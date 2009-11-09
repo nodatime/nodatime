@@ -150,27 +150,27 @@ namespace NodaTime
 
         public void TestEqualsHashCode()
         {
-            var Test1 = new Instant(TestTime1);
-            var Test2 = new Instant(TestTime1);
-            Assert.IsTrue(Test1.Equals(Test2));
-            Assert.IsTrue(Test2.Equals(Test1));
-            Assert.IsTrue(Test1.Equals(Test1));
-            Assert.IsTrue(Test2.Equals(Test2));
-            Assert.IsTrue(Test1.GetHashCode() == Test2.GetHashCode());
-            Assert.IsTrue(Test1.GetHashCode() == Test1.GetHashCode());
-            Assert.IsTrue(Test2.GetHashCode() == Test2.GetHashCode());
+            var test1 = new Instant(TestTime1);
+            var test2 = new Instant(TestTime1);
+            Assert.IsTrue(test1.Equals(test2));
+            Assert.IsTrue(test2.Equals(test1));
+            Assert.IsTrue(test1.Equals(test1));
+            Assert.IsTrue(test2.Equals(test2));
+            Assert.IsTrue(test1.GetHashCode() == test2.GetHashCode());
+            Assert.IsTrue(test1.GetHashCode() == test1.GetHashCode());
+            Assert.IsTrue(test2.GetHashCode() == test2.GetHashCode());
 
-            var Test3 = new Instant(TestTime2);
-            Assert.IsFalse(Test1.Equals(Test3));
-            Assert.IsFalse(Test2.Equals(Test3));
-            Assert.IsFalse(Test3.Equals(Test1));
-            Assert.IsFalse(Test3.Equals(Test2));
-            Assert.IsFalse(Test1.GetHashCode() == Test3.GetHashCode());
-            Assert.IsFalse(Test2.GetHashCode() == Test3.GetHashCode());
+            var test3 = new Instant(TestTime2);
+            Assert.IsFalse(test1.Equals(test3));
+            Assert.IsFalse(test2.Equals(test3));
+            Assert.IsFalse(test3.Equals(test1));
+            Assert.IsFalse(test3.Equals(test2));
+            Assert.IsFalse(test1.GetHashCode() == test3.GetHashCode());
+            Assert.IsFalse(test2.GetHashCode() == test3.GetHashCode());
 
-            Assert.IsFalse(Test1.Equals("Hello"));
-            Assert.IsTrue(Test1.Equals(new MockInstant()));
-            Assert.IsFalse(Test1.Equals(new DateTime(TestTime1)));
+            Assert.IsFalse(test1.Equals("Hello"));
+            Assert.IsTrue(test1.Equals(new MockInstant()));
+            Assert.IsFalse(test1.Equals(new DateTime(TestTime1)));
         }
 
         private class MockInstant : AbstractInstant
@@ -192,32 +192,32 @@ namespace NodaTime
 
         public void TestCompareTo()
         {
-            var Test1 = new Instant(TestTime1);
-            var Test1a = new Instant(TestTime1);
-            Assert.Equals(0, Test1.CompareTo(Test1a));
-            Assert.Equals(0, Test1a.CompareTo(Test1));
-            Assert.Equals(0, Test1.CompareTo(Test1));
-            Assert.Equals(0, Test1a.CompareTo(Test1a));
+            var test1 = new Instant(TestTime1);
+            var test1a = new Instant(TestTime1);
+            Assert.Equals(0, test1.CompareTo(test1a));
+            Assert.Equals(0, test1a.CompareTo(test1));
+            Assert.Equals(0, test1.CompareTo(test1));
+            Assert.Equals(0, test1a.CompareTo(test1a));
 
-            var Test2 = new Instant(TestTime2);
-            Assert.Equals(-1, Test1.CompareTo(Test2));
-            Assert.Equals(+1, Test2.CompareTo(Test1));
+            var test2 = new Instant(TestTime2);
+            Assert.Equals(-1, test1.CompareTo(test2));
+            Assert.Equals(+1, test2.CompareTo(test1));
 
-            var Test3 = new DateTime(TestTime2, GregorianChronology.GetInstance(Paris));
-            Assert.Equals(-1, Test1.CompareTo(Test3));
-            Assert.Equals(+1, Test3.CompareTo(Test1));
-            Assert.Equals(0, Test3.CompareTo(Test2));
+            var test3 = new DateTime(TestTime2, GregorianChronology.GetInstance(Paris));
+            Assert.Equals(-1, test1.CompareTo(test3));
+            Assert.Equals(+1, test3.CompareTo(test1));
+            Assert.Equals(0, test3.CompareTo(test2));
 
-            Assert.Equals(+1, Test2.CompareTo(new MockInstant()));
-            Assert.Equals(0, Test1.CompareTo(new MockInstant()));
+            Assert.Equals(+1, test2.CompareTo(new MockInstant()));
+            Assert.Equals(0, test1.CompareTo(new MockInstant()));
 
             // Note: JodaTime Tests for NullPointerException here: WRONG!
-            Assert.Throws<ArgumentNullException>(() => Test1.CompareTo(null));
+            Assert.Throws<ArgumentNullException>(() => test1.CompareTo(null));
 
             // Note: This comment was on the JodaTime code. Not sure what it was meant for
             // We should probably delete it
             // try {
-            //     Test1.compareTo(new Date());
+            //     test1.compareTo(new Date());
             //     fail();
             // } catch (ClassCastException ex) {}
         }
@@ -241,24 +241,24 @@ namespace NodaTime
         /// </summary>
         public void TestIsEqual_Instant()
         {
-            var Test1 = new Instant(TestTime1);
-            var Test1a = new Instant(TestTime1);
-            Assert.IsTrue(Test1.IsEqual(Test1a));
-            Assert.IsTrue(Test1a.IsEqual(Test1));
-            Assert.IsTrue(Test1.IsEqual(Test1));
-            Assert.IsTrue(Test1a.IsEqual(Test1a));
+            var test1 = new Instant(TestTime1);
+            var test1a = new Instant(TestTime1);
+            Assert.IsTrue(test1.IsEqual(test1a));
+            Assert.IsTrue(test1a.IsEqual(test1));
+            Assert.IsTrue(test1.IsEqual(test1));
+            Assert.IsTrue(test1a.IsEqual(test1a));
 
-            var Test2 = new Instant(TestTime2);
-            Assert.IsFalse(Test1.IsEqual(Test2));
-            Assert.IsFalse(Test2.IsEqual(Test1));
+            var test2 = new Instant(TestTime2);
+            Assert.IsFalse(test1.IsEqual(test2));
+            Assert.IsFalse(test2.IsEqual(test1));
 
-            var Test3 = new DateTime(TestTime2, GregorianChronology.GetInstance(Paris));
-            Assert.IsFalse(Test1.IsEqual(Test3));
-            Assert.IsFalse(Test3.IsEqual(Test1));
-            Assert.IsTrue(Test3.IsEqual(Test2));
+            var test3 = new DateTime(TestTime2, GregorianChronology.GetInstance(Paris));
+            Assert.IsFalse(test1.IsEqual(test3));
+            Assert.IsFalse(test3.IsEqual(test1));
+            Assert.IsTrue(test3.IsEqual(test2));
 
-            Assert.IsFalse(Test2.IsEqual(new MockInstant()));
-            Assert.IsTrue(Test1.IsEqual(new MockInstant()));
+            Assert.IsFalse(test2.IsEqual(new MockInstant()));
+            Assert.IsTrue(test1.IsEqual(new MockInstant()));
 
             Assert.IsFalse(new Instant(TestTimeNow + 1).IsEqual(null));
             Assert.IsTrue(new Instant(TestTimeNow).IsEqual(null));
@@ -284,24 +284,24 @@ namespace NodaTime
         /// </summary>
         public void TestIsBefore_Instant()
         {
-            var Test1 = new Instant(TestTime1);
-            var Test1a = new Instant(TestTime1);
-            Assert.IsFalse(Test1.IsBefore(Test1a));
-            Assert.IsFalse(Test1a.IsBefore(Test1));
-            Assert.IsFalse(Test1.IsBefore(Test1));
-            Assert.IsFalse(Test1a.IsBefore(Test1a));
+            var test1 = new Instant(TestTime1);
+            var test1a = new Instant(TestTime1);
+            Assert.IsFalse(test1.IsBefore(test1a));
+            Assert.IsFalse(test1a.IsBefore(test1));
+            Assert.IsFalse(test1.IsBefore(test1));
+            Assert.IsFalse(test1a.IsBefore(test1a));
 
-            var Test2 = new Instant(TestTime2);
-            Assert.IsTrue(Test1.IsBefore(Test2));
-            Assert.IsFalse(Test2.IsBefore(Test1));
+            var test2 = new Instant(TestTime2);
+            Assert.IsTrue(test1.IsBefore(test2));
+            Assert.IsFalse(test2.IsBefore(test1));
 
-            var Test3 = new DateTime(TestTime2, GregorianChronology.GetInstance(Paris));
-            Assert.IsTrue(Test1.IsBefore(Test3));
-            Assert.IsFalse(Test3.IsBefore(Test1));
-            Assert.IsFalse(Test3.IsBefore(Test2));
+            var test3 = new DateTime(TestTime2, GregorianChronology.GetInstance(Paris));
+            Assert.IsTrue(test1.IsBefore(test3));
+            Assert.IsFalse(test3.IsBefore(test1));
+            Assert.IsFalse(test3.IsBefore(test2));
 
-            Assert.IsFalse(Test2.IsBefore(new MockInstant()));
-            Assert.IsFalse(Test1.IsBefore(new MockInstant()));
+            Assert.IsFalse(test2.IsBefore(new MockInstant()));
+            Assert.IsFalse(test1.IsBefore(new MockInstant()));
 
             Assert.IsFalse(new Instant(TestTimeNow + 1).IsBefore(null));
             Assert.IsFalse(new Instant(TestTimeNow).IsBefore(null));
@@ -327,24 +327,24 @@ namespace NodaTime
         /// </summary>
         public void TestIsAfter_Instant()
         {
-            var Test1 = new Instant(TestTime1);
-            var Test1a = new Instant(TestTime1);
-            Assert.IsFalse(Test1.IsAfter(Test1a));
-            Assert.IsFalse(Test1a.IsAfter(Test1));
-            Assert.IsFalse(Test1.IsAfter(Test1));
-            Assert.IsFalse(Test1a.IsAfter(Test1a));
+            var test1 = new Instant(TestTime1);
+            var test1a = new Instant(TestTime1);
+            Assert.IsFalse(test1.IsAfter(test1a));
+            Assert.IsFalse(test1a.IsAfter(test1));
+            Assert.IsFalse(test1.IsAfter(test1));
+            Assert.IsFalse(test1a.IsAfter(test1a));
 
-            var Test2 = new Instant(TestTime2);
-            Assert.IsFalse(Test1.IsAfter(Test2));
-            Assert.IsTrue(Test2.IsAfter(Test1));
+            var test2 = new Instant(TestTime2);
+            Assert.IsFalse(test1.IsAfter(test2));
+            Assert.IsTrue(test2.IsAfter(test1));
 
-            var Test3 = new DateTime(TestTime2, GregorianChronology.GetInstance(Paris));
-            Assert.IsFalse(Test1.IsAfter(Test3));
-            Assert.IsTrue(Test3.IsAfter(Test1));
-            Assert.IsFalse(Test3.IsAfter(Test2));
+            var test3 = new DateTime(TestTime2, GregorianChronology.GetInstance(Paris));
+            Assert.IsFalse(test1.IsAfter(test3));
+            Assert.IsTrue(test3.IsAfter(test1));
+            Assert.IsFalse(test3.IsAfter(test2));
 
-            Assert.IsTrue(Test2.IsAfter(new MockInstant()));
-            Assert.IsFalse(Test1.IsAfter(new MockInstant()));
+            Assert.IsTrue(test2.IsAfter(new MockInstant()));
+            Assert.IsFalse(test1.IsAfter(new MockInstant()));
 
             Assert.IsTrue(new Instant(TestTimeNow + 1).IsAfter(null));
             Assert.IsFalse(new Instant(TestTimeNow).IsAfter(null));
