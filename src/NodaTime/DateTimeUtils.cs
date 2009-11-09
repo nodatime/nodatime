@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace NodaTime
 {
     /// <summary>
@@ -24,5 +26,14 @@ namespace NodaTime
     /// </summary>
     public static class DateTimeUtils
     {
+        public static void SetCurrentMillisFixed(long now)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void SetCurrentMillisSystem()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

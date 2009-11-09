@@ -61,6 +61,9 @@
     <Compile Include="Chronologies\AssembledChronology.cs" />
     <Compile Include="Chronologies\ChronologyBase.cs" />
     <Compile Include="Chronologies\IsoChronology.cs" />
+    <Compile Include="Converters\ConverterManager.cs" />
+    <Compile Include="Converters\IConverter.cs" />
+    <Compile Include="Converters\IInstantConverter.cs" />
     <Compile Include="MutableInstant.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Format\IPeriodParser.cs" />

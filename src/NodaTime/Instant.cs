@@ -1,4 +1,5 @@
 ﻿#region Copyright and license information
+
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -13,7 +14,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
+using System;
+
 using NodaTime.Base;
 
 namespace NodaTime
@@ -23,5 +28,28 @@ namespace NodaTime
     /// </summary>
     public sealed class Instant : AbstractInstant
     {
+        public Instant()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Instant(long instant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Instant(object instant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IChronology Chronology
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public long Milliseconds
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

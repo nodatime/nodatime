@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace NodaTime.Chronologies
 {
     /// <summary>
@@ -22,5 +24,9 @@ namespace NodaTime.Chronologies
     /// </summary>
     public sealed class IsoChronology : AssembledChronology
     {
+        public static IChronology Utc
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

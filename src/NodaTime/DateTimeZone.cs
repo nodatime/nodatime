@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace NodaTime
 {
     /// <summary>
@@ -23,5 +25,15 @@ namespace NodaTime
     /// </summary>   
     public abstract class DateTimeZone
     {
+        public static DateTimeZone Default
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public static DateTimeZone ForID(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
