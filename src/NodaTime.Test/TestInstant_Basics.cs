@@ -71,6 +71,7 @@ namespace NodaTime
             originalLocale = null;
         }
 
+        [Test]
         public void TestTest()
         {
             Assert.Equals("2002-06-09T00:00:00.000Z", new Instant(TestTimeNow).ToString());
@@ -78,6 +79,7 @@ namespace NodaTime
             Assert.Equals("2003-05-06T14:28:00.000Z", new Instant(TestTime2).ToString());
         }
 
+        [Test]
         public void TestGet_DateTimeFieldType()
         {
             var test = new Instant(); // 2002-06-09
@@ -111,6 +113,7 @@ namespace NodaTime
             //} catch (IllegalArgumentException ex) {}
         }
 
+        [Test]
         public void TestGet_DateTimeField()
         {
             var test = new Instant(); // 2002-06-09
@@ -139,6 +142,7 @@ namespace NodaTime
             Assert.Throws<ArgumentException>(() => test.Get(null));
         }
 
+        [Test]
         public void TestGetMethods()
         {
             var test = new Instant();
@@ -148,6 +152,7 @@ namespace NodaTime
             Assert.Equals(TestTimeNow, test.Milliseconds);
         }
 
+        [Test]
         public void TestEqualsHashCode()
         {
             var test1 = new Instant(TestTime1);
@@ -190,6 +195,7 @@ namespace NodaTime
             }
         }
 
+        [Test]
         public void TestCompareTo()
         {
             var test1 = new Instant(TestTime1);
@@ -222,6 +228,7 @@ namespace NodaTime
             // } catch (ClassCastException ex) {}
         }
 
+        [Test]
         public void TestIsEqual_long()
         {
             Assert.IsFalse(new Instant(TestTime1).IsEqual(TestTime2));
@@ -229,6 +236,7 @@ namespace NodaTime
             Assert.IsFalse(new Instant(TestTime2).IsEqual(TestTime1));
         }
 
+        [Test]
         public void TestIsEqualNow()
         {
             Assert.IsFalse(new Instant(TestTimeNow - 1).IsEqualNow());
@@ -239,6 +247,7 @@ namespace NodaTime
         /// <summary>
         /// Original name: TestIsEqual_RI
         /// </summary>
+        [Test]
         public void TestIsEqual_Instant()
         {
             var test1 = new Instant(TestTime1);
@@ -265,6 +274,7 @@ namespace NodaTime
             Assert.IsFalse(new Instant(TestTimeNow - 1).IsEqual(null));
         }
 
+        [Test]
         public void TestIsBefore_long()
         {
             Assert.IsTrue(new Instant(TestTime1).IsBefore(TestTime2));
@@ -272,6 +282,7 @@ namespace NodaTime
             Assert.IsFalse(new Instant(TestTime2).IsBefore(TestTime1));
         }
 
+        [Test]
         public void TestIsBeforeNow()
         {
             Assert.IsTrue(new Instant(TestTimeNow - 1).IsBeforeNow());
@@ -282,6 +293,7 @@ namespace NodaTime
         /// <summary>
         /// Original name: TestIsBefore_RI
         /// </summary>
+        [Test]
         public void TestIsBefore_Instant()
         {
             var test1 = new Instant(TestTime1);
@@ -308,6 +320,7 @@ namespace NodaTime
             Assert.IsTrue(new Instant(TestTimeNow - 1).IsBefore(null));
         }
 
+        [Test]
         public void TestIsAfter_long()
         {
             Assert.IsFalse(new Instant(TestTime1).IsAfter(TestTime2));
@@ -315,6 +328,7 @@ namespace NodaTime
             Assert.IsTrue(new Instant(TestTime2).IsAfter(TestTime1));
         }
 
+        [Test]
         public void TestIsAfterNow()
         {
             Assert.IsFalse(new Instant(TestTimeNow - 1).IsAfterNow());
@@ -325,6 +339,7 @@ namespace NodaTime
         /// <summary>
         /// Original name: TestIsAfter_RI
         /// </summary>
+        [Test]
         public void TestIsAfter_Instant()
         {
             var test1 = new Instant(TestTime1);
@@ -351,6 +366,7 @@ namespace NodaTime
             Assert.IsFalse(new Instant(TestTimeNow - 1).IsAfter(null));
         }
 
+        [Test]
         public void TestSerialization()
         {
             var test = new Instant(TestTimeNow);
@@ -368,12 +384,14 @@ namespace NodaTime
             }
         }
 
+        [Test]
         public void TestToString()
         {
             var test = new Instant(TestTimeNow);
             Assert.Equals("2002-06-09T00:00:00.000Z", test.ToString());
         }
 
+        [Test]
         public void TestToInstant()
         {
             var test = new Instant(TestTime1);
@@ -381,6 +399,7 @@ namespace NodaTime
             Assert.AreSame(test, result);
         }
 
+        [Test]
         public void TestToDateTime()
         {
             var test = new Instant(TestTime1);
@@ -399,6 +418,7 @@ namespace NodaTime
         //    assertEquals(IsoChronology.GetInstance(), result.Chronology);
         //}
 
+        [Test]
         public void TestToDateTime_DateTimeZone()
         {
             var test = new Instant(TestTime1);
@@ -417,6 +437,7 @@ namespace NodaTime
             Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
         }
 
+        [Test]
         public void TestToDateTime_Chronology()
         {
             var test = new Instant(TestTime1);
@@ -434,6 +455,7 @@ namespace NodaTime
             Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
         }
 
+        [Test]
         public void TestToMutableDateTime()
         {
             var test = new Instant(TestTime1);
@@ -452,6 +474,7 @@ namespace NodaTime
         //    assertEquals(IsoChronology.GetInstance(), result.Chronology);
         //}
 
+        [Test]
         public void TestToMutableDateTime_DateTimeZone()
         {
             var test = new Instant(TestTime1);
@@ -470,6 +493,7 @@ namespace NodaTime
             Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
         }
 
+        [Test]
         public void TestToMutableDateTime_Chronology()
         {
             var test = new Instant(TestTime1);
@@ -488,6 +512,7 @@ namespace NodaTime
             Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
         }
 
+        [Test]
         public void TestWithMillis_long()
         {
             var test = new Instant(TestTime1);
@@ -500,6 +525,7 @@ namespace NodaTime
             Assert.AreSame(test, result);
         }
 
+        [Test]
         public void TestWithDurationAdded_long_int()
         {
             var test = new Instant(TestTime1);
@@ -522,6 +548,7 @@ namespace NodaTime
         /// <summary>
         /// Original name: testWithDurationAdded_RD_int
         /// </summary>
+        [Test]
         public void TestWithDurationAdded_Duration_int()
         {
             var test = new Instant(TestTime1);
@@ -544,6 +571,7 @@ namespace NodaTime
             Assert.Equals(expected, result);
         }
 
+        [Test]
         public void TestPlus_long()
         {
             var test = new Instant(TestTime1);
@@ -555,6 +583,7 @@ namespace NodaTime
         /// <summary>
         /// Original name: testPlus_RD
         /// </summary>
+        [Test]
         public void TestPlus_Duration()
         {
             var test = new Instant(TestTime1);
@@ -566,6 +595,7 @@ namespace NodaTime
             Assert.AreSame(test, result);
         }
 
+        [Test]
         public void TestMinus_long()
         {
             var test = new Instant(TestTime1);
@@ -577,6 +607,7 @@ namespace NodaTime
         /// <summary>
         /// Original name: testMinus_RD
         /// </summary>
+        [Test]
         public void TestMinus_Duration()
         {
             var test = new Instant(TestTime1);
