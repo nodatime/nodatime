@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace NodaTime
 {
     /// <summary>
@@ -22,5 +24,9 @@ namespace NodaTime
     /// </summary>
     public class MutableInstant : IMutableInstant
     {
+        public int CompareTo(IInstant other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

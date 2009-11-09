@@ -24,9 +24,108 @@ namespace NodaTime.Chronologies
     /// </summary>
     public sealed class IsoChronology : AssembledChronology
     {
-        public static IChronology Utc
+        public static IsoChronology Utc
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public static IsoChronology GetInstance()
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTimeField Era
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField CenturyOfEra
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField YearOfCentury
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField YearOfEra
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField Year
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField DayOfMonth
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField MonthOfYear
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField Weekyear
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField WeekOfWeekyear
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField DayOfWeek
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField DayOfYear
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField HalfdayOfDay
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField HourOfHalfday
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField ClockhourOfDay
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField ClockhourOfHalfday
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField HourOfDay
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField MinuteOfHour
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField MinuteOfDay
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField SecondOfMinute
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField SecondOfDay
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField MillisecondsOfSecond
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public DateTimeField MillisecondsOfDay
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public static IsoChronology GetInstance(DateTimeZone dateTimeZone)
+        {
+            throw new NotImplementedException();
         }
     }
 }

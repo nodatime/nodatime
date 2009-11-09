@@ -25,5 +25,27 @@ namespace NodaTime
     /// </summary>
     public enum DateTimeFieldType
     {
+        Era,
+        CenturyOfEra,
+        YearOfCentury,
+        YearOfEra,
+        Year,
+        MonthOfYear,
+        DayOfMonth,
+        Weekyear,
+        WeekOfWeekyear,
+        DayOfWeek,
+        DayOfYear,
+        HalfdayOfDay,
+        HourOfHalfday,
+        ClockhourOfDay,
+        ClockhourOfHalfday,
+        HourOfDay,
+        MinuteOfHour,
+        MinuteOfDay,
+        SecondOfMinute,
+        SecondOfDay,
+        MillisOfSecond,
+        MillisOfDay
     }
 }

@@ -30,6 +30,10 @@ namespace NodaTime
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
+        public static DateTimeZone Utc
+        {
+            get { throw new NotImplementedException(); }
+        }
 
         public static DateTimeZone ForID(string id)
         {

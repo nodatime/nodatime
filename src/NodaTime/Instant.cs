@@ -43,13 +43,39 @@ namespace NodaTime
             throw new NotImplementedException();
         }
 
-        public IChronology Chronology
+        public Instant WithMilliseconds(long milliseconds)
         {
-            get { throw new NotImplementedException(); }
+            throw new NotImplementedException();
         }
-        public long Milliseconds
+
+        public Instant WithDurationAdded(long durationToAdd, int scalar)
         {
-            get { throw new NotImplementedException(); }
+            throw new NotImplementedException();
+        }
+
+        public Instant WithDurationAdded(Duration durationToAdd, int scalar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Instant Plus(IDuration duration)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Instant Minus(IDuration duration)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Instant Plus(long duration)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Instant Minus(long duration)
+        {
+            throw new NotImplementedException();
         }
     }
 }

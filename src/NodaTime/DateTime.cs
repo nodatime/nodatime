@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
+
 using NodaTime.Base;
 namespace NodaTime
 {
@@ -25,5 +28,15 @@ namespace NodaTime
     /// </summary>
     public sealed class DateTime : DateTimeBase
     {
+        public DateTime(long instant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime(long instant, IChronology chronology)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

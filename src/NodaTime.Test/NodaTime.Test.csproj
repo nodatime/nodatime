@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="MockZeroNullIntegerConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestInstant_Basics.cs" />
     <Compile Include="TestInstant_Constructors.cs" />
   </ItemGroup>
   <ItemGroup>

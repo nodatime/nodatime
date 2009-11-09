@@ -1,4 +1,5 @@
-﻿#region Copyright and license information
+#region Copyright and license information
+
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -13,7 +14,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
+using System;
 
 namespace NodaTime.Base
 {
@@ -22,5 +26,113 @@ namespace NodaTime.Base
     /// </summary>
     public class AbstractInstant : IInstant
     {
+        public virtual IChronology Chronology
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public virtual long Milliseconds
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public virtual int CompareTo(IInstant instant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual bool IsEqual(IInstant instant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsEqual(long other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsEqualNow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsBefore(long other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsBeforeNow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsBefore(IInstant instant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsAfter(long other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsAfterNow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsAfter(IInstant instant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Instant ToInstant()
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime ToDateTime()
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime ToDateTime(DateTimeZone paris)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Get(DateTimeFieldType field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Get(DateTimeField second)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime ToDateTime(IChronology chronology)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTimeZone Zone
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public MutableDateTime ToMutableDateTime(DateTimeZone paris)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MutableDateTime ToMutableDateTime(IChronology chronology)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MutableDateTime ToMutableDateTime()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

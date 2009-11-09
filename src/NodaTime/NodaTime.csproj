@@ -60,6 +60,7 @@
     <Compile Include="Base\DateTimeBase.cs" />
     <Compile Include="Chronologies\AssembledChronology.cs" />
     <Compile Include="Chronologies\ChronologyBase.cs" />
+    <Compile Include="Chronologies\GregorianChronology.cs" />
     <Compile Include="Chronologies\IsoChronology.cs" />
     <Compile Include="Converters\ConverterManager.cs" />
     <Compile Include="Converters\IConverter.cs" />

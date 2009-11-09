@@ -8,7 +8,7 @@ namespace NodaTime.Converters
     public class ConverterManager
     {
         /// <summary>
-        /// Original name: getInstance
+        /// Original name: GetInstance
         /// </summary>
         public static ConverterManager Instance
         {

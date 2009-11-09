@@ -15,12 +15,14 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace NodaTime
 {
     /// <summary>
     /// Original name: ReadableInstant
     /// </summary>
-    public interface IInstant
+    public interface IInstant : IComparable<IInstant>
     {
     }
 }
