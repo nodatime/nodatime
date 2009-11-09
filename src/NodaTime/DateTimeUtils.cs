@@ -26,17 +26,17 @@ namespace NodaTime
     /// </summary>
     public static class DateTimeUtils
     {
-        // I think we'll want to get rid of this in favour of a way of replacing the "clock",
-        // which is another name for the MillisProvider. That isn't public in Joda, but I think
-        // it's worth *making* it public - it's good for testing.
-        public static void SetCurrentMillisFixed(long now)
-        {
-            throw new NotImplementedException();
-        }
+        private static volatile IClock clock = new SystemClock();
 
-        public static void SetCurrentMillisSystem()
+        /// <summary>
+        /// The clock used for determining the current time *everywhere* in Noda Time.
+        /// Use TestClock to replace it temporarily, for the sake of unit tests.
+        /// TODO: Sample...
+        /// </summary>
+        public static IClock Clock
         {
-            throw new NotImplementedException();
+            get { return clock; }
+            internal set { clock = value; }
         }
     }
 }

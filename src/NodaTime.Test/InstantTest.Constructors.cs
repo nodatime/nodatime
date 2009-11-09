@@ -33,11 +33,14 @@ namespace NodaTime.Test
     public partial class InstantTest
     {
         [Test]
-        public void TestConstructor()
+        public void TestCurrentTime()
         {
-            var test = Instant.Now;
-            Assert.Equals(IsoChronology.Utc, test.Chronology);
-            Assert.Equals(TestTimeNow, test.Milliseconds);
+            using (TestClock.ReplaceCurrent(TestTimeNow))
+            {
+                var test = Instant.Now;
+                Assert.Equals(IsoChronology.Utc, test.Chronology);
+                Assert.Equals(TestTimeNow, test.Milliseconds);
+            }
         }
 
         [Test]

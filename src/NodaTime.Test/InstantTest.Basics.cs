@@ -86,11 +86,14 @@ namespace NodaTime.Test
         [Test]
         public void TestGetMethods()
         {
-            var test = Instant.Now;
+            using (TestClock.ReplaceCurrent(TestTimeNow))
+            {
+                var test = Instant.Now;
 
-            Assert.Equals(IsoChronology.Utc, test.Chronology);
-            Assert.Equals(DateTimeZone.Utc, test.Zone);
-            Assert.Equals(TestTimeNow, test.Milliseconds);
+                Assert.Equals(IsoChronology.Utc, test.Chronology);
+                Assert.Equals(DateTimeZone.Utc, test.Zone);
+                Assert.Equals(TestTimeNow, test.Milliseconds);
+            }
         }
 
         [Test]
