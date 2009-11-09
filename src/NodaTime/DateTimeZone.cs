@@ -25,7 +25,7 @@ namespace NodaTime
     /// </summary>   
     public abstract class DateTimeZone
     {
-        public static DateTimeZone Default
+        public static DateTimeZone SystemDefault
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }

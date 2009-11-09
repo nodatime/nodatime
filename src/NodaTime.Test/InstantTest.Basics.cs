@@ -58,28 +58,28 @@ namespace NodaTime.Test
         public void TestGet_DateTimeField()
         {
             var test = Instant.Now; // 2002-06-09
-            Assert.Equals(1, test[IsoChronology.GetInstance().Era]);
-            Assert.Equals(20, test[IsoChronology.GetInstance().CenturyOfEra]);
-            Assert.Equals(2, test[IsoChronology.GetInstance().YearOfCentury]);
-            Assert.Equals(2002, test[IsoChronology.GetInstance().YearOfEra]);
-            Assert.Equals(2002, test[IsoChronology.GetInstance().Year]);
-            Assert.Equals(6, test[IsoChronology.GetInstance().MonthOfYear]);
-            Assert.Equals(9, test[IsoChronology.GetInstance().DayOfMonth]);
-            Assert.Equals(2002, test[IsoChronology.GetInstance().Weekyear]);
-            Assert.Equals(23, test[IsoChronology.GetInstance().WeekOfWeekyear]);
-            Assert.Equals(7, test[IsoChronology.GetInstance().DayOfWeek]);
-            Assert.Equals(160, test[IsoChronology.GetInstance().DayOfYear]);
-            Assert.Equals(0, test[IsoChronology.GetInstance().HalfdayOfDay]);
-            Assert.Equals(1, test[IsoChronology.GetInstance().HourOfHalfday]);
-            Assert.Equals(1, test[IsoChronology.GetInstance().ClockhourOfDay]);
-            Assert.Equals(1, test[IsoChronology.GetInstance().ClockhourOfHalfday]);
-            Assert.Equals(1, test[IsoChronology.GetInstance().HourOfDay]);
-            Assert.Equals(0, test[IsoChronology.GetInstance().MinuteOfHour]);
-            Assert.Equals(60, test[IsoChronology.GetInstance().MinuteOfDay]);
-            Assert.Equals(0, test[IsoChronology.GetInstance().SecondOfMinute]);
-            Assert.Equals(60 * 60, test[IsoChronology.GetInstance().SecondOfDay]);
-            Assert.Equals(0, test[IsoChronology.GetInstance().MillisecondsOfSecond]);
-            Assert.Equals(60 * 60 * 1000, test[IsoChronology.GetInstance().MillisecondsOfDay]);
+            Assert.Equals(1, test[IsoChronology.SystemDefault.Era]);
+            Assert.Equals(20, test[IsoChronology.SystemDefault.CenturyOfEra]);
+            Assert.Equals(2, test[IsoChronology.SystemDefault.YearOfCentury]);
+            Assert.Equals(2002, test[IsoChronology.SystemDefault.YearOfEra]);
+            Assert.Equals(2002, test[IsoChronology.SystemDefault.Year]);
+            Assert.Equals(6, test[IsoChronology.SystemDefault.MonthOfYear]);
+            Assert.Equals(9, test[IsoChronology.SystemDefault.DayOfMonth]);
+            Assert.Equals(2002, test[IsoChronology.SystemDefault.Weekyear]);
+            Assert.Equals(23, test[IsoChronology.SystemDefault.WeekOfWeekyear]);
+            Assert.Equals(7, test[IsoChronology.SystemDefault.DayOfWeek]);
+            Assert.Equals(160, test[IsoChronology.SystemDefault.DayOfYear]);
+            Assert.Equals(0, test[IsoChronology.SystemDefault.HalfdayOfDay]);
+            Assert.Equals(1, test[IsoChronology.SystemDefault.HourOfHalfday]);
+            Assert.Equals(1, test[IsoChronology.SystemDefault.ClockhourOfDay]);
+            Assert.Equals(1, test[IsoChronology.SystemDefault.ClockhourOfHalfday]);
+            Assert.Equals(1, test[IsoChronology.SystemDefault.HourOfDay]);
+            Assert.Equals(0, test[IsoChronology.SystemDefault.MinuteOfHour]);
+            Assert.Equals(60, test[IsoChronology.SystemDefault.MinuteOfDay]);
+            Assert.Equals(0, test[IsoChronology.SystemDefault.SecondOfMinute]);
+            Assert.Equals(60 * 60, test[IsoChronology.SystemDefault.SecondOfDay]);
+            Assert.Equals(0, test[IsoChronology.SystemDefault.MillisecondsOfSecond]);
+            Assert.Equals(60 * 60 * 1000, test[IsoChronology.SystemDefault.MillisecondsOfDay]);
             Assert.Throws<ArgumentException>(() => { var ignored = test[null]; });
         }
 
@@ -346,7 +346,7 @@ namespace NodaTime.Test
             var test = new Instant(TestTime1);
             var result = test.ToDateTime();
             Assert.Equals(TestTime1, result.Milliseconds);
-            Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
+            Assert.Equals(IsoChronology.SystemDefault, result.Chronology);
         }
 
         // Note: This was Testing a deprecated method. We are not porting deprecated API
@@ -356,7 +356,7 @@ namespace NodaTime.Test
         //    Assert.AreSame(DateTime.class, result.getClass());
         //    Assert.AreSame(IsoChronology.class, result.Chronology.getClass());
         //    assertEquals(test.Milliseconds, result.Milliseconds);
-        //    assertEquals(IsoChronology.GetInstance(), result.Chronology);
+        //    assertEquals(IsoChronology.SystemDefault, result.Chronology);
         //}
 
         [Test]
@@ -375,16 +375,16 @@ namespace NodaTime.Test
             test = new Instant(TestTime1);
             result = test.ToDateTime((DateTimeZone) null);
             Assert.Equals(test.Milliseconds, result.Milliseconds);
-            Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
+            Assert.Equals(IsoChronology.SystemDefault, result.Chronology);
         }
 
         [Test]
         public void TestToDateTime_Chronology()
         {
             var test = new Instant(TestTime1);
-            var result = test.ToDateTime(IsoChronology.GetInstance());
+            var result = test.ToDateTime(IsoChronology.SystemDefault);
             Assert.Equals(test.Milliseconds, result.Milliseconds);
-            Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
+            Assert.Equals(IsoChronology.SystemDefault, result.Chronology);
 
             test = new Instant(TestTime1);
             result = test.ToDateTime(GregorianChronology.GetInstance(Paris));
@@ -393,7 +393,7 @@ namespace NodaTime.Test
 
             test = new Instant(TestTime1);
             result = test.ToDateTime((IChronology) null);
-            Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
+            Assert.Equals(IsoChronology.SystemDefault, result.Chronology);
         }
 
         [Test]
@@ -402,7 +402,7 @@ namespace NodaTime.Test
             var test = new Instant(TestTime1);
             var result = test.ToMutableDateTime();
             Assert.Equals(test.Milliseconds, result.Milliseconds);
-            Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
+            Assert.Equals(IsoChronology.SystemDefault, result.Chronology);
         }
 
         // Note: Another method Testing deprecated APIs
@@ -412,7 +412,7 @@ namespace NodaTime.Test
         //    Assert.AreSame(MutableDateTime.class, result.getClass());
         //    Assert.AreSame(IsoChronology.class, result.Chronology.getClass());
         //    assertEquals(test.Milliseconds, result.Milliseconds);
-        //    assertEquals(IsoChronology.GetInstance(), result.Chronology);
+        //    assertEquals(IsoChronology.SystemDefault, result.Chronology);
         //}
 
         [Test]
@@ -421,7 +421,7 @@ namespace NodaTime.Test
             var test = new Instant(TestTime1);
             var result = test.ToMutableDateTime(London);
             Assert.Equals(test.Milliseconds, result.Milliseconds);
-            Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
+            Assert.Equals(IsoChronology.SystemDefault, result.Chronology);
 
             test = new Instant(TestTime1);
             result = test.ToMutableDateTime(Paris);
@@ -431,16 +431,16 @@ namespace NodaTime.Test
             test = new Instant(TestTime1);
             result = test.ToMutableDateTime((DateTimeZone) null);
             Assert.Equals(test.Milliseconds, result.Milliseconds);
-            Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
+            Assert.Equals(IsoChronology.SystemDefault, result.Chronology);
         }
 
         [Test]
         public void TestToMutableDateTime_Chronology()
         {
             var test = new Instant(TestTime1);
-            var result = test.ToMutableDateTime(IsoChronology.GetInstance());
+            var result = test.ToMutableDateTime(IsoChronology.SystemDefault);
             Assert.Equals(test.Milliseconds, result.Milliseconds);
-            Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
+            Assert.Equals(IsoChronology.SystemDefault, result.Chronology);
 
             test = new Instant(TestTime1);
             result = test.ToMutableDateTime(GregorianChronology.GetInstance(Paris));
@@ -450,7 +450,7 @@ namespace NodaTime.Test
             test = new Instant(TestTime1);
             result = test.ToMutableDateTime((IChronology) null);
             Assert.Equals(test.Milliseconds, result.Milliseconds);
-            Assert.Equals(IsoChronology.GetInstance(), result.Chronology);
+            Assert.Equals(IsoChronology.SystemDefault, result.Chronology);
         }
 
         [Test]

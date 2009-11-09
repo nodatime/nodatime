@@ -29,9 +29,12 @@ namespace NodaTime.Chronologies
             get { throw new NotImplementedException(); }
         }
 
-        public static IsoChronology GetInstance()
+        /// <summary>
+        /// Returns the IsoChronology with the system default time zone.
+        /// </summary>
+        public static IsoChronology SystemDefault
         {
-            throw new NotImplementedException();
+            get { throw new NotImplementedException(); }
         }
 
         public override DateTimeField Era
