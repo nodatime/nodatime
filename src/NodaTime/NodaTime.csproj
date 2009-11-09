@@ -59,6 +59,8 @@
     <Compile Include="Base\PeriodBase.cs" />
     <Compile Include="Base\DateTimeBase.cs" />
     <Compile Include="Chronologies\AssembledChronology.cs" />
+    <Compile Include="Chronologies\BasicChronology.cs" />
+    <Compile Include="Chronologies\BasicGJChronology.cs" />
     <Compile Include="Chronologies\ChronologyBase.cs" />
     <Compile Include="Chronologies\GregorianChronology.cs" />
     <Compile Include="Chronologies\IsoChronology.cs" />

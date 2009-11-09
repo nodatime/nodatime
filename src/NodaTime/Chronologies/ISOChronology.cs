@@ -34,91 +34,91 @@ namespace NodaTime.Chronologies
             throw new NotImplementedException();
         }
 
-        public DateTimeField Era
+        public override DateTimeField Era
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField CenturyOfEra
+        public override DateTimeField CenturyOfEra
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField YearOfCentury
+        public override DateTimeField YearOfCentury
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField YearOfEra
+        public override DateTimeField YearOfEra
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField Year
+        public override DateTimeField Year
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField DayOfMonth
+        public override DateTimeField DayOfMonth
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField MonthOfYear
+        public override DateTimeField MonthOfYear
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField Weekyear
+        public override DateTimeField Weekyear
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField WeekOfWeekyear
+        public override DateTimeField WeekOfWeekyear
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField DayOfWeek
+        public override DateTimeField DayOfWeek
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField DayOfYear
+        public override DateTimeField DayOfYear
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField HalfdayOfDay
+        public override DateTimeField HalfdayOfDay
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField HourOfHalfday
+        public override DateTimeField HourOfHalfday
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField ClockhourOfDay
+        public override DateTimeField ClockhourOfDay
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField ClockhourOfHalfday
+        public override DateTimeField ClockhourOfHalfday
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField HourOfDay
+        public override DateTimeField HourOfDay
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField MinuteOfHour
+        public override DateTimeField MinuteOfHour
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField MinuteOfDay
+        public override DateTimeField MinuteOfDay
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField SecondOfMinute
+        public override DateTimeField SecondOfMinute
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField SecondOfDay
+        public override DateTimeField SecondOfDay
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField MillisecondsOfSecond
+        public override DateTimeField MillisecondsOfSecond
         {
             get { throw new NotImplementedException(); }
         }
-        public DateTimeField MillisecondsOfDay
+        public override DateTimeField MillisecondsOfDay
         {
             get { throw new NotImplementedException(); }
         }

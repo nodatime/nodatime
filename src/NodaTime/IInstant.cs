@@ -24,5 +24,15 @@ namespace NodaTime
     /// </summary>
     public interface IInstant : IComparable<IInstant>
     {
+        Instant ToInstant();
+        DateTime ToDateTime();
+        DateTime ToDateTime(DateTimeZone paris);
+        int Get(DateTimeFieldType field);
+        int Get(DateTimeField second);
+        DateTime ToDateTime(IChronology chronology);
+        DateTimeZone Zone { get; }
+        MutableDateTime ToMutableDateTime(DateTimeZone paris);
+        MutableDateTime ToMutableDateTime(IChronology chronology);
+        MutableDateTime ToMutableDateTime();
     }
 }
