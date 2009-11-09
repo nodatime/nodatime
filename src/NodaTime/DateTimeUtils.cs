@@ -26,6 +26,9 @@ namespace NodaTime
     /// </summary>
     public static class DateTimeUtils
     {
+        // I think we'll want to get rid of this in favour of a way of replacing the "clock",
+        // which is another name for the MillisProvider. That isn't public in Joda, but I think
+        // it's worth *making* it public - it's good for testing.
         public static void SetCurrentMillisFixed(long now)
         {
             throw new NotImplementedException();

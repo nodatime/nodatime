@@ -28,9 +28,14 @@ namespace NodaTime
     /// </summary>
     public sealed class Instant : AbstractInstant
     {
-        public Instant()
+        /// <summary>
+        /// This takes the place of the old parameterless constructor; it's more inkeeping
+        /// with DateTime.Now etc, whereas java.util.Date/Calendar support the parameterless
+        /// constructor style. Let's get rid of that ambiguity.
+        /// </summary>
+        public static Instant Now
         {
-            throw new NotImplementedException();
+            get { throw new NotImplementedException(); }
         }
 
         public Instant(long instant)

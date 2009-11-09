@@ -8,69 +8,10 @@ using NodaTime.Chronologies;
 
 using NUnit.Framework;
 
-namespace NodaTime
+namespace NodaTime.Test
 {
-    [TestFixture]
-    public class TestInstant_Basics
+    public partial class InstantTest
     {
-        // test in 2002/03 as time zones are more well known
-        // (before the late 90's they were all over the place)
-        private static readonly DateTimeZone Paris = DateTimeZone.ForID("Europe/Paris");
-        private static readonly DateTimeZone London = DateTimeZone.ForID("Europe/London");
-
-        private const long Y2002Days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
-                                       366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 +
-                                       365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
-                                       366 + 365;
-        private const long Y2003Days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
-                                       366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 +
-                                       365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
-                                       366 + 365 + 365;
-
-        // 2002-06-09
-        private const long TestTimeNow =
-            (Y2002Days + 31L + 28L + 31L + 30L + 31L + 9L - 1L) * DateTimeConstants.MillisecondsPerDay;
-
-        // 2002-04-05
-        private const long TestTime1 =
-            (Y2002Days + 31L + 28L + 31L + 5L - 1L) * DateTimeConstants.MillisecondsPerDay
-            + 12L * DateTimeConstants.MillisecondsPerHour
-            + 24L * DateTimeConstants.MillisecondsPerMinute;
-
-        // 2003-05-06
-        private const long TestTime2 =
-            (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * DateTimeConstants.MillisecondsPerDay
-            + 14L * DateTimeConstants.MillisecondsPerHour
-            + 28L * DateTimeConstants.MillisecondsPerMinute;
-
-        private DateTimeZone originalDateTimeZone;
-        private TimeZone originalTimeZone;
-        private CultureInfo originalLocale;
-
-        [SetUp]
-        public void SetUp()
-        {
-            DateTimeUtils.SetCurrentMillisFixed(TestTimeNow);
-            originalDateTimeZone = DateTimeZone.Default;
-            // TODO: originalTimeZone = TimeZone.getDefault();
-            // TODO: originalLocale = Locale.getDefault();
-            DateTimeZone.Default = London;
-            // TODO:TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-            // TODO:Locale.setDefault(Locale.UK);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            DateTimeUtils.SetCurrentMillisSystem();
-            DateTimeZone.Default = originalDateTimeZone;
-            // TODO: TimeZone.setDefault(originalTimeZone);
-            // TODO: Locale.setDefault(originalLocale);
-            originalDateTimeZone = null;
-            originalTimeZone = null;
-            originalLocale = null;
-        }
-
         [Test]
         public void TestTest()
         {
@@ -82,33 +23,33 @@ namespace NodaTime
         [Test]
         public void TestGet_DateTimeFieldType()
         {
-            var test = new Instant(); // 2002-06-09
-            Assert.Equals(1, test.Get(DateTimeFieldType.Era));
-            Assert.Equals(20, test.Get(DateTimeFieldType.CenturyOfEra));
-            Assert.Equals(2, test.Get(DateTimeFieldType.YearOfCentury));
-            Assert.Equals(2002, test.Get(DateTimeFieldType.YearOfEra));
-            Assert.Equals(2002, test.Get(DateTimeFieldType.Year));
-            Assert.Equals(6, test.Get(DateTimeFieldType.MonthOfYear));
-            Assert.Equals(9, test.Get(DateTimeFieldType.DayOfMonth));
-            Assert.Equals(2002, test.Get(DateTimeFieldType.Weekyear));
-            Assert.Equals(23, test.Get(DateTimeFieldType.WeekOfWeekyear));
-            Assert.Equals(7, test.Get(DateTimeFieldType.DayOfWeek));
-            Assert.Equals(160, test.Get(DateTimeFieldType.DayOfYear));
-            Assert.Equals(0, test.Get(DateTimeFieldType.HalfdayOfDay));
-            Assert.Equals(0, test.Get(DateTimeFieldType.HourOfHalfday));
-            Assert.Equals(24, test.Get(DateTimeFieldType.ClockhourOfDay));
-            Assert.Equals(12, test.Get(DateTimeFieldType.ClockhourOfHalfday));
-            Assert.Equals(0, test.Get(DateTimeFieldType.HourOfDay));
-            Assert.Equals(0, test.Get(DateTimeFieldType.MinuteOfHour));
-            Assert.Equals(0, test.Get(DateTimeFieldType.MinuteOfDay));
-            Assert.Equals(0, test.Get(DateTimeFieldType.SecondOfMinute));
-            Assert.Equals(0, test.Get(DateTimeFieldType.SecondOfDay));
-            Assert.Equals(0, test.Get(DateTimeFieldType.MillisOfSecond));
-            Assert.Equals(0, test.Get(DateTimeFieldType.MillisOfDay));
+            var test = Instant.Now; // 2002-06-09
+            Assert.Equals(1, test[DateTimeFieldType.Era]);
+            Assert.Equals(20, test[DateTimeFieldType.CenturyOfEra]);
+            Assert.Equals(2, test[DateTimeFieldType.YearOfCentury]);
+            Assert.Equals(2002, test[DateTimeFieldType.YearOfEra]);
+            Assert.Equals(2002, test[DateTimeFieldType.Year]);
+            Assert.Equals(6, test[DateTimeFieldType.MonthOfYear]);
+            Assert.Equals(9, test[DateTimeFieldType.DayOfMonth]);
+            Assert.Equals(2002, test[DateTimeFieldType.Weekyear]);
+            Assert.Equals(23, test[DateTimeFieldType.WeekOfWeekyear]);
+            Assert.Equals(7, test[DateTimeFieldType.DayOfWeek]);
+            Assert.Equals(160, test[DateTimeFieldType.DayOfYear]);
+            Assert.Equals(0, test[DateTimeFieldType.HalfdayOfDay]);
+            Assert.Equals(0, test[DateTimeFieldType.HourOfHalfday]);
+            Assert.Equals(24, test[DateTimeFieldType.ClockhourOfDay]);
+            Assert.Equals(12, test[DateTimeFieldType.ClockhourOfHalfday]);
+            Assert.Equals(0, test[DateTimeFieldType.HourOfDay]);
+            Assert.Equals(0, test[DateTimeFieldType.MinuteOfHour]);
+            Assert.Equals(0, test[DateTimeFieldType.MinuteOfDay]);
+            Assert.Equals(0, test[DateTimeFieldType.SecondOfMinute]);
+            Assert.Equals(0, test[DateTimeFieldType.SecondOfDay]);
+            Assert.Equals(0, test[DateTimeFieldType.MillisOfSecond]);
+            Assert.Equals(0, test[DateTimeFieldType.MillisOfDay]);
             // This assertion is not relevant in .NET because enums cannot be null
             // I'm keeping it because it may become relevant once DateTimeFieldType is fully shaped
             //try {
-            //    test.Get((DateTimeFieldType) null);
+            //    test[(DateTimeFieldType) null);
             //    fail();
             //} catch (IllegalArgumentException ex) {}
         }
@@ -116,36 +57,36 @@ namespace NodaTime
         [Test]
         public void TestGet_DateTimeField()
         {
-            var test = new Instant(); // 2002-06-09
-            Assert.Equals(1, test.Get(IsoChronology.GetInstance().Era));
-            Assert.Equals(20, test.Get(IsoChronology.GetInstance().CenturyOfEra));
-            Assert.Equals(2, test.Get(IsoChronology.GetInstance().YearOfCentury));
-            Assert.Equals(2002, test.Get(IsoChronology.GetInstance().YearOfEra));
-            Assert.Equals(2002, test.Get(IsoChronology.GetInstance().Year));
-            Assert.Equals(6, test.Get(IsoChronology.GetInstance().MonthOfYear));
-            Assert.Equals(9, test.Get(IsoChronology.GetInstance().DayOfMonth));
-            Assert.Equals(2002, test.Get(IsoChronology.GetInstance().Weekyear));
-            Assert.Equals(23, test.Get(IsoChronology.GetInstance().WeekOfWeekyear));
-            Assert.Equals(7, test.Get(IsoChronology.GetInstance().DayOfWeek));
-            Assert.Equals(160, test.Get(IsoChronology.GetInstance().DayOfYear));
-            Assert.Equals(0, test.Get(IsoChronology.GetInstance().HalfdayOfDay));
-            Assert.Equals(1, test.Get(IsoChronology.GetInstance().HourOfHalfday));
-            Assert.Equals(1, test.Get(IsoChronology.GetInstance().ClockhourOfDay));
-            Assert.Equals(1, test.Get(IsoChronology.GetInstance().ClockhourOfHalfday));
-            Assert.Equals(1, test.Get(IsoChronology.GetInstance().HourOfDay));
-            Assert.Equals(0, test.Get(IsoChronology.GetInstance().MinuteOfHour));
-            Assert.Equals(60, test.Get(IsoChronology.GetInstance().MinuteOfDay));
-            Assert.Equals(0, test.Get(IsoChronology.GetInstance().SecondOfMinute));
-            Assert.Equals(60 * 60, test.Get(IsoChronology.GetInstance().SecondOfDay));
-            Assert.Equals(0, test.Get(IsoChronology.GetInstance().MillisecondsOfSecond));
-            Assert.Equals(60 * 60 * 1000, test.Get(IsoChronology.GetInstance().MillisecondsOfDay));
-            Assert.Throws<ArgumentException>(() => test.Get(null));
+            var test = Instant.Now; // 2002-06-09
+            Assert.Equals(1, test[IsoChronology.GetInstance().Era]);
+            Assert.Equals(20, test[IsoChronology.GetInstance().CenturyOfEra]);
+            Assert.Equals(2, test[IsoChronology.GetInstance().YearOfCentury]);
+            Assert.Equals(2002, test[IsoChronology.GetInstance().YearOfEra]);
+            Assert.Equals(2002, test[IsoChronology.GetInstance().Year]);
+            Assert.Equals(6, test[IsoChronology.GetInstance().MonthOfYear]);
+            Assert.Equals(9, test[IsoChronology.GetInstance().DayOfMonth]);
+            Assert.Equals(2002, test[IsoChronology.GetInstance().Weekyear]);
+            Assert.Equals(23, test[IsoChronology.GetInstance().WeekOfWeekyear]);
+            Assert.Equals(7, test[IsoChronology.GetInstance().DayOfWeek]);
+            Assert.Equals(160, test[IsoChronology.GetInstance().DayOfYear]);
+            Assert.Equals(0, test[IsoChronology.GetInstance().HalfdayOfDay]);
+            Assert.Equals(1, test[IsoChronology.GetInstance().HourOfHalfday]);
+            Assert.Equals(1, test[IsoChronology.GetInstance().ClockhourOfDay]);
+            Assert.Equals(1, test[IsoChronology.GetInstance().ClockhourOfHalfday]);
+            Assert.Equals(1, test[IsoChronology.GetInstance().HourOfDay]);
+            Assert.Equals(0, test[IsoChronology.GetInstance().MinuteOfHour]);
+            Assert.Equals(60, test[IsoChronology.GetInstance().MinuteOfDay]);
+            Assert.Equals(0, test[IsoChronology.GetInstance().SecondOfMinute]);
+            Assert.Equals(60 * 60, test[IsoChronology.GetInstance().SecondOfDay]);
+            Assert.Equals(0, test[IsoChronology.GetInstance().MillisecondsOfSecond]);
+            Assert.Equals(60 * 60 * 1000, test[IsoChronology.GetInstance().MillisecondsOfDay]);
+            Assert.Throws<ArgumentException>(() => { var ignored = test[null]; });
         }
 
         [Test]
         public void TestGetMethods()
         {
-            var test = new Instant();
+            var test = Instant.Now;
 
             Assert.Equals(IsoChronology.Utc, test.Chronology);
             Assert.Equals(DateTimeZone.Utc, test.Zone);

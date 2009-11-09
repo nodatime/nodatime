@@ -27,8 +27,8 @@ namespace NodaTime
         Instant ToInstant();
         DateTime ToDateTime();
         DateTime ToDateTime(DateTimeZone paris);
-        int Get(DateTimeFieldType field);
-        int Get(DateTimeField second);
+        int this[DateTimeFieldType field] { get; }
+        int this[DateTimeField second] { get; }
         DateTime ToDateTime(IChronology chronology);
         DateTimeZone Zone { get; }
         MutableDateTime ToMutableDateTime(DateTimeZone paris);

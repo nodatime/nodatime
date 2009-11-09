@@ -100,14 +100,14 @@ namespace NodaTime.Base
             throw new NotImplementedException();
         }
 
-        public int Get(DateTimeFieldType field)
+        public int this[DateTimeFieldType field]
         {
-            throw new NotImplementedException();
+            get { throw new NotImplementedException(); }
         }
 
-        public int Get(DateTimeField second)
+        public int this[DateTimeField second]
         {
-            throw new NotImplementedException();
+            get { throw new NotImplementedException(); }
         }
 
         public DateTime ToDateTime(IChronology chronology)

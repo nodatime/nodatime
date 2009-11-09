@@ -25,63 +25,17 @@ using NodaTime.Converters;
 
 using NUnit.Framework;
 
-namespace NodaTime
+namespace NodaTime.Test
 {
     /// <summary>
     /// Original name: TestInstant_Constructors
     /// </summary>
-    [TestFixture]
-    public class TestInstant_Constructors
+    public partial class InstantTest
     {
-        // This is not used, but it was in JodaTime. Maybe we should just delete it
-        private static readonly DateTimeZone Paris = DateTimeZone.ForID("Europe/Paris");
-
-        private static readonly DateTimeZone London = DateTimeZone.ForID("Europe/London");
-
-        // 1970-06-09
-        private const long TestTimeNow =
-            (31L + 28L + 31L + 30L + 31L + 9L - 1L) * DateTimeConstants.MillisecondsPerDay;
-        // 1970-04-05
-        private const long TestTime1 =
-            (31L + 28L + 31L + 6L - 1L) * DateTimeConstants.MillisecondsPerDay
-            + 12L * DateTimeConstants.MillisecondsPerHour
-            + 24L * DateTimeConstants.MillisecondsPerMinute;
-
-        // 1971-05-06
-        private const long TestTime2 =
-            (365L + 31L + 28L + 31L + 30L + 7L - 1L) * DateTimeConstants.MillisecondsPerDay
-            + 14L * DateTimeConstants.MillisecondsPerHour
-            + 28L * DateTimeConstants.MillisecondsPerMinute;
-
-        private DateTimeZone zone;
-        // Was java.util.Locale, using CultureInfo
-        private CultureInfo locale;
-
-        [SetUp]
-        public void SetUp()
-        {
-            DateTimeUtils.SetCurrentMillisFixed(TestTimeNow);
-            zone = DateTimeZone.Default;
-            locale = CultureInfo.CurrentCulture;
-            DateTimeZone.Default = London;
-            // TODO: TimeZone.setDefault(London.ToTimeZone());
-            // TODO: Locale.setDefault(Locale.UK);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            DateTimeUtils.SetCurrentMillisSystem();
-            DateTimeZone.Default = zone;
-            // TODO: TimeZone.setDefault(zone.toTimeZone());
-            // TODO: Locale.setDefault(locale);
-            zone = null;
-        }
-
         [Test]
         public void TestConstructor()
         {
-            var test = new Instant();
+            var test = Instant.Now;
             Assert.Equals(IsoChronology.Utc, test.Chronology);
             Assert.Equals(TestTimeNow, test.Milliseconds);
         }
