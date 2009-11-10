@@ -21,7 +21,7 @@ namespace NodaTime.Base
     /// Original name: AbstractDateTime.
     /// This class could potentially be replaced with extension methods.
     /// </summary>
-    public class AbstractDateTime : AbstractInstant, IDateTime
+    public abstract class AbstractDateTime : AbstractInstant, IDateTime
     {
     }
 }

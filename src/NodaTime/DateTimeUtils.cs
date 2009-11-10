@@ -26,7 +26,7 @@ namespace NodaTime
     /// </summary>
     public static class DateTimeUtils
     {
-        private static volatile IClock clock = new SystemClock();
+        private static volatile IClock clock = SystemClock.Instance;
 
         /// <summary>
         /// The clock used for determining the current time *everywhere* in Noda Time.

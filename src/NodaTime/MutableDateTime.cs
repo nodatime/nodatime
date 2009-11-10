@@ -23,5 +23,9 @@ namespace NodaTime
     /// </summary>
     public class MutableDateTime : DateTimeBase, IMutableDateTime
     {
+        public MutableDateTime(long instant, IChronology chronology)
+            : base(instant, chronology)
+        {
+        }
     }
 }

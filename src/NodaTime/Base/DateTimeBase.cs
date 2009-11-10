@@ -22,5 +22,24 @@ namespace NodaTime.Base
     /// </summary>
     public abstract class DateTimeBase : AbstractDateTime
     {
+        private long millis;
+        private IChronology chronology;
+
+        public override IChronology Chronology { get { return chronology; } }
+
+        /// <summary>
+        /// Note: Not a property because we can't override the "getter-only" property
+        /// with a writable one.
+        /// </summary>
+        protected void SetChronology(IChronology chronology)
+        {
+            this.chronology = chronology;
+        }
+
+        protected DateTimeBase(long instant, IChronology chronology)
+        {
+            this.chronology = chronology;
+            millis = instant;
+        }
     }
 }

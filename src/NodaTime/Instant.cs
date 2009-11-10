@@ -20,6 +20,7 @@
 using System;
 
 using NodaTime.Base;
+using NodaTime.Chronologies;
 
 namespace NodaTime
 {
@@ -28,6 +29,11 @@ namespace NodaTime
     /// </summary>
     public sealed class Instant : AbstractInstant
     {
+        public override IChronology Chronology
+        {
+            get { return IsoChronology.Utc; }
+        }
+
         /// <summary>
         /// This takes the place of the old parameterless constructor; it's more inkeeping
         /// with DateTime.Now etc, whereas java.util.Date/Calendar support the parameterless

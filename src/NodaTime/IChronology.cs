@@ -23,6 +23,7 @@ namespace NodaTime
     /// </summary>
     public interface IChronology
     {
+        DateTimeZone Zone { get; }
         DateTimeField Era { get; }
         DateTimeField CenturyOfEra { get; }
         DateTimeField YearOfCentury { get; }

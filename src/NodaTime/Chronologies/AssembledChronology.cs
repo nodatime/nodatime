@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 namespace NodaTime.Chronologies
 {
     /// <summary>
@@ -22,5 +23,9 @@ namespace NodaTime.Chronologies
     /// </summary>
     public abstract class AssembledChronology : ChronologyBase
     {
+        public override DateTimeZone Zone
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

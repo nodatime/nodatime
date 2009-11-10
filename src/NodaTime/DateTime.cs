@@ -28,12 +28,7 @@ namespace NodaTime
     /// </summary>
     public sealed class DateTime : DateTimeBase
     {
-        public DateTime(long instant)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DateTime(long instant, IChronology chronology)
+        public DateTime(long instant, IChronology chronology) : base(instant, chronology)
         {
             throw new NotImplementedException();
         }

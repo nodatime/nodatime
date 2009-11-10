@@ -19,5 +19,6 @@ namespace NodaTime
 {
     public interface IDateTime : IInstant
     {
+        IChronology Chronology { get; }
     }
 }

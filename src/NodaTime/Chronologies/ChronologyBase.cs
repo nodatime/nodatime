@@ -22,6 +22,7 @@ namespace NodaTime.Chronologies
     /// </summary>
     public abstract class ChronologyBase : IChronology
     {
+        public abstract DateTimeZone Zone { get; }
         public abstract DateTimeField Era { get; }
         public abstract DateTimeField CenturyOfEra { get; }
         public abstract DateTimeField YearOfCentury { get; }

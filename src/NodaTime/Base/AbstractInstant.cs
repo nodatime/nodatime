@@ -24,12 +24,15 @@ namespace NodaTime.Base
     /// <summary>
     /// Original name: AbstractInstant.
     /// </summary>
-    public class AbstractInstant : IInstant
+    public abstract class AbstractInstant : IInstant
     {
-        public virtual IChronology Chronology
+        public abstract IChronology Chronology { get; }
+
+        public DateTimeZone Zone
         {
-            get { throw new NotImplementedException(); }
+            get { return Chronology.Zone; }
         }
+
         public virtual long Milliseconds
         {
             get { throw new NotImplementedException(); }
@@ -113,11 +116,6 @@ namespace NodaTime.Base
         public DateTime ToDateTime(IChronology chronology)
         {
             throw new NotImplementedException();
-        }
-
-        public DateTimeZone Zone
-        {
-            get { throw new NotImplementedException(); }
         }
 
         public MutableDateTime ToMutableDateTime(DateTimeZone paris)
