@@ -1,5 +1,4 @@
 #region Copyright and license information
-
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,11 +13,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
-using System.Globalization;
 
 using NodaTime.Chronologies;
 using NodaTime.Converters;
@@ -28,12 +25,15 @@ using NUnit.Framework;
 namespace NodaTime.Test
 {
     /// <summary>
-    /// Original name: TestInstant_Constructors
+    /// Original name: TestInstant_Assert.AreEquals
     /// </summary>
     public partial class InstantTest
     {
+        /// <summary>
+        /// TODO: Rename this file to InstantTest.Construction or something to allow for things like this.
+        /// </summary>
         [Test]
-        public void TestCurrentTime()
+        public void NowProperty_ReturnsCurrentTime()
         {
             using (TestClock.ReplaceCurrent(TestTimeNow))
             {
@@ -44,24 +44,20 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void TestConstructor_long1()
+        public void ConstructFrom_Long()
         {
             var test = new Instant(TestTime1);
             Assert.Equals(IsoChronology.Utc, test.Chronology);
             Assert.Equals(TestTime1, test.Milliseconds);
-        }
-
-        [Test]
-        public void TestConstructor_long2()
-        {
-            var test = new Instant(TestTime2);
+            test = new Instant(TestTime2);
             Assert.Equals(IsoChronology.Utc, test.Chronology);
             Assert.Equals(TestTime2, test.Milliseconds);
         }
 
         [Test]
-        public void TestConstructor_Object()
+        public void ConstructFrom_Object()
         {
+            // TODO: Make this the right value (will currently be in ticks from the wrong starting point!)
             var date = new System.DateTime(TestTime1);
             var test = new Instant(date);
             Assert.Equals(IsoChronology.Utc, test.Chronology);
@@ -69,21 +65,27 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void TestConstructor_InvalidObject()
+        public void ConstructFrom_InvalidObject()
         {
             Assert.Throws<ArgumentException>(() => new Instant(new object()));
         }
 
+        /// <summary>
+        /// TODO: Decide if we want to support this
+        /// </summary>
         [Test]
-        public void TestConstructor_NullObject()
+        public void ConstructFrom_NullObjectReference_UsesSystemTime()
         {
-            var test = new Instant(null);
-            Assert.Equals(IsoChronology.Utc, test.Chronology);
-            Assert.Equals(TestTimeNow, test.Milliseconds);
+            using (TestClock.ReplaceCurrent(TestTimeNow))
+            {
+                var test = new Instant(null);
+                Assert.Equals(IsoChronology.Utc, test.Chronology);
+                Assert.Equals(TestTimeNow, test.Milliseconds);
+            }
         }
 
         [Test]
-        public void TestConstructor_BadConverterObject()
+        public void ConstructFrom_BadConverterObject()
         {
             try
             {
