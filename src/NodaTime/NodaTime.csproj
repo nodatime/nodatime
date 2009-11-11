@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{42B687A6-0F76-4638-A372-161C922A998B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NodaTime</RootNamespace>
+    <AssemblyName>NodaTime</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\AbstractDuration.cs" />
+    <Compile Include="Base\AbstractInstant.cs" />
+    <Compile Include="Base\AbstractInterval.cs" />
+    <Compile Include="Base\AbstractPartial.cs" />
+    <Compile Include="Base\AbstractPeriod.cs" />
+    <Compile Include="Base\AbstractDateTime.cs" />
+    <Compile Include="Base\DurationBase.cs" />
+    <Compile Include="Base\IntervalBase.cs" />
+    <Compile Include="Base\LocalBase.cs" />
+    <Compile Include="Base\PartialBase.cs" />
+    <Compile Include="Base\PeriodBase.cs" />
+    <Compile Include="Base\DateTimeBase.cs" />
+    <Compile Include="Chronologies\AssembledChronology.cs" />
+    <Compile Include="Chronologies\BasicChronology.cs" />
+    <Compile Include="Chronologies\BasicGJChronology.cs" />
+    <Compile Include="Chronologies\ChronologyBase.cs" />
+    <Compile Include="Chronologies\GregorianChronology.cs" />
+    <Compile Include="Chronologies\IsoChronology.cs" />
+    <Compile Include="Converters\ConverterManager.cs" />
+    <Compile Include="Converters\IConverter.cs" />
+    <Compile Include="Converters\IInstantConverter.cs" />
+    <Compile Include="TestClock.cs" />
+    <Compile Include="IClock.cs" />
+    <Compile Include="MutableInstant.cs" />
+    <Compile Include="Format\DateTimeFormatterBuilder.cs" />
+    <Compile Include="Format\IPeriodParser.cs" />
+    <Compile Include="Format\IPeriodPrinter.cs" />
+    <Compile Include="Format\IsoPeriodFormatterFactory.cs" />
+    <Compile Include="Format\PeriodFormatter.cs" />
+    <Compile Include="Format\PeriodFormatterBuilder.cs" />
+    <Compile Include="Format\PeriodFormatterFactory.cs" />
+    <Compile Include="MutableInterval.cs" />
+    <Compile Include="MutablePeriod.cs" />
+    <Compile Include="SystemClock.cs" />
+    <Compile Include="TimeZones\CachedDateTimeZone.cs" />
+    <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
+    <Compile Include="TimeZones\DefaultNameProvider.cs" />
+    <Compile Include="TimeZones\IDateTimeZoneProvider.cs" />
+    <Compile Include="TimeZones\INameProvider.cs" />
+    <Compile Include="TimeZones\UtcProvider.cs" />
+    <Compile Include="TimeZones\ZoneInfoProvider.cs" />
+    <Compile Include="YearMonthDay.cs" />
+    <Compile Include="Format\DateTimeFormatter.cs" />
+    <Compile Include="Format\DateTimeFormatterFactory.cs" />
+    <Compile Include="Format\DateTimeParserBucket.cs" />
+    <Compile Include="Format\FormatUtils.cs" />
+    <Compile Include="Format\IDateTimeParser.cs" />
+    <Compile Include="Format\IDateTimePrinter.cs" />
+    <Compile Include="Format\IsoDateTimeFormatterFactory.cs" />
+    <Compile Include="IChronology.cs" />
+    <Compile Include="Partial.cs" />
+    <Compile Include="Period.cs" />
+    <Compile Include="PeriodType.cs" />
+    <Compile Include="Weeks.cs" />
+    <Compile Include="Seconds.cs" />
+    <Compile Include="IMutableInterval.cs" />
+    <Compile Include="IMutableInstant.cs" />
+    <Compile Include="IMutablePeriod.cs" />
+    <Compile Include="MutableDateTime.cs" />
+    <Compile Include="IMutableDateTime.cs" />
+    <Compile Include="YearMonth.cs" />
+    <Compile Include="Years.cs" />
+    <Compile Include="Months.cs" />
+    <Compile Include="Minutes.cs" />
+    <Compile Include="LocalTime.cs" />
+    <Compile Include="LocalDateTime.cs" />
+    <Compile Include="DateMidnight.cs" />
+    <Compile Include="DateTimeField.cs" />
+    <Compile Include="DateTimeFieldType.cs" />
+    <Compile Include="DateTimeUtils.cs" />
+    <Compile Include="DateTimeZone.cs" />
+    <Compile Include="Days.cs" />
+    <Compile Include="Duration.cs" />
+    <Compile Include="DurationField.cs" />
+    <Compile Include="DurationFieldType.cs" />
+    <Compile Include="Hours.cs" />
+    <Compile Include="IllegalFieldValueException.cs" />
+    <Compile Include="Instant.cs" />
+    <Compile Include="Interval.cs" />
+    <Compile Include="IInstant.cs" />
+    <Compile Include="IInterval.cs" />
+    <Compile Include="IPartial.cs" />
+    <Compile Include="IDateTime.cs" />
+    <Compile Include="LocalDate.cs" />
+    <Compile Include="NodaTimePermission.cs" />
+    <Compile Include="DateTime.cs" />
+    <Compile Include="DateTimeComparer.cs" />
+    <Compile Include="DateTimeConstants.cs" />
+    <Compile Include="IDuration.cs" />
+    <Compile Include="IPeriod.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Base\SingleFieldPeriodBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Converters\readme.txt" />
+    <Content Include="Fields\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Diagrams\Duration.cd" />
+    <None Include="Diagrams\InstantAndDateTime.cd" />
+    <None Include="Diagrams\Interval.cd" />
+    <None Include="Diagrams\Partial.cd" />
+    <None Include="Diagrams\Period.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

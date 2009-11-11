@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime", "NodaTime\NodaTime.csproj", "{42B687A6-0F76-4638-A372-161C922A998B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Test", "NodaTime.Test\NodaTime.Test.csproj", "{F870636C-1018-4392-8C74-76AD498EDD66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoneInfoCompiler", "ZoneInfoCompiler\ZoneInfoCompiler.csproj", "{F51A7DF5-1559-45C3-A606-494DAD63A892}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42B687A6-0F76-4638-A372-161C922A998B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42B687A6-0F76-4638-A372-161C922A998B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42B687A6-0F76-4638-A372-161C922A998B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42B687A6-0F76-4638-A372-161C922A998B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F870636C-1018-4392-8C74-76AD498EDD66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F870636C-1018-4392-8C74-76AD498EDD66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F870636C-1018-4392-8C74-76AD498EDD66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F870636C-1018-4392-8C74-76AD498EDD66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F51A7DF5-1559-45C3-A606-494DAD63A892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51A7DF5-1559-45C3-A606-494DAD63A892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51A7DF5-1559-45C3-A606-494DAD63A892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51A7DF5-1559-45C3-A606-494DAD63A892}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
