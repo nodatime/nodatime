@@ -40,12 +40,18 @@ namespace NodaTime.Base
             throw new NotImplementedException();
         }
 
-        protected int Value
+        /// <summary>
+        /// The amount of this period.
+        /// </summary>
+        protected int value
         {
             get { return period; }
             set { period = value; }
         }
 
+        /// <summary>
+        /// Gets the single duartion field type.
+        /// </summary>
         public abstract DurationFieldType FieldType { get; }
 
         public override bool Equals(object obj)
@@ -93,6 +99,14 @@ namespace NodaTime.Base
             return FieldType;
         }
 
+        /// <summary>
+        /// Gets the value at the specfied index.
+        /// 
+        /// The only index supported by this period is zero.
+        /// </summary>
+        /// <param name="index">the index to retrieve, which must be zero</param>
+        /// <returns>the value of the field at the specified index</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown if index != 0</exception>
         int IPeriod.GetValue(int index)
         {
             if (index != 0)
@@ -103,6 +117,13 @@ namespace NodaTime.Base
             return Value;
         }
 
+        /// <summary>
+        /// Gets the value of a duration field represented by this period.
+        /// 
+        /// If the field type specified does not match the type used by this class then zero is returned.
+        /// </summary>
+        /// <param name="field">the field type to query, null returns zero</param>
+        /// <returns>the value of that field, zero if field not supported</returns>
         int IPeriod.Get(DurationFieldType field)
         {
             if (field == FieldType)
@@ -113,16 +134,33 @@ namespace NodaTime.Base
             return 0;
         }
 
+        /// <summary>
+        /// Checks whether the duration field specified is supported by this period.
+        /// </summary>
+        /// <param name="field">the type to check, may be null which returns false</param>
+        /// <returns>true if the field is supported</returns>
         bool IPeriod.IsSupported(DurationFieldType field)
         {
             return field == FieldType;
         }
 
+        /// <summary>
+        /// Get this object as a Period object.
+        /// The period will use PeriodType.standard
+        /// </summary>
+        /// <returns>a Period representing the same number of days</returns>
         public Period ToPeriod()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Get this object as a MutablePeriod.
+        /// 
+        /// This will always return a new MutablePeriod with the same fields.
+        /// The period will use PeriodType.standard
+        /// </summary>
+        /// <returns>a MutablePeriod using the same field set and values</returns>
         public MutablePeriod ToMutablePeriod()
         {
             throw new NotImplementedException();
