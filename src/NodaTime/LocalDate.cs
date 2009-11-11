@@ -23,5 +23,9 @@ namespace NodaTime
     /// </summary>
     public sealed class LocalDate : LocalBase
     {
+        public LocalDate(int year, int month, int day)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
