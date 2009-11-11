@@ -44,8 +44,6 @@ namespace NodaTime.Base
 
         public abstract Period ToPeriod();
 
-        public abstract MutablePeriod ToMutablePeriod();
-
         #endregion
     }
 }

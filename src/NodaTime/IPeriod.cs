@@ -72,14 +72,6 @@ namespace NodaTime
         /// <returns>a Duration using the same field set and values</returns>
         Period ToPeriod();
 
-        /// <summary>
-        /// Get this object as a <see cref="NodaTime.MutablePeriod"/>.
-        /// 
-        /// This will always return a new <see cref="NodaTime.MutablePeriod"/> with the same fields.
-        /// </summary>
-        /// <returns>a <see cref="NodaTime.MutablePeriod"/> using the same field set and values</returns>
-        MutablePeriod ToMutablePeriod();
-
         // TODO: There is a bool Equals(object) function in the Java interface. Should this be be here?
         // bool Equals(object readablePeriod);
         // int GetHashCode();

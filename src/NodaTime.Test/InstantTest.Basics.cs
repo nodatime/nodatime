@@ -460,73 +460,6 @@ namespace NodaTime.Test
             Assert.AreEqual(IsoChronology.SystemDefault, result.Chronology);
         }
 
-        /// <summary>
-        /// TODO: Decide if we want to support this
-        /// </summary>
-        [Test]
-        public void ToMutableDateTime_WithoutDateTimeZone_UsesSystemDefault()
-        {
-            var test = new Instant(TestTime1);
-            var result = test.ToMutableDateTime();
-            Assert.AreEqual(test.Milliseconds, result.Milliseconds);
-            Assert.AreEqual(IsoChronology.SystemDefault, result.Chronology);
-        }
-
-        // Note: Another method Testing deprecated APIs
-        //public void TestToMutableDateTimeISO() {
-        //    Instant test = new Instant(TestTime1);
-        //    MutableDateTime result = test.ToMutableDateTimeISO();
-        //    Assert.AreSame(MutableDateTime.class, result.getClass());
-        //    Assert.AreSame(IsoChronology.class, result.Chronology.getClass());
-        //    assertEquals(test.Milliseconds, result.Milliseconds);
-        //    assertEquals(IsoChronology.SystemDefault, result.Chronology);
-        //}
-
-        [Test]
-        public void ToMutableDateTime_WithDateTimeZone()
-        {
-            var test = new Instant(TestTime1);
-            var result = test.ToMutableDateTime(London);
-            Assert.AreEqual(test.Milliseconds, result.Milliseconds);
-            Assert.AreEqual(IsoChronology.SystemDefault, result.Chronology);
-
-            test = new Instant(TestTime1);
-            result = test.ToMutableDateTime(Paris);
-            Assert.AreEqual(test.Milliseconds, result.Milliseconds);
-            Assert.AreEqual(IsoChronology.GetInstance(Paris), result.Chronology);
-        }
-
-        /// <summary>
-        /// TODO: Decide if we want to support this
-        /// </summary>
-        [Test]
-        public void ToMutableDateTime_WithNullDateTimeZone_UsesSystemDefault()
-        {
-            var test = new Instant(TestTime1);
-            var result = test.ToMutableDateTime((DateTimeZone) null);
-            Assert.AreEqual(test.Milliseconds, result.Milliseconds);
-            Assert.AreEqual(IsoChronology.SystemDefault, result.Chronology);
-        }
-
-        [Test]
-        public void ToMutableDateTime_Chronology()
-        {
-            var test = new Instant(TestTime1);
-            var result = test.ToMutableDateTime(IsoChronology.SystemDefault);
-            Assert.AreEqual(test.Milliseconds, result.Milliseconds);
-            Assert.AreEqual(IsoChronology.SystemDefault, result.Chronology);
-
-            test = new Instant(TestTime1);
-            result = test.ToMutableDateTime(GregorianChronology.GetInstance(Paris));
-            Assert.AreEqual(test.Milliseconds, result.Milliseconds);
-            Assert.AreEqual(GregorianChronology.GetInstance(Paris), result.Chronology);
-
-            test = new Instant(TestTime1);
-            result = test.ToMutableDateTime((IChronology) null);
-            Assert.AreEqual(test.Milliseconds, result.Milliseconds);
-            Assert.AreEqual(IsoChronology.SystemDefault, result.Chronology);
-        }
-
         [Test]
         public void WithMillis_LongValue()
         {
@@ -633,10 +566,5 @@ namespace NodaTime.Test
             result = test.Minus(null);
             Assert.AreSame(test, result);
         }
-
-        // Note: Not sure if a class being sealed is a nice thing to test here
-        //public void TestImmutable() {
-        //    assertTrue(Modifier.isFinal(Instant.class.getModifiers()));
-        //}
     }
 }
