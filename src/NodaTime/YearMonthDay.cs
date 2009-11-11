@@ -23,5 +23,9 @@ namespace NodaTime
     /// </summary>
     public sealed class YearMonthDay : PartialBase
     {
+        public YearMonthDay(int year, int month, int day)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

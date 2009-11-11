@@ -25,6 +25,33 @@ namespace NodaTime.Base
     /// </summary>
     public abstract class SingleFieldPeriodBase : IPeriod, IComparable<SingleFieldPeriodBase>
     {
+        #region Static Methods
+
+        /// <summary>
+        /// Calculates the number of whole units between the two specified datetimes.
+        /// </summary>
+        /// <param name="start">the start instant, validated to not be null</param>
+        /// <param name="end">the end instant, validated to not be null</param>
+        /// <param name="field">the field type to use, must not be null</param>
+        /// <returns>the period</returns>
+        /// <exception cref="System.ArgumentException">if the instants are null or invalid</exception>
+        protected static int Between(IInstant start, IInstant end, DurationFieldType field)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected static int Between(IPartial start, IPartial end, IPeriod field)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected static int StandardPeriodIn(IPeriod period, long millisPerUnit)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
         /// <summary>
         /// The period in the units of this period.
         /// </summary>
@@ -114,7 +141,7 @@ namespace NodaTime.Base
                 throw new ArgumentOutOfRangeException("index", "Index must be 0 for a SingleFieldPeriod.");
             }
 
-            return Value;
+            return value;
         }
 
         /// <summary>
@@ -128,7 +155,7 @@ namespace NodaTime.Base
         {
             if (field == FieldType)
             {
-                return Value;
+                return value;
             }
 
             return 0;
