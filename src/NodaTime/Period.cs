@@ -23,5 +23,44 @@ namespace NodaTime
     /// </summary>
     public sealed class Period : PeriodBase
     {
+        public override PeriodType PeriodType
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public override int Size
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public override DurationFieldType GetFieldType(int index)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override int GetValue(int index)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override int Get(DurationFieldType field)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool IsSupported(DurationFieldType field)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Period ToPeriod()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override MutablePeriod ToMutablePeriod()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

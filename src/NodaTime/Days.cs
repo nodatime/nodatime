@@ -23,5 +23,16 @@ namespace NodaTime
     /// </summary>
     public sealed class Days : SingleFieldPeriodBase
     {
+        private Days(int days) : base(days) { }
+
+        public override DurationFieldType FieldType
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public override PeriodType PeriodType
+        {
+            get { throw new System.NotImplementedException(); }
+        }
     }
 }
