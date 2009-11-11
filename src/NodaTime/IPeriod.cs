@@ -22,5 +22,67 @@ namespace NodaTime
     /// </summary>
     public interface IPeriod
     {
+        /// <summary>
+        /// Gets the period type that defines which fields are included in the period.
+        /// </summary>
+        PeriodType PeriodType { get; }
+
+        /// <summary>
+        /// Gets the number of fields this period supports.
+        /// </summary>
+        int Size { get; }
+
+        /// <summary>
+        /// Gets the field type at the specified index.
+        /// </summary>
+        /// <param name="index">the index the retrieve</param>
+        /// <returns>the field at the specified index</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">if the index is invalid</exception>
+        DurationFieldType GetFieldType(int index);
+
+        /// <summary>
+        /// Gets the value at the specified index.
+        /// </summary>
+        /// <param name="index">the index to retrieve</param>
+        /// <returns>the value of the field at the specified index</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">if the index is invalid</exception>
+        int GetValue(int index);
+
+        /// <summary>
+        /// Gets the value of one of the fields.
+        /// 
+        /// If the field type specified is not supported by the period then zero is returned.
+        /// </summary>
+        /// <param name="field">the field type to query, null return zero</param>
+        /// <returns>the value of that field, zero if field not supported</returns>
+        int Get(DurationFieldType field);
+
+        /// <summary>
+        /// Checks whether the field type specified is supported by this period.
+        /// </summary>
+        /// <param name="field">the field to check, may be null which returns false</param>
+        /// <returns>true if the field is supported</returns>
+        bool IsSupported(DurationFieldType field);
+
+        /// <summary>
+        /// Get this period as an immutable <see cref="NodaTime.Period"/> object.
+        /// 
+        /// This will either typecase this instance, or create a new <see cref="NodaTime.Period"/>Period</see>.
+        /// </summary>
+        /// <returns>a Duration using the same field set and values</returns>
+        Period ToPeriod();
+
+        /// <summary>
+        /// Get this object as a <see cref="NodaTime.MutablePeriod"/>.
+        /// 
+        /// This will always return a new <see cref="NodaTime.MutablePeriod"/> with the same fields.
+        /// </summary>
+        /// <returns>a <see cref="NodaTime.MutablePeriod"/> using the same field set and values</returns>
+        MutablePeriod ToMutablePeriod();
+
+        // TODO: There is a bool Equals(object) function in the Java interface. Should this be be here?
+        // bool Equals(object readablePeriod);
+        // int GetHashCode();
+        // string ToString();
     }
 }
