@@ -22,5 +22,30 @@ namespace NodaTime.Base
     /// </summary>
     public abstract class AbstractPeriod : IPeriod
     {
+        #region IPeriod Members
+
+        public abstract PeriodType PeriodType
+        {
+            get;
+        }
+
+        public abstract int Size
+        {
+            get;
+        }
+
+        public abstract DurationFieldType GetFieldType(int index);
+
+        public abstract int GetValue(int index);
+
+        public abstract int Get(DurationFieldType field);
+
+        public abstract bool IsSupported(DurationFieldType field);
+
+        public abstract Period ToPeriod();
+
+        public abstract MutablePeriod ToMutablePeriod();
+
+        #endregion
     }
 }

@@ -25,9 +25,109 @@ namespace NodaTime.Base
     /// </summary>
     public abstract class SingleFieldPeriodBase : IPeriod, IComparable<SingleFieldPeriodBase>
     {
+        /// <summary>
+        /// The period in the units of this period.
+        /// </summary>
+        private int period;
+
+        protected SingleFieldPeriodBase(int period)
+        {
+            this.period = period;
+        }
+
         public int CompareTo(SingleFieldPeriodBase other)
         {
             throw new NotImplementedException();
         }
+
+        protected int Value
+        {
+            get { return period; }
+            set { period = value; }
+        }
+
+        public abstract DurationFieldType FieldType { get; }
+
+        public override bool Equals(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
+
+        #region IPeriod Members
+
+        /// <summary>
+        /// Gets the period type which matches the duration field type.
+        /// </summary>
+        public abstract PeriodType PeriodType { get; }
+
+        /// <summary>
+        /// Gets the number of fields this period supports, which is one.
+        /// </summary>
+        int IPeriod.Size { get { return 1; } }
+
+        /// <summary>
+        /// Gets the field type at the specified index.
+        /// 
+        /// The only index supported by this period is zero which returns the field type of this class.
+        /// </summary>
+        /// <param name="index">the index to retrieve, which must be 0</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown if index != 0</exception>
+        DurationFieldType IPeriod.GetFieldType(int index)
+        {
+            if (index != 0)
+            {
+                throw new ArgumentOutOfRangeException("index", "Index must be 0 for a SingleFieldPeriod.");
+            }
+
+            return FieldType;
+        }
+
+        int IPeriod.GetValue(int index)
+        {
+            if (index != 0)
+            {
+                throw new ArgumentOutOfRangeException("index", "Index must be 0 for a SingleFieldPeriod.");
+            }
+
+            return Value;
+        }
+
+        int IPeriod.Get(DurationFieldType field)
+        {
+            if (field == FieldType)
+            {
+                return Value;
+            }
+
+            return 0;
+        }
+
+        bool IPeriod.IsSupported(DurationFieldType field)
+        {
+            return field == FieldType;
+        }
+
+        public Period ToPeriod()
+        {
+            throw new NotImplementedException();
+        }
+
+        public MutablePeriod ToMutablePeriod()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

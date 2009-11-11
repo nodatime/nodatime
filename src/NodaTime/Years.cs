@@ -23,5 +23,16 @@ namespace NodaTime
     /// </summary>
     public sealed class Years : SingleFieldPeriodBase
     {
+        private Years() : base(0) { }
+
+        public override DurationFieldType FieldType
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public override PeriodType PeriodType
+        {
+            get { throw new System.NotImplementedException(); }
+        }
     }
 }
