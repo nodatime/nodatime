@@ -41,5 +41,10 @@ namespace NodaTime.Base
             this.chronology = chronology;
             millis = instant;
         }
+
+        protected DateTimeBase(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone chronology) 
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

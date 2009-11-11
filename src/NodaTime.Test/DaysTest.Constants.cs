@@ -15,16 +15,26 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime
+using NodaTime;
+using NUnit.Framework;
+
+namespace NodaTime.Test
 {
-    /// <summary>
-    /// Original name: PeriodType
-    /// </summary>
-    public class PeriodType
-    {
-        public static PeriodType Days()
+	partial class DaysTest
+	{
+        [TestCase]
+        public void ConstantsTest_Valid()
         {
-            throw new System.NotImplementedException();
+            Assert.AreEqual(0, Days.Zero.Value);
+            Assert.AreEqual(1, Days.One.Value);
+            Assert.AreEqual(2, Days.Two.Value);
+            Assert.AreEqual(3, Days.Three.Value);
+            Assert.AreEqual(4, Days.Four.Value);
+            Assert.AreEqual(5, Days.Five.Value);
+            Assert.AreEqual(6, Days.Six.Value);
+            Assert.AreEqual(7, Days.Seven.Value);
+            Assert.AreEqual(int.MaxValue, Days.MaxValue.Value);
+            Assert.AreEqual(int.MinValue, Days.MinValue.Value);
         }
-    }
+	}
 }

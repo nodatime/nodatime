@@ -23,5 +23,12 @@ namespace NodaTime
     /// </summary>
     public sealed class Partial : AbstractPartial
     {
+        public Partial(DateTimeFieldType field, int period) 
+            : this(new DateTimeFieldType[] { field }, new int[] { period }) { }
+
+        public Partial(DateTimeFieldType[] field, int[] periods)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

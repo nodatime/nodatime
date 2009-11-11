@@ -23,7 +23,30 @@ namespace NodaTime
     /// </summary>
     public sealed class Days : SingleFieldPeriodBase
     {
+        private static Days zero = new Days(0);
+        public static Days Zero { get { return zero; } }
+        private static Days one = new Days(1);
+        public static Days One { get { return one; } }
+        private static Days two = new Days(2);
+        public static Days Two { get { return two; } }
+        private static Days three = new Days(3);
+        public static Days Three { get { return three; } }
+        private static Days four = new Days(4);
+        public static Days Four { get { return four; } }
+        private static Days five = new Days(5);
+        public static Days Five { get { return five; } }
+        private static Days six = new Days(6);
+        public static Days Six { get { return six; } }
+        private static Days seven = new Days(7);
+        public static Days Seven { get { return seven; } }
+        private static Days minValue = new Days(int.MinValue);
+        public static Days MinValue { get { return minValue; } }
+        private static Days maxValue = new Days(int.MaxValue);
+        public static Days MaxValue { get { return maxValue; } }
+
         private Days(int days) : base(days) { }
+
+        public int Value { get { return value; } }
 
         public override DurationFieldType FieldType
         {
