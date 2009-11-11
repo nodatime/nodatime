@@ -117,20 +117,5 @@ namespace NodaTime.Base
         {
             throw new NotImplementedException();
         }
-
-        public MutableDateTime ToMutableDateTime(DateTimeZone paris)
-        {
-            throw new NotImplementedException();
-        }
-
-        public MutableDateTime ToMutableDateTime(IChronology chronology)
-        {
-            throw new NotImplementedException();
-        }
-
-        public MutableDateTime ToMutableDateTime()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -88,7 +88,6 @@
     <Compile Include="Converters\IInstantConverter.cs" />
     <Compile Include="TestClock.cs" />
     <Compile Include="IClock.cs" />
-    <Compile Include="MutableInstant.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Format\IPeriodParser.cs" />
     <Compile Include="Format\IPeriodPrinter.cs" />
@@ -96,8 +95,6 @@
     <Compile Include="Format\PeriodFormatter.cs" />
     <Compile Include="Format\PeriodFormatterBuilder.cs" />
     <Compile Include="Format\PeriodFormatterFactory.cs" />
-    <Compile Include="MutableInterval.cs" />
-    <Compile Include="MutablePeriod.cs" />
     <Compile Include="SystemClock.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
@@ -120,11 +117,6 @@
     <Compile Include="PeriodType.cs" />
     <Compile Include="Weeks.cs" />
     <Compile Include="Seconds.cs" />
-    <Compile Include="IMutableInterval.cs" />
-    <Compile Include="IMutableInstant.cs" />
-    <Compile Include="IMutablePeriod.cs" />
-    <Compile Include="MutableDateTime.cs" />
-    <Compile Include="IMutableDateTime.cs" />
     <Compile Include="YearMonth.cs" />
     <Compile Include="Years.cs" />
     <Compile Include="Months.cs" />
