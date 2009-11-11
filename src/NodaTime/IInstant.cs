@@ -26,13 +26,10 @@ namespace NodaTime
     {
         Instant ToInstant();
         DateTime ToDateTime();
-        DateTime ToDateTime(DateTimeZone paris);
+        DateTime ToDateTime(DateTimeZone zone);
+        DateTime ToDateTime(IChronology chronology);
         int this[DateTimeFieldType field] { get; }
         int this[DateTimeField second] { get; }
-        DateTime ToDateTime(IChronology chronology);
         DateTimeZone Zone { get; }
-        MutableDateTime ToMutableDateTime(DateTimeZone paris);
-        MutableDateTime ToMutableDateTime(IChronology chronology);
-        MutableDateTime ToMutableDateTime();
     }
 }

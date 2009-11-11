@@ -181,18 +181,6 @@ namespace NodaTime.Base
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Get this object as a MutablePeriod.
-        /// 
-        /// This will always return a new MutablePeriod with the same fields.
-        /// The period will use PeriodType.standard
-        /// </summary>
-        /// <returns>a MutablePeriod using the same field set and values</returns>
-        public MutablePeriod ToMutablePeriod()
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
     }
 }

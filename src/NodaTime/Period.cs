@@ -57,10 +57,5 @@ namespace NodaTime
         {
             throw new System.NotImplementedException();
         }
-
-        public override MutablePeriod ToMutablePeriod()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
