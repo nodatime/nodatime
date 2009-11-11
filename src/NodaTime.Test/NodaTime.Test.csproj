@@ -68,6 +68,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DaysTest.cs" />
+    <Compile Include="DaysTest.Constants.cs">
+      <DependentUpon>DaysTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="MockZeroNullIntegerConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstantTest.cs" />
@@ -77,6 +81,11 @@
     <Compile Include="InstantTest.Constructors.cs">
       <DependentUpon>InstantTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Base\SingleFieldPeriodBaseTest.cs" />
+    <Compile Include="Base\SingleFieldPeriodBaseTest.Single.cs">
+      <DependentUpon>SingleFieldPeriodBaseTest.cs</DependentUpon>
+    </Compile>
+    <None Include="Tests.nunit" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
@@ -105,9 +114,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Tests.nunit" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

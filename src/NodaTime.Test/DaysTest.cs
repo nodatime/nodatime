@@ -15,16 +15,15 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime
+using NUnit.Framework;
+
+namespace NodaTime.Test
 {
-    /// <summary>
-    /// Original name: PeriodType
-    /// </summary>
-    public class PeriodType
+    [TestFixture]
+    public partial class DaysTest
     {
-        public static PeriodType Days()
-        {
-            throw new System.NotImplementedException();
-        }
+        // Test in 2002/03 as time zones are more well known
+        // (before the late 90's they were all over the place)
+        private static readonly DateTimeZone Paris = DateTimeZone.ForID("Europe/Paris");
     }
 }

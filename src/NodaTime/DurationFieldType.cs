@@ -23,5 +23,16 @@ namespace NodaTime
     /// </summary>
     public enum DurationFieldType
     {
+        Eras,
+        Centuries,
+        WeekYears,
+        Years,
+        Months,
+        Days,
+        HalfDays,
+        Hours,
+        Minutes,
+        Seconds,
+        Milliseconds,
     }
 }
