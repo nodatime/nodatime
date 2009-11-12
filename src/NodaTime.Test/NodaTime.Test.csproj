@@ -68,8 +68,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DaysTest.cs" />
-    <Compile Include="DaysTest.Constants.cs">
+    <Compile Include="Periods\DaysTest.cs" />
+    <Compile Include="Periods\DaysTest.Constants.cs">
       <DependentUpon>DaysTest.cs</DependentUpon>
     </Compile>
     <Compile Include="MockZeroNullIntegerConverter.cs" />
