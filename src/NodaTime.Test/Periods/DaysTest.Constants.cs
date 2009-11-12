@@ -15,15 +15,26 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.Periods;
 using NUnit.Framework;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Periods
 {
-    [TestFixture]
-    public partial class DaysTest
-    {
-        // Test in 2002/03 as time zones are more well known
-        // (before the late 90's they were all over the place)
-        private static readonly DateTimeZone Paris = DateTimeZone.ForID("Europe/Paris");
-    }
+	partial class DaysTest
+	{
+        [TestCase]
+        public void ConstantsTest_Valid()
+        {
+            Assert.AreEqual(0, Days.Zero.Value);
+            Assert.AreEqual(1, Days.One.Value);
+            Assert.AreEqual(2, Days.Two.Value);
+            Assert.AreEqual(3, Days.Three.Value);
+            Assert.AreEqual(4, Days.Four.Value);
+            Assert.AreEqual(5, Days.Five.Value);
+            Assert.AreEqual(6, Days.Six.Value);
+            Assert.AreEqual(7, Days.Seven.Value);
+            Assert.AreEqual(int.MaxValue, Days.MaxValue.Value);
+            Assert.AreEqual(int.MinValue, Days.MinValue.Value);
+        }
+	}
 }
