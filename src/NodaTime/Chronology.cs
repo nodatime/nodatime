@@ -30,7 +30,7 @@ namespace NodaTime
         private readonly DateTimeZone zone;
         private readonly ICalendarSystem calendarSystem;
 
-        public static Chronology Utc { get { throw new NotImplementedException(); } }
+        public static Chronology IsoUtc { get { throw new NotImplementedException(); } }
 
         public DateTimeZone Zone { get { return zone; } }
         public ICalendarSystem CalendarSystem { get { return calendarSystem; } }

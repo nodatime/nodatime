@@ -85,7 +85,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the chronology associated with this date and time.
         /// </summary>
-        public Chronology Chronology { get { return chronology ?? Chronology.Utc; } }
+        public Chronology Chronology { get { return chronology ?? Chronology.IsoUtc; } }
 
         public DateTimeZone Zone { get { return Chronology.Zone; } }
     }
