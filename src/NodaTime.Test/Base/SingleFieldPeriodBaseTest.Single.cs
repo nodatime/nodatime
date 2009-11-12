@@ -15,19 +15,20 @@
 // limitations under the License.
 #endregion
 
-using NodaTime;
 using NodaTime.Base;
-using NUnit.Framework;
 
 namespace NodaTime.Test.Base
 {
     partial class SingleFieldPeriodBaseTest
     {
+        /// <summary>
+        /// TODO: Change the name of this class. (I'm not sure why we need it anyway.)
+        /// </summary>
         class Single : SingleFieldPeriodBase
         {
             public Single(int period) : base(period) { }
 
-            public static int SBetween(IInstant start, IInstant end, DurationFieldType field)
+            public static int SBetween(ZonedDateTime start, ZonedDateTime end, DurationFieldType field)
             {
                 return SingleFieldPeriodBase.Between(start, end, field);
             }

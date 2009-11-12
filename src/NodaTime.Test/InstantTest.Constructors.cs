@@ -15,15 +15,10 @@
 // limitations under the License.
 #endregion
 
-using System;
-
-using NodaTime.Chronologies;
-using NodaTime.Converters;
-
-using NUnit.Framework;
-
 namespace NodaTime.Test
 {
+    // Test is commented out as little of it makes sense at the moment. We may or may not want some of it :)
+    /*
     /// <summary>
     /// Original name: TestInstant_Assert.AreEquals
     /// </summary>
@@ -99,5 +94,5 @@ namespace NodaTime.Test
                 ConverterManager.Instance.RemoveInstantConverter(MockZeroNullIntegerConverter.Instance);
             }
         }
-    }
+    }*/
 }

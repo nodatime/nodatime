@@ -14,15 +14,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
+
 namespace NodaTime
 {
     /// <summary>
-    /// Original name: Chronology.
-    /// This was an abstract class with static methods, but all the
-    /// methods are now deprected.
+    /// A chronology is a calendar system with an associated time zone, for example
+    /// "the ISO calendar in the Europe/London time zone".
+    /// TODO: Make this a struct? The hard work will be done in the calendar system
+    /// and time zone classes.
     /// </summary>
-    public interface IChronology
+    public sealed class Chronology
     {
+        private readonly DateTimeZone zone;
+        private readonly ICalendarSystem calendarSystem;
+
+        public static Chronology Utc { get { throw new NotImplementedException(); } }
+
+        public DateTimeZone Zone { get { return zone; } }
+        public ICalendarSystem CalendarSystem { get { return calendarSystem; } }
+
+        public Chronology(DateTimeZone zone, ICalendarSystem calendarSystem)
+        {
+            this.zone = zone;
+            this.calendarSystem = calendarSystem;
+        }
+
+        /*
         DateTimeZone Zone { get; }
         DateTimeField Era { get; }
         DateTimeField CenturyOfEra { get; }
@@ -46,5 +65,6 @@ namespace NodaTime
         DateTimeField SecondOfDay { get; }
         DateTimeField MillisecondsOfSecond { get; }
         DateTimeField MillisecondsOfDay { get; }
+         */
     }
 }

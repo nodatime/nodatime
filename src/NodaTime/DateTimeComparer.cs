@@ -21,7 +21,7 @@ namespace NodaTime
 {
     /// <summary>
     /// Original name: DateTimeComparator. Need to carefully consider this, as it's
-    /// slighty odd to be able to compare any two objects.
+    /// slighty odd to be able to compare any two objects. We may well want to remove this class.
     /// </summary>
     class DateTimeComparer : IComparer<object>
     {
