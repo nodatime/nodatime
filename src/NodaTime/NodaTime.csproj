@@ -86,6 +86,7 @@
     <Compile Include="Converters\ConverterManager.cs" />
     <Compile Include="Converters\IConverter.cs" />
     <Compile Include="Converters\IInstantConverter.cs" />
+    <Compile Include="ICalendarSystem.cs"/>
     <Compile Include="TestClock.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
