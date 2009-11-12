@@ -16,14 +16,14 @@
 #endregion
 using NodaTime.Base;
 
-namespace NodaTime
+namespace NodaTime.Periods
 {
     /// <summary>
-    /// Original name: Seconds.
+    /// Original name: Weeks.
     /// </summary>
-    public sealed class Seconds : SingleFieldPeriodBase
+    public sealed class Weeks : SingleFieldPeriodBase
     {
-        private Seconds() : base(0) { }
+        private Weeks() : base(0) { }
 
         public override DurationFieldType FieldType
         {

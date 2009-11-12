@@ -14,14 +14,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-namespace NodaTime
+using NodaTime.Base;
+
+namespace NodaTime.Periods
 {
     /// <summary>
-    /// Original name: DateMidnight.
-    /// We may want to remove this; I thought it had been deprecated as midnight doesn't
-    /// occur on every day in every time zone. (Yes, this has bitten me.)
+    /// Original name: Hours
     /// </summary>
-    public sealed class DateMidnight
+    public sealed class Hours : SingleFieldPeriodBase
     {
+        private Hours() : base(0) { }
+
+        public override DurationFieldType FieldType
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public override PeriodType PeriodType
+        {
+            get { throw new System.NotImplementedException(); }
+        }
     }
 }
