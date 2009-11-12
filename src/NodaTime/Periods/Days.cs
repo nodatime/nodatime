@@ -16,7 +16,7 @@
 #endregion
 using NodaTime.Base;
 
-namespace NodaTime
+namespace NodaTime.Periods
 {
     /// <summary>
     /// Original name: Days.

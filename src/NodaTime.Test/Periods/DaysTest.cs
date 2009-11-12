@@ -14,25 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using NodaTime.Base;
 
-namespace NodaTime
+using NUnit.Framework;
+
+namespace NodaTime.Test.Periods
 {
-    /// <summary>
-    /// Original name: Weeks.
-    /// </summary>
-    public sealed class Weeks : SingleFieldPeriodBase
+    [TestFixture]
+    public partial class DaysTest
     {
-        private Weeks() : base(0) { }
-
-        public override DurationFieldType FieldType
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        public override PeriodType PeriodType
-        {
-            get { throw new System.NotImplementedException(); }
-        }
+        // Test in 2002/03 as time zones are more well known
+        // (before the late 90's they were all over the place)
+        private static readonly DateTimeZone Paris = DateTimeZone.ForID("Europe/Paris");
     }
 }
