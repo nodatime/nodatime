@@ -35,7 +35,7 @@ namespace NodaTime.Base
         /// <param name="field">the field type to use, must not be null</param>
         /// <returns>the period</returns>
         /// <exception cref="System.ArgumentException">if the instants are null or invalid</exception>
-        protected static int Between(IInstant start, IInstant end, DurationFieldType field)
+        protected static int Between(ZonedDateTime start, ZonedDateTime end, DurationFieldType field)
         {
             throw new NotImplementedException();
         }

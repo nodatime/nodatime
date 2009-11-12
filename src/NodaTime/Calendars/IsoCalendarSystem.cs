@@ -17,14 +17,14 @@
 
 using System;
 
-namespace NodaTime.Chronologies
+namespace NodaTime.Calendars
 {
     /// <summary>
     /// Original name: ISOChronology
     /// </summary>
-    public sealed class IsoChronology : AssembledChronology
+    public sealed class IsoCalendarSystem : AssembledCalendarSystem
     {
-        public static IsoChronology Utc
+        public static IsoCalendarSystem Utc
         {
             get { throw new NotImplementedException(); }
         }
@@ -32,7 +32,7 @@ namespace NodaTime.Chronologies
         /// <summary>
         /// Returns the IsoChronology with the system default time zone.
         /// </summary>
-        public static IsoChronology SystemDefault
+        public static IsoCalendarSystem SystemDefault
         {
             get { throw new NotImplementedException(); }
         }
@@ -126,7 +126,7 @@ namespace NodaTime.Chronologies
             get { throw new NotImplementedException(); }
         }
 
-        public static IsoChronology GetInstance(DateTimeZone dateTimeZone)
+        public static IsoCalendarSystem GetInstance(DateTimeZone dateTimeZone)
         {
             throw new NotImplementedException();
         }

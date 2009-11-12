@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime.Base
+namespace NodaTime.Calendars
 {
     /// <summary>
-    /// Original name: AbstractInterval.
+    /// Original name: AssembledChronology.
     /// </summary>
-    public abstract class AbstractInterval : IInterval
+    public abstract class AssembledCalendarSystem : CalendarSystemBase
     {
     }
 }

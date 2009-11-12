@@ -27,16 +27,16 @@ namespace NodaTime.Converters
         /// <summary>
         /// Original name: getChronology
         /// </summary>
-        IChronology GetChronology(object obj, DateTimeZone zone);
+        Chronology GetChronology(object obj, DateTimeZone zone);
 
         /// <summary>
         /// Original name: getChronology
         /// </summary>
-        IChronology GetChronology(object obj, IChronology chrono);
+        Chronology GetChronology(object obj, Chronology chrono);
 
         /// <summary>
         /// Original name: getInstantMillis
         /// </summary>
-        long GetInstantMilliseconds(object obj, IChronology chrono);
+        long GetInstantMilliseconds(object obj, Chronology chrono);
     }
 }

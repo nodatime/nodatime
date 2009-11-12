@@ -17,7 +17,7 @@
 
 #endregion
 
-namespace NodaTime.Chronologies
+namespace NodaTime.Calendars
 {
-    public abstract class BasicGJChronology : BasicChronology {}
+    public abstract class BasicCalendarSystem : AssembledCalendarSystem {}
 }

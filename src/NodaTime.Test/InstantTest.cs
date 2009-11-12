@@ -22,6 +22,8 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class InstantTest
     {
+        // Test is commented out as little of it makes sense at the moment. We may or may not want some of it :)
+        /*
         // test in 2002/03 as time zones are more well known
         // (before the late 90's they were all over the place)
         private static readonly DateTimeZone Paris = DateTimeZone.ForID("Europe/Paris");
@@ -51,5 +53,6 @@ namespace NodaTime.Test
             (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * DateTimeConstants.MillisecondsPerDay
             + 14L * DateTimeConstants.MillisecondsPerHour
             + 28L * DateTimeConstants.MillisecondsPerMinute;
+         */
     }
 }
