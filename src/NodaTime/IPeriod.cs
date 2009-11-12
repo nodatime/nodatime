@@ -71,10 +71,5 @@ namespace NodaTime
         /// </summary>
         /// <returns>a Duration using the same field set and values</returns>
         Period ToPeriod();
-
-        // TODO: There is a bool Equals(object) function in the Java interface. Should this be be here?
-        // bool Equals(object readablePeriod);
-        // int GetHashCode();
-        // string ToString();
     }
 }
