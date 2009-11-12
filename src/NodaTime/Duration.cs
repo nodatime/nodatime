@@ -15,17 +15,34 @@
 // limitations under the License.
 #endregion
 
-using System;
 
-using NodaTime.Base;
 
 namespace NodaTime
 {
-    public sealed class Duration : DurationBase
+    /// <summary>
+    /// A length of time in milliseconds.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// There is no concept of fields, such as days or seconds, as these fields
+    /// can vary in length. A duration may be converted to a Period to obtain
+    /// field values. This conversion will typically cause a loss of precision.
+    /// </para>
+    /// <para>
+    /// This type is immutable and thread-safe.
+    /// </para>
+    public struct Duration
     {
+        private long milliseconds;
+
+        /// <summary>
+        /// The number of milliseconds in the duration.
+        /// </summary>
+        public long Milliseconds { get { return milliseconds; } }
+
         public Duration(long milliseconds)
         {
-            throw new NotImplementedException();
+            this.milliseconds = milliseconds;
         }
     }
 }

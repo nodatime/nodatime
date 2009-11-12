@@ -17,76 +17,39 @@
 
 #endregion
 
-using System;
-
-using NodaTime.Base;
-using NodaTime.Chronologies;
-
 namespace NodaTime
 {
     /// <summary>
-    /// Original name: Instant.
+    /// Represents an instant on the timeline, measured in milliseconds from the Unix epoch,
+    /// which is typically described as January 1st 1970, midnight, UTC (ISO calendar).
     /// </summary>
-    public sealed class Instant : AbstractInstant
+    /// <remarks>
+    /// The default value of this struct is the Unix epoch.
+    /// This type is immutable and thread-safe.
+    /// </remarks>
+    public struct Instant
     {
-        public override IChronology Chronology
+        public static readonly Instant UnixEpoch = new Instant(0);
+
+        private readonly long milliseconds;
+
+        /// <summary>
+        /// Milliseconds since the Unix epoch.
+        /// </summary>
+        public long Milliseconds { get { return milliseconds; } }
+
+        public Instant(long milliseconds)
         {
-            get { return IsoChronology.Utc; }
+            this.milliseconds = milliseconds;
         }
 
         /// <summary>
-        /// This takes the place of the old parameterless constructor; it's more inkeeping
-        /// with DateTime.Now etc, whereas java.util.Date/Calendar support the parameterless
-        /// constructor style. Let's get rid of that ambiguity.
+        /// Returns the difference between two instants as a duration.
+        /// TODO: It *could* return an interval... but I think this is better.
         /// </summary>
-        public static Instant Now
+        public static Duration operator -(Instant first, Instant second)
         {
-            get { throw new NotImplementedException(); }
-        }
-
-        public Instant(long instant)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Instant(object instant)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Instant WithMilliseconds(long milliseconds)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Instant WithDurationAdded(long durationToAdd, int scalar)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Instant WithDurationAdded(Duration durationToAdd, int scalar)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Instant Plus(IDuration duration)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Instant Minus(IDuration duration)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Instant Plus(long duration)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Instant Minus(long duration)
-        {
-            throw new NotImplementedException();
+            return new Duration(first.Milliseconds - second.Milliseconds);
         }
     }
 }

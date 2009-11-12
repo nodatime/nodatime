@@ -14,14 +14,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using NodaTime.Base;
 
 namespace NodaTime
 {
     /// <summary>
-    /// Original name: Interval.
+    /// An interval between two instants in time.
     /// </summary>
-    public sealed class Interval : IntervalBase
+    /// <remarks>
+    /// This type is immutable and thread-safe.
+    /// </remarks>
+    public struct Interval
     {
+        private readonly Instant start;
+        private readonly Instant end;
+
+        public Interval(Instant start, Instant end)
+        {
+            this.start = start;
+            this.end = end;
+        }
+
+        public Duration Duration
+        {
+            get { return end - start; }
+        }
     }
 }

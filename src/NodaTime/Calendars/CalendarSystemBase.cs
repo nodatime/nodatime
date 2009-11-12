@@ -15,14 +15,13 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime.Chronologies
+namespace NodaTime.Calendars
 {
     /// <summary>
     /// Original name: BaseChronology
     /// </summary>
-    public abstract class ChronologyBase : IChronology
+    public abstract class CalendarSystemBase : ICalendarSystem
     {
-        public abstract DateTimeZone Zone { get; }
         public abstract DateTimeField Era { get; }
         public abstract DateTimeField CenturyOfEra { get; }
         public abstract DateTimeField YearOfCentury { get; }

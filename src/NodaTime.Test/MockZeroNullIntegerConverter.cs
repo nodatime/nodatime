@@ -28,22 +28,22 @@ namespace NodaTime
     {
         public static readonly IInstantConverter Instance = new MockZeroNullIntegerConverter();
 
-        public long GetInstantMilliseconds(object obj, IChronology chrono)
+        public long GetInstantMilliseconds(object obj, Chronology chrono)
         {
             return 0;
         }
 
-        public long GetInstantMilliseconds(object obj, IChronology chrono, DateTimeFormatter parser)
+        public long GetInstantMilliseconds(object obj, Chronology chrono, DateTimeFormatter parser)
         {
             return 0;
         }
 
-        public IChronology GetChronology(object obj, DateTimeZone zone)
+        public Chronology GetChronology(object obj, DateTimeZone zone)
         {
             return null;
         }
 
-        public IChronology GetChronology(object obj, IChronology chrono)
+        public Chronology GetChronology(object obj, Chronology chrono)
         {
             return null;
         }

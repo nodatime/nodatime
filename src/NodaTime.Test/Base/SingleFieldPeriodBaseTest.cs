@@ -29,11 +29,11 @@ namespace NodaTime.Test.Base
         #region Note: was testFactory_between_RInstant
 
         [Test]
-        public void Between_StaticIInstant()
+        public void Between_StaticInstant()
         {
-            DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, Paris);
-            DateTime end1 = new DateTime(2006, 6, 12, 12, 0, 0, 0, Paris);
-            DateTime end2 = new DateTime(2006, 6, 15, 18, 0, 0, 0, Paris);
+            ZonedDateTime start = new ZonedDateTime(2006, 6, 9, 12, 0, 0, 0, Paris);
+            ZonedDateTime end1 = new ZonedDateTime(2006, 6, 12, 12, 0, 0, 0, Paris);
+            ZonedDateTime end2 = new ZonedDateTime(2006, 6, 15, 18, 0, 0, 0, Paris);
 
             Assert.AreEqual(3, Single.SBetween(start, end1, DurationFieldType.Days));
             Assert.AreEqual(0, Single.SBetween(start, start, DurationFieldType.Days));
@@ -41,29 +41,6 @@ namespace NodaTime.Test.Base
             Assert.AreEqual(-3, Single.SBetween(end1, start, DurationFieldType.Days));
             Assert.AreEqual(6, Single.SBetween(start, end2, DurationFieldType.Days));
         }
-
-        [Test, ExpectedException("System.ArgumentException")]
-        public void Between_StaticIInstant_ThrowsArgumentException1()
-        {
-            DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, Paris);
-
-            Single.SBetween(start, null, DurationFieldType.Days);
-        }
-
-        [Test, ExpectedException("System.ArgumentException")]
-        public void Between_StaticIInstant_ThrowsArgumentException2()
-        {
-            DateTime end1 = new DateTime(2006, 6, 12, 12, 0, 0, 0, Paris);
-
-            Single.SBetween(null, end1, DurationFieldType.Days);
-        }
-
-        [Test, ExpectedException("System.ArgumentException")]
-        public void Between_StaticIInstant_ThrowsArgumentException3()
-        {
-            Single.SBetween(null, null, DurationFieldType.Days);
-        }
-
         #endregion
 
         #region Note: was testFactory_between_RPatial

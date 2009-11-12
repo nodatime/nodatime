@@ -19,14 +19,14 @@
 
 using System;
 
-namespace NodaTime.Chronologies
+namespace NodaTime.Calendars
 {
     /// <summary>
     /// Original name: GregorianChronology
     /// </summary>
-    public class GregorianChronology : BasicGJChronology
+    public class GregorianCalendarSystem : BasicGJCalendarSystem
     {
-        public static IChronology GetInstance(DateTimeZone dateTimeZone)
+        public static Chronology GetInstance(DateTimeZone dateTimeZone)
         {
             throw new NotImplementedException();
         }
