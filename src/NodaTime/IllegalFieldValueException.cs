@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 using System;
+using System.Runtime.Serialization;
 
 namespace NodaTime
 {
@@ -22,7 +23,24 @@ namespace NodaTime
     /// Original name: IllegalFieldValueException. We may not need this class
     /// at all, but it does have logic in it, so I thought I'd at least include it for the moment.
     /// </summary>
+    [Serializable]
     public class IllegalFieldValueException : ArgumentOutOfRangeException
     {
+        public IllegalFieldValueException() {}
+
+        public IllegalFieldValueException(string paramName)
+            : base(paramName) {}
+
+        public IllegalFieldValueException(string message, Exception innerException)
+            : base(message, innerException) {}
+
+        public IllegalFieldValueException(string paramName, string message)
+            : base(paramName, message) {}
+
+        public IllegalFieldValueException(string paramName, string actualValue, string message)
+            : base(paramName, actualValue, message) {}
+
+        protected IllegalFieldValueException(SerializationInfo info, StreamingContext context)
+            : base(info, context) {}
     }
 }
