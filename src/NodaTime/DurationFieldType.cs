@@ -28,6 +28,7 @@ namespace NodaTime
         WeekYears,
         Years,
         Months,
+		Weeks,
         Days,
         HalfDays,
         Hours,
