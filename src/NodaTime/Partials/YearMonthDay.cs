@@ -20,6 +20,8 @@ namespace NodaTime
 {
     /// <summary>
     /// Original name: YearMonthDay.
+    /// TODO: This is deprecated in favour of LocalDate.
+    /// But maybe we should have MonthDay, e.g. your birthday...
     /// </summary>
     public sealed class YearMonthDay : PartialBase
     {
