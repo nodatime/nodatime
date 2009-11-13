@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-
-
 namespace NodaTime
 {
     /// <summary>
