@@ -1,0 +1,27 @@
+(This document will become part of the proper docs eventually.)
+
+The names are meant to broadly reflect those in Joda Time, with the
+following changes:
+
+- Interfaces now being with I as per .NET conventions
+- Acronyms are only capitalised for the first letter (e.g.
+UtcProvider)
+- The Readable* interfaces are now just I*, e.g. IInstant, IPartial
+  etc. I haven't checked, but I suspect that part of the reason for
+  the "Readable" prefix was because in Java there's no I prefix
+  convention for interfaces; the I prefix allows a simple "default"
+  implementation of an interface with effectively the same name.
+- The ReadWritable* interfaces are now IMutable*. (We will explicitly
+  define that any implementation of IFoo but not IMutableFoo must be
+  immutable.)
+- Namespaces have been expanded appropriately; I'm still looking for
+  a better name than "Format"
+- DateTime is still a problem. I haven't come up with anything better
+  yet. Instant sounded good - until I spotted that there was already
+  an Instant type. Oops. I did try "ZonedInstant" but that's awful.
+  Suggestions welcome.
+- Base* classes are now *Base to match .NET conventions
+- The DateTimeFormat, ISODateTimeFormat etc classes are now named 
+  *Factory, but I'm wondering about DateTimeFormatters etc instead,
+  so you'd use DateTimeFormatters.ForPattern etc. Alternatively,
+  why not put it into DateTimeFormatter in the first place?
