@@ -50,7 +50,7 @@ namespace NodaTime.Test.Base
 
             public override PeriodType PeriodType
             {
-                get { return PeriodType.Days(); }
+                get { return PeriodType.Days; }
             }
         }
     }

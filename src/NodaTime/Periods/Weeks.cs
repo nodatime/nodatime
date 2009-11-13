@@ -32,7 +32,7 @@ namespace NodaTime.Periods
 
         public override PeriodType PeriodType
         {
-            get { throw new System.NotImplementedException(); }
+            get { return PeriodType.Weeks; }
         }
     }
 }
