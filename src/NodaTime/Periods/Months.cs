@@ -27,7 +27,7 @@ namespace NodaTime.Periods
 
         public override DurationFieldType FieldType
         {
-            get { throw new System.NotImplementedException(); }
+			get { return DurationFieldType.Months; }
         }
 
         public override PeriodType PeriodType
