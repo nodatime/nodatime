@@ -15,16 +15,47 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace NodaTime
 {
     /// <summary>
     /// Original name: PeriodType
     /// </summary>
-    public class PeriodType
+    /// <remarks>
+    /// Defined values are:
+    /// 
+    /// Standard - years, months, weeks, days, hours, minutes, seconds, millis
+    /// YearMonthDayTime - years, months, days, hours, minutes, seconds, millis
+    /// YearMonthDay - years, months, days
+    /// YearWeekDayTime - years, weeks, days, hours, minutes, seconds, millis
+    /// YearWeekDay - years, weeks, days
+    /// YearDayTime - years, days, hours, minutes, seconds, millis
+    /// YearDay - years, days, hours
+    /// DayTime - days, hours, minutes, seconds, millis
+    /// Time - hours, minutes, seconds, millis
+    /// plus one for each single type
+    /// </remarks>
+    [Flags]
+    public enum PeriodType
     {
-        public static PeriodType Days()
-        {
-            throw new System.NotImplementedException();
-        }
+        Years = DurationFieldType.Years,
+        Months = DurationFieldType.Months,
+        Weeks = DurationFieldType.Weeks,
+        Days = DurationFieldType.Days,
+        Hours = DurationFieldType.Hours,
+        Minutes = DurationFieldType.Minutes,
+        Seconds = DurationFieldType.Seconds,
+        Milliseconds = DurationFieldType.Milliseconds,
+
+        Standard = Years | Months | Weeks | Days | Hours | Minutes | Seconds | Milliseconds,
+        YearMonthDayTime = Years | Months | Days | Hours | Minutes | Seconds | Milliseconds,
+        YearMonthDay = Years | Months | Days,
+        YearWeekDayTime = Years | Weeks | Days | Hours | Minutes | Seconds | Milliseconds,
+        YearWeekDay = Years | Weeks | Days,
+        YearDayTime = Years | Days | Hours | Minutes | Seconds | Milliseconds,
+        YearDay = Years | Days | Hours,
+        DayTime = Days | Hours | Minutes | Seconds | Milliseconds,
+        Time = Hours | Minutes | Seconds | Milliseconds,
     }
 }

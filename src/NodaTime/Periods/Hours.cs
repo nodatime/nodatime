@@ -27,12 +27,12 @@ namespace NodaTime.Periods
 
         public override DurationFieldType FieldType
         {
-			get { return DurationFieldType.Hours; }
+            get { return DurationFieldType.Hours; }
         }
 
         public override PeriodType PeriodType
         {
-            get { throw new System.NotImplementedException(); }
+            get { return PeriodType.Hours; }
         }
     }
 }
