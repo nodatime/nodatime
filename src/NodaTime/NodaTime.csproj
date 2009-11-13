@@ -116,7 +116,7 @@
     <Compile Include="Periods\Months.cs" />
     <Compile Include="Periods\Minutes.cs" />
     <Compile Include="Partials\LocalTime.cs" />
-    <Compile Include="Partials\LocalDateTime.cs" />
+    <Compile Include="LocalDateTime.cs" />
     <Compile Include="DateTimeField.cs" />
     <Compile Include="DateTimeFieldType.cs" />
     <Compile Include="DateTimeUtils.cs" />
