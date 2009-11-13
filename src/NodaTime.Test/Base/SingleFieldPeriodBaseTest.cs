@@ -16,6 +16,7 @@
 #endregion
 
 using NUnit.Framework;
+using System;
 
 namespace NodaTime.Test.Base
 {
@@ -66,7 +67,7 @@ namespace NodaTime.Test.Base
             LocalDate start = new LocalDate(2006, 6, 9);
             Single zero = new Single(0);
 
-            Single.SBetween(start, null, zero);
+            Assert.Throws<ArgumentException>(() => Single.SBetween(start, null, zero));
         }
 
         [Test]
@@ -75,7 +76,7 @@ namespace NodaTime.Test.Base
             LocalDate end1 = new LocalDate(2006, 6, 12);
             Single zero = new Single(0);
 
-            Single.SBetween(null, end1, zero);
+            Assert.Throws<ArgumentException>(() => Single.SBetween(null, end1, zero));
         }
 
         [Test]
@@ -83,7 +84,7 @@ namespace NodaTime.Test.Base
         {
             Single zero = new Single(0);
 
-            Single.SBetween(null, null, zero);
+            Assert.Throws<ArgumentException>(() => Single.SBetween(null, null, zero));
         }
 
         [Test]
@@ -92,7 +93,7 @@ namespace NodaTime.Test.Base
             LocalDate start = new LocalDate(2006, 6, 9);
             Single zero = new Single(0);
 
-            Single.SBetween(start, new LocalTime(), zero);
+            Assert.Throws<ArgumentException>(() => Single.SBetween(start, new LocalTime(), zero));
         }
 
         [Test]
@@ -100,7 +101,7 @@ namespace NodaTime.Test.Base
         {
             Single zero = new Single(0);
 
-            Single.SBetween(new Partial(DateTimeFieldType.DayOfWeek, 2), new Partial(DateTimeFieldType.DayOfMonth, 3), zero);
+            Assert.Throws<ArgumentException>(() => Single.SBetween(new Partial(DateTimeFieldType.DayOfWeek, 2), new Partial(DateTimeFieldType.DayOfMonth, 3), zero));
         }
 
         [Test]
@@ -108,10 +109,10 @@ namespace NodaTime.Test.Base
         {
             Single zero = new Single(0);
             Partial p = new Partial(
-                new DateTimeFieldType[] { DateTimeFieldType.Year, DateTimeFieldType.HourOfDay }, 
+                new DateTimeFieldType[] { DateTimeFieldType.Year, DateTimeFieldType.HourOfDay },
                 new int[] { 1, 2 });
 
-            Single.SBetween(p, p, zero);
+            Assert.Throws<ArgumentException>(() => Single.SBetween(p, p, zero));
         }
 
         #endregion
