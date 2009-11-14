@@ -51,7 +51,7 @@ namespace NodaTime.Test.Base
         {
             LocalDate start = new LocalDate(2006, 6, 9);
             LocalDate end1 = new LocalDate(2006, 6, 12);
-            YearMonthDay end2 = new YearMonthDay(2006, 6, 15);
+            LocalDate end2 = new LocalDate(2006, 6, 15);
             Single zero = new Single(0);
 
             Assert.AreEqual(3, Single.SBetween(start, end1, zero));
