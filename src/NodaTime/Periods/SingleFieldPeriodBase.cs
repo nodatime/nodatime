@@ -70,7 +70,7 @@ namespace NodaTime.Base
         /// <summary>
         /// The amount of this period.
         /// </summary>
-        protected int value
+        protected int Value
         {
             get { return period; }
             set { period = value; }
@@ -141,7 +141,7 @@ namespace NodaTime.Base
                 throw new ArgumentOutOfRangeException("index", "Index must be 0 for a SingleFieldPeriod.");
             }
 
-            return value;
+            return Value;
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace NodaTime.Base
         {
             if (field == FieldType)
             {
-                return value;
+                return Value;
             }
 
             return 0;
