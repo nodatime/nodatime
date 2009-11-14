@@ -97,7 +97,7 @@
     <Compile Include="TimeZones\INameProvider.cs" />
     <Compile Include="TimeZones\UtcProvider.cs" />
     <Compile Include="TimeZones\ZoneInfoProvider.cs" />
-    <Compile Include="Partials\YearMonthDay.cs" />
+    <Compile Include="Partials\MonthDay.cs" />
     <Compile Include="Format\DateTimeFormatter.cs" />
     <Compile Include="Format\DateTimeFormatterFactory.cs" />
     <Compile Include="Format\DateTimeParserBucket.cs" />
