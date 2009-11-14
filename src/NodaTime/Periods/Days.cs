@@ -36,7 +36,7 @@ namespace NodaTime.Periods
 
         private Days(int days) : base(days) { }
 
-        public int Value { get { return value; } }
+        public new int Value { get { return base.Value; } }
 
         public override DurationFieldType FieldType
         {
