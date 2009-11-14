@@ -19,13 +19,12 @@ using NodaTime.Base;
 namespace NodaTime
 {
     /// <summary>
-    /// Original name: YearMonthDay.
-    /// TODO: This is deprecated in favour of LocalDate.
-    /// But maybe we should have MonthDay, e.g. your birthday...
+    /// Original name: N/A
+    /// Month and day, this is good for birthdays, etc.
     /// </summary>
-    public sealed class YearMonthDay : PartialBase
+    public sealed class MonthDay : PartialBase
     {
-        public YearMonthDay(int year, int month, int day)
+        public MonthDay(int month, int day)
         {
             throw new System.NotImplementedException();
         }
