@@ -37,6 +37,7 @@ namespace NodaTime
     /// Time - hours, minutes, seconds, millis
     /// plus one for each single type
     /// </remarks>
+    [Flags]
     public enum PeriodType
     {
         Years = DurationFieldType.Years,
