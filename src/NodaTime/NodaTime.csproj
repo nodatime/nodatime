@@ -145,9 +145,6 @@
     <Content Include="Fields\readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Diagrams\Duration.cd" />
-    <None Include="Diagrams\InstantAndDateTime.cd" />
-    <None Include="Diagrams\Interval.cd" />
     <None Include="Diagrams\Partial.cd" />
     <None Include="Diagrams\Period.cd" />
   </ItemGroup>
