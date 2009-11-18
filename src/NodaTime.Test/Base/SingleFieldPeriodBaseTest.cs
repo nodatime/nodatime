@@ -17,6 +17,7 @@
 
 using NUnit.Framework;
 using System;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test.Base
 {
@@ -25,7 +26,7 @@ namespace NodaTime.Test.Base
     {
         // test in 2002/03 as time zones are more well known
         // (before the late 90's they were all over the place)
-        private static readonly DateTimeZone Paris = DateTimeZone.ForID("Europe/Paris");
+        private static readonly IDateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
 
         #region Note: was testFactory_between_RInstant
 
