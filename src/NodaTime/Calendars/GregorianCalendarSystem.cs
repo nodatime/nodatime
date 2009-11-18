@@ -26,7 +26,7 @@ namespace NodaTime.Calendars
     /// </summary>
     public class GregorianCalendarSystem : BasicGJCalendarSystem
     {
-        public static Chronology GetInstance(DateTimeZone dateTimeZone)
+        public static Chronology GetInstance(IDateTimeZone dateTimeZone)
         {
             throw new NotImplementedException();
         }

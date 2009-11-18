@@ -92,6 +92,7 @@
     <Compile Include="SystemClock.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
+    <Compile Include="TimeZones\DateTimeZones.cs" />
     <Compile Include="TimeZones\DefaultNameProvider.cs" />
     <Compile Include="TimeZones\IDateTimeZoneProvider.cs" />
     <Compile Include="TimeZones\INameProvider.cs" />
@@ -120,7 +121,7 @@
     <Compile Include="DateTimeField.cs" />
     <Compile Include="DateTimeFieldType.cs" />
     <Compile Include="DateTimeUtils.cs" />
-    <Compile Include="DateTimeZone.cs" />
+    <Compile Include="IDateTimeZone.cs" />
     <Compile Include="Periods\Days.cs" />
     <Compile Include="Duration.cs" />
     <Compile Include="DurationField.cs" />
