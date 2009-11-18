@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
-
 namespace NodaTime
 {
     /// <summary>
@@ -25,10 +23,46 @@ namespace NodaTime
     /// </summary>   
     public interface IDateTimeZone
     {
-        Instant NextTransition(Instant instant);
-        Instant PreviousTransition(Instant instant);
+        /// <summary>
+        /// Returns the transition occurring strictly after the specified instant,
+        /// or null if there are no further transitions.
+        /// </summary>
+        /// <param name="instant">The instant after which to consider transitions.</param>
+        /// <returns>The instant of the next transition, or null if there are no further transitions.</returns>
+        Instant? NextTransition(Instant instant);
+
+        /// <summary>
+        /// Returns the transition occurring strictly before the specified instant,
+        /// or null if there are no earlier transitions.
+        /// </summary>
+        /// <param name="instant">The instant before which to consider transitions.</param>
+        /// <returns>The instant of the previous transition, or null if there are no further transitions.</returns>
+        Instant? PreviousTransition(Instant instant);
+        
+        /// <summary>
+        /// Returns the offset from UTC, where a positive duration indicates that local time is later
+        /// than UTC. In other words, local time = UTC + offset.
+        /// </summary>
+        /// <param name="instant">The instant for which to calculate the offset.</param>
+        /// <returns>The offset from UTC at the specified instant.</returns>
         Duration GetOffsetFromUtc(Instant instant);
+
+        /// <summary>
+        /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
+        /// than local time. In other words, UTC = local time - (offset from local).
+        /// </summary>
+        /// <param name="instant">The instant for which to calculate the offset.</param>
+        /// <returns>The offset at the specified local time.</returns>
         Duration GetOffsetFromLocal(LocalDateTime localTime);
+
+        /// <summary>
+        /// The Olson database ID for the time zone.
+        /// </summary>
         string Id { get; }
+
+        /// <summary>
+        /// Indicates whether the time zone is fixed, i.e. contains no transitions.
+        /// </summary>
+        bool IsFixed { get; }
     }
 }
