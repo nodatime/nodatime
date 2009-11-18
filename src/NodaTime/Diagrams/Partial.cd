@@ -4,64 +4,50 @@
     <Position X="1.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Base\PartialBase.cs</FileName>
+      <FileName>Partials\PartialBase.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Base.AbstractPartial" Collapsed="true">
     <Position X="3.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Base\AbstractPartial.cs</FileName>
+      <FileName>Partials\AbstractPartial.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.YearMonth" Collapsed="true">
-    <Position X="0.5" Y="4.75" Width="1.5" />
+    <Position X="1.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>YearMonth.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="NodaTime.YearMonthDay" Collapsed="true">
-    <Position X="2.75" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>YearMonthDay.cs</FileName>
+      <FileName>Partials\YearMonth.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Partial" Collapsed="true">
     <Position X="3.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Partial.cs</FileName>
+      <FileName>Partials\Partial.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.LocalTime" Collapsed="true">
-    <Position X="8.5" Y="4.75" Width="1.5" />
+    <Position X="6.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>LocalTime.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="NodaTime.LocalDateTime" Collapsed="true">
-    <Position X="5" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>LocalDateTime.cs</FileName>
+      <FileName>Partials\LocalTime.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.LocalDate" Collapsed="true">
-    <Position X="6.75" Y="4.75" Width="1.5" />
+    <Position X="4.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>LocalDate.cs</FileName>
+      <FileName>Partials\LocalDate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Base.LocalBase" Collapsed="true">
     <Position X="5.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Base\LocalBase.cs</FileName>
+      <FileName>Partials\LocalBase.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="NodaTime.IPartial" Collapsed="true">
