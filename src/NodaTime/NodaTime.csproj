@@ -94,6 +94,7 @@
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DateTimeZones.cs" />
     <Compile Include="TimeZones\DefaultNameProvider.cs" />
+    <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneProvider.cs" />
     <Compile Include="TimeZones\INameProvider.cs" />
     <Compile Include="TimeZones\UtcProvider.cs" />

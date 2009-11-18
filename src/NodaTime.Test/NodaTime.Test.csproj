@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FixedDateTimeZoneTest.cs" />
     <Compile Include="Periods\DaysTest.cs" />
     <Compile Include="Periods\DaysTest.Constants.cs">
       <DependentUpon>DaysTest.cs</DependentUpon>
