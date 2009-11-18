@@ -23,6 +23,7 @@ namespace NodaTime
     /// Original name: PeriodType
     /// </summary>
     /// <remarks>
+    /// TODO: Consider where we should really have ticks. It's not entirely clear.
     /// Defined values are:
     /// 
     /// Standard - years, months, weeks, days, hours, minutes, seconds, millis
@@ -36,7 +37,6 @@ namespace NodaTime
     /// Time - hours, minutes, seconds, millis
     /// plus one for each single type
     /// </remarks>
-    [Flags]
     public enum PeriodType
     {
         Years = DurationFieldType.Years,
