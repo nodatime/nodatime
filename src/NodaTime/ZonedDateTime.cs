@@ -40,7 +40,7 @@ namespace NodaTime
         private Instant instant;
         private Chronology chronology;
 
-        public ZonedDateTime(LocalDateTime localDateTime, DateTimeZone zone)
+        public ZonedDateTime(LocalDateTime localDateTime, IDateTimeZone zone)
         {
             instant = Instant.UnixEpoch;
             chronology = null;
@@ -54,7 +54,7 @@ namespace NodaTime
 
         public ZonedDateTime(int year, int month, int day,
                              int hour, int minute, int second,
-                             DateTimeZone zone)
+                             IDateTimeZone zone)
         {
             instant = Instant.UnixEpoch;
             chronology = null;
@@ -70,7 +70,7 @@ namespace NodaTime
 
         public ZonedDateTime(int year, int month, int day,
                              int hour, int minute, int second,
-                             int millisecond, DateTimeZone zone)
+                             int millisecond, IDateTimeZone zone)
         {
             instant = Instant.UnixEpoch;
             chronology = null;
@@ -103,6 +103,6 @@ namespace NodaTime
         /// </summary>
         public Chronology Chronology { get { return chronology ?? Chronology.IsoUtc; } }
 
-        public DateTimeZone Zone { get { return Chronology.Zone; } }
+        public IDateTimeZone Zone { get { return Chronology.Zone; } }
     }
 }

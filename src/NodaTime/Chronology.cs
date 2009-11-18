@@ -27,15 +27,15 @@ namespace NodaTime
     /// </summary>
     public sealed class Chronology
     {
-        private readonly DateTimeZone zone;
+        private readonly IDateTimeZone zone;
         private readonly ICalendarSystem calendarSystem;
 
         public static Chronology IsoUtc { get { throw new NotImplementedException(); } }
 
-        public DateTimeZone Zone { get { return zone; } }
+        public IDateTimeZone Zone { get { return zone; } }
         public ICalendarSystem CalendarSystem { get { return calendarSystem; } }
 
-        public Chronology(DateTimeZone zone, ICalendarSystem calendarSystem)
+        public Chronology(IDateTimeZone zone, ICalendarSystem calendarSystem)
         {
             this.zone = zone;
             this.calendarSystem = calendarSystem;

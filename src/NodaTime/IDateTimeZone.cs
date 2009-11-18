@@ -20,24 +20,15 @@ using System;
 namespace NodaTime
 {
     /// <summary>
-    /// Original name: DateTimeZone.
-    /// Everyone should fear time zones. We need to be very careful here :)
+    /// Interface describing a time zone. Most users won't need to call any
+    /// of the methods on this, instead 
     /// </summary>   
-    public abstract class DateTimeZone
+    public interface IDateTimeZone
     {
-        public static DateTimeZone SystemDefault
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-        public static DateTimeZone Utc
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public static DateTimeZone ForID(string id)
-        {
-            throw new NotImplementedException();
-        }
+        Instant NextTransition(Instant instant);
+        Instant PreviousTransition(Instant instant);
+        Duration GetOffsetFromUtc(Instant instant);
+        Duration GetOffsetFromLocal(LocalDateTime localTime);
+        string Id { get; }
     }
 }

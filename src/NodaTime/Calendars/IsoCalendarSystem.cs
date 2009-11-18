@@ -126,7 +126,7 @@ namespace NodaTime.Calendars
             get { throw new NotImplementedException(); }
         }
 
-        public static IsoCalendarSystem GetInstance(DateTimeZone dateTimeZone)
+        public static IsoCalendarSystem GetInstance(IDateTimeZone dateTimeZone)
         {
             throw new NotImplementedException();
         }
