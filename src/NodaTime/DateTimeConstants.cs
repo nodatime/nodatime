@@ -17,6 +17,7 @@
 
 #endregion
 
+using System;
 
 namespace NodaTime
 {
@@ -31,6 +32,11 @@ namespace NodaTime
     public static class DateTimeConstants
     {
         // Note: I (Martinho) renamed Millis to Milliseconds to keep consistency with existing Framework members
+
+        /// <summary>
+        /// As per <see cref="TimeSpan.TicksPerMillisecond" />, included here for consistency.
+        /// </summary>
+        public const long TicksPerMillisecond = 10000;
 
         /// <summary>
         /// Original name: MILLIS_PER_MINUTE

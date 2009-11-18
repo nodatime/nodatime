@@ -18,12 +18,12 @@
 namespace NodaTime
 {
     /// <summary>
-    /// A length of time in milliseconds.
+    /// A length of time in ticks. (There are 10,000 ticks in a millisecond.)
     /// </summary>
     /// <remarks>
     /// <para>
     /// There is no concept of fields, such as days or seconds, as these fields
-    /// can vary in length. A duration may be converted to a Period to obtain
+    /// can vary in length. A duration may be converted to an <see cref="IPeriod" /> to obtain
     /// field values. This conversion will typically cause a loss of precision.
     /// </para>
     /// <para>
@@ -31,16 +31,16 @@ namespace NodaTime
     /// </para>
     public struct Duration
     {
-        private long milliseconds;
+        private readonly long ticks;
 
         /// <summary>
-        /// The number of milliseconds in the duration.
+        /// The number of ticks in the duration.
         /// </summary>
-        public long Milliseconds { get { return milliseconds; } }
+        public long Ticks { get { return ticks; } }
 
-        public Duration(long milliseconds)
+        public Duration(long ticks)
         {
-            this.milliseconds = milliseconds;
+            this.ticks = ticks;
         }
     }
 }

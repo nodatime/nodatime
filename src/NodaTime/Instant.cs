@@ -20,8 +20,9 @@
 namespace NodaTime
 {
     /// <summary>
-    /// Represents an instant on the timeline, measured in milliseconds from the Unix epoch,
+    /// Represents an instant on the timeline, measured in ticks from the Unix epoch,
     /// which is typically described as January 1st 1970, midnight, UTC (ISO calendar).
+    /// (There are 10,000 ticks in a millisecond.)
     /// </summary>
     /// <remarks>
     /// The default value of this struct is the Unix epoch.
@@ -31,16 +32,16 @@ namespace NodaTime
     {
         public static readonly Instant UnixEpoch = new Instant(0);
 
-        private readonly long milliseconds;
+        private readonly long ticks;
 
         /// <summary>
-        /// Milliseconds since the Unix epoch.
+        /// Ticks since the Unix epoch.
         /// </summary>
-        public long Milliseconds { get { return milliseconds; } }
+        public long Ticks { get { return ticks; } }
 
-        public Instant(long milliseconds)
+        public Instant(long ticks)
         {
-            this.milliseconds = milliseconds;
+            this.ticks = ticks;
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace NodaTime
         /// </summary>
         public static Duration operator -(Instant first, Instant second)
         {
-            return new Duration(first.Milliseconds - second.Milliseconds);
+            return new Duration(first.Ticks - second.Ticks);
         }
     }
 }
