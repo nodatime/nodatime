@@ -25,17 +25,5 @@ namespace NodaTime
     /// </summary>
     public static class DateTimeUtils
     {
-        private static volatile IClock clock = SystemClock.Instance;
-
-        /// <summary>
-        /// The clock used for determining the current time *everywhere* in Noda Time.
-        /// Use TestClock to replace it temporarily, for the sake of unit tests.
-        /// TODO: Sample...
-        /// </summary>
-        public static IClock Clock
-        {
-            get { return clock; }
-            internal set { clock = value; }
-        }
     }
 }
