@@ -15,14 +15,13 @@
 // limitations under the License.
 #endregion
 
-using System;
-
-namespace NodaTime
+namespace NodaTime.Clocks
 {
     /// <summary>
-    /// Singleton implementation of IClock which reads the current system time.
+    /// Singleton implementation of <see cref="IClock"/> which reads the current system time.
     /// </summary>
-    public class SystemClock : IClock
+    public class SystemClock
+        : IClock
     {
         private static readonly SystemClock instance = new SystemClock();
 
@@ -31,18 +30,21 @@ namespace NodaTime
         /// <summary>
         /// We'll want to do better than this, but it'll do for now.
         /// </summary>
-        private static readonly System.DateTime UnixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        // private static readonly System.DateTime UnixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        private static readonly long UnixEpochTicks = (new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc)).Ticks;
+
+        #region IClockType Members
 
         /// <summary>
-        /// Prevents instantiation
+        /// Gets the current time as the number of ticks since the Unix Epoch.
         /// </summary>
-        private SystemClock()
+        /// <value>The current time in ticks.</value>
+        public Instant Now
         {
+            get { return new Instant(System.DateTime.UtcNow.Ticks - UnixEpochTicks); }
         }
 
-        public long Now
-        {
-            get { return (System.DateTime.UtcNow.Ticks - UnixEpoch.Ticks) / TimeSpan.TicksPerMillisecond; }
-        }
+        #endregion
     }
 }

@@ -32,6 +32,10 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,6 +69,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clock.cs" />
+    <Compile Include="Clocks\FixedClock.cs" />
     <Compile Include="Partials\AbstractPartial.cs" />
     <Compile Include="Periods\AbstractPeriod.cs" />
     <Compile Include="Partials\LocalBase.cs" />
@@ -80,7 +86,6 @@
     <Compile Include="Converters\IConverter.cs" />
     <Compile Include="Converters\IInstantConverter.cs" />
     <Compile Include="ICalendarSystem.cs" />
-    <Compile Include="TestClock.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Format\IPeriodParser.cs" />
@@ -89,7 +94,7 @@
     <Compile Include="Format\PeriodFormatter.cs" />
     <Compile Include="Format\PeriodFormatterBuilder.cs" />
     <Compile Include="Format\PeriodFormatterFactory.cs" />
-    <Compile Include="SystemClock.cs" />
+    <Compile Include="Clocks\SystemClock.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DateTimeZones.cs" />
