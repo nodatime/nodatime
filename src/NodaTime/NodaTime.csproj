@@ -65,6 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calendars\CalendarSystems.cs" />
+    <Compile Include="Fields\DateTimeFieldSet.cs" />
+    <Compile Include="LocalInstant.cs" />
     <Compile Include="Partials\AbstractPartial.cs" />
     <Compile Include="Periods\AbstractPeriod.cs" />
     <Compile Include="Partials\LocalBase.cs" />
