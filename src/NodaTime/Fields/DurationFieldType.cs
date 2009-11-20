@@ -25,8 +25,8 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// Values are defined to be compatible with flags. This is so PeriodType can combine these values safely.
+    /// TODO: Find out if this is really necessary.
     /// </remarks>
-    [Flags]
     public enum DurationFieldType
     {
         Eras = 1,

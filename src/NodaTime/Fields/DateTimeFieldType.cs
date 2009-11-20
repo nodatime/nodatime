@@ -45,7 +45,8 @@ namespace NodaTime
         MinuteOfDay,
         SecondOfMinute,
         SecondOfDay,
-        MillisOfSecond,
-        MillisOfDay
+        MillisecondOfSecond,
+        TickOfMillisecond,
+        TickOfDay
     }
 }
