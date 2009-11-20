@@ -117,6 +117,6 @@ namespace NodaTime
         public int SecondOfMinute { get { return calendar.DateTimeFields[DateTimeFieldType.SecondOfMinute].GetValue(localInstant); } }
         public int MillisecondsOfSecond { get { return calendar.DateTimeFields[DateTimeFieldType.MillisecondOfSecond].GetValue(localInstant); } }
         public int TicksOfMillicond { get { return calendar.DateTimeFields[DateTimeFieldType.TickOfMillisecond].GetValue(localInstant); } }
-        public int TicksOfDay { get { return calendar.DateTimeFields[DateTimeFieldType.TickOfDay].GetValue(localInstant); } }
+        public long TicksOfDay { get { return calendar.DateTimeFields[DateTimeFieldType.TickOfDay].GetLongValue(localInstant); } }
     }
 }

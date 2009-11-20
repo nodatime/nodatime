@@ -3,8 +3,8 @@
     /// <summary>
     /// Represents a local date and time without reference to a calendar system,
     /// as the number of ticks since the Unix epoch which would represent that time
-    /// of the same date in UTC. You cannot perform arithmetic directly on a local
-    /// instant, as the result would depend on the time zone.
+    /// of the same date in UTC. This needs a better description, and possibly a better name
+    /// at some point...
     /// </summary>
     public struct LocalInstant
     {

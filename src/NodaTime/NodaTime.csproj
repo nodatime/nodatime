@@ -72,7 +72,9 @@
     <Compile Include="Clock.cs" />
     <Compile Include="Clocks\FixedClock.cs" />
     <Compile Include="Calendars\CalendarSystems.cs" />
+    <Compile Include="Fields\DateTimeFieldBase.cs" />
     <Compile Include="Fields\DateTimeFieldSet.cs" />
+    <Compile Include="Fields\DurationFieldBase.cs" />
     <Compile Include="LocalInstant.cs" />
     <Compile Include="Partials\AbstractPartial.cs" />
     <Compile Include="Periods\AbstractPeriod.cs" />
@@ -127,7 +129,7 @@
     <Compile Include="Periods\Minutes.cs" />
     <Compile Include="Partials\LocalTime.cs" />
     <Compile Include="LocalDateTime.cs" />
-    <Compile Include="Fields\DateTimeField.cs" />
+    <Compile Include="Fields\IDateTimeField.cs" />
     <Compile Include="Fields\DateTimeFieldType.cs" />
     <Compile Include="IDateTimeZone.cs" />
     <Compile Include="Periods\Days.cs" />

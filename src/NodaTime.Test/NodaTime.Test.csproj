@@ -72,6 +72,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fields\DateTimeFieldBaseTest.cs" />
+    <Compile Include="Fields\DurationFieldBaseTest.cs" />
     <Compile Include="FixedDateTimeZoneTest.cs" />
     <Compile Include="Periods\DaysTest.cs" />
     <Compile Include="Periods\DaysTest.Constants.cs">

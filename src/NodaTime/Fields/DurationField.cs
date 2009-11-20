@@ -20,12 +20,55 @@ namespace NodaTime
 {
     /// <summary>
     /// Original name: DurationField.
+    /// FIXME: Rename Long to Int64 everywhere.
+    /// Note: Can't easily copy the tests for this until we've got a real DurationField.
+    /// Note: The fact that this is an abstract class and IDateTimeField is an interface is slightly irksome. Suggestions welcome.
     /// </summary>
-    public abstract class DurationField : IComparable<DurationField>
+    public abstract class DurationField
     {
-        public int CompareTo(DurationField other)
+        public abstract bool IsSupported { get; }
+
+        public abstract bool IsPrecise { get; }
+
+        public abstract long UnitTicks { get; }
+        public abstract DurationFieldType FieldType { get; }
+
+        public abstract int GetValue(Duration duration);
+
+        public abstract long GetLongValue(Duration duration);
+
+        public abstract int GetValue(Duration duration, LocalInstant localInstant);
+
+        public abstract long GetLongValue(Duration duration, LocalInstant localInstant);
+
+        public abstract Duration GetDuration(long value);
+
+        public abstract Duration GetDuration(long value, LocalInstant localInstant);
+
+        public abstract LocalInstant Add(LocalInstant localInstant, int value);
+
+        public abstract LocalInstant Add(LocalInstant localInstant, long value);
+
+        public LocalInstant Subtract(LocalInstant localInstant, int value)
         {
-            throw new NotImplementedException();
+            if (value == int.MinValue)
+            {
+                return Subtract(localInstant, (long)value);
+            }
+            return Add(localInstant, -value);
         }
+
+        public LocalInstant Subtract(LocalInstant instant, long value)
+        {
+            if (value == long.MinValue)
+            {
+                throw new ArithmeticException("Long.MinValue cannot be negated");
+            }
+            return Add(instant, -value);
+        }
+
+        public abstract int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
+
+        public abstract long GetLongDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
     }
 }

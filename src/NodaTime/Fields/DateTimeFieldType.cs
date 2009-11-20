@@ -18,10 +18,8 @@
 namespace NodaTime
 {
     /// <summary>
-    /// Original name: DateTimeFieldType. I expect this to be a "smart enum" in fact rather
-    /// than a normal one - I need to write up the pattern some time, but basically it'll be a
-    /// limited set of values which can have methods etc just like normal objects. If you're
-    /// familiar with Java enums, they're like those.
+    /// Type of a date time field; used for indexing into DateTimeFieldSet.
+    /// If new elements are added, DateTimeField.IsValidField must be updated.
     /// </summary>
     public enum DateTimeFieldType
     {
