@@ -21,5 +21,18 @@ namespace NodaTime
     /// </summary>
     public abstract class DateTimeField
     {
+        private readonly DateTimeFieldType fieldType;
+
+        public DateTimeFieldType FieldType { get { return fieldType; } }
+
+        protected DateTimeField(DateTimeFieldType fieldType)
+        {
+            this.fieldType = fieldType;
+        }
+
+        internal int GetValue(LocalInstant localInstant)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

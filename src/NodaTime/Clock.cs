@@ -20,13 +20,8 @@ using NodaTime.Clocks;
 namespace NodaTime
 {
     /// <summary>
-    /// Represents a clock which can tell the current time, expressed in ticks since the Unix Epoch.
+    /// Represents a clock which can tell the current time as an <see cref="Instant"/>.
     /// </summary>
-    /// <remarks>
-    /// A tick is the smallest time increment that the system can support. The <see
-    /// cref="DateTimeConstants.TicksPerMillisecond"/> const determines the resolution of this
-    /// clock.
-    /// </remarks>
     public static class Clock
     {
         private static IClock current = SystemClock.Instance;
@@ -50,9 +45,9 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the current time as the number of ticks since the Unix Epoch.
+        /// Gets the time according to the current clock.
         /// </summary>
-        /// <value>The current time in ticks as an Instant.</value>
+        /// <value>The time according to the current clock.</value>
         public static Instant Now { get { return Current.Now; } }
     }
 }

@@ -15,6 +15,9 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.Calendars;
+using NodaTime.Fields;
+
 namespace NodaTime
 {
     /// <summary>
@@ -22,14 +25,21 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The most commonly use calendar system in Noda Time is IsoCalendarSystem,
+    /// The most commonly use calendar system in Noda Time is <see cref="IsoCalendarSystem" />,
     /// which is used as a default value in many overloaded methods and constructors.
     /// </para>
     /// <para>
-    /// A calendar system has no specific time zone; an IChronology represents the union
+    /// A calendar system has no specific time zone; a <see cref="Chronology" /> represents the union
     /// of a time zone with a calendar system.
+    /// </para>
+    /// <para>
+    /// The members of this class are unlikely to be used directly by most users of the API.
     /// </para>
     public interface ICalendarSystem
     {
+        LocalInstant GetLocalInstant(int year, int month, int day, int hour, 
+                                     int minute, int second, int millisecond, int tickWithinMillisecond);
+
+        DateTimeFieldSet DateTimeFields { get; }
     }
 }

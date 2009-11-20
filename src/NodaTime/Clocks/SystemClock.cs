@@ -25,21 +25,22 @@ namespace NodaTime.Clocks
     {
         private static readonly SystemClock instance = new SystemClock();
 
+        /// <summary>
+        /// Gets the singleton instance of <see cref="SystemClock"/>.
+        /// </summary>
+        /// <value>The singleton instance of <see cref="SystemClock"/>.</value>
         public static SystemClock Instance { get { return instance; } }
 
-        /// <summary>
-        /// We'll want to do better than this, but it'll do for now.
-        /// </summary>
+        // TODO: We'll want to do better than this, but it'll do for now.
         // private static readonly System.DateTime UnixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
         private static readonly long UnixEpochTicks = (new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc)).Ticks;
 
-        #region IClockType Members
+        #region IClock Members
 
         /// <summary>
-        /// Gets the current time as the number of ticks since the Unix Epoch.
+        /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
-        /// <value>The current time in ticks.</value>
+        /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
         public Instant Now
         {
             get { return new Instant(System.DateTime.UtcNow.Ticks - UnixEpochTicks); }
