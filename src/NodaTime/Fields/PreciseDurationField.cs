@@ -50,22 +50,22 @@ namespace NodaTime.Fields
 
         public override Duration GetDuration(long value, LocalInstant localInstant)
         {
-            return new Duration(checked(value * UnitTicks));
+            return new Duration(value * UnitTicks);
         }
 
         public override LocalInstant Add(LocalInstant localInstant, int value)
         {
-            return new LocalInstant(checked(localInstant.Ticks + value * UnitTicks));
+            return new LocalInstant(localInstant.Ticks + value * UnitTicks);
         }
 
         public override LocalInstant Add(LocalInstant localInstant, long value)
         {
-            return new LocalInstant(checked(localInstant.Ticks + value * UnitTicks));
+            return new LocalInstant(localInstant.Ticks + value * UnitTicks);
         }
 
         public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            return checked((minuendInstant.Ticks - subtrahendInstant.Ticks) / UnitTicks);
+            return (minuendInstant.Ticks - subtrahendInstant.Ticks) / UnitTicks;
         }
     }
 }

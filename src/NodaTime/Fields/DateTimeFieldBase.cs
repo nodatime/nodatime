@@ -43,7 +43,7 @@ namespace NodaTime.Fields
 
         public virtual int GetValue(LocalInstant localInstant)
         {
-            return checked((int) GetInt64Value(localInstant));
+            return (int) GetInt64Value(localInstant);
         }
 
         public virtual LocalInstant Add(LocalInstant localInstant, int value)
