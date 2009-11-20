@@ -15,6 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System;
+using NodaTime.Fields;
+
 namespace NodaTime.Calendars
 {
     /// <summary>
@@ -44,5 +47,16 @@ namespace NodaTime.Calendars
         public abstract DateTimeField SecondOfDay { get; }
         public abstract DateTimeField MillisecondsOfSecond { get; }
         public abstract DateTimeField MillisecondsOfDay { get; }
+
+        public LocalInstant GetLocalInstant(int year, int month, int day, int hour, 
+            int minute, int second, int millisecond, int tickWithinMillisecond)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTimeFieldSet DateTimeFields
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }
