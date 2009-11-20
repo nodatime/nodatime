@@ -29,22 +29,22 @@ namespace NodaTime
     /// </remarks>
     public static class Clock
     {
-        private static IClock theClock = SystemClock.Instance;
+        private static IClock current = SystemClock.Instance;
 
         /// <summary>
         /// Gets or sets the object that reports the current time. Replaceable for easier testing.
         /// </summary>
         /// <value>The clock object.</value>
-        public static IClock TheClock
+        public static IClock Current
         {
-            get { return theClock; }
+            get { return current; }
             set
             {
                 if (value == null) {
-                    theClock = SystemClock.Instance;
+                    current = SystemClock.Instance;
                 }
                 else {
-                    TheClock = value;
+                    Current = value;
                 }
             }
         }
@@ -52,7 +52,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the current time as the number of ticks since the Unix Epoch.
         /// </summary>
-        /// <value>The current time in ticks.</value>
-        public static Instant Now { get { return TheClock.Now; } }
+        /// <value>The current time in ticks as an Instant.</value>
+        public static Instant Now { get { return Current.Now; } }
     }
 }
