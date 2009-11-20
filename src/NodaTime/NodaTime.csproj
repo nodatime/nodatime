@@ -129,7 +129,6 @@
     <Compile Include="LocalDateTime.cs" />
     <Compile Include="Fields\DateTimeField.cs" />
     <Compile Include="Fields\DateTimeFieldType.cs" />
-    <Compile Include="DateTimeUtils.cs" />
     <Compile Include="IDateTimeZone.cs" />
     <Compile Include="Periods\Days.cs" />
     <Compile Include="Duration.cs" />
