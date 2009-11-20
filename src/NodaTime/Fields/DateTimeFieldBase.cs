@@ -43,7 +43,7 @@ namespace NodaTime.Fields
 
         public virtual int GetValue(LocalInstant localInstant)
         {
-            return checked((int) GetLongValue(localInstant));
+            return checked((int) GetInt64Value(localInstant));
         }
 
         public virtual LocalInstant Add(LocalInstant localInstant, int value)
@@ -61,9 +61,9 @@ namespace NodaTime.Fields
             return DurationField.GetDifference(minuendInstant, subtrahendInstant);
         }
 
-        public long GetLongDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        public long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            return DurationField.GetLongDifference(minuendInstant, subtrahendInstant);
+            return DurationField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace NodaTime.Fields
             {
                 // Round to the instant that makes this field even. If both values
                 // make this field even (unlikely), favor the ceiling.
-                return (GetLongValue(ceiling) & 1) == 0 ? ceiling : floor;
+                return (GetInt64Value(ceiling) & 1) == 0 ? ceiling : floor;
             }
         }
 
@@ -172,7 +172,7 @@ namespace NodaTime.Fields
         }
 
         public abstract bool IsLenient { get; }
-        public abstract long GetLongValue(LocalInstant localInstant);
+        public abstract long GetInt64Value(LocalInstant localInstant);
         public abstract LocalInstant SetValue(LocalInstant localInstant, long value);
         public abstract DurationField DurationField { get; }
         public abstract DurationField RangeDurationField { get; }

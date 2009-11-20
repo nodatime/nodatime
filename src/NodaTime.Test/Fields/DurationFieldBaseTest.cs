@@ -74,10 +74,10 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetLongValueWithoutLocalInstant_UsesUnitTicks()
+        public void GetInt64ValueWithoutLocalInstant_UsesUnitTicks()
         {
             DurationFieldBase field = new StubDurationFieldBase();
-            Assert.AreEqual(long.MaxValue / 123, field.GetLongValue(new Duration(long.MaxValue)));
+            Assert.AreEqual(long.MaxValue / 123, field.GetInt64Value(new Duration(long.MaxValue)));
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace NodaTime.Test.Fields
                 get { return 123; }
             }
 
-            public override long GetLongValue(Duration duration, LocalInstant localInstant)
+            public override long GetInt64Value(Duration duration, LocalInstant localInstant)
             {
                 throw new System.NotImplementedException();
             }
@@ -139,7 +139,7 @@ namespace NodaTime.Test.Fields
                 return new LocalInstant(localInstant.Ticks + value * UnitTicks);
             }
 
-            public override long GetLongDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
             {
                 throw new System.NotImplementedException();
             }

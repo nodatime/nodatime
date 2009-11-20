@@ -26,7 +26,7 @@ namespace NodaTime
 
         // Int32 is more convenient and fine for almost all fields
         int GetValue(LocalInstant localInstant);
-        long GetLongValue(LocalInstant localInstant);
+        long GetInt64Value(LocalInstant localInstant);
         bool IsSupported { get; }
         bool IsLenient { get; }
 
@@ -38,8 +38,8 @@ namespace NodaTime
         // TODO: Add/AddWrap for partial and field
 
         int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
-        long GetLongDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
-        // Long is always valid here; I don't think we need an overload for SetValue(int)
+        long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
+        // Int64 is always valid here; I don't think we need an overload for SetValue(int)
         LocalInstant SetValue(LocalInstant localInstant, long value);
 
         // TODO: Set value for partials and text

@@ -39,7 +39,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void ConstructFrom_Long()
+        public void ConstructFrom_Int64()
         {
             var test = new Instant(TestTime1);
             Assert.Equals(IsoChronology.Utc, test.Chronology);

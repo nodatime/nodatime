@@ -199,7 +199,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void IsEqual_Long()
+        public void IsEqual_Int64()
         {
             Assert.IsTrue(new Instant(TestTime1).IsEqual(TestTime2));
             Assert.IsTrue(new Instant(TestTime1).IsEqual(TestTime1));
@@ -248,7 +248,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void IsBefore_Long()
+        public void IsBefore_Int64()
         {
             Assert.IsTrue(new Instant(TestTime1).IsBefore(TestTime2));
             Assert.IsFalse(new Instant(TestTime1).IsBefore(TestTime1));
@@ -455,7 +455,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void WithMillis_LongValue()
+        public void WithMillis_Int64Value()
         {
             var test = new Instant(TestTime1);
             var result = test.WithMilliseconds(TestTime2);
@@ -468,7 +468,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void WithDurationAdded_LongAndInt()
+        public void WithDurationAdded_Int64AndInt()
         {
             var test = new Instant(TestTime1);
             var result = test.WithDurationAdded(123456789L, 1);
@@ -514,7 +514,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Plus_Long()
+        public void Plus_Int64()
         {
             var test = new Instant(TestTime1);
             var result = test.Plus(123456789L);
@@ -538,7 +538,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Minus_Long()
+        public void Minus_Int64()
         {
             var test = new Instant(TestTime1);
             var result = test.Minus(123456789L);

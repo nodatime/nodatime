@@ -43,7 +43,7 @@ namespace NodaTime.Fields
 
         public override long UnitTicks { get { return unitTicks; } }
 
-        public override long GetLongValue(Duration duration, LocalInstant localInstant)
+        public override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
             return duration.Ticks / unitTicks;
         }
@@ -63,7 +63,7 @@ namespace NodaTime.Fields
             return new LocalInstant(checked(localInstant.Ticks + value * UnitTicks));
         }
 
-        public override long GetLongDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return checked((minuendInstant.Ticks - subtrahendInstant.Ticks) / UnitTicks);
         }
