@@ -30,53 +30,52 @@ namespace NodaTime.Clocks
         : IClock, IDisposable
     {
         /// <summary>
-        /// Gets or sets the original clock object.
+        /// The original <see cref="IClock"/>.
         /// </summary>
-        /// <value>The original clock object.</value>
-        private IClock Original { get; set; }
+        private readonly IClock original;
 
         /// <summary>
-        /// Gets or sets the known, fixed tick value.
+        /// The <see cref="Instant"/> this clock is fixed to.
         /// </summary>
-        /// <value>The ticks value.</value>
-        private Instant Ticks { get; set; }
+        private readonly Instant instant;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FixedClock"/> class.
         /// </summary>
-        /// <param name="original">The original clock object.</param>
-        /// <param name="ticks">The known, fixed tick value.</param>
-        private FixedClock(IClock original, Instant ticks)
+        /// <param name="original">The original <see cref="IClock"/>.</param>
+        /// <param name="instant">The known, fixed <see cref="Instant"/>.</param>
+        private FixedClock(IClock original, Instant instant)
         {
-            Original = original;
-            Ticks = ticks;
+            this.original = original;
+            this.instant = instant;
         }
 
         /// <summary>
         /// Replaces the system clock with a fixed clock that always returns the same value.
         /// </summary>
-        /// <param name="ticks">The fixed instant to return.</param>
-        /// <returns>The newly created FixedClock.</returns>
+        /// <param name="instant">The fixed <see cref="Instant"/> to set the clock to.</param>
+        /// <returns>The newly created <see cref="FixedClock"/>.</returns>
         /// <example>
-        ///     using (FixedClock.ReplaceClock(new Instant(1234567L))) {
+        ///     using (FixedClock.ReplaceClock(new Instant(1234567L)))
+        ///     {
         ///         // The system clock is fixed here
         ///     }
         ///     // The system clock is restored here
         /// </example>
-        public static FixedClock ReplaceClock(Instant ticks)
+        public static FixedClock ReplaceClock(Instant instant)
         {
-            return new FixedClock(Clock.TheClock, ticks);
+            return new FixedClock(Clock.Current, instant);
         }
 
-        #region IClockType Members
+        #region IClock Members
 
         /// <summary>
-        /// Gets the current time as the number of ticks since the Unix Epoch.
+        /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
-        /// <value>The current time in ticks as an Instant.</value>
+        /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
         public Instant Now
         {
-            get { return Ticks; }
+            get { return instant; }
         }
 
         #endregion
@@ -92,7 +91,7 @@ namespace NodaTime.Clocks
         /// </remarks>
         public void Dispose()
         {
-            Clock.TheClock = Original;
+            Clock.Current = original;
         }
 
         #endregion

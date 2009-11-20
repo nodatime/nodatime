@@ -18,14 +18,14 @@
 namespace NodaTime
 {
     /// <summary>
-    /// Defines the interface of a clock object that can tell the time in ticks.
+    /// Defines the interface of a clock object that can tell the time as an <see cref="Instant"/>.
     /// </summary>
     public interface IClock
     {
         /// <summary>
-        /// Gets the current time as the number of ticks since the Unix Epoch.
+        /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
-        /// <value>The current time in ticks as an Instant.</value>
+        /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
         Instant Now { get; }
     }
 }
