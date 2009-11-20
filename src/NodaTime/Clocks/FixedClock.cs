@@ -65,7 +65,7 @@ namespace NodaTime.Clocks
         /// </example>
         public static FixedClock ReplaceClock(Instant ticks)
         {
-            return new FixedClock(Clock.TheClock, ticks);
+            return new FixedClock(Clock.Current, ticks);
         }
 
         #region IClockType Members
@@ -92,7 +92,7 @@ namespace NodaTime.Clocks
         /// </remarks>
         public void Dispose()
         {
-            Clock.TheClock = Original;
+            Clock.Current = Original;
         }
 
         #endregion
