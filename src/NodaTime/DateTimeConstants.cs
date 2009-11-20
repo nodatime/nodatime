@@ -43,6 +43,8 @@ namespace NodaTime
         /// </summary>
         public const int MillisecondsPerSecond = 1000;
 
+        public const long TicksPerSecond = TicksPerMillisecond * MillisecondsPerSecond;
+        
         /// <summary>
         /// Original name: SECONDS_PER_MINUTE
         /// </summary>
@@ -51,6 +53,8 @@ namespace NodaTime
         /// Original name: MILLIS_PER_MINUTE
         /// </summary>
         public const int MillisecondsPerMinute = MillisecondsPerSecond * SecondsPerMinute;
+
+        public const long TicksPerMinute = TicksPerMillisecond * MillisecondsPerMinute;
 
         /// <summary>
         /// Original name: MINUTES_PER_HOUR
@@ -64,6 +68,8 @@ namespace NodaTime
         /// Original name: MILLIS_PER_HOUR
         /// </summary>
         public const int MillisecondsPerHour = MillisecondsPerMinute * MinutesPerHour;
+
+        public const long TicksPerHour = TicksPerMillisecond * MillisecondsPerHour;
 
         /// <summary>
         /// Original name: HOURS_PER_DAY
@@ -81,6 +87,8 @@ namespace NodaTime
         /// Original name: MILLIS_PER_DAY
         /// </summary>
         public const int MillisecondsPerDay = MillisecondsPerHour * HoursPerDay;
+
+        public const long TicksPerDay = TicksPerMillisecond * MillisecondsPerDay;
 
         /// <summary>
         /// Original name: DAYS_PER_WEEK
@@ -102,5 +110,8 @@ namespace NodaTime
         /// Original name: MILLIS_PER_WEEK
         /// </summary>
         public const int MillisecondsPerWeek = MillisecondsPerDay * DaysPerWeek;
+
+        public const long TicksPerWeek = TicksPerMillisecond * MillisecondsPerWeek;
+
     }
 }
