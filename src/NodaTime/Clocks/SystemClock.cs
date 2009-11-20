@@ -25,7 +25,7 @@ namespace NodaTime.Clocks
     {
         private static readonly SystemClock instance = new SystemClock();
 
-        public static SystemClock Instance { get { return Instance; } }
+        public static SystemClock Instance { get { return instance; } }
 
         /// <summary>
         /// We'll want to do better than this, but it'll do for now.
