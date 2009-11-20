@@ -41,7 +41,7 @@ namespace NodaTime.Fields
 
         public override int GetValue(Duration duration)
         {
- 	        return checked((int) GetInt64Value(duration));
+ 	        return (int) GetInt64Value(duration);
         }
 
         public override long GetInt64Value(Duration duration)
@@ -51,17 +51,17 @@ namespace NodaTime.Fields
 
         public override int GetValue(Duration duration, LocalInstant localInstant)
         {
- 	        return checked((int) GetInt64Value(duration, localInstant));
+ 	        return (int) GetInt64Value(duration, localInstant);
         }
 
         public override Duration GetDuration(long value)
         {
-            return new Duration(checked(value * UnitTicks));
+            return new Duration(value * UnitTicks);
         }
 
         public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            return checked((int) GetInt64Difference(minuendInstant, subtrahendInstant));
+            return (int) GetInt64Difference(minuendInstant, subtrahendInstant);
         }
 
         public static bool IsTypeValid(DurationFieldType type)
