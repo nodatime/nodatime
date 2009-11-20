@@ -21,26 +21,21 @@ namespace NodaTime
 {
     /// <summary>
     /// Original name: DurationFieldType.
-    /// Like DateTimeFieldType - may or may not end up as an enum.
     /// </summary>
-    /// <remarks>
-    /// Values are defined to be compatible with flags. This is so PeriodType can combine these values safely.
-    /// TODO: Find out if this is really necessary.
-    /// </remarks>
     public enum DurationFieldType
     {
-        Eras = 1,
-        Centuries = 1 << 1,
-        WeekYears = 1 << 2,
-        Years = 1 << 3,
-        Months = 1 << 4,
-        Weeks = 1 << 5,
-        Days = 1 << 6,
-        HalfDays = 1 << 7,
-        Hours = 1 << 8,
-        Minutes = 1 << 9,
-        Seconds = 1 << 10,
-        Milliseconds = 1 << 11,
-        Ticks = 1 << 12
+        Eras,
+        Centuries,
+        WeekYears,
+        Years,
+        Months,
+        Weeks,
+        Days,
+        HalfDays,
+        Hours,
+        Minutes,
+        Seconds,
+        Milliseconds,
+        Ticks,
     }
 }

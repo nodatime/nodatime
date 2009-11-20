@@ -31,91 +31,91 @@ namespace NodaTime.Calendars
             throw new NotImplementedException();
         }
 
-        public override DateTimeField Era
+        public override IDateTimeField Era
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField CenturyOfEra
+        public override IDateTimeField CenturyOfEra
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField YearOfCentury
+        public override IDateTimeField YearOfCentury
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField YearOfEra
+        public override IDateTimeField YearOfEra
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField Year
+        public override IDateTimeField Year
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField DayOfMonth
+        public override IDateTimeField DayOfMonth
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField MonthOfYear
+        public override IDateTimeField MonthOfYear
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField Weekyear
+        public override IDateTimeField Weekyear
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField WeekOfWeekyear
+        public override IDateTimeField WeekOfWeekyear
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField DayOfWeek
+        public override IDateTimeField DayOfWeek
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField DayOfYear
+        public override IDateTimeField DayOfYear
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField HalfdayOfDay
+        public override IDateTimeField HalfdayOfDay
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField HourOfHalfday
+        public override IDateTimeField HourOfHalfday
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField ClockhourOfDay
+        public override IDateTimeField ClockhourOfDay
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField ClockhourOfHalfday
+        public override IDateTimeField ClockhourOfHalfday
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField HourOfDay
+        public override IDateTimeField HourOfDay
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField MinuteOfHour
+        public override IDateTimeField MinuteOfHour
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField MinuteOfDay
+        public override IDateTimeField MinuteOfDay
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField SecondOfMinute
+        public override IDateTimeField SecondOfMinute
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField SecondOfDay
+        public override IDateTimeField SecondOfDay
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField MillisecondsOfSecond
+        public override IDateTimeField MillisecondsOfSecond
         {
             get { throw new NotImplementedException(); }
         }
-        public override DateTimeField MillisecondsOfDay
+        public override IDateTimeField MillisecondsOfDay
         {
             get { throw new NotImplementedException(); }
         }
