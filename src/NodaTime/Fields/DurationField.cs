@@ -20,7 +20,7 @@ namespace NodaTime
 {
     /// <summary>
     /// Original name: DurationField.
-    /// FIXME: Rename Long to Int64 everywhere.
+    /// FIXME: Rename Int64 to Int64 everywhere.
     /// Note: Can't easily copy the tests for this until we've got a real DurationField.
     /// Note: The fact that this is an abstract class and IDateTimeField is an interface is slightly irksome. Suggestions welcome.
     /// </summary>
@@ -35,11 +35,11 @@ namespace NodaTime
 
         public abstract int GetValue(Duration duration);
 
-        public abstract long GetLongValue(Duration duration);
+        public abstract long GetInt64Value(Duration duration);
 
         public abstract int GetValue(Duration duration, LocalInstant localInstant);
 
-        public abstract long GetLongValue(Duration duration, LocalInstant localInstant);
+        public abstract long GetInt64Value(Duration duration, LocalInstant localInstant);
 
         public abstract Duration GetDuration(long value);
 
@@ -62,13 +62,13 @@ namespace NodaTime
         {
             if (value == long.MinValue)
             {
-                throw new ArithmeticException("Long.MinValue cannot be negated");
+                throw new ArithmeticException("Int64.MinValue cannot be negated");
             }
             return Add(instant, -value);
         }
 
         public abstract int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
 
-        public abstract long GetLongDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
+        public abstract long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
     }
 }

@@ -75,7 +75,7 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetDifference_DelegatesToDurationFieldGetLongDifference()
+        public void GetDifference_DelegatesToDurationFieldGetInt64Difference()
         {
             MockCountingDurationField.differences = 0;
             DateTimeFieldBase field = new StubDateTimeFieldBase();
@@ -84,11 +84,11 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetLongDifference_DelegatesToDurationFieldGetLongDifference()
+        public void GetInt64Difference_DelegatesToDurationFieldGetInt64Difference()
         {
             MockCountingDurationField.differences = 0;
             DateTimeFieldBase field = new StubDateTimeFieldBase();
-            Assert.AreEqual(30, field.GetLongDifference(new LocalInstant(), new LocalInstant()));
+            Assert.AreEqual(30, field.GetInt64Difference(new LocalInstant(), new LocalInstant()));
             Assert.AreEqual(1, MockCountingDurationField.differences);
         }
 
@@ -261,7 +261,7 @@ namespace NodaTime.Test.Fields
                 return (int)(instant.Ticks / 60L);
             }
 
-            public override long GetLongValue(LocalInstant localInstant)
+            public override long GetInt64Value(LocalInstant localInstant)
             {
                 return localInstant.Ticks / 60L;
             }
@@ -318,7 +318,7 @@ namespace NodaTime.Test.Fields
 
             public override long UnitTicks { get { return 0; } }
 
-            public override long GetLongValue(Duration duration, LocalInstant localInstant)
+            public override long GetInt64Value(Duration duration, LocalInstant localInstant)
             {
                 return 0;
             }
@@ -340,7 +340,7 @@ namespace NodaTime.Test.Fields
                 return new LocalInstant(localInstant.Ticks + value * 60L);
             }
 
-            public override long GetLongDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
             {
                 differences++;
                 return 30;

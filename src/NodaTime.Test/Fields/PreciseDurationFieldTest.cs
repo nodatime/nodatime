@@ -71,12 +71,12 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetLongValue()
+        public void GetInt64Value()
         {
-            Assert.AreEqual(0, field.GetLongValue(new Duration(0L)));
-            Assert.AreEqual(12345, field.GetLongValue(new Duration(123456789L)));
-            Assert.AreEqual(-1, field.GetLongValue(new Duration(-12345L)));
-            Assert.AreEqual(int.MaxValue + 1L, field.GetLongValue(new Duration(int.MaxValue * 10000L + 10000L)));
+            Assert.AreEqual(0, field.GetInt64Value(new Duration(0L)));
+            Assert.AreEqual(12345, field.GetInt64Value(new Duration(123456789L)));
+            Assert.AreEqual(-1, field.GetInt64Value(new Duration(-12345L)));
+            Assert.AreEqual(int.MaxValue + 1L, field.GetInt64Value(new Duration(int.MaxValue * 10000L + 10000L)));
         }
 
         [Test]
@@ -96,13 +96,13 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetLongValue_WithLocalInstant()
+        public void GetInt64Value_WithLocalInstant()
         {
             LocalInstant when = new LocalInstant(987654321L);
-            Assert.AreEqual(0, field.GetLongValue(new Duration(0L), when));
-            Assert.AreEqual(12345, field.GetLongValue(new Duration(123456789L), when));
-            Assert.AreEqual(-1, field.GetLongValue(new Duration(-12345L), when));
-            Assert.AreEqual(int.MaxValue + 1L, field.GetLongValue(new Duration(int.MaxValue * 10000L + 10000L), when));
+            Assert.AreEqual(0, field.GetInt64Value(new Duration(0L), when));
+            Assert.AreEqual(12345, field.GetInt64Value(new Duration(123456789L), when));
+            Assert.AreEqual(-1, field.GetInt64Value(new Duration(-12345L), when));
+            Assert.AreEqual(int.MaxValue + 1L, field.GetInt64Value(new Duration(int.MaxValue * 10000L + 10000L), when));
         }
 
         [Test]
@@ -185,19 +185,19 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetLongDifference()
+        public void GetInt64Difference()
         {
-            Assert.AreEqual(0L, field.GetLongDifference(new LocalInstant(1), new LocalInstant(0)));
-            Assert.AreEqual(567L, field.GetLongDifference(new LocalInstant(5670000L), new LocalInstant(0)));
-            Assert.AreEqual(567L - 1234L, field.GetLongDifference(new LocalInstant(5670000L), new LocalInstant(12340000L)));
-            Assert.AreEqual(567L + 1234L, field.GetLongDifference(new LocalInstant(5670000L), new LocalInstant(-12340000L)));
-            Assert.AreEqual(int.MaxValue + 1L, field.GetLongDifference(new LocalInstant(int.MaxValue * 10000L), new LocalInstant(-10000L)));
+            Assert.AreEqual(0L, field.GetInt64Difference(new LocalInstant(1), new LocalInstant(0)));
+            Assert.AreEqual(567L, field.GetInt64Difference(new LocalInstant(5670000L), new LocalInstant(0)));
+            Assert.AreEqual(567L - 1234L, field.GetInt64Difference(new LocalInstant(5670000L), new LocalInstant(12340000L)));
+            Assert.AreEqual(567L + 1234L, field.GetInt64Difference(new LocalInstant(5670000L), new LocalInstant(-12340000L)));
+            Assert.AreEqual(int.MaxValue + 1L, field.GetInt64Difference(new LocalInstant(int.MaxValue * 10000L), new LocalInstant(-10000L)));
         }
 
         [Test]
-        public void GetLongDifference_ThrowsOnOverflow()
+        public void GetInt64Difference_ThrowsOnOverflow()
         {
-            Assert.Throws<OverflowException>(() => field.GetLongDifference(new LocalInstant(long.MaxValue), new LocalInstant(-1L)));
+            Assert.Throws<OverflowException>(() => field.GetInt64Difference(new LocalInstant(long.MaxValue), new LocalInstant(-1L)));
         }
     }
 }
