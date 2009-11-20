@@ -40,14 +40,14 @@ namespace NodaTime
     [Flags]
     public enum PeriodType
     {
-        Years = DurationFieldType.Years,
-        Months = DurationFieldType.Months,
-        Weeks = DurationFieldType.Weeks,
-        Days = DurationFieldType.Days,
-        Hours = DurationFieldType.Hours,
-        Minutes = DurationFieldType.Minutes,
-        Seconds = DurationFieldType.Seconds,
-        Milliseconds = DurationFieldType.Milliseconds,
+        Years = 1 << 0,
+        Months = 1 << 1,
+        Weeks = 1 << 2,
+        Days = 1 << 3,
+        Hours = 1 << 4,
+        Minutes = 1 << 5,
+        Seconds = 1 << 6,
+        Milliseconds = 1 << 7,
 
         Standard = Years | Months | Weeks | Days | Hours | Minutes | Seconds | Milliseconds,
         YearMonthDayTime = Years | Months | Days | Hours | Minutes | Seconds | Milliseconds,

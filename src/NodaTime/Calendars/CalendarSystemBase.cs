@@ -25,28 +25,28 @@ namespace NodaTime.Calendars
     /// </summary>
     public abstract class CalendarSystemBase : ICalendarSystem
     {
-        public abstract DateTimeField Era { get; }
-        public abstract DateTimeField CenturyOfEra { get; }
-        public abstract DateTimeField YearOfCentury { get; }
-        public abstract DateTimeField YearOfEra { get; }
-        public abstract DateTimeField Year { get; }
-        public abstract DateTimeField DayOfMonth { get; }
-        public abstract DateTimeField MonthOfYear { get; }
-        public abstract DateTimeField Weekyear { get; }
-        public abstract DateTimeField WeekOfWeekyear { get; }
-        public abstract DateTimeField DayOfWeek { get; }
-        public abstract DateTimeField DayOfYear { get; }
-        public abstract DateTimeField HalfdayOfDay { get; }
-        public abstract DateTimeField HourOfHalfday { get; }
-        public abstract DateTimeField ClockhourOfDay { get; }
-        public abstract DateTimeField ClockhourOfHalfday { get; }
-        public abstract DateTimeField HourOfDay { get; }
-        public abstract DateTimeField MinuteOfHour { get; }
-        public abstract DateTimeField MinuteOfDay { get; }
-        public abstract DateTimeField SecondOfMinute { get; }
-        public abstract DateTimeField SecondOfDay { get; }
-        public abstract DateTimeField MillisecondsOfSecond { get; }
-        public abstract DateTimeField MillisecondsOfDay { get; }
+        public abstract IDateTimeField Era { get; }
+        public abstract IDateTimeField CenturyOfEra { get; }
+        public abstract IDateTimeField YearOfCentury { get; }
+        public abstract IDateTimeField YearOfEra { get; }
+        public abstract IDateTimeField Year { get; }
+        public abstract IDateTimeField DayOfMonth { get; }
+        public abstract IDateTimeField MonthOfYear { get; }
+        public abstract IDateTimeField Weekyear { get; }
+        public abstract IDateTimeField WeekOfWeekyear { get; }
+        public abstract IDateTimeField DayOfWeek { get; }
+        public abstract IDateTimeField DayOfYear { get; }
+        public abstract IDateTimeField HalfdayOfDay { get; }
+        public abstract IDateTimeField HourOfHalfday { get; }
+        public abstract IDateTimeField ClockhourOfDay { get; }
+        public abstract IDateTimeField ClockhourOfHalfday { get; }
+        public abstract IDateTimeField HourOfDay { get; }
+        public abstract IDateTimeField MinuteOfHour { get; }
+        public abstract IDateTimeField MinuteOfDay { get; }
+        public abstract IDateTimeField SecondOfMinute { get; }
+        public abstract IDateTimeField SecondOfDay { get; }
+        public abstract IDateTimeField MillisecondsOfSecond { get; }
+        public abstract IDateTimeField MillisecondsOfDay { get; }
 
         public LocalInstant GetLocalInstant(int year, int month, int day, int hour, 
             int minute, int second, int millisecond, int tickWithinMillisecond)
