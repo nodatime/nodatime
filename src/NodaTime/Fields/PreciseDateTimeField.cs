@@ -26,7 +26,7 @@ namespace NodaTime.Fields
     /// of precise durations, like time of day fields. If either duration field is
     /// imprecise, then an ImpreciseDateTimeField may be used instead.
     /// </remarks>
-    internal class PreciseDateTimeField : PreciseDurationDateTimeField
+    internal sealed class PreciseDateTimeField : PreciseDurationDateTimeField
     {
         private readonly DurationField rangeField;
         private readonly long effectiveRange;
