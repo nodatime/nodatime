@@ -81,6 +81,7 @@
     <Compile Include="Fields\PreciseDateTimeField.cs" />
     <Compile Include="Fields\PreciseDurationField.cs" />
     <Compile Include="Fields\PreciseDurationDateTimeField.cs" />
+    <Compile Include="Fields\UnsupportedDurationField.cs" />
     <Compile Include="LocalInstant.cs" />
     <Compile Include="Partials\AbstractPartial.cs" />
     <Compile Include="Periods\AbstractPeriod.cs" />
