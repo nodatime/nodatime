@@ -1,67 +1,82 @@
-﻿using System;
-using NodaTime.Fields;
+﻿#region Copyright and license information
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009 Jon Skeet
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
 using NUnit.Framework;
+using System;
+using NodaTime.Fields;
 
 namespace NodaTime.Test.Fields
 {
     [TestFixture]
-    public class PreciseDurationDateTimeFieldTest
+    public class PreciseDateTimeFieldTest
     {
         [Test]
-        public void Constructor_GivenNullDurationField_ThrowsArgumentNullException()
+        public void Constructor_WithNullRangeField_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new StubPreciseDurationDateTimeField(null));
-        }
-        
-        [Test]
-        public void Constructor_GivenZeroTicksDurationField_ThrowsArgumentException()
-        {
-            DurationField badField = new FakeDurationField(0, true);
-            Assert.Throws<ArgumentException>(() => new StubPreciseDurationDateTimeField(badField));
+            Assert.Throws<ArgumentNullException>(() =>
+                new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
+                    new FakeDurationField(1, true), null));
         }
 
         [Test]
-        public void Constructor_GivenImpreciseDurationField_ThrowsArgumentException()
+        public void Constructor_WithTooSmallRangeField_ThrowsArgumentException()
         {
-            DurationField badField = new FakeDurationField(1, false);
-            Assert.Throws<ArgumentException>(() => new StubPreciseDurationDateTimeField(badField));
+            // Effectively like "seconds per second" - effective range = 1
+            Assert.Throws<ArgumentException>(() =>
+                new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
+                    new FakeDurationField(1, true), new FakeDurationField(1, true)));
         }
 
         [Test]
-        public void FieldType_ReturnsTypePassedToConstructor()
+        public void Constructor_WithImprecise_RangeField_ThrowsArgumentException()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            Assert.Throws<ArgumentException>(() =>
+                new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
+                    new FakeDurationField(1, true), new FakeDurationField(60, false)));
+        }
+
+        [Test]
+        public void FieldType()
+        {
+            PreciseDateTimeField field = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
+                    new FakeDurationField(1, true), new FakeDurationField(60, true));
             Assert.AreEqual(DateTimeFieldType.SecondOfMinute, field.FieldType);
         }
 
         [Test]
-        public void IsSupported_ReturnsTrue()
+        public void IsSupported()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            PreciseDateTimeField field = CreateSecondOfMinuteField();
             Assert.IsTrue(field.IsSupported);
         }
 
         [Test]
-        public void IsLenient_ReturnsFalse()
+        public void GetInt64Value()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.IsFalse(field.IsLenient);
-        }
-
-        [Test]
-        public void GetValue()
-        {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(0, field.GetValue(new LocalInstant(0)));
-            Assert.AreEqual(1, field.GetValue(new LocalInstant(60)));
-            Assert.AreEqual(2, field.GetValue(new LocalInstant(123)));
+            PreciseDateTimeField field = CreateSecondOfMinuteField();
+            Assert.AreEqual(0, field.GetInt64Value(new LocalInstant(0L)));
+            Assert.AreEqual(1, field.GetInt64Value(new LocalInstant(60L)));
+            Assert.AreEqual(2, field.GetInt64Value(new LocalInstant(123L)));
         }
 
         [Test]
         public void Add_WithInt32Value()
         {
             MockCountingDurationField.int32Additions = 0;
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(61L, field.Add(new LocalInstant(1L), 1).Ticks);
             Assert.AreEqual(1, MockCountingDurationField.int32Additions);
         }
@@ -70,7 +85,7 @@ namespace NodaTime.Test.Fields
         public void Add_WithInt64Value()
         {
             MockCountingDurationField.int64Additions = 0;
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(61L, field.Add(new LocalInstant(1L), 1L).Ticks);
             Assert.AreEqual(1, MockCountingDurationField.int64Additions);
         }
@@ -79,7 +94,7 @@ namespace NodaTime.Test.Fields
         public void GetDifference_DelegatesToDurationField()
         {
             MockCountingDurationField.differences = 0;
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(30, field.GetDifference(new LocalInstant(0), new LocalInstant(0)));
             Assert.AreEqual(1, MockCountingDurationField.differences);
         }
@@ -88,7 +103,7 @@ namespace NodaTime.Test.Fields
         public void GetInt64Difference_DelegatesToDurationField()
         {
             MockCountingDurationField.differences = 0;
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(30L, field.GetInt64Difference(new LocalInstant(0), new LocalInstant(0)));
             Assert.AreEqual(1, MockCountingDurationField.differences);
         }
@@ -96,7 +111,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void SetValue()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(0, field.SetValue(new LocalInstant(120L), 0).Ticks);
             Assert.AreEqual(29 * 60, field.SetValue(new LocalInstant(120L), 29).Ticks);
         }
@@ -104,34 +119,34 @@ namespace NodaTime.Test.Fields
         [Test]
         public void IsLeap_DefaultsToFalse()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.IsFalse(field.IsLeap(new LocalInstant(0L)));
         }
 
         [Test]
         public void GetLeapAmount_DefaultsTo0()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.GetLeapAmount(new LocalInstant(0L)));
         }
 
         public void LeapDurationField_DefaultsToNull()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.IsNull(field.LeapDurationField);
         }
 
         [Test]
         public void GetMinimumValue_DefaultsTo0()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.GetMinimumValue());
         }
 
         [Test]
         public void RoundFloor()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(-120L, field.RoundFloor(new LocalInstant(-61L)).Ticks);
             Assert.AreEqual(-60L, field.RoundFloor(new LocalInstant(-60L)).Ticks);
             Assert.AreEqual(-60L, field.RoundFloor(new LocalInstant(-59L)).Ticks);
@@ -147,7 +162,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundCeiling()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(-60L, field.RoundCeiling(new LocalInstant(-61L)).Ticks);
             Assert.AreEqual(-60L, field.RoundCeiling(new LocalInstant(-60L)).Ticks);
             Assert.AreEqual(0L, field.RoundCeiling(new LocalInstant(-59L)).Ticks);
@@ -163,7 +178,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundHalfFloor()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(30L)).Ticks);
@@ -175,7 +190,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundHalfCeiling()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.RoundHalfCeiling(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfCeiling(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(60L, field.RoundHalfCeiling(new LocalInstant(30L)).Ticks);
@@ -186,7 +201,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundHalfEven()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(30L)).Ticks);
@@ -200,7 +215,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Remainder()
         {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
+            DateTimeFieldBase field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.Remainder(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(29L, field.Remainder(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(30L, field.Remainder(new LocalInstant(30L)).Ticks);
@@ -208,35 +223,11 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(0L, field.Remainder(new LocalInstant(60L)).Ticks);
         }
 
-        private class StubPreciseDurationDateTimeField : PreciseDurationDateTimeField
+        private static PreciseDateTimeField CreateSecondOfMinuteField()
         {
-            internal StubPreciseDurationDateTimeField(DurationField unit)
-                : base(DateTimeFieldType.SecondOfMinute, unit)
-            {
-            }
-
-            internal StubPreciseDurationDateTimeField() 
-                : base(DateTimeFieldType.SecondOfMinute, new MockCountingDurationField(DurationFieldType.Seconds))
-            {
-            }
-
-
-            public override long GetInt64Value(LocalInstant localInstant)
-            {
-                return localInstant.Ticks / 60L;
-            }
-
-            public override DurationField RangeDurationField
-            {
-                get { return new MockCountingDurationField(DurationFieldType.Minutes); }
-            }
-
-            public override long GetMaximumValue()
-            {
-                return 59;
-            }
+            return new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
+                    new MockCountingDurationField(DurationFieldType.Seconds, 60),
+                    new MockCountingDurationField(DurationFieldType.Minutes, 60 * 60));
         }
-
-        // Class allowing us to simulate bad precision/ticks for constructor testing
     }
 }

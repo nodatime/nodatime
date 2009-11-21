@@ -19,6 +19,10 @@ namespace NodaTime.Fields
         protected PreciseDurationDateTimeField(DateTimeFieldType fieldType, DurationField unit)
             : base(fieldType)
         {
+            if (unit == null)
+            {
+                throw new ArgumentNullException("unit");
+            }
             if (!unit.IsPrecise)
             {
                 throw new ArgumentException("Unit duration field must be precise");

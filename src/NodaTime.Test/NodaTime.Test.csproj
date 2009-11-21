@@ -74,7 +74,9 @@
   <ItemGroup>
     <Compile Include="Fields\DateTimeFieldBaseTest.cs" />
     <Compile Include="Fields\DurationFieldBaseTest.cs" />
+    <Compile Include="Fields\FakeDurationField.cs" />
     <Compile Include="Fields\MockCountingDurationField.cs" />
+    <Compile Include="Fields\PreciseDateTimeFieldTest.cs" />
     <Compile Include="Fields\PreciseDurationDateTimeFieldTest.cs" />
     <Compile Include="Fields\PreciseDurationFieldTest.cs" />
     <Compile Include="FixedDateTimeZoneTest.cs" />
