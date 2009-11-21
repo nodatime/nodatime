@@ -17,8 +17,8 @@
 
 using System;
 using System.Linq;
-using NUnit.Framework;
 using NodaTime.Fields;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Fields
 {
