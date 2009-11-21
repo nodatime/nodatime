@@ -301,50 +301,5 @@ namespace NodaTime.Test.Fields
                 get { return false; }
             }
         }
-
-        private class MockCountingDurationField : DurationFieldBase
-        {
-            // FIXME: Use a proper mock?
-            internal static int int32Additions;
-            internal static int int64Additions;
-            internal static int differences;
-
-            internal MockCountingDurationField(DurationFieldType fieldType)
-                : base(fieldType)
-            {
-            }
-
-            public override bool IsPrecise { get { return false; } }
-
-            public override long UnitTicks { get { return 0; } }
-
-            public override long GetInt64Value(Duration duration, LocalInstant localInstant)
-            {
-                return 0;
-            }
-
-            public override Duration GetDuration(long value, LocalInstant localInstant)
-            {
-                return new Duration(0);
-            }
-
-            public override LocalInstant Add(LocalInstant localInstant, int value)
-            {
-                int32Additions++;
-                return new LocalInstant(localInstant.Ticks + value * 60L);
-            }
-
-            public override LocalInstant Add(LocalInstant localInstant, long value)
-            {
-                int64Additions++;
-                return new LocalInstant(localInstant.Ticks + value * 60L);
-            }
-
-            public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-            {
-                differences++;
-                return 30;
-            }
-        }
     }
 }
