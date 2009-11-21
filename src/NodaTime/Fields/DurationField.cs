@@ -20,7 +20,6 @@ namespace NodaTime
 {
     /// <summary>
     /// Original name: DurationField.
-    /// FIXME: Rename Int64 to Int64 everywhere.
     /// Note: Can't easily copy the tests for this until we've got a real DurationField.
     /// Note: The fact that this is an abstract class and IDateTimeField is an interface is slightly irksome. Suggestions welcome.
     /// </summary>
