@@ -25,15 +25,22 @@ namespace NodaTime.Test.Fields
         internal static int int32Additions;
         internal static int int64Additions;
         internal static int differences;
+        private readonly long unitTicks;
 
         internal MockCountingDurationField(DurationFieldType fieldType)
+            : this(fieldType, 60)
+        {
+        }
+
+        internal MockCountingDurationField(DurationFieldType fieldType, long unitTicks)
             : base(fieldType)
         {
+            this.unitTicks = unitTicks;
         }
 
         public override bool IsPrecise { get { return true; } }
 
-        public override long UnitTicks { get { return 60; } }
+        public override long UnitTicks { get { return unitTicks; } }
 
         public override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
@@ -48,13 +55,13 @@ namespace NodaTime.Test.Fields
         public override LocalInstant Add(LocalInstant localInstant, int value)
         {
             int32Additions++;
-            return new LocalInstant(localInstant.Ticks + value * 60L);
+            return new LocalInstant(localInstant.Ticks + value * unitTicks);
         }
 
         public override LocalInstant Add(LocalInstant localInstant, long value)
         {
             int64Additions++;
-            return new LocalInstant(localInstant.Ticks + value * 60L);
+            return new LocalInstant(localInstant.Ticks + value * unitTicks);
         }
 
         public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)

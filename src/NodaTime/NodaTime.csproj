@@ -78,6 +78,7 @@
     <Compile Include="Fields\DateTimeFieldSet.cs" />
     <Compile Include="Fields\DurationFieldBase.cs" />
     <Compile Include="Fields\FieldUtils.cs" />
+    <Compile Include="Fields\PreciseDateTimeField.cs" />
     <Compile Include="Fields\PreciseDurationField.cs" />
     <Compile Include="Fields\PreciseDurationDateTimeField.cs" />
     <Compile Include="LocalInstant.cs" />
