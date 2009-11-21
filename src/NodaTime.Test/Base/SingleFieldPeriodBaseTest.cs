@@ -21,6 +21,7 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Base
 {
+    [Ignore("We don't have enough code to run these yet")]
     [TestFixture]
     public partial class SingleFieldPeriodBaseTest
     {
