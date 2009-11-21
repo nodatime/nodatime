@@ -406,8 +406,8 @@ namespace NodaTime.Test
         //    DateTime result = test.toDateTimeISO();
         //    Assert.AreSame(DateTime.class, result.getClass());
         //    Assert.AreSame(IsoChronology.class, result.Chronology.getClass());
-        //    assertEquals(test.Milliseconds, result.Milliseconds);
-        //    assertEquals(IsoChronology.SystemDefault, result.Chronology);
+        //    Assert.AreEqual(test.Milliseconds, result.Milliseconds);
+        //    Assert.AreEqual(IsoChronology.SystemDefault, result.Chronology);
         //}
 
         [Test]
