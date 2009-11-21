@@ -14,27 +14,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+using System;
 
-
-namespace NodaTime
+namespace NodaTime.Fields
 {
-    /// <summary>
-    /// Original name: DurationFieldType.
-    /// </summary>
-    public enum DurationFieldType
+    internal static class FieldUtils
     {
-        Eras,
-        Centuries,
-        WeekYears,
-        Years,
-        Months,
-        Weeks,
-        Days,
-        HalfDays,
-        Hours,
-        Minutes,
-        Seconds,
-        Milliseconds,
-        Ticks,
+        public static void VerifyValueBounds(IDateTimeField field, long value, long lowerBound, long upperBound)
+        {
+            // TODO: i18n or decide whether we want our own custom type with lower and upper bounds
+            if ((value < lowerBound) || (value > upperBound))
+            {
+                throw new ArgumentOutOfRangeException("value", value, "Value should be in range [" + lowerBound + "-" + upperBound + "]");
+            }
+        }
     }
 }

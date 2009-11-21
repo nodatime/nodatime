@@ -15,53 +15,52 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime.Fields
-{
-    /// <summary>
-    /// Duration field class representing a field with a fixed unit length.
-    /// </summary>
-    internal sealed class PreciseDurationField : DurationFieldBase
-    {
-        /// <summary>
-        /// The size of the unit, in ticks.
-        /// </summary>
-        private readonly long unitTicks;
+using NodaTime.Fields;
 
-        internal PreciseDurationField(DurationFieldType type, long unitTicks) : base(type)
+namespace NodaTime.Test.Fields
+{
+    internal class MockCountingDurationField : DurationFieldBase
+    {
+        // FIXME: Use a proper mock?
+        internal static int int32Additions;
+        internal static int int64Additions;
+        internal static int differences;
+
+        internal MockCountingDurationField(DurationFieldType fieldType)
+            : base(fieldType)
         {
-            this.unitTicks = unitTicks;
         }
 
-        /// <summary>
-        /// Always returns true.
-        /// </summary>
         public override bool IsPrecise { get { return true; } }
 
-        public override long UnitTicks { get { return unitTicks; } }
+        public override long UnitTicks { get { return 60; } }
 
         public override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
-            return duration.Ticks / unitTicks;
+            return 0;
         }
 
         public override Duration GetDuration(long value, LocalInstant localInstant)
         {
-            return new Duration(value * UnitTicks);
+            return new Duration(0);
         }
 
         public override LocalInstant Add(LocalInstant localInstant, int value)
         {
-            return new LocalInstant(localInstant.Ticks + value * UnitTicks);
+            int32Additions++;
+            return new LocalInstant(localInstant.Ticks + value * 60L);
         }
 
         public override LocalInstant Add(LocalInstant localInstant, long value)
         {
-            return new LocalInstant(localInstant.Ticks + value * UnitTicks);
+            int64Additions++;
+            return new LocalInstant(localInstant.Ticks + value * 60L);
         }
 
         public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            return (minuendInstant.Ticks - subtrahendInstant.Ticks) / UnitTicks;
+            differences++;
+            return 30;
         }
     }
 }
