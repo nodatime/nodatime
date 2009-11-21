@@ -60,6 +60,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clock.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="Fields\PreciseDateTimeField.cs" />
     <Compile Include="Fields\PreciseDurationField.cs" />
     <Compile Include="Fields\PreciseDurationDateTimeField.cs" />
+    <Compile Include="Fields\UnsupportedDateTimeField.cs" />
     <Compile Include="Fields\UnsupportedDurationField.cs" />
     <Compile Include="LocalInstant.cs" />
     <Compile Include="Partials\AbstractPartial.cs" />
