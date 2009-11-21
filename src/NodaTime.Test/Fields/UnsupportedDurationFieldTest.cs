@@ -21,7 +21,7 @@ using NUnit.Framework;
 namespace NodaTime.Test.Fields
 {
     [TestFixture]
-    public class TestUnsupportedDurationField
+    public class UnsupportedDurationFieldTest
     {
         [Test]
         public void ConstantProperties_ReturnExpectedValues()
