@@ -30,12 +30,13 @@ namespace NodaTime.Test.Fields
     [TestFixture]
     public class FieldSetTest
     {
+        private readonly IDateTimeField sampleField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
+                new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond),
+                new PreciseDurationField(DurationFieldType.Minutes, DateTimeConstants.TicksPerMinute));
+
         [Test]
         public void FieldsAreCopiedFromBuilderToSet()
         {
-            IDateTimeField sampleField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
-                new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond),
-                new PreciseDurationField(DurationFieldType.Minutes, DateTimeConstants.TicksPerMinute));
             FieldSet fieldSet = new FieldSet.Builder { SecondOfMinute = sampleField, Seconds = sampleField.DurationField }.Build();
             Assert.AreSame(sampleField, fieldSet.SecondOfMinute);
             Assert.AreSame(sampleField.DurationField, fieldSet.Seconds);
@@ -79,14 +80,61 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Builder_WithFieldSet_CopiesFields()
         {
-            IDateTimeField sampleField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
-                new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond),
-                new PreciseDurationField(DurationFieldType.Minutes, DateTimeConstants.TicksPerMinute));
             FieldSet originalFieldSet = new FieldSet.Builder { SecondOfMinute = sampleField, Seconds = sampleField.DurationField }.Build();
 
             FieldSet newFieldSet = new FieldSet.Builder(originalFieldSet).Build();
             Assert.AreSame(sampleField, newFieldSet.SecondOfMinute);
             Assert.AreSame(sampleField.DurationField, newFieldSet.Seconds);
+        }
+
+        [Test]
+        public void Builder_WithNullFieldSet_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => new FieldSet.Builder(null));
+        }
+
+        [Test]
+        public void WithSupportedFieldsFrom_WithNullSet_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => new FieldSet.Builder().WithSupportedFieldsFrom(null));
+        }
+
+        [Test]
+        public void WithSupportedFieldsFrom_CopiedSupportedFields()
+        {
+            FieldSet originalFieldSet = new FieldSet.Builder { SecondOfMinute = sampleField, Seconds = sampleField.DurationField }.Build();
+            IDateTimeField newField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
+                new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond),
+                new PreciseDurationField(DurationFieldType.Minutes, DateTimeConstants.TicksPerMinute));
+
+            FieldSet newFieldSet = new FieldSet.Builder { SecondOfMinute = newField }
+                .WithSupportedFieldsFrom(originalFieldSet).Build();
+            // SecondOfMinute is supported in originalFieldSet, so the field is copied over
+            Assert.AreSame(originalFieldSet.SecondOfMinute, newFieldSet.SecondOfMinute);
+        }
+
+        [Test]
+        public void WithSupportedFieldsFrom_DoesNotCopyUnsupportedFields()
+        {
+            FieldSet originalFieldSet = new FieldSet.Builder { SecondOfMinute = sampleField, Seconds = sampleField.DurationField }.Build();
+            Assert.IsFalse(originalFieldSet.SecondOfDay.IsSupported);
+
+            IDateTimeField newField = new PreciseDateTimeField(DateTimeFieldType.SecondOfDay,
+                new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond),
+                new PreciseDurationField(DurationFieldType.Minutes, DateTimeConstants.TicksPerDay));
+
+            FieldSet newFieldSet = new FieldSet.Builder { SecondOfDay = newField }
+                .WithSupportedFieldsFrom(originalFieldSet).Build();
+            // SecondOfDay isn't supported in originalFieldSet, so the property we set is kept
+            Assert.AreSame(newField, newFieldSet.SecondOfDay);
+        }
+
+        [Test]
+        public void WithSupportedFieldsFrom_ReturnsSameBuilderReference()
+        {
+            FieldSet originalSet = new FieldSet.Builder().Build();
+            FieldSet.Builder builder = new FieldSet.Builder();
+            Assert.AreSame(builder, builder.WithSupportedFieldsFrom(originalSet));
         }
     }
 }
