@@ -25,29 +25,6 @@ namespace NodaTime.Calendars
     /// </summary>
     public abstract class CalendarSystemBase : ICalendarSystem
     {
-        public abstract IDateTimeField Era { get; }
-        public abstract IDateTimeField CenturyOfEra { get; }
-        public abstract IDateTimeField YearOfCentury { get; }
-        public abstract IDateTimeField YearOfEra { get; }
-        public abstract IDateTimeField Year { get; }
-        public abstract IDateTimeField DayOfMonth { get; }
-        public abstract IDateTimeField MonthOfYear { get; }
-        public abstract IDateTimeField Weekyear { get; }
-        public abstract IDateTimeField WeekOfWeekyear { get; }
-        public abstract IDateTimeField DayOfWeek { get; }
-        public abstract IDateTimeField DayOfYear { get; }
-        public abstract IDateTimeField HalfdayOfDay { get; }
-        public abstract IDateTimeField HourOfHalfday { get; }
-        public abstract IDateTimeField ClockhourOfDay { get; }
-        public abstract IDateTimeField ClockhourOfHalfday { get; }
-        public abstract IDateTimeField HourOfDay { get; }
-        public abstract IDateTimeField MinuteOfHour { get; }
-        public abstract IDateTimeField MinuteOfDay { get; }
-        public abstract IDateTimeField SecondOfMinute { get; }
-        public abstract IDateTimeField SecondOfDay { get; }
-        public abstract IDateTimeField MillisecondsOfSecond { get; }
-        public abstract IDateTimeField MillisecondsOfDay { get; }
-
         public LocalInstant GetLocalInstant(int year, int month, int day, int hour, 
             int minute, int second, int millisecond, int tickWithinMillisecond)
         {

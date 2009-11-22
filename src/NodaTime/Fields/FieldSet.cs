@@ -40,7 +40,6 @@ namespace NodaTime.Fields
         private readonly IDateTimeField tickOfMillisecond;
         private readonly IDateTimeField tickOfDay;
         private readonly IDateTimeField millisecondOfSecond;
-        private readonly IDateTimeField millisecondOfDay;
         private readonly IDateTimeField secondOfMinute;
         private readonly IDateTimeField secondOfDay;
         private readonly IDateTimeField minuteOfHour;
@@ -80,7 +79,6 @@ namespace NodaTime.Fields
         public IDateTimeField TickOfMillisecond { get { return tickOfMillisecond; } }
         public IDateTimeField TickOfDay { get { return tickOfDay; } }
         public IDateTimeField MillisecondOfSecond { get { return millisecondOfSecond; } }
-        public IDateTimeField MillisecondOfDay { get { return millisecondOfDay; } }
         public IDateTimeField SecondOfMinute { get { return secondOfMinute; } }
         public IDateTimeField SecondOfDay { get { return secondOfDay; } }
         public IDateTimeField MinuteOfHour { get { return minuteOfHour; } }
@@ -105,45 +103,44 @@ namespace NodaTime.Fields
 
         private FieldSet(Builder builder)
         {
-            ticks = builder.Ticks;
-            milliseconds = builder.Milliseconds;
-            seconds = builder.Seconds;
-            minutes = builder.Minutes;
-            hours = builder.Hours;
-            halfDays = builder.HalfDays;
-            days = builder.Days;
-            weeks = builder.Weeks;
-            weekYears = builder.WeekYears;
-            months = builder.Months;
-            years = builder.Years;
-            centuries = builder.Centuries;
-            eras = builder.Eras;
+            ticks = builder.Ticks ?? UnsupportedDurationField.Ticks;
+            milliseconds = builder.Milliseconds ?? UnsupportedDurationField.Milliseconds;
+            seconds = builder.Seconds ?? UnsupportedDurationField.Seconds;
+            minutes = builder.Minutes ?? UnsupportedDurationField.Minutes;
+            hours = builder.Hours ?? UnsupportedDurationField.Hours;
+            halfDays = builder.HalfDays ?? UnsupportedDurationField.HalfDays;
+            days = builder.Days ?? UnsupportedDurationField.Days;
+            weeks = builder.Weeks ?? UnsupportedDurationField.Weeks;
+            weekYears = builder.WeekYears ?? UnsupportedDurationField.WeekYears;
+            months = builder.Months ?? UnsupportedDurationField.Months;
+            years = builder.Years ?? UnsupportedDurationField.Years;
+            centuries = builder.Centuries ?? UnsupportedDurationField.Centuries;
+            eras = builder.Eras ?? UnsupportedDurationField.Eras;
 
-            tickOfMillisecond = builder.TickOfMillisecond;
-            tickOfDay = builder.TickOfDay;
-            millisecondOfSecond = builder.MillisecondOfSecond;
-            millisecondOfDay = builder.MillisecondOfDay;
-            secondOfMinute = builder.SecondOfMinute;
-            secondOfDay = builder.SecondOfDay;
-            minuteOfHour = builder.MinuteOfHour;
-            minuteOfDay = builder.MinuteOfDay;
-            hourOfDay = builder.HourOfDay;
-            clockHourOfDay = builder.ClockHourOfDay;
-            hourOfHalfDay = builder.HourOfHalfDay;
-            clockHourOfHalfDay = builder.ClockHourOfHalfDay;
-            halfDayOfDay = builder.HalfDayOfDay;
-            dayOfWeek = builder.DayOfWeek;
-            dayOfMonth = builder.DayOfMonth;
-            dayOfYear = builder.DayOfYear;
-            weekOfWeekYear = builder.WeekOfWeekYear;
-            weekYear = builder.WeekYear;
-            weekYearOfCentury = builder.WeekYearOfCentury;
-            monthOfYear = builder.MonthOfYear;
-            year = builder.Year;
-            yearOfCentury = builder.YearOfCentury;
-            yearOfEra = builder.YearOfEra;
-            centruryOfEra = builder.CenturyOfEra;
-            era = builder.Era;
+            tickOfMillisecond = builder.TickOfMillisecond ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.TickOfMillisecond, ticks);
+            tickOfDay = builder.TickOfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.TickOfDay, ticks);
+            millisecondOfSecond = builder.MillisecondOfSecond ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MillisecondOfSecond, milliseconds);
+            secondOfMinute = builder.SecondOfMinute ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.SecondOfMinute, seconds);
+            secondOfDay = builder.SecondOfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.SecondOfDay, seconds);
+            minuteOfHour = builder.MinuteOfHour ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MinuteOfHour, minutes);
+            minuteOfDay = builder.MinuteOfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MinuteOfDay, minutes);
+            hourOfDay = builder.HourOfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.HourOfDay, hours);
+            clockHourOfDay = builder.ClockHourOfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.ClockHourOfDay, hours);
+            hourOfHalfDay = builder.HourOfHalfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.HourOfHalfDay, hours);
+            clockHourOfHalfDay = builder.ClockHourOfHalfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.ClockHourOfHalfDay, hours);
+            halfDayOfDay = builder.HalfDayOfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.HalfDayOfDay, halfDays);
+            dayOfWeek = builder.DayOfWeek ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.DayOfWeek, days);
+            dayOfMonth = builder.DayOfMonth ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.DayOfMonth, days);
+            dayOfYear = builder.DayOfYear ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.DayOfYear, days);
+            weekOfWeekYear = builder.WeekOfWeekYear ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.WeekOfWeekYear, weeks);
+            weekYear = builder.WeekYear ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.WeekYear, years);
+            weekYearOfCentury = builder.WeekYearOfCentury ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.WeekYearOfCentury, weekYears);
+            monthOfYear = builder.MonthOfYear ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, months);
+            year = builder.Year ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.Year, years);
+            yearOfCentury = builder.YearOfCentury ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.YearOfCentury, years);
+            yearOfEra = builder.YearOfEra ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.YearOfEra, years);
+            centruryOfEra = builder.CenturyOfEra ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.CenturyOfEra, centuries);
+            era = builder.Era ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.Era, eras);
         }
 
         // TODO: Consider making FieldSet privately mutable and mutate it directly in the builder.
@@ -191,7 +188,53 @@ namespace NodaTime.Fields
             public IDateTimeField CenturyOfEra { get; set; }
             public IDateTimeField Era { get; set; }
 
-            public FieldSet ToFieldSet()
+            public Builder()
+            {
+            }
+
+            public Builder(FieldSet baseSet)
+            {
+                Ticks = baseSet.Ticks;
+                Milliseconds = baseSet.Milliseconds;
+                Seconds = baseSet.Seconds;
+                Minutes = baseSet.Minutes;
+                Hours = baseSet.Hours;
+                HalfDays = baseSet.HalfDays;
+                Days = baseSet.Days;
+                Weeks = baseSet.Weeks;
+                WeekYears = baseSet.WeekYears;
+                Months = baseSet.Months;
+                Years = baseSet.Years;
+                Centuries = baseSet.Centuries;
+                Eras = baseSet.Eras;
+
+                TickOfMillisecond = baseSet.TickOfMillisecond;
+                TickOfDay = baseSet.TickOfDay;
+                MillisecondOfSecond = baseSet.MillisecondOfSecond;
+                SecondOfMinute = baseSet.SecondOfMinute;
+                SecondOfDay = baseSet.SecondOfDay;
+                MinuteOfHour = baseSet.MinuteOfHour;
+                MinuteOfDay = baseSet.MinuteOfDay;
+                HourOfDay = baseSet.HourOfDay;
+                ClockHourOfDay = baseSet.ClockHourOfDay;
+                HourOfHalfDay = baseSet.HourOfHalfDay;
+                ClockHourOfHalfDay = baseSet.ClockHourOfHalfDay;
+                HalfDayOfDay = baseSet.HalfDayOfDay;
+                DayOfWeek = baseSet.DayOfWeek;
+                DayOfMonth = baseSet.DayOfMonth;
+                DayOfYear = baseSet.DayOfYear;
+                WeekOfWeekYear = baseSet.WeekOfWeekYear;
+                WeekYear = baseSet.WeekYear;
+                WeekYearOfCentury = baseSet.WeekYearOfCentury;
+                MonthOfYear = baseSet.MonthOfYear;
+                Year = baseSet.Year;
+                YearOfCentury = baseSet.YearOfCentury;
+                YearOfEra = baseSet.YearOfEra;
+                CenturyOfEra = baseSet.CenturyOfEra;
+                Era = baseSet.Era;
+            }
+
+            public FieldSet Build()
             {
                 return new FieldSet(this);
             }
