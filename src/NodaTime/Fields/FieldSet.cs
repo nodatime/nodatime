@@ -194,6 +194,10 @@ namespace NodaTime.Fields
 
             public Builder(FieldSet baseSet)
             {
+                if (baseSet == null)
+                {
+                    throw new ArgumentNullException("baseSet");
+                }
                 Ticks = baseSet.Ticks;
                 Milliseconds = baseSet.Milliseconds;
                 Seconds = baseSet.Seconds;
@@ -232,6 +236,58 @@ namespace NodaTime.Fields
                 YearOfEra = baseSet.YearOfEra;
                 CenturyOfEra = baseSet.CenturyOfEra;
                 Era = baseSet.Era;
+            }
+
+            /// <summary>
+            /// Copies just the supported fields from the specified set into this builder,
+            /// and returns this builder again (for fluent building).
+            /// </summary>
+            /// <param name="other">The set of fields to copy.</param>
+            public Builder WithSupportedFieldsFrom(FieldSet other)
+            {
+                if (other == null)
+                {
+                    throw new ArgumentNullException("other");
+                }
+                Ticks = other.Ticks.IsSupported ? other.Ticks : Ticks;
+                Milliseconds = other.Milliseconds.IsSupported ? other.Milliseconds : Milliseconds;
+                Seconds = other.Seconds.IsSupported ? other.Seconds : Seconds;
+                Minutes = other.Minutes.IsSupported ? other.Minutes : Minutes;
+                Hours = other.Hours.IsSupported ? other.Hours : Hours;
+                HalfDays = other.HalfDays.IsSupported ? other.HalfDays : HalfDays;
+                Days = other.Days.IsSupported ? other.Days : Days;
+                Weeks = other.Weeks.IsSupported ? other.Weeks : Weeks;
+                WeekYears = other.WeekYears.IsSupported ? other.WeekYears : WeekYears;
+                Months = other.Months.IsSupported ? other.Months : Months;
+                Years = other.Years.IsSupported ? other.Years : Years;
+                Centuries = other.Centuries.IsSupported ? other.Centuries : Centuries;
+                Eras = other.Eras.IsSupported ? other.Eras : Eras;
+
+                TickOfMillisecond = other.TickOfMillisecond.IsSupported ? other.TickOfMillisecond : TickOfMillisecond;
+                TickOfDay = other.TickOfDay.IsSupported ? other.TickOfDay : TickOfDay;
+                MillisecondOfSecond = other.MillisecondOfSecond.IsSupported ? other.MillisecondOfSecond : MillisecondOfSecond;
+                SecondOfMinute = other.SecondOfMinute.IsSupported ? other.SecondOfMinute : SecondOfMinute;
+                SecondOfDay = other.SecondOfDay.IsSupported ? other.SecondOfDay : SecondOfDay;
+                MinuteOfHour = other.MinuteOfHour.IsSupported ? other.MinuteOfHour : MinuteOfHour;
+                MinuteOfDay = other.MinuteOfDay.IsSupported ? other.MinuteOfDay : MinuteOfDay;
+                HourOfDay = other.HourOfDay.IsSupported ? other.HourOfDay : HourOfDay;
+                ClockHourOfDay = other.ClockHourOfDay.IsSupported ? other.ClockHourOfDay : ClockHourOfDay;
+                HourOfHalfDay = other.HourOfHalfDay.IsSupported ? other.HourOfHalfDay : HourOfHalfDay;
+                ClockHourOfHalfDay = other.ClockHourOfHalfDay.IsSupported ? other.ClockHourOfHalfDay : ClockHourOfHalfDay;
+                HalfDayOfDay = other.HalfDayOfDay.IsSupported ? other.HalfDayOfDay : HalfDayOfDay;
+                DayOfWeek = other.DayOfWeek.IsSupported ? other.DayOfWeek : DayOfWeek;
+                DayOfMonth = other.DayOfMonth.IsSupported ? other.DayOfMonth : DayOfMonth;
+                DayOfYear = other.DayOfYear.IsSupported ? other.DayOfYear : DayOfYear;
+                WeekOfWeekYear = other.WeekOfWeekYear.IsSupported ? other.WeekOfWeekYear : WeekOfWeekYear;
+                WeekYear = other.WeekYear.IsSupported ? other.WeekYear : WeekYear;
+                WeekYearOfCentury = other.WeekYearOfCentury.IsSupported ? other.WeekYearOfCentury : WeekYearOfCentury;
+                MonthOfYear = other.MonthOfYear.IsSupported ? other.MonthOfYear : MonthOfYear;
+                Year = other.Year.IsSupported ? other.Year : Year;
+                YearOfCentury = other.YearOfCentury.IsSupported ? other.YearOfCentury : YearOfCentury;
+                YearOfEra = other.YearOfEra.IsSupported ? other.YearOfEra : YearOfEra;
+                CenturyOfEra = other.CenturyOfEra.IsSupported ? other.CenturyOfEra : CenturyOfEra;
+                Era = other.Era.IsSupported ? other.Era : Era;
+                return this;
             }
 
             public FieldSet Build()
