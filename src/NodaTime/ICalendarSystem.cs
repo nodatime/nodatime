@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.Calendars;
 using NodaTime.Fields;
 
 namespace NodaTime
@@ -39,6 +40,6 @@ namespace NodaTime
         LocalInstant GetLocalInstant(int year, int month, int day, int hour, 
                                      int minute, int second, int millisecond, int tickWithinMillisecond);
 
-        DateTimeFieldSet DateTimeFields { get; }
+        FieldSet Fields { get; }
     }
 }

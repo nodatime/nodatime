@@ -54,7 +54,7 @@ namespace NodaTime.Calendars
             throw new NotImplementedException();
         }
 
-        public DateTimeFieldSet DateTimeFields
+        public FieldSet Fields
         {
             get { throw new NotImplementedException(); }
         }

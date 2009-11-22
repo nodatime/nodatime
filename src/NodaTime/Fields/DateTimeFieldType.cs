@@ -18,7 +18,7 @@
 namespace NodaTime
 {
     /// <summary>
-    /// Type of a date time field; used for indexing into DateTimeFieldSet.
+    /// Type of a date time field.
     /// If new elements are added, DateTimeField.IsValidField must be updated.
     /// </summary>
     public enum DateTimeFieldType
