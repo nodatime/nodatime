@@ -52,5 +52,21 @@ namespace NodaTime
         {
             return new Duration(first.Ticks - second.Ticks);
         }
+
+        /// <summary>
+        /// Returns an instant after adding the given duration
+        /// </summary>
+        public static Instant operator +(Instant instant, Duration duration)
+        {
+            return new Instant(instant.Ticks + duration.Ticks);
+        }
+
+        /// <summary>
+        /// Returns an instant after subtracting the given duration
+        /// </summary>
+        public static Instant operator -(Instant instant, Duration duration)
+        {
+            return new Instant(instant.Ticks - duration.Ticks);
+        }
     }
 }
