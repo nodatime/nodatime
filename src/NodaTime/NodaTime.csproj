@@ -68,7 +68,7 @@
     <Compile Include="Clocks\FixedClock.cs" />
     <Compile Include="Calendars\CalendarSystems.cs" />
     <Compile Include="Fields\DateTimeFieldBase.cs" />
-    <Compile Include="Fields\DateTimeFieldSet.cs" />
+    <Compile Include="Fields\FieldSet.cs" />
     <Compile Include="Fields\DurationFieldBase.cs" />
     <Compile Include="Fields\FieldUtils.cs" />
     <Compile Include="Fields\PreciseDateTimeField.cs" />
