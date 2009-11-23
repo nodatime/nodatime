@@ -34,8 +34,8 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithValidType_RemembersType()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase(DateTimeFieldType.Weekyear);
-            Assert.AreEqual(DateTimeFieldType.Weekyear, field.FieldType);
+            DateTimeFieldBase field = new StubDateTimeFieldBase(DateTimeFieldType.WeekYear);
+            Assert.AreEqual(DateTimeFieldType.WeekYear, field.FieldType);
         }
 
         [Test]

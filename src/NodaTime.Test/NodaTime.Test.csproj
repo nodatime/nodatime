@@ -76,6 +76,7 @@
     <Compile Include="Fields\DateTimeFieldBaseTest.cs" />
     <Compile Include="Fields\DurationFieldBaseTest.cs" />
     <Compile Include="Fields\FakeDurationField.cs" />
+    <Compile Include="Fields\FieldSetTest.cs" />
     <Compile Include="Fields\MockCountingDurationField.cs" />
     <Compile Include="Fields\PreciseDateTimeFieldTest.cs" />
     <Compile Include="Fields\PreciseDurationDateTimeFieldTest.cs" />

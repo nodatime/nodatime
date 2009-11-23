@@ -22,7 +22,7 @@ namespace NodaTime.Fields
     /// Precise datetime field, composed of two precise duration fields.
     /// </summary>
     /// <remarks>
-    /// This DateTimeField is useful for defining DateTimeFields that are composed
+    /// This DateTimeField is useful for defining fields that are composed
     /// of precise durations, like time of day fields. If either duration field is
     /// imprecise, then an ImpreciseDateTimeField may be used instead.
     /// </remarks>

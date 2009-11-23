@@ -12,7 +12,8 @@
     <AssemblyName>NodaTime</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -68,7 +69,7 @@
     <Compile Include="Clocks\FixedClock.cs" />
     <Compile Include="Calendars\CalendarSystems.cs" />
     <Compile Include="Fields\DateTimeFieldBase.cs" />
-    <Compile Include="Fields\DateTimeFieldSet.cs" />
+    <Compile Include="Fields\FieldSet.cs" />
     <Compile Include="Fields\DurationFieldBase.cs" />
     <Compile Include="Fields\FieldUtils.cs" />
     <Compile Include="Fields\PreciseDateTimeField.cs" />

@@ -22,6 +22,7 @@ namespace NodaTime.Fields
     /// A placeholder implementation to use when a datetime field is not supported.
     /// Operations which can be performed solely on the duration field delegate to that; most
     /// just throw <see cref="NotSupportedException" />.
+    /// TODO: See whether we really need the delegation, or whether DurationField could just throw.
     /// </summary>
     internal class UnsupportedDateTimeField : IDateTimeField
     {

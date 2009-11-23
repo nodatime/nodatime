@@ -101,22 +101,22 @@ namespace NodaTime
             this.calendar = calendar;
         }
 
-        public int Era { get { return calendar.DateTimeFields[DateTimeFieldType.Era].GetValue(localInstant); } }
-        public int CenturyOfEra { get { return calendar.DateTimeFields[DateTimeFieldType.CenturyOfEra].GetValue(localInstant); } }
-        public int Year { get { return calendar.DateTimeFields[DateTimeFieldType.Year].GetValue(localInstant); } }
-        public int YearOfCentury { get { return calendar.DateTimeFields[DateTimeFieldType.YearOfCentury].GetValue(localInstant); } }
-        public int YearOfEra { get { return calendar.DateTimeFields[DateTimeFieldType.YearOfEra].GetValue(localInstant); } }
-        public int WeekYear { get { return calendar.DateTimeFields[DateTimeFieldType.Weekyear].GetValue(localInstant); } }
-        public int MonthOfYear { get { return calendar.DateTimeFields[DateTimeFieldType.MonthOfYear].GetValue(localInstant); } }
-        public int WeekOfWeekYear { get { return calendar.DateTimeFields[DateTimeFieldType.WeekOfWeekyear].GetValue(localInstant); } }
-        public int DayOfYear { get { return calendar.DateTimeFields[DateTimeFieldType.DayOfYear].GetValue(localInstant); } }
-        public int DayOfMonth { get { return calendar.DateTimeFields[DateTimeFieldType.DayOfMonth].GetValue(localInstant); } }
-        public int DayOfWeek { get { return calendar.DateTimeFields[DateTimeFieldType.DayOfWeek].GetValue(localInstant); } }
-        public int HourOfDay { get { return calendar.DateTimeFields[DateTimeFieldType.HourOfDay].GetValue(localInstant); } }
-        public int MinuteOfHour { get { return calendar.DateTimeFields[DateTimeFieldType.MinuteOfHour].GetValue(localInstant); } }
-        public int SecondOfMinute { get { return calendar.DateTimeFields[DateTimeFieldType.SecondOfMinute].GetValue(localInstant); } }
-        public int MillisecondsOfSecond { get { return calendar.DateTimeFields[DateTimeFieldType.MillisecondOfSecond].GetValue(localInstant); } }
-        public int TicksOfMillicond { get { return calendar.DateTimeFields[DateTimeFieldType.TickOfMillisecond].GetValue(localInstant); } }
-        public long TicksOfDay { get { return calendar.DateTimeFields[DateTimeFieldType.TickOfDay].GetInt64Value(localInstant); } }
+        public int Era { get { return calendar.Fields.Era.GetValue(localInstant); } }
+        public int CenturyOfEra { get { return calendar.Fields.CenturyOfEra.GetValue(localInstant); } }
+        public int Year { get { return calendar.Fields.Year.GetValue(localInstant); } }
+        public int YearOfCentury { get { return calendar.Fields.YearOfCentury.GetValue(localInstant); } }
+        public int YearOfEra { get { return calendar.Fields.YearOfEra.GetValue(localInstant); } }
+        public int WeekYear { get { return calendar.Fields.WeekYear.GetValue(localInstant); } }
+        public int MonthOfYear { get { return calendar.Fields.MonthOfYear.GetValue(localInstant); } }
+        public int WeekOfWeekYear { get { return calendar.Fields.WeekOfWeekYear.GetValue(localInstant); } }
+        public int DayOfYear { get { return calendar.Fields.DayOfYear.GetValue(localInstant); } }
+        public int DayOfMonth { get { return calendar.Fields.DayOfMonth.GetValue(localInstant); } }
+        public int DayOfWeek { get { return calendar.Fields.DayOfWeek.GetValue(localInstant); } }
+        public int HourOfDay { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
+        public int MinuteOfHour { get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
+        public int SecondOfMinute { get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
+        public int MillisecondOfSecond { get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
+        public int TickOfMillisecond { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
+        public long TickOfDay { get { return calendar.Fields.TickOfDay.GetInt64Value(localInstant); } }
     }
 }

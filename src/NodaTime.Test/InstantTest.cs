@@ -28,6 +28,7 @@ namespace NodaTime.Test
         // (before the late 90's they were all over the place)
         private static readonly DateTimeZone Paris = DateTimeZone.ForID("Europe/Paris");
         private static readonly DateTimeZone London = DateTimeZone.ForID("Europe/London");
+         */
 
         private const long Y2002Days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
                                        366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 +
@@ -53,6 +54,19 @@ namespace NodaTime.Test
             (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * DateTimeConstants.MillisecondsPerDay
             + 14L * DateTimeConstants.MillisecondsPerHour
             + 28L * DateTimeConstants.MillisecondsPerMinute;
-         */
+
+        [Test]
+        public void TestInsantOperators()
+        {
+            long diff = TestTime2 - TestTime1;
+
+            Instant time1 = new Instant(TestTime1);
+            Instant time2 = new Instant(TestTime2);
+            Duration duration = time2 - time1;
+            
+            Assert.AreEqual(diff, duration.Ticks);
+            Assert.AreEqual(TestTime2, (time1 + duration).Ticks);
+            Assert.AreEqual(TestTime1, (time2 - duration).Ticks);
+        }
     }
 }
