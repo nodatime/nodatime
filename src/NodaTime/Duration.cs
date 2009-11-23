@@ -209,10 +209,11 @@ namespace NodaTime
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (obj == null) {
+            Duration? duration = obj as Duration?;
+            if (duration == null)
                 return false;
-            }
-            return Equals((Duration)obj);
+
+            return Equals(duration.Value);
         }
 
         /// <summary>
@@ -235,7 +236,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return Ticks.ToString("+#,##0;-#,##0", CultureInfo.CurrentUICulture);
+            return Ticks.ToString("+#,##0;-#,##0 ticks", CultureInfo.CurrentUICulture);
         }
 
         #endregion  // Object overrides
