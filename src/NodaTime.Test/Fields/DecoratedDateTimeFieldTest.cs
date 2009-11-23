@@ -64,9 +64,8 @@ namespace NodaTime.Test.Fields
 
         private static IDateTimeField CreateSampleField()
         {
-            DurationField ticks = TicksDurationField.Instance;
-            DurationField millis = new PreciseDurationField(DurationFieldType.Milliseconds, DateTimeConstants.TicksPerMillisecond);
-            return new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, ticks, millis);            
+            return new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, 
+                TicksDurationField.Instance, PreciseDurationField.Milliseconds);            
         }
 
         private class SimpleDecoratedDateTimeField : DecoratedDateTimeField

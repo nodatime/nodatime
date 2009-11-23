@@ -30,13 +30,13 @@ namespace NodaTime.Calendars
             FieldSet.Builder builder = new FieldSet.Builder()
             {
                 Ticks = TicksDurationField.Instance,
-                Milliseconds = new PreciseDurationField(DurationFieldType.Milliseconds, DateTimeConstants.TicksPerMillisecond),
-                Seconds = new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond),
-                Minutes = new PreciseDurationField(DurationFieldType.Minutes, DateTimeConstants.TicksPerMinute),
-                Hours = new PreciseDurationField(DurationFieldType.Hours, DateTimeConstants.TicksPerHour),
-                HalfDays = new PreciseDurationField(DurationFieldType.HalfDays, DateTimeConstants.TicksPerDay / 2),
-                Days = new PreciseDurationField(DurationFieldType.Days, DateTimeConstants.TicksPerDay),
-                Weeks = new PreciseDurationField(DurationFieldType.Weeks, DateTimeConstants.TicksPerWeek)
+                Milliseconds = PreciseDurationField.Milliseconds,
+                Seconds = PreciseDurationField.Seconds,
+                Minutes = PreciseDurationField.Minutes,
+                Hours = PreciseDurationField.Hours,
+                HalfDays = PreciseDurationField.HalfDays,
+                Days = PreciseDurationField.Days,
+                Weeks = PreciseDurationField.Weeks
             };
             builder.TickOfMillisecond = new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, builder.Ticks, builder.Milliseconds);
             builder.TickOfDay = new PreciseDateTimeField(DateTimeFieldType.TickOfDay, builder.Ticks, builder.Days);
