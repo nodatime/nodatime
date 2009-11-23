@@ -15,6 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Globalization;
+
 namespace NodaTime
 {
     /// <summary>
@@ -22,14 +25,15 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// There is no concept of fields, such as days or seconds, as these fields
-    /// can vary in length. A duration may be converted to an <see cref="IPeriod" /> to obtain
-    /// field values. This conversion will typically cause a loss of precision.
+    /// There is no concept of fields, such as days or seconds, as these fields can vary in length.
+    /// A duration may be converted to an <see cref="IPeriod" /> to obtain field values. This
+    /// conversion will typically cause a loss of precision.
     /// </para>
     /// <para>
     /// This type is immutable and thread-safe.
     /// </para>
     public struct Duration
+        : IEquatable<Duration>, IComparable<Duration>
     {
         private readonly long ticks;
 
@@ -38,9 +42,215 @@ namespace NodaTime
         /// </summary>
         public long Ticks { get { return ticks; } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Duration"/> struct.
+        /// </summary>
+        /// <param name="ticks">The number of ticks.</param>
         public Duration(long ticks)
         {
             this.ticks = ticks;
         }
+
+        #region Operators
+
+        /// <summary>
+        /// Implements the operator + (addition).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the sum of the given values.</returns>
+        public static Duration operator +(Duration left, Duration right)
+        {
+            return new Duration(left.Ticks + right.Ticks);
+        }
+
+        /// <summary>
+        /// Implements the operator - (subtraction).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the difference of the given values.</returns>
+        public static Duration operator -(Duration left, Duration right)
+        {
+            return new Duration(left.Ticks - right.Ticks);
+        }
+
+        /// <summary>
+        /// Implements the operator == (equality).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
+        public static bool operator ==(Duration left, Duration right)
+        {
+            if (System.Object.ReferenceEquals(left, right)) {
+                return true;
+            }
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator != (inequality).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
+        public static bool operator !=(Duration left, Duration right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Implements the operator &lt; (less than).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
+        public static bool operator <(Duration left, Duration right)
+        {
+            if (System.Object.ReferenceEquals(left, right)) {
+                return false;
+            }
+            return left.CompareTo(right) < 0;
+        }
+
+        /// <summary>
+        /// Implements the operator &lt;= (less than or equal).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
+        public static bool operator <=(Duration left, Duration right)
+        {
+            if (System.Object.ReferenceEquals(left, right)) {
+                return true;
+            }
+            return left.CompareTo(right) <= 0;
+        }
+
+        /// <summary>
+        /// Implements the operator &gt; (greater than).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
+        public static bool operator >(Duration left, Duration right)
+        {
+            if (System.Object.ReferenceEquals(left, right)) {
+                return false;
+            }
+            return left.CompareTo(right) > 0;
+        }
+
+        /// <summary>
+        /// Implements the operator &gt;= (greater than or equal).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
+        public static bool operator >=(Duration left, Duration right)
+        {
+            if (System.Object.ReferenceEquals(left, right)) {
+                return true;
+            }
+            return left.CompareTo(right) >= 0;
+        }
+
+        #endregion // Operators
+
+        #region IEquatable<Duration> Members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter;
+        /// otherwise, false.
+        /// </returns>
+        public bool Equals(Duration other)
+        {
+            return this.Ticks == other.Ticks;
+        }
+
+        #endregion
+
+        #region IComparable<Duration> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings:
+        /// <list type="table">
+        /// <listheader>
+        /// <term>Value</term>
+        /// <description>Meaning</description>
+        /// </listheader>
+        /// <item>
+        /// <term>&lt; 0</term>
+        /// <description>This object is less than the <paramref name="other"/> parameter.</description>
+        /// </item>
+        /// <item>
+        /// <term>0</term>
+        /// <description>This object is equal to <paramref name="other"/>.</description>
+        /// </item>
+        /// <item>
+        /// <term>&gt; 0</term>
+        /// <description>This object is greater than <paramref name="other"/>.</description>
+        /// </item>
+        /// </list>
+        /// </returns>
+        public int CompareTo(Duration other)
+        {
+            return Ticks.CompareTo(other.Ticks);
+        }
+
+        #endregion
+
+        #region Object overrides
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null) {
+                return false;
+            }
+            return Equals((Duration)obj);
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data
+        /// structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return Ticks.GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Ticks.ToString("+#,##0;-#,##0", CultureInfo.CurrentUICulture);
+        }
+
+        #endregion  // Object overrides
     }
 }
