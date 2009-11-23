@@ -40,31 +40,5 @@ namespace NodaTime
             this.zone = zone;
             this.calendarSystem = calendarSystem;
         }
-
-        /*
-        DateTimeZone Zone { get; }
-        DateTimeField Era { get; }
-        DateTimeField CenturyOfEra { get; }
-        DateTimeField YearOfCentury { get; }
-        DateTimeField YearOfEra { get; }
-        DateTimeField Year { get; }
-        DateTimeField DayOfMonth { get; }
-        DateTimeField MonthOfYear { get; }
-        DateTimeField Weekyear { get; }
-        DateTimeField WeekOfWeekyear { get; }
-        DateTimeField DayOfWeek { get; }
-        DateTimeField DayOfYear { get; }
-        DateTimeField HalfdayOfDay { get; }
-        DateTimeField HourOfHalfday { get; }
-        DateTimeField ClockhourOfDay { get; }
-        DateTimeField ClockhourOfHalfday { get; }
-        DateTimeField HourOfDay { get; }
-        DateTimeField MinuteOfHour { get; }
-        DateTimeField MinuteOfDay { get; }
-        DateTimeField SecondOfMinute { get; }
-        DateTimeField SecondOfDay { get; }
-        DateTimeField MillisecondsOfSecond { get; }
-        DateTimeField MillisecondsOfDay { get; }
-         */
     }
 }

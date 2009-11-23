@@ -68,12 +68,14 @@
     <Compile Include="Clocks\FixedClock.cs" />
     <Compile Include="Calendars\CalendarSystems.cs" />
     <Compile Include="Fields\DateTimeFieldBase.cs" />
+    <Compile Include="Fields\DecoratedDateTimeField.cs" />
     <Compile Include="Fields\FieldSet.cs" />
     <Compile Include="Fields\DurationFieldBase.cs" />
     <Compile Include="Fields\FieldUtils.cs" />
     <Compile Include="Fields\PreciseDateTimeField.cs" />
     <Compile Include="Fields\PreciseDurationField.cs" />
     <Compile Include="Fields\PreciseDurationDateTimeField.cs" />
+    <Compile Include="Fields\TicksDurationField.cs" />
     <Compile Include="Fields\UnsupportedDateTimeField.cs" />
     <Compile Include="Fields\UnsupportedDurationField.cs" />
     <Compile Include="LocalInstant.cs" />

@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.Fields;
+
 namespace NodaTime.Calendars
 {
     /// <summary>
@@ -22,5 +24,9 @@ namespace NodaTime.Calendars
     /// </summary>
     public abstract class AssembledCalendarSystem : CalendarSystemBase
     {
+        protected AssembledCalendarSystem(ICalendarSystem baseCalendar, FieldSet fields)
+            : base(fields)
+        {
+        }
     }
 }
