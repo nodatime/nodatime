@@ -85,6 +85,7 @@
     <Compile Include="Fields\TicksDurationFieldTest.cs" />
     <Compile Include="Fields\UnsupportedDateTimeFieldTest.cs" />
     <Compile Include="Fields\UnsupportedDurationFieldTest.cs" />
+    <Compile Include="Fields\ZeroIsMaxDateTimeFieldTest.cs" />
     <Compile Include="FixedDateTimeZoneTest.cs" />
     <Compile Include="Periods\DaysTest.cs" />
     <Compile Include="Periods\DaysTest.Constants.cs">
