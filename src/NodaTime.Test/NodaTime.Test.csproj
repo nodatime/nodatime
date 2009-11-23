@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DurationTest.cs" />
     <Compile Include="Fields\DateTimeFieldBaseTest.cs" />
     <Compile Include="Fields\DecoratedDateTimeFieldTest.cs" />
     <Compile Include="Fields\DurationFieldBaseTest.cs" />
