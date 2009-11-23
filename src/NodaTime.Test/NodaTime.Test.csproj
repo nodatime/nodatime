@@ -82,6 +82,7 @@
     <Compile Include="Fields\PreciseDateTimeFieldTest.cs" />
     <Compile Include="Fields\PreciseDurationDateTimeFieldTest.cs" />
     <Compile Include="Fields\PreciseDurationFieldTest.cs" />
+    <Compile Include="Fields\TicksDurationFieldTest.cs" />
     <Compile Include="Fields\UnsupportedDateTimeFieldTest.cs" />
     <Compile Include="Fields\UnsupportedDurationFieldTest.cs" />
     <Compile Include="FixedDateTimeZoneTest.cs" />
