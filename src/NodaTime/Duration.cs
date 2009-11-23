@@ -209,11 +209,10 @@ namespace NodaTime
         /// </returns>
         public override bool Equals(object obj)
         {
-            Duration? duration = obj as Duration?;
-            if (duration == null)
-                return false;
-
-            return Equals(duration.Value);
+            if (obj is Duration) {
+                return Equals((Duration)obj);
+            }
+            return false;
         }
 
         /// <summary>
