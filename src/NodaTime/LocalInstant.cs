@@ -187,11 +187,10 @@ namespace NodaTime
         /// </returns>
         public override bool Equals(object obj)
         {
-            LocalInstant? instant = obj as LocalInstant?;
-            if (instant == null)
-                return false;
-
-            return Equals(instant.Value);
+            if (obj is LocalInstant) {
+                return Equals((LocalInstant)obj);
+            }
+            return false;
         }
 
         /// <summary>
