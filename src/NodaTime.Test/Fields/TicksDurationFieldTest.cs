@@ -63,94 +63,81 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetTicks()
+        public void GetDuration()
         {
-            Assert.AreEqual(0L, TicksDurationField.Instance.Get);
+            Assert.AreEqual(0L, TicksDurationField.Instance.GetDuration(0).Ticks);
+            Assert.AreEqual(1234L, TicksDurationField.Instance.GetDuration(1234).Ticks);
+            Assert.AreEqual(-1234L, TicksDurationField.Instance.GetDuration(-1234).Ticks);
         }
 
-
-        //-----------------------------------------------------------------------
-        public void test_getMillis_int()
+        [Test]
+        public void GetDuration_WithLocalInstant()
         {
-            assertEquals(0, MillisDurationField.INSTANCE.getMillis(0));
-            assertEquals(1234, MillisDurationField.INSTANCE.getMillis(1234));
-            assertEquals(-1234, MillisDurationField.INSTANCE.getMillis(-1234));
+            LocalInstant when = new LocalInstant(56789L);
+            Assert.AreEqual(0L, TicksDurationField.Instance.GetDuration(0, when).Ticks);
+            Assert.AreEqual(1234L, TicksDurationField.Instance.GetDuration(1234, when).Ticks);
+            Assert.AreEqual(-1234L, TicksDurationField.Instance.GetDuration(-1234, when).Ticks);
         }
 
-        public void test_getMillis_long()
+        [Test]
+        public void Add_Int32Value()
         {
-            assertEquals(0L, MillisDurationField.INSTANCE.getMillis(0L));
-            assertEquals(1234L, MillisDurationField.INSTANCE.getMillis(1234L));
-            assertEquals(-1234L, MillisDurationField.INSTANCE.getMillis(-1234L));
+            Assert.AreEqual(567L, TicksDurationField.Instance.Add(new LocalInstant(567L), 0).Ticks);
+            Assert.AreEqual(567L + 1234L, TicksDurationField.Instance.Add(new LocalInstant(567L), 1234).Ticks);
+            Assert.AreEqual(567L - 1234L, TicksDurationField.Instance.Add(new LocalInstant(567L), -1234).Ticks);
         }
 
-        public void test_getMillis_int_long()
+        [Test]
+        public void Add_Int32Value_Overflows()
         {
-            assertEquals(0, MillisDurationField.INSTANCE.getMillis(0, 567L));
-            assertEquals(1234, MillisDurationField.INSTANCE.getMillis(1234, 567L));
-            assertEquals(-1234, MillisDurationField.INSTANCE.getMillis(-1234, 567L));
+            Assert.Throws<OverflowException>(() =>
+                TicksDurationField.Instance.Add(new LocalInstant(long.MaxValue), 1));
         }
 
-        public void test_getMillis_long_long()
+        [Test]
+        public void Add_Int64Value()
         {
-            assertEquals(0L, MillisDurationField.INSTANCE.getMillis(0L, 567L));
-            assertEquals(1234L, MillisDurationField.INSTANCE.getMillis(1234L, 567L));
-            assertEquals(-1234L, MillisDurationField.INSTANCE.getMillis(-1234L, 567L));
+            Assert.AreEqual(567L, TicksDurationField.Instance.Add(new LocalInstant(567L), 0L).Ticks);
+            Assert.AreEqual(567L + 1234L, TicksDurationField.Instance.Add(new LocalInstant(567L), 1234L).Ticks);
+            Assert.AreEqual(567L - 1234L, TicksDurationField.Instance.Add(new LocalInstant(567L), -1234L).Ticks);
         }
 
-        //-----------------------------------------------------------------------
-        public void test_add_long_int()
+        [Test]
+        public void Add_Int64Value_Overflows()
         {
-            assertEquals(567L, MillisDurationField.INSTANCE.add(567L, 0));
-            assertEquals(567L + 1234L, MillisDurationField.INSTANCE.add(567L, 1234));
-            assertEquals(567L - 1234L, MillisDurationField.INSTANCE.add(567L, -1234));
-            try
-            {
-                MillisDurationField.INSTANCE.add(Long.MAX_VALUE, 1);
-                fail();
-            }
-            catch (ArithmeticException ex) { }
+            Assert.Throws<OverflowException>(() =>
+                TicksDurationField.Instance.Add(new LocalInstant(long.MaxValue), 1L));
         }
 
-        public void test_add_long_long()
+        [Test]
+        public void GetInt32Difference()
         {
-            assertEquals(567L, MillisDurationField.INSTANCE.add(567L, 0L));
-            assertEquals(567L + 1234L, MillisDurationField.INSTANCE.add(567L, 1234L));
-            assertEquals(567L - 1234L, MillisDurationField.INSTANCE.add(567L, -1234L));
-            try
-            {
-                MillisDurationField.INSTANCE.add(Long.MAX_VALUE, 1L);
-                fail();
-            }
-            catch (ArithmeticException ex) { }
+            Assert.AreEqual(567, TicksDurationField.Instance.GetDifference(new LocalInstant(567L), new LocalInstant(0L)));
+            Assert.AreEqual(567 - 1234, TicksDurationField.Instance.GetDifference(new LocalInstant(567L), new LocalInstant(1234L)));
+            Assert.AreEqual(567 + 1234, TicksDurationField.Instance.GetDifference(new LocalInstant(567L), new LocalInstant(-1234L)));
         }
 
-        //-----------------------------------------------------------------------
-        public void test_getDifference_long_int()
+        [Test]
+        public void GetInt32Difference_Overflows()
         {
-            assertEquals(567, MillisDurationField.INSTANCE.getDifference(567L, 0L));
-            assertEquals(567 - 1234, MillisDurationField.INSTANCE.getDifference(567L, 1234L));
-            assertEquals(567 + 1234, MillisDurationField.INSTANCE.getDifference(567L, -1234L));
-            try
-            {
-                MillisDurationField.INSTANCE.getDifference(Long.MAX_VALUE, 1L);
-                fail();
-            }
-            catch (ArithmeticException ex) { }
+            Assert.Throws<OverflowException>(() =>
+                TicksDurationField.Instance.GetDifference(new LocalInstant(long.MaxValue), new LocalInstant(1L)));
         }
 
-        public void test_getDifferenceAsLong_long_long()
+        [Test]
+        public void GetInt64Difference()
         {
-            assertEquals(567L, MillisDurationField.INSTANCE.getDifferenceAsLong(567L, 0L));
-            assertEquals(567L - 1234L, MillisDurationField.INSTANCE.getDifferenceAsLong(567L, 1234L));
-            assertEquals(567L + 1234L, MillisDurationField.INSTANCE.getDifferenceAsLong(567L, -1234L));
-            try
-            {
-                MillisDurationField.INSTANCE.getDifferenceAsLong(Long.MAX_VALUE, -1L);
-                fail();
-            }
-            catch (ArithmeticException ex) { }
+            Assert.AreEqual(567L, TicksDurationField.Instance.GetInt64Difference(new LocalInstant(567L), new LocalInstant(0L)));
+            Assert.AreEqual(567L - 1234L, TicksDurationField.Instance.GetInt64Difference(new LocalInstant(567L), new LocalInstant(1234L)));
+            Assert.AreEqual(567L + 1234L, TicksDurationField.Instance.GetInt64Difference(new LocalInstant(567L), new LocalInstant(-1234L)));
+            Assert.AreEqual(long.MaxValue - 1, TicksDurationField.Instance.GetInt64Difference(new LocalInstant(long.MaxValue), new LocalInstant(1L)));
         }
 
+        [Test]
+        public void GetInt64Difference_Overflows()
+        {
+            Assert.Throws<OverflowException>(() =>
+                TicksDurationField.Instance.GetInt64Difference(new LocalInstant(long.MaxValue), new LocalInstant(-1L)));
+        }
     }
 }
