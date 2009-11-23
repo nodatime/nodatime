@@ -35,6 +35,8 @@ namespace NodaTime
     public struct Duration
         : IEquatable<Duration>, IComparable<Duration>
     {
+        public static readonly Duration Zero = new Duration(0L);
+
         private readonly long ticks;
 
         /// <summary>
@@ -83,9 +85,6 @@ namespace NodaTime
         /// <returns>c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Duration left, Duration right)
         {
-            if (System.Object.ReferenceEquals(left, right)) {
-                return true;
-            }
             return left.Equals(right);
         }
 
@@ -108,9 +107,6 @@ namespace NodaTime
         /// <returns>c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Duration left, Duration right)
         {
-            if (System.Object.ReferenceEquals(left, right)) {
-                return false;
-            }
             return left.CompareTo(right) < 0;
         }
 
@@ -122,9 +118,6 @@ namespace NodaTime
         /// <returns>c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Duration left, Duration right)
         {
-            if (System.Object.ReferenceEquals(left, right)) {
-                return true;
-            }
             return left.CompareTo(right) <= 0;
         }
 
@@ -136,9 +129,6 @@ namespace NodaTime
         /// <returns>c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Duration left, Duration right)
         {
-            if (System.Object.ReferenceEquals(left, right)) {
-                return false;
-            }
             return left.CompareTo(right) > 0;
         }
 
@@ -150,9 +140,6 @@ namespace NodaTime
         /// <returns>c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Duration left, Duration right)
         {
-            if (System.Object.ReferenceEquals(left, right)) {
-                return true;
-            }
             return left.CompareTo(right) >= 0;
         }
 
