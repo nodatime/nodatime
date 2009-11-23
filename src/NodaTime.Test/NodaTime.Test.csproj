@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fields\DateTimeFieldBaseTest.cs" />
+    <Compile Include="Fields\DecoratedDateTimeFieldTest.cs" />
     <Compile Include="Fields\DurationFieldBaseTest.cs" />
     <Compile Include="Fields\FakeDurationField.cs" />
     <Compile Include="Fields\FieldSetTest.cs" />

@@ -37,9 +37,31 @@ namespace NodaTime
     /// </para>
     public interface ICalendarSystem
     {
-        LocalInstant GetLocalInstant(int year, int month, int day, int hour, 
-                                     int minute, int second, int millisecond, int tickWithinMillisecond);
+        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay);
+
+        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth,
+                                     int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond);
+
+        LocalInstant GetLocalInstant(LocalInstant localInstant,
+                                     int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond);
 
         FieldSet Fields { get; }
+
+        void Validate(IPartial partial, int[] values);
+
+        int[] GetPartialValues(IPartial partial, LocalInstant instant);
+
+        /// <summary>
+        /// Sets the values from the partial within an existing local instant.
+        /// </summary>
+        LocalInstant SetPartial(IPartial partial, LocalInstant localInstant);
+
+        int[] GetPeriodValues(IPeriod period, LocalInstant start, LocalInstant end);
+
+        int[] GetPeriodValues(IPeriod period, Duration duration);
+
+        LocalInstant Add(IPeriod period, LocalInstant localInstant, int scalar);
+
+        LocalInstant Add(IPeriod period, Duration duration, int scalar);
     }
 }

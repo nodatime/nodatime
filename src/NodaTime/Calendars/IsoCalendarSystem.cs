@@ -24,11 +24,6 @@ namespace NodaTime.Calendars
     /// </summary>
     public sealed class IsoCalendarSystem : AssembledCalendarSystem
     {
-        public static IsoCalendarSystem Utc
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         /// <summary>
         /// Returns the IsoChronology with the system default time zone.
         /// </summary>
@@ -36,9 +31,15 @@ namespace NodaTime.Calendars
         {
             get { throw new NotImplementedException(); }
         }
+
         public static IsoCalendarSystem GetInstance(IDateTimeZone dateTimeZone)
         {
             throw new NotImplementedException();
+        }
+
+        // TODO: Not sure what we'll really need here yet.
+        private IsoCalendarSystem(ICalendarSystem baseSystem) : base(baseSystem, baseSystem.Fields)
+        {
         }
     }
 }
