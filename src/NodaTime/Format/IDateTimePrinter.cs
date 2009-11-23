@@ -15,6 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Text;
+using System.IO;
 namespace NodaTime.Format
 {
     /// <summary>
@@ -22,5 +25,14 @@ namespace NodaTime.Format
     /// </summary>
     public interface IDateTimePrinter
     {
+        void PrintTo(StringBuilder builder, IPartial partial, IFormatProvider locale);
+
+        void PrintTo(Stream stream, IPartial partial, IFormatProvider locale);
+
+        void PrintTo(StringBuilder builder, Instant adjustedInstant, ICalendarSystem iCalendarSystem, Duration timezoneOffset, IDateTimeZone iDateTimeZone, IFormatProvider locale);
+
+        void PrintTo(Stream stream, Instant adjustedInstant, ICalendarSystem iCalendarSystem, Duration timezoneOffset, IDateTimeZone iDateTimeZone, IFormatProvider locale);
+
+        int EstimatedPrintedLength { get; set; }
     }
 }
