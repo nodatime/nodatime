@@ -213,7 +213,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return Ticks.ToString("N", CultureInfo.CurrentUICulture);
+            return Ticks.ToString("N0", CultureInfo.CurrentUICulture);
         }
 
         #endregion  // Object overrides
