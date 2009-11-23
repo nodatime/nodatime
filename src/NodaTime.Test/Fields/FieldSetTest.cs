@@ -31,8 +31,7 @@ namespace NodaTime.Test.Fields
     public class FieldSetTest
     {
         private readonly IDateTimeField sampleField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
-                new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond),
-                new PreciseDurationField(DurationFieldType.Minutes, DateTimeConstants.TicksPerMinute));
+            PreciseDurationField.Seconds, PreciseDurationField.Minutes);
 
         [Test]
         public void FieldsAreCopiedFromBuilderToSet()
@@ -46,7 +45,7 @@ namespace NodaTime.Test.Fields
         public void UnsupportedDateTimeFields_AreBuiltFromDurationFields()
         {
             FieldSet fieldSet = new FieldSet.Builder { 
-                Seconds = new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond) 
+                Seconds = PreciseDurationField.Seconds 
             }.Build();
             IDateTimeField field = fieldSet.SecondOfMinute;
             Assert.IsFalse(field.IsSupported);
@@ -102,10 +101,9 @@ namespace NodaTime.Test.Fields
         [Test]
         public void WithSupportedFieldsFrom_CopiedSupportedFields()
         {
-            FieldSet originalFieldSet = new FieldSet.Builder { SecondOfMinute = sampleField, Seconds = sampleField.DurationField }.Build();
+            FieldSet originalFieldSet = new FieldSet.Builder { SecondOfMinute = sampleField }.Build();
             IDateTimeField newField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
-                new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond),
-                new PreciseDurationField(DurationFieldType.Minutes, DateTimeConstants.TicksPerMinute));
+                PreciseDurationField.Seconds, PreciseDurationField.Minutes);
 
             FieldSet newFieldSet = new FieldSet.Builder { SecondOfMinute = newField }
                 .WithSupportedFieldsFrom(originalFieldSet).Build();
@@ -116,12 +114,11 @@ namespace NodaTime.Test.Fields
         [Test]
         public void WithSupportedFieldsFrom_DoesNotCopyUnsupportedFields()
         {
-            FieldSet originalFieldSet = new FieldSet.Builder { SecondOfMinute = sampleField, Seconds = sampleField.DurationField }.Build();
+            FieldSet originalFieldSet = new FieldSet.Builder { SecondOfMinute = sampleField }.Build();
             Assert.IsFalse(originalFieldSet.SecondOfDay.IsSupported);
 
-            IDateTimeField newField = new PreciseDateTimeField(DateTimeFieldType.SecondOfDay,
-                new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond),
-                new PreciseDurationField(DurationFieldType.Minutes, DateTimeConstants.TicksPerDay));
+            IDateTimeField newField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
+                PreciseDurationField.Seconds, PreciseDurationField.Minutes);
 
             FieldSet newFieldSet = new FieldSet.Builder { SecondOfDay = newField }
                 .WithSupportedFieldsFrom(originalFieldSet).Build();

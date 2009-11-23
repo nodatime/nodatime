@@ -22,6 +22,14 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class PreciseDurationField : DurationFieldBase
     {
+        internal static readonly PreciseDurationField Milliseconds = new PreciseDurationField(DurationFieldType.Milliseconds, DateTimeConstants.TicksPerMillisecond),
+        internal static readonly PreciseDurationField Seconds = new PreciseDurationField(DurationFieldType.Seconds, DateTimeConstants.TicksPerSecond),
+        internal static readonly PreciseDurationField Minutes = new PreciseDurationField(DurationFieldType.Minutes, DateTimeConstants.TicksPerMinute),
+        internal static readonly PreciseDurationField Hours = new PreciseDurationField(DurationFieldType.Hours, DateTimeConstants.TicksPerHour),
+        internal static readonly PreciseDurationField HalfDays = new PreciseDurationField(DurationFieldType.HalfDays, DateTimeConstants.TicksPerDay / 2),
+        internal static readonly PreciseDurationField Days = new PreciseDurationField(DurationFieldType.Days, DateTimeConstants.TicksPerDay),
+        internal static readonly PreciseDurationField Weeks = new PreciseDurationField(DurationFieldType.Weeks, DateTimeConstants.TicksPerWeek)
+
         /// <summary>
         /// The size of the unit, in ticks.
         /// </summary>
