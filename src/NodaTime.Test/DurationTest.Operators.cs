@@ -97,8 +97,8 @@ namespace NodaTime.Test
         {
             Duration test1 = new Duration(123L);
             Duration test2 = new Duration(123L);
-            Assert.AreEqual(test1.GetHashCode(), (object) test1.GetHashCode());
-            Assert.AreEqual(test2.GetHashCode(), (object) test2.GetHashCode());
+            Assert.AreEqual(test1.GetHashCode(), test1.GetHashCode());
+            Assert.AreEqual(test2.GetHashCode(), test2.GetHashCode());
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace NodaTime.Test
         {
             Duration test1 = new Duration(123L);
             Duration test2 = new Duration(123L);
-            Assert.AreEqual(test1.GetHashCode(), (object) test2.GetHashCode());
+            Assert.AreEqual(test1.GetHashCode(), test2.GetHashCode());
         }
 
         [Test]
