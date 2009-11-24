@@ -24,9 +24,54 @@ namespace NodaTime.Calendars
     /// </summary>
     public class GregorianCalendarSystem : BasicGJCalendarSystem
     {
+        private const int DaysFrom0000To1970 = 719527;
+        private const long AverageTicksPerGregorianYear = (long) (365.2425m * DateTimeConstants.TicksPerDay);
+
+        private GregorianCalendarSystem(int minDaysInFirstWeek) : base(null, minDaysInFirstWeek)
+        {
+        }
+
+        protected override void AssembleFields(NodaTime.Fields.FieldSet.Builder builder)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Chronology GetInstance(IDateTimeZone dateTimeZone)
         {
             throw new NotImplementedException();
         }
+
+        protected override LocalInstant CalculateStartOfYear(int year)
+        {
+            // Initial value is just temporary.
+            int leapYears = year / 100;
+            if (year < 0)
+            {
+                // Add 3 before shifting right since /4 and >>2 behave differently
+                // on negative numbers. When the expression is written as
+                // (year / 4) - (year / 100) + (year / 400),
+                // it works for both positive and negative values, except this optimization
+                // eliminates two divisions.
+                leapYears = ((year + 3) >> 2) - leapYears + ((leapYears + 3) >> 2) - 1;
+            }
+            else
+            {
+                leapYears = (year >> 2) - leapYears + (leapYears >> 2);
+                if (IsLeapYear(year))
+                {
+                    leapYears--;
+                }
+            }
+
+            return new LocalInstant((year * 365L + (leapYears - DaysFrom0000To1970)) * DateTimeConstants.TicksPerDay);
+        }
+
+        protected override bool IsLeapYear(int year)
+        {
+            return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
+        }
+
+        public override long AverageTicksPerYear { get { return AverageTicksPerGregorianYear; } }
+        public override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerGregorianYear / 2; } }
     }
 }

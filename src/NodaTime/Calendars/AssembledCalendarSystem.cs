@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NodaTime.Fields;
 
 namespace NodaTime.Calendars
@@ -24,9 +25,98 @@ namespace NodaTime.Calendars
     /// </summary>
     public abstract class AssembledCalendarSystem : CalendarSystemBase
     {
-        protected AssembledCalendarSystem(ICalendarSystem baseCalendar, FieldSet fields)
-            : base(fields)
+        private readonly FieldSet fields;
+
+        protected delegate void FieldAssembler(FieldSet.Builder builder,
+            ICalendarSystem baseCalendar);
+        private readonly bool useBaseTimeOfDayFields;
+        private readonly bool useBaseTicksOfDayFields;
+        private readonly bool useBaseYearMonthDayFields;
+
+        private readonly ICalendarSystem baseCalendar;
+
+        protected AssembledCalendarSystem(ICalendarSystem baseCalendar)
         {
+            this.baseCalendar = baseCalendar;
+            fields = ConstructFields();
+
+            if (baseCalendar != null)
+            {
+                // Work out which fields from the base are still valid, so we can
+                // optimize by calling directly to the base calendar sometimes
+                FieldSet baseFields = baseCalendar.Fields;
+                useBaseTimeOfDayFields = baseFields.HourOfDay == Fields.HourOfDay &&
+                                         baseFields.MinuteOfHour == Fields.MinuteOfHour &&
+                                         baseFields.SecondOfMinute == Fields.SecondOfMinute &&
+                                         baseFields.MillisecondOfSecond == Fields.MillisecondOfSecond &&
+                                         baseFields.TickOfMillisecond == Fields.TickOfMillisecond;
+                useBaseTicksOfDayFields = baseFields.TickOfDay == Fields.TickOfDay;
+                useBaseYearMonthDayFields = baseFields.Year == Fields.Year &&
+                                            baseFields.MonthOfYear == Fields.MonthOfYear &&
+                                            baseFields.DayOfMonth == Fields.DayOfMonth;
+            }
+            else
+            {
+                useBaseYearMonthDayFields = false;
+                useBaseTimeOfDayFields = false;
+                useBaseYearMonthDayFields = false;
+            }
+        }
+
+        public override FieldSet Fields { get { return fields; } }
+
+        internal ICalendarSystem BaseCalendar { get { return baseCalendar; } }
+
+        private FieldSet ConstructFields()
+        {
+            FieldSet.Builder builder = new FieldSet.Builder();
+            if (this.BaseCalendar != null)
+            {
+                builder.WithSupportedFieldsFrom(baseCalendar.Fields);
+            }
+            AssembleFields(builder);
+            return builder.Build();
+        }
+
+        /// <summary>
+        /// I would really like to work out a way of avoiding this at some
+        /// point - abstract/virtual calls in the constructor are awful.
+        /// However, it's hard to work around this at the moment.
+        /// </summary>
+        protected abstract void AssembleFields(FieldSet.Builder builder);
+
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        {
+            if (useBaseYearMonthDayFields && useBaseTimeOfDayFields)
+            {
+                // Only call specialized implementation if applicable fields are the same.
+                return base.GetLocalInstant(year, monthOfYear, dayOfMonth,
+                                            hourOfDay, minuteOfHour, secondOfMinute,
+                                            millisecondOfSecond, tickOfMillisecond);
+            }
+            return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
+        }
+
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay)
+        {
+            if (useBaseTicksOfDayFields && useBaseYearMonthDayFields)
+            {
+                // Only call specialized implementation if applicable fields are the same.
+                return baseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
+            }
+            return base.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
+        }
+
+        public override LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        {
+            if (useBaseTimeOfDayFields)
+            {
+                // Only call specialized implementation if applicable fields are the same.
+                return baseCalendar.GetLocalInstant(localInstant, hourOfDay, 
+                    minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
+            }
+
+            return base.GetLocalInstant(localInstant, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
         }
     }
 }

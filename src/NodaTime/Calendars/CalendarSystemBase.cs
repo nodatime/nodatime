@@ -25,14 +25,7 @@ namespace NodaTime.Calendars
     /// </summary>
     public abstract class CalendarSystemBase : ICalendarSystem
     {
-        private readonly FieldSet fields;
-
-        protected CalendarSystemBase(FieldSet fields)
-        {
-            this.fields = fields;
-        }
-
-        public LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay)
+        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay)
         {
             LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
@@ -40,7 +33,7 @@ namespace NodaTime.Calendars
             return Fields.TickOfDay.SetValue(instant, tickOfDay);
         }
 
-        public LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay,
+        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay,
             int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
         {
             LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
@@ -53,7 +46,7 @@ namespace NodaTime.Calendars
             return Fields.TickOfMillisecond.SetValue(instant, tickOfMillisecond);
         }
 
-        public LocalInstant GetLocalInstant(LocalInstant localInstant, 
+        public virtual LocalInstant GetLocalInstant(LocalInstant localInstant, 
             int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
         {
             localInstant = Fields.HourOfDay.SetValue(localInstant, hourOfDay);
@@ -63,7 +56,7 @@ namespace NodaTime.Calendars
             return Fields.TickOfMillisecond.SetValue(localInstant, tickOfMillisecond);
         }
 
-        public FieldSet Fields { get { return fields; } }
+        public abstract FieldSet Fields { get; }
 
         public void Validate(IPartial partial, int[] values)
         {
