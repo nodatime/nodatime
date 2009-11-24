@@ -20,7 +20,7 @@ using System;
 using NodaTime.Converters;
 using NodaTime.Format;
 
-namespace NodaTime
+namespace NodaTime.Test
 {
     public class MockZeroNullIntegerConverter : IInstantConverter
     {

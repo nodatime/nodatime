@@ -32,9 +32,15 @@ namespace NodaTime
     /// <para>
     /// This type is immutable and thread-safe.
     /// </para>
+    /// </remarks>
     public struct Duration
         : IEquatable<Duration>, IComparable<Duration>
     {
+        public static readonly Duration Zero = new Duration(0L);
+        public static readonly Duration One = new Duration(1L);
+        public static readonly Duration MinValue = new Duration(Int64.MinValue);
+        public static readonly Duration MaxValue = new Duration(Int64.MaxValue);
+
         private readonly long ticks;
 
         /// <summary>
@@ -49,6 +55,21 @@ namespace NodaTime
         public Duration(long ticks)
         {
             this.ticks = ticks;
+        }
+
+        public Duration(long startTicks, long endTicks)
+        {
+            ticks = endTicks - startTicks;
+        }
+
+        public Duration(Instant start, Instant end)
+        {
+            ticks = end.Ticks - start.Ticks;
+        }
+
+        public Duration(Interval interval)
+        {
+            ticks = interval.Duration.Ticks;
         }
 
         #region Operators
@@ -83,9 +104,6 @@ namespace NodaTime
         /// <returns>c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Duration left, Duration right)
         {
-            if (System.Object.ReferenceEquals(left, right)) {
-                return true;
-            }
             return left.Equals(right);
         }
 
@@ -108,9 +126,6 @@ namespace NodaTime
         /// <returns>c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Duration left, Duration right)
         {
-            if (System.Object.ReferenceEquals(left, right)) {
-                return false;
-            }
             return left.CompareTo(right) < 0;
         }
 
@@ -122,9 +137,6 @@ namespace NodaTime
         /// <returns>c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Duration left, Duration right)
         {
-            if (System.Object.ReferenceEquals(left, right)) {
-                return true;
-            }
             return left.CompareTo(right) <= 0;
         }
 
@@ -136,9 +148,6 @@ namespace NodaTime
         /// <returns>c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Duration left, Duration right)
         {
-            if (System.Object.ReferenceEquals(left, right)) {
-                return false;
-            }
             return left.CompareTo(right) > 0;
         }
 
@@ -150,9 +159,6 @@ namespace NodaTime
         /// <returns>c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Duration left, Duration right)
         {
-            if (System.Object.ReferenceEquals(left, right)) {
-                return true;
-            }
             return left.CompareTo(right) >= 0;
         }
 
@@ -222,10 +228,10 @@ namespace NodaTime
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (obj == null) {
-                return false;
+            if (obj is Duration) {
+                return Equals((Duration)obj);
             }
-            return Equals((Duration)obj);
+            return false;
         }
 
         /// <summary>
@@ -248,9 +254,39 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return Ticks.ToString("+#,##0;-#,##0", CultureInfo.CurrentUICulture);
+            return Ticks.ToString("+#,##0' ticks';-#,##0' ticks'", CultureInfo.CurrentUICulture);
         }
 
         #endregion  // Object overrides
+
+        public static Duration StandardDays(long days)
+        {
+            return new Duration(days * DateTimeConstants.TicksPerDay);
+        }
+
+        public static Duration StandardHours(long hours)
+        {
+            return new Duration(hours * DateTimeConstants.TicksPerHour);
+        }
+
+        public static Duration StandardMinutes(long minutes)
+        {
+            return new Duration(minutes * DateTimeConstants.TicksPerMinute);
+        }
+
+        public static Duration StandardSeconds(long seconds)
+        {
+            return new Duration(seconds * DateTimeConstants.TicksPerSecond);
+        }
+
+        public static Duration Milliseconds(long milliseconds)
+        {
+            return new Duration(milliseconds * DateTimeConstants.TicksPerMillisecond);
+        }
+
+        public static Duration Parse(string s)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

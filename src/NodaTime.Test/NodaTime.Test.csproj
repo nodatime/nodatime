@@ -73,6 +73,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DurationTest.cs" />
+    <Compile Include="DurationTest.Operators.cs">
+      <DependentUpon>DurationTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DurationTest.Construction.cs">
+      <DependentUpon>DurationTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Fields\DateTimeFieldBaseTest.cs" />
     <Compile Include="Fields\DecoratedDateTimeFieldTest.cs" />
     <Compile Include="Fields\DurationFieldBaseTest.cs" />
@@ -89,6 +95,9 @@
     <Compile Include="FixedDateTimeZoneTest.cs" />
     <Compile Include="Periods\DaysTest.cs" />
     <Compile Include="Periods\DaysTest.Constants.cs">
+      <DependentUpon>DaysTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\DaysTest.Factories.cs">
       <DependentUpon>DaysTest.cs</DependentUpon>
     </Compile>
     <Compile Include="MockZeroNullIntegerConverter.cs" />

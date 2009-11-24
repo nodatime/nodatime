@@ -15,17 +15,16 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Calendars;
 using NodaTime.Fields;
 
-namespace NodaTime
+namespace NodaTime.Calendars
 {
     /// <summary>
     /// A system of defining time in terms of years, months, days and so forth.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The most commonly use calendar system in Noda Time is <see cref="IsoCalendarSystem" />,
+    /// The most commonly use calendar system in Noda Time is <see cref="Calendars.IsoCalendarSystem" />,
     /// which is used as a default value in many overloaded methods and constructors.
     /// </para>
     /// <para>
@@ -35,6 +34,7 @@ namespace NodaTime
     /// <para>
     /// The members of this class are unlikely to be used directly by most users of the API.
     /// </para>
+    /// </remarks>
     public interface ICalendarSystem
     {
         LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay);

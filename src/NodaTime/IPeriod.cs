@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using NodaTime.Fields;
+using NodaTime.Periods;
 
 namespace NodaTime
 {
@@ -65,9 +68,9 @@ namespace NodaTime
         bool IsSupported(DurationFieldType field);
 
         /// <summary>
-        /// Get this period as an immutable <see cref="NodaTime.Period"/> object.
+        /// Get this period as an immutable <see cref="Period"/> object.
         /// 
-        /// This will either typecase this instance, or create a new <see cref="NodaTime.Period"/>Period</see>.
+        /// This will either typecase this instance, or create a new <see cref="Period"/>Period</see>.
         /// </summary>
         /// <returns>a Duration using the same field set and values</returns>
         Period ToPeriod();

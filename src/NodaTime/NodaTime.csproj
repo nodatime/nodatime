@@ -101,7 +101,7 @@
     <Compile Include="Converters\ConverterManager.cs" />
     <Compile Include="Converters\IConverter.cs" />
     <Compile Include="Converters\IInstantConverter.cs" />
-    <Compile Include="ICalendarSystem.cs" />
+    <Compile Include="Calendars\ICalendarSystem.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Format\IPeriodParser.cs" />
@@ -115,9 +115,18 @@
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DateTimeZones.cs" />
     <Compile Include="TimeZones\DefaultNameProvider.cs" />
+    <Compile Include="TimeZones\DSTZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneProvider.cs" />
     <Compile Include="TimeZones\INameProvider.cs" />
+    <Compile Include="TimeZones\JIsoCalendarSystem.cs" />
+    <Compile Include="TimeZones\ZoneYearOffset.cs" />
+    <Compile Include="TimeZones\PrecalculatedZone.cs" />
+    <Compile Include="TimeZones\ZoneRecurrence.cs" />
+    <Compile Include="TimeZones\ZoneRule.cs" />
+    <Compile Include="TimeZones\ZoneRuleSet.cs" />
+    <Compile Include="TimeZones\ZoneTransition.cs" />
+    <Compile Include="TimeZones\TransitionMode.cs" />
     <Compile Include="TimeZones\UtcProvider.cs" />
     <Compile Include="TimeZones\ZoneInfoProvider.cs" />
     <Compile Include="Partials\MonthDay.cs" />
@@ -158,6 +167,7 @@
     <Compile Include="IPeriod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Periods\SingleFieldPeriodBase.cs" />
+    <Compile Include="Utility\HashCodeHelper.cs" />
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +175,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Diagrams\Calendars.cd" />
+    <None Include="Diagrams\Fields.cd" />
     <None Include="Diagrams\Partial.cd" />
     <None Include="Diagrams\Period.cd" />
   </ItemGroup>

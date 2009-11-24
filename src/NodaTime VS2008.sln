@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Test", "NodaTime.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoneInfoCompiler", "ZoneInfoCompiler\ZoneInfoCompiler.csproj", "{F51A7DF5-1559-45C3-A606-494DAD63A892}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoneInfoCompiler.Test", "ZoneInfoCompiler.Test\ZoneInfoCompiler.Test.csproj", "{0A4C2376-D366-43DB-92E1-306FFCC81553}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{F51A7DF5-1559-45C3-A606-494DAD63A892}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F51A7DF5-1559-45C3-A606-494DAD63A892}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F51A7DF5-1559-45C3-A606-494DAD63A892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A4C2376-D366-43DB-92E1-306FFCC81553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A4C2376-D366-43DB-92E1-306FFCC81553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A4C2376-D366-43DB-92E1-306FFCC81553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A4C2376-D366-43DB-92E1-306FFCC81553}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
