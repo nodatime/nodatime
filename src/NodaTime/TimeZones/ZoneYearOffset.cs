@@ -280,7 +280,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override int GetHashCode()
         {
-            int hash = HashCodeHelper.Intialize();
+            int hash = HashCodeHelper.Initialize();
             hash = HashCodeHelper.Hash(hash, this.mode);
             hash = HashCodeHelper.Hash(hash, this.monthOfYear);
             hash = HashCodeHelper.Hash(hash, this.dayOfMonth);

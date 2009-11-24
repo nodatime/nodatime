@@ -135,7 +135,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override int GetHashCode()
         {
-            int hash = HashCodeHelper.Intialize();
+            int hash = HashCodeHelper.Initialize();
             hash = HashCodeHelper.Hash(hash, this.fromYear);
             hash = HashCodeHelper.Hash(hash, this.toYear);
             hash = HashCodeHelper.Hash(hash, this.recurrence);
