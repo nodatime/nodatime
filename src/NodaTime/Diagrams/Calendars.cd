@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NodaTime.Calendars.AssembledCalendarSystem" Collapsed="true">
+    <Position X="1.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Calendars\AssembledCalendarSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Calendars.BasicCalendarSystem" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Calendars\BasicCalendarSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Calendars.BasicGJCalendarSystem" Collapsed="true">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Calendars\BasicGJCalendarSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Calendars.GregorianCalendarSystem" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Calendars\GregorianCalendarSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Calendars.IsoCalendarSystem" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEABAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Calendars\IsoCalendarSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Calendars.CalendarSystemBase" Collapsed="true">
+    <Position X="1.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEgAA=</HashCode>
+      <FileName>Calendars\CalendarSystemBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -156,7 +156,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClassDiagram2.cd" />
+    <None Include="Diagrams\Calendars.cd" />
+    <None Include="Diagrams\Fields.cd" />
     <None Include="Diagrams\Partial.cd" />
     <None Include="Diagrams\Period.cd" />
   </ItemGroup>
