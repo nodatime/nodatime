@@ -366,15 +366,17 @@ namespace NodaTime.Test
         [Test]
         public void OperatorPlus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (zero + zero).Ticks);
-            Assert.AreEqual(1L, (one + zero).Ticks);
-            Assert.AreEqual(1L, (zero + one).Ticks);
+            Assert.AreEqual(0L, (zero + zero).Ticks, "0 + 0");
+            Assert.AreEqual(1L, (one + zero).Ticks, "1 + 0");
+            Assert.AreEqual(1L, (zero + one).Ticks, "0 + 1");
         }
 
         [Test]
         public void OperatorPlus_NonZero()
         {
-            Assert.AreEqual(3000001L, (threeMillion + one).Ticks);
+            Assert.AreEqual(3000001L, (threeMillion + one).Ticks, "3,000,000 + 1");
+            Assert.AreEqual(0L, (one + negativeOne).Ticks, "1 + (-1)");
+            Assert.AreEqual(-49999999L, (negativeFiftyMillion + one).Ticks, "-50,000,000 + 1");
         }
 
         #endregion
@@ -384,15 +386,17 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMinus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (zero - zero).Ticks);
-            Assert.AreEqual(1L, (one - zero).Ticks);
-            Assert.AreEqual(-1L, (zero - one).Ticks);
+            Assert.AreEqual(0L, (zero - zero).Ticks, "0 - 0");
+            Assert.AreEqual(1L, (one - zero).Ticks, "1 - 0");
+            Assert.AreEqual(-1L, (zero - one).Ticks, "0 - 1");
         }
 
         [Test]
         public void OperatorMinus_NonZero()
         {
-            Assert.AreEqual(2999999L, (threeMillion - one).Ticks);
+            Assert.AreEqual(2999999L, (threeMillion - one).Ticks, "3,000,000 - 1");
+            Assert.AreEqual(2L, (one - negativeOne).Ticks, "1 - (-1)");
+            Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).Ticks, "-50,000,000 - 1");
         }
 
         #endregion
