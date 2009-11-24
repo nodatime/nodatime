@@ -54,14 +54,9 @@ namespace NodaTime.Periods
 
         #endregion
 
-        /// <summary>
-        /// The period in the units of this period.
-        /// </summary>
-        private int period;
-
         protected SingleFieldPeriodBase(int period)
         {
-            this.period = period;
+            this.Value = period;
         }
 
         public int CompareTo(SingleFieldPeriodBase other)
@@ -72,11 +67,7 @@ namespace NodaTime.Periods
         /// <summary>
         /// The amount of this period.
         /// </summary>
-        protected int Value
-        {
-            get { return period; }
-            set { period = value; }
-        }
+        protected int Value { get; set; }
 
         /// <summary>
         /// Gets the single duartion field type.
