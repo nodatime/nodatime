@@ -15,10 +15,9 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Calendars;
 using NodaTime.Fields;
 
-namespace NodaTime
+namespace NodaTime.Calendars
 {
     /// <summary>
     /// A system of defining time in terms of years, months, days and so forth.
