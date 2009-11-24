@@ -40,6 +40,7 @@ namespace NodaTime.Test
         [Test]
         public void IEquatableEquals_WithDifferentTicks_IsFalse()
         {
+            Assert.False(one.Equals(negativeOne), "1 == -1");
             Assert.False(one.Equals(threeMillion), "1 == 3,000,000");
             Assert.False(one.Equals(negativeFiftyMillion), "1 == -50,000,000");
             Assert.False(minimum.Equals(maximum), "MinValue == MaxValue");
@@ -78,11 +79,13 @@ namespace NodaTime.Test
         public void ObjectEquals_WithDifferentTicks_IsFalse()
         {
             object oOne = one;
+            object oNegativeOne = negativeOne;
             object oThreeMillion = threeMillion;
             object oNegativeFiftyMillion = negativeFiftyMillion;
             object oMinimum = minimum;
             object oMaximum = maximum;
 
+            Assert.False(oOne.Equals(oNegativeOne), "1 == -1");
             Assert.False(oOne.Equals(oThreeMillion), "1 == 3,000,000");
             Assert.False(oOne.Equals(oNegativeFiftyMillion), "1 == -50,000,000");
             Assert.False(oMinimum.Equals(oMaximum), "MinValue == MaxValue");
@@ -177,6 +180,7 @@ namespace NodaTime.Test
         [Test]
         public void OperatorEquals_WithDifferentTicks_IsFalse()
         {
+            Assert.False(one == negativeOne, "1 == -1");
             Assert.False(one == threeMillion, "1 == 3,000,000");
             Assert.False(one == negativeFiftyMillion, "1 == -50,000,000");
             Assert.False(minimum == maximum, "MinValue == MaxValue");
@@ -205,6 +209,7 @@ namespace NodaTime.Test
         [Test]
         public void OperatorNotEquals_WithDifferentTicks_IsTrue()
         {
+            Assert.True(one != negativeOne, "1 != -1");
             Assert.True(one != threeMillion, "1 != 3,000,000");
             Assert.True(one != negativeFiftyMillion, "1 != -50,000,000");
             Assert.True(minimum != maximum, "MinValue != MaxValue");
