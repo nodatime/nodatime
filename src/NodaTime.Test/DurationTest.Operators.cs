@@ -23,63 +23,7 @@ namespace NodaTime.Test
 {
     partial class DurationTest
     {
-        [Test]
-        public void OperatorPlus_Zero_IsNeutralElement()
-        {
-            Assert.AreEqual(0L, (zero + zero).Ticks);
-            Assert.AreEqual(1L, (one + zero).Ticks);
-            Assert.AreEqual(1L, (zero + one).Ticks);
-        }
-
-        [Test]
-        public void OperatorPlus_NonZero()
-        {
-            Assert.AreEqual(3000001L, (threeMillion + one).Ticks);
-        }
-
-        [Test]
-        public void OperatorMinus_Zero_IsNeutralElement()
-        {
-            Assert.AreEqual(0L, (zero - zero).Ticks);
-            Assert.AreEqual(1L, (one - zero).Ticks);
-            Assert.AreEqual(-1L, (zero - one).Ticks);
-        }
-
-        [Test]
-        public void OperatorMinus_NonZero()
-        {
-            Assert.AreEqual(2999999L, (threeMillion - one).Ticks);
-        }
-
-        [Test]
-        public void CompareTo_Self_IsEqual()
-        {
-            Assert.AreEqual(0, one.CompareTo(one), "1 == 1 (same object)");
-        }
-
-        [Test]
-        public void CompareTo_WithEqualTicks_IsEqual()
-        {
-            Assert.AreEqual(0, one.CompareTo(onePrime), "1 == 1 (different objects)");
-        }
-
-        [Test]
-        public void CompareTo_WithMoreTicks_IsGreater()
-        {
-            Assert.Greater(one.CompareTo(negativeFiftyMillion), 0, "1 > -50,000,000");
-            Assert.Greater(threeMillion.CompareTo(one), 0, "3,000,000 > 1");
-            Assert.Greater(negativeOne.CompareTo(negativeFiftyMillion), 0, "-1 > -50,000,000");
-            Assert.Greater(maximum.CompareTo(minimum), 0, "MaxValue > MinValue");
-        }
-
-        [Test]
-        public void CompareTo_WithLessTicks_IsLess()
-        {
-            Assert.Less(negativeFiftyMillion.CompareTo(one), 0, "-50,000,000 < 1");
-            Assert.Less(one.CompareTo(threeMillion), 0, "1 < 3,000,000");
-            Assert.Less(negativeFiftyMillion.CompareTo(negativeOne), 0, "-50,000,000 > -1");
-            Assert.Less(minimum.CompareTo(maximum), 0, "MinValue < MaxValue");
-        }
+        #region IEquatable.Equals
 
         [Test]
         public void IEquatableEquals_ToSelf_IsTrue()
@@ -100,6 +44,10 @@ namespace NodaTime.Test
             Assert.False(one.Equals(negativeFiftyMillion), "1 == -50,000,000");
             Assert.False(minimum.Equals(maximum), "MinValue == MaxValue");
         }
+
+        #endregion
+
+        #region object.Equals
 
         [Test]
         public void ObjectEquals_ToNull_IsFalse()
@@ -140,6 +88,76 @@ namespace NodaTime.Test
             Assert.False(oMinimum.Equals(oMaximum), "MinValue == MaxValue");
         }
 
+        #endregion
+
+        #region object.GetHashCode
+
+        [Test]
+        public void GetHashCode_Twice_IsEqual()
+        {
+            Duration test1 = new Duration(123L);
+            Duration test2 = new Duration(123L);
+            Assert.AreEqual(test1.GetHashCode(), (object) test1.GetHashCode());
+            Assert.AreEqual(test2.GetHashCode(), (object) test2.GetHashCode());
+        }
+
+        [Test]
+        public void GetHashCode_SameTicks_IsEqual()
+        {
+            Duration test1 = new Duration(123L);
+            Duration test2 = new Duration(123L);
+            Assert.AreEqual(test1.GetHashCode(), (object) test2.GetHashCode());
+        }
+
+        [Test]
+        public void GetHashCode_DifferentTicks_IsDifferent()
+        {
+            Duration test1 = new Duration(123L);
+            Duration test2 = new Duration(123L);
+            Duration test3 = new Duration(321L);
+
+            Assert.AreNotEqual(test1.GetHashCode(), test3.GetHashCode());
+            Assert.AreNotEqual(test2.GetHashCode(), test3.GetHashCode());
+        }
+
+        #endregion
+
+        #region CompareTo
+
+        [Test]
+        public void CompareTo_Self_IsEqual()
+        {
+            Assert.AreEqual(0, one.CompareTo(one), "1 == 1 (same object)");
+        }
+
+        [Test]
+        public void CompareTo_WithEqualTicks_IsEqual()
+        {
+            Assert.AreEqual(0, one.CompareTo(onePrime), "1 == 1 (different objects)");
+        }
+
+        [Test]
+        public void CompareTo_WithMoreTicks_IsGreater()
+        {
+            Assert.Greater(one.CompareTo(negativeFiftyMillion), 0, "1 > -50,000,000");
+            Assert.Greater(threeMillion.CompareTo(one), 0, "3,000,000 > 1");
+            Assert.Greater(negativeOne.CompareTo(negativeFiftyMillion), 0, "-1 > -50,000,000");
+            Assert.Greater(maximum.CompareTo(minimum), 0, "MaxValue > MinValue");
+        }
+
+        [Test]
+        public void CompareTo_WithLessTicks_IsLess()
+        {
+            Assert.Less(negativeFiftyMillion.CompareTo(one), 0, "-50,000,000 < 1");
+            Assert.Less(one.CompareTo(threeMillion), 0, "1 < 3,000,000");
+            Assert.Less(negativeFiftyMillion.CompareTo(negativeOne), 0, "-50,000,000 > -1");
+            Assert.Less(minimum.CompareTo(maximum), 0, "MinValue < MaxValue");
+        }
+
+        #endregion
+
+        #region operator ==
+
         [Test]
         public void OperatorEquals_ToSelf_IsTrue()
         {
@@ -164,6 +182,10 @@ namespace NodaTime.Test
             Assert.False(minimum == maximum, "MinValue == MaxValue");
         }
 
+        #endregion
+
+        #region operator !=
+
         [Test]
         public void OperatorNotEquals_ToSelf_IsFalse()
         {
@@ -187,6 +209,10 @@ namespace NodaTime.Test
             Assert.True(one != negativeFiftyMillion, "1 != -50,000,000");
             Assert.True(minimum != maximum, "MinValue != MaxValue");
         }
+
+        #endregion
+
+        #region operator <
 
         [Test]
         public void OperatorLessThan_Self_IsFalse()
@@ -220,6 +246,10 @@ namespace NodaTime.Test
             Assert.False(maximum < minimum, "MaxValue < MinValue");
         }
 
+        #endregion
+
+        #region operator <=
+
         [Test]
         public void OperatorLessThanOrEqual_Self_IsTrue()
         {
@@ -251,6 +281,10 @@ namespace NodaTime.Test
             Assert.False(negativeOne <= negativeFiftyMillion, "-1 <= -50,000,000");
             Assert.False(maximum <= minimum, "MaxValue <= MinValue");
         }
+
+        #endregion
+
+        #region operator >
 
         [Test]
         public void OperatorGreaterThan_Self_IsFalse()
@@ -284,6 +318,10 @@ namespace NodaTime.Test
             Assert.True(maximum > minimum, "MaxValue > MinValue");
         }
 
+        #endregion
+
+        #region operator >=
+
         [Test]
         public void OperatorGreaterThanOrEqual_Self_IsTrue()
         {
@@ -315,5 +353,44 @@ namespace NodaTime.Test
             Assert.True(negativeOne >= negativeFiftyMillion, "-1 >= -50,000,000");
             Assert.True(maximum >= minimum, "MaxValue >= MinValue");
         }
+
+        #endregion
+
+        #region operator +
+
+        [Test]
+        public void OperatorPlus_Zero_IsNeutralElement()
+        {
+            Assert.AreEqual(0L, (zero + zero).Ticks);
+            Assert.AreEqual(1L, (one + zero).Ticks);
+            Assert.AreEqual(1L, (zero + one).Ticks);
+        }
+
+        [Test]
+        public void OperatorPlus_NonZero()
+        {
+            Assert.AreEqual(3000001L, (threeMillion + one).Ticks);
+        }
+
+        #endregion
+
+        #region operator -
+
+        [Test]
+        public void OperatorMinus_Zero_IsNeutralElement()
+        {
+            Assert.AreEqual(0L, (zero - zero).Ticks);
+            Assert.AreEqual(1L, (one - zero).Ticks);
+            Assert.AreEqual(-1L, (zero - one).Ticks);
+        }
+
+        [Test]
+        public void OperatorMinus_NonZero()
+        {
+            Assert.AreEqual(2999999L, (threeMillion - one).Ticks);
+        }
+
+        #endregion
+
     }
 }
