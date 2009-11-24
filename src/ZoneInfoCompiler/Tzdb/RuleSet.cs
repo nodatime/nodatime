@@ -15,15 +15,15 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime.ZoneInfoCompiler
+using System.Collections.Generic;
+
+namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
-    /// Original name: ZoneInfoCompiler (in org.joda.time.tz)
+    /// Defines a list of daylight savings rules.
     /// </summary>
-    internal sealed class Program
+    internal class RuleSet
+        : List<Rule>
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }

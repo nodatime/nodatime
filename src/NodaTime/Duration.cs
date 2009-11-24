@@ -36,6 +36,9 @@ namespace NodaTime
         : IEquatable<Duration>, IComparable<Duration>
     {
         public static readonly Duration Zero = new Duration(0L);
+        public static readonly Duration One = new Duration(1L);
+        public static readonly Duration MinValue = new Duration(Int64.MinValue);
+        public static readonly Duration MaxValue = new Duration(Int64.MaxValue);
 
         private readonly long ticks;
 
