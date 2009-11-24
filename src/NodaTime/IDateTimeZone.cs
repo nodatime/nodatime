@@ -51,7 +51,7 @@ namespace NodaTime
         /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
         /// than local time. In other words, UTC = local time - (offset from local).
         /// </summary>
-        /// <param name="instant">The instant for which to calculate the offset.</param>
+        /// <param name="localTime">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
         Duration GetOffsetFromLocal(LocalDateTime localTime);
 

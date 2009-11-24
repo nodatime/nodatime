@@ -16,7 +16,7 @@ namespace NodaTime.TimeZones
         /// Creates a new fixed time zone.
         /// </summary>
         /// <param name="id">The ID of the time zone.</param>
-        /// <param name="standardOffset">The offset from UTC. A positive duration indicates that the local time is later than UTC.</param>
+        /// <param name="offset">The offset from UTC. A positive duration indicates that the local time is later than UTC.</param>
         public FixedDateTimeZone(string id, Duration offset)
         {
             this.id = id;

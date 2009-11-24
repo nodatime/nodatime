@@ -18,9 +18,6 @@ using System;
 
 namespace NodaTime.Fields
 {
-    /// <summary>
-    /// 
-    /// </summary>
     internal class UnsupportedDurationField : DurationField
     {
         private static readonly UnsupportedDurationField[] Cache = Array.ConvertAll
