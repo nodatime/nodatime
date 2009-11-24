@@ -17,6 +17,7 @@
 
 using System;
 using System.Text;
+using NodaTime.Utility;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {

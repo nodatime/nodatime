@@ -93,8 +93,6 @@ namespace NodaTime.TimeZones
          *
          * @param firstTicks ticks of first transition
          */
-        int x;
-
         public IEnumerable<ZoneTransition> Transitions(LocalInstant instant)
         {
             ZoneTransition transition = null;

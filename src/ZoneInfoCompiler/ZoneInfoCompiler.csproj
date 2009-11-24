@@ -69,7 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleLog.cs" />
-    <Compile Include="HashCodeHelper.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="LogBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,6 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tzdb\Data\Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NodaTime\NodaTime.csproj">
+      <Project>{42B687A6-0F76-4638-A372-161C922A998B}</Project>
+      <Name>NodaTime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

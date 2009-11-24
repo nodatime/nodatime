@@ -41,7 +41,7 @@ namespace NodaTime.Utility
         /// Returns the initial value for a hash code.
         /// </summary>
         /// <returns>The initial interger value.</returns>
-        public static int Intialize()
+        public static int Initialize()
         {
             return HashcodeInitializer;
         }
