@@ -48,8 +48,10 @@ namespace NodaTime.Fields
 
         public static UnsupportedDurationField ForFieldType(DurationFieldType fieldType)
         {
-            // If the field type is out of range, accessing the array will throw the right
-            // exception anyway, so we don't need to check.
+            if (!DurationFieldBase.IsTypeValid(fieldType))
+            {
+                throw new ArgumentOutOfRangeException("fieldType");
+            }
             return Cache[(int) fieldType];
         }
 
