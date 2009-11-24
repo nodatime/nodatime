@@ -1,15 +1,15 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ZoneInfoCompiler")]
+[assembly: AssemblyTitle("ZoneInfoCompiler.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ZoneInfoCompiler")]
+[assembly: AssemblyProduct("ZoneInfoCompiler.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("71c2f0ad-a18f-40e5-8b20-4def18f268c3")]
+[assembly: Guid("3def8f36-bc1e-4555-8677-ad8f1058e9af")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,6 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: CLSCompliant(true)]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("ZoneInfoCompiler.Test")]

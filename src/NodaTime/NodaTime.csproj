@@ -106,9 +106,18 @@
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DateTimeZones.cs" />
     <Compile Include="TimeZones\DefaultNameProvider.cs" />
+    <Compile Include="TimeZones\DSTZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneProvider.cs" />
     <Compile Include="TimeZones\INameProvider.cs" />
+    <Compile Include="TimeZones\JIsoCalendarSystem.cs" />
+    <Compile Include="TimeZones\ZoneYearOffset.cs" />
+    <Compile Include="TimeZones\PrecalculatedZone.cs" />
+    <Compile Include="TimeZones\ZoneRecurrence.cs" />
+    <Compile Include="TimeZones\ZoneRule.cs" />
+    <Compile Include="TimeZones\ZoneRuleSet.cs" />
+    <Compile Include="TimeZones\ZoneTransition.cs" />
+    <Compile Include="TimeZones\TransitionMode.cs" />
     <Compile Include="TimeZones\UtcProvider.cs" />
     <Compile Include="TimeZones\ZoneInfoProvider.cs" />
     <Compile Include="Partials\MonthDay.cs" />
@@ -149,6 +158,7 @@
     <Compile Include="IPeriod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Periods\SingleFieldPeriodBase.cs" />
+    <Compile Include="Utility\HashCodeHelper.cs" />
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>

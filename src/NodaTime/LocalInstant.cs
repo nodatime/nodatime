@@ -12,6 +12,8 @@ namespace NodaTime
         : IEquatable<LocalInstant>, IComparable<LocalInstant>
     {
         public static readonly LocalInstant LocalUnixEpoch = new LocalInstant(0);
+        public static readonly LocalInstant MinValue = new LocalInstant(Int64.MinValue);
+        public static readonly LocalInstant MaxValue = new LocalInstant(Int64.MaxValue);
 
         private readonly long ticks;
 
