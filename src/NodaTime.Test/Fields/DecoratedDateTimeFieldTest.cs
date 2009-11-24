@@ -53,6 +53,7 @@ namespace NodaTime.Test.Fields
             AssertDelegated(x => x.GetMaximumValue(when1));
             AssertDelegated(x => x.GetMaximumValue());
             AssertDelegated(x => x.SetValue(when1, 100));
+            AssertDelegated(x => x.RoundFloor(when1));
         }
 
         private static void AssertDelegated<T>(Func<IDateTimeField, T> func)
@@ -64,9 +65,8 @@ namespace NodaTime.Test.Fields
 
         private static IDateTimeField CreateSampleField()
         {
-            DurationField ticks = TicksDurationField.Instance;
-            DurationField millis = new PreciseDurationField(DurationFieldType.Milliseconds, DateTimeConstants.TicksPerMillisecond);
-            return new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, ticks, millis);            
+            return new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, 
+                TicksDurationField.Instance, PreciseDurationField.Milliseconds);            
         }
 
         private class SimpleDecoratedDateTimeField : DecoratedDateTimeField

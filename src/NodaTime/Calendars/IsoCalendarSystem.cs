@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Fields;
 
 namespace NodaTime.Calendars
 {
@@ -37,8 +38,17 @@ namespace NodaTime.Calendars
             throw new NotImplementedException();
         }
 
+        protected override void AssembleFields(FieldSet.Builder builder)
+        {
+            throw new NotImplementedException();
+        }
+
         // TODO: Not sure what we'll really need here yet.
-        private IsoCalendarSystem(ICalendarSystem baseSystem) : base(baseSystem, baseSystem.Fields)
+        private IsoCalendarSystem(ICalendarSystem baseSystem) : base(baseSystem)
+        {
+        }
+
+        private static void AssembleFields(FieldSet.Builder fields, ICalendarSystem baseCalendar)
         {
         }
     }

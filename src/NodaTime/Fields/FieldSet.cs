@@ -143,6 +143,16 @@ namespace NodaTime.Fields
             era = builder.Era ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.Era, eras);
         }
 
+        /// <summary>
+        /// Convenience method to create a new field set with
+        /// the current field set as a "base" overridden with
+        /// supported fields from the given set.
+        /// </summary>
+        internal FieldSet WithSupportedFieldsFrom(FieldSet fields)
+        {
+            return new Builder(this).WithSupportedFieldsFrom(fields).Build();
+        }
+
         // TODO: Consider making FieldSet privately mutable and mutate it directly in the builder.
         // Pros: Less copying
         // Cons: Builders aren't reusable, and FieldSet isn't as obviously thread-safe.

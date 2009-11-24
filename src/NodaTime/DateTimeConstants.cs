@@ -1,5 +1,4 @@
 ﻿#region Copyright and license information
-
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,9 +13,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
+using System;
 
 namespace NodaTime
 {
@@ -33,9 +32,10 @@ namespace NodaTime
         // Note: I (Martinho) renamed Millis to Milliseconds to keep consistency with existing Framework members
 
         /// <summary>
-        /// As per <see cref="System.TimeSpan.TicksPerMillisecond" />, included here for consistency.
+        /// As per <see cref="TimeSpan.TicksPerMillisecond" />, 
+        /// included here for consistency.
         /// </summary>
-        public const long TicksPerMillisecond = 10000;
+        public const long TicksPerMillisecond = TimeSpan.TicksPerMillisecond;
 
         /// <summary>
         /// Original name: MILLIS_PER_MINUTE
