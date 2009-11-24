@@ -26,7 +26,7 @@
   <Class Name="NodaTime.Periods.Days" Collapsed="true">
     <Position X="8" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAgIEAAEAIAAAQAEAAAAAAggAAgAAIA=</HashCode>
+      <HashCode>AAAAAAFAAAAAAAgIEAAEAIAAAQAEAEAAAAggAAgAgKA=</HashCode>
       <FileName>Periods\Days.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -86,5 +86,12 @@
       <FileName>IPeriod.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Enum Name="NodaTime.Periods.PeriodType" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAACQCAAAQAAAAAAAAIAQoAAESAgBAAAEAQE=</HashCode>
+      <FileName>Periods\PeriodType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

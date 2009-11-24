@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 using NodaTime.Fields;
 
 namespace NodaTime.Periods
@@ -24,6 +26,19 @@ namespace NodaTime.Periods
     /// </summary>
     public sealed class Period : PeriodBase
     {
+        public static readonly Period Zero = new Period();
+
+        public Period()
+        {
+        }
+
+        public Period(
+            int years, int months, int weeks, int days,
+            int hours, int minutes, int seconds, int millis)
+        {
+            throw new NotImplementedException();
+        }
+
         public override PeriodType PeriodType
         {
             get { throw new System.NotImplementedException(); }
@@ -57,6 +72,31 @@ namespace NodaTime.Periods
         public override Period ToPeriod()
         {
             throw new System.NotImplementedException();
+        }
+
+        public static Period Years(int years)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Period Months(int months)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Period Weeks(int weeks)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Period Days(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Period Hours(int hours)
+        {
+            throw new NotImplementedException();
         }
     }
 }
