@@ -25,15 +25,79 @@ namespace NodaTime.Calendars
     /// </summary>
     public abstract class CalendarSystemBase : ICalendarSystem
     {
-        public LocalInstant GetLocalInstant(int year, int month, int day, int hour, 
-            int minute, int second, int millisecond, int tickWithinMillisecond)
+        private readonly FieldSet fields;
+
+        protected CalendarSystemBase(FieldSet fields)
+        {
+            this.fields = fields;
+        }
+
+        public LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay)
+        {
+            LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
+            instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
+            instant = Fields.DayOfMonth.SetValue(instant, dayOfMonth);
+            return Fields.TickOfDay.SetValue(instant, tickOfDay);
+        }
+
+        public LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay,
+            int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        {
+            LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
+            instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
+            instant = Fields.DayOfMonth.SetValue(instant, dayOfMonth);
+            instant = Fields.HourOfDay.SetValue(instant, hourOfDay);
+            instant = Fields.MinuteOfHour.SetValue(instant, minuteOfHour);
+            instant = Fields.SecondOfMinute.SetValue(instant, secondOfMinute);
+            instant = Fields.MillisecondOfSecond.SetValue(instant, millisecondOfSecond);
+            return Fields.TickOfMillisecond.SetValue(instant, tickOfMillisecond);
+        }
+
+        public LocalInstant GetLocalInstant(LocalInstant localInstant, 
+            int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        {
+            localInstant = Fields.HourOfDay.SetValue(localInstant, hourOfDay);
+            localInstant = Fields.MinuteOfHour.SetValue(localInstant, minuteOfHour);
+            localInstant = Fields.SecondOfMinute.SetValue(localInstant, secondOfMinute);
+            localInstant = Fields.MillisecondOfSecond.SetValue(localInstant, millisecondOfSecond);
+            return Fields.TickOfMillisecond.SetValue(localInstant, tickOfMillisecond);
+        }
+
+        public FieldSet Fields { get { return fields; } }
+
+        public void Validate(IPartial partial, int[] values)
         {
             throw new NotImplementedException();
         }
 
-        public FieldSet Fields
+        public int[] GetPartialValues(IPartial partial, LocalInstant instant)
         {
-            get { throw new NotImplementedException(); }
+            throw new NotImplementedException();
+        }
+
+        public LocalInstant SetPartial(IPartial partial, LocalInstant localInstant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int[] GetPeriodValues(IPeriod period, LocalInstant start, LocalInstant end)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int[] GetPeriodValues(IPeriod period, Duration duration)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LocalInstant Add(IPeriod period, LocalInstant localInstant, int scalar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LocalInstant Add(IPeriod period, Duration duration, int scalar)
+        {
+            throw new NotImplementedException();
         }
     }
 }
