@@ -16,7 +16,7 @@
 #endregion
 
 
-namespace NodaTime
+namespace NodaTime.Fields
 {
     /// <summary>
     /// Original name: DurationFieldType.
