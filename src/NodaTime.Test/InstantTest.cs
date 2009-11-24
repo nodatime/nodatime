@@ -56,7 +56,7 @@ namespace NodaTime.Test
             + 28L * DateTimeConstants.MillisecondsPerMinute;
 
         [Test]
-        public void TestInsantOperators()
+        public void TestInstantOperators()
         {
             long diff = TestTime2 - TestTime1;
 

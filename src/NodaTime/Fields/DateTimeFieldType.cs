@@ -15,7 +15,7 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime
+namespace NodaTime.Fields
 {
     /// <summary>
     /// Type of a date time field.

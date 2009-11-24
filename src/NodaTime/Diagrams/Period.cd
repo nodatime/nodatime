@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="NodaTime.Base.SingleFieldPeriodBase" Collapsed="true">
+  <Class Name="NodaTime.Periods.SingleFieldPeriodBase" Collapsed="true">
     <Position X="2.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAABAAgAAAAQugAAAAAAACAAAAIABEAAgAiAAgAA=</HashCode>
@@ -8,14 +8,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="NodaTime.Base.PeriodBase" Collapsed="true">
-    <Position X="0.75" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Periods\PeriodBase.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="NodaTime.Base.AbstractPeriod" Collapsed="true">
+  <Class Name="NodaTime.Periods.AbstractPeriod" Collapsed="true">
     <Position X="0.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAAAAAIAAAgABKAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
@@ -23,7 +16,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="NodaTime.Period" Collapsed="true">
+  <Class Name="NodaTime.Periods.Period" Collapsed="true">
     <Position X="0.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAAAAAIAAAgABKAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
@@ -33,7 +26,7 @@
   <Class Name="NodaTime.Periods.Days" Collapsed="true">
     <Position X="8" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAgIEAAEAIAAAQAEAAAAAAggAAgAAIA=</HashCode>
+      <HashCode>AAAAAAFAAAAAAAgIEAAEAIAAAQAEAEAAAAggAAgAgKA=</HashCode>
       <FileName>Periods\Days.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -79,6 +72,13 @@
       <FileName>Periods\Years.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="NodaTime.Periods.PeriodBase" Collapsed="true">
+    <Position X="0.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Periods\PeriodBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="NodaTime.IPeriod" Collapsed="true">
     <Position X="1.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
@@ -86,5 +86,12 @@
       <FileName>IPeriod.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Enum Name="NodaTime.Periods.PeriodType" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAACQCAAAQAAAAAAAAIAQoAAESAgBAAAEAQE=</HashCode>
+      <FileName>Periods\PeriodType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

@@ -17,6 +17,8 @@
 
 using System;
 
+using NodaTime.Calendars;
+
 namespace NodaTime
 {
     /// <summary>
