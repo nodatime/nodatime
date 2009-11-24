@@ -68,12 +68,17 @@
     <Compile Include="Clock.cs" />
     <Compile Include="Clocks\FixedClock.cs" />
     <Compile Include="Calendars\CalendarSystems.cs" />
+    <Compile Include="Fields\BasicYearDateTimeField.cs" />
     <Compile Include="Fields\DateTimeFieldBase.cs" />
     <Compile Include="Fields\DecoratedDateTimeField.cs" />
     <Compile Include="Fields\DelegatedDateTimeField.cs" />
     <Compile Include="Fields\FieldSet.cs" />
     <Compile Include="Fields\DurationFieldBase.cs" />
     <Compile Include="Fields\FieldUtils.cs" />
+    <Compile Include="Fields\GJEraDateTimeField.cs" />
+    <Compile Include="Fields\GJYearOfEraDateTimeField.cs" />
+    <Compile Include="Fields\ImpreciseDateTimeField.cs" />
+    <Compile Include="Fields\OffsetDateTimeField.cs" />
     <Compile Include="Fields\PreciseDateTimeField.cs" />
     <Compile Include="Fields\PreciseDurationField.cs" />
     <Compile Include="Fields\PreciseDurationDateTimeField.cs" />

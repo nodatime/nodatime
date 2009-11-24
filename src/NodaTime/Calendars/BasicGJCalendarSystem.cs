@@ -17,5 +17,11 @@
 
 namespace NodaTime.Calendars
 {
-    public abstract class BasicGJCalendarSystem : BasicCalendarSystem {}
+    public abstract class BasicGJCalendarSystem : BasicCalendarSystem
+    {
+        protected BasicGJCalendarSystem(ICalendarSystem baseCalendar,
+            int minDaysInFirstWeek) : base(baseCalendar, minDaysInFirstWeek)
+        {
+        }
+    }
 }
