@@ -92,7 +92,7 @@
     <Compile Include="Converters\ConverterManager.cs" />
     <Compile Include="Converters\IConverter.cs" />
     <Compile Include="Converters\IInstantConverter.cs" />
-    <Compile Include="ICalendarSystem.cs" />
+    <Compile Include="Calendars\ICalendarSystem.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Format\IPeriodParser.cs" />
@@ -166,6 +166,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Diagrams\Calendars.cd" />
+    <None Include="Diagrams\Fields.cd" />
     <None Include="Diagrams\Partial.cd" />
     <None Include="Diagrams\Period.cd" />
   </ItemGroup>

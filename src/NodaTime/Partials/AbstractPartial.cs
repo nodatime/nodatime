@@ -16,7 +16,8 @@
 #endregion
 
 using System;
-namespace NodaTime.Base
+
+namespace NodaTime.Partials
 {
     /// <summary>
     /// Original name: AbstractPartial

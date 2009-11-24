@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -15,7 +15,9 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime.Base
+using NodaTime.Fields;
+
+namespace NodaTime.Periods
 {
     /// <summary>
     /// Original name: AbstractPeriod

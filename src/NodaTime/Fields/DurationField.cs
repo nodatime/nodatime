@@ -16,7 +16,7 @@
 #endregion
 using System;
 
-namespace NodaTime
+namespace NodaTime.Fields
 {
     /// <summary>
     /// Original name: DurationField.

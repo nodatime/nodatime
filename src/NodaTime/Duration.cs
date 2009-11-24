@@ -32,6 +32,7 @@ namespace NodaTime
     /// <para>
     /// This type is immutable and thread-safe.
     /// </para>
+    /// </remarks>
     public struct Duration
         : IEquatable<Duration>, IComparable<Duration>
     {
@@ -54,6 +55,21 @@ namespace NodaTime
         public Duration(long ticks)
         {
             this.ticks = ticks;
+        }
+
+        public Duration(long startTicks, long endTicks)
+        {
+            ticks = endTicks - startTicks;
+        }
+
+        public Duration(Instant start, Instant end)
+        {
+            ticks = end.Ticks - start.Ticks;
+        }
+
+        public Duration(Interval interval)
+        {
+            ticks = interval.Duration.Ticks;
         }
 
         #region Operators
@@ -242,5 +258,35 @@ namespace NodaTime
         }
 
         #endregion  // Object overrides
+
+        public static Duration StandardDays(long days)
+        {
+            return new Duration(days * DateTimeConstants.TicksPerDay);
+        }
+
+        public static Duration StandardHours(long hours)
+        {
+            return new Duration(hours * DateTimeConstants.TicksPerHour);
+        }
+
+        public static Duration StandardMinutes(long minutes)
+        {
+            return new Duration(minutes * DateTimeConstants.TicksPerMinute);
+        }
+
+        public static Duration StandardSeconds(long seconds)
+        {
+            return new Duration(seconds * DateTimeConstants.TicksPerSecond);
+        }
+
+        public static Duration Milliseconds(long milliseconds)
+        {
+            return new Duration(milliseconds * DateTimeConstants.TicksPerMillisecond);
+        }
+
+        public static Duration Parse(string s)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

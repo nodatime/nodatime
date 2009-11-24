@@ -17,7 +17,7 @@
 
 using System;
 
-namespace NodaTime
+namespace NodaTime.Periods
 {
     /// <summary>
     /// Original name: PeriodType
