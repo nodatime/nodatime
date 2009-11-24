@@ -22,7 +22,7 @@ namespace NodaTime.Test.Periods
 {
 	partial class DaysTest
 	{
-        [TestCase]
+        [Test]
         public void ConstantsTest_Valid()
         {
             Assert.AreEqual(0, Days.Zero.Value);

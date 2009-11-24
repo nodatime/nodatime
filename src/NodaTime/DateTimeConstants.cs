@@ -33,7 +33,7 @@ namespace NodaTime
         // Note: I (Martinho) renamed Millis to Milliseconds to keep consistency with existing Framework members
 
         /// <summary>
-        /// As per <see cref="TimeSpan.TicksPerMillisecond" />, included here for consistency.
+        /// As per <see cref="System.TimeSpan.TicksPerMillisecond" />, included here for consistency.
         /// </summary>
         public const long TicksPerMillisecond = 10000;
 

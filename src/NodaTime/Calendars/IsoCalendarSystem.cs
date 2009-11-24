@@ -25,7 +25,7 @@ namespace NodaTime.Calendars
     public sealed class IsoCalendarSystem : AssembledCalendarSystem
     {
         /// <summary>
-        /// Returns the IsoChronology with the system default time zone.
+        /// Returns the <see cref="IsoCalendarSystem"/> with the system default time zone.
         /// </summary>
         public static IsoCalendarSystem SystemDefault
         {

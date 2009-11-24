@@ -36,3 +36,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: CLSCompliant(true)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("ZoneInfoCompiler.Test")]

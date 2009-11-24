@@ -68,8 +68,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="ConsoleLog.cs" />
+    <Compile Include="ILog.cs" />
+    <Compile Include="LogBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tokens.cs" />
+    <Compile Include="Tzdb\DateTimeOfYear.cs" />
+    <Compile Include="Tzdb\MissingTokenException.cs" />
+    <Compile Include="Tzdb\ParserHelper.cs" />
+    <Compile Include="Tzdb\Rule.cs" />
+    <Compile Include="Tzdb\RuleSet.cs" />
+    <Compile Include="Tzdb\TzdbDatabase.cs" />
+    <Compile Include="Tzdb\TzdbZoneInfoCompiler.cs" />
+    <Compile Include="Tzdb\TzdbZoneInfoParser.cs" />
+    <Compile Include="Tzdb\Zone.cs" />
+    <Compile Include="Tzdb\ZoneAlias.cs" />
+    <Compile Include="Tzdb\ZoneList.cs" />
+    <Compile Include="ZoneInfoCompiler.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -92,6 +107,28 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tzdb\Data\africa" />
+    <None Include="Tzdb\Data\antarctica" />
+    <None Include="Tzdb\Data\asia" />
+    <None Include="Tzdb\Data\australasia" />
+    <None Include="Tzdb\Data\backward" />
+    <None Include="Tzdb\Data\etcetera" />
+    <None Include="Tzdb\Data\europe" />
+    <None Include="Tzdb\Data\northamerica" />
+    <None Include="Tzdb\Data\pacificnew" />
+    <None Include="Tzdb\Data\southamerica" />
+    <None Include="Tzdb\Data\systemv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tzdb\Data\Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NodaTime\NodaTime.csproj">
+      <Project>{42B687A6-0F76-4638-A372-161C922A998B}</Project>
+      <Name>NodaTime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
