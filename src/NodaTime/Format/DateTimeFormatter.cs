@@ -137,8 +137,8 @@ namespace NodaTime.Format
         public void PrintTo(StringBuilder builder, Instant instant)
         {
             Chronology chronology;
-            Duration timezoneOffset;
-            Instant adjustedInstant;
+            Offset timezoneOffset;
+            LocalInstant adjustedInstant;
             PrepareToPrint(instant, out chronology, out timezoneOffset, out adjustedInstant);
 
             printer.PrintTo(builder, adjustedInstant, chronology.CalendarSystem, timezoneOffset, chronology.Zone, locale);
@@ -147,8 +147,8 @@ namespace NodaTime.Format
         public void PrintTo(Stream stream, Instant instant)
         {
             Chronology chronology;
-            Duration timezoneOffset;
-            Instant adjustedInstant;
+            Offset timezoneOffset;
+            LocalInstant adjustedInstant;
             PrepareToPrint(instant, out chronology, out timezoneOffset, out adjustedInstant);
 
             printer.PrintTo(stream, adjustedInstant, chronology.CalendarSystem, timezoneOffset, chronology.Zone, locale);
@@ -190,7 +190,7 @@ namespace NodaTime.Format
             return builder.ToString();
         }
 
-        private void PrepareToPrint(Instant instant, out Chronology chronology, out Duration timezoneOffset, out Instant adjustedInstant)
+        private void PrepareToPrint(Instant instant, out Chronology chronology, out Offset timezoneOffset, out LocalInstant adjustedInstant)
         {
             RequirePrinter();
 

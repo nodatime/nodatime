@@ -85,9 +85,13 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Adds a cutover for added rules. The standard offset at the cutover defaults to 0. Call
-        /// <see cref="DateTimeZoneBuilder.SetStandardOffset"/> afterwards to change it.
+        /// Adds a cutover for added rules.
         /// </summary>
+        /// <remarks>
+        /// A cutover is a point where the standard offset from GMT/UTC changed. This occurs mostly
+        /// pre-1900. The standard offset at the cutover defaults to 0. Call <see
+        /// cref="DateTimeZoneBuilder.SetStandardOffset"/> afterwards to change it.
+        /// </remarks>
         /// <param name="year">The year of cutover.</param>
         /// <param name="mode">The transition mode.</param>
         /// <param name="monthOfYear">The month of year.</param>
@@ -106,7 +110,8 @@ namespace NodaTime.TimeZones
                                               bool advanceDayOfWeek,
                                               Duration ticksOfDay)
         {
-            if (ruleSets.Count > 0) {
+            if (ruleSets.Count > 0)
+            {
                 ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, ticksOfDay);
                 LastRuleSet.SetUpperLimit(year, yearOffset);
             }
@@ -119,7 +124,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="standardOffset">The standard offset.</param>
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
-        public DateTimeZoneBuilder SetStandardOffset(Duration standardOffset)
+        public DateTimeZoneBuilder SetStandardOffset(Offset standardOffset)
         {
             LastRuleSet.StandardOffset = standardOffset;
             return this;
@@ -131,7 +136,7 @@ namespace NodaTime.TimeZones
         /// <param name="nameKey">The name key of new rule.</param>
         /// <param name="savings">The <see cref="Duration"/> to add to standard offset.</param>
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
-        public DateTimeZoneBuilder SetFixedSavings(String nameKey, Duration savings)
+        public DateTimeZoneBuilder SetFixedSavings(String nameKey, Offset savings)
         {
             LastRuleSet.SetFixedSavings(nameKey, savings);
             return this;
@@ -154,7 +159,7 @@ namespace NodaTime.TimeZones
         /// <param name="ticksOfDay">The <see cref="Duration"/> into the day. Additional precision for specifying time of day of transitions</param>
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
         public DateTimeZoneBuilder AddRecurringSavings(String nameKey,
-                                                       Duration savings,
+                                                       Offset savings,
                                                        int fromYear,
                                                        int toYear,
                                                        TransitionMode mode,
@@ -164,13 +169,126 @@ namespace NodaTime.TimeZones
                                                        bool advanceDayOfWeek,
                                                        Duration ticksOfDay)
         {
-            if (fromYear <= toYear) {
+            if (fromYear <= toYear)
+            {
                 ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthYearOffset, dayOfMonth, dayOfWeek, advanceDayOfWeek, ticksOfDay);
                 ZoneRecurrence recurrence = new ZoneRecurrence(yearOffset, nameKey, savings);
                 ZoneRule rule = new ZoneRule(recurrence, fromYear, toYear);
                 LastRuleSet.AddRule(rule);
             }
             return this;
+        }
+
+        /**
+         * Processes all the rules and builds a DateTimeZone.
+         *
+         * @param id  time zone id to assign
+         * @param outputID  true if the zone id should be output
+         */
+        public IDateTimeZone ToDateTimeZone(String zoneId)
+        {
+            if (zoneId == null)
+            {
+                throw new ArgumentNullException("zoneId", "zoneId cannot be null");
+            }
+
+            var transitions = new List<ZoneTransition>();
+            IDateTimeZone tailZone = null;
+            Instant instant = Instant.MinValue;
+            Duration savings = Duration.Zero;
+
+            int ruleSetCount = this.ruleSets.Count;
+            for (int i = 0; i < ruleSetCount; i++)
+            {
+                var ruleSet = this.ruleSets[i];
+                var transitionIterator = ruleSet.Iterator(instant);
+                var nextTransition = transitionIterator.Next();
+                if (nextTransition == null)
+                {
+                    continue;
+                }
+                AddTransition(transitions, nextTransition);
+
+                while ((nextTransition = transitionIterator.Next()) != null)
+                {
+                    if (AddTransition(transitions, nextTransition))
+                    {
+                        if (tailZone != null)
+                        {
+                            // Got the extra transition before DSTZone.
+                            break;
+                        }
+                    }
+                    if (tailZone == null && i == ruleSetCount - 1)
+                    {
+                        tailZone = transitionIterator.BuildTailZone(zoneId);
+                        // If tailZone is not null, don't break out of main loop until at least one
+                        // more transition is calculated. This ensures a correct 'seam' to the
+                        // DSTZone.
+                    }
+                }
+
+                instant = ruleSet.getUpperLimit(transitionIterator.Savings);
+            }
+
+            // Check if a simpler zone implementation can be returned.
+            if (transitions.Count == 0)
+            {
+                if (tailZone != null)
+                {
+                    // This shouldn't happen, but handle just in case.
+                    return tailZone;
+                }
+                return new FixedDateTimeZone(zoneId, Offset.Zero);
+            }
+            if (transitions.Count == 1 && tailZone == null)
+            {
+                ZoneTransition tr = transitions[0];
+                return new FixedDateTimeZone(zoneId, tr.WallOffset);
+            }
+
+            PrecalculatedDateTimeZone zone = PrecalculatedDateTimeZone.create(zoneId, transitions, tailZone);
+            if (zone.IsCachable())
+            {
+                return CachedDateTimeZone.ForZone(zone);
+            }
+            return zone;
+        }
+
+        /// <summary>
+        /// Adds the given transition to the transition list if it represents a new transition.
+        /// </summary>
+        /// <param name="transitions">The list of <see cref="ZoneTransition"/> to add to.</param>
+        /// <param name="transition">The transition to add.</param>
+        /// <returns><c>true</c> if the transition was added.</returns>
+        private bool AddTransition(IList<ZoneTransition> transitions, ZoneTransition transition)
+        {
+            int transitionCount = transitions.Count;
+            if (transitionCount == 0)
+            {
+                transitions.Add(transition);
+                return true;
+            }
+
+            ZoneTransition lastTransition = transitions[transitionCount - 1];
+            if (!transition.IsTransitionFrom(lastTransition))
+            {
+                return false;
+            }
+
+            // If local time of new transition is same as last local time, just replace last
+            // transition with new one.
+            LocalInstant lastLocal = lastTransition.Instant + lastTransition.WallOffset;
+            LocalInstant newLocal = transition.Instant + transition.WallOffset;
+
+            if (newLocal != lastLocal)
+            {
+                transitions.Add(transition);
+                return true;
+            }
+
+            transitions.RemoveAt(transitionCount - 1);
+            return AddTransition(transitions, transition);
         }
 
         /// <summary>
@@ -181,7 +299,8 @@ namespace NodaTime.TimeZones
         {
             get
             {
-                if (ruleSets.Count == 0) {
+                if (ruleSets.Count == 0)
+                {
                     AddEndOfTimeRuleSet();
                 }
                 return ruleSets[ruleSets.Count - 1];
@@ -342,114 +461,6 @@ public class DateTimeZoneBuilder {
         return (RuleSet)iRuleSets.get(iRuleSets.size() - 1);
     }
     
-    /**
-     * Processes all the rules and builds a DateTimeZone.
-     *
-     * @param id  time zone id to assign
-     * @param outputID  true if the zone id should be output
-     */
-    public DateTimeZone toDateTimeZone(String id, boolean outputID) {
-        if (id == null) {
-            throw new IllegalArgumentException();
-        }
-
-        // Discover where all the transitions occur and store the results in
-        // these lists.
-        ArrayList transitions = new ArrayList();
-
-        // Tail zone picks up remaining transitions in the form of an endless
-        // DST cycle.
-        DSTZone tailZone = null;
-
-        long millis = Long.MIN_VALUE;
-        int saveMillis = 0;
-            
-        int ruleSetCount = iRuleSets.size();
-        for (int i=0; i<ruleSetCount; i++) {
-            RuleSet rs = (RuleSet)iRuleSets.get(i);
-            Transition next = rs.firstTransition(millis);
-            if (next == null) {
-                continue;
-            }
-            addTransition(transitions, next);
-            millis = next.getMillis();
-            saveMillis = next.getSaveMillis();
-
-            // Copy it since we're going to destroy it.
-            rs = new RuleSet(rs);
-
-            while ((next = rs.nextTransition(millis, saveMillis)) != null) {
-                if (addTransition(transitions, next)) {
-                    if (tailZone != null) {
-                        // Got the extra transition before DSTZone.
-                        break;
-                    }
-                }
-                millis = next.getMillis();
-                saveMillis = next.getSaveMillis();
-                if (tailZone == null && i == ruleSetCount - 1) {
-                    tailZone = rs.buildTailZone(id);
-                    // If tailZone is not null, don't break out of main loop until
-                    // at least one more transition is calculated. This ensures a
-                    // correct 'seam' to the DSTZone.
-                }
-            }
-
-            millis = rs.getUpperLimit(saveMillis);
-        }
-
-        // Check if a simpler zone implementation can be returned.
-        if (transitions.size() == 0) {
-            if (tailZone != null) {
-                // This shouldn't happen, but handle just in case.
-                return tailZone;
-            }
-            return buildFixedZone(id, "UTC", 0, 0);
-        }
-        if (transitions.size() == 1 && tailZone == null) {
-            Transition tr = (Transition)transitions.get(0);
-            return buildFixedZone(id, tr.getNameKey(),
-                                  tr.getWallOffset(), tr.getStandardOffset());
-        }
-
-        PrecalculatedZone zone = PrecalculatedZone.create(id, outputID, transitions, tailZone);
-        if (zone.isCachable()) {
-            return CachedDateTimeZone.forZone(zone);
-        }
-        return zone;
-    }
-
-    private boolean addTransition(ArrayList transitions, Transition tr) {
-        int size = transitions.size();
-        if (size == 0) {
-            transitions.add(tr);
-            return true;
-        }
-
-        Transition last = (Transition)transitions.get(size - 1);
-        if (!tr.isTransitionFrom(last)) {
-            return false;
-        }
-
-        // If local time of new transition is same as last local time, just
-        // replace last transition with new one.
-        int offsetForLast = 0;
-        if (size >= 2) {
-            offsetForLast = ((Transition)transitions.get(size - 2)).getWallOffset();
-        }
-        int offsetForNew = last.getWallOffset();
-
-        long lastLocal = last.getMillis() + offsetForLast;
-        long newLocal = tr.getMillis() + offsetForNew;
-
-        if (newLocal != lastLocal) {
-            transitions.add(tr);
-            return true;
-        }
-
-        transitions.remove(size - 1);
-        return addTransition(transitions, tr);
-    }
 
     /**
      * Encodes a built DateTimeZone to the given stream. Call readFrom to
