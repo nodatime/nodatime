@@ -71,7 +71,10 @@ namespace NodaTime.Utility
         [SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", Justification = "Deliberately overflowing.")]
         private static int MakeHash(int code, int value)
         {
-            code = (code * HashcodeMultiplier) + value;
+            unchecked
+            {
+                code = (code * HashcodeMultiplier) + value;
+            }
             return code;
         }
     }

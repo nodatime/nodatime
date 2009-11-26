@@ -1,5 +1,4 @@
 ﻿#region Copyright and license information
-
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -23,73 +21,146 @@ using System.Globalization;
 namespace NodaTime
 {
     /// <summary>
-    /// Represents an instant on the timeline, measured in ticks from the Unix epoch,
-    /// which is typically described as January 1st 1970, midnight, UTC (ISO calendar).
-    /// (There are 10,000 ticks in a millisecond.)
+    /// An offset from UTC in ticks. (There are 10,000 ticks in a millisecond.)
     /// </summary>
     /// <remarks>
-    /// The default value of this struct is the Unix epoch.
+    /// <para>
+    /// Offsets are constrained to the range (-24 hours, 24 hours). If the ticks value given is
+    /// outside this range then the value is forced into the range by considering that time wraps as
+    /// it goes around the world multiple times. 
+    /// </para>
+    /// <para>
+    /// There is no concept of fields, such as days or seconds, as these fields can vary in length.
+    /// A duration may be converted to an <see cref="IPeriod" /> to obtain field values. This
+    /// conversion will typically cause a loss of precision.
+    /// </para>
+    /// <para>
     /// This type is immutable and thread-safe.
+    /// </para>
     /// </remarks>
-    public struct Instant
-        : IEquatable<Instant>, IComparable<Instant>
+    public struct Offset
+        : IEquatable<Offset>, IComparable<Offset>
     {
-        public static readonly Instant UnixEpoch = new Instant(0);
-        public static readonly Instant MinValue = new Instant(Int64.MinValue);
-        public static readonly Instant MaxValue = new Instant(Int64.MaxValue);
+        public static readonly Offset Zero = new Offset(0L);
+        public static readonly Offset One = new Offset(1L);
+        public static readonly Offset MinValue = new Offset(-DateTimeConstants.TicksPerDay + 1);
+        public static readonly Offset MaxValue = new Offset(DateTimeConstants.TicksPerDay - 1);
 
         private readonly long ticks;
 
         /// <summary>
-        /// Ticks since the Unix epoch.
+        /// The number of ticks in the duration.
         /// </summary>
         public long Ticks { get { return ticks; } }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Instant"/> struct.
+        /// Initializes a new instance of the <see cref="Offset"/> struct.
         /// </summary>
-        /// <param name="ticks">The ticks from the unix epoch.</param>
-        public Instant(long ticks)
+        /// <remarks>
+        /// Offsets are constrained to the range (-24 hours, 24 hours). If the ticks value given is
+        /// outside this range then the value is forced into the range by considering that time
+        /// wraps as it goes around the world multiple times. 
+        /// </remarks>
+        /// <param name="ticks">The number of ticks.</param>
+        public Offset(long ticks)
         {
-            this.ticks = ticks;
+            this.ticks = ticks % DateTimeConstants.TicksPerDay;
+        }
+
+        /// <summary>
+        /// Creates an offset with the specified number of hours.
+        /// </summary>
+        /// <param name="hours">The number of hours.</param>
+        /// <returns>
+        /// A new <see cref="Offset"/> representing the given value.
+        /// </returns>
+        /// <remarks>
+        /// TODO: not sure about the name. Anyone got a better one?
+        /// </remarks>
+        public static Offset Create(int hours)
+        {
+            return Create(hours, 0, 0, 0);
+        }
+
+        /// <summary>
+        /// Creates an offset with the specified number of hours and minutes.
+        /// </summary>
+        /// <param name="hours">The number of hours.</param>
+        /// <param name="minutes">The number of minutes.</param>
+        /// <returns>
+        /// A new <see cref="Offset"/> representing the given values.
+        /// </returns>
+        /// <remarks>
+        /// TODO: not sure about the name. Anyone got a better one?
+        /// </remarks>
+        public static Offset Create(int hours, int minutes)
+        {
+            return Create(hours, minutes, 0, 0);
+        }
+
+        /// <summary>
+        /// Creates an offset with the specified number of hours, minutes, and seconds.
+        /// </summary>
+        /// <param name="hours">The number of hours.</param>
+        /// <param name="minutes">The number of minutes.</param>
+        /// <param name="seconds">The number of seconds.</param>
+        /// <returns>
+        /// A new <see cref="Offset"/> representing the given values.
+        /// </returns>
+        /// <remarks>
+        /// TODO: not sure about the name. Anyone got a better one?
+        /// </remarks>
+        public static Offset Create(int hours, int minutes, int seconds)
+        {
+            return Create(hours, minutes, seconds, 0);
+        }
+
+        /// <summary>
+        /// Creates an offset with the specified number of hours, minutes, seconds, and
+        /// milliseconds.
+        /// </summary>
+        /// <param name="hours">The number of hours.</param>
+        /// <param name="minutes">The number of minutes.</param>
+        /// <param name="seconds">The number of seconds.</param>
+        /// <param name="milliseconds">The number of milliseconds.</param>
+        /// <returns>
+        /// A new <see cref="Offset"/> representing the given values.
+        /// </returns>
+        /// <remarks>
+        /// TODO: not sure about the name. Anyone got a better one?
+        /// </remarks>
+        public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
+        {
+            return new Offset(
+                (hours * DateTimeConstants.TicksPerHour) +
+                (minutes * DateTimeConstants.TicksPerMinute) +
+                (seconds * DateTimeConstants.TicksPerSecond) +
+                (milliseconds * DateTimeConstants.TicksPerMillisecond)
+                );
         }
 
         #region Operators
 
         /// <summary>
-        /// Returns the difference between two instants as a duration.
-        /// TODO: It *could* return an interval... but I think this is better.
-        /// </summary>
-        public static Duration operator -(Instant first, Instant second)
-        {
-            return new Duration(first.Ticks - second.Ticks);
-        }
-
-        /// <summary>
-        /// Returns an instant after adding the given duration
-        /// </summary>
-        public static Instant operator +(Instant instant, Duration duration)
-        {
-            return new Instant(instant.Ticks + duration.Ticks);
-        }
-
-        /// <summary>
-        /// Returns an instant after subtracting the given duration
-        /// </summary>
-        public static Instant operator -(Instant instant, Duration duration)
-        {
-            return new Instant(instant.Ticks - duration.Ticks);
-        }
-
-        /// <summary>
-        /// Implements the operator + (addition) for <see cref="Instant"/> + <see cref="Offset"/>.
+        /// Implements the operator + (addition).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
-        public static LocalInstant operator +(Instant instant, Offset offset)
+        /// <returns>A new <see cref="Offset"/> representing the sum of the given values.</returns>
+        public static Offset operator +(Offset left, Offset right)
         {
-            return new LocalInstant(instant.Ticks + offset.Ticks);
+            return new Offset(left.Ticks + right.Ticks);
+        }
+
+        /// <summary>
+        /// Implements the operator - (subtraction).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Offset"/> representing the difference of the given values.</returns>
+        public static Offset operator -(Offset left, Offset right)
+        {
+            return new Offset(left.Ticks - right.Ticks);
         }
 
         /// <summary>
@@ -98,7 +169,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator ==(Instant left, Instant right)
+        public static bool operator ==(Offset left, Offset right)
         {
             return left.Equals(right);
         }
@@ -109,7 +180,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator !=(Instant left, Instant right)
+        public static bool operator !=(Offset left, Offset right)
         {
             return !(left == right);
         }
@@ -120,7 +191,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
-        public static bool operator <(Instant left, Instant right)
+        public static bool operator <(Offset left, Offset right)
         {
             return left.CompareTo(right) < 0;
         }
@@ -131,7 +202,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
-        public static bool operator <=(Instant left, Instant right)
+        public static bool operator <=(Offset left, Offset right)
         {
             return left.CompareTo(right) <= 0;
         }
@@ -142,7 +213,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
-        public static bool operator >(Instant left, Instant right)
+        public static bool operator >(Offset left, Offset right)
         {
             return left.CompareTo(right) > 0;
         }
@@ -153,14 +224,14 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
-        public static bool operator >=(Instant left, Instant right)
+        public static bool operator >=(Offset left, Offset right)
         {
             return left.CompareTo(right) >= 0;
         }
 
         #endregion // Operators
 
-        #region IEquatable<Instant> Members
+        #region IEquatable<Offset> Members
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -170,14 +241,14 @@ namespace NodaTime
         /// true if the current object is equal to the <paramref name="other"/> parameter;
         /// otherwise, false.
         /// </returns>
-        public bool Equals(Instant other)
+        public bool Equals(Offset other)
         {
             return this.Ticks == other.Ticks;
         }
 
         #endregion
 
-        #region IComparable<Instant> Members
+        #region IComparable<Offset> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -205,7 +276,7 @@ namespace NodaTime
         /// </item>
         /// </list>
         /// </returns>
-        public int CompareTo(Instant other)
+        public int CompareTo(Offset other)
         {
             return Ticks.CompareTo(other.Ticks);
         }
@@ -224,9 +295,9 @@ namespace NodaTime
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (obj is Instant)
+            if (obj is Offset)
             {
-                return Equals((Instant)obj);
+                return Equals((Offset)obj);
             }
             return false;
         }
@@ -251,7 +322,14 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return Ticks.ToString("N0", CultureInfo.CurrentUICulture);
+            bool negative = Ticks < 0;
+            long ticks = negative ? -Ticks : Ticks;
+            long hours = ticks / DateTimeConstants.TicksPerHour;
+            long minutes = (ticks % DateTimeConstants.TicksPerHour) / DateTimeConstants.TicksPerMinute;
+            long seconds = (ticks % DateTimeConstants.TicksPerMinute) / DateTimeConstants.TicksPerSecond;
+            long milliseconds = (ticks % DateTimeConstants.TicksPerSecond) / DateTimeConstants.TicksPerMillisecond;
+            string sign = negative ? "-" : "+";
+            return string.Format(CultureInfo.InvariantCulture, "{0}{1:D2}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, milliseconds);
         }
 
         #endregion  // Object overrides

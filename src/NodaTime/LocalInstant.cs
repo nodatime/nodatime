@@ -51,6 +51,18 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Implements the operator - (subtraction) for <see cref="LocalInstant"/> - <see
+        /// cref="Offset"/>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
+        public static Instant operator -(LocalInstant instant, Offset offset)
+        {
+            return new Instant(instant.Ticks - offset.Ticks);
+        }
+
+        /// <summary>
         /// Returns an instant after subtracting the given duration
         /// </summary>
         public static LocalInstant operator -(LocalInstant instant, Duration duration)
