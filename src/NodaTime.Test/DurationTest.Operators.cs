@@ -392,5 +392,26 @@ namespace NodaTime.Test
 
         #endregion
 
+        #region operator /
+        [Test]
+        public void OperatorDivision()
+        {
+            Assert.AreEqual(1000, (threeMillion / 3000).Ticks);
+        }
+
+        [Test]
+        public void OperatorDivisionTruncates()
+        {
+            Assert.AreEqual(1, (threeMillion / 2000000).Ticks);
+        }
+        #endregion
+
+        #region operator *
+        [Test]
+        public void OperatorMultiplication()
+        {
+            Assert.AreEqual(threeMillion, new Duration(3000) * 1000);
+        }
+        #endregion
     }
 }

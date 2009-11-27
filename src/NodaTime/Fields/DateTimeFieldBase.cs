@@ -19,17 +19,18 @@ using System;
 
 namespace NodaTime.Fields
 {
+    /// <summary>
+    /// Porting status: need partial, text and wrap implementations
+    /// </summary>
     public abstract class DateTimeFieldBase : IDateTimeField
     {
-        internal readonly static int DateTimeFieldTypeLength = Enum.GetValues(typeof(DateTimeFieldType)).Length;
-
         private readonly DateTimeFieldType fieldType;
         
         protected DateTimeFieldBase(DateTimeFieldType fieldType)
         {
-            if (!IsTypeValid(fieldType))
+            if (fieldType == null)
             {
-                throw new ArgumentOutOfRangeException("fieldType");
+                throw new ArgumentNullException("fieldType");
             }
             this.fieldType = fieldType;
         }
@@ -56,12 +57,12 @@ namespace NodaTime.Fields
             return DurationField.Add(localInstant, value);
         }
 
-        public int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        public virtual int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return DurationField.GetDifference(minuendInstant, subtrahendInstant);
         }
 
-        public long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        public virtual long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return DurationField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }
@@ -108,7 +109,7 @@ namespace NodaTime.Fields
         public virtual LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             LocalInstant newInstant = RoundFloor(localInstant);
-            if (newInstant.Ticks != localInstant.Ticks)
+            if (newInstant != localInstant)
             {
                 newInstant = Add(newInstant, 1);
             }
@@ -120,8 +121,8 @@ namespace NodaTime.Fields
             LocalInstant floor = RoundFloor(localInstant);
             LocalInstant ceiling = RoundCeiling(localInstant);
 
-            long diffFromFloor = localInstant.Ticks - floor.Ticks;
-            long diffToCeiling = ceiling.Ticks - localInstant.Ticks;
+            Duration diffFromFloor = localInstant - floor;
+            Duration diffToCeiling = ceiling - localInstant;
 
              // Closer to the floor, or halfway - round floor
             return diffFromFloor <= diffToCeiling ? floor : ceiling;
@@ -144,8 +145,8 @@ namespace NodaTime.Fields
             LocalInstant floor = RoundFloor(localInstant);
             LocalInstant ceiling = RoundCeiling(localInstant);
 
-            long diffFromFloor = localInstant.Ticks - floor.Ticks;
-            long diffToCeiling = ceiling.Ticks - localInstant.Ticks;
+            Duration diffFromFloor = localInstant - floor;
+            Duration diffToCeiling = ceiling - localInstant;
 
             // Closer to the floor - round floor
             if (diffFromFloor < diffToCeiling)
@@ -167,8 +168,7 @@ namespace NodaTime.Fields
 
         public virtual Duration Remainder(LocalInstant localInstant)
         {
-            // TODO: Improve this in terms of readability when we've got operators on local instants
-            return new Duration(localInstant.Ticks - RoundFloor(localInstant).Ticks);
+            return localInstant - RoundFloor(localInstant);
         }
 
         public abstract bool IsLenient { get; }
@@ -178,11 +178,5 @@ namespace NodaTime.Fields
         public abstract DurationField RangeDurationField { get; }
         public abstract long GetMaximumValue();
         public abstract long GetMinimumValue();
-
-
-        public static bool IsTypeValid(DateTimeFieldType type)
-        {
-            return type >= 0 && type <= DateTimeFieldType.TickOfDay;
-        }
     }
 }

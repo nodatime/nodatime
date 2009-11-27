@@ -1,34 +1,28 @@
-﻿using NodaTime.Calendars;
+﻿using System;
+using NodaTime.Calendars;
 
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Porting status: Need AddWrapField
+    /// Still need to do AddWrapField.
     /// </summary>
-    internal sealed class GJYearOfEraDateTimeField : DecoratedDateTimeField
+    internal class IsoYearOfEraDateTimeField : DecoratedDateTimeField
     {
-        private readonly BasicCalendarSystem calendarSystem;
+        internal static readonly IDateTimeField Instance = new IsoYearOfEraDateTimeField();
 
-        internal GJYearOfEraDateTimeField(IDateTimeField yearField, BasicCalendarSystem calendarSystem)
-            : base (yearField, DateTimeFieldType.YearOfEra)
+        private IsoYearOfEraDateTimeField()
+            : base(GregorianCalendarSystem.Default.Fields.Year, DateTimeFieldType.YearOfEra)
         {
-            this.calendarSystem = calendarSystem;
+        }
+
+        public override int GetValue(LocalInstant localInstant)
+        {
+            return Math.Abs(WrappedField.GetValue(localInstant));
         }
 
         public override long GetInt64Value(LocalInstant localInstant)
         {
-            int year = WrappedField.GetValue(localInstant);
-            return year <= 0 ? 1 - year : year;
-        }
-
-        public override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return WrappedField.Add(localInstant, value);
-        }
-
-        public override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            return WrappedField.Add(localInstant, value);
+            return Math.Abs(WrappedField.GetValue(localInstant));
         }
 
         public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
@@ -43,17 +37,17 @@ namespace NodaTime.Fields
 
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            FieldUtils.VerifyValueBounds(this, value, 1, GetMaximumValue());
-            if (calendarSystem.GetYear(localInstant) <= 0)
+            FieldUtils.VerifyValueBounds(this, value, 0, GetMaximumValue());
+            if (WrappedField.GetValue(localInstant) < 0)
             {
-                value = 1 - value;
+                value = -value;
             }
             return base.SetValue(localInstant, value);
         }
 
         public override long GetMinimumValue()
         {
-            return 1;
+            return 0;
         }
 
         public override long GetMaximumValue()
@@ -63,7 +57,7 @@ namespace NodaTime.Fields
 
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
-            return WrappedField.RoundFloor(localInstant);
+            return WrappedField.RoundCeiling(localInstant);
         }
 
         public override LocalInstant RoundCeiling(LocalInstant localInstant)

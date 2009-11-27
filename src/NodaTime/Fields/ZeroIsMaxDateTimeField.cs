@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NodaTime.Fields
 {
@@ -100,6 +98,16 @@ namespace NodaTime.Fields
         public override Duration Remainder(LocalInstant localInstant)
         {
             return WrappedField.Remainder(localInstant);
+        }
+
+        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        {
+            return WrappedField.GetDifference(minuendInstant, subtrahendInstant);
+        }
+
+        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        {
+            return WrappedField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }
     }
 }

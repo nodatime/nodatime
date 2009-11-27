@@ -19,6 +19,9 @@ using System;
 
 namespace NodaTime.Fields
 {
+    /// <summary>
+    /// Porting status: done
+    /// </summary>
     public abstract class DurationFieldBase : DurationField
     {
         private readonly DurationFieldType fieldType;
@@ -66,7 +69,7 @@ namespace NodaTime.Fields
 
         public static bool IsTypeValid(DurationFieldType type)
         {
-            return type >= 0 && type <= DurationFieldType.Milliseconds;
+            return type >= 0 && type <= DurationFieldType.Ticks;
         }
     }
 }

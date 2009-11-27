@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 using System;
-using System.Linq;
 using NodaTime.Fields;
 using NUnit.Framework;
 
@@ -28,7 +27,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithInvalidType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new StubDateTimeFieldBase((DateTimeFieldType)(-1)));
+            Assert.Throws<ArgumentNullException>(() => new StubDateTimeFieldBase(null));
         }
 
         [Test]
@@ -215,24 +214,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(30L, field.Remainder(new LocalInstant(30L)).Ticks);
             Assert.AreEqual(31L, field.Remainder(new LocalInstant(31L)).Ticks);
             Assert.AreEqual(0L, field.Remainder(new LocalInstant(60L)).Ticks);
-        }
-
-        [Test]
-        public void IsTypeValid_AllEnumValues_AreValid()
-        {
-            foreach (DateTimeFieldType type in Enum.GetValues(typeof(DateTimeFieldType)))
-            {
-                Assert.IsTrue(DateTimeFieldBase.IsTypeValid(type));
-            }
-        }
-
-        [Test]
-        public void IsTypeValid_ValuesOutOfRange_AreInvalid()
-        {
-            Assert.IsFalse(DateTimeFieldBase.IsTypeValid((DateTimeFieldType) (-1)));
-            DateTimeFieldType max = Enum.GetValues(typeof(DateTimeFieldType))
-                .Cast<DateTimeFieldType>().Max();
-            Assert.IsFalse(DateTimeFieldBase.IsTypeValid(max + 1));
         }
 
         private class StubDateTimeFieldBase : DateTimeFieldBase

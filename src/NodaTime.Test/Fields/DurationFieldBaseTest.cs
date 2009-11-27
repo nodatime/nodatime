@@ -83,9 +83,9 @@ namespace NodaTime.Test.Fields
         [Test]
         public void IsTypeValid_AllEnumValues_AreValid()
         {
-            foreach (DateTimeFieldType type in Enum.GetValues(typeof(DurationFieldType)))
+            foreach (DurationFieldType type in Enum.GetValues(typeof(DurationFieldType)))
             {
-                Assert.IsTrue(DateTimeFieldBase.IsTypeValid(type));
+                Assert.IsTrue(DurationFieldBase.IsTypeValid(type));
             }
         }
 

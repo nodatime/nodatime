@@ -21,24 +21,33 @@ using NodaTime.Fields;
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// Original name: ISOChronology
+    /// Implements a calendar system that follows the rules of the ISO8601 standard,
+    /// which is compatible with Gregorian for all modern dates. This class is a singleton.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// When ISO does not define a field, but it can be determined (such as AM/PM) it is included.
+    /// </para>
+    /// <para>
+    /// With the exception of century related fields, ISOChronology is exactly the
+    /// same as <see cref="GregorianCalendarSystem" />. In this chronology, centuries and year
+    /// of century are zero based. For all years, the century is determined by
+    /// dropping the last two digits of the year, ignoring sign. The year of century
+    /// is the value of the last two year digits.
+    /// </para>
+    /// </remarks>
     public sealed class IsoCalendarSystem : AssembledCalendarSystem
     {
-        /// <summary>
-        /// Returns the <see cref="IsoCalendarSystem"/> with the system default time zone.
-        /// </summary>
+        public static readonly IsoCalendarSystem Instance = new IsoCalendarSystem(GregorianCalendarSystem.Default);
+
+        [Obsolete("Use IsoCalendarSystem.Instance")]
         public static IsoCalendarSystem SystemDefault
         {
             get { throw new NotImplementedException(); }
         }
 
+        [Obsolete("Use IsoCalendarSystem.Instance")]
         public static IsoCalendarSystem GetInstance(IDateTimeZone dateTimeZone)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void AssembleFields(FieldSet.Builder builder)
         {
             throw new NotImplementedException();
         }
@@ -48,8 +57,15 @@ namespace NodaTime.Calendars
         {
         }
 
-        private static void AssembleFields(FieldSet.Builder fields, ICalendarSystem baseCalendar)
+        protected override void AssembleFields(FieldSet.Builder fields)
         {
+            // Use zero based century and year of century.
+            DividedDateTimeField centuryOfEra = new DividedDateTimeField
+                (IsoYearOfEraDateTimeField.Instance, DateTimeFieldType.CenturyOfEra, 100);
+            fields.CenturyOfEra = centuryOfEra;
+            fields.YearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.YearOfCentury);
+            fields.WeekYearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.WeekYearOfCentury);
+            fields.Centuries = centuryOfEra.DurationField;
         }
     }
 }

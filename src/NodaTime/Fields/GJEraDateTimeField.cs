@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NodaTime.Calendars;
+﻿using NodaTime.Calendars;
 
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// TODO: Implement properly, and consider moving to Calendars namespace.
-    /// (To match the chrono namespace in Joda.)
+    /// Porting status: needs text
+    /// TODO: Rename to "GregulianEraDateTimeField" or something similar?
     /// </summary>
     internal sealed class GJEraDateTimeField : DateTimeFieldBase
     {
@@ -19,44 +16,71 @@ namespace NodaTime.Fields
             this.calendarSystem = calendarSystem;
         }
 
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsLenient
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public override bool IsLenient { get { return false; } }
 
         public override long GetInt64Value(LocalInstant localInstant)
         {
-            throw new NotImplementedException();
+            return calendarSystem.GetYear(localInstant) <= 0 ? DateTimeConstants.BeforeCommonEra : DateTimeConstants.CommonEra;
         }
 
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            throw new NotImplementedException();
+            FieldUtils.VerifyValueBounds(this, value, DateTimeConstants.BCE, DateTimeConstants.CE);
+
+            int oldEra = GetValue(localInstant);
+            if (oldEra != value)
+            {
+                int year = calendarSystem.GetYear(localInstant);
+                return calendarSystem.SetYear(localInstant, -year);
+            }
+            else
+            {
+                return localInstant;
+            }
         }
 
-        public override DurationField DurationField
+        public override DurationField DurationField { get { return UnsupportedDurationField.Eras; } }
+
+        public override DurationField RangeDurationField { get { return null; } }
+
+        public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
-            get { throw new NotImplementedException(); }
+            return GetValue(localInstant) == DateTimeConstants.CommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
+                : new LocalInstant(long.MinValue);
         }
 
-        public override DurationField RangeDurationField
+        public override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
-            get { throw new NotImplementedException(); }
+            return GetValue(localInstant) == DateTimeConstants.BeforeCommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
+                : new LocalInstant(long.MaxValue);
         }
 
         public override long GetMaximumValue()
         {
-            throw new NotImplementedException();
+            return DateTimeConstants.CommonEra;
         }
 
         public override long GetMinimumValue()
         {
-            throw new NotImplementedException();
+            return DateTimeConstants.BeforeCommonEra;
+        }
+
+        public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
+        {
+            // In reality, the era is infinite, so there is no halfway point.
+            return RoundFloor(localInstant);
+        }
+
+        public override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
+        {
+            // In reality, the era is infinite, so there is no halfway point.
+            return RoundFloor(localInstant);
+        }
+
+        public override LocalInstant RoundHalfEven(LocalInstant localInstant)
+        {
+            // In reality, the era is infinite, so there is no halfway point.
+            return RoundFloor(localInstant);
         }
     }
 }

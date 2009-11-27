@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NodaTime.Fields
 {
@@ -8,6 +6,7 @@ namespace NodaTime.Fields
     /// Derives from <see cref="DateTimeFieldBase" />, implementing
     /// only the minimum required set of methods. These implemented methods
     /// delegate to a wrapped field.
+    /// Porting status: Done.
     /// </summary>
     /// <remarks>
     /// <para>

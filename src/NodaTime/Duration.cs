@@ -97,6 +97,28 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Implements the operator / (division).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the duration divided by the scale.</returns>
+        public static Duration operator /(Duration left, long right)
+        {
+            return new Duration(left.Ticks / right);
+        }
+
+        /// <summary>
+        /// Implements the operator * (multiplication).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the duration multiplied by the scale.</returns>
+        public static Duration operator *(Duration left, long right)
+        {
+            return new Duration(left.Ticks * right);
+        }
+
+        /// <summary>
         /// Implements the operator == (equality).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
@@ -258,6 +280,11 @@ namespace NodaTime
         }
 
         #endregion  // Object overrides
+
+        public static Duration StandardWeeks(long weeks)
+        {
+            return new Duration(weeks * DateTimeConstants.TicksPerWeek);
+        }
 
         public static Duration StandardDays(long days)
         {

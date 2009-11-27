@@ -16,11 +16,10 @@
 #endregion
 
 using System;
-
+using NodaTime.Utility;
 // TODO: This is a hack to get the code working. When the real ISoCalendarSystem is ready
 //       remove all alias lines in all files in the package and remove the JIsoCalendarSystem.cs file.
 using IsoCalendarSystem = NodaTime.TimeZones.JIsoCalendarSystem;
-using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {

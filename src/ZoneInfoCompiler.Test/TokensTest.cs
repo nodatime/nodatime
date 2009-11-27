@@ -14,8 +14,6 @@
 // limitations under the License.
 #endregion
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using NodaTime.ZoneInfoCompiler;
 using NUnit.Framework;
 

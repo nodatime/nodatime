@@ -93,6 +93,7 @@
     <Compile Include="Fields\UnsupportedDurationFieldTest.cs" />
     <Compile Include="Fields\ZeroIsMaxDateTimeFieldTest.cs" />
     <Compile Include="FixedDateTimeZoneTest.cs" />
+    <Compile Include="Calendars\IsoCalendarSystemTest.cs" />
     <Compile Include="Periods\DaysTest.cs" />
     <Compile Include="Periods\DaysTest.Constants.cs">
       <DependentUpon>DaysTest.cs</DependentUpon>

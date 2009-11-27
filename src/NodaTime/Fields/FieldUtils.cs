@@ -18,6 +18,9 @@ using System;
 
 namespace NodaTime.Fields
 {
+    /// <summary>
+    /// TODO: Potentially remove this. Can move VerifyValueBounds into DateTimeFieldBase, probably.
+    /// </summary>
     internal static class FieldUtils
     {
         public static void VerifyValueBounds(IDateTimeField field, long value, long lowerBound, long upperBound)

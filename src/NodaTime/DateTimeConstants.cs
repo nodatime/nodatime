@@ -29,7 +29,37 @@ namespace NodaTime
     /// </summary>
     public static class DateTimeConstants
     {
-        // Note: I (Martinho) renamed Millis to Milliseconds to keep consistency with existing Framework members
+        // TODO: Enum for this instead? (With duplicate values where appropriate.)
+        public static int BeforeCommonEra = 0;
+        public static int BCE = 0;
+        public static int BC = 0;
+        public static int CommonEra = 1;
+        public static int CE = 1;
+        public static int AD = 1;
+
+        // TODO: Enum for this instead?
+        public const int Monday = 1;
+        public const int Tuesday = 2;
+        public const int Wednesday = 3;
+        public const int Thursday = 4;
+        public const int Friday = 5;
+        public const int Saturday = 6;
+        public const int Sunday = 7;
+
+        // TODO: Enum for this instead?
+        public const int January = 1;
+        public const int February = 2;
+        public const int March = 3;
+        public const int April = 4;
+        public const int May = 5;
+        public const int June = 6;
+        public const int July = 7;
+        public const int August = 8;
+        public const int September = 9;
+        public const int October = 10;
+        public const int November = 11;
+        public const int December = 12;
+
 
         /// <summary>
         /// As per <see cref="TimeSpan.TicksPerMillisecond" />, 
@@ -112,5 +142,13 @@ namespace NodaTime
 
         public const long TicksPerWeek = TicksPerMillisecond * MillisecondsPerWeek;
 
+        public static class Durations
+        {
+            public static readonly Duration OneWeek = new Duration(TicksPerWeek);
+            public static readonly Duration OneDay = new Duration(TicksPerDay);
+            public static readonly Duration OneHour = new Duration(TicksPerHour);
+            public static readonly Duration OneMinute = new Duration(TicksPerMinute);
+            public static readonly Duration OneSecond = new Duration(TicksPerSecond);
+        }
     }
 }

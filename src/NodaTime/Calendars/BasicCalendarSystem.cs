@@ -24,14 +24,26 @@ namespace NodaTime.Calendars
     {
         private readonly static FieldSet preciseFields = CreatePreciseFields();
 
-        const int yearCacheSize = 1 << 10;
-        const int yearCacheMask = yearCacheSize - 1;
-        private static readonly YearInfo[] yearCache = new YearInfo[yearCacheSize];
+        const int YearCacheSize = 1 << 10;
+        const int YearCacheMask = YearCacheSize - 1;
+        private static readonly YearInfo[] yearCache = new YearInfo[YearCacheSize];
 
         private readonly int minDaysInFirstWeek;
 
+        protected abstract long GetTotalTicksByYearMonth(int year, int month);
+        public abstract int MinYear { get; }
+        public abstract int MaxYear { get; }
+        public abstract long AverageTicksPerMonth { get; }
         public abstract long AverageTicksPerYear { get; }
         public abstract long AverageTicksPerYearDividedByTwo { get; }
+        public abstract long ApproxTicksAtEpochDividedByTwo { get; }
+        public abstract int GetDaysInYearMonth(int year, int month);
+        protected abstract LocalInstant CalculateStartOfYear(int year);
+        protected internal abstract bool IsLeapYear(int year);
+        protected internal abstract int GetMonthOfYear(LocalInstant localInstant, int year);
+        internal abstract int GetDaysInMonthMax(int month);
+        internal abstract long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
+        internal abstract LocalInstant SetYear(LocalInstant localInstant, int year);
 
         private static FieldSet CreatePreciseFields()
         {
@@ -51,6 +63,7 @@ namespace NodaTime.Calendars
             builder.TickOfMillisecond = new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, builder.Ticks, builder.Milliseconds);
             builder.TickOfDay = new PreciseDateTimeField(DateTimeFieldType.TickOfDay, builder.Ticks, builder.Days);
             builder.MillisecondOfSecond = new PreciseDateTimeField(DateTimeFieldType.MillisecondOfSecond, builder.Milliseconds, builder.Seconds);
+            builder.MillisecondOfDay = new PreciseDateTimeField(DateTimeFieldType.MillisecondOfDay, builder.Milliseconds, builder.Days);
             builder.SecondOfMinute = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, builder.Seconds, builder.Minutes);
             builder.SecondOfDay = new PreciseDateTimeField(DateTimeFieldType.SecondOfDay, builder.Seconds, builder.Days);
             builder.MinuteOfHour = new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, builder.Minutes, builder.Hours);
@@ -76,12 +89,8 @@ namespace NodaTime.Calendars
             // Effectively invalidate the first cache entry.
             // Every other cache entry will automatically be invalid,
             // by having year 0.
-            yearCache[0] = new YearInfo(1, LocalInstant.LocalUnixEpoch);
+            yearCache[0] = new YearInfo(1, LocalInstant.LocalUnixEpoch.Ticks);
         }
-
-        protected abstract LocalInstant CalculateStartOfYear(int year);
-
-        protected abstract bool IsLeapYear(int year);
 
         protected override void AssembleFields(FieldSet.Builder builder)
         {
@@ -95,7 +104,6 @@ namespace NodaTime.Calendars
             builder.Year = new BasicYearDateTimeField(this);
             builder.YearOfEra = new GJYearOfEraDateTimeField(builder.Year, this);
 
-            /* TODO: Uncomment this lot!
             // Define one-based centuryOfEra and yearOfCentury.
             IDateTimeField field = new OffsetDateTimeField(builder.YearOfEra, 99);
             builder.CenturyOfEra = new DividedDateTimeField(field, DateTimeFieldType.CenturyOfEra, 100);
@@ -108,12 +116,11 @@ namespace NodaTime.Calendars
             builder.DayOfMonth = new BasicDayOfMonthDateTimeField(this, builder.Days);
             builder.DayOfYear = new BasicDayOfYearDateTimeField(this, builder.Days);
             builder.MonthOfYear = new GJMonthOfYearDateTimeField(this);
-            builder.WeekYear = new BasicWeekyearDateTimeField(this);
-            builder.WeekOfWeekYear = new BasicWeekOfWeekyearDateTimeField(this, builder.Weeks);
-            
+            builder.WeekYear = new BasicWeekYearDateTimeField(this);
+            builder.WeekOfWeekYear = new BasicWeekOfWeekYearDateTimeField(this, builder.Weeks);
+
             field = new RemainderDateTimeField(builder.WeekYear, DateTimeFieldType.WeekYearOfCentury, 100);
             builder.WeekYearOfCentury = new OffsetDateTimeField(field, DateTimeFieldType.WeekYearOfCentury, 1);
-            */
             // The remaining (imprecise) durations are available from the newly
             // created datetime fields.
 
@@ -127,15 +134,164 @@ namespace NodaTime.Calendars
         /// Fetches the start of the year from the cache, or calculates
         /// and caches it.
         /// </summary>
-        internal LocalInstant GetStartOfYear(int year)
+        internal long GetYearTicks(int year)
         {
-            YearInfo info = yearCache[year & yearCacheMask];
+            YearInfo info = yearCache[year & YearCacheMask];
             if (info.Year != year)
             {
-                info = new YearInfo(year, CalculateStartOfYear(year));
-                yearCache[year & yearCacheMask] = info;
+                info = new YearInfo(year, CalculateStartOfYear(year).Ticks);
+                yearCache[year & YearCacheMask] = info;
             }
-            return info.StartOfYear;
+            return info.StartOfYearTicks;
+        }
+
+
+        internal int GetDayOfWeek(LocalInstant localInstant)
+        {
+            // 1970-01-01 is day of week 4, Thursday.
+
+            long daysSince19700101;
+            long ticks = localInstant.Ticks;
+            if (ticks >= 0)
+            {
+                daysSince19700101 = ticks / DateTimeConstants.TicksPerDay;
+            }
+            else
+            {
+                daysSince19700101 = (ticks - (DateTimeConstants.TicksPerDay - 1))
+                    / DateTimeConstants.TicksPerDay;
+                if (daysSince19700101 < -3)
+                {
+                    return 7 + (int)((daysSince19700101 + 4) % 7);
+                }
+            }
+
+            return 1 + (int)((daysSince19700101 + 3) % 7);
+        }
+
+        internal int GetDayOfMonth(LocalInstant localInstant)
+        {
+            int year = GetYear(localInstant);
+            int month = GetMonthOfYear(localInstant, year);
+            return GetDayOfMonth(localInstant, year, month);
+        }
+
+        internal int GetDayOfMonth(LocalInstant localInstant, int year)
+        {
+            int month = GetMonthOfYear(localInstant, year);
+            return GetDayOfMonth(localInstant, year, month);
+        }
+
+        internal int GetDayOfMonth(LocalInstant localInstant, int year, int month)
+        {
+            long dateTicks = GetYearTicks(year);
+            dateTicks += GetTotalTicksByYearMonth(year, month);
+            return (int)((localInstant.Ticks - dateTicks) / DateTimeConstants.TicksPerDay) + 1;
+        }
+
+        internal int GetDaysInMonthMax()
+        {
+            return 31;
+        }
+
+        internal int GetMonthOfYear(LocalInstant localInstant)
+        {
+            return GetMonthOfYear(localInstant, GetYear(localInstant));
+        }
+
+        internal int GetDaysInMonthMax(LocalInstant instant)
+        {
+            int thisYear = GetYear(instant);
+            int thisMonth = GetMonthOfYear(instant, thisYear);
+            return GetDaysInYearMonth(thisYear, thisMonth);
+        }
+
+        internal int GetYear(LocalInstant instant)
+        {
+            long ticks = instant.Ticks;
+            // Get an initial estimate of the year, and the millis value that
+            // represents the start of that year. Then verify estimate and fix if
+            // necessary.
+
+            // Initial estimate uses values divided by two to avoid overflow.
+            long unitMillis = AverageTicksPerYearDividedByTwo;
+            long i2 = (ticks >> 1) + ApproxTicksAtEpochDividedByTwo;
+            if (i2 < 0)
+            {
+                i2 = i2 - unitMillis + 1;
+            }
+            int year = (int)(i2 / unitMillis);
+
+            long yearStart = GetYearTicks(year);
+            long diff = ticks - yearStart;
+
+            if (diff < 0)
+            {
+                year--;
+            }
+            else if (diff >= DateTimeConstants.TicksPerDay * 365L)
+            {
+                // One year may need to be added to fix estimate.
+                long oneYear = DateTimeConstants.TicksPerDay * (IsLeapYear(year) ? 366L : 365L);
+                yearStart += oneYear;
+
+                if (yearStart <= instant.Ticks)
+                {
+                    // Didn't go too far, so actually add one year.
+                    year++;
+                }
+            }
+
+            return year;
+        }
+
+
+        internal int GetDaysInYearMax()
+        {
+            return 366;
+        }
+
+        internal int GetDaysInYearMax(int year)
+        {
+            return IsLeapYear(year) ? 366 : 365;
+        }
+
+        internal int GetDayOfYear(LocalInstant localInstant)
+        {
+            return GetDayOfYear(localInstant, GetYear(localInstant));
+        }
+
+        internal int GetDayOfYear(LocalInstant localInstant, int year)
+        {
+            long yearStart = GetYearTicks(year);
+            return (int)((localInstant.Ticks - yearStart) / DateTimeConstants.TicksPerDay) + 1;
+        }
+
+        // Note: no overload taking the year, as it's never used in Joda
+        internal int GetMaxMonth()
+        {
+            return 12;
+        }
+
+        internal long GetTickOfDay(LocalInstant localInstant)
+        {
+            long ticks = localInstant.Ticks;
+            return ticks >= 0 ? ticks % DateTimeConstants.TicksPerDay :
+                (DateTimeConstants.TicksPerDay - 1) + ((ticks + 1) % DateTimeConstants.TicksPerDay);            
+        }
+
+        internal long GetYearMonthDayTicks(int year, int month, int dayOfMonth)
+        {
+            long ticks = GetYearTicks(year);
+            ticks += GetTotalTicksByYearMonth(year, month);
+            return ticks + (dayOfMonth - 1) * DateTimeConstants.TicksPerDay;
+        }
+
+        internal long GetYearMonthTicks(int year, int month)
+        {
+            long ticks = GetYearTicks(year);
+            ticks += GetTotalTicksByYearMonth(year, month);
+            return ticks;
         }
 
         /// <summary>
@@ -145,15 +301,75 @@ namespace NodaTime.Calendars
         private struct YearInfo
         {
             private readonly int year;
-            private readonly LocalInstant startOfYear;
-            internal YearInfo(int year, LocalInstant startOfYear)
+            private readonly long startOfYear;
+            internal YearInfo(int year, long startOfYear)
             {
                 this.year = year;
                 this.startOfYear = startOfYear;
             }
 
             internal int Year { get { return year; } }
-            internal LocalInstant StartOfYear { get { return startOfYear; } }
+            internal long StartOfYearTicks { get { return startOfYear; } }
+        }
+
+        internal int GetWeekYear(LocalInstant localInstant)
+        {
+            int year = GetYear(localInstant);
+            int week = GetWeekOfWeekYear(localInstant, year);
+            if (week == 1)
+            {
+                return GetYear(localInstant + DateTimeConstants.Durations.OneWeek);
+            }
+            else if (week > 51)
+            {
+                return GetYear(localInstant - Duration.StandardWeeks(2));
+            }
+            else
+            {
+                return year;
+            }
+
+        }
+
+        internal int GetWeekOfWeekYear(LocalInstant localInstant)
+        {
+            return GetWeekOfWeekYear(localInstant, GetYear(localInstant));
+        }
+
+        internal int GetWeekOfWeekYear(LocalInstant localInstant, int year)
+        {
+            long firstWeekTicks1 = GetFirstWeekOfYearTicks(year);
+            if (localInstant.Ticks < firstWeekTicks1)
+            {
+                return GetWeeksInYear(year - 1);
+            }
+            long firstWeekTicks2 = GetFirstWeekOfYearTicks(year + 1);
+            if (localInstant.Ticks >= firstWeekTicks2)
+            {
+                return 1;
+            }
+            return (int)((localInstant.Ticks - firstWeekTicks1) / DateTimeConstants.TicksPerWeek) + 1;
+        }
+
+        internal int GetWeeksInYear(int year)
+        {
+            long firstWeekTicks1 = GetFirstWeekOfYearTicks(year);
+            long firstWeekTicks2 = GetFirstWeekOfYearTicks(year + 1);
+            return (int) ((firstWeekTicks2 - firstWeekTicks1) / DateTimeConstants.TicksPerWeek);
+        }
+
+        private long GetFirstWeekOfYearTicks(int year)
+        {
+            long jan1Millis = GetYearTicks(year);
+            int jan1DayOfWeek = GetDayOfWeek(new LocalInstant(jan1Millis));
+        
+            if (jan1DayOfWeek > (8 - minDaysInFirstWeek)) {
+                // First week is end of previous year because it doesn't have enough days.
+                return jan1Millis + (8 - jan1DayOfWeek) * DateTimeConstants.TicksPerDay;
+            } else {
+                // First week is start of this year because it has enough days.
+                return jan1Millis - (jan1DayOfWeek - 1) * DateTimeConstants.TicksPerDay;
+            }
         }
     }
 }
