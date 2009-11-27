@@ -19,7 +19,7 @@ namespace NodaTime.Format
     /// <summary>
     /// Utilities for formatters.
     /// </summary>
-    public static class FormatUtils
+    internal static class FormatUtils
     {
     }
 }

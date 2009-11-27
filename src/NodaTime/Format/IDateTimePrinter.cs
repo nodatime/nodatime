@@ -30,9 +30,9 @@ namespace NodaTime.Format
 
         void PrintTo(Stream stream, IPartial partial, IFormatProvider locale);
 
-        void PrintTo(StringBuilder builder, Instant adjustedInstant, ICalendarSystem iCalendarSystem, Duration timezoneOffset, IDateTimeZone iDateTimeZone, IFormatProvider locale);
+        void PrintTo(StringBuilder builder, LocalInstant adjustedInstant, ICalendarSystem iCalendarSystem, Offset timezoneOffset, IDateTimeZone iDateTimeZone, IFormatProvider locale);
 
-        void PrintTo(Stream stream, Instant adjustedInstant, ICalendarSystem iCalendarSystem, Duration timezoneOffset, IDateTimeZone iDateTimeZone, IFormatProvider locale);
+        void PrintTo(Stream stream, LocalInstant adjustedInstant, ICalendarSystem iCalendarSystem, Offset timezoneOffset, IDateTimeZone iDateTimeZone, IFormatProvider locale);
 
         int EstimatedPrintedLength { get; set; }
     }

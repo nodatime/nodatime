@@ -21,131 +21,48 @@ namespace NodaTime.TimeZones
     internal class DSTZone
         : IDateTimeZone
     {
+        private readonly string id;
 
-        internal Duration StandardOffset { get; set; }
+        internal Offset StandardOffset { get; set; }
         internal ZoneRecurrence StartRecurrence { get; set; }
         internal ZoneRecurrence EndRecurrence { get; set; }
 
-        internal DSTZone(String id, Duration standardOffset,
-                ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DSTZone"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="standardOffset">The standard offset.</param>
+        /// <param name="startRecurrence">The start recurrence.</param>
+        /// <param name="endRecurrence">The end recurrence.</param>
+        internal DSTZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
         {
-            Id = id;
+            this.id = id;
             StandardOffset = standardOffset;
             StartRecurrence = startRecurrence;
             EndRecurrence = endRecurrence;
-        }
 
-        public String getNameKey(LocalInstant instant)
-        {
-            return findMatchingRecurrence(instant).Name;
-        }
-
-        public Duration getOffset(LocalInstant instant)
-        {
-            return StandardOffset + findMatchingRecurrence(instant).Savings;
-        }
-
-        public Duration getStandardOffset(LocalInstant instant)
-        {
-            return StandardOffset;
-        }
-
-        public LocalInstant nextTransition(LocalInstant instant)
-        {
-            Duration standardOffset = StandardOffset;
-            ZoneRecurrence startRecurrence = StartRecurrence;
-            ZoneRecurrence endRecurrence = EndRecurrence;
-
-            LocalInstant start, end;
-
-            try {
-                start = startRecurrence.Next(instant, standardOffset, endRecurrence.Savings);
-                if (instant > LocalInstant.LocalUnixEpoch && start < LocalInstant.LocalUnixEpoch) {
-                    // Overflowed.
-                    start = instant;
+            if (startRecurrence.Name == endRecurrence.Name)
+            {
+                if (startRecurrence.Savings > Offset.Zero)
+                {
+                    startRecurrence = startRecurrence.RenameAppend("-Summer");
+                }
+                else
+                {
+                    endRecurrence = endRecurrence.RenameAppend("-Summer");
                 }
             }
-            catch (ArgumentException) {
-                // Overflowed.
-                start = instant;
-            }
-            catch (ArithmeticException) {
-                // Overflowed.
-                start = instant;
-            }
 
-            try {
-                end = endRecurrence.Next(instant, standardOffset, startRecurrence.Savings);
-                if (instant > LocalInstant.LocalUnixEpoch && end < LocalInstant.LocalUnixEpoch) {
-                    // Overflowed.
-                    end = instant;
-                }
-            }
-            catch (ArgumentException) {
-                // Overflowed.
-                end = instant;
-            }
-            catch (ArithmeticException) {
-                // Overflowed.
-                end = instant;
-            }
-
-            return (start > end) ? end : start;
-        }
-
-        public LocalInstant previousTransition(LocalInstant instant)
-        {
-            // Increment in order to handle the case where instant is exactly at
-            // a transition.
-            instant = instant + Duration.One;
-
-            Duration standardOffset = StandardOffset;
-            ZoneRecurrence startRecurrence = StartRecurrence;
-            ZoneRecurrence endRecurrence = EndRecurrence;
-
-            LocalInstant start, end;
-
-            try {
-                start = startRecurrence.Previous(instant, standardOffset, endRecurrence.Savings);
-                if (instant < LocalInstant.LocalUnixEpoch && start > LocalInstant.LocalUnixEpoch) {
-                    // Overflowed.
-                    start = instant;
-                }
-            }
-            catch (ArgumentException) {
-                // Overflowed.
-                start = instant;
-            }
-            catch (ArithmeticException) {
-                // Overflowed.
-                start = instant;
-            }
-
-            try {
-                end = endRecurrence.Previous(instant, standardOffset, startRecurrence.Savings);
-                if (instant < LocalInstant.LocalUnixEpoch && end > LocalInstant.LocalUnixEpoch) {
-                    // Overflowed.
-                    end = instant;
-                }
-            }
-            catch (ArgumentException) {
-                // Overflowed.
-                end = instant;
-            }
-            catch (ArithmeticException) {
-                // Overflowed.
-                end = instant;
-            }
-
-            return new LocalInstant(((start > end) ? start : end).Ticks - 1);
         }
 
         public bool equals(Object obj)
         {
-            if (this == obj) {
+            if (this == obj)
+            {
                 return true;
             }
-            if (obj is DSTZone) {
+            if (obj is DSTZone)
+            {
                 DSTZone other = (DSTZone)obj;
                 return
                     Id == other.Id &&
@@ -156,66 +73,61 @@ namespace NodaTime.TimeZones
             return false;
         }
 
-        private ZoneRecurrence findMatchingRecurrence(LocalInstant instant)
+        private ZoneRecurrence findMatchingRecurrence(Instant instant)
         {
-            Duration standardOffset = StandardOffset;
-            ZoneRecurrence startRecurrence = StartRecurrence;
-            ZoneRecurrence endRecurrence = EndRecurrence;
-
-            LocalInstant start, end;
-
-            try {
-                start = startRecurrence.Next(instant, standardOffset, endRecurrence.Savings);
-            }
-            catch (ArgumentException) {
-                // Overflowed.
-                start = instant;
-            }
-            catch (ArithmeticException) {
-                // Overflowed.
-                start = instant;
-            }
-
-            try {
-                end = endRecurrence.Next(instant, standardOffset, startRecurrence.Savings);
-            }
-            catch (ArgumentException) {
-                // Overflowed.
-                end = instant;
-            }
-            catch (ArithmeticException) {
-                // Overflowed.
-                end = instant;
-            }
-
-            return (start > end) ? startRecurrence : endRecurrence;
+            Instant start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
+            Instant end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
+            return (start > end) ? StartRecurrence : EndRecurrence;
         }
+
 
         #region IDateTimeZone Members
 
         public Instant? NextTransition(Instant instant)
         {
-            throw new NotImplementedException();
+            Instant start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
+            Instant end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
+            return (start > end) ? end : start;
         }
 
         public Instant? PreviousTransition(Instant instant)
         {
-            throw new NotImplementedException();
+            // Increment in order to handle the case where instant is exactly at
+            // a transition.
+            instant = instant + Duration.One;
+            Instant start = StartRecurrence.Previous(instant, StandardOffset, EndRecurrence.Savings);
+            Instant end = EndRecurrence.Previous(instant, StandardOffset, StartRecurrence.Savings);
+            Instant result = (start > end) ? start : end;
+            if (result != Instant.MinValue) {
+                result = result - Duration.One;
+            }
+            return result;
         }
 
-        public Duration GetOffsetFromUtc(Instant instant)
+        public Offset GetOffsetFromUtc(Instant instant)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public Duration GetOffsetFromLocal(LocalDateTime localTime)
+        public Offset GetOffsetFromLocal(LocalInstant instant)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public string Id { get; private set; }
+        public string Name(Instant instant)
+        {
+            return findMatchingRecurrence(instant).Name;
+        }
 
-        public bool IsFixed { get; private set; }
+        public string Id
+        {
+            get { return this.id; }
+        }
+
+        public bool IsFixed
+        {
+            get { return false; }
+        }
 
         #endregion
     }
