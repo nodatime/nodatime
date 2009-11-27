@@ -18,8 +18,6 @@ using System;
 using System.Collections.Generic;
 using NodaTime.Calendars;
 
-// TODO: This is a hack to get the code working. When the real ISoCalendarSystem is ready
-//       remove all alias lines in all files in the package and remove the JIsoCalendarSystem.cs file.
 namespace NodaTime.TimeZones
 {
     /// <summary>
@@ -156,7 +154,7 @@ namespace NodaTime.TimeZones
         internal class TransitionIterator
         {
             private readonly ZoneRuleSet ruleSet;
-            private readonly IsoCalendarSystem calendar;
+            private readonly ICalendarSystem calendar;
             private readonly Instant startingInstant;
 
             private List<ZoneRule> rules;

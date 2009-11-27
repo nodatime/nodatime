@@ -114,6 +114,7 @@
     <Compile Include="Base\SingleFieldPeriodBaseTest.Single.cs">
       <DependentUpon>SingleFieldPeriodBaseTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
     <None Include="Tests.nunit" />
   </ItemGroup>
   <ItemGroup>

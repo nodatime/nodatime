@@ -67,13 +67,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         public static readonly string[] DaysOfWeek = {
                                                          "",
-                                                         "Sun",
                                                          "Mon",
                                                          "Tue",
                                                          "Wed",
                                                          "Thu",
                                                          "Fri",
-                                                         "Sat"
+                                                         "Sat",
+                                                         "Sun"
                                                      };
 
         /// <summary>

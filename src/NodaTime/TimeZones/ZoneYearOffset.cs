@@ -39,10 +39,10 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneYearOffset"/> class.
         /// </summary>
-        /// <param name="mode">The mode.</param>
+        /// <param name="mode">The transition mode.</param>
         /// <param name="monthOfYear">The month year offset.</param>
-        /// <param name="dayOfMonth">The day of month.</param>
-        /// <param name="dayOfWeek">The day of week.</param>
+        /// <param name="dayOfMonth">The day of month. 0 means not set. Negatives count from end of month.</param>
+        /// <param name="dayOfWeek">The day of week. 0 menas not set.</param>
         /// <param name="advance">if set to <c>true</c> [advance].</param>
         /// <param name="tickOfDay">The tick within the day.</param>
         internal ZoneYearOffset(TransitionMode mode,
@@ -72,7 +72,7 @@ namespace NodaTime.TimeZones
         /// <returns>The <see cref="Instant"/> of the point in the given year.</returns>
         internal Instant MakeInstant(int year, Offset standardOffset, Offset savings)
         {
-            IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
+            ICalendarSystem calendar = IsoCalendarSystem.Instance;
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.Fields.MonthOfYear.SetValue(instant, this.monthOfYear);
             instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay);
@@ -177,7 +177,7 @@ namespace NodaTime.TimeZones
         /// <param name="calendar">The calendar to use to set the values.</param>
         /// <param name="instant">The instant to adjust.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        private LocalInstant SetDayOfMonthWithLeap(IsoCalendarSystem calendar, LocalInstant instant, int direction)
+        private LocalInstant SetDayOfMonthWithLeap(ICalendarSystem calendar, LocalInstant instant, int direction)
         {
             if (this.monthOfYear == 2 && this.dayOfMonth == 29)
             {
@@ -197,7 +197,7 @@ namespace NodaTime.TimeZones
         /// <param name="calendar">The calendar to use to set the values.</param>
         /// <param name="instant">The instant to adjust.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        private LocalInstant SetDayOfMonth(IsoCalendarSystem calendar, LocalInstant instant)
+        private LocalInstant SetDayOfMonth(ICalendarSystem calendar, LocalInstant instant)
         {
             if (this.dayOfMonth > 0)
             {
@@ -222,7 +222,7 @@ namespace NodaTime.TimeZones
         /// <param name="calendar">The calendar to use to set the values.</param>
         /// <param name="instant">The instant to adjust.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        private LocalInstant SetDayOfWeek(IsoCalendarSystem calendar, LocalInstant instant)
+        private LocalInstant SetDayOfWeek(ICalendarSystem calendar, LocalInstant instant)
         {
             if (this.dayOfWeek != 0)
             {
