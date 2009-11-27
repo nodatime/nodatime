@@ -26,8 +26,8 @@ namespace NodaTime.Fields
     /// </summary>
     internal class UnsupportedDateTimeField : IDateTimeField
     {
-        private static object cacheLock = new object();
-        private static readonly UnsupportedDateTimeField[] cache = new UnsupportedDateTimeField[Enum.GetValues(typeof(DateTimeFieldType)).Length];
+        private static readonly object cacheLock = new object();
+        private static readonly UnsupportedDateTimeField[] cache = new UnsupportedDateTimeField[DateTimeFieldType.MaxOrdinal + 1];
 
         private readonly DateTimeFieldType fieldType;
         private readonly DurationField durationField;
@@ -39,9 +39,9 @@ namespace NodaTime.Fields
         /// </summary>
         public static UnsupportedDateTimeField GetInstance(DateTimeFieldType fieldType, DurationField durationField)
         {
-            if (!DateTimeFieldBase.IsTypeValid(fieldType))
+            if (fieldType == null)
             {
-                throw new ArgumentOutOfRangeException("fieldType");
+                throw new ArgumentNullException("fieldType");
             }
             if (durationField == null)
             {
@@ -49,11 +49,11 @@ namespace NodaTime.Fields
             }
             lock (cacheLock)
             {
-                UnsupportedDateTimeField cached = cache[(int)fieldType];
+                UnsupportedDateTimeField cached = cache[fieldType.Ordinal];
                 if (cached == null || !object.ReferenceEquals(cached.DurationField, durationField))
                 {
                     cached = new UnsupportedDateTimeField(fieldType, durationField);
-                    cache[(int)fieldType] = cached;
+                    cache[fieldType.Ordinal] = cached;
                 }
                 return cached;
             }

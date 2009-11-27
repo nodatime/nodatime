@@ -38,7 +38,7 @@ namespace NodaTime
         private ICalendarSystem calendar;
 
         public LocalDateTime(LocalInstant localInstant)
-            : this(localInstant, CalendarSystems.Iso)
+            : this(localInstant, IsoCalendarSystem.Instance)
         {
         }
 
@@ -50,7 +50,7 @@ namespace NodaTime
 
         public LocalDateTime(int year, int month, int day,
                              int hour, int minute)
-            : this(year, month, day, hour, minute, 0, 0, 0, CalendarSystems.Iso)
+            : this(year, month, day, hour, minute, 0, 0, 0, IsoCalendarSystem.Instance)
         {
         }
 
@@ -62,7 +62,7 @@ namespace NodaTime
 
         public LocalDateTime(int year, int month, int day,
                              int hour, int minute, int second)
-            : this(year, month, day, hour, minute, second, 0, 0, CalendarSystems.Iso)
+            : this(year, month, day, hour, minute, second, 0, 0, IsoCalendarSystem.Instance)
         {
         }
 
@@ -75,7 +75,7 @@ namespace NodaTime
 
         public LocalDateTime(int year, int month, int day,
                              int hour, int minute, int second, int millisecond)
-            : this(year, month, day, hour, minute, second, millisecond, 0, CalendarSystems.Iso)
+            : this(year, month, day, hour, minute, second, millisecond, 0, IsoCalendarSystem.Instance)
         {
         }
 
@@ -89,7 +89,7 @@ namespace NodaTime
         public LocalDateTime(int year, int month, int day,
                              int hour, int minute, int second, int millisecond,
                              int tickWithinMillisecond)
-            : this(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, CalendarSystems.Iso)
+            : this(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, IsoCalendarSystem.Instance)
         {
         }
 
@@ -115,7 +115,9 @@ namespace NodaTime
         public int HourOfDay { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
         public int MinuteOfHour { get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
         public int SecondOfMinute { get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
+        public int SecondOfDay { get { return calendar.Fields.SecondOfDay.GetValue(localInstant); } }
         public int MillisecondOfSecond { get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
+        public int MillisecondOfDay { get { return calendar.Fields.MillisecondOfDay.GetValue(localInstant); } }
         public int TickOfMillisecond { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
         public long TickOfDay { get { return calendar.Fields.TickOfDay.GetInt64Value(localInstant); } }
     }

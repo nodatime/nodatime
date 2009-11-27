@@ -33,8 +33,8 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetInstance_WithInvalidDateTimeFieldType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => 
-                UnsupportedDateTimeField.GetInstance((DateTimeFieldType)(-1), UnsupportedDurationField.Years));
+            Assert.Throws<ArgumentNullException>(() => 
+                UnsupportedDateTimeField.GetInstance(null, UnsupportedDurationField.Years));
         }
 
         [Test]

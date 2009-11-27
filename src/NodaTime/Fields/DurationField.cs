@@ -20,6 +20,7 @@ namespace NodaTime.Fields
 {
     /// <summary>
     /// Original name: DurationField.
+    /// Porting status: Done aside from comparisons, which I'm not sure we want.
     /// Note: Can't easily copy the tests for this until we've got a real DurationField.
     /// Note: The fact that this is an abstract class and IDateTimeField is an interface is slightly irksome. Suggestions welcome.
     /// </summary>

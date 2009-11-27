@@ -15,12 +15,10 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using NodaTime.ZoneInfoCompiler;
-using NUnit.Framework;
-using NodaTime.ZoneInfoCompiler.Tzdb;
 using System.IO;
+using NodaTime.ZoneInfoCompiler;
+using NodaTime.ZoneInfoCompiler.Tzdb;
+using NUnit.Framework;
 
 namespace ZoneInfoCompiler.Test
 {

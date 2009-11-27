@@ -13,12 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using NodaTime.ZoneInfoCompiler;
 using NUnit.Framework;
-using NodaTime.ZoneInfoCompiler.Tzdb;
 
 namespace ZoneInfoCompiler.Test
 {    

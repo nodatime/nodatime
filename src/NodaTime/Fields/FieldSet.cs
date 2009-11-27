@@ -40,6 +40,7 @@ namespace NodaTime.Fields
         private readonly IDateTimeField tickOfMillisecond;
         private readonly IDateTimeField tickOfDay;
         private readonly IDateTimeField millisecondOfSecond;
+        private readonly IDateTimeField millisecondOfDay;
         private readonly IDateTimeField secondOfMinute;
         private readonly IDateTimeField secondOfDay;
         private readonly IDateTimeField minuteOfHour;
@@ -79,6 +80,7 @@ namespace NodaTime.Fields
         public IDateTimeField TickOfMillisecond { get { return tickOfMillisecond; } }
         public IDateTimeField TickOfDay { get { return tickOfDay; } }
         public IDateTimeField MillisecondOfSecond { get { return millisecondOfSecond; } }
+        public IDateTimeField MillisecondOfDay { get { return millisecondOfDay; } }
         public IDateTimeField SecondOfMinute { get { return secondOfMinute; } }
         public IDateTimeField SecondOfDay { get { return secondOfDay; } }
         public IDateTimeField MinuteOfHour { get { return minuteOfHour; } }
@@ -120,6 +122,7 @@ namespace NodaTime.Fields
             tickOfMillisecond = builder.TickOfMillisecond ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.TickOfMillisecond, ticks);
             tickOfDay = builder.TickOfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.TickOfDay, ticks);
             millisecondOfSecond = builder.MillisecondOfSecond ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MillisecondOfSecond, milliseconds);
+            millisecondOfDay = builder.MillisecondOfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MillisecondOfDay, milliseconds);
             secondOfMinute = builder.SecondOfMinute ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.SecondOfMinute, seconds);
             secondOfDay = builder.SecondOfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.SecondOfDay, seconds);
             minuteOfHour = builder.MinuteOfHour ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MinuteOfHour, minutes);
@@ -225,6 +228,7 @@ namespace NodaTime.Fields
                 TickOfMillisecond = baseSet.TickOfMillisecond;
                 TickOfDay = baseSet.TickOfDay;
                 MillisecondOfSecond = baseSet.MillisecondOfSecond;
+                MillisecondOfDay = baseSet.MillisecondOfDay;
                 SecondOfMinute = baseSet.SecondOfMinute;
                 SecondOfDay = baseSet.SecondOfDay;
                 MinuteOfHour = baseSet.MinuteOfHour;
@@ -276,6 +280,7 @@ namespace NodaTime.Fields
                 TickOfMillisecond = other.TickOfMillisecond.IsSupported ? other.TickOfMillisecond : TickOfMillisecond;
                 TickOfDay = other.TickOfDay.IsSupported ? other.TickOfDay : TickOfDay;
                 MillisecondOfSecond = other.MillisecondOfSecond.IsSupported ? other.MillisecondOfSecond : MillisecondOfSecond;
+                MillisecondOfDay = other.MillisecondOfDay.IsSupported ? other.MillisecondOfDay : MillisecondOfDay;
                 SecondOfMinute = other.SecondOfMinute.IsSupported ? other.SecondOfMinute : SecondOfMinute;
                 SecondOfDay = other.SecondOfDay.IsSupported ? other.SecondOfDay : SecondOfDay;
                 MinuteOfHour = other.MinuteOfHour.IsSupported ? other.MinuteOfHour : MinuteOfHour;

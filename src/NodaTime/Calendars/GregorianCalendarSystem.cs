@@ -27,14 +27,31 @@ namespace NodaTime.Calendars
         private const int DaysFrom0000To1970 = 719527;
         private const long AverageTicksPerGregorianYear = (long) (365.2425m * DateTimeConstants.TicksPerDay);
 
+        // TODO: Consider making this public, but with a different name?
+        // It roughly maps onto GregorianChronology.getInstanceUTC() except of course we don't have a time zone...
+        internal static readonly GregorianCalendarSystem Default = new GregorianCalendarSystem(4);
+
         private GregorianCalendarSystem(int minDaysInFirstWeek) : base(null, minDaysInFirstWeek)
         {
         }
 
-        protected override void AssembleFields(NodaTime.Fields.FieldSet.Builder builder)
+        protected override void AssembleFields(Fields.FieldSet.Builder builder)
         {
-            throw new NotImplementedException();
+            // TODO: This pattern appears all over the place. It *may* not be necessary
+            // now we've separated out all the time zone stuff.
+            if (BaseCalendar == null)
+            {
+                base.AssembleFields(builder);
+            }
         }
+
+        public override long AverageTicksPerYear { get { return AverageTicksPerGregorianYear; } }
+        public override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerGregorianYear / 2; } }
+        public override long AverageTicksPerMonth { get { return (long)(365.2425m * DateTimeConstants.TicksPerDay / 12); } }
+        public override long ApproxTicksAtEpochDividedByTwo { get { return (1970 * AverageTicksPerGregorianYear) / 2; } }
+        // TODO: Check that this is still valid now we've moved to ticks. I suspect it's not... (divide by 10000?)
+        public override int MinYear { get { return -292275054; } }
+        public override int MaxYear { get { return 292278993; } }
 
         public static Chronology GetInstance(IDateTimeZone dateTimeZone)
         {
@@ -66,12 +83,9 @@ namespace NodaTime.Calendars
             return new LocalInstant((year * 365L + (leapYears - DaysFrom0000To1970)) * DateTimeConstants.TicksPerDay);
         }
 
-        protected override bool IsLeapYear(int year)
+        protected internal override bool IsLeapYear(int year)
         {
             return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
         }
-
-        public override long AverageTicksPerYear { get { return AverageTicksPerGregorianYear; } }
-        public override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerGregorianYear / 2; } }
     }
 }
