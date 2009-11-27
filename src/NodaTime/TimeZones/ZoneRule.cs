@@ -33,7 +33,7 @@ namespace NodaTime.TimeZones
     {
         internal ZoneRecurrence Recurrence { get { return this.recurrence; } }
         internal string Name { get { return Recurrence.Name; } }
-        internal Duration Savings { get { return Recurrence.Savings; } }
+        internal Offset Savings { get { return Recurrence.Savings; } }
         internal bool IsInfinite { get { return this.toYear == Int32.MaxValue; } }
 
         private readonly ZoneRecurrence recurrence;
@@ -63,19 +63,19 @@ namespace NodaTime.TimeZones
         /// adjusted instant is determined. If the next adjustment is after the ending year the
         /// input instant is returned otherwise the next transition is returned.
         /// </remarks>
-        /// <param name="instant">The <see cref="LocalInstant"/> lower bound for the next trasnition.</param>
+        /// <param name="instant">The <see cref="Instant"/> lower bound for the next trasnition.</param>
         /// <param name="standardOffset">The <see cref="Duration"/> standard offset.</param>
         /// <param name="savings">The <see cref="Duration"/> savings adjustment.</param>
         /// <returns></returns>
-        public LocalInstant Next(LocalInstant instant, Duration standardOffset, Duration savings)
+        public Instant Next(Instant instant, Offset standardOffset, Offset savings)
         {
             IsoCalendarSystem calendar = IsoCalendarSystem.Utc;
 
-            Duration wallOffset = standardOffset + savings;
-            LocalInstant adjustedInstant = instant;
+            Offset wallOffset = standardOffset + savings;
+            Instant adjustedInstant = instant;
 
             int year;
-            if (instant == LocalInstant.MinValue) {
+            if (instant == Instant.MinValue) {
                 year = Int32.MinValue;
             }
             else {
@@ -90,7 +90,7 @@ namespace NodaTime.TimeZones
                 adjustedInstant = adjustedInstant - Duration.One;
             }
 
-            LocalInstant next = Recurrence.Next(adjustedInstant, standardOffset, savings);
+            Instant next = Recurrence.Next(adjustedInstant, standardOffset, savings);
 
             if (next > instant) {
                 year = calendar.Year.GetValue(next + wallOffset);

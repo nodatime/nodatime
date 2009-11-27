@@ -64,18 +64,16 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns an <see cref="LocalInstant"/> that represents the point in the given year that
-        /// this object defines. If the exact point is not valid then the nearest point that matches
-        /// the definition is returned.
+        /// Returns an <see cref="Instant"/> that represents the point in the given year that this
+        /// object defines. If the exact point is not valid then the nearest point that matches the
+        /// definition is returned.
         /// </summary>
         /// <param name="year">The year to calculate for.</param>
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="savings">The daylight savings adjustment.</param>
-        /// <returns></returns>
-        internal LocalInstant MakeInstant(int year, Duration standardOffset, Duration savings)
+        /// <returns>The <see cref="Instant"/> of the point in the given year.</returns>
+        internal Instant MakeInstant(int year, Offset standardOffset, Offset savings)
         {
-            Duration offset = GetOffset(standardOffset, savings);
-
             IsoCalendarSystem calendar = IsoCalendarSystem.Utc;
             LocalInstant instant = calendar.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.MonthOfYear.SetValue(instant, this.monthOfYear);
@@ -83,6 +81,7 @@ namespace NodaTime.TimeZones
             instant = SetDayOfMonth(calendar, instant);
             instant = SetDayOfWeek(calendar, instant);
 
+            Offset offset = GetOffset(standardOffset, savings);
             // Convert from local time to UTC.
             return instant - offset;
         }
@@ -95,7 +94,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="savings">The daylight savings adjustment.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal LocalInstant Next(LocalInstant instant, Duration standardOffset, Duration savings)
+        internal Instant Next(Instant instant, Offset standardOffset, Offset savings)
         {
             return AdjustInstant(instant, standardOffset, savings, 1);
         }
@@ -108,7 +107,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="savings">The daylight savings adjustment.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal LocalInstant Previous(LocalInstant instant, Duration standardOffset, Duration savings)
+        internal Instant Previous(Instant instant, Offset standardOffset, Offset savings)
         {
             return AdjustInstant(instant, standardOffset, savings, -1);
         }
@@ -116,42 +115,57 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Adjusts the instant one year in the given direction.
         /// </summary>
+        /// <remarks>
+        /// If there is an overflow/underflow in any operation performed in this method then <see
+        /// cref="Instant.MinValue"/> or <see cref="Instant.MaxValue"/> will be returned depending
+        /// on <paramref name="direction"/>.
+        /// </remarks>
         /// <param name="instant">The instant to adjust.</param>
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="savings">The daylight savings adjustment.</param>
         /// <param name="direction">The direction to adjust. 1 for forward, -1 for backward.</param>
-        /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        private LocalInstant AdjustInstant(LocalInstant instant, Duration standardOffset, Duration savings, int direction)
+        /// <returns>The adjusted <see cref="Instant"/>.</returns>
+        private Instant AdjustInstant(Instant instant, Offset standardOffset, Offset savings, int direction)
         {
-            Duration offset = GetOffset(standardOffset, savings);
+            try
+            {
+                Offset offset = GetOffset(standardOffset, savings);
 
-            // Convert from UTC to local time.
-            instant = instant + offset;
+                // Convert from UTC to local time.
+                LocalInstant localInstant = instant + offset;
 
-            IsoCalendarSystem calendar = IsoCalendarSystem.Utc;
-            LocalInstant newInstant = calendar.MonthOfYear.SetValue(instant, this.monthOfYear);
-            // Be lenient with millisOfDay.
-            newInstant = calendar.TicksOfDay.SetValue(newInstant, this.ticksOfDay);
-            newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
+                IsoCalendarSystem calendar = IsoCalendarSystem.Utc;
+                LocalInstant newInstant = calendar.MonthOfYear.SetValue(localInstant, this.monthOfYear);
+                // Be lenient with millisOfDay.
+                newInstant = calendar.TicksOfDay.SetValue(newInstant, this.ticksOfDay);
+                newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
-            if (this.dayOfWeek == 0) {
-                if (newInstant >= instant) {
-                    newInstant = calendar.Year.Add(newInstant, direction);
-                    newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
+                if (this.dayOfWeek == 0)
+                {
+                    if (newInstant >= localInstant)
+                    {
+                        newInstant = calendar.Year.Add(newInstant, direction);
+                        newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
+                    }
                 }
-            }
-            else {
-                newInstant = SetDayOfWeek(calendar, newInstant);
-                if (newInstant >= instant) {
-                    newInstant = calendar.Year.Add(newInstant, direction);
-                    newInstant = calendar.MonthOfYear.SetValue(newInstant, this.monthOfYear);
-                    newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
+                else
+                {
                     newInstant = SetDayOfWeek(calendar, newInstant);
+                    if (newInstant >= localInstant)
+                    {
+                        newInstant = calendar.Year.Add(newInstant, direction);
+                        newInstant = calendar.MonthOfYear.SetValue(newInstant, this.monthOfYear);
+                        newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
+                        newInstant = SetDayOfWeek(calendar, newInstant);
+                    }
                 }
+                // Convert from local time to UTC.
+                return newInstant - offset;
             }
-
-            // Convert from local time to UTC.
-            return newInstant - offset;
+            catch (OverflowException)
+            {
+                return direction < 0 ? Instant.MinValue : Instant.MaxValue;
+            }
         }
 
         /// <summary>
@@ -167,8 +181,10 @@ namespace NodaTime.TimeZones
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
         private LocalInstant SetDayOfMonthWithLeap(IsoCalendarSystem calendar, LocalInstant instant, int direction)
         {
-            if (this.monthOfYear == 2 && this.dayOfMonth == 29) {
-                while (calendar.Year.IsLeap(instant) == false) {
+            if (this.monthOfYear == 2 && this.dayOfMonth == 29)
+            {
+                while (calendar.Year.IsLeap(instant) == false)
+                {
                     instant = calendar.Year.Add(instant, direction);
                 }
             }
@@ -185,10 +201,12 @@ namespace NodaTime.TimeZones
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
         private LocalInstant SetDayOfMonth(IsoCalendarSystem calendar, LocalInstant instant)
         {
-            if (this.dayOfMonth > 0) {
+            if (this.dayOfMonth > 0)
+            {
                 instant = calendar.DayOfMonth.SetValue(instant, this.dayOfMonth);
             }
-            else if (this.dayOfMonth < 0) {
+            else if (this.dayOfMonth < 0)
+            {
                 instant = calendar.DayOfMonth.SetValue(instant, 1);
                 instant = calendar.MonthOfYear.Add(instant, 1);
                 instant = calendar.DayOfMonth.Add(instant, this.dayOfMonth);
@@ -208,17 +226,23 @@ namespace NodaTime.TimeZones
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
         private LocalInstant SetDayOfWeek(IsoCalendarSystem calendar, LocalInstant instant)
         {
-            if (this.dayOfWeek != 0) {
+            if (this.dayOfWeek != 0)
+            {
                 int dayOfWeek = calendar.DayOfWeek.GetValue(instant);
                 int daysToAdd = this.dayOfWeek - dayOfWeek;
-                if (daysToAdd != 0) {
-                    if (this.advance) {
-                        if (daysToAdd < 0) {
+                if (daysToAdd != 0)
+                {
+                    if (this.advance)
+                    {
+                        if (daysToAdd < 0)
+                        {
                             daysToAdd += 7;
                         }
                     }
-                    else {
-                        if (daysToAdd > 0) {
+                    else
+                    {
+                        if (daysToAdd > 0)
+                        {
                             daysToAdd -= 7;
                         }
                     }
@@ -234,17 +258,20 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="savings">The daylight savings adjustment.</param>
         /// <returns>The base time offset as a <see cref="Duration"/>.</returns>
-        private Duration GetOffset(Duration standardOffset, Duration savings)
+        private Offset GetOffset(Offset standardOffset, Offset savings)
         {
-            Duration offset;
-            if (this.mode == TransitionMode.Wall) {
+            Offset offset;
+            if (this.mode == TransitionMode.Wall)
+            {
                 offset = standardOffset + savings;
             }
-            else if (this.mode == TransitionMode.Standard) {
+            else if (this.mode == TransitionMode.Standard)
+            {
                 offset = standardOffset;
             }
-            else {
-                offset = Duration.Zero;
+            else
+            {
+                offset = Offset.Zero;
             }
             return offset;
         }
@@ -264,7 +291,8 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            if (obj is ZoneYearOffset) {
+            if (obj is ZoneYearOffset)
+            {
                 return Equals((ZoneYearOffset)obj);
             }
             return false;
@@ -302,7 +330,8 @@ namespace NodaTime.TimeZones
         /// </returns>
         public bool Equals(ZoneYearOffset other)
         {
-            if (other == null) {
+            if (other == null)
+            {
                 return false;
             }
             return

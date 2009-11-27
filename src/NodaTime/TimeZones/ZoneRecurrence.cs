@@ -29,11 +29,11 @@ namespace NodaTime.TimeZones
         : IEquatable<ZoneRecurrence>
     {
         internal string Name { get { return this.name; } }
-        internal Duration Savings { get { return this.savings; } }
+        internal Offset Savings { get { return this.savings; } }
 
         private readonly ZoneYearOffset yearOffset;
         private readonly string name;
-        private readonly Duration savings;
+        private readonly Offset savings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneRecurrence"/> class.
@@ -41,7 +41,7 @@ namespace NodaTime.TimeZones
         /// <param name="yearOffset">The year offset.</param>
         /// <param name="name">The name.</param>
         /// <param name="savings">The savings.</param>
-        internal ZoneRecurrence(ZoneYearOffset yearOffset, String name, Duration savings)
+        internal ZoneRecurrence(ZoneYearOffset yearOffset, String name, Offset savings)
         {
             this.yearOffset = yearOffset;
             this.name = name;
@@ -56,7 +56,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="savings">The daylight savings adjustment.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal LocalInstant Next(LocalInstant instant, Duration standardOffset, Duration savings)
+        internal Instant Next(Instant instant, Offset standardOffset, Offset savings)
         {
             return this.yearOffset.Next(instant, standardOffset, savings);
         }
@@ -69,7 +69,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="savings">The daylight savings adjustment.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal LocalInstant Previous(LocalInstant instant, Duration standardOffset, Duration savings)
+        internal Instant Previous(Instant instant, Offset standardOffset, Offset savings)
         {
             return this.yearOffset.Previous(instant, standardOffset, savings);
         }
