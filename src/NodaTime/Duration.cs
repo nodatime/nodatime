@@ -283,32 +283,32 @@ namespace NodaTime
 
         public static Duration StandardWeeks(long weeks)
         {
-            return new Duration(weeks * DateTimeConstants.TicksPerWeek);
+            return new Duration(weeks * NodaConstants.TicksPerWeek);
         }
 
         public static Duration StandardDays(long days)
         {
-            return new Duration(days * DateTimeConstants.TicksPerDay);
+            return new Duration(days * NodaConstants.TicksPerDay);
         }
 
         public static Duration StandardHours(long hours)
         {
-            return new Duration(hours * DateTimeConstants.TicksPerHour);
+            return new Duration(hours * NodaConstants.TicksPerHour);
         }
 
         public static Duration StandardMinutes(long minutes)
         {
-            return new Duration(minutes * DateTimeConstants.TicksPerMinute);
+            return new Duration(minutes * NodaConstants.TicksPerMinute);
         }
 
         public static Duration StandardSeconds(long seconds)
         {
-            return new Duration(seconds * DateTimeConstants.TicksPerSecond);
+            return new Duration(seconds * NodaConstants.TicksPerSecond);
         }
 
         public static Duration Milliseconds(long milliseconds)
         {
-            return new Duration(milliseconds * DateTimeConstants.TicksPerMillisecond);
+            return new Duration(milliseconds * NodaConstants.TicksPerMillisecond);
         }
 
         public static Duration Parse(string s)

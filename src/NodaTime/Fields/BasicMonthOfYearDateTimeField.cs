@@ -8,7 +8,7 @@ namespace NodaTime.Fields
     /// </summary>
     internal class BasicMonthOfYearDateTimeField : ImpreciseDateTimeField
     {
-        private const int MinimumValue = DateTimeConstants.January;
+        private const int MinimumValue = NodaConstants.January;
 
         private readonly BasicCalendarSystem calendarSystem;
         private readonly int max;

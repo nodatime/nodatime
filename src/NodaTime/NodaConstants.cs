@@ -27,7 +27,7 @@ namespace NodaTime
     /// as well. We should consider an Iso8601Month enum etc. Possibly start
     /// with everything in here, then refactor it out when it's all working.
     /// </summary>
-    public static class DateTimeConstants
+    public static class NodaConstants
     {
         // TODO: Enum for this instead? (With duplicate values where appropriate.)
         public static int BeforeCommonEra = 0;

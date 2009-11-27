@@ -41,19 +41,19 @@ namespace NodaTime.Test
 
         // 2002-06-09
         private const long TestTimeNow =
-            (Y2002Days + 31L + 28L + 31L + 30L + 31L + 9L - 1L) * DateTimeConstants.MillisecondsPerDay;
+            (Y2002Days + 31L + 28L + 31L + 30L + 31L + 9L - 1L) * NodaConstants.MillisecondsPerDay;
 
         // 2002-04-05
         private const long TestTime1 =
-            (Y2002Days + 31L + 28L + 31L + 5L - 1L) * DateTimeConstants.MillisecondsPerDay
-            + 12L * DateTimeConstants.MillisecondsPerHour
-            + 24L * DateTimeConstants.MillisecondsPerMinute;
+            (Y2002Days + 31L + 28L + 31L + 5L - 1L) * NodaConstants.MillisecondsPerDay
+            + 12L * NodaConstants.MillisecondsPerHour
+            + 24L * NodaConstants.MillisecondsPerMinute;
 
         // 2003-05-06
         private const long TestTime2 =
-            (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * DateTimeConstants.MillisecondsPerDay
-            + 14L * DateTimeConstants.MillisecondsPerHour
-            + 28L * DateTimeConstants.MillisecondsPerMinute;
+            (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * NodaConstants.MillisecondsPerDay
+            + 14L * NodaConstants.MillisecondsPerHour
+            + 28L * NodaConstants.MillisecondsPerMinute;
 
         [Test]
         public void TestInstantOperators()

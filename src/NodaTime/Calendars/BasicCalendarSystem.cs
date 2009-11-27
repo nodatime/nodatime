@@ -154,12 +154,12 @@ namespace NodaTime.Calendars
             long ticks = localInstant.Ticks;
             if (ticks >= 0)
             {
-                daysSince19700101 = ticks / DateTimeConstants.TicksPerDay;
+                daysSince19700101 = ticks / NodaConstants.TicksPerDay;
             }
             else
             {
-                daysSince19700101 = (ticks - (DateTimeConstants.TicksPerDay - 1))
-                    / DateTimeConstants.TicksPerDay;
+                daysSince19700101 = (ticks - (NodaConstants.TicksPerDay - 1))
+                    / NodaConstants.TicksPerDay;
                 if (daysSince19700101 < -3)
                 {
                     return 7 + (int)((daysSince19700101 + 4) % 7);
@@ -186,7 +186,7 @@ namespace NodaTime.Calendars
         {
             long dateTicks = GetYearTicks(year);
             dateTicks += GetTotalTicksByYearMonth(year, month);
-            return (int)((localInstant.Ticks - dateTicks) / DateTimeConstants.TicksPerDay) + 1;
+            return (int)((localInstant.Ticks - dateTicks) / NodaConstants.TicksPerDay) + 1;
         }
 
         internal int GetDaysInMonthMax()
@@ -229,10 +229,10 @@ namespace NodaTime.Calendars
             {
                 year--;
             }
-            else if (diff >= DateTimeConstants.TicksPerDay * 365L)
+            else if (diff >= NodaConstants.TicksPerDay * 365L)
             {
                 // One year may need to be added to fix estimate.
-                long oneYear = DateTimeConstants.TicksPerDay * (IsLeapYear(year) ? 366L : 365L);
+                long oneYear = NodaConstants.TicksPerDay * (IsLeapYear(year) ? 366L : 365L);
                 yearStart += oneYear;
 
                 if (yearStart <= instant.Ticks)
@@ -264,7 +264,7 @@ namespace NodaTime.Calendars
         internal int GetDayOfYear(LocalInstant localInstant, int year)
         {
             long yearStart = GetYearTicks(year);
-            return (int)((localInstant.Ticks - yearStart) / DateTimeConstants.TicksPerDay) + 1;
+            return (int)((localInstant.Ticks - yearStart) / NodaConstants.TicksPerDay) + 1;
         }
 
         // Note: no overload taking the year, as it's never used in Joda
@@ -276,15 +276,15 @@ namespace NodaTime.Calendars
         internal long GetTickOfDay(LocalInstant localInstant)
         {
             long ticks = localInstant.Ticks;
-            return ticks >= 0 ? ticks % DateTimeConstants.TicksPerDay :
-                (DateTimeConstants.TicksPerDay - 1) + ((ticks + 1) % DateTimeConstants.TicksPerDay);            
+            return ticks >= 0 ? ticks % NodaConstants.TicksPerDay :
+                (NodaConstants.TicksPerDay - 1) + ((ticks + 1) % NodaConstants.TicksPerDay);            
         }
 
         internal long GetYearMonthDayTicks(int year, int month, int dayOfMonth)
         {
             long ticks = GetYearTicks(year);
             ticks += GetTotalTicksByYearMonth(year, month);
-            return ticks + (dayOfMonth - 1) * DateTimeConstants.TicksPerDay;
+            return ticks + (dayOfMonth - 1) * NodaConstants.TicksPerDay;
         }
 
         internal long GetYearMonthTicks(int year, int month)
@@ -318,7 +318,7 @@ namespace NodaTime.Calendars
             int week = GetWeekOfWeekYear(localInstant, year);
             if (week == 1)
             {
-                return GetYear(localInstant + DateTimeConstants.Durations.OneWeek);
+                return GetYear(localInstant + NodaConstants.Durations.OneWeek);
             }
             else if (week > 51)
             {
@@ -348,14 +348,14 @@ namespace NodaTime.Calendars
             {
                 return 1;
             }
-            return (int)((localInstant.Ticks - firstWeekTicks1) / DateTimeConstants.TicksPerWeek) + 1;
+            return (int)((localInstant.Ticks - firstWeekTicks1) / NodaConstants.TicksPerWeek) + 1;
         }
 
         internal int GetWeeksInYear(int year)
         {
             long firstWeekTicks1 = GetFirstWeekOfYearTicks(year);
             long firstWeekTicks2 = GetFirstWeekOfYearTicks(year + 1);
-            return (int) ((firstWeekTicks2 - firstWeekTicks1) / DateTimeConstants.TicksPerWeek);
+            return (int) ((firstWeekTicks2 - firstWeekTicks1) / NodaConstants.TicksPerWeek);
         }
 
         private long GetFirstWeekOfYearTicks(int year)
@@ -365,10 +365,10 @@ namespace NodaTime.Calendars
         
             if (jan1DayOfWeek > (8 - minDaysInFirstWeek)) {
                 // First week is end of previous year because it doesn't have enough days.
-                return jan1Millis + (8 - jan1DayOfWeek) * DateTimeConstants.TicksPerDay;
+                return jan1Millis + (8 - jan1DayOfWeek) * NodaConstants.TicksPerDay;
             } else {
                 // First week is start of this year because it has enough days.
-                return jan1Millis - (jan1DayOfWeek - 1) * DateTimeConstants.TicksPerDay;
+                return jan1Millis - (jan1DayOfWeek - 1) * NodaConstants.TicksPerDay;
             }
         }
     }

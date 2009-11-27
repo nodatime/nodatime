@@ -49,10 +49,10 @@ namespace NodaTime.TimeZones
                 }
             }
 
-            return new LocalInstant((year * 365L + (leapYears - DAYS_0000_TO_1970)) * DateTimeConstants.TicksPerDay);
+            return new LocalInstant((year * 365L + (leapYears - DAYS_0000_TO_1970)) * NodaConstants.TicksPerDay);
         }
 
-        private const long TicksPerYear = (long)(365.2425 * DateTimeConstants.TicksPerDay);
+        private const long TicksPerYear = (long)(365.2425 * NodaConstants.TicksPerDay);
         internal static long getAverageTicksPerYearDividedByTwo()
         {
             return TicksPerYear / 2;
@@ -82,14 +82,14 @@ namespace NodaTime.TimeZones
             if (diff < Duration.Zero) {
                 year--;
             }
-            else if (diff >= new Duration(DateTimeConstants.TicksPerDay * 365L)) {
+            else if (diff >= new Duration(NodaConstants.TicksPerDay * 365L)) {
                 // One year may need to be added to fix estimate.
                 Duration oneYear;
                 if (isLeapYear(year)) {
-                    oneYear = new Duration(DateTimeConstants.TicksPerDay * 366L);
+                    oneYear = new Duration(NodaConstants.TicksPerDay * 366L);
                 }
                 else {
-                    oneYear = new Duration(DateTimeConstants.TicksPerDay * 365L);
+                    oneYear = new Duration(NodaConstants.TicksPerDay * 365L);
                 }
 
                 yearStart += oneYear;
@@ -105,10 +105,10 @@ namespace NodaTime.TimeZones
         internal static Duration getTicksOfDay(LocalInstant instant)
         {
             if (instant >= LocalInstant.LocalUnixEpoch) {
-                return new Duration(instant.Ticks % DateTimeConstants.TicksPerDay);
+                return new Duration(instant.Ticks % NodaConstants.TicksPerDay);
             }
             else {
-                return new Duration((DateTimeConstants.TicksPerDay - 1) + (instant.Ticks + 1) % DateTimeConstants.TicksPerDay);
+                return new Duration((NodaConstants.TicksPerDay - 1) + (instant.Ticks + 1) % NodaConstants.TicksPerDay);
             }
         }
         private static int[] MIN_DAYS_PER_MONTH_ARRAY = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -124,11 +124,11 @@ namespace NodaTime.TimeZones
             long minSum = 0;
             long maxSum = 0;
             for (int i = 0; i < 11; i++) {
-                long ticks = MIN_DAYS_PER_MONTH_ARRAY[i] * DateTimeConstants.TicksPerDay;
+                long ticks = MIN_DAYS_PER_MONTH_ARRAY[i] * NodaConstants.TicksPerDay;
                 minSum += ticks;
                 MIN_TOTAL_TICKS_BY_MONTH_ARRAY[i + 1] = new Duration(minSum);
 
-                ticks = MAX_DAYS_PER_MONTH_ARRAY[i] * DateTimeConstants.TicksPerDay;
+                ticks = MAX_DAYS_PER_MONTH_ARRAY[i] * NodaConstants.TicksPerDay;
                 maxSum += ticks;
                 MAX_TOTAL_TICKS_BY_MONTH_ARRAY[i + 1] = new Duration(maxSum);
             }
@@ -137,7 +137,7 @@ namespace NodaTime.TimeZones
         {
             LocalInstant millis = getYearTicks(year);
             millis = millis + getTotalTicksByYearMonth(year, month);
-            return new LocalInstant(millis.Ticks + (dayOfMonth - 1) * DateTimeConstants.TicksPerDay);
+            return new LocalInstant(millis.Ticks + (dayOfMonth - 1) * NodaConstants.TicksPerDay);
         }
         internal static Duration getTotalTicksByYearMonth(int year, int month)
         {
@@ -157,7 +157,7 @@ namespace NodaTime.TimeZones
         {
             LocalInstant dateTicks = getYearTicks(year);
             dateTicks = dateTicks + getTotalTicksByYearMonth(year, month);
-            return (int)((instant - dateTicks).Ticks / DateTimeConstants.TicksPerDay) + 1;
+            return (int)((instant - dateTicks).Ticks / NodaConstants.TicksPerDay) + 1;
         }
         internal static int getMonthOfYear(LocalInstant instant, int year)
         {
@@ -169,9 +169,9 @@ namespace NodaTime.TimeZones
             // the instant isn't measured in milliseconds, but in units of
             // (128/125)seconds.
 
-            int i = (int)(((instant - getYearTicks(year)).Ticks >> 10) / DateTimeConstants.TicksPerMillisecond);
+            int i = (int)(((instant - getYearTicks(year)).Ticks >> 10) / NodaConstants.TicksPerMillisecond);
 
-            // There are 8,640,000,000,000 ticks per day, but divided by 1024 * DateTimeConstants.TicksPerMillisecond
+            // There are 8,640,000,000,000 ticks per day, but divided by 1024 * NodaConstants.TicksPerMillisecond
             // is 84375. There are 84375 (128/125)seconds per day.
 
             return
@@ -229,7 +229,7 @@ namespace NodaTime.TimeZones
             private int getDayYearOffset(LocalInstant instant, int year)
             {
                 LocalInstant yearStart = getYearTicks(year);
-                return (int)((instant - yearStart).Ticks / DateTimeConstants.TicksPerDay) + 1;
+                return (int)((instant - yearStart).Ticks / NodaConstants.TicksPerDay) + 1;
             }
             public LocalInstant Add(LocalInstant instant, int value)
             {
@@ -272,11 +272,11 @@ namespace NodaTime.TimeZones
                 int month = getMonthOfYear(instant, year);
                 LocalInstant dateMillis = getYearTicks(year);
                 dateMillis = dateMillis + getTotalTicksByYearMonth(year, month);
-                return (int)((instant - dateMillis).Ticks / DateTimeConstants.TicksPerDay) + 1;
+                return (int)((instant - dateMillis).Ticks / NodaConstants.TicksPerDay) + 1;
             }
             public LocalInstant SetValue(LocalInstant instant, int value)
             {
-                return instant + new Duration((value - GetValue(instant)) * DateTimeConstants.TicksPerDay);
+                return instant + new Duration((value - GetValue(instant)) * NodaConstants.TicksPerDay);
             }
             public LocalInstant Add(LocalInstant instant, int value)
             {
@@ -293,10 +293,10 @@ namespace NodaTime.TimeZones
 
                 long daysSince19700101;
                 if (instant >= LocalInstant.LocalUnixEpoch) {
-                    daysSince19700101 = instant.Ticks / DateTimeConstants.TicksPerDay;
+                    daysSince19700101 = instant.Ticks / NodaConstants.TicksPerDay;
                 }
                 else {
-                    daysSince19700101 = (instant.Ticks - (DateTimeConstants.TicksPerDay - 1)) / DateTimeConstants.TicksPerDay;
+                    daysSince19700101 = (instant.Ticks - (NodaConstants.TicksPerDay - 1)) / NodaConstants.TicksPerDay;
                     if (daysSince19700101 < -3) {
                         return 7 + (int)((daysSince19700101 + 4) % 7);
                     }
@@ -306,7 +306,7 @@ namespace NodaTime.TimeZones
             }
             public LocalInstant SetValue(LocalInstant instant, int value)
             {
-                return instant + new Duration((value - GetValue(instant)) * DateTimeConstants.TicksPerDay);
+                return instant + new Duration((value - GetValue(instant)) * NodaConstants.TicksPerDay);
             }
             public LocalInstant Add(LocalInstant instant, int value)
             {

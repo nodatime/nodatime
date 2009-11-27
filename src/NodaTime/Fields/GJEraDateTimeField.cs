@@ -20,12 +20,12 @@ namespace NodaTime.Fields
 
         public override long GetInt64Value(LocalInstant localInstant)
         {
-            return calendarSystem.GetYear(localInstant) <= 0 ? DateTimeConstants.BeforeCommonEra : DateTimeConstants.CommonEra;
+            return calendarSystem.GetYear(localInstant) <= 0 ? NodaConstants.BeforeCommonEra : NodaConstants.CommonEra;
         }
 
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            FieldUtils.VerifyValueBounds(this, value, DateTimeConstants.BCE, DateTimeConstants.CE);
+            FieldUtils.VerifyValueBounds(this, value, NodaConstants.BCE, NodaConstants.CE);
 
             int oldEra = GetValue(localInstant);
             if (oldEra != value)
@@ -45,24 +45,24 @@ namespace NodaTime.Fields
 
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
-            return GetValue(localInstant) == DateTimeConstants.CommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
+            return GetValue(localInstant) == NodaConstants.CommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
                 : new LocalInstant(long.MinValue);
         }
 
         public override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
-            return GetValue(localInstant) == DateTimeConstants.BeforeCommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
+            return GetValue(localInstant) == NodaConstants.BeforeCommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
                 : new LocalInstant(long.MaxValue);
         }
 
         public override long GetMaximumValue()
         {
-            return DateTimeConstants.CommonEra;
+            return NodaConstants.CommonEra;
         }
 
         public override long GetMinimumValue()
         {
-            return DateTimeConstants.BeforeCommonEra;
+            return NodaConstants.BeforeCommonEra;
         }
 
         public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
