@@ -19,9 +19,9 @@ using System;
 namespace NodaTime
 {
     /// <summary>
-    /// Original name: DateTimeConstants.
+    /// Original name: NodaConstants.
     /// 
-    /// I'm not sure that everything in DateTimeConstants
+    /// I'm not sure that everything in NodaConstants
     /// really belongs in one file, and it should perhaps be named to reflect its ISO background
     /// as well. We should consider an Iso8601Month enum etc. Possibly start
     /// with everything in here, then refactor it out when it's all working.
