@@ -16,11 +16,10 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using NodaTime.Calendars;
 
 // TODO: This is a hack to get the code working. When the real ISoCalendarSystem is ready
 //       remove all alias lines in all files in the package and remove the JIsoCalendarSystem.cs file.
-using IsoCalendarSystem = NodaTime.TimeZones.JIsoCalendarSystem;
-
 namespace NodaTime.TimeZones
 {
     /// <summary>
@@ -45,7 +44,7 @@ namespace NodaTime.TimeZones
             // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the
             // future, then it won't be observed.
             LocalInstant now = new LocalInstant(Clock.Now.Ticks);
-            yearLimit = IsoCalendarSystem.Utc.Year.GetValue(now) + 100;
+            yearLimit = IsoCalendarSystem.Instance.Fields.Year.GetValue(now) + 100;
         }
 
         internal Offset StandardOffset { get; set; }
@@ -173,7 +172,7 @@ namespace NodaTime.TimeZones
             /// <param name="startingInstant">The starting instant.</param>
             internal TransitionIterator(ZoneRuleSet ruleSet, Instant startingInstant)
             {
-                this.calendar = IsoCalendarSystem.Utc;
+                this.calendar = IsoCalendarSystem.Instance;
                 this.ruleSet = ruleSet;
                 this.startingInstant = startingInstant;
             }
@@ -325,7 +324,7 @@ namespace NodaTime.TimeZones
 
                 // Stop precalculating if year reaches some arbitrary limit. We can cheat in the
                 // conversion because it is an approximation anyway.
-                if (calendar.Year.GetValue(nextTicks + Offset.Zero) >= yearLimit)
+                if (calendar.Fields.Year.GetValue(nextTicks + Offset.Zero) >= yearLimit)
                 {
                     return null;
                 }

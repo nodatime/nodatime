@@ -98,7 +98,7 @@ namespace NodaTime.TimeZones
         /// <param name="dayOfWeek">The day of week. If 0, ignore.</param>
         /// <param name="advanceDayOfWeek">if dayOfMonth does not fall on dayOfWeek, then if advanceDayOfWeek set to <c>true</c>
         /// advance to dayOfWeek when true, otherwise retreat to dayOfWeek when true.</param>
-        /// <param name="ticksOfDay">The <see cref="Duration"/> into the day. Additional precision for specifying time of day of transitions</param>
+        /// <param name="tickOfDay">The <see cref="Duration"/> into the day. Additional precision for specifying time of day of transitions</param>
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
         public DateTimeZoneBuilder AddCutover(int year,
                                               TransitionMode mode,
@@ -106,11 +106,11 @@ namespace NodaTime.TimeZones
                                               int dayOfMonth,
                                               int dayOfWeek,
                                               bool advanceDayOfWeek,
-                                              Duration ticksOfDay)
+                                              Duration tickOfDay)
         {
             if (ruleSets.Count > 0)
             {
-                ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, ticksOfDay);
+                ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
                 LastRuleSet.SetUpperLimit(year, yearOffset);
             }
             AddEndOfTimeRuleSet();
@@ -154,7 +154,7 @@ namespace NodaTime.TimeZones
         /// <param name="dayOfWeek">The day of week. If 0, ignore.</param>
         /// <param name="advanceDayOfWeek">if dayOfMonth does not fall on dayOfWeek, then if advanceDayOfWeek set to <c>true</c>
         /// advance to dayOfWeek when true, otherwise retreat to dayOfWeek when true.</param>
-        /// <param name="ticksOfDay">The <see cref="Duration"/> into the day. Additional precision for specifying time of day of transitions</param>
+        /// <param name="tickOfDay">The <see cref="Duration"/> into the day. Additional precision for specifying time of day of transitions</param>
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
         public DateTimeZoneBuilder AddRecurringSavings(String nameKey,
                                                        Offset savings,
@@ -165,11 +165,11 @@ namespace NodaTime.TimeZones
                                                        int dayOfMonth,
                                                        int dayOfWeek,
                                                        bool advanceDayOfWeek,
-                                                       Duration ticksOfDay)
+                                                       Duration tickOfDay)
         {
             if (fromYear <= toYear)
             {
-                ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthYearOffset, dayOfMonth, dayOfWeek, advanceDayOfWeek, ticksOfDay);
+                ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthYearOffset, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
                 ZoneRecurrence recurrence = new ZoneRecurrence(yearOffset, nameKey, savings);
                 ZoneRule rule = new ZoneRule(recurrence, fromYear, toYear);
                 LastRuleSet.AddRule(rule);

@@ -131,7 +131,6 @@
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneProvider.cs" />
     <Compile Include="TimeZones\INameProvider.cs" />
-    <Compile Include="TimeZones\JIsoCalendarSystem.cs" />
     <Compile Include="TimeZones\ZoneYearOffset.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZone.cs" />
     <Compile Include="TimeZones\ZoneRecurrence.cs" />

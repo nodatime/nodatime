@@ -28,7 +28,7 @@ namespace NodaTime.Calendars
         protected delegate void FieldAssembler(FieldSet.Builder builder,
             ICalendarSystem baseCalendar);
         private readonly bool useBaseTimeOfDayFields;
-        private readonly bool useBaseTicksOfDayFields;
+        private readonly bool useBaseTickOfDayFields;
         private readonly bool useBaseYearMonthDayFields;
 
         private readonly ICalendarSystem baseCalendar;
@@ -48,7 +48,7 @@ namespace NodaTime.Calendars
                                          baseFields.SecondOfMinute == Fields.SecondOfMinute &&
                                          baseFields.MillisecondOfSecond == Fields.MillisecondOfSecond &&
                                          baseFields.TickOfMillisecond == Fields.TickOfMillisecond;
-                useBaseTicksOfDayFields = baseFields.TickOfDay == Fields.TickOfDay;
+                useBaseTickOfDayFields = baseFields.TickOfDay == Fields.TickOfDay;
                 useBaseYearMonthDayFields = baseFields.Year == Fields.Year &&
                                             baseFields.MonthOfYear == Fields.MonthOfYear &&
                                             baseFields.DayOfMonth == Fields.DayOfMonth;
@@ -97,7 +97,7 @@ namespace NodaTime.Calendars
 
         public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay)
         {
-            if (useBaseTicksOfDayFields && useBaseYearMonthDayFields)
+            if (useBaseTickOfDayFields && useBaseYearMonthDayFields)
             {
                 // Only call specialized implementation if applicable fields are the same.
                 return baseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);

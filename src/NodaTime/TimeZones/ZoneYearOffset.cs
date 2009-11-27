@@ -15,11 +15,8 @@
 // limitations under the License.
 #endregion
 using System;
+using NodaTime.Calendars;
 using NodaTime.Utility;
-
-// TODO: This is a hack to get the code working. When the real ISoCalendarSystem is ready
-//       remove all alias lines in all files in the package and remove the JIsoCalendarSystem.cs file.
-using IsoCalendarSystem = NodaTime.TimeZones.JIsoCalendarSystem;
 
 namespace NodaTime.TimeZones
 {
@@ -37,7 +34,7 @@ namespace NodaTime.TimeZones
         private readonly int dayOfMonth;
         private readonly int dayOfWeek;
         private readonly bool advance;
-        private readonly Duration ticksOfDay;
+        private readonly long tickOfDay;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneYearOffset"/> class.
@@ -47,20 +44,21 @@ namespace NodaTime.TimeZones
         /// <param name="dayOfMonth">The day of month.</param>
         /// <param name="dayOfWeek">The day of week.</param>
         /// <param name="advance">if set to <c>true</c> [advance].</param>
-        /// <param name="ticksOfDay">The ticks of day.</param>
+        /// <param name="tickOfDay">The tick within the day.</param>
         internal ZoneYearOffset(TransitionMode mode,
                                 int monthOfYear,
                                 int dayOfMonth,
                                 int dayOfWeek,
                                 bool advance,
-                                Duration ticksOfDay)
+                                Duration tickOfDay)
         {
             this.mode = mode;
             this.monthOfYear = monthOfYear;
             this.dayOfMonth = dayOfMonth;
             this.dayOfWeek = dayOfWeek;
             this.advance = advance;
-            this.ticksOfDay = ticksOfDay;
+            // TODO: Consider making tickOfDay a long instead
+            this.tickOfDay = tickOfDay.Ticks;
         }
 
         /// <summary>
@@ -74,10 +72,10 @@ namespace NodaTime.TimeZones
         /// <returns>The <see cref="Instant"/> of the point in the given year.</returns>
         internal Instant MakeInstant(int year, Offset standardOffset, Offset savings)
         {
-            IsoCalendarSystem calendar = IsoCalendarSystem.Utc;
-            LocalInstant instant = calendar.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
-            instant = calendar.MonthOfYear.SetValue(instant, this.monthOfYear);
-            instant = calendar.TicksOfDay.SetValue(instant, this.ticksOfDay);
+            IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
+            LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
+            instant = calendar.Fields.MonthOfYear.SetValue(instant, this.monthOfYear);
+            instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay);
             instant = SetDayOfMonth(calendar, instant);
             instant = SetDayOfWeek(calendar, instant);
 
@@ -134,17 +132,17 @@ namespace NodaTime.TimeZones
                 // Convert from UTC to local time.
                 LocalInstant localInstant = instant + offset;
 
-                IsoCalendarSystem calendar = IsoCalendarSystem.Utc;
-                LocalInstant newInstant = calendar.MonthOfYear.SetValue(localInstant, this.monthOfYear);
+                IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
+                LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, this.monthOfYear);
                 // Be lenient with millisOfDay.
-                newInstant = calendar.TicksOfDay.SetValue(newInstant, this.ticksOfDay);
+                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay);
                 newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
                 if (this.dayOfWeek == 0)
                 {
                     if (newInstant >= localInstant)
                     {
-                        newInstant = calendar.Year.Add(newInstant, direction);
+                        newInstant = calendar.Fields.Year.Add(newInstant, direction);
                         newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
                     }
                 }
@@ -153,8 +151,8 @@ namespace NodaTime.TimeZones
                     newInstant = SetDayOfWeek(calendar, newInstant);
                     if (newInstant >= localInstant)
                     {
-                        newInstant = calendar.Year.Add(newInstant, direction);
-                        newInstant = calendar.MonthOfYear.SetValue(newInstant, this.monthOfYear);
+                        newInstant = calendar.Fields.Year.Add(newInstant, direction);
+                        newInstant = calendar.Fields.MonthOfYear.SetValue(newInstant, this.monthOfYear);
                         newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
                         newInstant = SetDayOfWeek(calendar, newInstant);
                     }
@@ -183,9 +181,9 @@ namespace NodaTime.TimeZones
         {
             if (this.monthOfYear == 2 && this.dayOfMonth == 29)
             {
-                while (calendar.Year.IsLeap(instant) == false)
+                while (calendar.Fields.Year.IsLeap(instant) == false)
                 {
-                    instant = calendar.Year.Add(instant, direction);
+                    instant = calendar.Fields.Year.Add(instant, direction);
                 }
             }
             instant = SetDayOfMonth(calendar, instant);
@@ -203,13 +201,13 @@ namespace NodaTime.TimeZones
         {
             if (this.dayOfMonth > 0)
             {
-                instant = calendar.DayOfMonth.SetValue(instant, this.dayOfMonth);
+                instant = calendar.Fields.DayOfMonth.SetValue(instant, this.dayOfMonth);
             }
             else if (this.dayOfMonth < 0)
             {
-                instant = calendar.DayOfMonth.SetValue(instant, 1);
-                instant = calendar.MonthOfYear.Add(instant, 1);
-                instant = calendar.DayOfMonth.Add(instant, this.dayOfMonth);
+                instant = calendar.Fields.DayOfMonth.SetValue(instant, 1);
+                instant = calendar.Fields.MonthOfYear.Add(instant, 1);
+                instant = calendar.Fields.DayOfMonth.Add(instant, this.dayOfMonth);
             }
             return instant;
         }
@@ -228,7 +226,7 @@ namespace NodaTime.TimeZones
         {
             if (this.dayOfWeek != 0)
             {
-                int dayOfWeek = calendar.DayOfWeek.GetValue(instant);
+                int dayOfWeek = calendar.Fields.DayOfWeek.GetValue(instant);
                 int daysToAdd = this.dayOfWeek - dayOfWeek;
                 if (daysToAdd != 0)
                 {
@@ -246,7 +244,7 @@ namespace NodaTime.TimeZones
                             daysToAdd -= 7;
                         }
                     }
-                    instant = calendar.DayOfWeek.Add(instant, daysToAdd);
+                    instant = calendar.Fields.DayOfWeek.Add(instant, daysToAdd);
                 }
             }
             return instant;
@@ -313,7 +311,7 @@ namespace NodaTime.TimeZones
             hash = HashCodeHelper.Hash(hash, this.dayOfMonth);
             hash = HashCodeHelper.Hash(hash, this.dayOfWeek);
             hash = HashCodeHelper.Hash(hash, this.advance);
-            hash = HashCodeHelper.Hash(hash, this.ticksOfDay);
+            hash = HashCodeHelper.Hash(hash, this.tickOfDay);
             return hash;
         }
 
@@ -340,7 +338,7 @@ namespace NodaTime.TimeZones
                 this.dayOfMonth == other.dayOfMonth &&
                 this.dayOfWeek == other.dayOfWeek &&
                 this.advance == other.advance &&
-                this.ticksOfDay == other.ticksOfDay;
+                this.tickOfDay == other.tickOfDay;
         }
 
         #endregion

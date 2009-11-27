@@ -15,10 +15,8 @@
 // limitations under the License.
 #endregion
 using System;
+using NodaTime.Calendars;
 using NodaTime.Utility;
-// TODO: This is a hack to get the code working. When the real ISoCalendarSystem is ready
-//       remove all alias lines in all files in the package and remove the JIsoCalendarSystem.cs file.
-using IsoCalendarSystem = NodaTime.TimeZones.JIsoCalendarSystem;
 
 namespace NodaTime.TimeZones
 {
@@ -69,7 +67,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         public Instant Next(Instant instant, Offset standardOffset, Offset savings)
         {
-            IsoCalendarSystem calendar = IsoCalendarSystem.Utc;
+            IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
 
             Offset wallOffset = standardOffset + savings;
             Instant adjustedInstant = instant;
@@ -79,12 +77,12 @@ namespace NodaTime.TimeZones
                 year = Int32.MinValue;
             }
             else {
-                year = calendar.Year.GetValue(instant + wallOffset);
+                year = calendar.Fields.Year.GetValue(instant + wallOffset);
             }
 
             if (year < this.fromYear) {
                 // First advance instant to start of from year.
-                adjustedInstant = calendar.Year.SetValue(LocalInstant.LocalUnixEpoch, this.fromYear) - wallOffset;
+                adjustedInstant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.fromYear) - wallOffset;
                 // Back off one tick to account for next recurrence being exactly at the beginning
                 // of the year.
                 adjustedInstant = adjustedInstant - Duration.One;
@@ -93,7 +91,7 @@ namespace NodaTime.TimeZones
             Instant next = Recurrence.Next(adjustedInstant, standardOffset, savings);
 
             if (next > instant) {
-                year = calendar.Year.GetValue(next + wallOffset);
+                year = calendar.Fields.Year.GetValue(next + wallOffset);
                 if (year > this.toYear) {
                     // Out of range, return original value.
                     next = instant;
