@@ -43,8 +43,8 @@ namespace NodaTime
     {
         public static readonly Offset Zero = new Offset(0L);
         public static readonly Offset One = new Offset(1L);
-        public static readonly Offset MinValue = new Offset(-DateTimeConstants.TicksPerDay + 1);
-        public static readonly Offset MaxValue = new Offset(DateTimeConstants.TicksPerDay - 1);
+        public static readonly Offset MinValue = new Offset(-NodaConstants.TicksPerDay + 1);
+        public static readonly Offset MaxValue = new Offset(NodaConstants.TicksPerDay - 1);
 
         private readonly long ticks;
 
@@ -64,7 +64,7 @@ namespace NodaTime
         /// <param name="ticks">The number of ticks.</param>
         public Offset(long ticks)
         {
-            this.ticks = ticks % DateTimeConstants.TicksPerDay;
+            this.ticks = ticks % NodaConstants.TicksPerDay;
         }
 
         /// <summary>
@@ -132,10 +132,10 @@ namespace NodaTime
         public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
         {
             return new Offset(
-                (hours * DateTimeConstants.TicksPerHour) +
-                (minutes * DateTimeConstants.TicksPerMinute) +
-                (seconds * DateTimeConstants.TicksPerSecond) +
-                (milliseconds * DateTimeConstants.TicksPerMillisecond)
+                (hours * NodaConstants.TicksPerHour) +
+                (minutes * NodaConstants.TicksPerMinute) +
+                (seconds * NodaConstants.TicksPerSecond) +
+                (milliseconds * NodaConstants.TicksPerMillisecond)
                 );
         }
 
@@ -324,10 +324,10 @@ namespace NodaTime
         {
             bool negative = Ticks < 0;
             long ticks = negative ? -Ticks : Ticks;
-            long hours = ticks / DateTimeConstants.TicksPerHour;
-            long minutes = (ticks % DateTimeConstants.TicksPerHour) / DateTimeConstants.TicksPerMinute;
-            long seconds = (ticks % DateTimeConstants.TicksPerMinute) / DateTimeConstants.TicksPerSecond;
-            long milliseconds = (ticks % DateTimeConstants.TicksPerSecond) / DateTimeConstants.TicksPerMillisecond;
+            long hours = ticks / NodaConstants.TicksPerHour;
+            long minutes = (ticks % NodaConstants.TicksPerHour) / NodaConstants.TicksPerMinute;
+            long seconds = (ticks % NodaConstants.TicksPerMinute) / NodaConstants.TicksPerSecond;
+            long milliseconds = (ticks % NodaConstants.TicksPerSecond) / NodaConstants.TicksPerMillisecond;
             string sign = negative ? "-" : "+";
             return string.Format(CultureInfo.InvariantCulture, "{0}{1:D2}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, milliseconds);
         }

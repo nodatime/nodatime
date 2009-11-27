@@ -39,19 +39,6 @@ namespace NodaTime.Calendars
     {
         public static readonly IsoCalendarSystem Instance = new IsoCalendarSystem(GregorianCalendarSystem.Default);
 
-        [Obsolete("Use IsoCalendarSystem.Instance")]
-        public static IsoCalendarSystem SystemDefault
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        [Obsolete("Use IsoCalendarSystem.Instance")]
-        public static IsoCalendarSystem GetInstance(IDateTimeZone dateTimeZone)
-        {
-            throw new NotImplementedException();
-        }
-
-        // TODO: Not sure what we'll really need here yet.
         private IsoCalendarSystem(ICalendarSystem baseSystem) : base(baseSystem)
         {
         }
