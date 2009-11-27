@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calendars\DaysOfWeek.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="Clocks\FixedClock.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />

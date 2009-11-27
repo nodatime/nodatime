@@ -75,7 +75,7 @@ namespace ZoneInfoCompiler.Test
             DateTimeOfYear expected = new DateTimeOfYear() {
                 MonthOfYear = 3,
                 DayOfMonth = -1,
-                DayOfWeek = 3,
+                DayOfWeek = (int)DayOfWeek.Tuesday,
                 MillisecondOfDay = ToMilliseconds(2, 0, 0, 0)
             };
             Assert.AreEqual(expected, actual);
@@ -90,7 +90,7 @@ namespace ZoneInfoCompiler.Test
             DateTimeOfYear expected = new DateTimeOfYear() {
                 MonthOfYear = 3,
                 DayOfMonth = 14,
-                DayOfWeek = 3,
+                DayOfWeek = (int)DayOfWeek.Tuesday,
                 MillisecondOfDay = ToMilliseconds(2, 0, 0, 0),
                 AdvanceDayOfWeek = true
             };
@@ -106,7 +106,7 @@ namespace ZoneInfoCompiler.Test
             DateTimeOfYear expected = new DateTimeOfYear() {
                 MonthOfYear = 3,
                 DayOfMonth = 14,
-                DayOfWeek = 3,
+                DayOfWeek = (int)DayOfWeek.Tuesday,
                 MillisecondOfDay = ToMilliseconds(2, 0, 0, 0),
                 AdvanceDayOfWeek = false
             };

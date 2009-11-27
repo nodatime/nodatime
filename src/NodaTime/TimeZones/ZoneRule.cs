@@ -67,7 +67,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         public Instant Next(Instant instant, Offset standardOffset, Offset savings)
         {
-            IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
+            ICalendarSystem calendar = IsoCalendarSystem.Instance;
 
             Offset wallOffset = standardOffset + savings;
             Instant adjustedInstant = instant;
