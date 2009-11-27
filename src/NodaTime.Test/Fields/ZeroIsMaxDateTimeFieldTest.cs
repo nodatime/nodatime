@@ -34,19 +34,19 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetValue_ForNonZero_ReturnsOriginalValue()
         {
-            Assert.AreEqual(1, field.GetValue(new LocalInstant(DateTimeConstants.TicksPerHour)));
+            Assert.AreEqual(1, field.GetValue(new LocalInstant(NodaConstants.TicksPerHour)));
         }
 
         [Test]
         public void TestSetValue_WithMaximumUsesZero()
         {
-            Assert.AreEqual(0, field.SetValue(new LocalInstant(DateTimeConstants.TicksPerHour), 24).Ticks);
+            Assert.AreEqual(0, field.SetValue(new LocalInstant(NodaConstants.TicksPerHour), 24).Ticks);
         }
 
         [Test]
         public void TestSetValue_WithNonMaximumPassesValueThrough()
         {
-            Assert.AreEqual(DateTimeConstants.TicksPerHour * 2,
+            Assert.AreEqual(NodaConstants.TicksPerHour * 2,
                 field.SetValue(new LocalInstant(0), 2).Ticks);
         }
     }

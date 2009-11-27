@@ -28,7 +28,7 @@ namespace NodaTime.Test.Fields
         [SetUp]
         public void SetUp()
         {
-            field = new PreciseDurationField(DurationFieldType.Milliseconds, DateTimeConstants.TicksPerMillisecond);
+            field = new PreciseDurationField(DurationFieldType.Milliseconds, NodaConstants.TicksPerMillisecond);
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void UnitTicks()
         {
-            Assert.AreEqual(DateTimeConstants.TicksPerMillisecond, field.UnitTicks);
+            Assert.AreEqual(NodaConstants.TicksPerMillisecond, field.UnitTicks);
         }
 
         [Test]

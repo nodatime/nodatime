@@ -29,12 +29,12 @@ namespace NodaTime.Fields
 
         public override long GetMaximumValue()
         {
-            return DateTimeConstants.Sunday;
+            return NodaConstants.Sunday;
         }
 
         public override long GetMinimumValue()
         {
-            return DateTimeConstants.Monday;
+            return NodaConstants.Monday;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace NodaTime.Calendars
         };
         private static readonly long[] MinTotalTicksByMonth;
         private static readonly long[] MaxTotalTicksByMonth;
-        private const long Feb29thTicks = (31L + 29 - 1) * DateTimeConstants.TicksPerDay;
+        private const long Feb29thTicks = (31L + 29 - 1) * NodaConstants.TicksPerDay;
 
         static BasicGJCalendarSystem()
         {
@@ -40,8 +40,8 @@ namespace NodaTime.Calendars
             long maxSum = 0;
             for (int i = 0; i < 11; i++)
             {
-                minSum += MinDaysPerMonth[i] * DateTimeConstants.TicksPerDay;
-                maxSum += MaxDaysPerMonth[i] * DateTimeConstants.TicksPerDay;
+                minSum += MinDaysPerMonth[i] * NodaConstants.TicksPerDay;
+                maxSum += MaxDaysPerMonth[i] * NodaConstants.TicksPerDay;
                 MinTotalTicksByMonth[i + 1] = minSum;
                 MaxTotalTicksByMonth[i + 1] = maxSum;
             }
@@ -61,7 +61,7 @@ namespace NodaTime.Calendars
             // ticks per day contains 1024 * 10000 as a factor. After the division,
             // the instant isn't measured in ticks, but in units of
             // (128/125)seconds.
-            int i = (int) ((((localInstant.Ticks - GetYearTicks(year))) >> 10) / DateTimeConstants.TicksPerMillisecond);
+            int i = (int) ((((localInstant.Ticks - GetYearTicks(year))) >> 10) / NodaConstants.TicksPerMillisecond);
 
             return
                 (IsLeapYear(year))
@@ -112,12 +112,12 @@ namespace NodaTime.Calendars
                 {
                     if (!IsLeapYear(minuendYear))
                     {
-                        subtrahendRem -= DateTimeConstants.TicksPerDay;
+                        subtrahendRem -= NodaConstants.TicksPerDay;
                     }
                 }
                 else if (minuendRem >= Feb29thTicks && IsLeapYear(minuendYear))
                 {
-                    minuendRem -= DateTimeConstants.TicksPerDay;
+                    minuendRem -= NodaConstants.TicksPerDay;
                 }
             }
 

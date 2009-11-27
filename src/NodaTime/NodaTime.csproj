@@ -173,7 +173,7 @@
     <Compile Include="Partials\LocalDate.cs" />
     <Compile Include="NodaTimePermission.cs" />
     <Compile Include="DateTimeComparer.cs" />
-    <Compile Include="DateTimeConstants.cs" />
+    <Compile Include="NodaConstants.cs" />
     <Compile Include="IPeriod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Periods\SingleFieldPeriodBase.cs" />
