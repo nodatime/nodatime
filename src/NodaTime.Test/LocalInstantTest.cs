@@ -19,7 +19,7 @@ using NUnit.Framework;
 namespace NodaTime.Test
 {
     [TestFixture]
-    public partial class InstantTest
+    public partial class LocalInstantTest
     {
         // Test is commented out as little of it makes sense at the moment. We may or may not want some of it :)
         /*
@@ -54,19 +54,19 @@ namespace NodaTime.Test
             + 14L * NodaConstants.MillisecondsPerHour
             + 28L * NodaConstants.MillisecondsPerMinute;
 
-        private Instant one = new Instant(1L);
-        private Instant onePrime = new Instant(1L);
-        private Instant negativeOne = new Instant(-1L);
-        private Instant threeMillion = new Instant(3000000L);
-        private Instant negativeFiftyMillion = new Instant(-50000000L);
+        private LocalInstant one = new LocalInstant(1L);
+        private LocalInstant onePrime = new LocalInstant(1L);
+        private LocalInstant negativeOne = new LocalInstant(-1L);
+        private LocalInstant threeMillion = new LocalInstant(3000000L);
+        private LocalInstant negativeFiftyMillion = new LocalInstant(-50000000L);
 
         [Test]
-        public void TestInstantOperators()
+        public void TestLocalInstantOperators()
         {
             long diff = TestTime2 - TestTime1;
 
-            Instant time1 = new Instant(TestTime1);
-            Instant time2 = new Instant(TestTime2);
+            LocalInstant time1 = new LocalInstant(TestTime1);
+            LocalInstant time2 = new LocalInstant(TestTime2);
             Duration duration = time2 - time1;
             
             Assert.AreEqual(diff, duration.Ticks);

@@ -22,13 +22,9 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class DurationTest
     {
-        Duration zero = new Duration(0L);
-        Duration one = new Duration(1L);
         Duration onePrime = new Duration(1L);
         Duration negativeOne = new Duration(-1L);
         Duration threeMillion = new Duration(3000000L);
         Duration negativeFiftyMillion = new Duration(-50000000L);
-        Duration minimum = new Duration(Int64.MinValue);
-        Duration maximum = new Duration(Int64.MaxValue);
     }
 }

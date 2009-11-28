@@ -107,8 +107,15 @@
     <Compile Include="InstantTest.Basics.cs">
       <DependentUpon>InstantTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="InstantTest.Constructors.cs">
+    <Compile Include="InstantTest.Operators.cs">
       <DependentUpon>InstantTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalInstantTest.cs" />
+    <Compile Include="LocalInstantTest.Basics.cs">
+      <DependentUpon>LocalInstantTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalInstantTest.Operators.cs">
+      <DependentUpon>LocalInstantTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Base\SingleFieldPeriodBaseTest.cs" />
     <Compile Include="Base\SingleFieldPeriodBaseTest.Single.cs">
