@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using NodaTime.TimeZones;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -111,22 +112,28 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public void Parse(TextReader reader, TzdbDatabase database)
         {
             Log.LineNumber = 1;
-            try {
-                for (string line = reader.ReadLine(); line != null; line = reader.ReadLine()) {
-                    try {
+            try
+            {
+                for (string line = reader.ReadLine(); line != null; line = reader.ReadLine())
+                {
+                    try
+                    {
                         ParseLine(line, database);
                     }
-                    catch (ParseException) {
+                    catch (ParseException)
+                    {
                         // Nothing to do
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         Log.Error("Exception {0} occurred: {1}", e.GetType().Name, e.Message);
                         throw;
                     }
                     Log.LineNumber++;
                 }
             }
-            finally {
+            finally
+            {
                 Log.LineNumber = -1;
             }
         }
@@ -163,37 +170,45 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal void ParseLine(string line, TzdbDatabase database)
         {
             int index = line.IndexOf("#", StringComparison.Ordinal);
-            if (index == 0) {
+            if (index == 0)
+            {
                 return;
             }
-            if (index > 0) {
+            if (index > 0)
+            {
                 line = line.Substring(0, index - 1);
             }
             line = line.TrimEnd();
-            if (line.Length == 0) {
+            if (line.Length == 0)
+            {
                 return;
             }
             Tokens tokens = Tokens.Tokenize(line);
             string keyword = NextString(tokens, "Keyword");
-            if (keyword == KeywordRule) {
-                Rule rule = ParseRule(tokens);
+            if (keyword == KeywordRule)
+            {
+                ZoneRule rule = ParseRule(tokens);
                 database.AddRule(rule);
             }
-            else if (keyword == KeywordLink) {
+            else if (keyword == KeywordLink)
+            {
                 ZoneAlias alias = ParseLink(tokens);
                 database.AddAlias(alias);
             }
-            else if (keyword == KeywordZone) {
+            else if (keyword == KeywordZone)
+            {
                 string name = NextString(tokens, "Name");
                 Zone zone = ParseZone(tokens);
                 zone.Name = name;
                 database.AddZone(zone);
             }
-            else if (keyword == string.Empty) {
+            else if (keyword == string.Empty)
+            {
                 Zone zone = ParseZone(tokens);
                 database.AddZone(zone);
             }
-            else {
+            else
+            {
                 Error("Unexpected zone database keyword: {0}", keyword);
             }
         }
@@ -219,63 +234,77 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </remarks>
         /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The Rule object.</returns>
-        internal Rule ParseRule(Tokens tokens)
+        internal ZoneRule ParseRule(Tokens tokens)
         {
-            Rule rule = new Rule();
-            rule.Name = NextString(tokens, "Name");
-            rule.FromYear = NextYear(tokens, "FromYear", 0);
-            rule.ToYear = NextYear(tokens, "ToYear", rule.FromYear);
-            if (rule.ToYear < rule.FromYear) {
-                throw new ArgumentException("ToYear cannot be before the FromYear in a Rule: " + rule.ToYear + " < " + rule.FromYear);
+            string name = NextString(tokens, "Name");
+            int fromYear = NextYear(tokens, "FromYear", 0);
+            int toYear = NextYear(tokens, "ToYear", fromYear);
+            if (toYear < fromYear)
+            {
+                throw new ArgumentException("To year cannot be before the from year in a Rule: " + toYear + " < " + fromYear);
             }
-            rule.Type = NextOptional(tokens, "Type");
-            rule.DateTimeOfYear = ParseDateTimeOfYear(tokens);
-            rule.SaveMilliseconds = NextOffset(tokens, "SaveMillis");
-            rule.LetterS = NextOptional(tokens, "LetterS");
-            return rule;
+            string type = NextOptional(tokens, "Type");
+            ZoneYearOffset yearOffset = ParseDateTimeOfYear(tokens);
+            Offset savings = NextOffset(tokens, "SaveMillis");
+            string letterS = NextOptional(tokens, "LetterS");
+            ZoneRecurrence recurrence = new ZoneRecurrence(name, savings, yearOffset);
+            return new ZoneRule(recurrence, fromYear, toYear); ;
         }
 
         /// <summary>
         /// Parses the date time of year.
         /// </summary>
+        /// <param name="tokens">The tokens to parse.</param>
+        /// <returns>The DateTimeOfYear object.</returns>
         /// <remarks>
         /// IN ON AT
         /// </remarks>
-        /// <param name="tokens">The tokens to parse.</param>
-        /// <returns>The DateTimeOfYear object.</returns>
-        internal DateTimeOfYear ParseDateTimeOfYear(Tokens tokens)
+        internal ZoneYearOffset ParseDateTimeOfYear(Tokens tokens)
         {
-            DateTimeOfYear dateTime = new DateTimeOfYear();
+            TransitionMode mode = ZoneYearOffset.StartOfYear.Mode;
+            int monthOfYear = ZoneYearOffset.StartOfYear.MonthOfYear;
+            int dayOfMonth = ZoneYearOffset.StartOfYear.DayOfMonth;
+            int dayOfWeek = ZoneYearOffset.StartOfYear.DayOfWeek;
+            bool advanceDayOfWeek = ZoneYearOffset.StartOfYear.AdvanceDayOfWeek;
+            Offset tickOfDay = ZoneYearOffset.StartOfYear.TickOfDay;
 
-            dateTime.MonthOfYear = NextMonth(tokens, "MonthOfYear");
+            monthOfYear = NextMonth(tokens, "MonthOfYear");
 
             String on = NextString(tokens, "When");
-            if (on.StartsWith("last", StringComparison.Ordinal)) {
-                dateTime.DayOfMonth = -1;
-                dateTime.DayOfWeek = ParseDayOfWeek(on.Substring(4));
-                dateTime.AdvanceDayOfWeek = false;
+            if (on.StartsWith("last", StringComparison.Ordinal))
+            {
+                dayOfMonth = -1;
+                dayOfWeek = ParseDayOfWeek(on.Substring(4));
+                advanceDayOfWeek = false;
             }
-            else {
+            else
+            {
                 int index = on.IndexOf(">=", StringComparison.Ordinal);
-                if (index > 0) {
-                    dateTime.DayOfMonth = Int32.Parse(on.Substring(index + 2), CultureInfo.InvariantCulture);
-                    dateTime.DayOfWeek = ParseDayOfWeek(on.Substring(0, index));
-                    dateTime.AdvanceDayOfWeek = true;
+                if (index > 0)
+                {
+                    dayOfMonth = Int32.Parse(on.Substring(index + 2), CultureInfo.InvariantCulture);
+                    dayOfWeek = ParseDayOfWeek(on.Substring(0, index));
+                    advanceDayOfWeek = true;
                 }
-                else {
+                else
+                {
                     index = on.IndexOf("<=", StringComparison.Ordinal);
-                    if (index > 0) {
-                        dateTime.DayOfMonth = Int32.Parse(on.Substring(index + 2), CultureInfo.InvariantCulture);
-                        dateTime.DayOfWeek = ParseDayOfWeek(on.Substring(0, index));
-                        dateTime.AdvanceDayOfWeek = false;
+                    if (index > 0)
+                    {
+                        dayOfMonth = Int32.Parse(on.Substring(index + 2), CultureInfo.InvariantCulture);
+                        dayOfWeek = ParseDayOfWeek(on.Substring(0, index));
+                        advanceDayOfWeek = false;
                     }
-                    else {
-                        try {
-                            dateTime.DayOfMonth = Int32.Parse(on, CultureInfo.InvariantCulture);
-                            dateTime.DayOfWeek = 0;
-                            dateTime.AdvanceDayOfWeek = false;
+                    else
+                    {
+                        try
+                        {
+                            dayOfMonth = Int32.Parse(on, CultureInfo.InvariantCulture);
+                            dayOfWeek = 0;
+                            advanceDayOfWeek = false;
                         }
-                        catch (FormatException e) {
+                        catch (FormatException e)
+                        {
                             throw new ArgumentException("Unparsable ON token: " + on, e);
                         }
                     }
@@ -283,14 +312,17 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
 
             string atTime = NextString(tokens, "AT");
-            if (atTime != null && atTime.Length > 0) {
-                if (Char.IsLetter(atTime[atTime.Length - 1])) {
-                    dateTime.ZoneCharacter = atTime[atTime.Length - 1];
+            if (atTime != null && atTime.Length > 0)
+            {
+                if (Char.IsLetter(atTime[atTime.Length - 1]))
+                {
+                    char zoneCharacter = atTime[atTime.Length - 1];
+                    mode = ZoneYearOffset.NormalizeModeCharacter(zoneCharacter);
                     atTime = atTime.Substring(0, atTime.Length - 1);
                 }
-                dateTime.MillisecondOfDay = ParserHelper.ParseOffset(atTime);
+                tickOfDay = ParserHelper.ParseOffset(atTime);
             }
-            return dateTime;
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
         }
 
         /// <summary>
@@ -304,19 +336,21 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal Zone ParseZone(Tokens tokens)
         {
             Zone zone = new Zone();
-            zone.OffsetMilliseconds = NextOffset(tokens, "Gmt Offset");
+            zone.Offset = NextOffset(tokens, "Gmt Offset");
             zone.Rules = NextOptional(tokens, "Rules");
             zone.Format = NextString(tokens, "Format");
             zone.Year = NextYear(tokens, "Until Year", 0);
             zone.Month = NextMonth(tokens, "Until Month", 0);
             zone.Day = NextInteger(tokens, "Until Day", 0);
             string untilTime = NextString(tokens, "Until Time", null);
-            if (untilTime != null && untilTime.Length > 0) {
-                if (Char.IsLetter(untilTime[untilTime.Length - 1])) {
+            if (untilTime != null && untilTime.Length > 0)
+            {
+                if (Char.IsLetter(untilTime[untilTime.Length - 1]))
+                {
                     zone.ZoneCharacter = untilTime[untilTime.Length - 1];
                     untilTime = untilTime.Substring(0, untilTime.Length - 1);
                 }
-                zone.Millisecond = ParserHelper.ParseOffset(untilTime);
+                zone.TickOfDay = ParserHelper.ParseOffset(untilTime);
             }
             return zone;
         }
@@ -328,8 +362,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <returns>The month number 1-12 or 0 if the month is not valid</returns>
         internal int ParseMonth(String text)
         {
-            for (int i = 1; i < Months.Length; i++) {
-                if (text == Months[i]) {
+            for (int i = 1; i < Months.Length; i++)
+            {
+                if (text == Months[i])
+                {
                     return i;
                 }
             }
@@ -343,8 +379,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <returns></returns>
         internal int ParseDayOfWeek(String text)
         {
-            for (int i = 1; i < DaysOfWeek.Length; i++) {
-                if (text == DaysOfWeek[i]) {
+            for (int i = 1; i < DaysOfWeek.Length; i++)
+            {
+                if (text == DaysOfWeek[i])
+                {
                     return i;
                 }
             }
@@ -374,7 +412,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             int result = defaultValue;
             string text;
-            if (tokens.TryNextToken(name, out text)) {
+            if (tokens.TryNextToken(name, out text))
+            {
                 result = ParserHelper.ParseInteger(text, defaultValue);
             }
             return result;
@@ -386,7 +425,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        private int NextOffset(Tokens tokens, string name)
+        private Offset NextOffset(Tokens tokens, string name)
         {
             string value = NextString(tokens, name);
             return ParserHelper.ParseOffset(value);
@@ -399,11 +438,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="name">The name.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
-        private int NextOffset(Tokens tokens, string name, int defaultValue)
+        private Offset NextOffset(Tokens tokens, string name, Offset defaultValue)
         {
-            int result = defaultValue;
+            Offset result = defaultValue;
             string text;
-            if (tokens.TryNextToken(name, out text)) {
+            if (tokens.TryNextToken(name, out text))
+            {
                 result = ParserHelper.ParseOffset(text);
             }
             return result;
@@ -420,7 +460,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             int result = defaultValue;
             string text;
-            if (tokens.TryNextToken(name, out text)) {
+            if (tokens.TryNextToken(name, out text))
+            {
                 result = ParserHelper.ParseYear(text, defaultValue);
             }
             return result;
@@ -449,7 +490,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             int result = defaultValue;
             string text;
-            if (tokens.TryNextToken(name, out text)) {
+            if (tokens.TryNextToken(name, out text))
+            {
                 result = ParseMonth(text);
             }
             return result;
@@ -475,7 +517,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <returns></returns>
         private string NextString(Tokens tokens, string name)
         {
-            if (!tokens.HasNextToken) {
+            if (!tokens.HasNextToken)
+            {
                 Error("Missing zone info token {0}", name);
             }
             return tokens.NextToken(name);
@@ -491,7 +534,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private string NextString(Tokens tokens, string name, string defaultValue)
         {
             string result;
-            if (!tokens.TryNextToken(name, out result)) {
+            if (!tokens.TryNextToken(name, out result))
+            {
                 result = defaultValue;
             }
             return result;

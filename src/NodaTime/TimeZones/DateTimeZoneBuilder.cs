@@ -103,7 +103,7 @@ namespace NodaTime.TimeZones
                                               int dayOfMonth,
                                               int dayOfWeek,
                                               bool advanceDayOfWeek,
-                                              Duration tickOfDay)
+                                              Offset tickOfDay)
         {
             if (ruleSets.Count > 0)
             {
@@ -162,12 +162,12 @@ namespace NodaTime.TimeZones
                                                        int dayOfMonth,
                                                        int dayOfWeek,
                                                        bool advanceDayOfWeek,
-                                                       Duration tickOfDay)
+                                                       Offset tickOfDay)
         {
             if (fromYear <= toYear)
             {
                 ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthYearOffset, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
-                ZoneRecurrence recurrence = new ZoneRecurrence(yearOffset, nameKey, savings);
+                ZoneRecurrence recurrence = new ZoneRecurrence(nameKey, savings, yearOffset);
                 ZoneRule rule = new ZoneRule(recurrence, fromYear, toYear);
                 LastRuleSet.AddRule(rule);
             }

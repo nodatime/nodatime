@@ -34,10 +34,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the offset milliseconds to add to UTC for this time zone.
+        /// Gets or sets the offset to add to UTC for this time zone.
         /// </summary>
-        /// <value>The offset milliseconds from UTC.</value>
-        internal int OffsetMilliseconds { get; set; }
+        /// <value>The offset from UTC.</value>
+        internal Offset Offset { get; set; }
 
         /// <summary>
         /// Gets or sets the daylight savings rules name applicable to this zone line.
@@ -70,10 +70,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal int Day { get; set; }
 
         /// <summary>
-        /// Gets or sets the until millisecond time of the day if defined.
+        /// Gets or sets the until offset time of the day if defined.
         /// </summary>
-        /// <value>The millisecond or -1.</value>
-        internal int Millisecond { get; set; }
+        /// <value>The offset or Offset.MinValue.</value>
+        internal Offset TickOfDay { get; set; }
 
         /// <summary>
         /// Gets or sets the until zone character if defined.
@@ -86,7 +86,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         internal Zone()
         {
-            Millisecond = -1;
+            TickOfDay = Offset.MinValue;
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(Name).Append(" ");
-            builder.Append(ParserHelper.FormatOffset(OffsetMilliseconds)).Append(" ");
+            builder.Append(ParserHelper.FormatOffset(Offset)).Append(" ");
             builder.Append(ParserHelper.FormatOptional(Rules)).Append(" ");
             builder.Append(Format);
             if (Year > 0) {
@@ -108,8 +108,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     builder.Append(" ").Append(TzdbZoneInfoParser.Months[Month]);
                     if (Day > 0) {
                         builder.Append(" ").Append(Day.ToString("D", CultureInfo.InvariantCulture)).Append(" ");
-                        if (Millisecond >= 0) {
-                            builder.Append(" ").Append(ParserHelper.FormatOffset(Millisecond));
+                        if (TickOfDay >= Offset.Zero) {
+                            builder.Append(" ").Append(ParserHelper.FormatOffset(TickOfDay));
                             if (ZoneCharacter != 0) {
                                 builder.Append(ZoneCharacter);
                             }
@@ -150,13 +150,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             int hash = HashCodeHelper.Initialize();
             hash = HashCodeHelper.Hash(hash, Name);
-            hash = HashCodeHelper.Hash(hash, OffsetMilliseconds);
+            hash = HashCodeHelper.Hash(hash, Offset);
             hash = HashCodeHelper.Hash(hash, Rules);
             hash = HashCodeHelper.Hash(hash, Format);
             hash = HashCodeHelper.Hash(hash, Year);
             hash = HashCodeHelper.Hash(hash, Month);
             hash = HashCodeHelper.Hash(hash, Day);
-            hash = HashCodeHelper.Hash(hash, Millisecond);
+            hash = HashCodeHelper.Hash(hash, TickOfDay);
             hash = HashCodeHelper.Hash(hash, ZoneCharacter);
             return hash;
         }
@@ -175,13 +175,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             return 
                 Name == other.Name &&
-                OffsetMilliseconds == other.OffsetMilliseconds &&
+                Offset == other.Offset &&
                 Rules == other.Rules &&
                 Format == other.Format &&
                 Year == other.Year &&
                 Month == other.Month &&
                 Day == other.Day &&
-                Millisecond == other.Millisecond &&
+                TickOfDay == other.TickOfDay &&
                 ZoneCharacter == other.ZoneCharacter;
         }
 

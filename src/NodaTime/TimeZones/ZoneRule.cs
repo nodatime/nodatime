@@ -26,13 +26,13 @@ namespace NodaTime.TimeZones
     /// <remarks>
     /// Immutable, threadsafe.
     /// </remarks>
-    internal class ZoneRule
+    public class ZoneRule
         : IEquatable<ZoneRule>
     {
-        internal ZoneRecurrence Recurrence { get { return this.recurrence; } }
-        internal string Name { get { return Recurrence.Name; } }
-        internal Offset Savings { get { return Recurrence.Savings; } }
-        internal bool IsInfinite { get { return this.toYear == Int32.MaxValue; } }
+        public ZoneRecurrence Recurrence { get { return this.recurrence; } }
+        public string Name { get { return Recurrence.Name; } }
+        public Offset Savings { get { return Recurrence.Savings; } }
+        public bool IsInfinite { get { return this.toYear == Int32.MaxValue; } }
 
         private readonly ZoneRecurrence recurrence;
         private readonly int fromYear;
@@ -44,7 +44,7 @@ namespace NodaTime.TimeZones
         /// <param name="recurrence">The recurrence definition of this rule.</param>
         /// <param name="fromYear">The inclusive starting year for this rule.</param>
         /// <param name="toYear">The inclusive ending year for this rule.</param>
-        internal ZoneRule(ZoneRecurrence recurrence, int fromYear, int toYear)
+        public ZoneRule(ZoneRecurrence recurrence, int fromYear, int toYear)
         {
             this.recurrence = recurrence;
             this.fromYear = fromYear;
@@ -65,7 +65,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The <see cref="Duration"/> standard offset.</param>
         /// <param name="savings">The <see cref="Duration"/> savings adjustment.</param>
         /// <returns></returns>
-        public Instant Next(Instant instant, Offset standardOffset, Offset savings)
+        internal Instant Next(Instant instant, Offset standardOffset, Offset savings)
         {
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
 

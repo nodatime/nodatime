@@ -16,6 +16,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using NodaTime.TimeZones;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -28,7 +29,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// Gets or sets the daylight savings rule sets.
         /// </summary>
         /// <value>The rule sets.</value>
-        internal IDictionary<string, RuleSet> Rules { get; private set; }
+        internal IDictionary<string, ZoneRuleSet> Rules { get; private set; }
 
         /// <summary>
         /// Gets or sets the time zone definitions.
@@ -54,7 +55,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         internal TzdbDatabase()
         {
-            Rules = new Dictionary<string, RuleSet>();
+            Rules = new Dictionary<string, ZoneRuleSet>();
             Zones = new List<ZoneList>();
             Aliases = new List<ZoneAlias>();
             CurrentZoneList = null;
@@ -65,14 +66,14 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// RuleSet, one is created and added to the database.
         /// </summary>
         /// <param name="rule">The rule to add.</param>
-        internal void AddRule(Rule rule)
+        internal void AddRule(ZoneRule rule)
         {
-            RuleSet ruleSet;
+            ZoneRuleSet ruleSet;
             if (!Rules.TryGetValue(rule.Name, out ruleSet)) {
-                ruleSet = new RuleSet();
+                ruleSet = new ZoneRuleSet();
                 Rules[rule.Name] = ruleSet;
             }
-            ruleSet.Add(rule);
+            ruleSet.AddRule(rule);
         }
 
         /// <summary>

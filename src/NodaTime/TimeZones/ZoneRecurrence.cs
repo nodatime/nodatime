@@ -25,23 +25,24 @@ namespace NodaTime.TimeZones
     /// <remarks>
     /// Immutable, thread safe.
     /// </remarks>
-    internal class ZoneRecurrence
+    public class ZoneRecurrence
         : IEquatable<ZoneRecurrence>
     {
-        internal string Name { get { return this.name; } }
-        internal Offset Savings { get { return this.savings; } }
+        public string Name { get { return this.name; } }
+        public Offset Savings { get { return this.savings; } }
+        public ZoneYearOffset YearOffset { get { return this.yearOffset; } }
 
-        private readonly ZoneYearOffset yearOffset;
         private readonly string name;
+        private readonly ZoneYearOffset yearOffset;
         private readonly Offset savings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneRecurrence"/> class.
         /// </summary>
-        /// <param name="yearOffset">The year offset.</param>
         /// <param name="name">The name.</param>
         /// <param name="savings">The savings.</param>
-        internal ZoneRecurrence(ZoneYearOffset yearOffset, String name, Offset savings)
+        /// <param name="yearOffset">The year offset.</param>
+        public ZoneRecurrence(String name, Offset savings, ZoneYearOffset yearOffset)
         {
             this.yearOffset = yearOffset;
             this.name = name;
@@ -82,7 +83,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         internal ZoneRecurrence RenameAppend(String suffix)
         {
-            return new ZoneRecurrence(this.yearOffset, Name + suffix, Savings);
+            return new ZoneRecurrence(Name + suffix, Savings, this.yearOffset);
         }
 
         #region Object overrides

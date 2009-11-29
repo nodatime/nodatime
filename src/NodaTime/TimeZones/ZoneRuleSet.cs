@@ -28,7 +28,8 @@ namespace NodaTime.TimeZones
     /// Not immutable, not thread safe. 
     /// </para>
     /// </remarks>
-    internal class ZoneRuleSet
+    public class ZoneRuleSet
+        : IEnumerable<ZoneRule>
     {
         private static readonly int yearLimit;
 
@@ -56,7 +57,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneRuleSet"/> class.
         /// </summary>
-        internal ZoneRuleSet()
+        public ZoneRuleSet()
         {
         }
 
@@ -75,7 +76,7 @@ namespace NodaTime.TimeZones
         /// Adds the given rule to the set if it is not already in the set.
         /// </summary>
         /// <param name="rule">The rule to add.</param>
-        internal void AddRule(ZoneRule rule)
+        public void AddRule(ZoneRule rule)
         {
             if (!rules.Contains(rule))
             {
@@ -113,7 +114,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="startingInstant">The starting instant.</param>
         /// <returns>The <see cref="TransitionIterator"/> that iterates the transitions.</returns>
-        public TransitionIterator Iterator(Instant startingInstant)
+        internal TransitionIterator Iterator(Instant startingInstant)
         {
             return new TransitionIterator(this, startingInstant);
         }
@@ -353,5 +354,37 @@ namespace NodaTime.TimeZones
                 }
             }
         }
+
+        #region IEnumerable<ZoneRule> Members
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate
+        /// through the collection.
+        /// </returns>
+        public IEnumerator<ZoneRule> GetEnumerator()
+        {
+            return this.rules.GetEnumerator();
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate
+        /// through the collection.
+        /// </returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.rules.GetEnumerator();
+        }
+
+        #endregion
     }
 }
