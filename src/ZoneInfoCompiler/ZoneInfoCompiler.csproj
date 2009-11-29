@@ -73,11 +73,8 @@
     <Compile Include="LogBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tokens.cs" />
-    <Compile Include="Tzdb\DateTimeOfYear.cs" />
     <Compile Include="Tzdb\MissingTokenException.cs" />
     <Compile Include="Tzdb\ParserHelper.cs" />
-    <Compile Include="Tzdb\Rule.cs" />
-    <Compile Include="Tzdb\RuleSet.cs" />
     <Compile Include="Tzdb\TzdbDatabase.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoCompiler.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoParser.cs" />

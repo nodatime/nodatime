@@ -19,6 +19,8 @@ using System.IO;
 using NodaTime.ZoneInfoCompiler;
 using NodaTime.ZoneInfoCompiler.Tzdb;
 using NUnit.Framework;
+using NodaTime.TimeZones;
+using NodaTime;
 
 namespace ZoneInfoCompiler.Test
 {
@@ -71,13 +73,14 @@ namespace ZoneInfoCompiler.Test
         {
             string text = "Mar lastTue 2:00";
             Tokens tokens = Tokens.Tokenize(text);
-            DateTimeOfYear actual = Parser.ParseDateTimeOfYear(tokens);
-            DateTimeOfYear expected = new DateTimeOfYear() {
-                MonthOfYear = 3,
-                DayOfMonth = -1,
-                DayOfWeek = (int)DayOfWeek.Tuesday,
-                MillisecondOfDay = ToMilliseconds(2, 0, 0, 0)
-            };
+            ZoneYearOffset actual = Parser.ParseDateTimeOfYear(tokens);
+            ZoneYearOffset expected = new ZoneYearOffset(
+                TransitionMode.Wall,
+                3,
+                -1,
+                (int)DayOfWeek.Tuesday,
+                false,
+                ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
         }
 
@@ -86,14 +89,14 @@ namespace ZoneInfoCompiler.Test
         {
             string text = "Mar Tue>=14 2:00";
             Tokens tokens = Tokens.Tokenize(text);
-            DateTimeOfYear actual = Parser.ParseDateTimeOfYear(tokens);
-            DateTimeOfYear expected = new DateTimeOfYear() {
-                MonthOfYear = 3,
-                DayOfMonth = 14,
-                DayOfWeek = (int)DayOfWeek.Tuesday,
-                MillisecondOfDay = ToMilliseconds(2, 0, 0, 0),
-                AdvanceDayOfWeek = true
-            };
+            ZoneYearOffset actual = Parser.ParseDateTimeOfYear(tokens);
+            ZoneYearOffset expected = new ZoneYearOffset(
+                TransitionMode.Wall,
+                3,
+                14,
+                (int)DayOfWeek.Tuesday,
+                true,
+                ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
         }
 
@@ -102,14 +105,14 @@ namespace ZoneInfoCompiler.Test
         {
             string text = "Mar Tue<=14 2:00";
             Tokens tokens = Tokens.Tokenize(text);
-            DateTimeOfYear actual = Parser.ParseDateTimeOfYear(tokens);
-            DateTimeOfYear expected = new DateTimeOfYear() {
-                MonthOfYear = 3,
-                DayOfMonth = 14,
-                DayOfWeek = (int)DayOfWeek.Tuesday,
-                MillisecondOfDay = ToMilliseconds(2, 0, 0, 0),
-                AdvanceDayOfWeek = false
-            };
+            ZoneYearOffset actual = Parser.ParseDateTimeOfYear(tokens);
+            ZoneYearOffset expected = new ZoneYearOffset(
+                TransitionMode.Wall,
+                3,
+                14,
+                (int)DayOfWeek.Tuesday,
+                false,
+                ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
         }
 
@@ -337,8 +340,9 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_simple()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT");
-            Zone expected = new Zone() {
-                OffsetMilliseconds = ToMilliseconds(2, 0, 0, 0),
+            Zone expected = new Zone()
+            {
+                Offset = ToOffset(2, 0, 0, 0),
                 Rules = "US",
                 Format = "P%sT"
             };
@@ -349,8 +353,9 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_optionalRule()
         {
             Tokens tokens = Tokens.Tokenize("2:00 - P%sT");
-            Zone expected = new Zone() {
-                OffsetMilliseconds = ToMilliseconds(2, 0, 0, 0),
+            Zone expected = new Zone()
+            {
+                Offset = ToOffset(2, 0, 0, 0),
                 Rules = null,
                 Format = "P%sT"
             };
@@ -361,8 +366,9 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYear()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969");
-            Zone expected = new Zone() {
-                OffsetMilliseconds = ToMilliseconds(2, 0, 0, 0),
+            Zone expected = new Zone()
+            {
+                Offset = ToOffset(2, 0, 0, 0),
                 Rules = "US",
                 Format = "P%sT",
                 Year = 1969
@@ -374,8 +380,9 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYearMonthDay()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23");
-            Zone expected = new Zone() {
-                OffsetMilliseconds = ToMilliseconds(2, 0, 0, 0),
+            Zone expected = new Zone()
+            {
+                Offset = ToOffset(2, 0, 0, 0),
                 Rules = "US",
                 Format = "P%sT",
                 Year = 1969,
@@ -389,14 +396,15 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYearMonthDayTime()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856");
-            Zone expected = new Zone() {
-                OffsetMilliseconds = ToMilliseconds(2, 0, 0, 0),
+            Zone expected = new Zone()
+            {
+                Offset = ToOffset(2, 0, 0, 0),
                 Rules = "US",
                 Format = "P%sT",
                 Year = 1969,
                 Month = 3,
                 Day = 23,
-                Millisecond = ToMilliseconds(14, 53, 27, 856)
+                TickOfDay = ToOffset(14, 53, 27, 856)
             };
             Assert.AreEqual(expected, Parser.ParseZone(tokens));
         }
@@ -405,14 +413,15 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYearMonthDayTimeZone()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856s");
-            Zone expected = new Zone() {
-                OffsetMilliseconds = ToMilliseconds(2, 0, 0, 0),
+            Zone expected = new Zone()
+            {
+                Offset = ToOffset(2, 0, 0, 0),
                 Rules = "US",
                 Format = "P%sT",
                 Year = 1969,
                 Month = 3,
                 Day = 23,
-                Millisecond = ToMilliseconds(14, 53, 27, 856),
+                TickOfDay = ToOffset(14, 53, 27, 856),
                 ZoneCharacter = 's'
             };
             Assert.AreEqual(expected, Parser.ParseZone(tokens));
@@ -422,22 +431,23 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_badOffset_exception()
         {
             Tokens tokens = Tokens.Tokenize("asd US P%sT 1969 Mar 23 14:53:27.856s");
-            Zone expected = new Zone() {
-                OffsetMilliseconds = ToMilliseconds(2, 0, 0, 0),
+            Zone expected = new Zone()
+            {
+                Offset = ToOffset(2, 0, 0, 0),
                 Rules = "US",
                 Format = "P%sT",
                 Year = 1969,
                 Month = 3,
                 Day = 23,
-                Millisecond = ToMilliseconds(14, 53, 27, 856),
+                TickOfDay = ToOffset(14, 53, 27, 856),
                 ZoneCharacter = 's'
             };
             Assert.Throws(typeof(FormatException), () => Parser.ParseZone(tokens));
         }
 
-        private static int ToMilliseconds(int hours, int minutes, int seconds, int fractions)
+        private static Offset ToOffset(int hours, int minutes, int seconds, int fractions)
         {
-            return (((((hours * 60) + minutes) * 60) + seconds) * 1000) + fractions;
+            return new Offset(((((((hours * 60) + minutes) * 60) + seconds) * 1000) + fractions) * NodaConstants.TicksPerMillisecond);
         }
 
         /* ############################################################################### */
@@ -466,7 +476,8 @@ namespace ZoneInfoCompiler.Test
         [Test]
         public void ParseMonth_months()
         {
-            for (int i = 0; i < MonthNames.Length; i++) {
+            for (int i = 0; i < MonthNames.Length; i++)
+            {
                 string month = MonthNames[i];
                 Assert.AreEqual(i + 1, Parser.ParseMonth(month));
             }

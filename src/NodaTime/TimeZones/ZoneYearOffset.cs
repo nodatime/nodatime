@@ -17,6 +17,7 @@
 using System;
 using NodaTime.Calendars;
 using NodaTime.Utility;
+using System.Text;
 
 namespace NodaTime.TimeZones
 {
@@ -26,15 +27,88 @@ namespace NodaTime.TimeZones
     /// <remarks>
     /// Immutable, thread safe
     /// </remarks>
-    internal class ZoneYearOffset
+    public class ZoneYearOffset
         : IEquatable<ZoneYearOffset>
     {
+        /// <summary>
+        /// An offset that specifies the beginning of the year.
+        /// </summary>
+        public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
+
         private readonly TransitionMode mode;
         private readonly int monthOfYear;
         private readonly int dayOfMonth;
         private readonly int dayOfWeek;
         private readonly bool advance;
-        private readonly long tickOfDay;
+        private readonly Offset tickOfDay;
+
+        // TODO: find a better home for these two arrays
+
+        /// <summary>
+        /// The months of the year names as they appear in the TZDB zone files. They are
+        /// always the short name in US English. Extra blank name at the beginning helps
+        /// to make the indexes to come out right.
+        /// </summary>
+        private static readonly string[] Months = { 
+                                             "",
+                                             "Jan",
+                                             "Feb",
+                                             "Mar",
+                                             "Apr",
+                                             "May",
+                                             "Jun",
+                                             "Jul",
+                                             "Aug",
+                                             "Sep",
+                                             "Oct",
+                                             "Nov",
+                                             "Dec"
+                                         };
+
+        /// <summary>
+        /// The days of the week names as they appear in the TZDB zone files. They are
+        /// always the short name in US English.
+        /// </summary>
+        private static readonly string[] DaysOfWeek = {
+                                                         "",
+                                                         "Mon",
+                                                         "Tue",
+                                                         "Wed",
+                                                         "Thu",
+                                                         "Fri",
+                                                         "Sat",
+                                                         "Sun"
+                                                     };
+        /// <summary>
+        /// Gets the method by which offsets are added to Instants to get LocalInstants.
+        /// </summary>
+        public TransitionMode Mode { get { return this.mode; } }
+
+        /// <summary>
+        /// Gets the month of year the rule starts.
+        /// </summary>
+        public int MonthOfYear { get { return this.monthOfYear; } }
+
+        /// <summary>
+        /// Gets the day of month this rule starts.
+        /// </summary>
+        public int DayOfMonth { get { return this.dayOfMonth; } }
+
+        /// <summary>
+        /// Gets the day of week this rule starts.
+        /// </summary>
+        /// <value>The integer day of week (1=Mon, 2=Tue, etc.). 0 means not set.</value>
+        public int DayOfWeek { get { return this.dayOfWeek; } }
+
+        /// <summary>
+        /// Gets a value indicating whether [advance day of week].
+        /// </summary>
+        public bool AdvanceDayOfWeek { get { return this.advance; } }
+
+        /// <summary>
+        /// Gets the tick of day when the rule takes effect.
+        /// </summary>
+        public Offset TickOfDay { get { return this.tickOfDay; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneYearOffset"/> class.
@@ -45,20 +119,45 @@ namespace NodaTime.TimeZones
         /// <param name="dayOfWeek">The day of week. 0 menas not set.</param>
         /// <param name="advance">if set to <c>true</c> [advance].</param>
         /// <param name="tickOfDay">The tick within the day.</param>
-        internal ZoneYearOffset(TransitionMode mode,
+        public ZoneYearOffset(TransitionMode mode,
                                 int monthOfYear,
                                 int dayOfMonth,
                                 int dayOfWeek,
                                 bool advance,
-                                Duration tickOfDay)
+                                Offset tickOfDay)
         {
             this.mode = mode;
             this.monthOfYear = monthOfYear;
             this.dayOfMonth = dayOfMonth;
             this.dayOfWeek = dayOfWeek;
             this.advance = advance;
-            // TODO: Consider making tickOfDay a long instead
-            this.tickOfDay = tickOfDay.Ticks;
+            this.tickOfDay = tickOfDay;
+        }
+
+        /// <summary>
+        /// Normalizes the transition mode characater.
+        /// </summary>
+        /// <param name="c">The character to normalize.</param>
+        /// <returns>The <see cref="TransitionMode"/>.</returns>
+        public static TransitionMode NormalizeModeCharacter(char c)
+        {
+            switch (c)
+            {
+                case 's':
+                case 'S':
+                    return TransitionMode.Standard;
+                case 'u':
+                case 'U':
+                case 'g':
+                case 'G':
+                case 'z':
+                case 'Z':
+                    return TransitionMode.Utc;
+                case 'w':
+                case 'W':
+                default:
+                    return TransitionMode.Wall;
+            }
         }
 
         /// <summary>
@@ -75,7 +174,7 @@ namespace NodaTime.TimeZones
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.Fields.MonthOfYear.SetValue(instant, this.monthOfYear);
-            instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay);
+            instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay.Ticks);
             instant = SetDayOfMonth(calendar, instant);
             instant = SetDayOfWeek(calendar, instant);
 
@@ -135,7 +234,7 @@ namespace NodaTime.TimeZones
                 IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
                 LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, this.monthOfYear);
                 // Be lenient with millisOfDay.
-                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay);
+                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay.Ticks);
                 newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
                 if (this.dayOfWeek == 0)
@@ -313,6 +412,52 @@ namespace NodaTime.TimeZones
             hash = HashCodeHelper.Hash(hash, this.advance);
             hash = HashCodeHelper.Hash(hash, this.tickOfDay);
             return hash;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(Months[MonthOfYear]).Append(" ");
+            if (DayOfMonth == -1)
+            {
+                builder.Append("last").Append(DaysOfWeek[DayOfWeek]).Append(" ");
+            }
+            else if (DayOfWeek == 0)
+            {
+                builder.Append(DayOfMonth).Append(" ");
+            }
+            else
+            {
+                builder.Append(DaysOfWeek[DayOfWeek]);
+                if (AdvanceDayOfWeek)
+                {
+                    builder.Append(">=");
+                }
+                else
+                {
+                    builder.Append("<=");
+                }
+                builder.Append(DayOfMonth).Append(" ");
+            }
+            builder.Append(TickOfDay);
+            switch (Mode)
+            {
+                case TransitionMode.Standard:
+                    builder.Append("s");
+                    break;
+                case TransitionMode.Utc:
+                    builder.Append("u");
+                    break;
+                case TransitionMode.Wall:
+                    break;
+            }
+            return builder.ToString();
         }
 
         #endregion // Object overrides

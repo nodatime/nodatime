@@ -26,10 +26,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// </summary>
     internal class ParserHelper
     {
-        private const int MillisecondsPerSecond = 1000;
-        private const int MillisecondsPerMinute = 60 * MillisecondsPerSecond;
-        private const int MillisecondsPerHour = 60 * MillisecondsPerMinute;
-
         /// <summary>
         /// Parses the year.
         /// </summary>
@@ -80,12 +76,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        /// Parses a time offset string into an integer number of milliseconds.
+        /// Parses a time offset string into an integer number of ticks.
         /// </summary>
         /// <param name="value">The value to parse.</param>
-        /// <returns>an integer number of milliseconds</returns>
+        /// <returns>an integer number of ticks</returns>
         /// <exception cref="ArgumentNullException">If the text is null.</exception>
-        public static int ParseOffset(string text)
+        public static Offset ParseOffset(string text)
         {
             if (text == null) {
                 throw new ArgumentNullException("value cannot be null");
@@ -94,46 +90,46 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             if (parts.Length > 3) {
                 throw new FormatException("Offset has too many colon separated parts (max of 3 allowed): " + text);
             }
-            int milliseconds = ConvertHourToMilliseconds(parts[0]);
+            long ticks = ConvertHourToTicks(parts[0]);
             if (parts.Length > 1) {
-                milliseconds += ConvertMinuteToMilliseconds(parts[1]);
+                ticks += ConvertMinuteToTicks(parts[1]);
                 if (parts.Length > 2) {
-                    milliseconds += ConvertSecondsWithFractionalToMilliseconds(parts[2]);
+                    ticks += ConvertSecondsWithFractionalToTicks(parts[2]);
                 }
             }
-            return milliseconds;
+            return new Offset(ticks);
         }
 
         /// <summary>
-        /// Converts an hour string to its integer value.
+        /// Converts an hour string to its long value.
         /// </summary>
         /// <param name="text">The text to convert.</param>
         /// <returns>The hour in the range [-23, 23].</returns>
         /// <exception cref="ArgumentNullException">If the text is null.</exception>
         /// <exception cref="FormatException">If the text is not a valid integer in the range [-23, 23].</exception>
-        internal static int ConvertHourToMilliseconds(string text)
+        internal static long ConvertHourToTicks(string text)
         {
             int value = Int32.Parse(text, NumberStyles.Integer, CultureInfo.InvariantCulture);
             if (value < -23 || value > 23) {
                 throw new FormatException("hours out of valid range of [-23, 23]: " + value);
             }
-            return value * MillisecondsPerHour;
+            return value * NodaConstants.TicksPerHour;
         }
 
         /// <summary>
-        /// Converts a minute string to its integer value.
+        /// Converts a minute string to its long value.
         /// </summary>
         /// <param name="text">The text to convert.</param>
         /// <returns>The minute in the range [0, 59].</returns>
         /// <exception cref="ArgumentNullException">If the text is null.</exception>
         /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 59].</exception>
-        internal static int ConvertMinuteToMilliseconds(string text)
+        internal static long ConvertMinuteToTicks(string text)
         {
             int value = Int32.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture);
             if (value < 0 || value > 59) {
                 throw new FormatException("hours out of valid range of [0, 59]: " + value);
             }
-            return value * MillisecondsPerMinute;
+            return value * NodaConstants.TicksPerMinute;
         }
 
         /// <summary>
@@ -143,13 +139,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <returns>The second in the range [0, 60).</returns>
         /// <exception cref="ArgumentNullException">If the text is null.</exception>
         /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 60).</exception>
-        internal static int ConvertSecondsWithFractionalToMilliseconds(string text)
+        internal static long ConvertSecondsWithFractionalToTicks(string text)
         {
             double number = Double.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
             if (number < 0.0 || number >= 60.0) {
                 throw new FormatException("seconds out of valid range of [0, 60): " + number);
             }
-            int value = (int)(number * MillisecondsPerSecond);
+            long value = (long)(number * NodaConstants.MillisecondsPerSecond) * NodaConstants.TicksPerMillisecond;
             return value;
         }
 
@@ -220,30 +216,31 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         /// Formats the given millisecons offset as a string parsable by ParseOffset().
         /// </summary>
-        /// <param name="milliseconds">The milliseconds to format.</param>
+        /// <param name="offset">The Offset to format.</param>
         /// <returns>The formatted string</returns>
-        internal static string FormatOffset(int milliseconds)
+        internal static string FormatOffset(Offset offset)
         {
             StringBuilder builder = new StringBuilder();
-            if (milliseconds < 0) {
+            long ticks = offset.Ticks;
+            if (ticks < 0) {
                 builder.Append("-");
-                milliseconds = -milliseconds;
+                ticks = -ticks;
             }
-            int hours = milliseconds / MillisecondsPerHour;
-            milliseconds -= (hours * MillisecondsPerHour);
+            long hours = ticks / NodaConstants.TicksPerHour;
+            ticks -= (hours * NodaConstants.TicksPerHour);
             builder.Append(hours.ToString("D", CultureInfo.InvariantCulture));
-            int minutes = milliseconds / MillisecondsPerMinute;
-            milliseconds -= (minutes * MillisecondsPerMinute);
+            long minutes = ticks / NodaConstants.TicksPerMinute;
+            ticks -= (minutes * NodaConstants.TicksPerMinute);
             builder.Append(":");
             builder.Append(minutes.ToString("D2", CultureInfo.InvariantCulture));
-            if (milliseconds > 0) {
-                int seconds = milliseconds / MillisecondsPerSecond;
-                milliseconds -= (seconds * MillisecondsPerSecond);
+            if (ticks > 0) {
+                long seconds = ticks / NodaConstants.TicksPerMinute;
+                ticks -= (seconds * NodaConstants.TicksPerMinute);
                 builder.Append(":");
                 builder.Append(seconds.ToString("D2", CultureInfo.InvariantCulture));
-                if (milliseconds > 0) {
+                if (ticks > 0) {
                     builder.Append(".");
-                    builder.Append(milliseconds.ToString("D3", CultureInfo.InvariantCulture));
+                    builder.Append(ticks.ToString("D3", CultureInfo.InvariantCulture));
                 }
             }
             return builder.ToString();
