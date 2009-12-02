@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{42B687A6-0F76-4638-A372-161C922A998B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NodaTime</RootNamespace>
+    <AssemblyName>NodaTime</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DocumentationFile>bin\Debug\NodaTime.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Calendars\DaysOfWeek.cs" />
+    <Compile Include="Clock.cs" />
+    <Compile Include="Clocks\FixedClock.cs" />
+    <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
+    <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
+    <Compile Include="Offset.cs" />
+    <Compile Include="Fields\BasicMonthOfYearDateTimeField.cs" />
+    <Compile Include="Fields\BasicWeekOfWeekYearDateTimeField.cs" />
+    <Compile Include="Fields\BasicWeekYearDateTimeField.cs" />
+    <Compile Include="Fields\BasicYearDateTimeField.cs" />
+    <Compile Include="Fields\DateTimeFieldBase.cs" />
+    <Compile Include="Fields\DecoratedDateTimeField.cs" />
+    <Compile Include="Fields\DecoratedDurationField.cs" />
+    <Compile Include="Fields\DividedDateTimeField.cs" />
+    <Compile Include="Fields\FieldSet.cs" />
+    <Compile Include="Fields\DurationFieldBase.cs" />
+    <Compile Include="Fields\FieldUtils.cs" />
+    <Compile Include="Fields\GJDayOfWeekDateTimeField.cs" />
+    <Compile Include="Fields\GJEraDateTimeField.cs" />
+    <Compile Include="Fields\GJMonthOfYearDateTimeField.cs" />
+    <Compile Include="Fields\GJYearOfEraDateTimeField.cs" />
+    <Compile Include="Fields\ImpreciseDateTimeField.cs" />
+    <Compile Include="Fields\IsoYearOfEraDateTimeField.cs" />
+    <Compile Include="Fields\OffsetDateTimeField.cs" />
+    <Compile Include="Fields\PreciseDateTimeField.cs" />
+    <Compile Include="Fields\PreciseDurationField.cs" />
+    <Compile Include="Fields\PreciseDurationDateTimeField.cs" />
+    <Compile Include="Fields\RemainderDateTimeField.cs" />
+    <Compile Include="Fields\ScaledDurationField.cs" />
+    <Compile Include="Fields\TicksDurationField.cs" />
+    <Compile Include="Fields\UnsupportedDateTimeField.cs" />
+    <Compile Include="Fields\UnsupportedDurationField.cs" />
+    <Compile Include="Fields\ZeroIsMaxDateTimeField.cs" />
+    <Compile Include="LocalInstant.cs" />
+    <Compile Include="Partials\AbstractPartial.cs" />
+    <Compile Include="Periods\AbstractPeriod.cs" />
+    <Compile Include="Partials\LocalBase.cs" />
+    <Compile Include="Partials\PartialBase.cs" />
+    <Compile Include="Periods\PeriodBase.cs" />
+    <Compile Include="Calendars\AssembledCalendarSystem.cs" />
+    <Compile Include="Calendars\BasicCalendarSystem.cs" />
+    <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
+    <Compile Include="Calendars\CalendarSystemBase.cs" />
+    <Compile Include="Calendars\GregorianCalendarSystem.cs" />
+    <Compile Include="Calendars\IsoCalendarSystem.cs" />
+    <Compile Include="Converters\ConverterManager.cs" />
+    <Compile Include="Converters\IConverter.cs" />
+    <Compile Include="Converters\IInstantConverter.cs" />
+    <Compile Include="Calendars\ICalendarSystem.cs" />
+    <Compile Include="IClock.cs" />
+    <Compile Include="Format\DateTimeFormatterBuilder.cs" />
+    <Compile Include="Format\IPeriodParser.cs" />
+    <Compile Include="Format\IPeriodPrinter.cs" />
+    <Compile Include="Format\IsoPeriodFormatterFactory.cs" />
+    <Compile Include="Format\PeriodFormatter.cs" />
+    <Compile Include="Format\PeriodFormatterBuilder.cs" />
+    <Compile Include="Format\PeriodFormatterFactory.cs" />
+    <Compile Include="Clocks\SystemClock.cs" />
+    <Compile Include="TimeZones\CachedDateTimeZone.cs" />
+    <Compile Include="TimeZones\DateTimeZoneBase.cs" />
+    <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
+    <Compile Include="TimeZones\DateTimeZones.cs" />
+    <Compile Include="TimeZones\DefaultNameProvider.cs" />
+    <Compile Include="TimeZones\DSTZone.cs" />
+    <Compile Include="TimeZones\FixedDateTimeZone.cs" />
+    <Compile Include="TimeZones\IDateTimeZoneProvider.cs" />
+    <Compile Include="TimeZones\INameProvider.cs" />
+    <Compile Include="TimeZones\ZoneYearOffset.cs" />
+    <Compile Include="TimeZones\PrecalculatedDateTimeZone.cs" />
+    <Compile Include="TimeZones\ZoneRecurrence.cs" />
+    <Compile Include="TimeZones\ZoneRule.cs" />
+    <Compile Include="TimeZones\ZoneRuleSet.cs" />
+    <Compile Include="TimeZones\ZoneTransition.cs" />
+    <Compile Include="TimeZones\TransitionMode.cs" />
+    <Compile Include="TimeZones\UtcProvider.cs" />
+    <Compile Include="TimeZones\ZoneInfoProvider.cs" />
+    <Compile Include="Partials\MonthDay.cs" />
+    <Compile Include="Format\DateTimeFormatter.cs" />
+    <Compile Include="Format\DateTimeFormatterFactory.cs" />
+    <Compile Include="Format\DateTimeParserBucket.cs" />
+    <Compile Include="Format\FormatUtils.cs" />
+    <Compile Include="Format\IDateTimeParser.cs" />
+    <Compile Include="Format\IDateTimePrinter.cs" />
+    <Compile Include="Format\IsoDateTimeFormatterFactory.cs" />
+    <Compile Include="Chronology.cs" />
+    <Compile Include="Partials\Partial.cs" />
+    <Compile Include="Periods\Period.cs" />
+    <Compile Include="Periods\PeriodType.cs" />
+    <Compile Include="Periods\Weeks.cs" />
+    <Compile Include="Periods\Seconds.cs" />
+    <Compile Include="Partials\YearMonth.cs" />
+    <Compile Include="Periods\Years.cs" />
+    <Compile Include="Periods\Months.cs" />
+    <Compile Include="Periods\Minutes.cs" />
+    <Compile Include="Partials\LocalTime.cs" />
+    <Compile Include="LocalDateTime.cs" />
+    <Compile Include="Fields\IDateTimeField.cs" />
+    <Compile Include="Fields\DateTimeFieldType.cs" />
+    <Compile Include="IDateTimeZone.cs" />
+    <Compile Include="Periods\Days.cs" />
+    <Compile Include="Duration.cs" />
+    <Compile Include="Fields\DurationField.cs" />
+    <Compile Include="Fields\DurationFieldType.cs" />
+    <Compile Include="Periods\Hours.cs" />
+    <Compile Include="Instant.cs" />
+    <Compile Include="Interval.cs" />
+    <Compile Include="IPartial.cs" />
+    <Compile Include="Partials\LocalDate.cs" />
+    <Compile Include="NodaTimePermission.cs" />
+    <Compile Include="DateTimeComparer.cs" />
+    <Compile Include="NodaConstants.cs" />
+    <Compile Include="IPeriod.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Periods\SingleFieldPeriodBase.cs" />
+    <Compile Include="Utility\HashCodeHelper.cs" />
+    <Compile Include="ZonedDateTime.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Converters\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Diagrams\Calendars.cd" />
+    <None Include="Diagrams\Fields.cd" />
+    <None Include="Diagrams\Partial.cd" />
+    <None Include="Diagrams\Period.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
