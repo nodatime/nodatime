@@ -23,7 +23,7 @@ namespace NodaTime.Test
     public partial class PeriodFormatterTest
     {
         [Test]
-        public void IntiWithNullPrinterAndParser()
+        public void InitWithNullPrinterAndParser()
         {
             var sut = new PeriodFormatter(null, null, daysPeriodType);
             Assert.IsNull(sut.Printer);            
@@ -36,7 +36,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void IntiWithNotNullPrinterAndNullParser()
+        public void InitWithNotNullPrinterAndNullParser()
         {
             var sut = new PeriodFormatter(null, printer, daysPeriodType);
             Assert.IsNull(sut.Parser);
@@ -49,7 +49,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void IntiWithNullPrinterAndNotNullParser()
+        public void InitWithNullPrinterAndNotNullParser()
         {
             var sut = new PeriodFormatter(parser, null, daysPeriodType);
             Assert.AreEqual(parser, sut.Parser);
@@ -62,7 +62,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void IntiWithNotNullPrinterAndParser()
+        public void InitWithNotNullPrinterAndParser()
         {
             var sut = new PeriodFormatter(parser, printer, daysPeriodType);
             Assert.AreEqual(parser, sut.Parser);

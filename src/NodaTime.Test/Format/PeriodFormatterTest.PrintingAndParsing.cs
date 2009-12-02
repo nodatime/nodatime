@@ -27,24 +27,22 @@ namespace NodaTime.Test
     public partial class PeriodFormatterTest
     {
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void PrintToBuilderNonPrinter()
         {
             var sutDefault = new PeriodFormatter(null, null, daysPeriodType);
             var sb = new StringBuilder();
             var period = Days.Five;
 
-            sutDefault.PrintTo(sb, period);
+            Assert.Throws<NotSupportedException>(() => sutDefault.PrintTo(sb, period));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PrintToBuilderNullPeriod()
         {
             var sutDefault = new PeriodFormatter(null, printer, daysPeriodType);
             var sb = new StringBuilder();
 
-            sutDefault.PrintTo(sb, null);
+            Assert.Throws<ArgumentNullException>(() => sutDefault.PrintTo(sb, null));
         }
 
         [Test]
@@ -64,24 +62,22 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void PrintToWriterNonPrinter()
         {
             var sutDefault = new PeriodFormatter(null, null, daysPeriodType);
             var sw = new StringWriter();
             var period = Days.Five;
 
-            sutDefault.PrintTo(sw, period);
+            Assert.Throws<NotSupportedException>(() => sutDefault.PrintTo(sw, period));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PrintToWriterNullPeriod()
         {
             var sutDefault = new PeriodFormatter(null, printer, daysPeriodType);
             var sw = new StringWriter();
 
-            sutDefault.PrintTo(sw, null);
+            Assert.Throws<ArgumentNullException>(() => sutDefault.PrintTo(sw, null));
         }
 
         [Test]
@@ -101,22 +97,20 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void PrintNonPrinter()
         {
             var sutDefault = new PeriodFormatter(null, null, daysPeriodType);
             var period = Days.Five;
 
-            sutDefault.Print(period);
+            Assert.Throws<NotSupportedException>(() => sutDefault.Print(period));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PrintNullPeriod()
         {
             var sutDefault = new PeriodFormatter(null, printer, daysPeriodType);
 
-            sutDefault.Print(null);
+            Assert.Throws<ArgumentNullException>(() => sutDefault.Print(null));
         }
 
         [Test]
@@ -134,17 +128,14 @@ namespace NodaTime.Test
             Assert.AreSame(provider, printer.PrintToBuilderProviderArgument);
             Assert.AreSame(period, printer.PrintToBuilderToPeriodArgument);
             Assert.IsNotNull(text);
-
-
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ParseIntoNonParser()
         {
             var sutDefault = new PeriodFormatter(null, null, daysPeriodType);
             IPeriod result;
-            sutDefault.ParseInto("_", 0, out result);
+            Assert.Throws<NotSupportedException>(() => sutDefault.ParseInto("_", 0, out result));
         }
 
         [Test]
@@ -165,12 +156,11 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ParseNonParser()
         {
             var sutDefault = new PeriodFormatter(null, null, daysPeriodType);
 
-            sutDefault.Parse("_");
+            Assert.Throws<NotSupportedException>(() => sutDefault.Parse("_"));
         }
 
         [Test]
@@ -189,14 +179,13 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ParseIntoFailedParse()
         {
             var sutDefault = new PeriodFormatter(parser, null, daysPeriodType).WithProvider(provider);
             parser.ParseIntoPositionToReturn = -1;
             var text = "_";
 
-            IPeriod result = sutDefault.Parse(text);
+            Assert.Throws<ArgumentException>(() => sutDefault.Parse(text));
 
             Assert.IsTrue(parser.ParseIntoCalled);
             Assert.AreEqual(text, parser.ParseIntoStringArgument);
@@ -205,14 +194,13 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ParseIntoPartialParse()
         {
             var sutDefault = new PeriodFormatter(parser, null, daysPeriodType).WithProvider(provider);
             parser.ParseIntoPositionToReturn = 2;
             var text = "123456789";
 
-            IPeriod result = sutDefault.Parse(text);
+            Assert.Throws<ArgumentException>(() => sutDefault.Parse(text));
 
             Assert.IsTrue(parser.ParseIntoCalled);
             Assert.AreEqual(text, parser.ParseIntoStringArgument);
