@@ -128,7 +128,7 @@ namespace NodaTime.Format
         public bool IsParser { get { return periodParser != null; } }
 
         /// <summary>
-        /// Gets the internal parser object that performs the real printing work.
+        /// Gets the internal parser object that performs the real parsing work.
         /// </summary>
         public IPeriodParser Parser { get { return periodParser; } }
 
@@ -278,13 +278,13 @@ namespace NodaTime.Format
         private void VerifyPrinter()
         {
             if (periodPrinter == null)
-                throw new InvalidOperationException("Printing not supported");
+                throw new NotSupportedException("Printing not supported");
         }
 
         private void VerifyParser()
         {
             if (periodParser == null)
-                throw new InvalidOperationException("Parsing not supported");
+                throw new NotSupportedException("Parsing not supported");
         }
 
         private static void VerifyPeriodArgument(IPeriod period)
