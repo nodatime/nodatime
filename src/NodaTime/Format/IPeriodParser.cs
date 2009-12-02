@@ -14,12 +14,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+using System;
+using System.Globalization;
 namespace NodaTime.Format
 {
     /// <summary>
-    /// Original name: PeriodParser.
+    /// Internal interface for parsing textual representations of time periods.
     /// </summary>
+    /// <remarks>
+    /// Application users will rarely use this class directly. Instead, you
+    /// will use one of the factory classes to create a <see cref="PeriodFormatter"/>.
+    /// </remarks>
     public interface IPeriodParser
     {
+        /// <summary>
+        /// Parses a period from the given text, at the given position, passing the
+        /// result into the given IPeriod.
+        /// </summary>
+        /// <remarks>
+        /// If the parse succeeds, the return value is the new text position.
+        /// To determine the position where the parse failed, apply the
+        /// one's complement operator (~) on the return value.
+        /// </remarks>
+        /// <param name="periodString">Text to parse</param>
+        /// <param name="position">Position to start parsing from</param>
+        /// <param name="provider">The IFormatProvider to use for parsing</param>
+        /// <param name="period">A period that will be created as a result of parsing</param>
+        /// <returns>New position, if negative, parse failed.</returns>
+        int ParseInto(String periodString, int position, IFormatProvider provider, out IPeriod period);
     }
 }
