@@ -23,7 +23,7 @@ namespace NodaTime.Test
     public partial class PeriodFormatterTest
     {
         [Test]
-        public void WithProviderCreatesNewInstance()
+        public void WithProvider_CreatesNewInstance()
         {
             var sutDefault = new PeriodFormatter(null, null, daysPeriodType);
             Assert.IsNull(sutDefault.Provider);
@@ -33,7 +33,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void WithPeriodTypeCreatesNewInstance()
+        public void WithPeriodType_CreatesNewInstance()
         {
             var sutDefault = new PeriodFormatter(null, null, daysPeriodType);
             Assert.AreEqual(daysPeriodType, sutDefault.PeriodType);
