@@ -128,6 +128,7 @@
     <Compile Include="Format\PeriodFormatterFactory.cs" />
     <Compile Include="Clocks\SystemClock.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
+    <Compile Include="TimeZones\WindowToPosixResource.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\DateTimeZoneBase.cs" />
@@ -142,6 +143,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Tzdb.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TimeZones\winmap.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>winmap.resx</DependentUpon>
     </Compile>
     <Compile Include="TimeZones\ZoneYearOffset.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZone.cs" />
@@ -191,6 +197,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Periods\SingleFieldPeriodBase.cs" />
     <Compile Include="Utility\HashCodeHelper.cs" />
+    <Compile Include="Utility\ResourceHelper.cs" />
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -230,6 +237,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Tzdb.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeZones\winmap.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>winmap.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

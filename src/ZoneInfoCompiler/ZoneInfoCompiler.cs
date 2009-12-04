@@ -16,6 +16,8 @@
 #endregion
 
 using NodaTime.ZoneInfoCompiler.Tzdb;
+using System;
+using NodaTime.ZoneInfoCompiler.winmap;
 
 namespace NodaTime.ZoneInfoCompiler
 {
@@ -36,10 +38,51 @@ namespace NodaTime.ZoneInfoCompiler
         /// <returns>0 for success, non-0 for error.</returns>
         static int Main(string[] arguments)
         {
+            int result = 0;
             var log = new ConsoleLog();
-            TzdbZoneInfoCompiler compiler = new TzdbZoneInfoCompiler(log);
-            int result = compiler.Execute(arguments);
+            if (arguments.Length < 1)
+            {
+                result = Usage(log);
+            }
+            else
+            {
+                string command = arguments[0];
+                string[] remainingArguments = new string[arguments.Length - 1];
+                Array.ConstrainedCopy(arguments, 1, remainingArguments, 0, remainingArguments.Length);
+                if (command.Equals("tzdb", StringComparison.OrdinalIgnoreCase))
+                {
+                    var compiler = new TzdbZoneInfoCompiler(log);
+                    result = compiler.Execute(remainingArguments);
+                }
+                else if (command.Equals("winmap", StringComparison.OrdinalIgnoreCase))
+                {
+                    var compiler = new WindowsMapperCompiler(log);
+                    result = compiler.Execute(remainingArguments);
+                }
+                else
+                {
+                    log.Error("Unknown comamnd: {0}", command);
+                    result = Usage(log);
+                }
+            }
             return result;
+        }
+
+        /// <summary>
+        /// Usages the specified log.
+        /// </summary>
+        /// <param name="log">The log.</param>
+        /// <returns></returns>
+        private static int Usage(ILog log)
+        {
+            log.Info("");
+            log.Info("Usage: command [ options ]");
+            log.Info("");
+            log.Info("where command is one of:");
+            log.Info("   tzdb          Build a TZDB resource file");
+            log.Info("   winmap        Build a Windows to Posix mapping file");
+            log.Info("");
+            return 1;
         }
     }
 }

@@ -27,10 +27,10 @@ namespace NodaTime.Test.TimeZones
     public partial class TzdbTest
     {
         [Test]
-        public void MakeInstant_Defaults_Epoch()
+        public void CurrentTimeZone_LocalTimeZone_AlwaysFails()
         {
-            DateTimeZones.ResetProviders(); 
-            IDateTimeZone timezone = DateTimeZones.ForId("America/Los_Angeles");
+            IDateTimeZone actual = DateTimeZones.Current;
+            Assert.AreEqual(null, actual);
         }
     }
 }

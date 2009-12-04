@@ -21,6 +21,7 @@ using System.Resources;
 using System.IO;
 using System.Text.RegularExpressions;
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
@@ -36,7 +37,7 @@ namespace NodaTime.TimeZones
 
         private readonly string baseName;
         private readonly ResourceManager manager;
-        private readonly IDictionary<string, string> aliasMap;
+        private readonly IDictionary<string, string> timeZoneIdMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider"/> class.
@@ -46,37 +47,7 @@ namespace NodaTime.TimeZones
         {
             this.baseName = baseName;
             this.manager = new ResourceManager(baseName, Assembly.GetExecutingAssembly());
-            this.aliasMap = LoadTimeZoneAliasMap();
-        }
-
-        /// <summary>
-        /// Loads the time zone id map.
-        /// </summary>
-        /// <returns></returns>
-        private IDictionary<string, string> LoadTimeZoneAliasMap()
-        {
-            byte[] bytes = this.manager.GetObject(NormalizeAsResourceName(IdMapKey)) as byte[];
-            if (bytes != null)
-            {
-                using (MemoryStream stream = new MemoryStream(bytes))
-                {
-                    DateTimeZoneReader reader = new DateTimeZoneReader(stream);
-                    return reader.ReadTimeZoneAliasMap();
-                }
-            }
-            throw new ArgumentException("The resource file does not contain an Alias Map");
-        }
-
-        /// <summary>
-        /// Normalizes the given time zone id into a valid resource name.
-        /// </summary>
-        /// <param name="id">The id to normalize.</param>
-        /// <returns>The normalized name.</returns>
-        public static string NormalizeAsResourceName(string id)
-        {
-            id = id.Replace("-", "_minus_");
-            id = id.Replace("+", "_plus_");
-            return invalidResourceNameCharacters.Replace(id, "_");
+            this.timeZoneIdMap = ResourceHelper.LoadDictionary(this.manager, IdMapKey);
         }
 
         #region IDateTimeZoneProvider Members
@@ -95,22 +66,12 @@ namespace NodaTime.TimeZones
         /// </remarks>
         public IDateTimeZone ForId(string id)
         {
-            IDateTimeZone timeZone = null;
             string queryId = id;
-            if (aliasMap.ContainsKey(queryId))
+            if (timeZoneIdMap.ContainsKey(queryId))
             {
-                queryId = aliasMap[queryId];
+                queryId = timeZoneIdMap[queryId];
             }
-            byte[] bytes = this.manager.GetObject(NormalizeAsResourceName(queryId)) as byte[];
-            if (bytes != null)
-            {
-                using (MemoryStream stream = new MemoryStream(bytes))
-                {
-                    DateTimeZoneReader reader = new DateTimeZoneReader(stream);
-                    timeZone = reader.ReadTimeZone(id);
-                }
-            }
-            return timeZone;
+            return ResourceHelper.LoadTimeZone(this.manager, queryId, id);
         }
 
         /// <summary>
@@ -121,12 +82,7 @@ namespace NodaTime.TimeZones
         {
             get
             {
-                IEnumerable<string> result = this.manager.GetObject(IdMapKey) as string[];
-                if (result == null)
-                {
-                    result = new string[0];
-                }
-                return result;
+                return this.timeZoneIdMap.Keys;
             }
         }
 

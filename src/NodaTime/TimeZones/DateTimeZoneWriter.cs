@@ -195,13 +195,13 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes the given time zone alias map to the stream.
+        /// Writes the given dictionary of string to string to the stream.
         /// </summary>
-        /// <param name="aliasMap">The time zone alias map to write.</param>
-        public void WriteTimeZoneAliasMap(IDictionary<string, string> aliasMap)
+        /// <param name="dictionary">The <see cref="IDictionary"/> to write.</param>
+        public void WriteDictionary(IDictionary<string, string> dictionary)
         {
-            WriteNumber(aliasMap.Count);
-            foreach (var entry in aliasMap)
+            WriteNumber(dictionary.Count);
+            foreach (var entry in dictionary)
             {
                 WriteString(entry.Key);
                 WriteString(entry.Value);
