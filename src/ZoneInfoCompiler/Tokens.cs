@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -40,16 +41,14 @@ namespace NodaTime.ZoneInfoCompiler
         private static readonly string[] NoTokens = new string[0];
 
         /// <summary>
-        /// Gets or sets the individual words.
+        /// The list of words. This will never be null but may be empty.
         /// </summary>
-        /// <value>The list of words. This will never be null but may be empty.</value>
-        private IList<string> Words { get; set; }
+        private IList<string> words;
 
         /// <summary>
-        /// Gets or sets the current index.
+        /// The current index into the words list.
         /// </summary>
-        /// <value>The current index.</value>
-        private int Index { get; set; }
+        private int index;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tokens"/> class.
@@ -57,8 +56,8 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="words">The words list.</param>
         private Tokens(IList<string> words)
         {
-            Words = words;
-            Index = 0;
+            this.words = words;
+            this.index = 0;
         }
 
         /// <summary>
@@ -70,12 +69,14 @@ namespace NodaTime.ZoneInfoCompiler
         /// <exception cref="ArgumentNullException">If the text is null.</exception>
         public static Tokens Tokenize(string text)
         {
-            if (text == null) {
+            if (text == null)
+            {
                 throw new ArgumentNullException("text cannot be null");
             }
             text = text.TrimEnd();
             string[] parts = Regex.Split(text, @"\s+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-            if (parts.Length == 1 && parts[0] == string.Empty) {
+            if (parts.Length == 1 && parts[0] == string.Empty)
+            {
                 parts = NoTokens;
             }
             var list = new List<string>(parts);
@@ -90,8 +91,9 @@ namespace NodaTime.ZoneInfoCompiler
         /// <exception cref="MissingTokenException">Thrown if there is no next token.</exception>
         public string NextToken(string name)
         {
-            if (HasNextToken) {
-                return Words[Index++];
+            if (HasNextToken)
+            {
+                return this.words[this.index++];
             }
             throw new MissingTokenException(name);
         }
@@ -104,7 +106,8 @@ namespace NodaTime.ZoneInfoCompiler
         /// <returns>True if there was a next token, false otherwise.</returns>
         public bool TryNextToken(string name, out string result)
         {
-            if (HasNextToken) {
+            if (HasNextToken)
+            {
                 result = NextToken(name);
                 return true;
             }
@@ -118,6 +121,6 @@ namespace NodaTime.ZoneInfoCompiler
         /// <value>
         /// <c>true</c> if this instance has another token; otherwise, <c>false</c>.
         /// </value>
-        public bool HasNextToken { get { return Index < Words.Count; } }
+        public bool HasNextToken { get { return this.index < this.words.Count; } }
     }
 }

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+using NodaTime.TimeZones;
 namespace NodaTime
 {
     /// <summary>
@@ -76,5 +77,11 @@ namespace NodaTime
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
         bool IsFixed { get; }
+
+        /// <summary>
+        /// Writes the time zone to the specified writer.
+        /// </summary>
+        /// <param name="writer">The writer to write to.</param>
+        void Write(DateTimeZoneWriter writer);
     }
 }

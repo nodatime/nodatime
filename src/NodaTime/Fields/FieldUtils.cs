@@ -21,14 +21,67 @@ namespace NodaTime.Fields
     /// <summary>
     /// TODO: Potentially remove this. Can move VerifyValueBounds into DateTimeFieldBase, probably.
     /// </summary>
-    internal static class FieldUtils
+    public static class FieldUtils
     {
-        public static void VerifyValueBounds(IDateTimeField field, long value, long lowerBound, long upperBound)
+        internal static void VerifyValueBounds(IDateTimeField field, long value, long lowerBound, long upperBound)
         {
             // TODO: i18n or decide whether we want our own custom type with lower and upper bounds
             if ((value < lowerBound) || (value > upperBound))
             {
                 throw new ArgumentOutOfRangeException("value", value, "Value should be in range [" + lowerBound + "-" + upperBound + "]");
+            }
+        }
+        /// <summary>
+        /// Verifies the input value against the valid range of the calendar field.
+        /// </summary>
+        /// <param name="field">The calendar field definition.</param>
+        /// <param name="name">The name of the field for the error message.</param>
+        /// <param name="value">The value to check.</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the given value is not in the valid range of the given calendar field.</exception>
+        public static void VerifyFieldValue(IDateTimeField field, string name, long value)
+        {
+            VerifyFieldValue(field, name, value, false);
+        }
+
+        /// <summary>
+        /// Verifies the input value against the valid range of the calendar field.
+        /// </summary>
+        /// <param name="field">The calendar field definition.</param>
+        /// <param name="name">The name of the field for the error message.</param>
+        /// <param name="value">The value to check.</param>
+        /// <param name="allowNegated">if set to <c>true</c> all the range of value to be the negative as well.</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the given value is not in the valid range of the given calendar field.</exception>
+        public static void VerifyFieldValue(IDateTimeField field, string name, long value, Boolean allowNegated)
+        {
+            bool failed = false;
+            string range = "";
+            long minimum = field.GetMinimumValue();
+            long maximum = field.GetMaximumValue();
+            if (allowNegated)
+            {
+                range = "[" + minimum + ", " + maximum + "] or [" + -maximum + ", " + -minimum + "]";
+            }
+            else
+            {
+                range = "[" + minimum + ", " + maximum + "]";
+            }
+            if (allowNegated && value < 0)
+            {
+                if (value < -maximum || -minimum < value)
+                {
+                    failed = true;
+                }
+            }
+            else
+            {
+                if (value < minimum || maximum < value)
+                {
+                    failed = true;
+                }
+            }
+            if (failed)
+            {
+                throw new ArgumentOutOfRangeException(name, value, name + " is not in the valid range: " + range);
             }
         }
     }

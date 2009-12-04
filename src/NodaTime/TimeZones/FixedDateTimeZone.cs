@@ -71,5 +71,20 @@ namespace NodaTime.TimeZones
         {
             return this.standardOffset;
         }
+
+        /// <summary>
+        /// Writes the specified writer.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        public override void Write(DateTimeZoneWriter writer)
+        {
+            writer.WriteTicks(this.standardOffset.Ticks);
+        }
+
+        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        {
+            long ticks = reader.ReadTicks();
+            return new FixedDateTimeZone(id, new Offset(ticks));
+        }
     }
 }

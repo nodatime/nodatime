@@ -14,12 +14,55 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System.Collections.Generic;
+
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Original name: UTCProvider
+    /// Provides an implementation of <see cref="IDateTimeZoneProvider"/> that can find and return
+    /// the UTC time zone.
     /// </summary>
-    public sealed class UtcProvider : IDateTimeZoneProvider
+    /// <remarks>
+    /// Original name: UTCProvider
+    /// </remarks>
+    public sealed class UtcProvider
+        : IDateTimeZoneProvider
     {
+        private static string[] ids = { DateTimeZones.UtcId };
+
+        #region IDateTimeZoneProvider Members
+
+        /// <summary>
+        /// Returns the time zone definition associated with the given id.
+        /// </summary>
+        /// <param name="id">The id of the time zone to return.</param>
+        /// <returns>
+        /// The <see cref="IDateTimeZone"/> or <c>null</c> if there is no time zone with the given id.
+        /// </returns>
+        /// <remarks>
+        /// If the time zone does not yet exist, its definition is loaded from where ever this
+        /// provider gets time zone definitions. Time zones should not be cached in the provider as
+        /// they will be cached in <see cref="DateTimeZones"/>.
+        /// </remarks>
+        public IDateTimeZone ForId(string id)
+        {
+            if (id == DateTimeZones.UtcId)
+            {
+                return DateTimeZones.Utc;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns an enumeration of the available ids from this provider.
+        /// </summary>
+        /// <value>The <see cref="IEnumerable"/> of ids.</value>
+        public IEnumerable<string> Ids
+        {
+            get { return ids; }
+        }
+
+        #endregion
     }
 }
