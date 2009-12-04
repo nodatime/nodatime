@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Globalization;
 using System.IO;
@@ -118,7 +119,17 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 {
                     try
                     {
-                        ParseLine(line, database);
+                        if (Log.LineNumber == 1)
+                        {
+                            if (!line.StartsWith("# "))
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            ParseLine(line, database);
+                        }
                     }
                     catch (ParseException)
                     {
@@ -198,13 +209,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             else if (keyword == KeywordZone)
             {
                 string name = NextString(tokens, "Name");
-                Zone zone = ParseZone(tokens);
-                zone.Name = name;
+                Zone zone = ParseZone(name, tokens);
                 database.AddZone(zone);
             }
             else if (keyword == string.Empty)
             {
-                Zone zone = ParseZone(tokens);
+                Zone zone = ParseZone(string.Empty, tokens);
                 database.AddZone(zone);
             }
             else
@@ -220,10 +230,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <returns>The ZoneAlias object.</returns>
         internal ZoneAlias ParseLink(Tokens tokens)
         {
-            ZoneAlias alias = new ZoneAlias();
-            alias.Existing = NextString(tokens, "Existing");
-            alias.Alias = NextString(tokens, "Alias");
-            return alias;
+            string existing = NextString(tokens, "Existing");
+            string alias = NextString(tokens, "Alias");
+            return new ZoneAlias(existing, alias);
         }
 
         /// <summary>
@@ -248,7 +257,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             Offset savings = NextOffset(tokens, "SaveMillis");
             string letterS = NextOptional(tokens, "LetterS");
             ZoneRecurrence recurrence = new ZoneRecurrence(name, savings, yearOffset);
-            return new ZoneRule(recurrence, fromYear, toYear); ;
+            return new ZoneRule(recurrence, fromYear, toYear, letterS); ;
         }
 
         /// <summary>
@@ -333,26 +342,27 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </remarks>
         /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The Zone object.</returns>
-        internal Zone ParseZone(Tokens tokens)
+        internal Zone ParseZone(string name, Tokens tokens)
         {
-            Zone zone = new Zone();
-            zone.Offset = NextOffset(tokens, "Gmt Offset");
-            zone.Rules = NextOptional(tokens, "Rules");
-            zone.Format = NextString(tokens, "Format");
-            zone.Year = NextYear(tokens, "Until Year", 0);
-            zone.Month = NextMonth(tokens, "Until Month", 0);
-            zone.Day = NextInteger(tokens, "Until Day", 0);
+            Offset offset = NextOffset(tokens, "Gmt Offset");
+            string rules = NextOptional(tokens, "Rules");
+            string format = NextString(tokens, "Format");
+            int year = NextYear(tokens, "Until Year", 0);
+            int monthOfYear = NextMonth(tokens, "Until Month", NodaConstants.January);
+            int dayOfMonth = NextInteger(tokens, "Until Day", 1);
+            Offset tickOfDay = Offset.Zero;
+            char zoneCharacter = (char)0;
             string untilTime = NextString(tokens, "Until Time", null);
             if (untilTime != null && untilTime.Length > 0)
             {
                 if (Char.IsLetter(untilTime[untilTime.Length - 1]))
                 {
-                    zone.ZoneCharacter = untilTime[untilTime.Length - 1];
+                    zoneCharacter = untilTime[untilTime.Length - 1];
                     untilTime = untilTime.Substring(0, untilTime.Length - 1);
                 }
-                zone.TickOfDay = ParserHelper.ParseOffset(untilTime);
+                tickOfDay = ParserHelper.ParseOffset(untilTime);
             }
-            return zone;
+            return new Zone(name, offset, rules, format, year, monthOfYear, dayOfMonth, tickOfDay, zoneCharacter);
         }
 
         /// <summary>
@@ -476,7 +486,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private int NextMonth(Tokens tokens, string name)
         {
             string value = NextString(tokens, name);
-            return ParseMonth(value);
+            int result = ParseMonth(value);
+            if (result == 0)
+            {
+                result = NodaConstants.January;
+            }
+            return result;
         }
 
         /// <summary>
@@ -493,6 +508,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             if (tokens.TryNextToken(name, out text))
             {
                 result = ParseMonth(text);
+                if (result == 0)
+                {
+                    result = defaultValue;
+                }
             }
             return result;
         }

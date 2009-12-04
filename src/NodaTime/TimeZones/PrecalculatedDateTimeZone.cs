@@ -108,11 +108,11 @@ namespace NodaTime.TimeZones
 
         // All array fields have the same length.
 
-        private readonly Instant[] transitions;
-        private readonly Offset[] wallOffsets;
-        private readonly Offset[] standardOffsets;
-        private readonly String[] nameKeys;
-        private readonly IDateTimeZone tailZone;
+        internal readonly Instant[] transitions;
+        internal readonly Offset[] wallOffsets;
+        internal readonly Offset[] standardOffsets;
+        internal readonly String[] nameKeys;
+        internal readonly IDateTimeZone tailZone;
 
         /**
          * Constructor used ONLY for valid input, loaded via static methods.
@@ -314,6 +314,91 @@ namespace NodaTime.TimeZones
         }
 
         #endregion
+
+        public override void Write(DateTimeZoneWriter writer)
+        {
+            int size = this.transitions.Length;
+
+            // Create unique string pool.
+            var poolSet = new Dictionary<string, string>();
+            for (int i = 0; i < size; i++)
+            {
+                if (!poolSet.ContainsKey(this.nameKeys[i]))
+                {
+                    poolSet.Add(this.nameKeys[i], null);
+                }
+            }
+
+            int poolSize = poolSet.Count;
+            String[] pool = new String[poolSize];
+            poolSet.Keys.CopyTo(pool, 0);
+            writer.WriteNumber(poolSize);
+            for (int i = 0; i < poolSize; i++)
+            {
+                writer.WriteString(pool[i]);
+            }
+
+            writer.WriteNumber(size);
+            for (int i = 0; i < size; i++)
+            {
+                writer.WriteTicks(this.transitions[i].Ticks);
+                writer.WriteTicks(this.wallOffsets[i].Ticks);
+                writer.WriteTicks(this.standardOffsets[i].Ticks);
+                string name = this.nameKeys[i];
+                for (int p = 0; p < poolSize; p++)
+                {
+                    if (pool[p] == name)
+                    {
+                        writer.WriteNumber(p);
+                        break;
+                    }
+                }
+            }
+            bool hasTailZone = this.tailZone != null;
+            writer.WriteBoolean(hasTailZone);
+            if (hasTailZone)
+            {
+                this.tailZone.Write(writer);
+            }
+        }
+
+        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        {
+            int poolSize = reader.ReadNumber();
+            string[] pool = new string[poolSize];
+            for (int i = 0; i < poolSize; i++)
+            {
+                pool[i] = reader.ReadString();
+            }
+
+            int size = reader.ReadNumber();
+            Instant[] transitions = new Instant[size];
+            Offset[] wallOffsets = new Offset[size];
+            Offset[] standardOffsets = new Offset[size];
+            String[] nameKeys = new String[size];
+            for (int i = 0; i < size; i++)
+            {
+                long ticks;
+                ticks = reader.ReadTicks();
+                transitions[i] = new Instant(ticks);
+
+                ticks = reader.ReadTicks();
+                wallOffsets[i] = new Offset(ticks);
+
+                ticks = reader.ReadTicks();
+                standardOffsets[i] = new Offset(ticks);
+
+                int index = reader.ReadNumber();
+                nameKeys[i] = pool[index];
+            }
+            bool hasTailZone = reader.ReadBoolean();
+            IDateTimeZone tailZone = null;
+            if (hasTailZone) {
+                tailZone = reader.ReadTimeZone(id + "-tail");
+            }
+
+            return new PrecalculatedDateTimeZone(id, transitions, wallOffsets, standardOffsets, nameKeys, tailZone);
+        }
     }
 }
 

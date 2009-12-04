@@ -33,10 +33,14 @@ namespace NodaTime.TimeZones
         public string Name { get { return Recurrence.Name; } }
         public Offset Savings { get { return Recurrence.Savings; } }
         public bool IsInfinite { get { return this.toYear == Int32.MaxValue; } }
+        public int FromYear { get { return this.fromYear; } }
+        public int ToYear { get { return this.toYear; } }
+        public string LetterS { get { return this.letterS; } }
 
         private readonly ZoneRecurrence recurrence;
         private readonly int fromYear;
         private readonly int toYear;
+        private readonly string letterS;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneRule"/> class.
@@ -45,10 +49,61 @@ namespace NodaTime.TimeZones
         /// <param name="fromYear">The inclusive starting year for this rule.</param>
         /// <param name="toYear">The inclusive ending year for this rule.</param>
         public ZoneRule(ZoneRecurrence recurrence, int fromYear, int toYear)
+            : this(recurrence, fromYear, toYear, null)
+        {
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZoneRule"/> class.
+        /// </summary>
+        /// <param name="recurrence">The recurrence definition of this rule.</param>
+        /// <param name="fromYear">The inclusive starting year for this rule.</param>
+        /// <param name="toYear">The inclusive ending year for this rule.</param>
+        public ZoneRule(ZoneRecurrence recurrence, int fromYear, int toYear, string letterS)
         {
             this.recurrence = recurrence;
             this.fromYear = fromYear;
             this.toYear = toYear;
+            this.letterS = letterS;
+        }
+
+        /// <summary>
+        /// Formats the name.
+        /// </summary>
+        /// <param name="nameFormat">The name format.</param>
+        /// <returns></returns>
+        public String FormatName(String nameFormat)
+        {
+            int index = nameFormat.IndexOf('/');
+            if (index > 0)
+            {
+                if (Savings == Offset.Zero)
+                {
+                    // Extract standard name.
+                    return nameFormat.Substring(0, index);
+                }
+                else
+                {
+                    return nameFormat.Substring(index + 1);
+                }
+            }
+            index = nameFormat.IndexOf("%s");
+            if (index < 0)
+            {
+                return nameFormat;
+            }
+            string left = nameFormat.Substring(0, index);
+            string right = nameFormat.Substring(index + 2);
+            string name;
+            if (LetterS == null)
+            {
+                name = left + right;
+            }
+            else
+            {
+                name = left + LetterS + right;
+            }
+            return name;
         }
 
         /// <summary>
@@ -73,14 +128,17 @@ namespace NodaTime.TimeZones
             Instant adjustedInstant = instant;
 
             int year;
-            if (instant == Instant.MinValue) {
+            if (instant == Instant.MinValue)
+            {
                 year = Int32.MinValue;
             }
-            else {
+            else
+            {
                 year = calendar.Fields.Year.GetValue(instant + wallOffset);
             }
 
-            if (year < this.fromYear) {
+            if (year < this.fromYear)
+            {
                 // First advance instant to start of from year.
                 adjustedInstant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.fromYear) - wallOffset;
                 // Back off one tick to account for next recurrence being exactly at the beginning
@@ -90,9 +148,11 @@ namespace NodaTime.TimeZones
 
             Instant next = Recurrence.Next(adjustedInstant, standardOffset, savings);
 
-            if (next > instant) {
+            if (next > instant)
+            {
                 year = calendar.Fields.Year.GetValue(next + wallOffset);
-                if (year > this.toYear) {
+                if (year > this.toYear)
+                {
                     // Out of range, return original value.
                     next = instant;
                 }
@@ -116,7 +176,8 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            if (obj is ZoneRule) {
+            if (obj is ZoneRule)
+            {
                 return Equals((ZoneRule)obj);
             }
             return false;
@@ -152,7 +213,8 @@ namespace NodaTime.TimeZones
         /// </returns>
         public bool Equals(ZoneRule other)
         {
-            if (other == null) {
+            if (other == null)
+            {
                 return false;
             }
             return

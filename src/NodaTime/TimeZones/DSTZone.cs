@@ -129,7 +129,21 @@ namespace NodaTime.TimeZones
             get { return false; }
         }
 
-        #endregion
-    }
+        public void Write(DateTimeZoneWriter writer)
+        {
+            writer.WriteTicks(StandardOffset.Ticks);
+            StartRecurrence.Write(writer);
+            EndRecurrence.Write(writer);
+        }
 
+        #endregion
+
+        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        {
+            long ticks = reader.ReadTicks();
+            ZoneRecurrence start = ZoneRecurrence.Read(reader);
+            ZoneRecurrence end = ZoneRecurrence.Read(reader);
+            return new DSTZone(id, new Offset(ticks), start, end);
+        }
+    }
 }

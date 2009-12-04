@@ -1,0 +1,2745 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+   <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+   <xsd:schema id="root"
+               xmlns=""
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+      <xsd:element name="root"
+                   msdata:IsDataSet="true">
+         <xsd:complexType>
+            <xsd:choice maxOccurs="unbounded">
+               <xsd:element name="metadata">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="value"
+                                     type="xsd:string"
+                                     minOccurs="0" />
+                     </xsd:sequence>
+                     <xsd:attribute name="name"
+                                    use="required"
+                                    type="xsd:string" />
+                     <xsd:attribute name="type"
+                                    type="xsd:string" />
+                     <xsd:attribute name="mimetype"
+                                    type="xsd:string" />
+                     <xsd:attribute ref="xml:space" />
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="assembly">
+                  <xsd:complexType>
+                     <xsd:attribute name="alias"
+                                    type="xsd:string" />
+                     <xsd:attribute name="name"
+                                    type="xsd:string" />
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="data">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="value"
+                                     type="xsd:string"
+                                     minOccurs="0"
+                                     msdata:Ordinal="1" />
+                        <xsd:element name="comment"
+                                     type="xsd:string"
+                                     minOccurs="0"
+                                     msdata:Ordinal="2" />
+                     </xsd:sequence>
+                     <xsd:attribute name="name"
+                                    type="xsd:string"
+                                    use="required"
+                                    msdata:Ordinal="1" />
+                     <xsd:attribute name="type"
+                                    type="xsd:string"
+                                    msdata:Ordinal="3" />
+                     <xsd:attribute name="mimetype"
+                                    type="xsd:string"
+                                    msdata:Ordinal="4" />
+                     <xsd:attribute ref="xml:space" />
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="resheader">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="value"
+                                     type="xsd:string"
+                                     minOccurs="0"
+                                     msdata:Ordinal="1" />
+                     </xsd:sequence>
+                     <xsd:attribute name="name"
+                                    type="xsd:string"
+                                    use="required" />
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:choice>
+         </xsd:complexType>
+      </xsd:element>
+   </xsd:schema>
+   <resheader name="resmimetype">
+      <value>text/microsoft-resx</value>
+   </resheader>
+   <resheader name="version">
+      <value>2.0</value>
+   </resheader>
+   <resheader name="reader">
+      <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+   </resheader>
+   <resheader name="writer">
+      <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+   </resheader>
+   <assembly alias="mscorlib"
+             name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+   <data name="Africa/Abidjan"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80dNVPL/Pz/wn5Lmirc/P/EA</value>
+   </data>
+   <data name="Africa/Accra"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Africa/Addis_Ababa"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U9EFETVTzRUFU8/8/P/CfQ+gZt6AAACRnoAAAJGfxn8Cv8pcFBfIA</value>
+   </data>
+   <data name="Africa/Algiers"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U81BNVPNXRVT0V0VTVPNDRVT0Q0VTVA3/Pz/wn2vISd+gAAACMKAAAAIw8Z+RYFBOPz/yn5lk
+         8+8BP/OfmfdKbz8/8p+a213vAT/zn6GXx+8/P/KfolRObwE/85+i1tLvPz/yn8Ud0u8BP/OfxXeG/z8/
+         8p/H2gmfAQH0n82yUg8DAfWfzqd6/wEB9J/USwdvPz/yn+XO0v8BAfSf81yw7z8/8kAihqMBP/NAJejj
+         Pz/yoAvuo38BP/OgDMwRbz8/8qANlzSPAT/zoA6HM58/P/KgDq1S/wEB9KARg69vAwH1oBJ2NV8BP/Og
+         Enz3Dz8/8qAVT17/AQH0AA==
+      </value>
+   </data>
+   <data name="Africa/Asmara"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80FNVPRBRE1U80VBVPT/Pz/wn0PoGYugAAAkc6AAACRz8Z9phrcLoAAAJGegAAAkZ/KfwK/y
+         lwUF8wA=
+      </value>
+   </data>
+   <data name="Africa/Bamako"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80dNVPNXQVT0/z8/8J+S5ob/Pz/xn7ySuH89PfKf7hGHDz8/8QA=</value>
+   </data>
+   <data name="Africa/Bangui"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81dBVPL/Pz/wn5LmfRMBAfEA</value>
+   </data>
+   <data name="Africa/Banjul"
+         type="System.Byte[], mscorlib">
+      <value>A/TzTE1U80JNVPNXQVTzR01U9P8/P/CfkuabA5////N7n///83vxn74qJIM9PfKf9LY2Dz8/8wA=</value>
+   </data>
+   <data name="Africa/Bissau"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81dBVPNHTVTz/z8/8J+RxJIDPT3xoAlnYQ8/P/IA</value>
+   </data>
+   <data name="Africa/Blantyre"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NBVPL/Pz/wn4JGw68DA/EA</value>
+   </data>
+   <data name="Africa/Brazzaville"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81dBVPL/Pz/wn5LmgCsBAfEA</value>
+   </data>
+   <data name="Africa/Bujumbura"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NBVPL/Pz/wn2mGv/cDA/EA</value>
+   </data>
+   <data name="Africa/Cairo"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Africa/Casablanca"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81dFVPRXRVNU80NFVAL/Pz/wn5ZR62M/P/GfxR3g/wE/8p/Fd3jvPz/xn8X4uf8BP/Kf0L//
+         bz8/8Z/ZVHB/AT/yn9oM9G8/P/FAA0VPAT/yQAXlQz8/8UA7578BP/JAPWujPz/xoAoFhv8BP/KgCn7C
+         7z8/8aAN8h3/AT/yoA5Gb+8/P/GgGrel/wEB8wA=
+      </value>
+   </data>
+   <data name="Africa/Ceuta"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81dFVPRXRVNU80NFVAL/Pz/wn342sAM/P/GfntZ1bwE/8p+foW5fPz/xn6vodG8BP/KfrMdB
+         7z8/8Z+tvxvvAT/yn7Lhg28/P/FAA0VPAT/yQAXlQz8/8UA7578BP/JAPWujPz/xoAoFhv8BP/KgCn7C
+         7z8/8aAN8h3/AT/yoA5Gb+8/P/GgGrel/wEB8wA=
+      </value>
+   </data>
+   <data name="Africa/Conakry"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80dNVPNXQVT0/z8/8J+S5oGjPz/xn7ySuH89PfKf7TAWjz8/8QA=</value>
+   </data>
+   <data name="Africa/Dakar"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81dBVPNHTVTz/z8/8J+S5ppHPT3xn8o7EI8/P/IA</value>
+   </data>
+   <data name="Africa/Dar_es_Salaam"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80VBVPVCRUFVVPT/Pz/wn7aj06sFBfGf1p1/z6AAACacoAAAJpzyn+8SZuIFBfEA</value>
+   </data>
+   <data name="Africa/Djibouti"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80VBVPL/Pz/wn5Hz0gsFBfEA</value>
+   </data>
+   <data name="Africa/Douala"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81dBVPL/Pz/wn5LmhWcBAfEA</value>
+   </data>
+   <data name="Africa/El_Aaiun"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81dBVPNXRVTz/z8/8J+8SNgfPT3xoAvRsI8/P/IA</value>
+   </data>
+   <data name="Africa/Freetown"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80ZNVPNXQVT0U0xTVPNHTVT3/z8/8J9aepATQCAANEAgADTxn5WQGZM9PfKfvRAFD0Af/+s9
+         85+9sNKvPT3yn+ZyWw8/PfOf5uuW/z099AA=
+      </value>
+   </data>
+   <data name="Africa/Gaborone"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80NBVPRDQVNU9P8/P/CfYB9wMwMD8Z/Ojm5/BQPyn89+UW8DA/EA</value>
+   </data>
+   <data name="Africa/Harare"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NBVPL/Pz/wn4JGx2MDA/EA</value>
+   </data>
+   <data name="Africa/Johannesburg"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FNBU1Ty/z8/8J9te0E/AgLxAA==</value>
+   </data>
+   <data name="Africa/Kampala"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80VBVPRCRUFU9UJFQVVU9f8/P/Cfse7fGwUF8Z+0wprPBATyn9adhtegAAAmnKAAACac85/n
+         jEdiBQXxAA==
+      </value>
+   </data>
+   <data name="Africa/Khartoum"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80NBVPRDQVNU80VBVPb/Pz/wn7aj2f8DA/FAGp1nBQPyQB5IiwMD8UAinOcFA/KgOIA3DwUF
+         8wA=
+      </value>
+   </data>
+   <data name="Africa/Kigali"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NBVPL/Pz/wn77xDk8DA/EA</value>
+   </data>
+   <data name="Africa/Kinshasa"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81dBVPL/Pz/wn3hNLKcBAfEA</value>
+   </data>
+   <data name="Africa/Lagos"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81dBVPL/Pz/wn6FR808BAfEA</value>
+   </data>
+   <data name="Africa/Libreville"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81dBVPL/Pz/wn5LmhaMBAfEA</value>
+   </data>
+   <data name="Africa/Lome"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80dNVPL/Pz/wn28rxls/P/EA</value>
+   </data>
+   <data name="Africa/Luanda"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80FPVPNXQVTz/z8/8J9tSTYXoAAADDOgAAAMM/GfkcR4SwEB8gA=</value>
+   </data>
+   <data name="Africa/Lubumbashi"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NBVPL/Pz/wn3hNIT8DA/EA</value>
+   </data>
+   <data name="Africa/Lusaka"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NBVPL/Pz/wn4JGyfsDA/EA</value>
+   </data>
+   <data name="Africa/Malabo"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80dNVPNXQVTz/z8/8J+S5oZDPz/xn/Sfvn8BAfIA</value>
+   </data>
+   <data name="Africa/Maputo"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NBVPL/Pz/wn4JGxfMDA/EA</value>
+   </data>
+   <data name="Africa/Maseru"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FNBU1T0/z8/8J+CRsq3AwPxn86Obn8FA/Gfz35RbwMD8QA=</value>
+   </data>
+   <data name="Africa/Mbabane"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FNBU1Ty/z8/8J+CRsdXAwPxAA==</value>
+   </data>
+   <data name="Africa/Mogadishu"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80VBVPRCRUFU9P8/P/CfcLxk9wUF8Z+2o85PBATyn+eMStcFBfEA</value>
+   </data>
+   <data name="Africa/Monrovia"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U801NVPNMUlTzR01U9P8/P/CfWnqSY6AAAAoboAAAChvxn6BfWGOgAAAKbaAAAApt8qAEYeIR
+         Pz/zAA==
+      </value>
+   </data>
+   <data name="Africa/Nairobi"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80VBVPRCRUFU9UJFQVVU9f8/P/Cfse7a+wUF8Z+0wprPBATyn8eRR9egAAAmnKAAACac85/t
+         L+HiBQXxAA==
+      </value>
+   </data>
+   <data name="Africa/Ndjamena"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81dBVPRXQVNU9P8/P/CfkuaAYwEB8aASZnFvAwHyoBMm3l8BAfEA</value>
+   </data>
+   <data name="Africa/Niamey"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81dBVPNHTVT0/z8/8J+S5oyDPT3xn7ySxo8/P/Kf7TAIfwEB8QA=</value>
+   </data>
+   <data name="Africa/Nouakchott"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80dNVPNXQVT0/z8/8J+S5purPz/xn7ySuH89PfKf7uXIjz8/8QA=</value>
+   </data>
+   <data name="Africa/Ouagadougou"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80dNVPL/Pz/wn5LmjRM/P/EA</value>
+   </data>
+   <data name="Africa/Porto_Novo"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80dNVPNXQVTz/z8/8J+S5owLPz/xn7ySuH8BAfIA</value>
+   </data>
+   <data name="Africa/Sao_Tome"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80dNVPP/Pz/wn148/S+gAAAIj6AAAAiP8J+S5oXvPz/xAA==</value>
+   </data>
+   <data name="Africa/Tripoli"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80NFVPRDRVNU80VFVAP/Pz/wn6HywSMBAfGf29p9jwMB8p/cQnnfAQHxn9+Xno8DAfKf4AYy
+         XwEB8Z/jTgvvAwHyn+PImV8BAfGf607G7wMD86AWkkJfAQHxoBrTR28DAfKgHaG63wEB8aAejxbvAwHy
+         oB+AS18BAfGgJkC37wMD86AyTvFfAQHxoDNENm8DAfKgNDVq3wMD8wA=
+      </value>
+   </data>
+   <data name="Africa/Tunis"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81BNVPL/Pz/wn1lGE/OgAAACMKAAAAIw8QA=</value>
+   </data>
+   <data name="Africa/Windhoek"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U9FNXQVT0U0FTVPNDQVT2/z8/8J9te0t3AgLxn4JGz2cDA/KfzK6MfwUD8p/Nnm9vAwPyoCYG
+         p98DA/MA
+      </value>
+   </data>
+   <data name="America/Adak"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U805TVPNOV1TzQlNU80JEVPRBSERU+/8/P/CfP8D5Hp///3A9n///cD3wn32HRIEpKfGfy1W+
+         Lysp8p/QgBy/KSnxQAnn0ykp80AiiesrKfRALrBPKSnzQDg0Kysp9KAM2fc/KSnzoBoCbc8tK/UA
+      </value>
+   </data>
+   <data name="America/Anchorage"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NBVPRDQVdU9EFIU1T0QUhEVPNZRFT7/z8/8J8/wOAHn///j2ef//+PZ/CffYclVysr8Z/L
+         VbAfLSvyn9CADq8rK/FACeeXKyvzQCKJry0r9EAusBMrK/NAODPvLSv0oAzZ6S8rK/OgGgJfvy8t9QA=
+      </value>
+   </data>
+   <data name="America/Anguilla"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn5M3L183N/EA</value>
+   </data>
+   <data name="America/Antigua"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80VTVPNBU1Tz/z8/8J+TNzCPNTXxn9xC3E83N/IA</value>
+   </data>
+   <data name="America/Araguaina"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80JSVPRCUlNUFf8/P/CflqpuLzk58Z+2LhZfOznyn7cau585OfGfuA6vLzs58p/ZCsavOTnx
+         n/K2zC87OfKf8yLZHzk58Z/03d8vOznyn/Us6x85OfGf9m/4rzs58p/25pGfOTnxn/gpny87OfKgHJek
+         Hzk58aAdvwIvOznyoB5SnB85OfGgH6A1rzs58qAgKpUfOTnxoCF1i687OfKgIf/rHzk58aAjVr8vOzny
+         oCPzk585OfGgJT/brzs58qAl3LAfOTnxoDB0m687OfKgMSPlHzk58aAyVyCvOznyoDMXjZ85OfGgND7r
+         rzs58qA07jUfOTnxoDYVky87OfKgNtdRnzk58aA4AAEvOznyoDivSp85OfGgO+Ndrzs58qA/cPqfOTnx
+         AA==
+      </value>
+   </data>
+   <data name="America/Argentina/Buenos_Aires"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80NNVPNBUlT0QVJTVAz/Pz/wn3KcjxOf///Lr5///8uv8Z+ikodPNzfyn7Z7Uj85N/OftvHr
+         Lzc38p+4NPi/OTfzn8hsbi83N/KfyQ1TPzk385/MbMuvNzfyn8zPuj85N/Of0UgCLzc38p/SYjE/OTfz
+         n/Jb1K83N/Kf8r7DPzk385/zIucvNzfyn/RPiz85N/NAAeZzNzfyQAXsDzk380AJ65M3N/JAHhHvOTny
+         QDiRczs580A6uHc5OfKgIbIwrzs586AiMLKfOTnyoCNYEK87OfOgNtyXnzk58qA39savNzfyAA==
+      </value>
+   </data>
+   <data name="America/Argentina/Catamarca"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NNVPNBUlT0QVJTVPRXQVJUFf8/P/CfcpykU5///8uvn///y6/xn6KSh083N/KftntSPzk3
+         85+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIvNzfyn9Ji
+         MT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnrkzc38kAe
+         Ee85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586An0FifNzf0oCkA/z87OfOg
+         NtyXnzk58qA39savNzfyoDi/OL85OfKgQLvxLzc39KBA1Qu/OTnyoEWV1i87OfOgRfydHzk58qBHGsCv
+         OznzoEj5Qx85OfIA
+      </value>
+   </data>
+   <data name="America/Argentina/Cordoba"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NNVPNBUlT0QVJTVPRXQVJUDv8/P/Cfcpylz5///8uvn///y6/xn6KSh083N/KftntSPzk3
+         85+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIvNzfyn9Ji
+         MT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnrkzc38kAe
+         Ee85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586An0FifNzf0oCkA/z87OfOg
+         NtyXnzk58qA39savNzfyAA==
+      </value>
+   </data>
+   <data name="America/Argentina/Jujuy"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NNVPNBUlT0QVJTVPRXQVJU9VdBUlNUF/8/P/Cfcpykx5///8uvn///y6/xn6KSh083N/Kf
+         tntSPzk385+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIv
+         Nzfyn9JiMT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnr
+         kzc38kAeEe85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586Al8HafNzf0oCcq
+         V785N/WgJ+Lbrzc39KAo7oo/OznzoCuZVx85OfKgNhbkrzs586A23JefOTnyoDf2xq83N/KgOL84vzk5
+         8qBFldYvOznzoEX8nR85OfKgRxrArzs586BI+UMfOTnyAA==
+      </value>
+   </data>
+   <data name="America/Argentina/La_Rioja"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NNVPNBUlT0QVJTVPRXQVJUFf8/P/CfcpyjU5///8uvn///y6/xn6KSh083N/KftntSPzk3
+         85+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIvNzfyn9Ji
+         MT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnrkzc38kAe
+         Ee85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586AnzbWfNzf0oCgmJj87OfOg
+         NtyXnzk58qA39savNzfyoDi/OL85OfKgQLvxLzc39KBA1Qu/OTnyoEWV1i87OfOgRfydHzk58qBHGsCv
+         OznzoEj5Qx85OfIA
+      </value>
+   </data>
+   <data name="America/Argentina/Mendoza"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NNVPNBUlT0QVJTVPRXQVJU9VdBUlNUGf8/P/Cfcpyhe5///8uvn///y6/xn6KSh083N/Kf
+         tntSPzk385+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIv
+         Nzfyn9JiMT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnr
+         kzc38kAeEe85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586Al8HafNzf0oCcZ
+         ND85N/WgJ83Drzc39KAo+me/OTf1oCmwSK83N/SgKuDhPzs586A23JefOTnyoDf2xq83N/KgOL84vzk5
+         8qBAsBOvNzf0oEFWPr85OfKgRZXWLzs586BF/J0fOTnyoEcawK87OfOgSPlDHzk58gA=
+      </value>
+   </data>
+   <data name="America/Argentina/Rio_Gallegos"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NNVPNBUlT0QVJTVPRXQVJUE/8/P/CfcpyhG5///8uvn///y6/xn6KSh083N/KftntSPzk3
+         85+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIvNzfyn9Ji
+         MT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnrkzc38kAe
+         Ee85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586A23JefOTnyoDf2xq83N/Kg
+         OL84vzk58qBAu/EvNzf0oEDVC785OfKgRZXWLzs586BF/J0fOTnyoEcawK87OfOgSPlDHzk58gA=
+      </value>
+   </data>
+   <data name="America/Argentina/Salta"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NNVPNBUlT0QVJTVPRXQVJUE/8/P/Cfcpykq5///8uvn///y6/xn6KSh083N/KftntSPzk3
+         85+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIvNzfyn9Ji
+         MT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnrkzc38kAe
+         Ee85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586An0FifNzf0oCkA/z87OfOg
+         NtyXnzk58qA39savNzfyoDi/OL85OfKgRZXWLzs586BF/J0fOTnyoEcawK87OfOgSPlDHzk58gA=
+      </value>
+   </data>
+   <data name="America/Argentina/San_Juan"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NNVPNBUlT0QVJTVPRXQVJUFf8/P/Cfcpyhw5///8uvn///y6/xn6KSh083N/KftntSPzk3
+         85+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIvNzfyn9Ji
+         MT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnrkzc38kAe
+         Ee85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586AnzbWfNzf0oCgmJj87OfOg
+         NtyXnzk58qA39savNzfyoDi/OL85OfKgQLqfrzc39KBBAzA/OTnyoEWV1i87OfOgRfydHzk58qBHGsCv
+         OznzoEj5Qx85OfIA
+      </value>
+   </data>
+   <data name="America/Argentina/San_Luis"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NNVPNBUlT0QVJTVPRXQVJU9VdBUlNUFv8/P/Cfcpyjy5///8uvn///y6/xn6KSh083N/Kf
+         tntSPzk385+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIv
+         Nzfyn9JiMT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnr
+         kzc38kAeEe85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586Al/aWfNzf0oCcZ
+         ND85N/WgJ83Drzc39KAoRxu/OTnyoDf2xq85N/WgOL8qrzk58qBAup+vNzf0oEEDMD85OfKgRZXWLzs5
+         86BF/J0fOTnyoEcawK87OfOgR5P8nzk58gA=
+      </value>
+   </data>
+   <data name="America/Argentina/Tucuman"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NNVPNBUlT0QVJTVPRXQVJUEP8/P/Cfcpyk25///8uvn///y6/xn6KSh083N/KftntSPzk3
+         85+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIvNzfyn9Ji
+         MT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnrkzc38kAe
+         Ee85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586An0FifNzf0oCkA/z87OfOg
+         NtyXnzk58qA39savNzfyoDi/OL85OfKgQLvxLzc39AA=
+      </value>
+   </data>
+   <data name="America/Argentina/Ushuaia"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NNVPNBUlT0QVJTVPRXQVJUE/8/P/Cfcpyh95///8uvn///y6/xn6KSh083N/KftntSPzk3
+         85+28esvNzfyn7g0+L85N/OfyGxuLzc38p/JDVM/OTfzn8xsy683N/KfzM+6Pzk385/RSAIvNzfyn9Ji
+         MT85N/Of8lvUrzc38p/yvsM/OTfzn/Mi5y83N/Kf9E+LPzk380AB5nM3N/JABewPOTfzQAnrkzc38kAe
+         Ee85OfJAOJFzOznzQDq4dzk58qAhsjCvOznzoCIwsp85OfKgI1gQrzs586A23JefOTnyoDf2xq83N/Kg
+         OL84vzk58qBAuU4vNzf0oEDVC785OfKgRZXWLzs586BF/J0fOTnyoEcawK87OfOgSPlDHzk58gA=
+      </value>
+   </data>
+   <data name="America/Aruba"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80FOVPNBU1Tz/z8/8J+THhxHODjxn/aY3jc3N/IA</value>
+   </data>
+   <data name="America/Asuncion"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80FNVPNQWVT0/z8/8J9phvnPn///4a+f///hr/GfuBfdzzc38kA2EG85OfIA</value>
+   </data>
+   <data name="America/Atikokan"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NTVPNDRFTzQ1dU80VTVPj/Pz/wn3LugVszM/GfnNdt/zUz8p+d3wvvMzPxn8j4V181M/Kf
+         y4jwbzUz85/Qf9ZvMzPxn9JhF/81NfQA
+      </value>
+   </data>
+   <data name="America/Bahia"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80JSVPRCUlNUG/8/P/CflqpbIzk58Z+2LhZfOznyn7cau585OfGfuA6vLzs58p/ZCsavOTnx
+         n/K2zC87OfKf8yLZHzk58Z/03d8vOznyn/Us6x85OfGf9m/4rzs58p/25pGfOTnxn/gpny87OfKgHJek
+         Hzk58aAdvwIvOznyoB5SnB85OfGgH6A1rzs58qAgKpUfOTnxoCF1i687OfKgIf/rHzk58aAjVr8vOzny
+         oCPzk585OfGgJT/brzs58qAl3LAfOTnxoCcfva87OfKgJ7NXnzk58aApB4ivOznyoCmIrZ85OfGgKteY
+         rzs58qArhuIfOTnxoDB0m687OfKgMSPlHzk58aAyVyCvOznyoDMXjZ85OfGgND7rrzs58qA07jUfOTnx
+         oDYVky87OfKgNtdRnzk58aA4AAEvOznyoDivSp85OfGgO+Ndrzs58qA/cPqfOTnxAA==
+      </value>
+   </data>
+   <data name="America/Barbados"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80JNVPL/Pz/wn6l5CXuf///jg5///+OD8QA=</value>
+   </data>
+   <data name="America/Belem"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80JSVPRCUlNUBf8/P/Cflqpt6zk58Z+2LhZfOznyn7cau585OfGfuA6vLzs58p/ZCsavOTnx
+         n/K2zC87OfKf8yLZHzk58Z/03d8vOznyn/Us6x85OfGf9m/4rzs58p/25pGfOTnxn/gpny87OfKgHJek
+         Hzk58aAdvwIvOznyoB5SnB85OfGgH6A1rzs58qAgKpUfOTnxoCF1i687OfKgIf/rHzk58QA=
+      </value>
+   </data>
+   <data name="America/Belize"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="America/Blanc_Sablon"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80FTVPNBRFTzQVdU9v8/P/CfXj0iUzc38Z+c11HfOTfyn53e7883N/Gfyaeu3zk385/Qf7pP
+         NzfxAA==
+      </value>
+   </data>
+   <data name="America/Boa_Vista"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80FNVPRBTVNUB/8/P/Cflqp+nzc38Z+2LiRvOTfyn7caya83N/GfuA69Pzk38p/ZCtS/Nzfx
+         n/K22j85N/Kf8yLnLzc38Z/03e0/OTfyn/Us+S83N/Gf9nAGvzk38p/25p+vNzfxn/gprT85N/KgHJey
+         Lzc38aAdvxA/OTfyoB5Sqi83N/GgH6BDvzk38qAgKqMvNzfxoCF1mb85N/KgIf/5Lzc38aA4AA8/OTfy
+         oDivWK83N/EA
+      </value>
+   </data>
+   <data name="America/Bogota"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80JNVPL/Pz/wn16cGouf///U85///9Tz8QA=</value>
+   </data>
+   <data name="America/Boise"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U81BTVPNQRFTzTVNU801XVPNNRFT7/z8/8J9eBAW9Ly/xn5y9LB8xL/Kfndszjy8v8Z+oRkwf
+         MTHzn8mn2Q8zMfSf0H/kfzEx80ACY5szMfVABop/MTHzQDgzOzMx9aAHhnPfMTHzAA==
+      </value>
+   </data>
+   <data name="America/Cambridge_Bay"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/jzenp6801TVPNNV1T0TUREVPNNRFTzQ0RU80VTVPNDU1T8/z8/8J+h8s1/MTHxn8mn2Q8zMfKf0H/k
+         fzEx8Z/1T3hvNTHzn/Y/aW8xMfGgEYmCDzMx9KASeWT/MTHxoB6WOw8zMfSgOBv2/zUz9aA5+8rvNTX2
+         oDoE6U8zM/cA
+      </value>
+   </data>
+   <data name="America/Campo_Grande"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="America/Cancun"
+         type="System.Byte[], mscorlib">
+      <value>A/TzTE1U80NTVPNFU1TzRURU9f8/P/CfpbbETzMz8aAWhtVfNTXyoC9+S283NfOgMJMYXzU18gA=</value>
+   </data>
+   <data name="America/Caracas"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80NNVPNWRVT1/z8/8J9phw0/n///zjuf///OO/Gfkx4fQzg48p/2mN43NzfyoEdbkm84OPIA</value>
+   </data>
+   <data name="America/Cayenne"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80dGVPP/Pz/wn5H0Hc83N/FADeuPOTnxAA==</value>
+   </data>
+   <data name="America/Cayman"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80tNVPNFU1Tz/z8/8J9phxvTn///u1+f//+7X/Gfkw+xnzU18gA=</value>
+   </data>
+   <data name="America/Chicago"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NTVPNDRFTzRVNU80NXVPz/Pz/wn14D5uczM/GfnL0P/zUz8p+d2xdvMzPxn6Jl8H81M/Kf
+         pTW1bzMz8Z/AWtX/NTXzn8GwPG8zM/Gfy1V33zUz9J/Qf9ZvMzPxn9VV1P81M/Kf2ACv7zMz8QA=
+      </value>
+   </data>
+   <data name="America/Chihuahua"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U801TVPNDU1TzQ0RU+f8/P/CfpbbmZzEx8Z+v8m7fMzPyn7ZmVl8xMfGft0PSXzMz8p+4DDZf
+         MTHxn7j9hu8zM/KgM0dX/zUz86A0qyLPMzPyAA==
+      </value>
+   </data>
+   <data name="America/Costa_Rica"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FNKTVTy/z8/8J9phxlLn///wjOf///CM/EA</value>
+   </data>
+   <data name="America/Cuiaba"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80FNVPRBTVNUG/8/P/Cflqpmyzc38Z+2LiRvOTfyn7caya83N/GfuA69Pzk38p/ZCtS/Nzfx
+         n/K22j85N/Kf8yLnLzc38Z/03e0/OTfyn/Us+S83N/Gf9nAGvzk38p/25p+vNzfxn/gprT85N/KgHJey
+         Lzc38aAdvxA/OTfyoB5Sqi83N/GgH6BDvzk38qAgKqMvNzfxoCF1mb85N/KgIf/5Lzc38aAjVs0/OTfy
+         oCPzoa83N/GgJT/pvzk38qAl3L4vNzfxoCcfy785N/KgJ7Nlrzc38aApB5a/OTfyoCmIu683N/GgKtem
+         vzk38qArhvAvNzfxoDB0qb85N/KgMSPzLzc38aAyVy6/OTfyoDMXm683N/GgND75vzk38qA07kMvNzfx
+         oDYVoT85N/KgNtdfrzc38aA4AA8/OTfyoDivWK83N/GgO+Nrvzk38qA/cQivNzfxAA==
+      </value>
+   </data>
+   <data name="America/Curacao"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80FOVPNBU1Tz/z8/8J+THh1fODjxn/aY3jc3N/IA</value>
+   </data>
+   <data name="America/Danmarkshavn"
+         type="System.Byte[], mscorlib">
+      <value>A/TzTE1U81dHVPRXR1NU80dNVPX/Pz/wn5uAQh85OfGgE018Tzs58qAWE9yPOTnxoDDnTi8/P/MA</value>
+   </data>
+   <data name="America/Dawson"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/fzTE1U81lTVPNZRFTzWVdU9FlERFTzUFNU81BEVP3/Pz/wn32GhmstLfGfnNeYLy8t8p+d2fAfLS3x
+         n57u2S8vLfKfn8Ge/y0t8Z/Jp/UvLy3zn9CAAJ8tLfGf9U+UjzEt9J/2P4WPLS3xQD6umy8v9aARiZAf
+         MS/2oBJ5cw8vL/UA
+      </value>
+   </data>
+   <data name="America/Dawson_Creek"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U81BTVPNQRFTzUFdU801TVPn/Pz/wn149c8cvL/GfnNeKHzEv8p+d3ygPLy/xn8mn5x8xL/Of
+         0H/yjy8v8Z/XNdMfMS/yn9ngrg8vL/FANV3XMTH0AA==
+      </value>
+   </data>
+   <data name="America/Denver"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U801TVPNNRFTzTVdU+P8/P/CfXgPwlzEx8Z+cvR4PMzHyn53bJX8xMfGfy1WF7zMx85/Qf+R/
+         MTHxn/VPlI8zMfKf9j93fzEx8QA=
+      </value>
+   </data>
+   <data name="America/Detroit"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NTVPNFU1TzRVdU80VEVPv/Pz/wn4W9E0QzM/GfmTyT/zU18p/LVWnPNzXzn9B/yF81NfKf
+         1VXG7zc19J/WIL/fNTXyQAOCAzc19EAGigc1NfJAODLDNzX0oAlniz81NfIA
+      </value>
+   </data>
+   <data name="America/Dominica"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn5H0Mas3N/EA</value>
+   </data>
+   <data name="America/Edmonton"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U801TVPNNRFTzTVdUAf8/P/CfiN6+/zEx8Z+cz5MPMzHyn53fGf8xMfGfoKsGjzMx8p+hmul/
+         MTHxn8mn2Q8zMfOf0Hf7fzEx8Z/TdgEPMzHyn9RA+f8xMfFAAmObMzHyQAaKfzEx8UASifszMfJAFol/
+         MTHxQCqIezMx8kAur18xMfEA
+      </value>
+   </data>
+   <data name="America/Eirunepe"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80FDVPRBQ1NU80FNVAb/Pz/wn5aqdf81NfGfti4yfzc18p+3Gte/NTXxn7gOy083NfKf2Qri
+         zzU18Z/ytuhPNzXyn/Mi9T81NfGf9N37Tzc18p/1LQc/NTXxn/ZwFM83NfKf9uatvzU18Z/4KbtPNzXy
+         oByXwD81NfGgHb8eTzc18qAeUrg/NTXxoB+gUc83NfKgICqxPzU18aAhdafPNzXyoCIABz81NfGgSGB/
+         Tzc38wA=
+      </value>
+   </data>
+   <data name="America/El_Salvador"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="America/Fortaleza"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80JSVPRCUlNUDf8/P/CflqpbJzk58Z+2LhZfOznyn7cau585OfGfuA6vLzs58p/ZCsavOTnx
+         n/K2zC87OfKf8yLZHzk58Z/03d8vOznyn/Us6x85OfGf9m/4rzs58p/25pGfOTnxn/gpny87OfKgHJek
+         Hzk58aAdvwIvOznyoB5SnB85OfGgH6A1rzs58qAgKpUfOTnxoCF1i687OfKgIf/rHzk58aAjVr8vOzny
+         oCPzk585OfGgJT/brzs58qAl3LAfOTnxoDgAAS87OfKgOK9Knzk58aA7412vOznyoD2ZAZ85OfEA
+      </value>
+   </data>
+   <data name="America/Glace_Bay"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80FTVPNBRFTzQVdU9/8/P/CfgPGMKzc38Z+c11HfOTfyn53e7883N/Gfyaeu3zk385/Qf7pP
+         NzfxQDquJzk38gA=
+      </value>
+   </data>
+   <data name="America/Godthab"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81dHVPL/Pz/wn5uAW185OfEA</value>
+   </data>
+   <data name="America/Goose_Bay"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U805TVPNORFTzTldU+/8/P/CfXj07W5///90Ln///3Qvxn76ePvM6OvGfwpgFJzw68p/FOaWX
+         Ojrxn8wAqac8OvOf0H+lNzo68Z/VaBjHPDryn9gJuTc6OvGf2v6ERzw68p/bwEK3OjrxAA==
+      </value>
+   </data>
+   <data name="America/Grand_Turk"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80tNVPL/Pz/wn2mHCU+f//+7X5///7tf8QA=</value>
+   </data>
+   <data name="America/Grenada"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn5H0MRs3N/EA</value>
+   </data>
+   <data name="America/Guadeloupe"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn5HV3s83N/EA</value>
+   </data>
+   <data name="America/Guatemala"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="America/Guayaquil"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81FNVPNFQ1Tz/z8/8J9phx1HQB/+4UAf/uHxn7akO4c1NfIA</value>
+   </data>
+   <data name="America/Guyana"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9EdCR1TzR1lU9f8/P/CfmNlg10Af/3hAH/948UADFgZAH/94QB//ePKgCn2fIzk58qAnf/sv
+         NzfyAA==
+      </value>
+   </data>
+   <data name="America/Halifax"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80FTVPNBRFTzQVdUFv8/P/CfgPGk3zc38Z+ZAlm/OTfyn5nzji83N/GfoLqSPzk38p+hTiwv
+         Nzfxn6KZIr85N/Kfoznrrzc38Z+kcm0/OTfyn6b7AS83N/GfrA2kvzk38p+sq8qvNzfxn63bEb85N/Kf
+         rp4hrzc38Z+vxX+/OTfyn7Bo6683N/Gft0Jkvzk38p+57+KvNzfxn7sfKb85N/Kfu7v+Lzc38Z+9EYC/
+         OTfyn72vpq83N/GfvvFivzk38p+/e8IvNzfxn8CtrD85N/KfwXC8Lzc38Z/EkQi/OTfyn8uI1E85N/Of
+         0H+6Tzc38Z/VVbjfOTfyn9gAk883N/Gf2v6ZXzk38p/bwFfPNzfxn+ReA185N/Kf5Sj8Tzc38Z/vr8Rf
+         OTfyn/Cfp083N/EA
+      </value>
+   </data>
+   <data name="America/Havana"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80hNVPL/Pz/wn2mHGuef///An5///8Cf8QA=</value>
+   </data>
+   <data name="America/Hermosillo"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U801TVPNDU1TzUFNU801EVPz/Pz/wn6W23T8xMfGfr/Ju3zMz8p+2ZlZfMTHxn7dD0l8zM/Kf
+         uAw2XzEx8Z+4/YbvMzPyn8vqcV8xMfGf2JG07y8v8w8xMfGgL35njzMx9KAwkzR/MTHxAA==
+      </value>
+   </data>
+   <data name="America/Indiana/Indianapolis"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NTVPNDRFTzQ1dU80VTVPNFRFT+/z8/8J9eA+mzMzPxn5y9D/81M/KfndsXbzMz8Z/Ide7/
+         NTPyn8j4ZW8zM/Gfy1V33zUz85/Qf9ZvMzPxn9Lbl181M/Kf5F4RbzU19J/o8hbvMzPxn+oG//81NfRA
+         IoiDNzX1QCgGDzU19AA=
+      </value>
+   </data>
+   <data name="America/Indiana/Knox"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NTVPNDRFTzQ1dU80VTVP7/Pz/wn14D6NMzM/GfnL0P/zUz8p+d2xdvMzPxn8mnyv81M/Of
+         0H/WbzMz8Z/XNbb/NTPyn9ngke8zM/Gf8Y/CfzU19J/0X4dvMzPxQAJjXzUz8kAGikMzM/FAODL/NTPy
+         oCkKY+81NfQA
+      </value>
+   </data>
+   <data name="America/Indiana/Marengo"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NTVPNDRFTzQ1dU80VTVPNFRFQA/z8/8J9eA+lZMzPxn5y9D/81M/KfndsXbzMz8Z/Jp8r/
+         NTPzn9B/1m8zM/Gf4J5bfzUz8p/haVRvMzPxn++v4H81NfRAIoiDNzX1QC6u5zU19EA4MsM3NfWgB40L
+         XzUz8qAJELJvNzX1oAtIvr81NfQA
+      </value>
+   </data>
+   <data name="America/Indiana/Petersburg"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NTVPNDRFTzQ1dU80VTVP3/Pz/wn14D55kzM/GfnL0P/zUz8p+d2xdvMzPxn8mnyv81M/Of
+         0H/WbzMz8Z/kXh9/NTPyn+cSNO8zM/Gf9y9ofzU19EAGikM1M/KgDrmS7zU19KBEL3ZvNTPyoEVNi+8z
+         M/EA
+      </value>
+   </data>
+   <data name="America/Indiana/Tell_City"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NTVPNDRFTzQ1dU80VTVPNFRFT9/z8/8J9eA+iRMzPxn5y9D/81M/KfndsXbzMz8Z/Jp8r/
+         NTPzn9B/1m8zM/Gf3r55fzUz8p/fiXJvMzPxn+KGCl81M/Kf7NbE7zMz8Z/1T4Z/NTX0QCKIgzc19UAo
+         Bg81NfQA
+      </value>
+   </data>
+   <data name="America/Indiana/Vevay"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NTVPNDRFTzQ1dU80VTVPNFRFT5/z8/8J9eA+u/MzPxn5y9D/81M/KfndsXbzMz8Z/Jp8r/
+         NTPzn9B/1m8zM/Gf4n49fzU19EAiiIM3NfVALq7nNTX0AA==
+      </value>
+   </data>
+   <data name="America/Indiana/Vincennes"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NTVPNDRFTzQ1dU80VTVPNFRFQA/z8/8J9eA+chMzPxn5y9D/81M/KfndsXbzMz8Z/Jp8r/
+         NTPzn9B/1m8zM/Gf3r55fzUz8p/fiXJvMzPxn+KGCl81M/Kf7NbE7zMz8Z/1T4Z/NTX0QCKIgzc19UAo
+         Bg81NfSgRC92bzUz8qBFTYvvMzPxAA==
+      </value>
+   </data>
+   <data name="America/Indiana/Winamac"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NTVPNDRFTzQ1dU80VTVPNFRFT9/z8/8J9eA+jdMzPxn5y9D/81M/KfndsXbzMz8Z/Jp8r/
+         NTPzn9B/1m8zM/Gf1VXU/zUz8p/YAK/vMzPxn++v4H81NfRAIoiDNzX1QCgGDzU19KBEL3ZvNTPyoEVN
+         i+8zM/EA
+      </value>
+   </data>
+   <data name="America/Inuvik"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/Xzenp681BTVPRQRERU801TVPNNRFT3/z8/8J/gBk5/Ly/xn/VPhn8zL/Kf9j93fy8v8aARZKYfMTHz
+         oBGJgg8zMfSgEnlk/zEx8wA=
+      </value>
+   </data>
+   <data name="America/Iqaluit"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzenp680VXVPNFU1T0RUREVPNFRFTzQ0RU+f8/P/CfzGyhfzc18Z/Qf8hfNTXyn/VPXE85NfOf9j9N
+         TzU18qARiWXvNzX0oBJ5SN81NfKgHpYe7zc19KA4G9rfNTP1AA==
+      </value>
+   </data>
+   <data name="America/Jamaica"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80tNVPNFU1TzRURU9f8/P/CfaYcgH5///7tfn///u1/xn5MPsZ81NfKgCCDBbzc186AM2aLf
+         NTXyAA==
+      </value>
+   </data>
+   <data name="America/Juneau"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U81BTVPNQV1TzUERU81lEVPr/Pz/wnz/A0YSf//+dBJ///50E8J99hxe6Ly/xn8tVk/8xL/Kf
+         0H/yjy8v8UAiiTcxL/NALq+bLy/xQDgzdzEv86AM2c0PLy/xoBoCQ58vLfQA
+      </value>
+   </data>
+   <data name="America/Kentucky/Louisville"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80NTVPNDRFTzQ1dU80VTVPNFRFQA/z8/8J9eA+pzMzPxn5y9D/81M/KfndsXbzMz8Z/ILWx/
+         NTPyn8j4ZW8zM/Gfy1V33zUz85/Qf9ZvMzPxn9VV1P81M/Kf2eCR7zMz8Z/wHp5/NTX0QBqJAzc19UAm
+         iAc1NfRAODLDNzX1oAeNC181M/IA
+      </value>
+   </data>
+   <data name="America/Kentucky/Monticello"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80NTVPNDRFTzQ1dU/P8/P/CfXgPsJzMz8Z+cvQ//NTPyn53bF28zM/GfyafK/zUz85/Qf9Zv
+         MzPxQBqJPzUz8kAmiEMzM/FAODL/NTPyoAzZsO8zM/GgHpYs/zUz8qAhgaFvMzPxAA==
+      </value>
+   </data>
+   <data name="America/La_Paz"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80NNVPRCT1NU80JPVPT/Pz/wn2mHDBuf///PY5///89j8Z+4Hoebn///3XOf///PY/KfuO7G
+         izc38wA=
+      </value>
+   </data>
+   <data name="America/Lima"
+         type="System.Byte[], mscorlib">
+      <value>A/HzTE1U8v8/P/CfaYcf45///7uzn///u7PwAA==</value>
+   </data>
+   <data name="America/Los_Angeles"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81BTVPNQRFTzUFdU+v8/P/CfXgQB6y8v8Z+cvSwfMS/yn53bM48vL/GfyafnHzEv85/Qf/KP
+         Ly/xn9Ub7x8xL/Kf1p4ojy8v8Z/ZFbUfMS/yn9ngrg8vL/EA
+      </value>
+   </data>
+   <data name="America/Maceio"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80JSVPRCUlNUD/8/P/Cflqpdwzk58Z+2LhZfOznyn7cau585OfGfuA6vLzs58p/ZCsavOTnx
+         n/K2zC87OfKf8yLZHzk58Z/03d8vOznyn/Us6x85OfGf9m/4rzs58p/25pGfOTnxn/gpny87OfKgHJek
+         Hzk58aAdvwIvOznyoB5SnB85OfGgH6A1rzs58qAgKpUfOTnxoCF1i687OfKgIf/rHzk58aAjVr8vOzny
+         oCPzk585OfGgJT/brzs58qAl3LAfOTnxoDB91i87OfKgMSPlHzk58aA4AAEvOznyoDivSp85OfGgO+Nd
+         rzs58qA9mQGfOTnxAA==
+      </value>
+   </data>
+   <data name="America/Managua"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U801NVPNDU1TzRVNU80NEVPr/Pz/wn2mHFzuf///ER5///8RH8Z+9LTO3MzPyQDq5ZzU186AJ
+         pD5PMzPyoA9yFt81M/SgD/SNTzMz8qApYZEfNTXzoCrBS08zM/KgK0Pd3zU18wA=
+      </value>
+   </data>
+   <data name="America/Manaus"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80FNVPRBTVNUBf8/P/Cflqp/Ozc38Z+2LiRvOTfyn7caya83N/GfuA69Pzk38p/ZCtS/Nzfx
+         n/K22j85N/Kf8yLnLzc38Z/03e0/OTfyn/Us+S83N/Gf9nAGvzk38p/25p+vNzfxn/gprT85N/KgHJey
+         Lzc38aAdvxA/OTfyoB5Sqi83N/GgH6BDvzk38qAgKqMvNzfxoCF1mb85N/KgIf/5Lzc38QA=
+      </value>
+   </data>
+   <data name="America/Martinique"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U9EZGTVTzQVNU80FEVPX/Pz/wn2mHEruf///Iw5///8jD8Z+Ro8Y7NzfyoBNNbj85N/OgFDQW
+         rzc38gA=
+      </value>
+   </data>
+   <data name="America/Mazatlan"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U801TVPNDU1TzUFNU+f8/P/CfpbblxzEx8Z+v8m7fMzPyn7ZmVl8xMfGft0PSXzMz8p+4DDZf
+         MTHxn7j9hu8zM/Kfy+pxXzEx8Z/YkbTvLy/zAA==
+      </value>
+   </data>
+   <data name="America/Menominee"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NTVPNDRFTzQ1dU80VTVPn/Pz/wn2F3MbwzM/GfnL0P/zUz8p+d2xdvMzPxn8mnyv81M/Of
+         0H/WbzMz8Z/3L2h/NTPyn/gohe8zM/FAGok/NTX0AA==
+      </value>
+   </data>
+   <data name="America/Merida"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80NTVPNFU1Tz/z8/8J+ltr73MzPxoBaG1V81NfIA</value>
+   </data>
+   <data name="America/Mexico_City"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U801TVPNDU1TzQ0RU80NXVAb/Pz/wn6W210cxMfGfr/Ju3zMz8p+2ZlZfMTHxn7dD0l8zM/Kf
+         uAw2XzEx8Z+4/YbvMzPyn8P9fN81M/OfxLYAzzMz8p/Hc2zfNTPzn8gJqc8zM/KfzSGTXzUz9J/N1NFP
+         MzPyn9i34l81M/Of2ZVQTzMz8qAvfll/NTPzoDCTJm8zM/KgORUifzUz86A5zaZvMzPyoDrG3/81M/Og
+         O7bC7zMz8gA=
+      </value>
+   </data>
+   <data name="America/Miquelon"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80FTVPRQTVNU8/8/P/CfkbYjtzc38aATbmO/OTnyAA==</value>
+   </data>
+   <data name="America/Moncton"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80VTVPNBU1TzQURU80FXVAP/Pz/wn14e5MM1NfGfgPG2Tzc38p+c11HfOTfzn53e7883N/Kf
+         vRwazzk385+/aqy/Nzfyn8SPxU85N/OfxS3rPzc38p/GZmzPOTfzn8tVTa85N/Sf0H+6Tzc38p/VVbjf
+         OTfzn9gAk883N/JAOq4nOTfzQD6tqzc38qAelhDfOTfzoCtDs683N/IA
+      </value>
+   </data>
+   <data name="America/Monterrey"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80NTVPNDRFTz/z8/8J+ltscHMzPxoCHbOV81M/IA</value>
+   </data>
+   <data name="America/Montevideo"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U801NVPNVWVT1VVlIU1T0VVlTVP3/Pz/wn3l95TOf///gS5///+BL8Z+iknKzOjryn6cf5Cc7
+         OvOfqA58nzo68p+o/8YnOzrzn7rWix86OvKfv7sDJzs685/Af2ufOjryn8GUTac7OvOfyXQMHzo68p/L
+         PYunPDr0n8u0JJc6OvIA
+      </value>
+   </data>
+   <data name="America/Montreal"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80VTVPNFRFTzRVdUAf8/P/CfXj0vBzU18Z+a285vNzXyn5sDMT81NfGfoLGI9zc18p+hfyTn
+         NTXxn6KStW83NfKfqP6s5zU18Z+qHMlvNzXyn66eL781NfGfr7MYzzc18p+57p8/NTXxn8uI8G83NfOf
+         0H/IXzU18Z/S24lPNzXyn9guxl81NfEA
+      </value>
+   </data>
+   <data name="America/Montserrat"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn5H0MOc3N/EA</value>
+   </data>
+   <data name="America/Nassau"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80VTVPNFRFT0/z8/8J+TNz4bNTXxn/Nvlm83NfKf9F95XzU18QA=</value>
+   </data>
+   <data name="America/New_York"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80VTVPNFRFTzRVdU+v8/P/CfXgPWSzU18Z+cvQHvNzXyn53bCV81NfGfoorMbzc18p+jVcVf
+         NTXxn8tVac83NfOf0H/IXzU18Z/VVcbvNzXyn9gAod81NfEA
+      </value>
+   </data>
+   <data name="America/Nipigon"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80VTVPNFRFT1/z8/8J9y7mhfNTXxn5zXX+83NfKfnd793zU18Z/I+ElPNzXyAA==</value>
+   </data>
+   <data name="America/Nome"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U805TVPNOV1TzQlNU80JEVPNZRFT7/z8/8J8/wO6Sn///ZbGf//9lsfCffYdPDSkp8Z/LVb4v
+         Kynyn9CAHL8pKfFACefTKSnzQCKJ6ysp9EAusE8pKfNAODQrKyn0oAzZ9z8pKfOgGgJtzy8t9QA=
+      </value>
+   </data>
+   <data name="America/Noronha"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80ZOVPRGTlNUDf8/P/Cflqpg2zs78Z+2LghPPTvyn7carY87O/GfuA6hHz078p/ZCrifOzvx
+         n/K2vh89O/Kf8yLLDzs78Z/03dEfPTvyn/Us3Q87O/Gf9m/qnz078p/25oOPOzvxn/gpkR89O/KgHJeW
+         Dzs78aAdvvQfPTvyoB5Sjg87O/GgH6Annz078qAgKocPOzvxoCF1fZ89O/KgIf/dDzs78aAjVrEfPTvy
+         oCPzhY87O/GgJT/Nnz078qAl3KIPOzvxoDf/8x89O/KgOK88jzs78aA740+fPTvyoD2Y8487O/EA
+      </value>
+   </data>
+   <data name="America/North_Dakota/Center"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U801TVPNNRFTzTVdU+f8/P/CfXgP3fzEx8Z+cvR4PMzHyn53bJX8xMfGfyafZDzMx85/Qf+R/
+         MTHxQAJjmzMx8kAGin8xMfFAODM7MzHyAA==
+      </value>
+   </data>
+   <data name="America/North_Dakota/New_Salem"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U801TVPNNRFTzTVdU+f8/P/CfXgP3STEx8Z+cvR4PMzHyn53bJX8xMfGfyafZDzMx85/Qf+R/
+         MTHxQAJjmzMx8kAGin8xMfFAODM7MzHyAA==
+      </value>
+   </data>
+   <data name="America/Panama"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80NNVPNFU1Tz/z8/8J9phx2Pn///vkef//++R/Gfi/RYtzU18gA=</value>
+   </data>
+   <data name="America/Pangnirtung"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/fzenp680FTVPNBV1T0QUREVPNBRFTzRURU80NEVPv/Pz/wn6PVUn83N/Gfyaeu3zk38p/Qf7pPNzfx
+         n/VPTj87N/Of9j8/Pzc38aARiVffOTf0oBJ5Os83N/GgHpYQ3zk39KAvfN3PNzX1oDgb2t81M/YA
+      </value>
+   </data>
+   <data name="America/Paramaribo"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81BNVPRORUdU81NSVPb/Pz/wn5EFe6ef///fY5///99j8Z++Kjibn///31Of///fU/Gf0mIZ
+         qzo68qALEUqnOjrzoBu+I6c5OfMA
+      </value>
+   </data>
+   <data name="America/Phoenix"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U801TVPNNRFTzTVdU+P8/P/CfXgP/azEx8Z+cvR4PMzHyn53bJX8xMfGfyafZDzMx85/PF98b
+         MTHxn8+P5aszMfOf0H/kfzEx8QA=
+      </value>
+   </data>
+   <data name="America/Port_of_Spain"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn5M3MNM3N/EA</value>
+   </data>
+   <data name="America/Port_au_Prince"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FBQTVTy/z8/8J9phwgvQB//QEAf/0DxAA==</value>
+   </data>
+   <data name="America/Porto_Velho"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80FNVPRBTVNUBf8/P/Cflqp7lzc38Z+2LiRvOTfyn7caya83N/GfuA69Pzk38p/ZCtS/Nzfx
+         n/K22j85N/Kf8yLnLzc38Z/03e0/OTfyn/Us+S83N/Gf9nAGvzk38p/25p+vNzfxn/gprT85N/KgHJey
+         Lzc38aAdvxA/OTfyoB5Sqi83N/GgH6BDvzk38qAgKqMvNzfxoCF1mb85N/KgIf/5Lzc38QA=
+      </value>
+   </data>
+   <data name="America/Puerto_Rico"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80FTVPNBV1T0/z8/8J965opGNzfxn8v2Mr85N/Kf0H+6Tzc38QA=</value>
+   </data>
+   <data name="America/Rainy_River"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80NTVPNDRFT1/z8/8J9y7n6XMzPxn5zXbf81M/Kfnd8L7zMz8Z/I+FdfNTPyAA==</value>
+   </data>
+   <data name="America/Rankin_Inlet"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/Xzenp680NTVPRDRERU80NEVPNFU1T4/z8/8J/njG3/MzPxn/VPal83M/Kf9j9bXzMz8aARiXP/NTPz
+         oBJ5Vu8zM/GgHpYs/zUz86A5+8rvNTX0AA==
+      </value>
+   </data>
+   <data name="America/Recife"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80JSVPRCUlNUDf8/P/Cflqpehzk58Z+2LhZfOznyn7cau585OfGfuA6vLzs58p/ZCsavOTnx
+         n/K2zC87OfKf8yLZHzk58Z/03d8vOznyn/Us6x85OfGf9m/4rzs58p/25pGfOTnxn/gpny87OfKgHJek
+         Hzk58aAdvwIvOznyoB5SnB85OfGgH6A1rzs58qAgKpUfOTnxoCF1i687OfKgIf/rHzk58aAjVr8vOzny
+         oCPzk585OfGgJT/brzs58qAl3LAfOTnxoDgAAS87OfKgOK9Knzk58aA7412vOznyoD2ZAZ85OfEA
+      </value>
+   </data>
+   <data name="America/Regina"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U801TVPNNRFTzTVdU80NTVAL/Pz/wn4b9d6MxMfGfnNd8DzMx8p+d3xn/MTHxn7OFbe8zMfKf
+         tFBm3zEx8Z/AkibvMzHyn8GCCd8xMfGfyafZDzMx85/Qd/t/MTHxn9F6b48zMfKf0nOM/zEx8Z/TdgEP
+         MzHyn9RA+f8xMfGf6gcODzMx8p/q9vD/MTHxn+2of48zM/QA
+      </value>
+   </data>
+   <data name="America/Resolute"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/Xzenp680NTVPRDRERU80NEVPNFU1T8/z8/8J/V+4F/MzPxn/VPal83M/Kf9j9bXzMz8aARiXP/NTPz
+         oBJ5Vu8zM/GgHpYs/zUz86A5+8rvNTX0oDrG3/81M/OgPbuO7zMz8aBEE9T/NTPzoEVEUW81NfQA
+      </value>
+   </data>
+   <data name="America/Rio_Branco"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80FDVPRBQ1NU80FNVAb/Pz/wn5aqd+81NfGfti4yfzc18p+3Gte/NTXxn7gOy083NfKf2Qri
+         zzU18Z/ytuhPNzXyn/Mi9T81NfGf9N37Tzc18p/1LQc/NTXxn/ZwFM83NfKf9uatvzU18Z/4KbtPNzXy
+         oByXwD81NfGgHb8eTzc18qAeUrg/NTXxoB+gUc83NfKgICqxPzU18aAhdafPNzXyoCIABz81NfGgSGB/
+         Tzc38wA=
+      </value>
+   </data>
+   <data name="America/Santarem"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80FNVPRBTVNU80JSVAb/Pz/wn5aqaBc3N/Gfti4kbzk38p+3GsmvNzfxn7gOvT85N/Kf2QrU
+         vzc38Z/ytto/OTfyn/Mi5y83N/Gf9N3tPzk38p/1LPkvNzfxn/ZwBr85N/Kf9uafrzc38Z/4Ka0/OTfy
+         oByXsi83N/GgHb8QPzk38qAeUqovNzfxoB+gQ785N/KgICqjLzc38aAhdZm/OTfyoCH/+S83N/GgSGBx
+         Pzk58wA=
+      </value>
+   </data>
+   <data name="America/Santiago"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81NNVPNDTFT0Q0xTVPj/Pz/wn2mHCbmf///RxZ///9HF8Z+PJFW5NTXyn5tc5U+f///RxZ//
+         /9HF8Z+fcPE5Nzfyn6EAcb+f///RxZ///9HF8Z+wXmO5NTXyn7JBAM83NfMA
+      </value>
+   </data>
+   <data name="America/Santo_Domingo"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U9FNETVTzRVNU80VEVPRFSERU80FTVPr/Pz/wn2mHCndAH/83QB//N/Gfut8vnzU18p/4JxhP
+         NzXzQAEtDzU18kAWiMs2NfRAGRrNNTXyoAkQlk83N/WgOfu83zc186A6KdNPNzf1AA==
+      </value>
+   </data>
+   <data name="America/Sao_Paulo"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80JSVPRCUlNU+f8/P/Cflqpvqzk58Z+2LhZfOznyn7cau585OfGfuA6vLzs58p/ZCsavOTnx
+         n/K2zC87OfKf8yLZHzk58Z/0WgkvOznyAA==
+      </value>
+   </data>
+   <data name="America/Scoresbysund"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80NHVPRDR1NU8/8/P/Cfm4A/Bzs78aATTW4/PTvyAA==</value>
+   </data>
+   <data name="America/St_Johns"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U805TVPNORFTzTldU+/8/P/CfXj0mc5///90Ln///3Qvxn5ruIBOf///rG5///90L8p+bw6UD
+         n///3Quf///dC/GfoLUo45///+sbn///3Qvyn6Gb0VOf///dC5///90L8Z++nj7zOjrxn77YQSc8OvKf
+         v5n/lzo68Z/MAKmnPDrzn9B/pTc6OvEA
+      </value>
+   </data>
+   <data name="America/St_Kitts"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn5M3L7M3N/EA</value>
+   </data>
+   <data name="America/St_Lucia"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80NNVPNBU1Tz/z8/8J9phxLPQB//E0Af/xPxn5Lmxc83N/IA</value>
+   </data>
+   <data name="America/St_Thomas"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn5H0Lh83N/EA</value>
+   </data>
+   <data name="America/St_Vincent"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80tNVPNBU1Tz/z8/8J9phxKXn///yOef///I5/GfkubFlzc38gA=</value>
+   </data>
+   <data name="America/Swift_Current"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U801TVPNNRFTzTVdU80NTVP3/Pz/wn4b9kMcxMfGfnNd8DzMx8p+d3xn/MTHxn8mn2Q8zMfOf
+         0H/kfzEx8Z/TdgEPMzHyn9RA+f8xMfGf5kdKDzMx8p/nNyz/MTHxn+oHDg8zMfKf6vbw/zEx8UAyDDsz
+         M/QA
+      </value>
+   </data>
+   <data name="America/Tegucigalpa"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="America/Thule"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="America/Thunder_Bay"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NTVPNFU1TzRVdU80VEVPf/Pz/wn3LuZ3MzM/GfjyR73zU18p/LVWnPNzXzn9B/yF81NfJA
+         KogDNzX0QDauZzU18gA=
+      </value>
+   </data>
+   <data name="America/Tijuana"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U801TVPNQU1TzUERU81BXVPNQUFQG/z8/8J+ltt/3MTHxn6l5T28vL/Kfr/J87zEx8Z+2ZmRv
+         Ly/yn7cbD/8xL/OfuAry7y8v8p/L6o1/MS/0n9IkVt8xL/Wf0pm6by8v8p/XG1j/MS/zn9iRtO8vL/Kf
+         5F47nzEv85/nElEPLy/yoAtI9v8xL/OgIYG9jy8v8qAzR3QfMS/zoDYy6I8vL/KgORU+nzEv86A5zcKP
+         Ly/yoDpQOP8xL/MA
+      </value>
+   </data>
+   <data name="America/Toronto"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80VTVPNFRFTzRVdUBf8/P/Cfcu5wszU18Z+c11/vNzXyn53e/d81NfGfoLGB7zc18p+hcyQ/
+         NTXxn6KlKm83NfKfo0dE3zU18Z+kfSNvNzXyn6UsbN81NfGfqDznbzc18p+unkvfNTXxn6+zNO83NfKf
+         ue67XzU18Z/LiPBvNzXzn9B/yF81NfGf0tuJTzc18p/UQMG/NTXxn9kViu83NfKf2jOSXzU18QA=
+      </value>
+   </data>
+   <data name="America/Tortola"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn5H0Lms3N/EA</value>
+   </data>
+   <data name="America/Vancouver"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81BTVPNQRFTzUFdU+P8/P/CfXj1xEy8v8Z+c14ofMS/yn53fKA8vL/GfyafnHzEv85/Qf/KP
+         Ly/xn9GWLR8xL/Kf0nJJjy8v8QA=
+      </value>
+   </data>
+   <data name="America/Whitehorse"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/fzTE1U81lTVPNZRFTzWVdU9FlERFTzUFNU81BEVP3/Pz/wn32GioMtLfGfnNeYLy8t8p+d2fAfLS3x
+         n57u2S8vLfKfn8Ge/y0t8Z/Jp/UvLy3zn9CAAJ8tLfGf9U+UjzEt9J/2P4WPLS3xQAPiky8v9aARiZAf
+         MS/2oBJ5cw8vL/UA
+      </value>
+   </data>
+   <data name="America/Winnipeg"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80NTVPNDRFTzQ1dUCP8/P/CfZOSjKzMz8Z+ZH3bfNTPyn5nhNU8zM/GfnNdt/zUz8p+d3wvv
+         MzPxn8C/B/81M/KfwW5RbzMz8Z/Jp8r/NTPzn9B37W8zM/Gf0ac0fzUz8p/Sci1vMzPxn9N18v81M/Kf
+         1EDr7zMz8Z/ZHtN/NTPyn9nnKW8zM/Gf2v61fzUz8p/bwHPvMzPxn/GPwn81M/Kf8lAvbzMz8Z/3L2h/
+         NTPyn/gok/8zM/GgHpYs/zUz8gA=
+      </value>
+   </data>
+   <data name="America/Yakutat"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81lTVPNZV1TzWURU+f8/P/CfP8DWfp///4Xen///hd7wn32HLuAtLfGfy1WiDy8t8p/QgACf
+         LS3xQCKJcy8t80Aur9ctLfFAODOzLy3zoAzZ2x8tLfEA
+      </value>
+   </data>
+   <data name="America/Yellowknife"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/Xzenp6801TVPNNV1T0TUREVPNNRFT4/z8/8J++Khf/MTHxn8mn2Q8zMfKf0H/kfzEx8Z/1T3hvNTHz
+         n/Y/aW8xMfGgEYmCDzMx9KASeWT/MTHxAA==
+      </value>
+   </data>
+   <data name="Antarctica/Casey"
+         type="System.Byte[], mscorlib">
+      <value>A/Lzenp681dTVPL/Pz/wQBf63w8P8QA=</value>
+   </data>
+   <data name="Antarctica/Davis"
+         type="System.Byte[], mscorlib">
+      <value>A/Lzenp69ERBVlT0/z8/8J/nnD//DQ3xn/ZH3w8/P/BAGKk/DQ3xAA==</value>
+   </data>
+   <data name="Antarctica/DumontDUrville"
+         type="System.Byte[], mscorlib">
+      <value>A/Pzenp681BNVPRERFVU9P8/P/Cf1Lx2fxMT8Z/eNGBfPz/wn+c8An8TE/IA</value>
+   </data>
+   <data name="Antarctica/Mawson"
+         type="System.Byte[], mscorlib">
+      <value>A/Lzenp69E1BV1Ty/z8/8J/iIDJ/CwvxAA==</value>
+   </data>
+   <data name="Antarctica/McMurdo"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Antarctica/Palmer"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/Pzenp69EFSU1TzQVJU+P8/P/Cf9pis/zk38UAB5nM3N/JABewPOTfxQAnrkzc38kAeEe85OfJAOJFz
+         OznxQDq4dzk58gA=
+      </value>
+   </data>
+   <data name="Antarctica/Rothera"
+         type="System.Byte[], mscorlib">
+      <value>A/Lzenp69FJPVFTy/z8/8KANAiz/OTnxAA==</value>
+   </data>
+   <data name="Antarctica/Syowa"
+         type="System.Byte[], mscorlib">
+      <value>A/Lzenp69FNZT1Ty/z8/8J/nsVf/BQXxAA==</value>
+   </data>
+   <data name="Antarctica/Vostok"
+         type="System.Byte[], mscorlib">
+      <value>A/Lzenp69FZPU1Ty/z8/8J/pWIl/CwvxAA==</value>
+   </data>
+   <data name="Asia/Aden"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn9phOB8FBfEA</value>
+   </data>
+   <data name="Asia/Almaty"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9EFMTVT1QUxNU1T5/z8/8J+qGXvbCQnxn7Wj7y8LC/GgE0ZKHw0L8qAUN36PCwvxoBrDSz8N
+         C/KgJ39ujwsL8aAp1NA/DQvyoCrEwT8LC/EA
+      </value>
+   </data>
+   <data name="Asia/Amman"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Asia/Anadyr"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9EFOQVT1QU5BU1T7/z8/8J+qGR2bFxfxn7WjjL8ZGfGgE0XnrxsZ8qAUNxwfGRnxoBcITq8X
+         F/GgGOmQPxkX8qAZ0wXfFxfxoBrC9t8ZF/KgJ/SLzxcV8qAo5GCvFRXxAA==
+      </value>
+   </data>
+   <data name="Asia/Aqtau"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U9EZPUlT0U0hFVPVTSEVTVPRBUVRU9UFRVFNUAP8/P/CfqhmU3wcH8Z+1o/0/CQnxn/LUri8J
+         CfKgFhjOLwsL8qAXCLEfCQnyoBjp8q8LCfOgGdNoTwkJ8qAaw1lPCwnzoCd/fJ8JCfKgKUumLwkJ9KAp
+         1N5PCwn1oCrEz08JCfSgL1OOzwcH9KBCNe0/CQn0AA==
+      </value>
+   </data>
+   <data name="Asia/Aqtobe"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U9EFLVFT1QUtUU1T0QVFUVPVBUVRTVP3/Pz/wn6oZjmcHB/GftaP9PwkJ8aAVJ4uvCwnyoBYY
+         wB8LC/GgFwixHwkJ8aAY6fKvCwnyoBnTaE8JCfGgGsNZTwsJ8qAnf3yfCQnxoClLpi8JCfOgKdTeTwsJ
+         9KAqxM9PCQnzAA==
+      </value>
+   </data>
+   <data name="Asia/Ashgabat"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U9EFTSFT1QVNIU1TzVE1U+v8/P/CfqhmNQwcH8Z+1o/0/CQnxoBNGWC8LCfKgFDeMnwkJ8aAa
+         w1lPCwnyoCf07j8JB/KgKOTDHwcH8aApCck/BwfzoCl4o18JCfMA
+      </value>
+   </data>
+   <data name="Asia/Baghdad"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80JNVPNBU1Tz/z8/8J9phrHboAAAKZ+gAAApn/GfnjA83wUF8gA=</value>
+   </data>
+   <data name="Asia/Bahrain"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80dTVPNBU1Tz/z8/8J+h8p4TBwfxQDNgTwUF8gA=</value>
+   </data>
+   <data name="Asia/Baku"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U9EJBS1T1QkFLU1T0QVpTVPNBWlT7/z8/8J+qGZVDBQXxn+faDE8HB/GgE0ZmPwkH8qAUN5qv
+         BwfxoBrDZ18JB/KgJ/T8TwcF8qAovVI/BwXzoCjk0S8FBfSgKdT6bwcF86Aqo72vBwf0AA==
+      </value>
+   </data>
+   <data name="Asia/Bangkok"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80JNVPNJQ1Tz/z8/8J9WtoXDoAAAXjugAABeO/Gfompnww0N8gA=</value>
+   </data>
+   <data name="Asia/Beirut"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Asia/Bishkek"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U9EZSVVT1RlJVU1T0S0dTVPNLR1T8/z8/8J+qGX4PCQnxn7Wj7y8LC/GgE0ZKHw0L8qAUN36P
+         CwvxoBrDSz8NC/KgJ/TgLwsJ8qAovqO/CwnzoCjkwx8JCfSgMV2n1wsJ86AycnTHCQn0oEL7oC8LC/QA
+      </value>
+   </data>
+   <data name="Asia/Brunei"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80JOVPP/Pz/wn62KAkMODvGfumdHhw8P8QA=</value>
+   </data>
+   <data name="Asia/Choibalsan"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U9FVMQVT0Q0hPVPVDSE9TVPf/Pz/wn4bT5ycNDfGgDwvcjw8P8aAY6ch/ERHyoBrDBO8TEfOg
+         OdS8fxER8qA6xLuPExHzAA==
+      </value>
+   </data>
+   <data name="Asia/Chongqing"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9ExPTlTy/z8/8J+w/qiTDQ3xAA==</value>
+   </data>
+   <data name="Asia/Colombo"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U801NVPNJU1T0SUhTVPNMS1T5/z8/8J9WtpkjoAAASuOgAABK4/Gfh529GwoK8p/LWhwnCwrz
+         n8yVK58MCvKf0nWANwoK8qAxpgAnDAz0oDJxAB8LC/SgRD/qJwoK8gA=
+      </value>
+   </data>
+   <data name="Asia/Damascus"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Asia/Dhaka"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80hNVPRCVVJU80lTVPREQUNU80JEVPf/Pz/wn2mGhrugAABSz6AAAFLP8Z/K24avDAzyn8wF
+         cRcKCvOfzJUypwwM8p/dqNKXCwv0QCncNwsL9QA=
+      </value>
+   </data>
+   <data name="Asia/Dili"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81RMVPNKU1TzQ0lU9v8/P/CfkuYYww8P8Z/LmTLvERHyn9JW7m8REfGgC+owbw8P86A5w5j/
+         ERHxAA==
+      </value>
+   </data>
+   <data name="Asia/Dubai"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80dTVPL/Pz/wn6HymacHB/EA</value>
+   </data>
+   <data name="Asia/Dushanbe"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U9ERVU1T1RFVTU1TzVEpU+P8/P/CfqhmDfwkJ8Z+1o+8vCwvxoBNGSh8NC/KgFDd+jwsL8aAa
+         w0s/DQvyoCf04C8LCfKgKMqBPwkJ8wA=
+      </value>
+   </data>
+   <data name="Asia/Gaza"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80VFVPRFRVNU80lTVPNJRFQi/z8/8J99vUqvAwPxn8Z3Ld8FA/GfywSNzwMD8Z/Ly8p/BQPx
+         n9Cple8DA/Gf0YR8/wUD8Z/Siq1PAwPxn9V3j18HA/Gf1fyavwUD8Z/WTTBvAwPxn9c9E18FA/Gf1096
+         TwMD8Z/mVS/fBQPyn+cS+c8DA/Gf6CqF3wUD8p/q1Dl/AwPxQAtSZwMD80A8MGcFA/RAPldrAwPzoAgV
+         tt8FA/SgCMUATwMD86Aa3cVfBQP0oBuovk8DA/OgHOvL3wUD9KAdf2XPAwPzoB6hfd8FA/SgH2iCTwMD
+         86AgeshfBQP0oCE8hs8DA/OgInj83wUD9KAjHwvPAwPzoCQqul8FA/SgJPWzTwMD86AmCpxfBQP0oCbe
+         z88DA/OgJ/JnXwUD9KAoxprPAwPzoCnaMl8FA/SgKqfOTwMD86AruhRfBQP0oCx+dc8DA/OgLZn2XwUD
+         9KAuZ5JPAwPzoC9mEd8FA/SgMFnpTwMD86Aw5wffAwPxoDNEKF8FA/KgNglvXwMD8QA=
+      </value>
+   </data>
+   <data name="Asia/Harbin"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U9ENIQVTzQ1NU9f8/P/CfsP6VuxAQ8Z+40853Dw/yn8eQ+n8REfFAAobDEBDxAA==</value>
+   </data>
+   <data name="Asia/Ho_Chi_Minh"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81NNVPNJQ1T1/z8/8J+Ib0J/oAAAY+ugAABj6/GfkV/uzw0N8p+ThbGPDw/yn7dBu/8NDfIA</value>
+   </data>
+   <data name="Asia/Hong_Kong"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Asia/Hovd"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9EhPVlTy/z8/8J+G0/yTCwvxAA==</value>
+   </data>
+   <data name="Asia/Irkutsk"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80lNVPRJUktU9UlSS1NU+f8/P/CfVraCL6AAAGHPoAAAYc/xn6ISD68NDfKftaPTDw8P8qAT
+         Ri3/EQ/zoBQ3Ym8PD/KgGsMvHxEP86An9MQPDw3zoCjkmO8NDfIA
+      </value>
+   </data>
+   <data name="Asia/Jakarta"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80pNVPRKQVZU81dJVPNKU1T5/z8/8J8/ZklfoAAAZB+gAABkH/GfqXiF30AgAbdAIAG38p+6
+         Ft5fDg7zn8u/g4cREfSf0lbubw4O85/XPMYHDw/zn9r/Jf8ODvOf9LW+hw0N8wA=
+      </value>
+   </data>
+   <data name="Asia/Jayapura"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80VJVPNDU1T0/z8/8J+6FsGXERHxn9BYue8SEvKf9LWiZxER8QA=</value>
+   </data>
+   <data name="Asia/Jerusalem"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80pNVPL/Pz/wn1a2wvegAAAg96AAACD38QA=</value>
+   </data>
+   <data name="Asia/Kabul"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FGVPP/Pz/wn2mGmp8HB/Gf0PnXPwgI8QA=</value>
+   </data>
+   <data name="Asia/Kamchatka"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9FBFVFT1UEVUU1T4/z8/8J+nUpbDFRXxn7Wjms8XF/GgE0X1vxkX8qAUNyovFxfxoBrC9t8Z
+         F/KgJ/SLzxcV8qAo5GCvFRXxAA==
+      </value>
+   </data>
+   <data name="Asia/Karachi"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80lTVPRLQVJU9f8/P/CfiX78owoK8Z/MlTKnDArxn9J0EpcKCvGf3ajgpwkJ8gA=</value>
+   </data>
+   <data name="Asia/Kashgar"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9EtBU1Tz/z8/8J+w/sVDCgrxn8eRHacJCfEA</value>
+   </data>
+   <data name="Asia/Katmandu"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80lTVPNOUFTz/z8/8J+h8n2DCgrxoB4YMKdAIAFYQCABWPIA</value>
+   </data>
+   <data name="Asia/Kolkata"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80hNVPRCVVJU80lTVPb/Pz/wn1a2kSegAABSz6AAAFLP8Z/K24avDAzyn8wFcRcKCvOfzJUy
+         pwwK85/SdBKXCgrzAA==
+      </value>
+   </data>
+   <data name="Asia/Krasnoyarsk"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9EtSQVT1S1JBU1T4/z8/8J+h+Q33Cwvxn7Wj4R8NDfGgE0Y8Dw8N8qAUN3B/DQ3xoBrDPS8P
+         DfKgJ/TSHw0L8qAo5Kb/CwvxAA==
+      </value>
+   </data>
+   <data name="Asia/Kuala_Lumpur"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U81NNVPRNQUxU9U1BTFNU80pTVPNNWVT5/z8/8J9+NlWpoAAAYVygAABhXPGfhoOFog0N8p+6
+         Z06PQCABtw3zn8AK5F9AIAG3QCABt/KfyrPlXw4O8p/LkV8HERH0n9JIbe8ODvKgFpH1Bw8P9QA=
+      </value>
+   </data>
+   <data name="Asia/Kuching"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U9EJPUlT2Qk9SVFNU80pTVPNNWVT4/z8/8J+tigaPDg7xn7pnR4cPD/GfvZnz/0AgAfMP8p++
+         EefPDw/xn8uRV/8REfOf0kht7w8P8aAWke3/Dw/0AA==
+      </value>
+   </data>
+   <data name="Asia/Kuwait"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn9phNYMFBfEA</value>
+   </data>
+   <data name="Asia/Macau"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U801PVPRNT1NU/P8/P/CfkuYkAw8P8Z/tl++3EQ/yn+7IbCcPD/Gf8VeCfxEP8p/2RnFvDw/x
+         n/clfjcRD/Kf+BVhJw8P8UAqXR8RD/JALlyjDw/xoAgW5TcRD/KgDqY87w8P8QA=
+      </value>
+   </data>
+   <data name="Asia/Magadan"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9E1BR1T1TUFHU1T4/z8/8J+qGTafExPxn7WjqN8VFfGgE0YDzxcV8qAUNzg/FRXxoBrDBO8X
+         FfKgJ/SZ3xUT8qAo5G6/ExPxAA==
+      </value>
+   </data>
+   <data name="Asia/Makassar"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U801NVPNDSVTzSlNU9f8/P/CfofJdj6AAAG/voAAAb+/xn7oW1Y8PD/Kfy4gdfxER85/SVu5v
+         Dw/yAA==
+      </value>
+   </data>
+   <data name="Asia/Manila"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81BIVPRQSFNU80pTVPb/Pz/wnxThwc9AIAHjQCAB4/Cfex8/jw8P8Z+/um9/EQ/yn8Azq28P
+         D/Gfy/Lm/xER8wA=
+      </value>
+   </data>
+   <data name="Asia/Muscat"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80dTVPL/Pz/wn6HylpMHB/EA</value>
+   </data>
+   <data name="Asia/Nicosia"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80VFVPRFRVNU+f8/P/CfpXcetwMD8aAIDHxfBQPyoAj8X08DA/GgChff3wUD8qAK3EFPAwPx
+         oAvEV18FA/KgDKmuTwMD8aATQ99fBQPyAA==
+      </value>
+   </data>
+   <data name="Asia/Novosibirsk"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9E5PVlT1Tk9WU1T7/z8/8J+h2xkjCwvxn7Wj4R8NDfGgE0Y8Dw8N8qAUN3B/DQ3xoBrDPS8P
+         DfKgJ/TSHw0L8qAo5Kb/CwvxoCl4hz8NDfGgKdTCLw8N8qAqxLMvDQ3xAA==
+      </value>
+   </data>
+   <data name="Asia/Omsk"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9E9NU1T1T01TU1T4/z8/8J+hs0CvCQnxn7Wj7y8LC/GgE0ZKHw0L8qAUN36PCwvxoBrDSz8N
+         C/KgJ/TgLwsJ8qAo5LUPCQnxAA==
+      </value>
+   </data>
+   <data name="Asia/Oral"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U9FVSQVT1VVJBU1T0T1JBVPVPUkFTVAD/Pz/wn6oZk9sHB/GftaP9PwkJ8aAVJ4uvCwnyoBYY
+         wB8LC/GgFwixHwkJ8aAY6fKvCwnyoBnTaE8JCfGgGsNZTwsJ8qAkK++/CQfyoCd/iq8HB/GgKUu0PwcH
+         86Ap1OxfCQf0oCrE3V8HB/OgQjXtPwkJ8wA=
+      </value>
+   </data>
+   <data name="Asia/Phnom_Penh"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81NNVPNJQ1T1/z8/8J+Ib0QjoAAAY+ugAABj6/GfkV/uzw0N8p+ThbGPDw/yn7dBu/8NDfIA</value>
+   </data>
+   <data name="Asia/Pontianak"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U81BNVPNXSVTzSlNU80NJVPn/Pz/wn4v/jf+gAABmf6AAAGZ/8Z+6Ft7/Dg7yn8t5pAcREfOf
+         0lbubw4O8p/XPMYHDw/yn9r/Jf8ODvKf9LW+hw8P9KAh2nR/DQ3yAA==
+      </value>
+   </data>
+   <data name="Asia/Pyongyang"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/LzTE1U80tTVPf/Pz/wn2mGZZsQEPGfhZN+dxER8Z+w/o3vEBDxn7iEtHcREfGf4k8p7w8P8Z/wNXh/
+         ERHxAA==
+      </value>
+   </data>
+   <data name="Asia/Qatar"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80dTVPNBU1Tz/z8/8J+h8p0vBwfxQDNgTwUF8gA=</value>
+   </data>
+   <data name="Asia/Qyzylorda"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U9EtJWlT1S0laU1T0UVlaVPVRWVpTVP7/Pz/wn6oZhp8HB/GftaP9PwkJ8aAVJ4uvCwnyoBYY
+         wB8LC/GgFwixHwkJ8aAY6fKvCwnyoBnTaE8JCfGgGsNZTwsJ8qAnf3yfCQnxoClLpi8JCfOgKXiVTwsL
+         86Ap1NA/DQv0oCrEwT8LC/MA
+      </value>
+   </data>
+   <data name="Asia/Rangoon"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U81JNVPRCVVJU80pTVPNNTVT1/z8/8J9WtonXoAAAWiOgAABaI/GfofJzWwwM8p/L8vwXERHz
+         n9GaZ+8MDPQA
+      </value>
+   </data>
+   <data name="Asia/Riyadh"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80FTVPL/Pz/wn9phNrMFBfEA</value>
+   </data>
+   <data name="Asia/Sakhalin"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NKVPNKU1T0U0FLVPVTQUtTVPz/Pz/wn4bwzbcREfGfw86FbxER8p/SMLLvFRXzoBNGA88X
+         FfSgFDc4PxUV86AawwTvFxX0oCf0md8VE/SgKORuvxMT86ApeE7/FRXzoCnUie8XFfSgKsR67xUV8wA=
+      </value>
+   </data>
+   <data name="Asia/Samarkand"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U9FNBTVT1U0FNU1T0VEFTVPRVWlNU81VaVPv/Pz/wn6oZhV8HB/GftaP9PwkJ8aAVJ4uvCwny
+         oBYYwB8LC/OgFwixHwkJ8aAY6fKvCwnyoBnTaE8JCfGgGsNZTwsJ8qAov9kfCwn0oCjktQ8JCfUA
+      </value>
+   </data>
+   <data name="Asia/Seoul"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80tTVPNLRFT5/z8/8J9phmR3EBDxn4WTfncREfGfsP6N7xAQ8Z+4hLR3ERHxn+JPKe8PD/Gf
+         6/8NfxEP8p/snoTvDw/xn/A1eH8QEPEA
+      </value>
+   </data>
+   <data name="Asia/Shanghai"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80NTVPNDRFT1/z8/8J+w/pqfDw/xn8Z5fH8RD/Kfxxeibw8P8Z/H89r/EQ/yAA==</value>
+   </data>
+   <data name="Asia/Singapore"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U81NNVPRNQUxU9U1BTFNU80pTVPNTR1T6/z8/8J9+NlOioAAAYVygAABhXPGfhoOFog0N8p+6
+         Z06PQCABtw3zn8AK5F9AIAG3QCABt/KfyrPlXw4O8p/LkV8HERH0n9JIbe8ODvKf97pNhw4O9aAWkfUH
+         Dw/1AA==
+      </value>
+   </data>
+   <data name="Asia/Taipei"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Asia/Tashkent"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U9FRBU1T1VEFTU1T0VVpTVPNVWlT5/z8/8J+qGYMHCQnxn7Wj7y8LC/GgE0ZKHw0L8qAUN36P
+         CwvxoBrDSz8NC/KgJ/TgLwsJ8qAov9kfCwnzoCjktQ8JCfQA
+      </value>
+   </data>
+   <data name="Asia/Tbilisi"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U9FRCTVT0VEJJVPVUQklTVPRHRVNU80dFVAT/Pz/wn1a2ufugAAAqA6AAACoD8Z+qGZn7BQXy
+         n+faDE8HB/KgE0ZmPwkH86AUN5qvBwfyoBrDZ18JB/OgJ/T8TwcF86AoAMu/BwX0oCjk0S8FBfWgKWDa
+         TwcF9KAuZOE/CQf0oDBkWS8HB/WgMlAmvwkH9KAzFysvBwf1oDUdVr8JB/SgOBtALwcH9aBA3dW/BQX1
+         oEIjom8HB/UA
+      </value>
+   </data>
+   <data name="Asia/Tehran"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81RNVPRJUlNU9P8/P/Cfmmx9x6AAADA3oAAAMDfxn9LbEscGBvKgDruiRwcH8gA=</value>
+   </data>
+   <data name="Asia/Thimphu"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80lTVPNCVFTz/z8/8J/V5hVzCgrxoCFhTacLC/IA</value>
+   </data>
+   <data name="Asia/Tokyo"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80pTVPNDSlTz/z8/8J9lwiFsERHxn3TO428REfIA</value>
+   </data>
+   <data name="Asia/Ulaanbaatar"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FVMQVTy/z8/8J+G0+5LDQ3xAA==</value>
+   </data>
+   <data name="Asia/Urumqi"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FVSVVTy/z8/8J+w/rpjCwvxAA==</value>
+   </data>
+   <data name="Asia/Vientiane"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81NNVPNJQ1T1/z8/8J+Ib0ZPoAAAY+ugAABj6/GfkV/uzw0N8p+ThbGPDw/yn7dBu/8NDfIA</value>
+   </data>
+   <data name="Asia/Vladivostok"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U9FZMQVT1VkxBU1T2VkxBU1NU+P8/P/Cfp1lHTxER8Z+1o7bvExPxoBNGEd8VE/KgFDdGTxMT
+         8aAawxL/FRPyoCf0p+8TEfOgKOR8zxER8gA=
+      </value>
+   </data>
+   <data name="Asia/Yakutsk"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9FlBS1T1WUFLU1T4/z8/8J+h2+pvDw/xn7WjxP8REfGgE0Yf7xMR8qAUN1RfERHxoBrDIQ8T
+         EfKgJ/S1/xEP8qAo5IrfDw/xAA==
+      </value>
+   </data>
+   <data name="Asia/Yekaterinburg"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9FNWRVT1U1ZFU1T4/z8/8J+hEq3vBwfxn7Wj/T8JCfGgE0ZYLwsJ8qAUN4yfCQnxoBrDWU8L
+         CfKgJ/TuPwkH8qAo5MMfBwfxAA==
+      </value>
+   </data>
+   <data name="Asia/Yerevan"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U9FlFUlT1WUVSU1T0QU1TVPNBTVT8/z8/8J+qGZpHBQXxn+faDE8HB/GgE0ZmPwkH8qAUN5qv
+         BwfxoBrDZ18JB/KgJ/T8TwcF8qAo3PY/BwXzoCjk0S8FBfSgKdT6bwcF86AqxOtvBQX0oDBkkW8HB/QA
+      </value>
+   </data>
+   <data name="Atlantic/Azores"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80hNVPRBWk9U9UFaT1NU9UFaT01U9FdFU1QZ/z8/8J9ePQePn////ref///+t/GfkcHixzs7
+         8p+ZaQSPPTvzn5ocXp87O/KfmrqEjz0785+b6GwPOzvyn5yeWw89O/OfqRImDzs78p+r6JCPPTvzn6zH
+         Xg87O/Kfrb84Dz0785+2MAKPOzvyn7cdUI89O/Ofu9jjDzs78p+8vkgPPTvzn8V3lQ87O/KfxfjIDz07
+         85/HHsaPOzvyn8gQCQ89O/OfyguMfz879J/KnzR/PTvzn8r83Q87O/Kfy+Iz/z879J/Mktz/PTvzn83M
+         of8/O/Sf0Xn/Dz0785/SafAPOzvyn9NaCz89O/Of1En8Pzs78p/a2ZM/PTvzn9vJhD87O/JAAexPPT3y
+         oAu59Y8/PfOgDKnmjz098qANpGOPPz3zoA6TAw89PfKgEVrtDz8986AbvMsfPT3yoCrFFZ8BP/UA
+      </value>
+   </data>
+   <data name="Atlantic/Bermuda"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80FTVPNBRFTz/z8/8J+0wxTnNzfxoAoAlV85N/IA</value>
+   </data>
+   <data name="Atlantic/Canary"
+         type="System.Byte[], mscorlib">
+      <value>A/TzTE1U9ENBTlTzV0VU9FdFU1T0/z8/8J+mBFwvPT3xn9RB9x8/P/KgE001/wE/8wA=</value>
+   </data>
+   <data name="Atlantic/Cape_Verde"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80NWVPRDVlNU9f8/P/CfiX9Bkzs78Z/MlZwfPTvyn9J0fA87O/GgCxf3Pz098QA=</value>
+   </data>
+   <data name="Atlantic/Faroe"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81dFVPL/Pz/wn4ttl6c/P/EA</value>
+   </data>
+   <data name="Atlantic/Madeira"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/fzTE1U80ZNVPRNQURU9U1BRFNU9U1BRE1U81dFVPRXRVNUF/8/P/CfXj0Px5////O3n///87fxn5HB
+         7cc9PfKfmWj2fz8985+aHFCPPT3yn5q6dn8/PfOfm+hd/z098p+cnkz/Pz3zn6kSF/89PfKfq+iCfz89
+         85+sx0//PT3yn62/Kf8/PfOfti/0fz098p+3HUJ/Pz3zn7vY1P89PfKfvL45/z8985/Fd4b/PT3yn8X4
+         uf8/PfOfxx64fz098p/ID/r/Pz3zn8oLfm8BPfSfyp8mbz8985/K/M7/PT3yn8viJe8BPfSfzJLO7z89
+         85/NzJPvAT30n9F58P8/PfOf0mnh/z098p/TWf0vPz3zn9RJ7i89PfKf2tmFLz8985/byXYvPT3yQAHs
+         Ez8/9aALued/AT/2oAyp2H8/P/WgDaRVfwE/9qAOkvT/Pz/1oBFa3v8BP/YA
+      </value>
+   </data>
+   <data name="Atlantic/Reykjavik"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U81JNVPNJU1T0SVNTVPNHTVQD/z8/8J8F1hYjn///+HOf///4c/Gfi2B2iz098p+arpj/Pz3z
+         n5vwVQ89PfKfxGvmfz8985/FhNIfPT3yn8X45C8/PfOfx0O+nz098p/H4fKfPz3zn8kk8h89PfKfycsP
+         Hz8985/K+5mfPT3yn8ujCB8/PfOfzNzNHz098p/TWe8fPz3zn9gtPJ89PfJAEhI3Pz/0AA==
+      </value>
+   </data>
+   <data name="Atlantic/South_Georgia"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80dTVPL/Pz/wn2mG8X87O/EA</value>
+   </data>
+   <data name="Atlantic/St_Helena"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80pNVPNHTVTz/z8/8J9phtYnoAAABVegAAAFV/Gf3EKQpz8/8gA=</value>
+   </data>
+   <data name="Atlantic/Stanley"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81NNVPNGS1T0RktTVPz/Pz/wn2mG+aOf///h25///+Hb8Z+TREcjNzfyn8FveL85N/OfwlYh
+         Lzc38p/FNyW/OTfzn8tVTa83N/KgF/Povzk386AZCLWvNzfyoBkR/j85OfKgGcffLzs586AcyGufOTny
+         AA==
+      </value>
+   </data>
+   <data name="Australia/Adelaide"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/LzTE1U80NTVPr/Pz/wn3MWixMREfGfexIDbxIS8Z+abCijFBLxn5ra9HcSEvGfyXOGhxQS8Z/J5ir3
+         EhLxn8rWKgcUEvGfy8dedxIS8Z/Mv0aHFBLxAA==
+      </value>
+   </data>
+   <data name="Australia/Brisbane"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/LzTE1U80VTVPn/Pz/wn3LtnwcTE/GfmmwhmxUT8Z+a2u1vExPxn8lzf38VE/GfyeYj7xMT8Z/K1iL/
+         FRPxn8vHV28TE/GfzL8/fxUT8QA=
+      </value>
+   </data>
+   <data name="Australia/Broken_Hill"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80VTVPNDU1QA/z8/8J9zFohjExPxn3YEpd8REfKfexIDbxIS8p+abCijFBLyn5ra9HcSEvKf
+         yXOGhxQS8p/J5ir3EhLyn8rWKgcUEvKfy8dedxIS8p/Mv0aHFBLyQClD/RIS8qAdtoWHFBLyoCQQDwcS
+         EvKgN8gOhxQS8gA=
+      </value>
+   </data>
+   <data name="Australia/Currie"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/LzTE1U80VTVPn/Pz/wn3QuBB8TE/Gfm9V4fxUT8Z+cd3bPExPxn8lzf38VE/GfyeYj7xMT8Z/K1iL/
+         FRPxn8vHV28TE/GfzL8/fxUT8QA=
+      </value>
+   </data>
+   <data name="Australia/Darwin"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NTVPL/Pz/wn3MWklcREfEA</value>
+   </data>
+   <data name="Australia/Eucla"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/LzTE1U9ENXU1T5/z8/8J90pgqvQCACDEAgAgzxn5psMy9AIAJIQCACDPGfmtr/A0AgAgxAIAIM8Z/J
+         c5ETQCACSEAgAgzxn8nmNYNAIAIMQCACDPGfytY0k0AgAkhAIAIM8Z/Lx2kDQCACDEAgAgzxn8y/URNA
+         IAJIQCACDPEA
+      </value>
+   </data>
+   <data name="Australia/Hobart"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/LzTE1U80VTVPn/Pz/wn3QuAOMTE/Gfm9V4fxUT8Z+cd3bPExPxn8lzf38VE/GfyeYj7xMT8Z/K1iL/
+         FRPxn8vHV28TE/GfzL8/fxUT8QA=
+      </value>
+   </data>
+   <data name="Australia/Lindeman"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/LzTE1U80VTVPz/Pz/wn3LtotMTE/GfmmwhmxUT8Z+a2u1vExPxn8lzf38VE/GfyeYj7xMT8Z/K1iL/
+         FRPxn8vHV28TE/GfzL8/fxUT8UApSX8TE/GgI2nq/xUT8aAkEAf/ExPxAA==
+      </value>
+   </data>
+   <data name="Australia/Lord_Howe"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80VTVPL/Pz/wn3MWd9sTE/EA</value>
+   </data>
+   <data name="Australia/Melbourne"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/LzTE1U80VTVPn/Pz/wn3MWhRcTE/GfmmwhmxUT8Z+a2u1vExPxn8lzf38VE/GfyeYj7xMT8Z/K1iL/
+         FRPxn8vHV28TE/GfzL8/fxUT8QA=
+      </value>
+   </data>
+   <data name="Australia/Perth"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/LzTE1U81dTVPn/Pz/wn3SmFuMPD/Gfmmw9uxEP8Z+a2wmPDw/xn8lzm58RD/GfyeZADw8P8Z/K1j8f
+         EQ/xn8vHc48PD/GfzL9bnxEP8QA=
+      </value>
+   </data>
+   <data name="Australia/Sydney"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/LzTE1U80VTVPn/Pz/wn3MWfzsTE/GfmmwhmxUT8Z+a2u1vExPxn8lzf38VE/GfyeYj7xMT8Z/K1iL/
+         FRPxn8vHV28TE/GfzL8/fxUT8QA=
+      </value>
+   </data>
+   <data name="CET"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="CST6CDT"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="EET"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="EST"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="EST5EDT"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_1"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_10"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_11"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_12"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_2"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_3"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_4"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_5"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_6"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_7"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_8"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_9"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_1"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_10"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_11"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_12"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_13"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_14"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_2"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_3"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_4"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_5"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_6"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_7"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_8"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/GMT_9"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/UCT"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Etc/UTC"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Europe/Amsterdam"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/nzTE1U80FNVPNOU1TxU/D0TkVTVPNORVT0Q0VTVPNDRVQH/z8/8J8CElFroAAABJOgAAAEk/GfmSmp
+         66AAABKjoAAABJPyn5nzUVugAAAEk6AAAAST8Z+a+ISLoAAAEqOgAAAEk/Kfm8OLi6AAAASToAAABJPx
+         n5zHQwugAAASo6AAAAST8p+drfmLoAAABJOgAAAEk/GfpEV5i6AAABKjoAAABJPyn6U+pQugAAAEk6AA
+         AAST8Z+mfwGLoAAAEqOgAAAEk/KfwPsp26AAABKjoAAABJPzn8F4kougAAAEk6AAAAST9J/CnpELoAAA
+         EqOgAAAEk/OfwtxdW0AgAE9AIAAT9Z/FOFZvQCAAE0AgABP2n8hEsk8DAfefywYXjwEB+J/Lx+QPAwH3
+         n8zBD48BAfifzbJSDwMB95/On6APAQH4AA==
+      </value>
+   </data>
+   <data name="Europe/Andorra"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81dFVPNDRVTz/z8/8J9+NrOTPz/xn9RB2v8BAfIA</value>
+   </data>
+   <data name="Europe/Athens"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80FNVPNFRVT0RUVTVPRDRVNU80NFVAj/Pz/wn3Q/mEOgAAAWO6AAABY78Z+bgCF/AwPyn7ea
+         ZN8FA/Oft+QqzwMD8p/IETBfBQPzn8oQqE8DAfSfywYXjwEB9Z/LyRlvAwH0n8zA5V8BAfWfz5NpbwMD
+         8p/dMRlfBQPzn93UhU8DA/KgCAsq3wUD86AJN8DfAwPyoAnrKP8FA/OgCtsZ/wMD8qALxHN/BQPzoAyr
+         Kf8DA/KgD4NIbwUD86AQcXdvAwPyoBFj/V8FA/OgElE9TwMD8gA=
+      </value>
+   </data>
+   <data name="Europe/Belgrade"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80NFVPRDRVNU+v8/P/CfXjzwRwEB8Z/KAjXfAwHyn8sGF48BAfGfy8fkDwMB8p/MwQ+PAQHx
+         n82yUg8DAfKfzp+gDwEB8Z/RoYwPAwHyn9JOMn8BAfEA
+      </value>
+   </data>
+   <data name="Europe/Berlin"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80NFVPRDRVNU9ENFTVQC/z8/8J9vomH3AQHxn5kpkl8DAfKfmfNV7wEB8Z+a+cyPAwHyn5vE
+         048BAfGfxibsjwMB8p/LBhePAQHxn8vH5A8DAfKfzMEPjwEB8Z/NslIPAwHyn86foA8BAfGf01idnwMB
+         8p/ThrQPBQHzn9PHP38DAfKf1EnSDwEB8Z/VSZUPAwHyAA==
+      </value>
+   </data>
+   <data name="Europe/Brussels"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80JNVPNXRVTzQ0VU9ENFU1T0V0VTVAz/Pz/wn1a23+WgAAAEGaAAAAQZ8Z9t6WylPz/yn5hE
+         SX8BAfOfmwwlbwMB9J+bxNOPAQHzn5/O6h8BP/WfoZfH7z8/8p+iVE5vAT/1n6N87+8/P/KfpEQCbwE/
+         9Z+lPn9vPz/yn6ZIzm8BP/WfsIcwHz8/8p+xkX8fAT/1n8V3ox8/P/KfxfjWHwE/9Z/ISgsPAwH0n8sG
+         F48BAfOfy8fkDwMB9J/MwQ+PAQHzn82yUg8DAfSfzp+gDwEB85/QW81vAwH0n9BtDQ8BAfOf0bAMjwMB
+         9J/SafAPAQHzAA==
+      </value>
+   </data>
+   <data name="Europe/Bucharest"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80JNVPRFRVNU80VFVPz/Pz/wn2zP4AegAAAYd6AAABh38Z+3sNIHBQPyn7gPul8DA/OfuP+r
+         XwUD8qAQasPPAwPzoBFqhs8FA/KgElPuXwMD86AVI91/BQPyoCd/ps8DA/OgLSSg3wUD8qAwkpnPAwPz
+         AA==
+      </value>
+   </data>
+   <data name="Europe/Budapest"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80NFVPRDRVNUDP8/P/Cfau6zGwEB8Z+ZKZJfAwHyn5nzVe8BAfGfmvnMjwMB8p+bxNOPAQHx
+         n565np8DAfKfn4NGDwEB8Z+gjaMfAwHyn6F4QA8BAfGfyfE8jwMB8p/LBhePAQHxn8vH5A8DAfKfzMEP
+         jwEB8Z/NslIPAwHyn86foA8BAfGf0W9zDwMB8p/SafAPAQHxn9NZ4Q8DAfKf2gUnjwEB8Z/gwXVvAwHy
+         n+Fwvt8BAfGf5JT/7wMB8p/lKJnfAQHxn+Z07/8DAfKf5xHgjwEB8aARarD/AwHyAA==
+      </value>
+   </data>
+   <data name="Europe/Chisinau"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/nzTE1U80NNVPNCTVT0RUVTVPNFRVT0Q0VTVPNDRVTzTVNL801TRAf/Pz/wn1a2yPdAIAByQCAAcvGf
+         nmufC6AAABh3oAAAGHfyn7ew0gcFA/OfuA+6XwMD9J+4/6tfBQPzn8p3fU8DAfWfywYXjwEB9p/Lx+QP
+         AwH1n8zBD48BAfafzbJSDwMB9Z/On6APAQH2n9BOnm8FBfegE0Z0TwcF+KAUN6i/BQX3oBrDdW8HBfig
+         JZ5lPwUF96AmQz7PAwP0oCd/tN8FA/OgKOTfPwMD9KApYOhfBQPzoDCSmc8DA/QA
+      </value>
+   </data>
+   <data name="Europe/Copenhagen"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80NNVPNDRVT0Q0VTVAD/Pz/wn2mGz7OgAAALy6AAAAvL8Z9xDO8zAQHyn5k8B18DAfOfmfM5
+         zwEB8p/GYNJvAwHzn8znPP8BAfKfzbJSDwMB85/On6APAQHyn9GYUY8DAfOf0jp6DwEB8p/TfXmPAwHz
+         n9P+rI8BAfKf1WVEjwMB85/V3T0PAQHyAA==
+      </value>
+   </data>
+   <data name="Europe/Dublin"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80RNVPNJU1TzR01U80JTVBX/Pz/wn1fQ/yOgAAAF8KAAAAXw8Z+bJqeuoAAAFACgAAAF8PKf
+         m9XxHj8/85+cu2ofAT/0n5215x8/P/OfnqSGnwE/9J+flckfPz/zn6CDFx8BP/SfoZlDnz8/85+ibYUf
+         AT/0n6Nex58/P/OfpEQsnwE/9J+lRpKfPz/zn6ZBD58BP/KfpwwWnz8/85+oIPGfAT/yn6rnih8/P/Of
+         rcCXnwE/8p/FePSfPz/zn8X6J58BP/Kf1EnSDz8/85/VHiGfAT/yn9ZOng8/P/Of1ywoHwE/8p/YLTyf
+         Pz/zn9kMCh8BP/Kf2gU1nz8/85/etOqfAT/yn9+SZp8/P/Of4IuSHwE/8p/utmCfPz/zn/NBK58BP/JA
+         Lq27Pz/zoBNECY8BP/KgFFjkjz8/8wA=
+      </value>
+   </data>
+   <data name="Europe/Gibraltar"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80dNVPNCU1T0QkRTVPNDRVQd/z8/8J9X0P/7Pz/xn5lEKJ8BP/KfmfOAHz8/8Z+a7f0fAT/y
+         n5vDkB8/P/GfnLtqHwE/8p+dtecfPz/xn56khp8BP/Kfn5XJHz8/8Z+ggxcfAT/yn6GZQ58/P/Gfom2F
+         HwE/8p+jXsefPz/xn6RELJ8BP/KfpUaSnz8/8Z+mQQ+fAT/yn6cMFp8/P/GfqCDxnwE/8p+q54ofPz/x
+         n63Al58BP/KfxXj0nz8/8Z/F+iefAT/yn8g2RI8DP/OfyLd3jwE/8p/J8TyPAz/zn86OfI8BP/Kfz5I0
+         DwM/85/QEhWPAT/yn9CKHB8/P/Gf0YNHnwE/8p/TYcoPAz/zn9P+rI8BP/Kf1G14nz8/8Z/VG36fAT/y
+         n9ZMCR8/P/Gf1xhhnwE/8p/YLTyfPz/xn9kMCh8BP/Kf2gU1nz8/8Z/etOqfAT/yn9+SZp8/P/Gf4IuS
+         HwE/8p/oFEaPAQH0AA==
+      </value>
+   </data>
+   <data name="Europe/Helsinki"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80hNVPNFRVT0RUVTVPX/Pz/wn1O6JpegAAAXZ6AAABdn8Z+kc28XAwPyn8ntHd8FA/Ofyt5S
+         TwMD8gA=
+      </value>
+   </data>
+   <data name="Europe/Istanbul"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80lNVPNFRVT0RUVTVPRUUlNU81RSVCb/Pz/wn1a2yNegAAAbZ6AAABtn8Z+Qi/WXAwPyn5kp
+         kl8FA/OfmfM5zwMD8p+ggt7fBQPzn6GY/U8DA/Kfom1M3wUD85+jXoFPAwPyn6RD9F8FA/OfpUZMTwMD
+         8p+oRaNfBQPzn6j/eM8DA/KfqhhWXwUD85/HHTzPAwPyn8docF8FA/OfyO1MzwMD8p/J6nrfBQPzn8sE
+         jc8DA/Kfz5C4XwUD85/QidXPAwPyn9HBBd8FA/Of0mHOzwMD8p/TbCvfBQPzn9RJmc8DA/Kf1yFj3wUD
+         85/b0lxPAwPyn/AThd8FA/Of8IOHTwMD8p/zhYFfBQPzn/Q8s88DA/JAGq5HBQPzQB4QSwMD8kAzbEMF
+         A/NANs6/AwPyQDoJnwUD80A+zrcDA/KgB/oHXwUD86AJECXPAwPyoAouSV8FA/OgDMVdzwMD8qAPhEWP
+         BQPzoBCGc08HBfSgEIe2vwUF9aATQ/t/BwX0oBf7YT8FBfWgGuWgTwcF9KAbudO/BQX1oByske8HBfSg
+         HMbFvwUD86AdnJD/AwPyoCYL++8FA/OgJwUnbwMD8gA=
+      </value>
+   </data>
+   <data name="Europe/Kaliningrad"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NFVPRDRVNU801TS/NNU0QE/z8/8J9voltHAQHxn5kpkl8DAfKfmfNV7wEB8Z+a+cyPAwHy
+         n5vE048BAfGfxibsjwMB8p/LBhePAQHxn8vH5A8DAfKfzMEPjwEB8Z/NslIPAwHyn86foA8BAfGf0PoB
+         bwMD8Z/Rgb3fBQPyn9Jp4f8DA/Gf0tsm3wUF86ATRnRPBwX0oBQ3qL8FBfOgGsN1bwcF9AA=
+      </value>
+   </data>
+   <data name="Europe/Kiev"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/jzTE1U80tNVPNFRVTzTVNL9ENFU1TzQ0VU801TRPRFRVNUAv8/P/CfVrbHY6AAAByboAAAHJvxn6oZ
+         p2MDA/KftaQZXwUF85/KzS7PAwH0n8sGF48BAfWfy8fkDwMB9J/MwQ+PAQH1n82yUg8DAfSfzp+gDwEB
+         9Z/OzahvBQXzoBNGdE8HBfagFDeovwUF86Aaw3VvBwX2oCWeZT8FBfOgJo0u7wMD8qApYOhfBQP3AA==
+      </value>
+   </data>
+   <data name="Europe/Lisbon"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U81dFVPRXRVNU9FdFTVTzQ0VU9ENFU1QZ/z8/8J9ePPrvoAAACI+gAAAIj/CfkuaF7z8/8Z+Z
+         aOhvAT/yn5ocQn8/P/GfmrpobwE/8p+b6E/vPz/xn5yePu8BP/KfqRIJ7z8/8Z+r6HRvAT/yn6zHQe8/
+         P/Gfrb8b7wE/8p+2L+ZvPz/xn7cdNG8BP/Kfu9jG7z8/8Z+8vivvAT/yn8V3eO8/P/Gfxfir7wE/8p/H
+         HqpvPz/xn8gP7O8BP/KfygtwXwM/85/KnxhfAT/yn8r8wO8/P/Gfy+IX3wM/85/MksDfAT/yn83Mhd8D
+         P/Of0Xni7wE/8p/SadPvPz/xn9NZ7x8BP/Kf1EngHz8/8Z/a2XcfAT/yn9vJaB8/P/FAAevXAQH0oAyr
+         Kf8/P/GgDaRVfwE/8qAOkvT/Pz/xoBFa3v8BP/KgG7y9Dz8/8aAqxQePAwH1oCyk6Y8BAfQA
+      </value>
+   </data>
+   <data name="Europe/London"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80dNVPNCU1T0QkRTVCH/Pz/wnxpdCTQ/P/GfmUQonwE/8p+Z84AfPz/xn5rt/R8BP/Kfm8OQ
+         Hz8/8Z+cu2ofAT/yn5215x8/P/GfnqSGnwE/8p+flckfPz/xn6CDFx8BP/KfoZlDnz8/8Z+ibYUfAT/y
+         n6Nex58/P/GfpEQsnwE/8p+lRpKfPz/xn6ZBD58BP/KfpwwWnz8/8Z+oIPGfAT/yn6rnih8/P/GfrcCX
+         nwE/8p/FePSfPz/xn8X6J58BP/KfyDZEjwM/85/It3ePAT/yn8nxPI8DP/Ofzo58jwE/8p/PkjQPAz/z
+         n9ASFY8BP/Kf0IocHz8/8Z/Rg0efAT/yn9Nhyg8DP/Of0/6sjwE/8p/UbXifPz/xn9Ubfp8BP/Kf1kwJ
+         Hz8/8Z/XGGGfAT/yn9gtPJ8/P/Gf2QwKHwE/8p/aBTWfPz/xn9606p8BP/Kf35Jmnz8/8Z/gi5IfAT/y
+         n+62YJ8/P/Gf80ErnwE/8kAurbs/P/GgE0QJjwE/8qAUWOSPPz/xAA==
+      </value>
+   </data>
+   <data name="Europe/Luxembourg"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U80NFVPRDRVNU81dFVPRXRVNUEv8/P/CfhKKtuwEB8Z+ZPAdfAwHyn5nzVe8BAfGfmwl0XwMB
+         8p+bw2XvAQHxn5zZro8DAfKfnaS1jwEB8Z+ef2RfAwHyn5+dpA8BAfGfn+DEbz8/85+gTN9vAT/0n6GX
+         5A8/P/OfolRObwE/9J+jfQwPPz/zn6REAm8BP/SfpT6Nfz8/85+mSM5vAT/0n6cnuA8/P/OfqAuvbwE/
+         9J+pB4v/Pz/zn6n3bu8BP/SfxXejHz8/85/F+NYfAT/0n8hCMB8DAfSfywYXjwEB85/Lx+QPAwH0n8zB
+         D48BAfOfzbJSDwMB9J/On6APAQHzn9Bvvh8BAfGf0bAMjwMB8p/SafAPAQHxAA==
+      </value>
+   </data>
+   <data name="Europe/Madrid"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U81dFVPRXRVNU9FdFTVTzQ0VU9ENFU1QK/z8/8J9+NrGLPz/xn5sSvO8BP/Kfm93D7z8/8Z+c
+         2ZJvAT/yn6kE2u8/P/Gfq+h0bwE/8p+sx0HvPz/xn62/G+8BP/KfwXhs7z8/8Z/CWIvvAT/yn8oUqt8D
+         P/OfyrWB3wE/8p/L42lfAz/zn8zA5V8BP/Kf0mCZbz8/8Z/UQdr/AQH0n9c9E18DAfWf2AWFbwEB9EA6
+         XYcDAfVAPjYjAQH0oAnYl98DAfWgCss57wEB9KALwwXfAwH1oA6S5u8BAfQA
+      </value>
+   </data>
+   <data name="Europe/Malta"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80NFVPRDRVNUEP8/P/CfcL3TYwEB8Z+ZVSHvAwHyn5nzVe8BAfGfmuSYbwMB8p+b1IlvAQHx
+         n5yoyu8DAfKfnb73bwEB8Z+ef3JvAwHyn6Fpo28BAfGfxomw7wMB8p/M5zz/AQHxn82yUg8DAfKfzp+g
+         DwEB8Z/RchYPAwHyn9Jono8BAfGf0zzD7wMB8p/USGRvAQHxn/dT0+8DAfKf9/ni3wEB8UATRuMDAfJA
+         HeknAQHxQCMkIwMB8kAl6OMBAfFAM2xDAwHyQDXnpwEB8UA6f4MDAfJAPcADAQHxoAgXMo8DAfKgCNjw
+         /wEB8aARYtYPAwHyAA==
+      </value>
+   </data>
+   <data name="Europe/Minsk"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/jzTE1U801NVPNFRVTzTVNL9ENFU1TzQ0VU801TRPRFRVNUA/8/P/CfVrbKJ0AgAG1AIABt8Z+qGao3
+         AwPyn7WkGV8FBfOfyl5wzwMB9J/LBhePAQH1n8vH5A8DAfSfzMEPjwEB9Z/NslIPAwH0n86foA8BAfWf
+         0AoQbwUF86ATRnRPBwX2oBQ3qL8FBfOgGsN1bwcF9qAlnmU/BQXzoCf1GG8FA/egKOUJbwMD8qAp1Oxf
+         BQP3AA==
+      </value>
+   </data>
+   <data name="Europe/Monaco"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/fzTE1U81BNVPNXRVT0V0VTVPRXRU1U80NFVPRDRVNUDP8/P/Cfa8hFk6AAAAIwoAAAAjDxn5FgUE4/
+         P/KfmWTz7wE/85+Z90pvPz/yn5rbXe8BP/OfoZfH7z8/8p+iVE5vAT/zn6N87+8/P/KfpEQCbwE/85+l
+         Pn9vPz/yn6Z28u8BP/OfxXd47z8/8p/F+NYfAT/zn8g2KG8DP/SfyQEhXwE/85/JzDZvAz/0n8sGF48B
+         P/Ofy8fkDwM/9J/MwQ+PAT/zn82vrw8DP/Sfzqds7wE/85/PkOKPAz/0n9BtDQ8/P/Kf0k5crwEB9aAJ
+         2LP/AwH2oArIlu8BAfUA
+      </value>
+   </data>
+   <data name="Europe/Moscow"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/rzTE1U801NVPNNU1T0TURTVPFT8PNNU0vzTVNE80VFVPRFRVNUBv8/P/CfVrbAwwQE8Z+bXx7XoAAA
+         MWegAAAjV/KfnEm7l6AAACNXoAAAI1fxn50WBgegAAA/d6AAACNX85+doySXoAAAMWegAAAjV/Kfnvc5
+         h6AAAD93oAAAI1fzn58e4qegAAAxZ6AAACNX9J+fW3mXoAAAI1egAAAjV/WfoQAyRwUF9p+iLei/BwX3
+         n6Jb/y8JBfefozQ1LwcF95+jW9A/BQX2n6ceRU8DA/iftaQZXwUF9qATRnRPBwX3oBQ3qL8FBfagGsN1
+         bwcF96An9QpfBQP5oCjk3z8DA/gA
+      </value>
+   </data>
+   <data name="Europe/Oslo"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80NFVPRDRVNU/f8/P/Cfcu4kawEB8Z+ZRV3/AwHyn5nx9l8BAfGfyLdNXwMB8p/LBhePAQHx
+         n8vH5A8DAfKfzMEPjwEB8Z/NslIPAwHyn86foA8BAfGf6c8+jwMB8p/qyGoPAQHxn/VN0o8DAfIA
+      </value>
+   </data>
+   <data name="Europe/Paris"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/fzTE1U81BNVPNXRVT0V0VTVPRXRU1U9ENFU1TzQ0VUC/8/P/Cfa8hKiqAAAAIwoAAAAjDxn5FgUIo/
+         P/KfmWTz7wE/85+Z90pvPz/yn5rbXe8BP/OfoZfH7z8/8p+iVE5vAT/zn6N87+8/P/KfpEQCbwE/85+l
+         Pn9vPz/yn6Z28u8BP/OfxXd47z8/8p/F+NYfAT/zn8g2KG8DP/SfyGwZzwMB9Z/LBhePAQH2n8vH5A8D
+         AfWfzMEPjwEB9p/NslIPAwH1n86foA8BAfaf0E/v7wM/9J/QbQ0PPz/yn9JOXK8BAfagCdiz/wMB9aAK
+         yJbvAQH2AA==
+      </value>
+   </data>
+   <data name="Europe/Prague"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81BNVPNDRVT0Q0VTVAP/Pz/wnx5JkvegAAANh6AAAA2H8Z9sz+r3AQHyn5kpkl8DAfOfmfNV
+         7wEB8p+a+cyPAwHzn5vE048BAfKfxibsjwMB85/LBhePAQHyn8vH5A8DAfOfzMEPjwEB8p/NslIPAwHz
+         n86foA8BAfKf0G5ejwMB85/QwBuPAQHyn9Ge6Q8DAfOf0mnwDwEB8p/TawSPAwHzAA==
+      </value>
+   </data>
+   <data name="Europe/Riga"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/nzTE1U81JNVPNMU1TzRUVU801TS/RDRVNU80NFVPNNU0T0RUVTVAf/Pz/wn1a2zWegAAAWl6AAABaX
+         8Z+euYgHoAAAJKegAAAWl/Kfn4SPB6AAABaXoAAAFpfxn6CIRoegAAAkp6AAABaX8p+gy4MHoAAAFpeg
+         AAAWl/Gfrefx5wMD85/Ir2RfBQX0n8piZU8DAfWfywYXjwEB9p/Lx+QPAwH1n8zBD48BAfafzbJSDwMB
+         9Z/On6APAQH2n9CQiW8FBfSgE0Z0TwcF96AUN6i/BQX0oBrDdW8HBfegJAsWXwUD+KAk/bhvAwPzoDUd
+         nQ8FA/igOLrhzwMD8wA=
+      </value>
+   </data>
+   <data name="Europe/Rome"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81JNVPNDRVT0Q0VTVBL/Pz/wnz2+HsugAAALs6AAAAuz8Z9wvIPLAQHyn5lVIe8DAfOfmfNV
+         7wEB8p+a5JhvAwHzn5vUiW8BAfKfnKjK7wMB85+dvvdvAQHyn55/cm8DAfOfoWmjbwEB8p/GibDvAwHz
+         n8znPP8BAfKfzbJSDwMB85/On6APAQHyn9AHbW8DAfOf0GufbwEB8p/RXP4PAwHzn9Jono8BAfKf0zzD
+         7wMB85/USGRvAQHyn/dT0+8DAfOf9/ni3wEB8kATRuMDAfNAHeknAQHyQCMkIwMB80Al6OMBAfJAM2xD
+         AwHzQDXnpwEB8kA7RGMDAfOgCOtX7wEB8qAKK7RvAwHzoA6S5u8BAfIA
+      </value>
+   </data>
+   <data name="Europe/Samara"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U9FNBTVT0S1VZVPVLVVlTVPv/Pz/wn6EAJpsFBfGftaQLTwcH8Z++TCa/BwfyoBNGZj8JB/Og
+         FDearwcH8qAaw2dfCQfzoCQr/c8HBfOgJ/UKXwUD86Ao5N8/AwPyoCjlF38FBfIA
+      </value>
+   </data>
+   <data name="Europe/Simferopol"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/jzTE1U81NNVPNFRVTzTVNL9ENFU1TzQ0VU801TRPRFRVNUBv8/P/CfVrbEB0AgAIdAIACH8Z+qGaQf
+         AwPyn7WkGV8FBfOfywSNzwMB9J/LBhePAQH1n8vH5A8DAfSfzMEPjwEB9Z/NslIPAwH0n86foA8BAfWf
+         z59G7wUF86ATRnRPBwX2oBQ3qL8FBfOgGsN1bwcF9qAlnmU/BQXzoCaNLu8DA/KgKWDoXwUD96AtwsbP
+         BwX2oDBkZz8FBfOgMV3K/wcF9qAycpfvBQXzAA==
+      </value>
+   </data>
+   <data name="Europe/Sofia"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/bzTE1U80lNVPNFRVTzQ0VU9ENFU1T0RUVTVP3/Pz/wn1a2ziOgAAAbZ6AAABtn8Z9yw+MXAwPyn8zn
+         Sw8BAfOfzbJSDwMB9J/On6APAQHzn9FyJB8DA/KgEW0pzwUD9aASUpzfAwPyoBfzsH8FA/WgGdOSfwMD
+         8qAnf7TfBQP1oDCSmc8DA/IA
+      </value>
+   </data>
+   <data name="Europe/Stockholm"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U81NFVPNDRVT0Q0VTVPX/Pz/wn1TVn5OgAAAOHaAAAA4d8Z98VXNhAQHyn5sejF8DAfOfm9Xa
+         7wEB8gA=
+      </value>
+   </data>
+   <data name="Europe/Tallinn"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/jzTE1U81RNVPNDRVTzRUVU801TS/RDRVNU801TRPRFRVNUA/8/P/CfVrbMy0AgAGJAIABi8Z+eWS3L
+         AQHyn6EAK29AIABiQCAAYvGfpHNvSwMD85/IsLXfBQX0n8rGl08DAfWfywYXjwEB8p/Lx+QPAwH1n8zB
+         D48BAfKfzbJSDwMB9Z/On6APAQHyn9B02e8FBfSgE0Z0TwcF9qAUN6i/BQX0oBrDdW8HBfagJCwL3wUD
+         96AnBTV/AwPzAA==
+      </value>
+   </data>
+   <data name="Europe/Tirane"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80NFVPRDRVNUDP8/P/Cflqo0ZwEB8Z/IbYdvAwHyn8sGF48BAfGfy8fkDwMB8p/L17YPAQHx
+         QDrIowMB8kA+GccBAfGgCCRFbwMB8qAI7z5fAQHxoAoGym8DAfKgCtHDXwEB8aAL8ThvAwHyoAyy9t8B
+         AfGgDc/I7wMB8qAOktjfAQHxoA+vqu8DAfKgEHK63wEB8aARjjtvAwHyoBJZNF8BAfGgE2eF7wMB8qAU
+         Mn7fAQHxoBVQom8DAfKgFhubXwEB8aAXH2DvAwHyoBf6K98BAfGgGOoq7wMB8gA=
+      </value>
+   </data>
+   <data name="Europe/Uzhgorod"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/fzTE1U80NFVPRDRVNU801TS/NNU0TzRUVU9EVFU1QD/z8/8J9q7rAXAQHxn8eRXO8DAfKfywYXjwEB
+         8Z/Lx+QPAwHyn8zBD48BAfGfzbJSDwMB8p/On6APAQHxn9CAt28DAfKf0KGe3wEB8Z/R5f3vBQXzoBNG
+         dE8HBfSgFDeovwUF86Aaw3VvBwX0oCWeZT8FBfOgJo0u7wEB8aAn9UKfAwP1oClg6F8FA/YA
+      </value>
+   </data>
+   <data name="Europe/Vaduz"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NFVPL/Pz/wn3HUBJMBAfEA</value>
+   </data>
+   <data name="Europe/Vienna"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U80NFVPRDRVNUA/8/P/Cfb6JfLwEB8Z+ZKZJfAwHyn5nzVe8BAfGfmvnMjwMB8p+bxNOPAQHx
+         n8gJcY8DAfKfywYXjwEB8Z/Lx+QPAwHyn8zBD48BAfGfzbJSDwMB8p/On6APAQHxn9FyFg8DAfKf0X82
+         /wEB8Z/TWI+PAwHyn9gJlg8BAfGgEWqi7wMB8qASUUtfAQHxAA==
+      </value>
+   </data>
+   <data name="Europe/Vilnius"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/nzTE1U81dNVPNLTVTzQ0VU80VFVPNNU0v0Q0VTVPNNU0T0RUVTVAf/Pz/wn1a2zENAIABTQCAAU/Gf
+         nE8fT6AAABZnoAAAFmfyn6GFSpcBAfOfovEw7wMD9J+jZnhfAQHzn8isz28FBfWfylkqzwMB9p/LBheP
+         AQHzn8vH5A8DAfafzMEPjwEB85/NslIPAwH2n86foA8BAfOf0DBL7wUF9aATRnRPBwX3oBQ3qL8FBfWg
+         GsN1bwcF96An9QpfBQP4oCrE+X8DA/SgNR2A7wEB86A2/X8PAwH2oDgbeG8DA/QA
+      </value>
+   </data>
+   <data name="Europe/Volgograd"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U9FRTQVT0U1RBVPRWT0xU9VZPTFNU+v8/P/CfofVG2wUF8Z+r2IZPBQXyn7WkC08HB/Kf8LBM
+         PwcH86ATRmY/CQf0oBQ3mq8HB/OgGsNnXwkH9KAkK/3PBwX0oCf1Cl8HB/MA
+      </value>
+   </data>
+   <data name="Europe/Warsaw"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U81dNVPRDRVNU80NFVPRFRVNUC/8/P/CfVrbQT0AgAFNAIABT8Z+ZqCrPAwHyn5nzVe8BAfOf
+         mvnMjwMB8p+bxNOPAQHzn5+EpZ8FA/Sfpn1uTwMB8p/LBhePAQHzn8vH5A8DAfKfzMEPjwEB85/NslIP
+         AwHyn86foA8BAfOf0IC3bwMB8p/QqYffAQHzn9GBy+8DAfKf0mnwDwEB85/TfXmPAwHyn9RJ0g8BAfOf
+         1UmVDwMB8p/nEdJ/AQHzn+gAcf8DAfKf6trQ/wEB85/ryB7/AwHyn/BxPH8BAfOgE0P7fwMB8gA=
+      </value>
+   </data>
+   <data name="Europe/Zaporozhye"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/jzTE1U80NVVPNFRVTzTVNL9ENFU1TzQ0VU801TRPRFRVNUAf8/P/CfVrbDB0AgAItAIACL8Z+qGaMv
+         AwPyn7WkGV8FBfOfyqrnzwMB9J/LBhePAQH1n8vH5A8DAfSfzMEPjwEB9Z/NslIPAwH0n86foA8BAfWf
+         zr3WbwUF86ATRnRPBwX2oBQ3qL8FBfOgGsN1bwcF9qAn9QpfBQP3oCrEz08DA/IA
+      </value>
+   </data>
+   <data name="Europe/Zurich"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80JNVPNDRVT0Q0VTVPf/Pz/wnxvWDn+gAAAG96AAAAb38Z9x1AaHAQHyn8dCQu8DAfOfx4/9
+         XwEB8p/INkSPAwHzn8kBIV8BAfIA
+      </value>
+   </data>
+   <data name="HST"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Indian/Antananarivo"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80VBVPRFQVNU9P8/P/CfkfPN8wUF8Z/iM8C/BwXyn+Krqy8FBfEA</value>
+   </data>
+   <data name="Indian/Chagos"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80lPVPP/Pz/wn4l+95sJCfGgMObdrwsL8QA=</value>
+   </data>
+   <data name="Indian/Christmas"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NYVPL/Pz/wn3MWqeMNDfEA</value>
+   </data>
+   <data name="Indian/Cocos"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NDVPL/Pz/wn3xVJqMMDPEA</value>
+   </data>
+   <data name="Indian/Comoro"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80VBVPL/Pz/wn5Hz0e8FBfEA</value>
+   </data>
+   <data name="Indian/Kerguelen"
+         type="System.Byte[], mscorlib">
+      <value>A/Lzenp681RGVPL/Pz/wn9phYn8JCfEA</value>
+   </data>
+   <data name="Indian/Mahe"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81NDVPL/Pz/wn4hk5oMHB/EA</value>
+   </data>
+   <data name="Indian/Maldives"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U801NVPNNVlTz/z8/8J9Wtp8XQCABJUAgASXxn+0vw5cJCfIA</value>
+   </data>
+   <data name="Indian/Mauritius"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Indian/Mayotte"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80VBVPL/Pz/wn5Hz0BcFBfEA</value>
+   </data>
+   <data name="Indian/Reunion"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81JFVPL/Pz/wn5HMOX8HB/EA</value>
+   </data>
+   <data name="MET"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="MST"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="MST7MDT"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Pacific/Apia"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U9FNBTVTzV1NU9P8/P/CfVcjlf5///2ufn///a5/wn5EF718qKvGf2mH2Jykp8gA=</value>
+   </data>
+   <data name="Pacific/Auckland"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/PzTE1U9E5aTVT0TlpTVPj/Pz/wn0G3TKcWFvGfrtN/ZxgW8p+vbwJXFhbxn7CPyOcXFvKfsWQDXxYW
+         8Z+7xdpnFxbyn9D5Zr8WFvIA
+      </value>
+   </data>
+   <data name="Pacific/Chatham"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Pacific/Easter"
+         type="System.Byte[], mscorlib">
+      <value>A/TzTE1U80VNVPRFQVNU9UVBU1NU9P8/P/CfaYc5x5///6Gnn///oafxn7nHOFcxMfJALjhPMzHzAA==</value>
+   </data>
+   <data name="Pacific/Efate"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Pacific/Enderbury"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FBIT1T0/z8/8J9+N0n7JyfxoBJWBL8pKfGgLwaLLxkZ8QA=</value>
+   </data>
+   <data name="Pacific/Fakaofo"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81RLVPL/Pz/wn343SdcrK/EA</value>
+   </data>
+   <data name="Pacific/Fiji"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Pacific/Funafuti"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81RWVPL/Pz/wn342DPsXF/EA</value>
+   </data>
+   <data name="Pacific/Galapagos"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80VDVPRHQUxU8/8/P/CftqQxHzU18aAeGMRPMzPyAA==</value>
+   </data>
+   <data name="Pacific/Gambier"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9EdBTVTy/z8/8J+UUCv7LS3xAA==</value>
+   </data>
+   <data name="Pacific/Guadalcanal"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81NCVPL/Pz/wn5RPM4sVFfEA</value>
+   </data>
+   <data name="Pacific/Guam"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U80dTVPRDaFNU9P8/P/CfFOG780AgAkJAIAJC8J9+Ni1LExPxoDpDXl8TE/IA</value>
+   </data>
+   <data name="Pacific/Honolulu"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/TzTE1U80hTVPNIRFTzSFdU9/8/P/CffFavgSws8Z+7BTU3Lizyn7sg1qcsLPGfyaf8Ny4s85/QgAen
+         LCzxn9WNZTcrK/EA
+      </value>
+   </data>
+   <data name="Pacific/Johnston"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Pacific/Kiritimati"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9ExJTlT0/z8/8J9+Nzq/QB/9z0Af/c/xoBJV3z8rK/GgLwZ9Hxsb8QA=</value>
+   </data>
+   <data name="Pacific/Kosrae"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9EtPU1T0/z8/8J9+NhwzFRXxQB336xcX8aA2i2c/FRXxAA==</value>
+   </data>
+   <data name="Pacific/Kwajalein"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U801IVPRLV0FU9P8/P/CffjYYHxUV8UAd9+snJ/KgLHS8vxcX8QA=</value>
+   </data>
+   <data name="Pacific/Majuro"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U801IVPP/Pz/wn342FH8VFfFAHffrFxfxAA==</value>
+   </data>
+   <data name="Pacific/Marquesas"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9E1BUlTy/z8/8J+UUEPXLi7xAA==</value>
+   </data>
+   <data name="Pacific/Midway"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U805TVPNORFTzQlNU81NTVPb/Pz/wn343RBcpKfGf5nWKrysp8p/m7XUfKSnxQAnn0ykp86Aa
+         KzAvKSn0AA==
+      </value>
+   </data>
+   <data name="Pacific/Nauru"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U805SVPNKU1T1/z8/8J+j5ysDFhbxn8u0v0cREfKf0EJQbxYW8aARiwTHFxfxAA==</value>
+   </data>
+   <data name="Pacific/Niue"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U805VVPT/Pz/wn343SxNAH/1/QB/9f/Gf3EMr/yoq8aAQdLwnKSnxAA==</value>
+   </data>
+   <data name="Pacific/Norfolk"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U805NVPNORlTz/z8/8J9+NheHQCACn0AgAp/xn9xB+H8WFvIA</value>
+   </data>
+   <data name="Pacific/Noumea"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="Pacific/Pago_Pago"
+         type="System.Byte[], mscorlib">
+      <value>
+         A/XzTE1U9FNBTVTzTlNU80JTVPNTU1T2/z8/8J9VyOSHn///aqef//9qp/CfkQXwVyoq8Z/aYfYnKSny
+         QAnn0ykp86AaKzAvKSn0AA==
+      </value>
+   </data>
+   <data name="Pacific/Palau"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81BXVPL/Pz/wn342NusREfEA</value>
+   </data>
+   <data name="Pacific/Pitcairn"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U81BOVPNQU1Tz/z8/8J9+NxwLMDDxoDVEM/cvL/IA</value>
+   </data>
+   <data name="Pacific/Ponape"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FBPTlTy/z8/8J9+NiCrFRXxAA==</value>
+   </data>
+   <data name="Pacific/Port_Moresby"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U9FBNTVTzUEdU8/8/P/CfVrZaB6AAAInvoAAAie/xn3LtpI8TE/IA</value>
+   </data>
+   <data name="Pacific/Rarotonga"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U80NLVPL/Pz/wn343OHcsLPEA</value>
+   </data>
+   <data name="Pacific/Saipan"
+         type="System.Byte[], mscorlib">
+      <value>A/PzTE1U801QVPRDaFNU9f8/P/CfFOG840AgAkZAIAJG8J9+NixbERHxQB34YxMT8aA6Q15fExPyAA==</value>
+   </data>
+   <data name="Pacific/Tahiti"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FRBSFTy/z8/8J+UUDpnKyvxAA==</value>
+   </data>
+   <data name="Pacific/Tarawa"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9EdJTFTy/z8/8J9+NhLLFxfxAA==</value>
+   </data>
+   <data name="Pacific/Tongatapu"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81RPVPP/Pz/wn342B7dAIALjQCAC4/GfyXNCjxkZ8QA=</value>
+   </data>
+   <data name="Pacific/Truk"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FRSVVTy/z8/8J9+NiazExPxAA==</value>
+   </data>
+   <data name="Pacific/Wake"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U9FdBS1Ty/z8/8J9+NhjLFxfxAA==</value>
+   </data>
+   <data name="Pacific/Wallis"
+         type="System.Byte[], mscorlib">
+      <value>A/LzTE1U81dGVPL/Pz/wn342CKcXF/EA</value>
+   </data>
+   <data name="PST8PDT"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="WET"
+         type="System.Byte[], mscorlib">
+      <value>AT8=</value>
+   </data>
+   <data name="IdMap"
+         type="System.Byte[], mscorlib">
+      <value>
+         dwZBbnRhcmN0aWNhL1NvdXRoX1BvbGUDQW50YXJjdGljYS9NY011cmRv/kV1cm9wZS9OaWNvc2lh/EFz
+         aWEvTmljb3NpYf1BZnJpY2EvQXNtZXJh/UFmcmljYS9Bc21hcmEAQWZyaWNhL1RpbWJ1a3R1/UFmcmlj
+         YS9CYW1ha28RQW1lcmljYS9BcmdlbnRpbmEvQ29tb2RSaXZhZGF2aWEMQW1lcmljYS9BcmdlbnRpbmEv
+         Q2F0YW1hcmNh/EFtZXJpY2EvQXRrYfxBbWVyaWNhL0FkYWsFQW1lcmljYS9CdWVub3NfQWlyZXMPQW1l
+         cmljYS9BcmdlbnRpbmEvQnVlbm9zX0FpcmVzAkFtZXJpY2EvQ2F0YW1hcmNhDEFtZXJpY2EvQXJnZW50
+         aW5hL0NhdGFtYXJjYQZBbWVyaWNhL0NvcmFsX0hhcmJvdXIBQW1lcmljYS9BdGlrb2thbgBBbWVyaWNh
+         L0NvcmRvYmEKQW1lcmljYS9BcmdlbnRpbmEvQ29yZG9iYQFBbWVyaWNhL0Vuc2VuYWRhAEFtZXJpY2Ev
+         VGlqdWFuYQNBbWVyaWNhL0ZvcnRfV2F5bmUNQW1lcmljYS9JbmRpYW5hL0luZGlhbmFwb2xpcwVBbWVy
+         aWNhL0luZGlhbmFwb2xpcw1BbWVyaWNhL0luZGlhbmEvSW5kaWFuYXBvbGlz/UFtZXJpY2EvSnVqdXkI
+         QW1lcmljYS9BcmdlbnRpbmEvSnVqdXkAQW1lcmljYS9Lbm94X0lOBUFtZXJpY2EvSW5kaWFuYS9Lbm94
+         A0FtZXJpY2EvTG91aXN2aWxsZQxBbWVyaWNhL0tlbnR1Y2t5L0xvdWlzdmlsbGUAQW1lcmljYS9NZW5k
+         b3phCkFtZXJpY2EvQXJnZW50aW5hL01lbmRvemEDQW1lcmljYS9Qb3J0b19BY3JlA0FtZXJpY2EvUmlv
+         X0JyYW5jbwBBbWVyaWNhL1Jvc2FyaW8KQW1lcmljYS9BcmdlbnRpbmEvQ29yZG9iYf5BbWVyaWNhL1Zp
+         cmdpbgJBbWVyaWNhL1N0X1Rob21hc/5Bc2lhL0FzaGtoYWJhZP1Bc2lhL0FzaGdhYmF0/kFzaWEvQ2h1
+         bmdraW5n/kFzaWEvQ2hvbmdxaW5n+kFzaWEvRGFjY2H6QXNpYS9EaGFrYf1Bc2lhL0NhbGN1dHRh/EFz
+         aWEvS29sa2F0YfpBc2lhL01hY2Fv+kFzaWEvTWFjYXX9QXNpYS9UZWxfQXZpdv5Bc2lhL0plcnVzYWxl
+         bftBc2lhL1NhaWdvbgFBc2lhL0hvX0NoaV9NaW5o+0FzaWEvVGhpbWJ1/EFzaWEvVGhpbXBodQNBc2lh
+         L1VqdW5nX1BhbmRhbmf9QXNpYS9NYWthc3NhcgBBc2lhL1VsYW5fQmF0b3IBQXNpYS9VbGFhbmJhYXRh
+         cgBBdGxhbnRpYy9GYWVyb2X+QXRsYW50aWMvRmFyb2UDQXRsYW50aWMvSmFuX01heWVu+0V1cm9wZS9P
+         c2xv/UF1c3RyYWxpYS9BQ1QBQXVzdHJhbGlhL1N5ZG5leQNBdXN0cmFsaWEvQ2FuYmVycmEBQXVzdHJh
+         bGlhL1N5ZG5lef1BdXN0cmFsaWEvTEhJBEF1c3RyYWxpYS9Mb3JkX0hvd2X9QXVzdHJhbGlhL05TVwFB
+         dXN0cmFsaWEvU3lkbmV5AEF1c3RyYWxpYS9Ob3J0aAFBdXN0cmFsaWEvRGFyd2luBUF1c3RyYWxpYS9R
+         dWVlbnNsYW5kA0F1c3RyYWxpYS9CcmlzYmFuZQBBdXN0cmFsaWEvU291dGgDQXVzdHJhbGlhL0FkZWxh
+         aWRlA0F1c3RyYWxpYS9UYXNtYW5pYQFBdXN0cmFsaWEvSG9iYXJ0A0F1c3RyYWxpYS9WaWN0b3JpYQRB
+         dXN0cmFsaWEvTWVsYm91cm5l/kF1c3RyYWxpYS9XZXN0AEF1c3RyYWxpYS9QZXJ0aAVBdXN0cmFsaWEv
+         WWFuY293aW5uYQZBdXN0cmFsaWEvQnJva2VuX0hpbGz7QnJhemlsL0FjcmUDQW1lcmljYS9SaW9fQnJh
+         bmNvAUJyYXppbC9EZU5vcm9uaGEAQW1lcmljYS9Ob3Jvbmhh+0JyYXppbC9FYXN0AkFtZXJpY2EvU2Fv
+         X1BhdWxv+0JyYXppbC9XZXN0/kFtZXJpY2EvTWFuYXVzAENhbmFkYS9BdGxhbnRpYwBBbWVyaWNhL0hh
+         bGlmYXj+Q2FuYWRhL0NlbnRyYWwBQW1lcmljYS9XaW5uaXBlZwlDYW5hZGEvRWFzdC1TYXNrYXRjaGV3
+         YW7+QW1lcmljYS9SZWdpbmH+Q2FuYWRhL0Vhc3Rlcm4AQW1lcmljYS9Ub3JvbnRvAENhbmFkYS9Nb3Vu
+         dGFpbgFBbWVyaWNhL0VkbW9udG9uBENhbmFkYS9OZXdmb3VuZGxhbmQBQW1lcmljYS9TdF9Kb2huc/5D
+         YW5hZGEvUGFjaWZpYwJBbWVyaWNhL1ZhbmNvdXZlcgRDYW5hZGEvU2Fza2F0Y2hld2Fu/kFtZXJpY2Ev
+         UmVnaW5h/ENhbmFkYS9ZdWtvbgNBbWVyaWNhL1doaXRlaG9yc2UCQ2hpbGUvQ29udGluZW50YWwBQW1l
+         cmljYS9TYW50aWFnbwNDaGlsZS9FYXN0ZXJJc2xhbmT+UGFjaWZpYy9FYXN0ZXL0Q3ViYf5BbWVyaWNh
+         L0hhdmFuYfVFZ3lwdPxBZnJpY2EvQ2Fpcm/0RWlyZf1FdXJvcGUvRHVibGlu/kV1cm9wZS9CZWxmYXN0
+         /UV1cm9wZS9Mb25kb24ARXVyb3BlL1RpcmFzcG9sAEV1cm9wZS9DaGlzaW5hdfJHQv1FdXJvcGUvTG9u
+         ZG9u90dCLUVpcmX9RXVyb3BlL0xvbmRvbvVHTVQrMPdFdGMvR01U9UdNVC0w90V0Yy9HTVT0R01UMPdF
+         dGMvR01U+UdyZWVud2ljaPdFdGMvR01U+Ehvbmdrb25n/kFzaWEvSG9uZ19Lb25n90ljZWxhbmQDQXRs
+         YW50aWMvUmV5a2phdmlr9ElyYW77QXNpYS9UZWhyYW72SXNyYWVs/kFzaWEvSmVydXNhbGVt90phbWFp
+         Y2EAQW1lcmljYS9KYW1haWNh9UphcGFu+kFzaWEvVG9reW/5S3dhamFsZWluAlBhY2lmaWMvS3dhamFs
+         ZWlu9UxpYnlh/kFmcmljYS9Ucmlwb2xpAU1leGljby9CYWphTm9ydGUAQW1lcmljYS9UaWp1YW5h/k1l
+         eGljby9CYWphU3VyAUFtZXJpY2EvTWF6YXRsYW7+TWV4aWNvL0dlbmVyYWwEQW1lcmljYS9NZXhpY29f
+         Q2l0efJOWgFQYWNpZmljL0F1Y2tsYW5k905aLUNIQVQAUGFjaWZpYy9DaGF0aGFt9k5hdmFqb/5BbWVy
+         aWNhL0RlbnZlcvNQUkP9QXNpYS9TaGFuZ2hhaf1QYWNpZmljL1NhbW9hAlBhY2lmaWMvUGFnb19QYWdv
+         +1BhY2lmaWMvWWFw/FBhY2lmaWMvVHJ1a/ZQb2xhbmT9RXVyb3BlL1dhcnNhd/hQb3J0dWdhbP1FdXJv
+         cGUvTGlzYm9u81JPQ/tBc2lhL1RhaXBlafNST0v6QXNpYS9TZW91bPlTaW5nYXBvcmX+QXNpYS9TaW5n
+         YXBvcmX2VHVya2V5AEV1cm9wZS9Jc3RhbmJ1bPNVQ1T3RXRjL1VDVPlVUy9BbGFza2ECQW1lcmljYS9B
+         bmNob3JhZ2X7VVMvQWxldXRpYW78QW1lcmljYS9BZGFr+lVTL0FyaXpvbmEAQW1lcmljYS9QaG9lbml4
+         +lVTL0NlbnRyYWwAQW1lcmljYS9DaGljYWdvAFVTL0Vhc3QtSW5kaWFuYQ1BbWVyaWNhL0luZGlhbmEv
+         SW5kaWFuYXBvbGlz+lVTL0Vhc3Rlcm4BQW1lcmljYS9OZXdfWW9ya/lVUy9IYXdhaWkBUGFjaWZpYy9I
+         b25vbHVsdQJVUy9JbmRpYW5hLVN0YXJrZQVBbWVyaWNhL0luZGlhbmEvS25vePtVUy9NaWNoaWdhbgBB
+         bWVyaWNhL0RldHJvaXT7VVMvTW91bnRhaW7+QW1lcmljYS9EZW52ZXL6VVMvUGFjaWZpYwRBbWVyaWNh
+         L0xvc19BbmdlbGVz+FVTL1NhbW9hAlBhY2lmaWMvUGFnb19QYWdv81VUQ/dFdGMvVVRD+VVuaXZlcnNh
+         bPdFdGMvVVRD9FctU1X9RXVyb3BlL01vc2Nvd/RadWx190V0Yy9VVEPzR01U90V0Yy9HTVT9RXRjL1Vu
+         aXZlcnNhbPdFdGMvVVRD+EV0Yy9adWx190V0Yy9VVEP9RXRjL0dyZWVud2ljaPdFdGMvR01U+UV0Yy9H
+         TVQtMPdFdGMvR01U+UV0Yy9HTVQrMPdFdGMvR01U+EV0Yy9HTVQw90V0Yy9HTVT9RXVyb3BlL0plcnNl
+         ef1FdXJvcGUvTG9uZG9uAEV1cm9wZS9HdWVybnNlef1FdXJvcGUvTG9uZG9uA0V1cm9wZS9Jc2xlX29m
+         X01hbv1FdXJvcGUvTG9uZG9uAUV1cm9wZS9NYXJpZWhhbW4ARXVyb3BlL0hlbHNpbmtp/kV1cm9wZS9W
+         YXRpY2Fu+0V1cm9wZS9Sb21lAkV1cm9wZS9TYW5fTWFyaW5v+0V1cm9wZS9Sb21lBEFyY3RpYy9Mb25n
+         eWVhcmJ5ZW77RXVyb3BlL09zbG8BRXVyb3BlL0xqdWJsamFuYQBFdXJvcGUvQmVsZ3JhZGUBRXVyb3Bl
+         L1BvZGdvcmljYQBFdXJvcGUvQmVsZ3JhZGUARXVyb3BlL1NhcmFqZXZvAEV1cm9wZS9CZWxncmFkZf1F
+         dXJvcGUvU2tvcGplAEV1cm9wZS9CZWxncmFkZf1FdXJvcGUvWmFncmViAEV1cm9wZS9CZWxncmFkZQJF
+         dXJvcGUvQnJhdGlzbGF2Yf1FdXJvcGUvUHJhZ3Vl/UFzaWEvSXN0YW5idWwARXVyb3BlL0lzdGFuYnVs
+         AUFtZXJpY2EvU2hpcHJvY2v+QW1lcmljYS9EZW52ZXIGQW1lcmljYS9TdF9CYXJ0aGVsZW15A0FtZXJp
+         Y2EvR3VhZGVsb3VwZQBBbWVyaWNhL01hcmlnb3QDQW1lcmljYS9HdWFkZWxvdXBl/lVTL1BhY2lmaWMt
+         TmV3BEFtZXJpY2EvTG9zX0FuZ2VsZXM=
+      </value>
+   </data>
+</root>

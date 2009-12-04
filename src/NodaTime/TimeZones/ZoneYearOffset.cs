@@ -14,10 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Calendars;
 using NodaTime.Utility;
 using System.Text;
+using NodaTime.Fields;
 
 namespace NodaTime.TimeZones
 {
@@ -126,6 +128,14 @@ namespace NodaTime.TimeZones
                                 bool advance,
                                 Offset tickOfDay)
         {
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
+            if (dayOfWeek != 0)
+            {
+                FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
+            }
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+
             this.mode = mode;
             this.monthOfYear = monthOfYear;
             this.dayOfMonth = dayOfMonth;
@@ -207,6 +217,31 @@ namespace NodaTime.TimeZones
         internal Instant Previous(Instant instant, Offset standardOffset, Offset savings)
         {
             return AdjustInstant(instant, standardOffset, savings, -1);
+        }
+
+        /// <summary>
+        /// Writes this object to the given <see cref="DateTimeZoneWriter"/>.
+        /// </summary>
+        /// <param name="writer">Where to send the output.</param>
+        internal void Write(DateTimeZoneWriter writer)
+        {
+            writer.WriteInt8((byte)Mode);
+            writer.WriteInt8((byte)MonthOfYear);
+            writer.WriteInt8((byte)DayOfMonth);
+            writer.WriteInt8((byte)DayOfWeek);
+            writer.WriteBoolean(AdvanceDayOfWeek);
+            writer.WriteTicks(TickOfDay.Ticks);
+        }
+
+        public static ZoneYearOffset Read(DateTimeZoneReader reader)
+        {
+            TransitionMode mode = (TransitionMode)reader.ReadInt8();
+            int monthOfYear = reader.ReadInt8();
+            int dayOfMonth = reader.ReadInt8();
+            int dayOfWeek = reader.ReadInt8();
+            bool advance = reader.ReadBoolean();
+            long ticks = reader.ReadTicks();
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, new Offset(ticks));
         }
 
         /// <summary>

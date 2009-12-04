@@ -86,6 +86,25 @@ namespace NodaTime.TimeZones
             return new ZoneRecurrence(Name + suffix, Savings, this.yearOffset);
         }
 
+        /// <summary>
+        /// Writes this object to the given <see cref="DateTimeZoneWriter"/>.
+        /// </summary>
+        /// <param name="writer">Where to send the output.</param>
+        internal void Write(DateTimeZoneWriter writer)
+        {
+            writer.WriteString(Name);
+            writer.WriteTicks(Savings.Ticks);
+            YearOffset.Write(writer);
+        }
+
+        public static ZoneRecurrence Read(DateTimeZoneReader reader)
+        {
+            string name = reader.ReadString();
+            long ticks = reader.ReadTicks();
+            ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
+            return new ZoneRecurrence(name, new Offset(ticks), yearOffset);
+        }
+
         #region Object overrides
 
         /// <summary>

@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System.IO;
+
 namespace NodaTime.ZoneInfoCompiler
 {
     /// <summary>
@@ -56,5 +59,23 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="format">The format string to log.</param>
         /// <param name="arguments">The arguments for the string format if any.</param>
         void Error(string format, params object[] arguments);
+
+        /// <summary>
+        /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Info"/>.
+        /// </summary>
+        /// <value>The <see cref="TextWriter"/>.</value>
+        TextWriter InfoWriter { get; }
+
+        /// <summary>
+        /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Warn"/>.
+        /// </summary>
+        /// <value>The <see cref="TextWriter"/>.</value>
+        TextWriter WarnWriter { get; }
+
+        /// <summary>
+        /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Error"/>.
+        /// </summary>
+        /// <value>The <see cref="TextWriter"/>.</value>
+        TextWriter ErrorWriter { get; }
     }
 }
