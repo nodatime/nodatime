@@ -34,7 +34,7 @@ namespace NodaTime.TimeZones
     public sealed class CachedDateTimeZone
         : IDateTimeZone
     {
-        private readonly IDateTimeZone timeZone;
+        internal readonly IDateTimeZone timeZone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
@@ -161,6 +161,17 @@ namespace NodaTime.TimeZones
             get { return this.timeZone.IsFixed; }
         }
 
+        public void Write(DateTimeZoneWriter writer)
+        {
+            writer.WriteTimeZone(timeZone);
+        }
+
         #endregion
+
+        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        {
+            IDateTimeZone timeZone = reader.ReadTimeZone(id);
+            return new CachedDateTimeZone(timeZone);
+        }
     }
 }

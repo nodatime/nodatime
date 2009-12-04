@@ -62,8 +62,16 @@ namespace NodaTime.TimeZones
         {
             this.instant = instant;
             this.name = name;
-            this.wallOffset = wallOffset;
-            this.standardOffset = standardOffset;
+            if (this.instant != Instant.MinValue && this.instant != Instant.MaxValue)
+            {
+                this.wallOffset = wallOffset;
+                this.standardOffset = standardOffset;
+            }
+            else
+            {
+                this.wallOffset = Offset.Zero;
+                this.standardOffset = Offset.Zero;
+            }
         }
 
         /// <summary>

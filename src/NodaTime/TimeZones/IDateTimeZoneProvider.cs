@@ -14,13 +14,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System.Collections.Generic;
+
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Original name: Provider.
-    /// (I felt this was too general, and likely to clash with IOC containers etc.)
+    /// Provides the interface for objects that can retrieve time zone definitions given and id.
     /// </summary>
+    /// <remarks>
+    /// Original name: Provider. (I felt this was too general, and likely to clash with IOC
+    /// containers etc.)
+    /// </remarks>
     public interface IDateTimeZoneProvider
     {
+        /// <summary>
+        /// Returns the time zone definition associated with the given id.
+        /// </summary>
+        /// <remarks>
+        /// If the time zone does not yet exist, its definition is loaded from where ever this
+        /// provider gets time zone definitions. Time zones should not be cached in the provider as
+        /// they will be cached in <see cref="DateTimeZones"/>.
+        /// </remarks>
+        /// <param name="id">The id of the time zone to return.</param>
+        /// <returns>The <see cref="IDateTimeZone"/> or <c>null</c> if there is no time zone with the given id.</returns>
+        IDateTimeZone ForId(string id);
+
+        /// <summary>
+        /// Returns an enumeration of the available ids from this provider.
+        /// </summary>
+        /// <value>The <see cref="IEnumerable"/> of ids.</value>
+        IEnumerable<string> Ids { get; }
     }
 }

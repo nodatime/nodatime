@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Collections.Generic;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
@@ -33,7 +34,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             get
             {
-                if (Count > 0) {
+                if (Count > 0)
+                {
                     return this[0].Name;
                 }
                 return null;

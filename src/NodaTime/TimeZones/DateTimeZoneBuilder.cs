@@ -16,6 +16,10 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using NodaTime.Calendars;
+using NodaTime.Fields;
+using System.IO;
+using System.Text;
 
 namespace NodaTime.TimeZones
 {
@@ -105,6 +109,14 @@ namespace NodaTime.TimeZones
                                               bool advanceDayOfWeek,
                                               Offset tickOfDay)
         {
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
+            if (dayOfWeek != 0)
+            {
+                FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
+            }
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+
             if (ruleSets.Count > 0)
             {
                 ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
@@ -158,15 +170,23 @@ namespace NodaTime.TimeZones
                                                        int fromYear,
                                                        int toYear,
                                                        TransitionMode mode,
-                                                       int monthYearOffset,
+                                                       int monthOfYear,
                                                        int dayOfMonth,
                                                        int dayOfWeek,
                                                        bool advanceDayOfWeek,
                                                        Offset tickOfDay)
         {
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
+            if (dayOfWeek != 0)
+            {
+                FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
+            }
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+
             if (fromYear <= toYear)
             {
-                ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthYearOffset, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
+                ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
                 ZoneRecurrence recurrence = new ZoneRecurrence(nameKey, savings, yearOffset);
                 ZoneRule rule = new ZoneRule(recurrence, fromYear, toYear);
                 LastRuleSet.AddRule(rule);
@@ -197,7 +217,7 @@ namespace NodaTime.TimeZones
             {
                 var ruleSet = this.ruleSets[i];
                 var transitionIterator = ruleSet.Iterator(instant);
-                var nextTransition = transitionIterator.Next();
+                var nextTransition = transitionIterator.First();
                 if (nextTransition == null)
                 {
                     continue;

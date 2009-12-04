@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.ZoneInfoCompiler.Tzdb;
 
 namespace NodaTime.ZoneInfoCompiler
@@ -31,13 +32,13 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         /// Runs the compiler from the command line.
         /// </summary>
-        /// <param name="args">The command line arguments. Each compiler defines its own.</param>
+        /// <param name="arguments">The command line arguments. Each compiler defines its own.</param>
         /// <returns>0 for success, non-0 for error.</returns>
-        static int Main(string[] args)
+        static int Main(string[] arguments)
         {
             var log = new ConsoleLog();
             TzdbZoneInfoCompiler compiler = new TzdbZoneInfoCompiler(log);
-            int result = compiler.Execute(args);
+            int result = compiler.Execute(arguments);
             return result;
         }
     }

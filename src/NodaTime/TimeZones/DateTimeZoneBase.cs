@@ -65,6 +65,8 @@ namespace NodaTime.TimeZones
         /// </returns>
         public abstract Instant? PreviousTransition(Instant instant);
 
+        public abstract void Write(DateTimeZoneWriter writer);
+
         /// <summary>
         /// Returns the offset from UTC, where a positive duration indicates that local time is later
         /// than UTC. In other words, local time = UTC + offset.

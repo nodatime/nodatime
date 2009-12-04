@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Utility;
 
@@ -23,27 +24,26 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// Represents an alias link between a target (existing item) and a source (the alias) time
     /// zone.
     /// </summary>
+    /// <remarks>
+    /// Immutable, thread-safe.
+    /// </remarks>
     internal class ZoneAlias
         : IEquatable<ZoneAlias>
     {
+        private readonly string existing;
+        private readonly string alias;
+
         /// <summary>
         /// Gets or sets the existing time zone name.
         /// </summary>
         /// <value>The existing name.</value>
-        internal string Existing { get; set; }
+        internal string Existing { get { return this.existing; } }
 
         /// <summary>
         /// Gets or sets the time zone alias name.
         /// </summary>
         /// <value>The alias name.</value>
-        internal string Alias { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZoneAlias"/> class.
-        /// </summary>
-        internal ZoneAlias()
-        {
-        }
+        internal string Alias { get { return this.alias; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneAlias"/> class.
@@ -52,8 +52,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="alias">The alias zone name.</param>
         internal ZoneAlias(string existing, string alias)
         {
-            Existing = existing;
-            Alias = alias;
+            this.existing = existing;
+            this.alias = alias;
         }
 
         /// <summary>
@@ -110,7 +110,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </returns>
         public bool Equals(ZoneAlias other)
         {
-            if (other == null) {
+            if (other == null)
+            {
                 return false;
             }
             return Existing == other.Existing && Alias == other.Alias;
