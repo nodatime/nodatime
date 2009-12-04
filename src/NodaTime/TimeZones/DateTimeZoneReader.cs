@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using NodaTime.Calendars;
@@ -157,10 +158,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Reads a time zone alias map from the stream.
+        /// Reads a dictionary of string to string from the stream.
         /// </summary>
-        /// <returns>The time zone alias map.</returns>
-        public IDictionary<string, string> ReadTimeZoneAliasMap()
+        /// <returns>The <see cref="IDictionary"/> to read.</returns>
+        public IDictionary<string, string> ReadDictionary()
         {
             IDictionary<string, string> results = new Dictionary<string, string>();
             int count = ReadNumber();

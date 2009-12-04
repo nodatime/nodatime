@@ -22,6 +22,7 @@ using System.Linq;
 using System.Resources;
 using CommandLine;
 using NodaTime.TimeZones;
+using NodaTime.ZoneInfoCompiler;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -35,8 +36,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     {
         private ILog log;
         private TzdbZoneInfoParser tzdbParser;
-        private MemoryStream memory;
-        private DateTimeZoneWriter writer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbZoneInfoCompiler"/> class.
@@ -46,8 +45,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             this.log = log;
             this.tzdbParser = new TzdbZoneInfoParser(this.log);
-            this.memory = new MemoryStream();
-            this.writer = new DateTimeZoneWriter(this.memory);
         }
 
         /// <summary>
@@ -69,27 +66,23 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             var files = options.InputFiles;
             IEnumerable<FileInfo> fileList = MakeFileList(sourceDirectory, files);
             ValidateArguments(sourceDirectory, fileList, outputFile);
-            IResourceWriter resourceWriter = GetResourceWriter(outputFile.Name, options.OutputType);
-            try
+            using (var output = new ResourceOutput(outputFile.Name, options.OutputType))
             {
                 //// Using this conditional code makes debugging simpler in Visual Studio because exceptions will
                 //// be caught by VS and shown with the exception visualizer.
 #if DEBUG
-                Compile(fileList, resourceWriter);
+                Compile(fileList, output);
 #else
-            try
-            {
-                Compile(fileList, resourceWriter);
-            }
-            catch (Exception e)
-            {
-                return Usage(e.Message);
-            }
+                try
+                {
+                    Compile(fileList, output);
+                }
+                catch (Exception e)
+                {
+                    this.log.Error("{0}", e.Message);
+                    return 2;
+                }
 #endif
-            }
-            finally
-            {
-                resourceWriter.Close();
             }
             return 0;
         }
@@ -101,11 +94,11 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="files">The enumeration of file name strings.</param>
         /// <param name="destination">The destination <see cref="DirectoryInfo"/> object.</param>
         /// <returns></returns>
-        internal int Compile(IEnumerable<FileInfo> fileList, IResourceWriter resourceWriter)
+        internal int Compile(IEnumerable<FileInfo> fileList, ResourceOutput output)
         {
             TzdbDatabase database = new TzdbDatabase();
             ParseAllFiles(fileList, database);
-            GenerateDateTimeZones(database, resourceWriter);
+            GenerateDateTimeZones(database, output);
             LogCounts(database);
             return 0;
         }
@@ -167,16 +160,15 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </para>
         /// </remarks>
         /// <param name="database">The database of parsed zone info records.</param>
-        /// <param name="destination">The output file <see cref="IResourceWriter"/>.</param>
-        private void GenerateDateTimeZones(TzdbDatabase database, IResourceWriter resourceWriter)
+        /// <param name="destination">The output file <see cref="ResourceOutput"/>.</param>
+        private void GenerateDateTimeZones(TzdbDatabase database, ResourceOutput output)
         {
             var timeZoneMap = new Dictionary<string, string>();
             foreach (var zoneList in database.Zones)
             {
                 IDateTimeZone timeZone = CreateTimeZone(zoneList, database.Rules);
                 timeZoneMap.Add(timeZone.Id, timeZone.Id);
-                this.writer.WriteTimeZone(timeZone);
-                WriteResource(DateTimeZoneResourceProvider.NormalizeAsResourceName(timeZone.Id), resourceWriter);
+                output.WriteTimeZone(timeZone.Id, timeZone);
             }
 
             foreach (var key in database.Aliases.Keys)
@@ -189,8 +181,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 timeZoneMap.Add(key, value);
             }
 
-            this.writer.WriteTimeZoneAliasMap(timeZoneMap);
-            WriteResource(DateTimeZoneResourceProvider.IdMapKey, resourceWriter);
+            output.WriteDictionary(DateTimeZoneResourceProvider.IdMapKey, timeZoneMap);
         }
 
         /// <summary>
@@ -306,27 +297,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        /// Returns the appropriate implementation of <see cref="IResourceWriter"/> to use to
-        /// generate the output file as directed by the command line arguments.
-        /// </summary>
-        /// <param name="name">The name of the output file.</param>
-        /// <param name="type">The outpu file type.</param>
-        /// <returns>The <see cref="IResourceWriter"/> to write to.</returns>
-        private IResourceWriter GetResourceWriter(string name, OutputType type)
-        {
-            IResourceWriter result;
-            if (type == OutputType.Resource)
-            {
-                result = new ResourceWriter(name);
-            }
-            else
-            {
-                result = new ResXResourceWriter(name);
-            }
-            return result;
-        }
-
-        /// <summary>
         /// Validates the program arguments. If anything is not setup correctly then an exception os
         /// thrown and compilation does not proceed.
         /// </summary>
@@ -362,19 +332,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             {
                 throw new ArgumentException("The " + name + " location must be a directory: " + directory.FullName, name);
             }
-        }
-
-        /// <summary>
-        /// Writes contents of the <see cref="MemoryStream"/> member to the given resource writer.
-        /// </summary>
-        /// <param name="name">The name of the resource to write.</param>
-        /// <param name="resourceWriter">The resource writer to write to.</param>
-        private void WriteResource(string name, IResourceWriter resourceWriter)
-        {
-            this.memory.Flush();
-            byte[] bytes = this.memory.ToArray();
-            resourceWriter.AddResource(name, bytes);
-            this.memory.SetLength(0);
         }
 
         /// <summary>

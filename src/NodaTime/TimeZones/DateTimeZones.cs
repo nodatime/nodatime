@@ -51,45 +51,54 @@ namespace NodaTime.TimeZones
         public const string UtcId = "UTC";
 
         private static readonly IDateTimeZone utc = new FixedDateTimeZone(UtcId, Offset.Zero);
-        private static IDateTimeZone current = utc;
-        private static readonly LinkedList<IDateTimeZoneProvider> providers = new LinkedList<IDateTimeZoneProvider>();
-        private static readonly SortedDictionary<string, string> idList = new SortedDictionary<string, string>();
-        private static readonly IDictionary<string, IDateTimeZone> timeZoneMap = new Dictionary<string, IDateTimeZone>();
+
+        private readonly static Impl implementation = new Impl();
 
         /// <summary>
         /// Initializes the <see cref="DateTimeZones"/> class.
         /// </summary>
         static DateTimeZones()
         {
-            ResetProviders();
+            implementation.AddStandardProvider();
         }
 
         /// <summary>
-        /// Resets the providers.
-        /// </summary>
-        internal static void ResetProviders()
-        {
-            providers.Clear();
-            providers.AddFirst(new DateTimeZoneResourceProvider("NodaTime.TimeZones.Tzdb"));
-        }
-
-        /// <summary>
-        /// Gets or sets the system default time zone which can only be changed by the system.
+        /// Gets the system default time zone which can only be changed by the system.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The time zones defined in the operating system may be different than the ones defines in
+        /// The time zones defined in the operating system are different than the ones defines in
         /// this library so a mapping will occur. If an exact mapping can be made then that will be
-        /// used otherwise either the closest possible <see cref="IDateTimeZone"/> will be used or
-        /// one will be built.
+        /// used otherwise UTC will be used.
         /// </para>
         /// </remarks>
         /// <value>The system default <see cref="IDateTimeZone"/>. this will never be <c>null</c>.</value>
         public static IDateTimeZone SystemDefault
         {
-            // TODO: catch system time zone change message and reset this or always get the system one and map it?
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get
+            {
+                var systemName = TimeZone.CurrentTimeZone.StandardName;
+                string timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName);
+                if (timeZoneId == null)
+                {
+                    timeZoneId = UtcId;
+                }
+                var timeZone = ForId(timeZoneId);
+                if (timeZone == null)
+                {
+                    timeZone = Utc;
+                }
+                return timeZone;
+            }
+        }
+
+        /// <summary>
+        /// Gets the UTC (Coordinated Univeral Time) time zone.
+        /// </summary>
+        /// <value>The UTC <see cref="IDateTimezone"/>.</value>
+        public static IDateTimeZone Utc
+        {
+            get { return utc; }
         }
 
         /// <summary>
@@ -103,27 +112,8 @@ namespace NodaTime.TimeZones
         /// <value>The current <see cref="IDateTimeZone"/>. This will never be <c>null</c>.</value>
         public static IDateTimeZone Current
         {
-            get { return current; }
-            set
-            {
-                if (value == null)
-                {
-                    current = SystemDefault;
-                }
-                else
-                {
-                    current = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the UTC (Coordinated Univeral Time) time zone.
-        /// </summary>
-        /// <value>The UTC <see cref="IDateTimezone"/>.</value>
-        public static IDateTimeZone Utc
-        {
-            get { return utc; }
+            get { return implementation.Current; }
+            set { implementation.Current = value; }
         }
 
         /// <summary>
@@ -138,11 +128,7 @@ namespace NodaTime.TimeZones
         /// <param name="provider">The <see cref="IDateTimeZoneProvider"/> to add.</param>
         public static void AddProvider(IDateTimeZoneProvider provider)
         {
-            if (!providers.Contains(provider)) {
-                providers.AddFirst(provider);
-                timeZoneMap.Clear();
-                idList.Clear();
-            }
+            implementation.AddProvider(provider);
         }
 
         /// <summary>
@@ -155,14 +141,7 @@ namespace NodaTime.TimeZones
         /// <returns><c>true</c> if the provider was removed.</returns>
         public static bool RemoveProvider(IDateTimeZoneProvider provider)
         {
-            if (providers.Contains(provider))
-            {
-                providers.Remove(provider);
-                timeZoneMap.Clear();
-                idList.Clear();
-                return true;
-            }
-            return false;
+            return implementation.RemoveProvider(provider);
         }
 
         /// <summary>
@@ -172,21 +151,7 @@ namespace NodaTime.TimeZones
         /// <value>The <see cref="IEnumerable"/> of string ids.</value>
         public static IEnumerable<string> Ids
         {
-            get
-            {
-                if (idList.Count == 0)
-                {
-                    idList.Add(UtcId, null);
-                    foreach (var provider in providers)
-                    {
-                        foreach (var id in provider.Ids)
-                        {
-                            idList.Add(id, null);
-                        }
-                    }
-                }
-                return idList.Keys;
-            }
+            get { return implementation.Ids; }
         }
 
         /// <summary>
@@ -196,23 +161,140 @@ namespace NodaTime.TimeZones
         /// <returns>The <see cref="IDateTimeZone"/> with the given id or <c>null</c> if there isn't one defined.</returns>
         public static IDateTimeZone ForId(string id)
         {
-            IDateTimeZone result = Utc;
-            if (id != UtcId)
+            return implementation.ForId(id);
+        }
+
+        /// <summary>
+        /// Provides a standard object that implements the functionality of the static class <see
+        /// cref="DateTimeZones"/>. This makes testing simpler because all of the logic is here only
+        /// this class needs to be tested and it can use the standard testing methods.
+        /// </summary>
+        internal class Impl
+        {
+            private IDateTimeZone current = null;
+            private readonly LinkedList<IDateTimeZoneProvider> providers = new LinkedList<IDateTimeZoneProvider>();
+            private readonly SortedDictionary<string, string> idList = new SortedDictionary<string, string>();
+            private readonly IDictionary<string, IDateTimeZone> timeZoneMap = new Dictionary<string, IDateTimeZone>();
+
+            /// <summary>
+            /// Adds the standard provider to the list of providers.
+            /// </summary>
+            internal void AddStandardProvider()
             {
-                if (!timeZoneMap.TryGetValue(id, out result))
+                AddProvider(new DateTimeZoneResourceProvider("NodaTime.TimeZones.Tzdb"));
+            }
+
+            /// <summary>
+            /// Gets or sets the current time zone.
+            /// </summary>
+            /// <remarks>
+            /// This is the time zone that is used whenever a time zone is not given to a method. It can
+            /// be set to any valid time zone. Setting it to <c>null</c> causes the <see
+            /// cref="SystemDefault"/> time zone to be used.
+            /// </remarks>
+            /// <value>The current <see cref="IDateTimeZone"/>. This will never be <c>null</c>.</value>
+            internal IDateTimeZone Current
+            {
+                get
                 {
-                    foreach (var provider in providers)
+                    if (this.current == null)
                     {
-                        result = provider.ForId(id);
-                        if (result != null)
-                        {
-                            break;
-                        }
+                        return SystemDefault;
                     }
-                    timeZoneMap.Add(id, result);
+                    return this.current;
+                }
+                set { this.current = value; }
+            }
+
+            /// <summary>
+            /// Adds the given time zone provider to the front of the provider list.
+            /// </summary>
+            /// <remarks>
+            /// Because this adds the new provider to the from of the list, it will be checked first for
+            /// time zone definitions and therefore can override the default system definitions. This
+            /// allows for adding new or replacing existing time zones without updating the system. If
+            /// the provider is already on the list nothing changes.
+            /// </remarks>
+            /// <param name="provider">The <see cref="IDateTimeZoneProvider"/> to add.</param>
+            internal void AddProvider(IDateTimeZoneProvider provider)
+            {
+                if (!this.providers.Contains(provider))
+                {
+                    this.providers.AddFirst(provider);
+                    this.timeZoneMap.Clear();
+                    this.idList.Clear();
                 }
             }
-            return result;
+
+            /// <summary>
+            /// Removes the given time zone provider from the provider list.
+            /// </summary>
+            /// <remarks>
+            /// If the provider is not on the list nothing changes.
+            /// </remarks>
+            /// <param name="provider">The <see cref="IDateTimeZoneProvider"/> to remove.</param>
+            /// <returns><c>true</c> if the provider was removed.</returns>
+            internal bool RemoveProvider(IDateTimeZoneProvider provider)
+            {
+                if (this.providers.Contains(provider))
+                {
+                    this.providers.Remove(provider);
+                    this.timeZoneMap.Clear();
+                    this.idList.Clear();
+                    return true;
+                }
+                return false;
+            }
+
+            /// <summary>
+            /// Gets the complete list of valid time zone ids provided by all of the registered
+            /// providers. This list will be sorted in lexigraphical order by the id name.
+            /// </summary>
+            /// <value>The <see cref="IEnumerable"/> of string ids.</value>
+            internal IEnumerable<string> Ids
+            {
+                get
+                {
+                    if (this.idList.Count == 0)
+                    {
+                        this.idList.Add(UtcId, null);
+                        foreach (var provider in this.providers)
+                        {
+                            foreach (var id in provider.Ids)
+                            {
+                                this.idList.Add(id, null);
+                            }
+                        }
+                    }
+                    return this.idList.Keys;
+                }
+            }
+
+            /// <summary>
+            /// Returns the time zone with the given id.
+            /// </summary>
+            /// <param name="id">The time zone id to find.</param>
+            /// <returns>The <see cref="IDateTimeZone"/> with the given id or <c>null</c> if there isn't one defined.</returns>
+            internal IDateTimeZone ForId(string id)
+            {
+                IDateTimeZone result = Utc;
+                if (id != UtcId)
+                {
+                    if (!this.timeZoneMap.TryGetValue(id, out result))
+                    {
+                        foreach (var provider in this.providers)
+                        {
+                            result = provider.ForId(id);
+                            if (result != null)
+                            {
+                                break;
+                            }
+                        }
+                        this.timeZoneMap.Add(id, result);
+                    }
+                }
+                return result;
+            }
         }
     }
 }

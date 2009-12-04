@@ -15,29 +15,23 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
 using CommandLine;
 using CommandLine.Text;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.ZoneInfoCompiler.winmap
 {
     /// <summary>
-    /// Defines the command line options that are valid.
+    /// Defines the command line options for the CommandLine parsing package.
     /// </summary>
-    internal class TzdbCompilerOptions
+    internal class WindowsMapperCompilerOptions
     {
         private static readonly HeadingInfo headingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
 
         #region Standard Option Attribute
         [Option("s", "source",
                 Required = true,
-                HelpText = "Source directory containing the input files.")]
-        public string SourceDirectoryName = string.Empty;
-
-        [Option("o", "output",
-                Required = true,
-                HelpText = "The name of the output file.")]
-        public string OutputFileName = string.Empty;
+                HelpText = "Source XML file defining the mappings.")]
+        public string SourceFileName = string.Empty;
 
         [Option("t", "type",
                 HelpText = "The type of the output file { ResX, Resource }.")]
@@ -46,9 +40,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         #endregion
 
         #region Specialized Option Attribute
-        [ValueList(typeof(List<string>))]
-        public IList<string> InputFiles = null;
-
         [HelpOption(
                 HelpText = "Display this help.")]
         public string GetUsage()
@@ -67,8 +58,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             help.AddPreOptionsLine("See the License for the specific language governing permissions and");
             help.AddPreOptionsLine("limitations under the License.");
             help.AddPreOptionsLine(" ");
-            help.AddPreOptionsLine("Usage: " + AssemblyInfo.Product + " tzdb -s source -o foo.resx");
-            help.AddPreOptionsLine("       " + AssemblyInfo.Product + " tzdb -s source -o foo.resource --type Resource");
+            help.AddPreOptionsLine("Usage: " + AssemblyInfo.Product + " winmap -s data.xml type resx");
+            help.AddPreOptionsLine("       " + AssemblyInfo.Product + " winmap -s data.xml type resources");
 
             help.AddOptions(this);
 
