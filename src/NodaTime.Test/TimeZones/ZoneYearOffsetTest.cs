@@ -78,9 +78,9 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_Milliseconds()
         {
-            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, new Offset(1000L));
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Create(0, 0, 0, 1));
             Instant actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
-            Instant expected = new Instant((1L - 1) * NodaConstants.TicksPerDay + 1000L);
+            Instant expected = new Instant((1L - 1) * NodaConstants.TicksPerDay + NodaConstants.TicksPerMillisecond);
             Assert.AreEqual(expected, actual);
         }
 

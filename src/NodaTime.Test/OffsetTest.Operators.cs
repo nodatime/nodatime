@@ -28,21 +28,21 @@ namespace NodaTime.Test
         [Test]
         public void IEquatableEquals_ToSelf_IsTrue()
         {
-            Assert.True(Offset.One.Equals(Offset.One), "1 == 1 (same object)");
+            Assert.True(threeHours.Equals(threeHours), "threeHours == threeHours (same object)");
         }
 
         [Test]
         public void IEquatableEquals_WithEqualTicks_IsTrue()
         {
-            Assert.True(Offset.One.Equals(onePrime), "1 == 1 (different objects)");
+            Assert.True(threeHours.Equals(threeHours), "threeHours == threeHours (different objects)");
         }
 
         [Test]
         public void IEquatableEquals_WithDifferentTicks_IsFalse()
         {
-            Assert.False(Offset.One.Equals(negativeOne), "1 == -1");
-            Assert.False(Offset.One.Equals(threeMillion), "1 == 3,000,000");
-            Assert.False(Offset.One.Equals(negativeFiftyMillion), "1 == -50,000,000");
+            Assert.False(threeHours.Equals(negativeThreeHours), "threeHours == -threeHours");
+            Assert.False(threeHours.Equals(Offset.Zero), "threeHours == 0");
+            Assert.False(Offset.Zero.Equals(negativeThreeHours), "0 == -threeHours");
             Assert.False(Offset.MinValue.Equals(Offset.MaxValue), "MinValue == MaxValue");
         }
 
@@ -53,41 +53,40 @@ namespace NodaTime.Test
         [Test]
         public void ObjectEquals_ToNull_IsFalse()
         {
-            object oOne = Offset.One;
+            object obj = threeHours;
 
-            Assert.False(oOne.Equals(null), "1 == null");
+            Assert.False(obj.Equals(null), "threeHours == null");
         }
 
         [Test]
         public void ObjectEquals_ToSelf_IsTrue()
         {
-            object oOne = Offset.One;
+            object obj = threeHours;
 
-            Assert.True(oOne.Equals(oOne), "1 == 1 (same object)");
+            Assert.True(obj.Equals(obj), "threeHours == threeHours (same object)");
         }
 
         [Test]
         public void ObjectEquals_WithEqualTicks_IsTrue()
         {
-            object oOne = Offset.One;
-            object oOnePrime = onePrime;
+            object obj = threeHours;
+            object objPrime = threeHoursPrime;
 
-            Assert.True(oOne.Equals(oOnePrime), "1 == 1 (different objects)");
+            Assert.True(obj.Equals(objPrime), "threeHours == threeHours (different objects)");
         }
 
         [Test]
         public void ObjectEquals_WithDifferentTicks_IsFalse()
         {
-            object oOne = Offset.One;
-            object oNegativeOne = negativeOne;
-            object oThreeMillion = threeMillion;
-            object oNegativeFiftyMillion = negativeFiftyMillion;
+            object oZero = Offset.Zero;
+            object oThreehours = threeHours;
+            object oNegativeThreeHours = negativeThreeHours;
             object oMinimum = Offset.MinValue;
             object oMaximum = Offset.MaxValue;
 
-            Assert.False(oOne.Equals(oNegativeOne), "1 == -1");
-            Assert.False(oOne.Equals(oThreeMillion), "1 == 3,000,000");
-            Assert.False(oOne.Equals(oNegativeFiftyMillion), "1 == -50,000,000");
+            Assert.False(oZero.Equals(oThreehours), "0 == threeHours");
+            Assert.False(oZero.Equals(oNegativeThreeHours), "0 == -threeHours");
+            Assert.False(oThreehours.Equals(oNegativeThreeHours), "threeHours == -threeHours");
             Assert.False(oMinimum.Equals(oMaximum), "MinValue == MaxValue");
         }
 
@@ -98,8 +97,8 @@ namespace NodaTime.Test
         [Test]
         public void GetHashCode_Twice_IsEqual()
         {
-            Offset test1 = new Offset(123L);
-            Offset test2 = new Offset(123L);
+            Offset test1 = new Offset(NodaConstants.TicksPerHour);
+            Offset test2 = new Offset(NodaConstants.TicksPerHour);
             Assert.AreEqual(test1.GetHashCode(), test1.GetHashCode());
             Assert.AreEqual(test2.GetHashCode(), test2.GetHashCode());
         }
@@ -107,21 +106,28 @@ namespace NodaTime.Test
         [Test]
         public void GetHashCode_SameTicks_IsEqual()
         {
-            Offset test1 = new Offset(123L);
-            Offset test2 = new Offset(123L);
+            Offset test1 = new Offset(NodaConstants.TicksPerHour);
+            Offset test2 = new Offset(NodaConstants.TicksPerHour);
             Assert.AreEqual(test1.GetHashCode(), test2.GetHashCode());
         }
 
-        [Test]
-        public void GetHashCode_DifferentTicks_IsDifferent()
-        {
-            Offset test1 = new Offset(123L);
-            Offset test2 = new Offset(123L);
-            Offset test3 = new Offset(321L);
-
-            Assert.AreNotEqual(test1.GetHashCode(), test3.GetHashCode());
-            Assert.AreNotEqual(test2.GetHashCode(), test3.GetHashCode());
-        }
+        //// This is not a valid test for two reasons:
+        ////
+        ////   1. return 1; is a valid GetHashCode() method i.e it always returns the same value.
+        ////   2. There are more long values than int values (in fact there are 2^32 longs values
+        ////      for each int value so that means that the hash code function MUST be mapping 
+        ////      multiple values to each int value. 
+        //// 
+        //// [Test]
+        //// public void GetHashCode_DifferentTicks_IsDifferent()
+        //// {
+        ////     Offset test1 = new Offset(123L);
+        ////     Offset test2 = new Offset(123L);
+        ////     Offset test3 = new Offset(321L);
+        //// 
+        ////     Assert.AreNotEqual(test1.GetHashCode(), test3.GetHashCode());
+        ////     Assert.AreNotEqual(test2.GetHashCode(), test3.GetHashCode());
+        //// }
 
         #endregion
 
@@ -130,30 +136,30 @@ namespace NodaTime.Test
         [Test]
         public void CompareTo_Self_IsEqual()
         {
-            Assert.AreEqual(0, Offset.One.CompareTo(Offset.One), "1 == 1 (same object)");
+            Assert.AreEqual(0, threeHours.CompareTo(threeHours), "threeHours == threeHours (same object)");
         }
 
         [Test]
         public void CompareTo_WithEqualTicks_IsEqual()
         {
-            Assert.AreEqual(0, Offset.One.CompareTo(onePrime), "1 == 1 (different objects)");
+            Assert.AreEqual(0, threeHours.CompareTo(threeHoursPrime), "threeHours == threeHours (different objects)");
         }
 
         [Test]
         public void CompareTo_WithMoreTicks_IsGreater()
         {
-            Assert.Greater(Offset.One.CompareTo(negativeFiftyMillion), 0, "1 > -50,000,000");
-            Assert.Greater(threeMillion.CompareTo(Offset.One), 0, "3,000,000 > 1");
-            Assert.Greater(negativeOne.CompareTo(negativeFiftyMillion), 0, "-1 > -50,000,000");
+            Assert.Greater(Offset.Zero.CompareTo(negativeThreeHours), 0, "0 > -threeHours");
+            Assert.Greater(threeHours.CompareTo(Offset.Zero), 0, "threeHours > 0");
+            Assert.Greater(negativeThreeHours.CompareTo(negativeTwelveHours), 0, "-threeHours > -twelveHours");
             Assert.Greater(Offset.MaxValue.CompareTo(Offset.MinValue), 0, "MaxValue > MinValue");
         }
 
         [Test]
         public void CompareTo_WithLessTicks_IsLess()
         {
-            Assert.Less(negativeFiftyMillion.CompareTo(Offset.One), 0, "-50,000,000 < 1");
-            Assert.Less(Offset.One.CompareTo(threeMillion), 0, "1 < 3,000,000");
-            Assert.Less(negativeFiftyMillion.CompareTo(negativeOne), 0, "-50,000,000 > -1");
+            Assert.Less(negativeThreeHours.CompareTo(Offset.Zero), 0, "-threeHours < 0");
+            Assert.Less(Offset.Zero.CompareTo(threeHours), 0, "0 < threeHours");
+            Assert.Less(negativeTwelveHours.CompareTo(negativeThreeHours), 0, "-twelveHours > -threeHours");
             Assert.Less(Offset.MinValue.CompareTo(Offset.MaxValue), 0, "MinValue < MaxValue");
         }
 
@@ -167,22 +173,21 @@ namespace NodaTime.Test
             // Warning CS1718: Comparison made to same variable; did you mean to compare something else?
             // This is intentional for testing
 #pragma warning disable 1718
-            Assert.True(Offset.One == Offset.One, "1 == 1 (same object)");
+            Assert.True(threeHours == threeHours, "threeHours == threeHours (same object)");
 #pragma warning restore 1718
         }
 
         [Test]
         public void OperatorEquals_WithEqualTicks_IsTrue()
         {
-            Assert.True(Offset.One == onePrime, "1 == 1 (different objects)");
+            Assert.True(threeHours == threeHoursPrime, "threeHours == threeHours (different objects)");
         }
 
         [Test]
         public void OperatorEquals_WithDifferentTicks_IsFalse()
         {
-            Assert.False(Offset.One == negativeOne, "1 == -1");
-            Assert.False(Offset.One == threeMillion, "1 == 3,000,000");
-            Assert.False(Offset.One == negativeFiftyMillion, "1 == -50,000,000");
+            Assert.False(Offset.Zero == negativeThreeHours, "0 == -threeHours");
+            Assert.False(Offset.Zero == threeHours, "0 == threeHours");
             Assert.False(Offset.MinValue == Offset.MaxValue, "MinValue == MaxValue");
         }
 
@@ -196,22 +201,21 @@ namespace NodaTime.Test
             // Warning CS1718: Comparison made to same variable; did you mean to compare something else?
             // This is intentional for testing
 #pragma warning disable 1718
-            Assert.False(Offset.One != Offset.One, "1 != 1 (same object)");
+            Assert.False(threeHours != threeHours, "threeHours != threeHours (same object)");
 #pragma warning restore 1718
         }
 
         [Test]
         public void OperatorNotEquals_WithEqualTicks_IsFalse()
         {
-            Assert.False(Offset.One != onePrime, "1 != 1 (different objects)");
+            Assert.False(threeHours != threeHoursPrime, "threeHours != threeHours (different objects)");
         }
 
         [Test]
         public void OperatorNotEquals_WithDifferentTicks_IsTrue()
         {
-            Assert.True(Offset.One != negativeOne, "1 != -1");
-            Assert.True(Offset.One != threeMillion, "1 != 3,000,000");
-            Assert.True(Offset.One != negativeFiftyMillion, "1 != -50,000,000");
+            Assert.True(Offset.Zero != negativeThreeHours, "0 != -threeHours");
+            Assert.True(Offset.Zero != threeHours, "0 != threeHours");
             Assert.True(Offset.MinValue != Offset.MaxValue, "MinValue != MaxValue");
         }
 
@@ -225,29 +229,29 @@ namespace NodaTime.Test
             // Warning CS1718: Comparison made to same variable; did you mean to compare something else?
             // This is intentional for testing
 #pragma warning disable 1718
-            Assert.False(Offset.One < Offset.One, "1 < 1 (same object)");
+            Assert.False(threeHours < threeHours, "1 < 1 (same object)");
 #pragma warning restore 1718
         }
 
         [Test]
         public void OperatorLessThan_EqualTicks_IsFalse()
         {
-            Assert.False(Offset.One < onePrime, "1 < 1 (different objects)");
+            Assert.False(threeHours < threeHoursPrime, "1 < 1 (different objects)");
         }
 
         [Test]
         public void OperatorLessThan_MoreTicks_IsTrue()
         {
-            Assert.True(Offset.One < threeMillion, "1 < 3,000,000");
-            Assert.True(negativeFiftyMillion < negativeOne, "-50,000,000 < -1");
+            Assert.True(Offset.Zero < threeHours, "1 < 3,000,000");
+            Assert.True(negativeTwelveHours < negativeThreeHours, "-50,000,000 < -1");
             Assert.True(Offset.MinValue < Offset.MaxValue, "MinValue < MaxValue");
         }
 
         [Test]
         public void OperatorLessThan_LessTicks_IsFalse()
         {
-            Assert.False(threeMillion < Offset.One, "3,000,000 < 1");
-            Assert.False(negativeOne < negativeFiftyMillion, "-1 < -50,000,000");
+            Assert.False(threeHours < Offset.Zero, "3,000,000 < 1");
+            Assert.False(negativeThreeHours < negativeTwelveHours, "-1 < -50,000,000");
             Assert.False(Offset.MaxValue < Offset.MinValue, "MaxValue < MinValue");
         }
 
@@ -261,29 +265,29 @@ namespace NodaTime.Test
             // Warning CS1718: Comparison made to same variable; did you mean to compare something else?
             // This is intentional for testing
 #pragma warning disable 1718
-            Assert.True(Offset.One <= Offset.One, "1 <= 1 (same object)");
+            Assert.True(threeHours <= threeHours, "1 <= 1 (same object)");
 #pragma warning restore 1718
         }
 
         [Test]
         public void OperatorLessThanOrEqual_EqualTicks_IsTrue()
         {
-            Assert.True(Offset.One <= onePrime, "1 <= 1 (different objects)");
+            Assert.True(threeHours <= threeHoursPrime, "1 <= 1 (different objects)");
         }
 
         [Test]
         public void OperatorLessThanOrEqual_MoreTicks_IsTrue()
         {
-            Assert.True(Offset.One <= threeMillion, "1 <= 3,000,000");
-            Assert.True(negativeFiftyMillion <= negativeOne, "-50,000,000 <= -1");
+            Assert.True(Offset.Zero <= threeHours, "1 <= 3,000,000");
+            Assert.True(negativeTwelveHours <= negativeThreeHours, "-50,000,000 <= -1");
             Assert.True(Offset.MinValue <= Offset.MaxValue, "MinValue <= MaxValue");
         }
 
         [Test]
         public void OperatorLessThanOrEqual_LessTicks_IsFalse()
         {
-            Assert.False(threeMillion <= Offset.One, "3,000,000 <= 1");
-            Assert.False(negativeOne <= negativeFiftyMillion, "-1 <= -50,000,000");
+            Assert.False(threeHours <= Offset.Zero, "3,000,000 <= 1");
+            Assert.False(negativeThreeHours <= negativeTwelveHours, "-1 <= -50,000,000");
             Assert.False(Offset.MaxValue <= Offset.MinValue, "MaxValue <= MinValue");
         }
 
@@ -297,29 +301,29 @@ namespace NodaTime.Test
             // Warning CS1718: Comparison made to same variable; did you mean to compare something else?
             // This is intentional for testing
 #pragma warning disable 1718
-            Assert.False(Offset.One > Offset.One, "1 > 1 (same object)");
+            Assert.False(threeHours > threeHours, "1 > 1 (same object)");
 #pragma warning restore 1718
         }
 
         [Test]
         public void OperatorGreaterThan_EqualTicks_IsFalse()
         {
-            Assert.False(Offset.One > onePrime, "1 > 1 (different objects)");
+            Assert.False(threeHours > threeHoursPrime, "1 > 1 (different objects)");
         }
 
         [Test]
         public void OperatorGreaterThan_MoreTicks_IsFalse()
         {
-            Assert.False(Offset.One > threeMillion, "1 > 3,000,000");
-            Assert.False(negativeFiftyMillion > negativeOne, "-50,000,000 > -1");
+            Assert.False(Offset.Zero > threeHours, "1 > 3,000,000");
+            Assert.False(negativeTwelveHours > negativeThreeHours, "-50,000,000 > -1");
             Assert.False(Offset.MinValue > Offset.MaxValue, "MinValue > MaxValue");
         }
 
         [Test]
         public void OperatorGreaterThan_LessTicks_IsTrue()
         {
-            Assert.True(threeMillion > Offset.One, "3,000,000 > 1");
-            Assert.True(negativeOne > negativeFiftyMillion, "-1 > -50,000,000");
+            Assert.True(threeHours > Offset.Zero, "3,000,000 > 1");
+            Assert.True(negativeThreeHours > negativeTwelveHours, "-1 > -50,000,000");
             Assert.True(Offset.MaxValue > Offset.MinValue, "MaxValue > MinValue");
         }
 
@@ -333,29 +337,29 @@ namespace NodaTime.Test
             // Warning CS1718: Comparison made to same variable; did you mean to compare something else?
             // This is intentional for testing
 #pragma warning disable 1718
-            Assert.True(Offset.One >= Offset.One, "1 >= 1 (same object)");
+            Assert.True(threeHours >= threeHours, "1 >= 1 (same object)");
 #pragma warning restore 1718
         }
 
         [Test]
         public void OperatorGreaterThanOrEqual_EqualTicks_IsTrue()
         {
-            Assert.True(Offset.One >= onePrime, "1 >= 1 (different objects)");
+            Assert.True(threeHours >= threeHoursPrime, "1 >= 1 (different objects)");
         }
 
         [Test]
         public void OperatorGreaterThanOrEqual_MoreTicks_IsFalse()
         {
-            Assert.False(Offset.One >= threeMillion, "1 >= 3,000,000");
-            Assert.False(negativeFiftyMillion >= negativeOne, "-50,000,000 >= -1");
+            Assert.False(Offset.Zero >= threeHours, "1 >= 3,000,000");
+            Assert.False(negativeTwelveHours >= negativeThreeHours, "-50,000,000 >= -1");
             Assert.False(Offset.MinValue >= Offset.MaxValue, "MinValue >= MaxValue");
         }
 
         [Test]
         public void OperatorGreaterThanOrEqual_LessTicks_IsTrue()
         {
-            Assert.True(threeMillion >= Offset.One, "3,000,000 >= 1");
-            Assert.True(negativeOne >= negativeFiftyMillion, "-1 >= -50,000,000");
+            Assert.True(threeHours >= Offset.Zero, "3,000,000 >= 1");
+            Assert.True(negativeThreeHours >= negativeTwelveHours, "-1 >= -50,000,000");
             Assert.True(Offset.MaxValue >= Offset.MinValue, "MaxValue >= MinValue");
         }
 
@@ -367,16 +371,16 @@ namespace NodaTime.Test
         public void OperatorPlus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(0L, (Offset.Zero + Offset.Zero).Ticks, "0 + 0");
-            Assert.AreEqual(1L, (Offset.One + Offset.Zero).Ticks, "1 + 0");
-            Assert.AreEqual(1L, (Offset.Zero + Offset.One).Ticks, "0 + 1");
+            Assert.AreEqual(3 * NodaConstants.TicksPerHour, (threeHours + Offset.Zero).Ticks, "1 + 0");
+            Assert.AreEqual(3 * NodaConstants.TicksPerHour, (Offset.Zero + threeHours).Ticks, "0 + 1");
         }
 
         [Test]
         public void OperatorPlus_NonZero()
         {
-            Assert.AreEqual(3000001L, (threeMillion + Offset.One).Ticks, "3,000,000 + 1");
-            Assert.AreEqual(0L, (Offset.One + negativeOne).Ticks, "1 + (-1)");
-            Assert.AreEqual(-49999999L, (negativeFiftyMillion + Offset.One).Ticks, "-50,000,000 + 1");
+            Assert.AreEqual(6 * NodaConstants.TicksPerHour, (threeHours + threeHours).Ticks, "3,000,000 + 1");
+            Assert.AreEqual(0L, (threeHours + negativeThreeHours).Ticks, "1 + (-1)");
+            Assert.AreEqual(-9 * NodaConstants.TicksPerHour, (negativeTwelveHours + threeHours).Ticks, "-TwelveHours + threeHours");
         }
 
         #endregion
@@ -387,16 +391,16 @@ namespace NodaTime.Test
         public void OperatorMinus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(0L, (Offset.Zero - Offset.Zero).Ticks, "0 - 0");
-            Assert.AreEqual(1L, (Offset.One - Offset.Zero).Ticks, "1 - 0");
-            Assert.AreEqual(-1L, (Offset.Zero - Offset.One).Ticks, "0 - 1");
+            Assert.AreEqual(3 * NodaConstants.TicksPerHour, (threeHours - Offset.Zero).Ticks, "1 - 0");
+            Assert.AreEqual(-3 * NodaConstants.TicksPerHour, (Offset.Zero - threeHours).Ticks, "0 - 1");
         }
 
         [Test]
         public void OperatorMinus_NonZero()
         {
-            Assert.AreEqual(2999999L, (threeMillion - Offset.One).Ticks, "3,000,000 - 1");
-            Assert.AreEqual(2L, (Offset.One - negativeOne).Ticks, "1 - (-1)");
-            Assert.AreEqual(-50000001L, (negativeFiftyMillion - Offset.One).Ticks, "-50,000,000 - 1");
+            Assert.AreEqual(0, (threeHours - threeHours).Ticks, "3,000,000 - 1");
+            Assert.AreEqual(6 * NodaConstants.TicksPerHour, (threeHours - negativeThreeHours).Ticks, "1 - (-1)");
+            Assert.AreEqual(-15 * NodaConstants.TicksPerHour, (negativeTwelveHours - threeHours).Ticks, "-TwelveHours - threeHours");
         }
 
         #endregion

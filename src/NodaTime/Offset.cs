@@ -35,6 +35,12 @@ namespace NodaTime
     /// conversion will typically cause a loss of precision.
     /// </para>
     /// <para>
+    /// Internally, offsets are stored as an <see cref="Int32"/> number of milliseconds instead of
+    /// as ticks. This is because as a description of the offset of a time zone from UTC, there is
+    /// no offset of less than one second. Using milliseconds gives more than enough resolution and
+    /// allows us to save 4 bytes per Offset.
+    /// </para>
+    /// <para>
     /// This type is immutable and thread-safe.
     /// </para>
     /// </remarks>
@@ -42,16 +48,20 @@ namespace NodaTime
         : IEquatable<Offset>, IComparable<Offset>
     {
         public static readonly Offset Zero = new Offset(0L);
-        public static readonly Offset One = new Offset(1L);
-        public static readonly Offset MinValue = new Offset(-NodaConstants.TicksPerDay + 1);
-        public static readonly Offset MaxValue = new Offset(NodaConstants.TicksPerDay - 1);
+        public static readonly Offset MinValue = new Offset(-NodaConstants.MillisecondsPerDay + 1);
+        public static readonly Offset MaxValue = new Offset(NodaConstants.MillisecondsPerDay - 1);
 
-        private readonly long ticks;
+        private readonly int milliseconds;
 
         /// <summary>
-        /// The number of ticks in the duration.
+        /// Gets the number of ticks in the offset.
         /// </summary>
-        public long Ticks { get { return ticks; } }
+        public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
+
+        /// <summary>
+        /// Gets the number of milliseconds in the offset.
+        /// </summary>
+        public int Milliseconds { get { return milliseconds; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Offset"/> struct.
@@ -59,12 +69,27 @@ namespace NodaTime
         /// <remarks>
         /// Offsets are constrained to the range (-24 hours, 24 hours). If the ticks value given is
         /// outside this range then the value is forced into the range by considering that time
-        /// wraps as it goes around the world multiple times. 
+        /// wraps as it goes around the world multiple times. Also the resolution of an offset is
+        /// milliseconds so any values below that resolution are ignored.
         /// </remarks>
         /// <param name="ticks">The number of ticks.</param>
         public Offset(long ticks)
+            : this((int)(ticks / NodaConstants.TicksPerMillisecond))
         {
-            this.ticks = ticks % NodaConstants.TicksPerDay;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Offset"/> struct.
+        /// </summary>
+        /// <remarks>
+        /// We keep this constructor private so there is no confusion as to whether we are
+        /// initializing from ticks or milliseconds. As far as the outside world is concerned, this
+        /// offset uses ticks.
+        /// </remarks>
+        /// <param name="milliseconds">The milliseconds.</param>
+        private Offset(int milliseconds)
+        {
+            this.milliseconds = milliseconds % NodaConstants.MillisecondsPerDay;
         }
 
         /// <summary>
@@ -131,12 +156,12 @@ namespace NodaTime
         /// </remarks>
         public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
         {
-            return new Offset(
-                (hours * NodaConstants.TicksPerHour) +
-                (minutes * NodaConstants.TicksPerMinute) +
-                (seconds * NodaConstants.TicksPerSecond) +
-                (milliseconds * NodaConstants.TicksPerMillisecond)
-                );
+            return new Offset((int)(
+                (hours * NodaConstants.MillisecondsPerHour) +
+                (minutes * NodaConstants.MillisecondsPerMinute) +
+                (seconds * NodaConstants.MillisecondsPerSecond) +
+                milliseconds
+                ));
         }
 
         #region Operators
@@ -149,7 +174,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset"/> representing the sum of the given values.</returns>
         public static Offset operator +(Offset left, Offset right)
         {
-            return new Offset(left.Ticks + right.Ticks);
+            return new Offset(left.Milliseconds + right.Milliseconds);
         }
 
         /// <summary>
@@ -160,7 +185,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset"/> representing the difference of the given values.</returns>
         public static Offset operator -(Offset left, Offset right)
         {
-            return new Offset(left.Ticks - right.Ticks);
+            return new Offset(left.Milliseconds - right.Milliseconds);
         }
 
         /// <summary>
@@ -243,7 +268,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Offset other)
         {
-            return this.Ticks == other.Ticks;
+            return this.Milliseconds == other.Milliseconds;
         }
 
         #endregion
@@ -278,7 +303,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Offset other)
         {
-            return Ticks.CompareTo(other.Ticks);
+            return Milliseconds.CompareTo(other.Milliseconds);
         }
 
         #endregion
@@ -311,7 +336,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return Ticks.GetHashCode();
+            return Milliseconds.GetHashCode();
         }
 
         /// <summary>
@@ -322,12 +347,12 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            bool negative = Ticks < 0;
-            long ticks = negative ? -Ticks : Ticks;
-            long hours = ticks / NodaConstants.TicksPerHour;
-            long minutes = (ticks % NodaConstants.TicksPerHour) / NodaConstants.TicksPerMinute;
-            long seconds = (ticks % NodaConstants.TicksPerMinute) / NodaConstants.TicksPerSecond;
-            long milliseconds = (ticks % NodaConstants.TicksPerSecond) / NodaConstants.TicksPerMillisecond;
+            bool negative = Milliseconds < 0;
+            int milliseconds = negative ? -Milliseconds : Milliseconds;
+            int hours = milliseconds / NodaConstants.MillisecondsPerHour;
+            int minutes = (milliseconds % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
+            int seconds = (milliseconds % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
+            milliseconds = milliseconds % NodaConstants.MillisecondsPerSecond;
             string sign = negative ? "-" : "+";
             return string.Format(CultureInfo.InvariantCulture, "{0}{1:D2}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, milliseconds);
         }
