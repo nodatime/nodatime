@@ -37,11 +37,11 @@ namespace NodaTime.Test
                           5 * NodaConstants.TicksPerHour +
                           6 * NodaConstants.TicksPerMinute +
                           7 * NodaConstants.TicksPerSecond +
-                          8 * NodaConstants.TicksPerMillisecond + 9;
+                          8 * NodaConstants.TicksPerMillisecond;
             long expected = 5 * NodaConstants.TicksPerHour +
                             6 * NodaConstants.TicksPerMinute +
                             7 * NodaConstants.TicksPerSecond +
-                            8 * NodaConstants.TicksPerMillisecond + 9;
+                            8 * NodaConstants.TicksPerMillisecond;
             Offset test = new Offset(length);
             Assert.AreEqual(expected, test.Ticks);
         }

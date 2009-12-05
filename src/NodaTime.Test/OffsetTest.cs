@@ -22,9 +22,18 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class OffsetTest
     {
-        Offset onePrime = new Offset(1L);
-        Offset negativeOne = new Offset(-1L);
-        Offset threeMillion = new Offset(3000000L);
-        Offset negativeFiftyMillion = new Offset(-50000000L);
+        Offset threeHours = MakeOffset(3, 0, 0, 0);
+        Offset threeHoursPrime = MakeOffset(3, 0, 0, 0);
+        Offset negativeThreeHours = MakeOffset(-3, 0, 0, 0);
+        Offset negativeTwelveHours = MakeOffset(-12, 0, 0, 0);
+
+        private static Offset MakeOffset(int hours, int minutes, int seconds, int milliseconds)
+        {
+            long ticks = (hours * NodaConstants.TicksPerHour);
+            ticks += (minutes * NodaConstants.TicksPerMinute);
+            ticks += (seconds * NodaConstants.TicksPerSecond);
+            ticks += (milliseconds * NodaConstants.TicksPerMillisecond);
+            return new Offset(ticks);
+        }
     }
 }
