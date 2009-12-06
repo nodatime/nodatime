@@ -29,11 +29,11 @@ namespace NodaTime.Test
 
         private static Offset MakeOffset(int hours, int minutes, int seconds, int milliseconds)
         {
-            long ticks = (hours * NodaConstants.TicksPerHour);
-            ticks += (minutes * NodaConstants.TicksPerMinute);
-            ticks += (seconds * NodaConstants.TicksPerSecond);
-            ticks += (milliseconds * NodaConstants.TicksPerMillisecond);
-            return new Offset(ticks);
+            int millis = (hours * NodaConstants.MillisecondsPerHour);
+            millis += (minutes * NodaConstants.MillisecondsPerMinute);
+            millis += (seconds * NodaConstants.MillisecondsPerSecond);
+            millis += milliseconds;
+            return new Offset(millis);
         }
     }
 }

@@ -86,7 +86,7 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
         public static LocalInstant operator +(Instant instant, Offset offset)
         {
-            return new LocalInstant(instant.Ticks + offset.Ticks);
+            return new LocalInstant(instant.Ticks + offset.AsTicks());
         }
 
         /// <summary>

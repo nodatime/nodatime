@@ -78,13 +78,19 @@ namespace NodaTime.TimeZones
         /// <param name="writer">The writer.</param>
         public override void Write(DateTimeZoneWriter writer)
         {
-            writer.WriteTicks(this.standardOffset.Ticks);
+            writer.WriteOffset(this.standardOffset);
         }
 
+        /// <summary>
+        /// Reads the specified reader.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="id">The id.</param>
+        /// <returns></returns>
         public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
         {
-            long ticks = reader.ReadTicks();
-            return new FixedDateTimeZone(id, new Offset(ticks));
+            Offset offset = reader.ReadOffset();
+            return new FixedDateTimeZone(id, offset);
         }
     }
 }

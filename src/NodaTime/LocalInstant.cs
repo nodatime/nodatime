@@ -75,7 +75,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public static Instant operator -(LocalInstant instant, Offset offset)
         {
-            return new Instant(instant.Ticks - offset.Ticks);
+            return new Instant(instant.Ticks - offset.AsTicks());
         }
 
         /// <summary>

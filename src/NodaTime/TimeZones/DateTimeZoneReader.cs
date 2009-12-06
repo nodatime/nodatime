@@ -118,14 +118,6 @@ namespace NodaTime.TimeZones
                 {
                     return Int64.MaxValue;
                 }
-                else if (flag == DateTimeZoneWriter.FlagOffsetMinValue)
-                {
-                    return Offset.MinValue.Ticks;
-                }
-                else if (flag == DateTimeZoneWriter.FlagOffsetMaxValue)
-                {
-                    return Offset.MaxValue.Ticks;
-                }
 
                 if ((flag & 0xc0) == DateTimeZoneWriter.FlagHalfHour)
                 {
@@ -172,6 +164,16 @@ namespace NodaTime.TimeZones
                 results.Add(key, value);
             }
             return results;
+        }
+
+        /// <summary>
+        /// Writes the offset value to the stream
+        /// </summary>
+        /// <param name="value">The offset to write.</param>
+        public Offset ReadOffset()
+        {
+            int milliseconds = ReadNumber();
+            return new Offset(milliseconds);
         }
 
         /// <summary>

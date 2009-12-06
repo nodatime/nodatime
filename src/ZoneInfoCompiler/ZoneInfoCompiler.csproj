@@ -78,7 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="CompilerTools.cs" />
     <Compile Include="ConsoleLog.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="LogBase.cs" />

@@ -134,7 +134,7 @@ namespace NodaTime.TimeZones
             {
                 FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
             }
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.AsTicks());
 
             this.mode = mode;
             this.monthOfYear = monthOfYear;
@@ -184,7 +184,7 @@ namespace NodaTime.TimeZones
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.Fields.MonthOfYear.SetValue(instant, this.monthOfYear);
-            instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay.Ticks);
+            instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay.AsTicks());
             instant = SetDayOfMonth(calendar, instant);
             instant = SetDayOfWeek(calendar, instant);
 
@@ -230,7 +230,7 @@ namespace NodaTime.TimeZones
             writer.WriteInt8((byte)DayOfMonth);
             writer.WriteInt8((byte)DayOfWeek);
             writer.WriteBoolean(AdvanceDayOfWeek);
-            writer.WriteTicks(TickOfDay.Ticks);
+            writer.WriteOffset(TickOfDay);
         }
 
         public static ZoneYearOffset Read(DateTimeZoneReader reader)
@@ -240,8 +240,8 @@ namespace NodaTime.TimeZones
             int dayOfMonth = reader.ReadInt8();
             int dayOfWeek = reader.ReadInt8();
             bool advance = reader.ReadBoolean();
-            long ticks = reader.ReadTicks();
-            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, new Offset(ticks));
+            Offset ticksOfDay = reader.ReadOffset();
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace NodaTime.TimeZones
                 IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
                 LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, this.monthOfYear);
                 // Be lenient with millisOfDay.
-                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay.Ticks);
+                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay.AsTicks());
                 newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
                 if (this.dayOfWeek == 0)

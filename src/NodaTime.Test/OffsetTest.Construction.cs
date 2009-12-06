@@ -27,23 +27,23 @@ namespace NodaTime.Test
         public void Zero()
         {
             Offset test = Offset.Zero;
-            Assert.AreEqual(0, test.Ticks);
+            Assert.AreEqual(0, test.Milliseconds);
         }
 
         [Test]
         public void ConstructFrom_Int64()
         {
-            long length = 4 * NodaConstants.TicksPerDay +
-                          5 * NodaConstants.TicksPerHour +
-                          6 * NodaConstants.TicksPerMinute +
-                          7 * NodaConstants.TicksPerSecond +
-                          8 * NodaConstants.TicksPerMillisecond;
-            long expected = 5 * NodaConstants.TicksPerHour +
-                            6 * NodaConstants.TicksPerMinute +
-                            7 * NodaConstants.TicksPerSecond +
-                            8 * NodaConstants.TicksPerMillisecond;
+            int length = 4 * NodaConstants.MillisecondsPerDay +
+                          5 * NodaConstants.MillisecondsPerHour +
+                          6 * NodaConstants.MillisecondsPerMinute +
+                          7 * NodaConstants.MillisecondsPerSecond +
+                          8;
+            int expected = 5 * NodaConstants.MillisecondsPerHour +
+                           6 * NodaConstants.MillisecondsPerMinute +
+                           7 * NodaConstants.MillisecondsPerSecond +
+                           8;
             Offset test = new Offset(length);
-            Assert.AreEqual(expected, test.Ticks);
+            Assert.AreEqual(expected, test.Milliseconds);
         }
     }
 }

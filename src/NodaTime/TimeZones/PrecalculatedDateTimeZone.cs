@@ -342,8 +342,8 @@ namespace NodaTime.TimeZones
             for (int i = 0; i < size; i++)
             {
                 writer.WriteTicks(this.transitions[i].Ticks);
-                writer.WriteTicks(this.wallOffsets[i].Ticks);
-                writer.WriteTicks(this.standardOffsets[i].Ticks);
+                writer.WriteOffset(this.wallOffsets[i]);
+                writer.WriteOffset(this.standardOffsets[i]);
                 string name = this.nameKeys[i];
                 for (int p = 0; p < poolSize; p++)
                 {
@@ -378,16 +378,10 @@ namespace NodaTime.TimeZones
             String[] nameKeys = new String[size];
             for (int i = 0; i < size; i++)
             {
-                long ticks;
-                ticks = reader.ReadTicks();
+                long ticks = reader.ReadTicks();
                 transitions[i] = new Instant(ticks);
-
-                ticks = reader.ReadTicks();
-                wallOffsets[i] = new Offset(ticks);
-
-                ticks = reader.ReadTicks();
-                standardOffsets[i] = new Offset(ticks);
-
+                wallOffsets[i] = reader.ReadOffset();
+                standardOffsets[i] = reader.ReadOffset();
                 int index = reader.ReadNumber();
                 nameKeys[i] = pool[index];
             }

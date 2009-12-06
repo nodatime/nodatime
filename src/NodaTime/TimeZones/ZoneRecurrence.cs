@@ -93,16 +93,16 @@ namespace NodaTime.TimeZones
         internal void Write(DateTimeZoneWriter writer)
         {
             writer.WriteString(Name);
-            writer.WriteTicks(Savings.Ticks);
+            writer.WriteOffset(Savings);
             YearOffset.Write(writer);
         }
 
         public static ZoneRecurrence Read(DateTimeZoneReader reader)
         {
             string name = reader.ReadString();
-            long ticks = reader.ReadTicks();
+            Offset savings = reader.ReadOffset();
             ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
-            return new ZoneRecurrence(name, new Offset(ticks), yearOffset);
+            return new ZoneRecurrence(name, savings, yearOffset);
         }
 
         #region Object overrides
