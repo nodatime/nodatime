@@ -131,7 +131,7 @@ namespace NodaTime.TimeZones
 
         public void Write(DateTimeZoneWriter writer)
         {
-            writer.WriteTicks(StandardOffset.Ticks);
+            writer.WriteOffset(StandardOffset);
             StartRecurrence.Write(writer);
             EndRecurrence.Write(writer);
         }
@@ -140,10 +140,10 @@ namespace NodaTime.TimeZones
 
         public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
         {
-            long ticks = reader.ReadTicks();
+            Offset offset = reader.ReadOffset();
             ZoneRecurrence start = ZoneRecurrence.Read(reader);
             ZoneRecurrence end = ZoneRecurrence.Read(reader);
-            return new DSTZone(id, new Offset(ticks), start, end);
+            return new DSTZone(id, offset, start, end);
         }
     }
 }

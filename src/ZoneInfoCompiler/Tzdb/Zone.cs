@@ -112,7 +112,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth);
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.AsTicks());
             this.name = name;
             this.offset = offset;
             this.rules = rules;
@@ -134,7 +134,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(Name).Append(" ");
-            builder.Append(ParserHelper.FormatOffset(Offset)).Append(" ");
+            builder.Append(Offset.ToString()).Append(" ");
             builder.Append(ParserHelper.FormatOptional(Rules)).Append(" ");
             builder.Append(Format);
             if (Year > 0)
@@ -148,7 +148,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                         builder.Append(" ").Append(DayOfMonth.ToString("D", CultureInfo.InvariantCulture)).Append(" ");
                         if (TickOfDay > Offset.Zero)
                         {
-                            builder.Append(" ").Append(ParserHelper.FormatOffset(TickOfDay));
+                            builder.Append(" ").Append(TickOfDay.ToString());
                             if (ZoneCharacter != 0)
                             {
                                 builder.Append(ZoneCharacter);

@@ -97,8 +97,8 @@ namespace NodaTime.Test
         [Test]
         public void GetHashCode_Twice_IsEqual()
         {
-            Offset test1 = new Offset(NodaConstants.TicksPerHour);
-            Offset test2 = new Offset(NodaConstants.TicksPerHour);
+            Offset test1 = MakeOffset(1, 0, 0, 0);
+            Offset test2 = MakeOffset(1, 0, 0, 0);
             Assert.AreEqual(test1.GetHashCode(), test1.GetHashCode());
             Assert.AreEqual(test2.GetHashCode(), test2.GetHashCode());
         }
@@ -106,8 +106,8 @@ namespace NodaTime.Test
         [Test]
         public void GetHashCode_SameTicks_IsEqual()
         {
-            Offset test1 = new Offset(NodaConstants.TicksPerHour);
-            Offset test2 = new Offset(NodaConstants.TicksPerHour);
+            Offset test1 = MakeOffset(1, 0, 0, 0);
+            Offset test2 = MakeOffset(1, 0, 0, 0);
             Assert.AreEqual(test1.GetHashCode(), test2.GetHashCode());
         }
 
@@ -370,17 +370,17 @@ namespace NodaTime.Test
         [Test]
         public void OperatorPlus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (Offset.Zero + Offset.Zero).Ticks, "0 + 0");
-            Assert.AreEqual(3 * NodaConstants.TicksPerHour, (threeHours + Offset.Zero).Ticks, "1 + 0");
-            Assert.AreEqual(3 * NodaConstants.TicksPerHour, (Offset.Zero + threeHours).Ticks, "0 + 1");
+            Assert.AreEqual(0, (Offset.Zero + Offset.Zero).Milliseconds, "0 + 0");
+            Assert.AreEqual(MakeOffset(3, 0, 0, 0), threeHours + Offset.Zero, "1 + 0");
+            Assert.AreEqual(MakeOffset(3, 0, 0, 0), Offset.Zero + threeHours, "0 + 1");
         }
 
         [Test]
         public void OperatorPlus_NonZero()
         {
-            Assert.AreEqual(6 * NodaConstants.TicksPerHour, (threeHours + threeHours).Ticks, "3,000,000 + 1");
-            Assert.AreEqual(0L, (threeHours + negativeThreeHours).Ticks, "1 + (-1)");
-            Assert.AreEqual(-9 * NodaConstants.TicksPerHour, (negativeTwelveHours + threeHours).Ticks, "-TwelveHours + threeHours");
+            Assert.AreEqual(MakeOffset(6, 0, 0, 0), threeHours + threeHours, "3,000,000 + 1");
+            Assert.AreEqual(Offset.Zero, threeHours + negativeThreeHours, "1 + (-1)");
+            Assert.AreEqual(MakeOffset(-9, 0, 0, 0), negativeTwelveHours + threeHours, "-TwelveHours + threeHours");
         }
 
         #endregion
@@ -390,17 +390,17 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMinus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (Offset.Zero - Offset.Zero).Ticks, "0 - 0");
-            Assert.AreEqual(3 * NodaConstants.TicksPerHour, (threeHours - Offset.Zero).Ticks, "1 - 0");
-            Assert.AreEqual(-3 * NodaConstants.TicksPerHour, (Offset.Zero - threeHours).Ticks, "0 - 1");
+            Assert.AreEqual(Offset.Zero, Offset.Zero - Offset.Zero, "0 - 0");
+            Assert.AreEqual(MakeOffset(3, 0, 0, 0), threeHours - Offset.Zero, "1 - 0");
+            Assert.AreEqual(MakeOffset(-3, 0, 0, 0), Offset.Zero - threeHours, "0 - 1");
         }
 
         [Test]
         public void OperatorMinus_NonZero()
         {
-            Assert.AreEqual(0, (threeHours - threeHours).Ticks, "3,000,000 - 1");
-            Assert.AreEqual(6 * NodaConstants.TicksPerHour, (threeHours - negativeThreeHours).Ticks, "1 - (-1)");
-            Assert.AreEqual(-15 * NodaConstants.TicksPerHour, (negativeTwelveHours - threeHours).Ticks, "-TwelveHours - threeHours");
+            Assert.AreEqual(Offset.Zero, threeHours - threeHours, "3,000,000 - 1");
+            Assert.AreEqual(MakeOffset(6, 0, 0, 0), threeHours - negativeThreeHours, "1 - (-1)");
+            Assert.AreEqual(MakeOffset(-15, 0, 0, 0), negativeTwelveHours - threeHours, "-TwelveHours - threeHours");
         }
 
         #endregion

@@ -107,7 +107,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     ticks += ConvertSecondsWithFractionalToTicks(parts[2]);
                 }
             }
-            return new Offset(ticks);
+            return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
         }
 
         /// <summary>
@@ -229,42 +229,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 }
             }
             return value;
-        }
-
-        /// <summary>
-        /// Formats the given millisecons offset as a string parsable by ParseOffset().
-        /// </summary>
-        /// <param name="offset">The Offset to format.</param>
-        /// <returns>The formatted string</returns>
-        internal static string FormatOffset(Offset offset)
-        {
-            StringBuilder builder = new StringBuilder();
-            long ticks = offset.Ticks;
-            if (ticks < 0)
-            {
-                builder.Append("-");
-                ticks = -ticks;
-            }
-            long hours = ticks / NodaConstants.TicksPerHour;
-            ticks -= (hours * NodaConstants.TicksPerHour);
-            builder.Append(hours.ToString("D", CultureInfo.InvariantCulture));
-            long minutes = ticks / NodaConstants.TicksPerMinute;
-            ticks -= (minutes * NodaConstants.TicksPerMinute);
-            builder.Append(":");
-            builder.Append(minutes.ToString("D2", CultureInfo.InvariantCulture));
-            if (ticks > 0)
-            {
-                long seconds = ticks / NodaConstants.TicksPerMinute;
-                ticks -= (seconds * NodaConstants.TicksPerMinute);
-                builder.Append(":");
-                builder.Append(seconds.ToString("D2", CultureInfo.InvariantCulture));
-                if (ticks > 0)
-                {
-                    builder.Append(".");
-                    builder.Append(ticks.ToString("D3", CultureInfo.InvariantCulture));
-                }
-            }
-            return builder.ToString();
         }
     }
 }

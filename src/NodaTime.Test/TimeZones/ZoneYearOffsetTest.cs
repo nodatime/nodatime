@@ -26,9 +26,9 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public partial class ZoneYearOffsetTest
     {
-        private Offset oneHour = new Offset(1L * NodaConstants.TicksPerHour);
-        private Offset twoHours = new Offset(2L * NodaConstants.TicksPerHour);
-        private Offset minusOneHour = new Offset(-1L * NodaConstants.TicksPerHour);
+        private Offset oneHour = Offset.Create(1);
+        private Offset twoHours = Offset.Create(2);
+        private Offset minusOneHour = Offset.Create(-1);
 
         [Test]
         public void MakeInstant_Defaults_Epoch()
@@ -62,7 +62,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Standard, 1, 1, 0, true, Offset.Zero);
             Instant actual = offset.MakeInstant(1970, twoHours, oneHour);
-            Instant expected = new Instant((1L - 1) * NodaConstants.TicksPerDay - twoHours.Ticks);
+            Instant expected = new Instant((1L - 1) * NodaConstants.TicksPerDay - twoHours.AsTicks());
             Assert.AreEqual(expected, actual);
         }
 
@@ -71,7 +71,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
             Instant actual = offset.MakeInstant(1970, twoHours, oneHour);
-            Instant expected = new Instant((1L - 1) * NodaConstants.TicksPerDay - (twoHours.Ticks + oneHour.Ticks));
+            Instant expected = new Instant((1L - 1) * NodaConstants.TicksPerDay - (twoHours.AsTicks() + oneHour.AsTicks()));
             Assert.AreEqual(expected, actual);
         }
 

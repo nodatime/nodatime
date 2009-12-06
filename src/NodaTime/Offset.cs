@@ -21,18 +21,13 @@ using System.Globalization;
 namespace NodaTime
 {
     /// <summary>
-    /// An offset from UTC in ticks. (There are 10,000 ticks in a millisecond.)
+    /// An offset from UTC in milliseconds.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Offsets are constrained to the range (-24 hours, 24 hours). If the ticks value given is
-    /// outside this range then the value is forced into the range by considering that time wraps as
-    /// it goes around the world multiple times. 
-    /// </para>
-    /// <para>
-    /// There is no concept of fields, such as days or seconds, as these fields can vary in length.
-    /// A duration may be converted to an <see cref="IPeriod" /> to obtain field values. This
-    /// conversion will typically cause a loss of precision.
+    /// Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
+    /// is outside this range then the value is forced into the range by considering that time wraps
+    /// as it goes around the world multiple times.
     /// </para>
     /// <para>
     /// Internally, offsets are stored as an <see cref="Int32"/> number of milliseconds instead of
@@ -47,16 +42,11 @@ namespace NodaTime
     public struct Offset
         : IEquatable<Offset>, IComparable<Offset>
     {
-        public static readonly Offset Zero = new Offset(0L);
+        public static readonly Offset Zero = new Offset(0);
         public static readonly Offset MinValue = new Offset(-NodaConstants.MillisecondsPerDay + 1);
         public static readonly Offset MaxValue = new Offset(NodaConstants.MillisecondsPerDay - 1);
 
         private readonly int milliseconds;
-
-        /// <summary>
-        /// Gets the number of ticks in the offset.
-        /// </summary>
-        public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
 
         /// <summary>
         /// Gets the number of milliseconds in the offset.
@@ -67,27 +57,12 @@ namespace NodaTime
         /// Initializes a new instance of the <see cref="Offset"/> struct.
         /// </summary>
         /// <remarks>
-        /// Offsets are constrained to the range (-24 hours, 24 hours). If the ticks value given is
-        /// outside this range then the value is forced into the range by considering that time
-        /// wraps as it goes around the world multiple times. Also the resolution of an offset is
-        /// milliseconds so any values below that resolution are ignored.
+        /// Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value
+        /// given is outside this range then the value is forced into the range by considering that
+        /// time wraps as it goes around the world multiple times
         /// </remarks>
-        /// <param name="ticks">The number of ticks.</param>
-        public Offset(long ticks)
-            : this((int)(ticks / NodaConstants.TicksPerMillisecond))
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Offset"/> struct.
-        /// </summary>
-        /// <remarks>
-        /// We keep this constructor private so there is no confusion as to whether we are
-        /// initializing from ticks or milliseconds. As far as the outside world is concerned, this
-        /// offset uses ticks.
-        /// </remarks>
-        /// <param name="milliseconds">The milliseconds.</param>
-        private Offset(int milliseconds)
+        /// <param name="ticks">The number of milliseconds.</param>
+        public Offset(int milliseconds)
         {
             this.milliseconds = milliseconds % NodaConstants.MillisecondsPerDay;
         }
@@ -162,6 +137,15 @@ namespace NodaTime
                 (seconds * NodaConstants.MillisecondsPerSecond) +
                 milliseconds
                 ));
+        }
+
+        /// <summary>
+        /// Returns the number of ticks represented by this offset.
+        /// </summary>
+        /// <returns>The number of ticks.</returns>
+        public long AsTicks()
+        {
+            return Milliseconds * NodaConstants.TicksPerMillisecond;
         }
 
         #region Operators
