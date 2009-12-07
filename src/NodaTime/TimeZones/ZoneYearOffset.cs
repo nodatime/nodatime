@@ -24,10 +24,30 @@ using NodaTime.Fields;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Defines an offset within a year. Can be applied to multiple years.
+    /// Defines an offset within a year as an expresion that can be used to reference multiple
+    /// years.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// A year offset defines a way of determining an offset into a year based on certain criteria.
+    /// The most basic is the month of the year and the day of the month. If only these two are
+    /// supplied then the offset is always the sae day of each year. The only exception is if the
+    /// day is February 29th, then it only refers to those years that have a February 29th.
+    /// </para>
+    /// <para>
+    /// If the day of the week is specified then the offset determined byt the month and day are
+    /// adjusted to the nearest day that falls on the given day of the week. If then month and day
+    /// fall on that day of the week then nothing changes. Otherwise the offset is moved forward or
+    /// backward up to 6 days to make the day fall on the correct day of the week. The direction the
+    /// offset is moved is determined by the <see cref="Advance"/> property.
+    /// </para>
+    /// <para>
+    /// Finally the <see cref="Mode"/> property deterines whether the <see cref="TickOfDay"/> value
+    /// is added to the calculated offset to generate an offset within the day.
+    /// </para>
+    /// <para>
     /// Immutable, thread safe
+    /// </para>
     /// </remarks>
     public class ZoneYearOffset
         : IEquatable<ZoneYearOffset>
