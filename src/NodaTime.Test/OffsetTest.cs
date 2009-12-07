@@ -35,5 +35,10 @@ namespace NodaTime.Test
             millis += milliseconds;
             return new Offset(millis);
         }
+
+        private static string OperatorMessage(Offset left, string op, Offset right)
+        {
+            return left + " " + op + " " + right;
+        }
     }
 }

@@ -40,10 +40,10 @@ namespace NodaTime.Test
         [Test]
         public void IEquatableEquals_WithDifferentTicks_IsFalse()
         {
-            Assert.False(threeHours.Equals(negativeThreeHours), "threeHours == -threeHours");
-            Assert.False(threeHours.Equals(Offset.Zero), "threeHours == 0");
-            Assert.False(Offset.Zero.Equals(negativeThreeHours), "0 == -threeHours");
-            Assert.False(Offset.MinValue.Equals(Offset.MaxValue), "MinValue == MaxValue");
+            Assert.False(threeHours.Equals(negativeThreeHours), OperatorMessage(threeHours, "Equals", negativeThreeHours));
+            Assert.False(threeHours.Equals(Offset.Zero), OperatorMessage(threeHours, "Equals", Offset.Zero));
+            Assert.False(Offset.Zero.Equals(negativeThreeHours), OperatorMessage(Offset.Zero, "Equals", negativeThreeHours));
+            Assert.False(Offset.MinValue.Equals(Offset.MaxValue), OperatorMessage(Offset.MinValue, "Equals", Offset.MaxValue));
         }
 
         #endregion
@@ -55,7 +55,7 @@ namespace NodaTime.Test
         {
             object obj = threeHours;
 
-            Assert.False(obj.Equals(null), "threeHours == null");
+            Assert.False(obj.Equals(null), threeHours + " == null");
         }
 
         [Test]
