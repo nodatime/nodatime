@@ -14,18 +14,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
-using NodaTime.Utility;
+using System.Text;
 
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Represents a transition two different time references. Normally this is between standard
-    /// timne and daylight savings time but it might be for other purposes like the discontinuity in
-    /// the Gregorian calendar to account for leap time. 
+    /// Represents a transition two different time references.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// Normally this is between standard timne and daylight savings time but it might be for other
+    /// purposes like the discontinuity in the Gregorian calendar to account for leap time.
+    /// </para>
+    /// <para>
     /// Immutable, thread safe.
+    /// </para>
     /// </remarks>
     internal class ZoneTransition
         : IEquatable<ZoneTransition>, IComparable<ZoneTransition>
@@ -44,33 +49,53 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneTransition"/> class.
         /// </summary>
-        /// <param name="instant">The instant.</param>
-        /// <param name="tr">The tr.</param>
-        internal ZoneTransition(Instant instant, ZoneTransition tr)
-            : this(instant, tr.Name, tr.WallOffset, tr.StandardOffset)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZoneTransition"/> class.
-        /// </summary>
-        /// <param name="instant">The instant.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="wallOffset">The wall offset.</param>
-        /// <param name="standardOffset">The standard offset.</param>
+        /// <remarks>
+        /// <para>
+        /// Assumption 1: Offset.MaxValue &lt;&lt; Instant.MaxValue
+        /// </para>
+        /// <para>
+        /// Assumption 2: Offset.MinValue &gt;&gt; Instant.MinValue
+        /// </para>
+        /// <para>
+        /// Therefore the sum of an Instant with an Offset of the opposite sign cannot overflow or
+        /// underflow. We only have to worry about summing an Instant with an Offset of the same
+        /// sign over/underflowing.
+        /// </para>
+        /// </remarks>
+        /// <param name="instant">The instant that this transistion occurs at.</param>
+        /// <param name="name">The name for the time at this transition e.g. PDT or PST.</param>
+        /// <param name="wallOffset">The actual offset at this transition.</param>
+        /// <param name="standardOffset">The standard offset at this transition.</param>
         internal ZoneTransition(Instant instant, String name, Offset wallOffset, Offset standardOffset)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name", "name cannot be null");
+            }
             this.instant = instant;
             this.name = name;
-            if (this.instant != Instant.MinValue && this.instant != Instant.MaxValue)
+            this.wallOffset = wallOffset;
+            this.standardOffset = standardOffset;
+            //
+            // Make sure that the math will not overflow later.
+            //
+            if (instant.Ticks < 0 && wallOffset.Milliseconds < 0)
             {
-                this.wallOffset = wallOffset;
-                this.standardOffset = standardOffset;
+                long distanceFromEndOfTime = instant.Ticks - Instant.MinValue.Ticks;
+                if (distanceFromEndOfTime < Math.Abs(wallOffset.AsTicks()))
+                {
+                    this.wallOffset = Offset.FromTicks(-distanceFromEndOfTime);
+                    this.standardOffset = this.wallOffset;
+                }
             }
-            else
+            else if (instant.Ticks > 0 && wallOffset.Milliseconds > 0)
             {
-                this.wallOffset = Offset.Zero;
-                this.standardOffset = Offset.Zero;
+                long distanceFromEndOfTime = Instant.MaxValue.Ticks - instant.Ticks;
+                if (distanceFromEndOfTime < wallOffset.AsTicks())
+                {
+                    this.wallOffset = Offset.FromTicks(distanceFromEndOfTime);
+                    this.standardOffset = this.wallOffset;
+                }
             }
         }
 
@@ -80,7 +105,8 @@ namespace NodaTime.TimeZones
         /// <remarks>
         /// To be a transition from another the instant at which the transition occurs must be
         /// greater than the given transition's and either the time offset or the name must be
-        /// different.
+        /// different. If this is not true then this transition is considered to be redundant
+        /// and should not be used.
         /// </remarks>
         /// <param name="other">The <see cref="ZoneTransition"/> to compare to.</param>
         /// <returns>
@@ -127,6 +153,22 @@ namespace NodaTime.TimeZones
         public override int GetHashCode()
         {
             return Instant.GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(name);
+            builder.Append(" at ").Append(Instant);
+            builder.Append(" ").Append(StandardOffset);
+            builder.Append(" [").Append(WallOffset).Append("]");
+            return builder.ToString();
         }
 
         #endregion // Object overrides
@@ -181,5 +223,4 @@ namespace NodaTime.TimeZones
 
         #endregion
     }
-
 }

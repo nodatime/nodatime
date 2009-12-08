@@ -282,7 +282,7 @@ namespace NodaTime.TimeZones
 
                     // Set first to the best transition found so far, but next iteration may find
                     // something closer to lower limit.
-                    firstTransition = new ZoneTransition(this.startingInstant, next);
+                    firstTransition = new ZoneTransition(this.startingInstant, next.Name, next.WallOffset, next.StandardOffset);
                     savings = next.Savings;
                 }
                 // Restore rules

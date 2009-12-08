@@ -26,11 +26,11 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public partial class TzdbTest
     {
-        [Test]
-        public void CurrentTimeZone_LocalTimeZone_AlwaysFails()
-        {
-            IDateTimeZone actual = DateTimeZones.Current;
-            Assert.AreEqual(null, actual);
-        }
+        ////[Test]
+        ////public void CurrentTimeZone_LocalTimeZone_AlwaysFails()
+        ////{
+        ////    IDateTimeZone actual = DateTimeZones.Current;
+        ////    Assert.AreEqual(null, actual);
+        ////}
     }
 }

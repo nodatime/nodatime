@@ -42,6 +42,9 @@ namespace NodaTime
     public struct Offset
         : IEquatable<Offset>, IComparable<Offset>
     {
+        private const string ShortFormat = "S";
+        private const string LongFormat = "L";
+
         public static readonly Offset Zero = new Offset(0);
         public static readonly Offset MinValue = new Offset(-NodaConstants.MillisecondsPerDay + 1);
         public static readonly Offset MaxValue = new Offset(NodaConstants.MillisecondsPerDay - 1);
@@ -65,6 +68,16 @@ namespace NodaTime
         public Offset(int milliseconds)
         {
             this.milliseconds = milliseconds % NodaConstants.MillisecondsPerDay;
+        }
+
+        /// <summary>
+        /// Froms the ticks.
+        /// </summary>
+        /// <param name="ticks">The ticks.</param>
+        /// <returns></returns>
+        public static Offset FromTicks(long ticks)
+        {
+            return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
         }
 
         /// <summary>
@@ -331,6 +344,40 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
+            return ToString(ShortFormat);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <param name="format">The format to use.</param>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public string ToString(string format)
+        {
+            if (format == ShortFormat)
+            {
+                return Format(false);
+            }
+            else if (format == LongFormat)
+            {
+                return Format(true);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("format", format, "The format parameter is not valid: " + format);
+            }
+        }
+
+        /// <summary>
+        /// Returns a string formatted version of this offset. The trailing milliseconds and seconds
+        /// are ommitted if they are zero unless the <paramref name="force"/> flag is set.
+        /// </summary>
+        /// <param name="forceAll">if set to <c>true</c> if all of the fields should be shown reguardless.</param>
+        /// <returns></returns>
+        private string Format(bool forceAll)
+        {
             bool negative = Milliseconds < 0;
             int milliseconds = negative ? -Milliseconds : Milliseconds;
             int hours = milliseconds / NodaConstants.MillisecondsPerHour;
@@ -338,7 +385,18 @@ namespace NodaTime
             int seconds = (milliseconds % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
             milliseconds = milliseconds % NodaConstants.MillisecondsPerSecond;
             string sign = negative ? "-" : "+";
-            return string.Format(CultureInfo.InvariantCulture, "{0}{1:D2}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, milliseconds);
+            if (forceAll || milliseconds != 0)
+            {
+                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, milliseconds);
+            }
+            else if (seconds != 0)
+            {
+                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}:{3:D2}", sign, hours, minutes, seconds);
+            }
+            else
+            {
+                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}", sign, hours, minutes);
+            }
         }
 
         #endregion  // Object overrides
