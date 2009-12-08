@@ -16,10 +16,10 @@
 #endregion
 
 using System;
-using NodaTime.Calendars;
-using NodaTime.Utility;
 using System.Text;
+using NodaTime.Calendars;
 using NodaTime.Fields;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
