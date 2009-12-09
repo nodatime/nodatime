@@ -189,7 +189,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="zoneList">The time zone definition parts to add.</param>
         /// <param name="ruleSets">The rule sets map to use in looking up rules for the time zones..</param>
-        private IDateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, ZoneRuleSet> ruleSets)
+        private IDateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, ZoneRuleCollection> ruleSets)
         {
             DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
             foreach (var zone in zoneList)
@@ -209,7 +209,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     }
                     catch (FormatException)
                     {
-                        ZoneRuleSet rs = ruleSets[zone.Rules];
+                        ZoneRuleCollection rs = ruleSets[zone.Rules];
                         if (rs == null)
                         {
                             throw new ArgumentException("Rules not found: " + zone.Rules);
@@ -239,8 +239,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="builder">The <see cref="DateTimeZoneBuilder"/> to add to.</param>
         /// <param name="nameFormat">The name format pattern.</param>
-        /// <param name="ruleSet">The <see cref="ZoneRuleSet"/> describing the recurring savings.</param>
-        private void AddRecurring(DateTimeZoneBuilder builder, String nameFormat, ZoneRuleSet ruleSet)
+        /// <param name="ruleSet">The <see cref="ZoneRuleCollection"/> describing the recurring savings.</param>
+        private void AddRecurring(DateTimeZoneBuilder builder, String nameFormat, ZoneRuleCollection ruleSet)
         {
             foreach (var rule in ruleSet)
             {

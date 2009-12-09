@@ -82,6 +82,10 @@ namespace NodaTime.TimeZones
         /// <returns><c>true</c> if the time zone was successfully written.</returns>
         public void WriteTimeZone(IDateTimeZone timeZone)
         {
+            if (timeZone == null)
+            {
+                throw new ArgumentNullException("timeZone");
+            }
             if (timeZone is FixedDateTimeZone)
             {
                 WriteInt8(FlagTimeZoneFixed);
@@ -188,6 +192,10 @@ namespace NodaTime.TimeZones
         /// <param name="dictionary">The <see cref="IDictionary"/> to write.</param>
         public void WriteDictionary(IDictionary<string, string> dictionary)
         {
+            if (dictionary == null)
+            {
+                throw new ArgumentNullException("dictionary");
+            }
             WriteNumber(dictionary.Count);
             foreach (var entry in dictionary)
             {

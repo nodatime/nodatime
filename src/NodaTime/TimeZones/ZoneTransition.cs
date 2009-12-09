@@ -136,9 +136,10 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            if (obj is ZoneTransition)
+            ZoneTransition transition = obj as ZoneTransition;
+            if (transition != null)
             {
-                return Equals((ZoneTransition)obj);
+                return Equals(transition);
             }
             return false;
         }

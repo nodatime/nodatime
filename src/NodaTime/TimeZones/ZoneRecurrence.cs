@@ -55,11 +55,11 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="instant">The instant to adjust.</param>
         /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="savings">The daylight savings adjustment.</param>
+        /// <param name="savingsOffset">The daylight savings adjustment.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal Instant Next(Instant instant, Offset standardOffset, Offset savings)
+        internal Instant Next(Instant instant, Offset standardOffset, Offset savingsOffset)
         {
-            return this.yearOffset.Next(instant, standardOffset, savings);
+            return this.yearOffset.Next(instant, standardOffset, savingsOffset);
         }
 
         /// <summary>
@@ -68,11 +68,11 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="instant">The instant to adjust.</param>
         /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="savings">The daylight savings adjustment.</param>
+        /// <param name="savingsOffset">The daylight savings adjustment.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal Instant Previous(Instant instant, Offset standardOffset, Offset savings)
+        internal Instant Previous(Instant instant, Offset standardOffset, Offset savingsOffset)
         {
-            return this.yearOffset.Previous(instant, standardOffset, savings);
+            return this.yearOffset.Previous(instant, standardOffset, savingsOffset);
         }
 
         /// <summary>
@@ -99,6 +99,10 @@ namespace NodaTime.TimeZones
 
         public static ZoneRecurrence Read(DateTimeZoneReader reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
             string name = reader.ReadString();
             Offset savings = reader.ReadOffset();
             ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
@@ -120,8 +124,10 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            if (obj is ZoneRecurrence) {
-                return Equals((ZoneRecurrence)obj);
+            ZoneRecurrence recurrence = obj as ZoneRecurrence;
+            if (recurrence != null)
+            {
+                return Equals(recurrence);
             }
             return false;
         }

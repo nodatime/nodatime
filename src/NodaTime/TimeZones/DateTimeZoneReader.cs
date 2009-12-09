@@ -59,7 +59,7 @@ namespace NodaTime.TimeZones
         /// <returns><c>true</c> if the time zone was successfully written.</returns>
         public IDateTimeZone ReadTimeZone(string id)
         {
-            int flag = ReadInt8();
+            int flag = ReadByte();
             if (flag == DateTimeZoneWriter.FlagTimeZoneFixed)
             {
                 return FixedDateTimeZone.Read(this, id);
@@ -109,7 +109,7 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                byte flag = (byte)ReadInt8();
+                byte flag = (byte)ReadByte();
                 if (flag == DateTimeZoneWriter.FlagMinValue)
                 {
                     return Int64.MinValue;
@@ -127,9 +127,9 @@ namespace NodaTime.TimeZones
                 if ((flag & 0xc0) == DateTimeZoneWriter.FlagMinutes)
                 {
                     int first = flag & ~0xc0;
-                    int second = ReadInt8();
-                    int third = ReadInt8();
-                    int fourth = ReadInt8();
+                    int second = ReadByte();
+                    int third = ReadByte();
+                    int fourth = ReadByte();
 
                     long units = (((((first << 8) + second) << 8) + third) << 8) + fourth;
                     units = units - DateTimeZoneWriter.MaxHalfHours;
@@ -182,7 +182,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         public bool ReadBoolean()
         {
-            return ReadInt8() == 0 ? false : true;
+            return ReadByte() == 0 ? false : true;
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                byte flag = (byte)ReadInt8();
+                byte flag = (byte)ReadByte();
                 if (flag == 0xff)
                 {
                     return ReadInt32();
@@ -212,7 +212,7 @@ namespace NodaTime.TimeZones
                 if ((flag & 0xc0) == 0x80)
                 {
                     int first = flag & 0x3f;
-                    int second = ReadInt8();
+                    int second = ReadByte();
                     return ((first << 8) + second) + adjustment;
                 }
                 adjustment += 0x4000;
@@ -226,7 +226,7 @@ namespace NodaTime.TimeZones
                 {
                     adjustment += 0x200000;
                     int first = flag & 0x0f;
-                    int second = ReadInt8();
+                    int second = ReadByte();
                     int third = ReadInt16();
                     return (((first << 8) + second) << 16) + third + adjustment;
                 }
@@ -257,13 +257,13 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                int high = ReadInt8();
-                int low = ReadInt8();
+                int high = ReadByte();
+                int low = ReadByte();
                 return (high << 8) + low;
             }
         }
 
-        public int ReadInt8()
+        public int ReadByte()
         {
             return this.stream.ReadByte();
         }

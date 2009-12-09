@@ -40,6 +40,10 @@ namespace NodaTime.Utility
         /// <returns>The normalized name.</returns>
         public static string NormalizeAsResourceName(string name)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
             name = name.Replace("-", "_minus_");
             name = name.Replace("+", "_plus_");
             name = name.Replace("<", "_less_");
@@ -56,6 +60,10 @@ namespace NodaTime.Utility
         /// <returns>The <see cref="IDictionary"/> or <c>null</c> if there is no such resource.</returns>
         public static IDictionary<string, string> LoadDictionary(ResourceManager manager, string name)
         {
+            if (manager == null)
+            {
+                throw new ArgumentNullException("manager");
+            }
             string normalizedName = ResourceHelper.NormalizeAsResourceName(name);
             byte[] bytes = manager.GetObject(normalizedName) as byte[];
             if (bytes != null)
@@ -78,6 +86,10 @@ namespace NodaTime.Utility
         /// <returns>The <see cref="IDateTimeZone"/> or <c>null</c> if there is no such resource.</returns>
         public static IDateTimeZone LoadTimeZone(ResourceManager manager, string name, string id)
         {
+            if (manager == null)
+            {
+                throw new ArgumentNullException("manager");
+            }
             string normalizedName = ResourceHelper.NormalizeAsResourceName(name);
             byte[] bytes = manager.GetObject(normalizedName) as byte[];
             if (bytes != null)

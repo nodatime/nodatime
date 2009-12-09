@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     {
         private readonly string id;
         private readonly bool isFixed;
-        protected readonly Offset standardOffset;
+        private readonly Offset standardOffset;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneBase"/> class.
@@ -36,12 +36,14 @@ namespace NodaTime.TimeZones
         /// <param name="id">The unique id of this time zone.</param>
         /// <param name="standardOffset">The standard offset from UTC.</param>
         /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
-        public DateTimeZoneBase(string id, Offset standardOffset, bool isFixed)
+        protected DateTimeZoneBase(string id, Offset standardOffset, bool isFixed)
         {
             this.id = id;
             this.standardOffset = standardOffset;
             this.isFixed = isFixed;
         }
+
+        protected Offset StandardOffset { get { return this.standardOffset; } }
 
         #region IDateTimeZone Members
 

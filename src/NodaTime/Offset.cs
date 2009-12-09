@@ -175,6 +175,17 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Adds one Offset to another. Friendly alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Offset"/> representing the sum of the given values.</returns>
+        public static Offset Add(Offset left, Offset right)
+        {
+            return left + right;
+        }
+
+        /// <summary>
         /// Implements the operator - (subtraction).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
@@ -183,6 +194,17 @@ namespace NodaTime
         public static Offset operator -(Offset left, Offset right)
         {
             return new Offset(left.Milliseconds - right.Milliseconds);
+        }
+
+        /// <summary>
+        /// Subtracts one Offset from another. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Offset"/> representing the difference of the given values.</returns>
+        public static Offset Subtract(Offset left, Offset right)
+        {
+            return left - right;
         }
 
         /// <summary>
@@ -379,15 +401,15 @@ namespace NodaTime
         private string Format(bool forceAll)
         {
             bool negative = Milliseconds < 0;
-            int milliseconds = negative ? -Milliseconds : Milliseconds;
-            int hours = milliseconds / NodaConstants.MillisecondsPerHour;
-            int minutes = (milliseconds % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
-            int seconds = (milliseconds % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
-            milliseconds = milliseconds % NodaConstants.MillisecondsPerSecond;
+            int millisecondsValue = negative ? -Milliseconds : Milliseconds;
+            int hours = millisecondsValue / NodaConstants.MillisecondsPerHour;
+            int minutes = (millisecondsValue % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
+            int seconds = (millisecondsValue % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
+            millisecondsValue = millisecondsValue % NodaConstants.MillisecondsPerSecond;
             string sign = negative ? "-" : "+";
-            if (forceAll || milliseconds != 0)
+            if (forceAll || millisecondsValue != 0)
             {
-                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, milliseconds);
+                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, millisecondsValue);
             }
             else if (seconds != 0)
             {
