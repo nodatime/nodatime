@@ -16,6 +16,7 @@
 #endregion
 using System;
 using NodaTime.Utility;
+using System.Text;
 
 namespace NodaTime.TimeZones
 {
@@ -23,7 +24,15 @@ namespace NodaTime.TimeZones
     /// Extends <see cref="ZoneYearOffset"/> with a name and savings.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// This represents a recurring transition from or to a daylight savings time. The name is the
+    /// name of the time zone during this period (e.g. PST or PDT). The savings is usually 0 or the
+    /// daylight offset. This is also used to support some of the tricky transitions that occurred
+    /// before that calendars were "standardized."
+    /// </para>
+    /// <para>
     /// Immutable, thread safe.
+    /// </para>
     /// </remarks>
     public class ZoneRecurrence
         : IEquatable<ZoneRecurrence>
@@ -39,9 +48,9 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneRecurrence"/> class.
         /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="savings">The savings.</param>
-        /// <param name="yearOffset">The year offset.</param>
+        /// <param name="name">The name of the time zone period e.g. PST.</param>
+        /// <param name="savings">The savings for this period.</param>
+        /// <param name="yearOffset">The year offset of when this period starts in a year.</param>
         public ZoneRecurrence(String name, Offset savings, ZoneYearOffset yearOffset)
         {
             this.yearOffset = yearOffset;
@@ -97,6 +106,11 @@ namespace NodaTime.TimeZones
             YearOffset.Write(writer);
         }
 
+        /// <summary>
+        /// Reads the specified reader.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <returns></returns>
         public static ZoneRecurrence Read(DateTimeZoneReader reader)
         {
             if (reader == null)
@@ -148,6 +162,21 @@ namespace NodaTime.TimeZones
             return hash;
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(Name);
+            builder.Append(" ").Append(Savings);
+            builder.Append(" ").Append(YearOffset);
+            return builder.ToString();
+        }
+
         #endregion // Object overrides
 
         #region IEquatable<ZoneRecurrence> Members
@@ -169,6 +198,36 @@ namespace NodaTime.TimeZones
                 this.savings == other.savings &&
                 this.name == other.name &&
                 this.yearOffset == other.yearOffset;
+        }
+
+        #endregion
+
+        #region Operator overloads
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ZoneRecurrence left, ZoneRecurrence right)
+        {
+            if ((object)left == null || (object)right == null)
+            {
+                return (object)left == (object)right;
+            }
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ZoneRecurrence left, ZoneRecurrence right)
+        {
+            return !(left == right);
         }
 
         #endregion
