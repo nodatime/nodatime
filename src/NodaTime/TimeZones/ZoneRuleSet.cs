@@ -28,23 +28,14 @@ namespace NodaTime.TimeZones
     /// Not immutable, not thread safe. 
     /// </para>
     /// </remarks>
-    public class ZoneRuleSet
+    public class ZoneRuleCollection
         : IEnumerable<ZoneRule>
     {
-        private static readonly int yearLimit;
-
-        /// <summary>
-        /// Initializes the <see cref="ZoneRuleSet"/> class.
-        /// </summary>
-        static ZoneRuleSet()
-        {
-            // Don't pre-calculate more than 100 years into the future. Almost all zones will stop
-            // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
-            // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the
-            // future, then it won't be observed.
-            LocalInstant now = new LocalInstant(Clock.Now.Ticks);
-            yearLimit = IsoCalendarSystem.Instance.Fields.Year.GetValue(now) + 100;
-        }
+        // Don't pre-calculate more than 100 years into the future. Almost all zones will stop
+        // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
+        // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the
+        // future, then it won't be observed.
+        private static readonly int yearLimit = IsoCalendarSystem.Instance.Fields.Year.GetValue(LocalInstant.Now) + 100;
 
         internal Offset StandardOffset { get; set; }
 
@@ -55,9 +46,9 @@ namespace NodaTime.TimeZones
         private ZoneYearOffset upperYearOffset;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZoneRuleSet"/> class.
+        /// Initializes a new instance of the <see cref="ZoneRuleCollection"/> class.
         /// </summary>
-        public ZoneRuleSet()
+        public ZoneRuleCollection()
         {
         }
 
@@ -154,7 +145,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         internal class TransitionIterator
         {
-            private readonly ZoneRuleSet ruleSet;
+            private readonly ZoneRuleCollection ruleSet;
             private readonly ICalendarSystem calendar;
             private readonly Instant startingInstant;
 
@@ -169,7 +160,7 @@ namespace NodaTime.TimeZones
             /// </summary>
             /// <param name="ruleSet">The rule set to iterate over.</param>
             /// <param name="startingInstant">The starting instant.</param>
-            internal TransitionIterator(ZoneRuleSet ruleSet, Instant startingInstant)
+            internal TransitionIterator(ZoneRuleCollection ruleSet, Instant startingInstant)
             {
                 this.calendar = IsoCalendarSystem.Instance;
                 this.ruleSet = ruleSet;
@@ -243,7 +234,6 @@ namespace NodaTime.TimeZones
                 // and savings for whatever rule reaches the limit.
 
                 Instant nextInstant = Instant.MinValue;
-                Offset savings = Offset.Zero;
                 ZoneTransition firstTransition = null;
 
                 for (ZoneTransition next = GetNext(nextInstant); next != null; next = GetNext(nextInstant))

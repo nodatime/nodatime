@@ -55,6 +55,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// An offset that specifies the beginning of the year.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification="ZoneYearOffset is immutable")]
         public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
 
         private readonly TransitionMode mode;
@@ -167,11 +168,11 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Normalizes the transition mode characater.
         /// </summary>
-        /// <param name="c">The character to normalize.</param>
+        /// <param name="modeCharacter">The character to normalize.</param>
         /// <returns>The <see cref="TransitionMode"/>.</returns>
-        public static TransitionMode NormalizeModeCharacter(char c)
+        public static TransitionMode NormalizeModeCharacter(char modeCharacter)
         {
-            switch (c)
+            switch (modeCharacter)
             {
                 case 's':
                 case 'S':
@@ -255,10 +256,14 @@ namespace NodaTime.TimeZones
 
         public static ZoneYearOffset Read(DateTimeZoneReader reader)
         {
-            TransitionMode mode = (TransitionMode)reader.ReadInt8();
-            int monthOfYear = reader.ReadInt8();
-            int dayOfMonth = reader.ReadInt8();
-            int dayOfWeek = reader.ReadInt8();
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
+            TransitionMode mode = (TransitionMode)reader.ReadByte();
+            int monthOfYear = reader.ReadByte();
+            int dayOfMonth = reader.ReadByte();
+            int dayOfWeek = reader.ReadByte();
             bool advance = reader.ReadBoolean();
             Offset ticksOfDay = reader.ReadOffset();
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay);
@@ -380,8 +385,8 @@ namespace NodaTime.TimeZones
         {
             if (this.dayOfWeek != 0)
             {
-                int dayOfWeek = calendar.Fields.DayOfWeek.GetValue(instant);
-                int daysToAdd = this.dayOfWeek - dayOfWeek;
+                int dayOfWeekOfInstant = calendar.Fields.DayOfWeek.GetValue(instant);
+                int daysToAdd = this.dayOfWeek - dayOfWeekOfInstant;
                 if (daysToAdd != 0)
                 {
                     if (this.advance)
@@ -443,9 +448,10 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            if (obj is ZoneYearOffset)
+            ZoneYearOffset offset = obj as ZoneYearOffset;
+            if (offset != null)
             {
-                return Equals((ZoneYearOffset)obj);
+                return Equals(offset);
             }
             return false;
         }

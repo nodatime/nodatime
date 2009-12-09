@@ -45,6 +45,10 @@ namespace NodaTime.Calendars
 
         protected override void AssembleFields(FieldSet.Builder fields)
         {
+            if (fields == null)
+            {
+                throw new ArgumentNullException("fields");
+            }
             // Use zero based century and year of century.
             DividedDateTimeField centuryOfEra = new DividedDateTimeField
                 (IsoYearOfEraDateTimeField.Instance, DateTimeFieldType.CenturyOfEra, 100);

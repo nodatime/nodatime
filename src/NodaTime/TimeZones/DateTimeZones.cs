@@ -57,6 +57,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes the <see cref="DateTimeZones"/> class.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static DateTimeZones()
         {
             implementation.AddStandardProvider();

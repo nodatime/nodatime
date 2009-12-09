@@ -74,7 +74,7 @@ namespace NodaTime.TimeZones
     /// </remarks>
     public sealed class DateTimeZoneBuilder
     {
-        private readonly IList<ZoneRuleSet> ruleSets = new List<ZoneRuleSet>();
+        private readonly IList<ZoneRuleCollection> ruleSets = new List<ZoneRuleCollection>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneBuilder"/> class.
@@ -210,7 +210,6 @@ namespace NodaTime.TimeZones
             var transitions = new List<ZoneTransition>();
             IDateTimeZone tailZone = null;
             Instant instant = Instant.MinValue;
-            Duration savings = Duration.Zero;
 
             int ruleSetCount = this.ruleSets.Count;
             for (int i = 0; i < ruleSetCount; i++)
@@ -310,7 +309,7 @@ namespace NodaTime.TimeZones
         /// Gets the last rule set if there are no rule sets one that spans all of time is created and returned.
         /// </summary>
         /// <value>The last rule set.</value>
-        private ZoneRuleSet LastRuleSet
+        private ZoneRuleCollection LastRuleSet
         {
             get
             {
@@ -327,7 +326,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         private void AddEndOfTimeRuleSet()
         {
-            ruleSets.Add(new ZoneRuleSet());
+            ruleSets.Add(new ZoneRuleCollection());
         }
     }
 }

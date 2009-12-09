@@ -78,6 +78,10 @@ namespace NodaTime.TimeZones
         /// </returns>
         public static bool IsWorthCaching(IEnumerable<Instant> transitions)
         {
+            if (transitions == null)
+            {
+                throw new ArgumentNullException("transitions");
+            }
             // Add up all the distances between transitions that are less than
             // about two years.
             double distances = 0;
@@ -163,6 +167,10 @@ namespace NodaTime.TimeZones
 
         public void Write(DateTimeZoneWriter writer)
         {
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
             writer.WriteTimeZone(timeZone);
         }
 
@@ -170,6 +178,10 @@ namespace NodaTime.TimeZones
 
         public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
             IDateTimeZone timeZone = reader.ReadTimeZone(id);
             return new CachedDateTimeZone(timeZone);
         }

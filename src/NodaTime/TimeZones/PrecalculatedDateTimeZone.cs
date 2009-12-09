@@ -33,10 +33,14 @@ namespace NodaTime.TimeZones
          */
         internal static PrecalculatedDateTimeZone create(String id, List<ZoneTransition> transitions, IDateTimeZone tailZone)
         {
+            if (transitions == null) 
+            {
+                throw new ArgumentNullException("transitions");
+            }
             int size = transitions.Count;
             if (size == 0)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("There must be at least one transition", "transitions");
             }
 
             Instant[] trans = new Instant[size];
@@ -317,6 +321,10 @@ namespace NodaTime.TimeZones
 
         public override void Write(DateTimeZoneWriter writer)
         {
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
             int size = this.transitions.Length;
 
             // Create unique string pool.

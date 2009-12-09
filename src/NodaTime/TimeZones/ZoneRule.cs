@@ -74,7 +74,11 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         public String FormatName(String nameFormat)
         {
-            int index = nameFormat.IndexOf('/');
+            if (nameFormat == null)
+            {
+                throw new ArgumentNullException("nameFormat");
+            }
+            int index = nameFormat.IndexOf("/", StringComparison.Ordinal);
             if (index > 0)
             {
                 if (Savings == Offset.Zero)
@@ -87,7 +91,7 @@ namespace NodaTime.TimeZones
                     return nameFormat.Substring(index + 1);
                 }
             }
-            index = nameFormat.IndexOf("%s");
+            index = nameFormat.IndexOf("%s", StringComparison.Ordinal);
             if (index < 0)
             {
                 return nameFormat;
@@ -176,9 +180,10 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            if (obj is ZoneRule)
+            ZoneRule rule = obj as ZoneRule;
+            if (rule != null)
             {
-                return Equals((ZoneRule)obj);
+                return Equals(rule);
             }
             return false;
         }
