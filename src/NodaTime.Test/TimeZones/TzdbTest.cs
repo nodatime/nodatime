@@ -1,4 +1,5 @@
 ﻿#region Copyright and license information
+
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -13,13 +14,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
-namespace NodaTime.TimeZones
+
+using System;
+using NodaTime.TimeZones;
+using NUnit.Framework;
+
+namespace NodaTime.Test.TimeZones
 {
-    /// <summary>
-    /// Original name: ZoneInfoProvider
-    /// </summary>
-    public sealed class ZoneInfoProvider : IDateTimeZoneProvider
+    [TestFixture]
+    public partial class TzdbTest
     {
+        ////[Test]
+        ////public void CurrentTimeZone_LocalTimeZone_AlwaysFails()
+        ////{
+        ////    IDateTimeZone actual = DateTimeZones.Current;
+        ////    Assert.AreEqual(null, actual);
+        ////}
     }
 }

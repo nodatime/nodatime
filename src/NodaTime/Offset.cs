@@ -21,18 +21,19 @@ using System.Globalization;
 namespace NodaTime
 {
     /// <summary>
-    /// An offset from UTC in ticks. (There are 10,000 ticks in a millisecond.)
+    /// An offset from UTC in milliseconds.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Offsets are constrained to the range (-24 hours, 24 hours). If the ticks value given is
-    /// outside this range then the value is forced into the range by considering that time wraps as
-    /// it goes around the world multiple times. 
+    /// Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
+    /// is outside this range then the value is forced into the range by considering that time wraps
+    /// as it goes around the world multiple times.
     /// </para>
     /// <para>
-    /// There is no concept of fields, such as days or seconds, as these fields can vary in length.
-    /// A duration may be converted to an <see cref="IPeriod" /> to obtain field values. This
-    /// conversion will typically cause a loss of precision.
+    /// Internally, offsets are stored as an <see cref="Int32"/> number of milliseconds instead of
+    /// as ticks. This is because as a description of the offset of a time zone from UTC, there is
+    /// no offset of less than one second. Using milliseconds gives more than enough resolution and
+    /// allows us to save 4 bytes per Offset.
     /// </para>
     /// <para>
     /// This type is immutable and thread-safe.
@@ -41,30 +42,42 @@ namespace NodaTime
     public struct Offset
         : IEquatable<Offset>, IComparable<Offset>
     {
-        public static readonly Offset Zero = new Offset(0L);
-        public static readonly Offset One = new Offset(1L);
-        public static readonly Offset MinValue = new Offset(-NodaConstants.TicksPerDay + 1);
-        public static readonly Offset MaxValue = new Offset(NodaConstants.TicksPerDay - 1);
+        private const string ShortFormat = "S";
+        private const string LongFormat = "L";
 
-        private readonly long ticks;
+        public static readonly Offset Zero = new Offset(0);
+        public static readonly Offset MinValue = new Offset(-NodaConstants.MillisecondsPerDay + 1);
+        public static readonly Offset MaxValue = new Offset(NodaConstants.MillisecondsPerDay - 1);
+
+        private readonly int milliseconds;
 
         /// <summary>
-        /// The number of ticks in the duration.
+        /// Gets the number of milliseconds in the offset.
         /// </summary>
-        public long Ticks { get { return ticks; } }
+        public int Milliseconds { get { return milliseconds; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Offset"/> struct.
         /// </summary>
         /// <remarks>
-        /// Offsets are constrained to the range (-24 hours, 24 hours). If the ticks value given is
-        /// outside this range then the value is forced into the range by considering that time
-        /// wraps as it goes around the world multiple times. 
+        /// Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value
+        /// given is outside this range then the value is forced into the range by considering that
+        /// time wraps as it goes around the world multiple times
         /// </remarks>
-        /// <param name="ticks">The number of ticks.</param>
-        public Offset(long ticks)
+        /// <param name="ticks">The number of milliseconds.</param>
+        public Offset(int milliseconds)
         {
-            this.ticks = ticks % NodaConstants.TicksPerDay;
+            this.milliseconds = milliseconds % NodaConstants.MillisecondsPerDay;
+        }
+
+        /// <summary>
+        /// Froms the ticks.
+        /// </summary>
+        /// <param name="ticks">The ticks.</param>
+        /// <returns></returns>
+        public static Offset FromTicks(long ticks)
+        {
+            return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
         }
 
         /// <summary>
@@ -131,12 +144,21 @@ namespace NodaTime
         /// </remarks>
         public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
         {
-            return new Offset(
-                (hours * NodaConstants.TicksPerHour) +
-                (minutes * NodaConstants.TicksPerMinute) +
-                (seconds * NodaConstants.TicksPerSecond) +
-                (milliseconds * NodaConstants.TicksPerMillisecond)
-                );
+            return new Offset((int)(
+                (hours * NodaConstants.MillisecondsPerHour) +
+                (minutes * NodaConstants.MillisecondsPerMinute) +
+                (seconds * NodaConstants.MillisecondsPerSecond) +
+                milliseconds
+                ));
+        }
+
+        /// <summary>
+        /// Returns the number of ticks represented by this offset.
+        /// </summary>
+        /// <returns>The number of ticks.</returns>
+        public long AsTicks()
+        {
+            return Milliseconds * NodaConstants.TicksPerMillisecond;
         }
 
         #region Operators
@@ -149,7 +171,18 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset"/> representing the sum of the given values.</returns>
         public static Offset operator +(Offset left, Offset right)
         {
-            return new Offset(left.Ticks + right.Ticks);
+            return new Offset(left.Milliseconds + right.Milliseconds);
+        }
+
+        /// <summary>
+        /// Adds one Offset to another. Friendly alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Offset"/> representing the sum of the given values.</returns>
+        public static Offset Add(Offset left, Offset right)
+        {
+            return left + right;
         }
 
         /// <summary>
@@ -160,7 +193,18 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset"/> representing the difference of the given values.</returns>
         public static Offset operator -(Offset left, Offset right)
         {
-            return new Offset(left.Ticks - right.Ticks);
+            return new Offset(left.Milliseconds - right.Milliseconds);
+        }
+
+        /// <summary>
+        /// Subtracts one Offset from another. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Offset"/> representing the difference of the given values.</returns>
+        public static Offset Subtract(Offset left, Offset right)
+        {
+            return left - right;
         }
 
         /// <summary>
@@ -243,7 +287,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Offset other)
         {
-            return this.Ticks == other.Ticks;
+            return this.Milliseconds == other.Milliseconds;
         }
 
         #endregion
@@ -278,7 +322,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Offset other)
         {
-            return Ticks.CompareTo(other.Ticks);
+            return Milliseconds.CompareTo(other.Milliseconds);
         }
 
         #endregion
@@ -311,7 +355,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return Ticks.GetHashCode();
+            return Milliseconds.GetHashCode();
         }
 
         /// <summary>
@@ -322,14 +366,59 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            bool negative = Ticks < 0;
-            long ticks = negative ? -Ticks : Ticks;
-            long hours = ticks / NodaConstants.TicksPerHour;
-            long minutes = (ticks % NodaConstants.TicksPerHour) / NodaConstants.TicksPerMinute;
-            long seconds = (ticks % NodaConstants.TicksPerMinute) / NodaConstants.TicksPerSecond;
-            long milliseconds = (ticks % NodaConstants.TicksPerSecond) / NodaConstants.TicksPerMillisecond;
+            return ToString(ShortFormat);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <param name="format">The format to use.</param>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public string ToString(string format)
+        {
+            if (format == ShortFormat)
+            {
+                return Format(false);
+            }
+            else if (format == LongFormat)
+            {
+                return Format(true);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("format", format, "The format parameter is not valid: " + format);
+            }
+        }
+
+        /// <summary>
+        /// Returns a string formatted version of this offset. The trailing milliseconds and seconds
+        /// are ommitted if they are zero unless the <paramref name="force"/> flag is set.
+        /// </summary>
+        /// <param name="forceAll">if set to <c>true</c> if all of the fields should be shown reguardless.</param>
+        /// <returns></returns>
+        private string Format(bool forceAll)
+        {
+            bool negative = Milliseconds < 0;
+            int millisecondsValue = negative ? -Milliseconds : Milliseconds;
+            int hours = millisecondsValue / NodaConstants.MillisecondsPerHour;
+            int minutes = (millisecondsValue % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
+            int seconds = (millisecondsValue % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
+            millisecondsValue = millisecondsValue % NodaConstants.MillisecondsPerSecond;
             string sign = negative ? "-" : "+";
-            return string.Format(CultureInfo.InvariantCulture, "{0}{1:D2}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, milliseconds);
+            if (forceAll || millisecondsValue != 0)
+            {
+                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, millisecondsValue);
+            }
+            else if (seconds != 0)
+            {
+                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}:{3:D2}", sign, hours, minutes, seconds);
+            }
+            else
+            {
+                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}", sign, hours, minutes);
+            }
         }
 
         #endregion  // Object overrides

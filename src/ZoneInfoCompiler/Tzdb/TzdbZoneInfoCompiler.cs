@@ -14,771 +14,337 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
+using CommandLine;
+using NodaTime.TimeZones;
+using NodaTime.ZoneInfoCompiler;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
+    /// <summary>
+    /// Provides a compiler for Olson (TZDB) zone info files into the internal format used by Noda
+    /// Time for its <see cref="IDateTimeZone"/> definitions. This read a set of files and generates
+    /// a resource file with the compiled contents suitable for reading with <see
+    /// cref="NodaTime.TimeZones.DateTimeZoneResourceProvider"/> or one of its variants.
+    /// </summary>
     internal class TzdbZoneInfoCompiler
     {
-        private ILog Log { get; set; }
-        private TzdbZoneInfoParser Parser { get; set; }
+        private ILog log;
+        private TzdbZoneInfoParser tzdbParser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbZoneInfoCompiler"/> class.
         /// </summary>
-        /// <param name="log">The log.</param>
+        /// <param name="log">The log to send all output messages to.</param>
         internal TzdbZoneInfoCompiler(ILog log)
         {
-            Log = log;
-            Parser = new TzdbZoneInfoParser(Log);
+            this.log = log;
+            this.tzdbParser = new TzdbZoneInfoParser(this.log);
         }
 
         /// <summary>
-        /// Executes the specified arguments.
+        /// Executes compiler with the specified command line.
         /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns></returns>
-        public int Execute(IEnumerable<string> arguments)
+        /// <param name="arguments">The command line arguments.</param>
+        /// <returns>0 if successful, non-zero if an error occurred.</returns>
+        public int Execute(string[] arguments)
         {
-            int count = arguments.Count();
-            if (count < 1) {
-                return Usage("Missing source directory argument");
+            var options = new TzdbCompilerOptions();
+            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(this.log.InfoWriter));
+            if (!parser.ParseArguments(arguments, options))
+            {
+                return 1;
             }
-            else if (count < 2) {
-                return Usage("Missing destination directory argument");
-            }
-            DirectoryInfo sourceInfo = new DirectoryInfo(arguments.Take(1).Single());
-            DirectoryInfo destinationInfo = new DirectoryInfo(arguments.Skip(1).Take(1).Single());
-            var files = new List<string>(arguments.Skip(2));
-            try {
-                Compile(sourceInfo, files, destinationInfo);
-            }
-            catch (Exception e) {
-                return Usage(e.Message);
+
+            DirectoryInfo sourceDirectory = new DirectoryInfo(options.SourceDirectoryName);
+            FileInfo outputFile = new FileInfo(options.OutputFileName);
+            var files = options.InputFiles;
+            IEnumerable<FileInfo> fileList = MakeFileList(sourceDirectory, files);
+            ValidateArguments(sourceDirectory, fileList, outputFile);
+            using (var output = new ResourceOutput(outputFile.Name, options.OutputType))
+            {
+                //// Using this conditional code makes debugging simpler in Visual Studio because exceptions will
+                //// be caught by VS and shown with the exception visualizer.
+#if DEBUG
+                Compile(fileList, output);
+#else
+                try
+                {
+                    Compile(fileList, output);
+                }
+                catch (Exception e)
+                {
+                    this.log.Error("{0}", e.Message);
+                    return 2;
+                }
+#endif
             }
             return 0;
         }
 
         /// <summary>
-        /// Usages the specified error message.
+        /// Compiles the specified files and generates the output resource file.
         /// </summary>
-        /// <param name="errorMessage">The error message.</param>
+        /// <param name="source">The source <see cref="DirectoryInfo"/> object.</param>
+        /// <param name="files">The enumeration of file name strings.</param>
+        /// <param name="destination">The destination <see cref="DirectoryInfo"/> object.</param>
         /// <returns></returns>
-        private int Usage(string errorMessage)
+        internal int Compile(IEnumerable<FileInfo> fileList, ResourceOutput output)
         {
-            if (errorMessage != null) {
-                Log.Error("{0}", errorMessage);
-            }
-            Log.Info("");
-            Log.Info("usage: ZoneInfoCompiler sourceDirectory destinationDirectory file1 [ file2 ... ]");
-            Log.Info("");
-            Log.Info("    sourceDirectory must be an existing directory.");
-            Log.Info("    destinationDirectory will be created if it does not exist.");
-            Log.Info("    file1 [ file2 ... ] a list of zone info files to process");
-            Log.Info("");
-            return 1;
-        }
-
-        /// <summary>
-        /// Compiles the specified source.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="files">The files.</param>
-        /// <param name="destination">The destination.</param>
-        /// <returns></returns>
-        internal int Compile(DirectoryInfo source, IEnumerable<string> files, DirectoryInfo destination)
-        {
-            ValidateCompile(source, files, destination);
-            if (!destination.Exists) {
-                destination.Create();
-            }
-
             TzdbDatabase database = new TzdbDatabase();
-            ParseAllFiles(source, files, database);
+            ParseAllFiles(fileList, database);
+            GenerateDateTimeZones(database, output);
             LogCounts(database);
             return 0;
         }
 
         /// <summary>
-        /// Writes various informational counts to the log.
+        /// Parses all of the given files.
         /// </summary>
-        /// <param name="database">The database to query.</param>
-        private void LogCounts(TzdbDatabase database)
+        /// <param name="files">The <see cref="IEnumerable"/> of <see cref="FileInfo"/> objects.</param>
+        /// <param name="database">The <see cref="TzdbDatabase"/> where the parsed data is placed.</param>
+        private void ParseAllFiles(IEnumerable<FileInfo> files, TzdbDatabase database)
         {
-            Log.Info("=======================================");
-            Log.Info("Rule sets: {0:D}", database.Rules.Count);
-            Log.Info("Zones:     {0:D}", database.Zones.Count);
-            Log.Info("Aliases:   {0:D}", database.Aliases.Count);
-            Log.Info("=======================================");
-        }
-
-        /// <summary>
-        /// Validates the compile.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="files">The files.</param>
-        /// <param name="destination">The destination.</param>
-        private void ValidateCompile(DirectoryInfo source, IEnumerable<string> files, DirectoryInfo destination)
-        {
-            if (source == null) {
-                throw new ArgumentNullException("source", "Source cannot be null");
-            }
-            if (destination == null) {
-                throw new ArgumentNullException("destination", "Destination cannot be null");
-            }
-            if (!source.Exists) {
-                throw new ArgumentException("The source directory does not exist: " + source.FullName, "source");
-            }
-            if (destination.Exists && destination.Attributes != FileAttributes.Directory) {
-                throw new ArgumentException("If the destination exists it must be a directory: " + destination.FullName, "destination");
+            foreach (var file in files)
+            {
+                this.log.Info("Parsing file {0} . . .", file.Name);
+                ParseFile(file, database);
             }
         }
 
         /// <summary>
-        /// Parses all files.
+        /// Parses the file defined by the given <see cref="FileInfo"/>.
         /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="files">The files.</param>
-        /// <param name="database">The database.</param>
-        private void ParseAllFiles(DirectoryInfo source, IEnumerable<string> files, TzdbDatabase database)
-        {
-            IEnumerable<FileInfo> list;
-            if (files == null || files.Count() == 0) {
-                list = source.GetFiles();
-            }
-            else {
-                list = MakeFileList(source, files);
-            }
-            foreach (var file in list) {
-                if (!file.Exists) {
-                    Log.Error("File [{0}] does not exist", file.FullName);
-                }
-                else {
-                    Log.Info("Parsing file {0} . . .", file.Name);
-                    ParseFile(file, database);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Takes an enumeration of file names and converts it to an enumeration of FileInfo objects.
-        /// </summary>
-        /// <param name="source">The source directory.</param>
-        /// <param name="files">The string file name enumeration.</param>
-        /// <returns></returns>
-        private IEnumerable<FileInfo> MakeFileList(DirectoryInfo source, IEnumerable<string> files)
-        {
-            foreach (var fileName in files) {
-                yield return new FileInfo(Path.Combine(source.ToString(), fileName));
-            }
-        }
-
-        /// <summary>
-        /// Parses the file defined by the given FileInfo.
-        /// </summary>
+        /// <remarks>
+        /// Currently this compiler only handles files in the Olson (TZDB) zone info format.
+        /// </remarks>
         /// <param name="file">The file to parse.</param>
-        /// <param name="database">The database to parse into.</param>
+        /// <param name="database">The <see cref="TzdbDatabase"/> where the parsed data is placed.</param>
         internal void ParseFile(FileInfo file, TzdbDatabase database)
         {
-            Log.FileName = file.Name;
-            try {
-                using (FileStream stream = file.OpenRead()) {
-                    Parser.Parse(stream, database);
+            this.log.FileName = file.Name;
+            try
+            {
+                using (FileStream stream = file.OpenRead())
+                {
+                    this.tzdbParser.Parse(stream, database);
                 }
             }
-            finally {
-                Log.FileName = null;
-            }
-        }
-    }
-
-#if FOO
-public class ZoneInfoCompiler {
-    static DateTimeOfYear cStartOfYear;
-
-    static Chronology cLenientISO;
-
-    static DateTimeOfYear getStartOfYear() {
-        if (cStartOfYear == null) {
-            cStartOfYear = new DateTimeOfYear();
-        }
-        return cStartOfYear;
-    }
-
-    static Chronology getLenientISOChronology() {
-        if (cLenientISO == null) {
-            cLenientISO = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
-        }
-        return cLenientISO;
-    }
-
-    /**
-     * @param zimap maps string ids to DateTimeZone objects.
-     */
-    static void writeZoneInfoMap(DataOutputStream dout, Map zimap) throws IOException {
-        // Build the string pool.
-        Map idToIndex = new HashMap(zimap.size());
-        TreeMap indexToId = new TreeMap();
-
-        Iterator it = zimap.entrySet().iterator();
-        short count = 0;
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry)it.next();
-            String id = (String)entry.getKey();
-            if (!idToIndex.containsKey(id)) {
-                Short index = new Short(count);
-                idToIndex.put(id, index);
-                indexToId.put(index, id);
-                if (++count == 0) {
-                    throw new InternalError("Too many time zone ids");
-                }
-            }
-            id = ((DateTimeZone)entry.getValue()).getID();
-            if (!idToIndex.containsKey(id)) {
-                Short index = new Short(count);
-                idToIndex.put(id, index);
-                indexToId.put(index, id);
-                if (++count == 0) {
-                    throw new InternalError("Too many time zone ids");
-                }
+            finally
+            {
+                this.log.FileName = null;
             }
         }
 
-        // Write the string pool, ordered by index.
-        dout.writeShort(indexToId.size());
-        it = indexToId.values().iterator();
-        while (it.hasNext()) {
-            dout.writeUTF((String)it.next());
-        }
-
-        // Write the mappings.
-        dout.writeShort(zimap.size());
-        it = zimap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry)it.next();
-            String id = (String)entry.getKey();
-            dout.writeShort(((Short)idToIndex.get(id)).shortValue());
-            id = ((DateTimeZone)entry.getValue()).getID();
-            dout.writeShort(((Short)idToIndex.get(id)).shortValue());
-        }
-    }
-
-    static int parseYear(String str, int def) {
-        str = str.toLowerCase();
-        if (str.equals("minimum") || str.equals("min")) {
-            return Integer.MIN_VALUE;
-        } else if (str.equals("maximum") || str.equals("max")) {
-            return Integer.MAX_VALUE;
-        } else if (str.equals("only")) {
-            return def;
-        }
-        return Integer.parseInt(str);
-    }
-
-    static int parseMonth(String str) {
-        DateTimeField field = ISOChronology.getInstanceUTC().monthOfYear();
-        return field.get(field.set(0, str, Locale.ENGLISH));
-    }
-
-    static int parseDayOfWeek(String str) {
-        DateTimeField field = ISOChronology.getInstanceUTC().dayOfWeek();
-        return field.get(field.set(0, str, Locale.ENGLISH));
-    }
-    
-    static String parseOptional(String str) {
-        return (str.equals("-")) ? null : str;
-    }
-
-    static int parseTime(String str) {
-        DateTimeFormatter p = ISODateTimeFormat.hourMinuteSecondFraction();
-        MutableDateTime mdt = new MutableDateTime(0, getLenientISOChronology());
-        int pos = 0;
-        if (str.startsWith("-")) {
-            pos = 1;
-        }
-        int newPos = p.parseInto(mdt, str, pos);
-        if (newPos == ~pos) {
-            throw new IllegalArgumentException(str);
-        }
-        int millis = (int)mdt.getMillis();
-        if (pos == 1) {
-            millis = -millis;
-        }
-        return millis;
-    }
-
-    static char parseZoneChar(char c) {
-        switch (c) {
-        case 's': case 'S':
-            // Standard time
-            return 's';
-        case 'u': case 'U': case 'g': case 'G': case 'z': case 'Z':
-            // UTC
-            return 'u';
-        case 'w': case 'W': default:
-            // Wall time
-            return 'w';
-        }
-    }
-
-    /**
-     * @return false if error.
-     */
-    static boolean test(String id, DateTimeZone tz) {
-        if (!id.equals(tz.getID())) {
-            return true;
-        }
-
-        // Test to ensure that reported transitions are not duplicated.
-
-        long millis = ISOChronology.getInstanceUTC().year().set(0, 1850);
-        long end = ISOChronology.getInstanceUTC().year().set(0, 2050);
-
-        int offset = tz.getOffset(millis);
-        String key = tz.getNameKey(millis);
-
-        List transitions = new ArrayList();
-
-        while (true) {
-            long next = tz.nextTransition(millis);
-            if (next == millis || next > end) {
-                break;
-            }
-
-            millis = next;
-
-            int nextOffset = tz.getOffset(millis);
-            String nextKey = tz.getNameKey(millis);
-
-            if (offset == nextOffset
-                && key.equals(nextKey)) {
-                System.out.println("*d* Error in " + tz.getID() + " "
-                                   + new DateTime(millis,
-                                                  ISOChronology.getInstanceUTC()));
-                return false;
-            }
-
-            if (nextKey == null || (nextKey.length() < 3 && !"??".equals(nextKey))) {
-                System.out.println("*s* Error in " + tz.getID() + " "
-                                   + new DateTime(millis,
-                                                  ISOChronology.getInstanceUTC())
-                                   + ", nameKey=" + nextKey);
-                return false;
-            }
-
-            transitions.add(new Long(millis));
-
-            offset = nextOffset;
-            key = nextKey;
-        }
-
-        // Now verify that reverse transitions match up.
-
-        millis = ISOChronology.getInstanceUTC().year().set(0, 2050);
-        end = ISOChronology.getInstanceUTC().year().set(0, 1850);
-
-        for (int i=transitions.size(); --i>= 0; ) {
-            long prev = tz.previousTransition(millis);
-            if (prev == millis || prev < end) {
-                break;
-            }
-
-            millis = prev;
-
-            long trans = ((Long)transitions.get(i)).longValue();
-            
-            if (trans - 1 != millis) {
-                System.out.println("*r* Error in " + tz.getID() + " "
-                                   + new DateTime(millis,
-                                                  ISOChronology.getInstanceUTC()) + " != "
-                                   + new DateTime(trans - 1,
-                                                  ISOChronology.getInstanceUTC()));
-                                   
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    // Maps names to RuleSets.
-    private Map iRuleSets;
-
-    // List of Zone objects.
-    private List iZones;
-
-    // List String pairs to link.
-    private List iLinks;
-
-    public ZoneInfoCompiler() {
-        iRuleSets = new HashMap();
-        iZones = new ArrayList();
-        iLinks = new ArrayList();
-    }
-
-    /**
-     * Returns a map of ids to DateTimeZones.
-     *
-     * @param outputDir optional directory to write compiled data files to
-     * @param sources optional list of source files to parse
-     */
-    public Map compile(File outputDir, File[] sources) throws IOException {
-        if (sources != null) {
-            for (int i=0; i<sources.length; i++) {
-                BufferedReader in = new BufferedReader(new FileReader(sources[i]));
-                parseDataFile(in);
-                in.close();
-            }
-        }
-
-        if (outputDir != null) {
-            if (!outputDir.exists()) {
-                throw new IOException("Destination directory doesn't exist: " + outputDir);
-            }
-            if (!outputDir.isDirectory()) {
-                throw new IOException("Destination is not a directory: " + outputDir);
-            }
-        }
-
-        Map map = new TreeMap();
-
-        for (int i=0; i<iZones.size(); i++) {
-            Zone zone = (Zone)iZones.get(i);
-            DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
-            zone.addToBuilder(builder, iRuleSets);
-            final DateTimeZone original = builder.toDateTimeZone(zone.iName, true);
-            DateTimeZone tz = original;
-            if (test(tz.getID(), tz)) {
-                map.put(tz.getID(), tz);
-                if (outputDir != null) {
-                    System.out.println("Writing " + tz.getID());
-                    File file = new File(outputDir, tz.getID());
-                    if (!file.getParentFile().exists()) {
-                        file.getParentFile().mkdirs();
-                    }
-                    OutputStream out = new FileOutputStream(file);
-                    builder.writeTo(zone.iName, out);
-                    out.close();
-
-                    // Test if it can be read back.
-                    InputStream in = new FileInputStream(file);
-                    DateTimeZone tz2 = DateTimeZoneBuilder.readFrom(in, tz.getID());
-                    in.close();
-
-                    if (!original.equals(tz2)) {
-                        System.out.println("*e* Error in " + tz.getID() +
-                                           ": Didn't read properly from file");
-                    }
-                }
-            }
-        }
-
-        for (int pass=0; pass<2; pass++) {
-            for (int i=0; i<iLinks.size(); i += 2) {
-                String id = (String)iLinks.get(i);
-                String alias = (String)iLinks.get(i + 1);
-                DateTimeZone tz = (DateTimeZone)map.get(id);
-                if (tz == null) {
-                    if (pass > 0) {
-                        System.out.println("Cannot find time zone '" + id +
-                                           "' to link alias '" + alias + "' to");
-                    }
-                } else {
-                    map.put(alias, tz);
-                }
-            }
-        }
-
-        if (outputDir != null) {
-            System.out.println("Writing ZoneInfoMap");
-            File file = new File(outputDir, "ZoneInfoMap");
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-
-            OutputStream out = new FileOutputStream(file);
-            DataOutputStream dout = new DataOutputStream(out);
-            // Sort and filter out any duplicates that match case.
-            Map zimap = new TreeMap(String.CASE_INSENSITIVE_ORDER);
-            zimap.putAll(map);
-            writeZoneInfoMap(dout, zimap);
-            dout.close();
-        }
-
-        return map;
-    }
-
-    public void parseDataFile(BufferedReader in) throws IOException {
-        Zone zone = null;
-        String line;
-        while ((line = in.readLine()) != null) {
-            String trimmed = line.trim();
-            if (trimmed.length() == 0 || trimmed.charAt(0) == '#') {
-                continue;
-            }
-
-            int index = line.indexOf('#');
-            if (index >= 0) {
-                line = line.substring(0, index);
-            }
-
-            //System.out.println(line);
-
-            StringTokenizer st = new StringTokenizer(line, " \t");
-
-            if (Character.isWhitespace(line.charAt(0)) && st.hasMoreTokens()) {
-                if (zone != null) {
-                    // Zone continuation
-                    zone.chain(st);
-                }
-                continue;
-            } else {
-                if (zone != null) {
-                    iZones.add(zone);
-                }
-                zone = null;
-            }
-
-            if (st.hasMoreTokens()) {
-                String token = st.nextToken();
-                if (token.equalsIgnoreCase("Rule")) {
-                    Rule r = new Rule(st);
-                    RuleSet rs = (RuleSet)iRuleSets.get(r.iName);
-                    if (rs == null) {
-                        rs = new RuleSet(r);
-                        iRuleSets.put(r.iName, rs);
-                    } else {
-                        rs.addRule(r);
-                    }
-                } else if (token.equalsIgnoreCase("Zone")) {
-                    zone = new Zone(st);
-                } else if (token.equalsIgnoreCase("Link")) {
-                    iLinks.add(st.nextToken());
-                    iLinks.add(st.nextToken());
-                } else {
-                    System.out.println("Unknown line: " + line);
-                }
-            }
-        }
-
-        if (zone != null) {
-            iZones.add(zone);
-        }
-    }
-
-    private static class DateTimeOfYear {
-        public final int iMonthOfYear;
-        public final int iDayOfMonth;
-        public final int iDayOfWeek;
-        public final boolean iAdvanceDayOfWeek;
-        public final int iMillisOfDay;
-        public final char iZoneChar;
-
-        DateTimeOfYear() {
-            iMonthOfYear = 1;
-            iDayOfMonth = 1;
-            iDayOfWeek = 0;
-            iAdvanceDayOfWeek = false;
-            iMillisOfDay = 0;
-            iZoneChar = 'w';
-        }
-
-        DateTimeOfYear(StringTokenizer st) {
-            int month = 1;
-            int day = 1;
-            int dayOfWeek = 0;
-            int millis = 0;
-            boolean advance = false;
-            char zoneChar = 'w';
-
-            if (st.hasMoreTokens()) {
-                month = parseMonth(st.nextToken());
-
-                if (st.hasMoreTokens()) {
-                    String str = st.nextToken();
-                    if (str.startsWith("last")) {
-                        day = -1;
-                        dayOfWeek = parseDayOfWeek(str.substring(4));
-                        advance = false;
-                    } else {
-                        try {
-                            day = Integer.parseInt(str);
-                            dayOfWeek = 0;
-                            advance = false;
-                        } catch (NumberFormatException e) {
-                            int index = str.indexOf(">=");
-                            if (index > 0) {
-                                day = Integer.parseInt(str.substring(index + 2));
-                                dayOfWeek = parseDayOfWeek(str.substring(0, index));
-                                advance = true;
-                            } else {
-                                index = str.indexOf("<=");
-                                if (index > 0) {
-                                    day = Integer.parseInt(str.substring(index + 2));
-                                    dayOfWeek = parseDayOfWeek(str.substring(0, index));
-                                    advance = false;
-                                } else {
-                                    throw new IllegalArgumentException(str);
-                                }
-                            }
-                        }
-                    }
-
-                    if (st.hasMoreTokens()) {
-                        str = st.nextToken();
-                        zoneChar = parseZoneChar(str.charAt(str.length() - 1));
-                        millis = parseTime(str);
-                    }
-                }
-            }
-
-            iMonthOfYear = month;
-            iDayOfMonth = day;
-            iDayOfWeek = dayOfWeek;
-            iAdvanceDayOfWeek = advance;
-            iMillisOfDay = millis;
-            iZoneChar = zoneChar;
-        }
-
-        /**
-         * Adds a recurring savings rule to the builder.
-         */
-        public void addRecurring(DateTimeZoneBuilder builder, String nameKey,
-                                 int saveMillis, int fromYear, int toYear)
+        /// <summary>
+        /// Generates the date time zones from the given parsed time zone information object.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// First we go through the list of time zones and generate an <see cref="IDateTimeZone"/>
+        /// object for each one. We create a mapping between the time zone name and itself (for
+        /// writing out later). Then we write out the time zone as a resource to the current writer.
+        /// </para>
+        /// <para>
+        /// Second we go through all of the alias mappings and find the actual time zone that they
+        /// map to. we do this by redirecting through aliases until there are no more aliases. This
+        /// allows for on alias to refer to another. We add the alias mapping to the time zone
+        /// mapping created in the first step. When done, we write out the entire mapping as a
+        /// resource. The keys of the mapping can be used as the list of valid time zone ids
+        /// supported by this resource file.
+        /// </para>
+        /// </remarks>
+        /// <param name="database">The database of parsed zone info records.</param>
+        /// <param name="destination">The output file <see cref="ResourceOutput"/>.</param>
+        private void GenerateDateTimeZones(TzdbDatabase database, ResourceOutput output)
         {
-            builder.addRecurringSavings(nameKey, saveMillis,
-                                        fromYear, toYear,
-                                        iZoneChar,
-                                        iMonthOfYear,
-                                        iDayOfMonth,
-                                        iDayOfWeek,
-                                        iAdvanceDayOfWeek,
-                                        iMillisOfDay);
-        }
-
-        /**
-         * Adds a cutover to the builder.
-         */
-        public void addCutover(DateTimeZoneBuilder builder, int year) {
-            builder.addCutover(year,
-                               iZoneChar,
-                               iMonthOfYear,
-                               iDayOfMonth,
-                               iDayOfWeek,
-                               iAdvanceDayOfWeek,
-                               iMillisOfDay);
-        }
-
-        public String toString() {
-            return
-                "MonthOfYear: " + iMonthOfYear + "\n" +
-                "DayOfMonth: " + iDayOfMonth + "\n" +
-                "DayOfWeek: " + iDayOfWeek + "\n" +
-                "AdvanceDayOfWeek: " + iAdvanceDayOfWeek + "\n" +
-                "MillisOfDay: " + iMillisOfDay + "\n" +
-                "ZoneChar: " + iZoneChar + "\n";
-        }
-    }
-
-    private static class Rule {
-        public final String iName;
-        public final int iFromYear;
-        public final int iToYear;
-        public final String iType;
-        public final DateTimeOfYear iDateTimeOfYear;
-        public final int iSaveMillis;
-        public final String iLetterS;
-
-        Rule(StringTokenizer st) {
-            iName = st.nextToken().intern();
-            iFromYear = parseYear(st.nextToken(), 0);
-            iToYear = parseYear(st.nextToken(), iFromYear);
-            if (iToYear < iFromYear) {
-                throw new IllegalArgumentException();
+            var timeZoneMap = new Dictionary<string, string>();
+            foreach (var zoneList in database.Zones)
+            {
+                IDateTimeZone timeZone = CreateTimeZone(zoneList, database.Rules);
+                timeZoneMap.Add(timeZone.Id, timeZone.Id);
+                output.WriteTimeZone(timeZone.Id, timeZone);
             }
-            iType = parseOptional(st.nextToken());
-            iDateTimeOfYear = new DateTimeOfYear(st);
-            iSaveMillis = parseTime(st.nextToken());
-            iLetterS = parseOptional(st.nextToken());
+
+            foreach (var key in database.Aliases.Keys)
+            {
+                string value = database.Aliases[key];
+                while (database.Aliases.ContainsKey(value))
+                {
+                    value = database.Aliases[value];
+                }
+                timeZoneMap.Add(key, value);
+            }
+
+            output.WriteDictionary(DateTimeZoneResourceProvider.IdMapKey, timeZoneMap);
         }
 
-        /**
-         * Adds a recurring savings rule to the builder.
-         */
-        public void addRecurring(DateTimeZoneBuilder builder, String nameFormat) {
-            String nameKey = formatName(nameFormat);
-            iDateTimeOfYear.addRecurring
-                (builder, nameKey, iSaveMillis, iFromYear, iToYear);
+        /// <summary>
+        /// Returns a newly created <see cref="IDateTimeZone"/> built from the given time zone data.
+        /// </summary>
+        /// <param name="zoneList">The time zone definition parts to add.</param>
+        /// <param name="ruleSets">The rule sets map to use in looking up rules for the time zones..</param>
+        private IDateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, ZoneRuleCollection> ruleSets)
+        {
+            DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
+            foreach (var zone in zoneList)
+            {
+                builder.SetStandardOffset(zone.Offset);
+                if (zone.Rules == null)
+                {
+                    builder.SetFixedSavings(zone.Format, Offset.Zero);
+                }
+                else
+                {
+                    try
+                    {
+                        // Check if iRules actually just refers to a savings.
+                        Offset savings = ParserHelper.ParseOffset(zone.Rules);
+                        builder.SetFixedSavings(zone.Format, savings);
+                    }
+                    catch (FormatException)
+                    {
+                        ZoneRuleCollection rs = ruleSets[zone.Rules];
+                        if (rs == null)
+                        {
+                            throw new ArgumentException("Rules not found: " + zone.Rules);
+                        }
+                        AddRecurring(builder, zone.Format, rs);
+                    }
+                }
+                if (zone.Year == Int32.MaxValue)
+                {
+                    break;
+                }
+
+                builder.AddCutover(zone.Year,
+                                   TransitionMode.Wall,
+                                   zone.MonthOfYear,
+                                   zone.DayOfMonth,
+                                   0,
+                                   true,
+                                   zone.TickOfDay);
+
+            }
+            return builder.ToDateTimeZone(zoneList.Name);
         }
 
-        private String formatName(String nameFormat) {
-            int index = nameFormat.indexOf('/');
-            if (index > 0) {
-                if (iSaveMillis == 0) {
-                    // Extract standard name.
-                    return nameFormat.substring(0, index).intern();
-                } else {
-                    return nameFormat.substring(index + 1).intern();
+        /// <summary>
+        /// Adds a recurring savings rule to the time zone builder.
+        /// </summary>
+        /// <param name="builder">The <see cref="DateTimeZoneBuilder"/> to add to.</param>
+        /// <param name="nameFormat">The name format pattern.</param>
+        /// <param name="ruleSet">The <see cref="ZoneRuleCollection"/> describing the recurring savings.</param>
+        private void AddRecurring(DateTimeZoneBuilder builder, String nameFormat, ZoneRuleCollection ruleSet)
+        {
+            foreach (var rule in ruleSet)
+            {
+                builder.AddRecurringSavings(rule.FormatName(nameFormat),
+                                            rule.Savings,
+                                            rule.FromYear,
+                                            rule.ToYear,
+                                            rule.Recurrence.YearOffset.Mode,
+                                            rule.Recurrence.YearOffset.MonthOfYear,
+                                            rule.Recurrence.YearOffset.DayOfMonth,
+                                            rule.Recurrence.YearOffset.DayOfWeek,
+                                            rule.Recurrence.YearOffset.AdvanceDayOfWeek,
+                                            rule.Recurrence.YearOffset.TickOfDay);
+            }
+        }
+
+        /// <summary>
+        /// Takes an enumeration of file names and converts it to an enumeration of FileInfo
+        /// objects.
+        /// </summary>
+        /// <remarks>
+        /// Only those files that actually exist are returned. If a file does not exist, a message
+        /// is logged. If the list is empty then all of the files in the <paramref name="source"/>
+        /// directory are returned.
+        /// </remarks>
+        /// <param name="source">The source directory <see cref="DirectoryInfo"/> object.</param>
+        /// <param name="files">The enumeration of file name strings.</param>
+        /// <returns>Am <see cref="IEnumerable"/> of <see cref="FileInfo"/> objects.</returns>
+        private IEnumerable<FileInfo> MakeFileList(DirectoryInfo source, IEnumerable<string> files)
+        {
+            if (files == null || files.Count() == 0)
+            {
+                var allFiles = source.GetFiles();
+                foreach (var file in allFiles)
+                {
+                    yield return file;
                 }
             }
-            index = nameFormat.indexOf("%s");
-            if (index < 0) {
-                return nameFormat;
+            else
+            {
+                foreach (var fileName in files)
+                {
+                    FileInfo fileInfo = new FileInfo(Path.Combine(source.ToString(), fileName));
+                    if (!fileInfo.Exists)
+                    {
+                        this.log.Error("File [{0}] does not exist", fileInfo.FullName);
+                    }
+                    else
+                    {
+                        yield return fileInfo;
+                    }
+                }
             }
-            String left = nameFormat.substring(0, index);
-            String right = nameFormat.substring(index + 2);
-            String name;
-            if (iLetterS == null) {
-                name = left.concat(right);
-            } else {
-                name = left + iLetterS + right;
-            }
-            return name.intern();
         }
 
-        public String toString() {
-            return
-                "[Rule]\n" + 
-                "Name: " + iName + "\n" +
-                "FromYear: " + iFromYear + "\n" +
-                "ToYear: " + iToYear + "\n" +
-                "Type: " + iType + "\n" +
-                iDateTimeOfYear +
-                "SaveMillis: " + iSaveMillis + "\n" +
-                "LetterS: " + iLetterS + "\n";
+        /// <summary>
+        /// Validates the program arguments. If anything is not setup correctly then an exception os
+        /// thrown and compilation does not proceed.
+        /// </summary>
+        /// <param name="source">The source directory <see cref="DirectoryInfo"/> object.</param>
+        /// <param name="files">The <see cref="IEnumerable"/> of file names. Cannot be <c>null</c>.</param>
+        /// <param name="target">The target file <see cref="FileInfo"/> object.</param>
+        private void ValidateArguments(DirectoryInfo source, IEnumerable<FileInfo> fileList, FileInfo target)
+        {
+            ValidateExitingDirectory(source, "source");
+            if (fileList.Count() == 0)
+            {
+                throw new ArgumentException("There are no files to process");
+            }
+        }
+
+        /// <summary>
+        /// Validates the the given directory info object is valid and refers to an existing
+        /// directory.
+        /// </summary>
+        /// <param name="directory">The <see cref="DirectoryInfo"/> to check.</param>
+        /// <param name="name">The name to use in error messages.</param>
+        private void ValidateExitingDirectory(DirectoryInfo directory, string name)
+        {
+            if (directory == null)
+            {
+                throw new ArgumentNullException(name, "The " + name + " parameter cannot be null");
+            }
+            if (!directory.Exists)
+            {
+                throw new ArgumentException("The " + name + " location does not exist: " + directory.FullName, name);
+            }
+            if (directory.Attributes != FileAttributes.Directory)
+            {
+                throw new ArgumentException("The " + name + " location must be a directory: " + directory.FullName, name);
+            }
+        }
+
+        /// <summary>
+        /// Writes various informational counts to the log.
+        /// </summary>
+        /// <param name="database">The database to query for the counts.</param>
+        private void LogCounts(TzdbDatabase database)
+        {
+            this.log.Info("=======================================");
+            this.log.Info("Rule sets: {0:D}", database.Rules.Count);
+            this.log.Info("Zones:     {0:D}", database.Zones.Count);
+            this.log.Info("Aliases:   {0:D}", database.Aliases.Count);
+            this.log.Info("=======================================");
         }
     }
-
-    private static class RuleSet {
-        private List iRules;
-
-        RuleSet(Rule rule) {
-            iRules = new ArrayList();
-            iRules.add(rule);
-        }
-
-        void addRule(Rule rule) {
-            if (!(rule.iName.equals(((Rule)iRules.get(0)).iName))) {
-                throw new IllegalArgumentException("Rule name mismatch");
-            }
-            iRules.add(rule);
-        }
-
-        /**
-         * Adds recurring savings rules to the builder.
-         */
-        public void addRecurring(DateTimeZoneBuilder builder, String nameFormat) {
-            for (int i=0; i<iRules.size(); i++) {
-                Rule rule = (Rule)iRules.get(i);
-                rule.addRecurring(builder, nameFormat);
-            }
-        }
-    }
-
-}
-
-#endif
 }

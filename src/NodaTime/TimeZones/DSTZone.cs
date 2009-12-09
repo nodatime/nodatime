@@ -61,9 +61,9 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            if (obj is DSTZone)
+            DSTZone other = obj as DSTZone;
+            if (other != null)
             {
-                DSTZone other = (DSTZone)obj;
                 return
                     Id == other.Id &&
                     StandardOffset == other.StandardOffset &&
@@ -129,7 +129,29 @@ namespace NodaTime.TimeZones
             get { return false; }
         }
 
-        #endregion
-    }
+        public void Write(DateTimeZoneWriter writer)
+        {
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
+            writer.WriteOffset(StandardOffset);
+            StartRecurrence.Write(writer);
+            EndRecurrence.Write(writer);
+        }
 
+        #endregion
+
+        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
+            Offset offset = reader.ReadOffset();
+            ZoneRecurrence start = ZoneRecurrence.Read(reader);
+            ZoneRecurrence end = ZoneRecurrence.Read(reader);
+            return new DSTZone(id, offset, start, end);
+        }
+    }
 }

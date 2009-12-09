@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Diagnostics;
 
 namespace NodaTime.ZoneInfoCompiler
@@ -35,7 +36,8 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="message">The message to log.</param>
         protected override void LogMessage(LogBase.LogType type, string message)
         {
-            switch (type) {
+            switch (type)
+            {
                 case LogType.Informational:
                     // Do nothing
                     break;
@@ -50,6 +52,10 @@ namespace NodaTime.ZoneInfoCompiler
             EndLine();
         }
 
+        /// <summary>
+        /// Writes the specified message to the console or the debug output.
+        /// </summary>
+        /// <param name="message">The message to write.</param>
         private void Write(string message)
         {
 #if DEBUG
@@ -59,6 +65,9 @@ namespace NodaTime.ZoneInfoCompiler
 #endif
         }
 
+        /// <summary>
+        /// Writes an end-of-line to the console or the debug output.
+        /// </summary>
         private void EndLine()
         {
 #if DEBUG

@@ -34,7 +34,7 @@ namespace NodaTime.TimeZones
     public sealed class CachedDateTimeZone
         : IDateTimeZone
     {
-        private readonly IDateTimeZone timeZone;
+        internal readonly IDateTimeZone timeZone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
@@ -78,6 +78,10 @@ namespace NodaTime.TimeZones
         /// </returns>
         public static bool IsWorthCaching(IEnumerable<Instant> transitions)
         {
+            if (transitions == null)
+            {
+                throw new ArgumentNullException("transitions");
+            }
             // Add up all the distances between transitions that are less than
             // about two years.
             double distances = 0;
@@ -161,6 +165,25 @@ namespace NodaTime.TimeZones
             get { return this.timeZone.IsFixed; }
         }
 
+        public void Write(DateTimeZoneWriter writer)
+        {
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
+            writer.WriteTimeZone(timeZone);
+        }
+
         #endregion
+
+        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
+            IDateTimeZone timeZone = reader.ReadTimeZone(id);
+            return new CachedDateTimeZone(timeZone);
+        }
     }
 }

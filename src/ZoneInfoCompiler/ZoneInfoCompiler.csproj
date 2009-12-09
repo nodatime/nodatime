@@ -48,6 +48,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,10 +59,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=1.7.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\commandline\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -72,19 +78,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ConsoleLog.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="LogBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceOutput.cs" />
     <Compile Include="Tokens.cs" />
     <Compile Include="Tzdb\MissingTokenException.cs" />
     <Compile Include="Tzdb\ParserHelper.cs" />
+    <Compile Include="Tzdb\TzdbCompilerOptions.cs" />
     <Compile Include="Tzdb\TzdbDatabase.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoCompiler.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoParser.cs" />
     <Compile Include="Tzdb\Zone.cs" />
     <Compile Include="Tzdb\ZoneAlias.cs" />
     <Compile Include="Tzdb\ZoneList.cs" />
+    <Compile Include="winmap\WindowsMapperCompiler.cs" />
+    <Compile Include="winmap\WindowsMapperCompilerOptions.cs" />
     <Compile Include="ZoneInfoCompiler.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -124,12 +135,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tzdb\Data\Readme.txt" />
+    <Content Include="Tzdb\Data\supplementalData.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
       <Project>{42B687A6-0F76-4638-A372-161C922A998B}</Project>
       <Name>NodaTime</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

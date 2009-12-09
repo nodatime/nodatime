@@ -16,6 +16,10 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using NodaTime.Calendars;
+using NodaTime.Fields;
+using System.IO;
+using System.Text;
 
 namespace NodaTime.TimeZones
 {
@@ -70,7 +74,7 @@ namespace NodaTime.TimeZones
     /// </remarks>
     public sealed class DateTimeZoneBuilder
     {
-        private readonly IList<ZoneRuleSet> ruleSets = new List<ZoneRuleSet>();
+        private readonly IList<ZoneRuleCollection> ruleSets = new List<ZoneRuleCollection>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneBuilder"/> class.
@@ -105,6 +109,14 @@ namespace NodaTime.TimeZones
                                               bool advanceDayOfWeek,
                                               Offset tickOfDay)
         {
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
+            if (dayOfWeek != 0)
+            {
+                FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
+            }
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.AsTicks());
+
             if (ruleSets.Count > 0)
             {
                 ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
@@ -158,15 +170,23 @@ namespace NodaTime.TimeZones
                                                        int fromYear,
                                                        int toYear,
                                                        TransitionMode mode,
-                                                       int monthYearOffset,
+                                                       int monthOfYear,
                                                        int dayOfMonth,
                                                        int dayOfWeek,
                                                        bool advanceDayOfWeek,
                                                        Offset tickOfDay)
         {
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
+            if (dayOfWeek != 0)
+            {
+                FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
+            }
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.AsTicks());
+
             if (fromYear <= toYear)
             {
-                ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthYearOffset, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
+                ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
                 ZoneRecurrence recurrence = new ZoneRecurrence(nameKey, savings, yearOffset);
                 ZoneRule rule = new ZoneRule(recurrence, fromYear, toYear);
                 LastRuleSet.AddRule(rule);
@@ -190,14 +210,13 @@ namespace NodaTime.TimeZones
             var transitions = new List<ZoneTransition>();
             IDateTimeZone tailZone = null;
             Instant instant = Instant.MinValue;
-            Duration savings = Duration.Zero;
 
             int ruleSetCount = this.ruleSets.Count;
             for (int i = 0; i < ruleSetCount; i++)
             {
                 var ruleSet = this.ruleSets[i];
                 var transitionIterator = ruleSet.Iterator(instant);
-                var nextTransition = transitionIterator.Next();
+                var nextTransition = transitionIterator.First();
                 if (nextTransition == null)
                 {
                     continue;
@@ -290,7 +309,7 @@ namespace NodaTime.TimeZones
         /// Gets the last rule set if there are no rule sets one that spans all of time is created and returned.
         /// </summary>
         /// <value>The last rule set.</value>
-        private ZoneRuleSet LastRuleSet
+        private ZoneRuleCollection LastRuleSet
         {
             get
             {
@@ -307,7 +326,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         private void AddEndOfTimeRuleSet()
         {
-            ruleSets.Add(new ZoneRuleSet());
+            ruleSets.Add(new ZoneRuleCollection());
         }
     }
 }

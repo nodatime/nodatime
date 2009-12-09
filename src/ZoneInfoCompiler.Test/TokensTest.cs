@@ -14,12 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.ZoneInfoCompiler;
 using NUnit.Framework;
 
 namespace ZoneInfoCompiler.Test
-{    
+{
     /// <summary>
     /// This is a test class for containing all of the ParserHelper unit tests.
     ///</summary>
@@ -83,10 +84,12 @@ namespace ZoneInfoCompiler.Test
         /// <param name="expected">The expected values.</param>
         private void ValidateTokens(Tokens tokens, string[] expected)
         {
-            for (int i = 0; i < expected.Length; i++) {
+            for (int i = 0; i < expected.Length; i++)
+            {
                 Assert.True(tokens.HasNextToken, "Not enough items in enumertion");
                 string actual = tokens.NextToken(i.ToString());
-                if (actual == null) {
+                if (actual == null)
+                {
                     Assert.Fail("The enumeration item at index [" + i + "] is null");
                 }
                 Assert.AreEqual(expected[i], actual, "The enumeration item at index [" + i + "] is not correct");

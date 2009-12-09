@@ -386,7 +386,7 @@ namespace NodaTime.Test
         {
             Assert.AreEqual(LocalInstant.LocalUnixEpoch, Instant.UnixEpoch + Offset.Zero, "UnixEpoch + Offset.Zero");
             Assert.AreEqual(new LocalInstant(1L), one + Offset.Zero, "Instant(1) + Offset.Zero");
-            Assert.AreEqual(new LocalInstant(1L), Instant.UnixEpoch + Offset.One, "UnixEpoch + Offset.One");
+            Assert.AreEqual(new LocalInstant(NodaConstants.TicksPerHour), Instant.UnixEpoch + offsetOneHour, "UnixEpoch + offsetOneHour");
         }
 
         #endregion

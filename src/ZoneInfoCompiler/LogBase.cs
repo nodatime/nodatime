@@ -14,7 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 namespace NodaTime.ZoneInfoCompiler
@@ -25,6 +27,8 @@ namespace NodaTime.ZoneInfoCompiler
     internal abstract class LogBase
         : ILog
     {
+        private delegate void LogOutputMethod(string format, params object[] arguments);
+
         /// <summary>
         /// Called to actually log the message to where ever the logger sends its output. The
         /// destination can be different based on the message type and different loggers may not
@@ -79,6 +83,42 @@ namespace NodaTime.ZoneInfoCompiler
             LogMessage(LogType.Error, Format(format, arguments));
         }
 
+        /// <summary>
+        /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Info"/>.
+        /// </summary>
+        /// <value>The <see cref="TextWriter"/>.</value>
+        public TextWriter InfoWriter
+        {
+            get
+            {
+                return new LogTextWriter(this.Info);
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Warn"/>.
+        /// </summary>
+        /// <value>The <see cref="TextWriter"/>.</value>
+        public TextWriter WarnWriter
+        {
+            get
+            {
+                return new LogTextWriter(this.Warn);
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Error"/>.
+        /// </summary>
+        /// <value>The <see cref="TextWriter"/>.</value>
+        public TextWriter ErrorWriter
+        {
+            get
+            {
+                return new LogTextWriter(this.Error);
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -92,9 +132,11 @@ namespace NodaTime.ZoneInfoCompiler
             StringBuilder builder = new StringBuilder();
             string message = string.Format(CultureInfo.InvariantCulture, format, arguments);
             builder.Append(message);
-            if (LineNumber > 0) {
+            if (LineNumber > 0)
+            {
                 builder.Append(" at line ").Append(LineNumber);
-                if (FileName != null) {
+                if (FileName != null)
+                {
                     builder.Append(" of ").Append(FileName);
                 }
             }
@@ -120,6 +162,63 @@ namespace NodaTime.ZoneInfoCompiler
             /// This defines an error. Processing will terminate without completing.
             /// </summary>
             Error
+        }
+
+        /// <summary>
+        /// Private class to implement a <see cref="Textwriter"/> that sends its output
+        /// to the given output method.
+        /// </summary>
+        private class LogTextWriter
+            : TextWriter
+        {
+            private StringBuilder builder = new StringBuilder();
+            private LogOutputMethod output;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="LogTextWriter"/> class.
+            /// </summary>
+            /// <param name="log">The log.</param>
+            public LogTextWriter(LogOutputMethod output)
+            {
+                this.output = output;
+            }
+
+            /// <summary>
+            /// When overridden in a derived class, returns the <see cref="T:System.Text.Encoding"/> in which the output is written.
+            /// </summary>
+            /// <returns>The Encoding in which the output is written.</returns>
+            public override Encoding Encoding
+            {
+                get { return Encoding.UTF8; }
+            }
+
+            /// <summary>
+            /// Writes a character to the text stream.
+            /// </summary>
+            /// <param name="value">The character to write to the text stream.</param>
+            /// <exception cref="T:System.ObjectDisposedException">
+            /// The <see cref="T:System.IO.TextWriter"/> is closed.
+            /// </exception>
+            /// <exception cref="T:System.IO.IOException">
+            /// An I/O error occurs.
+            /// </exception>
+            public override void Write(char value)
+            {
+                if (value == '\r')
+                {
+                    // Ignore
+                }
+                else if (value == '\n')
+                {
+                    string message = this.builder.ToString();
+                    output("{0}", message);
+                    this.builder.Remove(0, message.Length);
+                }
+                else
+                {
+                    this.builder.Append(value);
+                }
+            }
         }
     }
 }

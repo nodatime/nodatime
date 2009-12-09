@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Globalization;
 using System.Text;
@@ -35,13 +36,16 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public static int ParseYear(String text, int defaultValue)
         {
             text = text.ToLowerInvariant();
-            if (text == "minimum" || text == "min") {
+            if (text == "minimum" || text == "min")
+            {
                 return Int32.MinValue;
             }
-            else if (text == "maximum" || text == "max") {
+            else if (text == "maximum" || text == "max")
+            {
                 return Int32.MaxValue;
             }
-            else if (text == "only") {
+            else if (text == "only")
+            {
                 return defaultValue;
             }
             return Int32.Parse(text, CultureInfo.InvariantCulture);
@@ -56,7 +60,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <exception cref="ArgumentNullException">If the text is null.</exception>
         public static string ParseOptional(String text)
         {
-            if (text == null) {
+            if (text == null)
+            {
                 throw new ArgumentNullException("value cannot be null");
             }
             return text == "-" ? null : text;
@@ -69,7 +74,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <returns></returns>
         public static string FormatOptional(string value)
         {
-            if (value == null) {
+            if (value == null)
+            {
                 return "-";
             }
             return value;
@@ -83,21 +89,25 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <exception cref="ArgumentNullException">If the text is null.</exception>
         public static Offset ParseOffset(string text)
         {
-            if (text == null) {
+            if (text == null)
+            {
                 throw new ArgumentNullException("value cannot be null");
             }
             string[] parts = Regex.Split(text, ":", RegexOptions.CultureInvariant | RegexOptions.Compiled);
-            if (parts.Length > 3) {
+            if (parts.Length > 3)
+            {
                 throw new FormatException("Offset has too many colon separated parts (max of 3 allowed): " + text);
             }
             long ticks = ConvertHourToTicks(parts[0]);
-            if (parts.Length > 1) {
+            if (parts.Length > 1)
+            {
                 ticks += ConvertMinuteToTicks(parts[1]);
-                if (parts.Length > 2) {
+                if (parts.Length > 2)
+                {
                     ticks += ConvertSecondsWithFractionalToTicks(parts[2]);
                 }
             }
-            return new Offset(ticks);
+            return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
         }
 
         /// <summary>
@@ -110,7 +120,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal static long ConvertHourToTicks(string text)
         {
             int value = Int32.Parse(text, NumberStyles.Integer, CultureInfo.InvariantCulture);
-            if (value < -23 || value > 23) {
+            if (value < -23 || value > 23)
+            {
                 throw new FormatException("hours out of valid range of [-23, 23]: " + value);
             }
             return value * NodaConstants.TicksPerHour;
@@ -126,7 +137,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal static long ConvertMinuteToTicks(string text)
         {
             int value = Int32.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture);
-            if (value < 0 || value > 59) {
+            if (value < 0 || value > 59)
+            {
                 throw new FormatException("hours out of valid range of [0, 59]: " + value);
             }
             return value * NodaConstants.TicksPerMinute;
@@ -142,7 +154,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal static long ConvertSecondsWithFractionalToTicks(string text)
         {
             double number = Double.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
-            if (number < 0.0 || number >= 60.0) {
+            if (number < 0.0 || number >= 60.0)
+            {
                 throw new FormatException("seconds out of valid range of [0, 60): " + number);
             }
             long value = (long)(number * NodaConstants.MillisecondsPerSecond) * NodaConstants.TicksPerMillisecond;
@@ -171,12 +184,15 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <exception cref="FormatException">If the text is not a valid positive or zero integer.</exception>
         internal static int ParsePositiveInteger(string text, int defaultValue)
         {
-            if (defaultValue < 0) {
+            if (defaultValue < 0)
+            {
                 throw new ArgumentOutOfRangeException("defaultValue", "defaultValue must be a positive integer or zero.");
             }
             int value = defaultValue;
-            if (text != null) {
-                if (!Int32.TryParse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture, out value)) {
+            if (text != null)
+            {
+                if (!Int32.TryParse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture, out value))
+                {
                     value = defaultValue;
                 }
             }
@@ -205,45 +221,14 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal static int ParseInteger(string text, int defaultValue)
         {
             int value = defaultValue;
-            if (text != null) {
-                if (!Int32.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out value)) {
+            if (text != null)
+            {
+                if (!Int32.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
+                {
                     value = defaultValue;
                 }
             }
             return value;
-        }
-
-        /// <summary>
-        /// Formats the given millisecons offset as a string parsable by ParseOffset().
-        /// </summary>
-        /// <param name="offset">The Offset to format.</param>
-        /// <returns>The formatted string</returns>
-        internal static string FormatOffset(Offset offset)
-        {
-            StringBuilder builder = new StringBuilder();
-            long ticks = offset.Ticks;
-            if (ticks < 0) {
-                builder.Append("-");
-                ticks = -ticks;
-            }
-            long hours = ticks / NodaConstants.TicksPerHour;
-            ticks -= (hours * NodaConstants.TicksPerHour);
-            builder.Append(hours.ToString("D", CultureInfo.InvariantCulture));
-            long minutes = ticks / NodaConstants.TicksPerMinute;
-            ticks -= (minutes * NodaConstants.TicksPerMinute);
-            builder.Append(":");
-            builder.Append(minutes.ToString("D2", CultureInfo.InvariantCulture));
-            if (ticks > 0) {
-                long seconds = ticks / NodaConstants.TicksPerMinute;
-                ticks -= (seconds * NodaConstants.TicksPerMinute);
-                builder.Append(":");
-                builder.Append(seconds.ToString("D2", CultureInfo.InvariantCulture));
-                if (ticks > 0) {
-                    builder.Append(".");
-                    builder.Append(ticks.ToString("D3", CultureInfo.InvariantCulture));
-                }
-            }
-            return builder.ToString();
         }
     }
 }

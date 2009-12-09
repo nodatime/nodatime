@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using NodaTime.TimeZones;
@@ -25,23 +26,25 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// </summary>
     internal class TzdbDatabase
     {
+        private SortedList<string, ZoneList> zoneLists;
+
         /// <summary>
         /// Gets or sets the daylight savings rule sets.
         /// </summary>
         /// <value>The rule sets.</value>
-        internal IDictionary<string, ZoneRuleSet> Rules { get; private set; }
+        internal IDictionary<string, ZoneRuleCollection> Rules { get; private set; }
 
         /// <summary>
         /// Gets or sets the time zone definitions.
         /// </summary>
         /// <value>The time zone definitions.</value>
-        internal IList<ZoneList> Zones { get; private set; }
+        internal IList<ZoneList> Zones { get { return this.zoneLists.Values; } }
 
         /// <summary>
         /// Gets or sets the time zone alias links.
         /// </summary>
         /// <value>The alias links.</value>
-        internal IList<ZoneAlias> Aliases { get; private set; }
+        internal IDictionary<string, string> Aliases { get; private set; }
 
         /// <summary>
         /// Gets or sets the current zone list. This is used to gather all of the time zone
@@ -55,9 +58,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         internal TzdbDatabase()
         {
-            Rules = new Dictionary<string, ZoneRuleSet>();
-            Zones = new List<ZoneList>();
-            Aliases = new List<ZoneAlias>();
+            this.zoneLists = new SortedList<string, ZoneList>();
+            Rules = new Dictionary<string, ZoneRuleCollection>();
+            Aliases = new Dictionary<string, string>();
             CurrentZoneList = null;
         }
 
@@ -68,9 +71,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="rule">The rule to add.</param>
         internal void AddRule(ZoneRule rule)
         {
-            ZoneRuleSet ruleSet;
-            if (!Rules.TryGetValue(rule.Name, out ruleSet)) {
-                ruleSet = new ZoneRuleSet();
+            ZoneRuleCollection ruleSet;
+            if (!Rules.TryGetValue(rule.Name, out ruleSet))
+            {
+                ruleSet = new ZoneRuleCollection();
                 Rules[rule.Name] = ruleSet;
             }
             ruleSet.AddRule(rule);
@@ -82,7 +86,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="link">The zone alias to add.</param>
         internal void AddAlias(ZoneAlias alias)
         {
-            Aliases.Add(alias);
+            Aliases.Add(alias.Alias, alias.Existing);
         }
 
         /// <summary>
@@ -92,15 +96,19 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="zone">The zone to add.</param>
         internal void AddZone(Zone zone)
         {
-            if (zone.Name == null) {
-                if (CurrentZoneList == null) {
+            string name = zone.Name;
+            if (name == null || name == string.Empty)
+            {
+                if (CurrentZoneList == null)
+                {
                     throw new ArgumentException("A continuation zone must be preceeded by an initially named zone");
                 }
-                zone.Name = CurrentZoneList.Name;
+                name = CurrentZoneList.Name;
             }
-            if (CurrentZoneList == null || CurrentZoneList.Name != zone.Name) {
+            if (CurrentZoneList == null || CurrentZoneList.Name != name)
+            {
                 CurrentZoneList = new ZoneList();
-                Zones.Add(CurrentZoneList);
+                this.zoneLists.Add(name, CurrentZoneList);
             }
             CurrentZoneList.Add(zone);
         }

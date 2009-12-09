@@ -14,13 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.IO;
+using NodaTime;
+using NodaTime.TimeZones;
 using NodaTime.ZoneInfoCompiler;
 using NodaTime.ZoneInfoCompiler.Tzdb;
 using NUnit.Framework;
-using NodaTime.TimeZones;
-using NodaTime;
 
 namespace ZoneInfoCompiler.Test
 {
@@ -182,8 +183,8 @@ namespace ZoneInfoCompiler.Test
             TzdbDatabase database = new TzdbDatabase();
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 2, 0);
-            Assert.AreEqual(3, database.Zones[0].Count, "Zones in set " + database.Zones[0].Name);
-            Assert.AreEqual(2, database.Zones[1].Count, "Zones in set " + database.Zones[0].Name);
+            Assert.AreEqual(2, database.Zones[0].Count, "Zones in set " + database.Zones[0].Name);
+            Assert.AreEqual(3, database.Zones[1].Count, "Zones in set " + database.Zones[1].Name);
         }
 
         [Test]
@@ -202,14 +203,15 @@ namespace ZoneInfoCompiler.Test
             TzdbDatabase database = new TzdbDatabase();
             Parser.Parse(reader, database);
             ValidateCounts(database, 1, 2, 0);
-            Assert.AreEqual(3, database.Zones[0].Count, "Zones in set " + database.Zones[0].Name);
-            Assert.AreEqual(2, database.Zones[1].Count, "Zones in set " + database.Zones[0].Name);
+            Assert.AreEqual(2, database.Zones[0].Count, "Zones in set " + database.Zones[0].Name);
+            Assert.AreEqual(3, database.Zones[1].Count, "Zones in set " + database.Zones[1].Name);
         }
 
         [Test]
         public void Parse_twoLinks()
         {
             string text =
+                "# First line must be a comment\n" +
                 "Link from to\n" +
                 "Link target source\n";
             StringReader reader = new StringReader(text);
@@ -319,135 +321,152 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_emptyString_exception()
         {
             Tokens tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_tooFewWords2_exception()
         {
             Tokens tokens = Tokens.Tokenize("2:00");
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_tooFewWords1_exception()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US");
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_simple()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT");
-            Zone expected = new Zone()
-            {
-                Offset = ToOffset(2, 0, 0, 0),
-                Rules = "US",
-                Format = "P%sT"
-            };
-            Assert.AreEqual(expected, Parser.ParseZone(tokens));
+            Zone expected = new Zone(
+                string.Empty,
+                ToOffset(2, 0, 0, 0),
+                "US",
+                "P%sT",
+                0,
+                NodaConstants.January,
+                1,
+                Offset.Zero,
+                (char)0
+                );
+            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_optionalRule()
         {
             Tokens tokens = Tokens.Tokenize("2:00 - P%sT");
-            Zone expected = new Zone()
-            {
-                Offset = ToOffset(2, 0, 0, 0),
-                Rules = null,
-                Format = "P%sT"
-            };
-            Assert.AreEqual(expected, Parser.ParseZone(tokens));
+            Zone expected = new Zone(
+                string.Empty,
+                ToOffset(2, 0, 0, 0),
+                null,
+                "P%sT",
+                0,
+                NodaConstants.January,
+                1,
+                Offset.Zero,
+                (char)0
+                );
+            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_withYear()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969");
-            Zone expected = new Zone()
-            {
-                Offset = ToOffset(2, 0, 0, 0),
-                Rules = "US",
-                Format = "P%sT",
-                Year = 1969
-            };
-            Assert.AreEqual(expected, Parser.ParseZone(tokens));
+            Zone expected = new Zone(
+                string.Empty,
+                ToOffset(2, 0, 0, 0),
+                "US",
+                "P%sT",
+                1969,
+                NodaConstants.January,
+                1,
+                Offset.Zero,
+                (char)0
+                );
+            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_withYearMonthDay()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23");
-            Zone expected = new Zone()
-            {
-                Offset = ToOffset(2, 0, 0, 0),
-                Rules = "US",
-                Format = "P%sT",
-                Year = 1969,
-                Month = 3,
-                Day = 23
-            };
-            Assert.AreEqual(expected, Parser.ParseZone(tokens));
+            Zone expected = new Zone(
+                string.Empty,
+                ToOffset(2, 0, 0, 0),
+                "US",
+                "P%sT",
+                1969,
+                NodaConstants.March,
+                23,
+                Offset.Zero,
+                (char)0
+                );
+            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_withYearMonthDayTime()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856");
-            Zone expected = new Zone()
-            {
-                Offset = ToOffset(2, 0, 0, 0),
-                Rules = "US",
-                Format = "P%sT",
-                Year = 1969,
-                Month = 3,
-                Day = 23,
-                TickOfDay = ToOffset(14, 53, 27, 856)
-            };
-            Assert.AreEqual(expected, Parser.ParseZone(tokens));
+            Zone expected = new Zone(
+                string.Empty,
+                ToOffset(2, 0, 0, 0),
+                "US",
+                "P%sT",
+                1969,
+                NodaConstants.March,
+                23,
+                ToOffset(14, 53, 27, 856),
+                (char)0
+                );
+            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_withYearMonthDayTimeZone()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856s");
-            Zone expected = new Zone()
-            {
-                Offset = ToOffset(2, 0, 0, 0),
-                Rules = "US",
-                Format = "P%sT",
-                Year = 1969,
-                Month = 3,
-                Day = 23,
-                TickOfDay = ToOffset(14, 53, 27, 856),
-                ZoneCharacter = 's'
-            };
-            Assert.AreEqual(expected, Parser.ParseZone(tokens));
+            Zone expected = new Zone(
+                string.Empty,
+                ToOffset(2, 0, 0, 0),
+                "US",
+                "P%sT",
+                1969,
+                NodaConstants.March,
+                23,
+                ToOffset(14, 53, 27, 856),
+                's'
+                );
+            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_badOffset_exception()
         {
             Tokens tokens = Tokens.Tokenize("asd US P%sT 1969 Mar 23 14:53:27.856s");
-            Zone expected = new Zone()
-            {
-                Offset = ToOffset(2, 0, 0, 0),
-                Rules = "US",
-                Format = "P%sT",
-                Year = 1969,
-                Month = 3,
-                Day = 23,
-                TickOfDay = ToOffset(14, 53, 27, 856),
-                ZoneCharacter = 's'
-            };
-            Assert.Throws(typeof(FormatException), () => Parser.ParseZone(tokens));
+            Zone expected = new Zone(
+                string.Empty,
+                ToOffset(2, 0, 0, 0),
+                "US",
+                "P%sT",
+                1969,
+                NodaConstants.March,
+                23,
+                ToOffset(14, 53, 27, 856),
+                's'
+                );
+            Assert.Throws(typeof(FormatException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         private static Offset ToOffset(int hours, int minutes, int seconds, int fractions)
         {
-            return new Offset(((((((hours * 60) + minutes) * 60) + seconds) * 1000) + fractions) * NodaConstants.TicksPerMillisecond);
+            return new Offset((((((hours * 60) + minutes) * 60) + seconds) * 1000) + fractions);
         }
 
         /* ############################################################################### */

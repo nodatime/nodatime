@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     {
         private readonly string id;
         private readonly bool isFixed;
-        protected readonly Offset standardOffset;
+        private readonly Offset standardOffset;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneBase"/> class.
@@ -36,12 +36,14 @@ namespace NodaTime.TimeZones
         /// <param name="id">The unique id of this time zone.</param>
         /// <param name="standardOffset">The standard offset from UTC.</param>
         /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
-        public DateTimeZoneBase(string id, Offset standardOffset, bool isFixed)
+        protected DateTimeZoneBase(string id, Offset standardOffset, bool isFixed)
         {
             this.id = id;
             this.standardOffset = standardOffset;
             this.isFixed = isFixed;
         }
+
+        protected Offset StandardOffset { get { return this.standardOffset; } }
 
         #region IDateTimeZone Members
 
@@ -64,6 +66,8 @@ namespace NodaTime.TimeZones
         /// The instant of the previous transition, or null if there are no further transitions.
         /// </returns>
         public abstract Instant? PreviousTransition(Instant instant);
+
+        public abstract void Write(DateTimeZoneWriter writer);
 
         /// <summary>
         /// Returns the offset from UTC, where a positive duration indicates that local time is later
@@ -118,6 +122,21 @@ namespace NodaTime.TimeZones
         public bool IsFixed
         {
             get { return this.isFixed; }
+        }
+
+        #endregion
+
+        #region Object overrides
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Id;
         }
 
         #endregion
