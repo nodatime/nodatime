@@ -20,43 +20,21 @@
 using System;
 using NodaTime.TimeZones;
 using NUnit.Framework;
-using System.IO;
+using NodaTime.Calendars;
 
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public partial class ReadWriteTest
+    public partial class ZoneRecurrenceTest
     {
         [Test]
-        public void ReadWriteNumber_0()
+        public void WriteRead()
         {
-            for (int i = 0; i < 16; i++)
-            {
-                TestValue(i);
-            }
-            TestValue(0x0f);
-            TestValue(0x10);
-            TestValue(0x7f);
-            TestValue(0x80);
-            TestValue(0x81);
-            TestValue(0x3fff);
-            TestValue(0x4000);
-            TestValue(0x4001);
-            TestValue(0x1fffff);
-            TestValue(0x200000);
-            TestValue(0x200001);
-            TestValue(-1);
-            TestValue(Int32.MinValue);
-            TestValue(Int32.MaxValue);
-        }
-
-        private void TestValue(int expected)
-        {
-            DtzIoHelper dio = new DtzIoHelper();
-            dio.Writer.WriteNumber(expected);
-            int actual = dio.Reader.ReadNumber();
+            var dio = new DtzIoHelper();
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var actual = new ZoneRecurrence("bob", Offset.Zero, yearOffset);
+            var expected = dio.WriteRead(actual);
             Assert.AreEqual(expected, actual);
         }
-
     }
 }
