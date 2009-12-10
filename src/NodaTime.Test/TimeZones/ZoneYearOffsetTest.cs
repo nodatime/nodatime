@@ -308,5 +308,14 @@ namespace NodaTime.Test.TimeZones
             Instant expected = new Instant(baseTicks + TicksPerStandardYear + TicksPerLeapYear + (4 * NodaConstants.TicksPerDay));
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void WriteRead()
+        {
+            var dio = new DtzIoHelper();
+            var actual = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var expected = dio.WriteRead(actual);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

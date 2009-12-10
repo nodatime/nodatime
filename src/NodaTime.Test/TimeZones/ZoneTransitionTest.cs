@@ -77,5 +77,123 @@ namespace NodaTime.Test.TimeZones
             TestHelper.TestEqualsClass(value, equalValue, greaterValue);
             TestHelper.TestCompareToClass(value, equalValue, greaterValue);
         }
+
+        [Test]
+        public void ISTransitionFrom_null_true()
+        {
+            var value = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            Assert.True(value.IsTransitionFrom(null));
+        }
+
+        [Test]
+        public void ISTransitionFrom_identity_false()
+        {
+            var value = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            Assert.False(value.IsTransitionFrom(value));
+        }
+
+        [Test]
+        public void ISTransitionFrom_equalObject_false()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            Assert.False(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_unequalStandardOffset_false()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.MaxValue);
+            Assert.False(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_unequalWallOffset_false()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.MaxValue, Offset.Zero);
+            Assert.False(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_unequalName_false()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "qwe", Offset.Zero, Offset.Zero);
+            Assert.False(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_earlierInstant_false()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.Zero);
+            Assert.False(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_earlierInstantAndUnequalStandardOffset_false()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.MaxValue);
+            Assert.False(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_earlierInstantndUnequalWallOffset_false()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.MaxValue, Offset.Zero);
+            Assert.False(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_earlierInstantAndUnequalName_false()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "qwe", Offset.Zero, Offset.Zero);
+            Assert.False(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_laterInstant_false()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
+            Assert.False(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_laterInstantAndUnequalStandardOffset_false()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.MaxValue);
+            Assert.False(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_laterInstantAndUnequalWallOffset_true()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.MaxValue, Offset.Zero);
+            Assert.True(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_laterInstantAndUnequalName_true()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "qwe", Offset.Zero, Offset.Zero);
+            Assert.True(newValue.IsTransitionFrom(oldValue));
+        }
+
+        [Test]
+        public void ISTransitionFrom_laterInstantAndUnequalNameAndWallOffset_true()
+        {
+            var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "qwe", Offset.MaxValue, Offset.Zero);
+            Assert.True(newValue.IsTransitionFrom(oldValue));
+        }
     }
 }

@@ -154,7 +154,7 @@
     <Compile Include="TimeZones\PrecalculatedDateTimeZone.cs" />
     <Compile Include="TimeZones\ZoneRecurrence.cs" />
     <Compile Include="TimeZones\ZoneRule.cs" />
-    <Compile Include="TimeZones\ZoneRuleSet.cs" />
+    <Compile Include="TimeZones\ZoneRuleCollection.cs" />
     <Compile Include="TimeZones\ZoneTransition.cs" />
     <Compile Include="TimeZones\TransitionMode.cs" />
     <Compile Include="TimeZones\UtcProvider.cs" />

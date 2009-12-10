@@ -548,5 +548,31 @@ namespace NodaTime.TimeZones
         }
 
         #endregion
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ZoneYearOffset left, ZoneYearOffset right)
+        {
+            if ((object)left == null || (object)right == null)
+            {
+                return (object)left == (object)right;
+            }
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ZoneYearOffset left, ZoneYearOffset right)
+        {
+            return !(left == right);
+        }
     }
 }

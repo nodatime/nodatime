@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System.Diagnostics;
-
 namespace NodaTime.ZoneInfoCompiler
 {
     /// <summary>
@@ -59,9 +57,9 @@ namespace NodaTime.ZoneInfoCompiler
         private void Write(string message)
         {
 #if DEBUG
-            Debug.Write(message);
+            System.Diagnostics.Debug.Write(message);
 #else
-            Console.Write(message);
+            System.Console.Write(message);
 #endif
         }
 
@@ -71,9 +69,9 @@ namespace NodaTime.ZoneInfoCompiler
         private void EndLine()
         {
 #if DEBUG
-            Debug.WriteLine("");
+            System.Diagnostics.Debug.WriteLine("");
 #else
-            Console.WriteLine();
+            System.Console.WriteLine();
 #endif
         }
     }
