@@ -94,6 +94,7 @@
     <Compile Include="Tzdb\Zone.cs" />
     <Compile Include="Tzdb\ZoneAlias.cs" />
     <Compile Include="Tzdb\ZoneList.cs" />
+    <Compile Include="Tzdb\ZoneRule.cs" />
     <Compile Include="winmap\WindowsMapperCompiler.cs" />
     <Compile Include="winmap\WindowsMapperCompilerOptions.cs" />
     <Compile Include="ZoneInfoCompiler.cs" />

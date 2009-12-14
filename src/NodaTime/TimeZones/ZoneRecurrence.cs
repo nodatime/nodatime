@@ -17,6 +17,7 @@
 using System;
 using NodaTime.Utility;
 using System.Text;
+using NodaTime.Calendars;
 
 namespace NodaTime.TimeZones
 {
@@ -40,10 +41,15 @@ namespace NodaTime.TimeZones
         public string Name { get { return this.name; } }
         public Offset Savings { get { return this.savings; } }
         public ZoneYearOffset YearOffset { get { return this.yearOffset; } }
+        public int FromYear { get { return this.fromYear; } }
+        public int ToYear { get { return this.toYear; } }
+        public bool IsInfinite { get { return ToYear == Int32.MaxValue; } }
 
         private readonly string name;
         private readonly ZoneYearOffset yearOffset;
         private readonly Offset savings;
+        private readonly int fromYear;
+        private readonly int toYear;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneRecurrence"/> class.
@@ -51,37 +57,117 @@ namespace NodaTime.TimeZones
         /// <param name="name">The name of the time zone period e.g. PST.</param>
         /// <param name="savings">The savings for this period.</param>
         /// <param name="yearOffset">The year offset of when this period starts in a year.</param>
-        public ZoneRecurrence(String name, Offset savings, ZoneYearOffset yearOffset)
+        public ZoneRecurrence(String name, Offset savings, ZoneYearOffset yearOffset, int fromYear, int toYear)
         {
             this.yearOffset = yearOffset;
             this.name = name;
             this.savings = savings;
+            this.fromYear = fromYear;
+            this.toYear = toYear;
         }
 
         /// <summary>
         /// Returns the given instant adjusted one year forward taking into account leap years and other
         /// adjustments like day of week.
         /// </summary>
-        /// <param name="instant">The instant to adjust.</param>
-        /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="savingsOffset">The daylight savings adjustment.</param>
-        /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal Instant Next(Instant instant, Offset standardOffset, Offset savingsOffset)
+        /// <remarks>
+        /// If the given instant is before the starting year, the year of the given instant is
+        /// adjusted to the beginning of the starting year. The then first transition after the
+        /// adjusted instant is determined. If the next adjustment is after the ending year the
+        /// input instant is returned otherwise the next transition is returned.
+        /// </remarks>
+        /// <param name="instant">The <see cref="Instant"/> lower bound for the next trasnition.</param>
+        /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
+        /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
+        /// <returns></returns>
+        internal Instant Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            return this.yearOffset.Next(instant, standardOffset, savingsOffset);
+            ICalendarSystem calendar = IsoCalendarSystem.Instance;
+
+            Offset wallOffset = standardOffset + previousSavings;
+            Instant adjustedInstant = instant;
+
+            int year;
+            if (instant == Instant.MinValue)
+            {
+                year = Int32.MinValue;
+            }
+            else
+            {
+                year = calendar.Fields.Year.GetValue(instant + wallOffset);
+            }
+
+            if (year < this.fromYear)
+            {
+                // First advance instant to start of from year.
+                adjustedInstant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.fromYear) - wallOffset;
+                // Back off one tick to account for next recurrence being exactly at the beginning
+                // of the year.
+                adjustedInstant = adjustedInstant - Duration.One;
+            }
+
+            Instant next = this.yearOffset.Next(instant, standardOffset, previousSavings);
+
+            if (next > instant)
+            {
+                year = calendar.Fields.Year.GetValue(next + wallOffset);
+                if (year > this.toYear)
+                {
+                    // Out of range, return original value.
+                    next = instant;
+                }
+            }
+
+            return next;
         }
 
         /// <summary>
         /// Returns the given instant adjusted one year backward taking into account leap years and other
         /// adjustments like day of week.
         /// </summary>
-        /// <param name="instant">The instant to adjust.</param>
-        /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="savingsOffset">The daylight savings adjustment.</param>
-        /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal Instant Previous(Instant instant, Offset standardOffset, Offset savingsOffset)
+        /// <param name="instant">The <see cref="Instant"/> lower bound for the next trasnition.</param>
+        /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
+        /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
+        /// <returns></returns>
+        internal Instant Previous(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            return this.yearOffset.Previous(instant, standardOffset, savingsOffset);
+            ICalendarSystem calendar = IsoCalendarSystem.Instance;
+
+            Offset wallOffset = standardOffset + previousSavings;
+            Instant adjustedInstant = instant;
+
+            int year;
+            if (instant == Instant.MaxValue)
+            {
+                year = Int32.MaxValue;
+            }
+            else
+            {
+                year = calendar.Fields.Year.GetValue(instant + wallOffset);
+            }
+
+            if (year > this.toYear)
+            {
+                // First advance instant to start of from year.
+                adjustedInstant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.toYear) - wallOffset;
+                // Skip forward one tick to account for next recurrence being exactly at the end
+                // of the year.
+                adjustedInstant = adjustedInstant + Duration.One;
+            }
+
+            Instant previous = this.yearOffset.Previous(instant, standardOffset, previousSavings);
+
+            if (previous < instant)
+            {
+                year = calendar.Fields.Year.GetValue(previous + wallOffset);
+                if (year < this.fromYear)
+                {
+                    // Out of range, return original value.
+                    previous = instant;
+                }
+            }
+
+            return previous;
         }
 
         /// <summary>
@@ -92,7 +178,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         internal ZoneRecurrence RenameAppend(String suffix)
         {
-            return new ZoneRecurrence(Name + suffix, Savings, this.yearOffset);
+            return new ZoneRecurrence(Name + suffix, Savings, this.yearOffset, this.fromYear, this.toYear);
         }
 
         /// <summary>
@@ -104,6 +190,8 @@ namespace NodaTime.TimeZones
             writer.WriteString(Name);
             writer.WriteOffset(Savings);
             YearOffset.Write(writer);
+            writer.WriteNumber(this.fromYear);
+            writer.WriteNumber(this.toYear);
         }
 
         /// <summary>
@@ -120,7 +208,9 @@ namespace NodaTime.TimeZones
             string name = reader.ReadString();
             Offset savings = reader.ReadOffset();
             ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
-            return new ZoneRecurrence(name, savings, yearOffset);
+            int fromYear = reader.ReadNumber();
+            int toYear = reader.ReadNumber();
+            return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
         }
 
         #region Object overrides
@@ -174,6 +264,7 @@ namespace NodaTime.TimeZones
             builder.Append(Name);
             builder.Append(" ").Append(Savings);
             builder.Append(" ").Append(YearOffset);
+            builder.Append(" [").Append(FromYear).Append("-").Append(ToYear).Append("]");
             return builder.ToString();
         }
 
