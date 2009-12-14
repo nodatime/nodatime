@@ -75,6 +75,7 @@
     <Compile Include="Clocks\FixedClock.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
+    <Compile Include="NodaDefaults.cs" />
     <Compile Include="Offset.cs" />
     <Compile Include="Fields\BasicMonthOfYearDateTimeField.cs" />
     <Compile Include="Fields\BasicWeekOfWeekYearDateTimeField.cs" />
