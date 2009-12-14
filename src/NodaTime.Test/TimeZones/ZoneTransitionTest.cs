@@ -53,18 +53,22 @@ namespace NodaTime.Test.TimeZones
         public void Construct_BeginningOfTime_Truncated()
         {
             string name = "abc";
-            var actual = new ZoneTransition(new Instant(Instant.MinValue.Ticks + oneHour.AsTicks()), name, minusTwoHours, minusTwoHours);
-            var expected = new ZoneTransition(new Instant(Instant.MinValue.Ticks + oneHour.AsTicks()), name, minusOneHour, minusOneHour);
-            Assert.AreEqual(expected, actual);
+            Instant instant = new Instant(Instant.MinValue.Ticks + oneHour.AsTicks());
+            var actual = new ZoneTransition(instant, name, minusTwoHours, minusTwoHours);
+            Assert.AreEqual(instant, actual.Instant, "Instant");
+            Assert.AreEqual(minusOneHour, actual.StandardOffset, "StandardOffset");
+            Assert.AreEqual(Offset.Zero, actual.Savings, "Savings");
         }
 
         [Test]
         public void Construct_EndOfTime_Truncated()
         {
             string name = "abc";
-            var actual = new ZoneTransition(new Instant(Instant.MinValue.Ticks + oneHour.AsTicks()), name, threeHours, threeHours);
-            var expected = new ZoneTransition(new Instant(Instant.MinValue.Ticks + oneHour.AsTicks()), name, oneHour, oneHour);
-            Assert.AreEqual(expected, actual);
+            Instant instant = new Instant(Instant.MaxValue.Ticks + minusOneHour.AsTicks());
+            var actual = new ZoneTransition(instant, name, threeHours, threeHours);
+            Assert.AreEqual(instant, actual.Instant, "Instant");
+            Assert.AreEqual(oneHour, actual.StandardOffset, "StandardOffset");
+            Assert.AreEqual(Offset.Zero, actual.Savings, "Savings");
         }
 
         [Test]
@@ -104,15 +108,15 @@ namespace NodaTime.Test.TimeZones
         public void ISTransitionFrom_unequalStandardOffset_false()
         {
             var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
-            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.MaxValue);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.MaxValue, Offset.Zero);
             Assert.False(newValue.IsTransitionFrom(oldValue));
         }
 
         [Test]
-        public void ISTransitionFrom_unequalWallOffset_false()
+        public void ISTransitionFrom_unequalSavings_false()
         {
             var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
-            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.MaxValue, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.MaxValue);
             Assert.False(newValue.IsTransitionFrom(oldValue));
         }
 
@@ -136,15 +140,15 @@ namespace NodaTime.Test.TimeZones
         public void ISTransitionFrom_earlierInstantAndUnequalStandardOffset_false()
         {
             var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
-            var oldValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.MaxValue);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.MaxValue, Offset.Zero);
             Assert.False(newValue.IsTransitionFrom(oldValue));
         }
 
         [Test]
-        public void ISTransitionFrom_earlierInstantndUnequalWallOffset_false()
+        public void ISTransitionFrom_earlierInstantndUnequalSavings_false()
         {
             var newValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
-            var oldValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.MaxValue, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.MaxValue);
             Assert.False(newValue.IsTransitionFrom(oldValue));
         }
 
@@ -168,15 +172,15 @@ namespace NodaTime.Test.TimeZones
         public void ISTransitionFrom_laterInstantAndUnequalStandardOffset_false()
         {
             var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.Zero);
-            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.MaxValue);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.MaxValue, Offset.Zero);
             Assert.False(newValue.IsTransitionFrom(oldValue));
         }
 
         [Test]
-        public void ISTransitionFrom_laterInstantAndUnequalWallOffset_true()
+        public void ISTransitionFrom_laterInstantAndUnequalSavings_true()
         {
             var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.Zero);
-            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.MaxValue, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.MaxValue);
             Assert.True(newValue.IsTransitionFrom(oldValue));
         }
 
@@ -189,10 +193,10 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void ISTransitionFrom_laterInstantAndUnequalNameAndWallOffset_true()
+        public void ISTransitionFrom_laterInstantAndUnequalNameAndSavings_true()
         {
             var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.Zero, Offset.Zero);
-            var oldValue = new ZoneTransition(Instant.UnixEpoch, "qwe", Offset.MaxValue, Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "qwe", Offset.Zero, Offset.MaxValue);
             Assert.True(newValue.IsTransitionFrom(oldValue));
         }
     }

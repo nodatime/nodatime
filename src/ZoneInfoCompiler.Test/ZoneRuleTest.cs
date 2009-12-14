@@ -21,19 +21,21 @@ using System;
 using NodaTime.TimeZones;
 using NUnit.Framework;
 using NodaTime.Calendars;
+using NodaTime.ZoneInfoCompiler.Tzdb;
+using NodaTime;
 
-namespace NodaTime.Test.TimeZones
+namespace ZoneInfoCompiler.Test
 {
     [TestFixture]
-    public partial class ZoneRecurrenceTest
+    public partial class ZoneRuleTest
     {
         [Test]
         public void WriteRead()
         {
-            var dio = new DtzIoHelper();
             var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
-            var actual = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971,  2009);
-            var expected = dio.WriteRead(actual);
+            var recurrence = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
+            var actual = new ZoneRule(recurrence, "D");
+            var expected = new ZoneRule(recurrence, "D");
             Assert.AreEqual(expected, actual);
         }
     }
