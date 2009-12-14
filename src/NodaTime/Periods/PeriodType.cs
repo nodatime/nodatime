@@ -39,6 +39,18 @@ namespace NodaTime.Periods
     /// </remarks>
     public sealed class PeriodType
     {
+        internal enum Index
+        {
+            Year,
+            Month,
+            Week,
+            Day,
+            Hour,
+            Minute,
+            Second,
+            Millisecond            
+        }
+
         #region Static Properties
 
         /// <summary>
@@ -51,6 +63,8 @@ namespace NodaTime.Periods
                 return new PeriodType("Years"
                     ,
                     new DurationFieldType[] {DurationFieldType.Years}
+                    ,
+                    new [] { 0, -1, -1, -1, -1, -1, -1, -1, }
                     );
             }
         }
@@ -65,6 +79,8 @@ namespace NodaTime.Periods
                 return new PeriodType("Months"
                     ,
                     new DurationFieldType[] { DurationFieldType.Months }
+                    ,
+                    new [] { -1, 0, -1, -1, -1, -1, -1, -1, }
                     );
             }
         }
@@ -79,6 +95,8 @@ namespace NodaTime.Periods
                 return new PeriodType("Weeks"
                     ,
                     new DurationFieldType[] { DurationFieldType.Weeks }
+                    ,
+                    new [] { -1, -1, 0, -1, -1, -1, -1, -1, }
                     );
             }
         }
@@ -93,6 +111,8 @@ namespace NodaTime.Periods
                 return new PeriodType("Days"
                     ,
                     new DurationFieldType[] { DurationFieldType.Days }
+                    ,
+                    new [] { -1, -1, -1, 0, -1, -1, -1, -1, }
                     );
             }
         }
@@ -107,6 +127,8 @@ namespace NodaTime.Periods
                 return new PeriodType("Hours"
                     ,
                     new DurationFieldType[] { DurationFieldType.Hours }
+                    ,
+                    new [] { -1, -1, -1, -1, 0, -1, -1, -1, }
                     );
             }
         }
@@ -121,6 +143,8 @@ namespace NodaTime.Periods
                 return new PeriodType("Minutes"
                     ,
                     new DurationFieldType[] { DurationFieldType.Minutes }
+                    ,
+                    new [] { -1, -1, -1, -1, -1, 0, -1, -1, }
                     );
             }
         }
@@ -135,6 +159,8 @@ namespace NodaTime.Periods
                 return new PeriodType("Seconds"
                     ,
                     new DurationFieldType[] { DurationFieldType.Seconds }
+                    ,
+                    new [] { -1, -1, -1, -1, -1, -1, 0, -1, }
                     );
             }
         }
@@ -149,6 +175,8 @@ namespace NodaTime.Periods
                 return new PeriodType("Milliseconds"
                     ,
                     new DurationFieldType[] { DurationFieldType.Milliseconds }
+                    ,
+                    new [] { -1, -1, -1, -1, -1, -1, -1, 0, }
                     );
             }
         }
@@ -193,6 +221,8 @@ namespace NodaTime.Periods
                     DurationFieldType.Weeks, DurationFieldType.Days,
                     DurationFieldType.Hours, DurationFieldType.Minutes,
                     DurationFieldType.Seconds, DurationFieldType.Milliseconds}
+                    ,
+                    new [] { 0, 1, 2, 3, 4, 5, 6, 7, }
                     );                
             }
         }
@@ -235,6 +265,8 @@ namespace NodaTime.Periods
                     DurationFieldType.Days,
                     DurationFieldType.Hours, DurationFieldType.Minutes,
                     DurationFieldType.Seconds, DurationFieldType.Milliseconds}
+                    ,
+                    new [] { 0, 1, -1, 2, 3, 4, 5, 6, }
                     );
             }
         }
@@ -267,6 +299,8 @@ namespace NodaTime.Periods
                     new DurationFieldType[] {
                     DurationFieldType.Years, DurationFieldType.Months,
                     DurationFieldType.Days}
+                    ,
+                    new [] { 0, 1, -1, 2, -1, -1, -1, -1, }
                     );
             }
         }
@@ -308,6 +342,8 @@ namespace NodaTime.Periods
                     DurationFieldType.Years, DurationFieldType.Weeks, DurationFieldType.Days,
                     DurationFieldType.Hours, DurationFieldType.Minutes,
                     DurationFieldType.Seconds, DurationFieldType.Milliseconds}
+                    ,
+                    new [] { 0, -1, 1, 2, 3, 4, 5, 6, }
                     );
             }
         }
@@ -339,6 +375,8 @@ namespace NodaTime.Periods
                     ,
                     new DurationFieldType[] {
                     DurationFieldType.Years, DurationFieldType.Weeks, DurationFieldType.Days}
+                    ,
+                    new [] { 0, -1, 1, 2, -1, -1, -1, -1, }
                     );
             }
         }
@@ -378,6 +416,8 @@ namespace NodaTime.Periods
                     DurationFieldType.Years, DurationFieldType.Days,
                     DurationFieldType.Hours, DurationFieldType.Minutes,
                     DurationFieldType.Seconds, DurationFieldType.Milliseconds}
+                    ,
+                    new [] { 0, -1, -1, 1, 2, 3, 4, 5, }
                     );
             }
         }
@@ -407,6 +447,8 @@ namespace NodaTime.Periods
                     ,
                     new DurationFieldType[] {
                     DurationFieldType.Years, DurationFieldType.Days}
+                    ,
+                    new [] { 0, -1, -1, 1, -1, -1, -1, -1, }
                     );
             }
         }
@@ -444,6 +486,8 @@ namespace NodaTime.Periods
                     DurationFieldType.Days,
                     DurationFieldType.Hours, DurationFieldType.Minutes,
                     DurationFieldType.Seconds, DurationFieldType.Milliseconds}
+                    ,
+                    new [] { -1, -1, -1, 0, 1, 2, 3, 4, }
                     );
             }
         }
@@ -478,6 +522,8 @@ namespace NodaTime.Periods
                     new DurationFieldType[] {
                     DurationFieldType.Hours, DurationFieldType.Minutes,
                     DurationFieldType.Seconds, DurationFieldType.Milliseconds}
+                    ,
+                    new [] { -1, -1, -1, -1, 0, 1, 2, 3, }
                     );
             }
         }
@@ -487,10 +533,16 @@ namespace NodaTime.Periods
         private readonly string name;
         private readonly DurationFieldType[] fieldTypes;
 
-        private PeriodType(string name, DurationFieldType[] fieldTypes)
+        //the only one purpose of this member is to improve perfomance
+        //of searching the index of the field for particular period type
+        //otherwise, it would be looping through fieldTypes array
+        private readonly int[] indicies;
+
+        private PeriodType(string name, DurationFieldType[] fieldTypes, int[] indicies)
         {
             this.name = name;
             this.fieldTypes = fieldTypes;
+            this.indicies = indicies;
         }
 
         /// <summary>
@@ -509,7 +561,6 @@ namespace NodaTime.Periods
             get { return fieldTypes.Length; }
         }
 
-
         /// <summary>
         /// Gets the field type by index.
         /// </summary>
@@ -520,7 +571,6 @@ namespace NodaTime.Periods
         {
             return fieldTypes[index];
         }
-
 
         /// <summary>
         /// Gets the index of the field in this period.
@@ -537,6 +587,21 @@ namespace NodaTime.Periods
                 }
             }
             return -1;
+        }
+
+        /// <summary>
+        /// Checks whether the field specified is supported by this period.
+        /// </summary>
+        /// <param name="fieldType">The type to check, may be null which returns false</param>
+        /// <returns>True if the field is supported, false otherwise</returns>
+        public bool IsSupported(DurationFieldType fieldType)
+        {
+            return (IndexOf(fieldType) >= 0);
+        }
+
+        internal int GetRealIndex(PeriodType.Index index)
+        {
+            return indicies[(int)index];
         }
 
         public override string ToString()
