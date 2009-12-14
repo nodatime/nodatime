@@ -105,7 +105,6 @@
     <Compile Include="Fields\ZeroIsMaxDateTimeField.cs" />
     <Compile Include="LocalInstant.cs" />
     <Compile Include="Partials\AbstractPartial.cs" />
-    <Compile Include="Periods\AbstractPeriod.cs" />
     <Compile Include="Partials\LocalBase.cs" />
     <Compile Include="Partials\PartialBase.cs" />
     <Compile Include="Periods\PeriodBase.cs" />

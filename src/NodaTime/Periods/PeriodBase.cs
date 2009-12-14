@@ -14,12 +14,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+using NodaTime.Fields;
 namespace NodaTime.Periods
 {
     /// <summary>
     /// Original name: BasePeriod.
     /// </summary>
-    public abstract class PeriodBase : AbstractPeriod
+    public abstract class PeriodBase : IPeriod
     {
+        #region IPeriod Members
+
+        public abstract PeriodType PeriodType
+        {
+            get;
+        }
+
+        public abstract int Size
+        {
+            get;
+        }
+
+        public abstract DurationFieldType GetFieldType(int index);
+
+        public abstract int GetValue(int index);
+
+        public abstract int Get(DurationFieldType field);
+
+        public abstract bool IsSupported(DurationFieldType field);
+
+        public abstract Period ToPeriod();
+
+        #endregion
+
     }
 }
