@@ -37,14 +37,14 @@ namespace NodaTime.TimeZones
     {
         internal Instant Instant { get { return this.instant; } }
         internal string Name { get { return this.name; } }
-        internal Offset WallOffset { get { return this.wallOffset; } }
         internal Offset StandardOffset { get { return this.standardOffset; } }
-        internal Offset Savings { get { return WallOffset - StandardOffset; } }
+        internal Offset Savings { get { return this.savings; } }
+        internal Offset WallOffset { get { return StandardOffset + Savings; } }
 
         private readonly Instant instant;
         private readonly string name;
-        private readonly Offset wallOffset;
         private readonly Offset standardOffset;
+        private readonly Offset savings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneTransition"/> class.
@@ -64,9 +64,9 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="instant">The instant that this transistion occurs at.</param>
         /// <param name="name">The name for the time at this transition e.g. PDT or PST.</param>
-        /// <param name="wallOffset">The actual offset at this transition.</param>
         /// <param name="standardOffset">The standard offset at this transition.</param>
-        internal ZoneTransition(Instant instant, String name, Offset wallOffset, Offset standardOffset)
+        /// <param name="savings">The actual offset at this transition.</param>
+        internal ZoneTransition(Instant instant, String name, Offset standardOffset, Offset savings)
         {
             if (name == null)
             {
@@ -74,27 +74,27 @@ namespace NodaTime.TimeZones
             }
             this.instant = instant;
             this.name = name;
-            this.wallOffset = wallOffset;
             this.standardOffset = standardOffset;
+            this.savings = savings;
             //
             // Make sure that the math will not overflow later.
             //
-            if (instant.Ticks < 0 && wallOffset.Milliseconds < 0)
+            if (instant.Ticks < 0 && WallOffset.Milliseconds < 0)
             {
                 long distanceFromEndOfTime = instant.Ticks - Instant.MinValue.Ticks;
-                if (distanceFromEndOfTime < Math.Abs(wallOffset.AsTicks()))
+                if (distanceFromEndOfTime < Math.Abs(WallOffset.AsTicks()))
                 {
-                    this.wallOffset = Offset.FromTicks(-distanceFromEndOfTime);
-                    this.standardOffset = this.wallOffset;
+                    this.standardOffset = Offset.FromTicks(-distanceFromEndOfTime);
+                    this.savings = Offset.Zero;
                 }
             }
-            else if (instant.Ticks > 0 && wallOffset.Milliseconds > 0)
+            else if (instant.Ticks > 0 && savings.Milliseconds > 0)
             {
                 long distanceFromEndOfTime = Instant.MaxValue.Ticks - instant.Ticks;
-                if (distanceFromEndOfTime < wallOffset.AsTicks())
+                if (distanceFromEndOfTime < WallOffset.AsTicks())
                 {
-                    this.wallOffset = Offset.FromTicks(distanceFromEndOfTime);
-                    this.standardOffset = this.wallOffset;
+                    this.standardOffset = Offset.FromTicks(distanceFromEndOfTime);
+                    this.savings = Offset.Zero;
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>
         /// To be a transition from another the instant at which the transition occurs must be
-        /// greater than the given transition's and either the time offset or the name must be
+        /// greater than the given transition's and either the savings offset or the name must be
         /// different. If this is not true then this transition is considered to be redundant
         /// and should not be used.
         /// </remarks>
@@ -118,7 +118,7 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return Instant > other.Instant && (WallOffset != other.WallOffset || Name != other.Name);
+            return Instant > other.Instant && (Savings != other.Savings|| Name != other.Name);
         }
 
         #region Object overrides
@@ -168,7 +168,7 @@ namespace NodaTime.TimeZones
             builder.Append(name);
             builder.Append(" at ").Append(Instant);
             builder.Append(" ").Append(StandardOffset);
-            builder.Append(" [").Append(WallOffset).Append("]");
+            builder.Append(" [").Append(Savings).Append("]");
             return builder.ToString();
         }
 
@@ -220,6 +220,36 @@ namespace NodaTime.TimeZones
                 return 1;
             }
             return Instant.CompareTo(other.Instant);
+        }
+
+        #endregion
+
+        #region Operator overloads
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ZoneTransition left, ZoneTransition right)
+        {
+            if ((object)left == null || (object)right == null)
+            {
+                return (object)left == (object)right;
+            }
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ZoneTransition left, ZoneTransition right)
+        {
+            return !(left == right);
         }
 
         #endregion
