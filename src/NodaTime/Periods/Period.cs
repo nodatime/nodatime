@@ -386,5 +386,385 @@ namespace NodaTime.Periods
         }
 
         #endregion
+
+        #region Creation methods
+
+        private int[] WitnIndexedField(PeriodType.Index index, int newValue)
+        {
+            return WitnIndexedField(index, newValue, false);
+        }
+
+        private int[] WitnIndexedField(PeriodType.Index index, int newValue, bool add)
+        {
+            //clone values
+            var values = GetValues();
+
+            //change field value
+            int realIndex = PeriodType.GetRealIndex(index);
+            if (realIndex == -1)
+                throw new NotSupportedException("Field is not supported");
+
+            if (add)
+                values[realIndex] += newValue;
+            else
+                values[realIndex] = newValue;
+
+            return values;
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of years.
+        /// </summary>
+        /// <param name="years">The amount of years to set, may be negative</param>
+        /// <returns>The new period with the changed years</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period WithYears(int years)
+        {
+            var values = WitnIndexedField(PeriodType.Index.Year, years);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of months.
+        /// </summary>
+        /// <param name="months">The amount of months to set, may be negative</param>
+        /// <returns>The new period with the changed months</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period WithMonths(int months)
+        {
+            var values = WitnIndexedField(PeriodType.Index.Month, months);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of weeks.
+        /// </summary>
+        /// <param name="weeks">The amount of weeks to set, may be negative</param>
+        /// <returns>The new period with the changed weeks</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period WithWeeks(int weeks)
+        {
+            var values = WitnIndexedField(PeriodType.Index.Week, weeks);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of days.
+        /// </summary>
+        /// <param name="days">The amount of days to set, may be negative</param>
+        /// <returns>The new period with the changed days</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period WithDays(int days)
+        {
+            var values = WitnIndexedField(PeriodType.Index.Day, days);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of hours.
+        /// </summary>
+        /// <param name="hours">The amount of hours to set, may be negative</param>
+        /// <returns>The new period with the changed hours</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period WithHours(int hours)
+        {
+            var values = WitnIndexedField(PeriodType.Index.Hour, hours);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of minutes.
+        /// </summary>
+        /// <param name="minutes">The amount of minutes to set, may be negative</param>
+        /// <returns>The new period with the changed minutes</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period WithMinutes(int minutes)
+        {
+            var values = WitnIndexedField(PeriodType.Index.Minute, minutes);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of seconds.
+        /// </summary>
+        /// <param name="seconds">The amount of seconds to set, may be negative</param>
+        /// <returns>The new period with the changed seconds</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period WithSeconds(int seconds)
+        {
+            var values = WitnIndexedField(PeriodType.Index.Second, seconds);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of milliseconds.
+        /// </summary>
+        /// <param name="milliseconds">The amount of milliseconds to set, may be negative</param>
+        /// <returns>The new period with the changed milliseconds</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period WithMilliseconds(int milliseconds)
+        {
+            var values = WitnIndexedField(PeriodType.Index.Millisecond, milliseconds);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of years added.
+        /// </summary>
+        /// <param name="years">The amount of years to add, may be negative</param>
+        /// <returns>The new period with the increased years</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period AddYears(int years)
+        {
+            if (years == 0)
+                return this;
+
+            var values = WitnIndexedField(PeriodType.Index.Year, years, true);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of months added.
+        /// </summary>
+        /// <param name="months">The amount of months to add, may be negative</param>
+        /// <returns>The new period with the increased months</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period AddMonths(int months)
+        {
+            if (months == 0)
+                return this;
+
+            var values = WitnIndexedField(PeriodType.Index.Month, months, true);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of weeks added.
+        /// </summary>
+        /// <param name="weeks">The amount of weeks to add, may be negative</param>
+        /// <returns>The new period with the increased weeks</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period AddWeeks(int weeks)
+        {
+            if (weeks == 0)
+                return this;
+
+            var values = WitnIndexedField(PeriodType.Index.Week, weeks, true);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of days added.
+        /// </summary>
+        /// <param name="days">The amount of days to add, may be negative</param>
+        /// <returns>The new period with the increased days</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period AddDays(int days)
+        {
+            if (days == 0)
+                return this;
+
+            var values = WitnIndexedField(PeriodType.Index.Day, days, true);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of hours added.
+        /// </summary>
+        /// <param name="hours">The amount of hours to add, may be negative</param>
+        /// <returns>The new period with the added hours</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period AddHours(int hours)
+        {
+            if (hours == 0)
+                return this;
+
+            var values = WitnIndexedField(PeriodType.Index.Hour, hours, true);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of minutes added.
+        /// </summary>
+        /// <param name="minutes">The amount of minutes to add, may be negative</param>
+        /// <returns>The new period with the increased minutes</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period AddMinutes(int minutes)
+        {
+            if (minutes == 0)
+                return this;
+
+            var values = WitnIndexedField(PeriodType.Index.Minute, minutes, true);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of seconds added.
+        /// </summary>
+        /// <param name="seconds">The amount of seconds to add, may be negative</param>
+        /// <returns>The new period with the increased seconds</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period AddSeconds(int seconds)
+        {
+            if (seconds == 0)
+                return this;
+
+            var values = WitnIndexedField(PeriodType.Index.Second, seconds, true);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of milliseconds added.
+        /// </summary>
+        /// <param name="milliseconds">The amount of milliseconds to add, may be negative</param>
+        /// <returns>The new period with the increased milliseconds</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period AddMilliseconds(int milliseconds)
+        {
+            if (milliseconds == 0)
+                return this;
+
+
+            var values = WitnIndexedField(PeriodType.Index.Millisecond, milliseconds, true);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of years taken away.
+        /// </summary>
+        /// <param name="years">The amount of years to take away, may be negative</param>
+        /// <returns>The new period with the decreased years</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period SubtractYears(int years)
+        {
+            return AddYears(-years);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of months taken away.
+        /// </summary>
+        /// <param name="months">The amount of months to take away, may be negative</param>
+        /// <returns>The new period with the decreased months</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period SubtractMonths(int months)
+        {
+            return AddMonths(-months);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of weeks taken away.
+        /// </summary>
+        /// <param name="weeks">The amount of weeks to take away, may be negative</param>
+        /// <returns>The new period with the decreased weeks</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period SubtractWeeks(int weeks)
+        {
+            return AddWeeks(-weeks);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of days taken away.
+        /// </summary>
+        /// <param name="days">The amount of days to take away, may be negative</param>
+        /// <returns>The new period with the decreased days</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period SubtractDays(int days)
+        {
+            return AddDays(-days);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of hours taken away.
+        /// </summary>
+        /// <param name="hours">The amount of hours to take away, may be negative</param>
+        /// <returns>The new period with the decreased hours</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period SubtractHours(int hours)
+        {
+            return AddHours(-hours);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of minutes taken away.
+        /// </summary>
+        /// <param name="minutes">The amount of minutes to take away, may be negative</param>
+        /// <returns>The new period with the decreased minutes</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period SubtractMinutes(int minutes)
+        {
+            return AddMinutes(-minutes);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of seconds taken away.
+        /// </summary>
+        /// <param name="seconds">The amount of seconds to take away, may be negative</param>
+        /// <returns>The new period with the decreased seconds</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period SubtractSeconds(int seconds)
+        {
+            return AddSeconds(-seconds);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified number of milliseconds taken away.
+        /// </summary>
+        /// <param name="milliseconds">The amount of milliseconds to take away, may be negative</param>
+        /// <returns>The new period with the decreased milliseconds</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Period SubtractMilliseconds(int milliseconds)
+        {
+            return AddMilliseconds(-milliseconds);
+        }
+
+        #endregion
     }
 }
