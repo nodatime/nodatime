@@ -127,6 +127,9 @@
     </Compile>
     <Compile Include="MockZeroNullIntegerConverter.cs" />
     <Compile Include="Periods\PeriodTypeTest.cs" />
+    <Compile Include="Periods\PeriodTypeTest.Masking.cs">
+      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Periods\PeriodTypeTest.Types.cs">
       <DependentUpon>PeriodTypeTest.cs</DependentUpon>
     </Compile>
