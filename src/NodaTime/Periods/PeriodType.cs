@@ -16,6 +16,7 @@
 #endregion
 using System;
 using NodaTime.Fields;
+using NodaTime.Utility;
 
 namespace NodaTime.Periods
 {
@@ -37,7 +38,7 @@ namespace NodaTime.Periods
     /// Time - hours, minutes, seconds, millis
     /// plus one for each single type
     /// </remarks>
-    public sealed class PeriodType
+    public sealed class PeriodType:IEquatable<PeriodType>
     {
         internal enum Index
         {
@@ -712,9 +713,68 @@ namespace NodaTime.Periods
 
         #endregion
 
+        #region Equality
+
+        public bool Equals(PeriodType other)
+        {
+            if (Object.ReferenceEquals(this, other))
+                return true;
+
+            if (other == null)
+                return false;
+
+            return PeriodType.EqualsArrays(this.fieldTypes, other.fieldTypes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as PeriodType);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = HashCodeHelper.Initialize();
+            for (int i = 0; i < fieldTypes.Length; i++)
+                hash = HashCodeHelper.Hash(hash, fieldTypes[i]);
+
+            return hash;
+        }
+
+        public static bool operator ==(PeriodType left, PeriodType right)
+        {
+            return Object.Equals(left, right);
+        }
+
+        public static bool operator !=(PeriodType left, PeriodType right)
+        {
+            return !Object.Equals(left, right);
+        }
+
+        #endregion
+
         public override string ToString()
         {
             return "PeriodType[" + Name + "]";
+        }
+
+        private static bool EqualsArrays(DurationFieldType[] arrayA, DurationFieldType[] arrayB)
+        {
+            //check for nulls and reference equality
+            if (Object.Equals(arrayA, arrayB))
+                return true;
+
+            //check for length
+            if (arrayA.Length != arrayB.Length)
+                return false;
+
+            //check for elemnts equality
+            for (int i = 0; i < arrayA.Length; i++)
+            {
+                if (!Object.Equals(arrayA[i], arrayB[i]))
+                    return false;
+            }
+
+            return true;
         }
     }
 }
