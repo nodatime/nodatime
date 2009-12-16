@@ -604,6 +604,114 @@ namespace NodaTime.Periods
             return indicies[(int)index];
         }
 
+        #region Masking
+
+        private PeriodType WithFieldRemoved(PeriodType.Index index, string name)
+        {
+            int fieldIndex = GetRealIndex(index);
+            if (fieldIndex == -1)
+                return this;
+
+            //construct new field types
+            DurationFieldType[] newFieldTypes = new DurationFieldType[Size - 1];
+            for (int i = 0; i < fieldTypes.Length; i++)
+            {
+                if (i < fieldIndex)
+                    newFieldTypes[i] = fieldTypes[i];
+                else if (i > fieldIndex)
+                    newFieldTypes[i - 1] = fieldTypes[i];
+            }
+
+            //construct new indicies
+            int[] newIndices = new int[8];
+            int indicesIndex = (int)index;
+            for (int i = 0; i < indicies.Length; i++)
+            {
+                if (i < indicesIndex)
+                    newIndices[i] = indicies[i];
+                else if (i > indicesIndex)
+                    newIndices[i] = (indicies[i] == -1 ? -1 : indicies[i] - 1);
+                else
+                    newIndices[i] = -1;
+            }
+
+            return new PeriodType(Name + name, newFieldTypes, newIndices);
+        }
+
+        /// <summary>
+        /// Returns a version of this PeriodType instance that does not support years.
+        /// </summary>
+        /// <returns>A new period type that supports the original set of fields except years</returns>
+        public PeriodType WithYearsRemoved()
+        {
+            return WithFieldRemoved(Index.Year, "NoYears");
+        }
+
+        /// <summary>
+        /// Returns a version of this PeriodType instance that does not support months.
+        /// </summary>
+        /// <returns>A new period type that supports the original set of fields except months</returns>
+        public PeriodType WithMonthsRemoved()
+        {
+            return WithFieldRemoved(Index.Month, "NoMonths");
+        }
+
+        /// <summary>
+        /// Returns a version of this PeriodType instance that does not support weeks.
+        /// </summary>
+        /// <returns>A new period type that supports the original set of fields except weeks</returns>
+        public PeriodType WithWeeksRemoved()
+        {
+            return WithFieldRemoved(Index.Week, "NoWeeks");
+        }
+
+        /// <summary>
+        /// Returns a version of this PeriodType instance that does not support days.
+        /// </summary>
+        /// <returns>A new period type that supports the original set of fields except days</returns>
+        public PeriodType WithDaysRemoved()
+        {
+            return WithFieldRemoved(Index.Day, "NoDays");
+        }
+
+        /// <summary>
+        /// Returns a version of this PeriodType instance that does not support hours.
+        /// </summary>
+        /// <returns>A new period type that supports the original set of fields except hours</returns>
+        public PeriodType WithHoursRemoved()
+        {
+            return WithFieldRemoved(Index.Hour, "NoHours");
+        }
+
+        /// <summary>
+        /// Returns a version of this PeriodType instance that does not support minutes.
+        /// </summary>
+        /// <returns>A new period type that supports the original set of fields except minutes</returns>
+        public PeriodType WithMinutesRemoved()
+        {
+            return WithFieldRemoved(Index.Minute, "NoMinutes");
+        }
+
+        /// <summary>
+        /// Returns a version of this PeriodType instance that does not support seconds.
+        /// </summary>
+        /// <returns>A new period type that supports the original set of fields except seconds</returns>
+        public PeriodType WithSecondsRemoved()
+        {
+            return WithFieldRemoved(Index.Second, "NoSeconds");
+        }
+
+        /// <summary>
+        /// Returns a version of this PeriodType instance that does not support milliseconds.
+        /// </summary>
+        /// <returns>A new period type that supports the original set of fields except milliseconds</returns>
+        public PeriodType WithMillisecondsRemoved()
+        {
+            return WithFieldRemoved(Index.Millisecond, "NoMilliseconds");
+        }
+
+        #endregion
+
         public override string ToString()
         {
             return "PeriodType[" + Name + "]";
