@@ -382,7 +382,7 @@ namespace NodaTime.Periods
         private int GetIndexedField(PeriodType.Index index)
         {
             int realIndex = PeriodType.GetRealIndex(index);
-            return GetValue(realIndex);
+            return realIndex == -1 ? 0 : GetValue(realIndex);
         }
 
         #endregion

@@ -126,6 +126,7 @@
       <DependentUpon>DaysTest.cs</DependentUpon>
     </Compile>
     <Compile Include="MockZeroNullIntegerConverter.cs" />
+    <Compile Include="Periods\PeriodTest.cs" />
     <Compile Include="Periods\PeriodTypeTest.cs" />
     <Compile Include="Periods\PeriodTypeTest.Equality.cs">
       <DependentUpon>PeriodTypeTest.cs</DependentUpon>
