@@ -28,13 +28,13 @@ namespace NodaTime.Test.Periods
         public void NamedValues_ForYearDayTimePeriod()
         {
             var sut = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime);
-            Assert.AreEqual(1, sut.Years());
-            Assert.AreEqual(0, sut.Months());
-            Assert.AreEqual(4, sut.Days());
-            Assert.AreEqual(5, sut.Hours());
-            Assert.AreEqual(6, sut.Minutes());
-            Assert.AreEqual(7, sut.Seconds());
-            Assert.AreEqual(8, sut.Milliseconds());
+            Assert.AreEqual(1, sut.Years);
+            Assert.AreEqual(0, sut.Months);
+            Assert.AreEqual(4, sut.Days);
+            Assert.AreEqual(5, sut.Hours);
+            Assert.AreEqual(6, sut.Minutes);
+            Assert.AreEqual(7, sut.Seconds);
+            Assert.AreEqual(8, sut.Milliseconds);
         }
 
         [Test]
