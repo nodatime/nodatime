@@ -93,19 +93,19 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(0, Days.StandardDaysIn(Period.Zero).Value);
             Assert.AreEqual(1, Days.StandardDaysIn(new Period(0, 0, 0, 1, 0, 0, 0, 0)).Value);
-            Assert.AreEqual(123, Days.StandardDaysIn(Period.Days(123)).Value);
-            Assert.AreEqual((-987), Days.StandardDaysIn(Period.Days(-987)).Value);
-            Assert.AreEqual(1, Days.StandardDaysIn(Period.Hours(47)).Value);
-            Assert.AreEqual(2, Days.StandardDaysIn(Period.Hours(48)).Value);
-            Assert.AreEqual(2, Days.StandardDaysIn(Period.Hours(49)).Value);
-            Assert.AreEqual(14, Days.StandardDaysIn(Period.Weeks(2)).Value);
+            Assert.AreEqual(123, Days.StandardDaysIn(Period.FromDays(123)).Value);
+            Assert.AreEqual((-987), Days.StandardDaysIn(Period.FromDays(-987)).Value);
+            Assert.AreEqual(1, Days.StandardDaysIn(Period.FromHours(47)).Value);
+            Assert.AreEqual(2, Days.StandardDaysIn(Period.FromHours(48)).Value);
+            Assert.AreEqual(2, Days.StandardDaysIn(Period.FromHours(49)).Value);
+            Assert.AreEqual(14, Days.StandardDaysIn(Period.FromWeeks(2)).Value);
         }
 
         [Test]
         [Ignore("Not enough code")]
         public void StandardDaysIn_ImpreciseFields_ThrowsArgumentException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Days.StandardDaysIn(Period.Months(1)));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Days.StandardDaysIn(Period.FromMonths(1)));
         }
 
         [Test]

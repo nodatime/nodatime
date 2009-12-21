@@ -52,14 +52,14 @@ namespace NodaTime.Periods
         /// <para>
         /// The standard period type is used, thus you can add other fields such
         /// as months or days using the <code>WithXxx()</code> methods.
-        /// For example, <code>Period.Years(2).WithMonths(6);</code>
+        /// For example, <code>Period.FromYears(2).WithMonths(6);</code>
         /// </para>
         /// <para>
         /// If you want a year-based period that cannot have other fields added,
         /// then you should consider using <see cref="Years"/>.
         /// </para>
         /// </remarks>
-        public static Period Years(int years)
+        public static Period FromYears(int years)
         {
             return new Period(new int[] { years, 0, 0, 0, 0, 0, 0, 0}, PeriodType.Standart);
         }
@@ -72,15 +72,15 @@ namespace NodaTime.Periods
         /// <remarks>
         /// <para>
         /// The standard period type is used, thus you can add other fields such
-        /// as years or days using the <code>withXxx()</code> methods.
-        /// For example, <code>Period.months(2).withDays(6);</code>
+        /// as years or days using the <code>WithXxx()</code> methods.
+        /// For example, <code>Period.FromMonths(2).WithDays(6);</code>
         /// </para>
         /// <para>
         /// If you want a month-based period that cannot have other fields added,
         /// then you should consider using <see cref="Months"/>.
         /// </para>
         /// </remarks>
-        public static Period Months(int months)
+        public static Period FromMonths(int months)
         {
             return new Period(new int[] { 0, months, 0, 0, 0, 0, 0, 0}, PeriodType.Standart);
         }
@@ -93,15 +93,15 @@ namespace NodaTime.Periods
         /// <remarks>
         /// <para>
         /// The standard period type is used, thus you can add other fields such
-        /// as months or days using the <code>withXxx()</code> methods.
-        /// For example, <code>Period.weeks(2).withDays(6);</code>
+        /// as months or days using the <code>WithXxx()</code> methods.
+        /// For example, <code>Period.FromWeeks(2).WithDays(6);</code>
         /// </para>
         /// <para>
         /// If you want a week-based period that cannot have other fields added,
         /// then you should consider using <see cref="Weeks"/>.
         /// </para>
         /// </remarks>
-        public static Period Weeks(int weeks)
+        public static Period FromWeeks(int weeks)
         {
             return new Period(new int[] { 0, 0, weeks, 0, 0, 0, 0, 0}, PeriodType.Standart);
         }
@@ -114,15 +114,15 @@ namespace NodaTime.Periods
         /// <remarks>
         /// <para>
         /// The standard period type is used, thus you can add other fields such
-        /// as months or weeks using the <code>withXxx()</code> methods.
-        /// For example, <code>Period.days(2).withHours(6);</code>
+        /// as months or weeks using the <code>WithXxx()</code> methods.
+        /// For example, <code>Period.FromDays(2).WithHours(6);</code>
         /// </para>
         /// <para>
         /// If you want a day-based period that cannot have other fields added,
         /// then you should consider using <see cref="Days"/>.
         /// </para>
         /// </remarks>
-        public static Period Days(int days)
+        public static Period FromDays(int days)
         {
             return new Period(new int[] { 0, 0, 0, days, 0, 0, 0, 0}, PeriodType.Standart);
         }
@@ -135,15 +135,15 @@ namespace NodaTime.Periods
         /// <remarks>
         /// <para>
         /// The standard period type is used, thus you can add other fields such
-        /// as months or days using the <code>withXxx()</code> methods.
-        /// For example, <code>Period.hours(2).withMinutes(30);</code>
+        /// as months or days using the <code>WithXxx()</code> methods.
+        /// For example, <code>Period.FromHours(2).WithMinutes(30);</code>
         /// </para>
         /// <para>
         /// If you want a hour-based period that cannot have other fields added,
         /// then you should consider using <see cref="Hours"/>.
         /// </para>
         /// </remarks>
-        public static Period Hours(int hours)
+        public static Period FromHours(int hours)
         {
             return new Period(new int[] { 0, 0, 0, 0, hours, 0, 0, 0}, PeriodType.Standart);
         }
@@ -156,15 +156,15 @@ namespace NodaTime.Periods
         /// <remarks>
         /// <para>
         /// The standard period type is used, thus you can add other fields such
-        /// as days or hours using the <code>withXxx()</code> methods.
-        /// For example, <code>Period.minutes(2).withSeconds(30);</code>
+        /// as days or hours using the <code>WithXxx()</code> methods.
+        /// For example, <code>Period.FromMinutes(2).WithSeconds(30);</code>
         /// </para>
         /// <para>
         /// If you want a minute-based period that cannot have other fields added,
         /// then you should consider using <see cref="Minutes"/>.
         /// </para>
         /// </remarks>
-        public static Period Minutes(int minutes)
+        public static Period FromMinutes(int minutes)
         {
             return new Period(new int[] { 0, 0, 0, 0, 0, minutes, 0, 0}, PeriodType.Standart);
         }
@@ -177,15 +177,15 @@ namespace NodaTime.Periods
         /// <remarks>
         /// <para>
         /// The standard period type is used, thus you can add other fields such
-        /// as days or hours using the <code>withXxx()</code> methods.
-        /// For example, <code>Period.seconds(2).withMillis(30);</code>
+        /// as days or hours using the <code>WithXxx()</code> methods.
+        /// For example, <code>Period.FromSeconds(2).WithMilliseconds(30);</code>
         /// </para>
         /// <para>
         /// If you want a second-based period that cannot have other fields added,
         /// then you should consider using <see cref="Seconds"/>.
         /// </para>
         /// </remarks>
-        public static Period Seconds(int seconds)
+        public static Period FromSeconds(int seconds)
         {
             return new Period(new int[] { 0, 0, 0, 0, 0, 0, seconds, 0}, PeriodType.Standart);
         }
@@ -198,15 +198,15 @@ namespace NodaTime.Periods
         /// <remarks>
         /// <para>
         /// The standard period type is used, thus you can add other fields such
-        /// as days or hours using the <code>withXxx()</code> methods.
-        /// For example, <code>Period.seconds(2).withMillis(30);</code>
+        /// as days or hours using the <code>WithXxx()</code> methods.
+        /// For example, <code>Period.FromSeconds(2).WithMillis(30);</code>
         /// </para>
         /// <para>
         /// If you want a second-based period that cannot have other fields added,
         /// then you should consider using <see cref="Seconds"/>.
         /// </para>
         /// </remarks>
-        public static Period Milliseconds(int milliseconds)
+        public static Period FromMilliseconds(int milliseconds)
         {
             return new Period(new int[] { 0, 0, 0, 0, 0, 0, 0, milliseconds}, PeriodType.Standart);
         }
@@ -311,72 +311,96 @@ namespace NodaTime.Periods
         /// Gets the years field part of the period.
         /// </summary>
         /// <returns>The number of years in the period, zero if unsupported</returns>
-        public int Years()
+        public int Years
         {
-            return GetIndexedField(PeriodType.Index.Year);
+            get
+            {
+                return GetIndexedField(PeriodType.Index.Year);
+            }
         }
 
         /// <summary>
         /// Gets the months field part of the period.
         /// </summary>
         /// <returns>The number of months in the period, zero if unsupported</returns>
-        public int Months()
+        public int Months
         {
-            return GetIndexedField(PeriodType.Index.Month);
+            get
+            {
+                return GetIndexedField(PeriodType.Index.Month);
+            }
         }
 
         /// <summary>
         /// Gets the weeks field part of the period.
         /// </summary>
         /// <returns>The number of weeks in the period, zero if unsupported</returns>
-        public int Weeks()
+        public int Weeks
         {
-            return GetIndexedField(PeriodType.Index.Week);
+            get
+            {
+                return GetIndexedField(PeriodType.Index.Week);
+            }
         }
 
         /// <summary>
         /// Gets the days field part of the period.
         /// </summary>
         /// <returns>The number of days in the period, zero if unsupported</returns>
-        public int Days()
+        public int Days
         {
-            return GetIndexedField(PeriodType.Index.Day);
+            get
+            {
+                return GetIndexedField(PeriodType.Index.Day);
+            }
         }
 
         /// <summary>
         /// Gets the hours field part of the period.
         /// </summary>
         /// <returns>The number of hours in the period, zero if unsupported</returns>
-        public int Hours()
+        public int Hours
         {
-            return GetIndexedField(PeriodType.Index.Hour);
+            get
+            {
+                return GetIndexedField(PeriodType.Index.Hour);
+            }
         }
 
         /// <summary>
         /// Gets the minutes field part of the period.
         /// </summary>
         /// <returns>The number of minutes in the period, zero if unsupported</returns>
-        public int Minutes()
+        public int Minutes
         {
-            return GetIndexedField(PeriodType.Index.Minute);
+            get
+            {
+                return GetIndexedField(PeriodType.Index.Minute);
+            }
         }
 
         /// <summary>
         /// Gets the seconds field part of the period.
         /// </summary>
         /// <returns>The number of seconds in the period, zero if unsupported</returns>
-        public int Seconds()
+        public int Seconds
         {
-            return GetIndexedField(PeriodType.Index.Second);
+            get
+            {
+                return GetIndexedField(PeriodType.Index.Second);
+            }
         }
 
         /// <summary>
         /// Gets the milliseconds field part of the period.
         /// </summary>
         /// <returns>The number of milliseconds in the period, zero if unsupported</returns>
-        public int Milliseconds()
+        public int Milliseconds
         {
-            return GetIndexedField(PeriodType.Index.Millisecond);
+            get
+            {
+                return GetIndexedField(PeriodType.Index.Millisecond);
+            }
         }
 
         private int GetIndexedField(PeriodType.Index index)
