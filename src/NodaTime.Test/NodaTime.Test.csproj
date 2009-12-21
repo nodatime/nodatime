@@ -118,6 +118,18 @@
     <Compile Include="OffsetTest.Construction.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Periods\PeriodTest.SubtractMethods.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTest.AddMethods.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTest.WithMethods.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTest.StaticCreationMethods.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Periods\DaysTest.cs" />
     <Compile Include="Periods\DaysTest.Constants.cs">
       <DependentUpon>DaysTest.cs</DependentUpon>

@@ -426,14 +426,56 @@ namespace NodaTime.Periods
             //change field value
             int realIndex = PeriodType.GetRealIndex(index);
             if (realIndex == -1)
-                throw new NotSupportedException("Field is not supported");
-
-            if (add)
-                values[realIndex] += newValue;
+            {
+                if (newValue != 0)
+                    throw new NotSupportedException("Field is not supported");
+            }
             else
-                values[realIndex] = newValue;
-
+            {
+                if (add)
+                    values[realIndex] += newValue;
+                else
+                    values[realIndex] = newValue;
+            }
             return values;
+        }
+
+        private int[] WitnAnyField(DurationFieldType fieldType, int newValue, bool add)
+        {
+            //clone values
+            var values = GetValues();
+
+            //change field value
+            int index = PeriodType.IndexOf(fieldType);
+            if (index == -1)
+            {
+                if(newValue != 0)
+                    throw new NotSupportedException("Field is not supported");
+            }
+            else
+            {
+                if (add)
+                    values[index] += newValue;
+                else
+                    values[index] = newValue;
+            }
+            return values;
+        }
+
+        /// <summary>
+        /// Creates a new Period instance with the specified field set to a new value.
+        /// </summary>
+        /// <param name="fieldType">The field to set to</param>
+        /// <param name="value">The value to set</param>
+        /// <returns>The new period instance</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        /// <exception cref="NotSupportedException">If the field type unsupported</exception>
+        public Period WithField(DurationFieldType fieldType, int value)
+        {
+            var values = WitnAnyField(fieldType, value, false);
+            return new Period(values, PeriodType);
         }
 
         /// <summary>
@@ -545,6 +587,25 @@ namespace NodaTime.Periods
         public Period WithMilliseconds(int milliseconds)
         {
             var values = WitnIndexedField(PeriodType.Index.Millisecond, milliseconds);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Creates a new Period instance with the new value added to the specified field
+        /// </summary>
+        /// <param name="fieldType">The field to add value to</param>
+        /// <param name="value">The value to add</param>
+        /// <returns>The new period instance</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        /// <exception cref="NotSupportedException">If the field type unsupported</exception>
+        public Period AddField(DurationFieldType fieldType, int value)
+        {
+            if (value == 0)
+                return this;
+
+            var values = WitnAnyField(fieldType, value, true);
             return new Period(values, PeriodType);
         }
 
