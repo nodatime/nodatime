@@ -157,5 +157,51 @@ namespace NodaTime.Test.Periods
             var sut = new Period(6, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years).SubtractMilliseconds(0);
             Assert.AreEqual(0, sut.Milliseconds);
         }
+
+        [Test]
+        public void SubtractTime_SubtractsTimesValue_OnStandartPeriodType()
+        {
+            var first = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+            var second = new Period(0, 0, 0, 0, 12, 11, 10, 9, PeriodType.Time);
+            var result = first.Subtract(second);
+
+            Assert.AreEqual(1, result.Years);
+            Assert.AreEqual(2, result.Months);
+            Assert.AreEqual(3, result.Weeks);
+            Assert.AreEqual(4, result.Days);
+            Assert.AreEqual(-7, result.Hours);
+            Assert.AreEqual(-5, result.Minutes);
+            Assert.AreEqual(-3, result.Seconds);
+            Assert.AreEqual(-1, result.Milliseconds);
+        }
+
+        [Test]
+        public void SubtractNull_ReturnsTheSameInstance_OnStandartPeriodType()
+        {
+            var first = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+            IPeriod second = null;
+            var result = first.Subtract(second);
+
+            Assert.AreEqual(1, result.Years);
+            Assert.AreEqual(2, result.Months);
+            Assert.AreEqual(3, result.Weeks);
+            Assert.AreEqual(4, result.Days);
+            Assert.AreEqual(5, result.Hours);
+            Assert.AreEqual(6, result.Minutes);
+            Assert.AreEqual(7, result.Seconds);
+            Assert.AreEqual(8, result.Milliseconds);
+
+            Assert.AreSame(first, result);
+        }
+
+        [Test]
+        public void SubtractStandart_ThrowsUnsupported_OnTimePeriodType()
+        {
+            var first = new Period(0, 0, 0, 0, 9, 9, 9, 9, PeriodType.Time);
+            var second = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+
+            Assert.Throws<NotSupportedException>(() => first.Subtract(second));
+        }
+
     }
 }

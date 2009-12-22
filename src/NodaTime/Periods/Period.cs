@@ -424,6 +424,13 @@ namespace NodaTime.Periods
             var values = GetValues();
 
             //change field value
+            UpdateIndexedField(values, index, newValue, add);
+
+            return values;
+        }
+
+        private void UpdateIndexedField(int[] values, PeriodType.Index index, int newValue, bool add)
+        {
             int realIndex = PeriodType.GetRealIndex(index);
             if (realIndex == -1)
             {
@@ -437,7 +444,7 @@ namespace NodaTime.Periods
                 else
                     values[realIndex] = newValue;
             }
-            return values;
+ 
         }
 
         private int[] WitnAnyField(DurationFieldType fieldType, int newValue, bool add)
@@ -460,6 +467,26 @@ namespace NodaTime.Periods
                     values[index] = newValue;
             }
             return values;
+        }
+
+        /// <summary>
+        /// Creates a new Period instance with the fields from the specified period
+        /// opied on top of those from this period.
+        /// </summary>
+        /// <param name="period">The period to copy from, null ignored</param>
+        /// <returns>The new period instance</returns>
+        /// <remarks>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </remarks>
+        /// <exception cref="ArgumentException">If a field type is unsupported</exception>
+        public Period With(IPeriod period)
+        {
+            if (period == null)
+                return this;
+
+            var values = GetValues();
+            MergePeriodInto(values, period);
+            return new Period(values, PeriodType);
         }
 
         /// <summary>
@@ -587,6 +614,44 @@ namespace NodaTime.Periods
         public Period WithMilliseconds(int milliseconds)
         {
             var values = WitnIndexedField(PeriodType.Index.Millisecond, milliseconds);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified period added.
+        /// </summary>
+        /// <param name="period">The period to add, null adds zero and returns this</param>
+        /// <returns>The new updated period</returns>
+        /// <remarks>
+        /// <para>
+        /// Each field of the period is added separately. Thus a period of
+        /// 2 hours 30 minutes plus 3 hours 40 minutes will produce a result
+        /// of 5 hours 70 minutes - see <see cref="NormalizedStandard"/>.
+        /// </para>
+        /// <para>
+        /// If the period being added contains a non-zero amount for a field that
+        /// is not supported in this period then an exception is thrown.
+        /// </para>
+        /// <para>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="NotSupportedException">If the field type unsupported</exception>
+        public Period Add(IPeriod period)
+        {
+            if (period == null)
+                return this;
+
+            var values = GetValues();
+            UpdateIndexedField(values, PeriodType.Index.Year, period.Get(DurationFieldType.Years), true);
+            UpdateIndexedField(values, PeriodType.Index.Month, period.Get(DurationFieldType.Months), true);
+            UpdateIndexedField(values, PeriodType.Index.Week, period.Get(DurationFieldType.Weeks), true);
+            UpdateIndexedField(values, PeriodType.Index.Day, period.Get(DurationFieldType.Days), true);
+            UpdateIndexedField(values, PeriodType.Index.Hour, period.Get(DurationFieldType.Hours), true);
+            UpdateIndexedField(values, PeriodType.Index.Minute, period.Get(DurationFieldType.Minutes), true);
+            UpdateIndexedField(values, PeriodType.Index.Second, period.Get(DurationFieldType.Seconds), true);
+            UpdateIndexedField(values, PeriodType.Index.Millisecond, period.Get(DurationFieldType.Milliseconds), true);
+
             return new Period(values, PeriodType);
         }
 
@@ -743,6 +808,44 @@ namespace NodaTime.Periods
 
 
             var values = WitnIndexedField(PeriodType.Index.Millisecond, milliseconds, true);
+            return new Period(values, PeriodType);
+        }
+
+        /// <summary>
+        /// Returns a new period with the specified period subtracted.
+        /// </summary>
+        /// <param name="period">The period to subtract, null subtracts zero and returns this</param>
+        /// <returns>The new updated period</returns>
+        /// <remarks>
+        /// <para>
+        /// Each field of the period is subtracted separately. Thus a period of
+        /// 3 hours 30 minutes minus 2 hours 40 minutes will produce a result
+        /// of 1 hour and -10 minutes - see <see cref="NormalizedStandard"/>.
+        /// </para>
+        /// <para>
+        /// If the period being subtracted contains a non-zero amount for a field that
+        /// is not supported in this period then an exception is thrown.
+        /// </para>
+        /// <para>
+        /// This period instance is immutable and unaffected by this method call.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="NotSupportedException">If the field type unsupported</exception>
+        public Period Subtract(IPeriod period)
+        {
+            if (period == null)
+                return this;
+
+            var values = GetValues();
+            UpdateIndexedField(values, PeriodType.Index.Year, -period.Get(DurationFieldType.Years), true);
+            UpdateIndexedField(values, PeriodType.Index.Month, -period.Get(DurationFieldType.Months), true);
+            UpdateIndexedField(values, PeriodType.Index.Week, -period.Get(DurationFieldType.Weeks), true);
+            UpdateIndexedField(values, PeriodType.Index.Day, -period.Get(DurationFieldType.Days), true);
+            UpdateIndexedField(values, PeriodType.Index.Hour, -period.Get(DurationFieldType.Hours), true);
+            UpdateIndexedField(values, PeriodType.Index.Minute, -period.Get(DurationFieldType.Minutes), true);
+            UpdateIndexedField(values, PeriodType.Index.Second, -period.Get(DurationFieldType.Seconds), true);
+            UpdateIndexedField(values, PeriodType.Index.Millisecond, -period.Get(DurationFieldType.Milliseconds), true);
+
             return new Period(values, PeriodType);
         }
 
