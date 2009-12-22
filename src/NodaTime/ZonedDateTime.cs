@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
+
 namespace NodaTime
 {
     /// <summary>
@@ -36,51 +39,76 @@ namespace NodaTime
     /// </remarks>
     public struct ZonedDateTime
     {
-        private Instant instant;
-        private Chronology chronology;
+        private readonly Instant instant;
+        private readonly Chronology chronology;
 
         public ZonedDateTime(LocalDateTime localDateTime, IDateTimeZone zone)
         {
-            instant = Instant.UnixEpoch;
-            chronology = null;
+            if (zone == null)
+            {
+                throw new ArgumentNullException("zone");
+            } 
+            LocalInstant localInstant = localDateTime.LocalInstant;
+            instant = localInstant - zone.GetOffsetFromLocal(localInstant);
+            chronology = new Chronology(zone, localDateTime.Calendar);
         }
 
         public ZonedDateTime(Instant instant, Chronology chronology)
         {
-            this.instant = Instant.UnixEpoch;
-            this.chronology = null;
+            if (chronology == null)
+            {
+                throw new ArgumentNullException("chronology");
+            }
+            this.instant = instant;
+            this.chronology = chronology;
         }
 
         public ZonedDateTime(int year, int month, int day,
                              int hour, int minute, int second,
                              IDateTimeZone zone)
+            : this(year, month, day, hour, minute, second, Chronology.IsoForZone(zone))
         {
-            instant = Instant.UnixEpoch;
-            chronology = null;
         }
 
         public ZonedDateTime(int year, int month, int day,
                              int hour, int minute, int second,
                              Chronology chronology)
+            : this(year, month, day, hour, minute, second, 0, 0, chronology)
         {
-            instant = Instant.UnixEpoch;
-            this.chronology = null;
         }
 
         public ZonedDateTime(int year, int month, int day,
                              int hour, int minute, int second,
                              int millisecond, IDateTimeZone zone)
+            : this(year, month, day, hour, minute, second, millisecond, Chronology.IsoForZone(zone))
         {
-            instant = Instant.UnixEpoch;
-            chronology = null;
         }
 
         public ZonedDateTime(int year, int month, int day,
                              int hour, int minute, int second,
                              int millisecond, Chronology chronology)
+            : this(year, month, day, hour, minute, second, millisecond, 0, chronology)
         {
-            instant = Instant.UnixEpoch;
-            this.chronology = null;
+        }
+
+        public ZonedDateTime(int year, int month, int day,
+                             int hour, int minute, int second,
+                             int millisecond, int tick, IDateTimeZone zone)
+            : this(year, month, day, hour, minute, second, millisecond, tick, Chronology.IsoForZone(zone))
+        {
+        }
+
+        public ZonedDateTime(int year, int month, int day,
+                             int hour, int minute, int second,
+                             int millisecond, int tick, Chronology chronology)
+        {
+            if (chronology == null)
+            {
+                throw new ArgumentNullException("chronology");
+            }
+            LocalInstant localInstant = chronology.Calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond, tick);
+            instant = localInstant - chronology.Zone.GetOffsetFromLocal(localInstant);
+            this.chronology = chronology;
         }
 
         /// <summary>

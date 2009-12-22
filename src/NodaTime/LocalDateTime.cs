@@ -34,7 +34,7 @@ namespace NodaTime
     public struct LocalDateTime
     {
         private readonly LocalInstant localInstant;
-        private ICalendarSystem calendar;
+        private readonly ICalendarSystem calendar;
 
         public LocalDateTime(LocalInstant localInstant)
             : this(localInstant, IsoCalendarSystem.Instance)
@@ -99,6 +99,9 @@ namespace NodaTime
             localInstant = calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond);
             this.calendar = calendar;
         }
+
+        public LocalInstant LocalInstant { get { return localInstant; } }
+        public ICalendarSystem Calendar { get { return calendar; } }
 
         public int Era { get { return calendar.Fields.Era.GetValue(localInstant); } }
         public int CenturyOfEra { get { return calendar.Fields.CenturyOfEra.GetValue(localInstant); } }

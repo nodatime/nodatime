@@ -17,6 +17,7 @@
 using System;
 
 using NodaTime.Calendars;
+using NodaTime.TimeZones;
 
 namespace NodaTime
 {
@@ -28,18 +29,36 @@ namespace NodaTime
     /// </summary>
     public sealed class Chronology
     {
+        private static readonly Chronology isoUtc = new Chronology(DateTimeZones.Utc, IsoCalendarSystem.Instance);
+
+        public static Chronology IsoUtc { get { return isoUtc; } }
+        
         private readonly IDateTimeZone zone;
         private readonly ICalendarSystem calendarSystem;
-
-        public static Chronology IsoUtc { get { throw new NotImplementedException(); } }
-
+        
         public IDateTimeZone Zone { get { return zone; } }
-        public ICalendarSystem CalendarSystem { get { return calendarSystem; } }
+        public ICalendarSystem Calendar { get { return calendarSystem; } }
 
         public Chronology(IDateTimeZone zone, ICalendarSystem calendarSystem)
         {
+            if (zone == null)
+            {
+                throw new ArgumentNullException("zone");
+            }
+            if (calendarSystem == null)
+            {
+                throw new ArgumentNullException("calendarSystem");
+            }
             this.zone = zone;
             this.calendarSystem = calendarSystem;
+        }
+
+        /// <summary>
+        /// Returns a chronology which uses the ISO chronology in the given time zone.
+        /// </summary>
+        internal static Chronology IsoForZone(IDateTimeZone zone)
+        {
+            return new Chronology(zone, IsoCalendarSystem.Instance);
         }
     }
 }
