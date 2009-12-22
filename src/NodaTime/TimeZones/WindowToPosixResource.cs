@@ -26,7 +26,7 @@ namespace NodaTime.TimeZones
     /// Provides a mapping between the time zone ids used by Noda Time (which are the POSIX names)
     /// and the names used by Microsoft Windows.
     /// </summary>
-    public sealed class WindowsToPosixResource
+    public static class WindowsToPosixResource
     {
         public const string WindowToPosixMapBase = "winmap";
         public const string WindowToPosixMapBaseFull = "NodaTime.TimeZones." + WindowToPosixMapBase;
@@ -39,6 +39,7 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider"/> class.
         /// </summary>
         /// <param name="baseName">Name of the base.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static WindowsToPosixResource()
         {
             var manager = new ResourceManager(WindowToPosixMapBaseFull, Assembly.GetExecutingAssembly());

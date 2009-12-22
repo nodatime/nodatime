@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+using System;
 namespace NodaTime.TimeZones
 {
     /// <summary>
@@ -69,7 +70,7 @@ namespace NodaTime.TimeZones
         /// <returns>The offset at the specified local time.</returns>
         public override Offset GetOffsetFromLocal(LocalInstant instant)
         {
-            return this.standardOffset;
+            return StandardOffset;
         }
 
         /// <summary>
@@ -78,13 +79,27 @@ namespace NodaTime.TimeZones
         /// <param name="writer">The writer.</param>
         public override void Write(DateTimeZoneWriter writer)
         {
-            writer.WriteTicks(this.standardOffset.Ticks);
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
+            writer.WriteOffset(StandardOffset);
         }
 
+        /// <summary>
+        /// Reads the specified reader.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="id">The id.</param>
+        /// <returns></returns>
         public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
         {
-            long ticks = reader.ReadTicks();
-            return new FixedDateTimeZone(id, new Offset(ticks));
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
+            Offset offset = reader.ReadOffset();
+            return new FixedDateTimeZone(id, offset);
         }
     }
 }

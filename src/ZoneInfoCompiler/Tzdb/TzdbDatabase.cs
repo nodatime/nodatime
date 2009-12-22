@@ -32,7 +32,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// Gets or sets the daylight savings rule sets.
         /// </summary>
         /// <value>The rule sets.</value>
-        internal IDictionary<string, ZoneRuleSet> Rules { get; private set; }
+        internal IDictionary<string, IList<ZoneRule>> Rules { get; private set; }
 
         /// <summary>
         /// Gets or sets the time zone definitions.
@@ -59,7 +59,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal TzdbDatabase()
         {
             this.zoneLists = new SortedList<string, ZoneList>();
-            Rules = new Dictionary<string, ZoneRuleSet>();
+            Rules = new Dictionary<string, IList<ZoneRule>>();
             Aliases = new Dictionary<string, string>();
             CurrentZoneList = null;
         }
@@ -71,13 +71,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="rule">The rule to add.</param>
         internal void AddRule(ZoneRule rule)
         {
-            ZoneRuleSet ruleSet;
+            IList<ZoneRule> ruleSet;
             if (!Rules.TryGetValue(rule.Name, out ruleSet))
             {
-                ruleSet = new ZoneRuleSet();
+                ruleSet = new List<ZoneRule>();
                 Rules[rule.Name] = ruleSet;
             }
-            ruleSet.AddRule(rule);
+            ruleSet.Add(rule);
         }
 
         /// <summary>

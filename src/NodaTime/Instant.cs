@@ -54,20 +54,53 @@ namespace NodaTime
         #region Operators
 
         /// <summary>
+        /// Returns an instant after adding the given duration
+        /// </summary>
+        public static Instant operator +(Instant instant, Duration duration)
+        {
+            return new Instant(instant.Ticks + duration.Ticks);
+        }
+
+        /// <summary>
+        /// Implements the operator + (addition) for <see cref="Instant"/> + <see cref="Offset"/>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
+        public static LocalInstant operator +(Instant instant, Offset offset)
+        {
+            return new LocalInstant(instant.Ticks + offset.AsTicks());
+        }
+
+        /// <summary>
+        /// Adds a duration to an instant. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant"/> representing the sum of the given values.</returns>
+        public static Instant Add(Instant left, Duration right)
+        {
+            return left + right;
+        }
+
+        /// <summary>
+        /// Adds an offset to an instant. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
+        public static LocalInstant Add(Instant left, Offset right)
+        {
+            return left + right;
+        }
+
+        /// <summary>
         /// Returns the difference between two instants as a duration.
         /// TODO: It *could* return an interval... but I think this is better.
         /// </summary>
         public static Duration operator -(Instant first, Instant second)
         {
             return new Duration(first.Ticks - second.Ticks);
-        }
-
-        /// <summary>
-        /// Returns an instant after adding the given duration
-        /// </summary>
-        public static Instant operator +(Instant instant, Duration duration)
-        {
-            return new Instant(instant.Ticks + duration.Ticks);
         }
 
         /// <summary>
@@ -79,14 +112,25 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Implements the operator + (addition) for <see cref="Instant"/> + <see cref="Offset"/>.
+        /// Subtracts one instant from another. Friendly alternative to <c>operator-()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
-        public static LocalInstant operator +(Instant instant, Offset offset)
+        /// <returns>A new <see cref="Duration"/> representing the difference of the given values.</returns>
+        public static Duration Subtract(Instant left, Instant right)
         {
-            return new LocalInstant(instant.Ticks + offset.Ticks);
+            return left - right;
+        }
+
+        /// <summary>
+        /// Subtracts a duration from an instant. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
+        public static Instant Subtract(Instant left, Duration right)
+        {
+            return left - right;
         }
 
         /// <summary>
@@ -248,7 +292,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return Ticks.ToString("N0", CultureInfo.CurrentUICulture);
+            return Ticks.ToString("N0", CultureInfo.CurrentCulture);
         }
 
         #endregion  // Object overrides

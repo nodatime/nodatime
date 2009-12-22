@@ -466,7 +466,7 @@ namespace ZoneInfoCompiler.Test
 
         private static Offset ToOffset(int hours, int minutes, int seconds, int fractions)
         {
-            return new Offset(((((((hours * 60) + minutes) * 60) + seconds) * 1000) + fractions) * NodaConstants.TicksPerMillisecond);
+            return new Offset((((((hours * 60) + minutes) * 60) + seconds) * 1000) + fractions);
         }
 
         /* ############################################################################### */

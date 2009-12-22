@@ -17,8 +17,10 @@
 using System;
 using NodaTime.Calendars;
 using NodaTime.Utility;
+using System.Text;
+using NodaTime.TimeZones;
 
-namespace NodaTime.TimeZones
+namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
     /// Defines one time zone rule with a validitity range.
@@ -31,15 +33,9 @@ namespace NodaTime.TimeZones
     {
         public ZoneRecurrence Recurrence { get { return this.recurrence; } }
         public string Name { get { return Recurrence.Name; } }
-        public Offset Savings { get { return Recurrence.Savings; } }
-        public bool IsInfinite { get { return this.toYear == Int32.MaxValue; } }
-        public int FromYear { get { return this.fromYear; } }
-        public int ToYear { get { return this.toYear; } }
         public string LetterS { get { return this.letterS; } }
 
         private readonly ZoneRecurrence recurrence;
-        private readonly int fromYear;
-        private readonly int toYear;
         private readonly string letterS;
 
         /// <summary>
@@ -48,22 +44,9 @@ namespace NodaTime.TimeZones
         /// <param name="recurrence">The recurrence definition of this rule.</param>
         /// <param name="fromYear">The inclusive starting year for this rule.</param>
         /// <param name="toYear">The inclusive ending year for this rule.</param>
-        public ZoneRule(ZoneRecurrence recurrence, int fromYear, int toYear)
-            : this(recurrence, fromYear, toYear, null)
-        {
-        }
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZoneRule"/> class.
-        /// </summary>
-        /// <param name="recurrence">The recurrence definition of this rule.</param>
-        /// <param name="fromYear">The inclusive starting year for this rule.</param>
-        /// <param name="toYear">The inclusive ending year for this rule.</param>
-        public ZoneRule(ZoneRecurrence recurrence, int fromYear, int toYear, string letterS)
+        public ZoneRule(ZoneRecurrence recurrence, string letterS)
         {
             this.recurrence = recurrence;
-            this.fromYear = fromYear;
-            this.toYear = toYear;
             this.letterS = letterS;
         }
 
@@ -74,10 +57,14 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         public String FormatName(String nameFormat)
         {
-            int index = nameFormat.IndexOf('/');
+            if (nameFormat == null)
+            {
+                throw new ArgumentNullException("nameFormat");
+            }
+            int index = nameFormat.IndexOf("/", StringComparison.Ordinal);
             if (index > 0)
             {
-                if (Savings == Offset.Zero)
+                if (Recurrence.Savings == Offset.Zero)
                 {
                     // Extract standard name.
                     return nameFormat.Substring(0, index);
@@ -87,7 +74,7 @@ namespace NodaTime.TimeZones
                     return nameFormat.Substring(index + 1);
                 }
             }
-            index = nameFormat.IndexOf("%s");
+            index = nameFormat.IndexOf("%s", StringComparison.Ordinal);
             if (index < 0)
             {
                 return nameFormat;
@@ -106,61 +93,6 @@ namespace NodaTime.TimeZones
             return name;
         }
 
-        /// <summary>
-        /// Returns the next transition instant as defined by the recurrence definition of this rule
-        /// within the year boundaries of the rule.
-        /// </summary>
-        /// <remarks>
-        /// If the given instant is before the starting year, the year of the given instant is
-        /// adjusted to the beginning of the starting year. The then first transition after the
-        /// adjusted instant is determined. If the next adjustment is after the ending year the
-        /// input instant is returned otherwise the next transition is returned.
-        /// </remarks>
-        /// <param name="instant">The <see cref="Instant"/> lower bound for the next trasnition.</param>
-        /// <param name="standardOffset">The <see cref="Duration"/> standard offset.</param>
-        /// <param name="savings">The <see cref="Duration"/> savings adjustment.</param>
-        /// <returns></returns>
-        internal Instant Next(Instant instant, Offset standardOffset, Offset savings)
-        {
-            ICalendarSystem calendar = IsoCalendarSystem.Instance;
-
-            Offset wallOffset = standardOffset + savings;
-            Instant adjustedInstant = instant;
-
-            int year;
-            if (instant == Instant.MinValue)
-            {
-                year = Int32.MinValue;
-            }
-            else
-            {
-                year = calendar.Fields.Year.GetValue(instant + wallOffset);
-            }
-
-            if (year < this.fromYear)
-            {
-                // First advance instant to start of from year.
-                adjustedInstant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.fromYear) - wallOffset;
-                // Back off one tick to account for next recurrence being exactly at the beginning
-                // of the year.
-                adjustedInstant = adjustedInstant - Duration.One;
-            }
-
-            Instant next = Recurrence.Next(adjustedInstant, standardOffset, savings);
-
-            if (next > instant)
-            {
-                year = calendar.Fields.Year.GetValue(next + wallOffset);
-                if (year > this.toYear)
-                {
-                    // Out of range, return original value.
-                    next = instant;
-                }
-            }
-
-            return next;
-        }
-
         #region Object overrides
 
         /// <summary>
@@ -176,9 +108,10 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            if (obj is ZoneRule)
+            ZoneRule rule = obj as ZoneRule;
+            if (rule != null)
             {
-                return Equals((ZoneRule)obj);
+                return Equals(rule);
             }
             return false;
         }
@@ -193,10 +126,26 @@ namespace NodaTime.TimeZones
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, this.fromYear);
-            hash = HashCodeHelper.Hash(hash, this.toYear);
-            hash = HashCodeHelper.Hash(hash, this.recurrence);
+            hash = HashCodeHelper.Hash(hash, Recurrence);
+            hash = HashCodeHelper.Hash(hash, LetterS);
             return hash;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(Recurrence);
+            if (LetterS != null)
+            {
+                builder.Append(" \"").Append(LetterS).Append("\"");
+            }
+            return builder.ToString();
         }
 
         #endregion Object overrides
@@ -217,10 +166,41 @@ namespace NodaTime.TimeZones
             {
                 return false;
             }
-            return
-                this.fromYear == other.fromYear &&
-                this.toYear == other.toYear &&
-                this.recurrence == other.recurrence;
+            if (this.recurrence != other.recurrence)
+            {
+                return false;
+            }
+            return object.Equals(LetterS, other.LetterS);
+        }
+
+        #endregion
+
+        #region Operator overloads
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ZoneRule left, ZoneRule right)
+        {
+            if ((object)left == null || (object)right == null)
+            {
+                return (object)left == (object)right;
+            }
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ZoneRule left, ZoneRule right)
+        {
+            return !(left == right);
         }
 
         #endregion
