@@ -115,5 +115,50 @@ namespace NodaTime.Test.Periods
             sut.WithField(DurationFieldType.Years, 0);
             Assert.AreEqual(0, sut.Years);
         }
+
+        [Test]
+        public void WithTime_SetsTimesValues_OnStandartPeriodType()
+        {
+            var first = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+            var second = new Period(0, 0, 0, 0, 9, 9, 9, 9, PeriodType.Time);
+            var result = first.With(second);
+
+            Assert.AreEqual(1, result.Years);
+            Assert.AreEqual(2, result.Months);
+            Assert.AreEqual(3, result.Weeks);
+            Assert.AreEqual(4, result.Days);
+            Assert.AreEqual(9, result.Hours);
+            Assert.AreEqual(9, result.Minutes);
+            Assert.AreEqual(9, result.Seconds);
+            Assert.AreEqual(9, result.Milliseconds);
+        }
+
+        [Test]
+        public void WithNull_ReturnsTheSameInstance_OnStandartPeriodType()
+        {
+            var first = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+            IPeriod second = null;
+            var result = first.With(second);
+
+            Assert.AreEqual(1, result.Years);
+            Assert.AreEqual(2, result.Months);
+            Assert.AreEqual(3, result.Weeks);
+            Assert.AreEqual(4, result.Days);
+            Assert.AreEqual(5, result.Hours);
+            Assert.AreEqual(6, result.Minutes);
+            Assert.AreEqual(7, result.Seconds);
+            Assert.AreEqual(8, result.Milliseconds);
+
+            Assert.AreSame(first, result);
+        }
+
+        [Test]
+        public void WithStandart_ThrowsUnsupported_OnTimePeriodType()
+        {
+            var first = new Period(0, 0, 0, 0, 9, 9, 9, 9, PeriodType.Time);
+            var second = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+
+            Assert.Throws<ArgumentException>(() => first.With(second));
+        }
     }
 }

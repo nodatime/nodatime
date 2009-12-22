@@ -86,6 +86,17 @@ namespace NodaTime.Periods
             }
         }
 
+        protected int[] MergePeriodInto(int[] values, IPeriod period)
+        {
+            for (int i = 0, isize = period.Size; i < isize; i++)
+            {
+                DurationFieldType type = period.GetFieldType(i);
+                int value = period.GetValue(i);
+                CheckAndUpdate(type, values, value);
+            }
+            return values;
+        }
+
         /// <summary>
         /// Gets an array of the field types that this period supports.
         /// </summary>
