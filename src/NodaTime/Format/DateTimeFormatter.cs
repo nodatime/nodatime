@@ -140,7 +140,7 @@ namespace NodaTime.Format
             LocalInstant adjustedInstant;
             PrepareToPrint(instant, out chronology, out timezoneOffset, out adjustedInstant);
 
-            printer.PrintTo(builder, adjustedInstant, chronology.CalendarSystem, timezoneOffset, chronology.Zone, locale);
+            printer.PrintTo(builder, adjustedInstant, chronology.Calendar, timezoneOffset, chronology.Zone, locale);
         }
 
         public void PrintTo(Stream stream, Instant instant)
@@ -150,7 +150,7 @@ namespace NodaTime.Format
             LocalInstant adjustedInstant;
             PrepareToPrint(instant, out chronology, out timezoneOffset, out adjustedInstant);
 
-            printer.PrintTo(stream, adjustedInstant, chronology.CalendarSystem, timezoneOffset, chronology.Zone, locale);
+            printer.PrintTo(stream, adjustedInstant, chronology.Calendar, timezoneOffset, chronology.Zone, locale);
         }
 
         public void PrintTo(StringBuilder builder, IPartial partial)
