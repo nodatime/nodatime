@@ -22,7 +22,7 @@ using NodaTime.Periods;
 using System.Globalization;
 using System.IO;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterTest
     {

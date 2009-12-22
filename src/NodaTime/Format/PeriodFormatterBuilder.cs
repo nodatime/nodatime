@@ -512,8 +512,8 @@ namespace NodaTime.Format
             {
                 int sum = 0;
 
-                for (int i = periodPrinters.Length; i >= 0; --i)
-                    sum += periodPrinters[i].CalculatePrintedLength(period, provider);
+                for (int i = periodPrinters.Length; i > 0; --i)
+                    sum += periodPrinters[i-1].CalculatePrintedLength(period, provider);
 
                 return sum;
             }
@@ -522,8 +522,8 @@ namespace NodaTime.Format
             {
                 int sum = 0;
 
-                for (int i = periodPrinters.Length; sum < stopAt && i >= 0; --i)
-                    sum += periodPrinters[i].CountFieldsToPrint(period, Int32.MaxValue, provider);
+                for (int i = periodPrinters.Length; sum < stopAt && i > 0; --i)
+                    sum += periodPrinters[i-1].CountFieldsToPrint(period, Int32.MaxValue, provider);
 
                 return sum;
             }
@@ -575,10 +575,13 @@ namespace NodaTime.Format
                 {
                     //filter unique strings
                     var uniqueStrings = new Dictionary<string, string>();
-                    uniqueStrings.Add(text, text);
-                    uniqueStrings.Add(finalText, finalText);
-                    foreach (var variant in variants)
-                        uniqueStrings.Add(variant, variant);
+                    if(!uniqueStrings.ContainsKey(text))
+                        uniqueStrings.Add(text, text);
+                    if(!uniqueStrings.ContainsKey(finalText))
+                        uniqueStrings.Add(finalText, finalText);
+                    if(variants != null)
+                        foreach (var variant in variants)
+                            uniqueStrings.Add(variant, variant);
                     parsedForms = new string[uniqueStrings.Keys.Count];
                     uniqueStrings.Keys.CopyTo(parsedForms, 0);
 
@@ -734,7 +737,7 @@ namespace NodaTime.Format
 
             notParser = false;
             notPrinter = false;
-            filedFormatters = new FieldFormatter[10];
+            filedFormatters = new FieldFormatter[13];
 
         }
 
@@ -1160,7 +1163,7 @@ namespace NodaTime.Format
 
             if (originalPrinter == null || orgiginalParser == null
                 || originalPrinter != orgiginalParser
-                || originalFormatter != null)
+                || originalFormatter == null)
             {
                 throw new InvalidOperationException("No field to apply suffix to");
             }
@@ -1434,18 +1437,21 @@ namespace NodaTime.Format
 
         static void Decompose(IList elementPairs, ArrayList printerList, ArrayList parserList)
         {
-            foreach (var item in elementPairs)
+            for (int i = 0; i < elementPairs.Count; i++ )
             {
-                if (item is IPeriodPrinter)
-                    if (item is Composite)
-                        printerList.AddRange(((Composite)item).Printers);
+                var firstItem = elementPairs[i];
+                if (firstItem is IPeriodPrinter)
+                    if (firstItem is Composite)
+                        printerList.AddRange(((Composite)firstItem).Printers);
                     else
-                        printerList.Add(item);
-                else if (item is IPeriodParser)
-                    if (item is Composite)
-                        parserList.AddRange(((Composite)item).Parsers);
+                        printerList.Add(firstItem);
+                ++i;
+                var secondItem = elementPairs[i];
+                if (secondItem is IPeriodParser)
+                    if (secondItem is Composite)
+                        parserList.AddRange(((Composite)secondItem).Parsers);
                     else
-                        parserList.Add(item);
+                        parserList.Add(secondItem);
             }
         }
 
@@ -1461,7 +1467,7 @@ namespace NodaTime.Format
                 Separator sep = (Separator)elementPairs[0];
                 var elementsAfterSeparator = new List<Object>(size - 2);
                 for (int i = 0; i < size - 2; i++)
-                    elementsAfterSeparator[i] = elementPairs[i + 2];
+                    elementsAfterSeparator.Add(elementPairs[i + 2]);
 
                 PeriodFormatter f = ToFormatter(elementsAfterSeparator, notPrinter, notParser);
                 sep = sep.Finish(f.Printer, f.Parser);
