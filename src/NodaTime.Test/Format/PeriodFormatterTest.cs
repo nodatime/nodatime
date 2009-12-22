@@ -20,7 +20,7 @@ using NodaTime.Format;
 using System.Globalization;
 using NodaTime.Periods;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Format
 {
     [TestFixture]
     public partial class PeriodFormatterTest

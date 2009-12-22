@@ -18,7 +18,7 @@ using System;
 using NUnit.Framework;
 using NodaTime.Format;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterTest
     {
