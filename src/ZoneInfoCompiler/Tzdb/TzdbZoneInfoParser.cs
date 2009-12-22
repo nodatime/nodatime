@@ -256,8 +256,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             ZoneYearOffset yearOffset = ParseDateTimeOfYear(tokens);
             Offset savings = NextOffset(tokens, "SaveMillis");
             string letterS = NextOptional(tokens, "LetterS");
-            ZoneRecurrence recurrence = new ZoneRecurrence(name, savings, yearOffset);
-            return new ZoneRule(recurrence, fromYear, toYear, letterS); ;
+            ZoneRecurrence recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
+            return new ZoneRule(recurrence, letterS); ;
         }
 
         /// <summary>

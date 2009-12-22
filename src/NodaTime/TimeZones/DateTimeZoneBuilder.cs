@@ -74,7 +74,7 @@ namespace NodaTime.TimeZones
     /// </remarks>
     public sealed class DateTimeZoneBuilder
     {
-        private readonly IList<ZoneRuleSet> ruleSets = new List<ZoneRuleSet>();
+        private readonly IList<ZoneRecurrenceCollection> ruleSets = new List<ZoneRecurrenceCollection>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneBuilder"/> class.
@@ -115,11 +115,31 @@ namespace NodaTime.TimeZones
             {
                 FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
             }
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.AsTicks());
+
+            return AddCutover(year, new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay));
+        }
+
+        /// <summary>
+        /// Adds a cutover for added rules.
+        /// </summary>
+        /// <param name="year">The year of cutover.</param>
+        /// <param name="yearOffset">The offset into the year of the cutover.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// A cutover is a point where the standard offset from GMT/UTC changed. This occurs mostly
+        /// pre-1900. The standard offset at the cutover defaults to 0.
+        /// Call <see cref="DateTimeZoneBuilder.SetStandardOffset"/> afterwards to change it.
+        /// </remarks>
+        public DateTimeZoneBuilder AddCutover(int year, ZoneYearOffset yearOffset)
+        {
+            if (yearOffset == null)
+            {
+                throw new ArgumentNullException("yearOffset");
+            }
 
             if (ruleSets.Count > 0)
             {
-                ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
                 LastRuleSet.SetUpperLimit(year, yearOffset);
             }
             AddEndOfTimeRuleSet();
@@ -182,14 +202,47 @@ namespace NodaTime.TimeZones
             {
                 FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
             }
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.AsTicks());
+            ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
+            return AddRecurringSavings(new ZoneRecurrence(nameKey, savings, yearOffset, fromYear, toYear));
+        }
 
-            if (fromYear <= toYear)
+        /// <summary>
+        /// Adds a recurring daylight saving time rule.
+        /// </summary>
+        /// <param name="nameKey">The name key of new rule.</param>
+        /// <param name="savings">The <see cref="Duration"/> to add to standard offset.</param>
+        /// <param name="fromYear">First year that rule is in effect. <see cref="Int32.MinValue"/> indicates beginning of time.</param>
+        /// <param name="toYear">Last year (inclusive) that rule is in effect. <see cref="Int32.MaxValue"/> indicates end of time.</param>
+        /// <param name="yearOffset">The offset into the year.</param>
+        /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns> 
+        public DateTimeZoneBuilder AddRecurringSavings(String nameKey,
+                                                       Offset savings,
+                                                       int fromYear,
+                                                       int toYear,
+                                                       ZoneYearOffset yearOffset)
+        {
+            if (yearOffset == null)
             {
-                ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
-                ZoneRecurrence recurrence = new ZoneRecurrence(nameKey, savings, yearOffset);
-                ZoneRule rule = new ZoneRule(recurrence, fromYear, toYear);
-                LastRuleSet.AddRule(rule);
+                throw new ArgumentNullException("yearOffset");
+            }
+            return AddRecurringSavings(new ZoneRecurrence(nameKey, savings, yearOffset, fromYear, toYear));
+        }
+
+        /// <summary>
+        /// Adds a recurring daylight saving time rule.
+        /// </summary>
+        /// <param name="recurrence">The zone recurrence defining the recurrening savings.</param>
+        /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns> 
+        public DateTimeZoneBuilder AddRecurringSavings(ZoneRecurrence recurrence)
+        {
+            if (recurrence == null)
+            {
+                throw new ArgumentNullException("recurrence");
+            }
+            if (recurrence.FromYear <= recurrence.ToYear)
+            {
+                LastRuleSet.AddRule(recurrence);
             }
             return this;
         }
@@ -210,7 +263,6 @@ namespace NodaTime.TimeZones
             var transitions = new List<ZoneTransition>();
             IDateTimeZone tailZone = null;
             Instant instant = Instant.MinValue;
-            Duration savings = Duration.Zero;
 
             int ruleSetCount = this.ruleSets.Count;
             for (int i = 0; i < ruleSetCount; i++)
@@ -310,7 +362,7 @@ namespace NodaTime.TimeZones
         /// Gets the last rule set if there are no rule sets one that spans all of time is created and returned.
         /// </summary>
         /// <value>The last rule set.</value>
-        private ZoneRuleSet LastRuleSet
+        private ZoneRecurrenceCollection LastRuleSet
         {
             get
             {
@@ -327,7 +379,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         private void AddEndOfTimeRuleSet()
         {
-            ruleSets.Add(new ZoneRuleSet());
+            ruleSets.Add(new ZoneRecurrenceCollection());
         }
     }
 }

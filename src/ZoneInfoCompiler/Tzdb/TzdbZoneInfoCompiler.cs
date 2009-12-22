@@ -189,7 +189,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="zoneList">The time zone definition parts to add.</param>
         /// <param name="ruleSets">The rule sets map to use in looking up rules for the time zones..</param>
-        private IDateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, ZoneRuleSet> ruleSets)
+        private IDateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, IList<ZoneRule>> ruleSets)
         {
             DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
             foreach (var zone in zoneList)
@@ -209,7 +209,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     }
                     catch (FormatException)
                     {
-                        ZoneRuleSet rs = ruleSets[zone.Rules];
+                        IList<ZoneRule> rs = ruleSets[zone.Rules];
                         if (rs == null)
                         {
                             throw new ArgumentException("Rules not found: " + zone.Rules);
@@ -239,15 +239,15 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="builder">The <see cref="DateTimeZoneBuilder"/> to add to.</param>
         /// <param name="nameFormat">The name format pattern.</param>
-        /// <param name="ruleSet">The <see cref="ZoneRuleSet"/> describing the recurring savings.</param>
-        private void AddRecurring(DateTimeZoneBuilder builder, String nameFormat, ZoneRuleSet ruleSet)
+        /// <param name="ruleSet">The <see cref="ZoneRecurrenceCollection"/> describing the recurring savings.</param>
+        private void AddRecurring(DateTimeZoneBuilder builder, String nameFormat, IList<ZoneRule> ruleSet)
         {
             foreach (var rule in ruleSet)
             {
                 builder.AddRecurringSavings(rule.FormatName(nameFormat),
-                                            rule.Savings,
-                                            rule.FromYear,
-                                            rule.ToYear,
+                                            rule.Recurrence.Savings,
+                                            rule.Recurrence.FromYear,
+                                            rule.Recurrence.ToYear,
                                             rule.Recurrence.YearOffset.Mode,
                                             rule.Recurrence.YearOffset.MonthOfYear,
                                             rule.Recurrence.YearOffset.DayOfMonth,

@@ -16,18 +16,38 @@
 #endregion
 
 using System;
-using NodaTime.Calendars;
-using NodaTime.Utility;
 using System.Text;
+using NodaTime.Calendars;
 using NodaTime.Fields;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Defines an offset within a year. Can be applied to multiple years.
+    /// Defines an offset within a year as an expresion that can be used to reference multiple
+    /// years.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// A year offset defines a way of determining an offset into a year based on certain criteria.
+    /// The most basic is the month of the year and the day of the month. If only these two are
+    /// supplied then the offset is always the sae day of each year. The only exception is if the
+    /// day is February 29th, then it only refers to those years that have a February 29th.
+    /// </para>
+    /// <para>
+    /// If the day of the week is specified then the offset determined byt the month and day are
+    /// adjusted to the nearest day that falls on the given day of the week. If then month and day
+    /// fall on that day of the week then nothing changes. Otherwise the offset is moved forward or
+    /// backward up to 6 days to make the day fall on the correct day of the week. The direction the
+    /// offset is moved is determined by the <see cref="Advance"/> property.
+    /// </para>
+    /// <para>
+    /// Finally the <see cref="Mode"/> property deterines whether the <see cref="TickOfDay"/> value
+    /// is added to the calculated offset to generate an offset within the day.
+    /// </para>
+    /// <para>
     /// Immutable, thread safe
+    /// </para>
     /// </remarks>
     public class ZoneYearOffset
         : IEquatable<ZoneYearOffset>
@@ -35,6 +55,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// An offset that specifies the beginning of the year.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification="ZoneYearOffset is immutable")]
         public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
 
         private readonly TransitionMode mode;
@@ -134,7 +155,7 @@ namespace NodaTime.TimeZones
             {
                 FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
             }
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.AsTicks());
 
             this.mode = mode;
             this.monthOfYear = monthOfYear;
@@ -147,11 +168,11 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Normalizes the transition mode characater.
         /// </summary>
-        /// <param name="c">The character to normalize.</param>
+        /// <param name="modeCharacter">The character to normalize.</param>
         /// <returns>The <see cref="TransitionMode"/>.</returns>
-        public static TransitionMode NormalizeModeCharacter(char c)
+        public static TransitionMode NormalizeModeCharacter(char modeCharacter)
         {
-            switch (c)
+            switch (modeCharacter)
             {
                 case 's':
                 case 'S':
@@ -184,7 +205,7 @@ namespace NodaTime.TimeZones
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.Fields.MonthOfYear.SetValue(instant, this.monthOfYear);
-            instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay.Ticks);
+            instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay.AsTicks());
             instant = SetDayOfMonth(calendar, instant);
             instant = SetDayOfWeek(calendar, instant);
 
@@ -230,18 +251,22 @@ namespace NodaTime.TimeZones
             writer.WriteInt8((byte)DayOfMonth);
             writer.WriteInt8((byte)DayOfWeek);
             writer.WriteBoolean(AdvanceDayOfWeek);
-            writer.WriteTicks(TickOfDay.Ticks);
+            writer.WriteOffset(TickOfDay);
         }
 
         public static ZoneYearOffset Read(DateTimeZoneReader reader)
         {
-            TransitionMode mode = (TransitionMode)reader.ReadInt8();
-            int monthOfYear = reader.ReadInt8();
-            int dayOfMonth = reader.ReadInt8();
-            int dayOfWeek = reader.ReadInt8();
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
+            TransitionMode mode = (TransitionMode)reader.ReadByte();
+            int monthOfYear = reader.ReadByte();
+            int dayOfMonth = reader.ReadByte();
+            int dayOfWeek = reader.ReadByte();
             bool advance = reader.ReadBoolean();
-            long ticks = reader.ReadTicks();
-            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, new Offset(ticks));
+            Offset ticksOfDay = reader.ReadOffset();
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay);
         }
 
         /// <summary>
@@ -269,7 +294,7 @@ namespace NodaTime.TimeZones
                 IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
                 LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, this.monthOfYear);
                 // Be lenient with millisOfDay.
-                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay.Ticks);
+                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay.AsTicks());
                 newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
                 if (this.dayOfWeek == 0)
@@ -360,8 +385,8 @@ namespace NodaTime.TimeZones
         {
             if (this.dayOfWeek != 0)
             {
-                int dayOfWeek = calendar.Fields.DayOfWeek.GetValue(instant);
-                int daysToAdd = this.dayOfWeek - dayOfWeek;
+                int dayOfWeekOfInstant = calendar.Fields.DayOfWeek.GetValue(instant);
+                int daysToAdd = this.dayOfWeek - dayOfWeekOfInstant;
                 if (daysToAdd != 0)
                 {
                     if (this.advance)
@@ -423,9 +448,10 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            if (obj is ZoneYearOffset)
+            ZoneYearOffset offset = obj as ZoneYearOffset;
+            if (offset != null)
             {
-                return Equals((ZoneYearOffset)obj);
+                return Equals(offset);
             }
             return false;
         }
@@ -522,5 +548,31 @@ namespace NodaTime.TimeZones
         }
 
         #endregion
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ZoneYearOffset left, ZoneYearOffset right)
+        {
+            if ((object)left == null || (object)right == null)
+            {
+                return (object)left == (object)right;
+            }
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ZoneYearOffset left, ZoneYearOffset right)
+        {
+            return !(left == right);
+        }
     }
 }

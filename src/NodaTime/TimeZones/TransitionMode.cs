@@ -17,7 +17,8 @@
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Specifies how transitions are calculated.
+    /// Specifies how transitions are calculated. Whether relative to UTC, the time zones standard
+    /// offset, or the wall (or daylight savings) offset.
     /// </summary>
     public enum TransitionMode
     {

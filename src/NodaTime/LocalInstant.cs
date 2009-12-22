@@ -16,6 +16,7 @@
 #endregion
 using System;
 using System.Globalization;
+using NodaTime.TimeZones;
 namespace NodaTime
 {
     /// <summary>
@@ -47,7 +48,40 @@ namespace NodaTime
             this.ticks = ticks;
         }
 
+        /// <summary>
+        /// Returns a new LocalInstant for the current time adjusting for the current time zone.
+        /// </summary>
+        /// <value>The <see cref="LocalInstant"/> of the current time.</value>
+        public static LocalInstant Now
+        {
+            get
+            {
+                Instant rightNow = Clock.Now;
+                Offset offsetToLocal = DateTimeZones.Current.GetOffsetFromUtc(rightNow);
+                return rightNow + offsetToLocal;
+            }
+        }
+
         #region Operators
+
+        /// <summary>
+        /// Returns an instant after adding the given duration
+        /// </summary>
+        public static LocalInstant operator +(LocalInstant instant, Duration duration)
+        {
+            return new LocalInstant(instant.Ticks + duration.Ticks);
+        }
+
+        /// <summary>
+        /// Adds a duration to a local instant. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
+        public static LocalInstant Add(LocalInstant left, Duration right)
+        {
+            return left + right;
+        }
 
         /// <summary>
         /// Returns the difference between two instants as a duration.
@@ -59,14 +93,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns an instant after adding the given duration
-        /// </summary>
-        public static LocalInstant operator +(LocalInstant instant, Duration duration)
-        {
-            return new LocalInstant(instant.Ticks + duration.Ticks);
-        }
-
-        /// <summary>
         /// Implements the operator - (subtraction) for <see cref="LocalInstant"/> - <see
         /// cref="Offset"/>.
         /// </summary>
@@ -75,7 +101,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public static Instant operator -(LocalInstant instant, Offset offset)
         {
-            return new Instant(instant.Ticks - offset.Ticks);
+            return new Instant(instant.Ticks - offset.AsTicks());
         }
 
         /// <summary>
@@ -85,6 +111,40 @@ namespace NodaTime
         {
             return new LocalInstant(instant.Ticks - duration.Ticks);
         }
+
+        /// <summary>
+        /// Subtracts one local instant from another. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the difference of the given values.</returns>
+        public static Duration Subtract(LocalInstant left, LocalInstant right)
+        {
+            return left - right;
+        }
+
+        /// <summary>
+        /// Subtracts an offset from a local instant. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
+        public static Instant Subtract(LocalInstant left, Offset right)
+        {
+            return left - right;
+        }
+
+        /// <summary>
+        /// Subtracts a duration from a local instant. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="LocalInstant"/> representing the difference of the given values.</returns>
+        public static LocalInstant Subtract(LocalInstant left, Duration right)
+        {
+            return left - right;
+        }
+
         /// <summary>
         /// Implements the operator == (equality).
         /// </summary>
@@ -217,7 +277,8 @@ namespace NodaTime
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (obj is LocalInstant) {
+            if (obj is LocalInstant)
+            {
                 return Equals((LocalInstant)obj);
             }
             return false;
@@ -243,7 +304,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return Ticks.ToString("N0", CultureInfo.CurrentUICulture);
+            return Ticks.ToString("N0", CultureInfo.CurrentCulture);
         }
 
         #endregion  // Object overrides

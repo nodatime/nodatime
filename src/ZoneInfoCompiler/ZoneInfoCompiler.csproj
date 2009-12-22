@@ -48,6 +48,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -78,7 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="CompilerTools.cs" />
     <Compile Include="ConsoleLog.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="LogBase.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="Tzdb\Zone.cs" />
     <Compile Include="Tzdb\ZoneAlias.cs" />
     <Compile Include="Tzdb\ZoneList.cs" />
+    <Compile Include="Tzdb\ZoneRule.cs" />
     <Compile Include="winmap\WindowsMapperCompiler.cs" />
     <Compile Include="winmap\WindowsMapperCompilerOptions.cs" />
     <Compile Include="ZoneInfoCompiler.cs" />

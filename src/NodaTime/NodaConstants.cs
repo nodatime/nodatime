@@ -29,12 +29,13 @@ namespace NodaTime
     public static class NodaConstants
     {
         // TODO: Enum for this instead? (With duplicate values where appropriate.)
-        public static int BeforeCommonEra = 0;
-        public static int BCE = 0;
-        public static int BC = 0;
-        public static int CommonEra = 1;
-        public static int CE = 1;
-        public static int AD = 1;
+        public const int BeforeCommonEra = 0;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BCE", Justification="BCE is the expected initialism")]
+        public const int BCE = 0;
+        public const int BC = 0;
+        public const int CommonEra = 1;
+        public const int CE = 1;
+        public const int AD = 1;
 
         // TODO: Enum for this instead?
         public const int January = 1;

@@ -33,10 +33,14 @@ namespace NodaTime.TimeZones
          */
         internal static PrecalculatedDateTimeZone create(String id, List<ZoneTransition> transitions, IDateTimeZone tailZone)
         {
+            if (transitions == null) 
+            {
+                throw new ArgumentNullException("transitions");
+            }
             int size = transitions.Count;
             if (size == 0)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("There must be at least one transition", "transitions");
             }
 
             Instant[] trans = new Instant[size];
@@ -317,6 +321,10 @@ namespace NodaTime.TimeZones
 
         public override void Write(DateTimeZoneWriter writer)
         {
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
             int size = this.transitions.Length;
 
             // Create unique string pool.
@@ -342,8 +350,8 @@ namespace NodaTime.TimeZones
             for (int i = 0; i < size; i++)
             {
                 writer.WriteTicks(this.transitions[i].Ticks);
-                writer.WriteTicks(this.wallOffsets[i].Ticks);
-                writer.WriteTicks(this.standardOffsets[i].Ticks);
+                writer.WriteOffset(this.wallOffsets[i]);
+                writer.WriteOffset(this.standardOffsets[i]);
                 string name = this.nameKeys[i];
                 for (int p = 0; p < poolSize; p++)
                 {
@@ -378,16 +386,10 @@ namespace NodaTime.TimeZones
             String[] nameKeys = new String[size];
             for (int i = 0; i < size; i++)
             {
-                long ticks;
-                ticks = reader.ReadTicks();
+                long ticks = reader.ReadTicks();
                 transitions[i] = new Instant(ticks);
-
-                ticks = reader.ReadTicks();
-                wallOffsets[i] = new Offset(ticks);
-
-                ticks = reader.ReadTicks();
-                standardOffsets[i] = new Offset(ticks);
-
+                wallOffsets[i] = reader.ReadOffset();
+                standardOffsets[i] = reader.ReadOffset();
                 int index = reader.ReadNumber();
                 nameKeys[i] = pool[index];
             }

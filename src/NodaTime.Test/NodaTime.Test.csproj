@@ -146,6 +146,10 @@
     <Compile Include="Base\SingleFieldPeriodBaseTest.Single.cs">
       <DependentUpon>SingleFieldPeriodBaseTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestHelper.cs" />
+    <Compile Include="TimeZones\ZoneRecurrenceTest.cs" />
+    <Compile Include="TimeZones\DtzIoHelper.cs" />
+    <Compile Include="TimeZones\ZoneTransitionTest.cs" />
     <Compile Include="TimeZones\ReadWriteTest.cs" />
     <Compile Include="TimeZones\TzdbTest.cs" />
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />

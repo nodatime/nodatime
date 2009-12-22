@@ -25,7 +25,7 @@ namespace NodaTime.Clocks
     /// <remarks>
     /// This is used for testing where having a known value simplfies the tests.
     /// </remarks>
-    public class FixedClock
+    public sealed class FixedClock
         : IClock, IDisposable
     {
         /// <summary>

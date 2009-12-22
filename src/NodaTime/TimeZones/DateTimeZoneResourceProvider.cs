@@ -33,9 +33,6 @@ namespace NodaTime.TimeZones
     {
         public const string IdMapKey = "IdMap";
 
-        private static readonly Regex invalidResourceNameCharacters = new Regex("[^A-Za-z0-9_/]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
-        private readonly string baseName;
         private readonly ResourceManager manager;
         private readonly IDictionary<string, string> timeZoneIdMap;
 
@@ -45,7 +42,6 @@ namespace NodaTime.TimeZones
         /// <param name="baseName">Name of the base.</param>
         public DateTimeZoneResourceProvider(string baseName)
         {
-            this.baseName = baseName;
             this.manager = new ResourceManager(baseName, Assembly.GetExecutingAssembly());
             this.timeZoneIdMap = ResourceHelper.LoadDictionary(this.manager, IdMapKey);
         }

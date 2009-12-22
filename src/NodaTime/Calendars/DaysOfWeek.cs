@@ -9,6 +9,7 @@ namespace NodaTime.Calendars
     /// </summary>
     public enum DaysOfWeek
     {
+        None = 0,
         Monday = 1,
         Tuesday = 2,
         Wednesday = 3,

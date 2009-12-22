@@ -42,8 +42,6 @@ namespace NodaTime.TimeZones
         internal const byte FlagMinutes = 0x40;
         internal const byte FlagSeconds = 0x80;
         internal const byte FlagTicks = 0xc0;
-        internal const byte FlagOffsetMaxValue = 0xfc;
-        internal const byte FlagOffsetMinValue = 0xfd;
         internal const byte FlagMaxValue = 0xfe;
         internal const byte FlagMinValue = 0xff;
 
@@ -84,6 +82,10 @@ namespace NodaTime.TimeZones
         /// <returns><c>true</c> if the time zone was successfully written.</returns>
         public void WriteTimeZone(IDateTimeZone timeZone)
         {
+            if (timeZone == null)
+            {
+                throw new ArgumentNullException("timeZone");
+            }
             if (timeZone is FixedDateTimeZone)
             {
                 WriteInt8(FlagTimeZoneFixed);
@@ -138,16 +140,6 @@ namespace NodaTime.TimeZones
                     WriteInt8(FlagMaxValue);
                     return;
                 }
-                else if (ticks == Offset.MinValue.Ticks)
-                {
-                    WriteInt8(FlagOffsetMinValue);
-                    return;
-                }
-                else if (ticks == Offset.MaxValue.Ticks)
-                {
-                    WriteInt8(FlagOffsetMaxValue);
-                    return;
-                }
                 if (ticks % (30 * NodaConstants.TicksPerMinute) == 0)
                 {
                     // Try to write in 30 minute units.
@@ -200,12 +192,25 @@ namespace NodaTime.TimeZones
         /// <param name="dictionary">The <see cref="IDictionary"/> to write.</param>
         public void WriteDictionary(IDictionary<string, string> dictionary)
         {
+            if (dictionary == null)
+            {
+                throw new ArgumentNullException("dictionary");
+            }
             WriteNumber(dictionary.Count);
             foreach (var entry in dictionary)
             {
                 WriteString(entry.Key);
                 WriteString(entry.Value);
             }
+        }
+
+        /// <summary>
+        /// Writes the offset value to the stream
+        /// </summary>
+        /// <param name="value">The offset to write.</param>
+        public void WriteOffset(Offset value)
+        {
+            WriteNumber(value.Milliseconds);
         }
 
         /// <summary>

@@ -86,6 +86,17 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Adds one duration to another. Friendly alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the sum of the given values.</returns>
+        public static Duration Add(Duration left, Duration right)
+        {
+            return left + right;
+        }
+
+        /// <summary>
         /// Implements the operator - (subtraction).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
@@ -94,6 +105,17 @@ namespace NodaTime
         public static Duration operator -(Duration left, Duration right)
         {
             return new Duration(left.Ticks - right.Ticks);
+        }
+
+        /// <summary>
+        /// Subtracts one duration from another. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the difference of the given values.</returns>
+        public static Duration Subtract(Duration left, Duration right)
+        {
+            return left - right;
         }
 
         /// <summary>
@@ -108,6 +130,17 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Divides a duration by a number. Friendly alternative to <c>operator/()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the quotient of the given values.</returns>
+        public static Duration Divide(Duration left, Duration right)
+        {
+            return left - right;
+        }
+
+        /// <summary>
         /// Implements the operator * (multiplication).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
@@ -116,6 +149,17 @@ namespace NodaTime
         public static Duration operator *(Duration left, long right)
         {
             return new Duration(left.Ticks * right);
+        }
+
+        /// <summary>
+        /// Multiplies a duration by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the product of the given values.</returns>
+        public static Duration Multiply(Duration left, Duration right)
+        {
+            return left - right;
         }
 
         /// <summary>
@@ -276,7 +320,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return Ticks.ToString("+#,##0' ticks';-#,##0' ticks'", CultureInfo.CurrentUICulture);
+            return Ticks.ToString("+#,##0' ticks';-#,##0' ticks'", CultureInfo.InvariantCulture);
         }
 
         #endregion  // Object overrides
@@ -306,9 +350,9 @@ namespace NodaTime
             return new Duration(seconds * NodaConstants.TicksPerSecond);
         }
 
-        public static Duration Milliseconds(long milliseconds)
+        public static Duration Milliseconds(long millisecondValue)
         {
-            return new Duration(milliseconds * NodaConstants.TicksPerMillisecond);
+            return new Duration(millisecondValue * NodaConstants.TicksPerMillisecond);
         }
 
         public static Duration Parse(string s)
