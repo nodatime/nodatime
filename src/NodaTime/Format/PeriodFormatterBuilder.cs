@@ -463,12 +463,65 @@ namespace NodaTime.Format
 
             #endregion
 
+            bool IsZero(IPeriod period) 
+            {
+                for (int i = 0, isize = period.Size; i < isize; i++) 
+                {
+                    if (period.GetValue(i) != 0) 
+                        return false;
+                }
+                return true;
+            }
+
             long GetFieldValue(IPeriod period)
             {
+                long value;
+
                 if (printZero != PrintZeroSetting.Always && !period.IsSupported(fieldType))
                     return long.MaxValue;
                 else
-                    return period.Get(fieldType);
+                    value = period.Get(fieldType);
+
+                // determine if period is zero and this is the last field
+                if (value == 0)
+                {
+                    switch (printZero)
+                    {
+                        case PrintZeroSetting.Never:
+                            return long.MaxValue;
+                        case PrintZeroSetting.RarelyLast:
+                            if (IsZero(period) && fieldFormatters[(int)fieldType] == this)
+                            {
+                                for (int i = (int)fieldType + 1; i < 12; i++)
+                                {
+                                    if (period.IsSupported(fieldType) && fieldFormatters[i] != null)
+                                    {
+                                        return long.MaxValue;
+                                    }
+                                }
+                            }
+                            else
+                                return long.MaxValue;
+                            break;
+                        case PrintZeroSetting.RarelyFirst:
+                            if (IsZero(period) && fieldFormatters[(int)fieldType] == this)
+                            {
+                                int i = Math.Min((int)fieldType, 8);  // line split out for IBM JDK
+                                i--;                              // see bug 1660490
+                                for (; i >= 0 && i <= 13; i--)
+                                {
+                                    if (period.IsSupported(fieldType) && fieldFormatters[i] != null)
+                                    {
+                                        return long.MaxValue;
+                                    }
+                                }
+                            }
+                            else
+                                return long.MaxValue;
+                            break;
+                    }
+                }
+                return value;
             }
         }
 
@@ -1254,7 +1307,7 @@ namespace NodaTime.Format
             else
             {
                 var afterSeparator = new object[elementPairs.Count - i - 1];
-                elementPairs.ToArray().CopyTo(afterSeparator, 0);
+                Array.Copy(elementPairs.ToArray(),i+1,afterSeparator,0,elementPairs.Count - i -1);
                 elementPairs.RemoveRange(i + 1, elementPairs.Count - i - 1);
                 var objects = CreateComposite(afterSeparator);
 
@@ -1510,6 +1563,51 @@ namespace NodaTime.Format
             return newPeriodFormatter;
         }
 
+        /// <summary>
+        /// Internal method to create a IPeriodPrinter instance using all the
+        /// appended elements.
+        /// </summary>
+        /// <returns>The newly created printer, null if builder cannot create a printer</returns>
+        /// <remarks>
+        /// <para>
+        /// Most applications will not use this method.
+        /// If you want a printer in an application, call <see cref="ToFormatter()"/>
+        /// and just use the printing API.
+        /// </para>
+        /// <para>
+        /// Subsequent changes to this builder do not affect the returned printer.
+        /// </para>
+        /// </remarks>
+        public IPeriodPrinter ToPrinter()
+        {
+            if (notPrinter)
+                return null;
+
+            return ToFormatter().Printer;
+        }
+
+        /// <summary>
+        /// Internal method to create a IPeriodParser instance using all the
+        /// appended elements.
+        /// </summary>
+        /// <returns>The newly created parser, null if builder cannot create a parser</returns>
+        /// <remarks>
+        /// <para>
+        /// Most applications will not use this method.
+        /// If you want a parser in an application, call <see cref="ToFormatter()"/>
+        /// and just use the parsing API.
+        /// </para>
+        /// <para>
+        /// Subsequent changes to this builder do not affect the returned parser.
+        /// </para>
+        /// </remarks>
+        public IPeriodParser ToParser()
+        {
+            if (notParser)
+                return null;
+
+            return ToFormatter().Parser;
+        }
         #endregion
 
         #endregion

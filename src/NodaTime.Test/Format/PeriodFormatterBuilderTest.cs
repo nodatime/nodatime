@@ -31,6 +31,8 @@ namespace NodaTime.Test.Format
         Period standartPeriod;
         Period timePeriod;
         Period datePeriod;
+        Period emptyYearDayTimePeriod;
+        Period fullYearDayTimePeriod;
 
         [SetUp]
         public void Init()
@@ -40,6 +42,8 @@ namespace NodaTime.Test.Format
             standartPeriod = new Period(1, 2, 3, 4, 5, 6, 7, 8);
             timePeriod = new Period(0, 0, 0, 0, 5, 6, 7, 8);
             datePeriod = new Period(1, 2, 3, 4, 0, 0, 0, 0);
+            emptyYearDayTimePeriod = new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime);
+            fullYearDayTimePeriod = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime);
         }
 
         [Test]
@@ -67,7 +71,6 @@ namespace NodaTime.Test.Format
             Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
             Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
         }
-
 
         [Test]
         public void AppendMonths_BuildsCorrectPrinter_For2MonthStandartPeriod()
@@ -565,31 +568,832 @@ namespace NodaTime.Test.Format
             Assert.AreEqual(2, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
         }
 
-        //[Test]
-        //public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForTimePeriod()
-        //{
-        //    var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
+        [Test]
+        public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForTimePeriod()
+        {
+            var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
 
-        //    var printer = formatter.Printer;
-        //    var printedValue = formatter.Print(timePeriod);
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(timePeriod);
 
-        //    Assert.AreEqual("5", printedValue);
-        //    Assert.AreEqual(1, printer.CalculatePrintedLength(timePeriod, null));
-        //    Assert.AreEqual(1, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
-        //}
+            Assert.AreEqual("5", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(timePeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
+        }
 
-        //[Test]
-        //public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForDatePeriod()
-        //{
-        //    var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
+        [Test]
+        public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForDatePeriod()
+        {
+            var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
 
-        //    var printer = formatter.Printer;
-        //    var printedValue = formatter.Print(datePeriod);
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(datePeriod);
 
-        //    Assert.AreEqual("1", printedValue);
-        //    Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
-        //    Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
-        //}
+            Assert.AreEqual("1", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
+        }
 
+        [Test]
+        public void AppendSeparatorFinalText_BuildsCorrectPrinter_ForStandartPeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendSeparator(", ", " and ")
+                .AppendHours().AppendSeparator(", ", " and ")
+                .AppendMinutes().AppendSeparator(", ", " and ")
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("1, 5 and 6", printedValue);
+            Assert.AreEqual(10, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(3, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendSeparatorFinalText_BuildsCorrectPrinter_ForTimePeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendSeparator(", ", " and ")
+                .AppendHours().AppendSeparator(", ", " and ")
+                .AppendMinutes().AppendSeparator(", ", " and ")
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(timePeriod);
+
+            Assert.AreEqual("5 and 6", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(timePeriod, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendSeparatorFinalText_BuildsCorrectPrinter_ForDatePeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendSeparator(", ", " and ")
+                .AppendHours().AppendSeparator(", ", " and ")
+                .AppendMinutes().AppendSeparator(", ", " and ")
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(datePeriod);
+
+            Assert.AreEqual("1", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendSeparatorIfFieldsAfter_BuildsCorrectPrinter_ForStandartPeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendSeparatorIfFieldsAfter("T")
+                .AppendHours()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("1T5", printedValue);
+            Assert.AreEqual(3, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendSeparatorIfFieldsAfter_BuildsCorrectPrinter_ForTimePeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendSeparatorIfFieldsAfter("T")
+                .AppendHours()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(timePeriod);
+
+            Assert.AreEqual("T5", printedValue);
+            Assert.AreEqual(2, printer.CalculatePrintedLength(timePeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendSeparatorIfFieldsAfter_BuildsCorrectPrinter_ForDatePeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendSeparatorIfFieldsAfter("T")
+                .AppendHours()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(datePeriod);
+
+            Assert.AreEqual("1", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendSeparatorIfFieldsBefore_BuildsCorrectPrinter_ForStandartPeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendSeparatorIfFieldsBefore("T")
+                .AppendHours()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("1T5", printedValue);
+            Assert.AreEqual(3, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendSeparatorIfFieldsBefore_BuildsCorrectPrinter_ForTimePeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendSeparatorIfFieldsBefore("T")
+                .AppendHours()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(timePeriod);
+
+            Assert.AreEqual("5", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(timePeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendSeparatorIfFieldsBefore_BuildsCorrectPrinter_ForDatePeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendSeparatorIfFieldsBefore("T")
+                .AppendHours()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(datePeriod);
+
+            Assert.AreEqual("1T", printedValue);
+            Assert.AreEqual(2, printer.CalculatePrintedLength(datePeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendLiteral_BuildsCorrectPrinter_ForStandartPeriod()
+        {
+            var formatter = builder
+                .AppendLiteral("HELLO")
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("HELLO", printedValue);
+            Assert.AreEqual(5, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(0, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendFormatter_BuildsCorrectPrinter_ForStandartPeriod()
+        {
+            var baseFormatter = builder
+                .AppendYears()
+                .AppendLiteral("-")
+                .ToFormatter();
+
+            var formatter = new PeriodFormatterBuilder()
+                .Append(baseFormatter)
+                .AppendYears()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("1-1", printedValue);
+            Assert.AreEqual(3, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        #region ZeroDefault
+
+        [Test]
+        public void ZeroDefault_BuildsCorrectPrinter_ForStandartPeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("1-2-3-4", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(4, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroDefault_BuildsCorrectPrinter_ForEmptyYearDayTimePeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(emptyYearDayTimePeriod);
+
+            Assert.AreEqual("---0", printedValue);
+            Assert.AreEqual(4, printer.CalculatePrintedLength(emptyYearDayTimePeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(emptyYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroDefault_BuildsCorrectPrinter_ForFullYearDayTimePeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(fullYearDayTimePeriod);
+
+            Assert.AreEqual("1---4", printedValue);
+            Assert.AreEqual(5, printer.CalculatePrintedLength(fullYearDayTimePeriod, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(fullYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroDefault_BuildsCorrectPrinter_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("---0", printedValue);
+            Assert.AreEqual(4, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroDefault_BuildsCorrectPrinter_ForEmptyStandartPeriod2YearsField()
+        {
+            var formatter = builder
+                .AppendYears().AppendLiteral("-")
+                .AppendYears()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("-0", printedValue);
+            Assert.AreEqual(2, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        #endregion
+
+        #region ZeroRarelyLast
+
+        [Test]
+        public void ZeroRarelyLast_PrintsYearsMonthsWeeksDays_ForFullStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyLast()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("1-2-3-4", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(4, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyLast_PrintsYearsMonthsWeeksDays_ForEmptyYearDayTimePeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyLast()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(emptyYearDayTimePeriod);
+
+            Assert.AreEqual("---0", printedValue);
+            Assert.AreEqual(4, printer.CalculatePrintedLength(emptyYearDayTimePeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(emptyYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyLast_PrintsYearsMonthsWeeksDays_ForFullYearDayTimePeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyLast()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(fullYearDayTimePeriod);
+
+            Assert.AreEqual("1---4", printedValue);
+            Assert.AreEqual(5, printer.CalculatePrintedLength(fullYearDayTimePeriod, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(fullYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyLast_PrintsYearsMonthsWeeksDays_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyLast()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("---0", printedValue);
+            Assert.AreEqual(4, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        #endregion
+
+        #region ZeroRarelyFirst
+
+        [Test]
+        public void ZeroRarelyFirst_PrintsYearsMonthsWeeksDays_ForFullStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyFirst()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("1-2-3-4", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(4, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyFirst_PrintsYearsMonthsWeeksDays_ForEmptyYearDayTimePeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyFirst()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(emptyYearDayTimePeriod);
+
+            Assert.AreEqual("0---", printedValue);
+            Assert.AreEqual(4, printer.CalculatePrintedLength(emptyYearDayTimePeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(emptyYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyFirst_PrintsYearsMonthsWeeksDays_ForFullYearDayTimePeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyFirst()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(fullYearDayTimePeriod);
+
+            Assert.AreEqual("1---4", printedValue);
+            Assert.AreEqual(5, printer.CalculatePrintedLength(fullYearDayTimePeriod, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(fullYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyFirst_PrintsYearsMonthsWeeksDays_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyFirst()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("0---", printedValue);
+            Assert.AreEqual(4, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyFirst_PrintsYears_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyFirst()
+                .AppendYears()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("0", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyFirst_PrintsMonths_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyFirst()
+                .AppendMonths()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("0", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyFirst_PrintsWeeks_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyFirst()
+                .AppendWeeks()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("0", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyFirst_PrintsHours_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyFirst()
+                .AppendHours()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("0", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyFirst_PrintsMinutes_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyFirst()
+                .AppendMinutes()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("0", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroRarelyFirst_PrintsSeconds_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroRarelyFirst()
+                .AppendSeconds()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("0", printedValue);
+            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        #endregion
+
+        #region ZeroIfSupported
+
+        [Test]
+        public void ZeroIfSupported_PrintsYearsMonthsWeeksDays_ForFullStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroIfSupported()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("1-2-3-4", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(4, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroIfSupported_PrintsYearsMonthsWeeksDays_ForEmptyYearDayTimePeriod()
+        {
+            var formatter = builder
+                .PrintZeroIfSupported()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(emptyYearDayTimePeriod);
+
+            Assert.AreEqual("0---0", printedValue);
+            Assert.AreEqual(5, printer.CalculatePrintedLength(emptyYearDayTimePeriod, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(emptyYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroIfSupported_PrintsYearsMonthsWeeksDays_ForFullYearDayTimePeriod()
+        {
+            var formatter = builder
+                .PrintZeroIfSupported()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(fullYearDayTimePeriod);
+
+            Assert.AreEqual("1---4", printedValue);
+            Assert.AreEqual(5, printer.CalculatePrintedLength(fullYearDayTimePeriod, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(fullYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroIfSupported_PrintsYearsMonthsWeeksDays_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroIfSupported()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("0-0-0-0", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(4, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        #endregion
+
+        #region ZeroAlways
+
+        [Test]
+        public void ZeroAlways_PrintsYearsMonthsWeeksDays_ForFullStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroAlways()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("1-2-3-4", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(4, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroAlways_PrintsYearsMonthsWeeksDays_ForEmptyYearDayTimePeriod()
+        {
+            var formatter = builder
+                .PrintZeroAlways()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(emptyYearDayTimePeriod);
+
+            Assert.AreEqual("0-0-0-0", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(emptyYearDayTimePeriod, null));
+            Assert.AreEqual(4, printer.CountFieldsToPrint(emptyYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroAlways_PrintsYearsMonthsWeeksDays_ForFullYearDayTimePeriod()
+        {
+            var formatter = builder
+                .PrintZeroAlways()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(fullYearDayTimePeriod);
+
+            Assert.AreEqual("1-0-0-4", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(fullYearDayTimePeriod, null));
+            Assert.AreEqual(4, printer.CountFieldsToPrint(fullYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroAlways_PrintsYearsMonthsWeeksDays_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroAlways()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("0-0-0-0", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(4, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        #endregion
+
+        #region ZeroNever
+
+        [Test]
+        public void ZeroNever_PrintsYearsMonthsWeeksDays_ForFullStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroNever()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(standartPeriod);
+
+            Assert.AreEqual("1-2-3-4", printedValue);
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standartPeriod, null));
+            Assert.AreEqual(4, printer.CountFieldsToPrint(standartPeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroNever_PrintsYearsMonthsWeeksDays_ForEmptyYearDayTimePeriod()
+        {
+            var formatter = builder
+                .PrintZeroNever()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(emptyYearDayTimePeriod);
+
+            Assert.AreEqual("---", printedValue);
+            Assert.AreEqual(3, printer.CalculatePrintedLength(emptyYearDayTimePeriod, null));
+            Assert.AreEqual(0, printer.CountFieldsToPrint(emptyYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroNever_PrintsYearsMonthsWeeksDays_ForFullYearDayTimePeriod()
+        {
+            var formatter = builder
+                .PrintZeroNever()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(fullYearDayTimePeriod);
+
+            Assert.AreEqual("1---4", printedValue);
+            Assert.AreEqual(5, printer.CalculatePrintedLength(fullYearDayTimePeriod, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(fullYearDayTimePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void ZeroNever_PrintsYearsMonthsWeeksDays_ForEmptyStandartPeriod()
+        {
+            var formatter = builder
+                .PrintZeroNever()
+                .AppendYears().AppendLiteral("-")
+                .AppendMonths().AppendLiteral("-")
+                .AppendWeeks().AppendLiteral("-")
+                .AppendDays()
+                .ToFormatter();
+
+            var printer = formatter.Printer;
+            var printedValue = formatter.Print(zeroPeriod);
+
+            Assert.AreEqual("---", printedValue);
+            Assert.AreEqual(3, printer.CalculatePrintedLength(zeroPeriod, null));
+            Assert.AreEqual(0, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+        }
+
+        #endregion
+
+        #region AppendPrinterParser
+
+        [Test]
+        public void AppendPrinterParser_Throws_IfBothNull()
+        {
+            Assert.Throws<ArgumentException>(()=>builder.Append(null, null));
+        }
+
+        [Test]
+        public void AppendPrinterParser_ReturnsOnlyPrinter_IfParserNull()
+        {
+            var printer = builder
+                .AppendYears()
+                .AppendLiteral("-")
+                .ToPrinter();
+            
+            var builder2 = new PeriodFormatterBuilder()
+                .Append(printer, null)
+                .AppendMonths();
+
+            Assert.NotNull(builder2.ToPrinter());
+            Assert.IsNull(builder2.ToParser());
+
+            var formatter = builder2.ToFormatter();
+
+            Assert.AreEqual("1-2", formatter.Print(standartPeriod));
+            Assert.Throws<NotSupportedException>(()=>formatter.Parse("1-3"));
+        }
+
+        #endregion
     }
 }
