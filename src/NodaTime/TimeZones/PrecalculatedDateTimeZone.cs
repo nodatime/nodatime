@@ -240,19 +240,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
-        /// than local time. In other words, UTC = local time - (offset from local).
-        /// </summary>
-        /// <param name="instant">The instant for which to calculate the offset.</param>
-        /// <returns>The offset at the specified local time.</returns>
-        public override Offset GetOffsetFromLocal(LocalInstant instant)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Returns the offset from UTC, where a positive duration indicates that local time is later
-        /// than UTC. In other words, local time = UTC + offset.
+        /// Returns the offset from UTC, such that local time = UTC + offset.
         /// </summary>
         /// <param name="instant">The instant for which to calculate the offset.</param>
         /// <returns>

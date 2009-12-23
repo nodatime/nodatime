@@ -85,7 +85,6 @@ namespace NodaTime.TimeZones
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
 
             Offset wallOffset = standardOffset + previousSavings;
-            Instant adjustedInstant = instant;
 
             int year;
             if (instant == Instant.MinValue)
@@ -100,10 +99,10 @@ namespace NodaTime.TimeZones
             if (year < this.fromYear)
             {
                 // First advance instant to start of from year.
-                adjustedInstant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.fromYear) - wallOffset;
+                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.fromYear) - wallOffset;
                 // Back off one tick to account for next recurrence being exactly at the beginning
                 // of the year.
-                adjustedInstant = adjustedInstant - Duration.One;
+                instant = instant - Duration.One;
             }
 
             Instant next = this.yearOffset.Next(instant, standardOffset, previousSavings);
