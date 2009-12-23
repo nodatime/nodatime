@@ -88,7 +88,33 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localTime">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
-        public abstract Offset GetOffsetFromLocal(LocalInstant instant);
+        public virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
+        {
+            // Get the offset at instantLocal (first estimate)
+            Offset offsetLocal = GetOffsetFromUtc(new Instant(localInstant.Ticks));
+            // Adjust instantLocal using the estimate and recalc the offset
+            Offset offsetAdjusted = GetOffsetFromUtc(localInstant - offsetLocal);
+            // If the offsets differ, we must be near a DST boundary
+            if (offsetLocal != offsetAdjusted)
+            {
+                // We need to ensure that time is always after the DST gap
+                // this happens naturally for positive offsets, but not for negative
+                if (offsetLocal < offsetAdjusted)
+                {
+                    // If we just return offsetAdjusted then the time is pushed
+                    // back before the transition, whereas it should be
+                    // on or after the transition
+                    // TODO: (Jon) This was just a direct copy from the Java. Need to check it.
+                    Instant? nextLocal = NextTransition(localInstant - offsetLocal);
+                    Instant? nextAdjusted = NextTransition(localInstant - offsetAdjusted);
+                    if (nextLocal != nextAdjusted)
+                    {
+                        return offsetLocal;
+                    }
+                }
+            }
+            return offsetAdjusted;
+        }
 
         /// <summary>
         /// Returns the name associated with the given instant.

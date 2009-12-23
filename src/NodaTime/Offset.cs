@@ -21,7 +21,9 @@ using System.Globalization;
 namespace NodaTime
 {
     /// <summary>
-    /// An offset from UTC in milliseconds.
+    /// An offset from UTC in milliseconds. A positive value means that the local time is
+    /// ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
+    /// UTC (e.g. for America).
     /// </summary>
     /// <remarks>
     /// <para>
@@ -394,7 +396,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a string formatted version of this offset. The trailing milliseconds and seconds
-        /// are ommitted if they are zero unless the <paramref name="force"/> flag is set.
+        /// are omitted if they are zero unless the <paramref name="force"/> flag is set.
         /// </summary>
         /// <param name="forceAll">if set to <c>true</c> if all of the fields should be shown reguardless.</param>
         /// <returns></returns>
