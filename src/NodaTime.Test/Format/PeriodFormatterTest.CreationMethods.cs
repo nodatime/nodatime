@@ -18,28 +18,18 @@ using System;
 using NUnit.Framework;
 using NodaTime.Format;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterTest
     {
         [Test]
         public void WithProvider_CreatesNewInstance()
         {
-            var sutDefault = new PeriodFormatter(null, null, daysPeriodType);
+            var sutDefault = PeriodFormatter.FromParser(parser);
             Assert.IsNull(sutDefault.Provider);
             var sutWithProvider = sutDefault.WithProvider(provider);
             Assert.AreEqual(provider, sutWithProvider.Provider);
             Assert.AreNotSame(sutDefault, sutWithProvider);
-        }
-
-        [Test]
-        public void WithPeriodType_CreatesNewInstance()
-        {
-            var sutDefault = new PeriodFormatter(null, null, daysPeriodType);
-            Assert.AreEqual(daysPeriodType, sutDefault.PeriodType);
-            var sutWithPeriodType = sutDefault.WithPeriodType(monthsPeriodType);
-            Assert.AreEqual(monthsPeriodType, sutWithPeriodType.PeriodType);
-            Assert.AreNotSame(sutDefault, sutWithPeriodType);
         }
     }
 }
