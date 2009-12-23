@@ -18,54 +18,69 @@ using System;
 using NUnit.Framework;
 using NodaTime.Format;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterTest
     {
-        // TODO: this does not throw an exception--should it?
-        //// [Test]
-        //// public void Construct_WithNullPrinterAndParser_ThrowsArgumentException()
-        //// {
-        ////     Assert.Throws<ArgumentException>(() => new PeriodFormatter(null, null, daysPeriodType));
-        //// }
 
         [Test]
-        public void Construct_WithNotNullPrinterAndNullParser()
+        public void Construct_FromNotNullPrinter()
         {
-            var sut = new PeriodFormatter(null, printer, daysPeriodType);
+            var sut = PeriodFormatter.FromPrinter(printer);
             Assert.IsNull(sut.Parser);
             Assert.AreEqual(printer, sut.Printer);
             Assert.IsNull(sut.Provider);
-            Assert.AreEqual(daysPeriodType, sut.PeriodType);
 
             Assert.IsTrue(sut.IsPrinter);
             Assert.IsFalse(sut.IsParser);
         }
 
         [Test]
-        public void Construct_WithNullPrinterAndNotNullParser()
+        public void Construct_FromNullPrinter()
         {
-            var sut = new PeriodFormatter(parser, null, daysPeriodType);
+            Assert.Throws<ArgumentNullException>(() => PeriodFormatter.FromPrinter(null));
+        }
+
+        [Test]
+        public void Construct_FromNotNullParser()
+        {
+            var sut = PeriodFormatter.FromParser(parser);
             Assert.AreEqual(parser, sut.Parser);
             Assert.IsNull(sut.Printer);
             Assert.IsNull(sut.Provider);
-            Assert.AreEqual(daysPeriodType, sut.PeriodType);
 
             Assert.IsFalse(sut.IsPrinter);
             Assert.IsTrue(sut.IsParser);
         }
 
         [Test]
-        public void Construct_WithNotNullPrinterAndParser()
+        public void Construct_FromNullParser()
         {
-            var sut = new PeriodFormatter(parser, printer, daysPeriodType);
+            Assert.Throws<ArgumentNullException>(() => PeriodFormatter.FromParser(null));
+        }
+
+        [Test]
+        public void Construct_FromPrinterAndParser()
+        {
+            var sut = PeriodFormatter.FromPrinterAndParser(printer, parser);
             Assert.AreEqual(parser, sut.Parser);
             Assert.AreEqual(printer, sut.Printer);
             Assert.IsNull(sut.Provider);
-            Assert.AreEqual(daysPeriodType, sut.PeriodType);
 
             Assert.IsTrue(sut.IsPrinter);
             Assert.IsTrue(sut.IsParser);
+        }
+
+        [Test]
+        public void Construct_FromNotNullPrinterAndNullParser()
+        {
+            Assert.Throws<ArgumentNullException>(() => PeriodFormatter.FromPrinterAndParser(printer, null));
+        }
+
+        [Test]
+        public void Construct_FromNullPrinterAndNotNullParser()
+        {
+            Assert.Throws<ArgumentNullException>(() => PeriodFormatter.FromPrinterAndParser(null, parser));
         }
 
     }
