@@ -58,14 +58,11 @@ namespace NodaTime.Fields
             this.max = Math.Min(maxValue, (int) field.GetMaximumValue() + offset);
         }
 
-        public override int GetValue(LocalInstant localInstant)
-        {
-            return base.GetValue(localInstant) + offset;
-        }
+        // Note: no need to override GetValue, as that delegates to GetInt64Value.
 
         public override long GetInt64Value(LocalInstant localInstant)
         {
-            return base.GetValue(localInstant) + offset;
+            return base.GetInt64Value(localInstant) + offset;
         }
 
         public override LocalInstant Add(LocalInstant localInstant, int value)
