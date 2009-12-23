@@ -90,6 +90,7 @@
     <Compile Include="Fields\FakeDurationField.cs" />
     <Compile Include="Fields\FieldSetTest.cs" />
     <Compile Include="Fields\MockCountingDurationField.cs" />
+    <Compile Include="Fields\OffsetDateTimeFieldTest.cs" />
     <Compile Include="Fields\PreciseDateTimeFieldTest.cs" />
     <Compile Include="Fields\PreciseDurationDateTimeFieldTest.cs" />
     <Compile Include="Fields\PreciseDurationFieldTest.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="TimeZones\ReadWriteTest.cs" />
     <Compile Include="TimeZones\TzdbTest.cs" />
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
+    <Compile Include="ZonedDateTimeTest.cs" />
     <None Include="Tests.nunit" />
   </ItemGroup>
   <ItemGroup>

@@ -48,8 +48,7 @@ namespace NodaTime
             {
                 throw new ArgumentNullException("zone");
             } 
-            LocalInstant localInstant = localDateTime.LocalInstant;
-            instant = localInstant - zone.GetOffsetFromLocal(localInstant);
+            instant = ConvertLocalToUtc(localDateTime.LocalInstant, zone);
             chronology = new Chronology(zone, localDateTime.Calendar);
         }
 
@@ -107,8 +106,19 @@ namespace NodaTime
                 throw new ArgumentNullException("chronology");
             }
             LocalInstant localInstant = chronology.Calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond, tick);
-            instant = localInstant - chronology.Zone.GetOffsetFromLocal(localInstant);
+            instant = ConvertLocalToUtc(localInstant, chronology.Zone);
             this.chronology = chronology;
+        }
+
+        private static Instant ConvertLocalToUtc(LocalInstant localInstant, IDateTimeZone zone)
+        {
+            Offset offset = zone.GetOffsetFromLocal(localInstant);
+            Instant instant = localInstant - offset;
+            if (offset != zone.GetOffsetFromUtc(instant))
+            {
+                throw new ArgumentException();
+            }
+            return instant;
         }
 
         /// <summary>
@@ -128,8 +138,32 @@ namespace NodaTime
         /// <summary>
         /// Returns the chronology associated with this date and time.
         /// </summary>
-        public Chronology Chronology { get { return chronology ?? Chronology.IsoUtc; } }
+        public Chronology Chronology { get { return chronology; } }
 
         public IDateTimeZone Zone { get { return Chronology.Zone; } }
+
+        public LocalInstant LocalInstant { get { return instant + Zone.GetOffsetFromUtc(instant); } }
+
+        public LocalDateTime LocalDateTime { get { return new LocalDateTime(LocalInstant, chronology.Calendar); } }
+
+        public int Era { get { return LocalDateTime.Era; } }
+        public int CenturyOfEra { get { return LocalDateTime.CenturyOfEra; } }
+        public int Year { get { return LocalDateTime.Year; } }
+        public int YearOfCentury { get { return LocalDateTime.YearOfCentury; } }
+        public int YearOfEra { get { return LocalDateTime.YearOfEra; } }
+        public int WeekYear { get { return LocalDateTime.WeekYear; } }
+        public int MonthOfYear { get { return LocalDateTime.MonthOfYear; } }
+        public int WeekOfWeekYear { get { return LocalDateTime.WeekOfWeekYear; } }
+        public int DayOfYear { get { return LocalDateTime.DayOfYear; } }
+        public int DayOfMonth { get { return LocalDateTime.DayOfMonth; } }
+        public int DayOfWeek { get { return LocalDateTime.DayOfWeek; } }
+        public int HourOfDay { get { return LocalDateTime.HourOfDay; } }
+        public int MinuteOfHour { get { return LocalDateTime.MinuteOfHour; } }
+        public int SecondOfMinute { get { return LocalDateTime.SecondOfMinute; } }
+        public int SecondOfDay { get { return LocalDateTime.SecondOfDay; } }
+        public int MillisecondOfSecond { get { return LocalDateTime.MillisecondOfSecond; } }
+        public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
+        public int TickOfMillisecond { get { return LocalDateTime.TickOfMillisecond; } }
+        public long TickOfDay { get { return LocalDateTime.TickOfDay; } }
     }
 }
