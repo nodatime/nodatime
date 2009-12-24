@@ -21,7 +21,7 @@ using System.Text;
 using System.IO;
 using NodaTime.Periods;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterTest
     {
