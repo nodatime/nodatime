@@ -23,10 +23,6 @@ namespace NodaTime.Test.Periods
 {
     public partial class PeriodTypeTest
     {
-        /// <summary>
-        /// The properties return singleton values, so reference equality can be used
-        /// everywhere. Only a few samples are tested here.
-        /// </summary>
         [Test]
         public void Properties_YieldSingletons()
         {
@@ -41,6 +37,8 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(PeriodType.Standard, PeriodType.Standard);
             Assert.AreNotEqual(PeriodType.Standard, PeriodType.Time);
+            TestHelper.TestEqualsClass(PeriodType.YearMonthDay.WithMonthsRemoved(),
+                PeriodType.YearDay, PeriodType.YearMonthDay);
         }
     }
 }

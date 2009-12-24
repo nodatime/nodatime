@@ -25,9 +25,8 @@ namespace NodaTime.Periods
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This is a "smart enum" - there are a number of predefined values, and no other instances
-    /// can be constructed. The properties are effectively singletons - accessing the same property
-    /// twice will return the same reference both times.
+    /// The properties are effectively singletons - accessing the same property
+    /// twice will return the same reference both times. New instances are created with the 
     /// </para>
     /// <para>
     /// TODO: Consider where we should really have ticks. It's not entirely clear.
@@ -452,20 +451,26 @@ namespace NodaTime.Periods
 
         #region Masking
 
-        private PeriodType WithFieldRemoved(PeriodType.Index index, string name)
+        private PeriodType WithFieldRemoved(PeriodType.Index index, string suffix)
         {
             int fieldIndex = GetRealIndex(index);
             if (fieldIndex == -1)
+            {
                 return this;
+            }
 
             //construct new field types
             DurationFieldType[] newFieldTypes = new DurationFieldType[Size - 1];
             for (int i = 0; i < fieldTypes.Length; i++)
             {
                 if (i < fieldIndex)
+                {
                     newFieldTypes[i] = fieldTypes[i];
+                }
                 else if (i > fieldIndex)
+                {
                     newFieldTypes[i - 1] = fieldTypes[i];
+                }
             }
 
             //construct new indicies
@@ -481,7 +486,7 @@ namespace NodaTime.Periods
                     newIndices[i] = -1;
             }
 
-            return new PeriodType(Name + name, newFieldTypes, newIndices);
+            return new PeriodType(Name + suffix, newFieldTypes, newIndices);
         }
 
         /// <summary>
@@ -563,10 +568,14 @@ namespace NodaTime.Periods
         public bool Equals(PeriodType other)
         {
             if (Object.ReferenceEquals(this, other))
+            {
                 return true;
+            }
 
             if (other == null)
+            {
                 return false;
+            }
 
             return PeriodType.EqualsArrays(this.fieldTypes, other.fieldTypes);
         }
@@ -580,7 +589,9 @@ namespace NodaTime.Periods
         {
             int hash = HashCodeHelper.Initialize();
             for (int i = 0; i < fieldTypes.Length; i++)
+            {
                 hash = HashCodeHelper.Hash(hash, fieldTypes[i]);
+            }
 
             return hash;
         }
@@ -614,14 +625,20 @@ namespace NodaTime.Periods
             if (index == -1)
             {
                 if (newValue != 0)
+                {
                     throw new NotSupportedException("Field is not supported");
+                }
             }
             else
             {
                 if (add)
+                {
                     values[index] += newValue;
+                }
                 else
+                {
                     values[index] = newValue;
+                }
             }
         }
 
@@ -634,17 +651,23 @@ namespace NodaTime.Periods
         {
             //check for nulls and reference equality
             if (Object.Equals(arrayA, arrayB))
+            {
                 return true;
+            }
 
             //check for length
             if (arrayA.Length != arrayB.Length)
+            {
                 return false;
+            }
 
             //check for elemnts equality
             for (int i = 0; i < arrayA.Length; i++)
             {
                 if (!Object.Equals(arrayA[i], arrayB[i]))
+                {
                     return false;
+                }
             }
 
             return true;
