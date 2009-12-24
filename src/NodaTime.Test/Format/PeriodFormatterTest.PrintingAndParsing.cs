@@ -134,8 +134,7 @@ namespace NodaTime.Test.Format
         public void ParseInto_NonParser()
         {
             var sutDefault = PeriodFormatter.FromPrinter(printer);
-            IPeriod result;
-            Assert.Throws<NotSupportedException>(() => sutDefault.ParseInto("_", 0, out result));
+            Assert.Throws<NotSupportedException>(() => sutDefault.Parse("_"));
         }
 
         [Test]
@@ -143,10 +142,8 @@ namespace NodaTime.Test.Format
         {
             var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider);
             var text = "_";
-            var position = 42;
-            IPeriod result;
-
-            sutDefault.ParseInto(text, position, out result);
+            var position = 0;
+            Period result = sutDefault.Parse(text);
 
             Assert.IsTrue(parser.ParseIntoCalled);
             Assert.AreEqual(text, parser.ParseIntoStringArgument);
