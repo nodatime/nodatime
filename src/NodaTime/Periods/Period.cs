@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Fields;
+using NodaTime.Calendars;
 
 namespace NodaTime.Periods
 {
@@ -31,7 +32,7 @@ namespace NodaTime.Periods
     /// hours, minutes, seconds and milliseconds.
     /// </para>
     /// </remarks>
-    public sealed class Period : PeriodBase
+    public sealed class Period : IPeriod
     {
         #region Static creation methods and properties
 
@@ -213,10 +214,25 @@ namespace NodaTime.Periods
 
         #endregion
 
+        private readonly PeriodType periodType;
+        private int[] fieldValues;
+
         #region Construction
 
         internal Period(int[] values, PeriodType periodType)
-            : base(values, periodType) { }
+        {
+            this.periodType = periodType;
+            this.fieldValues = values;
+
+        }
+
+        private Period(Duration duration, ICalendarSystem calendar, PeriodType periodType)
+        {
+            this.periodType = NodaDefaults.CheckPeriodType(periodType);
+
+            calendar = NodaDefaults.CheckCalendarSystem(calendar);
+            this.fieldValues = calendar.GetPeriodValues(this, duration);
+        }
 
 
         /// <summary>
@@ -239,7 +255,7 @@ namespace NodaTime.Periods
         /// </code>
         /// </remarks>
         public Period()
-            :base(Duration.Zero, null, null)
+            :this(Duration.Zero, null, null)
         {
         }
 
@@ -265,8 +281,11 @@ namespace NodaTime.Periods
             int years, int months, int weeks, int days,
             int hours, int minutes, int seconds, int milliseconds,
             PeriodType periodType)
-            : base(years, months, weeks, days, hours, minutes, seconds, milliseconds, periodType)
         {
+            this.periodType = NodaDefaults.CheckPeriodType(periodType);
+
+            SetPeriodInternal(years, months, weeks, days, hours, minutes, seconds, milliseconds);
+
         }
 
         /// <summary>
@@ -283,7 +302,7 @@ namespace NodaTime.Periods
         public Period(
             int years, int months, int weeks, int days,
             int hours, int minutes, int seconds, int millis)
-            :base(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.Standart)
+            : this(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.Standart)
         {
         }
 
@@ -299,8 +318,52 @@ namespace NodaTime.Periods
         /// seconds and millis, not the date fields.
         /// </remarks>
         public Period(int hours, int minutes, int seconds, int millis)
-            : base(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.Standart)
+            : this(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.Standart)
         {
+        }
+
+        #endregion
+
+        #region IPeriod Members
+
+        public PeriodType PeriodType
+        {
+            get { return periodType; }
+        }
+
+        public int Size
+        {
+            get { return periodType.Size; }
+        }
+
+        public DurationFieldType GetFieldType(int index)
+        {
+            return periodType.GetFieldType(index);
+        }
+
+        public bool IsSupported(DurationFieldType field)
+        {
+            return PeriodType.IsSupported(field);
+        }
+
+        public int GetValue(int index)
+        {
+            return fieldValues[index];
+        }
+
+        public int Get(DurationFieldType field)
+        {
+            int index = PeriodType.IndexOf(field);
+            if (index == -1)
+            {
+                return 0;
+            }
+            return GetValue(index);
+        }
+
+        public Period ToPeriod()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -924,5 +987,66 @@ namespace NodaTime.Periods
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets an array of the field types that this period supports.
+        /// </summary>
+        /// <remarks>
+        /// The fields are returned largest to smallest, for example Hours, Minutes, Seconds.
+        /// </remarks>
+        /// <returns>The fields supported in an array that may be altered, largest to smallest</returns>
+        public DurationFieldType[] GetFieldTypes()
+        {
+            DurationFieldType[] result = new DurationFieldType[Size];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = GetFieldType(i);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gets an array of the value of each of the fields that this period supports.
+        /// </summary>
+        /// <remarks>
+        /// The fields are returned largest to smallest, for example Hours, Minutes, Seconds.
+        /// Each value corresponds to the same array index as <code>GetFieldTypes()</code>
+        /// </remarks>
+        /// <returns>The current values of each field in an array that may be altered, largest to smallest</returns>
+        public int[] GetValues()
+        {
+            int[] result = new int[Size];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = GetValue(i);
+            }
+            return result;
+        }
+
+        private void SetPeriodInternal(int years, int months, int weeks, int days,
+                                       int hours, int minutes, int seconds, int millis)
+        {
+            int[] newValues = new int[Size];
+            PeriodType.UpdateIndexedField(newValues, PeriodType.Index.Year, years, false);
+            PeriodType.UpdateIndexedField(newValues, PeriodType.Index.Month, months, false);
+            PeriodType.UpdateIndexedField(newValues, PeriodType.Index.Week, weeks, false);
+            PeriodType.UpdateIndexedField(newValues, PeriodType.Index.Day, days, false);
+            PeriodType.UpdateIndexedField(newValues, PeriodType.Index.Hour, hours, false);
+            PeriodType.UpdateIndexedField(newValues, PeriodType.Index.Minute, minutes, false);
+            PeriodType.UpdateIndexedField(newValues, PeriodType.Index.Second, seconds, false);
+            PeriodType.UpdateIndexedField(newValues, PeriodType.Index.Millisecond, millis, false);
+            fieldValues = newValues;
+        }
+
+        private int[] MergePeriodInto(int[] values, IPeriod period)
+        {
+            for (int i = 0, isize = period.Size; i < isize; i++)
+            {
+                DurationFieldType type = period.GetFieldType(i);
+                int value = period.GetValue(i);
+                PeriodType.UpdateAnyField(values, type, value, false);
+            }
+            return values;
+        }
     }
 }
