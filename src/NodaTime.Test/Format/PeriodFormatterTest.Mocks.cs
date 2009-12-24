@@ -21,7 +21,7 @@ using System.Text;
 using System.IO;
 using NodaTime.Periods;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterTest
     {
@@ -75,20 +75,19 @@ namespace NodaTime.Test
         public class PeriodParserMock : IPeriodParser
         {
 
-            public bool ParseIntoCalled;
-            public string ParseIntoStringArgument;
-            public int ParseIntoPositionArgument;
-            public IFormatProvider ParseIntoProviderArgument;
-            public int ParseIntoPositionToReturn = 42;
+            public bool ParseCalled;
+            public string ParseStringArgument;
+            public int ParsePositionArgument;
+            public IFormatProvider ParseProviderArgument;
+            public int ParsePositionToReturn = 42;
 
-            public int ParseInto(string periodString, int position, IFormatProvider provider, out IPeriod period)
+            public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
-                ParseIntoCalled = true;
-                ParseIntoStringArgument = periodString;
-                ParseIntoPositionArgument = position;
-                ParseIntoProviderArgument = provider;
-                period = Days.One;
-                return ParseIntoPositionToReturn;
+                ParseCalled = true;
+                ParseStringArgument = periodString;
+                ParsePositionArgument = position;
+                ParseProviderArgument = provider;
+                return ParsePositionToReturn;
             }
 
         }

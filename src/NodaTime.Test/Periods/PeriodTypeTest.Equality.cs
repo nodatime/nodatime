@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,37 +14,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using NodaTime.Periods;
+using NUnit.Framework;
 using NodaTime.Fields;
 
-namespace NodaTime.Periods
+namespace NodaTime.Test.Periods
 {
-    /// <summary>
-    /// Original name: AbstractPeriod
-    /// </summary>
-    public abstract class AbstractPeriod : IPeriod
+    public partial class PeriodTypeTest
     {
-        #region IPeriod Members
-
-        public abstract PeriodType PeriodType
+        [Test]
+        public void Equals_StandartAndStandartNotTime()
         {
-            get;
+            TestHelper.TestEqualsClass(PeriodType.Standart, PeriodType.Standart, PeriodType.Time);
         }
 
-        public abstract int Size
+        [Test]
+        public void Equals_YearMonthDayTimeAndStandartWithWeeksRemovedNotYears()
         {
-            get;
+            TestHelper.TestEqualsClass(PeriodType.YearMonthDayTime, PeriodType.Standart.WithWeeksRemoved(), PeriodType.Years);
         }
 
-        public abstract DurationFieldType GetFieldType(int index);
-
-        public abstract int GetValue(int index);
-
-        public abstract int Get(DurationFieldType field);
-
-        public abstract bool IsSupported(DurationFieldType field);
-
-        public abstract Period ToPeriod();
-
-        #endregion
     }
 }
