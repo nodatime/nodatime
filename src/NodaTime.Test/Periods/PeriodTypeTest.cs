@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,12 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-namespace NodaTime.Periods
+
+using NUnit.Framework;
+
+namespace NodaTime.Test.Periods
 {
-    /// <summary>
-    /// Original name: BasePeriod.
-    /// </summary>
-    public abstract class PeriodBase : AbstractPeriod
+    [TestFixture]
+    public partial class PeriodTypeTest
     {
     }
 }
