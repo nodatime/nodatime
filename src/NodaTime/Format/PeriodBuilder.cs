@@ -28,7 +28,7 @@ namespace NodaTime.Format
         public PeriodBuilder(PeriodType periodType)
         {
             this.periodType = NodaDefaults.CheckPeriodType(periodType);
-            values = new int[periodType.Size];
+            values = new int[this.periodType.Size];
         }
 
         public PeriodBuilder Append(DurationFieldType fieldType, int value)

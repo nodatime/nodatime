@@ -164,16 +164,6 @@ namespace NodaTime.Periods
             return field == FieldType;
         }
 
-        /// <summary>
-        /// Get this object as a Period object.
-        /// The period will use PeriodType.standard
-        /// </summary>
-        /// <returns>a Period representing the same number of days</returns>
-        public Period ToPeriod()
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
     }
 }

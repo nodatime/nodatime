@@ -563,6 +563,18 @@ namespace NodaTime.Periods
         }
 
         /// <summary>
+        /// Gets an array of the field types that this period type supports.
+        /// </summary>
+        /// <remarks>
+        /// The fields are returned largest to smallest, for example Hours, Minutes, Seconds.
+        /// </remarks>
+        /// <returns>The fields supported in an array that may be altered, largest to smallest</returns>
+        public DurationFieldType[] GetFieldTypes()
+        {
+            return (DurationFieldType[])fieldTypes.Clone();
+        }
+
+        /// <summary>
         /// Gets the field type by index.
         /// </summary>
         /// <param name="index">the index to retrieve</param>
