@@ -15,11 +15,11 @@
 // limitations under the License.
 #endregion
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using NodaTime.Fields;
-using System.Collections;
 namespace NodaTime.Format
 {
     /// <summary>
