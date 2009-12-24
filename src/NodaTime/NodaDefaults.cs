@@ -23,7 +23,10 @@ namespace NodaTime
     /// <summary>
     /// Original name: DateTimeUtils.
     /// Contains the methods to check for null values of some NodaTime classes
-    /// and to return valid not-null values
+    /// and to return valid not-null values.
+    /// TODO: Consider removing this. I (Jon) believe that Joda Time made a mistake in
+    /// allowing nulls in so many places. We can provide defaults through overloading,
+    /// but when a value is available it shouldn't be null. To be discussed.
     /// </summary>
     internal static class NodaDefaults
     {
@@ -40,20 +43,5 @@ namespace NodaTime
         {
             return periodType ?? PeriodType.Standard;
         }
-
-        /// <summary>
-        /// Gets the calendar system handling null.
-        /// </summary>
-        /// <param name="calendar">the chronology to use, null means ISO in the default zone</param>
-        /// <returns>The calendar system, never null</returns>
-        /// <remarks>
-        /// If the calendar is <code>null</code>, <see cref="IsoCalendarSystem.Instance"/>
-        /// will be returned. Otherwise, the calendar specified is returned.
-        /// </remarks>
-        internal static ICalendarSystem CheckCalendarSystem(ICalendarSystem calendar)
-        {
-            return calendar ?? IsoCalendarSystem.Instance;
-        }
-        
     }
 }
