@@ -215,7 +215,7 @@ namespace NodaTime.Periods
 
         #region Construction
 
-        private Period(int[] values, PeriodType periodType)
+        internal Period(int[] values, PeriodType periodType)
             : base(values, periodType) { }
 
 
