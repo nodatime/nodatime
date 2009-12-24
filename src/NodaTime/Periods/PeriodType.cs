@@ -752,6 +752,34 @@ namespace NodaTime.Periods
 
         #endregion
 
+        internal void UpdateIndexedField(int[] values, PeriodType.Index index, int newValue, bool add)
+        {
+            int realIndex = GetRealIndex(index);
+            Update(values, realIndex, newValue, add);
+        }
+
+        internal void UpdateAnyField(int[] values, DurationFieldType fieldType, int newValue, bool add)
+        {
+            int index = IndexOf(fieldType);
+            Update(values, index, newValue, add);
+        }
+
+        private void Update(int[] values, int index, int newValue, bool add)
+        {
+            if (index == -1)
+            {
+                if (newValue != 0)
+                    throw new NotSupportedException("Field is not supported");
+            }
+            else
+            {
+                if (add)
+                    values[index] += newValue;
+                else
+                    values[index] = newValue;
+            }
+        }
+
         public override string ToString()
         {
             return "PeriodType[" + Name + "]";
