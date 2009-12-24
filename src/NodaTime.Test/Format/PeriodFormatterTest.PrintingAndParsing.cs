@@ -22,14 +22,14 @@ using NodaTime.Periods;
 using System.Globalization;
 using System.IO;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterTest
     {
         [Test]
         public void PrintToStringBuilder_NonPrinter()
         {
-            var sutDefault = new PeriodFormatter(parser, null, daysPeriodType);
+            var sutDefault = PeriodFormatter.FromParser(parser);
             var sb = new StringBuilder();
             var period = Days.Five;
 
@@ -39,7 +39,7 @@ namespace NodaTime.Test
         [Test]
         public void PrintToStringBuilder_NullPeriod()
         {
-            var sutDefault = new PeriodFormatter(null, printer, daysPeriodType);
+            var sutDefault = PeriodFormatter.FromPrinter(printer);
             var sb = new StringBuilder();
 
             Assert.Throws<ArgumentNullException>(() => sutDefault.PrintTo(sb, null));
@@ -48,7 +48,7 @@ namespace NodaTime.Test
         [Test]
         public void Print_ToStringBuilder()
         {
-            var sutDefault = new PeriodFormatter(null, printer, daysPeriodType).WithProvider(provider);
+            var sutDefault = PeriodFormatter.FromPrinter(printer).WithProvider(provider);
             var sb = new StringBuilder();
             var period = Days.Five;
 
@@ -64,7 +64,7 @@ namespace NodaTime.Test
         [Test]
         public void PrintToTextWriter_NonPrinter()
         {
-            var sutDefault = new PeriodFormatter(parser, null, daysPeriodType);
+            var sutDefault = PeriodFormatter.FromParser(parser);
             var sw = new StringWriter();
             var period = Days.Five;
 
@@ -74,7 +74,7 @@ namespace NodaTime.Test
         [Test]
         public void PrintToTextWriter_NullPeriod()
         {
-            var sutDefault = new PeriodFormatter(null, printer, daysPeriodType);
+            var sutDefault = PeriodFormatter.FromPrinter(printer);
             var sw = new StringWriter();
 
             Assert.Throws<ArgumentNullException>(() => sutDefault.PrintTo(sw, null));
@@ -83,7 +83,7 @@ namespace NodaTime.Test
         [Test]
         public void PrintToTextWriter()
         {
-            var sutDefault = new PeriodFormatter(null, printer, daysPeriodType).WithProvider(provider);
+            var sutDefault = PeriodFormatter.FromPrinter(printer).WithProvider(provider);
             var sw = new StringWriter();
             var period = Days.Five;
 
@@ -99,7 +99,7 @@ namespace NodaTime.Test
         [Test]
         public void Print_NonPrinter()
         {
-            var sutDefault = new PeriodFormatter(parser, null, daysPeriodType);
+            var sutDefault = PeriodFormatter.FromParser(parser);
             var period = Days.Five;
 
             Assert.Throws<NotSupportedException>(() => sutDefault.Print(period));
@@ -108,7 +108,7 @@ namespace NodaTime.Test
         [Test]
         public void Print_NullPeriod()
         {
-            var sutDefault = new PeriodFormatter(null, printer, daysPeriodType);
+            var sutDefault = PeriodFormatter.FromPrinter(printer);
 
             Assert.Throws<ArgumentNullException>(() => sutDefault.Print(null));
         }
@@ -116,7 +116,7 @@ namespace NodaTime.Test
         [Test]
         public void Print()
         {
-            var sutDefault = new PeriodFormatter(null, printer, daysPeriodType).WithProvider(provider);
+            var sutDefault = PeriodFormatter.FromPrinter(printer).WithProvider(provider);
             var period = Days.Five;
 
             var text = sutDefault.Print(period);
@@ -133,7 +133,7 @@ namespace NodaTime.Test
         [Test]
         public void ParseInto_NonParser()
         {
-            var sutDefault = new PeriodFormatter(null, printer, daysPeriodType);
+            var sutDefault = PeriodFormatter.FromPrinter(printer);
             IPeriod result;
             Assert.Throws<NotSupportedException>(() => sutDefault.ParseInto("_", 0, out result));
         }
@@ -141,7 +141,7 @@ namespace NodaTime.Test
         [Test]
         public void ParseInto()
         {
-            var sutDefault = new PeriodFormatter(parser, null, daysPeriodType).WithProvider(provider);
+            var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider);
             var text = "_";
             var position = 42;
             IPeriod result;
@@ -158,7 +158,7 @@ namespace NodaTime.Test
         [Test]
         public void Parse_NonParser()
         {
-            var sutDefault = new PeriodFormatter(null, printer, daysPeriodType);
+            var sutDefault = PeriodFormatter.FromPrinter(printer);
 
             Assert.Throws<NotSupportedException>(() => sutDefault.Parse("_"));
         }
@@ -166,7 +166,7 @@ namespace NodaTime.Test
         [Test]
         public void Parse_FullParse()
         {
-            var sutDefault = new PeriodFormatter(parser, null, daysPeriodType).WithProvider(provider);
+            var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider);
             parser.ParseIntoPositionToReturn = 10;
             var text = "_";
 
@@ -181,7 +181,7 @@ namespace NodaTime.Test
         [Test]
         public void Parse_FailedParse()
         {
-            var sutDefault = new PeriodFormatter(parser, null, daysPeriodType).WithProvider(provider);
+            var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider);
             parser.ParseIntoPositionToReturn = -1;
             var text = "_";
 
@@ -196,7 +196,7 @@ namespace NodaTime.Test
         [Test]
         public void Parse_PartialParse()
         {
-            var sutDefault = new PeriodFormatter(parser, null, daysPeriodType).WithProvider(provider);
+            var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider);
             parser.ParseIntoPositionToReturn = 2;
             var text = "123456789";
 

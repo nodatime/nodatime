@@ -100,6 +100,7 @@
     <Compile Include="Fields\ZeroIsMaxDateTimeFieldTest.cs" />
     <Compile Include="FixedDateTimeZoneTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.cs" />
+    <Compile Include="Format\PeriodFormatterBuilderTest.cs" />
     <Compile Include="Format\PeriodFormatterTest.cs" />
     <Compile Include="Format\PeriodFormatterTest.PrintingAndParsing.cs">
       <DependentUpon>PeriodFormatterTest.cs</DependentUpon>
@@ -120,6 +121,18 @@
     <Compile Include="OffsetTest.Construction.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Periods\PeriodTest.SubtractMethods.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTest.AddMethods.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTest.WithMethods.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTest.StaticCreationMethods.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Periods\DaysTest.cs" />
     <Compile Include="Periods\DaysTest.Constants.cs">
       <DependentUpon>DaysTest.cs</DependentUpon>
@@ -128,6 +141,23 @@
       <DependentUpon>DaysTest.cs</DependentUpon>
     </Compile>
     <Compile Include="MockZeroNullIntegerConverter.cs" />
+    <Compile Include="Periods\PeriodTest.cs" />
+    <Compile Include="Periods\PeriodTypeTest.cs" />
+    <Compile Include="Periods\PeriodTypeTest.Equality.cs">
+      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTypeTest.Masking.cs">
+      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTypeTest.Types.cs">
+      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTypeTest.IndexOf.cs">
+      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTypeTest.IsSupported.cs">
+      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstantTest.cs" />
     <Compile Include="InstantTest.Basics.cs">
