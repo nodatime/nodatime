@@ -31,6 +31,11 @@ namespace NodaTime.Periods
     /// The default is the standard period type, which supports years, months, weeks, days,
     /// hours, minutes, seconds and milliseconds.
     /// </para>
+    /// <para>
+    /// TODO: Consider making WithDays etc work with *any* period instead of just those
+    /// defined with a standard period type. This should just be a matter of checking whether
+    /// the field is supported, updating it if so, and constructing a new period type and values otherwise.
+    /// </para>
     /// </remarks>
     public sealed class Period : IPeriod
     {
@@ -226,11 +231,15 @@ namespace NodaTime.Periods
 
         }
 
+        // TODO: Do we really need this constructor? It's currently only called from the
+        // parameterless one...
         private Period(Duration duration, ICalendarSystem calendar, PeriodType periodType)
         {
+            if (calendar == null)
+            {
+                throw new ArgumentNullException("calendar");
+            }
             this.periodType = NodaDefaults.CheckPeriodType(periodType);
-
-            calendar = NodaDefaults.CheckCalendarSystem(calendar);
             this.fieldValues = calendar.GetPeriodValues(this, duration);
         }
 
@@ -255,7 +264,7 @@ namespace NodaTime.Periods
         /// </code>
         /// </remarks>
         public Period()
-            :this(Duration.Zero, null, null)
+            :this(Duration.Zero, IsoCalendarSystem.Instance, null)
         {
         }
 
@@ -471,12 +480,12 @@ namespace NodaTime.Periods
 
         #region Creation methods
 
-        private int[] WitnIndexedField(PeriodType.Index index, int newValue)
+        private int[] WithIndexedField(PeriodType.Index index, int newValue)
         {
-            return WitnIndexedField(index, newValue, false);
+            return WithIndexedField(index, newValue, false);
         }
 
-        private int[] WitnIndexedField(PeriodType.Index index, int newValue, bool add)
+        private int[] WithIndexedField(PeriodType.Index index, int newValue, bool add)
         {
             //clone values
             var values = GetValues();
@@ -487,7 +496,7 @@ namespace NodaTime.Periods
             return values;
         }
 
-        private int[] WitnAnyField(DurationFieldType fieldType, int newValue, bool add)
+        private int[] WithAnyField(DurationFieldType fieldType, int newValue, bool add)
         {
             //clone values
             var values = GetValues();
@@ -529,7 +538,7 @@ namespace NodaTime.Periods
         /// <exception cref="NotSupportedException">If the field type unsupported</exception>
         public Period WithField(DurationFieldType fieldType, int value)
         {
-            var values = WitnAnyField(fieldType, value, false);
+            var values = WithAnyField(fieldType, value, false);
             return new Period(values, PeriodType);
         }
 
@@ -543,7 +552,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Period WithYears(int years)
         {
-            var values = WitnIndexedField(PeriodType.Index.Year, years);
+            var values = WithIndexedField(PeriodType.Index.Year, years);
             return new Period(values, PeriodType);
         }
 
@@ -557,7 +566,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Period WithMonths(int months)
         {
-            var values = WitnIndexedField(PeriodType.Index.Month, months);
+            var values = WithIndexedField(PeriodType.Index.Month, months);
             return new Period(values, PeriodType);
         }
 
@@ -571,7 +580,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Period WithWeeks(int weeks)
         {
-            var values = WitnIndexedField(PeriodType.Index.Week, weeks);
+            var values = WithIndexedField(PeriodType.Index.Week, weeks);
             return new Period(values, PeriodType);
         }
 
@@ -585,7 +594,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Period WithDays(int days)
         {
-            var values = WitnIndexedField(PeriodType.Index.Day, days);
+            var values = WithIndexedField(PeriodType.Index.Day, days);
             return new Period(values, PeriodType);
         }
 
@@ -599,7 +608,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Period WithHours(int hours)
         {
-            var values = WitnIndexedField(PeriodType.Index.Hour, hours);
+            var values = WithIndexedField(PeriodType.Index.Hour, hours);
             return new Period(values, PeriodType);
         }
 
@@ -613,7 +622,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Period WithMinutes(int minutes)
         {
-            var values = WitnIndexedField(PeriodType.Index.Minute, minutes);
+            var values = WithIndexedField(PeriodType.Index.Minute, minutes);
             return new Period(values, PeriodType);
         }
 
@@ -627,7 +636,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Period WithSeconds(int seconds)
         {
-            var values = WitnIndexedField(PeriodType.Index.Second, seconds);
+            var values = WithIndexedField(PeriodType.Index.Second, seconds);
             return new Period(values, PeriodType);
         }
 
@@ -641,7 +650,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Period WithMilliseconds(int milliseconds)
         {
-            var values = WitnIndexedField(PeriodType.Index.Millisecond, milliseconds);
+            var values = WithIndexedField(PeriodType.Index.Millisecond, milliseconds);
             return new Period(values, PeriodType);
         }
 
@@ -698,7 +707,7 @@ namespace NodaTime.Periods
             if (value == 0)
                 return this;
 
-            var values = WitnAnyField(fieldType, value, true);
+            var values = WithAnyField(fieldType, value, true);
             return new Period(values, PeriodType);
         }
 
@@ -715,7 +724,7 @@ namespace NodaTime.Periods
             if (years == 0)
                 return this;
 
-            var values = WitnIndexedField(PeriodType.Index.Year, years, true);
+            var values = WithIndexedField(PeriodType.Index.Year, years, true);
             return new Period(values, PeriodType);
         }
 
@@ -732,7 +741,7 @@ namespace NodaTime.Periods
             if (months == 0)
                 return this;
 
-            var values = WitnIndexedField(PeriodType.Index.Month, months, true);
+            var values = WithIndexedField(PeriodType.Index.Month, months, true);
             return new Period(values, PeriodType);
         }
 
@@ -749,7 +758,7 @@ namespace NodaTime.Periods
             if (weeks == 0)
                 return this;
 
-            var values = WitnIndexedField(PeriodType.Index.Week, weeks, true);
+            var values = WithIndexedField(PeriodType.Index.Week, weeks, true);
             return new Period(values, PeriodType);
         }
 
@@ -766,7 +775,7 @@ namespace NodaTime.Periods
             if (days == 0)
                 return this;
 
-            var values = WitnIndexedField(PeriodType.Index.Day, days, true);
+            var values = WithIndexedField(PeriodType.Index.Day, days, true);
             return new Period(values, PeriodType);
         }
 
@@ -783,7 +792,7 @@ namespace NodaTime.Periods
             if (hours == 0)
                 return this;
 
-            var values = WitnIndexedField(PeriodType.Index.Hour, hours, true);
+            var values = WithIndexedField(PeriodType.Index.Hour, hours, true);
             return new Period(values, PeriodType);
         }
 
@@ -800,7 +809,7 @@ namespace NodaTime.Periods
             if (minutes == 0)
                 return this;
 
-            var values = WitnIndexedField(PeriodType.Index.Minute, minutes, true);
+            var values = WithIndexedField(PeriodType.Index.Minute, minutes, true);
             return new Period(values, PeriodType);
         }
 
@@ -817,7 +826,7 @@ namespace NodaTime.Periods
             if (seconds == 0)
                 return this;
 
-            var values = WitnIndexedField(PeriodType.Index.Second, seconds, true);
+            var values = WithIndexedField(PeriodType.Index.Second, seconds, true);
             return new Period(values, PeriodType);
         }
 
@@ -835,7 +844,7 @@ namespace NodaTime.Periods
                 return this;
 
 
-            var values = WitnIndexedField(PeriodType.Index.Millisecond, milliseconds, true);
+            var values = WithIndexedField(PeriodType.Index.Millisecond, milliseconds, true);
             return new Period(values, PeriodType);
         }
 
