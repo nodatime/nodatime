@@ -24,6 +24,12 @@ namespace NodaTime.Periods
     /// Controls a period implementation by specifying which duration fields are to be used.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// This is a "smart enum" - there are a number of predefined values, and no other instances
+    /// can be constructed. The properties are effectively singletons - accessing the same property
+    /// twice will return the same reference both times.
+    /// </para>
+    /// <para>
     /// TODO: Consider where we should really have ticks. It's not entirely clear.
     /// Defined values are:
     /// 
@@ -37,8 +43,9 @@ namespace NodaTime.Periods
     /// DayTime - days, hours, minutes, seconds, millis
     /// Time - hours, minutes, seconds, millis
     /// plus one for each single type
+    /// </para>
     /// </remarks>
-    public sealed class PeriodType:IEquatable<PeriodType>
+    public sealed class PeriodType : IEquatable<PeriodType>
     {
         internal enum Index
         {
@@ -49,138 +56,87 @@ namespace NodaTime.Periods
             Hour,
             Minute,
             Second,
-            Millisecond            
+            Millisecond
         }
 
+        #region Static fields backing properties
+
+        private static readonly PeriodType years = new PeriodType("Years", new[] { DurationFieldType.Years }, new[] { 0, -1, -1, -1, -1, -1, -1, -1, });
+        private static readonly PeriodType months = new PeriodType("Months", new[] { DurationFieldType.Months }, new[] { -1, 0, -1, -1, -1, -1, -1, -1, });
+        private static readonly PeriodType weeks = new PeriodType("Weeks", new[] { DurationFieldType.Weeks }, new[] { -1, -1, 0, -1, -1, -1, -1, -1, });
+        private static readonly PeriodType days = new PeriodType("Days", new[] { DurationFieldType.Days }, new[] { -1, -1, -1, 0, -1, -1, -1, -1, });
+        private static readonly PeriodType hours = new PeriodType("Hours", new[] { DurationFieldType.Hours }, new[] { -1, -1, -1, -1, 0, -1, -1, -1, });
+        private static readonly PeriodType minutes = new PeriodType("Minutes", new[] { DurationFieldType.Minutes }, new[] { -1, -1, -1, -1, -1, 0, -1, -1, });
+        private static readonly PeriodType seconds = new PeriodType("Seconds", new[] { DurationFieldType.Seconds }, new[] { -1, -1, -1, -1, -1, -1, 0, -1, });
+        private static readonly PeriodType milliseconds = new PeriodType("Milliseconds", new[] { DurationFieldType.Milliseconds }, new[] { -1, -1, -1, -1, -1, -1, -1, 0, });
+        private static readonly PeriodType standard = new PeriodType("Standard", new[] {
+                    DurationFieldType.Years, DurationFieldType.Months, DurationFieldType.Weeks, DurationFieldType.Days,
+                    DurationFieldType.Hours, DurationFieldType.Minutes,DurationFieldType.Seconds, DurationFieldType.Milliseconds},
+                    new[] { 0, 1, 2, 3, 4, 5, 6, 7, });
+        private static readonly PeriodType yearMonthDayTime = new PeriodType("YearMonthDayTime", new[] {
+                    DurationFieldType.Years, DurationFieldType.Months, DurationFieldType.Days,
+                    DurationFieldType.Hours, DurationFieldType.Minutes, DurationFieldType.Seconds, DurationFieldType.Milliseconds},
+                    new[] { 0, 1, -1, 2, 3, 4, 5, 6, });
+
+        private static readonly PeriodType yearMonthDay = new PeriodType("YearMonthDay", new[] {
+                    DurationFieldType.Years, DurationFieldType.Months, DurationFieldType.Days},
+                    new [] { 0, 1, -1, 2, -1, -1, -1, -1, });
+
+        private static readonly PeriodType yearWeekDayTime = new PeriodType("YearWeekDayTime", new[] {
+                    DurationFieldType.Years, DurationFieldType.Weeks, DurationFieldType.Days,
+                    DurationFieldType.Hours, DurationFieldType.Minutes,
+                    DurationFieldType.Seconds, DurationFieldType.Milliseconds},
+                    new [] { 0, -1, 1, 2, 3, 4, 5, 6, });
+
+        private static readonly PeriodType yearWeekDay = new PeriodType("YearWeekDay", new[] {
+                    DurationFieldType.Years, DurationFieldType.Weeks, DurationFieldType.Days},
+                    new[] { 0, -1, 1, 2, -1, -1, -1, -1, });
+
+        private static readonly PeriodType yearDayTime = new PeriodType("YearDayTime", new[] {
+                    DurationFieldType.Years, DurationFieldType.Days,
+                    DurationFieldType.Hours, DurationFieldType.Minutes,
+                    DurationFieldType.Seconds, DurationFieldType.Milliseconds},
+                    new[] { 0, -1, -1, 1, 2, 3, 4, 5, });
+
+        private static readonly PeriodType yearDay = new PeriodType("YearDay", new[] {
+                    DurationFieldType.Years, DurationFieldType.Days},
+                    new [] { 0, -1, -1, 1, -1, -1, -1, -1, });
+
+        private static readonly PeriodType dayTime = new PeriodType("DayTime", new[] {
+                    DurationFieldType.Days, DurationFieldType.Hours, DurationFieldType.Minutes,
+                    DurationFieldType.Seconds, DurationFieldType.Milliseconds},
+                    new [] { -1, -1, -1, 0, 1, 2, 3, 4, });
+
+        private static readonly PeriodType time = new PeriodType("Time", new[] {
+                    DurationFieldType.Hours, DurationFieldType.Minutes,
+                    DurationFieldType.Seconds, DurationFieldType.Milliseconds},
+                    new [] { -1, -1, -1, -1, 0, 1, 2, 3, });
+        #endregion
         #region Static Properties
 
-        /// <summary>
-        /// Gets a type that defines just the years field.
-        /// </summary>
-        public static PeriodType Years
-        {
-            get
-            {
-                return new PeriodType("Years"
-                    ,
-                    new DurationFieldType[] {DurationFieldType.Years}
-                    ,
-                    new [] { 0, -1, -1, -1, -1, -1, -1, -1, }
-                    );
-            }
-        }
+        /// <summary>Gets a type that defines just the years field.</summary>
+        public static PeriodType Years { get { return years; } }
 
-        /// <summary>
-        /// Gets a type that defines just the months field.
-        /// </summary>
-        public static PeriodType Months
-        {
-            get
-            {
-                return new PeriodType("Months"
-                    ,
-                    new DurationFieldType[] { DurationFieldType.Months }
-                    ,
-                    new [] { -1, 0, -1, -1, -1, -1, -1, -1, }
-                    );
-            }
-        }
+        /// <summary>Gets a type that defines just the months field.</summary>
+        public static PeriodType Months { get { return months; } }
 
-        /// <summary>
-        /// Gets a type that defines just the weeks field.
-        /// </summary>
-        public static PeriodType Weeks
-        {
-            get
-            {
-                return new PeriodType("Weeks"
-                    ,
-                    new DurationFieldType[] { DurationFieldType.Weeks }
-                    ,
-                    new [] { -1, -1, 0, -1, -1, -1, -1, -1, }
-                    );
-            }
-        }
+        /// <summary>Gets a type that defines just the weeks field.</summary>
+        public static PeriodType Weeks { get { return weeks; } }
 
-        /// <summary>
-        /// Gets a type that defines just the days field.
-        /// </summary>
-        public static PeriodType Days
-        {
-            get
-            {
-                return new PeriodType("Days"
-                    ,
-                    new DurationFieldType[] { DurationFieldType.Days }
-                    ,
-                    new [] { -1, -1, -1, 0, -1, -1, -1, -1, }
-                    );
-            }
-        }
+        /// <summary>Gets a type that defines just the days field.</summary>
+        public static PeriodType Days { get { return days; } }
 
-        /// <summary>
-        /// Gets a type that defines just the hours field.
-        /// </summary>
-        public static PeriodType Hours
-        {
-            get
-            {
-                return new PeriodType("Hours"
-                    ,
-                    new DurationFieldType[] { DurationFieldType.Hours }
-                    ,
-                    new [] { -1, -1, -1, -1, 0, -1, -1, -1, }
-                    );
-            }
-        }
+        /// <summary>Gets a type that defines just the hours field.</summary>
+        public static PeriodType Hours { get { return hours; } }
 
-        /// <summary>
-        /// Gets a type that defines just the minutes field.
-        /// </summary>
-        public static PeriodType Minutes
-        {
-            get
-            {
-                return new PeriodType("Minutes"
-                    ,
-                    new DurationFieldType[] { DurationFieldType.Minutes }
-                    ,
-                    new [] { -1, -1, -1, -1, -1, 0, -1, -1, }
-                    );
-            }
-        }
+        /// <summary>Gets a type that defines just the minutes field.</summary>
+        public static PeriodType Minutes { get { return minutes; } }
 
-        /// <summary>
-        /// Gets a type that defines just the seconds field.
-        /// </summary>
-        public static PeriodType Seconds
-        {
-            get
-            {
-                return new PeriodType("Seconds"
-                    ,
-                    new DurationFieldType[] { DurationFieldType.Seconds }
-                    ,
-                    new [] { -1, -1, -1, -1, -1, -1, 0, -1, }
-                    );
-            }
-        }
+        /// <summary>Gets a type that defines just the seconds field.</summary>
+        public static PeriodType Seconds { get { return seconds; } }
 
-        /// <summary>
-        /// Gets a type that defines just the milliseconds field.
-        /// </summary>
-        public static PeriodType Milliseconds
-        {
-            get
-            {
-                return new PeriodType("Milliseconds"
-                    ,
-                    new DurationFieldType[] { DurationFieldType.Milliseconds }
-                    ,
-                    new [] { -1, -1, -1, -1, -1, -1, -1, 0, }
-                    );
-            }
-        }
+        /// <summary>Gets a type that defines just the milliseconds field.</summary>
+        public static PeriodType Milliseconds { get { return milliseconds; } }
 
         /// <summary>
         /// Gets a type that defines all standard fields.
@@ -211,22 +167,7 @@ namespace NodaTime.Periods
         /// </item>
         /// </list>
         /// </remarks>
-        public static PeriodType Standard
-        {
-            get
-            {
-                return new PeriodType("Standard"
-                    ,
-                    new DurationFieldType[] {
-                    DurationFieldType.Years, DurationFieldType.Months,
-                    DurationFieldType.Weeks, DurationFieldType.Days,
-                    DurationFieldType.Hours, DurationFieldType.Minutes,
-                    DurationFieldType.Seconds, DurationFieldType.Milliseconds}
-                    ,
-                    new [] { 0, 1, 2, 3, 4, 5, 6, 7, }
-                    );                
-            }
-        }
+        public static PeriodType Standard { get { return standard; } }
 
         /// <summary>
         /// Gets a type that defines all standard fields except weeks.
@@ -255,22 +196,7 @@ namespace NodaTime.Periods
         /// </item>
         /// </list>
         /// </remarks>
-        public static PeriodType YearMonthDayTime
-        {
-            get
-            {
-                return new PeriodType("YearMonthDayTime"
-                    ,
-                    new DurationFieldType[] {
-                    DurationFieldType.Years, DurationFieldType.Months,
-                    DurationFieldType.Days,
-                    DurationFieldType.Hours, DurationFieldType.Minutes,
-                    DurationFieldType.Seconds, DurationFieldType.Milliseconds}
-                    ,
-                    new [] { 0, 1, -1, 2, 3, 4, 5, 6, }
-                    );
-            }
-        }
+        public static PeriodType YearMonthDayTime { get { return yearMonthDayTime; } }
 
         /// <summary>
         /// Gets a type that defines the year, month and day fields.
@@ -291,20 +217,7 @@ namespace NodaTime.Periods
         /// </item>
         /// </list>
         /// </remarks>
-        public static PeriodType YearMonthDay
-        {
-            get
-            {
-                return new PeriodType("YearMonthDay"
-                    ,
-                    new DurationFieldType[] {
-                    DurationFieldType.Years, DurationFieldType.Months,
-                    DurationFieldType.Days}
-                    ,
-                    new [] { 0, 1, -1, 2, -1, -1, -1, -1, }
-                    );
-            }
-        }
+        public static PeriodType YearMonthDay { get { return yearMonthDay; } }
 
         /// <summary>
         /// Gets a type that defines all standard fields except months.
@@ -333,21 +246,7 @@ namespace NodaTime.Periods
         /// </item>
         /// </list>
         /// </remarks>
-        public static PeriodType YearWeekDayTime
-        {
-            get
-            {
-                return new PeriodType("YearWeekDayTime"
-                    ,
-                    new DurationFieldType[] {
-                    DurationFieldType.Years, DurationFieldType.Weeks, DurationFieldType.Days,
-                    DurationFieldType.Hours, DurationFieldType.Minutes,
-                    DurationFieldType.Seconds, DurationFieldType.Milliseconds}
-                    ,
-                    new [] { 0, -1, 1, 2, 3, 4, 5, 6, }
-                    );
-            }
-        }
+        public static PeriodType YearWeekDayTime { get { return yearWeekDayTime; } }
 
         /// <summary>
         /// Gets a type that defines year, week and day fields.
@@ -368,19 +267,7 @@ namespace NodaTime.Periods
         /// </item>
         /// </list>
         /// </remarks>
-        public static PeriodType YearWeekDay
-        {
-            get
-            {
-                return new PeriodType("YearWeekDay"
-                    ,
-                    new DurationFieldType[] {
-                    DurationFieldType.Years, DurationFieldType.Weeks, DurationFieldType.Days}
-                    ,
-                    new [] { 0, -1, 1, 2, -1, -1, -1, -1, }
-                    );
-            }
-        }
+        public static PeriodType YearWeekDay { get { return yearWeekDay; } }
 
         /// <summary>
         /// Gets a type that defines all standard fields except months and weeks.
@@ -407,22 +294,8 @@ namespace NodaTime.Periods
         /// </item>
         /// </list>
         /// </remarks>
-        public static PeriodType YearDayTime
-        {
-            get
-            {
-                return new PeriodType("YearDayTime"
-                    ,
-                    new DurationFieldType[] {
-                    DurationFieldType.Years, DurationFieldType.Days,
-                    DurationFieldType.Hours, DurationFieldType.Minutes,
-                    DurationFieldType.Seconds, DurationFieldType.Milliseconds}
-                    ,
-                    new [] { 0, -1, -1, 1, 2, 3, 4, 5, }
-                    );
-            }
-        }
-
+        public static PeriodType YearDayTime { get { return yearDayTime; } }
+        
         /// <summary>
         /// Gets a type that defines the year and day fields.
         /// </summary>
@@ -440,19 +313,7 @@ namespace NodaTime.Periods
         /// </item>
         /// </list>
         /// </remarks>
-        public static PeriodType YearDay
-        {
-            get
-            {
-                return new PeriodType("YearDay"
-                    ,
-                    new DurationFieldType[] {
-                    DurationFieldType.Years, DurationFieldType.Days}
-                    ,
-                    new [] { 0, -1, -1, 1, -1, -1, -1, -1, }
-                    );
-            }
-        }
+        public static PeriodType YearDay { get { return yearDay; } }
 
         /// <summary>
         /// Gets a type that defines all standard fields from days downwards.
@@ -477,21 +338,7 @@ namespace NodaTime.Periods
         /// </item>
         /// </list>
         /// </remarks>
-        public static PeriodType DayTime
-        {
-            get
-            {
-                return new PeriodType("DayTime"
-                    ,
-                    new DurationFieldType[] {
-                    DurationFieldType.Days,
-                    DurationFieldType.Hours, DurationFieldType.Minutes,
-                    DurationFieldType.Seconds, DurationFieldType.Milliseconds}
-                    ,
-                    new [] { -1, -1, -1, 0, 1, 2, 3, 4, }
-                    );
-            }
-        }
+        public static PeriodType DayTime { get { return dayTime; } }
 
         /// <summary>
         /// Gets a type that defines all standard time fields.
@@ -514,21 +361,7 @@ namespace NodaTime.Periods
         /// </item>
         /// </list>
         /// </remarks>
-        public static PeriodType Time
-        {
-            get
-            {
-                return new PeriodType("Time"
-                    ,
-                    new DurationFieldType[] {
-                    DurationFieldType.Hours, DurationFieldType.Minutes,
-                    DurationFieldType.Seconds, DurationFieldType.Milliseconds}
-                    ,
-                    new [] { -1, -1, -1, -1, 0, 1, 2, 3, }
-                    );
-            }
-        }
-
+        public static PeriodType Time { get { return time; } }
         #endregion
 
         private readonly string name;
@@ -776,7 +609,7 @@ namespace NodaTime.Periods
             Update(values, index, newValue, add);
         }
 
-        private void Update(int[] values, int index, int newValue, bool add)
+        private static void Update(int[] values, int index, int newValue, bool add)
         {
             if (index == -1)
             {
