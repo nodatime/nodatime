@@ -297,9 +297,11 @@ namespace NodaTime.TimeZones
                 newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay.AsTicks());
                 newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
+                int signDifference = Math.Sign((localInstant - newInstant).Ticks);
+                int signDirection = Math.Sign(direction);
                 if (this.dayOfWeek == 0)
                 {
-                    if (newInstant >= localInstant)
+                    if (signDifference == 0 || signDirection == signDifference)
                     {
                         newInstant = calendar.Fields.Year.Add(newInstant, direction);
                         newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
@@ -308,7 +310,7 @@ namespace NodaTime.TimeZones
                 else
                 {
                     newInstant = SetDayOfWeek(calendar, newInstant);
-                    if (newInstant >= localInstant)
+                    if (signDifference == 0 || signDirection == signDifference)
                     {
                         newInstant = calendar.Fields.Year.Add(newInstant, direction);
                         newInstant = calendar.Fields.MonthOfYear.SetValue(newInstant, this.monthOfYear);
