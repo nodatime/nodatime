@@ -131,78 +131,56 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
-        public void ParseInto_NonParser()
+        public void Parse_NonParser()
         {
             var sutDefault = PeriodFormatter.FromPrinter(printer);
             Assert.Throws<NotSupportedException>(() => sutDefault.Parse("_"));
         }
 
         [Test]
-        public void ParseInto()
+        public void Parse()
         {
             var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider);
             var text = "_";
             var position = 0;
             Period result = sutDefault.Parse(text);
 
-            Assert.IsTrue(parser.ParseIntoCalled);
-            Assert.AreEqual(text, parser.ParseIntoStringArgument);
-            Assert.AreEqual(position, parser.ParseIntoPositionArgument);
-            Assert.AreSame(provider, parser.ParseIntoProviderArgument);
+            Assert.IsTrue(parser.ParseCalled);
+            Assert.AreEqual(text, parser.ParseStringArgument);
+            Assert.AreEqual(position, parser.ParsePositionArgument);
+            Assert.AreSame(provider, parser.ParseProviderArgument);
             Assert.IsNotNull(result);
         }
 
-        [Test]
-        public void Parse_NonParser()
-        {
-            var sutDefault = PeriodFormatter.FromPrinter(printer);
-
-            Assert.Throws<NotSupportedException>(() => sutDefault.Parse("_"));
-        }
-
-        [Test]
-        public void Parse_FullParse()
-        {
-            var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider);
-            parser.ParseIntoPositionToReturn = 10;
-            var text = "_";
-
-            IPeriod result = sutDefault.Parse(text);
-
-            Assert.IsTrue(parser.ParseIntoCalled);
-            Assert.AreEqual(text, parser.ParseIntoStringArgument);
-            Assert.AreSame(provider, parser.ParseIntoProviderArgument);
-            Assert.AreEqual(0, parser.ParseIntoPositionArgument);
-        }
 
         [Test]
         public void Parse_FailedParse()
         {
             var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider);
-            parser.ParseIntoPositionToReturn = -1;
+            parser.ParsePositionToReturn = -1;
             var text = "_";
 
             Assert.Throws<ArgumentException>(() => sutDefault.Parse(text));
 
-            Assert.IsTrue(parser.ParseIntoCalled);
-            Assert.AreEqual(text, parser.ParseIntoStringArgument);
-            Assert.AreSame(provider, parser.ParseIntoProviderArgument);
-            Assert.AreEqual(0, parser.ParseIntoPositionArgument);
+            Assert.IsTrue(parser.ParseCalled);
+            Assert.AreEqual(text, parser.ParseStringArgument);
+            Assert.AreSame(provider, parser.ParseProviderArgument);
+            Assert.AreEqual(0, parser.ParsePositionArgument);
         }
 
         [Test]
         public void Parse_PartialParse()
         {
             var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider);
-            parser.ParseIntoPositionToReturn = 2;
+            parser.ParsePositionToReturn = 2;
             var text = "123456789";
 
             Assert.Throws<ArgumentException>(() => sutDefault.Parse(text));
 
-            Assert.IsTrue(parser.ParseIntoCalled);
-            Assert.AreEqual(text, parser.ParseIntoStringArgument);
-            Assert.AreSame(provider, parser.ParseIntoProviderArgument);
-            Assert.AreEqual(0, parser.ParseIntoPositionArgument);
+            Assert.IsTrue(parser.ParseCalled);
+            Assert.AreEqual(text, parser.ParseStringArgument);
+            Assert.AreSame(provider, parser.ParseProviderArgument);
+            Assert.AreEqual(0, parser.ParsePositionArgument);
         }
     }
 }

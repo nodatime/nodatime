@@ -75,19 +75,19 @@ namespace NodaTime.Test.Format
         public class PeriodParserMock : IPeriodParser
         {
 
-            public bool ParseIntoCalled;
-            public string ParseIntoStringArgument;
-            public int ParseIntoPositionArgument;
-            public IFormatProvider ParseIntoProviderArgument;
-            public int ParseIntoPositionToReturn = 42;
+            public bool ParseCalled;
+            public string ParseStringArgument;
+            public int ParsePositionArgument;
+            public IFormatProvider ParseProviderArgument;
+            public int ParsePositionToReturn = 42;
 
             public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
-                ParseIntoCalled = true;
-                ParseIntoStringArgument = periodString;
-                ParseIntoPositionArgument = position;
-                ParseIntoProviderArgument = provider;
-                return ParseIntoPositionToReturn;
+                ParseCalled = true;
+                ParseStringArgument = periodString;
+                ParsePositionArgument = position;
+                ParseProviderArgument = provider;
+                return ParsePositionToReturn;
             }
 
         }

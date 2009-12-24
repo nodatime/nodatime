@@ -361,11 +361,6 @@ namespace NodaTime.Periods
             return GetValue(index);
         }
 
-        public Period ToPeriod()
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         #region Public Properties
@@ -997,12 +992,7 @@ namespace NodaTime.Periods
         /// <returns>The fields supported in an array that may be altered, largest to smallest</returns>
         public DurationFieldType[] GetFieldTypes()
         {
-            DurationFieldType[] result = new DurationFieldType[Size];
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = GetFieldType(i);
-            }
-            return result;
+            return PeriodType.GetFieldTypes();
         }
 
         /// <summary>
@@ -1015,12 +1005,7 @@ namespace NodaTime.Periods
         /// <returns>The current values of each field in an array that may be altered, largest to smallest</returns>
         public int[] GetValues()
         {
-            int[] result = new int[Size];
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = GetValue(i);
-            }
-            return result;
+            return (int[])fieldValues.Clone();
         }
 
         private void SetPeriodInternal(int years, int months, int weeks, int days,
