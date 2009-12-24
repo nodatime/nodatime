@@ -158,7 +158,7 @@ namespace NodaTime.Test.Periods
             var first = new Period(0, 0, 0, 0, 9, 9, 9, 9, PeriodType.Time);
             var second = new Period(1, 2, 3, 4, 5, 6, 7, 8);
 
-            Assert.Throws<ArgumentException>(() => first.With(second));
+            Assert.Throws<NotSupportedException>(() => first.With(second));
         }
     }
 }

@@ -109,7 +109,6 @@
     <Compile Include="Partials\AbstractPartial.cs" />
     <Compile Include="Partials\LocalBase.cs" />
     <Compile Include="Partials\PartialBase.cs" />
-    <Compile Include="Periods\PeriodBase.cs" />
     <Compile Include="Calendars\AssembledCalendarSystem.cs" />
     <Compile Include="Calendars\BasicCalendarSystem.cs" />
     <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
