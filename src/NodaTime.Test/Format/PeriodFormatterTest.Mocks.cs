@@ -81,13 +81,12 @@ namespace NodaTime.Test.Format
             public IFormatProvider ParseIntoProviderArgument;
             public int ParseIntoPositionToReturn = 42;
 
-            public int ParseInto(string periodString, int position, IFormatProvider provider, out IPeriod period)
+            public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 ParseIntoCalled = true;
                 ParseIntoStringArgument = periodString;
                 ParseIntoPositionArgument = position;
                 ParseIntoProviderArgument = provider;
-                period = Days.One;
                 return ParseIntoPositionToReturn;
             }
 

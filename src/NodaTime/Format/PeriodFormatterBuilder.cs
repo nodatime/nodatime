@@ -314,7 +314,7 @@ namespace NodaTime.Format
 
             #region IPeriodParser Members
 
-            public int ParseInto(string periodString, int position, IFormatProvider provider, out IPeriod period)
+            public int Parse(string periodString, int position, PeriodBuilder builder,IFormatProvider provider)
             {
                 throw new NotImplementedException();
                 //string periodSubString = periodString.Substring(position, text.Length);
@@ -456,7 +456,7 @@ namespace NodaTime.Format
 
             #region IPeriodParser Members
 
-            public int ParseInto(string periodString, int position, IFormatProvider provider, out IPeriod period)
+            public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 throw new NotImplementedException();
             }
@@ -552,7 +552,7 @@ namespace NodaTime.Format
 
             #region IPeriodParser Members
 
-            public int ParseInto(string periodString, int position, IFormatProvider provider, out IPeriod period)
+            public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 throw new NotImplementedException();
             }
@@ -754,7 +754,7 @@ namespace NodaTime.Format
 
             #region IPeriodParser Members
 
-            public int ParseInto(string periodString, int position, IFormatProvider provider, out IPeriod period)
+            public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 throw new NotImplementedException();
             }
