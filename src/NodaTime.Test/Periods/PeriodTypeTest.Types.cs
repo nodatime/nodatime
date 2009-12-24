@@ -112,9 +112,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void Standart_ContainsValidFields()
+        public void Standard_ContainsValidFields()
         {
-            var sut = PeriodType.Standart;
+            var sut = PeriodType.Standard;
 
             Assert.AreEqual(8, sut.Size);
             Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));

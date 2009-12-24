@@ -159,7 +159,7 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void AddFieldYears_AddsValueToYearsField_OnStandartPeriodType()
+        public void AddFieldYears_AddsValueToYearsField_OnStandardPeriodType()
         {
             var sut = Period.FromYears(1).AddField(DurationFieldType.Years, 1);
             Assert.AreEqual(2, sut.Years);
@@ -189,7 +189,7 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void AddYears_SetsYearsValue_OnStandartPeriodType()
+        public void AddYears_SetsYearsValue_OnStandardPeriodType()
         {
             var first = new Period(1, 2, 3, 4, 5, 6, 7, 8);
             var second = Period.FromYears(10);
@@ -206,7 +206,7 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void AddTime_AddsTimesValue_OnStandartPeriodType()
+        public void AddTime_AddsTimesValue_OnStandardPeriodType()
         {
             var first = new Period(1, 2, 3, 4, 5, 6, 7, 8);
             var second = new Period(0, 0, 0, 0, 9, 10, 11, 12, PeriodType.Time);
@@ -223,7 +223,7 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void AddNull_ReturnsTheSameInstance_OnStandartPeriodType()
+        public void AddNull_ReturnsTheSameInstance_OnStandardPeriodType()
         {
             var first = new Period(1, 2, 3, 4, 5, 6, 7, 8);
             IPeriod second = null;
@@ -242,7 +242,7 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void AddStandart_ThrowsUnsupported_OnTimePeriodType()
+        public void AddStandard_ThrowsUnsupported_OnTimePeriodType()
         {
             var first = new Period(0, 0, 0, 0, 9, 9, 9, 9, PeriodType.Time);
             var second = new Period(1, 2, 3, 4, 5, 6, 7, 8);
