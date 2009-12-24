@@ -33,12 +33,12 @@ namespace NodaTime
         /// <param name="periodType">The period type to use, null means the standard period type</param>
         /// <returns>The type to use, never null</returns>
         /// <remarks>
-        /// If the period type is <code>null</code>, <see cref="PeriodType.Standart"/>
+        /// If the period type is <code>null</code>, <see cref="PeriodType.Standard"/>
         /// will be returned. Otherwise, the type specified is returned.
         /// </remarks>
         internal static PeriodType CheckPeriodType(PeriodType periodType)
         {
-            return periodType ?? PeriodType.Standart;
+            return periodType ?? PeriodType.Standard;
         }
 
         /// <summary>

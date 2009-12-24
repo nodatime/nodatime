@@ -24,15 +24,15 @@ namespace NodaTime.Test.Periods
     public partial class PeriodTypeTest
     {
         [Test]
-        public void Equals_StandartAndStandartNotTime()
+        public void Equals_StandardAndStandardNotTime()
         {
-            TestHelper.TestEqualsClass(PeriodType.Standart, PeriodType.Standart, PeriodType.Time);
+            TestHelper.TestEqualsClass(PeriodType.Standard, PeriodType.Standard, PeriodType.Time);
         }
 
         [Test]
-        public void Equals_YearMonthDayTimeAndStandartWithWeeksRemovedNotYears()
+        public void Equals_YearMonthDayTimeAndStandardWithWeeksRemovedNotYears()
         {
-            TestHelper.TestEqualsClass(PeriodType.YearMonthDayTime, PeriodType.Standart.WithWeeksRemoved(), PeriodType.Years);
+            TestHelper.TestEqualsClass(PeriodType.YearMonthDayTime, PeriodType.Standard.WithWeeksRemoved(), PeriodType.Years);
         }
 
     }

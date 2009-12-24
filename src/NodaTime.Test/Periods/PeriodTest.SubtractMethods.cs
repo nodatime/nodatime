@@ -159,7 +159,7 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void SubtractTime_SubtractsTimesValue_OnStandartPeriodType()
+        public void SubtractTime_SubtractsTimesValue_OnStandardPeriodType()
         {
             var first = new Period(1, 2, 3, 4, 5, 6, 7, 8);
             var second = new Period(0, 0, 0, 0, 12, 11, 10, 9, PeriodType.Time);
@@ -176,7 +176,7 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void SubtractNull_ReturnsTheSameInstance_OnStandartPeriodType()
+        public void SubtractNull_ReturnsTheSameInstance_OnStandardPeriodType()
         {
             var first = new Period(1, 2, 3, 4, 5, 6, 7, 8);
             IPeriod second = null;
@@ -195,7 +195,7 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void SubtractStandart_ThrowsUnsupported_OnTimePeriodType()
+        public void SubtractStandard_ThrowsUnsupported_OnTimePeriodType()
         {
             var first = new Period(0, 0, 0, 0, 9, 9, 9, 9, PeriodType.Time);
             var second = new Period(1, 2, 3, 4, 5, 6, 7, 8);

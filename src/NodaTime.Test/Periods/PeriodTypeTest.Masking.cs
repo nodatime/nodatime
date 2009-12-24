@@ -24,9 +24,9 @@ namespace NodaTime.Test.Periods
     public partial class PeriodTypeTest
     {
         [Test]
-        public void WithYearsRemoves_MasksYears_InStandartPeriodType()
+        public void WithYearsRemoves_MasksYears_InStandardPeriodType()
         {
-            var sut = PeriodType.Standart.WithYearsRemoved();
+            var sut = PeriodType.Standard.WithYearsRemoved();
 
             Assert.AreEqual(7, sut.Size);
             Assert.AreEqual(DurationFieldType.Months, sut.GetFieldType(0));
@@ -41,9 +41,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void WithMonthsRemoved_MasksMonths_InStandartPeriodType()
+        public void WithMonthsRemoved_MasksMonths_InStandardPeriodType()
         {
-            var sut = PeriodType.Standart.WithMonthsRemoved();
+            var sut = PeriodType.Standard.WithMonthsRemoved();
 
             Assert.AreEqual(7, sut.Size);
             Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
@@ -58,9 +58,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void WithWeeksRemoved_MasksWeeks_InStandartPeriodType()
+        public void WithWeeksRemoved_MasksWeeks_InStandardPeriodType()
         {
-            var sut = PeriodType.Standart.WithWeeksRemoved();
+            var sut = PeriodType.Standard.WithWeeksRemoved();
 
             Assert.AreEqual(7, sut.Size);
             Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
@@ -75,9 +75,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void WithDaysRemoved_MasksDays_InStandartPeriodType()
+        public void WithDaysRemoved_MasksDays_InStandardPeriodType()
         {
-            var sut = PeriodType.Standart.WithDaysRemoved();
+            var sut = PeriodType.Standard.WithDaysRemoved();
 
             Assert.AreEqual(7, sut.Size);
             Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
@@ -92,9 +92,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void WithHoursRemoved_MasksHours_InStandartPeriodType()
+        public void WithHoursRemoved_MasksHours_InStandardPeriodType()
         {
-            var sut = PeriodType.Standart.WithHoursRemoved();
+            var sut = PeriodType.Standard.WithHoursRemoved();
 
             Assert.AreEqual(7, sut.Size);
             Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
@@ -109,9 +109,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void WithMinutesRemoved_MasksMinutes_InStandartPeriodType()
+        public void WithMinutesRemoved_MasksMinutes_InStandardPeriodType()
         {
-            var sut = PeriodType.Standart.WithMinutesRemoved();
+            var sut = PeriodType.Standard.WithMinutesRemoved();
 
             Assert.AreEqual(7, sut.Size);
             Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
@@ -126,9 +126,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void WithSecondsRemoved_MasksSeconds_InStandartPeriodType()
+        public void WithSecondsRemoved_MasksSeconds_InStandardPeriodType()
         {
-            var sut = PeriodType.Standart.WithSecondsRemoved();
+            var sut = PeriodType.Standard.WithSecondsRemoved();
 
             Assert.AreEqual(7, sut.Size);
             Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
@@ -143,9 +143,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void WithMillisecondsRemoved_MasksMilliseconds_InStandartPeriodType()
+        public void WithMillisecondsRemoved_MasksMilliseconds_InStandardPeriodType()
         {
-            var sut = PeriodType.Standart.WithMillisecondsRemoved();
+            var sut = PeriodType.Standard.WithMillisecondsRemoved();
 
             Assert.AreEqual(7, sut.Size);
             Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
@@ -160,9 +160,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void WithHoursMinutesSeconsRemoved_MasksHoursMinutesSeconds_InStandartPeriodType()
+        public void WithHoursMinutesSeconsRemoved_MasksHoursMinutesSeconds_InStandardPeriodType()
         {
-            var sut = PeriodType.Standart
+            var sut = PeriodType.Standard
                                     .WithHoursRemoved()
                                     .WithMinutesRemoved()
                                     .WithSecondsRemoved();

@@ -211,7 +211,7 @@ namespace NodaTime.Periods
         /// </item>
         /// </list>
         /// </remarks>
-        public static PeriodType Standart
+        public static PeriodType Standard
         {
             get
             {
