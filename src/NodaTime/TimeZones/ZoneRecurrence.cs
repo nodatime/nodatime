@@ -59,8 +59,16 @@ namespace NodaTime.TimeZones
         /// <param name="yearOffset">The year offset of when this period starts in a year.</param>
         public ZoneRecurrence(String name, Offset savings, ZoneYearOffset yearOffset, int fromYear, int toYear)
         {
-            this.yearOffset = yearOffset;
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
+            if (yearOffset == null)
+            {
+                throw new ArgumentNullException("yearOffset");
+            }
             this.name = name;
+            this.yearOffset = yearOffset;
             this.savings = savings;
             this.fromYear = fromYear;
             this.toYear = toYear;
@@ -80,7 +88,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
         /// <returns></returns>
-        internal Instant Next(Instant instant, Offset standardOffset, Offset previousSavings)
+        internal Instant? Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
 
@@ -107,13 +115,12 @@ namespace NodaTime.TimeZones
 
             Instant next = this.yearOffset.Next(instant, standardOffset, previousSavings);
 
-            if (next > instant)
+            if (next >= instant)
             {
                 year = calendar.Fields.Year.GetValue(next + wallOffset);
                 if (year > this.toYear)
                 {
-                    // Out of range, return original value.
-                    next = instant;
+                    return null;
                 }
             }
 
@@ -128,12 +135,11 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
         /// <returns></returns>
-        internal Instant Previous(Instant instant, Offset standardOffset, Offset previousSavings)
+        internal Instant? Previous(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
 
             Offset wallOffset = standardOffset + previousSavings;
-            Instant adjustedInstant = instant;
 
             int year;
             if (instant == Instant.MaxValue)
@@ -148,21 +154,17 @@ namespace NodaTime.TimeZones
             if (year > this.toYear)
             {
                 // First advance instant to start of from year.
-                adjustedInstant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.toYear) - wallOffset;
-                // Skip forward one tick to account for next recurrence being exactly at the end
-                // of the year.
-                adjustedInstant = adjustedInstant + Duration.One;
+                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.toYear + 1) - wallOffset;
             }
 
             Instant previous = this.yearOffset.Previous(instant, standardOffset, previousSavings);
 
-            if (previous < instant)
+            if (previous <= instant)
             {
                 year = calendar.Fields.Year.GetValue(previous + wallOffset);
                 if (year < this.fromYear)
                 {
-                    // Out of range, return original value.
-                    previous = instant;
+                    return null;
                 }
             }
 
@@ -177,6 +179,10 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         internal ZoneRecurrence RenameAppend(String suffix)
         {
+            if (suffix == null)
+            {
+                throw new ArgumentNullException("suffix");
+            }
             return new ZoneRecurrence(Name + suffix, Savings, this.yearOffset, this.fromYear, this.toYear);
         }
 
@@ -286,6 +292,8 @@ namespace NodaTime.TimeZones
             }
             return
                 this.savings == other.savings &&
+                this.fromYear == other.fromYear &&
+                this.toYear == other.toYear &&
                 this.name == other.name &&
                 this.yearOffset == other.yearOffset;
         }

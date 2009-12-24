@@ -290,8 +290,8 @@ namespace NodaTime.TimeZones
                 for (int i = 0; i < this.rules.Count; i++)
                 {
                     ZoneRecurrence rule = this.rules[i];
-                    Instant next = rule.Next(nextInstant, this.ruleSet.StandardOffset, this.savings);
-                    if (next <= nextInstant)
+                    Instant? next = rule.Next(nextInstant, this.ruleSet.StandardOffset, this.savings);
+                    if (!next.HasValue || next.Value <= nextInstant)
                     {
                         this.rules.RemoveAt(i);
                         i--;
@@ -299,11 +299,11 @@ namespace NodaTime.TimeZones
                     }
                     // Even if next is same as previous next, choose the rule in order for more
                     // recently added rules to override.
-                    if (next <= nextTicks)
+                    if (next.Value <= nextTicks)
                     {
                         // Found a better match.
                         nextRule = rule;
-                        nextTicks = next;
+                        nextTicks = next.Value;
                     }
                 }
 

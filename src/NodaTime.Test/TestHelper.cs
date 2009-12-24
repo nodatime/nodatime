@@ -138,7 +138,7 @@ namespace NodaTime.Test
             {
                 if (!type.IsValueType)
                 {
-                    Assert.False((bool)equality.Invoke(null, new object[] { null, null }), "null == null");
+                    Assert.True((bool)equality.Invoke(null, new object[] { null, null }), "null == null");
                     Assert.False((bool)equality.Invoke(null, new object[] { value, null }), "value == null");
                     Assert.False((bool)equality.Invoke(null, new object[] { null, value }), "null == value");
                 }
@@ -152,7 +152,7 @@ namespace NodaTime.Test
             {
                 if (!type.IsValueType)
                 {
-                    Assert.True((bool)inequality.Invoke(null, new object[] { null, null }), "null != null");
+                    Assert.False((bool)inequality.Invoke(null, new object[] { null, null }), "null != null");
                     Assert.True((bool)inequality.Invoke(null, new object[] { value, null }), "value != null");
                     Assert.True((bool)inequality.Invoke(null, new object[] { null, value }), "null != value");
                 }
