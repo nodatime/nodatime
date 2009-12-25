@@ -31,11 +31,21 @@ namespace NodaTime.Format
             values = new int[this.periodType.Size];
         }
 
+        public PeriodType PeriodType
+        {
+            get { return periodType; }
+        }
+
         public PeriodBuilder Append(DurationFieldType fieldType, int value)
         {
             periodType.UpdateAnyField(values, fieldType, value, false);
 
             return this;
+        }
+
+        public bool IsSupported(DurationFieldType fieldType)
+        {
+            return periodType.IsSupported(fieldType);
         }
 
         public Period ToPeriod()
