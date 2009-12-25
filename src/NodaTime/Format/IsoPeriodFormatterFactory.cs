@@ -29,6 +29,9 @@ namespace NodaTime.Format
     /// IsoPeriodFormat is thread-safe and immutable, and the formatters it
     /// returns are as well.
     /// </para>
+    /// <para>
+    /// TODO: Consider renaming this to IsoPeriodFormats. It's not really a factory.
+    /// </para>
     /// </remarks>
     public static class IsoPeriodFormatterFactory
     {
