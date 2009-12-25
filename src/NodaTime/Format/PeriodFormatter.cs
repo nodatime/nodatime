@@ -14,11 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System.Globalization;
-using NodaTime.Periods;
 using System;
-using System.Text;
 using System.IO;
+using System.Text;
+using NodaTime.Periods;
 
 namespace NodaTime.Format
 {
@@ -95,8 +94,9 @@ namespace NodaTime.Format
         /// <param name="periodParser">The internal parser, null if cannot parse</param>
         /// <param name="periodPrinter">The internal printer, null if cannot print</param>
         /// <param name="provider">The format provider to use</param>
-        private PeriodFormatter(IPeriodParser periodParser, IPeriodPrinter periodPrinter
-            , IFormatProvider provider, PeriodType parsePeriodType)
+        /// <param name="parsePeriodType">The period type to use for parsing</param>
+        private PeriodFormatter(IPeriodParser periodParser, IPeriodPrinter periodPrinter,
+            IFormatProvider provider, PeriodType parsePeriodType)
         {
             this.periodParser = periodParser;
             this.periodPrinter = periodPrinter;

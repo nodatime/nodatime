@@ -25,11 +25,11 @@ namespace NodaTime.Format
     /// </summary>
     internal static class FormatUtils
     {
-        private const int LENGTH_OF_SAMPLE_TEXT = 32;
-        private const int LENGTH_OF_DOTS = 3;
-        private const string DOTS = "...";
+        private const int LengthOfSampleText = 32;
+        private const int LengthOfDots = 3;
+        private const string Dots = "...";
 
-        static readonly double LOG_10 = Math.Log(10);
+        static readonly double Log10 = Math.Log(10);
 
         /// <summary>
         /// Converts an integer to a string, prepended with a variable amount of '0'
@@ -47,19 +47,25 @@ namespace NodaTime.Format
             {
                 builder.Append('-');
                 if (value != int.MinValue)
+                {
                     value = -value;
+                }
                 else
                 {
                     for (; size > 10; size--)
+                    {
                         builder.Append('0');
-                    builder.Append("" + -(long)int.MinValue);
+                    }
+                    builder.Append(-(long)int.MinValue);
                 }
             }
 
             if (value < 10)
             {
                 for (; size > 1; size--)
+                {
                     builder.Append('0');
+                }
                 builder.Append((char)(value + '0'));
             }
             else if (value < 100)
@@ -69,23 +75,23 @@ namespace NodaTime.Format
                 // value to correct rounding error.
                 int d = ((value + 1) * 13421772) >> 27;
                 for (; size > 2; size--)
+                {
                     builder.Append('0');
+                }
                 builder.Append((char)(d + '0'));
                 // Append remainder by calculating (value - d * 10).
                 builder.Append((char)(value - (d << 3) - (d << 1) + '0'));
             }
             else
             {
-                int digits;
-                if (value < 1000)
-                    digits = 3;
-                else if (value < 10000)
-                    digits = 4;
-                else
-                    digits = (int)(Math.Log(value) / LOG_10) + 1;
+                int digits = value < 1000 ? 3
+                    : value < 10000 ? 4
+                    : (int)(Math.Log(value) / Log10) + 1;
 
                 for (; size > digits; size--)
+                {
                     builder.Append('0');
+                }
 
                 builder.Append(value);
             }
@@ -105,13 +111,19 @@ namespace NodaTime.Format
             {
                 builder.Append('-');
                 if (value != int.MinValue)
+                {
                     value = -value;
+                }
                 else
-                    builder.Append("" + -(long)int.MinValue);
+                {
+                    builder.Append(-(long) int.MinValue);
+                }
             }
 
             if (value < 10)
-                builder.Append((char)(value + '0'));
+            {
+                builder.Append((char) (value + '0'));
+            }
             else if (value < 100)
             {
                 // Calculate value div/mod by 10 without using two expensive
@@ -123,7 +135,9 @@ namespace NodaTime.Format
                 builder.Append((char)(value - (d << 3) - (d << 1) + '0'));
             }
             else
+            {
                 builder.Append(value);
+            }
         }
 
         /// <summary>
@@ -140,13 +154,19 @@ namespace NodaTime.Format
             {
                 writer.Write('-');
                 if (value != int.MinValue)
+                {
                     value = -value;
+                }
                 else
-                    writer.Write("" + -(long)int.MinValue);
+                {
+                    writer.Write(-(long) int.MinValue);
+                }
             }
 
             if (value < 10)
-                writer.Write((char)(value + '0'));
+            {
+                writer.Write((char) (value + '0'));
+            }
             else if (value < 100)
             {
                 // Calculate value div/mod by 10 without using two expensive
@@ -158,7 +178,9 @@ namespace NodaTime.Format
                 writer.Write((char)(value - (d << 3) - (d << 1) + '0'));
             }
             else
+            {
                 writer.Write(value);
+            }
         }
 
         /// <summary>
@@ -177,19 +199,25 @@ namespace NodaTime.Format
             {
                 writer.Write('-');
                 if (value != int.MinValue)
+                {
                     value = -value;
+                }
                 else
                 {
                     for (; size > 10; size--)
+                    {
                         writer.Write('0');
-                    writer.Write("" + -(long)int.MinValue);
+                    }
+                    writer.Write(-(long)int.MinValue);
                 }
             }
 
             if (value < 10)
             {
                 for (; size > 1; size--)
+                {
                     writer.Write('0');
+                }
                 writer.Write((char)(value + '0'));
             }
             else if (value < 100)
@@ -199,35 +227,33 @@ namespace NodaTime.Format
                 // value to correct rounding error.
                 int d = ((value + 1) * 13421772) >> 27;
                 for (; size > 2; size--)
+                {
                     writer.Write('0');
+                }
                 writer.Write((char)(d + '0'));
                 // Append remainder by calculating (value - d * 10).
                 writer.Write((char)(value - (d << 3) - (d << 1) + '0'));
             }
             else
             {
-                int digits;
-                if (value < 1000)
-                    digits = 3;
-                else if (value < 10000)
-                    digits = 4;
-                else
-                    digits = (int)(Math.Log(value) / LOG_10) + 1;
+                int digits = value < 1000 ? 3
+                    : value < 10000 ? 4
+                    : (int)(Math.Log(value) / Log10) + 1;
 
                 for (; size > digits; size--)
+                {
                     writer.Write('0');
+                }
 
                 writer.Write(value);
             }
         }
+
         internal static int CalculateDigitCount(long value)
         {
             if (value < 0)
             {
-                if (value != long.MinValue)
-                    return CalculateDigitCount(-value) + 1;
-                else
-                    return 20;
+                return value == long.MinValue ? 20 : CalculateDigitCount(-value) + 1;
             }
 
             return
@@ -235,27 +261,20 @@ namespace NodaTime.Format
                 value < 100 ? 2 :
                 value < 1000 ? 3 :
                 value < 10000 ? 4 :
-                (int)(Math.Log(value) / LOG_10 + 1);
-
+                (int)(Math.Log(value) / Log10 + 1);
         }
 
         internal static string CreateErrorMessage(string text, int errorPosition)
         {
-            int sampleLen = errorPosition + LENGTH_OF_SAMPLE_TEXT;
-            String sampleText;
-            if (text.Length <= sampleLen + LENGTH_OF_DOTS)
-                sampleText = text;
-            else
-                sampleText = text.Substring(0, sampleLen) + DOTS;
+            int sampleLen = errorPosition + LengthOfSampleText;
+            string sampleText = text.Length <= sampleLen + LengthOfDots ? text
+                : text.Substring(0, sampleLen) + Dots;
 
-            if(errorPosition <=0)
-                return "Invalid format: \"" + sampleText + '"';
+            string prefix = "Invalid format: \"" + sampleText + '"';
 
-            if (errorPosition >= text.Length)
-                return "Invalid format: \"" + sampleText + "\" is too short";
-
-            return "Invalid format: \"" + sampleText + "\" is malformed at \"" +
-                sampleText.Substring(errorPosition) + '"';
+            return errorPosition <= 0 ? prefix
+                : errorPosition >= text.Length ? prefix + " is too short"
+                : prefix + " is malformed at \"" + sampleText.Substring(errorPosition) + '"';
         }
     }
 }
