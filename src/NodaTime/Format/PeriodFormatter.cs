@@ -232,12 +232,12 @@ namespace NodaTime.Format
         /// </remarks>
         public PeriodFormatter WithParseType(PeriodType newParsePeriodType)
         {
-            if (newParsePeriodType == newParsePeriodType)
+            if (newParsePeriodType == parsePeriodType)
             {
                 return this;
             }
 
-            return new PeriodFormatter(periodParser, periodPrinter, provider, parsePeriodType);
+            return new PeriodFormatter(periodParser, periodPrinter, provider, newParsePeriodType);
         }
         #endregion
 
