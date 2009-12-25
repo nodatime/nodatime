@@ -29,53 +29,43 @@ namespace NodaTime.Format
     /// PeriodFormatterFactory is thread-safe and immutable, and the formatters it returns
     /// are as well.
     /// </para>
+    /// <para>
+    /// TODO: Consider renaming this to PeriodFormats.
+    /// </para>
     /// </remarks>
     public static class PeriodFormatterFactory
     {
-        static PeriodFormatter englishWords;
+        private static readonly PeriodFormatter englishWords = BuildEnglishWordsFormatter();
 
         /// <summary>
         /// Gets the default PeriodFormatter.
         /// </summary>
         /// <remarks>
         /// This currently returns a word based formatter using English only.
-        /// Hopefully future release will support localized period formatting.
+        /// Hopefully a future release will support localized period formatting.
         /// </remarks>
-        public static PeriodFormatter Default
+        public static PeriodFormatter Default { get { return englishWords; } }
+
+        private static PeriodFormatter BuildEnglishWordsFormatter()
         {
-            get
-            {
-                if (englishWords == null)
-                {
-                    var variants = new[] { " ", ",", ",and ", ", and " };
-                    englishWords = new PeriodFormatterBuilder()
-                        .AppendYears()
-                        .AppendSuffix(" year", " years")
-                        .AppendSeparator(", ", " and ", variants)
-                        .AppendMonths()
-                        .AppendSuffix(" month", " months")
-                        .AppendSeparator(", ", " and ", variants)
-                        .AppendWeeks()
-                        .AppendSuffix(" week", " weeks")
-                        .AppendSeparator(", ", " and ", variants)
-                        .AppendDays()
-                        .AppendSuffix(" day", " days")
-                        .AppendSeparator(", ", " and ", variants)
-                        .AppendHours()
-                        .AppendSuffix(" hour", " hours")
-                        .AppendSeparator(", ", " and ", variants)
-                        .AppendMinutes()
-                        .AppendSuffix(" minute", " minutes")
-                        .AppendSeparator(", ", " and ", variants)
-                        .AppendSeconds()
-                        .AppendSuffix(" second", " seconds")
-                        .AppendSeparator(", ", " and ", variants)
-                        .AppendMillis()
-                        .AppendSuffix(" millisecond", " milliseconds")
-                        .ToFormatter();
-                }
-                return englishWords;
-            }
+            var variants = new[] { " ", ",", ",and ", ", and " };
+            return new PeriodFormatterBuilder()
+                .AppendYears().AppendSuffix(" year", " years")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendMonths().AppendSuffix(" month", " months")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendWeeks().AppendSuffix(" week", " weeks")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendDays().AppendSuffix(" day", " days")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendHours().AppendSuffix(" hour", " hours")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendMinutes().AppendSuffix(" minute", " minutes")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendSeconds().AppendSuffix(" second", " seconds")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendMillis().AppendSuffix(" millisecond", " milliseconds")
+                .ToFormatter();
         }
     }
 }
