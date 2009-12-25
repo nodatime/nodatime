@@ -20,9 +20,15 @@ using NodaTime.Periods;
 
 namespace NodaTime.Format
 {
+    /// <summary>
+    /// Support class for parsing periods, used to allow a period
+    /// to be constructed in an apparently mutable way. An actual
+    /// instance of Period is only constructed as a final step,
+    /// however.
+    /// </summary>
     public sealed class PeriodBuilder
     {
-        private PeriodType periodType;
+        private readonly PeriodType periodType;
         private readonly int[] values;
 
         public PeriodBuilder(PeriodType periodType)
@@ -39,7 +45,6 @@ namespace NodaTime.Format
         public PeriodBuilder Append(DurationFieldType fieldType, int value)
         {
             periodType.UpdateAnyField(values, fieldType, value, false);
-
             return this;
         }
 
