@@ -57,6 +57,7 @@ namespace NodaTime.Format
                         builder.Append('0');
                     }
                     builder.Append(-(long)int.MinValue);
+                    return;
                 }
             }
 
@@ -117,6 +118,7 @@ namespace NodaTime.Format
                 else
                 {
                     builder.Append(-(long) int.MinValue);
+                    return;
                 }
             }
 
@@ -160,6 +162,7 @@ namespace NodaTime.Format
                 else
                 {
                     writer.Write(-(long) int.MinValue);
+                    return;
                 }
             }
 
@@ -209,6 +212,7 @@ namespace NodaTime.Format
                         writer.Write('0');
                     }
                     writer.Write(-(long)int.MinValue);
+                    return;
                 }
             }
 
