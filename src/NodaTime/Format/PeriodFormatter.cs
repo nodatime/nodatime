@@ -73,7 +73,7 @@ namespace NodaTime.Format
     ///     String periodStr = formatter.WithProvider(CultureInfo.CreateSpecificCulture("fr-FR")).Print(period);
     /// 
     ///     //parse using the French locale
-    ///     Period date = formatter.WithProvideer(CultureInfo.CreateSpecificCulture("fr-FR")).Parse(str);
+    ///     Period date = formatter.WithProvider(CultureInfo.CreateSpecificCulture("fr-FR")).Parse(str);
     /// </code>
     /// </para>
     /// </remarks>
@@ -200,7 +200,6 @@ namespace NodaTime.Format
         #endregion
 
         #region Creation methods
-
         /// <summary>
         /// Returns a new formatter with a different provider that will be used
         /// for printing and parsing.
@@ -242,7 +241,6 @@ namespace NodaTime.Format
         #endregion
 
         #region Printing and parsing
-
         /// <summary>
         /// Prints an IPeriod to a StringBuilder.
         /// </summary>
