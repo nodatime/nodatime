@@ -31,7 +31,8 @@ namespace NodaTime.Fields
         internal DividedDateTimeField(IDateTimeField field, DateTimeFieldType fieldType, int divisor)
             : base(field, fieldType)
         {
-            if (divisor < 2) {
+            if (divisor < 2)
+            {
                 throw new ArgumentOutOfRangeException("divisor", "The divisor must be at least 2");
             }
 
