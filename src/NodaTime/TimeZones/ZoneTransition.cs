@@ -25,7 +25,7 @@ namespace NodaTime.TimeZones
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Normally this is between standard timne and daylight savings time but it might be for other
+    /// Normally this is between standard time and daylight savings time but it might be for other
     /// purposes like the discontinuity in the Gregorian calendar to account for leap time.
     /// </para>
     /// <para>

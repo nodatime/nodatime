@@ -229,6 +229,17 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void Next_OneSecondBeforeJanOne()
+        {
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            Instant actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero) - Duration.One;
+            long baseTicks = actual.Ticks;
+            actual = offset.Next(actual, Offset.Zero, Offset.Zero);
+            Instant expected = Instant.UnixEpoch;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void NextTwice_JanOne()
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
@@ -275,6 +286,17 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void Previous_OneSecondAfterJanOne()
+        {
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            Instant actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero) + Duration.One;
+            long baseTicks = actual.Ticks;
+            actual = offset.Previous(actual, Offset.Zero, Offset.Zero);
+            Instant expected = Instant.UnixEpoch;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void PreviousTwice_JanOne()
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
@@ -316,6 +338,17 @@ namespace NodaTime.Test.TimeZones
             var actual = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
             var expected = dio.WriteRead(actual);
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void IEquatable_Tests()
+        {
+            var value = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var equalValue = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var unequalValue = new ZoneYearOffset(TransitionMode.Utc, 9, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+
+            TestHelper.TestEqualsClass(value, equalValue, unequalValue);
+            TestHelper.TestOperatorEquality(value, equalValue, unequalValue);
         }
     }
 }

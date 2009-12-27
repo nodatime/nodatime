@@ -75,9 +75,17 @@ namespace NodaTime.TimeZones
 
         private ZoneRecurrence findMatchingRecurrence(Instant instant)
         {
-            Instant start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
-            Instant end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
-            return (start > end) ? StartRecurrence : EndRecurrence;
+            Instant? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
+            Instant? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
+            if (start.HasValue)
+            {
+                if (end.HasValue)
+                {
+                    return (start.Value > end.Value) ? StartRecurrence : EndRecurrence;
+                }
+                return StartRecurrence;
+            }
+            return EndRecurrence;
         }
 
 
@@ -85,9 +93,17 @@ namespace NodaTime.TimeZones
 
         public Instant? NextTransition(Instant instant)
         {
-            Instant start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
-            Instant end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
-            return (start > end) ? end : start;
+            Instant? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
+            Instant? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
+            if (start.HasValue)
+            {
+                if (end.HasValue)
+                {
+                    return (start.Value > end.Value) ? end : start;
+                }
+                return start;
+            }
+            return end;
         }
 
         public Instant? PreviousTransition(Instant instant)
@@ -95,11 +111,24 @@ namespace NodaTime.TimeZones
             // Increment in order to handle the case where instant is exactly at
             // a transition.
             instant = instant + Duration.One;
-            Instant start = StartRecurrence.Previous(instant, StandardOffset, EndRecurrence.Savings);
-            Instant end = EndRecurrence.Previous(instant, StandardOffset, StartRecurrence.Savings);
-            Instant result = (start > end) ? start : end;
-            if (result != Instant.MinValue) {
-                result = result - Duration.One;
+            Instant? start = StartRecurrence.Previous(instant, StandardOffset, EndRecurrence.Savings);
+            Instant? end = EndRecurrence.Previous(instant, StandardOffset, StartRecurrence.Savings);
+
+            Instant? result = end;
+            if (start.HasValue)
+            {
+                if (end.HasValue)
+                {
+                    result = (start > end) ? end : start;
+                }
+                else
+                {
+                    result = start;
+                }
+            }
+
+            if (result.HasValue && result.Value != Instant.MinValue) {
+                result = result.Value - Duration.One;
             }
             return result;
         }
