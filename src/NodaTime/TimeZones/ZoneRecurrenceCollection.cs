@@ -195,7 +195,7 @@ namespace NodaTime.TimeZones
 
             /// <summary>
             /// If there are only two rule left and they are both infinite rules then a <see
-            /// cref="IDateTimeZone"/> implmentation is returned that encapsulates those rules,
+            /// cref="IDateTimeZone"/> implementation is returned that encapsulates those rules,
             /// otherwise null is returned.
             /// </summary>
             /// <param name="id">The id of the new <see cref="IDateTimeZone"/>.</param>

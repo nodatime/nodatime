@@ -99,12 +99,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 throw new FormatException("Offset has too many colon separated parts (max of 3 allowed): " + text);
             }
             long ticks = ConvertHourToTicks(parts[0]);
+            int sign = Math.Sign(ticks);
             if (parts.Length > 1)
             {
-                ticks += ConvertMinuteToTicks(parts[1]);
+                ticks += sign * ConvertMinuteToTicks(parts[1]);
                 if (parts.Length > 2)
                 {
-                    ticks += ConvertSecondsWithFractionalToTicks(parts[2]);
+                    ticks += sign * ConvertSecondsWithFractionalToTicks(parts[2]);
                 }
             }
             return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
