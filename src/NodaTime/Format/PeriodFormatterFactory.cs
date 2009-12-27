@@ -17,10 +17,55 @@
 namespace NodaTime.Format
 {
     /// <summary>
-    /// Original name: PeriodFormat.
-    /// Again, this might need to become non-static.
+    /// Factory that creates instances of PeriodFormatter.    
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Period formatting is performed by the <see cref="PeriodFormatter"/> class.
+    /// Three classes provide factory methods to create formatters, and this is one.
+    /// The others are <see cref="PeriodFormatterBuilder"/> and <see cref="ISOPeriodFormatterFactory"/>.
+    /// </para>
+    /// <para>
+    /// PeriodFormatterFactory is thread-safe and immutable, and the formatters it returns
+    /// are as well.
+    /// </para>
+    /// <para>
+    /// TODO: Consider renaming this to PeriodFormats.
+    /// </para>
+    /// </remarks>
     public static class PeriodFormatterFactory
     {
+        private static readonly PeriodFormatter englishWords = BuildEnglishWordsFormatter();
+
+        /// <summary>
+        /// Gets the default PeriodFormatter.
+        /// </summary>
+        /// <remarks>
+        /// This currently returns a word based formatter using English only.
+        /// Hopefully a future release will support localized period formatting.
+        /// </remarks>
+        public static PeriodFormatter Default { get { return englishWords; } }
+
+        private static PeriodFormatter BuildEnglishWordsFormatter()
+        {
+            var variants = new[] { " ", ",", ",and ", ", and " };
+            return new PeriodFormatterBuilder()
+                .AppendYears().AppendSuffix(" year", " years")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendMonths().AppendSuffix(" month", " months")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendWeeks().AppendSuffix(" week", " weeks")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendDays().AppendSuffix(" day", " days")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendHours().AppendSuffix(" hour", " hours")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendMinutes().AppendSuffix(" minute", " minutes")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendSeconds().AppendSuffix(" second", " seconds")
+                .AppendSeparator(", ", " and ", variants)
+                .AppendMillis().AppendSuffix(" millisecond", " milliseconds")
+                .ToFormatter();
+        }
     }
 }

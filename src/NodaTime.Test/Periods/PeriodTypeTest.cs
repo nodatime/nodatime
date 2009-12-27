@@ -14,31 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
-using NUnit.Framework;
-using NodaTime.Format;
-using System.Globalization;
-using NodaTime.Periods;
 
-namespace NodaTime.Test.Format
+using NUnit.Framework;
+
+namespace NodaTime.Test.Periods
 {
     [TestFixture]
-    public partial class PeriodFormatterTest
+    public partial class PeriodTypeTest
     {
-        PeriodFormatterTest.PeriodPrinterMock printer;
-        PeriodFormatterTest.PeriodParserMock parser;
-        PeriodType daysPeriodType;
-        PeriodType monthsPeriodType;
-        IFormatProvider provider;
-
-        [SetUp]
-        public void Init()
-        {
-            printer = new PeriodFormatterTest.PeriodPrinterMock();
-            parser = new PeriodFormatterTest.PeriodParserMock();
-            daysPeriodType = PeriodType.Days;
-            monthsPeriodType = PeriodType.Months;
-            provider = CultureInfo.InvariantCulture;
-        }
     }
 }

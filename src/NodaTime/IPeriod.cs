@@ -65,13 +65,5 @@ namespace NodaTime
         /// <param name="field">the field to check, may be null which returns false</param>
         /// <returns>true if the field is supported</returns>
         bool IsSupported(DurationFieldType field);
-
-        /// <summary>
-        /// Get this period as an immutable <see cref="Period"/> object.
-        /// 
-        /// This will either typecase this instance, or create a new <see cref="Period"/>Period</see>.
-        /// </summary>
-        /// <returns>a Duration using the same field set and values</returns>
-        Period ToPeriod();
     }
 }
