@@ -14,11 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System.Globalization;
-using NodaTime.Periods;
 using System;
-using System.Text;
 using System.IO;
+using System.Text;
+using NodaTime.Periods;
 
 namespace NodaTime.Format
 {
@@ -74,27 +73,35 @@ namespace NodaTime.Format
     ///     String periodStr = formatter.WithProvider(CultureInfo.CreateSpecificCulture("fr-FR")).Print(period);
     /// 
     ///     //parse using the French locale
-    ///     Period date = formatter.WithProvideer(CultureInfo.CreateSpecificCulture("fr-FR")).Parse(str);
+    ///     Period date = formatter.WithProvider(CultureInfo.CreateSpecificCulture("fr-FR")).Parse(str);
     /// </code>
     /// </para>
     /// </remarks>
     public sealed class PeriodFormatter
     {
+        private readonly PeriodType parsePeriodType;
+
         private readonly IPeriodParser periodParser;
         private readonly IPeriodPrinter periodPrinter;
 
         private readonly IFormatProvider provider;
-        private readonly PeriodType periodType;
 
         #region Construction
 
-        private PeriodFormatter(IPeriodParser periodParser, IPeriodPrinter periodPrinter
-            , IFormatProvider provider, PeriodType periodType)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PeriodFormatter"/> class with specified arguments.
+        /// </summary>
+        /// <param name="periodParser">The internal parser, null if cannot parse</param>
+        /// <param name="periodPrinter">The internal printer, null if cannot print</param>
+        /// <param name="provider">The format provider to use</param>
+        /// <param name="parsePeriodType">The period type to use for parsing</param>
+        private PeriodFormatter(IPeriodParser periodParser, IPeriodPrinter periodPrinter,
+            IFormatProvider provider, PeriodType parsePeriodType)
         {
             this.periodParser = periodParser;
             this.periodPrinter = periodPrinter;
             this.provider = provider;
-            this.periodType = periodType;
+            this.parsePeriodType = parsePeriodType;
         }
 
         /// <summary>
@@ -102,13 +109,67 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="periodParser">The internal parser, null if cannot parse</param>
         /// <param name="periodPrinter">The internal printer, null if cannot print</param>
-        /// <param name="periodType">The period type</param>
-        public PeriodFormatter(IPeriodParser periodParser, IPeriodPrinter periodPrinter, PeriodType periodType)
-            : this(periodParser, periodPrinter, null, periodType) { }
+        private PeriodFormatter(IPeriodParser periodParser, IPeriodPrinter periodPrinter)
+            : this(periodParser, periodPrinter, null, null) { }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="PeriodFormatter"/> class with the supplied <see cref="IPeriodPrinter"/>
+        /// </summary>
+        /// <param name="periodPrinter">PeriodPrinter to use</param>
+        /// <returns>A new formatter which can print, but not parse</returns>
+        public static PeriodFormatter FromPrinter(IPeriodPrinter periodPrinter)
+        {
+            if (periodPrinter == null)
+            {
+                throw new ArgumentNullException("periodPrinter");
+            }
+
+            return new PeriodFormatter(null, periodPrinter);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="PeriodFormatter"/> class with the supplied <see cref="IPeriodParser"/> instance
+        /// </summary>
+        /// <param name="periodParser">PeriodParser to use</param>
+        /// <returns>A new formatter which can parse, but not print</returns>
+        public static PeriodFormatter FromParser(IPeriodParser periodParser)
+        {
+            if (periodParser == null)
+            {
+                throw new ArgumentNullException("periodParser");
+            }
+
+            return new PeriodFormatter(periodParser, null);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="PeriodFormatter"/> class 
+        /// with the supplied <see cref="IPeriodParser"/> instance and <see cref="IPeriodPrinter"/> instance
+        /// </summary>
+        /// <param name="periodPrinter">PeriodPrinter to use</param>
+        /// <param name="periodParser">PeriodParser to use</param>
+        /// <returns>A new formatter which can parse and print</returns>
+        public static PeriodFormatter FromPrinterAndParser(IPeriodPrinter periodPrinter, IPeriodParser periodParser)
+        {
+            if (periodPrinter == null)
+            {
+                throw new ArgumentNullException("periodPrinter");
+            }
+
+            if (periodParser == null)
+            {
+                throw new ArgumentNullException("periodParser");
+            }
+
+            return new PeriodFormatter(periodParser, periodPrinter);
+        }
         #endregion
 
         #region Public properties
+        /// <summary>
+        /// Gets the PeriodType that will be used for parsing.
+        /// </summary>
+        public PeriodType ParsePeriodType { get { return parsePeriodType; } } 
 
         /// <summary>
         /// Indicates whether this formatter is capable of printing.
@@ -136,16 +197,9 @@ namespace NodaTime.Format
         /// Gets the IFormatProvider that will be used for printing and parsing.
         /// </summary>
         public IFormatProvider Provider { get { return provider; } }
-
-        /// <summary>
-        /// Gets the PeriodType that will be used for parsing.
-        /// </summary>
-        public PeriodType PeriodType { get { return periodType; } }
-
         #endregion
 
         #region Creation methods
-
         /// <summary>
         /// Returns a new formatter with a different provider that will be used
         /// for printing and parsing.
@@ -154,37 +208,39 @@ namespace NodaTime.Format
         /// and the original is unaltered and still usable.
         /// </para>
         /// </summary>
-        /// <param name="provider">The IFormatProvider to use.</param>
+        /// <param name="newProvider">The IFormatProvider to use.</param>
         /// <returns>The new formatter</returns>
-        public PeriodFormatter WithProvider(IFormatProvider provider)
+        public PeriodFormatter WithProvider(IFormatProvider newProvider)
         {
-            if (Object.Equals(provider, this.provider))
+            if (Object.Equals(newProvider, provider))
+            {
                 return this;
+            }
 
-            return new PeriodFormatter(this.periodParser, this.periodPrinter, provider, this.periodType);
+            return new PeriodFormatter(periodParser, periodPrinter, newProvider, parsePeriodType);
         }
 
         /// <summary>
-        /// Returns a new formatter with a different PeriodType for parsing
-        /// <para>
+        /// Returns a new formatter with a different PeriodType for parsing.
+        /// </summary>
+        /// <param name="newParsePeriodType">The type to use in parsing</param>
+        /// <returns>The new formatter</returns>
+        /// <remarks>
         /// A PeriodFormatter is immutable, so a new instance is returned,
         /// and the original is unaltered and still usable.
-        /// </para>
-        /// </summary>
-        /// <param name="periodType">The PeriodType to use.</param>
-        /// <returns>The new formatter</returns>
-        public PeriodFormatter WithPeriodType(PeriodType periodType)
+        /// </remarks>
+        public PeriodFormatter WithParseType(PeriodType newParsePeriodType)
         {
-            if (periodType == this.periodType)
+            if (newParsePeriodType == parsePeriodType)
+            {
                 return this;
+            }
 
-            return new PeriodFormatter(this.periodParser, this.periodPrinter, this.provider, periodType);
+            return new PeriodFormatter(periodParser, periodPrinter, provider, newParsePeriodType);
         }
-
         #endregion
 
         #region Printing and parsing
-
         /// <summary>
         /// Prints an IPeriod to a StringBuilder.
         /// </summary>
@@ -227,48 +283,29 @@ namespace NodaTime.Format
         }
 
         /// <summary>
-        /// Parses a period from the given text, at the given position, passing the
-        /// result into the given IPeriod.
-        /// </summary>
-        /// <remarks>
-        /// If the parse succeeds, the return value is the new text position.
-        /// Note that the parse may succeed without fully reading the text.
-        /// <para>
-        /// The parse type of the formatter is not used by this method.
-        /// If it fails, the return value is negative, 
-        /// but the period may still be passed into the given variable.
-        /// To determine the position where the parse failed, apply the
-        /// one's complement operator (~) on the return value.
-        /// </para>
-        /// </remarks>
-        /// <param name="text">Text to parse</param>
-        /// <param name="position">Position to start parsing from</param>
-        /// <param name="period">A period that will be created as a result of parsing</param>
-        /// <returns>New position, if negative, parse failed.</returns>
-        public int ParseInto(String text, int position, out IPeriod period)
-        {
-            VerifyParser();
-            return Parser.ParseInto(text, position, provider,  out period);
-
-        }
-
-        /// <summary>
         /// Parses a period from the given text
         /// </summary>
         /// <param name="text">Text to parse</param>
         /// <returns>Parsed pariod</returns>
-        public IPeriod Parse(String text)
+        public Period Parse(String text)
         {
             VerifyParser();
-            IPeriod period;
-            int newPosition = Parser.ParseInto(text, 0, provider, out period);
+
+            var builder = new PeriodBuilder(parsePeriodType);
+            int newPosition = Parser.Parse(text, 0, builder, provider);
+            var period = builder.ToPeriod();
+
             if (newPosition >= 0)
             {
                 if (newPosition > text.Length)
+                {
                     return period;
+                }
             }
             else
-                newPosition  = ~newPosition;
+            {
+                newPosition = ~newPosition;
+            }
 
             throw new ArgumentException(FormatUtils.CreateErrorMessage(text, newPosition));
         }
@@ -278,19 +315,25 @@ namespace NodaTime.Format
         private void VerifyPrinter()
         {
             if (periodPrinter == null)
+            {
                 throw new NotSupportedException("Printing not supported");
+            }
         }
 
         private void VerifyParser()
         {
             if (periodParser == null)
+            {
                 throw new NotSupportedException("Parsing not supported");
+            }
         }
 
         private static void VerifyPeriodArgument(IPeriod period)
         {
             if (period == null)
-                throw new ArgumentNullException("Period must not be null");
+            {
+                throw new ArgumentNullException("period");
+            }
         }
     }
 }

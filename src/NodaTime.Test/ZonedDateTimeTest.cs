@@ -48,6 +48,7 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [Ignore("Requires more time zone work")]
         public void Constructor_SpecifyingDateAndTimeToMinutesInSummer()
         {
             ZonedDateTime when = new ZonedDateTime(2009, 6, 22, 21, 39, 30, Pacific);

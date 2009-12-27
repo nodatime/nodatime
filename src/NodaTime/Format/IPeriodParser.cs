@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 using System;
-using System.Globalization;
 namespace NodaTime.Format
 {
     /// <summary>
@@ -38,9 +37,9 @@ namespace NodaTime.Format
         /// </remarks>
         /// <param name="periodString">Text to parse</param>
         /// <param name="position">Position to start parsing from</param>
+        /// <param name="builder">Period builder to use</param>
         /// <param name="provider">The IFormatProvider to use for parsing</param>
-        /// <param name="period">A period that will be created as a result of parsing</param>
         /// <returns>New position, if negative, parse failed.</returns>
-        int ParseInto(String periodString, int position, IFormatProvider provider, out IPeriod period);
+        int Parse(String periodString, int position, PeriodBuilder builder, IFormatProvider provider);
     }
 }
