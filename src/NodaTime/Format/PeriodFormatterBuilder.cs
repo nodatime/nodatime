@@ -664,22 +664,22 @@ namespace NodaTime.Format
                     }
                     else
                     {
-                        //if ((c == '.' || c == ',')
-                        //     && (iFieldType == SECONDS_MILLIS || iFieldType == SECONDS_OPTIONAL_MILLIS))
-                        //{
-                        //    if (fractPos >= 0)
-                        //    {
-                        //        // can't have two decimals
-                        //        break;
-                        //    }
-                        //    fractPos = position + length + 1;
-                        //    // Expand the limit to disregard the decimal point.
-                        //    limit = Math.min(limit + 1, text.length() - position);
-                        //}
-                        //else
-                        //{
+                        if ((c == '.' || c == ',')
+                             && (fieldType == FormatterDurationFieldType.SecondsMilliseconds || fieldType == FormatterDurationFieldType.SecondsMillisecondsOptional))
+                        {
+                            if (fractPos >= 0)
+                            {
+                                // can't have two decimals
+                                break;
+                            }
+                            fractPos = position + length + 1;
+                            // Expand the limit to disregard the decimal point.
+                            limit = Math.Min(limit + 1, periodString.Length - position);
+                        }
+                        else
+                        {
                             break;
-                        //}
+                        }
                     }
                     length++;
                 }
