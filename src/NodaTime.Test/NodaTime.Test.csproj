@@ -135,8 +135,12 @@
     <Compile Include="OffsetTest.Construction.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Periods\PeriodTest.Equality.cs" />
-    <Compile Include="Periods\PeriodTest.Operators.cs" />
+    <Compile Include="Periods\PeriodTest.Equality.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\PeriodTest.Operators.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Periods\PeriodTest.SubtractMethods.cs">
       <DependentUpon>PeriodTest.cs</DependentUpon>
     </Compile>
