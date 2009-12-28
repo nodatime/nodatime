@@ -295,14 +295,12 @@ namespace NodaTime.Format
             int newPosition = Parser.Parse(text, 0, builder, provider);
             var period = builder.ToPeriod();
 
-            if (newPosition >= 0)
+            if (newPosition >= text.Length)
             {
-                if (newPosition > text.Length)
-                {
-                    return period;
-                }
+                return period;
             }
-            else
+
+            if (newPosition < 0)
             {
                 newPosition = ~newPosition;
             }
