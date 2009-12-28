@@ -44,7 +44,7 @@ namespace NodaTime.Test.Format
 
             var parsedPeriod = formatter.Parse("1");
 
-            Assert.AreEqual(1, parsedPeriod.Years);
+            Assert.AreEqual(Period.FromYears(1), parsedPeriod);
         }
 
         [Test]
