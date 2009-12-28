@@ -38,6 +38,16 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
+        public void AppendYears_BuildsCorrectParser_For1YearStandardPeriod()
+        {
+            var formatter = builder.AppendYears().ToFormatter();
+
+            var parsedPeriod = formatter.Parse("1");
+
+            Assert.AreEqual(1, parsedPeriod.Years);
+        }
+
+        [Test]
         public void AppendYears_BuildsCorrectPrinter_ForZeroYearStandardPeriod()
         {
             var formatter = builder.AppendYears().ToFormatter();

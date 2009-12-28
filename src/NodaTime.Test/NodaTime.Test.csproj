@@ -114,6 +114,7 @@
       <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Format\PeriodFormatterBuilderTest.cs" />
+    <Compile Include="Format\PeriodFormatterFactoryTest.cs" />
     <Compile Include="Format\PeriodFormatterTest.cs" />
     <Compile Include="Format\PeriodFormatterTest.PrintingAndParsing.cs">
       <DependentUpon>PeriodFormatterTest.cs</DependentUpon>
