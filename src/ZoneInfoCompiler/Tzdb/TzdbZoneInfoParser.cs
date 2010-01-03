@@ -347,7 +347,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             Offset offset = NextOffset(tokens, "Gmt Offset");
             string rules = NextOptional(tokens, "Rules");
             string format = NextString(tokens, "Format");
-            int year = NextYear(tokens, "Until Year", 0);
+            int year = NextYear(tokens, "Until Year", Int32.MaxValue);
             int monthOfYear = NextMonth(tokens, "Until Month", NodaConstants.January);
             int dayOfMonth = NextInteger(tokens, "Until Day", 1);
             Offset tickOfDay = Offset.Zero;

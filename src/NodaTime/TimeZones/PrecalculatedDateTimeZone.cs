@@ -354,7 +354,7 @@ namespace NodaTime.TimeZones
             writer.WriteBoolean(hasTailZone);
             if (hasTailZone)
             {
-                this.tailZone.Write(writer);
+                writer.WriteTimeZone(this.tailZone);
             }
         }
 
