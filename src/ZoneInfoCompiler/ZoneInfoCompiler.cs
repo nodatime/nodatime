@@ -18,6 +18,7 @@
 using NodaTime.ZoneInfoCompiler.Tzdb;
 using System;
 using NodaTime.ZoneInfoCompiler.winmap;
+using NodaTime.TimeZones;
 
 namespace NodaTime.ZoneInfoCompiler
 {
@@ -38,6 +39,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <returns>0 for success, non-0 for error.</returns>
         static int Main(string[] arguments)
         {
+            DateTimeZones.Current = DateTimeZones.Utc;
             int result = 0;
             var log = new ConsoleLog();
             if (arguments.Length < 1)

@@ -335,8 +335,13 @@ namespace NodaTime.Test.TimeZones
         public void WriteRead()
         {
             var dio = new DtzIoHelper();
-            var actual = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
-            var expected = dio.WriteRead(actual);
+            var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var actual = dio.WriteRead(expected);
+            Assert.AreEqual(expected, actual);
+
+            dio = new DtzIoHelper();
+            expected = new ZoneYearOffset(TransitionMode.Utc, 10, -31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            actual = dio.WriteRead(expected);
             Assert.AreEqual(expected, actual);
         }
 
