@@ -280,5 +280,17 @@ namespace NodaTime.Format
                 : errorPosition >= text.Length ? prefix + " is too short"
                 : prefix + " is malformed at \"" + sampleText.Substring(errorPosition) + '"';
         }
+
+        internal static bool FindText(string targetString, int startAt, string textToFind)
+        {
+            if (startAt + textToFind.Length > targetString.Length)
+            {
+                return false;
+            }
+
+            string targetSubString = targetString.Substring(startAt, textToFind.Length);
+
+            return targetSubString.Equals(textToFind, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

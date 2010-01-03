@@ -18,6 +18,7 @@
 using System;
 using NodaTime.Fields;
 using NodaTime.Calendars;
+using NodaTime.Utility;
 
 namespace NodaTime.Periods
 {
@@ -37,7 +38,7 @@ namespace NodaTime.Periods
     /// the field is supported, updating it if so, and constructing a new period type and values otherwise.
     /// </para>
     /// </remarks>
-    public sealed class Period : IPeriod
+    public sealed class Period : IPeriod, IEquatable<Period>
     {
         #region Static creation methods and properties
 
@@ -231,8 +232,6 @@ namespace NodaTime.Periods
 
         }
 
-        // TODO: Do we really need this constructor? It's currently only called from the
-        // parameterless one...
         private Period(Duration duration, ICalendarSystem calendar, PeriodType periodType)
         {
             if (calendar == null)
@@ -1042,5 +1041,125 @@ namespace NodaTime.Periods
             }
             return values;
         }
+
+        #region IEquality
+
+        public bool Equals(Period other)
+        {
+            if (Object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (PeriodType != other.PeriodType)
+            {
+                return false;
+            }
+
+            if (fieldValues.Length != other.fieldValues.Length)
+            {
+                return false;
+            }
+
+            // Check for elements equality
+            for (int i = 0; i < fieldValues.Length; i++)
+            {
+                if (fieldValues[i] != other.fieldValues[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override bool  Equals(object obj)
+        {
+ 	        return Equals(obj as Period);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = HashCodeHelper.Initialize();
+
+            HashCodeHelper.Hash(hash, PeriodType);
+            for (int i = 0; i < fieldValues.Length; i++)
+            {
+                hash = HashCodeHelper.Hash(hash, fieldValues[i]);
+            }
+
+            return hash;
+        }
+
+        public static bool operator ==(Period left, Period right)
+        {
+            return Object.Equals(left, right);
+        }
+
+        public static bool operator !=(Period left, Period right)
+        {
+            return !Object.Equals(left, right);
+        }
+
+        #endregion
+
+        #region Operators
+
+        /// <summary>
+        /// Implements the operator + (addition).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Period"/> representing the sum of the given periods.</returns>
+        public static Period operator +(Period left, Period right)
+        {
+            if (left == null)
+                return right;
+            else
+                return left.Add(right);
+        }
+
+        /// <summary>
+        /// Adds one period to another. Friendly alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Period"/> representing the sum of the given values.</returns>
+        public static Period Add(Period left, Period right)
+        {
+            return left + right;
+        }
+
+        /// <summary>
+        /// Implements the operator - (subtraction).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Period"/> representing the difference of the given values.</returns>
+        public static Period operator -(Period left, Period right)
+        {
+            if (left == null)
+                return right;
+            else
+                return left.Subtract(right);
+        }
+
+        /// <summary>
+        /// Subtracts one duration from another. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Period"/> representing the sum of the given values.</returns>
+        public static Period Subtract(Period left, Period right)
+        {
+            return left - right;
+        }
+
+        #endregion
     }
 }

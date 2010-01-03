@@ -152,9 +152,27 @@ namespace NodaTime.Format
                     ? position + text.Length : ~position;
             }
 
-            public int Scan(string periodstring, int position)
+            public int Scan(string periodString, int position)
             {
-                throw new NotImplementedException();
+                for (int pos = position; pos < periodString.Length; pos++)
+                {
+                    string periodSubString = periodString.Substring(position, text.Length);
+                    if (periodSubString.Equals(text, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return pos;
+                    }
+                    // Only allow number characters to be skipped in search of suffix.
+                    switch (periodString[pos]) 
+                    {
+                        case '0': case '1': case '2': case '3': case '4':
+                        case '5': case '6': case '7': case '8': case '9':
+                        case '.': case ',': case '+': case '-':
+                            break;
+                        default:
+                            return ~position;
+                    }
+                }
+                return ~position;
             }
 
             #endregion
@@ -196,7 +214,42 @@ namespace NodaTime.Format
             {
                 string firstToCheck;
                 string secondToCheck;
+                ArrangeByLength(out firstToCheck, out secondToCheck);
 
+                if (FormatUtils.FindText(periodString, position, firstToCheck))
+                {
+                    return position + firstToCheck.Length;
+                }
+                if (FormatUtils.FindText(periodString, position, secondToCheck))
+                {
+                    return position + secondToCheck.Length;
+                }
+
+                return ~position;
+            }
+
+            public int Scan(string periodString, int position)
+            {
+                string firstToCheck;
+                string secondToCheck;
+                ArrangeByLength(out firstToCheck, out secondToCheck);
+
+                for (int pos = position; pos < periodString.Length; pos++)
+                {
+                    if (FormatUtils.FindText(periodString, position, firstToCheck))
+                    {
+                        return position + firstToCheck.Length;
+                    }
+                    if (FormatUtils.FindText(periodString, position, secondToCheck))
+                    {
+                        return position + secondToCheck.Length;
+                    }
+                }
+                return ~position;
+            }
+
+            private void ArrangeByLength(out string firstToCheck, out string secondToCheck)
+            {
                 if (singularText.Length > pluralText.Length)
                 {
                     firstToCheck = singularText;
@@ -207,29 +260,6 @@ namespace NodaTime.Format
                     firstToCheck = pluralText;
                     secondToCheck = singularText;
                 }
-
-                if (FindText(periodString, position, firstToCheck))
-                {
-                    return position + firstToCheck.Length;
-                }
-                if (FindText(periodString, position, secondToCheck))
-                {
-                    return position + secondToCheck.Length;
-                }
-
-                return ~position;
-            }
-
-            private bool FindText(string targetString, int startAt, string textToFind)
-            {
-                string targetSubString = targetString.Substring(startAt, textToFind.Length);
-
-                return targetSubString.Equals(textToFind, StringComparison.OrdinalIgnoreCase);
-            }
-
-            public int Scan(string periodstring, int position)
-            {
-                throw new NotImplementedException();
             }
 
             #endregion
@@ -272,21 +302,13 @@ namespace NodaTime.Format
             public int Parse(string periodString, int position)
             {
                 position = left.Parse(periodString, position);
-                if (position >= 0)
-                {
-                    position = right.Parse(periodString, position);
-                }
-                return position;
+                return position >= 0 ? right.Parse(periodString, position) : position;
             }
 
             public int Scan(string periodString, int position)
             {
                 position = left.Scan(periodString, position);
-                if (position >= 0)
-                {
-                    position = right.Scan(periodString, position);
-                }
-                return position;
+                return position >= 0 ? right.Scan(periodString, position) : position;
             }
 
             #endregion
@@ -586,7 +608,7 @@ namespace NodaTime.Format
                     }
                 }
 
-                if (!mustParse && IsSupported(builder.PeriodType,fieldType))
+                if (!mustParse && !IsSupported(builder.PeriodType,fieldType))
                 {
                     // If parsing is not required and the field is not supported,
                     // exit gracefully so that another parser can continue on.
@@ -642,22 +664,22 @@ namespace NodaTime.Format
                     }
                     else
                     {
-                        //if ((c == '.' || c == ',')
-                        //     && (iFieldType == SECONDS_MILLIS || iFieldType == SECONDS_OPTIONAL_MILLIS))
-                        //{
-                        //    if (fractPos >= 0)
-                        //    {
-                        //        // can't have two decimals
-                        //        break;
-                        //    }
-                        //    fractPos = position + length + 1;
-                        //    // Expand the limit to disregard the decimal point.
-                        //    limit = Math.min(limit + 1, text.length() - position);
-                        //}
-                        //else
-                        //{
+                        if ((c == '.' || c == ',')
+                             && (fieldType == FormatterDurationFieldType.SecondsMilliseconds || fieldType == FormatterDurationFieldType.SecondsMillisecondsOptional))
+                        {
+                            if (fractPos >= 0)
+                            {
+                                // can't have two decimals
+                                break;
+                            }
+                            fractPos = position + length + 1;
+                            // Expand the limit to disregard the decimal point.
+                            limit = Math.Min(limit + 1, periodString.Length - position);
+                        }
+                        else
+                        {
                             break;
-                        //}
+                        }
                     }
                     length++;
                 }
@@ -958,7 +980,12 @@ namespace NodaTime.Format
 
             public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
-                throw new NotImplementedException();
+                int len = periodParsers.Length;
+                for (int i = 0; i < len && position >= 0; i++)
+                {
+                    position = periodParsers[i].Parse(periodString, position, builder, provider);
+                }
+                return position;
             }
 
             #endregion
@@ -1036,7 +1063,7 @@ namespace NodaTime.Format
                 else
                 {
                     // filter unique strings
-                    var uniqueStrings = new Dictionary<string, string>();
+                    var uniqueStrings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                     if (!uniqueStrings.ContainsKey(text))
                     {
                         uniqueStrings.Add(text, text);
@@ -1178,7 +1205,54 @@ namespace NodaTime.Format
 
             public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
-                throw new NotImplementedException();
+                int oldPos = position;
+                position = beforeParser.Parse(periodString, position, builder, provider);
+
+                if (position < 0)
+                {
+                    return position;
+                }
+
+                bool found = false;
+                if (position > oldPos)
+                {
+                    // Consume this separator.
+                    int length = parsedForms.Length;
+                    for (int i = 0; i < length; i++)
+                    {
+                        String parsedForm = parsedForms[i];
+                        if (String.IsNullOrEmpty(parsedForm) ||
+                            periodString.Substring(position, parsedForm.Length).Equals(parsedForm, StringComparison.OrdinalIgnoreCase))
+                        {
+
+                            position += parsedForm.Length;
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                oldPos = position;
+                position = afterParser.Parse(periodString, position, builder, provider);
+
+                if (position < 0)
+                {
+                    return position;
+                }
+
+                if (found && position == oldPos)
+                {
+                    // Separator should not have been supplied.
+                    return ~oldPos;
+                }
+
+                if (position > oldPos && !found && !useBefore)
+                {
+                    // Separator was required.
+                    return ~oldPos;
+                }
+
+                return position;
             }
 
             #endregion
