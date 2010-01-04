@@ -193,8 +193,8 @@ namespace NodaTime.Test
             {
                 if (!type.IsValueType)
                 {
-                    Assert.False((bool)greaterThan.Invoke(null, new object[] { value, null }), "value < null");
-                    Assert.True((bool)greaterThan.Invoke(null, new object[] { null, value }), "null < value");
+                    Assert.False((bool)lessThan.Invoke(null, new object[] { value, null }), "value < null");
+                    Assert.True((bool)lessThan.Invoke(null, new object[] { null, value }), "null < value");
                 }
                 Assert.False((bool)lessThan.Invoke(null, new object[] { value, value }), "value < value");
                 Assert.False((bool)lessThan.Invoke(null, new object[] { value, equalValue }), "value < equalValue");
@@ -236,8 +236,8 @@ namespace NodaTime.Test
             {
                 if (!type.IsValueType)
                 {
-                    Assert.False((bool)greaterThanOrEqual.Invoke(null, new object[] { value, null }), "value <= null");
-                    Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { null, value }), "null <= value");
+                    Assert.False((bool)lessThanOrEqual.Invoke(null, new object[] { value, null }), "value <= null");
+                    Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { null, value }), "null <= value");
                 }
                 Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { value, value }), "value <= value");
                 Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { value, equalValue }), "value <= equalValue");
