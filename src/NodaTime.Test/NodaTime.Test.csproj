@@ -135,11 +135,30 @@
     <Compile Include="OffsetTest.Construction.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Periods\MonthsTest.cs" />
+    <Compile Include="Periods\MonthsTest.Factories.cs">
+      <DependentUpon>MonthsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\MonthsTest.Math.cs">
+      <DependentUpon>MonthsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\MonthsTest.Parse.cs">
+      <DependentUpon>MonthsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\YearsTest.Math.cs">
+      <DependentUpon>YearsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\YearsTest.Factories.cs">
+      <DependentUpon>YearsTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Periods\PeriodTest.Equality.cs">
       <DependentUpon>PeriodTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Periods\PeriodTest.Operators.cs">
       <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\YearsTest.Parse.cs">
+      <DependentUpon>YearsTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Periods\PeriodTest.SubtractMethods.cs">
       <DependentUpon>PeriodTest.cs</DependentUpon>
@@ -178,6 +197,11 @@
     <Compile Include="Periods\PeriodTypeTest.IsSupported.cs">
       <DependentUpon>PeriodTypeTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Periods\SingleFieldPeriodBaseTest.cs" />
+    <Compile Include="Periods\SingleFieldPeriodBaseTest.Mocks.cs">
+      <DependentUpon>SingleFieldPeriodBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\YearsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstantTest.cs" />
     <Compile Include="InstantTest.Basics.cs">

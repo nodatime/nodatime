@@ -1031,7 +1031,7 @@ namespace NodaTime.Periods
             fieldValues = newValues;
         }
 
-        private int[] MergePeriodInto(int[] values, IPeriod period)
+        private void MergePeriodInto(int[] values, IPeriod period)
         {
             for (int i = 0, isize = period.Size; i < isize; i++)
             {
@@ -1039,7 +1039,6 @@ namespace NodaTime.Periods
                 int value = period.GetValue(i);
                 PeriodType.UpdateAnyField(values, type, value, false);
             }
-            return values;
         }
 
         #region IEquality
