@@ -34,7 +34,6 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_ReturnsZero_ForZeroMonthsString()
         {
             var sut = Months.Parse("P0M");
@@ -42,7 +41,6 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_Returns1_For1MonthString()
         {
             var sut = Months.Parse("P1M");
@@ -50,7 +48,6 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_ReturnsMinus3_ForMinus3MonthsString()
         {
             var sut = Months.Parse("P-3M");
@@ -58,15 +55,13 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_Returns2_ForZeroYears2MonthString()
         {
-            var sut = Months.Parse("POY2M");
+            var sut = Months.Parse("P0Y2M");
             Assert.AreEqual(2, sut.Value);
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_Returns2_For2YearZeroTimeString()
         {
             var sut = Years.Parse("P2YT0H0M");
@@ -74,10 +69,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_Throws_ForWrongString()
         {
-            Assert.Throws<ArgumentException>(() => Months.Parse("P1MT1H"));
+            Assert.Throws<NotSupportedException>(() => Months.Parse("P1MT1H"));
         }
     }
 }

@@ -34,7 +34,6 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_ReturnsZero_ForZeroYearsString()
         {
             var sut = Years.Parse("P0Y");
@@ -42,7 +41,6 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_Returns1_For1YearString()
         {
             var sut = Years.Parse("P1Y");
@@ -50,7 +48,6 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_ReturnsMinus3_ForMinus3YearsString()
         {
             var sut = Years.Parse("P-3Y");
@@ -58,7 +55,6 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_Returns2_For2YearZeroMonthsString()
         {
             var sut = Years.Parse("P2Y0M");
@@ -66,7 +62,6 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_Returns2_For2YearZeroTimeString()
         {
             var sut = Years.Parse("P2YT0H0M");
@@ -74,10 +69,9 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Parse_Throws_ForWrongString()
         {
-            Assert.Throws<ArgumentException>(() => Years.Parse("P1MT1H"));
+            Assert.Throws<NotSupportedException>(() => Years.Parse("P1MT1H"));
         }
     }
 }
