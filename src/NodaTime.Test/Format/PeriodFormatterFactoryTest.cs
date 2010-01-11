@@ -47,7 +47,7 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
+        //[Ignore("Not implemented yet")]
         public void DefaultFormatter_Parse_StandardPeriodWithDaysValue()
         {
             var p = Period.FromDays(2);
@@ -55,7 +55,7 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
+        //[Ignore("Not implemented yet")]
         public void DefaultFormatter_Parse_StandardPeriodWithDaysAndHoursValues()
         {
             var p = Period.FromDays(2).WithHours(5);

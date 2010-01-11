@@ -16,6 +16,7 @@
 #endregion
 
 using NUnit.Framework;
+using NodaTime.Periods;
 
 namespace NodaTime.Test.Format
 {
@@ -58,6 +59,16 @@ namespace NodaTime.Test.Format
             Assert.AreEqual("1", printedValue);
             Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
             Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendSeparatorBetweenYearsAndHours_ParsesTo1yesr5MonthsStandardPeriod_FromFieldsWithSeparator()
+        {
+            var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
+
+            var period = formatter.Parse("1T5");
+
+            Assert.AreEqual(Period.FromYears(1).WithHours(5), period);
         }
 
         #region FinalText

@@ -147,22 +147,18 @@ namespace NodaTime.Format
 
             public int Parse(string periodString, int position)
             {
-                string periodSubString = periodString.Substring(position, text.Length);
-                return periodSubString.Equals(text, StringComparison.OrdinalIgnoreCase)
-                    ? position + text.Length : ~position;
+                return FormatUtils.MatchSubstring(periodString, position, text);
             }
 
             public int Scan(string periodString, int position)
             {
-                for (int pos = position; pos < periodString.Length; pos++)
+                for (int startAt = position; startAt < periodString.Length; startAt++)
                 {
-                    string periodSubString = periodString.Substring(position, text.Length);
-                    if (periodSubString.Equals(text, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return pos;
-                    }
+                    if (FormatUtils.MatchSubstring(periodString, startAt, text) > 0)
+                        return startAt;
+
                     // Only allow number characters to be skipped in search of suffix.
-                    switch (periodString[pos]) 
+                    switch (periodString[startAt]) 
                     {
                         case '0': case '1': case '2': case '3': case '4':
                         case '5': case '6': case '7': case '8': case '9':
@@ -216,16 +212,12 @@ namespace NodaTime.Format
                 string secondToCheck;
                 ArrangeByLength(out firstToCheck, out secondToCheck);
 
-                if (FormatUtils.FindText(periodString, position, firstToCheck))
+                int newPosition;
+                if ((newPosition = FormatUtils.MatchSubstring(periodString, position, firstToCheck)) > 0)
                 {
-                    return position + firstToCheck.Length;
+                    return newPosition;
                 }
-                if (FormatUtils.FindText(periodString, position, secondToCheck))
-                {
-                    return position + secondToCheck.Length;
-                }
-
-                return ~position;
+                return FormatUtils.MatchSubstring(periodString, position, secondToCheck);
             }
 
             public int Scan(string periodString, int position)
@@ -234,15 +226,16 @@ namespace NodaTime.Format
                 string secondToCheck;
                 ArrangeByLength(out firstToCheck, out secondToCheck);
 
-                for (int pos = position; pos < periodString.Length; pos++)
+                for (int startAt = position; startAt < periodString.Length; startAt++)
                 {
-                    if (FormatUtils.FindText(periodString, position, firstToCheck))
+                    int newPosition;
+                    if ((newPosition = FormatUtils.MatchSubstring(periodString, startAt, firstToCheck)) > 0)
                     {
-                        return position + firstToCheck.Length;
+                        return startAt;
                     }
-                    if (FormatUtils.FindText(periodString, position, secondToCheck))
+                    if ((newPosition = FormatUtils.MatchSubstring(periodString, startAt, secondToCheck)) > 0)
                     {
-                        return position + secondToCheck.Length;
+                        return startAt;
                     }
                 }
                 return ~position;
@@ -569,20 +562,12 @@ namespace NodaTime.Format
                     }
                     else
                     {
-                        // Prefix not found, so bail.
-                        if (!mustParse)
-                        {
-                            // It's okay because parsing of this field is not
-                            // required. Don't return an error. Fields down the
-                            // chain can continue on, trying to parse.
-                            return ~position;
-                        }
-                        return position;
+                        return mustParse ? position : ~position;
                     }
                 }
 
                 int suffixPos = -1;
-                if (suffix != null && !mustParse)
+                if (suffix != null)
                 {
                     // Pre-scan the suffix, to help determine if this field must be
                     // parsed.
@@ -594,17 +579,7 @@ namespace NodaTime.Format
                     }
                     else
                     {
-                        // Suffix not found, so bail.
-                        // TODO: This expression is always true, given the earlier "if".
-                        // This appears to be a bug in Joda...
-                        if (!mustParse)
-                        {
-                            // It's okay because parsing of this field is not
-                            // required. Don't return an error. Fields down the
-                            // chain can continue on, trying to parse.
-                            return ~suffixPos;
-                        }
-                        return suffixPos;
+                        return mustParse ? suffixPos : ~suffixPos;
                     }
                 }
 
@@ -615,15 +590,9 @@ namespace NodaTime.Format
                     return position;
                 }
 
-                int limit;
-                if (suffixPos > 0)
-                {
-                    limit = Math.Min(maxParsedDigits, suffixPos - position);
-                }
-                else
-                {
-                    limit = Math.Min(maxParsedDigits, periodString.Length - position);
-                }
+                int limit = suffixPos > 0 
+                    ? Math.Min(maxParsedDigits, suffixPos - position) 
+                    : Math.Min(maxParsedDigits, periodString.Length - position);
 
                 // validate input number
                 int length = 0;
@@ -638,8 +607,7 @@ namespace NodaTime.Format
                         bool negative = c == '-';
 
                         // Next character must be a digit.
-                        if (length + 1 >= limit ||
-                            (c = periodString[position + length + 1]) < '0' || c > '9')
+                        if (length + 1 >= limit || !Char.IsDigit(periodString, position + length + 1))
                         {
                             break;
                         }
@@ -658,7 +626,7 @@ namespace NodaTime.Format
                         continue;
                     }
                     // main number
-                    if (c >= '0' && c <= '9')
+                    if (Char.IsDigit(c))
                     {
                         hasDigits = true;
                     }
@@ -758,53 +726,6 @@ namespace NodaTime.Format
 
             #endregion
 
-            private static int ParseInt(String text, int position, int length)
-            {
-                if (length >= 10)
-                {
-                    // Since value may exceed max, use stock parser which checks for this.
-                    return Int32.Parse(text.Substring(position, position + length));
-                }
-                if (length <= 0)
-                {
-                    return 0;
-                }
-                int value = text[position++];
-                length--;
-                bool negative;
-                if (value == '-')
-                {
-                    if (--length < 0)
-                    {
-                        return 0;
-                    }
-                    negative = true;
-                    value = text[position++];
-                }
-                else
-                {
-                    negative = false;
-                }
-                value -= '0';
-                while (length-- > 0)
-                {
-                    value = ((value << 3) + (value << 1)) + text[position++] - '0';
-                }
-                return negative ? -value : value;
-            }
-
-            private static bool IsZero(IPeriod period) 
-            {
-                for (int i = 0, isize = period.Size; i < isize; i++) 
-                {
-                    if (period.GetValue(i) != 0)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
             private long GetFieldValue(IPeriod period)
             {
                 long value;
@@ -893,6 +814,53 @@ namespace NodaTime.Format
                 return value;
             }
 
+            private static int ParseInt(String text, int position, int length)
+            {
+                if (length >= 10)
+                {
+                    // Since value may exceed max, use stock parser which checks for this.
+                    return Int32.Parse(text.Substring(position, position + length));
+                }
+                if (length <= 0)
+                {
+                    return 0;
+                }
+                int value = text[position++];
+                length--;
+                bool negative;
+                if (value == '-')
+                {
+                    if (--length < 0)
+                    {
+                        return 0;
+                    }
+                    negative = true;
+                    value = text[position++];
+                }
+                else
+                {
+                    negative = false;
+                }
+                value -= '0';
+                while (length-- > 0)
+                {
+                    value = ((value << 3) + (value << 1)) + text[position++] - '0';
+                }
+                return negative ? -value : value;
+            }
+
+            private static bool IsZero(IPeriod period) 
+            {
+                for (int i = 0, isize = period.Size; i < isize; i++) 
+                {
+                    if (period.GetValue(i) != 0)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
             private static void AppendFieldValue(PeriodBuilder builder, FormatterDurationFieldType fieldType, int value)
             {
                 switch (fieldType)
@@ -925,7 +893,8 @@ namespace NodaTime.Format
                         break;
                 }
             }
-            static bool IsSupported(PeriodType type, FormatterDurationFieldType fieldType)
+
+            private static bool IsSupported(PeriodType type, FormatterDurationFieldType fieldType)
             {
                 switch (fieldType)
                 {
@@ -1217,15 +1186,12 @@ namespace NodaTime.Format
                 if (position > oldPos)
                 {
                     // Consume this separator.
-                    int length = parsedForms.Length;
-                    for (int i = 0; i < length; i++)
+                    for (int i = 0; i < parsedForms.Length; i++)
                     {
-                        String parsedForm = parsedForms[i];
-                        if (String.IsNullOrEmpty(parsedForm) ||
-                            periodString.Substring(position, parsedForm.Length).Equals(parsedForm, StringComparison.OrdinalIgnoreCase))
+                        int newPosition;
+                        if((newPosition = FormatUtils.MatchSubstring(periodString, position, parsedForms[i])) > 0)
                         {
-
-                            position += parsedForm.Length;
+                            position = newPosition;
                             found = true;
                             break;
                         }
@@ -1756,7 +1722,9 @@ namespace NodaTime.Format
         public PeriodFormatterBuilder AppendSuffix(string text)
         {
             if (text == null)
+            {
                 throw new ArgumentNullException();
+            }
 
             return AppendSuffix(new SimpleAffix(text));
         }
@@ -1770,7 +1738,7 @@ namespace NodaTime.Format
         /// <returns>This PeriodFormatterBuilder</returns>
         /// <remarks>
         /// During parsing, the singular and plural versions are accepted whether or
-        /// ot the actual value matches plurality.
+        /// not the actual value matches plurality.
         /// </remarks>
         /// <exception cref="InvalidOperationException">If no field exists to append to</exception>
         public PeriodFormatterBuilder AppendSuffix(string singularText, string pluralText)

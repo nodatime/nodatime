@@ -281,16 +281,23 @@ namespace NodaTime.Format
                 : prefix + " is malformed at \"" + sampleText.Substring(errorPosition) + '"';
         }
 
-        internal static bool FindText(string targetString, int startAt, string textToFind)
+        internal static int MatchSubstring(string targetString, int startAt, string textToFind)
         {
+            if (String.IsNullOrEmpty(textToFind))
+            {
+                return startAt;
+            }
+
             if (startAt + textToFind.Length > targetString.Length)
             {
-                return false;
+                return ~startAt;
             }
 
             string targetSubString = targetString.Substring(startAt, textToFind.Length);
 
-            return targetSubString.Equals(textToFind, StringComparison.OrdinalIgnoreCase);
+            return targetSubString.Equals(textToFind, StringComparison.OrdinalIgnoreCase) 
+                ? startAt + textToFind.Length
+                : ~startAt;
         }
     }
 }
