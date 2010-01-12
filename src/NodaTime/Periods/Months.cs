@@ -104,7 +104,7 @@ namespace NodaTime.Periods
 
         
         
-        private static readonly PeriodFormatter parser = IsoPeriodFormatterFactory.Standard.WithParseType(PeriodType.Months);
+        private static readonly PeriodFormatter parser = IsoPeriodFormats.Standard.WithParseType(PeriodType.Months);
 
         /// <summary>
         /// Creates a new <code>Months</code> by parsing a string in the ISO8601 format 'PnM'.

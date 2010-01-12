@@ -17,7 +17,7 @@
 namespace NodaTime.Format
 {
     /// <summary>
-    /// Factory that creates instances of PeriodFormatter.    
+    /// Provides access to constructed instances of PeriodFormatter.    
     /// </summary>
     /// <remarks>
     /// <para>
@@ -26,14 +26,11 @@ namespace NodaTime.Format
     /// The others are <see cref="PeriodFormatterBuilder"/> and <see cref="ISOPeriodFormatterFactory"/>.
     /// </para>
     /// <para>
-    /// PeriodFormatterFactory is thread-safe and immutable, and the formatters it returns
+    /// PeriodFormats is thread-safe and immutable, and the formatters it returns
     /// are as well.
     /// </para>
-    /// <para>
-    /// TODO: Consider renaming this to PeriodFormats.
-    /// </para>
     /// </remarks>
-    public static class PeriodFormatterFactory
+    public static class PeriodFormats
     {
         private static readonly PeriodFormatter englishWords = BuildEnglishWordsFormatter();
 

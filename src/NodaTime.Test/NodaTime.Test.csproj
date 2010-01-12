@@ -101,6 +101,7 @@
     <Compile Include="Fields\ZeroIsMaxDateTimeFieldTest.cs" />
     <Compile Include="FixedDateTimeZoneTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.cs" />
+    <Compile Include="Format\IsoPeriodFormatsTest.cs" />
     <Compile Include="Format\PeriodFormatterBuilderTest.Options.cs">
       <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
     </Compile>
@@ -114,7 +115,7 @@
       <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Format\PeriodFormatterBuilderTest.cs" />
-    <Compile Include="Format\PeriodFormatterFactoryTest.cs" />
+    <Compile Include="Format\PeriodFormatsTest.cs" />
     <Compile Include="Format\PeriodFormatterTest.cs" />
     <Compile Include="Format\PeriodFormatterTest.PrintingAndParsing.cs">
       <DependentUpon>PeriodFormatterTest.cs</DependentUpon>

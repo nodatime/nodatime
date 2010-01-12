@@ -123,10 +123,10 @@
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Format\IPeriodParser.cs" />
     <Compile Include="Format\IPeriodPrinter.cs" />
-    <Compile Include="Format\IsoPeriodFormatterFactory.cs" />
+    <Compile Include="Format\IsoPeriodFormats.cs" />
     <Compile Include="Format\PeriodFormatter.cs" />
     <Compile Include="Format\PeriodFormatterBuilder.cs" />
-    <Compile Include="Format\PeriodFormatterFactory.cs" />
+    <Compile Include="Format\PeriodFormats.cs" />
     <Compile Include="Clocks\SystemClock.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\WindowToPosixResource.cs" />
