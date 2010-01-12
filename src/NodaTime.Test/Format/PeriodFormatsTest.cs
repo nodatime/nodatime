@@ -21,7 +21,7 @@ using NUnit.Framework;
 namespace NodaTime.Test.Format
 {
     [TestFixture]
-    public partial class PeriodFormatterFactoryTest
+    public partial class PeriodFormatsTest
     {
 
         [Test]
@@ -29,37 +29,35 @@ namespace NodaTime.Test.Format
         {
             var p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
             Assert.AreEqual("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", 
-                PeriodFormatterFactory.Default.Print(p));
+                PeriodFormats.Default.Print(p));
         }
 
         [Test]
         public void DefaultFormatter_Print_StandardPeriodWithDaysValue()
         {
             var p = Period.FromDays(2);
-            Assert.AreEqual("2 days", PeriodFormatterFactory.Default.Print(p));
+            Assert.AreEqual("2 days", PeriodFormats.Default.Print(p));
         }
 
         [Test]
         public void DefaultFormatter_Print_StandardPeriodWithDaysAndHoursValues()
         {
             var p = Period.FromDays(2).WithHours(5);
-            Assert.AreEqual("2 days and 5 hours", PeriodFormatterFactory.Default.Print(p));
+            Assert.AreEqual("2 days and 5 hours", PeriodFormats.Default.Print(p));
         }
 
         [Test]
-        //[Ignore("Not implemented yet")]
         public void DefaultFormatter_Parse_StandardPeriodWithDaysValue()
         {
             var p = Period.FromDays(2);
-            Assert.AreEqual(p, PeriodFormatterFactory.Default.Parse("2 days"));
+            Assert.AreEqual(p, PeriodFormats.Default.Parse("2 days"));
         }
 
         [Test]
-        //[Ignore("Not implemented yet")]
         public void DefaultFormatter_Parse_StandardPeriodWithDaysAndHoursValues()
         {
             var p = Period.FromDays(2).WithHours(5);
-            Assert.AreEqual(p, PeriodFormatterFactory.Default.Parse("2 days and 5 hours"));
+            Assert.AreEqual(p, PeriodFormats.Default.Parse("2 days and 5 hours"));
         }
     }
 }

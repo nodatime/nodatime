@@ -770,7 +770,7 @@ namespace NodaTime.Format
                     default:
                         return long.MaxValue;
                 }
-                // determine if period is zero and this is the last field
+
                 if (value == 0)
                 {
                     switch (printZero)
@@ -778,33 +778,13 @@ namespace NodaTime.Format
                         case PrintZeroSetting.Never:
                             return long.MaxValue;
                         case PrintZeroSetting.RarelyLast:
-                            if (IsZero(period) && fieldFormatters[(int)fieldType] == this)
+                            if (!IsLastFieldInEmptyPeriod(period))
                             {
-                                for (int i = (int)fieldType + 1; i < MaxField - 1; i++)
-                                {
-                                    if (IsSupported(period.PeriodType, fieldType) && fieldFormatters[i] != null)
-                                    {
-                                        return long.MaxValue;
-                                    }
-                                }
-                            }
-                            else
                                 return long.MaxValue;
+                            }
                             break;
                         case PrintZeroSetting.RarelyFirst:
-                            if (IsZero(period) && fieldFormatters[(int)fieldType] == this)
-                            {
-                                int i = Math.Min((int)fieldType, 8);  // line split out for IBM JDK
-                                i--;                              // see bug 1660490
-                                for (; i >= 0 && i <= MaxField; i--)
-                                {
-                                    if (IsSupported(period.PeriodType, fieldType) && fieldFormatters[i] != null)
-                                    {
-                                        return long.MaxValue;
-                                    }
-                                }
-                            }
-                            else
+                            if (!IsFirstFieldInEmptyPeriod(period))
                             {
                                 return long.MaxValue;
                             }
@@ -812,6 +792,38 @@ namespace NodaTime.Format
                     }
                 }
                 return value;
+            }
+
+            //determines if a given period is zero and this is the last formatted field
+            private bool IsLastFieldInEmptyPeriod(IPeriod period)
+            {
+                if (!IsZero(period) || fieldFormatters[(int)fieldType] != this)
+                    return false;
+
+                for (int nextFieldType = (int)fieldType + 1; nextFieldType < MaxField; nextFieldType++)
+                {
+                    if (IsSupported(period.PeriodType, (FormatterDurationFieldType)nextFieldType) && fieldFormatters[nextFieldType] != null)
+                    {
+                        return false;
+                    }                        
+                }
+                return true;
+            }
+
+            //determines if a given period is zero and this is the first formatted field
+            private bool IsFirstFieldInEmptyPeriod(IPeriod period)
+            {
+                if (!IsZero(period) || fieldFormatters[(int)fieldType] != this)
+                    return false;
+
+                for (int previousFieldType = Math.Min((int)fieldType, (int)FormatterDurationFieldType.Milliseconds) - 1; previousFieldType >= 0; previousFieldType--)
+                {
+                    if (IsSupported(period.PeriodType, (FormatterDurationFieldType)previousFieldType) && fieldFormatters[previousFieldType] != null)
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
 
             private static int ParseInt(String text, int position, int length)

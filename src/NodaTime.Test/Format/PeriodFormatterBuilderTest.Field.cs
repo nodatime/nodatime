@@ -31,11 +31,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendYears().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("1", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));            
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));            
         }
 
         [Test]
@@ -82,11 +82,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendYears().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -109,11 +109,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendMonths().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("2", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -152,11 +152,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendMonths().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -179,11 +179,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendWeeks().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("3", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -222,11 +222,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendWeeks().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -249,11 +249,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendDays().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("4", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -292,11 +292,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendDays().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -320,11 +320,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendHours().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("5", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -363,11 +363,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendHours().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -390,11 +390,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendMinutes().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("6", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -433,11 +433,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendMinutes().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -460,11 +460,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendSeconds().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("7", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -503,11 +503,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendSeconds().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -530,11 +530,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendMillis().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("8", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -553,11 +553,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendMillis().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -576,11 +576,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendMillis3Digit().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("008", printedValue);
-            Assert.AreEqual(3, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -589,11 +589,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendMillis3Digit().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("000", printedValue);
-            Assert.AreEqual(3, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         #endregion
