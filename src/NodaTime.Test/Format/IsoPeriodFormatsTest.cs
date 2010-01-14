@@ -67,6 +67,15 @@ namespace NodaTime.Test.Format
             Assert.That(IsoPeriodFormats.Alternate.Print(period), Is.EqualTo(periodText));
         }
 
+        [Test]
+        [TestCaseSource("AlternateFormatterTestData")]
+        [Ignore("BUG")]
+        public void AlternateFormatter_Parses(IPeriod period, string periodText)
+        {
+            Assert.That(IsoPeriodFormats.Alternate.Parse(periodText), Is.EqualTo(standardPeriodEmpty.With(period)));
+        }
+
+
         object[] AlternateExtendedFormatterTestData =
         {
             new TestCaseData( new Period(1, 2, 3, 4, 5, 6, 7, 8)).Returns("P0001-02-04T05:06:07.008"),

@@ -14,64 +14,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using NUnit.Framework;
-using NodaTime.Periods;
-using NodaTime.Fields;
 using System;
+using NodaTime.Periods;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Periods
 {
     public partial class YearsTest
     {
-        [Test]
-        public void Parse_ReturnsZero_ForNullOrEmptyString()
+        object[] ParseCorrectTestData =
         {
-            var sut = Years.Parse(null);
-            Assert.AreEqual(0, sut.Value);
+            new TestCaseData(null, 0),
+            new TestCaseData(String.Empty, 0),
+            new TestCaseData("P0Y", 0),
+            new TestCaseData("P1Y", 1),
+            new TestCaseData("P-3Y", -3),
+            new TestCaseData("P2Y0M", 2),
+            new TestCaseData("P2YT0H0M", 2),
+        };
 
-            sut = Years.Parse(string.Empty);
-            Assert.AreEqual(0, sut.Value);
+        [Test]
+        [TestCaseSource("ParseCorrectTestData")]
+        public void Parse_CorrectString(string yearsString, int expectedYearsValue)
+        {
+            var sut = Years.Parse(yearsString);
+            Assert.AreEqual(expectedYearsValue, sut.Value);
         }
 
-        [Test]
-        public void Parse_ReturnsZero_ForZeroYearsString()
+        object[] ParseWrongTestData =
         {
-            var sut = Years.Parse("P0Y");
-            Assert.AreEqual(0, sut.Value);
-        }
+            new TestCaseData("P1YT1H"),
+            new TestCaseData("P1M1D"),
+        };
 
         [Test]
-        public void Parse_Returns1_For1YearString()
+        [TestCaseSource("ParseWrongTestData")]
+        public void Parse_ThrowsNotSupported_ForWrongString(string yearsString)
         {
-            var sut = Years.Parse("P1Y");
-            Assert.AreEqual(1, sut.Value);
-        }
-
-        [Test]
-        public void Parse_ReturnsMinus3_ForMinus3YearsString()
-        {
-            var sut = Years.Parse("P-3Y");
-            Assert.AreEqual(-3, sut.Value);
-        }
-
-        [Test]
-        public void Parse_Returns2_For2YearZeroMonthsString()
-        {
-            var sut = Years.Parse("P2Y0M");
-            Assert.AreEqual(2, sut.Value);
-        }
-
-        [Test]
-        public void Parse_Returns2_For2YearZeroTimeString()
-        {
-            var sut = Years.Parse("P2YT0H0M");
-            Assert.AreEqual(2, sut.Value);
-        }
-
-        [Test]
-        public void Parse_Throws_ForWrongString()
-        {
-            Assert.Throws<NotSupportedException>(() => Years.Parse("P1MT1H"));
+            Assert.Throws<NotSupportedException>(() => Years.Parse(yearsString));
         }
     }
 }

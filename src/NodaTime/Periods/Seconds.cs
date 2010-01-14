@@ -34,5 +34,6 @@ namespace NodaTime.Periods
         {
             get { return PeriodType.Seconds; }
         }
+
     }
 }

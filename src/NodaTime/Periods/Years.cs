@@ -47,6 +47,7 @@ namespace NodaTime.Periods
         private static readonly Years one = new Years(1);
         private static readonly Years two = new Years(2);
         private static readonly Years three = new Years(3);
+
         private static readonly Years maxValue = new Years(int.MaxValue);
         private static readonly Years minValue = new Years(int.MinValue);
 
@@ -143,6 +144,100 @@ namespace NodaTime.Periods
         /// </summary>
         public override PeriodType PeriodType { get { return PeriodType.Years; } }
 
+        #region Conversion
+
+        /// <summary>
+        /// Creates a new int from the specified <see cref="Years"/> instance
+        /// </summary>
+        /// <param name="period">An instance of <see cref="Years"/> period to get value from</param>
+        /// <returns>A new int which represents a value of given period</returns>
+        public static implicit operator int(Years period)
+        {
+            return period == null ? 0 : period.Value;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Years"/> instance from the specified integer value
+        /// </summary>
+        /// <param name="value">A value to use for initialization of new <see cref="Years"/> period instance</param>
+        /// <returns>New <see cref="Years"/> instance whose Value property is initialized to the given value</returns>
+        public static explicit operator Years(int value)
+        {
+            return Years.From(value);
+        }
+
+        #endregion
+
+        #region Negation
+
+        /// <summary>
+        /// Returns a new instance with the years value negated.
+        /// </summary>
+        /// <returns>The new years period with a negated value</returns>
+        /// <remarks>
+        /// This instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Years Negated()
+        {
+            return Years.From(-Value);
+        }
+
+        /// <summary>
+        /// Implements the unary operator - (negation).
+        /// </summary>
+        /// <param name="period">The period to negate.</param>
+        /// <returns>A new <see cref="Years"/> instance with a negated value.</returns>
+        public static Years operator -(Years period)
+        {
+            return Object.ReferenceEquals(period, null) ? null : period.Negated();
+        }
+
+        /// <summary>
+        /// Negate a given years period. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="period">The period to negate.</param>
+        /// <returns>A new <see cref="Years"/> instance with a negated value.</returns>
+        public static Years Negate(Years period)
+        {
+            return -period;
+        }
+
+        #endregion
+
+        #region Unary operators
+
+        /// <summary>
+        /// Implements the unary operator + .
+        /// </summary>
+        /// <param name="period">The operand.</param>
+        /// <returns>The same <see cref="Years"/> instance</returns>
+        public static Years operator +(Years period)
+        {
+            return period;
+        }
+
+        /// <summary>
+        /// Implements the unary operator ++ (increment).
+        /// </summary>
+        /// <param name="period">The period to increment.</param>
+        /// <returns>A new <see cref="Years"/> instance with incremented value.</returns>
+        public static Years operator ++(Years period)
+        {
+            return Object.ReferenceEquals(period, null) ? null : period.Add(1);
+        }
+
+        /// <summary>
+        /// Implements the unary operator ++ (decrement).
+        /// </summary>
+        /// <param name="period">The period to decrement.</param>
+        /// <returns>A new <see cref="Years"/> instance with decremented value.</returns>
+        public static Years operator --(Years period)
+        {
+            return Object.ReferenceEquals(period, null) ? null : period.Subtract(1);
+        }
+
+        #endregion
+
         #region Add
 
         /// <summary>
@@ -233,7 +328,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Years Multiply(int years)
         {
-            return Years.From(Value*years);
+            return years == 1 ? this : Years.From(Value * years);
         }
 
         /// <summary>
@@ -273,7 +368,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Years Divide(int years)
         {
-            return Years.From(Value / years);
+            return years == 1 ? this : Years.From(Value / years);
         }
 
         /// <summary>
@@ -410,30 +505,6 @@ namespace NodaTime.Periods
         public static bool operator >=(Years left, Years right)
         {
             return SingleFieldPeriodBase.Compare(left, right) >= 0;
-        }
-
-        #endregion
-
-        #region Conversion
-
-        /// <summary>
-        /// Creates a new int from the specified <see cref="Years"/> instance
-        /// </summary>
-        /// <param name="period">An instance of <see cref="Years"/> period to get value from</param>
-        /// <returns>A new int which represents a value of given period</returns>
-        public static implicit operator int(Years period)
-        {
-            return period == null ? 0 : period.Value;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="Years"/> instance from the specified integer value
-        /// </summary>
-        /// <param name="value">A value to use for initialization of new <see cref="Years"/> period instance</param>
-        /// <returns>New <see cref="Years"/> instance whose Value property is initialized to the given value</returns>
-        public static explicit operator Years(int value)
-        {
-            return Years.From(value);
         }
 
         #endregion

@@ -21,41 +21,41 @@ using NUnit.Framework;
 namespace NodaTime.Test.Periods
 {
     [TestFixture]
-    public partial class DaysTest
+    public partial class WeeksTest
     {
         [Test]
-        public void FieldType_ReturnsDaysAlways()
+        public void FieldType_ReturnsWeeksAlways()
         {
-            Assert.AreEqual(DurationFieldType.Days, Days.From(3).FieldType);
-            Assert.AreEqual(DurationFieldType.Days, Days.From(-3).FieldType);
+            Assert.AreEqual(DurationFieldType.Weeks, Weeks.From(3).FieldType);
+            Assert.AreEqual(DurationFieldType.Weeks, Weeks.From(-3).FieldType);
         }
 
         [Test]
-        public void PeriodType_ReturnsDaysAlways()
+        public void PeriodType_ReturnsWeeksAlways()
         {
-            Assert.AreEqual(PeriodType.Days, Days.From(6).PeriodType);
-            Assert.AreEqual(PeriodType.Days, Days.From(-6).PeriodType);
+            Assert.AreEqual(PeriodType.Weeks, Weeks.From(6).PeriodType);
+            Assert.AreEqual(PeriodType.Weeks, Weeks.From(-6).PeriodType);
         }
 
         [Test]
         public void ToString_ReturnsCorrectStrings()
         {
-            Assert.AreEqual("P20D", Days.From(20).ToString());
-            Assert.AreEqual("P-20D", Days.From(-20).ToString());
+            Assert.AreEqual("P20W", Weeks.From(20).ToString());
+            Assert.AreEqual("P-20W", Weeks.From(-20).ToString());
         }
 
         [Test]
         public void Equality()
         {
-            TestHelper.TestEqualsClass(Days.From(42), Days.From(42), Days.From(24));
-            TestHelper.TestOperatorEquality(Days.From(42), Days.From(42), Days.From(24));
+            TestHelper.TestEqualsClass(Weeks.From(42), Weeks.From(42), Weeks.From(24));
+            TestHelper.TestOperatorEquality(Weeks.From(42), Weeks.From(42), Weeks.From(24));
         }
 
         [Test]
         public void Comparison()
         {
-            TestHelper.TestCompareToClass(Days.From(55), Days.From(55), Days.From(66));
-            TestHelper.TestOperatorComparisonEquality(Days.From(55), Days.From(55), Days.From(66));
+            TestHelper.TestCompareToClass(Weeks.From(55), Weeks.From(55), Weeks.From(66));
+            TestHelper.TestOperatorComparisonEquality(Weeks.From(55), Weeks.From(55), Weeks.From(66));
         }
     }
 }

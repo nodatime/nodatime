@@ -23,41 +23,28 @@ namespace NodaTime.Test.Format
     [TestFixture]
     public partial class PeriodFormatsTest
     {
+        Period standardPeriodEmpty = new Period(0, 0, 0, 0, 0, 0, 0, 0);
+
+        object[] DefaultFormatterTestData =
+        {
+            new TestCaseData( new Period(0, 0, 0, 1, 5, 6, 7, 8), "1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds"),
+            new TestCaseData( new Period(6, 3, 0, 2, 0, 0, 0, 0), "6 years, 3 months and 2 days"),
+            new TestCaseData( Period.FromDays(2), "2 days"),
+            new TestCaseData( Period.FromDays(2).WithHours(5), "2 days and 5 hours"),
+        };
 
         [Test]
-        public void DefaultFormatter_Print_StandardPeriodWithTimeValues()
+        [TestCaseSource("DefaultFormatterTestData")]
+        public void DefaultFormatter_Prints(IPeriod period, string periodText)
         {
-            var p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-            Assert.AreEqual("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", 
-                PeriodFormats.Default.Print(p));
+            Assert.That(PeriodFormats.Default.Print(period), Is.EqualTo(periodText));
         }
 
         [Test]
-        public void DefaultFormatter_Print_StandardPeriodWithDaysValue()
+        [TestCaseSource("DefaultFormatterTestData")]
+        public void DefaultFormatter_Parses(IPeriod period, string periodText)
         {
-            var p = Period.FromDays(2);
-            Assert.AreEqual("2 days", PeriodFormats.Default.Print(p));
-        }
-
-        [Test]
-        public void DefaultFormatter_Print_StandardPeriodWithDaysAndHoursValues()
-        {
-            var p = Period.FromDays(2).WithHours(5);
-            Assert.AreEqual("2 days and 5 hours", PeriodFormats.Default.Print(p));
-        }
-
-        [Test]
-        public void DefaultFormatter_Parse_StandardPeriodWithDaysValue()
-        {
-            var p = Period.FromDays(2);
-            Assert.AreEqual(p, PeriodFormats.Default.Parse("2 days"));
-        }
-
-        [Test]
-        public void DefaultFormatter_Parse_StandardPeriodWithDaysAndHoursValues()
-        {
-            var p = Period.FromDays(2).WithHours(5);
-            Assert.AreEqual(p, PeriodFormats.Default.Parse("2 days and 5 hours"));
+            Assert.That(PeriodFormats.Default.Parse(periodText), Is.EqualTo(standardPeriodEmpty.With(period)));
         }
     }
 }

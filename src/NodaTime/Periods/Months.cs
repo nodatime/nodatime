@@ -45,6 +45,16 @@ namespace NodaTime.Periods
         private static readonly Months one = new Months(1);
         private static readonly Months two = new Months(2);
         private static readonly Months three = new Months(3);
+        private static readonly Months four = new Months(4);
+        private static readonly Months five = new Months(5);
+        private static readonly Months six = new Months(6);
+        private static readonly Months seven = new Months(7);
+        private static readonly Months eight = new Months(8);
+        private static readonly Months nine = new Months(9);
+        private static readonly Months ten = new Months(10);
+        private static readonly Months eleven = new Months(11);
+        private static readonly Months twelve = new Months(12);
+
         private static readonly Months maxValue = new Months(int.MaxValue);
         private static readonly Months minValue = new Months(int.MinValue);
 
@@ -67,6 +77,50 @@ namespace NodaTime.Periods
         /// Gets a period representing three months
         /// </summary>
         public static Months Three { get { return three; } }
+
+        /// <summary>
+        /// Gets a period representing four months
+        /// </summary>
+        public static Months Four { get { return four; } }
+
+        /// <summary>
+        /// Gets a period representing five months
+        /// </summary>
+        public static Months Five { get { return five; } }
+
+        /// <summary>
+        /// Gets a period representing six months
+        /// </summary>
+        public static Months Six { get { return six; } }
+
+        /// <summary>
+        /// Gets a period representing seven months
+        /// </summary>
+        public static Months Seven { get { return seven; } }
+
+        /// <summary>
+        /// Gets a period representing eight months
+        /// </summary>
+        public static Months Eight { get { return eight; } }
+
+        /// <summary>
+        /// Gets a period representing nine months
+        /// </summary>
+        public static Months Nine { get { return nine; } }
+
+        /// <summary>
+        /// Gets a period representing ten months
+        /// </summary>
+        public static Months Ten { get { return ten; } }
+
+        /// <summary>
+        /// Gets a period representing eleven months
+        /// </summary>
+        public static Months Eleven { get { return eleven; } }
+
+        /// Gets a period representing twelve months
+        /// </summary>
+        public static Months Twelve { get { return twelve; } }
 
         /// <summary>
         /// Gets a period representing the maximum number of months that can be stored in this object.
@@ -95,14 +149,21 @@ namespace NodaTime.Periods
                 case 1: return one;
                 case 2: return two;
                 case 3: return three;
+                case 4: return four;
+                case 5: return five;
+                case 6: return six;
+                case 7: return seven;
+                case 8: return eight;
+                case 9: return nine;
+                case 10: return ten;
+                case 11: return eleven;
+                case 12: return twelve;
                 case int.MaxValue: return maxValue;
                 case int.MinValue: return minValue;
                 default: 
                     return new Months(months);
             }
-        }
-
-        
+        }      
         
         private static readonly PeriodFormatter parser = IsoPeriodFormats.Standard.WithParseType(PeriodType.Months);
 
@@ -142,6 +203,100 @@ namespace NodaTime.Periods
         /// Gets the period type, which is <code>PeriodType.Months</code>.
         /// </summary>
         public override PeriodType PeriodType { get { return PeriodType.Months; } }
+
+        #region Conversion
+
+        /// <summary>
+        /// Creates a new int from the specified <see cref="Months"/> instance
+        /// </summary>
+        /// <param name="period">An instance of <see cref="Months"/> period to get value from</param>
+        /// <returns>A new int which represents a value of given period</returns>
+        public static implicit operator int(Months period)
+        {
+            return period == null ? 0 : period.Value;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Months"/> instance from the specified integer value
+        /// </summary>
+        /// <param name="value">A value to use for initialization of new <see cref="Months"/> period instance</param>
+        /// <returns>New <see cref="Months"/> instance whose Value property is initialized to the given value</returns>
+        public static explicit operator Months(int value)
+        {
+            return Months.From(value);
+        }
+
+        #endregion
+
+        #region Negation
+
+        /// <summary>
+        /// Returns a new instance with the weeks value negated.
+        /// </summary>
+        /// <returns>The new months period with a negated value</returns>
+        /// <remarks>
+        /// This instance is immutable and unaffected by this method call.
+        /// </remarks>
+        public Months Negated()
+        {
+            return Months.From(-Value);
+        }
+
+        /// <summary>
+        /// Implements the unary operator - (negation).
+        /// </summary>
+        /// <param name="period">The period to negate.</param>
+        /// <returns>A new <see cref="Months"/> instance with a negated value.</returns>
+        public static Months operator -(Months period)
+        {
+            return Object.ReferenceEquals(period, null) ? null : period.Negated();
+        }
+
+        /// <summary>
+        /// Negate a given months period. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="period">The period to negate.</param>
+        /// <returns>A new <see cref="Weeks"/> instance with a negated value.</returns>
+        public static Months Negate(Months period)
+        {
+            return -period;
+        }
+
+        #endregion
+
+        #region Unary operators
+
+        /// <summary>
+        /// Implements the unary operator + .
+        /// </summary>
+        /// <param name="period">The operand.</param>
+        /// <returns>The same <see cref="Months"/> instance</returns>
+        public static Months operator +(Months period)
+        {
+            return period;
+        }
+
+        /// <summary>
+        /// Implements the unary operator ++ (increment).
+        /// </summary>
+        /// <param name="period">The period to increment.</param>
+        /// <returns>A new <see cref="Months"/> instance with incremented value.</returns>
+        public static Months operator ++(Months period)
+        {
+            return Object.ReferenceEquals(period, null) ? null : period.Add(1);
+        }
+
+        /// <summary>
+        /// Implements the unary operator ++ (decrement).
+        /// </summary>
+        /// <param name="period">The period to decrement.</param>
+        /// <returns>A new <see cref="Months"/> instance with decremented value.</returns>
+        public static Months operator --(Months period)
+        {
+            return Object.ReferenceEquals(period, null) ? null : period.Subtract(1);
+        }
+
+        #endregion
 
         #region Add
 
@@ -233,7 +388,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Months Multiply(int months)
         {
-            return Months.From(Value * months);
+            return months == 1 ? this : Months.From(Value * months);
         }
 
         /// <summary>
@@ -265,15 +420,15 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the months divided by the specified divisor.
         /// </summary>
-        /// <param name="years">The amount to divide by, may be negative</param>
-        /// <returns>The new period divided by the specified dvisor</returns>
+        /// <param name="months">The amount to divide by, may be negative</param>
+        /// <returns>The new months period divided by the specified dvisor</returns>
         /// <remarks>
         /// The calculation uses integer division, thus 3 divided by 2 is 1.
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Months Divide(int years)
+        public Months Divide(int months)
         {
-            return Months.From(Value / years);
+            return months == 1 ? this : Months.From(Value / months);
         }
 
         /// <summary>
@@ -288,11 +443,11 @@ namespace NodaTime.Periods
         }
 
         /// <summary>
-        /// Divide one year by an another. Friendly alternative to <c>operator/()</c>.
+        /// Divide one months period by an another. Friendly alternative to <c>operator/()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Years"/> representing the division of the given values.</returns>
+        /// <returns>A new <see cref="Months"/> representing the division of the given values.</returns>
         public static Months Divide(Months left, Months right)
         {
             return left / right;
@@ -410,30 +565,6 @@ namespace NodaTime.Periods
         public static bool operator >=(Months left, Months right)
         {
             return SingleFieldPeriodBase.Compare(left, right) >= 0;
-        }
-
-        #endregion
-
-        #region Conversion
-
-        /// <summary>
-        /// Creates a new int from the specified <see cref="Months"/> instance
-        /// </summary>
-        /// <param name="period">An instance of <see cref="Months"/> period to get value from</param>
-        /// <returns>A new int which represents a value of given period</returns>
-        public static implicit operator int(Months period)
-        {
-            return period == null ? 0 : period.Value;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="Months"/> instance from the specified integer value
-        /// </summary>
-        /// <param name="value">A value to use for initialization of new <see cref="Months"/> period instance</param>
-        /// <returns>New <see cref="Months"/> instance whose Value property is initialized to the given value</returns>
-        public static explicit operator Months(int value)
-        {
-            return Months.From(value);
         }
 
         #endregion

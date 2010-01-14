@@ -146,6 +146,16 @@
     <Compile Include="Periods\MonthsTest.Parse.cs">
       <DependentUpon>MonthsTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Periods\WeeksTest.cs" />
+    <Compile Include="Periods\WeeksTest.Factories.cs">
+      <DependentUpon>WeeksTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\WeeksTest.Math.cs">
+      <DependentUpon>WeeksTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\WeeksTest.Parse.cs">
+      <DependentUpon>WeeksTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Periods\YearsTest.Math.cs">
       <DependentUpon>YearsTest.cs</DependentUpon>
     </Compile>
@@ -174,10 +184,13 @@
       <DependentUpon>PeriodTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Periods\DaysTest.cs" />
-    <Compile Include="Periods\DaysTest.Constants.cs">
+    <Compile Include="Periods\DaysTest.Factories.cs">
       <DependentUpon>DaysTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Periods\DaysTest.Factories.cs">
+    <Compile Include="Periods\DaysTest.Math.cs">
+      <DependentUpon>DaysTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\DaysTest.Parse.cs">
       <DependentUpon>DaysTest.cs</DependentUpon>
     </Compile>
     <Compile Include="MockZeroNullIntegerConverter.cs" />
