@@ -21,6 +21,64 @@ namespace NodaTime.Test.Periods
 {
     public partial class MonthsTest
     {
+
+        #region Negation
+
+        [Test]
+        public void Negated()
+        {
+            Assert.AreEqual(-2, Months.Two.Negated().Value, "- 2");
+            Assert.AreEqual(9, Months.From(-9).Negated().Value, "- -9");
+        }
+
+        [Test]
+        public void NegateOperator()
+        {
+            Assert.AreEqual(0, (-Months.Zero).Value, "-0");
+            Assert.AreEqual(-1, (-Months.One).Value, "-1");
+            Assert.AreEqual(7, (-Months.From(-7)).Value, "- (-7)");
+        }
+
+        [Test]
+        public void NegateStatic()
+        {
+            Assert.AreEqual(0, (Months.Negate(Months.Zero)).Value, "-0");
+            Assert.AreEqual(-3, (Months.Negate(Months.Three)).Value, "-3");
+            Assert.AreEqual(8, (Months.Negate(Months.From(-8))).Value, "- (-8)");
+        }
+
+        #endregion
+
+        #region Unary Operators
+
+        [Test]
+        public void UnaryPlusOperator()
+        {
+            Assert.AreEqual(0, (+Months.Zero).Value, "+0");
+            Assert.AreEqual(1, (+Months.One).Value, "+1");
+            Assert.AreEqual(7, (+Months.From(+7)).Value, "+ (+7)");
+        }
+
+        [Test]
+        public void UnaryIncrementOperator()
+        {
+            var twoMonths = Months.Two;
+            ++twoMonths;
+
+            Assert.AreEqual(3, (twoMonths).Value, "++2 = 3");
+        }
+
+        [Test]
+        public void UnaryDecrementOperator()
+        {
+            var twoMonths = Months.Two;
+            --twoMonths;
+
+            Assert.AreEqual(1, (twoMonths).Value, "--2 = 1");
+        }
+
+        #endregion
+
         #region Add
 
         [Test]
@@ -28,7 +86,9 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(5, Months.Two.Add(3).Value, "2 + 3");
             Assert.AreEqual(1, Months.One.Add(0).Value, "1 + 0");
-            Assert.AreSame(Months.Three, Months.Three.Add(0));
+            
+            var twentyMonths = Months.From(20);
+            Assert.AreSame(twentyMonths, twentyMonths.Add(0), "20 + 0");
         }
 
         [Test]
@@ -60,7 +120,9 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(1, Months.Three.Subtract(2).Value);
             Assert.AreEqual(1, Months.One.Subtract(0).Value);
-            Assert.AreSame(Months.Three, Months.Three.Subtract(0));
+            
+            var tenMonths = Months.From(10);
+            Assert.AreSame(tenMonths, tenMonths.Subtract(0), "10 - 0");
         }
 
         [Test]
@@ -92,7 +154,9 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(6, Months.Three.Multiply(2).Value, "3 * 2");
             Assert.AreEqual(2, Months.Two.Multiply(1).Value, "2 * 1");
-            Assert.AreSame(Months.Zero, Months.Three.Multiply(0), "3 * 0");
+            
+            var twentyFiveMonths = Months.From(25);
+            Assert.AreSame(twentyFiveMonths, twentyFiveMonths.Multiply(1), "25 * 1");
         }
 
         [Test]
@@ -120,7 +184,9 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(3, Months.From(6).Divide(2).Value, "6 / 2");
             Assert.AreEqual(2, Months.Two.Divide(1).Value, "2 / 1");
-            Assert.AreSame(Months.Three, Months.Three.Divide(1), "3 / 1");
+            
+            var twentySixMonths = Months.From(26);
+            Assert.AreSame(twentySixMonths, twentySixMonths.Divide(1), "26 / 1");
         }
 
         [Test]

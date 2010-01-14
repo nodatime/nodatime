@@ -21,6 +21,63 @@ namespace NodaTime.Test.Periods
 {
     public partial class YearsTest
     {
+        #region Negation
+
+        [Test]
+        public void Negated()
+        {
+            Assert.AreEqual(-2, Years.Two.Negated().Value, "- 2");
+            Assert.AreEqual(9, Years.From(-9).Negated().Value, "- -9");
+        }
+
+        [Test]
+        public void NegateOperator()
+        {
+            Assert.AreEqual(0, (-Years.Zero).Value, "-0");
+            Assert.AreEqual(-1, (-Years.One).Value, "-1");
+            Assert.AreEqual(7, (-Years.From(-7)).Value, "- (-7)");
+        }
+
+        [Test]
+        public void NegateStatic()
+        {
+            Assert.AreEqual(0, (Years.Negate(Years.Zero)).Value, "-0");
+            Assert.AreEqual(-3, (Years.Negate(Years.Three)).Value, "-3");
+            Assert.AreEqual(8, (Years.Negate(Years.From(-8))).Value, "- (-8)");
+        }
+
+        #endregion
+
+        #region Unary Operators
+
+        [Test]
+        public void UnaryPlusOperator()
+        {
+            Assert.AreEqual(0, (+Years.Zero).Value, "+0");
+            Assert.AreEqual(1, (+Years.One).Value, "+1");
+            Assert.AreEqual(7, (+Years.From(+7)).Value, "+ (+7)");
+        }
+
+        [Test]
+        public void UnaryIncrementOperator()
+        {
+            var twoYears = Years.Two;
+            ++twoYears;
+
+            Assert.AreEqual(3, (twoYears).Value, "++2 = 3");
+        }
+
+        [Test]
+        public void UnaryDecrementOperator()
+        {
+            var twoYears = Years.Two;
+            --twoYears;
+
+            Assert.AreEqual(1, (twoYears).Value, "--2 = 1");
+        }
+
+        #endregion
+
         #region Add
 
         [Test]
@@ -28,7 +85,9 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(5, Years.Two.Add(3).Value, "2 + 3");
             Assert.AreEqual(1, Years.One.Add(0).Value, "1 + 0");
-            Assert.AreSame(Years.Three, Years.Three.Add(0));
+
+            var twentyYears = Years.From(20);
+            Assert.AreSame(twentyYears, twentyYears.Add(0), "20 + 0");
         }
 
         [Test]
@@ -60,7 +119,9 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(1, Years.Three.Subtract(2).Value);
             Assert.AreEqual(1, Years.One.Subtract(0).Value);
-            Assert.AreSame(Years.Three, Years.Three.Subtract(0));
+
+            var tenYears = Years.From(10);
+            Assert.AreSame(tenYears, tenYears.Subtract(0), "10 - 0");
         }
 
         [Test]
@@ -92,7 +153,9 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(6, Years.Three.Multiply(2).Value, "3 * 2");
             Assert.AreEqual(2, Years.Two.Multiply(1).Value, "2 * 1");
-            Assert.AreSame(Years.Zero, Years.Three.Multiply(0), "3 * 0");
+            
+            var twentyFiveYears = Years.From(25);
+            Assert.AreSame(twentyFiveYears, twentyFiveYears.Multiply(1), "25 * 1");
         }
 
         [Test]
@@ -120,7 +183,9 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(3, Years.From(6).Divide(2).Value, "6 / 2");
             Assert.AreEqual(2, Years.Two.Divide(1).Value, "2 / 1");
-            Assert.AreSame(Years.Three, Years.Three.Divide(1), "3 / 1");
+            
+            var twentySixYears = Years.From(26);
+            Assert.AreSame(twentySixYears, twentySixYears.Divide(1), "26 / 1");
         }
 
         [Test]

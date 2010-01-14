@@ -28,6 +28,16 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(1, Months.One.Value);
             Assert.AreEqual(2, Months.Two.Value);
             Assert.AreEqual(3, Months.Three.Value);
+            Assert.AreEqual(4, Months.Four.Value);
+            Assert.AreEqual(5, Months.Five.Value);
+            Assert.AreEqual(6, Months.Six.Value);
+            Assert.AreEqual(7, Months.Seven.Value);
+            Assert.AreEqual(8, Months.Eight.Value);
+            Assert.AreEqual(9, Months.Nine.Value);
+            Assert.AreEqual(10, Months.Ten.Value);
+            Assert.AreEqual(11, Months.Eleven.Value);
+            Assert.AreEqual(12, Months.Twelve.Value);
+
             Assert.AreEqual(int.MinValue, Months.MinValue.Value);
             Assert.AreEqual(int.MaxValue, Months.MaxValue.Value);
         }
@@ -39,21 +49,41 @@ namespace NodaTime.Test.Periods
             Assert.AreSame(Months.One, Months.One);
             Assert.AreSame(Months.Two, Months.Two);
             Assert.AreSame(Months.Three, Months.Three);
+            Assert.AreSame(Months.Four, Months.Four);
+            Assert.AreSame(Months.Five, Months.Five);
+            Assert.AreSame(Months.Six, Months.Six);
+            Assert.AreSame(Months.Seven, Months.Seven);
+            Assert.AreSame(Months.Eight, Months.Eight);
+            Assert.AreSame(Months.Nine, Months.Nine);
+            Assert.AreSame(Months.Ten, Months.Ten);
+            Assert.AreSame(Months.Eleven, Months.Eleven);
+            Assert.AreSame(Months.Twelve, Months.Twelve);
+
             Assert.AreSame(Months.MinValue, Months.MinValue);
             Assert.AreSame(Months.MaxValue, Months.MaxValue);
         }
 
         [Test]
-        public void From_ReturnsCachedInstancesUpTo3Value()
+        public void From_ReturnsCachedInstancesUpTo12Value()
         {
             Assert.AreSame(Months.Zero, Months.From(0));
             Assert.AreSame(Months.One, Months.From(1));
             Assert.AreSame(Months.Two, Months.From(2));
             Assert.AreSame(Months.Three, Months.From(3));
+            Assert.AreSame(Months.Four, Months.From(4));
+            Assert.AreSame(Months.Five, Months.From(5));
+            Assert.AreSame(Months.Six, Months.From(6));
+            Assert.AreSame(Months.Seven, Months.From(7));
+            Assert.AreSame(Months.Eight, Months.From(8));
+            Assert.AreSame(Months.Nine, Months.From(9));
+            Assert.AreSame(Months.Ten, Months.From(10));
+            Assert.AreSame(Months.Eleven, Months.From(11));
+            Assert.AreSame(Months.Twelve, Months.From(12));
+            
             Assert.AreSame(Months.MinValue, Months.From(int.MinValue));
             Assert.AreSame(Months.MaxValue, Months.From(int.MaxValue));
 
-            Assert.AreEqual(10, Months.From(10).Value);
+            Assert.AreEqual(20, Months.From(20).Value);
         }
     }
 }

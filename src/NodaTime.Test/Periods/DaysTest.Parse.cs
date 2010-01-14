@@ -20,30 +20,30 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Periods
 {
-    public partial class MonthsTest
+    public partial class DaysTest
     {
         object[] ParseCorrectTestData =
         {
             new TestCaseData(null, 0),
             new TestCaseData(String.Empty, 0),
-            new TestCaseData("P0M", 0),
-            new TestCaseData("P1M", 1),
-            new TestCaseData("P-3M", -3),
-            new TestCaseData("P0Y2M", 2),
-            new TestCaseData("P2MT0H0M", 2),
+            new TestCaseData("P0D", 0),
+            new TestCaseData("P1D", 1),
+            new TestCaseData("P-3D", -3),
+            new TestCaseData("P0Y0M0W2D", 2),
+            new TestCaseData("P2DT0H0M", 2),
         };
 
         [Test]
         [TestCaseSource("ParseCorrectTestData")]
-        public void Parse_CorrectString(string monthsString, int expectedMonthsValue)
+        public void Parse_CorrectString(string weeksString, int expectedWeeksValue)
         {
-            var sut = Months.Parse(monthsString);
-            Assert.AreEqual(expectedMonthsValue, sut.Value);
+            var sut = Days.Parse(weeksString);
+            Assert.AreEqual(expectedWeeksValue, sut.Value);
         }
 
         object[] ParseWrongTestData =
         {
-            new TestCaseData("P1MT1H"),
+            new TestCaseData("P1DT1H"),
             new TestCaseData("P1Y1D"),
         };
 
@@ -51,7 +51,7 @@ namespace NodaTime.Test.Periods
         [TestCaseSource("ParseWrongTestData")]
         public void Parse_ThrowsNotSupported_ForWrongString(string yearsString)
         {
-            Assert.Throws<NotSupportedException>(() => Months.Parse(yearsString));
+            Assert.Throws<NotSupportedException>(() => Days.Parse(yearsString));
         }
     }
 }

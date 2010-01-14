@@ -148,7 +148,7 @@ namespace NodaTime.Periods
                 return true;
             }
 
-            if (other == null)
+            if (Object.ReferenceEquals(other, null))
             {
                 return false;
             }
