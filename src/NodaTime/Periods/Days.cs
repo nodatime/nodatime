@@ -283,7 +283,7 @@ namespace NodaTime.Periods
         /// <remarks>
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public new Days Add(int days)
+        public Days Add(int days)
         {
             return days == 0 ? this : Days.From(Value + days);
         }
