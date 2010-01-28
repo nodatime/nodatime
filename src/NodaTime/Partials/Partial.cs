@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
+using NodaTime.Calendars;
 using NodaTime.Fields;
 
 namespace NodaTime.Partials
@@ -23,12 +26,69 @@ namespace NodaTime.Partials
     /// </summary>
     public sealed class Partial : AbstractPartial
     {
-        public Partial(DateTimeFieldType field, int period) 
-            : this(new DateTimeFieldType[] { field }, new int[] { period }) { }
+        private readonly ICalendarSystem calendar;
+        private readonly DateTimeFieldType[] types;
+        private readonly int[] values;
 
-        public Partial(DateTimeFieldType[] field, int[] periods)
+        public Partial(DateTimeFieldType[] types, int[] values, ICalendarSystem calendar)
         {
-            throw new System.NotImplementedException();
+            this.calendar = calendar;
+            if (types == null)
+            {
+                throw new ArgumentNullException("types");
+            }
+            if (values == null)
+            {
+                throw new ArgumentNullException("values");
+            }
+            if (values.Length != types.Length)
+            {
+                throw new ArgumentException("Values array must be the same length as the types array");
+            }
+            if (types.Length == 0)
+            {
+                this.types = types;
+                this.values = values;
+                return;
+            }
+            for (int i = 0; i < types.Length; i++)
+            {
+                if (types[i] == null)
+                {
+                    throw new ArgumentException("Types array must not contain null: index " + i);
+                }
+            }
+
+
+            this.types = (DateTimeFieldType[])types.Clone();
+            calendar.Validate(this, values);
+            values = (int[])values.Clone();
+        }
+
+        /// <summary>
+        /// Gets the number of fields in this partial.
+        /// </summary>
+        public override int Size
+        {
+            get { return types.Length; }
+        }
+
+        /// <summary>
+        /// Gets the chronology of the partial which is never null.
+        /// </summary>
+        public override ICalendarSystem Calendar
+        {
+            get { return calendar; }
+        }
+
+        protected override DateTimeFieldBase GetField(int index, ICalendarSystem calendar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int GetValue(int index)
+        {
+            throw new NotImplementedException();
         }
     }
 }
