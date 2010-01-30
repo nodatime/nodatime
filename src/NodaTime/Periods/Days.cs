@@ -317,7 +317,7 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the specified number of days taken away.
         /// </summary>
-        /// <param name="weeks">The amount of days to take away, may be negative</param>
+        /// <param name="days">The amount of days to take away, may be negative</param>
         /// <returns>The new period minus the specified number of days</returns>
         /// <remarks>
         /// This instance is immutable and unaffected by this method call.
@@ -354,7 +354,7 @@ namespace NodaTime.Periods
         #region Multiplication
 
         /// <summary>
-        /// Returns a new instance with the weeks multiplied by the specified scalar.
+        /// Returns a new instance with the days multiplied by the specified scalar.
         /// </summary>
         /// <param name="days">The amount to multiply by, may be negative</param>
         /// <returns>The new days period multiplied by the specified scalar</returns>
@@ -396,7 +396,7 @@ namespace NodaTime.Periods
         /// Returns a new instance with the days divided by the specified divisor.
         /// </summary>
         /// <param name="days">The amount to divide by, may be negative</param>
-        /// <returns>The new days period divided by the specified dvisor</returns>
+        /// <returns>The new days period divided by the specified divisor</returns>
         /// <remarks>
         /// The calculation uses integer division, thus 3 divided by 2 is 1.
         /// This instance is immutable and unaffected by this method call.
@@ -411,7 +411,7 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Days"/> Representing the divison of the given values.</returns>
+        /// <returns>A new <see cref="Days"/> representing the divison of the given values.</returns>
         public static Days operator /(Days left, Days right)
         {
             return Object.ReferenceEquals(left, null) ? right : left.Divide(right);
