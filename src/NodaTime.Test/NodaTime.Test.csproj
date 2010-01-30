@@ -129,12 +129,32 @@
     <Compile Include="Format\PeriodFormatterTest.Construction.cs">
       <DependentUpon>PeriodFormatterTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Periods\MinutesTest.cs" />
+    <Compile Include="Periods\MinutesTes.Factories.cs">
+      <DependentUpon>MinutesTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\MinutesTest.Math.cs">
+      <DependentUpon>MinutesTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\MinutesTest.Parse.cs">
+      <DependentUpon>MinutesTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="OffsetTest.cs" />
     <Compile Include="OffsetTest.Operators.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
     </Compile>
     <Compile Include="OffsetTest.Construction.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\HoursTest.cs" />
+    <Compile Include="Periods\HoursTest.Factories.cs">
+      <DependentUpon>HoursTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\HoursTest.Math.cs">
+      <DependentUpon>HoursTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\HoursTest.Parse.cs">
+      <DependentUpon>HoursTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Periods\MonthsTest.cs" />
     <Compile Include="Periods\MonthsTest.Factories.cs">
@@ -145,6 +165,16 @@
     </Compile>
     <Compile Include="Periods\MonthsTest.Parse.cs">
       <DependentUpon>MonthsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\SecondsTest.cs" />
+    <Compile Include="Periods\SecondsTest.Factories.cs">
+      <DependentUpon>SecondsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\SecondsTest.Math.cs">
+      <DependentUpon>SecondsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\SecondsTest.Parse.cs">
+      <DependentUpon>SecondsTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Periods\WeeksTest.cs" />
     <Compile Include="Periods\WeeksTest.Factories.cs">
