@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NodaTime.Format;
@@ -21,7 +22,7 @@ using NodaTime.Format;
 namespace NodaTime.Periods
 {
     /// <summary>
-    /// An immutable time period representing a number of months.
+    /// An immutable time period representing a number of weeks.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -148,6 +149,100 @@ namespace NodaTime.Periods
         {
             get { return PeriodType.Weeks; }
         }
+
+        #region ToStandart
+
+        /// <summary>
+        /// Converts this period in weeks to a period in weeks assuming a
+        /// 7 day week.
+        /// <para>
+        /// This method allows you to convert between different types of period.
+        /// However to achieve this it makes the assumption that all weeks are 7 days
+        /// long.
+        /// This is not true when daylight savings time is considered, and may also
+        /// not be true for some unusual chronologies. However, it is included as it
+        /// is a useful operation for many applications and business rules.
+        /// </para>
+        /// </summary>        
+        /// <returns>A period representing the number of days for this number of weeks</returns>
+        public Days ToStandardDays()
+        {
+            return Days.From(Value * NodaConstants.DaysPerWeek);
+        }
+
+        /// <summary>
+        /// Converts this period in weeks to a period in hours assuming a
+        /// 7 day week and 24 hour day.
+        /// <para>
+        /// This method allows you to convert between different types of period.
+        /// However to achieve this it makes the assumption that all weeks are 7 days long
+        /// all days are 24 hours long.
+        /// This is not true when daylight savings time is considered, and may also
+        /// not be true for some unusual chronologies. However, it is included as it
+        /// is a useful operation for many applications and business rules.
+        /// </para>
+        /// </summary>        
+        /// <returns>A period representing the number of hours for this number of weeks</returns>
+        public Hours ToStandardHours()
+        {
+            return Hours.From(Value * NodaConstants.HoursPerWeek);
+        }
+
+        /// <summary>
+        /// Converts this period in weeks to a period in minutes assuming a
+        /// 7 day week, 24 hour day and 60 minute hour.
+        /// <para>
+        /// This method allows you to convert between different types of period.
+        /// However to achieve this it makes the assumption that all weeks are 7 days long
+        /// ,all days are 24 hours long and all hours are 60 minutes long.
+        /// This is not true when daylight savings time is considered, and may also
+        /// not be true for some unusual chronologies. However, it is included as it
+        /// is a useful operation for many applications and business rules.
+        /// </para>
+        /// </summary>        
+        /// <returns>A period representing the number of minutes for this number of weeks</returns>
+        public Minutes ToStandardMinutes()
+        {
+            return Minutes.From(Value * NodaConstants.MinutesPerWeek);
+        }
+
+        /// <summary>
+        /// Converts this period in weeks to a period in seconds assuming a
+        /// 7 day week, 24 hour day and 60 minute hour and 60 second minute.
+        /// <para>
+        /// This method allows you to convert between different types of period.
+        /// However to achieve this it makes the assumption that all weeks are 7 days long,
+        /// all days are 24 hours long, all hours are 60 minutes long and all minutes are 60 seconds long.
+        /// This is not true when daylight savings time is considered, and may also
+        /// not be true for some unusual chronologies. However, it is included as it
+        /// is a useful operation for many applications and business rules.
+        /// </para>
+        /// </summary>        
+        /// <returns>A period representing the number of seconds for this number of weeks</returns>
+        public Seconds ToStandardSeconds()
+        {
+            return Seconds.From(Value * NodaConstants.SecondsPerWeek);
+        }
+
+        /// <summary>
+        /// Converts this period in weeks to a duration in milliseconds assuming a
+        /// 7 day week, 24 hour day and 60 minute hour and 60 second minute.
+        /// <para>
+        /// This method allows you to convert between different types of period.
+        /// However to achieve this it makes the assumption that all weeks are 7 days long,
+        /// all days are 24 hours long, all hours are 60 minutes long and all minutes are 60 seconds long.
+        /// This is not true when daylight savings time is considered, and may also
+        /// not be true for some unusual chronologies. However, it is included as it
+        /// is a useful operation for many applications and business rules.
+        /// </para>
+        /// </summary>        
+        /// <returns>A duration equivalent to this number of weeks</returns>
+        public Duration ToStandardDuration()
+        {
+            return new Duration(Value * NodaConstants.MillisecondsPerWeek);
+        }
+
+        #endregion
 
         #region Conversion
 

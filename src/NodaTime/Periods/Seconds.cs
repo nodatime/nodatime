@@ -148,6 +148,101 @@ namespace NodaTime.Periods
             get { return PeriodType.Seconds; }
         }
 
+        #region ToStandart
+
+        /// <summary>
+        /// Converts this period in seconds to a period in weeks assuming a
+        /// 7 day week, 24 hour day, 60 minute hour and 60 second minute.
+        /// <para>
+        /// This method allows you to convert between different types of period.
+        /// However to achieve this it makes the assumption that all weeks are 7 days
+        /// long, all days are 24 hours long, all hours are 60 minutes long and
+        /// all minutes are 60 seconds long.
+        /// This is not true when daylight savings time is considered, and may also
+        /// not be true for some unusual chronologies. However, it is included as it
+        /// is a useful operation for many applications and business rules.
+        /// </para>
+        /// </summary>        
+        /// <returns>A period representing the number of whole weeks for this number of seconds</returns>
+        public Weeks ToStandardWeeks()
+        {
+            return Weeks.From(Value / NodaConstants.SecondsPerWeek);
+        }
+
+        /// <summary>
+        /// Converts this period in seconds to a period in days assuming a
+        /// 24 hour day, 60 minute hour and 60 second minute.
+        /// <para>
+        /// This method allows you to convert between different types of period.
+        /// However to achieve this it makes the assumption that all days are 24 hours long, 
+        /// all hours are 60 minutes long and all minutes are 60 seconds long.
+        /// This is not true when daylight savings time is considered, and may also
+        /// not be true for some unusual chronologies. However, it is included as it
+        /// is a useful operation for many applications and business rules.
+        /// </para>
+        /// </summary>        
+        /// <returns>A period representing the number of whole days for this number of seconds</returns>
+        public Days ToStandardDays()
+        {
+            return Days.From(Value / NodaConstants.SecondsPerDay);
+        }
+
+        /// <summary>
+        /// Converts this period in seconds to a period in hours assuming a
+        /// 60 minute hour and 60 second minute.
+        /// <para>
+        /// This method allows you to convert between different types of period.
+        /// However to achieve this it makes the assumption that all hours are 60 minutes long 
+        /// and all minutes are 60 seconds long.
+        /// This is not true when daylight savings time is considered, and may also
+        /// not be true for some unusual chronologies. However, it is included as it
+        /// is a useful operation for many applications and business rules.
+        /// </para>
+        /// </summary>        
+        /// <returns>A period representing the number of whole hours for this number of seconds</returns>
+        public Hours ToStandardHours()
+        {
+            return Hours.From(Value / NodaConstants.SecondsPerHour);
+        }
+
+        /// <summary>
+        /// Converts this period in seconds to a period in minutes assuming a
+        /// 60 second minute.
+        /// <para>
+        /// This method allows you to convert between different types of period.
+        /// However to achieve this it makes the assumption that all minutes are 60 seconds long.
+        /// This is not true when daylight savings time is considered, and may also
+        /// not be true for some unusual chronologies. However, it is included as it
+        /// is a useful operation for many applications and business rules.
+        /// </para>
+        /// </summary>        
+        /// <returns>A period representing the number of whole minutes for this number of seconds</returns>
+        public Minutes ToStandardMinutes()
+        {
+            return Minutes.From(Value / NodaConstants.SecondsPerMinute);
+        }
+
+        /// <summary>
+        /// Converts this period in seconds to a duration in milliseconds assuming a
+        /// 7 day week, 24 hour day, 60 minute hour and 60 second minute.
+        /// <para>
+        /// This method allows you to convert between different types of period.
+        /// However to achieve this it makes the assumption that all weeks are 7 days
+        /// long, all days are 24 hours long, all hours are 60 minutes long and
+        /// all minutes are 60 seconds long.
+        /// This is not true when daylight savings time is considered, and may also
+        /// not be true for some unusual chronologies. However, it is included as it
+        /// is a useful operation for many applications and business rules.
+        /// </para>
+        /// </summary>        
+        /// <returns>A duration equivalent to this number of seconds</returns>
+        public Duration ToStandardDuration()
+        {
+            return new Duration(Value*NodaConstants.MillisecondsPerSecond);
+        }
+
+        #endregion
+
         #region Conversion
 
         /// <summary>
