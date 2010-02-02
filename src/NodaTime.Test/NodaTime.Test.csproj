@@ -139,6 +139,9 @@
     <Compile Include="Periods\MinutesTest.Parse.cs">
       <DependentUpon>MinutesTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Periods\MinutesTest.ToStandard.cs">
+      <DependentUpon>MinutesTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="OffsetTest.cs" />
     <Compile Include="OffsetTest.Operators.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
@@ -154,6 +157,9 @@
       <DependentUpon>HoursTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Periods\HoursTest.Parse.cs">
+      <DependentUpon>HoursTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\HoursTest.ToStandard.cs">
       <DependentUpon>HoursTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Periods\MonthsTest.cs" />
@@ -176,6 +182,9 @@
     <Compile Include="Periods\SecondsTest.Parse.cs">
       <DependentUpon>SecondsTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Periods\SecondsTest.ToStandard.cs">
+      <DependentUpon>SecondsTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Periods\WeeksTest.cs" />
     <Compile Include="Periods\WeeksTest.Factories.cs">
       <DependentUpon>WeeksTest.cs</DependentUpon>
@@ -184,6 +193,9 @@
       <DependentUpon>WeeksTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Periods\WeeksTest.Parse.cs">
+      <DependentUpon>WeeksTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\WeeksTest.ToStandard.cs">
       <DependentUpon>WeeksTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Periods\YearsTest.Math.cs">
@@ -221,6 +233,9 @@
       <DependentUpon>DaysTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Periods\DaysTest.Parse.cs">
+      <DependentUpon>DaysTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Periods\DaysTest.ToStandard.cs">
       <DependentUpon>DaysTest.cs</DependentUpon>
     </Compile>
     <Compile Include="MockZeroNullIntegerConverter.cs" />
