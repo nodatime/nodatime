@@ -71,32 +71,31 @@ namespace NodaTime.Test.Periods
         public void Get_ReturnsSingleValue_ForTheSupportedDurationFieldType()
         {
             var sut = new Single(10);
-            Assert.AreEqual(sut.Value, sut.Get(DurationFieldType.Centuries));
+            Assert.AreEqual(sut.Value, sut.Get(DurationFieldType.Days));
         }
 
         [Test]
         public void Get_ReturnsZero_ForUnsupportedDurationFieldType()
         {
             var sut = new Single(10);
-            Assert.AreEqual(0, sut.Get(DurationFieldType.Days));
+            Assert.AreEqual(0, sut.Get(DurationFieldType.Centuries));
         }
 
         [Test]
         public void IsSupported_ReturnsTrue_ForTheSupportedDurationFieldType()
         {
             var sut = new Single(10);
-            Assert.True(sut.IsSupported(DurationFieldType.Centuries));
+            Assert.True(sut.IsSupported(DurationFieldType.Days));
         }
 
         [Test]
         public void IsSupported_ReturnsFalse_ForUnsupportedDurationFieldType()
         {
             var sut = new Single(10);
-            Assert.False(sut.IsSupported(DurationFieldType.Days));
+            Assert.False(sut.IsSupported(DurationFieldType.Centuries));
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void ToPeriod_ReturnsStandardPeriodWithDays()
         {
             var sut = new Single(20);

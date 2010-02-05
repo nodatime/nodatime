@@ -172,5 +172,20 @@ namespace NodaTime.Fields
         {
             throw new NotSupportedException();
         }
+
+        #region IDateTimeField Members
+
+
+        public long GetMaximumValue(IPartial instant, int[] values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long GetMinimumValue(IPartial instant, int[] values)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
