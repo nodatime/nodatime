@@ -32,7 +32,7 @@ namespace NodaTime.Test.Periods
             }
             public override DurationFieldType FieldType
             {
-                get { return DurationFieldType.Centuries; }
+                get { return DurationFieldType.Days; }
             }
 
             public override PeriodType PeriodType
@@ -50,12 +50,12 @@ namespace NodaTime.Test.Periods
             }
             public override DurationFieldType FieldType
             {
-                get { return DurationFieldType.Eras; }
+                get { return DurationFieldType.Hours; }
             }
 
             public override PeriodType PeriodType
             {
-                get { return PeriodType.Days; }
+                get { return PeriodType.Hours; }
             }
         }
     }

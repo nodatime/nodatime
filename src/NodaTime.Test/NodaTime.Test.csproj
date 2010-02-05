@@ -172,6 +172,9 @@
     <Compile Include="Periods\MonthsTest.Parse.cs">
       <DependentUpon>MonthsTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Periods\PeriodTest.Constructors.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Periods\SecondsTest.cs" />
     <Compile Include="Periods\SecondsTest.Factories.cs">
       <DependentUpon>SecondsTest.cs</DependentUpon>

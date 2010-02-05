@@ -23,7 +23,6 @@ namespace NodaTime.Test.Periods
     public partial class PeriodTest
     {
         [Test]
-        [Ignore("IsoCalendar is not implemented yet")]
         public void OperatorPlus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(Period.Zero, (Period.Zero + Period.Zero), "0 + 0");

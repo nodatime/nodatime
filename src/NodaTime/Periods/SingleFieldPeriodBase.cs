@@ -220,7 +220,7 @@ namespace NodaTime.Periods
         /// <summary>
         /// Get this period as an immutable <see cref="Period"/> object.
         /// </summary>
-        /// <returns>A <see cref="Period"/> representing the same number of days</returns>
+        /// <returns>A <see cref="Period"/> representing the same field value</returns>
         /// <remarks>
         /// The period will use <see cref="PeriodType.Standard"/>.
         /// </remarks>

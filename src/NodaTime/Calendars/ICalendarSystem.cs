@@ -46,21 +46,61 @@ namespace NodaTime.Calendars
 
         FieldSet Fields { get; }
 
+        #region Periods
+
+        /// <summary>
+        /// Gets the values of a period from a duration.
+        /// </summary>
+        /// <param name="period">The period instant to use</param>
+        /// <param name="duration">The duration to query</param>
+        /// <returns>The values of the period extracted from the duration</returns>
+        int[] GetPeriodValues(IPeriod period, Duration duration);
+
+        /// <summary>
+        /// Gets the values of a period from an interval.
+        /// </summary>
+        /// <param name="period">The period instant to use</param>
+        /// <param name="start">The start instant of an interval to query</param>
+        /// <param name="end">The end instant of an interval to query</param>
+        /// <returns>The values of the period extracted from the interval</returns>
+        int[] GetPeriodValues(IPeriod period, LocalInstant start, LocalInstant end);
+
+        /// <summary>
+        /// Adds the period to the instant, specifying the number of times to add.
+        /// </summary>
+        /// <param name="period">The period to add, null means add nothing</param>
+        /// <param name="instant">The instant to add to</param>
+        /// <param name="scalar">The number of times to add</param>
+        /// <returns>The updated instant</returns>
+        LocalInstant Add(IPeriod period, LocalInstant instant, int scalar);
+
+        #endregion
+
+        #region Partials
+
+        /// <summary>
+        /// Validates whether the values are valid for the fields of a partial instant.
+        /// </summary>
+        /// <param name="partial">The partial instant to validate</param>
+        /// <param name="values">The values to validate, not null, match fields in partial</param>
         void Validate(IPartial partial, int[] values);
 
+        /// <summary>
+        /// Gets the values of a partial from an instant.
+        /// </summary>
+        /// <param name="partial">The partial instant to use</param>
+        /// <param name="instant">The instant to query</param>
+        /// <returns>The values of this partial extracted from the instant</returns>
         int[] GetPartialValues(IPartial partial, LocalInstant instant);
 
         /// <summary>
         /// Sets the values from the partial within an existing local instant.
         /// </summary>
+        /// <param name="partial">The partial instant to use</param>
+        /// <param name="localInstant">The instant to update</param>
+        /// <returns>The updated instant</returns>
         LocalInstant SetPartial(IPartial partial, LocalInstant localInstant);
-
-        int[] GetPeriodValues(IPeriod period, LocalInstant start, LocalInstant end);
-
-        int[] GetPeriodValues(IPeriod period, Duration duration);
-
-        LocalInstant Add(IPeriod period, LocalInstant localInstant, int scalar);
-
-        LocalInstant Add(IPeriod period, Duration duration, int scalar);
+        
+        #endregion
     }
 }
