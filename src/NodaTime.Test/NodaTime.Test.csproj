@@ -76,6 +76,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calendars\IsoCalendarSystemTest.DateFields.cs" />
+    <Compile Include="Calendars\IsoCalendarSystemTest.DurationFields.cs" />
+    <Compile Include="Calendars\IsoCalendarSystemTest.TimeFields.cs" />
     <Compile Include="ChronologyTest.cs" />
     <Compile Include="DurationTest.cs" />
     <Compile Include="DurationTest.Operators.cs">

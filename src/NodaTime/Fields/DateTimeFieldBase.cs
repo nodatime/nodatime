@@ -187,5 +187,10 @@ namespace NodaTime.Fields
         public abstract DurationField RangeDurationField { get; }
         public abstract long GetMaximumValue();
         public abstract long GetMinimumValue();
+
+        public override string ToString()
+        {
+            return fieldType.ToString();
+        }
     }
 }

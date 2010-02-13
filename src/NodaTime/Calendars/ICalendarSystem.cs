@@ -36,15 +36,64 @@ namespace NodaTime.Calendars
     /// </remarks>
     public interface ICalendarSystem
     {
+
+        FieldSet Fields { get; }
+
+        /// <summary>
+        /// Returns a local instant, formed from the given year, month, day and ticks values.
+        /// The set of given values must refer to a valid datetime, or else an IllegalArgumentException is thrown.
+        /// <para>
+        /// The default implementation calls upon separate DateTimeFields to
+        /// determine the result. Subclasses are encouraged to provide a more
+        /// efficient implementation.
+        /// </para>
+        /// </summary>
+        /// <param name="year">Year to use</param>
+        /// <param name="monthOfYear">Month to use</param>
+        /// <param name="dayOfMonth">Day of month to use</param>
+        /// <param name="tickOfDay">Tick of day to use</param>
+        /// <returns>A LocalInstant instance</returns>
         LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay);
 
+        /// <summary>
+        /// Returns a local instant, formed from the given year, month, day, 
+        /// hour, minute, second, millisecond and ticks values.
+        /// <para>
+        /// The default implementation calls upon separate DateTimeFields to
+        /// determine the result. Subclasses are encouraged to provide a more
+        /// efficient implementation.
+        /// </para>       
+        /// </summary> 
+        /// <param name="year">Year to use</param>
+        /// <param name="monthOfYear">Month to use</param>
+        /// <param name="dayOfMonth">Day of month to use</param>
+        /// <param name="hourOfDay">Hour to use</param>
+        /// <param name="minuteOfHour">Minute to use</param>
+        /// <param name="secondOfMinute">Second to use</param>
+        /// <param name="millisecondOfSecond">Millisecond to use</param>
+        /// <param name="tickOfMillisecond">Tick to use</param>
+        /// <returns>A LocalInstant instance</returns>
         LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth,
                                      int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond);
 
+        /// <summary>
+        /// Returns a local instant, formed from the given instant, hour, minute, second, millisecond and ticks values.
+        /// <para>
+        /// The default implementation calls upon separate DateTimeFields to
+        /// determine the result. Subclasses are encouraged to provide a more
+        /// efficient implementation.
+        /// </para>       
+        /// </summary>
+        /// <param name="localInstant">Instant to start from</param>
+        /// <param name="hourOfDay">Hour to use</param>
+        /// <param name="minuteOfHour">Minute to use</param>
+        /// <param name="secondOfMinute">Second to use</param>
+        /// <param name="millisecondOfSecond">Milliscond to use</param>
+        /// <param name="tickOfMillisecond">Tick to use</param>
+        /// <returns>A LocalInstant instance</returns>
         LocalInstant GetLocalInstant(LocalInstant localInstant,
                                      int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond);
 
-        FieldSet Fields { get; }
 
         #region Periods
 
