@@ -14,6 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+using NodaTime.Fields;
+using NodaTime.Periods;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Periods
@@ -21,10 +23,39 @@ namespace NodaTime.Test.Periods
     [TestFixture]
     public partial class DaysTest
     {
-        // Test in 2002/03 as time zones are more well known
-        // (before the late 90's they were all over the place)
-        // private static readonly DateTimeZone Paris = DateTimeZone.ForID("Europe/Paris");
-        // the previous line is commented out because it fails the test - an exception during the constructor
-        // prevents the DaysTest.Contants tests from running (and they actually work!)
+        [Test]
+        public void FieldType_ReturnsDaysAlways()
+        {
+            Assert.AreEqual(DurationFieldType.Days, Days.From(3).FieldType);
+            Assert.AreEqual(DurationFieldType.Days, Days.From(-3).FieldType);
+        }
+
+        [Test]
+        public void PeriodType_ReturnsDaysAlways()
+        {
+            Assert.AreEqual(PeriodType.Days, Days.From(6).PeriodType);
+            Assert.AreEqual(PeriodType.Days, Days.From(-6).PeriodType);
+        }
+
+        [Test]
+        public void ToString_ReturnsCorrectStrings()
+        {
+            Assert.AreEqual("P20D", Days.From(20).ToString());
+            Assert.AreEqual("P-20D", Days.From(-20).ToString());
+        }
+
+        [Test]
+        public void Equality()
+        {
+            TestHelper.TestEqualsClass(Days.From(42), Days.From(42), Days.From(24));
+            TestHelper.TestOperatorEquality(Days.From(42), Days.From(42), Days.From(24));
+        }
+
+        [Test]
+        public void Comparison()
+        {
+            TestHelper.TestCompareToClass(Days.From(55), Days.From(55), Days.From(66));
+            TestHelper.TestOperatorComparisonEquality(Days.From(55), Days.From(55), Days.From(66));
+        }
     }
 }

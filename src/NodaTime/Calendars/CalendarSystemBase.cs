@@ -57,39 +57,189 @@ namespace NodaTime.Calendars
 
         public abstract FieldSet Fields { get; }
 
-        public void Validate(IPartial partial, int[] values)
-        {
-            throw new NotImplementedException();
-        }
 
-        public int[] GetPartialValues(IPartial partial, LocalInstant instant)
-        {
-            throw new NotImplementedException();
-        }
+        #region Periods
 
-        public LocalInstant SetPartial(IPartial partial, LocalInstant localInstant)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int[] GetPeriodValues(IPeriod period, LocalInstant start, LocalInstant end)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Gets the values of a period from a duration.
+        /// </summary>
+        /// <param name="period">The period instant to use</param>
+        /// <param name="duration">The duration to query</param>
+        /// <returns>The values of the period extracted from the duration</returns>
         public int[] GetPeriodValues(IPeriod period, Duration duration)
         {
-            throw new NotImplementedException();
+            int size = period.Size;
+            int[] values = new int[size];
+            if (duration != Duration.Zero)
+            {
+                LocalInstant current = LocalInstant.LocalUnixEpoch;
+                LocalInstant end = LocalInstant.LocalUnixEpoch + duration;
+
+                for (int i = 0; i < size; i++)
+                {
+                    DurationField field = GetField(period.GetFieldType(i));
+                    if (field.IsPrecise)
+                    {
+                        int value = field.GetDifference(end, current);
+                        values[i] = value;
+
+                        current = field.Add(current, value);
+                    }
+                }
+            }
+            return values;
         }
 
-        public LocalInstant Add(IPeriod period, LocalInstant localInstant, int scalar)
+        /// <summary>
+        /// Gets the values of a period from an interval.
+        /// </summary>
+        /// <param name="period">The period instant to use</param>
+        /// <param name="start">The start instant of an interval to query</param>
+        /// <param name="end">The end instant of an interval to query</param>
+        /// <returns>The values of the period extracted from the interval</returns>
+        public int[] GetPeriodValues(IPeriod period, LocalInstant start, LocalInstant end)
         {
-            throw new NotImplementedException();
+            int size = period.Size;
+            int[] values = new int[size];
+
+            LocalInstant result = start;
+            if (start != end)
+            {
+                for (int i = 0; i < size; i++)
+                {
+                    DurationField field = GetField(period.GetFieldType(i));
+                    int value = field.GetDifference(end, result);
+                    values[i] = value;
+
+                    result = field.Add(result, value);
+                }
+            }
+            return values;
         }
 
-        public LocalInstant Add(IPeriod period, Duration duration, int scalar)
+        /// <summary>
+        /// Adds the period to the instant, specifying the number of times to add.
+        /// </summary>
+        /// <param name="period">The period to add, null means add nothing</param>
+        /// <param name="instant">The instant to add to</param>
+        /// <param name="scalar">The number of times to add</param>
+        /// <returns>The updated instant</returns>
+        public LocalInstant Add(IPeriod period, LocalInstant instant, int scalar)
         {
-            throw new NotImplementedException();
+            LocalInstant result = instant;
+
+            if (scalar != 0 && period != null)
+            {
+                for (int i = 0, isize = period.Size; i < isize; i++)
+                {
+                    long value = period.GetValue(i); // use long to allow for multiplication (fits OK)
+                    if (value != 0)
+                    {
+                        result = GetField(period.GetFieldType(i)).Add(result, value * scalar);
+                    }
+                }
+            }
+            return result;
         }
+
+        private DurationField GetField(DurationFieldType fieldType)
+        {
+            switch (fieldType)
+            {
+                case DurationFieldType.Eras:        return Fields.Eras;
+                case DurationFieldType.Centuries:   return Fields.Centuries;
+                case DurationFieldType.WeekYears:   return Fields.WeekYears;
+                case DurationFieldType.Years:       return Fields.Years;
+                case DurationFieldType.Months:      return Fields.Months;
+                case DurationFieldType.Weeks:       return Fields.Weeks;
+                case DurationFieldType.Days:        return Fields.Days;
+                case DurationFieldType.HalfDays:    return Fields.HalfDays;
+                case DurationFieldType.Hours:       return Fields.Hours;
+                case DurationFieldType.Minutes:     return Fields.Minutes;
+                case DurationFieldType.Seconds:     return Fields.Seconds;
+                case DurationFieldType.Milliseconds:return Fields.Milliseconds;
+                default: throw new InvalidOperationException();
+            }
+        }
+
+        #endregion
+
+        #region Partials
+
+        /// <summary>
+        /// Validates whether the values are valid for the fields of a partial instant.
+        /// </summary>
+        /// <param name="partial">The partial instant to validate</param>
+        /// <param name="values">The values to validate, not null, match fields in partial</param>
+        public void Validate(IPartial partial, int[] values)
+        {
+            int size = partial.Size;
+
+            // check values in standard range, catching really stupid cases like -1
+            // this means that the second check will not hit trouble
+            for (int i = 0; i < size; i++)
+            {
+                int value = values[i];
+                DateTimeFieldBase field = partial.GetField(i);
+                if (value < field.GetMinimumValue())
+                {
+                    throw new FieldValueException(field.FieldType, value, field.GetMinimumValue(), null);
+                }
+                if (value > field.GetMaximumValue())
+                {
+                    throw new FieldValueException(field.FieldType, value, null, field.GetMaximumValue());
+                }
+            }
+
+            // check values in specific range, catching really odd cases like 30th Feb
+            for (int i = 0; i < size; i++)
+            {
+                int value = values[i];
+                DateTimeFieldBase field = partial.GetField(i);
+                if (value < field.GetMinimumValue(partial, values))
+                {
+                    throw new FieldValueException(field.FieldType, value, field.GetMinimumValue(partial, values), null);
+                }
+                if (value > field.GetMaximumValue(partial, values))
+                {
+                    throw new FieldValueException(field.FieldType, value, null, field.GetMaximumValue(partial, values));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the values of a partial from an instant.
+        /// </summary>
+        /// <param name="partial">The partial instant to use</param>
+        /// <param name="instant">The instant to query</param>
+        /// <returns>The values of this partial extracted from the instant</returns>
+        public int[] GetPartialValues(IPartial partial, LocalInstant instant)
+        {
+            int size = partial.Size;
+            int[] values = new int[size];
+            for (int i = 0; i < size; i++)
+            {
+                values[i] = partial.GetFieldType(i).GetField(this).GetValue(instant);
+            }
+            return values;
+        }
+
+        /// <summary>
+        /// Sets the values from the partial within an existing local instant.
+        /// </summary>
+        /// <param name="partial">The partial instant to use</param>
+        /// <param name="localInstant">The instant to update</param>
+        /// <returns>The updated instant</returns>
+        public LocalInstant SetPartial(IPartial partial, LocalInstant localInstant)
+        {
+            for (int i = 0, isize = partial.Size; i < isize; i++) 
+            {
+                localInstant = partial.GetFieldType(i).GetField(this)
+                                .SetValue(localInstant, partial.GetValue(i));
+            }
+            return localInstant;        
+        }
+
+        #endregion
     }
 }

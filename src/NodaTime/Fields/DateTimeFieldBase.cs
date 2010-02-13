@@ -95,10 +95,20 @@ namespace NodaTime.Fields
             return GetMaximumValue();
         }
 
+        public virtual long GetMaximumValue(IPartial instant, int[] values)
+        {
+            return GetMaximumValue();
+        }
+
         /// <summary>
         /// Defaults to the absolute minimum for the field.
         /// </summary>
         public virtual long GetMinimumValue(LocalInstant localInstant)
+        {
+            return GetMinimumValue();
+        }
+
+        public virtual long GetMinimumValue(IPartial instant, int[] values)
         {
             return GetMinimumValue();
         }

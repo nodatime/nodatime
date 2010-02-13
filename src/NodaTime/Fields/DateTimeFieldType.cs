@@ -14,6 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+using NodaTime.Calendars;
+using System;
 namespace NodaTime.Fields
 {
     /// <summary>
@@ -65,6 +67,50 @@ namespace NodaTime.Fields
         public int Ordinal { get { return ordinal; } }
         public DurationFieldType DurationFieldType { get { return durationFieldType; } }
         public DurationFieldType? RangeDurationFieldType { get { return rangeDurationFieldType; } }
+
+        //TODO:make sure that there is no better place for this method
+
+        /// <summary>
+        /// Gets a suitable field for this type from the given calendar.
+        /// </summary>
+        /// <param name="calendar">The calendar to use</param>
+        /// <returns>A suitable field</returns>
+        public IDateTimeField GetField(ICalendarSystem calendar)
+        {
+            if (calendar == null)
+            {
+                throw new ArgumentNullException("calendar");
+            }
+
+            //dispatch over Ordinal
+            switch (Ordinal)
+            {
+                case 0:  return calendar.Fields.Era;
+                case 1:  return calendar.Fields.YearOfEra;
+                case 2:  return calendar.Fields.CenturyOfEra;
+                case 3:  return calendar.Fields.YearOfCentury;
+                case 4:  return calendar.Fields.Year;
+                case 5:  return calendar.Fields.DayOfYear;
+                case 6:  return calendar.Fields.MonthOfYear;
+                case 7:  return calendar.Fields.DayOfMonth;
+                case 8:  return calendar.Fields.WeekYearOfCentury;
+                case 9:  return calendar.Fields.WeekYear;
+                case 10: return calendar.Fields.WeekOfWeekYear;
+                case 11: return calendar.Fields.DayOfWeek;
+                case 12: return calendar.Fields.HalfDayOfDay;
+                case 13: return calendar.Fields.HourOfHalfDay;
+                case 14: return calendar.Fields.ClockHourOfHalfDay;
+                case 15: return calendar.Fields.ClockHourOfDay;
+                case 16: return calendar.Fields.HourOfDay;
+                case 17: return calendar.Fields.MinuteOfDay;
+                case 18: return calendar.Fields.MinuteOfHour;
+                case 19: return calendar.Fields.SecondOfMinute;
+                case 20: return calendar.Fields.SecondOfDay;
+                case 21: return calendar.Fields.MillisecondOfDay;
+                case 22: return calendar.Fields.MillisecondOfSecond;
+                default: throw new InvalidOperationException();
+            }
+        }
 
         public override string ToString()
         {

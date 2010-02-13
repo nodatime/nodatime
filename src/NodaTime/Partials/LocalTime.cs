@@ -14,6 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
+using NodaTime.Calendars;
+using NodaTime.Fields;
+
 namespace NodaTime.Partials
 {
     /// <summary>
@@ -21,5 +26,24 @@ namespace NodaTime.Partials
     /// </summary>
     public sealed class LocalTime : LocalBase
     {
+        protected override DateTimeFieldBase GetField(int index, ICalendarSystem calendar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ICalendarSystem Calendar
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override int Size
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override int GetValue(int index)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

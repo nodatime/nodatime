@@ -14,16 +14,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
+using NodaTime.Calendars;
+using NodaTime.Fields;
+
 namespace NodaTime.Partials
 {
     /// <summary>
-    /// Original name: LocalDate
+    /// LocalDate is an immutable datetime class representing a date
+    /// without a time zone.
+    /// <para>
+    /// LocalDate implements the <see cref="IPartial"/> interface.
+    /// To do this, the interface methods focus on the key fields -
+    /// Year, MonthOfYear and DayOfMonth.
+    /// However, <b>all</b> date fields may in fact be queried.
+    /// 
+    /// </para>
     /// </summary>
     public sealed class LocalDate : LocalBase
     {
-        public LocalDate(int year, int month, int day)
+        protected override DateTimeFieldBase GetField(int index, ICalendarSystem calendar)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public override ICalendarSystem Calendar
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override int Size
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override int GetValue(int index)
+        {
+            throw new NotImplementedException();
         }
     }
 }

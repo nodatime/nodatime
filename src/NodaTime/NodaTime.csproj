@@ -53,7 +53,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -75,6 +75,7 @@
     <Compile Include="Clocks\FixedClock.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
+    <Compile Include="FieldValueException.cs" />
     <Compile Include="Format\PeriodBuilder.cs" />
     <Compile Include="NodaDefaults.cs" />
     <Compile Include="Offset.cs" />
@@ -123,10 +124,10 @@
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Format\IPeriodParser.cs" />
     <Compile Include="Format\IPeriodPrinter.cs" />
-    <Compile Include="Format\IsoPeriodFormatterFactory.cs" />
+    <Compile Include="Format\IsoPeriodFormats.cs" />
     <Compile Include="Format\PeriodFormatter.cs" />
     <Compile Include="Format\PeriodFormatterBuilder.cs" />
-    <Compile Include="Format\PeriodFormatterFactory.cs" />
+    <Compile Include="Format\PeriodFormats.cs" />
     <Compile Include="Clocks\SystemClock.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\WindowToPosixResource.cs" />

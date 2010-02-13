@@ -14,12 +14,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using NodaTime.Calendars;
+
 namespace NodaTime.Partials
 {
     /// <summary>
-    /// Original name: BasePartial
+    /// BasePartial is an abstract implementation of ReadablePartial that stores
+    /// data in array and <code>Chronology</code> fields.
     /// </summary>
     public abstract class PartialBase : AbstractPartial
     {
+        private readonly ICalendarSystem calendar;
+        private readonly int[] values;
+
+        protected PartialBase() { }
+
+        /// <summary>
+        /// Initializes a partial with specified time field values and chronology.
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="chronology"></param>
+        protected PartialBase(int[] values, ICalendarSystem calendar)
+        {
+            this.calendar = calendar;
+            calendar.Validate(this, values);
+            this.values = values;
+        }
+
+        /// <summary>
+        /// Gets the calendar system of the partial which is never null.
+        /// <para>
+        /// The <see cref="ICalendarSystem"/> is the calculation engine behind the partial and
+        /// provides conversion and validation of the fields in a particular calendar system.
+        /// </para>
+        /// </summary>
+        public override ICalendarSystem Calendar
+        {
+            get { return calendar; }
+        }
+
+        /// <summary>
+        /// Gets the value of the field at the specifed index.
+        /// </summary>
+        /// <param name="index">The index</param>
+        /// <returns>The value</returns>
+        public override int GetValue(int index)
+        {
+            return values[index];
+        }
     }
 }

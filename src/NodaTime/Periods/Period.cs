@@ -16,8 +16,8 @@
 #endregion
 
 using System;
-using NodaTime.Fields;
 using NodaTime.Calendars;
+using NodaTime.Fields;
 using NodaTime.Utility;
 
 namespace NodaTime.Periods
@@ -232,15 +232,111 @@ namespace NodaTime.Periods
 
         }
 
-        private Period(Duration duration, ICalendarSystem calendar, PeriodType periodType)
+        /// <summary>
+        /// Creates a period from the given duration.
+        /// <para>
+        /// Only precise fields in the period type will be used.
+        /// Imprecise fields will not be populated.
+        /// </para>
+        /// <para>
+        /// If the duration is small then this method will perform
+        /// as you might expect and split the fields evenly.
+        /// </para>
+        /// <para>
+        /// If the duration is large then all the remaining duration will
+        /// be stored in the largest available precise field.
+        /// </para>
+        /// </summary>
+        /// <param name="duration">the duration</param>
+        /// <param name="calendar">The calendar system to use to split the duration</param>
+        /// <param name="periodType">Which set of fields this period supports</param>
+        public Period(Duration duration, ICalendarSystem calendar, PeriodType periodType)
         {
             if (calendar == null)
             {
                 throw new ArgumentNullException("calendar");
             }
-            this.periodType = NodaDefaults.CheckPeriodType(periodType);
+
+            if (periodType == null)
+            {
+                throw new ArgumentNullException("periodType");
+            }
+
+            this.periodType = periodType;
             this.fieldValues = calendar.GetPeriodValues(this, duration);
         }
+
+        /// <summary>
+        /// Creates a period from the given duration using the standard set of fields.
+        /// <para>
+        /// Only precise fields in the period type will be used.
+        /// Imprecise fields will not be populated.
+        /// </para>
+        /// <para>
+        /// If the duration is small then this method will perform
+        /// as you might expect and split the fields evenly.
+        /// </para>
+        /// <para>
+        /// If the duration is large then all the remaining duration will
+        /// be stored in the largest available precise field.
+        /// </para>
+        /// </summary>
+        /// <param name="duration">the duration</param>
+        /// <param name="calendar">The calendar system to use to split the duration</param>
+        public Period(Duration duration, ICalendarSystem calendar)
+            : this(duration, calendar, PeriodType.Standard) { }
+
+
+        /// <summary>
+        /// Creates a period from the given duration.
+        /// <para>
+        /// Only precise fields in the period type will be used.
+        /// Imprecise fields will not be populated.
+        /// </para>
+        /// <para>
+        /// If the duration is small then this method will perform
+        /// as you might expect and split the fields evenly.
+        /// </para>
+        /// <para>
+        /// If the duration is large then all the remaining duration will
+        /// be stored in the largest available precise field.
+        /// </para>
+        /// </summary>
+        /// <param name="duration">the duration</param>
+        /// <param name="periodType">Which set of fields this period supports</param>
+        public Period(Duration duration, PeriodType periodType)
+            : this(duration, IsoCalendarSystem.Instance, periodType) { }
+
+
+        /// <summary>
+        /// Creates a period from the given duration using the standard set of fields.
+        /// <para>
+        /// Only precise fields in the period type will be used.
+        /// For the standard period type this is the time fields only.
+        /// Thus the year, month, week and day fields will not be populated.
+        /// </para>
+        /// <para>
+        /// If the duration is small, less than one day, then this method will perform
+        /// as you might expect and split the fields evenly.
+        /// </para>
+        /// <para>
+        /// If the duration is larger than one day then all the remaining duration will
+        /// be stored in the largest available precise field, hours in this case.
+        /// </para>
+        /// <para>
+        /// For example, a duration equal to (365 + 60 + 5) days will be converted to
+        /// ((365 + 60 + 5) * 24) hours by this constructor.
+        /// </para>
+        /// <para>
+        /// For more control over the conversion process, you have two options:
+        /// convert the duration to an <see cref="Interval"/>, and from there obtain the period
+        /// or specify a period type that contains precise definitions of the day and larger
+        /// fields, such as UTC
+        /// </para>
+        /// </summary>
+        /// <param name="duration">The duration</param>
+        public Period(Duration duration)
+            : this(duration, IsoCalendarSystem.Instance, PeriodType.Standard) { }
 
 
         /// <summary>
@@ -263,9 +359,56 @@ namespace NodaTime.Periods
         /// </code>
         /// </remarks>
         public Period()
-            :this(Duration.Zero, IsoCalendarSystem.Instance, null)
+            : this(Duration.Zero, IsoCalendarSystem.Instance, PeriodType.Standard) { }
+
+        /// <summary>
+        /// Creates a period from the given interval endpoints.
+        /// </summary>
+        /// <param name="start">Interval start</param>
+        /// <param name="end">Interval end</param>
+        /// <param name="calendar">The calendar system to use</param>
+        /// <param name="periodType">Which set of fields this period supports</param>
+        public Period(LocalInstant start, LocalInstant end, ICalendarSystem calendar, PeriodType periodType)
         {
+            if (calendar == null)
+            {
+                throw new ArgumentNullException("calendar");
+            }
+            if (periodType == null)
+            {
+                throw new ArgumentNullException("periodType");
+            }
+
+            this.periodType = periodType;
+            this.fieldValues = calendar.GetPeriodValues(this, start, end);
         }
+
+        /// <summary>
+        /// Creates a period from the given interval endpoints using the standard set of fields.
+        /// </summary>
+        /// <param name="start">Interval start</param>
+        /// <param name="end">Interval end</param>
+        /// <param name="calendar">The calendar system to use</param>
+        public Period(LocalInstant start, LocalInstant end, ICalendarSystem calendar)
+            : this(start, end, calendar, PeriodType.Standard) { }
+
+        /// <summary>
+        /// Creates a period from the given interval endpoints.
+        /// </summary>
+        /// <param name="start">Interval start</param>
+        /// <param name="end">Interval end</param>
+        /// <param name="periodType">Which set of fields this period supports</param>
+        public Period(LocalInstant start, LocalInstant end, PeriodType periodType)
+            : this(start, end, IsoCalendarSystem.Instance, periodType) { }
+
+        /// <summary>
+        /// Creates a period from the given interval endpoints.
+        /// </summary>
+        /// <param name="start">Interval start</param>
+        /// <param name="end">Interval end</param>
+        public Period(LocalInstant start, LocalInstant end)
+            : this(start, end, IsoCalendarSystem.Instance, PeriodType.Standard) { }
+
 
         /// <summary>
         /// Create a period from a set of field values.
@@ -310,9 +453,7 @@ namespace NodaTime.Periods
         public Period(
             int years, int months, int weeks, int days,
             int hours, int minutes, int seconds, int millis)
-            : this(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.Standard)
-        {
-        }
+            : this(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.Standard){}
 
         /// <summary>
         /// Create a period from a set of field values using the standard set of fields.
@@ -326,9 +467,7 @@ namespace NodaTime.Periods
         /// seconds and millis, not the date fields.
         /// </remarks>
         public Period(int hours, int minutes, int seconds, int millis)
-            : this(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.Standard)
-        {
-        }
+            : this(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.Standard) { }
 
         #endregion
 
@@ -1031,7 +1170,7 @@ namespace NodaTime.Periods
             fieldValues = newValues;
         }
 
-        private int[] MergePeriodInto(int[] values, IPeriod period)
+        private void MergePeriodInto(int[] values, IPeriod period)
         {
             for (int i = 0, isize = period.Size; i < isize; i++)
             {
@@ -1039,7 +1178,6 @@ namespace NodaTime.Periods
                 int value = period.GetValue(i);
                 PeriodType.UpdateAnyField(values, type, value, false);
             }
-            return values;
         }
 
         #region IEquality

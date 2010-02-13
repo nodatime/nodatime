@@ -16,10 +16,9 @@
 #endregion
 
 using System;
-using NUnit.Framework;
 using NodaTime.Format;
-using System.Globalization;
 using NodaTime.Periods;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {
@@ -27,23 +26,29 @@ namespace NodaTime.Test.Format
     public partial class PeriodFormatterBuilderTest
     {
         PeriodFormatterBuilder builder;
-        Period zeroPeriod;
-        Period StandardPeriod;
+
+        Period standardPeriodEmpty;
+        Period standardPeriodFull;
+
         Period timePeriod;
         Period datePeriod;
-        Period emptyYearDayTimePeriod;
-        Period fullYearDayTimePeriod;
+
+        Period yearDayTimePeriodEmpty;
+        Period yearDayTimePeriodFull;
 
         [SetUp]
         public void Init()
         {
             builder = new PeriodFormatterBuilder();
-            zeroPeriod = new Period(0, 0, 0, 0, 0, 0, 0, 0);
-            StandardPeriod = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+
+            standardPeriodEmpty = new Period(0, 0, 0, 0, 0, 0, 0, 0);
+            standardPeriodFull = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+
             timePeriod = new Period(0, 0, 0, 0, 5, 6, 7, 8);
             datePeriod = new Period(1, 2, 3, 4, 0, 0, 0, 0);
-            emptyYearDayTimePeriod = new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime);
-            fullYearDayTimePeriod = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime);
+
+            yearDayTimePeriodEmpty = new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime);
+            yearDayTimePeriodFull = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime);
         }
 
         [Test]
@@ -54,11 +59,11 @@ namespace NodaTime.Test.Format
                 .ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("HELLO", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(0, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(5, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(0, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -75,11 +80,11 @@ namespace NodaTime.Test.Format
                 .ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("1-1", printedValue);
-            Assert.AreEqual(3, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(2, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(2, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         #region AppendPrinterParser
@@ -107,7 +112,7 @@ namespace NodaTime.Test.Format
 
             var formatter = builder2.ToFormatter();
 
-            Assert.AreEqual("1-2", formatter.Print(StandardPeriod));
+            Assert.AreEqual("1-2", formatter.Print(standardPeriodFull));
             Assert.Throws<NotSupportedException>(()=>formatter.Parse("1-3"));
         }
 

@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Periods;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Format
@@ -25,7 +26,7 @@ namespace NodaTime.Test.Format
         #region Singular prefix
 
         [Test]
-        public void AppendPrefixNull_ThrowsArgumentNull()
+        public void AppendPrefixNull_ThrowsArgumentNull_ForNullPrefixString()
         {
             Assert.Throws<ArgumentNullException>(() => builder.AppendPrefix(null));
         }
@@ -33,14 +34,16 @@ namespace NodaTime.Test.Format
         [Test]
         public void AppendPrefixBeforeYears_BuildsCorrectPrinter_For1YearsStandardPeriod()
         {
-            var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
+            var formatter = builder.AppendPrefix("Years:")
+                                    .AppendYears()
+                                    .ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("Years:1", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -49,24 +52,24 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("Years:0", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
-        public void AppendPrefixBeforeMonths_BuildsCorrectPrinter_For2MOnthsStandardPeriod()
+        public void AppendPrefixBeforeMonths_BuildsCorrectPrinter_For2MonthsStandardPeriod()
         {
             var formatter = builder.AppendPrefix("Months:").AppendMonths().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("Months:2", printedValue);
-            Assert.AreEqual(8, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(8, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -75,11 +78,58 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendPrefix("Months:").AppendMonths().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("Months:0", printedValue);
-            Assert.AreEqual(8, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(8, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendPrefixBeforeYears_ParsesTo1YearStandardPeriod_FromPrefixWithFieldString()
+        {
+            var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
+
+            var period = formatter.Parse("Years:1");
+
+            Assert.AreEqual(Period.FromYears(1), period);
+        }
+
+        [Test]
+        public void AppendPrefixBeforeYears_ParseThrowsArgument_ForFieldWithoutPrefixString()
+        {
+            var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
+            Assert.Throws<ArgumentException>(() => formatter.Parse("1"));
+        }
+
+        [Test]
+        public void AppendPrefixBeforeYears_ParseThrowsArgument_ForPrefixWithoutFieldString()
+        {
+            var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
+            Assert.Throws<ArgumentException>(() => formatter.Parse("Years:"));
+        }
+        [Test]
+        public void AppendPrefixBeforeMonths_ParsesTo2MonthsStandardPeriod_FromPrefixWithFieldString()
+        {
+            var formatter = builder.AppendPrefix("Months:").AppendMonths().ToFormatter();
+
+            var period = formatter.Parse("Months:2");
+
+            Assert.AreEqual(Period.FromMonths(2), period);
+        }
+
+        [Test]
+        public void AppendPrefixBeforeMonths_ParseThrowsArgument_ForFieldWithoutPrefixString()
+        {
+            var formatter = builder.AppendPrefix("Months:").AppendMonths().ToFormatter();
+            Assert.Throws<ArgumentException>(() => formatter.Parse("2"));
+        }
+
+        [Test]
+        public void AppendPrefixBeforeMonths_ParseThrowsArgument_ForPrefixWithoutFieldString()
+        {
+            var formatter = builder.AppendPrefix("Months:").AppendMonths().ToFormatter();
+            Assert.Throws<ArgumentException>(() => formatter.Parse("Months:"));
         }
 
         #endregion
@@ -87,7 +137,7 @@ namespace NodaTime.Test.Format
         #region Plural prefix
 
         [Test]
-        public void AppendPrefixPluralNull_ThrowsArgumentNull()
+        public void AppendPrefixPlural_ThrowsArgumentNull_ForAnuNullOfPrefixStrings()
         {
             Assert.Throws<ArgumentNullException>(() => builder.AppendPrefix("prefix", null));
             Assert.Throws<ArgumentNullException>(() => builder.AppendPrefix(null, "prefix"));
@@ -101,11 +151,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendPrefix("Year:", "Years:").AppendYears().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("Year:1", printedValue);
-            Assert.AreEqual(6, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(6, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -114,24 +164,24 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendPrefix("Year:", "Years:").AppendYears().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("Years:0", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
-        public void AppendPrefixPluralBeforeHours_BuildsCorrectPrinter_For5HoursStandardPeriod()
+        public void AppendPrefixPluralBeforeHours_BuildsCorrectPrinter_For6HoursStandardPeriod()
         {
             var formatter = builder.AppendPrefix("Hour:", "Hours:").AppendMinutes().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("Hours:6", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -140,26 +190,45 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendPrefix("Hour:", "Hours:").AppendMinutes().ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("Hours:0", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
+        [Test]
+        public void AppendPrefixPluralBeforeYears_ParsesTo1YearStandardPeriod_FromPrefixWithFieldString()
+        {
+            var formatter = builder.AppendPrefix("Year:", "Years:").AppendYears().ToFormatter();
+
+            var period = formatter.Parse("Year:1");
+
+            Assert.AreEqual(Period.FromYears(1), period);
+        }
+
+        [Test]
+        public void AppendPrefixPluralBeforeYears_ParsesToZeroYearsStandardPeriod_FromPrefixWithFieldString()
+        {
+            var formatter = builder.AppendPrefix("Year:", "Years:").AppendYears().ToFormatter();
+
+            var period = formatter.Parse("Years:0");
+
+            Assert.AreEqual(Period.FromYears(0), period);
+        }
 
         #endregion
 
         #region Singular Suffix
 
         [Test]
-        public void AppendSuffixNull_ThrowsArgumentNull()
+        public void AppendSuffix_ThrowsArgumentNull_ForNullSuffixString()
         {
             Assert.Throws<ArgumentNullException>(() => builder.AppendSuffix(null));
         }
 
         [Test]
-        public void AppendSuffixWithoutFieldBefore_ThrowsInvalidOperation()
+        public void AppendSuffix_ThrowsInvalidOperation_WithoutFieldBefore()
         {
             Assert.Throws<InvalidOperationException>(() => builder.AppendSuffix(" years"));
         }
@@ -170,11 +239,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendYears().AppendSuffix(" years").ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("1 years", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -183,11 +252,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendYears().AppendSuffix(" years").ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0 years", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -196,11 +265,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendHours().AppendSuffix(" hours").ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("5 hours", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -209,11 +278,35 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendHours().AppendSuffix(" hours").ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0 hours", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendSuffixAfterYears_ParsesTo1YearStandardPeriod_FromFieldWithSuffix()
+        {
+            var formatter = builder.AppendYears().AppendSuffix(" year").ToFormatter();
+
+            var period = formatter.Parse("1 year");
+
+            Assert.AreEqual(Period.FromYears(1), period);
+        }
+
+        [Test]
+        public void AppendSuffixAfterYears_ParseThrowsArgument_FromFieldWithoutSuffix()
+        {
+            var formatter = builder.AppendYears().AppendSuffix(" year").ToFormatter();
+            Assert.Throws<ArgumentException>(() => formatter.Parse("1"));
+        }
+
+        [Test]
+        public void AppendSuffixAfterYears_ParseThrowsArgument_FromSuffixWithoutField()
+        {
+            var formatter = builder.AppendYears().AppendSuffix(" year").ToFormatter();
+            Assert.Throws<ArgumentException>(() => formatter.Parse("year"));
         }
 
         #endregion
@@ -221,7 +314,7 @@ namespace NodaTime.Test.Format
         #region Plural Suffix
 
         [Test]
-        public void AppendSuffixPluralNull_ThrowsArgumentNull()
+        public void AppendSuffixPlural_ThrowsArgumentNull_ForAnyNullOfSuffixStrings()
         {
             Assert.Throws<ArgumentNullException>(() => builder.AppendSuffix("_", null));
             Assert.Throws<ArgumentNullException>(() => builder.AppendSuffix(null, "_"));
@@ -229,7 +322,7 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
-        public void AppendSuffixPluralWithoutFieldBefore_ThrowsInvalidOperation()
+        public void AppendSuffixPlural_ThrowsInvalidOperation_WithoutFieldBefore()
         {
             Assert.Throws<InvalidOperationException>(() => builder.AppendSuffix("_", "_"));
         }
@@ -240,11 +333,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendYears().AppendSuffix(" year", " years").ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("1 year", printedValue);
-            Assert.AreEqual(6, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(6, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -253,11 +346,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendYears().AppendSuffix(" year", " years").ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0 years", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -266,11 +359,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendHours().AppendSuffix(" hour", " hours").ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("5 hours", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -279,13 +372,36 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendHours().AppendSuffix(" hour", " hours").ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("0 hours", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(7, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
+        [Test]
+        public void AppendSuffixPluralAfterYears_ParseTo1YearStandardPeriod_FromFieldWithSuffix()
+        {
+            var formatter = builder.AppendYears().AppendSuffix(" year", " years").ToFormatter();
+
+            var period = formatter.Parse("1 year");
+
+            Assert.AreEqual(Period.FromYears(1), period);
+        }
+
+        [Test]
+        public void AppendSuffixPluralAfterYears_ParseThrowsArgument_FromFieldWithoutSuffix()
+        {
+            var formatter = builder.AppendYears().AppendSuffix(" year", " years").ToFormatter();
+            Assert.Throws<ArgumentException>(() => formatter.Parse("1"));
+        }
+
+        [Test]
+        public void AppendSuffixPluralAfterYears_ParseThrowsArgument_FromSuffixWithoutField()
+        {
+            var formatter = builder.AppendYears().AppendSuffix(" year", " years").ToFormatter();
+            Assert.Throws<ArgumentException>(() => formatter.Parse("year"));
+        }
         #endregion
 
         #region Prefix And Suffix Together
@@ -296,11 +412,11 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendPrefix("P").AppendYears().AppendSuffix("Y").ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(StandardPeriod);
+            var printedValue = formatter.Print(standardPeriodFull);
 
             Assert.AreEqual("P1Y", printedValue);
-            Assert.AreEqual(3, printer.CalculatePrintedLength(StandardPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(StandardPeriod, int.MaxValue, null));
+            Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodFull, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
@@ -309,11 +425,21 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendPrefix("P").AppendYears().AppendSuffix("Y").ToFormatter();
 
             var printer = formatter.Printer;
-            var printedValue = formatter.Print(zeroPeriod);
+            var printedValue = formatter.Print(standardPeriodEmpty);
 
             Assert.AreEqual("P0Y", printedValue);
-            Assert.AreEqual(3, printer.CalculatePrintedLength(zeroPeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(zeroPeriod, int.MaxValue, null));
+            Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodEmpty, null));
+            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
+        }
+
+        [Test]
+        public void AppendPrefixAndSuffixOnYears_ParsesTo1YearStandardPeriod_FromFullString()
+        {
+            var formatter = builder.AppendPrefix("P").AppendYears().AppendSuffix("Y").ToFormatter();
+
+            var period = formatter.Parse("P1Y");
+
+            Assert.AreEqual(Period.FromYears(1), period);
         }
 
         #endregion
