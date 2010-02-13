@@ -19,7 +19,8 @@ using NodaTime.Fields;
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// Original name: AssembledChronology.
+    /// Abstract calendar system that enables calendar systems to be assembled from
+    /// a container of fields.
     /// </summary>
     public abstract class AssembledCalendarSystem : CalendarSystemBase
     {
@@ -88,7 +89,7 @@ namespace NodaTime.Calendars
             if (useBaseYearMonthDayFields && useBaseTimeOfDayFields)
             {
                 // Only call specialized implementation if applicable fields are the same.
-                return base.GetLocalInstant(year, monthOfYear, dayOfMonth,
+                return baseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth,
                                             hourOfDay, minuteOfHour, secondOfMinute,
                                             millisecondOfSecond, tickOfMillisecond);
             }

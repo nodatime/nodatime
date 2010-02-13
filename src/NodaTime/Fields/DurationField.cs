@@ -70,5 +70,10 @@ namespace NodaTime.Fields
         public abstract int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
 
         public abstract long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
+
+        public override string ToString()
+        {
+            return FieldType.ToString();
+        }
     }
 }

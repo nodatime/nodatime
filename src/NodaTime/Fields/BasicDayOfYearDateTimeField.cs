@@ -26,7 +26,7 @@ namespace NodaTime.Fields
         private readonly BasicCalendarSystem calendarSystem;
 
         internal BasicDayOfYearDateTimeField(BasicCalendarSystem calendarSystem, DurationField days)
-            : base(DateTimeFieldType.DayOfMonth, days)
+            : base(DateTimeFieldType.DayOfYear, days)
         {
             this.calendarSystem = calendarSystem;
         }

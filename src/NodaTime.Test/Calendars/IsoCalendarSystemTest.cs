@@ -17,11 +17,12 @@
 using System;
 using NodaTime.Calendars;
 using NUnit.Framework;
+using NodaTime.Fields;
 
 namespace NodaTime.Test
 {
     [TestFixture]
-    public class IsoCalendarSystemTest
+    public partial class IsoCalendarSystemTest
     {
         private static readonly DateTime UnixEpochDateTime = new  DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         // This was when I was writing the tests, having finally made everything work - several thousand lines
@@ -29,6 +30,7 @@ namespace NodaTime.Test
         private static readonly DateTime TimeOfGreatAchievement =
             new DateTime(2009, 11, 27, 18, 38, 25, 345, DateTimeKind.Utc) + TimeSpan.FromTicks(8765);
 
+        private static FieldSet isoFields = IsoCalendarSystem.Instance.Fields;
 
         [Test]
         public void FieldsOf_UnixEpoch()
