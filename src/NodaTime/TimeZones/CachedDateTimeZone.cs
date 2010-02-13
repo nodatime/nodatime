@@ -20,7 +20,7 @@ using System.Collections.Generic;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides a <see cref="IDatetimeZone"/> wrapper class that implements a simple cache to speed
+    /// Provides a <see cref="IDateTimeZone"/> wrapper class that implements a simple cache to speed
     /// up the lookup of transitions.
     /// </summary>
     /// <remarks>
@@ -60,7 +60,7 @@ namespace NodaTime.TimeZones
         {
             if (timeZone == null)
             {
-                throw new ArgumentNullException("timeZone", "timeZone cannot be null");
+                throw new ArgumentNullException("timeZone");
             }
             else if (timeZone is CachedDateTimeZone || timeZone.IsFixed)
             {
@@ -73,6 +73,7 @@ namespace NodaTime.TimeZones
         /// Returns true if this time zone is worth caching. Small time zones or time zones with
         /// lots of quick changes do not work well with <see cref="CachedDateTimeZone"/>.
         /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
         /// <returns>
         /// <c>true</c> if this instance is worth caching; otherwise, <c>false</c>.
         /// </returns>
@@ -95,7 +96,7 @@ namespace NodaTime.TimeZones
                     Duration diff = transition - previous;
                     if (diff.Ticks < ((366L + 365) * 24 * 60 * 60 * 1000))
                     {
-                        distances += (double)diff.Ticks;
+                        distances += diff.Ticks;
                         count++;
                     }
                 }
