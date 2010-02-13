@@ -147,22 +147,18 @@ namespace NodaTime.Format
 
             public int Parse(string periodString, int position)
             {
-                string periodSubString = periodString.Substring(position, text.Length);
-                return periodSubString.Equals(text, StringComparison.OrdinalIgnoreCase)
-                    ? position + text.Length : ~position;
+                return FormatUtils.MatchSubstring(periodString, position, text);
             }
 
             public int Scan(string periodString, int position)
             {
-                for (int pos = position; pos < periodString.Length; pos++)
+                for (int startAt = position; startAt < periodString.Length; startAt++)
                 {
-                    string periodSubString = periodString.Substring(position, text.Length);
-                    if (periodSubString.Equals(text, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return pos;
-                    }
+                    if (FormatUtils.MatchSubstring(periodString, startAt, text) > 0)
+                        return startAt;
+
                     // Only allow number characters to be skipped in search of suffix.
-                    switch (periodString[pos]) 
+                    switch (periodString[startAt]) 
                     {
                         case '0': case '1': case '2': case '3': case '4':
                         case '5': case '6': case '7': case '8': case '9':
@@ -216,16 +212,12 @@ namespace NodaTime.Format
                 string secondToCheck;
                 ArrangeByLength(out firstToCheck, out secondToCheck);
 
-                if (FormatUtils.FindText(periodString, position, firstToCheck))
+                int newPosition;
+                if ((newPosition = FormatUtils.MatchSubstring(periodString, position, firstToCheck)) > 0)
                 {
-                    return position + firstToCheck.Length;
+                    return newPosition;
                 }
-                if (FormatUtils.FindText(periodString, position, secondToCheck))
-                {
-                    return position + secondToCheck.Length;
-                }
-
-                return ~position;
+                return FormatUtils.MatchSubstring(periodString, position, secondToCheck);
             }
 
             public int Scan(string periodString, int position)
@@ -234,15 +226,16 @@ namespace NodaTime.Format
                 string secondToCheck;
                 ArrangeByLength(out firstToCheck, out secondToCheck);
 
-                for (int pos = position; pos < periodString.Length; pos++)
+                for (int startAt = position; startAt < periodString.Length; startAt++)
                 {
-                    if (FormatUtils.FindText(periodString, position, firstToCheck))
+                    int newPosition;
+                    if ((newPosition = FormatUtils.MatchSubstring(periodString, startAt, firstToCheck)) > 0)
                     {
-                        return position + firstToCheck.Length;
+                        return startAt;
                     }
-                    if (FormatUtils.FindText(periodString, position, secondToCheck))
+                    if ((newPosition = FormatUtils.MatchSubstring(periodString, startAt, secondToCheck)) > 0)
                     {
-                        return position + secondToCheck.Length;
+                        return startAt;
                     }
                 }
                 return ~position;
@@ -569,20 +562,12 @@ namespace NodaTime.Format
                     }
                     else
                     {
-                        // Prefix not found, so bail.
-                        if (!mustParse)
-                        {
-                            // It's okay because parsing of this field is not
-                            // required. Don't return an error. Fields down the
-                            // chain can continue on, trying to parse.
-                            return ~position;
-                        }
-                        return position;
+                        return mustParse ? position : ~position;
                     }
                 }
 
                 int suffixPos = -1;
-                if (suffix != null && !mustParse)
+                if (suffix != null)
                 {
                     // Pre-scan the suffix, to help determine if this field must be
                     // parsed.
@@ -594,17 +579,7 @@ namespace NodaTime.Format
                     }
                     else
                     {
-                        // Suffix not found, so bail.
-                        // TODO: This expression is always true, given the earlier "if".
-                        // This appears to be a bug in Joda...
-                        if (!mustParse)
-                        {
-                            // It's okay because parsing of this field is not
-                            // required. Don't return an error. Fields down the
-                            // chain can continue on, trying to parse.
-                            return ~suffixPos;
-                        }
-                        return suffixPos;
+                        return mustParse ? suffixPos : ~suffixPos;
                     }
                 }
 
@@ -615,15 +590,9 @@ namespace NodaTime.Format
                     return position;
                 }
 
-                int limit;
-                if (suffixPos > 0)
-                {
-                    limit = Math.Min(maxParsedDigits, suffixPos - position);
-                }
-                else
-                {
-                    limit = Math.Min(maxParsedDigits, periodString.Length - position);
-                }
+                int limit = suffixPos > 0 
+                    ? Math.Min(maxParsedDigits, suffixPos - position) 
+                    : Math.Min(maxParsedDigits, periodString.Length - position);
 
                 // validate input number
                 int length = 0;
@@ -638,8 +607,7 @@ namespace NodaTime.Format
                         bool negative = c == '-';
 
                         // Next character must be a digit.
-                        if (length + 1 >= limit ||
-                            (c = periodString[position + length + 1]) < '0' || c > '9')
+                        if (length + 1 >= limit || !Char.IsDigit(periodString, position + length + 1))
                         {
                             break;
                         }
@@ -658,7 +626,7 @@ namespace NodaTime.Format
                         continue;
                     }
                     // main number
-                    if (c >= '0' && c <= '9')
+                    if (Char.IsDigit(c))
                     {
                         hasDigits = true;
                     }
@@ -758,6 +726,106 @@ namespace NodaTime.Format
 
             #endregion
 
+            private long GetFieldValue(IPeriod period)
+            {
+                long value;
+
+                if (printZero != PrintZeroSetting.Always && !IsSupported(period.PeriodType, fieldType))
+                {
+                    return long.MaxValue;
+                }
+
+                switch (fieldType)
+                {
+                    case FormatterDurationFieldType.Years:
+                        value = period.Get(DurationFieldType.Years);
+                        break;
+                    case FormatterDurationFieldType.Months:
+                        value = period.Get(DurationFieldType.Months);
+                        break;
+                    case FormatterDurationFieldType.Weeks:
+                        value = period.Get(DurationFieldType.Weeks);
+                        break;
+                    case FormatterDurationFieldType.Days:
+                        value = period.Get(DurationFieldType.Days);
+                        break;
+                    case FormatterDurationFieldType.Hours:
+                        value = period.Get(DurationFieldType.Hours);
+                        break;
+                    case FormatterDurationFieldType.Minutes:
+                        value = period.Get(DurationFieldType.Minutes);
+                        break;
+                    case FormatterDurationFieldType.Seconds:
+                        value = period.Get(DurationFieldType.Seconds);
+                        break;
+                    case FormatterDurationFieldType.Milliseconds:
+                        value = period.Get(DurationFieldType.Milliseconds);
+                        break;
+                    case FormatterDurationFieldType.SecondsMilliseconds: // drop through
+                    case FormatterDurationFieldType.SecondsMillisecondsOptional:
+                        int seconds = period.Get(DurationFieldType.Seconds);
+                        int millis = period.Get(DurationFieldType.Milliseconds);
+                        value = (seconds * (long)NodaConstants.MillisecondsPerSecond) + millis;
+                        break;
+                    default:
+                        return long.MaxValue;
+                }
+
+                if (value == 0)
+                {
+                    switch (printZero)
+                    {
+                        case PrintZeroSetting.Never:
+                            return long.MaxValue;
+                        case PrintZeroSetting.RarelyLast:
+                            if (!IsLastFieldInEmptyPeriod(period))
+                            {
+                                return long.MaxValue;
+                            }
+                            break;
+                        case PrintZeroSetting.RarelyFirst:
+                            if (!IsFirstFieldInEmptyPeriod(period))
+                            {
+                                return long.MaxValue;
+                            }
+                            break;
+                    }
+                }
+                return value;
+            }
+
+            //determines if a given period is zero and this is the last formatted field
+            private bool IsLastFieldInEmptyPeriod(IPeriod period)
+            {
+                if (!IsZero(period) || fieldFormatters[(int)fieldType] != this)
+                    return false;
+
+                for (int nextFieldType = (int)fieldType + 1; nextFieldType < MaxField; nextFieldType++)
+                {
+                    if (IsSupported(period.PeriodType, (FormatterDurationFieldType)nextFieldType) && fieldFormatters[nextFieldType] != null)
+                    {
+                        return false;
+                    }                        
+                }
+                return true;
+            }
+
+            //determines if a given period is zero and this is the first formatted field
+            private bool IsFirstFieldInEmptyPeriod(IPeriod period)
+            {
+                if (!IsZero(period) || fieldFormatters[(int)fieldType] != this)
+                    return false;
+
+                for (int previousFieldType = Math.Min((int)fieldType, (int)FormatterDurationFieldType.Milliseconds) - 1; previousFieldType >= 0; previousFieldType--)
+                {
+                    if (IsSupported(period.PeriodType, (FormatterDurationFieldType)previousFieldType) && fieldFormatters[previousFieldType] != null)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
             private static int ParseInt(String text, int position, int length)
             {
                 if (length >= 10)
@@ -805,94 +873,6 @@ namespace NodaTime.Format
                 return true;
             }
 
-            private long GetFieldValue(IPeriod period)
-            {
-                long value;
-
-                if (printZero != PrintZeroSetting.Always && !IsSupported(period.PeriodType, fieldType))
-                {
-                    return long.MaxValue;
-                }
-
-                switch (fieldType)
-                {
-                    case FormatterDurationFieldType.Years:
-                        value = period.Get(DurationFieldType.Years);
-                        break;
-                    case FormatterDurationFieldType.Months:
-                        value = period.Get(DurationFieldType.Months);
-                        break;
-                    case FormatterDurationFieldType.Weeks:
-                        value = period.Get(DurationFieldType.Weeks);
-                        break;
-                    case FormatterDurationFieldType.Days:
-                        value = period.Get(DurationFieldType.Days);
-                        break;
-                    case FormatterDurationFieldType.Hours:
-                        value = period.Get(DurationFieldType.Hours);
-                        break;
-                    case FormatterDurationFieldType.Minutes:
-                        value = period.Get(DurationFieldType.Minutes);
-                        break;
-                    case FormatterDurationFieldType.Seconds:
-                        value = period.Get(DurationFieldType.Seconds);
-                        break;
-                    case FormatterDurationFieldType.Milliseconds:
-                        value = period.Get(DurationFieldType.Milliseconds);
-                        break;
-                    case FormatterDurationFieldType.SecondsMilliseconds: // drop through
-                    case FormatterDurationFieldType.SecondsMillisecondsOptional:
-                        int seconds = period.Get(DurationFieldType.Seconds);
-                        int millis = period.Get(DurationFieldType.Milliseconds);
-                        value = (seconds * (long)NodaConstants.MillisecondsPerSecond) + millis;
-                        break;
-                    default:
-                        return long.MaxValue;
-                }
-                // determine if period is zero and this is the last field
-                if (value == 0)
-                {
-                    switch (printZero)
-                    {
-                        case PrintZeroSetting.Never:
-                            return long.MaxValue;
-                        case PrintZeroSetting.RarelyLast:
-                            if (IsZero(period) && fieldFormatters[(int)fieldType] == this)
-                            {
-                                for (int i = (int)fieldType + 1; i < MaxField - 1; i++)
-                                {
-                                    if (IsSupported(period.PeriodType, fieldType) && fieldFormatters[i] != null)
-                                    {
-                                        return long.MaxValue;
-                                    }
-                                }
-                            }
-                            else
-                                return long.MaxValue;
-                            break;
-                        case PrintZeroSetting.RarelyFirst:
-                            if (IsZero(period) && fieldFormatters[(int)fieldType] == this)
-                            {
-                                int i = Math.Min((int)fieldType, 8);  // line split out for IBM JDK
-                                i--;                              // see bug 1660490
-                                for (; i >= 0 && i <= MaxField; i--)
-                                {
-                                    if (IsSupported(period.PeriodType, fieldType) && fieldFormatters[i] != null)
-                                    {
-                                        return long.MaxValue;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                return long.MaxValue;
-                            }
-                            break;
-                    }
-                }
-                return value;
-            }
-
             private static void AppendFieldValue(PeriodBuilder builder, FormatterDurationFieldType fieldType, int value)
             {
                 switch (fieldType)
@@ -925,7 +905,8 @@ namespace NodaTime.Format
                         break;
                 }
             }
-            static bool IsSupported(PeriodType type, FormatterDurationFieldType fieldType)
+
+            private static bool IsSupported(PeriodType type, FormatterDurationFieldType fieldType)
             {
                 switch (fieldType)
                 {
@@ -1217,15 +1198,12 @@ namespace NodaTime.Format
                 if (position > oldPos)
                 {
                     // Consume this separator.
-                    int length = parsedForms.Length;
-                    for (int i = 0; i < length; i++)
+                    for (int i = 0; i < parsedForms.Length; i++)
                     {
-                        String parsedForm = parsedForms[i];
-                        if (String.IsNullOrEmpty(parsedForm) ||
-                            periodString.Substring(position, parsedForm.Length).Equals(parsedForm, StringComparison.OrdinalIgnoreCase))
+                        int newPosition;
+                        if((newPosition = FormatUtils.MatchSubstring(periodString, position, parsedForms[i])) > 0)
                         {
-
-                            position += parsedForm.Length;
+                            position = newPosition;
                             found = true;
                             break;
                         }
@@ -1756,7 +1734,9 @@ namespace NodaTime.Format
         public PeriodFormatterBuilder AppendSuffix(string text)
         {
             if (text == null)
+            {
                 throw new ArgumentNullException();
+            }
 
             return AppendSuffix(new SimpleAffix(text));
         }
@@ -1770,7 +1750,7 @@ namespace NodaTime.Format
         /// <returns>This PeriodFormatterBuilder</returns>
         /// <remarks>
         /// During parsing, the singular and plural versions are accepted whether or
-        /// ot the actual value matches plurality.
+        /// not the actual value matches plurality.
         /// </remarks>
         /// <exception cref="InvalidOperationException">If no field exists to append to</exception>
         public PeriodFormatterBuilder AppendSuffix(string singularText, string pluralText)

@@ -50,8 +50,10 @@ namespace NodaTime.Fields
         DurationField LeapDurationField { get; }
         long GetMaximumValue();
         long GetMaximumValue(LocalInstant localInstant);
+        long GetMaximumValue(IPartial instant, int[] values);
         long GetMinimumValue();
         long GetMinimumValue(LocalInstant localInstant);
+        long GetMinimumValue(IPartial instant, int[] values);
         LocalInstant RoundFloor(LocalInstant localInstant);
         LocalInstant RoundCeiling(LocalInstant localInstant);
         LocalInstant RoundHalfFloor(LocalInstant localInstant);

@@ -16,22 +16,225 @@
 #endregion
 
 using System;
+using NodaTime.Calendars;
+using NodaTime.Fields;
 
 namespace NodaTime.Partials
 {
     /// <summary>
-    /// Original name: AbstractPartial
+    /// AbstractPartial provides a standard base implementation of most methods
+    /// in the IPartial interface.
+    /// <para>
+    /// Calculations on are performed using a <see cref="ICalendarSystem"/>.
+    /// </para>
     /// </summary>
-    public class AbstractPartial
-        : IPartial, IComparable<AbstractPartial>
+    public abstract class AbstractPartial: IPartial
     {
-        #region IComparable<AbstractPartial> Members
+        /// <summary>
+        /// Gets the calendar system of the partial which is never null.
+        /// <para>
+        /// The <see cref="ICalendarSystem"/> is the calculation engine behind the partial and
+        /// provides conversion and validation of the fields in a particular calendar system.
+        /// </para>
+        /// </summary>
+        public abstract ICalendarSystem Calendar { get; }
 
-        public int CompareTo(AbstractPartial other)
+        /// <summary>
+        /// Gets the number of fields that this partial supports.
+        /// </summary>
+        public abstract int Size { get; }
+
+        /// <summary>
+        /// Gets an array of the field types that this partial supports.
+        /// The fields are returned largest to smallest, for example Hour, Minute, Second.
+        /// </summary>
+        /// <returns>The fields supported in an array that may be altered, largest to smallest</returns>
+        public DateTimeFieldType[] GetFieldTypes()
+        {
+            DateTimeFieldType[] result = new DateTimeFieldType[Size];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = GetFieldType(i);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the index of the specified field, or -1 if the field is unsupported.
+        /// </summary>
+        /// <param name="type">The type to check, may be null which returns -1</param>
+        /// <returns>The index of the field, -1 if unsupported</returns>
+        public int IndexOf(DateTimeFieldType type)
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                if (GetFieldType(i) == type)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets the index of the specified field, throwing an exception if the
+        /// field is unsupported.
+        /// </summary>
+        /// <param name="type">The type to check, not null</param>
+        /// <returns>The index of the field</returns>
+        protected int IndexOfSupported(DateTimeFieldType type)
+        {
+            int index = IndexOf(type);
+            if (index == -1)
+            {
+                throw new ArgumentException("Field '" + type + "' is not supported");
+            }
+            return index;
+        }
+
+        /// <summary>
+        /// Checks whether the field specified is supported by this partial.
+        /// </summary>
+        /// <param name="fieldType">The type to check, may be null which returns false</param>
+        /// <returns>True if the field is supported. false otherwise</returns>
+        public bool IsSupported(DateTimeFieldType fieldType)
+        {
+            return (IndexOf(fieldType) != -1);
+        }
+
+        /// <summary>
+        /// Get the value of one of the fields of a datetime.
+        /// <para>
+        /// The field specified must be one of those that is supported by the partial.
+        /// </para>
+        /// </summary>
+        /// <param name="field">A DateTimeFieldType instance that is supported by this partial</param>
+        /// <returns>Value of that field</returns>
+        public int Get(DateTimeFieldType fieldType)
+        {
+            return GetValue(IndexOfSupported(fieldType));
+        }
+
+        /// <summary>
+        /// Gets the field type at the specified index.
+        /// </summary>
+        /// <param name="index">The index</param>
+        /// <returns>The field type</returns>
+        public DateTimeFieldType GetFieldType(int index)
+        {
+            return GetField(index, Calendar).FieldType;
+        }
+
+        /// <summary>
+        /// Gets the field at the specifed index.
+        /// </summary>
+        /// <param name="index">The index</param>
+        /// <returns>The field</returns>
+        public DateTimeFieldBase GetField(int index)
+        {
+            return GetField(index, Calendar);
+        }
+
+        /// <summary>
+        /// Gets an array of the fields that this partial supports.
+        /// The fields are returned largest to smallest, for example Hour, Minute, Second.
+        /// </summary>
+        /// <returns>The fields supported in an array that may be altered, largest to smallest</returns>
+        public DateTimeFieldBase[] GetFields()
+        {
+            DateTimeFieldBase[] result = new DateTimeFieldBase[Size];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = GetField(i);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the value at the specified index.
+        /// </summary>
+        /// <param name="index">The index to retrieve</param>
+        /// <returns>The value of the field at the specified index</returns>
+        public abstract int GetValue(int index);
+
+        /// <summary>
+        /// Gets an array of the value of each of the fields that this partial supports.
+        /// <para>
+        /// The fields are returned largest to smallest, for example Hour, Minute, Second.
+        /// Each value corresponds to the same array index as <code>GetFields()</code>
+        /// </para>
+        /// </summary>
+        /// <returns>The current values of each field in an array that may be altered, largest to smallest</returns>
+        public int[] GetValues()
+        {
+            int[] result = new int[Size];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = GetValue(i);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the field for a specific index in the calendar system specified.
+        /// <para>
+        /// This method must not use any instance variables.
+        /// </para>
+        /// </summary>
+        /// <param name="index">The index to retrieve</param>
+        /// <param name="chrono">The chronology to use</param>
+        /// <returns>The field</returns>
+        protected abstract DateTimeFieldBase GetField(int index, ICalendarSystem calendar);
+
+        /// <summary>
+        /// Gets the index of the first fields to have the specified duration,
+        /// or -1 if the field is unsupported.
+        /// </summary>
+        /// <param name="type">The type to check, may be null which returns -1</param>
+        /// <returns>The index of the field, -1 if unsupported</returns>
+        protected int IndexOf(DurationFieldType type)
+        {
+            for (int i = 0, isize = Size; i < isize; i++)
+            {
+                if (GetFieldType(i).DurationFieldType == type)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets the index of the first fields to have the specified duration,
+        /// throwing an exception if the field is unsupported.
+        /// </summary>
+        /// <param name="type">The type to check, not null</param>
+        /// <returns>Index of the field</returns>
+        protected int IndexOfSupported(DurationFieldType type)
+        {
+            int index = IndexOf(type);
+            if (index == -1)
+            {
+                throw new ArgumentException("Field '" + type + "' is not supported");
+            }
+            return index;
+        }
+
+        /// <summary>
+        /// Resolves this partial against another complete instant to create a new
+        /// full instant. The combination is performed using the chronology of the
+        /// specified instant.
+        /// <para>
+        /// For example, if this partial represents a time, then the result of this
+        /// method will be the datetime from the specified base instant plus the
+        /// time from this partial.
+        /// </para>
+        /// </summary>
+        /// <param name="baseInstant">The instant that provides the missing fields, null means now</param>
+        /// <returns></returns>
+        public ZonedDateTime ToDateTime(Instant baseInstant)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

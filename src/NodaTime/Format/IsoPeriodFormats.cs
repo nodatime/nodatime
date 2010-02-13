@@ -17,7 +17,7 @@
 namespace NodaTime.Format
 {
     /// <summary>
-    /// Factory that creates instances of PeriodFormatter for the ISO8601 standard.
+    /// Provides access to constructed instances of PeriodFormatter for the ISO8601 standard.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -26,14 +26,11 @@ namespace NodaTime.Format
     /// The others are <see cref="PeriodFormatterFactory"/> and <see cref="PeriodFormatterBuilder"/>.
     /// </para>
     /// <para>
-    /// IsoPeriodFormat is thread-safe and immutable, and the formatters it
+    /// IsoPeriodFormats is thread-safe and immutable, and the formatters it
     /// returns are as well.
     /// </para>
-    /// <para>
-    /// TODO: Consider renaming this to IsoPeriodFormats. It's not really a factory.
-    /// </para>
     /// </remarks>
-    public static class IsoPeriodFormatterFactory
+    public static class IsoPeriodFormats
     {
         private static readonly PeriodFormatter standard = new PeriodFormatterBuilder()
             .AppendLiteral("P")
