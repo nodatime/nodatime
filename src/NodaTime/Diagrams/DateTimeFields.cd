@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NodaTime.Fields.DateTimeFieldBase" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGJAAIBAoAAAAkAECQAAFAAACCAAAAAAAFBAYABAQAQ=</HashCode>
+      <FileName>Fields\DateTimeFieldBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NodaTime.Fields.FieldSet" Collapsed="true">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YEEUE5BFBAXQAlAQYJAQEGCNKBUgqygEULAPGEAAExk=</HashCode>
+      <FileName>Fields\FieldSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.FieldUtils" Collapsed="true">
+    <Position X="2.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Fields\FieldUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.PreciseDateTimeField" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AKAAAIAAAAAAAgAAAAAAAAAAAAAAAAAAAEBAAAAAAAA=</HashCode>
+      <FileName>Fields\PreciseDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.PreciseDurationDateTimeField" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAIIAAAAgAAAAAABEAACAAAAAAAABAAQABAQAA=</HashCode>
+      <FileName>Fields\PreciseDurationDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.ImpreciseDateTimeField" Collapsed="true">
+    <Position X="11.5" Y="1.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAIAAAAkAAAQAAAAAACAAAAAgAABBAAAAAAAA=</HashCode>
+      <FileName>Fields\ImpreciseDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.DecoratedDateTimeField" Collapsed="true">
+    <Position X="2.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEIAAABAAAgAAAAAABAAACAAAAAAAAFBAAAAAQAA=</HashCode>
+      <FileName>Fields\DecoratedDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.GJEraDateTimeField" Collapsed="true">
+    <Position X="4.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAIAAgAAAAgAACAAABAAACBAAAAAAAFBAQAAAQAA=</HashCode>
+      <FileName>Fields\GJEraDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.UnsupportedDateTimeField" Collapsed="true">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGJAAIBAoAAAAkAACQAAFAAADCAAAAgAAFBgYABAQAQ=</HashCode>
+      <FileName>Fields\UnsupportedDateTimeField.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NodaTime.Fields.DividedDateTimeField" Collapsed="true">
+    <Position X="2.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAoAEIAIIAAQAkAACQAAIAAACAAAAAAAAFAAAABAQAA=</HashCode>
+      <FileName>Fields\DividedDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.GJYearOfEraDateTimeField" Collapsed="true">
+    <Position X="4.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAIAAAAAAAkAAAQAAAAAAABAAAAAAAFAAQABAQAA=</HashCode>
+      <FileName>Fields\GJYearOfEraDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.IsoYearOfEraDateTimeField" Collapsed="true">
+    <Position X="6.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAIAAAAkAAAQAAAAAAAAAAAAAAQFAAQABAQAA=</HashCode>
+      <FileName>Fields\IsoYearOfEraDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.OffsetDateTimeField" Collapsed="true">
+    <Position X="3.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AALAEIAAoAAQAgAACAAAEAAAAAAAAAAAAEAAQABAQAQ=</HashCode>
+      <FileName>Fields\OffsetDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.RemainderDateTimeField" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAhAAIAIgAAAAgAACAAAAAAAAAAACAAAAEBAQABAQAA=</HashCode>
+      <FileName>Fields\RemainderDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.ZeroIsMaxDateTimeField" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAIAAoAAAAkAACQAAEAAAAAAAAAAAAFAAQABAQAQ=</HashCode>
+      <FileName>Fields\ZeroIsMaxDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.BasicMonthOfYearDateTimeField" Collapsed="true">
+    <Position X="9.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAEIAAIAAAAgAAAQAAFAAAQBAAAAAAAFBAAABAUAQ=</HashCode>
+      <FileName>Fields\BasicMonthOfYearDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.BasicWeekYearDateTimeField" Collapsed="true">
+    <Position X="11.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAIAAIAAAAgAAAQAAFAAAAhAAAAAAAFBAAABAQAQ=</HashCode>
+      <FileName>Fields\BasicWeekYearDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.BasicYearDateTimeField" Collapsed="true">
+    <Position X="14" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAIAAIAAAAgAAAQAAFAAAABAAAAAAAFBAQAAAQAQ=</HashCode>
+      <FileName>Fields\BasicYearDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodaTime.Fields.GJMonthOfYearDateTimeField" Collapsed="true">
+    <Position X="9.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fields\GJMonthOfYearDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="NodaTime.Fields.IDateTimeField" Collapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACJAAIBAoAAAAkAACQAAFAAACCAAAAAAAFBAYABAQAQ=</HashCode>
+      <FileName>Fields\IDateTimeField.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

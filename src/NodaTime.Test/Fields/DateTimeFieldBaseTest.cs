@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NUnit.Framework;
@@ -44,108 +45,144 @@ namespace NodaTime.Test.Fields
             Assert.IsTrue(field.IsSupported);
         }
 
-        // TODO: Isn't this testing the stub code rather than DateTimeFieldBase?
+        #region Values
+
         [Test]
-        public void GetValue_OnStub_DividesBy60()
+        public void GetValue_DelegatesToGetInt64Value()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
-            Assert.AreEqual(0, field.GetValue(new LocalInstant(0)));
-            Assert.AreEqual(1, field.GetValue(new LocalInstant(60)));
-            Assert.AreEqual(2, field.GetValue(new LocalInstant(123)));
+            var field = new StubDateTimeFieldBase();
+            var arg = new LocalInstant(60);
+
+            field.GetValue(arg);
+
+            Assert.That(field.GetInt64ValueWasCalled, Is.True);
+            Assert.That(field.GetInt64ValueArg, Is.EqualTo(arg));
         }
 
         [Test]
         public void AddInt32_DelegatesToDurationField()
         {
             MockCountingDurationField.int32Additions = 0;
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
-            Assert.AreEqual(61, field.Add(new LocalInstant(1), 1).Ticks);
-            Assert.AreEqual(1, MockCountingDurationField.int32Additions);
+            var instantArg = new LocalInstant(1);
+            var valueArg = 1;
+            var field = new StubDateTimeFieldBase();
+
+            field.Add(instantArg, valueArg);
+
+             Assert.That(MockCountingDurationField.int32Additions, Is.EqualTo(1));
+             Assert.That(MockCountingDurationField.AddInstantArg, Is.EqualTo(instantArg));
+             Assert.That(MockCountingDurationField.AddValueArg, Is.EqualTo(valueArg));
         }
 
         [Test]
         public void AddInt64_DelegatesToDurationField()
         {
             MockCountingDurationField.int64Additions = 0;
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
-            Assert.AreEqual(61, field.Add(new LocalInstant(1), 1L).Ticks);
-            Assert.AreEqual(1, MockCountingDurationField.int64Additions);
+            var instantArg = new LocalInstant(2);
+            var valueArg = 5L;
+            var field = new StubDateTimeFieldBase();
+
+            field.Add(instantArg, valueArg);
+
+             Assert.That(MockCountingDurationField.int64Additions, Is.EqualTo(1));
+             Assert.That(MockCountingDurationField.Add64InstantArg, Is.EqualTo(instantArg));
+             Assert.That(MockCountingDurationField.Add64ValueArg, Is.EqualTo(valueArg));
         }
 
         [Test]
-        public void GetDifference_DelegatesToDurationFieldGetInt64Difference()
+        public void GetDifference_DelegatesToDurationFieldGetDifference()
         {
             MockCountingDurationField.differences = 0;
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
-            Assert.AreEqual(30, field.GetDifference(new LocalInstant(), new LocalInstant()));
-            Assert.AreEqual(1, MockCountingDurationField.differences);
+            var firstInstant = new LocalInstant(2);
+            var secondInstant = new LocalInstant(3);
+            var field = new StubDateTimeFieldBase();
+
+            field.GetDifference(firstInstant, secondInstant);
+
+            Assert.That(MockCountingDurationField.differences, Is.EqualTo(1));
+            Assert.That(MockCountingDurationField.DiffFirstArg, Is.EqualTo(firstInstant));
+            Assert.That(MockCountingDurationField.DiffSecondArg, Is.EqualTo(secondInstant));
         }
 
         [Test]
         public void GetInt64Difference_DelegatesToDurationFieldGetInt64Difference()
         {
-            MockCountingDurationField.differences = 0;
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
-            Assert.AreEqual(30, field.GetInt64Difference(new LocalInstant(), new LocalInstant()));
-            Assert.AreEqual(1, MockCountingDurationField.differences);
+            MockCountingDurationField.differences64 = 0;
+            var firstInstant = new LocalInstant(4);
+            var secondInstant = new LocalInstant(5);
+            var field = new StubDateTimeFieldBase();
+
+            field.GetInt64Difference(firstInstant, secondInstant);
+
+            Assert.That(MockCountingDurationField.differences64, Is.EqualTo(1));
+            Assert.That(MockCountingDurationField.Diff64FirstArg, Is.EqualTo(firstInstant));
+            Assert.That(MockCountingDurationField.Diff64SecondArg, Is.EqualTo(secondInstant));
         }
 
-        [Test]
-        public void Set_OnStub_Adds1000()
-        {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
-            Assert.AreEqual(1000, field.SetValue(new LocalInstant(0), 0).Ticks);
-            Assert.AreEqual(1029, field.SetValue(new LocalInstant(0), 29).Ticks);
-        }
+        #endregion
+
+        #region Leap
 
         [Test]
         public void IsLeap_DefaultsToFalse()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeFieldBase();
             Assert.IsFalse(field.IsLeap(new LocalInstant(0)));
         }
 
         [Test]
         public void GetLeapAmount_DefaultsTo0()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeFieldBase();
             Assert.AreEqual(0, field.GetLeapAmount(new LocalInstant(0)));
         }
 
         [Test]
         public void LeapDurationField_DefaultsToNull()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeFieldBase();
             Assert.IsNull(field.LeapDurationField);
         }
+
+        #endregion
+
+        #region Ranges
 
         [Test]
         public void GetMinimumValue_OnStub_DefaultsTo0()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeFieldBase();
             Assert.AreEqual(0L, field.GetMinimumValue());
+            Assert.That(field.GetMinWasCalled, Is.True);
         }
                 
         [Test]
-        public void GetMinimumValueForInstant_OnStub_DefaultsTo0()
+        public void GetMinimumValueForInstant_DelegatesToAbsolute()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeFieldBase();
             Assert.AreEqual(0L, field.GetMinimumValue(new LocalInstant(0)));
+            Assert.That(field.GetMinWasCalled, Is.True);
         }
 
         [Test]
         public void GetMaximumValue_OnStub_DefaultsTo59()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeFieldBase();
             Assert.AreEqual(59L, field.GetMaximumValue());
+            Assert.That(field.GetMaxWasCalled, Is.True);
         }
 
         [Test]
-        public void GetMaximumValueForInstant_OnStub_DefaultsTo59()
+        public void GetMaximumValueForInstant_DelegatesToAbsolute()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeFieldBase();
             Assert.AreEqual(59L, field.GetMaximumValue(new LocalInstant(0)));
+            Assert.That(field.GetMaxWasCalled, Is.True);
         }
+
+        #endregion
+
+        #region Rounding
 
         [Test]
         public void RoundFloor_OnStub_RoundsTo60()
@@ -216,9 +253,10 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(0L, field.Remainder(new LocalInstant(60L)).Ticks);
         }
 
+        #endregion
+
         private class StubDateTimeFieldBase : DateTimeFieldBase
         {
-            private int maxValue;
 
             internal StubDateTimeFieldBase(DateTimeFieldType type)
                 : base(type)
@@ -226,29 +264,23 @@ namespace NodaTime.Test.Fields
             }
 
             internal StubDateTimeFieldBase()
-                : this(59)
-            {
-            }
-
-            internal StubDateTimeFieldBase(int maxValue)
                 : base(DateTimeFieldType.SecondOfMinute)
             {
-                this.maxValue = maxValue;
             }
 
-            public override int GetValue(LocalInstant instant)
-            {
-                return (int)(instant.Ticks / 60L);
-            }
-
+            public bool GetInt64ValueWasCalled;
+            public LocalInstant GetInt64ValueArg;
             public override long GetInt64Value(LocalInstant localInstant)
             {
+                GetInt64ValueWasCalled = true;
+                GetInt64ValueArg = localInstant;
+
                 return localInstant.Ticks / 60L;
             }
 
             public override LocalInstant SetValue(LocalInstant localInstant, long value)
             {
-                return new LocalInstant(1000 + value);
+                return localInstant;
             }
 
             public override DurationField DurationField
@@ -261,13 +293,18 @@ namespace NodaTime.Test.Fields
                 get { return new MockCountingDurationField(DurationFieldType.Minutes);  }
             }
 
+            public bool GetMaxWasCalled;
+
             public override long GetMaximumValue()
             {
+                GetMaxWasCalled = true;
                 return 59;
             }
 
+            public bool GetMinWasCalled;
             public override long GetMinimumValue()
             {
+                GetMinWasCalled = true;
                 return 0;
             }
 

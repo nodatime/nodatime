@@ -125,7 +125,7 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetDifference_DelegatesToDurationFieldGetInt64Difference()
+        public void GetDifference_DelegatesToDurationFieldGetDifference()
         {
             MockCountingDurationField.differences = 0;
             IDateTimeField field = UnsupportedDateTimeField.GetInstance(
@@ -137,11 +137,11 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetInt64Difference_DelegatesToDurationFieldGetInt64Difference()
         {
-            MockCountingDurationField.differences = 0;
+            MockCountingDurationField.differences64 = 0;
             IDateTimeField field = UnsupportedDateTimeField.GetInstance(
                 DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
             Assert.AreEqual(30, field.GetInt64Difference(new LocalInstant(), new LocalInstant()));
-            Assert.AreEqual(1, MockCountingDurationField.differences);
+            Assert.AreEqual(1, MockCountingDurationField.differences64);
         }
 
     }

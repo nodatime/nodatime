@@ -207,6 +207,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Diagrams\Calendars.cd" />
+    <None Include="Diagrams\DurationFields.cd" />
     <None Include="Diagrams\Fields.cd" />
     <None Include="Diagrams\Partial.cd" />
     <None Include="Diagrams\Period.cd" />
