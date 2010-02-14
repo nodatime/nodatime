@@ -21,9 +21,6 @@ namespace NodaTime.Test.Fields
     internal class MockCountingDurationField : DurationFieldBase
     {
         // FIXME: Use a proper mock?
-        internal static int int32Additions;
-        internal static int int64Additions;
-        internal static int differences;
         private readonly long unitTicks;
 
         internal MockCountingDurationField(DurationFieldType fieldType)
@@ -51,21 +48,49 @@ namespace NodaTime.Test.Fields
             return new Duration(0);
         }
 
+        internal static int int32Additions;
+        internal static LocalInstant AddInstantArg;
+        internal static int AddValueArg;
+
         public override LocalInstant Add(LocalInstant localInstant, int value)
         {
             int32Additions++;
+            AddInstantArg = localInstant;
+            AddValueArg = value;
             return new LocalInstant(localInstant.Ticks + value * unitTicks);
         }
 
+        internal static int int64Additions;
+        internal static LocalInstant Add64InstantArg;
+        internal static long Add64ValueArg;
         public override LocalInstant Add(LocalInstant localInstant, long value)
         {
             int64Additions++;
+            Add64InstantArg = localInstant;
+            Add64ValueArg = value;
+
             return new LocalInstant(localInstant.Ticks + value * unitTicks);
         }
 
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal static int differences;
+        internal static LocalInstant DiffFirstArg;
+        internal static LocalInstant DiffSecondArg;
+        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             differences++;
+            DiffFirstArg = minuendInstant;
+            DiffSecondArg = subtrahendInstant;
+            return 30;
+        }
+
+        internal static int differences64;
+        internal static LocalInstant Diff64FirstArg;
+        internal static LocalInstant Diff64SecondArg;
+        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        {
+            differences64++;
+            Diff64FirstArg = minuendInstant;
+            Diff64SecondArg = subtrahendInstant;
             return 30;
         }
     }
