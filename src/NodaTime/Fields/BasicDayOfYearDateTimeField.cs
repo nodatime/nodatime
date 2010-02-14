@@ -41,7 +41,7 @@ namespace NodaTime.Fields
             return calendarSystem.GetDayOfYear(localInstant);
         }
 
-        public override DurationField RangeDurationField { get { return calendarSystem.Fields.Days; } }
+        public override DurationField RangeDurationField { get { return calendarSystem.Fields.Years; } }
 
         public override long GetMaximumValue()
         {
