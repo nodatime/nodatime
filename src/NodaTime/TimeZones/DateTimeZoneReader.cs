@@ -74,7 +74,7 @@ namespace NodaTime.TimeZones
             }
             else if (flag == DateTimeZoneWriter.FlagTimeZoneDst)
             {
-                return DSTZone.Read(this, id);
+                return DaylightSavingsTimeZone.Read(this, id);
             }
             else
             {

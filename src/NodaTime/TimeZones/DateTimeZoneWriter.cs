@@ -98,7 +98,7 @@ namespace NodaTime.TimeZones
             {
                 WriteInt8(FlagTimeZoneCached);
             }
-            else if (timeZone is DSTZone)
+            else if (timeZone is DaylightSavingsTimeZone)
             {
                 WriteInt8(FlagTimeZoneDst);
             }
