@@ -66,7 +66,7 @@ namespace NodaTime
         /// given is outside this range then the value is forced into the range by considering that
         /// time wraps as it goes around the world multiple times
         /// </remarks>
-        /// <param name="ticks">The number of milliseconds.</param>
+        /// <param name="milliseconds">The number of milliseconds.</param>
         public Offset(int milliseconds)
         {
             this.milliseconds = milliseconds % NodaConstants.MillisecondsPerDay;
@@ -146,12 +146,10 @@ namespace NodaTime
         /// </remarks>
         public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
         {
-            return new Offset((int)(
-                (hours * NodaConstants.MillisecondsPerHour) +
-                (minutes * NodaConstants.MillisecondsPerMinute) +
-                (seconds * NodaConstants.MillisecondsPerSecond) +
-                milliseconds
-                ));
+            return new Offset((hours * NodaConstants.MillisecondsPerHour) +
+                              (minutes * NodaConstants.MillisecondsPerMinute) +
+                              (seconds * NodaConstants.MillisecondsPerSecond) +
+                              milliseconds);
         }
 
         /// <summary>
@@ -214,7 +212,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Offset left, Offset right)
         {
             return left.Equals(right);
@@ -225,7 +223,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator !=(Offset left, Offset right)
         {
             return !(left == right);
@@ -236,7 +234,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Offset left, Offset right)
         {
             return left.CompareTo(right) < 0;
@@ -247,7 +245,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Offset left, Offset right)
         {
             return left.CompareTo(right) <= 0;
@@ -258,7 +256,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Offset left, Offset right)
         {
             return left.CompareTo(right) > 0;
@@ -269,7 +267,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Offset left, Offset right)
         {
             return left.CompareTo(right) >= 0;
@@ -289,7 +287,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Offset other)
         {
-            return this.Milliseconds == other.Milliseconds;
+            return Milliseconds == other.Milliseconds;
         }
 
         #endregion
@@ -384,19 +382,16 @@ namespace NodaTime
             {
                 return Format(false);
             }
-            else if (format == LongFormat)
+            if (format == LongFormat)
             {
                 return Format(true);
             }
-            else
-            {
-                throw new ArgumentOutOfRangeException("format", format, "The format parameter is not valid: " + format);
-            }
+            throw new ArgumentOutOfRangeException("format", format, "The format parameter is not valid: " + format);
         }
 
         /// <summary>
         /// Returns a string formatted version of this offset. The trailing milliseconds and seconds
-        /// are omitted if they are zero unless the <paramref name="force"/> flag is set.
+        /// are omitted if they are zero unless the <paramref name="forceAll"/> flag is set.
         /// </summary>
         /// <param name="forceAll">if set to <c>true</c> if all of the fields should be shown reguardless.</param>
         /// <returns></returns>
@@ -413,14 +408,11 @@ namespace NodaTime
             {
                 return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, millisecondsValue);
             }
-            else if (seconds != 0)
+            if (seconds != 0)
             {
                 return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}:{3:D2}", sign, hours, minutes, seconds);
             }
-            else
-            {
-                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}", sign, hours, minutes);
-            }
+            return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}", sign, hours, minutes);
         }
 
         #endregion  // Object overrides

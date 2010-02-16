@@ -208,13 +208,13 @@ namespace NodaTime.TimeZones
                     ZoneRecurrence endRule = this.rules[1];
                     if (startRule.IsInfinite && endRule.IsInfinite)
                     {
-                        // With exactly two infinitely recurring rules left, a simple DSTZone can be
+                        // With exactly two infinitely recurring rules left, a simple DaylightSavingsTimeZone can be
                         // formed.
 
                         // The order of rules can come in any order, and it doesn't really matter
-                        // which rule was chosen the 'start' and which is chosen the 'end'. DSTZone
+                        // which rule was chosen the 'start' and which is chosen the 'end'. DaylightSavingsTimeZone
                         // works properly either way.
-                        return new DSTZone(id, this.ruleSet.StandardOffset, startRule, endRule);
+                        return new DaylightSavingsTimeZone(id, this.ruleSet.StandardOffset, startRule, endRule);
                     }
                 }
                 return null;

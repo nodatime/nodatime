@@ -1,6 +1,7 @@
 ﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,13 +14,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
-    internal class DSTZone
-        : IDateTimeZone
+    /// <summary>
+    ///    Provides a basic daylight savings time zone. A DST time zone has a simple recurrence
+    ///    where an extra offset is applied between two dates of a year.
+    /// </summary>
+    internal class DaylightSavingsTimeZone
+        : IDateTimeZone, IEquatable<DaylightSavingsTimeZone>
     {
         private readonly string id;
 
@@ -28,13 +36,18 @@ namespace NodaTime.TimeZones
         internal ZoneRecurrence EndRecurrence { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DSTZone"/> class.
+        ///    Initializes a new instance of the
+        ///    <see cref="DaylightSavingsTimeZone"/>
+        ///    class.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="startRecurrence">The start recurrence.</param>
+        /// <param name="startRecurrence">
+        ///    The start recurrence.
+        /// </param>
         /// <param name="endRecurrence">The end recurrence.</param>
-        internal DSTZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
+        internal DaylightSavingsTimeZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence,
+                                         ZoneRecurrence endRecurrence)
         {
             this.id = id;
             StandardOffset = standardOffset;
@@ -45,35 +58,43 @@ namespace NodaTime.TimeZones
             {
                 if (startRecurrence.Savings > Offset.Zero)
                 {
-                    startRecurrence = startRecurrence.RenameAppend("-Summer");
+                    StartRecurrence = startRecurrence.RenameAppend("-Summer");
                 }
                 else
                 {
-                    endRecurrence = endRecurrence.RenameAppend("-Summer");
+                    EndRecurrence = endRecurrence.RenameAppend("-Summer");
                 }
             }
-
         }
 
-        public bool equals(Object obj)
+        public override bool Equals(Object obj)
         {
-            if (this == obj)
-            {
-                return true;
-            }
-            DSTZone other = obj as DSTZone;
-            if (other != null)
-            {
-                return
-                    Id == other.Id &&
-                    StandardOffset == other.StandardOffset &&
-                    StartRecurrence.Equals(other.StartRecurrence) &&
-                    EndRecurrence.Equals(other.EndRecurrence);
-            }
-            return false;
+            return Equals(obj as DaylightSavingsTimeZone);
         }
 
-        private ZoneRecurrence findMatchingRecurrence(Instant instant)
+
+        public bool Equals(DaylightSavingsTimeZone other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return
+                Id == other.Id &&
+                StandardOffset == other.StandardOffset &&
+                StartRecurrence.Equals(other.StartRecurrence) &&
+                EndRecurrence.Equals(other.EndRecurrence);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = HashCodeHelper.Initialize();
+            hashCode = HashCodeHelper.Hash(hashCode, Id);
+            hashCode = HashCodeHelper.Hash(hashCode, StandardOffset);
+            hashCode = HashCodeHelper.Hash(hashCode, StartRecurrence);
+            hashCode = HashCodeHelper.Hash(hashCode, EndRecurrence);
+            return hashCode;
+        }
+
+        private ZoneRecurrence FindMatchingRecurrence(Instant instant)
         {
             Instant? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
             Instant? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
@@ -87,7 +108,6 @@ namespace NodaTime.TimeZones
             }
             return EndRecurrence;
         }
-
 
         #region IDateTimeZone Members
 
@@ -127,7 +147,8 @@ namespace NodaTime.TimeZones
                 }
             }
 
-            if (result.HasValue && result.Value != Instant.MinValue) {
+            if (result.HasValue && result.Value != Instant.MinValue)
+            {
                 result = result.Value - Duration.One;
             }
             return result;
@@ -135,17 +156,17 @@ namespace NodaTime.TimeZones
 
         public Offset GetOffsetFromUtc(Instant instant)
         {
-            throw new NotSupportedException();
+            return FindMatchingRecurrence(instant).Savings + StandardOffset;
         }
 
         public Offset GetOffsetFromLocal(LocalInstant instant)
         {
-            throw new NotSupportedException();
+            return DateTimeZone.GetOffsetFromLocal(this, instant);
         }
 
         public string Name(Instant instant)
         {
-            return findMatchingRecurrence(instant).Name;
+            return FindMatchingRecurrence(instant).Name;
         }
 
         public string Id
@@ -180,7 +201,7 @@ namespace NodaTime.TimeZones
             Offset offset = reader.ReadOffset();
             ZoneRecurrence start = ZoneRecurrence.Read(reader);
             ZoneRecurrence end = ZoneRecurrence.Read(reader);
-            return new DSTZone(id, offset, start, end);
+            return new DaylightSavingsTimeZone(id, offset, start, end);
         }
     }
 }

@@ -290,7 +290,7 @@ namespace NodaTime.TimeZones
                     {
                         if (tailZone != null)
                         {
-                            // Got the extra transition before DSTZone.
+                            // Got the extra transition before DaylightSavingsTimeZone.
                             break;
                         }
                     }
@@ -299,7 +299,7 @@ namespace NodaTime.TimeZones
                         tailZone = transitionIterator.BuildTailZone(zoneId);
                         // If tailZone is not null, don't break out of main loop until at least one
                         // more transition is calculated. This ensures a correct 'seam' to the
-                        // DSTZone.
+                        // DaylightSavingsTimeZone.
                     }
                 }
 
@@ -322,7 +322,7 @@ namespace NodaTime.TimeZones
                 return new FixedDateTimeZone(zoneId, tr.WallOffset);
             }
 
-            PrecalculatedDateTimeZone zone = PrecalculatedDateTimeZone.create(zoneId, transitions, tailZone);
+            PrecalculatedDateTimeZone zone = PrecalculatedDateTimeZone.Create(zoneId, transitions, tailZone);
             if (zone.IsCachable())
             {
                 return CachedDateTimeZone.ForZone(zone);

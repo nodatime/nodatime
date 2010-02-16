@@ -1,6 +1,7 @@
 ﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,10 +14,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
-using System.Globalization;
 using NodaTime.TimeZones;
+
 namespace NodaTime
 {
     /// <summary>
@@ -37,7 +40,10 @@ namespace NodaTime
         /// <summary>
         /// Ticks since the Unix epoch.
         /// </summary>
-        public long Ticks { get { return ticks; } }
+        public long Ticks
+        {
+            get { return this.ticks; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
@@ -96,8 +102,8 @@ namespace NodaTime
         /// Implements the operator - (subtraction) for <see cref="LocalInstant"/> - <see
         /// cref="Offset"/>.
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <param name="instant">The left hand side of the operator.</param>
+        /// <param name="offset">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public static Instant operator -(LocalInstant instant, Offset offset)
         {
@@ -150,7 +156,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(LocalInstant left, LocalInstant right)
         {
             return left.Equals(right);
@@ -161,7 +167,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator !=(LocalInstant left, LocalInstant right)
         {
             return !(left == right);
@@ -172,7 +178,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(LocalInstant left, LocalInstant right)
         {
             return left.CompareTo(right) < 0;
@@ -183,7 +189,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(LocalInstant left, LocalInstant right)
         {
             return left.CompareTo(right) <= 0;
@@ -194,7 +200,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(LocalInstant left, LocalInstant right)
         {
             return left.CompareTo(right) > 0;
@@ -205,7 +211,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(LocalInstant left, LocalInstant right)
         {
             return left.CompareTo(right) >= 0;
@@ -225,7 +231,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(LocalInstant other)
         {
-            return this.Ticks == other.Ticks;
+            return Ticks == other.Ticks;
         }
 
         #endregion
@@ -279,7 +285,7 @@ namespace NodaTime
         {
             if (obj is LocalInstant)
             {
-                return Equals((LocalInstant)obj);
+                return Equals((LocalInstant) obj);
             }
             return false;
         }
@@ -304,7 +310,11 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return Ticks.ToString("N0", CultureInfo.CurrentCulture);
+            // TODO: Use proper formatting!
+            var utc = new LocalDateTime(new LocalInstant(Ticks));
+            return string.Format("{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00} LOC", utc.Year, utc.MonthOfYear, utc.DayOfMonth,
+                                 utc.HourOfDay, utc.MinuteOfHour, utc.SecondOfMinute);
+            //return Ticks.ToString("N0", CultureInfo.CurrentCulture);
         }
 
         #endregion  // Object overrides
