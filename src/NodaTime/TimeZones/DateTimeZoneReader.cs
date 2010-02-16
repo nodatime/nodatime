@@ -74,12 +74,16 @@ namespace NodaTime.TimeZones
             }
             else if (flag == DateTimeZoneWriter.FlagTimeZoneDst)
             {
-                return DSTZone.Read(this, id);
+                return DaylightSavingsTimeZone.Read(this, id);
             }
             else
             {
                 string className = ReadString();
                 Type type = Type.GetType(className);
+                if (type == null)
+                {
+                    throw new InvalidOperationException("Unknown DateTimeZone type: " + className);
+                }
                 MethodInfo method = type.GetMethod("Read", new Type[] { typeof(DateTimeZoneReader), typeof(string) });
                 if (method != null)
                 {

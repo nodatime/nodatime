@@ -1,23 +1,24 @@
 ﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NodaTime.TimeZones
 {
@@ -31,9 +32,11 @@ namespace NodaTime.TimeZones
          * @param transitions  the list of Transition objects
          * @param tailZone  optional zone for getting info beyond precalculated tables
          */
-        internal static PrecalculatedDateTimeZone create(String id, List<ZoneTransition> transitions, IDateTimeZone tailZone)
+
+        internal static PrecalculatedDateTimeZone Create(String id, List<ZoneTransition> transitions,
+                                                         IDateTimeZone tailZone)
         {
-            if (transitions == null) 
+            if (transitions == null)
             {
                 throw new ArgumentNullException("transitions");
             }
@@ -43,10 +46,10 @@ namespace NodaTime.TimeZones
                 throw new ArgumentException("There must be at least one transition", "transitions");
             }
 
-            Instant[] trans = new Instant[size];
-            Offset[] wallOffsets = new Offset[size];
-            Offset[] standardOffsets = new Offset[size];
-            String[] nameKeys = new String[size];
+            var trans = new Instant[size];
+            var wallOffsets = new Offset[size];
+            var standardOffsets = new Offset[size];
+            var nameKeys = new String[size];
 
             ZoneTransition last = null;
             for (int i = 0; i < size; i++)
@@ -112,30 +115,36 @@ namespace NodaTime.TimeZones
 
         // All array fields have the same length.
 
-        internal readonly Instant[] transitions;
-        internal readonly Offset[] wallOffsets;
-        internal readonly Offset[] standardOffsets;
-        internal readonly String[] nameKeys;
-        internal readonly IDateTimeZone tailZone;
+        internal readonly Instant[] Transitions;
+        internal readonly Offset[] WallOffsets;
+        internal readonly Offset[] StandardOffsets;
+        internal readonly String[] NameKeys;
+        internal readonly IDateTimeZone TailZone;
 
         /**
          * Constructor used ONLY for valid input, loaded via static methods.
          */
-        private PrecalculatedDateTimeZone(String id, Instant[] transitions, Offset[] wallOffsets, Offset[] standardOffsets, String[] nameKeys, IDateTimeZone tailZone)
+
+        private PrecalculatedDateTimeZone(String id, Instant[] transitions, Offset[] wallOffsets,
+                                          Offset[] standardOffsets, String[] nameKeys, IDateTimeZone tailZone)
             : base(id, GetLatestOffset(standardOffsets), false)
         {
-            this.transitions = transitions;
-            this.wallOffsets = wallOffsets;
-            this.standardOffsets = standardOffsets;
-            this.nameKeys = nameKeys;
-            this.tailZone = tailZone;
+            this.Transitions = transitions;
+            this.WallOffsets = wallOffsets;
+            this.StandardOffsets = standardOffsets;
+            this.NameKeys = nameKeys;
+            this.TailZone = tailZone;
         }
 
         /// <summary>
-        /// Gets the last offset from the given array.
+        ///    Gets the last offset from the given array.
         /// </summary>
-        /// <param name="standardOffsets">The offsets array.</param>
-        /// <returns>Returns the last offset in the array or <see cref="Duration.Zero"/> if the array is empty.</returns>
+        /// <param name="offsets">The offsets array.</param>
+        /// <returns>
+        ///    Returns the last offset in the array or
+        ///    <see cref="Duration.Zero"/>
+        ///    if the array is empty.
+        /// </returns>
         private static Offset GetLatestOffset(Offset[] offsets)
         {
             if (offsets.Length > 0)
@@ -146,62 +155,71 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns true if this time zone is worth caching. Small time zones or time zones with
-        /// lots of quick changes do not work well with <see cref="CachedDateTimeZone"/>.
+        ///    Returns true if this time zone is worth caching. Small time zones or time zones with
+        ///    lots of quick changes do not work well with
+        ///    <see cref="CachedDateTimeZone"/>
+        ///    .
         /// </summary>
         /// <returns>
-        /// <c>true</c> if this instance is cachable; otherwise, <c>false</c>.
+        ///    <c>true</c>
+        ///    if this instance is cachable; otherwise,
+        ///    <c>false</c>
+        ///    .
         /// </returns>
         public bool IsCachable()
         {
-            if (this.tailZone != null)
+            if (this.TailZone != null)
             {
                 return true;
             }
-            return CachedDateTimeZone.IsWorthCaching(this.transitions);
+            return CachedDateTimeZone.IsWorthCaching(this.Transitions);
         }
 
         #region DateTimeZoneBase Members
 
         /// <summary>
-        /// Returns the transition occurring strictly after the specified instant,
-        /// or null if there are no further transitions.
+        ///    Returns the transition occurring strictly after the specified instant,
+        ///    or null if there are no further transitions.
         /// </summary>
-        /// <param name="instant">The instant after which to consider transitions.</param>
+        /// <param name="instant">
+        ///    The instant after which to consider transitions.
+        /// </param>
         /// <returns>
-        /// The instant of the next transition, or null if there are no further transitions.
+        ///    The instant of the next transition, or null if there are no further transitions.
         /// </returns>
         public override Instant? NextTransition(Instant instant)
         {
-            int i = Array.BinarySearch(this.transitions, instant);
+            int i = Array.BinarySearch(this.Transitions, instant);
             i = (i >= 0) ? (i + 1) : ~i;
-            if (i < this.transitions.Length)
+            if (i < this.Transitions.Length)
             {
-                return this.transitions[i];
+                return this.Transitions[i];
             }
-            if (this.tailZone == null)
+            if (this.TailZone == null)
             {
                 return instant;
             }
-            Instant end = this.transitions[this.transitions.Length - 1];
+            Instant end = this.Transitions[this.Transitions.Length - 1];
             if (instant < end)
             {
                 instant = end;
             }
-            return this.tailZone.NextTransition(instant);
+            return this.TailZone.NextTransition(instant);
         }
 
         /// <summary>
-        /// Returns the transition occurring strictly before the specified instant,
-        /// or null if there are no earlier transitions.
+        ///    Returns the transition occurring strictly before the specified instant,
+        ///    or null if there are no earlier transitions.
         /// </summary>
-        /// <param name="instant">The instant before which to consider transitions.</param>
+        /// <param name="instant">
+        ///    The instant before which to consider transitions.
+        /// </param>
         /// <returns>
-        /// The instant of the previous transition, or null if there are no further transitions.
+        ///    The instant of the previous transition, or null if there are no further transitions.
         /// </returns>
         public override Instant? PreviousTransition(Instant instant)
         {
-            int i = Array.BinarySearch(this.transitions, instant);
+            int i = Array.BinarySearch(this.Transitions, instant);
             if (i >= 0)
             {
                 if (instant > Instant.MinValue)
@@ -211,11 +229,11 @@ namespace NodaTime.TimeZones
                 return instant;
             }
             i = ~i;
-            if (i < this.transitions.Length)
+            if (i < this.Transitions.Length)
             {
                 if (i > 0)
                 {
-                    Instant prev = this.transitions[i - 1];
+                    Instant prev = this.Transitions[i - 1];
                     if (prev > Instant.MinValue)
                     {
                         return prev - Duration.One;
@@ -223,15 +241,15 @@ namespace NodaTime.TimeZones
                 }
                 return instant;
             }
-            if (this.tailZone != null)
+            if (this.TailZone != null)
             {
-                Instant? prev = this.tailZone.PreviousTransition(instant);
+                Instant? prev = this.TailZone.PreviousTransition(instant);
                 if (prev.HasValue && prev.Value < instant)
                 {
                     return prev;
                 }
             }
-            Instant previous = this.transitions[i - 1];
+            Instant previous = this.Transitions[i - 1];
             if (previous > Instant.MinValue)
             {
                 return previous - Duration.One;
@@ -240,69 +258,73 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns the offset from UTC, such that local time = UTC + offset.
+        ///    Returns the offset from UTC, such that local time = UTC + offset.
         /// </summary>
-        /// <param name="instant">The instant for which to calculate the offset.</param>
+        /// <param name="instant">
+        ///    The instant for which to calculate the offset.
+        /// </param>
         /// <returns>
-        /// The offset from UTC at the specified instant.
+        ///    The offset from UTC at the specified instant.
         /// </returns>
         public override Offset GetOffsetFromUtc(Instant instant)
         {
-            int i = Array.BinarySearch(this.transitions, instant);
+            int i = Array.BinarySearch(this.Transitions, instant);
             if (i >= 0)
             {
-                return this.wallOffsets[i];
+                return this.WallOffsets[i];
             }
             i = ~i;
-            if (i < this.transitions.Length)
+            if (i < this.Transitions.Length)
             {
                 if (i > 0)
                 {
-                    return this.wallOffsets[i - 1];
+                    return this.WallOffsets[i - 1];
                 }
                 return Offset.Zero;
             }
-            if (this.tailZone == null)
+            if (this.TailZone == null)
             {
-                return this.wallOffsets[i - 1];
+                return this.WallOffsets[i - 1];
             }
-            return this.tailZone.GetOffsetFromUtc(instant);
+            return this.TailZone.GetOffsetFromUtc(instant);
         }
 
         /// <summary>
-        /// Returns the name associated with the given instant.
+        ///    Returns the name associated with the given instant.
         /// </summary>
-        /// <param name="instant">The instant to get the name for.</param>
+        /// <param name="instant">
+        ///    The instant to get the name for.
+        /// </param>
         /// <returns>
-        /// The name of this time. Never returns null.
+        ///    The name of this time. Never returns null.
         /// </returns>
         /// <remarks>
-        /// For a fixed time zone this will always return the same value but for a time zone that
-        /// honors daylight savings this will return a different name depending on the time of year
-        /// it represents. For example in the Pacific Standard Time (UTC-8) it will return either
-        /// PST or PDT depending on the time of year.
+        ///    For a fixed time zone this will always return the same value but for a time zone that
+        ///    honors daylight savings this will return a different name depending on the time of year
+        ///    it represents. For example in the Pacific Standard Time (UTC-8) it will return either
+        ///    PST or PDT depending on the time of year.
         /// </remarks>
         public override string Name(Instant instant)
         {
-            int i = Array.BinarySearch(this.transitions, instant);
+            int i = Array.BinarySearch(this.Transitions, instant);
             if (i >= 0)
             {
-                return this.nameKeys[i];
+                return this.NameKeys[i];
             }
             i = ~i;
-            if (i < this.transitions.Length)
+            if (i < this.Transitions.Length)
             {
                 if (i > 0)
                 {
-                    return this.nameKeys[i - 1];
+                    return this.NameKeys[i - 1];
                 }
                 return DateTimeZones.UtcId;
             }
-            if (this.tailZone == null)
+            if (this.TailZone == null)
             {
-                return this.nameKeys[i - 1];
+                return this.NameKeys[i - 1];
             }
-            return this.tailZone.Name(instant);
+            return this.TailZone.Name(instant);
         }
 
         #endregion
@@ -313,20 +335,20 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("writer");
             }
-            int size = this.transitions.Length;
+            int size = this.Transitions.Length;
 
             // Create unique string pool.
             var poolSet = new Dictionary<string, string>();
             for (int i = 0; i < size; i++)
             {
-                if (!poolSet.ContainsKey(this.nameKeys[i]))
+                if (!poolSet.ContainsKey(this.NameKeys[i]))
                 {
-                    poolSet.Add(this.nameKeys[i], null);
+                    poolSet.Add(this.NameKeys[i], null);
                 }
             }
 
             int poolSize = poolSet.Count;
-            String[] pool = new String[poolSize];
+            var pool = new String[poolSize];
             poolSet.Keys.CopyTo(pool, 0);
             writer.WriteNumber(poolSize);
             for (int i = 0; i < poolSize; i++)
@@ -337,10 +359,10 @@ namespace NodaTime.TimeZones
             writer.WriteNumber(size);
             for (int i = 0; i < size; i++)
             {
-                writer.WriteTicks(this.transitions[i].Ticks);
-                writer.WriteOffset(this.wallOffsets[i]);
-                writer.WriteOffset(this.standardOffsets[i]);
-                string name = this.nameKeys[i];
+                writer.WriteTicks(this.Transitions[i].Ticks);
+                writer.WriteOffset(this.WallOffsets[i]);
+                writer.WriteOffset(this.StandardOffsets[i]);
+                string name = this.NameKeys[i];
                 for (int p = 0; p < poolSize; p++)
                 {
                     if (pool[p] == name)
@@ -350,28 +372,28 @@ namespace NodaTime.TimeZones
                     }
                 }
             }
-            bool hasTailZone = this.tailZone != null;
+            bool hasTailZone = this.TailZone != null;
             writer.WriteBoolean(hasTailZone);
             if (hasTailZone)
             {
-                this.tailZone.Write(writer);
+                writer.WriteTimeZone(this.TailZone);
             }
         }
 
         public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             int poolSize = reader.ReadNumber();
-            string[] pool = new string[poolSize];
+            var pool = new string[poolSize];
             for (int i = 0; i < poolSize; i++)
             {
                 pool[i] = reader.ReadString();
             }
 
             int size = reader.ReadNumber();
-            Instant[] transitions = new Instant[size];
-            Offset[] wallOffsets = new Offset[size];
-            Offset[] standardOffsets = new Offset[size];
-            String[] nameKeys = new String[size];
+            var transitions = new Instant[size];
+            var wallOffsets = new Offset[size];
+            var standardOffsets = new Offset[size];
+            var nameKeys = new String[size];
             for (int i = 0; i < size; i++)
             {
                 long ticks = reader.ReadTicks();
@@ -383,7 +405,8 @@ namespace NodaTime.TimeZones
             }
             bool hasTailZone = reader.ReadBoolean();
             IDateTimeZone tailZone = null;
-            if (hasTailZone) {
+            if (hasTailZone)
+            {
                 tailZone = reader.ReadTimeZone(id + "-tail");
             }
 
@@ -391,4 +414,3 @@ namespace NodaTime.TimeZones
         }
     }
 }
-

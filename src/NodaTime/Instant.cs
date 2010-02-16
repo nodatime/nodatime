@@ -1,6 +1,7 @@
 ﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,9 +14,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
-using System.Globalization;
 
 namespace NodaTime
 {
@@ -40,7 +42,10 @@ namespace NodaTime
         /// <summary>
         /// Ticks since the Unix epoch.
         /// </summary>
-        public long Ticks { get { return ticks; } }
+        public long Ticks
+        {
+            get { return this.ticks; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Instant"/> struct.
@@ -213,7 +218,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Instant other)
         {
-            return this.Ticks == other.Ticks;
+            return Ticks == other.Ticks;
         }
 
         #endregion
@@ -267,7 +272,7 @@ namespace NodaTime
         {
             if (obj is Instant)
             {
-                return Equals((Instant)obj);
+                return Equals((Instant) obj);
             }
             return false;
         }
@@ -293,9 +298,9 @@ namespace NodaTime
         public override string ToString()
         {
             // TODO: Use proper formatting!
-            LocalDateTime utc = new LocalDateTime(new LocalInstant(Ticks));
+            var utc = new LocalDateTime(new LocalInstant(Ticks));
             return string.Format("{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.MonthOfYear, utc.DayOfMonth,
-                utc.HourOfDay, utc.MinuteOfHour, utc.SecondOfMinute);
+                                 utc.HourOfDay, utc.MinuteOfHour, utc.SecondOfMinute);
             //return Ticks.ToString("N0", CultureInfo.CurrentCulture);
         }
 

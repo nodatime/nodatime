@@ -20,6 +20,7 @@ using NodaTime.Calendars;
 using NodaTime.Fields;
 using System.IO;
 using System.Text;
+using System.Diagnostics;
 
 namespace NodaTime.TimeZones
 {
@@ -76,11 +77,14 @@ namespace NodaTime.TimeZones
     {
         private readonly IList<ZoneRecurrenceCollection> ruleSets = new List<ZoneRecurrenceCollection>();
 
+        public string Name { get; private set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneBuilder"/> class.
         /// </summary>
-        public DateTimeZoneBuilder()
+        public DateTimeZoneBuilder(string name)
         {
+            Name = name;
         }
 
         /// <summary>
@@ -138,6 +142,7 @@ namespace NodaTime.TimeZones
                 throw new ArgumentNullException("yearOffset");
             }
 
+            Debug.WriteLine(string.Format("{0}: AddCutover({1}, {2})", Name, year, yearOffset));
             if (ruleSets.Count > 0)
             {
                 LastRuleSet.SetUpperLimit(year, yearOffset);
@@ -153,6 +158,7 @@ namespace NodaTime.TimeZones
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
         public DateTimeZoneBuilder SetStandardOffset(Offset standardOffset)
         {
+            Debug.WriteLine(string.Format("{0}: SetStandardOffset({1})", Name, standardOffset));
             LastRuleSet.StandardOffset = standardOffset;
             return this;
         }
@@ -165,6 +171,7 @@ namespace NodaTime.TimeZones
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
         public DateTimeZoneBuilder SetFixedSavings(String nameKey, Offset savings)
         {
+            Debug.WriteLine(string.Format("{0}: SetFixedSavings({1}, {2})", Name, nameKey, savings));
             LastRuleSet.SetFixedSavings(nameKey, savings);
             return this;
         }
@@ -240,6 +247,7 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("recurrence");
             }
+            Debug.WriteLine(string.Format("{0}: AddRecurringSavings({1})", Name, recurrence));
             if (recurrence.FromYear <= recurrence.ToYear)
             {
                 LastRuleSet.AddRule(recurrence);
@@ -282,7 +290,7 @@ namespace NodaTime.TimeZones
                     {
                         if (tailZone != null)
                         {
-                            // Got the extra transition before DSTZone.
+                            // Got the extra transition before DaylightSavingsTimeZone.
                             break;
                         }
                     }
@@ -291,7 +299,7 @@ namespace NodaTime.TimeZones
                         tailZone = transitionIterator.BuildTailZone(zoneId);
                         // If tailZone is not null, don't break out of main loop until at least one
                         // more transition is calculated. This ensures a correct 'seam' to the
-                        // DSTZone.
+                        // DaylightSavingsTimeZone.
                     }
                 }
 
@@ -314,7 +322,7 @@ namespace NodaTime.TimeZones
                 return new FixedDateTimeZone(zoneId, tr.WallOffset);
             }
 
-            PrecalculatedDateTimeZone zone = PrecalculatedDateTimeZone.create(zoneId, transitions, tailZone);
+            PrecalculatedDateTimeZone zone = PrecalculatedDateTimeZone.Create(zoneId, transitions, tailZone);
             if (zone.IsCachable())
             {
                 return CachedDateTimeZone.ForZone(zone);

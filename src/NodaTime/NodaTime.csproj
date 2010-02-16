@@ -73,6 +73,7 @@
     <Compile Include="Calendars\DaysOfWeek.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="Clocks\FixedClock.cs" />
+    <Compile Include="DateTimeZone.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
     <Compile Include="FieldValueException.cs" />
@@ -137,7 +138,7 @@
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DateTimeZones.cs" />
     <Compile Include="TimeZones\DefaultNameProvider.cs" />
-    <Compile Include="TimeZones\DSTZone.cs" />
+    <Compile Include="TimeZones\DaylightSavingsTimeZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneProvider.cs" />
     <Compile Include="TimeZones\INameProvider.cs" />
