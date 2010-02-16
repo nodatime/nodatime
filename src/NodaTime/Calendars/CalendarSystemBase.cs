@@ -20,10 +20,31 @@ using NodaTime.Fields;
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// Original name: BaseChronology
+    /// CalendarSystemBase provides a skeleton implementation for ICalendarSystem.
+    /// Many utility methods are defined, but all fields are unsupported.
+    /// <para>
+    /// CalendarSystemBase is thread-safe and immutable, and all subclasses must be
+    /// as well.
+    /// </para>
     /// </summary>
     public abstract class CalendarSystemBase : ICalendarSystem
     {
+        public abstract FieldSet Fields { get; }
+
+        /// <summary>
+        /// Returns a local instant, formed from the given year, month, day, and ticks values.
+        /// The set of given values must refer to a valid datetime, or else an IllegalArgumentException is thrown.
+        /// <para>
+        /// The default implementation calls upon separate DateTimeFields to
+        /// determine the result. Subclasses are encouraged to provide a more
+        /// efficient implementation.
+        /// </para>
+        /// </summary>
+        /// <param name="year">Year to use</param>
+        /// <param name="monthOfYear">Month to use</param>
+        /// <param name="dayOfMonth">Day of month to use</param>
+        /// <param name="tickOfDay">Tick of day to use</param>
+        /// <returns>A LocalInstant instance</returns>
         public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay)
         {
             LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
@@ -32,6 +53,24 @@ namespace NodaTime.Calendars
             return Fields.TickOfDay.SetValue(instant, tickOfDay);
         }
 
+        /// <summary>
+        /// Returns a local instant, formed from the given year, month, day, 
+        /// hour, minute, second, millisecond and ticks values.
+        /// </summary>
+        /// <para>
+        /// The default implementation calls upon separate DateTimeFields to
+        /// determine the result. Subclasses are encouraged to provide a more
+        /// efficient implementation.
+        /// </para>        
+        /// <param name="year">Year to use</param>
+        /// <param name="monthOfYear">Month to use</param>
+        /// <param name="dayOfMonth">Day of month to use</param>
+        /// <param name="hourOfDay">Hour to use</param>
+        /// <param name="minuteOfHour">Minute to use</param>
+        /// <param name="secondOfMinute">Second to use</param>
+        /// <param name="millisecondOfSecond">Millisecond to use</param>
+        /// <param name="tickOfMillisecond">Tick to use</param>
+        /// <returns>A LocalInstant instance</returns>
         public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay,
             int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
         {
@@ -45,6 +84,21 @@ namespace NodaTime.Calendars
             return Fields.TickOfMillisecond.SetValue(instant, tickOfMillisecond);
         }
 
+        /// <summary>
+        /// Returns a local instant, formed from the given instant, hour, minute, second, millisecond and ticks values.
+        /// <para>
+        /// The default implementation calls upon separate DateTimeFields to
+        /// determine the result. Subclasses are encouraged to provide a more
+        /// efficient implementation.
+        /// </para>       
+        /// </summary>
+        /// <param name="localInstant">Instant to start from</param>
+        /// <param name="hourOfDay">Hour to use</param>
+        /// <param name="minuteOfHour">Minute to use</param>
+        /// <param name="secondOfMinute">Second to use</param>
+        /// <param name="millisecondOfSecond">Milliscond to use</param>
+        /// <param name="tickOfMillisecond">Tick to use</param>
+        /// <returns>A LocalInstant instance</returns>
         public virtual LocalInstant GetLocalInstant(LocalInstant localInstant, 
             int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
         {
@@ -54,9 +108,6 @@ namespace NodaTime.Calendars
             localInstant = Fields.MillisecondOfSecond.SetValue(localInstant, millisecondOfSecond);
             return Fields.TickOfMillisecond.SetValue(localInstant, tickOfMillisecond);
         }
-
-        public abstract FieldSet Fields { get; }
-
 
         #region Periods
 

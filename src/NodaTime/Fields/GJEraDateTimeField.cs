@@ -32,7 +32,13 @@ namespace NodaTime.Fields
             this.calendarSystem = calendarSystem;
         }
 
+        public override DurationField DurationField { get { return UnsupportedDurationField.Eras; } }
+
+        public override DurationField RangeDurationField { get { return null; } }
+
         public override bool IsLenient { get { return false; } }
+
+        #region Values
 
         public override long GetInt64Value(LocalInstant localInstant)
         {
@@ -55,9 +61,23 @@ namespace NodaTime.Fields
             }
         }
 
-        public override DurationField DurationField { get { return UnsupportedDurationField.Eras; } }
+        #endregion
 
-        public override DurationField RangeDurationField { get { return null; } }
+        #region Ranges
+
+        public override long GetMaximumValue()
+        {
+            return NodaConstants.CommonEra;
+        }
+
+        public override long GetMinimumValue()
+        {
+            return NodaConstants.BeforeCommonEra;
+        }
+
+        #endregion
+
+        #region Rounding
 
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
@@ -69,16 +89,6 @@ namespace NodaTime.Fields
         {
             return GetValue(localInstant) == NodaConstants.BeforeCommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
                 : new LocalInstant(long.MaxValue);
-        }
-
-        public override long GetMaximumValue()
-        {
-            return NodaConstants.CommonEra;
-        }
-
-        public override long GetMinimumValue()
-        {
-            return NodaConstants.BeforeCommonEra;
         }
 
         public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
@@ -98,5 +108,7 @@ namespace NodaTime.Fields
             // In reality, the era is infinite, so there is no halfway point.
             return RoundFloor(localInstant);
         }
+
+        #endregion
     }
 }

@@ -51,62 +51,10 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void IsSupported_ReturnsTrue()
-        {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.IsTrue(field.IsSupported);
-        }
-
-        [Test]
         public void IsLenient_ReturnsFalse()
         {
             DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
             Assert.IsFalse(field.IsLenient);
-        }
-
-        [Test]
-        public void GetValue()
-        {
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(0, field.GetValue(new LocalInstant(0)));
-            Assert.AreEqual(1, field.GetValue(new LocalInstant(60)));
-            Assert.AreEqual(2, field.GetValue(new LocalInstant(123)));
-        }
-
-        [Test]
-        public void Add_WithInt32Value()
-        {
-            MockCountingDurationField.int32Additions = 0;
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(61L, field.Add(new LocalInstant(1L), 1).Ticks);
-            Assert.AreEqual(1, MockCountingDurationField.int32Additions);
-        }
-
-        [Test]
-        public void Add_WithInt64Value()
-        {
-            MockCountingDurationField.int64Additions = 0;
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(61L, field.Add(new LocalInstant(1L), 1L).Ticks);
-            Assert.AreEqual(1, MockCountingDurationField.int64Additions);
-        }
-
-        [Test]
-        public void GetDifference_DelegatesToDurationField()
-        {
-            MockCountingDurationField.differences = 0;
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(30, field.GetDifference(new LocalInstant(0), new LocalInstant(0)));
-            Assert.AreEqual(1, MockCountingDurationField.differences);
-        }
-
-        [Test]
-        public void GetInt64Difference_DelegatesToDurationField()
-        {
-            MockCountingDurationField.differences = 0;
-            DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(30L, field.GetInt64Difference(new LocalInstant(0), new LocalInstant(0)));
-            Assert.AreEqual(1, MockCountingDurationField.differences);
         }
 
         [Test]
@@ -187,7 +135,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(60L, field.RoundHalfFloor(new LocalInstant(60L)).Ticks);
         }
 
-
         [Test]
         public void RoundHalfCeiling()
         {
@@ -222,6 +169,7 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(30L, field.Remainder(new LocalInstant(30L)).Ticks);
             Assert.AreEqual(31L, field.Remainder(new LocalInstant(31L)).Ticks);
             Assert.AreEqual(0L, field.Remainder(new LocalInstant(60L)).Ticks);
+            Assert.AreEqual(57L, field.Remainder(new LocalInstant(-63L)).Ticks);
         }
 
         private class StubPreciseDurationDateTimeField : PreciseDurationDateTimeField

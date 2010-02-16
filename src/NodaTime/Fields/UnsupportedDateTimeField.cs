@@ -173,9 +173,6 @@ namespace NodaTime.Fields
             throw new NotSupportedException();
         }
 
-        #region IDateTimeField Members
-
-
         public long GetMaximumValue(IPartial instant, int[] values)
         {
             throw new NotImplementedException();
@@ -186,6 +183,66 @@ namespace NodaTime.Fields
             throw new NotImplementedException();
         }
 
-        #endregion
+
+        public long GetMaximumValue(IPartial instant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long GetMinimumValue(IPartial instant)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public string GetAsText(LocalInstant localInstant, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAsText(LocalInstant localInstant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAsText(IPartial partial, int fieldValue, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAsText(IPartial partial, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAsText(int fieldValue, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAsShortText(LocalInstant localInstant, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAsShortText(LocalInstant localInstant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAsShortText(IPartial partial, int fieldValue, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAsShortText(IPartial partial, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAsShortText(int fieldValue, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

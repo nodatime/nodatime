@@ -19,7 +19,10 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Porting status: done
+    /// DurationFieldBase provides the common behaviour for DurationField implementations.
+    /// <para>
+    /// DurationFieldBase is thread-safe and immutable, and its subclasses must be as well.
+    /// </para>
     /// </summary>
     public abstract class DurationFieldBase : DurationField
     {
@@ -34,6 +37,9 @@ namespace NodaTime.Fields
             this.fieldType = fieldType;
         }
         
+        /// <summary>
+        /// Get the type of the field.
+        /// </summary>
         public override DurationFieldType FieldType { get { return fieldType; } }
 
         /// <summary>
