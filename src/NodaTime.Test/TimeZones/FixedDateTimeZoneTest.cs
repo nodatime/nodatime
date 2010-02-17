@@ -17,41 +17,41 @@
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
     public class FixedDateTimeZoneTest
     {
-        private Offset oneHour = Offset.Create(1);
+        private static readonly Offset OneHour = Offset.Create(1);
 
         [Test]
         public void SimpleProperties_ReturnValuesFromConstructor()
         {
-            FixedDateTimeZone zone = new FixedDateTimeZone("test", oneHour);
+            FixedDateTimeZone zone = new FixedDateTimeZone("test", OneHour);
             Assert.AreEqual("test", zone.Id);
             // TODO: Use a real LocalDateTime when we've implemented it!
-            Assert.AreEqual(oneHour, zone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch));
-            Assert.AreEqual(oneHour, zone.GetOffsetFromUtc(Instant.UnixEpoch));
+            Assert.AreEqual(OneHour, zone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch));
+            Assert.AreEqual(OneHour, zone.GetOffsetFromUtc(Instant.UnixEpoch));
         }
 
         [Test]
         public void IsFixed_ReturnsTrue()
         {
-            FixedDateTimeZone zone = new FixedDateTimeZone("test", oneHour);
+            FixedDateTimeZone zone = new FixedDateTimeZone("test", OneHour);
             Assert.IsTrue(zone.IsFixed);
         }
 
         [Test]
         public void NextTransition_ReturnsNull()
         {
-            FixedDateTimeZone zone = new FixedDateTimeZone("test", oneHour);
+            FixedDateTimeZone zone = new FixedDateTimeZone("test", OneHour);
             Assert.IsNull(zone.NextTransition(Instant.UnixEpoch));
         }
 
         [Test]
         public void PreviousTransition_ReturnsNull()
         {
-            FixedDateTimeZone zone = new FixedDateTimeZone("test", oneHour);
+            FixedDateTimeZone zone = new FixedDateTimeZone("test", OneHour);
             Assert.IsNull(zone.PreviousTransition(Instant.UnixEpoch));
         }
     }
