@@ -102,7 +102,6 @@
     <Compile Include="Fields\UnsupportedDateTimeFieldTest.cs" />
     <Compile Include="Fields\UnsupportedDurationFieldTest.cs" />
     <Compile Include="Fields\ZeroIsMaxDateTimeFieldTest.cs" />
-    <Compile Include="FixedDateTimeZoneTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.cs" />
     <Compile Include="Format\IsoPeriodFormatsTest.cs" />
     <Compile Include="Format\PeriodFormatterBuilderTest.Options.cs">
@@ -283,6 +282,7 @@
       <DependentUpon>LocalInstantTest.cs</DependentUpon>
     </Compile>
     <Compile Include="TestHelper.cs" />
+    <Compile Include="TimeZones\FixedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\ZoneRecurrenceTest.cs" />
     <Compile Include="TimeZones\DtzIoHelper.cs" />
     <Compile Include="TimeZones\ZoneTransitionTest.cs" />
