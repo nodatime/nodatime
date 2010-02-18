@@ -24,7 +24,7 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Defines an offset within a year as an expresion that can be used to reference multiple
+    /// Defines an offset within a year as an expression that can be used to reference multiple
     /// years.
     /// </summary>
     /// <remarks>
@@ -297,14 +297,14 @@ namespace NodaTime.TimeZones
 
                 IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
                 LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, this.monthOfYear);
-                // Be lenient with millisOfDay.
+                // Be lenient with tick of day.
                 newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay.AsTicks());
                 newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
-                int signDifference = Math.Sign((localInstant - newInstant).Ticks);
                 int signDirection = Math.Sign(direction);
                 if (this.dayOfWeek == 0)
                 {
+                    int signDifference = Math.Sign((localInstant - newInstant).Ticks);
                     if (signDifference == 0 || signDirection == signDifference)
                     {
                         newInstant = calendar.Fields.Year.Add(newInstant, direction);
@@ -314,6 +314,7 @@ namespace NodaTime.TimeZones
                 else
                 {
                     newInstant = SetDayOfWeek(calendar, newInstant);
+                    int signDifference = Math.Sign((localInstant - newInstant).Ticks);
                     if (signDifference == 0 || signDirection == signDifference)
                     {
                         newInstant = calendar.Fields.Year.Add(newInstant, direction);
