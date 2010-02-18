@@ -48,13 +48,11 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Ignore("Requires more time zone work")]
         public void Constructor_SpecifyingDateAndTimeToMinutesInSummer()
         {
             ZonedDateTime when = new ZonedDateTime(2009, 6, 22, 21, 39, 30, Pacific);
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
-            Offset offset = Pacific.GetOffsetFromLocal(localInstant);
             Assert.AreEqual(instant, localInstant - Offset.Create(-7));
 
             Assert.AreEqual(2009, when.Year);
@@ -66,23 +64,22 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        /// Pacific time changed from -7 to -8 at 2am wall time on November 1st 2009,
+        /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
         /// so 2am became 1am. Using the constructor of ZonedDateTime, we should get
         /// the *later* version, i.e. when the offset is 8 hours. The instant should
         /// therefore represent 09:30 UTC.
         /// </summary>
         [Test]
-        [Ignore("Requires more time zone work")]
         public void Constructor_WithAmbiguousTime_UsesLaterInstant()
         {
-            ZonedDateTime when = new ZonedDateTime(2009, 11, 1, 1, 30, 0, Pacific);
+            ZonedDateTime when = new ZonedDateTime(2009, 11, 2, 1, 30, 0, Pacific);
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
             Assert.AreEqual(instant, localInstant - Offset.Create(-8));
 
             Assert.AreEqual(2009, when.Year);
             Assert.AreEqual(11, when.MonthOfYear);
-            Assert.AreEqual(1, when.DayOfMonth);
+            Assert.AreEqual(2, when.DayOfMonth);
             Assert.AreEqual(1, when.HourOfDay);
             Assert.AreEqual(30, when.MinuteOfHour);
             Assert.AreEqual(0, when.SecondOfMinute);
@@ -90,21 +87,20 @@ namespace NodaTime.Test
             LocalDateTime utc = new LocalDateTime(new LocalInstant(instant.Ticks));
             Assert.AreEqual(2009, utc.Year);
             Assert.AreEqual(11, utc.MonthOfYear);
-            Assert.AreEqual(1, utc.DayOfMonth);
+            Assert.AreEqual(2, utc.DayOfMonth);
             Assert.AreEqual(9, utc.HourOfDay);
             Assert.AreEqual(30, utc.MinuteOfHour);
             Assert.AreEqual(0, utc.SecondOfMinute);
         }
 
         /// <summary>
-        /// Pacific time changed from -8 to -7 at 2am wall time on March 2nd 2009,
+        /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
         /// so 2am became 3am. This means that 2.30am doesn't exist on that day.
         /// </summary>
         [Test]
-        [Ignore("Requires more time zone work")]
         public void Constructor_WithImpossibleTime_ThrowsException()
         {
-            Assert.Throws<ArgumentException>(() => new ZonedDateTime(2009, 3, 2, 2, 30, 0, Pacific));
+            Assert.Throws<ArgumentException>(() => new ZonedDateTime(2009, 3, 8, 2, 30, 0, Pacific));
         }
     }
 }

@@ -33,40 +33,21 @@ namespace NodaTime
     public static class DateTimeZone
     {
         /// <summary>
-        ///    Gets the offset from to subtract from a local time to get the UTC time.
+        /// Gets the offset from to subtract from a local time to get the UTC time.
         /// </summary>
-        /// <param name="timeZone">
-        ///    The time zone to use.
-        /// </param>
-        /// <param name="localInstant">
-        ///    The local instant to get the offset of.
-        /// </param>
-        /// <returns></returns>
+        /// <param name="timeZone">The time zone to use.</param>
+        /// <param name="localInstant">The local instant to get the offset of.</param>
+        /// <returns>The offset to subtract from the specified local time to obtain a UTC instant.</returns>
         /// <remarks>
-        ///    <para>
-        ///       Note that after calculating the offset, some error may be introduced. At
-        ///       offset transitions (due to DST or other historical changes), ranges of
-        ///       local times may map to different UTC times.
-        ///    </para>
-        ///    <para>
-        ///       This method will return an offset suitable for calculating an instant
-        ///       after any DST gap. For example, consider a zone with a cutover
-        ///       from 01:00 to 01:59:
-        ///    </para>
-        ///    <example>
-        ///       Input: 00:00  Output: 00:00
-        ///       <br/>
-        ///       Input: 00:30  Output: 00:30
-        ///       <br/>
-        ///       Input: 01:00  Output: 02:00
-        ///       <br/>
-        ///       Input: 01:30  Output: 02:30
-        ///       <br/>
-        ///       Input: 02:00  Output: 02:00
-        ///       <br/>
-        ///       Input: 02:30  Output: 02:30
-        ///       <br/>
-        ///    </example>
+        /// Around a DST transition, local times behave peculiarly. When
+        /// the time springs forward, (e.g. 12:59 to 02:00) some times never
+        /// occur; when the time falls back (e.g. 1:59 to 01:00) some times
+        /// occur twice. This method always returns a smaller offset when
+        /// there is ambiguity, i.e. it treats the local time as the later
+        /// of the possibilities. Currently for an impossible local time
+        /// it will return the offset corresponding to a later instant;
+        /// in the (near) future it is anticipated that an exception will be
+        /// thrown instead.
         /// </remarks>
         public static Offset GetOffsetFromLocal(IDateTimeZone timeZone, LocalInstant localInstant)
         {
@@ -74,33 +55,54 @@ namespace NodaTime
             {
                 throw new ArgumentNullException("timeZone");
             }
+            // Find an instant somewhere near the right time by assuming UTC temporarily
             var instant = new Instant(localInstant.Ticks);
 
-            // get the offset at instantLocal (first estimate)
-            var offsetLocal = timeZone.GetOffsetFromUtc(instant);
+            // Find the offset at that instant
+            var candidateOffset1 = timeZone.GetOffsetFromUtc(instant);
 
-            // adjust localInstant using the estimate and recalc the offset
-            var offsetAdjusted = timeZone.GetOffsetFromUtc(localInstant - offsetLocal);
+            // Adjust localInstant using the estimate, as a guess
+            // at the real UTC instant for the local time
+            var candidateInstant1 = localInstant - candidateOffset1;
+            // Now find the offset at that candidate instant
+            var candidateOffset2 = timeZone.GetOffsetFromUtc(candidateInstant1);
 
-            // if the offsets differ, we must be near a DST boundary
-            if (offsetLocal != offsetAdjusted)
+            // If the offsets are the same, we need to check for ambiguous
+            // local times.
+            if (candidateOffset1 == candidateOffset2)
             {
-                // we need to ensure that time is always after the DST gap
-                // this happens naturally for positive offsets, but not for negative
-                if ((offsetLocal - offsetAdjusted).AsTicks() < 0)
+                // It doesn't matter whether we use instant or candidateInstant1;
+                // both are the same side of the next transition (as they have the same offset)
+                var nextTransition = timeZone.NextTransition(candidateInstant1);
+                if (nextTransition == null)
                 {
-                    // if we just return offsetAdjusted then the time is pushed
-                    // back before the transition, whereas it should be
-                    // on or after the transition
-                    var nextLocal = timeZone.NextTransition(localInstant - offsetLocal);
-                    var nextAdjusted = timeZone.NextTransition(localInstant - offsetAdjusted);
-                    if (nextLocal != nextAdjusted)
-                    {
-                        return offsetLocal;
-                    }
+                    // No more transitions, so we must be okay
+                    return candidateOffset1;
                 }
+                // Try to apply the offset for the later transition to
+                // the local time we were originally given. If the result is
+                // after the transition, then it's the correct offset - it means
+                // the local time is ambiguous and we want to return the offset
+                // leading to the later UTC instant.
+                var candidateOffset3 = timeZone.GetOffsetFromUtc(nextTransition.Value);
+                var candidateInstant2 = localInstant - candidateOffset3;
+                return (candidateInstant2 > nextTransition.Value) ? candidateOffset3 : candidateOffset1;
             }
-            return offsetAdjusted;
+            else
+            {
+                // We know that candidateOffset1 doesn't work from the localInstant;
+                // try candidateOffset2 instead. If that works, then all is well,
+                // and we've just coped with with a DST transition between
+                // instant and candidateInstant1. If it doesn't, we've been
+                // given an invalid local time.
+                var candidateInstant2 = localInstant - candidateOffset2;
+                if (timeZone.GetOffsetFromUtc(candidateInstant2) == candidateOffset2)
+                {
+                    return candidateOffset2;
+                }
+                // TODO(jon): Consider throwing an exception instead.
+                return candidateOffset2 < candidateOffset1 ? candidateOffset2 : candidateOffset1;
+            }
         }
     }
 }
