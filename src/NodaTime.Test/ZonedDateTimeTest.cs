@@ -75,7 +75,7 @@ namespace NodaTime.Test
             ZonedDateTime when = new ZonedDateTime(2009, 11, 2, 1, 30, 0, Pacific);
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
-            Assert.AreEqual(instant, localInstant - Offset.Create(-8));
+            Assert.AreEqual(localInstant - Offset.Create(-8), instant);
 
             Assert.AreEqual(2009, when.Year);
             Assert.AreEqual(11, when.MonthOfYear);
