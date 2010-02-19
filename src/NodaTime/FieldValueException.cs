@@ -34,7 +34,18 @@ namespace NodaTime
         private readonly string stringValue;
         private readonly long? lowerBound;
         private readonly long? upperBound;
-        private string message;
+
+        public FieldValueException(DateTimeFieldType fieldType, String value)
+            :base(CreateMessage(fieldType.ToString(), value))
+        {
+            dateTimefieldType = fieldType;
+            durationFieldType = null;
+            fieldName = fieldType.ToString();
+            stringValue = value;
+            numberValue = 0;
+            lowerBound = null;
+            upperBound = null;
+    }   
 
         public FieldValueException(DateTimeFieldType fieldType, int value, long? lowerBound, long? upperBound)
             :base(CreateMessage(fieldType.ToString(), value, lowerBound, upperBound, null))
@@ -46,9 +57,28 @@ namespace NodaTime
             stringValue = null;
             this.lowerBound = lowerBound;
             this.upperBound = upperBound;
-            message = Message;
         }
 
+
+        private static String CreateMessage(String fieldName, String value)
+        {
+            StringBuilder sb = new StringBuilder().Append("Value ");
+
+            if (value == null)
+            {
+                sb.Append("null");
+            }
+            else
+            {
+                sb.Append('"');
+                sb.Append(value);
+                sb.Append('"');
+            }
+
+            sb.Append(" for ").Append(fieldName).Append(' ').Append("is not supported");
+
+            return sb.ToString();
+        }
 
         private static String CreateMessage(string fieldName, int value,
                                         long? lowerBound, long? upperBound, String explain)

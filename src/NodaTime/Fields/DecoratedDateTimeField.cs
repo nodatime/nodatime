@@ -28,7 +28,7 @@ namespace NodaTime.Fields
     /// <para>
     /// This design allows new DateTimeField types to be defined that piggyback
     /// on top of another, inheriting all the safe method implementations from
-    /// BaseDateTimeField. Should any method require pure delegation to the wrapped
+    /// DateTimeFieldBase. Should any method require pure delegation to the wrapped
     /// field, simply override and use the provided WrappedField property.
     /// </para>
     /// <para>
@@ -55,12 +55,14 @@ namespace NodaTime.Fields
             this.wrappedField = wrappedField;
         }
 
+        /// <summary>
+        /// Gets the wrapped date time field.
+        /// </summary>
         public IDateTimeField WrappedField { get { return wrappedField; } }
 
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
-        {
-            return wrappedField.RoundFloor(localInstant);
-        }
+        public override DurationField DurationField { get { return wrappedField.DurationField; } }
+
+        public override DurationField RangeDurationField { get { return wrappedField.RangeDurationField; } }
 
         public override bool IsLenient { get { return wrappedField.IsLenient; } }
 
@@ -74,10 +76,6 @@ namespace NodaTime.Fields
             return wrappedField.SetValue(localInstant, value);
         }
 
-        public override DurationField DurationField { get { return wrappedField.DurationField; } }
-
-        public override DurationField RangeDurationField { get { return wrappedField.RangeDurationField; } }
-
         public override long GetMaximumValue()
         {
             return wrappedField.GetMaximumValue();
@@ -87,5 +85,12 @@ namespace NodaTime.Fields
         {
             return wrappedField.GetMinimumValue();
         }
+
+        public override LocalInstant RoundFloor(LocalInstant localInstant)
+        {
+            return wrappedField.RoundFloor(localInstant);
+        }
+
+
     }
 }
