@@ -84,5 +84,54 @@ namespace NodaTime.Fields
                 throw new ArgumentOutOfRangeException(name, value, name + " is not in the valid range: " + range);
             }
         }
+
+        /// <summary>
+        /// Utility method used by AddWrapField implementations to ensure the new
+        /// value lies within the field's legal value range.
+        /// </summary>
+        /// <param name="currentValue">The current value of the data, which may lie outside the wrapped value range</param>
+        /// <param name="wrapValue">The value to add to current value before wrapping. This may be negative.</param>
+        /// <param name="minValue">The wrap range minimum value.</param>
+        /// <param name="maxValue">The wrap range maximum value. This must be greater than minValue (checked by the method).</param>
+        /// <returns>The wrapped value</returns>
+        /// <exception cref="ArgumentException">If minValue is greater than or equal to maxValue</exception>
+        public static int GetWrappedValue(int currentValue, int wrapValue,
+                                          int minValue, int maxValue)
+        {
+            return GetWrappedValue(currentValue + wrapValue, minValue, maxValue);
+        }
+
+        /// <summary>
+        /// Utility method that ensures the given value lies within the field's
+        /// legal value range.
+        /// </summary>
+        /// <param name="value">The value to fit into the wrapped value range</param>
+        /// <param name="minValue">Whe wrap range minimum value.</param>
+        /// <param name="maxValue">The wrap range maximum value. This must be greater than minValue (checked by the method).</param>
+        /// <returns>The wrapped value</returns>
+        /// <exception cref="ArgumentException">If minValue is greater than or equal to maxValue</exception>        
+        public static int GetWrappedValue(int value, int minValue, int maxValue)
+        {
+            if (minValue >= maxValue)
+            {
+                throw new ArgumentException("MIN > MAX");
+            }
+
+            int wrapRange = maxValue - minValue + 1;
+            value -= minValue;
+
+            if (value >= 0)
+            {
+                return (value % wrapRange) + minValue;
+            }
+
+            int remByRange = (-value) % wrapRange;
+
+            if (remByRange == 0)
+            {
+                return 0 + minValue;
+            }
+            return (wrapRange - remByRange) + minValue;
+        }
     }
 }
