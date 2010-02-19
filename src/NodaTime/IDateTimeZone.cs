@@ -48,12 +48,22 @@ namespace NodaTime
         Offset GetOffsetFromUtc(Instant instant);
 
         /// <summary>
-        /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
-        /// than local time. In other words, UTC = local time - (offset from local).
+        /// Gets the offset from to subtract from a local time to get the UTC time.
         /// </summary>
-        /// <param name="instant">The instant for which to calculate the offset.</param>
-        /// <returns>The offset at the specified local time.</returns>
-        Offset GetOffsetFromLocal(LocalInstant instant);
+        /// <param name="localInstant">The local instant to get the offset of.</param>
+        /// <returns>The offset to subtract from the specified local time to obtain a UTC instant.</returns>
+        /// <remarks>
+        /// Around a DST transition, local times behave peculiarly. When
+        /// the time springs forward, (e.g. 12:59 to 02:00) some times never
+        /// occur; when the time falls back (e.g. 1:59 to 01:00) some times
+        /// occur twice. This method always returns a smaller offset when
+        /// there is ambiguity, i.e. it treats the local time as the later
+        /// of the possibilities. Currently for an impossible local time
+        /// it will return the offset corresponding to a later instant;
+        /// in the (near) future it is anticipated that an exception will be
+        /// thrown instead.
+        /// </remarks>
+        Offset GetOffsetFromLocal(LocalInstant localInstant);
 
         /// <summary>
         /// Returns the name associated with the given instant.

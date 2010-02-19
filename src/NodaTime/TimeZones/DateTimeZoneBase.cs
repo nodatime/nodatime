@@ -82,7 +82,54 @@ namespace NodaTime.TimeZones
         /// <returns>The offset at the specified local time.</returns>
         public virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
-            return DateTimeZone.GetOffsetFromLocal(this, localInstant);
+            // Find an instant somewhere near the right time by assuming UTC temporarily
+            var instant = new Instant(localInstant.Ticks);
+
+            // Find the offset at that instant
+            var candidateOffset1 = GetOffsetFromUtc(instant);
+
+            // Adjust localInstant using the estimate, as a guess
+            // at the real UTC instant for the local time
+            var candidateInstant1 = localInstant - candidateOffset1;
+            // Now find the offset at that candidate instant
+            var candidateOffset2 = GetOffsetFromUtc(candidateInstant1);
+
+            // If the offsets are the same, we need to check for ambiguous
+            // local times.
+            if (candidateOffset1 == candidateOffset2)
+            {
+                // It doesn't matter whether we use instant or candidateInstant1;
+                // both are the same side of the next transition (as they have the same offset)
+                var nextTransition = NextTransition(candidateInstant1);
+                if (nextTransition == null)
+                {
+                    // No more transitions, so we must be okay
+                    return candidateOffset1;
+                }
+                // Try to apply the offset for the later transition to
+                // the local time we were originally given. If the result is
+                // after the transition, then it's the correct offset - it means
+                // the local time is ambiguous and we want to return the offset
+                // leading to the later UTC instant.
+                var candidateOffset3 = GetOffsetFromUtc(nextTransition.Value);
+                var candidateInstant2 = localInstant - candidateOffset3;
+                return (candidateInstant2 >= nextTransition.Value) ? candidateOffset3 : candidateOffset1;
+            }
+            else
+            {
+                // We know that candidateOffset1 doesn't work from the localInstant;
+                // try candidateOffset2 instead. If that works, then all is well,
+                // and we've just coped with with a DST transition between
+                // instant and candidateInstant1. If it doesn't, we've been
+                // given an invalid local time.
+                var candidateInstant2 = localInstant - candidateOffset2;
+                if (GetOffsetFromUtc(candidateInstant2) == candidateOffset2)
+                {
+                    return candidateOffset2;
+                }
+                var laterInstant = candidateInstant1 > candidateInstant2 ? candidateInstant1 : candidateInstant2;
+                throw new SkippedTimeException(localInstant, this, PreviousTransition(laterInstant).Value);
+            }
         }
 
         /// <summary>
