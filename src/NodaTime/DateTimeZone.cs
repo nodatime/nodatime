@@ -86,7 +86,7 @@ namespace NodaTime
                 // leading to the later UTC instant.
                 var candidateOffset3 = timeZone.GetOffsetFromUtc(nextTransition.Value);
                 var candidateInstant2 = localInstant - candidateOffset3;
-                return (candidateInstant2 > nextTransition.Value) ? candidateOffset3 : candidateOffset1;
+                return (candidateInstant2 >= nextTransition.Value) ? candidateOffset3 : candidateOffset1;
             }
             else
             {
