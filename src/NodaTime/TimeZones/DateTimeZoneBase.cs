@@ -78,7 +78,7 @@ namespace NodaTime.TimeZones
         /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
         /// than local time. In other words, UTC = local time - (offset from local).
         /// </summary>
-        /// <param name="localTime">The instant for which to calculate the offset.</param>
+        /// <param name="localInstant">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
         public virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
@@ -106,18 +106,12 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// The database ID for the time zone.
         /// </summary>
-        public string Id
-        {
-            get { return this.id; }
-        }
+        public string Id { get { return id; } }
 
         /// <summary>
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
-        public bool IsFixed
-        {
-            get { return this.isFixed; }
-        }
+        public bool IsFixed { get { return isFixed; } }
 
         #endregion
 
