@@ -32,9 +32,11 @@ namespace NodaTime.Test
         {
             LocalDateTime before = new LocalDateTime(2010, 3, 28, 1, 30);
             LocalDateTime impossible = new LocalDateTime(2010, 3, 28, 2, 30);
+            LocalDateTime atTransition = new LocalDateTime(2010, 3, 28, 3, 0);
             LocalDateTime after = new LocalDateTime(2010, 3, 28, 3, 30);
             AssertOffset(1, before, Paris);
             AssertOffset(1, impossible, Paris);
+            AssertOffset(2, atTransition, Paris);
             AssertOffset(2, after, Paris);
         }
 
@@ -43,10 +45,12 @@ namespace NodaTime.Test
         public void GetOffsetFromLocal_ParisFallTransition()
         {
             LocalDateTime before = new LocalDateTime(2010, 10, 31, 1, 30);
+            LocalDateTime atTransition = new LocalDateTime(2010, 10, 31, 2, 0);
             LocalDateTime ambiguous = new LocalDateTime(2010, 10, 31, 2, 30);
             LocalDateTime after = new LocalDateTime(2010, 10, 31, 3, 30);
             AssertOffset(2, before, Paris);
             AssertOffset(1, ambiguous, Paris);
+            AssertOffset(1, atTransition, Paris);
             AssertOffset(1, after, Paris);
         }
 
@@ -56,9 +60,11 @@ namespace NodaTime.Test
         {
             LocalDateTime before = new LocalDateTime(2010, 3, 14, 1, 30);
             LocalDateTime impossible = new LocalDateTime(2010, 3, 14, 2, 30);
+            LocalDateTime atTransition = new LocalDateTime(2010, 3, 14, 3, 0);
             LocalDateTime after = new LocalDateTime(2010, 3, 14, 3, 30);
             AssertOffset(-8, before, LosAngeles);
             AssertOffset(-8, impossible, LosAngeles);
+            AssertOffset(-7, atTransition, LosAngeles);
             AssertOffset(-7, after, LosAngeles);
         }
 
@@ -67,9 +73,11 @@ namespace NodaTime.Test
         public void GetOffsetFromLocal_LosAngelesFallTransition()
         {
             LocalDateTime before = new LocalDateTime(2010, 11, 7, 0, 30);
+            LocalDateTime atTransition = new LocalDateTime(2010, 11, 7, 1, 0);
             LocalDateTime ambiguous = new LocalDateTime(2010, 11, 7, 1, 30);
             LocalDateTime after = new LocalDateTime(2010, 11, 7, 2, 30);
             AssertOffset(-7, before, LosAngeles);
+            AssertOffset(-8, atTransition, LosAngeles);
             AssertOffset(-8, ambiguous, LosAngeles);
             AssertOffset(-8, after, LosAngeles);
         }
@@ -79,9 +87,11 @@ namespace NodaTime.Test
         public void GetOffsetFromLocal_NewZealandFallTransition()
         {
             LocalDateTime before = new LocalDateTime(2010, 4, 4, 1, 30);
+            LocalDateTime atTransition = new LocalDateTime(2010, 4, 4, 2, 0);
             LocalDateTime ambiguous = new LocalDateTime(2010, 4, 4, 2, 30);
             LocalDateTime after = new LocalDateTime(2010, 4, 4, 3, 30);
             AssertOffset(+13, before, NewZealand);
+            AssertOffset(+12, atTransition, NewZealand);
             AssertOffset(+12, ambiguous, NewZealand);
             AssertOffset(+12, after, NewZealand);
         }
@@ -92,9 +102,11 @@ namespace NodaTime.Test
         {
             LocalDateTime before = new LocalDateTime(2010, 9, 26, 1, 30);
             LocalDateTime impossible = new LocalDateTime(2010, 9, 26, 2, 30);
+            LocalDateTime atTransition = new LocalDateTime(2010, 9, 26, 3, 0);
             LocalDateTime after = new LocalDateTime(2010, 9, 26, 3, 30);
             AssertOffset(+12, before, NewZealand);
             AssertOffset(+12, impossible, NewZealand);
+            AssertOffset(+13, atTransition, NewZealand);
             AssertOffset(+13, after, NewZealand);
         }
 
