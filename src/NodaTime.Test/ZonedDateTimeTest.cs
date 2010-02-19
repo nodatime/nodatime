@@ -1,6 +1,6 @@
 ﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
@@ -100,7 +99,7 @@ namespace NodaTime.Test
         [Test]
         public void Constructor_WithImpossibleTime_ThrowsException()
         {
-            Assert.Throws<ArgumentException>(() => new ZonedDateTime(2009, 3, 8, 2, 30, 0, Pacific));
+            Assert.Throws<SkippedTimeException>(() => new ZonedDateTime(2009, 3, 8, 2, 30, 0, Pacific));
         }
     }
 }

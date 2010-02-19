@@ -130,6 +130,7 @@
     <Compile Include="Format\PeriodFormatterBuilder.cs" />
     <Compile Include="Format\PeriodFormats.cs" />
     <Compile Include="Clocks\SystemClock.cs" />
+    <Compile Include="SkippedTimeException.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\WindowToPosixResource.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />

@@ -100,8 +100,8 @@ namespace NodaTime
                 {
                     return candidateOffset2;
                 }
-                // TODO(jon): Consider throwing an exception instead.
-                return candidateOffset2 < candidateOffset1 ? candidateOffset2 : candidateOffset1;
+                var laterInstant = candidateInstant1 > candidateInstant2 ? candidateInstant1 : candidateInstant2;
+                throw new SkippedTimeException(localInstant, timeZone, timeZone.PreviousTransition(laterInstant).Value);
             }
         }
     }
