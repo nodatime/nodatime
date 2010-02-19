@@ -187,17 +187,18 @@ namespace NodaTime.TimeZones
         /// <returns>
         ///    The instant of the next transition, or null if there are no further transitions.
         /// </returns>
-        public override Instant? NextTransition(Instant instant)
+        public override Transition? NextTransition(Instant instant)
         {
             int i = Array.BinarySearch(this.Transitions, instant);
             i = (i >= 0) ? (i + 1) : ~i;
             if (i < this.Transitions.Length)
             {
-                return this.Transitions[i];
+                Offset previousOffset = i > 0 ? WallOffsets[i - 1] : Offset.Zero;
+                return new Transition(Transitions[i], previousOffset, WallOffsets[i]);
             }
             if (this.TailZone == null)
             {
-                return instant;
+                return null;
             }
             Instant end = this.Transitions[this.Transitions.Length - 1];
             if (instant < end)
@@ -217,34 +218,35 @@ namespace NodaTime.TimeZones
         /// <returns>
         ///    The instant of the previous transition, or null if there are no further transitions.
         /// </returns>
-        public override Instant? PreviousTransition(Instant instant)
+        public override Transition? PreviousTransition(Instant instant)
         {
+            if (instant == Instant.MinValue)
+            {
+                return null;
+            }
             int i = Array.BinarySearch(this.Transitions, instant);
-            if (i >= 0)
+            // If we find a transition, then the given instant is on a transition, and we want the
+            // one before it.
+            // If we don't find a transition, then ~i will be the index of next transition,
+            // so again we want the one before it... unless we've actually gone off the end of
+            // all the transitions, in which case we need to look at the tail zone (if any).
+            i = (i < 0 ? ~i : i) - 1;
+            if (i < this.Transitions.Length - 1)
             {
-                if (instant > Instant.MinValue)
+                if (i == -1 || Transitions[i] == Instant.MinValue)
                 {
-                    return instant - Duration.One;
+                    return null;
                 }
-                return instant;
+                // Assume offset of zero before the first transition. This is consistent with GetOffsetFromUtc
+                Offset previousOffset = i > 0 ? WallOffsets[i - 1] : Offset.Zero;
+                return new Transition(Transitions[i], previousOffset, WallOffsets[i]);
             }
-            i = ~i;
-            if (i < this.Transitions.Length)
-            {
-                if (i > 0)
-                {
-                    Instant prev = this.Transitions[i - 1];
-                    if (prev > Instant.MinValue)
-                    {
-                        return prev - Duration.One;
-                    }
-                }
-                return instant;
-            }
+            // The instant is after the last transition. If we have a tail zone, ask that
+            // for the transition; otherwise check whether our last transition is actually valid.
             if (this.TailZone != null)
             {
-                Instant? prev = this.TailZone.PreviousTransition(instant);
-                if (prev.HasValue && prev.Value < instant)
+                Transition? prev = this.TailZone.PreviousTransition(instant);
+                if (prev.HasValue && prev.Value.Instant < instant)
                 {
                     return prev;
                 }
@@ -252,9 +254,10 @@ namespace NodaTime.TimeZones
             Instant previous = this.Transitions[i - 1];
             if (previous > Instant.MinValue)
             {
-                return previous - Duration.One;
+                return new Transition(previous, WallOffsets[i - 2], WallOffsets[i - 1]);
             }
-            return instant;
+            // When would this happen?
+            return null;
         }
 
         /// <summary>

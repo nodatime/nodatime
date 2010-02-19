@@ -182,12 +182,12 @@ namespace NodaTime.TimeZones
 
         #region IDateTimeZone Members
 
-        public override Instant? NextTransition(Instant instant)
+        public override Transition? NextTransition(Instant instant)
         {
             return TimeZone.NextTransition(instant);
         }
 
-        public override Instant? PreviousTransition(Instant instant)
+        public override Transition? PreviousTransition(Instant instant)
         {
             return TimeZone.PreviousTransition(instant);
         }
@@ -214,7 +214,7 @@ namespace NodaTime.TimeZones
             get { return this.cache; }
         }
 
-        private IDateTimeZone TimeZone
+        internal IDateTimeZone TimeZone
         {
             get { return this.timeZone; }
         }
@@ -278,11 +278,11 @@ namespace NodaTime.TimeZones
             while (true)
             {
                 var next = TimeZone.NextTransition(periodStart);
-                if (!next.HasValue || next.Value == periodStart || next.Value > periodEnd)
+                if (!next.HasValue || next.Value.Instant == periodStart || next.Value.Instant > periodEnd)
                 {
                     break;
                 }
-                periodStart = next.Value;
+                periodStart = next.Value.Instant;
                 info = new Info(TimeZone, periodStart, info);
             }
 

@@ -89,10 +89,7 @@ namespace NodaTime
         /// <returns>
         /// A new <see cref="Offset"/> representing the given value.
         /// </returns>
-        /// <remarks>
-        /// TODO: not sure about the name. Anyone got a better one?
-        /// </remarks>
-        public static Offset Create(int hours)
+        public static Offset ForHours(int hours)
         {
             return Create(hours, 0, 0, 0);
         }

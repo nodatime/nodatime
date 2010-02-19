@@ -213,13 +213,13 @@ namespace NodaTime.Calendars
             // necessary.
 
             // Initial estimate uses values divided by two to avoid overflow.
-            long unitMillis = AverageTicksPerYearDividedByTwo;
+            long unitTicks = AverageTicksPerYearDividedByTwo;
             long i2 = (ticks >> 1) + ApproxTicksAtEpochDividedByTwo;
             if (i2 < 0)
             {
-                i2 = i2 - unitMillis + 1;
+                i2 = i2 - unitTicks + 1;
             }
-            int year = (int)(i2 / unitMillis);
+            int year = (int)(i2 / unitTicks);
 
             long yearStart = GetYearTicks(year);
             long diff = ticks - yearStart;
