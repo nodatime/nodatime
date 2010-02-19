@@ -24,10 +24,8 @@ namespace NodaTime.TimeZones
     ///    where an extra offset is applied between two dates of a year.
     /// </summary>
     internal class DaylightSavingsTimeZone
-        : IDateTimeZone, IEquatable<DaylightSavingsTimeZone>
+        : DateTimeZoneBase, IEquatable<DaylightSavingsTimeZone>
     {
-        private readonly string id;
-
         private readonly Offset standardOffset;
         internal Offset StandardOffset { get { return standardOffset; } }
         private readonly ZoneRecurrence startRecurrence;
@@ -47,9 +45,8 @@ namespace NodaTime.TimeZones
         /// </param>
         /// <param name="endRecurrence">The end recurrence.</param>
         internal DaylightSavingsTimeZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence,
-                                         ZoneRecurrence endRecurrence)
+                                         ZoneRecurrence endRecurrence) : base(id, false)
         {
-            this.id = id;
             this.standardOffset = standardOffset;
             this.startRecurrence = startRecurrence;
             this.endRecurrence = endRecurrence;
@@ -110,7 +107,7 @@ namespace NodaTime.TimeZones
 
         #region IDateTimeZone Members
 
-        public Instant? NextTransition(Instant instant)
+        public override Instant? NextTransition(Instant instant)
         {
             Instant? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
             Instant? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
@@ -125,7 +122,7 @@ namespace NodaTime.TimeZones
             return end;
         }
 
-        public Instant? PreviousTransition(Instant instant)
+        public override Instant? PreviousTransition(Instant instant)
         {
             // Increment in order to handle the case where instant is exactly at
             // a transition.
@@ -153,32 +150,17 @@ namespace NodaTime.TimeZones
             return result;
         }
 
-        public Offset GetOffsetFromUtc(Instant instant)
+        public override Offset GetOffsetFromUtc(Instant instant)
         {
             return FindMatchingRecurrence(instant).Savings + StandardOffset;
         }
 
-        public Offset GetOffsetFromLocal(LocalInstant instant)
-        {
-            return DateTimeZone.GetOffsetFromLocal(this, instant);
-        }
-
-        public string Name(Instant instant)
+        public override string Name(Instant instant)
         {
             return FindMatchingRecurrence(instant).Name;
         }
 
-        public string Id
-        {
-            get { return id; }
-        }
-
-        public bool IsFixed
-        {
-            get { return false; }
-        }
-
-        public void Write(DateTimeZoneWriter writer)
+        public override void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)
             {

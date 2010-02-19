@@ -49,8 +49,7 @@ namespace NodaTime.TimeZones
     ///       Original name: CachedDateTimeZone
     ///    </para>
     /// </remarks>
-    public sealed class CachedDateTimeZone
-        : IDateTimeZone
+    public sealed class CachedDateTimeZone : DateTimeZoneBase
     {
         /// <summary>
         ///    Defines the number of bits to shift an instant value to get the period. This converts
@@ -92,7 +91,7 @@ namespace NodaTime.TimeZones
         /// <param name="timeZone">
         ///    The time zone to cache.
         /// </param>
-        private CachedDateTimeZone(IDateTimeZone timeZone)
+        private CachedDateTimeZone(IDateTimeZone timeZone) : base(timeZone.Id, timeZone.IsFixed)
         {
             this.timeZone = timeZone;
             this.cachePeriodMask = MakeMask(0);
@@ -183,49 +182,26 @@ namespace NodaTime.TimeZones
 
         #region IDateTimeZone Members
 
-        public Instant? NextTransition(Instant instant)
+        public override Instant? NextTransition(Instant instant)
         {
             return TimeZone.NextTransition(instant);
         }
 
-        public Instant? PreviousTransition(Instant instant)
+        public override Instant? PreviousTransition(Instant instant)
         {
             return TimeZone.PreviousTransition(instant);
         }
 
-        public Offset GetOffsetFromUtc(Instant instant)
+        public override Offset GetOffsetFromUtc(Instant instant)
         {
             var info = GetInfo(instant);
             return info.Offset;
         }
 
-        public Offset GetOffsetFromLocal(LocalInstant instant)
-        {
-            return DateTimeZone.GetOffsetFromLocal(this, instant);
-        }
-
-        public string Name(Instant instant)
+        public override string Name(Instant instant)
         {
             var info = GetInfo(instant);
             return info.Name;
-        }
-
-        /// <summary>
-        ///    The database ID for the time zone.
-        /// </summary>
-        /// <value></value>
-        public string Id
-        {
-            get { return TimeZone.Id; }
-        }
-
-        /// <summary>
-        ///    Indicates whether the time zone is fixed, i.e. contains no transitions.
-        /// </summary>
-        /// <value></value>
-        public bool IsFixed
-        {
-            get { return TimeZone.IsFixed; }
         }
 
         private int CachePeriodMask
@@ -243,7 +219,7 @@ namespace NodaTime.TimeZones
             get { return this.timeZone; }
         }
 
-        public void Write(DateTimeZoneWriter writer)
+        public override void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)
             {
