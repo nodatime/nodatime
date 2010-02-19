@@ -1,7 +1,6 @@
 ﻿#region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,9 +13,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
-
 using System;
 using NodaTime.Utility;
 
@@ -31,9 +28,12 @@ namespace NodaTime.TimeZones
     {
         private readonly string id;
 
-        internal Offset StandardOffset { get; set; }
-        internal ZoneRecurrence StartRecurrence { get; set; }
-        internal ZoneRecurrence EndRecurrence { get; set; }
+        private readonly Offset standardOffset;
+        internal Offset StandardOffset { get { return standardOffset; } }
+        private readonly ZoneRecurrence startRecurrence;
+        internal ZoneRecurrence StartRecurrence { get { return startRecurrence; } }
+        private readonly ZoneRecurrence endRecurrence;
+        internal ZoneRecurrence EndRecurrence { get { return endRecurrence; } }
 
         /// <summary>
         ///    Initializes a new instance of the
@@ -50,19 +50,19 @@ namespace NodaTime.TimeZones
                                          ZoneRecurrence endRecurrence)
         {
             this.id = id;
-            StandardOffset = standardOffset;
-            StartRecurrence = startRecurrence;
-            EndRecurrence = endRecurrence;
+            this.standardOffset = standardOffset;
+            this.startRecurrence = startRecurrence;
+            this.endRecurrence = endRecurrence;
 
             if (startRecurrence.Name == endRecurrence.Name)
             {
                 if (startRecurrence.Savings > Offset.Zero)
                 {
-                    StartRecurrence = startRecurrence.RenameAppend("-Summer");
+                    this.startRecurrence = startRecurrence.RenameAppend("-Summer");
                 }
                 else
                 {
-                    EndRecurrence = endRecurrence.RenameAppend("-Summer");
+                    this.endRecurrence = endRecurrence.RenameAppend("-Summer");
                 }
             }
         }
@@ -71,7 +71,6 @@ namespace NodaTime.TimeZones
         {
             return Equals(obj as DaylightSavingsTimeZone);
         }
-
 
         public bool Equals(DaylightSavingsTimeZone other)
         {
@@ -171,7 +170,7 @@ namespace NodaTime.TimeZones
 
         public string Id
         {
-            get { return this.id; }
+            get { return id; }
         }
 
         public bool IsFixed
