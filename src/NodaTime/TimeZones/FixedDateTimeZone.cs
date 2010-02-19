@@ -26,14 +26,17 @@ namespace NodaTime.TimeZones
     public sealed class FixedDateTimeZone 
         : DateTimeZoneBase
     {
+        private readonly Offset offset;
+
         /// <summary>
         /// Creates a new fixed time zone.
         /// </summary>
         /// <param name="id">The ID of the time zone.</param>
         /// <param name="offset">The <see cref="Offset"/> from UTC.</param>
         public FixedDateTimeZone(string id, Offset offset)
-            : base(id, offset, true)
+            : base(id, true)
         {
+            this.offset = offset;
         }
 
         /// <summary>
@@ -62,6 +65,11 @@ namespace NodaTime.TimeZones
             return null;
         }
 
+        public override Offset GetOffsetFromUtc(Instant instant)
+        {
+            return offset;
+        }
+
         /// <summary>
         /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
         /// than local time. In other words, UTC = local time - (offset from local).
@@ -70,7 +78,7 @@ namespace NodaTime.TimeZones
         /// <returns>The offset at the specified local time.</returns>
         public override Offset GetOffsetFromLocal(LocalInstant instant)
         {
-            return StandardOffset;
+            return offset;
         }
 
         /// <summary>
@@ -83,7 +91,7 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("writer");
             }
-            writer.WriteOffset(StandardOffset);
+            writer.WriteOffset(offset);
         }
 
         /// <summary>

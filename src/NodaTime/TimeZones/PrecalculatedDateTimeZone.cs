@@ -127,7 +127,7 @@ namespace NodaTime.TimeZones
 
         private PrecalculatedDateTimeZone(String id, Instant[] transitions, Offset[] wallOffsets,
                                           Offset[] standardOffsets, String[] nameKeys, IDateTimeZone tailZone)
-            : base(id, GetLatestOffset(standardOffsets), false)
+            : base(id, false)
         {
             this.Transitions = transitions;
             this.WallOffsets = wallOffsets;

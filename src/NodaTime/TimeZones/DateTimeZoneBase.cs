@@ -28,22 +28,17 @@ namespace NodaTime.TimeZones
     {
         private readonly string id;
         private readonly bool isFixed;
-        private readonly Offset standardOffset;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneBase"/> class.
         /// </summary>
         /// <param name="id">The unique id of this time zone.</param>
-        /// <param name="standardOffset">The standard offset from UTC.</param>
         /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
-        protected DateTimeZoneBase(string id, Offset standardOffset, bool isFixed)
+        protected DateTimeZoneBase(string id, bool isFixed)
         {
             this.id = id;
-            this.standardOffset = standardOffset;
             this.isFixed = isFixed;
         }
-
-        protected Offset StandardOffset { get { return this.standardOffset; } }
 
         #region IDateTimeZone Members
 
@@ -77,10 +72,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The offset from UTC at the specified instant.
         /// </returns>
-        public virtual Offset GetOffsetFromUtc(Instant instant)
-        {
-            return this.standardOffset;
-        }
+        public abstract Offset GetOffsetFromUtc(Instant instant);
 
         /// <summary>
         /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
