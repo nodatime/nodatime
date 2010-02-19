@@ -68,6 +68,8 @@ namespace NodaTime.Fields
 
         public DateTimeFieldType FieldType { get { return fieldType; } }
 
+        public string Name { get { return FieldType.ToString(); } }
+
         public DurationField DurationField { get { return durationField; } }
         
         public DurationField RangeDurationField { get { return null; } }
@@ -241,6 +243,57 @@ namespace NodaTime.Fields
         }
 
         public string GetAsShortText(int fieldValue, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int[] SetValue(IPartial instant, int fieldIndex, int[] values, int newValue)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public LocalInstant AddWrapField(LocalInstant localInstant, int value)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LocalInstant SetValue(LocalInstant instant, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int[] SetValue(IPartial instant, int fieldIndex, int[] values, string text, IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+        public int GetMaximumTextLength(IFormatProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetMaximumShortTextLength(IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
