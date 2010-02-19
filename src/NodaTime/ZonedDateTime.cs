@@ -1,6 +1,6 @@
 ﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 using System;
 
 namespace NodaTime
@@ -112,12 +111,9 @@ namespace NodaTime
 
         private static Instant ConvertLocalToUtc(LocalInstant localInstant, IDateTimeZone zone)
         {
+            // This call will throw SkippedTimeException if necessary
             Offset offset = zone.GetOffsetFromLocal(localInstant);
             Instant instant = localInstant - offset;
-            if (offset != zone.GetOffsetFromUtc(instant))
-            {
-                throw new ArgumentException();
-            }
             return instant;
         }
 

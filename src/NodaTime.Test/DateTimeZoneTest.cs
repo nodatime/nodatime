@@ -35,7 +35,7 @@ namespace NodaTime.Test
             LocalDateTime atTransition = new LocalDateTime(2010, 3, 28, 3, 0);
             LocalDateTime after = new LocalDateTime(2010, 3, 28, 3, 30);
             AssertOffset(1, before, Paris);
-            AssertOffset(1, impossible, Paris);
+            AssertImpossible(impossible, Paris);
             AssertOffset(2, atTransition, Paris);
             AssertOffset(2, after, Paris);
         }
@@ -63,7 +63,7 @@ namespace NodaTime.Test
             LocalDateTime atTransition = new LocalDateTime(2010, 3, 14, 3, 0);
             LocalDateTime after = new LocalDateTime(2010, 3, 14, 3, 30);
             AssertOffset(-8, before, LosAngeles);
-            AssertOffset(-8, impossible, LosAngeles);
+            AssertImpossible(impossible, LosAngeles);
             AssertOffset(-7, atTransition, LosAngeles);
             AssertOffset(-7, after, LosAngeles);
         }
@@ -105,9 +105,14 @@ namespace NodaTime.Test
             LocalDateTime atTransition = new LocalDateTime(2010, 9, 26, 3, 0);
             LocalDateTime after = new LocalDateTime(2010, 9, 26, 3, 30);
             AssertOffset(+12, before, NewZealand);
-            AssertOffset(+12, impossible, NewZealand);
+            AssertImpossible(impossible, NewZealand);
             AssertOffset(+13, atTransition, NewZealand);
             AssertOffset(+13, after, NewZealand);
+        }
+
+        private static void AssertImpossible(LocalDateTime localTime, IDateTimeZone zone)
+        {
+            Assert.Throws<SkippedTimeException>(() => DateTimeZone.GetOffsetFromLocal(zone, localTime.LocalInstant));
         }
 
         private static void AssertOffset(int expectedHours, LocalDateTime localTime, IDateTimeZone zone)
