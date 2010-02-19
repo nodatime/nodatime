@@ -88,7 +88,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
         /// <returns></returns>
-        internal Instant? Next(Instant instant, Offset standardOffset, Offset previousSavings)
+        internal Transition? Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
 
@@ -124,7 +124,7 @@ namespace NodaTime.TimeZones
                 }
             }
 
-            return next;
+            return new Transition(next, wallOffset, standardOffset + Savings);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
         /// <returns></returns>
-        internal Instant? Previous(Instant instant, Offset standardOffset, Offset previousSavings)
+        internal Transition? Previous(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
 
@@ -153,7 +153,7 @@ namespace NodaTime.TimeZones
 
             if (year > this.toYear)
             {
-                // First advance instant to start of from year.
+                // First advance instant to start of year after toYear
                 instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.toYear + 1) - wallOffset;
             }
 
@@ -168,7 +168,7 @@ namespace NodaTime.TimeZones
                 }
             }
 
-            return previous;
+            return new Transition(previous, wallOffset, standardOffset + Savings);;
         }
 
         /// <summary>

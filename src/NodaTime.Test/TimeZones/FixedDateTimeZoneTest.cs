@@ -22,7 +22,7 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class FixedDateTimeZoneTest
     {
-        private static readonly Offset OneHour = Offset.Create(1);
+        private static readonly Offset OneHour = Offset.ForHours(1);
 
         [Test]
         public void SimpleProperties_ReturnValuesFromConstructor()

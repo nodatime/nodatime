@@ -92,13 +92,16 @@ namespace NodaTime.TimeZones
 
         private ZoneRecurrence FindMatchingRecurrence(Instant instant)
         {
-            Instant? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
-            Instant? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
+            // Find the transitions which start *after* the one we're currently in - then
+            // pick the later of them, which will be the same "polarity" as the one we're currently
+            // in.
+            Transition? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
+            Transition? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
             if (start.HasValue)
             {
                 if (end.HasValue)
                 {
-                    return (start.Value > end.Value) ? StartRecurrence : EndRecurrence;
+                    return (start.Value.Instant > end.Value.Instant) ? StartRecurrence : EndRecurrence;
                 }
                 return StartRecurrence;
             }
@@ -107,45 +110,37 @@ namespace NodaTime.TimeZones
 
         #region IDateTimeZone Members
 
-        public override Instant? NextTransition(Instant instant)
+        public override Transition? NextTransition(Instant instant)
         {
-            Instant? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
-            Instant? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
+            Transition? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
+            Transition? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
             if (start.HasValue)
             {
                 if (end.HasValue)
                 {
-                    return (start.Value > end.Value) ? end : start;
+                    return (start.Value.Instant > end.Value.Instant) ? end : start;
                 }
                 return start;
             }
             return end;
         }
 
-        public override Instant? PreviousTransition(Instant instant)
+        public override Transition? PreviousTransition(Instant instant)
         {
-            // Increment in order to handle the case where instant is exactly at
-            // a transition.
-            instant = instant + Duration.One;
-            Instant? start = StartRecurrence.Previous(instant, StandardOffset, EndRecurrence.Savings);
-            Instant? end = EndRecurrence.Previous(instant, StandardOffset, StartRecurrence.Savings);
+            Transition? start = StartRecurrence.Previous(instant, StandardOffset, EndRecurrence.Savings);
+            Transition? end = EndRecurrence.Previous(instant, StandardOffset, StartRecurrence.Savings);
 
-            Instant? result = end;
+            Transition? result = end;
             if (start.HasValue)
             {
                 if (end.HasValue)
                 {
-                    result = (start > end) ? end : start;
+                    result = (start.Value.Instant > end.Value.Instant) ? start : end;
                 }
                 else
                 {
                     result = start;
                 }
-            }
-
-            if (result.HasValue && result.Value != Instant.MinValue)
-            {
-                result = result.Value - Duration.One;
             }
             return result;
         }

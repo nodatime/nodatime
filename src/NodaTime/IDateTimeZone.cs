@@ -29,7 +29,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="instant">The instant after which to consider transitions.</param>
         /// <returns>The instant of the next transition, or null if there are no further transitions.</returns>
-        Instant? NextTransition(Instant instant);
+        Transition? NextTransition(Instant instant);
 
         /// <summary>
         /// Returns the transition occurring strictly before the specified instant,
@@ -37,7 +37,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="instant">The instant before which to consider transitions.</param>
         /// <returns>The instant of the previous transition, or null if there are no further transitions.</returns>
-        Instant? PreviousTransition(Instant instant);
+        Transition? PreviousTransition(Instant instant);
         
         /// <summary>
         /// Returns the offset from UTC, where a positive duration indicates that local time is later
@@ -58,11 +58,10 @@ namespace NodaTime
         /// occur; when the time falls back (e.g. 1:59 to 01:00) some times
         /// occur twice. This method always returns a smaller offset when
         /// there is ambiguity, i.e. it treats the local time as the later
-        /// of the possibilities. Currently for an impossible local time
-        /// it will return the offset corresponding to a later instant;
-        /// in the (near) future it is anticipated that an exception will be
-        /// thrown instead.
+        /// of the possibilities.
         /// </remarks>
+        /// <exception cref="SkippedTimeException">The local instant doesn't occur in this time zone
+        /// due to zone transitions.</exception>
         Offset GetOffsetFromLocal(LocalInstant localInstant);
 
         /// <summary>
