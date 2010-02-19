@@ -17,10 +17,14 @@
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.TimeZones
 {
+    /// <summary>
+    /// Tests within this class test the functionality within DateTimeZoneBase, even though it
+    /// tests it via concrete implementations.
+    /// </summary>
     [TestFixture]
-    public class DateTimeZoneTest
+    public class DateTimeZoneBaseTest
     {
         private static readonly IDateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
         private static readonly IDateTimeZone LosAngeles = DateTimeZones.ForId("America/Los_Angeles");
@@ -112,12 +116,12 @@ namespace NodaTime.Test
 
         private static void AssertImpossible(LocalDateTime localTime, IDateTimeZone zone)
         {
-            Assert.Throws<SkippedTimeException>(() => DateTimeZone.GetOffsetFromLocal(zone, localTime.LocalInstant));
+            Assert.Throws<SkippedTimeException>(() => zone.GetOffsetFromLocal(localTime.LocalInstant));
         }
 
         private static void AssertOffset(int expectedHours, LocalDateTime localTime, IDateTimeZone zone)
         {
-            Offset offset = DateTimeZone.GetOffsetFromLocal(zone, localTime.LocalInstant);
+            Offset offset = zone.GetOffsetFromLocal(localTime.LocalInstant);
             int actualHours = offset.Milliseconds / NodaConstants.MillisecondsPerHour;
             Assert.AreEqual(expectedHours, actualHours);
         }
