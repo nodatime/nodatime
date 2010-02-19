@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System.Linq;
-
 namespace NodaTime.Benchmarks.Timing
 {
     /// <summary>
@@ -29,8 +27,6 @@ namespace NodaTime.Benchmarks.Timing
         private Duration warmUpTime;
         private Duration testTime;
         private IBenchTimer timer;
-        private string typeFilter;
-        private string methodFilter;
 
         private BenchmarkOptions()
         {
@@ -39,16 +35,12 @@ namespace NodaTime.Benchmarks.Timing
         internal Duration WarmUpTime { get { return warmUpTime; } }
         internal Duration TestTime { get { return testTime; } }
         internal IBenchTimer Timer { get { return timer; } }
-        internal string TypeFilter { get { return typeFilter; } }
-        internal string MethodFilter { get { return methodFilter; } }
 
         internal static BenchmarkOptions FromCommandLine(string[] args)
         {
             // TODO: Use command line:)
             return new BenchmarkOptions
             {
-                typeFilter = args.FirstOrDefault(),
-                methodFilter = args.Skip(1).FirstOrDefault(),
                 warmUpTime = Duration.StandardSeconds(1),
                 testTime = Duration.StandardSeconds(3),
                 timer = new WallTimer()
