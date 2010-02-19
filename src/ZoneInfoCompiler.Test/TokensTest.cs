@@ -1,6 +1,6 @@
 ﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 #endregion
 
 using System;
+using NodaTime;
 using NodaTime.ZoneInfoCompiler;
+using NodaTime.ZoneInfoCompiler.Tzdb;
 using NUnit.Framework;
 
 namespace ZoneInfoCompiler.Test
@@ -75,6 +77,24 @@ namespace ZoneInfoCompiler.Test
             string line = LeadingSpacesMultipleInput;
             Tokens tokens = Tokens.Tokenize(line);
             ValidateTokens(tokens, LeadingSpacesMultipleTokenList);
+        }
+
+        [Test]
+        public void ParseOffset_ZeroHoursWithMinutesAndSeconds()
+        {
+            // Initial offset for Paris
+            string text = "0:09:21";
+            Offset offset = ParserHelper.ParseOffset(text);
+            Assert.AreEqual(Offset.Create(0, 9, 21), offset);
+        }
+
+        [Test]
+        public void ParseOffset_NegativeZeroHoursWithMinutesAndSeconds()
+        {
+            // Initial offset for Ouagadougou
+            string text = "-0:06:04";
+            Offset offset = ParserHelper.ParseOffset(text);
+            Assert.AreEqual(Offset.Create(0, -6, -4), offset);
         }
 
         /// <summary>

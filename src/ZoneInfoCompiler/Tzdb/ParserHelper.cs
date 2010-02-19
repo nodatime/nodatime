@@ -1,6 +1,6 @@
 ﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 
 using System;
 using System.Globalization;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
@@ -93,21 +92,27 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             {
                 throw new ArgumentNullException("value cannot be null");
             }
+            int sign = 1;
+            if (text.StartsWith("-"))
+            {
+                sign = -1;
+                text = text.Substring(1);
+            }
             string[] parts = Regex.Split(text, ":", RegexOptions.CultureInvariant | RegexOptions.Compiled);
             if (parts.Length > 3)
             {
                 throw new FormatException("Offset has too many colon separated parts (max of 3 allowed): " + text);
             }
             long ticks = ConvertHourToTicks(parts[0]);
-            int sign = Math.Sign(ticks);
             if (parts.Length > 1)
             {
-                ticks += sign * ConvertMinuteToTicks(parts[1]);
+                ticks += ConvertMinuteToTicks(parts[1]);
                 if (parts.Length > 2)
                 {
-                    ticks += sign * ConvertSecondsWithFractionalToTicks(parts[2]);
+                    ticks += ConvertSecondsWithFractionalToTicks(parts[2]);
                 }
             }
+            ticks = ticks * sign;
             return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
         }
 
@@ -140,7 +145,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             int value = Int32.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture);
             if (value < 0 || value > 59)
             {
-                throw new FormatException("hours out of valid range of [0, 59]: " + value);
+                throw new FormatException("minutes out of valid range of [0, 59]: " + value);
             }
             return value * NodaConstants.TicksPerMinute;
         }
