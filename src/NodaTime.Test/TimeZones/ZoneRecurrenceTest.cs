@@ -66,8 +66,8 @@ namespace NodaTime.Test.TimeZones
         {
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
-            Instant? actual = recurrence.Next(Instant.MinValue, Offset.Zero, Offset.Zero);
-            Instant? expected = Instant.UnixEpoch;
+            Transition? actual = recurrence.Next(Instant.MinValue, Offset.Zero, Offset.Zero);
+            Transition? expected = new Transition(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
@@ -76,8 +76,9 @@ namespace NodaTime.Test.TimeZones
         {
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
-            Instant? actual = recurrence.Next(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
-            Instant? expected = new Instant(Instant.UnixEpoch.Ticks + (1 * TicksPerStandardYear));
+            Transition? actual = recurrence.Next(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
+            Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (1 * TicksPerStandardYear)),
+                Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
@@ -86,19 +87,21 @@ namespace NodaTime.Test.TimeZones
         {
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
-            Instant? actual = recurrence.Next(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
-            actual = recurrence.Next(actual.Value, Offset.Zero, Offset.Zero);
-            Instant? expected = new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear));
+            Transition? actual = recurrence.Next(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
+            actual = recurrence.Next(actual.Value.Instant, Offset.Zero, Offset.Zero);
+            Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear)),
+                Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
         public void Next_BeyondLastYear_null()
         {
+            var afterRecurrenceEnd = new ZonedDateTime(1980, 1, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
-            Instant? actual = recurrence.Next(Instant.MaxValue, Offset.Zero, Offset.Zero);
-            Instant? expected = null;
+            Transition? actual = recurrence.Next(afterRecurrenceEnd, Offset.Zero, Offset.Zero);
+            Transition? expected = null;
             Assert.AreEqual(expected, actual);
         }
 
@@ -107,8 +110,9 @@ namespace NodaTime.Test.TimeZones
         {
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
-            Instant? actual = recurrence.Previous(Instant.MaxValue, Offset.Zero, Offset.Zero);
-            Instant? expected = new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear));
+            Transition? actual = recurrence.Previous(Instant.MaxValue, Offset.Zero, Offset.Zero);
+            Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear)),
+                Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
@@ -117,8 +121,8 @@ namespace NodaTime.Test.TimeZones
         {
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
-            Instant? actual = recurrence.Previous(new Instant(Instant.UnixEpoch.Ticks + (1 * TicksPerStandardYear)), Offset.Zero, Offset.Zero);
-            Instant? expected = Instant.UnixEpoch;
+            Transition? actual = recurrence.Previous(new Instant(Instant.UnixEpoch.Ticks + (1 * TicksPerStandardYear)), Offset.Zero, Offset.Zero);
+            Transition? expected = new Transition(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
@@ -127,9 +131,19 @@ namespace NodaTime.Test.TimeZones
         {
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1973);
-            Instant? actual = recurrence.Previous(new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear)), Offset.Zero, Offset.Zero);
-            actual = recurrence.Previous(actual.Value, Offset.Zero, Offset.Zero);
-            Instant? expected = Instant.UnixEpoch;
+            Transition? actual = recurrence.Previous(new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear)), Offset.Zero, Offset.Zero);
+            actual = recurrence.Previous(actual.Value.Instant, Offset.Zero, Offset.Zero);
+            Transition? expected = new Transition(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Previous_OnFirstYear_null()
+        {
+            var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
+            Transition? actual = recurrence.Previous(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
+            Transition? expected = null;
             Assert.AreEqual(expected, actual);
         }
 
@@ -138,8 +152,8 @@ namespace NodaTime.Test.TimeZones
         {
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
-            Instant? actual = recurrence.Previous(Instant.UnixEpoch - Duration.One, Offset.Zero, Offset.Zero);
-            Instant? expected = null;
+            Transition? actual = recurrence.Previous(Instant.UnixEpoch - Duration.One, Offset.Zero, Offset.Zero);
+            Transition? expected = null;
             Assert.AreEqual(expected, actual);
         }
 

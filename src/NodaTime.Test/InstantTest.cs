@@ -60,7 +60,7 @@ namespace NodaTime.Test
         private Instant threeMillion = new Instant(3000000L);
         private Instant negativeFiftyMillion = new Instant(-50000000L);
 
-        private Offset offsetOneHour = Offset.Create(1);
+        private Offset offsetOneHour = Offset.ForHours(1);
 
         [Test]
         public void TestInstantOperators()

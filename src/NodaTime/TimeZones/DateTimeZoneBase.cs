@@ -50,7 +50,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The instant of the next transition, or null if there are no further transitions.
         /// </returns>
-        public abstract Instant? NextTransition(Instant instant);
+        public abstract Transition? NextTransition(Instant instant);
 
         /// <summary>
         /// Returns the transition occurring strictly before the specified instant,
@@ -60,7 +60,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The instant of the previous transition, or null if there are no further transitions.
         /// </returns>
-        public abstract Instant? PreviousTransition(Instant instant);
+        public abstract Transition? PreviousTransition(Instant instant);
 
         public abstract void Write(DateTimeZoneWriter writer);
 
@@ -82,6 +82,8 @@ namespace NodaTime.TimeZones
         /// <returns>The offset at the specified local time.</returns>
         public virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
+            // TODO: Try to find offsets less frequently
+
             // Find an instant somewhere near the right time by assuming UTC temporarily
             var instant = new Instant(localInstant.Ticks);
 
@@ -111,9 +113,8 @@ namespace NodaTime.TimeZones
                 // after the transition, then it's the correct offset - it means
                 // the local time is ambiguous and we want to return the offset
                 // leading to the later UTC instant.
-                var candidateOffset3 = GetOffsetFromUtc(nextTransition.Value);
-                var candidateInstant2 = localInstant - candidateOffset3;
-                return (candidateInstant2 >= nextTransition.Value) ? candidateOffset3 : candidateOffset1;
+                var candidateInstant2 = localInstant - nextTransition.Value.NewOffset;
+                return (candidateInstant2 >= nextTransition.Value.Instant) ? nextTransition.Value.NewOffset : candidateOffset1;
             }
             else
             {
@@ -128,7 +129,7 @@ namespace NodaTime.TimeZones
                     return candidateOffset2;
                 }
                 var laterInstant = candidateInstant1 > candidateInstant2 ? candidateInstant1 : candidateInstant2;
-                throw new SkippedTimeException(localInstant, this, PreviousTransition(laterInstant).Value);
+                throw new SkippedTimeException(localInstant, this, PreviousTransition(laterInstant).Value.Instant);
             }
         }
 

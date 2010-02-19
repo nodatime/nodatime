@@ -194,7 +194,7 @@ namespace NodaTime.TimeZones
             }
 
             /// <summary>
-            /// If there are only two rule left and they are both infinite rules then a <see
+            /// If there are only two rules left and they are both infinite rules then a <see
             /// cref="IDateTimeZone"/> implementation is returned that encapsulates those rules,
             /// otherwise null is returned.
             /// </summary>
@@ -290,7 +290,8 @@ namespace NodaTime.TimeZones
                 for (int i = 0; i < this.rules.Count; i++)
                 {
                     ZoneRecurrence rule = this.rules[i];
-                    Instant? next = rule.Next(nextInstant, this.ruleSet.StandardOffset, this.savings);
+                    Transition? nextTransition = rule.Next(nextInstant, this.ruleSet.StandardOffset, this.savings);
+                    Instant? next = nextTransition == null ? (Instant?) null : nextTransition.Value.Instant;
                     if (!next.HasValue || next.Value <= nextInstant)
                     {
                         this.rules.RemoveAt(i);

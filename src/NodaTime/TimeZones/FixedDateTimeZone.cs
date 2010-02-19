@@ -47,7 +47,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The instant of the next transition, or null if there are no further transitions.
         /// </returns>
-        public override Instant? NextTransition(Instant instant)
+        public override Transition? NextTransition(Instant instant)
         {
             return null;
         }
@@ -60,7 +60,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The instant of the previous transition, or null if there are no further transitions.
         /// </returns>
-        public override Instant? PreviousTransition(Instant instant)
+        public override Transition? PreviousTransition(Instant instant)
         {
             return null;
         }

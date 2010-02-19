@@ -49,8 +49,8 @@ namespace NodaTime.Calendars
         public override long AverageTicksPerMonth { get { return (long)(365.2425m * NodaConstants.TicksPerDay / 12); } }
         public override long ApproxTicksAtEpochDividedByTwo { get { return (1970 * AverageTicksPerGregorianYear) / 2; } }
         // TODO: Check that this is still valid now we've moved to ticks. I suspect it's not... (divide by 10000?)
-        public override int MinYear { get { return -292275054; } }
-        public override int MaxYear { get { return 292278993; } }
+        public override int MinYear { get { return -27258; } }
+        public override int MaxYear { get { return 31196; } }
 
         public static Chronology GetInstance(IDateTimeZone dateTimeZone)
         {
