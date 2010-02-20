@@ -44,6 +44,13 @@ namespace NodaTime.TimeZones
     ///    </para>
     ///    <para>
     ///       TODO: what is the thread safety?
+    ///       Answer (Jon): Not sure. On .NET I think we're okay; I'll check with Miguel
+    ///       about the Mono memory model. Basically the concern would be whether the
+    ///       writes to the array and the values within the Info constructor could be seen out 
+    ///       of order; on .NET all writes are in order I believe, and the read would be okay
+    ///       as it's a new object (so it can't have any stale values). I may ask Joe though.
+    ///       Alternatively, we could lock on cache access or possibly do a
+    ///       volatile read.
     ///    </para>
     ///    <para>
     ///       Original name: CachedDateTimeZone
@@ -272,13 +279,16 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         private Info CreateInfo(Instant instant)
         {
+            // TODO: Extract constants?
             var periodStart = new Instant(instant.Ticks & (0x7ffffL << PeriodShift));
             var info = new Info(TimeZone, periodStart);
             var periodEnd = new Instant(periodStart.Ticks | 0x1fffffffffffL);
+            // TODO: Keep the transitions in the Info as well, so we can
+            // use them for NextTransition and PreviousTransition?
             while (true)
             {
                 var next = TimeZone.NextTransition(periodStart);
-                if (!next.HasValue || next.Value.Instant == periodStart || next.Value.Instant > periodEnd)
+                if (!next.HasValue || next.Value.Instant > periodEnd)
                 {
                     break;
                 }
@@ -322,7 +332,6 @@ namespace NodaTime.TimeZones
         private class Info
         {
             private readonly Instant periodStart;
-            private readonly IDateTimeZone timeZone;
             private readonly Info previous;
             private readonly string name;
             private readonly Offset offset;
@@ -330,11 +339,6 @@ namespace NodaTime.TimeZones
             public Instant PeriodStart
             {
                 get { return this.periodStart; }
-            }
-
-            private IDateTimeZone TimeZone
-            {
-                get { return this.timeZone; }
             }
 
             public Info Previous
@@ -370,11 +374,10 @@ namespace NodaTime.TimeZones
             /// <param name="previous">The previous.</param>
             public Info(IDateTimeZone zone, Instant periodStart, Info previous)
             {
-                this.timeZone = zone;
                 this.periodStart = periodStart;
                 this.previous = previous;
-                this.name = TimeZone.Name(PeriodStart);
-                this.offset = TimeZone.GetOffsetFromUtc(PeriodStart);
+                this.name = zone.Name(PeriodStart);
+                this.offset = zone.GetOffsetFromUtc(PeriodStart);
             }
         }
     }
