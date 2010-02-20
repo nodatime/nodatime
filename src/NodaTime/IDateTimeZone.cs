@@ -72,6 +72,7 @@ namespace NodaTime
         /// honors daylight savings this will return a different name depending on the time of year
         /// it represents. For example in the Pacific Standard Time (UTC-8) it will return either
         /// PST or PDT depending on the time of year.
+        /// TODO: Change this to GetName?
         /// </remarks>
         /// <param name="instant">The instant to get the name for.</param>
         /// <returns>The name of this time. Never returns null.</returns>

@@ -44,15 +44,15 @@ namespace NodaTime.Calendars
                 // Work out which fields from the base are still valid, so we can
                 // optimize by calling directly to the base calendar sometimes
                 FieldSet baseFields = baseCalendar.Fields;
-                useBaseTimeOfDayFields = baseFields.HourOfDay == Fields.HourOfDay &&
-                                         baseFields.MinuteOfHour == Fields.MinuteOfHour &&
-                                         baseFields.SecondOfMinute == Fields.SecondOfMinute &&
-                                         baseFields.MillisecondOfSecond == Fields.MillisecondOfSecond &&
-                                         baseFields.TickOfMillisecond == Fields.TickOfMillisecond;
-                useBaseTickOfDayFields = baseFields.TickOfDay == Fields.TickOfDay;
-                useBaseYearMonthDayFields = baseFields.Year == Fields.Year &&
-                                            baseFields.MonthOfYear == Fields.MonthOfYear &&
-                                            baseFields.DayOfMonth == Fields.DayOfMonth;
+                useBaseTimeOfDayFields = baseFields.HourOfDay == fields.HourOfDay &&
+                                         baseFields.MinuteOfHour == fields.MinuteOfHour &&
+                                         baseFields.SecondOfMinute == fields.SecondOfMinute &&
+                                         baseFields.MillisecondOfSecond == fields.MillisecondOfSecond &&
+                                         baseFields.TickOfMillisecond == fields.TickOfMillisecond;
+                useBaseTickOfDayFields = baseFields.TickOfDay == fields.TickOfDay;
+                useBaseYearMonthDayFields = baseFields.Year == fields.Year &&
+                                            baseFields.MonthOfYear == fields.MonthOfYear &&
+                                            baseFields.DayOfMonth == fields.DayOfMonth;
             }
             else
             {
@@ -62,14 +62,14 @@ namespace NodaTime.Calendars
             }
         }
 
-        public override FieldSet Fields { get { return fields; } }
+        public override sealed FieldSet Fields { get { return fields; } }
 
         internal ICalendarSystem BaseCalendar { get { return baseCalendar; } }
 
         private FieldSet ConstructFields()
         {
             FieldSet.Builder builder = new FieldSet.Builder();
-            if (this.BaseCalendar != null)
+            if (BaseCalendar != null)
             {
                 builder.WithSupportedFieldsFrom(baseCalendar.Fields);
             }
