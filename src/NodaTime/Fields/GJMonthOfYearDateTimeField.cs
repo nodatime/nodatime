@@ -18,7 +18,7 @@ using NodaTime.Calendars;
 
 namespace NodaTime.Fields
 {
-    internal class GJMonthOfYearDateTimeField : BasicMonthOfYearDateTimeField
+    internal sealed class GJMonthOfYearDateTimeField : BasicMonthOfYearDateTimeField
     {
         internal GJMonthOfYearDateTimeField(BasicCalendarSystem calendarSystem)
             : base(calendarSystem, NodaConstants.February)

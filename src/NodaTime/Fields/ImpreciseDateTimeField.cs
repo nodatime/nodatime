@@ -17,8 +17,23 @@
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Porting status: Done, I think!
+    /// Abstract datetime field class that defines its own DurationField, which
+    /// delegates back into this ImpreciseDateTimeField.
     /// </summary>
+    /// <remarks>
+    /// This DateTimeField is useful for defining DateTimeFields that are composed
+    /// of imprecise durations. If both duration fields are precise, then a
+    /// <see cref="PreciseDurationDateTimeField"/> should be used instead.
+    /// <para>
+    /// When defining imprecise DateTimeFields where a matching DurationField is
+    /// already available, just extend BaseDateTimeField directly so as not to
+    /// create redundant DurationField instances.
+    /// </para>
+    /// <para>
+    /// ImpreciseDateTimeField is thread-safe and immutable, and its subclasses must
+    /// be as well.
+    /// </para>
+    /// </remarks>
     internal abstract class ImpreciseDateTimeField : DateTimeFieldBase
     {
         private readonly long unitTicks;
@@ -33,12 +48,13 @@ namespace NodaTime.Fields
 
         public long UnitTicks { get { return unitTicks; } }
 
+        public override DurationField DurationField { get { return durationField; } }
+
+        public abstract override DurationField RangeDurationField { get; }
+        public abstract override int GetValue(LocalInstant localInstant);
         public abstract override LocalInstant Add(LocalInstant localInstant, int value);
         public abstract override LocalInstant Add(LocalInstant localInstant, long value);
-        public abstract override int GetValue(LocalInstant localInstant);
         public abstract override LocalInstant SetValue(LocalInstant localInstant, long value);
-        public abstract override DurationField RangeDurationField { get; }
-        public abstract override LocalInstant RoundFloor(LocalInstant localInstant);
 
         public override int  GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
@@ -73,7 +89,7 @@ namespace NodaTime.Fields
             return difference;
         }
 
-        public override DurationField DurationField { get { return durationField; } }
+        public abstract override LocalInstant RoundFloor(LocalInstant localInstant);
 
         private class LinkedDurationField : DurationFieldBase
         {

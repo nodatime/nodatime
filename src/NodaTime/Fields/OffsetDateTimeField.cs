@@ -14,12 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Porting status: Needs AddWrapField
+    /// Generic offset adjusting datetime field.
     /// </summary>
     internal sealed class OffsetDateTimeField : DecoratedDateTimeField
     {
@@ -60,6 +61,8 @@ namespace NodaTime.Fields
 
         // Note: no need to override GetValue, as that delegates to GetInt64Value.
 
+        #region Values
+
         public override long GetInt64Value(LocalInstant localInstant)
         {
             return base.GetInt64Value(localInstant) + offset;
@@ -79,11 +82,20 @@ namespace NodaTime.Fields
             return localInstant;
         }
 
+        public override LocalInstant AddWrapField(LocalInstant localInstant, int value)
+        {
+            return SetValue(localInstant, FieldUtils.GetWrappedValue(GetValue(localInstant), value, min, max));
+
+        }
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, min, max);
             return base.SetValue(localInstant, value - offset);
         }
+
+        #endregion
+
+        #region Leap
 
         public override bool IsLeap(LocalInstant localInstant)
         {
@@ -97,6 +109,10 @@ namespace NodaTime.Fields
 
         public override DurationField LeapDurationField { get { return WrappedField.LeapDurationField; } }
 
+        #endregion
+
+        #region Ranges
+
         public override long GetMinimumValue()
         {
             return min;
@@ -106,6 +122,10 @@ namespace NodaTime.Fields
         {
             return max;
         }
+
+        #endregion
+
+        #region Rounding
 
         // No need to override RoundFloor again - it already just delegates.
 
@@ -133,5 +153,7 @@ namespace NodaTime.Fields
         {
             return WrappedField.Remainder(localInstant);
         }
+        #endregion
+
     }
 }

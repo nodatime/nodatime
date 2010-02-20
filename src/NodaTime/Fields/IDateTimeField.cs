@@ -328,7 +328,7 @@ namespace NodaTime.Fields
 
         #endregion
 
-        #region Leap status
+        #region Leap
 
         /// <summary>
         /// Returns whether this field is 'leap' for the specified instant.
