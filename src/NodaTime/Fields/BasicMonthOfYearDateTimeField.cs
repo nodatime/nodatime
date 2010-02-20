@@ -14,13 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Calendars;
+using NodaTime.Partials;
 
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Needs partial and AddWrapField
+    /// Provides time calculations for the month of the year component of time.
     /// </summary>
     internal class BasicMonthOfYearDateTimeField : ImpreciseDateTimeField
     {
@@ -38,18 +40,46 @@ namespace NodaTime.Fields
             this.leapMonth = leapMonth;
         }
 
+        public override DurationField RangeDurationField { get { return calendarSystem.Fields.Years; } }
+
         public override bool IsLenient { get { return false; } }
 
+        #region Values
+
+        /// <summary>
+        /// Get the Month component of the specified local instant.
+        /// </summary>
+        /// <param name="localInstant">The local instant to query</param>
+        /// <returns>The month extracted from the input.</returns>
         public override int GetValue(LocalInstant localInstant)
         {
             return calendarSystem.GetMonthOfYear(localInstant);
         }
 
+        /// <summary>
+        /// Get the Month component of the specified local instant.
+        /// </summary>
+        /// <param name="localInstant">The local instant to query</param>
+        /// <returns>The month extracted from the input.</returns>
         public override long GetInt64Value(LocalInstant localInstant)
         {
             return calendarSystem.GetMonthOfYear(localInstant);
         }
 
+        /// <summary>
+        /// Add the specified month to the specified time instant.
+        /// The amount added may be negative.
+        /// </summary>
+        /// <param name="localInstant">The local instant to update</param>
+        /// <param name="value">The months to add (can be negative).</param>
+        /// <returns>The updated local instant</returns>
+        /// <remarks>
+        /// If the new month has less total days than the specified
+        /// day of the month, this value is coerced to the nearest
+        /// sane value. e.g.
+        /// 07-31 - (1 month) = 06-30
+        /// 03-31 - (1 month) = 02-28 or 02-29 depending
+        /// </remarks>
         public override LocalInstant Add(LocalInstant localInstant, int value)
         {
             // Keep the parameter name the same as the original declaration, but
@@ -170,10 +200,47 @@ namespace NodaTime.Fields
 
         }
 
+        /// <summary>
+        /// Add to the Month component of the specified time instant
+        /// wrapping around within that component if necessary.
+        /// </summary>
+        /// <param name="localInstant">The local instant to update</param>
+        /// <param name="value">The months to add (can be negative)</param>
+        /// <returns>The updated local instant</returns>
+        public override LocalInstant AddWrapField(LocalInstant localInstant, int value)
+        {
+            int months = value;
+            return SetValue(localInstant, FieldUtils.GetWrappedValue(GetValue(localInstant), months, MinimumValue, max));
+        }
+
+        public override int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
+        {
+            // overridden as superclass algorithm can't handle
+            // 2004-02-29 + 48 months -> 2008-02-29 type dates
+            if (valueToAdd == 0)
+            {
+                return values;
+            }
+
+            if (PartialUtils.IsContiguous(instant))
+            {
+                LocalInstant currentValue = LocalInstant.LocalUnixEpoch;
+                for (int i = 0, isize = instant.Size; i < isize; i++)
+                {
+                    currentValue = instant.GetFieldType(i).GetField(calendarSystem).SetValue(currentValue, values[i]);
+                }
+                currentValue = Add(currentValue, valueToAdd);
+                return calendarSystem.GetPartialValues(instant, currentValue);
+            }
+            else
+            {
+                return base.Add(instant, fieldIndex, values, valueToAdd);
+            }
+        }
+
         public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            // TODO: use operators when we've implemented them on LocalInstant :)
-            if (minuendInstant.Ticks < subtrahendInstant.Ticks)
+            if (minuendInstant < subtrahendInstant)
             {
                 return -GetInt64Difference(subtrahendInstant, minuendInstant);
             }
@@ -229,7 +296,9 @@ namespace NodaTime.Fields
                 calendarSystem.GetTickOfDay(localInstant));
         }
 
-        public override DurationField RangeDurationField { get { return calendarSystem.Fields.Years; } }
+        #endregion
+
+        #region Leap
 
         public override bool IsLeap(LocalInstant localInstant)
         {
@@ -245,6 +314,10 @@ namespace NodaTime.Fields
 
         public override DurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
 
+        #endregion
+
+        #region Ranges
+
         public override long GetMinimumValue()
         {
             return MinimumValue;
@@ -255,6 +328,10 @@ namespace NodaTime.Fields
             return max;
         }
 
+        #endregion
+
+        #region Rounding
+
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             int year = calendarSystem.GetYear(localInstant);
@@ -264,8 +341,9 @@ namespace NodaTime.Fields
 
         public override Duration Remainder(LocalInstant localInstant)
         {
-            // TODO: Use operators when we've implemented them
-            return new Duration(localInstant.Ticks - RoundFloor(localInstant).Ticks);
+            return localInstant - RoundFloor(localInstant);
         }
+
+        #endregion
     }
 }

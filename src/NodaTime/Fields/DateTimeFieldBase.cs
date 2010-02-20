@@ -203,7 +203,7 @@ namespace NodaTime.Fields
         /// 2001-01-31 add two months is 2001-03-31<br>
         /// </example>
         /// </remarks>
-        public int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
+        public virtual int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
         {
             if (valueToAdd == 0)
             {

@@ -35,6 +35,8 @@ namespace NodaTime.Fields
             }
         }
 
+        #region Values
+
         public override int GetValue(LocalInstant localInstant)
         {
             int value = WrappedField.GetValue(localInstant);
@@ -54,6 +56,20 @@ namespace NodaTime.Fields
             return WrappedField.SetValue(localInstant, value == max ? 0 : value);
         }
 
+        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        {
+            return WrappedField.GetDifference(minuendInstant, subtrahendInstant);
+        }
+
+        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        {
+            return WrappedField.GetInt64Difference(minuendInstant, subtrahendInstant);
+        }
+
+        #endregion
+
+        #region Leap
+
         public override bool IsLeap(LocalInstant localInstant)
         {
             return WrappedField.IsLeap(localInstant);
@@ -65,6 +81,10 @@ namespace NodaTime.Fields
         }
 
         public override DurationField LeapDurationField { get { return WrappedField.LeapDurationField; } }
+
+        #endregion
+
+        #region Ranges
 
         public override long GetMinimumValue()
         {
@@ -85,6 +105,10 @@ namespace NodaTime.Fields
         {
             return WrappedField.GetMaximumValue() + 1;
         }
+
+        #endregion
+
+        #region Rounding
 
         public override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
@@ -116,14 +140,6 @@ namespace NodaTime.Fields
             return WrappedField.Remainder(localInstant);
         }
 
-        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return WrappedField.GetDifference(minuendInstant, subtrahendInstant);
-        }
-
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return WrappedField.GetInt64Difference(minuendInstant, subtrahendInstant);
-        }
+        #endregion
     }
 }

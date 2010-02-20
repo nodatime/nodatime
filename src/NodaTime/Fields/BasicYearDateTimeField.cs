@@ -19,7 +19,7 @@ using NodaTime.Calendars;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Porting status: need AddWrapField
+    /// A year field suitable for many calendars.
     /// </summary>
     internal sealed class BasicYearDateTimeField : ImpreciseDateTimeField
     {
@@ -31,13 +31,34 @@ namespace NodaTime.Fields
             this.calendarSystem = calendarSystem;
         }
 
+        /// <summary>
+        /// Always returns null(not supported)
+        /// </summary>
+        public override DurationField RangeDurationField { get { return null; } }
+
+        /// <summary>
+        /// Always returns false, that means that it does not accept values that
+        /// are out of bounds.
+        /// </summary>
         public override bool IsLenient { get { return false; } }
 
+        #region Values
+
+        /// <summary>
+        /// Get the Year component of the specified local instant.
+        /// </summary>
+        /// <param name="localInstant">The local instant to query</param>
+        /// <returns>The year extracted from the input.</returns>
         public override int GetValue(LocalInstant localInstant)
         {
             return calendarSystem.GetYear(localInstant);
         }
 
+        /// <summary>
+        /// Get the Year component of the specified local instant.
+        /// </summary>
+        /// <param name="localInstant">The local instant to query</param>
+        /// <returns>The year extracted from the input.</returns>
         public override long GetInt64Value(LocalInstant localInstant)
         {
             return calendarSystem.GetYear(localInstant);
@@ -45,17 +66,26 @@ namespace NodaTime.Fields
         
         public override LocalInstant Add(LocalInstant localInstant, int value)
         {
-            if (value == 0)
-            {
-                return localInstant;
-            }
-            int thisYear = GetValue(localInstant);
-            return SetValue(localInstant, thisYear + value);
+            return value == 0 ? localInstant : SetValue(localInstant, GetValue(localInstant) + value);
         }
 
         public override LocalInstant Add(LocalInstant localInstant, long value)
         {
             return Add(localInstant, (int)value);
+        }
+
+        public override LocalInstant AddWrapField(LocalInstant localInstant, int value)
+        {
+            if (value == 0)
+            {
+                return localInstant;
+            }
+
+            int thisYear = calendarSystem.GetYear(localInstant);
+            int wrappedYear = FieldUtils.GetWrappedValue
+                (thisYear, value, calendarSystem.MinYear, calendarSystem.MaxYear);
+
+            return SetValue(localInstant, wrappedYear);
         }
 
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
@@ -70,7 +100,9 @@ namespace NodaTime.Fields
                 : calendarSystem.GetYearDifference(minuendInstant, subtrahendInstant);
         }
 
-        public override DurationField RangeDurationField { get { return null; } }
+        #endregion
+
+        #region Leap
 
         public override bool IsLeap(LocalInstant localInstant)
         {
@@ -84,6 +116,10 @@ namespace NodaTime.Fields
 
         public override DurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
 
+        #endregion
+
+        #region Ranges
+
         public override long GetMinimumValue()
         {
             return calendarSystem.MinYear;
@@ -93,6 +129,10 @@ namespace NodaTime.Fields
         {
             return calendarSystem.MaxYear;
         }
+
+        #endregion
+
+        #region Rounding
 
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
@@ -107,6 +147,6 @@ namespace NodaTime.Fields
                 : new LocalInstant(calendarSystem.GetYearTicks(year + 1));
         }
 
-        // Removed override of Remainder as base implementation is fine
+        #endregion
     }
 }
