@@ -33,6 +33,7 @@ namespace NodaTime.Benchmarks.Timing
             BenchmarkOptions options = BenchmarkOptions.FromCommandLine(args);
 
             var types = typeof(Program).Assembly.GetTypes()
+                .OrderBy(type => GetTypeDisplayName(type))
                 .Where(type => type.GetMethods(AllInstance).Any(IsBenchmark));
 
             var results = new List<BenchmarkResult>();
@@ -44,7 +45,7 @@ namespace NodaTime.Benchmarks.Timing
                     Console.WriteLine("Ignoring {0}: no public parameterless constructor", type.Name);
                     continue;
                 }
-                Console.WriteLine("Running benchmarks in {0}", type.Name);
+                Console.WriteLine("Running benchmarks in {0}", GetTypeDisplayName(type));
                 object instance = ctor.Invoke(null);
                 foreach (var method in type.GetMethods(AllInstance).Where(IsBenchmark))
                 {
@@ -58,6 +59,11 @@ namespace NodaTime.Benchmarks.Timing
                     results.Add(result);
                 }
             }
+        }
+
+        private static string GetTypeDisplayName(Type type)
+        {
+            return type.FullName.Replace("NodaTime.Benchmarks.", "");
         }
 
         private static BenchmarkResult RunBenchmark(MethodInfo method, object instance, BenchmarkOptions options)

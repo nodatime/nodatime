@@ -1,6 +1,6 @@
 ﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,14 +20,14 @@ using NodaTime.Benchmarks.Extensions;
 
 namespace NodaTime.Benchmarks.FrameworkComparisons
 {
-    internal class DateTimeBenchmarks
+    internal class UtcDateTimeBenchmarks
     {
-        private readonly DateTime sample = new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local);
+        private readonly DateTime sample = new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Utc);
 
         [Benchmark]
         public void Construction()
         {
-            new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local).Consume();
+            new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Utc).Consume();
         }
 
         [Benchmark]
@@ -85,9 +85,9 @@ namespace NodaTime.Benchmarks.FrameworkComparisons
         }
 
         [Benchmark]
-        public void ToUtc()
+        public void ToLocalTime()
         {
-            sample.ToUniversalTime();
+            sample.ToLocalTime();
         }
     }
 }
