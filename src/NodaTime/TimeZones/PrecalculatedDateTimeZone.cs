@@ -33,8 +33,7 @@ namespace NodaTime.TimeZones
          * @param tailZone  optional zone for getting info beyond precalculated tables
          */
 
-        internal static PrecalculatedDateTimeZone Create(String id, List<ZoneTransition> transitions,
-                                                         IDateTimeZone tailZone)
+        internal static PrecalculatedDateTimeZone Create(String id, List<ZoneTransition> transitions, IDateTimeZone tailZone)
         {
             if (transitions == null)
             {
@@ -114,6 +113,8 @@ namespace NodaTime.TimeZones
         }
 
         // All array fields have the same length.
+
+        internal readonly ZoneOffsetPeriod[] periods;
 
         internal readonly Instant[] Transitions;
         internal readonly Offset[] WallOffsets;
