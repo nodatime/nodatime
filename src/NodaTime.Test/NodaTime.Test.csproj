@@ -76,11 +76,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calendars\IsoCalendarSystemTest.DateFields.cs" />
-    <Compile Include="Calendars\IsoCalendarSystemTest.DurationFields.cs" />
-    <Compile Include="Calendars\IsoCalendarSystemTest.TimeFields.cs" />
     <Compile Include="ChronologyTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
+    <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneBaseTest.cs" />
     <Compile Include="DurationTest.cs" />
     <Compile Include="DurationTest.Operators.cs">
@@ -105,6 +103,18 @@
     <Compile Include="Fields\UnsupportedDurationFieldTest.cs" />
     <Compile Include="Fields\ZeroIsMaxDateTimeFieldTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.cs" />
+    <Compile Include="Calendars\IsoCalendarSystemTest.DateFields.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calendars\IsoCalendarSystemTest.DurationFields.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calendars\IsoCalendarSystemTest.TimeFields.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calendars\IsoCalendarSystemTest.FieldValidation.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Format\IsoPeriodFormatsTest.cs" />
     <Compile Include="Format\PeriodFormatterBuilderTest.Options.cs">
       <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>

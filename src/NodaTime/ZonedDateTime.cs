@@ -38,16 +38,18 @@ namespace NodaTime
     /// </remarks>
     public struct ZonedDateTime
     {
-        private readonly Instant instant;
+        private readonly LocalInstant localInstant;
         private readonly Chronology chronology;
+        private readonly Offset offset;
 
         public ZonedDateTime(LocalDateTime localDateTime, IDateTimeZone zone)
         {
             if (zone == null)
             {
                 throw new ArgumentNullException("zone");
-            } 
-            instant = ConvertLocalToUtc(localDateTime.LocalInstant, zone);
+            }
+            localInstant = localDateTime.LocalInstant;
+            offset = zone.GetOffsetFromLocal(localInstant);
             chronology = new Chronology(zone, localDateTime.Calendar);
         }
 
@@ -57,7 +59,8 @@ namespace NodaTime
             {
                 throw new ArgumentNullException("chronology");
             }
-            this.instant = instant;
+            offset = chronology.Zone.GetOffsetFromUtc(instant);
+            localInstant = instant + offset;
             this.chronology = chronology;
         }
 
@@ -104,17 +107,9 @@ namespace NodaTime
             {
                 throw new ArgumentNullException("chronology");
             }
-            LocalInstant localInstant = chronology.Calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond, tick);
-            instant = ConvertLocalToUtc(localInstant, chronology.Zone);
+            localInstant = chronology.Calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond, tick);
+            offset = chronology.Zone.GetOffsetFromLocal(localInstant);
             this.chronology = chronology;
-        }
-
-        private static Instant ConvertLocalToUtc(LocalInstant localInstant, IDateTimeZone zone)
-        {
-            // This call will throw SkippedTimeException if necessary
-            Offset offset = zone.GetOffsetFromLocal(localInstant);
-            Instant instant = localInstant - offset;
-            return instant;
         }
 
         /// <summary>
@@ -128,7 +123,7 @@ namespace NodaTime
         /// </remarks>
         public Instant ToInstant()
         {
-            return instant;
+            return localInstant - offset;
         }
 
         /// <summary>
@@ -138,7 +133,7 @@ namespace NodaTime
 
         public IDateTimeZone Zone { get { return Chronology.Zone; } }
 
-        public LocalInstant LocalInstant { get { return instant + Zone.GetOffsetFromUtc(instant); } }
+        public LocalInstant LocalInstant { get { return localInstant; } }
 
         public LocalDateTime LocalDateTime { get { return new LocalDateTime(LocalInstant, chronology.Calendar); } }
 

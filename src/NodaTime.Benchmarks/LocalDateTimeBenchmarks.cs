@@ -1,6 +1,6 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,9 +24,21 @@ namespace NodaTime.Benchmarks
         private readonly LocalDateTime sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
 
         [Benchmark]
-        public void Construction()
+        public void ConstructionToMinute()
+        {
+            new LocalDateTime(2009, 12, 26, 10, 8).Consume();
+        }
+
+        [Benchmark]
+        public void ConstructionToSecond()
         {
             new LocalDateTime(2009, 12, 26, 10, 8, 30).Consume();
+        }
+
+        [Benchmark]
+        public void ConstructionToTick()
+        {
+            new LocalDateTime(2009, 12, 26, 10, 8, 30, 0, 0).Consume();
         }
 
         [Benchmark]

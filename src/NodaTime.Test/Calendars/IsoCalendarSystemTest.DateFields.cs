@@ -17,7 +17,7 @@
 
 using NUnit.Framework;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Calendars
 {
     public partial class IsoCalendarSystemTest
     {

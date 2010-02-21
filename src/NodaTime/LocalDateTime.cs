@@ -1,6 +1,6 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,27 +49,29 @@ namespace NodaTime
 
         public LocalDateTime(int year, int month, int day,
                              int hour, int minute)
-            : this(year, month, day, hour, minute, 0, 0, 0, IsoCalendarSystem.Instance)
+            : this(year, month, day, hour, minute, IsoCalendarSystem.Instance)
         {
         }
 
         public LocalDateTime(int year, int month, int day,
                              int hour, int minute, ICalendarSystem calendar)
-            : this(year, month, day, hour, minute, 0, 0, 0, calendar)
         {
+            localInstant = calendar.GetLocalInstant(year, month, day, hour, minute);
+            this.calendar = calendar;
         }
 
         public LocalDateTime(int year, int month, int day,
                              int hour, int minute, int second)
-            : this(year, month, day, hour, minute, second, 0, 0, IsoCalendarSystem.Instance)
+            : this(year, month, day, hour, minute, second, IsoCalendarSystem.Instance)
         {
         }
 
         public LocalDateTime(int year, int month, int day,
                              int hour, int minute, int second,
                              ICalendarSystem calendar)
-            : this(year, month, day, hour, minute, second, 0, 0, calendar)
         {
+            localInstant = calendar.GetLocalInstant(year, month, day, hour, minute, second);
+            this.calendar = calendar;
         }
 
         public LocalDateTime(int year, int month, int day,
