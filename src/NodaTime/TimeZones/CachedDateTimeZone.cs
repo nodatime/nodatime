@@ -31,8 +31,8 @@ namespace NodaTime.TimeZones
     /// <remarks>
     ///    <para>
     ///       This class implements a hash table object optimized for handling the normal access of time zone
-    ///       transitions. Using the default settings the time line is divded into 56.9 year sections. As long as
-    ///       all time zone requests are within that range there will be not conflicts and the transition
+    ///       transitions. Using the default settings the time line is divided into 56.9 year sections. As long as
+    ///       all time zone requests are within that range there will not be conflicts and the transition
     ///       cache will not be flushed. If access is made outside of the range then the corresponding hash bucket
     ///       will be flushed and the new transition information filled in. Most applications perform there actions within
     ///       a narrow range (one or two years) so the cache should not flush in that case.
@@ -191,12 +191,22 @@ namespace NodaTime.TimeZones
 
         public override Transition? NextTransition(Instant instant)
         {
-            return TimeZone.NextTransition(instant);
+            var info = GetInfo(instant);
+            return info.NextTransition;
         }
 
         public override Transition? PreviousTransition(Instant instant)
         {
-            return TimeZone.PreviousTransition(instant);
+            var info = GetInfo(instant);
+            Transition? ret = info.PreviousTransition;
+            // If we're at the start of a period and a transition,
+            // the caching mechanism will return the wrong value, so
+            // ask the time zone itself.
+            if (ret != null && ret.Value.Instant == instant)
+            {
+                return TimeZone.PreviousTransition(instant);
+            }
+            return ret;
         }
 
         public override Offset GetOffsetFromUtc(Instant instant)
@@ -283,8 +293,6 @@ namespace NodaTime.TimeZones
             var periodStart = new Instant(instant.Ticks & (0x7ffffL << PeriodShift));
             var info = new Info(TimeZone, periodStart);
             var periodEnd = new Instant(periodStart.Ticks | 0x1fffffffffffL);
-            // TODO: Keep the transitions in the Info as well, so we can
-            // use them for NextTransition and PreviousTransition?
             while (true)
             {
                 var next = TimeZone.NextTransition(periodStart);
@@ -331,30 +339,19 @@ namespace NodaTime.TimeZones
         /// </summary>
         private class Info
         {
+            private readonly Transition? nextTransition;
+            private readonly Transition? previousTransition;
             private readonly Instant periodStart;
             private readonly Info previous;
             private readonly string name;
             private readonly Offset offset;
 
-            public Instant PeriodStart
-            {
-                get { return this.periodStart; }
-            }
-
-            public Info Previous
-            {
-                get { return this.previous; }
-            }
-
-            public string Name
-            {
-                get { return this.name; }
-            }
-
-            public Offset Offset
-            {
-                get { return this.offset; }
-            }
+            public Transition? PreviousTransition { get { return previousTransition; } }
+            public Transition? NextTransition { get { return nextTransition; } }
+            public Instant PeriodStart { get { return periodStart; } }
+            public Info Previous { get { return previous; } }
+            public string Name { get { return name; } }
+            public Offset Offset  { get { return offset; } }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Info"/> class.
@@ -378,6 +375,8 @@ namespace NodaTime.TimeZones
                 this.previous = previous;
                 this.name = zone.Name(PeriodStart);
                 this.offset = zone.GetOffsetFromUtc(PeriodStart);
+                this.previousTransition = zone.PreviousTransition(PeriodStart + Duration.One);
+                this.nextTransition = zone.NextTransition(PeriodStart);
             }
         }
     }
