@@ -45,7 +45,7 @@ namespace NodaTime.Calendars
         /// <param name="dayOfMonth">Day of month to use</param>
         /// <param name="tickOfDay">Tick of day to use</param>
         /// <returns>A LocalInstant instance</returns>
-        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay)
+        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
             LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);

@@ -53,7 +53,7 @@ namespace NodaTime.Calendars
         /// <param name="dayOfMonth">Day of month to use</param>
         /// <param name="tickOfDay">Tick of day to use</param>
         /// <returns>A LocalInstant instance</returns>
-        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay);
+        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay);
 
         /// <summary>
         /// Returns a local instant, formed from the given year, month, day, 

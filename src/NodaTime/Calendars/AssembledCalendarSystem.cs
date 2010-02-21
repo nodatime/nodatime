@@ -96,7 +96,7 @@ namespace NodaTime.Calendars
             return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int tickOfDay)
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
             if (useBaseTickOfDayFields && useBaseYearMonthDayFields)
             {
