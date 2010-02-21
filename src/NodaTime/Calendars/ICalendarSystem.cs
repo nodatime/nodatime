@@ -31,7 +31,9 @@ namespace NodaTime.Calendars
     /// of a time zone with a calendar system.
     /// </para>
     /// <para>
-    /// The members of this class are unlikely to be used directly by most users of the API.
+    /// The members of this class are unlikely to be used directly by most users of the API. There are many
+    /// overloads of GetLocalTime as it allows for optimised code paths, making it very cheap to construct
+    /// instances of LocalDateTime in most cases.
     /// </para>
     /// </remarks>
     public interface ICalendarSystem
@@ -54,6 +56,43 @@ namespace NodaTime.Calendars
         /// <param name="tickOfDay">Tick of day to use</param>
         /// <returns>A LocalInstant instance</returns>
         LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay);
+
+        /// <summary>
+        /// Returns a local instant, formed from the given year, month, day, 
+        /// hour, minute, second, millisecond and ticks values.
+        /// <para>
+        /// The default implementation calls upon separate DateTimeFields to
+        /// determine the result. Subclasses are encouraged to provide a more
+        /// efficient implementation.
+        /// </para>       
+        /// </summary> 
+        /// <param name="year">Year to use</param>
+        /// <param name="monthOfYear">Month to use</param>
+        /// <param name="dayOfMonth">Day of month to use</param>
+        /// <param name="hourOfDay">Hour to use</param>
+        /// <param name="minuteOfHour">Minute to use</param>
+        /// <param name="secondOfMinute">Second to use</param>
+        /// <returns>A LocalInstant instance</returns>
+        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth,
+                                     int hourOfDay, int minuteOfHour, int secondOfMinute);
+
+        /// <summary>
+        /// Returns a local instant, formed from the given year, month, day, 
+        /// hour, minute, second, millisecond and ticks values.
+        /// <para>
+        /// The default implementation calls upon separate DateTimeFields to
+        /// determine the result. Subclasses are encouraged to provide a more
+        /// efficient implementation.
+        /// </para>       
+        /// </summary> 
+        /// <param name="year">Year to use</param>
+        /// <param name="monthOfYear">Month to use</param>
+        /// <param name="dayOfMonth">Day of month to use</param>
+        /// <param name="hourOfDay">Hour to use</param>
+        /// <param name="minuteOfHour">Minute to use</param>
+        /// <returns>A LocalInstant instance</returns>
+        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth,
+                                     int hourOfDay, int minuteOfHour);
 
         /// <summary>
         /// Returns a local instant, formed from the given year, month, day, 

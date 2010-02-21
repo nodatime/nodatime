@@ -384,7 +384,36 @@ namespace NodaTime.Calendars
             return GetYearMonthDayTicks(year, monthOfYear, dayOfMonth);
         }
 
-        // TODO: Override the third GetLocalInstant overload?
+        // TODO: Override the remaining GetLocalInstant overload?
+
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
+        {
+            if (BaseCalendar != null)
+            {
+                return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
+            }
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
+
+            return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) +
+                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute);
+        }
+
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
+        {
+            if (BaseCalendar != null)
+            {
+                return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour,
+                    secondOfMinute);
+            }
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, secondOfMinute, 0, 59);
+
+            return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) +
+                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
+                secondOfMinute * NodaConstants.TicksPerSecond);
+        }
 
         public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
         {

@@ -109,6 +109,16 @@ namespace NodaTime.Calendars
             return Fields.TickOfMillisecond.SetValue(localInstant, tickOfMillisecond);
         }
 
+        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
+        {
+            return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, 0, 0);
+        }
+
+        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
+        {
+            return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, 0);
+        }
+
         #region Periods
 
         /// <summary>

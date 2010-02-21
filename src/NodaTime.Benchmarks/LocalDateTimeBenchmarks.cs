@@ -24,9 +24,21 @@ namespace NodaTime.Benchmarks
         private readonly LocalDateTime sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
 
         [Benchmark]
-        public void Construction()
+        public void ConstructionToMinute()
+        {
+            new LocalDateTime(2009, 12, 26, 10, 8).Consume();
+        }
+
+        [Benchmark]
+        public void ConstructionToSecond()
         {
             new LocalDateTime(2009, 12, 26, 10, 8, 30).Consume();
+        }
+
+        [Benchmark]
+        public void ConstructionToTick()
+        {
+            new LocalDateTime(2009, 12, 26, 10, 8, 30, 0, 0).Consume();
         }
 
         [Benchmark]
