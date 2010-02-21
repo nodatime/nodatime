@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 
 // Copyright 2001-2010 Stephen Colebourne
 // Copyright 2010 Jon Skeet
