@@ -57,5 +57,7 @@ namespace NodaTime.Calendars
             fields.WeekYearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.WeekYearOfCentury);
             fields.Centuries = centuryOfEra.DurationField;
         }
+
+        // TODO: Try overriding the GetLocalInstant methods to micro-optimise them (they will be called for almost every ZonedDateTime/LocalDateTime)
     }
 }

@@ -27,6 +27,7 @@ namespace NodaTime.Calendars
         private static readonly int[] MaxDaysPerMonth = {
             31,29,31,30,31,30,31,31,30,31,30,31
         };
+
         private static readonly long[] MinTotalTicksByMonth;
         private static readonly long[] MaxTotalTicksByMonth;
         private const long Feb29thTicks = (31L + 29 - 1) * NodaConstants.TicksPerDay;
@@ -127,6 +128,7 @@ namespace NodaTime.Calendars
             }
             return difference;
         }
+
         internal override LocalInstant SetYear(LocalInstant localInstant, int year)
         {
             int thisYear = GetYear(localInstant);
@@ -157,7 +159,6 @@ namespace NodaTime.Calendars
 
             long ticks = GetYearMonthDayTicks(year, 1, dayOfYear);
             return new LocalInstant(ticks + tickOfDay);
-
         }
    }
 }

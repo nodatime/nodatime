@@ -31,6 +31,22 @@ namespace NodaTime.Fields
                 throw new ArgumentOutOfRangeException("value", value, "Value should be in range [" + lowerBound + "-" + upperBound + "]");
             }
         }
+
+        /// <summary>
+        /// Verifies the input value against the specified range, for the given field type.
+        /// </summary>
+        /// <param name="fieldType">The field type</param>
+        /// <param name="value">The value to verify</param>
+        /// <param name="lowerBound">The minimum valid value</param>
+        /// <param name="upperBound">The maximum valid value</param>
+        internal static void VerifyValueBounds(DateTimeFieldType field, long value, long lowerBound, long upperBound)
+        {
+            // TODO: i18n or decide whether we want our own custom type with lower and upper bounds
+            if ((value < lowerBound) || (value > upperBound))
+            {
+                throw new ArgumentOutOfRangeException("value", value, "Value of type " + field + " should be in range [" + lowerBound + "-" + upperBound + "]");
+            }
+        }
         /// <summary>
         /// Verifies the input value against the valid range of the calendar field.
         /// </summary>
