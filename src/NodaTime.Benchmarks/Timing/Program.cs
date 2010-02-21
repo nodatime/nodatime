@@ -39,6 +39,11 @@ namespace NodaTime.Benchmarks.Timing
             var results = new List<BenchmarkResult>();
             foreach (Type type in types)
             {
+                if (options.TypeFilter != null && type.Name != options.TypeFilter)
+                {
+                    continue;
+                }
+
                 var ctor = type.GetConstructor(Type.EmptyTypes);
                 if (ctor == null)
                 {
@@ -49,6 +54,11 @@ namespace NodaTime.Benchmarks.Timing
                 object instance = ctor.Invoke(null);
                 foreach (var method in type.GetMethods(AllInstance).Where(IsBenchmark))
                 {
+                    if (options.MethodFilter != null && method.Name != options.MethodFilter)
+                    {
+                        continue;
+                    }
+
                     if (method.GetParameters().Length != 0)
                     {
                         Console.WriteLine("Ignoring {0}: method has parameters", method.Name);
