@@ -19,6 +19,7 @@ using NodaTime.Fields;
 
 namespace NodaTime.Calendars
 {
+    // TODO: Optimisations of GetLocalInstant etc.
     public abstract class BasicCalendarSystem : AssembledCalendarSystem
     {
         private readonly static FieldSet preciseFields = CreatePreciseFields();
@@ -29,6 +30,10 @@ namespace NodaTime.Calendars
 
         private readonly int minDaysInFirstWeek;
 
+        /// <summary>
+        /// Returns the number of ticks from the start of the given year to the start of the given month.
+        /// TODO: We always add this to the ticks at the start of the year. Why not just do it?
+        /// </summary>
         protected abstract long GetTotalTicksByYearMonth(int year, int month);
         public abstract int MinYear { get; }
         public abstract int MaxYear { get; }
@@ -369,6 +374,45 @@ namespace NodaTime.Calendars
                 // First week is start of this year because it has enough days.
                 return jan1Millis - (jan1DayOfWeek - 1) * NodaConstants.TicksPerDay;
             }
+        }
+
+        protected virtual long GetDateMidnightTicks(int year, int monthOfYear, int dayOfMonth)
+        {
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.Year, year, MinYear, MaxYear);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MonthOfYear, monthOfYear, 1, GetMaxMonth());
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.DayOfMonth, dayOfMonth, 1, GetDaysInYearMonth(year, monthOfYear));
+            return GetYearMonthDayTicks(year, monthOfYear, dayOfMonth);
+        }
+
+        // TODO: Override the third GetLocalInstant overload?
+
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        {
+            if (BaseCalendar != null)
+            {
+                return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, 
+                    secondOfMinute, millisecondOfSecond, tickOfMillisecond);
+            }
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, secondOfMinute, 0, 59);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MillisecondOfSecond, millisecondOfSecond, 0, 999);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfMillisecond, tickOfMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
+
+            return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) +
+                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
+                secondOfMinute * NodaConstants.TicksPerSecond + millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond);
+        }
+
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
+        {
+            if (BaseCalendar != null)
+            {
+                return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
+            }
+            // TODO: Report bug in Joda Time, which doesn't have the - 1 here.
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfDay, tickOfDay, 0, NodaConstants.TicksPerDay - 1);
+            return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + tickOfDay);
         }
     }
 }
