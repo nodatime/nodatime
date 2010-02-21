@@ -19,7 +19,7 @@ using NodaTime.Calendars;
 using NUnit.Framework;
 using NodaTime.Fields;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Calendars
 {
     [TestFixture]
     public partial class IsoCalendarSystemTest
@@ -29,6 +29,8 @@ namespace NodaTime.Test
         // of shockingly untested code.
         private static readonly DateTime TimeOfGreatAchievement =
             new DateTime(2009, 11, 27, 18, 38, 25, 345, DateTimeKind.Utc) + TimeSpan.FromTicks(8765);
+
+        private static readonly ICalendarSystem Iso = IsoCalendarSystem.Instance;
 
         private static FieldSet isoFields = IsoCalendarSystem.Instance.Fields;
 
