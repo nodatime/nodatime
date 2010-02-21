@@ -154,6 +154,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>winmap.resx</DependentUpon>
     </Compile>
+    <Compile Include="TimeZones\ZoneOffsetPeriod.cs" />
     <Compile Include="TimeZones\ZoneYearOffset.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZone.cs" />
     <Compile Include="TimeZones\ZoneRecurrence.cs" />

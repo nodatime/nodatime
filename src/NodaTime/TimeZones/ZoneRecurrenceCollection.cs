@@ -177,7 +177,7 @@ namespace NodaTime.TimeZones
             {
                 this.rules = new List<ZoneRecurrence>(ruleSet.rules);
                 this.savings = Offset.Zero;
-                ZoneTransition result = GetFirst();
+                var result = GetFirst();
                 SetupNext(result);
                 return result;
             }
@@ -188,7 +188,7 @@ namespace NodaTime.TimeZones
             /// <returns>The next <see cref="ZoneTransition"/> or <c>null</c> if no more.</returns>
             internal ZoneTransition Next()
             {
-                ZoneTransition result = GetNext(this.instant);
+                var result = GetNext(this.instant);
                 SetupNext(result);
                 return result;
             }
