@@ -1,6 +1,6 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,6 +29,22 @@ namespace NodaTime.Fields
             if ((value < lowerBound) || (value > upperBound))
             {
                 throw new ArgumentOutOfRangeException("value", value, "Value should be in range [" + lowerBound + "-" + upperBound + "]");
+            }
+        }
+
+        /// <summary>
+        /// Verifies the input value against the specified range, for the given field type.
+        /// </summary>
+        /// <param name="fieldType">The field type</param>
+        /// <param name="value">The value to verify</param>
+        /// <param name="lowerBound">The minimum valid value</param>
+        /// <param name="upperBound">The maximum valid value</param>
+        internal static void VerifyValueBounds(DateTimeFieldType field, long value, long lowerBound, long upperBound)
+        {
+            // TODO: i18n or decide whether we want our own custom type with lower and upper bounds
+            if ((value < lowerBound) || (value > upperBound))
+            {
+                throw new ArgumentOutOfRangeException("value", value, "Value of type " + field + " should be in range [" + lowerBound + "-" + upperBound + "]");
             }
         }
         /// <summary>

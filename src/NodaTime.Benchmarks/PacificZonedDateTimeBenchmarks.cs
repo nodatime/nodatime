@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -14,20 +14,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
-using NodaTime.Benchmarks.Timing;
 using NodaTime.Benchmarks.Extensions;
+using NodaTime.Benchmarks.Timing;
+using NodaTime.TimeZones;
 
-namespace NodaTime.Benchmarks.FrameworkComparisons
+namespace NodaTime.Benchmarks
 {
-    internal class DateTimeBenchmarks
+    internal class PacificZonedDateTimeBenchmarks
     {
-        private readonly DateTime sample = new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local);
+        private static readonly IDateTimeZone Pacific = DateTimeZones.ForId("America/Los_Angeles");
+
+        private readonly ZonedDateTime sample = new ZonedDateTime(2009, 12, 26, 10, 8, 30, Pacific);
 
         [Benchmark]
         public void Construction()
         {
-            new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local).Consume();
+            new ZonedDateTime(2009, 12, 26, 10, 8, 30, Pacific).Consume();
         }
 
         [Benchmark]
@@ -39,13 +41,13 @@ namespace NodaTime.Benchmarks.FrameworkComparisons
         [Benchmark]
         public void Month()
         {
-            sample.Month.Consume();
+            sample.MonthOfYear.Consume();
         }
         
         [Benchmark]
         public void DayOfMonth()
         {
-            sample.Day.Consume();
+            sample.DayOfMonth.Consume();
         }
 
         [Benchmark]
@@ -63,31 +65,31 @@ namespace NodaTime.Benchmarks.FrameworkComparisons
         [Benchmark]
         public void Hour()
         {
-            sample.Hour.Consume();
+            sample.HourOfDay.Consume();
         }
 
         [Benchmark]
         public void Minute()
         {
-            sample.Minute.Consume();
+            sample.MinuteOfHour.Consume();
         }
 
         [Benchmark]
         public void Second()
         {
-            sample.Second.Consume();
+            sample.SecondOfMinute.Consume();
         }
 
         [Benchmark]
         public void Millisecond()
         {
-            sample.Millisecond.Consume();
+            sample.MillisecondOfSecond.Consume();
         }
 
         [Benchmark]
-        public void ToUtc()
+        public void ToInstant()
         {
-            sample.ToUniversalTime();
+            sample.ToInstant();
         }
     }
 }

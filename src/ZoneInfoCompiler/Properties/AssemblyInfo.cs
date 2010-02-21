@@ -1,6 +1,6 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -27,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ZoneInfoCompiler")]
-[assembly: AssemblyCopyright("Copyright © 2009 Jon Skeet")]
+[assembly: AssemblyCopyright("Copyright � 2009 Jon Skeet")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

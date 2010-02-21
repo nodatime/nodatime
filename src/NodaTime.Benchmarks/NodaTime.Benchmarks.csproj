@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PacificZonedDateTimeBenchmarks.cs" />
+    <Compile Include="FrameworkComparisons\UtcDateTimeBenchmarks.cs" />
     <Compile Include="UtcZonedDateTimeBenchmarks.cs" />
     <Compile Include="LocalDateTimeBenchmarks.cs" />
     <Compile Include="FrameworkComparisons\DateTimeBenchmarks.cs" />
