@@ -25,32 +25,28 @@ namespace NodaTime.Benchmarks.Timing
     /// </summary>
     internal class BenchmarkOptions
     {
-        private Duration warmUpTime;
-        private Duration testTime;
-        private IBenchTimer timer;
-        private string typeFilter;
-        private string methodFilter;
-
         private BenchmarkOptions()
         {
         }
 
-        internal Duration WarmUpTime { get { return warmUpTime; } }
-        internal Duration TestTime { get { return testTime; } }
-        internal IBenchTimer Timer { get { return timer; } }
-        internal string TypeFilter { get { return typeFilter; } }
-        internal string MethodFilter { get { return methodFilter; } }
+        internal Duration WarmUpTime { get; private set; }
+        internal Duration TestTime { get; private set; }
+        internal IBenchTimer Timer { get; private set; }
+        internal string TypeFilter { get; private set; }
+        internal string MethodFilter { get; private set; }
+        internal bool DisplayRawData { get; private set; }
 
         internal static BenchmarkOptions FromCommandLine(string[] args)
         {
             // TODO: Use command line:)
             return new BenchmarkOptions
             {
-                typeFilter = args.FirstOrDefault(),
-                methodFilter = args.Skip(1).FirstOrDefault(),
-                warmUpTime = Duration.StandardSeconds(1),
-                testTime = Duration.StandardSeconds(3),
-                timer = new WallTimer()
+                TypeFilter = args.FirstOrDefault(),
+                MethodFilter = args.Skip(1).FirstOrDefault(),
+                WarmUpTime = Duration.StandardSeconds(1),
+                TestTime = Duration.StandardSeconds(3),
+                Timer = new WallTimer(),
+                DisplayRawData = args.Contains("-rawData")
             };
         }
     }
