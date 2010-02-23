@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoneInfoCompiler", "ZoneInf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoneInfoCompiler.Test", "ZoneInfoCompiler.Test\ZoneInfoCompiler.Test.csproj", "{0A4C2376-D366-43DB-92E1-306FFCC81553}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Benchmarks", "NodaTime.Benchmarks\NodaTime.Benchmarks.csproj", "{8123BB5D-1DEB-478A-A1B3-9CA8940CA4C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{0A4C2376-D366-43DB-92E1-306FFCC81553}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A4C2376-D366-43DB-92E1-306FFCC81553}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A4C2376-D366-43DB-92E1-306FFCC81553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8123BB5D-1DEB-478A-A1B3-9CA8940CA4C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8123BB5D-1DEB-478A-A1B3-9CA8940CA4C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8123BB5D-1DEB-478A-A1B3-9CA8940CA4C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8123BB5D-1DEB-478A-A1B3-9CA8940CA4C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
