@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
@@ -31,17 +34,27 @@ namespace NodaTime.Test.TimeZones
         private static readonly IDateTimeZone Algiers = DateTimeZones.ForId("Africa/Algiers");
 
         [Test]
-        public void NextTransition_RunsOutOfTransitions()
+        public void GetPeriod_BeforeLast()
         {
-            Instant april1981 = new ZonedDateTime(1981, 4, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
-            Transition? lastTransition = Algiers.NextTransition(april1981);
-            Assert.IsNotNull(lastTransition);
+            var april1981 = new ZonedDateTime(1981, 4, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+            var period = Algiers.GetPeriod(april1981);
+            Assert.AreEqual("WET", period.Name);
+            Assert.AreEqual(new Instant(3418020000000000L), period.Start);
+            Assert.AreEqual(new Instant(3575231999999999L), period.End);
+            Assert.AreEqual(Offset.Zero, period.Offset);
+            Assert.AreEqual(Offset.Zero, period.Savings);
+        }
 
-            Transition expected = new Transition(new ZonedDateTime(1981, 5, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant(),
-                Offset.Zero, Offset.ForHours(1));
-            Assert.AreEqual(expected, lastTransition.Value);
-
-            Assert.IsNull(Algiers.NextTransition(expected.Instant));
+        [Test]
+        public void GetPeriod_AfterLastTransition()
+        {
+            var may1981 = new ZonedDateTime(1981, 5, 1, 0, 0, 1, DateTimeZones.Utc).ToInstant();
+            var period = Algiers.GetPeriod(may1981);
+            Assert.AreEqual("CET", period.Name);
+            Assert.AreEqual(new Instant(3575232000000000L), period.Start);
+            Assert.AreEqual(Instant.MaxValue, period.End);
+            Assert.AreEqual(new Offset(NodaConstants.MillisecondsPerHour), period.Offset);
+            Assert.AreEqual(Offset.Zero, period.Savings);
         }
     }
 }

@@ -79,6 +79,8 @@
     <Compile Include="ChronologyTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
+    <Compile Include="TimeZones\NullDateTimeZoneTest.cs" />
+    <Compile Include="TimeZones\PrecalculatedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneBaseTest.cs" />
     <Compile Include="DurationTest.cs" />
     <Compile Include="DurationTest.Operators.cs">

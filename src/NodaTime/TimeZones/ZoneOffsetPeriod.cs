@@ -154,7 +154,7 @@ namespace NodaTime.TimeZones
         /// <value>The ending LocalInstant.</value>
         public LocalInstant LocalEnd
         {
-            get { return End + Offset; }
+            get { return End + (Offset - Savings); }
         }
 
         #endregion // Properties
@@ -269,6 +269,9 @@ namespace NodaTime.TimeZones
             buffer.Append(End);
             buffer.Append(@"] ");
             buffer.Append(Offset);
+            buffer.Append(@" (");
+            buffer.Append(Savings);
+            buffer.Append(@")");
             return buffer.ToString();
         }
 
@@ -299,5 +302,37 @@ namespace NodaTime.TimeZones
         }
 
         #endregion // operators
+
+        #region I/O
+
+        /// <summary>
+        /// Writes the specified writer.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        public void Write(DateTimeZoneWriter writer)
+        {
+            writer.WriteString(Name);
+            writer.WriteInstant(Start);
+            writer.WriteInstant(End);
+            writer.WriteOffset(Offset);
+            writer.WriteOffset(Savings);
+        }
+
+        /// <summary>
+        /// Reads the specified reader.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <returns></returns>
+        public static ZoneOffsetPeriod Read(DateTimeZoneReader reader)
+        {
+            var name = reader.ReadString();
+            var start = new Instant(reader.ReadTicks());
+            var end  = new Instant(reader.ReadTicks());
+            var offset = reader.ReadOffset();
+            var savings = reader.ReadOffset();
+            return new ZoneOffsetPeriod(name, start, end, offset, savings);
+        }
+
+        #endregion // I/O
     }
 }
