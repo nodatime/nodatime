@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +14,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using NodaTime.TimeZones;
+
 namespace NodaTime
 {
     /// <summary>
@@ -24,21 +28,15 @@ namespace NodaTime
     public interface IDateTimeZone
     {
         /// <summary>
-        /// Returns the transition occurring strictly after the specified instant,
-        /// or null if there are no further transitions.
+        /// The database ID for the time zone.
         /// </summary>
-        /// <param name="instant">The instant after which to consider transitions.</param>
-        /// <returns>The instant of the next transition, or null if there are no further transitions.</returns>
-        Transition? NextTransition(Instant instant);
+        string Id { get; }
 
         /// <summary>
-        /// Returns the transition occurring strictly before the specified instant,
-        /// or null if there are no earlier transitions.
+        /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
-        /// <param name="instant">The instant before which to consider transitions.</param>
-        /// <returns>The instant of the previous transition, or null if there are no further transitions.</returns>
-        Transition? PreviousTransition(Instant instant);
-        
+        bool IsFixed { get; }
+
         /// <summary>
         /// Returns the offset from UTC, where a positive duration indicates that local time is later
         /// than UTC. In other words, local time = UTC + offset.
@@ -65,6 +63,22 @@ namespace NodaTime
         Offset GetOffsetFromLocal(LocalInstant localInstant);
 
         /// <summary>
+        /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
+        /// for the given instant.
+        /// </summary>
+        /// <param name="instant">The Instant to test.</param>
+        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        ZoneOffsetPeriod GetPeriod(Instant instant);
+
+        /// <summary>
+        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
+        /// for the given local instant.
+        /// </summary>
+        /// <param name="localInstant">The LocalInstant to test.</param>
+        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        ZoneOffsetPeriod GetPeriod(LocalInstant localInstant);
+
+        /// <summary>
         /// Returns the name associated with the given instant.
         /// </summary>
         /// <remarks>
@@ -77,16 +91,6 @@ namespace NodaTime
         /// <param name="instant">The instant to get the name for.</param>
         /// <returns>The name of this time. Never returns null.</returns>
         string Name(Instant instant);
-
-        /// <summary>
-        /// The database ID for the time zone.
-        /// </summary>
-        string Id { get; }
-
-        /// <summary>
-        /// Indicates whether the time zone is fixed, i.e. contains no transitions.
-        /// </summary>
-        bool IsFixed { get; }
 
         /// <summary>
         /// Writes the time zone to the specified writer.

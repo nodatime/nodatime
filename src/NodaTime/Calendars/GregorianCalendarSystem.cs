@@ -59,6 +59,15 @@ namespace NodaTime.Calendars
 
         protected override LocalInstant CalculateStartOfYear(int year)
         {
+            if (year <= MinYear)
+            {
+                return LocalInstant.MinValue;
+            }
+            if (year > MaxYear)
+            {
+                return LocalInstant.MaxValue;
+            }
+
             // Initial value is just temporary.
             int leapYears = year / 100;
             if (year < 0)

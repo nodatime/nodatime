@@ -16,6 +16,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace NodaTime.TimeZones
 {
@@ -53,8 +54,208 @@ namespace NodaTime.TimeZones
     ///       Original name: CachedDateTimeZone
     ///    </para>
     /// </remarks>
-    public sealed class CachedDateTimeZone : DateTimeZoneBase
+    public sealed class CachedDateTimeZone
+        : DateTimeZoneBase
     {
+        internal const int DefaultCacheSize = 128;
+
+        private readonly IDateTimeZone timeZone;
+        private readonly CacheNode[] nodes;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
+        /// </summary>
+        /// <param name="timeZone">The time zone.</param>
+        private CachedDateTimeZone(IDateTimeZone timeZone)
+            : base(timeZone.Id, false)
+        {
+            this.timeZone = timeZone;
+            this.nodes = new CacheNode[DefaultCacheSize];
+        }
+
+        /// <summary>
+        ///    Returns a cached time zone for the given time zone.
+        /// </summary>
+        /// <remarks>
+        ///    If the time zone is already cached or it is fixed then it is returned unchanged.
+        /// </remarks>
+        /// <param name="timeZone">
+        ///    The time zone to cache.
+        /// </param>
+        /// <returns>
+        ///    The cached time zone.
+        /// </returns>
+        public static IDateTimeZone ForZone(IDateTimeZone timeZone)
+        {
+            if (timeZone == null)
+            {
+                throw new ArgumentNullException("timeZone");
+            }
+            if (timeZone is CachedDateTimeZone || timeZone.IsFixed)
+            {
+                return timeZone;
+            }
+            return new CachedDateTimeZone(timeZone);
+        }
+
+        #region Overrides of DateTimeZoneBase
+
+        /// <summary>
+        /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
+        /// for the given instant.
+        /// </summary>
+        /// <param name="instant">The Instant to test.</param>
+        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        public override ZoneOffsetPeriod GetPeriod(Instant instant)
+        {
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                var node = nodes[i];
+                if (node == null)
+                {
+                    return this.AddNode(i, timeZone.GetPeriod(instant));
+                }
+                if (node.Period.Contains(instant))
+                {
+                    return UseNode(i);
+                }
+            }
+            return this.AddNode(nodes.Length - 1, timeZone.GetPeriod(instant));
+        }
+
+        /// <summary>
+        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
+        /// for the given local instant.
+        /// </summary>
+        /// <param name="localInstant">The LocalInstant to test.</param>
+        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        public override ZoneOffsetPeriod GetPeriod(LocalInstant localInstant)
+        {
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                var node = nodes[i];
+                if (node == null)
+                {
+                    return this.AddNode(i, timeZone.GetPeriod(localInstant));
+                }
+                if (node.Period.Contains(localInstant))
+                {
+                    return UseNode(i);
+                }
+            }
+            return this.AddNode(nodes.Length - 1, timeZone.GetPeriod(localInstant));
+        }
+
+        /// <summary>
+        /// Writes the time zone to the specified writer.
+        /// </summary>
+        /// <param name="writer">The writer to write to.</param>
+        public override void Write(DateTimeZoneWriter writer)
+        {
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
+            writer.WriteTimeZone(timeZone);
+        }
+
+        /// <summary>
+        /// Reads the specified reader.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="id">The id.</param>
+        /// <returns></returns>
+        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
+            var timeZone = reader.ReadTimeZone(id);
+            return new CachedDateTimeZone(timeZone);
+        }
+
+        #endregion
+
+        internal IDateTimeZone TimeZone { get { return timeZone; } }
+
+        /// <summary>
+        /// Adds the node.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="period">The period.</param>
+        /// <returns></returns>
+        private ZoneOffsetPeriod AddNode(int index, ZoneOffsetPeriod period)
+        {
+            lock (nodes)
+            {
+                nodes[index] = new CacheNode(period);
+                return SortNode(index);
+            }
+        }
+
+        /// <summary>
+        /// Uses the node.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        private ZoneOffsetPeriod UseNode(int index)
+        {
+            lock (nodes)
+            {
+                var node = nodes[index];
+                node.Use();
+                return SortNode(index);
+            }
+        }
+
+        private ZoneOffsetPeriod SortNode(int index)
+        {
+            var node = nodes[index];
+            int count = node.Count;
+            for (int i = index; i > 0; i--)
+            {
+                if (count < this.nodes[i - 1].Count)
+                {
+                    break;
+                }
+                this.nodes[i] = this.nodes[i - 1];
+                this.nodes[i - 1] = node;
+            }
+            return node.Period;
+        }
+
+        private class CacheNode
+        {
+            private int count = 1;
+            private readonly ZoneOffsetPeriod period;
+
+            public int Count { get { return count; } }
+            public ZoneOffsetPeriod Period { get { return period; } }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CacheNode"/> class.
+            /// </summary>
+            /// <param name="period">The period.</param>
+            public CacheNode(ZoneOffsetPeriod period)
+            {
+                this.period = period;
+            }
+
+            /// <summary>
+            /// Uses this instance.
+            /// </summary>
+            /// <returns></returns>
+            public int Use()
+            {
+                return Interlocked.Increment(ref count);
+            }
+        }
+
+
+
+
+        /*
         /// <summary>
         ///    Defines the number of bits to shift an instant value to get the period. This converts
         ///    a number of ticks to a number of 40.6 days periods.
@@ -73,8 +274,6 @@ namespace NodaTime.TimeZones
         private const int HalfPeriodSize = PeriodSize / 2;
 
         private const long TwoYearsInTicks = (366L + 365) * NodaConstants.TicksPerDay;
-
-        private const int DefaultCacheSize = 512;
 
         private readonly IDateTimeZone timeZone;
 
@@ -376,5 +575,6 @@ namespace NodaTime.TimeZones
                 this.nextTransition = zone.NextTransition(PeriodStart);
             }
         }
+        */
     }
 }

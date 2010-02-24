@@ -132,6 +132,7 @@
     <Compile Include="Partials\PartialUtils.cs" />
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
+    <Compile Include="TimeZones\NullDateTimeZone.cs" />
     <Compile Include="TimeZones\Transition.cs" />
     <Compile Include="TimeZones\WindowToPosixResource.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
@@ -154,6 +155,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>winmap.resx</DependentUpon>
     </Compile>
+    <Compile Include="TimeZones\ZoneOffsetPeriod.cs" />
     <Compile Include="TimeZones\ZoneYearOffset.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZone.cs" />
     <Compile Include="TimeZones\ZoneRecurrence.cs" />

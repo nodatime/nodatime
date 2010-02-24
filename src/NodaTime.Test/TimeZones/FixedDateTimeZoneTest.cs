@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
@@ -22,37 +25,46 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class FixedDateTimeZoneTest
     {
-        private static readonly Offset OneHour = Offset.ForHours(1);
-
-        [Test]
-        public void SimpleProperties_ReturnValuesFromConstructor()
-        {
-            FixedDateTimeZone zone = new FixedDateTimeZone("test", OneHour);
-            Assert.AreEqual("test", zone.Id);
-            // TODO: Use a real LocalDateTime when we've implemented it!
-            Assert.AreEqual(OneHour, zone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch));
-            Assert.AreEqual(OneHour, zone.GetOffsetFromUtc(Instant.UnixEpoch));
-        }
+        private static readonly Offset OneHour = Offset.ForHours(-8);
+        private static readonly FixedDateTimeZone PstTimeZone = new FixedDateTimeZone(OneHour);
+        // private static readonly FixedDateTimeZone PstTimeZone = new FixedDateTimeZone("test", OneHour);
+        private static readonly ZoneOffsetPeriod FixPeriod = new ZoneOffsetPeriod(PstTimeZone.Id, Instant.MinValue, Instant.MaxValue, OneHour, Offset.Zero);
 
         [Test]
         public void IsFixed_ReturnsTrue()
         {
-            FixedDateTimeZone zone = new FixedDateTimeZone("test", OneHour);
-            Assert.IsTrue(zone.IsFixed);
+            Assert.IsTrue(PstTimeZone.IsFixed);
         }
 
         [Test]
-        public void NextTransition_ReturnsNull()
+        public void GetPeriodInstant_Period()
         {
-            FixedDateTimeZone zone = new FixedDateTimeZone("test", OneHour);
-            Assert.IsNull(zone.NextTransition(Instant.UnixEpoch));
+            var actual = PstTimeZone.GetPeriod(Instant.UnixEpoch);
+            Assert.AreEqual(FixPeriod, actual);
         }
 
         [Test]
-        public void PreviousTransition_ReturnsNull()
+        public void GetPeriodLocalInstant_Period()
         {
-            FixedDateTimeZone zone = new FixedDateTimeZone("test", OneHour);
-            Assert.IsNull(zone.PreviousTransition(Instant.UnixEpoch));
+            var actual = PstTimeZone.GetPeriod(LocalInstant.LocalUnixEpoch);
+            Assert.AreEqual(FixPeriod, actual);
+        }
+
+        [Test]
+        public void SimpleProperties_ReturnValuesFromConstructor()
+        {
+            Assert.AreEqual("UTC-8", PstTimeZone.Id);
+            // TODO: Use a real LocalDateTime when we've implemented it!
+            Assert.AreEqual(OneHour, PstTimeZone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch));
+            Assert.AreEqual(OneHour, PstTimeZone.GetOffsetFromUtc(Instant.UnixEpoch));
+        }
+
+        [Test]
+        public void WriteRead()
+        {
+            var dio = new DtzIoHelper();
+            var actual = dio.WriteRead(PstTimeZone);
+            Assert.AreEqual(PstTimeZone, actual);
         }
     }
 }
