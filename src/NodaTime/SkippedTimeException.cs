@@ -56,6 +56,7 @@ namespace NodaTime
         public Instant Transition { get { return transition; } }
 
         public SkippedTimeException(LocalInstant localInstant, IDateTimeZone zone, Instant transition)
+            : base("Local time " + localInstant + " is invalid in time zone " + zone.Id)
         {
             this.localInstant = localInstant;
             this.zone = zone;

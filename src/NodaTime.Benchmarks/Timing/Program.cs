@@ -65,7 +65,7 @@ namespace NodaTime.Benchmarks.Timing
                         continue;
                     }
                     BenchmarkResult result = RunBenchmark(method, instance, options);
-                    Console.WriteLine("  " + result);
+                    Console.WriteLine("  " + result.ToString(options));
                     results.Add(result);
                 }
             }
