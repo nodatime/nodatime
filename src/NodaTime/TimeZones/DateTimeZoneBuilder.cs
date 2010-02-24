@@ -142,7 +142,9 @@ namespace NodaTime.TimeZones
                 throw new ArgumentNullException("yearOffset");
             }
 
+#if DEBUG_FULL
             Debug.WriteLine(string.Format("{0}: AddCutover({1}, {2})", Name, year, yearOffset));
+#endif
             if (ruleSets.Count > 0)
             {
                 LastRuleSet.SetUpperLimit(year, yearOffset);
@@ -158,7 +160,9 @@ namespace NodaTime.TimeZones
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
         public DateTimeZoneBuilder SetStandardOffset(Offset standardOffset)
         {
+#if DEBUG_FULL
             Debug.WriteLine(string.Format("{0}: SetStandardOffset({1})", Name, standardOffset));
+#endif
             LastRuleSet.StandardOffset = standardOffset;
             return this;
         }
@@ -171,7 +175,9 @@ namespace NodaTime.TimeZones
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
         public DateTimeZoneBuilder SetFixedSavings(String nameKey, Offset savings)
         {
+#if DEBUG_FULL
             Debug.WriteLine(string.Format("{0}: SetFixedSavings({1}, {2})", Name, nameKey, savings));
+#endif
             LastRuleSet.SetFixedSavings(nameKey, savings);
             return this;
         }
@@ -184,7 +190,7 @@ namespace NodaTime.TimeZones
         /// <param name="fromYear">First year that rule is in effect. <see cref="Int32.MinValue"/> indicates beginning of time.</param>
         /// <param name="toYear">Last year (inclusive) that rule is in effect. <see cref="Int32.MaxValue"/> indicates end of time.</param>
         /// <param name="mode">The transition mode.</param>
-        /// <param name="monthYearOffset">The month of year.</param>
+        /// <param name="monthOfYear">The month of year.</param>
         /// <param name="dayOfMonth">The day of the month. If negative, set to ((last day of month)
         /// - ~dayOfMonth). For example, if -1, set to last day of month</param>
         /// <param name="dayOfWeek">The day of week. If 0, ignore.</param>
@@ -210,7 +216,7 @@ namespace NodaTime.TimeZones
                 FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
             }
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.AsTicks());
-            ZoneYearOffset yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
+            var yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
             return AddRecurringSavings(new ZoneRecurrence(nameKey, savings, yearOffset, fromYear, toYear));
         }
 
@@ -247,7 +253,9 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("recurrence");
             }
+#if DEBUG_FULL
             Debug.WriteLine(string.Format("{0}: AddRecurringSavings({1})", Name, recurrence));
+#endif
             if (recurrence.FromYear <= recurrence.ToYear)
             {
                 LastRuleSet.AddRule(recurrence);
@@ -265,19 +273,20 @@ namespace NodaTime.TimeZones
         {
             if (zoneId == null)
             {
-                throw new ArgumentNullException("zoneId", "zoneId cannot be null");
+                throw new ArgumentNullException("zoneId");
             }
 
             var transitions = new List<ZoneTransition>();
             IDateTimeZone tailZone = null;
             Instant instant = Instant.MinValue;
 
+            ZoneTransition nextTransition = null;
             int ruleSetCount = this.ruleSets.Count;
             for (int i = 0; i < ruleSetCount; i++)
             {
                 var ruleSet = this.ruleSets[i];
                 var transitionIterator = ruleSet.Iterator(instant);
-                var nextTransition = transitionIterator.First();
+                nextTransition = transitionIterator.First();
                 if (nextTransition == null)
                 {
                     continue;
@@ -291,6 +300,7 @@ namespace NodaTime.TimeZones
                         if (tailZone != null)
                         {
                             // Got the extra transition before DaylightSavingsTimeZone.
+                            nextTransition = transitionIterator.Next();
                             break;
                         }
                     }
@@ -318,11 +328,15 @@ namespace NodaTime.TimeZones
             }
             if (transitions.Count == 1 && tailZone == null)
             {
-                ZoneTransition tr = transitions[0];
-                return new FixedDateTimeZone(zoneId, tr.WallOffset);
+                var transition = transitions[0];
+                return new FixedDateTimeZone(zoneId, transition.WallOffset);
             }
-
-            PrecalculatedDateTimeZone zone = PrecalculatedDateTimeZone.Create(zoneId, transitions, tailZone);
+            if (tailZone == null)
+            {
+                tailZone = NullDateTimeZone.Instance;
+            }
+            var precalcedEnd = nextTransition != null ? nextTransition.Instant - Duration.One : Instant.MaxValue;
+            var zone = new PrecalculatedDateTimeZone(zoneId, transitions, precalcedEnd, tailZone);
             if (zone.IsCachable())
             {
                 return CachedDateTimeZone.ForZone(zone);
@@ -336,7 +350,7 @@ namespace NodaTime.TimeZones
         /// <param name="transitions">The list of <see cref="ZoneTransition"/> to add to.</param>
         /// <param name="transition">The transition to add.</param>
         /// <returns><c>true</c> if the transition was added.</returns>
-        private bool AddTransition(IList<ZoneTransition> transitions, ZoneTransition transition)
+        private static bool AddTransition(IList<ZoneTransition> transitions, ZoneTransition transition)
         {
             int transitionCount = transitions.Count;
             if (transitionCount == 0)

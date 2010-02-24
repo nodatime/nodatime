@@ -38,6 +38,7 @@ namespace NodaTime.Test.TimeZones
             return cached == null ? zone : cached.TimeZone;
         }
 
+        /*
         internal static Transition ValidateNextTransition(this IDateTimeZone zone, Instant instant)
         {
             Transition? transition = zone.NextTransition(instant);
@@ -87,6 +88,6 @@ namespace NodaTime.Test.TimeZones
 
             return transition;
         }
-
+        */
     }
 }

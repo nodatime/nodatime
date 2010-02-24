@@ -1,6 +1,7 @@
 ﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
 using NodaTime.Utility;
 
@@ -26,12 +29,9 @@ namespace NodaTime.TimeZones
     internal class DaylightSavingsTimeZone
         : DateTimeZoneBase, IEquatable<DaylightSavingsTimeZone>
     {
-        private readonly Offset standardOffset;
-        internal Offset StandardOffset { get { return standardOffset; } }
-        private readonly ZoneRecurrence startRecurrence;
-        internal ZoneRecurrence StartRecurrence { get { return startRecurrence; } }
         private readonly ZoneRecurrence endRecurrence;
-        internal ZoneRecurrence EndRecurrence { get { return endRecurrence; } }
+        private readonly Offset standardOffset;
+        private readonly ZoneRecurrence startRecurrence;
 
         /// <summary>
         ///    Initializes a new instance of the
@@ -45,30 +45,70 @@ namespace NodaTime.TimeZones
         /// </param>
         /// <param name="endRecurrence">The end recurrence.</param>
         internal DaylightSavingsTimeZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence,
-                                         ZoneRecurrence endRecurrence) : base(id, false)
+                                         ZoneRecurrence endRecurrence)
+            : base(id, false)
         {
-            this.standardOffset = standardOffset;
-            this.startRecurrence = startRecurrence;
-            this.endRecurrence = endRecurrence;
-
-            if (startRecurrence.Name == endRecurrence.Name)
+            if (startRecurrence == null)
             {
-                if (startRecurrence.Savings > Offset.Zero)
-                {
-                    this.startRecurrence = startRecurrence.RenameAppend("-Summer");
-                }
-                else
-                {
-                    this.endRecurrence = endRecurrence.RenameAppend("-Summer");
-                }
+                throw new ArgumentNullException("startRecurrence");
             }
+            if (endRecurrence == null)
+            {
+                throw new ArgumentNullException("endRecurrence");
+            }
+            this.standardOffset = standardOffset;
+            var start = startRecurrence;
+            var end = endRecurrence;
+            if (startRecurrence.Savings == Offset.Zero)
+            {
+                start = endRecurrence;
+                end = startRecurrence;
+            }
+            if (start.Name == end.Name)
+            {
+                start = start.RenameAppend("-Summer");
+            }
+            this.startRecurrence = start;
+            this.endRecurrence = end;
         }
 
-        public override bool Equals(Object obj)
+        /// <summary>
+        /// Gets the standard offset.
+        /// </summary>
+        /// <value>The standard offset.</value>
+        internal Offset StandardOffset
         {
-            return Equals(obj as DaylightSavingsTimeZone);
+            get { return this.standardOffset; }
         }
 
+        /// <summary>
+        /// Gets the start recurrence.
+        /// </summary>
+        /// <value>The start recurrence.</value>
+        internal ZoneRecurrence StartRecurrence
+        {
+            get { return this.startRecurrence; }
+        }
+
+        /// <summary>
+        /// Gets the end recurrence.
+        /// </summary>
+        /// <value>The end recurrence.</value>
+        internal ZoneRecurrence EndRecurrence
+        {
+            get { return this.endRecurrence; }
+        }
+
+        #region IEquatable<DaylightSavingsTimeZone> Members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.
+        ///                 </param>
         public bool Equals(DaylightSavingsTimeZone other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -80,6 +120,31 @@ namespace NodaTime.TimeZones
                 EndRecurrence.Equals(other.EndRecurrence);
         }
 
+        #endregion
+
+        #region Object overrides
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. 
+        ///                 </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.
+        ///                 </exception><filterpriority>2</filterpriority>
+        public override bool Equals(Object obj)
+        {
+            return Equals(obj as DaylightSavingsTimeZone);
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
             int hashCode = HashCodeHelper.Initialize();
@@ -90,6 +155,61 @@ namespace NodaTime.TimeZones
             return hashCode;
         }
 
+        #endregion // Object overrides
+
+        /// <summary>
+        /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
+        /// for the given instant.
+        /// </summary>
+        /// <param name="instant">The Instant to test.</param>
+        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        public override ZoneOffsetPeriod GetPeriod(Instant instant)
+        {
+            var previous = PreviousTransition(instant + Duration.One);
+            var next = NextTransition(instant);
+            // If we are outside of the value range of this TZ return null
+            if (!previous.HasValue || !next.HasValue)
+            {
+                return null;
+            }
+            var recurrence = FindMatchingRecurrence(instant);
+            return new ZoneOffsetPeriod(recurrence.Name, previous.Value.Instant, next.Value.Instant - Duration.One,
+                                        StandardOffset + recurrence.Savings, recurrence.Savings);
+        }
+
+        /// <summary>
+        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
+        /// for the given local instant.
+        /// </summary>
+        /// <param name="localInstant">The LocalInstant to test.</param>
+        /// <exception cref="SkippedTimeException"></exception>
+        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        public override ZoneOffsetPeriod GetPeriod(LocalInstant localInstant)
+        {
+            var normal = localInstant - StandardOffset;
+            var daylight = localInstant - (StandardOffset + this.startRecurrence.Savings);
+            var normalRecurrence = FindMatchingRecurrence(normal);
+            var daylightRecurrence = FindMatchingRecurrence(daylight);
+
+            if (ReferenceEquals(normalRecurrence, this.startRecurrence) &&
+                ReferenceEquals(daylightRecurrence, this.endRecurrence))
+            {
+                var instant = Instant.MaxValue;
+                var previous = PreviousTransition(normal);
+                if (previous.HasValue)
+                {
+                    instant = previous.Value.Instant;
+                }
+                throw new SkippedTimeException(localInstant, this, instant);
+            }
+            return GetPeriod(normal);
+        }
+
+        /// <summary>
+        /// Finds the matching recurrence.
+        /// </summary>
+        /// <param name="instant">The instant.</param>
+        /// <returns></returns>
         private ZoneRecurrence FindMatchingRecurrence(Instant instant)
         {
             // Find the transitions which start *after* the one we're currently in - then
@@ -108,9 +228,15 @@ namespace NodaTime.TimeZones
             return EndRecurrence;
         }
 
-        #region IDateTimeZone Members
-
-        public override Transition? NextTransition(Instant instant)
+        /// <summary>
+        /// Returns the transition occurring strictly after the specified instant,
+        /// or null if there are no further transitions.
+        /// </summary>
+        /// <param name="instant">The instant after which to consider transitions.</param>
+        /// <returns>
+        /// The instant of the next transition, or null if there are no further transitions.
+        /// </returns>
+        private Transition? NextTransition(Instant instant)
         {
             Transition? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
             Transition? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
@@ -125,7 +251,15 @@ namespace NodaTime.TimeZones
             return end;
         }
 
-        public override Transition? PreviousTransition(Instant instant)
+        /// <summary>
+        /// Returns the transition occurring strictly before the specified instant,
+        /// or null if there are no earlier transitions.
+        /// </summary>
+        /// <param name="instant">The instant before which to consider transitions.</param>
+        /// <returns>
+        /// The instant of the previous transition, or null if there are no further transitions.
+        /// </returns>
+        private Transition? PreviousTransition(Instant instant)
         {
             Transition? start = StartRecurrence.Previous(instant, StandardOffset, EndRecurrence.Savings);
             Transition? end = EndRecurrence.Previous(instant, StandardOffset, StartRecurrence.Savings);
@@ -145,16 +279,41 @@ namespace NodaTime.TimeZones
             return result;
         }
 
+        /// <summary>
+        /// Returns the offset from UTC, where a positive duration indicates that local time is later
+        /// than UTC. In other words, local time = UTC + offset.
+        /// </summary>
+        /// <param name="instant">The instant for which to calculate the offset.</param>
+        /// <returns>
+        /// The offset from UTC at the specified instant.
+        /// </returns>
         public override Offset GetOffsetFromUtc(Instant instant)
         {
             return FindMatchingRecurrence(instant).Savings + StandardOffset;
         }
 
+        /// <summary>
+        /// Returns the name associated with the given instant.
+        /// </summary>
+        /// <param name="instant">The instant to get the name for.</param>
+        /// <returns>
+        /// The name of this time. Never returns null.
+        /// </returns>
+        /// <remarks>
+        /// For a fixed time zone this will always return the same value but for a time zone that
+        /// honors daylight savings this will return a different name depending on the time of year
+        /// it represents. For example in the Pacific Standard Time (UTC-8) it will return either
+        /// PST or PDT depending on the time of year.
+        /// </remarks>
         public override string Name(Instant instant)
         {
             return FindMatchingRecurrence(instant).Name;
         }
 
+        /// <summary>
+        /// Writes the time zone to the specified writer.
+        /// </summary>
+        /// <param name="writer">The writer to write to.</param>
         public override void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)
@@ -165,8 +324,6 @@ namespace NodaTime.TimeZones
             StartRecurrence.Write(writer);
             EndRecurrence.Write(writer);
         }
-
-        #endregion
 
         public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
         {
