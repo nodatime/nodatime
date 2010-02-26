@@ -31,6 +31,8 @@ namespace NodaTime.Format
 
         static readonly double Log10 = Math.Log(10);
 
+        private const char UnicodeReplacementCharacter = '\ufffd';
+
         /// <summary>
         /// Converts an integer to a string, prepended with a variable amount of '0'
         /// pad characters, and appends it to the given buffer.
@@ -268,6 +270,12 @@ namespace NodaTime.Format
                 (int)(Math.Log(value) / Log10 + 1);
         }
 
+        internal static int ParseTwoDigits(String text, int position)
+        {
+            int value = text[position] - '0';
+            return ((value << 3) + (value << 1)) + text[position + 1] - '0';
+        }
+
         internal static string CreateErrorMessage(string text, int errorPosition)
         {
             int sampleLen = errorPosition + LengthOfSampleText;
@@ -298,6 +306,19 @@ namespace NodaTime.Format
             return targetSubString.Equals(textToFind, StringComparison.OrdinalIgnoreCase) 
                 ? startAt + textToFind.Length
                 : ~startAt;
+        }
+
+        internal static void WriteUnknownString(TextWriter writer)
+        {
+            writer.Write(UnicodeReplacementCharacter);
+        }
+
+        internal static void WriteUnknownString(TextWriter writer, int len)
+        {
+            for (int i = len; --i >= 0; )
+            {
+                writer.Write(UnicodeReplacementCharacter);
+            }
         }
     }
 }
