@@ -16,7 +16,36 @@
 #endregion
 namespace NodaTime.Format
 {
+    /// <summary>
+    /// Internal interface for parsing textual representations of datetimes.
+    /// </summary>
     public interface IDateTimeParser
     {
+        /// <summary>
+        /// Gets the expected maximum number of characters consumed.
+        /// </summary>
+        /// <remarks>
+        /// The actual amount should rarely exceed this estimate.
+        /// </remarks>
+        int EstimatedParsedLength { get; }
+
+        /// <summary>
+        /// Parse an element from the given text, saving any fields into the given
+        /// DateTimeParserBucket. If the parse succeeds, the return value is the new
+        /// text position. Note that the parse may succeed without fully reading the
+        /// text.
+        /// </summary>
+        /// <param name="bucket">Field are saved into this, not null</param>
+        /// <param name="text">The text to parse, not null</param>
+        /// <param name="position">Position to start parsing from</param>
+        /// <returns>New position, negative value means parse failed -
+        /// apply complement operator (~) to get position of failure</returns>
+        /// <remarks>
+        /// If it fails, the return value is negative. To determine the position
+        /// where the parse failed, apply the one's complement operator (~) on the
+        /// return value.
+        /// </remarks>
+        /// <exception cref="ArgumentException">If any field is out of range</exception>
+        int ParseInto(DateTimeParserBucket bucket, string text, int position);
     }
 }
