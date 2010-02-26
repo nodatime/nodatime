@@ -304,7 +304,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="target">The target file <see cref="FileInfo"/> object.</param>
         private void ValidateArguments(DirectoryInfo source, IEnumerable<FileInfo> fileList, FileInfo target)
         {
-            ValidateExitingDirectory(source, "source");
+            ValidateExistingDirectory(source, "source");
             if (fileList.Count() == 0)
             {
                 throw new ArgumentException("There are no files to process");
@@ -317,7 +317,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="directory">The <see cref="DirectoryInfo"/> to check.</param>
         /// <param name="name">The name to use in error messages.</param>
-        private void ValidateExitingDirectory(DirectoryInfo directory, string name)
+        private void ValidateExistingDirectory(DirectoryInfo directory, string name)
         {
             if (directory == null)
             {
@@ -325,11 +325,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
             if (!directory.Exists)
             {
-                throw new ArgumentException("The " + name + " location does not exist: " + directory.FullName, name);
-            }
-            if (directory.Attributes != FileAttributes.Directory)
-            {
-                throw new ArgumentException("The " + name + " location must be a directory: " + directory.FullName, name);
+                throw new ArgumentException("The " + name + " location does not exist or is not a directory: " + directory.FullName, name);
             }
         }
 

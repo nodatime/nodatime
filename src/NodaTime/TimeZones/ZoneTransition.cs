@@ -103,9 +103,12 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>
         /// To be a transition from another the instant at which the transition occurs must be
-        /// greater than the given transition's and either the savings offset or the name must be
+        /// greater than the given transition's and either the wall offset or the name must be
         /// different. If this is not true then this transition is considered to be redundant
         /// and should not be used.
+        /// TODO: Consider whether going from "standard=0,savings=1" to "standard=1,savings=0"
+        /// should be considered a transition. Currently we don't expose the standard/savings
+        /// aspect of a time zone, but we may well in the future.
         /// </remarks>
         /// <param name="other">The <see cref="ZoneTransition"/> to compare to.</param>
         /// <returns>
@@ -117,7 +120,7 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return Instant > other.Instant && (Savings != other.Savings|| Name != other.Name);
+            return Instant > other.Instant && (WallOffset != other.WallOffset || Name != other.Name);
         }
 
         #region Object overrides
