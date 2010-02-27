@@ -45,16 +45,16 @@ namespace NodaTime.TimeZones
         #region IDateTimeZone Members
 
         /// <summary>
-        /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
-        /// for the given instant.
+        /// Gets the zone offset period for the given instant. Null is returned if no period is
+        /// defined by the time zone for the given instant.
         /// </summary>
         /// <param name="instant">The Instant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         public abstract ZoneOffsetPeriod GetPeriod(Instant instant);
 
         /// <summary>
-        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
-        /// for the given local instant.
+        /// Gets the zone offset period for the given local instant. Null is returned if no period
+        /// is defined by the time zone for the given local instant.
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
@@ -63,8 +63,8 @@ namespace NodaTime.TimeZones
         public abstract void Write(DateTimeZoneWriter writer);
 
         /// <summary>
-        /// Returns the offset from UTC, where a positive duration indicates that local time is later
-        /// than UTC. In other words, local time = UTC + offset.
+        /// Returns the offset from UTC, where a positive duration indicates that local time is
+        /// later than UTC. In other words, local time = UTC + offset.
         /// </summary>
         /// <param name="instant">The instant for which to calculate the offset.</param>
         /// <returns>
@@ -77,8 +77,8 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
-        /// than local time. In other words, UTC = local time - (offset from local).
+        /// Returns the offset from local time to UTC, where a positive duration indicates that UTC
+        /// is earlier than local time. In other words, UTC = local time - (offset from local).
         /// </summary>
         /// <param name="localInstant">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
