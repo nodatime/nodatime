@@ -297,6 +297,7 @@
     </Compile>
     <Compile Include="TestHelper.cs" />
     <Compile Include="TimeZones\FixedDateTimeZoneTest.cs" />
+    <Compile Include="TimeZones\MiscellaneousBugReports.cs" />
     <Compile Include="TimeZones\ParisTest.cs" />
     <Compile Include="TimeZones\TzTestHelper.cs" />
     <Compile Include="TimeZones\ZoneRecurrenceTest.cs" />

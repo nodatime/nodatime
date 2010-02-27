@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Text;
+using NodaTime.Calendars;
 
 namespace NodaTime.Format
 {
@@ -25,6 +26,7 @@ namespace NodaTime.Format
     /// Possible rename: DateTimePattern, given that this is used for both parsing
     /// and formatting...
     /// Or we could rename it differently based on what we rename DateTime to in the end...
+    /// TODO: Rename Print to Format, for consistency with string.Format etc?
     /// </summary>
     public class DateTimeFormatter
     {
@@ -33,11 +35,11 @@ namespace NodaTime.Format
         // The internal parser used to output the datetime.
         private readonly IDateTimeParser parser;
         // The locale to use for printing and parsing.
-        private readonly IFormatProvider locale;
+        private readonly IFormatProvider provider;
         // Whether the offset is parsed.
         private readonly bool offsetParsed;
-        // The chronology to use as an override.
-        private readonly Chronology chronology;
+        // The calendar system to use as an override.
+        private readonly ICalendarSystem calendarSystem;
         // The zone to use as an override.
         private readonly IDateTimeZone zone;
         // The pivot year to use for two-digit year parsing.
@@ -48,9 +50,9 @@ namespace NodaTime.Format
         {
             this.printer = printer;
             this.parser = parser;
-            locale = null;
+            provider = null;
             offsetParsed = false;
-            chronology = null;
+            calendarSystem = null;
             zone = null;
             pivotYear = null;
         }
@@ -58,173 +60,265 @@ namespace NodaTime.Format
         private DateTimeFormatter(
             IDateTimePrinter printer, IDateTimeParser parser,
             IFormatProvider locale, bool offsetParsed,
-            Chronology chronology, IDateTimeZone zone,
+            ICalendarSystem calendarSystem, IDateTimeZone zone,
             int? pivotYear)
         {
             this.printer = printer;
             this.parser = parser;
-            this.locale = locale;
+            this.provider = locale;
             this.offsetParsed = offsetParsed;
-            this.chronology = chronology;
+            this.calendarSystem = calendarSystem;
             this.zone = zone;
             this.pivotYear = pivotYear;
         }
 
         #region Properties and With* methods
 
+        /// <summary>
+        /// Indicates whether this formatter capable of printing.
+        /// </summary>
         public bool IsPrinter { get { return printer != null; } }
+
+        /// <summary>
+        /// Gets the internal printer object that performs the real printing work.
+        /// </summary>
         public IDateTimePrinter Printer { get { return printer; } }
 
+        /// <summary>
+        /// Indicates whether this formatter capable of printing.
+        /// </summary>
         public bool IsParser { get { return parser != null; } }
+
+        /// <summary>
+        /// Gets the internal parser object that performs the real parsing work.
+        /// </summary>
         public IDateTimeParser Parser { get { return parser; } }
 
-        public IFormatProvider Locale { get { return locale; } }
-        public DateTimeFormatter WithLocale(IFormatProvider newLocale)
+        /// <summary>
+        /// Gets the format provider that will be used for printing and parsing.
+        /// </summary>
+        public IFormatProvider Provider { get { return provider; } }
+
+        /// <summary>
+        /// Returns a new formatter with a different format provider that will be used
+        /// for printing and parsing.
+        /// </summary>
+        /// <param name="newProvider">The format provider to use; if null, formatter uses default locale</param>
+        /// <returns>The new formatter</returns>
+        /// <remarks>A DateTimeFormatter is immutable, so a new instance is returned,
+        /// and the original is unaltered and still usable.</remarks>
+        public DateTimeFormatter WithProvider(IFormatProvider newProvider)
         {
-            if (this.locale == newLocale)
+            if (Object.Equals(this.provider, newProvider))
+            {
                 // no change, so there's no need to create a new formatter
                 return this;
+            }
 
-            return new DateTimeFormatter(printer, parser, newLocale, offsetParsed, chronology, zone, pivotYear);
+            return new DateTimeFormatter(printer, parser, newProvider, offsetParsed, calendarSystem, zone, pivotYear);
         }
 
+        /// <summary>
+        /// Indicates whether the offset from the string is used as the zone of
+        /// the parsed datetime.
+        /// </summary>
         public bool IsOffsetParsed { get { return offsetParsed; } }
+
+        /// <summary>
+        /// Returns a new formatter that will create a datetime with a time zone
+        /// equal to that of the offset of the parsed string.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// After calling this method, a string '2004-06-09T10:20:30-08:00' will
+        /// create a datetime with a zone of -08:00 (a fixed zone, with no daylight
+        /// savings rules). If the parsed string represents a local time (no zone
+        /// offset) the parsed datetime will be in the default zone.
+        /// <para>
+        /// Calling this method sets the override zone to null.
+        /// Calling the override zone method sets this flag off.
+        /// </para>
+        /// </remarks>
         public DateTimeFormatter WithOffsetParsed()
         {
-            const bool newOffsetParsed = true; // this const is for consistency with all other With* methods
-            if (this.offsetParsed == newOffsetParsed)
+            if (offsetParsed)
+            {
                 // no change, so there's no need to create a new formatter
                 return this;
+            }
 
-            return new DateTimeFormatter(printer, parser, locale, newOffsetParsed, chronology, zone, pivotYear);
+            return new DateTimeFormatter(printer, parser, provider, true, calendarSystem, zone, pivotYear);
         }
 
-        public Chronology Chronology { get { return chronology; } }
-        public DateTimeFormatter WithChronology(Chronology newChronology)
+        /// <summary>
+        /// Gets the calendar system to use as an override.
+        /// </summary>
+        public ICalendarSystem CalendarSystem { get { return calendarSystem; } }
+
+        /// <summary>
+        /// Returns a new formatter that will use the specified calendar system in
+        /// preference to that of the printed object, or ISO on a parse.
+        /// </summary>
+        /// <param name="newCalendarSystem">The calendar system to use as an override</param>
+        /// <returns>The new formatter</returns>
+        /// <remarks>
+        /// <para>
+        /// When printing, this calendar system will be used in preference to the calendar system
+        /// from the datetime that would otherwise be used.
+        /// </para>
+        /// <para>
+        /// When parsing, this calendar system will be set on the parsed datetime.
+        /// </para>
+        /// <para>
+        /// A null calendar system means no-override.
+        /// </para>
+        /// </remarks>
+        public DateTimeFormatter WithCalendarSystem(ICalendarSystem newCalendarSystem)
         {
-            if (this.chronology == newChronology)
+            if (Object.Equals(calendarSystem, newCalendarSystem))
+            {
                 // no change, so there's no need to create a new formatter
                 return this;
+            }
 
-            return new DateTimeFormatter(printer, parser, locale, offsetParsed, newChronology, zone, pivotYear);
+            return new DateTimeFormatter(printer, parser, provider, offsetParsed, newCalendarSystem, zone, pivotYear);
         }
 
+        /// <summary>
+        /// Gets the zone to use as an override.
+        /// </summary>
         public IDateTimeZone Zone { get { return zone; } }
+
+        /// <summary>
+        /// Returns a new formatter that will use the specified zone in preference
+        /// to the zone of the printed object, or default zone on a parse.
+        /// </summary>
+        /// <param name="newZone">The zone to use as an override</param>
+        /// <returns>The new formatter</returns>
+        /// <remarks>
+        /// <para>
+        /// When printing, this zone will be used in preference to the zone
+        /// from the datetime that would otherwise be used.
+        /// </para>
+        /// <para>
+        /// When parsing, this zone will be set on the parsed datetime.
+        /// </para>
+        /// <para>
+        /// A null zone means of no-override.
+        /// </para>
+        /// <para>
+        /// </remarks>
         public DateTimeFormatter WithZone(IDateTimeZone newZone)
         {
             if (this.zone == newZone)
                 // no change, so there's no need to create a new formatter
                 return this;
 
-            return new DateTimeFormatter(printer, parser, locale, offsetParsed, chronology, newZone, pivotYear);
+            return new DateTimeFormatter(printer, parser, provider, offsetParsed, calendarSystem, newZone, pivotYear);
         }
 
+        /// <summary>
+        /// Gets the pivot year to use as an override.
+        /// </summary>
         public int? PivotYear { get { return pivotYear; } }
+
+        /// <summary>
+        /// Returns a new formatter that will use the specified pivot year for two
+        /// digit year parsing in preference to that stored in the parser.
+        /// </summary>
+        /// <param name="newPivotYear"></param>
+        /// <returns></returns>
         public DateTimeFormatter WithPivotYear(int? newPivotYear)
         {
             if (this.pivotYear == newPivotYear)
                 // no change, so there's no need to create a new formatter
                 return this;
 
-            return new DateTimeFormatter(printer, parser, locale, offsetParsed, chronology, zone, newPivotYear);
+            return new DateTimeFormatter(printer, parser, provider, offsetParsed, calendarSystem, zone, newPivotYear);
         }
 
         #endregion
 
         #region Printing
 
-        public void PrintTo(StringBuilder builder, Instant instant)
+        /// <summary>
+        /// Prints a ZonedDateTime to a String.
+        /// </summary>
+        /// <param name="dateTime">The dateTime to format</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// This method will use the override zone and the override calendar system if
+        /// they are set. Otherwise it will use the chronology and zone of the dateTime.
+        /// </remarks>
+        public string Print(ZonedDateTime dateTime)
         {
-            Chronology chronology;
-            Offset timezoneOffset;
-            LocalInstant adjustedInstant;
-            PrepareToPrint(instant, out chronology, out timezoneOffset, out adjustedInstant);
+            VerifyPrinter();
 
-            printer.PrintTo(builder, adjustedInstant, chronology.Calendar, timezoneOffset, chronology.Zone, locale);
+            var builder = new StringBuilder(printer.EstimatedPrintedLength);
+            PrintTo(builder, dateTime);
+
+            return builder.ToString();
         }
 
-        public void PrintTo(Stream stream, Instant instant)
+        /// <summary>
+        /// Prints a ZonedDateTime to the specified string builder.
+        /// </summary>
+        /// <param name="builder">The builder to use</param>
+        /// <param name="dateTime">The dateTime to format</param>
+        public void PrintTo(StringBuilder builder, ZonedDateTime dateTime)
         {
-            Chronology chronology;
-            Offset timezoneOffset;
-            LocalInstant adjustedInstant;
-            PrepareToPrint(instant, out chronology, out timezoneOffset, out adjustedInstant);
+            PrintTo(new StringWriter(builder), dateTime);
+        }
 
-            printer.PrintTo(stream, adjustedInstant, chronology.Calendar, timezoneOffset, chronology.Zone, locale);
+        public void PrintTo(TextWriter writer, ZonedDateTime dateTime)
+        {
+            VerifyPrinter();
+
+            ICalendarSystem calendarSystem = SelectCalendarSystem(dateTime);
+            IDateTimeZone zone = SelectZone(dateTime);
+
+            var instant = dateTime.ToInstant();
+            var timezoneOffset = zone.GetOffsetFromUtc(instant);
+            var adjustedLocalInstant = instant + timezoneOffset;
+
+            printer.PrintTo(writer, adjustedLocalInstant, calendarSystem, timezoneOffset, zone, provider);
         }
 
         public void PrintTo(StringBuilder builder, IPartial partial)
         {
             if (partial == null)
                 throw new ArgumentNullException("partial");
-            RequirePrinter();
+            VerifyPrinter();
 
-            printer.PrintTo(builder, partial, locale);
-        }
-
-        public void PrintTo(Stream stream, IPartial partial)
-        {
-            if (partial == null)
-                throw new ArgumentNullException("partial");
-            RequirePrinter();
-
-            printer.PrintTo(stream, partial, locale);
-        }
-
-        public string Print(Instant instant)
-        {
-            RequirePrinter();
-
-            StringBuilder builder = new StringBuilder(printer.EstimatedPrintedLength);
-            PrintTo(builder, instant);
-            return builder.ToString();
-        }
-
-        public string Print(IPartial partial)
-        {
-            RequirePrinter();
-
-            StringBuilder builder = new StringBuilder(printer.EstimatedPrintedLength);
-            PrintTo(builder, partial);
-            return builder.ToString();
-        }
-
-        private void PrepareToPrint(Instant instant, out Chronology chronology, out Offset timezoneOffset, out LocalInstant adjustedInstant)
-        {
-            RequirePrinter();
-
-            chronology = SelectChronology(instant, this.chronology);
-            timezoneOffset = chronology.Zone.GetOffsetFromUtc(instant);
-            adjustedInstant = instant + timezoneOffset;
+            printer.PrintTo(new StringWriter(builder), partial, provider);
         }
 
         #endregion
 
-        #region RequirePrinter, RequireParser
-
-        private void RequirePrinter()
+        private void VerifyPrinter()
         {
             if (printer == null)
-                throw new InvalidOperationException("Printing is not supported");
+            {
+                throw new NotSupportedException("Printing is not supported");
+            }
         }
 
-        private void RequireParser()
+        private void VerifyParser()
         {
             if (parser == null)
-                throw new InvalidOperationException("Parser is not supported");
+            {
+                throw new NotSupportedException("Parser is not supported");
+            }
         }
 
-        #endregion
-
-        private static Chronology SelectChronology(Instant instant, Chronology thisChronology)
+        private ICalendarSystem SelectCalendarSystem(ZonedDateTime dateTime)
         {
-            // TODO: Java has the line
-            // Chronology chrono = DateTimeUtils.getInstantChronology(instant);
-            // I'm not sure what I'm supposed to do with that...
+            return calendarSystem == null ? dateTime.Chronology.Calendar : calendarSystem;
+        }
 
-            Chronology instantChronology = null; // TODO
-            return thisChronology ?? instantChronology ?? Chronology.IsoUtc;
-            // return first one which isn't null
+        private IDateTimeZone SelectZone(ZonedDateTime dateTime)
+        {
+            return zone == null ? dateTime.Zone : zone;
         }
     }
 }
