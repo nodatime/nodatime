@@ -1545,7 +1545,7 @@ namespace NodaTime.Format
         {
             Guard(formatter);
 
-            return Append(formatter.Printer, formatter.Parser);
+            return AppendPair(formatter.Printer, formatter.Parser);
 
         }
 
