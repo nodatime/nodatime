@@ -169,7 +169,7 @@
     <Compile Include="Format\FormatUtils.cs" />
     <Compile Include="Format\IDateTimeParser.cs" />
     <Compile Include="Format\IDateTimePrinter.cs" />
-    <Compile Include="Format\IsoDateTimeFormatterFactory.cs" />
+    <Compile Include="Format\IsoDateTimeFormats.cs" />
     <Compile Include="Chronology.cs" />
     <Compile Include="Partials\Partial.cs" />
     <Compile Include="Periods\Period.cs" />

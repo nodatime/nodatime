@@ -1818,6 +1818,71 @@ namespace NodaTime.Format
         }
 
         /// <summary>
+        /// Instructs the printer to emit a remainder of time as a decimal fraction, sans decimal point.
+        /// </summary>
+        /// <param name="fieldType">Type of field to append</param>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <param name="maxDigits">Maximum number of digits to print or parse</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        /// <example>
+        /// If the field is specified as minuteOfHour and the time is 12:30:45, 
+        /// the value printed is 75. A decimal point is implied, so the fraction is 0.75,
+        /// or three-quarters of a minute.
+        /// </example>
+        public DateTimeFormatterBuilder AppendFraction(DateTimeFieldType fieldType, int minDigits, int maxDigits)
+        {
+            Guard(fieldType);
+            Guard(minDigits, maxDigits);
+
+
+            return AppendObject(new Fraction(fieldType, minDigits, maxDigits));
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a remainder of time as a decimal fraction, sans decimal point.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <param name="maxDigits">Maximum number of digits to print or parse</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendFractionOfSecond(int minDigits, int maxDigits)
+        {          
+            return AppendFraction(DateTimeFieldType.SecondOfDay, minDigits, maxDigits);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a remainder of time as a decimal fraction, sans decimal point.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <param name="maxDigits">Maximum number of digits to print or parse</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendFractionOfMinute(int minDigits, int maxDigits)
+        {
+            return AppendFraction(DateTimeFieldType.MinuteOfDay, minDigits, maxDigits);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a remainder of time as a decimal fraction, sans decimal point.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <param name="maxDigits">Maximum number of digits to print or parse</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendFractionOfHour(int minDigits, int maxDigits)
+        {
+            return AppendFraction(DateTimeFieldType.HourOfDay, minDigits, maxDigits);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a remainder of time as a decimal fraction, sans decimal point.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <param name="maxDigits">Maximum number of digits to print or parse</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendFractionOfDay(int minDigits, int maxDigits)
+        {
+            return AppendFraction(DateTimeFieldType.DayOfYear, minDigits, maxDigits);
+        }
+
+        /// <summary>
         /// Instructs the printer to emit a numeric millisOfSecond field.
         /// </summary>
         /// <param name="minDigits">Minumum number of digits to print</param>
@@ -1972,7 +2037,7 @@ namespace NodaTime.Format
         /// <param name="maxDigits">Maximum number of digits to <i>parse</i>, or the estimated</param>
         /// maximum number of digits to print
         /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendWeekOfWeekYear(int minDigits, int maxDigits)
+        public DateTimeFormatterBuilder AppendWeekYear(int minDigits, int maxDigits)
         {
             return AppendDecimal(DateTimeFieldType.WeekYear, minDigits, maxDigits);
         }
@@ -1997,6 +2062,58 @@ namespace NodaTime.Format
         public DateTimeFormatterBuilder AppendYear(int minDigits, int maxDigits)
         {
             return AppendDecimal(DateTimeFieldType.Year, minDigits, maxDigits);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a locale-specific time zone name. 
+        /// A parser cannot be created from this builder 
+        /// if a time zone name is appended.
+        /// </summary>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendTimeZoneName()
+        {
+            return Append(new TimeZoneName(TimeZoneNamePrintKind.LongName), (IDateTimeParser)null);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a short locale-specific time zone name. 
+        /// A parser cannot be created from this builder 
+        /// if a time zone name is appended.
+        /// </summary>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendTimeZoneShortName()
+        {
+            return Append(new TimeZoneName(TimeZoneNamePrintKind.ShortName), (IDateTimeParser)null);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit the identifier of the time zone. 
+        /// This field cannot currently be parsed. 
+        /// </summary>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendTimeZoneId()
+        {
+            return Append(new TimeZoneName(TimeZoneNamePrintKind.Id), (IDateTimeParser)null);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit text and numbers to display time zone
+        /// offset from UTC. A parser will use the parsed time zone offset to adjust
+        /// the datetime.
+        /// </summary>
+        /// <param name="zeroOffsetText">Text to use if time zone offset is zero. If
+        /// null, offset is always shown.</param>
+        /// <param name="showSeparators">If true, prints ':' separator before minute and
+        /// second field and prints '.' separator before fraction field.</param>
+        /// <param name="minFields">Minimum number of fields to print, stopping when no
+        /// more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction</param>
+        /// <param name="maxFields">Maximum number of fields to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendTimeZoneOffset(String zeroOffsetText, bool showSeparators,
+                        int minFields, int maxFields)
+        {
+            return AppendObject(new TimeZoneOffset
+                           (zeroOffsetText, showSeparators, minFields, maxFields));
         }
 
         #endregion
@@ -2236,6 +2353,18 @@ namespace NodaTime.Format
             }
         }
 
+        private static void Guard(int minDigits, int maxDigits)
+        {
+            if (maxDigits < minDigits)
+            {
+                maxDigits = minDigits;
+            }
+            if (minDigits < 0 || maxDigits <= 0)
+            {
+                throw new ArgumentException();
+            } 
+
+        }
         #endregion
     }
 }
