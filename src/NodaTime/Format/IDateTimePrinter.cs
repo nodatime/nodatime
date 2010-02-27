@@ -14,26 +14,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.IO;
-using System.Text;
+
 using NodaTime.Calendars;
 
 namespace NodaTime.Format
 {
     /// <summary>
-    /// Original name: DateTimePrinter
+    /// Internal interface for creating textual representations of datetimes.
     /// </summary>
     public interface IDateTimePrinter
     {
-        void PrintTo(StringBuilder builder, IPartial partial, IFormatProvider locale);
+        /// <summary>
+        /// Returns the expected maximum number of characters produced.
+        /// The actual amount should rarely exceed this estimate.
+        /// </summary>
+        int EstimatedPrintedLength { get; }
 
-        void PrintTo(Stream stream, IPartial partial, IFormatProvider locale);
+        /// <summary>
+        /// Prints a local instant, using the given calendar system
+        /// </summary>
+        /// <param name="writer">Formatted instant is written to this writer, not null</param>
+        /// <param name="instant">Local instant to print</param>
+        /// <param name="calendarSystem">The calendar system to use, not null</param>
+        /// <param name="timezoneOffset"></param>
+        /// <param name="dateTimeZone">The time zone to use, null means local time</param>
+        /// <param name="provider">Provider to use</param>
+        void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider);
 
-        void PrintTo(StringBuilder builder, LocalInstant adjustedInstant, ICalendarSystem iCalendarSystem, Offset timezoneOffset, IDateTimeZone iDateTimeZone, IFormatProvider locale);
-
-        void PrintTo(Stream stream, LocalInstant adjustedInstant, ICalendarSystem iCalendarSystem, Offset timezoneOffset, IDateTimeZone iDateTimeZone, IFormatProvider locale);
-
-        int EstimatedPrintedLength { get; set; }
+        /// <summary>
+        /// Prints a partial.
+        /// </summary>
+        /// <param name="writer">Formatted partial is written to this builder, not null</param>
+        /// <param name="partial">A partial instance to print</param>
+        /// <param name="locale">Provider to use</param>
+        void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider);
     }
 }
