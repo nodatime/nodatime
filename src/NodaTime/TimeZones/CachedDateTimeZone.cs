@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,9 +14,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace NodaTime.TimeZones
@@ -59,8 +61,8 @@ namespace NodaTime.TimeZones
     {
         internal const int DefaultCacheSize = 128;
 
-        private readonly IDateTimeZone timeZone;
         private readonly CacheNode[] nodes;
+        private readonly IDateTimeZone timeZone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
@@ -71,6 +73,11 @@ namespace NodaTime.TimeZones
         {
             this.timeZone = timeZone;
             this.nodes = new CacheNode[DefaultCacheSize];
+        }
+
+        internal IDateTimeZone TimeZone
+        {
+            get { return this.timeZone; }
         }
 
         /// <summary>
@@ -98,6 +105,52 @@ namespace NodaTime.TimeZones
             return new CachedDateTimeZone(timeZone);
         }
 
+        /// <summary>
+        /// Adds the node.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="period">The period.</param>
+        /// <returns></returns>
+        private ZoneOffsetPeriod AddNode(int index, ZoneOffsetPeriod period)
+        {
+            lock (this.nodes)
+            {
+                this.nodes[index] = new CacheNode(period);
+                return this.SortNode(index);
+            }
+        }
+
+        /// <summary>
+        /// Uses the node.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        private ZoneOffsetPeriod UseNode(int index)
+        {
+            lock (this.nodes)
+            {
+                var node = this.nodes[index];
+                node.Use();
+                return this.SortNode(index);
+            }
+        }
+
+        private ZoneOffsetPeriod SortNode(int index)
+        {
+            var node = this.nodes[index];
+            int count = node.Count;
+            for (int i = index; i > 0; i--)
+            {
+                if (count < this.nodes[i - 1].Count)
+                {
+                    break;
+                }
+                this.nodes[i] = this.nodes[i - 1];
+                this.nodes[i - 1] = node;
+            }
+            return node.Period;
+        }
+
         #region Overrides of DateTimeZoneBase
 
         /// <summary>
@@ -108,42 +161,42 @@ namespace NodaTime.TimeZones
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         public override ZoneOffsetPeriod GetPeriod(Instant instant)
         {
-            for (int i = 0; i < nodes.Length; i++)
+            for (int i = 0; i < this.nodes.Length; i++)
             {
-                var node = nodes[i];
+                var node = this.nodes[i];
                 if (node == null)
                 {
-                    return this.AddNode(i, timeZone.GetPeriod(instant));
+                    return this.AddNode(i, this.timeZone.GetPeriod(instant));
                 }
                 if (node.Period.Contains(instant))
                 {
-                    return UseNode(i);
+                    return this.UseNode(i);
                 }
             }
-            return this.AddNode(nodes.Length - 1, timeZone.GetPeriod(instant));
+            return this.AddNode(this.nodes.Length - 1, this.timeZone.GetPeriod(instant));
         }
 
         /// <summary>
-        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
-        /// for the given local instant.
+        /// Gets the zone offset period for the given local instant. Null is returned if no period
+        /// is defined by the time zone for the given local instant.
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         public override ZoneOffsetPeriod GetPeriod(LocalInstant localInstant)
         {
-            for (int i = 0; i < nodes.Length; i++)
+            for (int i = 0; i < this.nodes.Length; i++)
             {
-                var node = nodes[i];
+                var node = this.nodes[i];
                 if (node == null)
                 {
-                    return this.AddNode(i, timeZone.GetPeriod(localInstant));
+                    return this.AddNode(i, this.timeZone.GetPeriod(localInstant));
                 }
                 if (node.Period.Contains(localInstant))
                 {
-                    return UseNode(i);
+                    return this.UseNode(i);
                 }
             }
-            return this.AddNode(nodes.Length - 1, timeZone.GetPeriod(localInstant));
+            return this.AddNode(this.nodes.Length - 1, this.timeZone.GetPeriod(localInstant));
         }
 
         /// <summary>
@@ -156,7 +209,7 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("writer");
             }
-            writer.WriteTimeZone(timeZone);
+            writer.WriteTimeZone(this.timeZone);
         }
 
         /// <summary>
@@ -177,83 +230,64 @@ namespace NodaTime.TimeZones
 
         #endregion
 
-        internal IDateTimeZone TimeZone { get { return timeZone; } }
+        #region Nested type: CacheNode
 
         /// <summary>
-        /// Adds the node.
+        /// Represents a use counted cache node.
         /// </summary>
-        /// <param name="index">The index.</param>
-        /// <param name="period">The period.</param>
-        /// <returns></returns>
-        private ZoneOffsetPeriod AddNode(int index, ZoneOffsetPeriod period)
-        {
-            lock (nodes)
-            {
-                nodes[index] = new CacheNode(period);
-                return SortNode(index);
-            }
-        }
-
-        /// <summary>
-        /// Uses the node.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <returns></returns>
-        private ZoneOffsetPeriod UseNode(int index)
-        {
-            lock (nodes)
-            {
-                var node = nodes[index];
-                node.Use();
-                return SortNode(index);
-            }
-        }
-
-        private ZoneOffsetPeriod SortNode(int index)
-        {
-            var node = nodes[index];
-            int count = node.Count;
-            for (int i = index; i > 0; i--)
-            {
-                if (count < this.nodes[i - 1].Count)
-                {
-                    break;
-                }
-                this.nodes[i] = this.nodes[i - 1];
-                this.nodes[i - 1] = node;
-            }
-            return node.Period;
-        }
-
+        /// <remarks>
+        /// <para>
+        /// Each node has a usage count that is incremented each time a node is referenced. The
+        /// cache uses this count to keep the cache is sorted order by usage. This keeps the most
+        /// used nodes at the front to reduce the lookup time and puts the oldest and least used
+        /// node at the end where it can be replaced in a Least Recently Used scheme.
+        /// </para>
+        /// <para>
+        /// TODO: in theory the count could wrap. Do we need to worry about that?
+        /// </para>
+        /// </remarks>
         private class CacheNode
         {
-            private int count = 1;
             private readonly ZoneOffsetPeriod period;
-
-            public int Count { get { return count; } }
-            public ZoneOffsetPeriod Period { get { return period; } }
+            private int count = 1;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="CacheNode"/> class.
             /// </summary>
-            /// <param name="period">The period.</param>
+            /// <param name="period">The period contained in this node.</param>
             public CacheNode(ZoneOffsetPeriod period)
             {
                 this.period = period;
             }
 
             /// <summary>
-            /// Uses this instance.
+            /// Gets the usage count.
             /// </summary>
-            /// <returns></returns>
-            public int Use()
+            /// <value>The integer usage count.</value>
+            public int Count
             {
-                return Interlocked.Increment(ref count);
+                get { return this.count; }
+            }
+
+            /// <summary>
+            /// Gets the period in this node.
+            /// </summary>
+            /// <value>The ZoneOffsetPeriod.</value>
+            public ZoneOffsetPeriod Period
+            {
+                get { return this.period; }
+            }
+
+            /// <summary>
+            /// Increments the usage count of this node in a thread-safe manner.
+            /// </summary>
+            public void Use()
+            {
+                Interlocked.Increment(ref this.count);
             }
         }
 
-
-
+        #endregion
 
         /*
         /// <summary>
