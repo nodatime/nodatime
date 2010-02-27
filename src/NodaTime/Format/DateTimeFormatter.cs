@@ -26,6 +26,7 @@ namespace NodaTime.Format
     /// Possible rename: DateTimePattern, given that this is used for both parsing
     /// and formatting...
     /// Or we could rename it differently based on what we rename DateTime to in the end...
+    /// TODO: Rename Print to Format, for consistency with string.Format etc?
     /// </summary>
     public class DateTimeFormatter
     {
@@ -297,13 +298,17 @@ namespace NodaTime.Format
         private void VerifyPrinter()
         {
             if (printer == null)
+            {
                 throw new NotSupportedException("Printing is not supported");
+            }
         }
 
-        private void VeridyParser()
+        private void VerifyParser()
         {
             if (parser == null)
+            {
                 throw new NotSupportedException("Parser is not supported");
+            }
         }
 
         private ICalendarSystem SelectCalendarSystem(ZonedDateTime dateTime)
