@@ -117,7 +117,6 @@ namespace NodaTime.Format
         private static readonly DateTimeFormatter ww = new DateTimeFormatterBuilder()
             .Append(we)
             .Append(wwe)
-            .Append(dme)
             .ToFormatter();
 
         // weekyear week day
@@ -240,6 +239,24 @@ namespace NodaTime.Format
             .Append(ttx)
             .ToFormatter();
 
+        // ordinal date(same as yd)
+        private static readonly DateTimeFormatter od = new DateTimeFormatterBuilder()
+            .Append(ye)
+            .Append(dye)
+            .ToFormatter();
+
+        // ordinal date time
+        private static readonly DateTimeFormatter odt = new DateTimeFormatterBuilder()
+            .Append(od)
+            .Append(tt)
+            .ToFormatter();
+
+        // ordinal date time no milliseconds
+        private static readonly DateTimeFormatter odtx = new DateTimeFormatterBuilder()
+            .Append(od)
+            .Append(ttx)
+            .ToFormatter();
+
         // basic date
         private static readonly DateTimeFormatter bd = new DateTimeFormatterBuilder()
             .AppendYear(4, 4)
@@ -311,7 +328,7 @@ namespace NodaTime.Format
         private static readonly DateTimeFormatter bwd = new DateTimeFormatterBuilder()
             .AppendWeekYear(4,4)
             .AppendLiteral('W')
-            .AppendFixedDecimal(DateTimeFieldType.WeekOfWeekYear, 3)
+            .AppendFixedDecimal(DateTimeFieldType.WeekOfWeekYear, 2)
             .AppendFixedDecimal(DateTimeFieldType.DayOfWeek, 1)
             .ToFormatter();
 
@@ -505,6 +522,13 @@ namespace NodaTime.Format
         public static DateTimeFormatter HourMinuteSecondFraction { get { return hmsf; } }
 
         /// <summary>
+        /// Gets a formatter for a full date as four digit year, two digit month
+        /// of year, and two digit day of month.
+        /// (yyyy-MM-dd)
+        /// </summary>
+        public static DateTimeFormatter Date { get { return ymd; } }
+
+        /// <summary>
         /// Gets a formatter that combines a full date and two digit hour of day.
         /// (yyyy-MM-dd'T'HH)
         /// </summary>
@@ -590,6 +614,36 @@ namespace NodaTime.Format
         /// (yyyy-MM-dd'T'HH:mm:ssZZ)
         /// </summary>
         public static DateTimeFormatter DateTimeNoMilliseconds { get { return dtx; } }
+
+        /// <summary>
+        /// Gets a formatter for a full ordinal date, using a four
+        /// digit year and three digit dayOfYear.
+        /// (yyyy-DDD)
+        /// </summary>
+        public static DateTimeFormatter OrdinalDate { get { return od; } }
+
+        /// <summary>
+        /// Gets a formatter for a full ordinal date and time, using a four
+        /// digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ss.SSSZZ).
+        /// The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+        /// (yyyy-DDD'T'HH:mm:ss.SSSZZ)
+        /// </summary>
+        public static DateTimeFormatter OrdinalDateTime { get { return odt; } }
+
+        /// <summary>
+        /// Gets a formatter for a full ordinal date and time without millis,
+        /// using a four digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ss.SSSZZ).
+        /// The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+        /// (yyyy-DDD'T'HH:mm:ssZZ)
+        /// </summary>
+        public static DateTimeFormatter OrdinalDateTimeNoMilliseconds { get { return odtx; } }
+
+        /// <summary>
+        /// Gets a formatter for a full date as four digit weekyear, two digit
+        /// week of weekyear, and one digit day of week
+        /// (xxxx-'W'ww-e)
+        /// </summary>
+        public static DateTimeFormatter WeekDate { get { return wwd; } }
 
         /// <summary>
         /// Gets a formatter that combines a full weekyear date and time,
@@ -774,6 +828,5 @@ namespace NodaTime.Format
         /// fraction       = ('.' | ',') digit+
         /// </summary>
         public static DateTimeFormatter LocalTimeParser { get { return ltp; } }
-
     }
 }
