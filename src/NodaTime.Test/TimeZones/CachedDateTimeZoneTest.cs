@@ -53,10 +53,10 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetPeriodInstant_RepeatedCallsReturnDifferentObject()
         {
-            var period = this.timeZone.GetPeriod(this.summer);
+            var period = this.timeZone.GetPeriod(Instant.UnixEpoch);
             for (int i = 0; i < CachedDateTimeZone.DefaultCacheSize + 1; i++)
             {
-                var instant = Instant.UnixEpoch + Duration.StandardWeeks(52 * i);
+                var instant = Instant.UnixEpoch + Duration.StandardWeeks(52 * (i + 1));
                 Assert.IsNotNull(this.timeZone.GetPeriod(instant));
             }
             var newPeriod = this.timeZone.GetPeriod(this.summer);
