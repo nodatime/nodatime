@@ -94,7 +94,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Next_BeyondLastYear_null()
         {
-            var afterRecurrenceEnd = new ZonedDateTime(1980, 1, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+            var afterRecurrenceEnd = Instant.FromUtc(1980, 1, 1, 0, 0);
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
             Transition? actual = recurrence.Next(afterRecurrenceEnd, Offset.Zero, Offset.Zero);
