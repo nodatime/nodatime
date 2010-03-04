@@ -33,11 +33,11 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void NextTransition_RunsOutOfTransitions()
         {
-            Instant april1981 = new ZonedDateTime(1981, 4, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+            Instant april1981 = Instant.FromUtc(1981, 4, 1, 0, 0);
             Transition? lastTransition = Algiers.NextTransition(april1981);
             Assert.IsNotNull(lastTransition);
 
-            Transition expected = new Transition(new ZonedDateTime(1981, 5, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant(),
+            Transition expected = new Transition(Instant.FromUtc(1981, 5, 1, 0, 0),
                 Offset.Zero, Offset.ForHours(1));
             Assert.AreEqual(expected, lastTransition.Value);
 
