@@ -94,10 +94,11 @@ namespace NodaTime.Calendars
                 // It may still be okay - let's take the long way to find out
                 return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
             }
-            return new LocalInstant(MonthStartTicks[yearMonthIndex] + 
+            // This is guaranteed not to overflow, as we've already validated the arguments
+            return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] + 
                 (dayOfMonth - 1) * NodaConstants.TicksPerDay +
                 hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
-                secondOfMinute * NodaConstants.TicksPerSecond + millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond);
+                secondOfMinute * NodaConstants.TicksPerSecond + millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond));
         }
 
         public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
@@ -113,10 +114,11 @@ namespace NodaTime.Calendars
                 // It may still be okay - let's take the long way to find out
                 return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
             }
-            return new LocalInstant(MonthStartTicks[yearMonthIndex] +
+            // This is guaranteed not to overflow, as we've already validated the arguments
+            return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] +
                 (dayOfMonth - 1) * NodaConstants.TicksPerDay +
                 hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
-                secondOfMinute * NodaConstants.TicksPerSecond);
+                secondOfMinute * NodaConstants.TicksPerSecond));
         }
 
         public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
@@ -131,9 +133,10 @@ namespace NodaTime.Calendars
                 // It may still be okay - let's take the long way to find out
                 return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
             }
-            return new LocalInstant(MonthStartTicks[yearMonthIndex] +
+            // This is guaranteed not to overflow, as we've already validated the arguments
+            return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] +
                 (dayOfMonth - 1) * NodaConstants.TicksPerDay +
-                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute);
+                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute));
         }
 
         // TODO: Try overriding the GetLocalInstant methods to micro-optimise them (they will be called for almost every ZonedDateTime/LocalDateTime)
