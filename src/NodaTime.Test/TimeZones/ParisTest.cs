@@ -42,16 +42,16 @@ namespace NodaTime.Test.TimeZones
         private static readonly Offset DaylightOffset = Offset.ForHours(2);
 
         private static readonly Transition Fall2009Transition = new Transition
-            (new ZonedDateTime(2009, 10, 25, 1, 0, 0, DateTimeZones.Utc).ToInstant(), DaylightOffset, StandardOffset);
+            (Instant.FromUtc(2009, 10, 25, 1, 0), DaylightOffset, StandardOffset);
         private static readonly Transition Spring2010Transition = new Transition
-            (new ZonedDateTime(2010, 3, 28, 1, 0, 0, DateTimeZones.Utc).ToInstant(), StandardOffset, DaylightOffset);
+            (Instant.FromUtc(2010, 3, 28, 1, 0), StandardOffset, DaylightOffset);
         private static readonly Transition Fall2010Transition = new Transition
-            (new ZonedDateTime(2010, 10, 31, 1, 0, 0, DateTimeZones.Utc).ToInstant(), DaylightOffset, StandardOffset);
+            (Instant.FromUtc(2010, 10, 31, 1, 0), DaylightOffset, StandardOffset);
         private static readonly Transition Spring2011Transition = new Transition
-            (new ZonedDateTime(2011, 3, 27, 1, 0, 0, DateTimeZones.Utc).ToInstant(), StandardOffset, DaylightOffset);
+            (Instant.FromUtc(2011, 3, 27, 1, 0), StandardOffset, DaylightOffset);
 
-        private static readonly Instant Summer2010 = new ZonedDateTime(2010, 6, 19, 0, 0, 0, DateTimeZones.Utc).ToInstant();
-        private static readonly Instant Winter2010 = new ZonedDateTime(2010, 12, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+        private static readonly Instant Summer2010 = Instant.FromUtc(2010, 6, 19, 0, 0);
+        private static readonly Instant Winter2010 = Instant.FromUtc(2010, 12, 1, 0, 0);
         // Until 1911, Paris was 9 minutes and 21 seconds off UTC.
         private static readonly Offset InitialOffset = Offset.Create(0, 9, 21);
 
@@ -95,8 +95,8 @@ namespace NodaTime.Test.TimeZones
         public void FirstTransitions()
         {
             // Paris had a name change in 1891, and then moved from +0:09:21 to UTC in 1911
-            Instant nameChangeInstant = new ZonedDateTime(1891, 3, 14, 23, 51, 39, DateTimeZones.Utc).ToInstant();
-            Instant utcChangeInstant = new ZonedDateTime(1911, 3, 10, 23, 51, 39, DateTimeZones.Utc).ToInstant();
+            Instant nameChangeInstant = Instant.FromUtc(1891, 3, 14, 23, 51, 39);
+            Instant utcChangeInstant = Instant.FromUtc(1911, 3, 10, 23, 51, 39);
 
             Transition? first = Paris.ValidateNextTransition(Instant.MinValue);
             Transition expected = new Transition(nameChangeInstant, InitialOffset, InitialOffset);

@@ -33,7 +33,7 @@ namespace NodaTime.Test.TimeZones
         {
             var cached = DateTimeZones.ForId("Europe/Paris");
             var uncached = cached.Uncached();
-            Instant summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+            Instant summer = Instant.FromUtc(2010, 6, 1, 0, 0);
             Instant nextTransitionTick = uncached.NextTransition(summer).Value.Instant;
             Assert.AreEqual(uncached.PreviousTransition(nextTransitionTick),
                 cached.PreviousTransition(nextTransitionTick));
@@ -45,7 +45,7 @@ namespace NodaTime.Test.TimeZones
             // This fails with naive caching
             var cached = DateTimeZones.ForId("Europe/Paris");
             var uncached = cached.Uncached();
-            Instant summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+            Instant summer = Instant.FromUtc(2010, 6, 1, 0, 0);
             Instant nextTransitionTick = uncached.NextTransition(summer).Value.Instant;
             Assert.AreEqual(uncached.PreviousTransition(nextTransitionTick + Duration.One),
                 cached.PreviousTransition(nextTransitionTick + Duration.One));
