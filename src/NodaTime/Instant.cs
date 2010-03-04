@@ -30,6 +30,9 @@ namespace NodaTime
     public struct Instant
         : IEquatable<Instant>, IComparable<Instant>
     {
+        public const string BeginningOfTimeLabel = "BOT";
+        public const string EndOfTimeLabel = "EOT";
+
         public static readonly Instant UnixEpoch = new Instant(0);
         public static readonly Instant MinValue = new Instant(Int64.MinValue);
         public static readonly Instant MaxValue = new Instant(Int64.MaxValue);
@@ -294,6 +297,15 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
+            if (Ticks == MinValue.Ticks)
+            {
+                return BeginningOfTimeLabel;
+            }
+            if (Ticks == MaxValue.Ticks)
+            {
+                return EndOfTimeLabel;
+            }
+
             // TODO: Use proper formatting!
             var utc = new LocalDateTime(new LocalInstant(Ticks));
             return string.Format("{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.MonthOfYear, utc.DayOfMonth,

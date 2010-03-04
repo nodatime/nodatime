@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
+
 namespace NodaTime.TimeZones
 {
     /// <summary>
@@ -42,45 +45,48 @@ namespace NodaTime.TimeZones
         #region IDateTimeZone Members
 
         /// <summary>
-        /// Returns the transition occurring strictly after the specified instant,
-        /// or null if there are no further transitions.
+        /// Gets the zone offset period for the given instant. Null is returned if no period is
+        /// defined by the time zone for the given instant.
         /// </summary>
-        /// <param name="instant">The instant after which to consider transitions.</param>
-        /// <returns>
-        /// The instant of the next transition, or null if there are no further transitions.
-        /// </returns>
-        public abstract Transition? NextTransition(Instant instant);
+        /// <param name="instant">The Instant to test.</param>
+        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        public abstract ZoneOffsetPeriod GetPeriod(Instant instant);
 
         /// <summary>
-        /// Returns the transition occurring strictly before the specified instant,
-        /// or null if there are no earlier transitions.
+        /// Gets the zone offset period for the given local instant. Null is returned if no period
+        /// is defined by the time zone for the given local instant.
         /// </summary>
-        /// <param name="instant">The instant before which to consider transitions.</param>
-        /// <returns>
-        /// The instant of the previous transition, or null if there are no further transitions.
-        /// </returns>
-        public abstract Transition? PreviousTransition(Instant instant);
+        /// <param name="localInstant">The LocalInstant to test.</param>
+        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        public abstract ZoneOffsetPeriod GetPeriod(LocalInstant localInstant);
 
         public abstract void Write(DateTimeZoneWriter writer);
 
         /// <summary>
-        /// Returns the offset from UTC, where a positive duration indicates that local time is later
-        /// than UTC. In other words, local time = UTC + offset.
+        /// Returns the offset from UTC, where a positive duration indicates that local time is
+        /// later than UTC. In other words, local time = UTC + offset.
         /// </summary>
         /// <param name="instant">The instant for which to calculate the offset.</param>
         /// <returns>
         /// The offset from UTC at the specified instant.
         /// </returns>
-        public abstract Offset GetOffsetFromUtc(Instant instant);
+        public virtual Offset GetOffsetFromUtc(Instant instant)
+        {
+            var period = GetPeriod(instant);
+            return period.Offset;
+        }
 
         /// <summary>
-        /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
-        /// than local time. In other words, UTC = local time - (offset from local).
+        /// Returns the offset from local time to UTC, where a positive duration indicates that UTC
+        /// is earlier than local time. In other words, UTC = local time - (offset from local).
         /// </summary>
         /// <param name="localInstant">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
         public virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
+            var period = GetPeriod(localInstant);
+            return period.Offset;
+#if false
             // TODO: Try to find offsets less frequently
 
             // Find an instant somewhere near the right time by assuming UTC temporarily
@@ -130,6 +136,7 @@ namespace NodaTime.TimeZones
                 var laterInstant = candidateInstant1 > candidateInstant2 ? candidateInstant1 : candidateInstant2;
                 throw new SkippedTimeException(localInstant, this, PreviousTransition(laterInstant).Value.Instant);
             }
+#endif
         }
 
         /// <summary>
@@ -147,7 +154,8 @@ namespace NodaTime.TimeZones
         /// </remarks>
         public virtual string Name(Instant instant)
         {
-            return Id;
+            var period = GetPeriod(instant);
+            return period.Name;
         }
 
         /// <summary>

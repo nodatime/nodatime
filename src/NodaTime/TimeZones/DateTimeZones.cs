@@ -49,7 +49,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         public const string UtcId = "UTC";
 
-        private static readonly IDateTimeZone utc = new FixedDateTimeZone(UtcId, Offset.Zero);
+        private static readonly IDateTimeZone utc = new FixedDateTimeZone(Offset.Zero);
 
         private readonly static Impl implementation = new Impl();
 

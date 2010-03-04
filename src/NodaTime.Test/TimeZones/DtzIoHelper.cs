@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System.IO;
 using NodaTime.TimeZones;
 
@@ -25,9 +28,9 @@ namespace NodaTime.Test.TimeZones
     /// </summary>
     public class DtzIoHelper
     {
+        private DateTimeZoneReader reader;
         private MemoryStream stream;
         private DateTimeZoneWriter writer;
-        private DateTimeZoneReader reader;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DtzIoHelper"/> class.
@@ -42,7 +45,10 @@ namespace NodaTime.Test.TimeZones
         /// Gets the writer.
         /// </summary>
         /// <value>The writer.</value>
-        public DateTimeZoneWriter Writer { get { return this.writer; } }
+        public DateTimeZoneWriter Writer
+        {
+            get { return this.writer; }
+        }
 
         /// <summary>
         /// Gets the reader.
@@ -58,11 +64,17 @@ namespace NodaTime.Test.TimeZones
                 }
                 if (this.reader == null)
                 {
-                    stream.Seek(0, SeekOrigin.Begin);
+                    this.stream.Seek(0, SeekOrigin.Begin);
                     this.reader = new DateTimeZoneReader(this.stream);
                 }
                 return this.reader;
             }
+        }
+
+        public IDateTimeZone WriteRead(IDateTimeZone timeZone)
+        {
+            this.Writer.WriteTimeZone(timeZone);
+            return this.Reader.ReadTimeZone(timeZone.Id);
         }
 
         public ZoneRecurrence WriteRead(ZoneRecurrence value)
