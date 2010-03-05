@@ -10,6 +10,7 @@ Thumbs.db
 *.exe
 *.pdb
 *.ReSharper
+*.resharper
 *.user
 *.aps
 *.pch
