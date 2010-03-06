@@ -31,7 +31,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="instant">The Instant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneOffsetPeriod GetPeriod(Instant instant)
+        public override ZoneInterval GetZoneInterval(Instant instant)
         {
             return null;
         }
@@ -42,7 +42,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneOffsetPeriod GetPeriod(LocalInstant localInstant)
+        public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             return null;
         }

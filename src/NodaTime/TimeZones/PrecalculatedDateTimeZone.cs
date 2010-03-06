@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     internal class PrecalculatedDateTimeZone
         : DateTimeZoneBase
     {
-        private readonly ZoneOffsetPeriod[] periods;
+        private readonly ZoneInterval[] periods;
         private readonly IDateTimeZone tailZone;
 
         /// <summary>
@@ -52,12 +52,12 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentException(@"There must be at least one transition", "transitions");
             }
-            this.periods = new ZoneOffsetPeriod[size];
+            this.periods = new ZoneInterval[size];
             for (int i = 0; i < size; i++)
             {
                 var transition = transitions[i];
-                var endInstant = i == size - 1 ? precalcedEnd : transitions[i + 1].Instant - Duration.One;
-                var period = new ZoneOffsetPeriod(transition.Name, transition.Instant, endInstant, transition.WallOffset,
+                var endInstant = i == size - 1 ? precalcedEnd : transitions[i + 1].Instant;
+                var period = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset,
                                                   transition.Savings);
                 this.periods[i] = period;
             }
@@ -69,7 +69,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The id.</param>
         /// <param name="periods">The periods.</param>
         /// <param name="tailZone">The tail zone.</param>
-        private PrecalculatedDateTimeZone(string id, ZoneOffsetPeriod[] periods, IDateTimeZone tailZone)
+        private PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, IDateTimeZone tailZone)
             : base(id, false)
         {
             this.tailZone = tailZone;
@@ -82,12 +82,12 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="instant">The Instant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneOffsetPeriod GetPeriod(Instant instant)
+        public override ZoneInterval GetZoneInterval(Instant instant)
         {
             int last = this.periods.Length - 1;
             if (this.periods[last].End < instant)
             {
-                return this.tailZone.GetPeriod(instant);
+                return this.tailZone.GetZoneInterval(instant);
             }
             for (var p = last; p >= 0; p--)
             {
@@ -109,12 +109,12 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneOffsetPeriod GetPeriod(LocalInstant localInstant)
+        public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             int last = this.periods.Length - 1;
             if (this.periods[last].LocalEnd < localInstant)
             {
-                return this.tailZone.GetPeriod(localInstant);
+                return this.tailZone.GetZoneInterval(localInstant);
             }
             for (var p = last; p >= 0; p--)
             {
@@ -185,7 +185,7 @@ namespace NodaTime.TimeZones
         public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             int size = reader.ReadCount();
-            var periods = new ZoneOffsetPeriod[size];
+            var periods = new ZoneInterval[size];
             var start = reader.ReadInstant();
             for (int i = 0; i < size; i++)
             {
@@ -193,8 +193,7 @@ namespace NodaTime.TimeZones
                 var offset = reader.ReadOffset();
                 var savings = reader.ReadOffset();
                 var nextStart = reader.ReadInstant();
-                var end = nextStart == Instant.MaxValue ? nextStart : nextStart - Duration.One;
-                periods[i] = new ZoneOffsetPeriod(name, start, end, offset, savings);
+                periods[i] = new ZoneInterval(name, start, nextStart, offset, savings);
                 start = nextStart;
             }
             var tailZone = reader.ReadTimeZone(id + "-tail");

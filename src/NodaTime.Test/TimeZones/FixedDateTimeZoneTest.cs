@@ -28,7 +28,7 @@ namespace NodaTime.Test.TimeZones
         private static readonly Offset OneHour = Offset.ForHours(-8);
         private static readonly FixedDateTimeZone PstTimeZone = new FixedDateTimeZone(OneHour);
         // private static readonly FixedDateTimeZone PstTimeZone = new FixedDateTimeZone("test", OneHour);
-        private static readonly ZoneOffsetPeriod FixPeriod = new ZoneOffsetPeriod(PstTimeZone.Id, Instant.MinValue, Instant.MaxValue, OneHour, Offset.Zero);
+        private static readonly ZoneInterval FixPeriod = new ZoneInterval(PstTimeZone.Id, Instant.MinValue, Instant.MaxValue, OneHour, Offset.Zero);
 
         [Test]
         public void IsFixed_ReturnsTrue()
@@ -37,16 +37,16 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void GetPeriodInstant_Period()
+        public void GetZoneIntervalInstant_ZoneInterval()
         {
-            var actual = PstTimeZone.GetPeriod(Instant.UnixEpoch);
+            var actual = PstTimeZone.GetZoneInterval(Instant.UnixEpoch);
             Assert.AreEqual(FixPeriod, actual);
         }
 
         [Test]
-        public void GetPeriodLocalInstant_Period()
+        public void GetZoneIntervalLocalInstant_ZoneInterval()
         {
-            var actual = PstTimeZone.GetPeriod(LocalInstant.LocalUnixEpoch);
+            var actual = PstTimeZone.GetZoneInterval(LocalInstant.LocalUnixEpoch);
             Assert.AreEqual(FixPeriod, actual);
         }
 

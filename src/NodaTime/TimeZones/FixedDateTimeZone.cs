@@ -32,7 +32,7 @@ namespace NodaTime.TimeZones
         : DateTimeZoneBase, IEquatable<FixedDateTimeZone>
     {
         private readonly Offset offset;
-        private readonly ZoneOffsetPeriod period;
+        private readonly ZoneInterval period;
 
         /// <summary>
         /// Creates a new fixed time zone.
@@ -53,7 +53,7 @@ namespace NodaTime.TimeZones
             : base(id, true)
         {
             this.offset = offset;
-            this.period = new ZoneOffsetPeriod(id, Instant.MinValue, Instant.MaxValue, offset, Offset.Zero);
+            this.period = new ZoneInterval(id, Instant.MinValue, Instant.MaxValue, offset, Offset.Zero);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="instant">The Instant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneOffsetPeriod GetPeriod(Instant instant)
+        public override ZoneInterval GetZoneInterval(Instant instant)
         {
             return this.period;
         }
@@ -87,7 +87,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneOffsetPeriod GetPeriod(LocalInstant localInstant)
+        public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             return this.period;
         }

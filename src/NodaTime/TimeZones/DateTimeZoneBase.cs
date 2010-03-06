@@ -50,7 +50,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="instant">The Instant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public abstract ZoneOffsetPeriod GetPeriod(Instant instant);
+        public abstract ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
         /// Gets the zone offset period for the given local instant. Null is returned if no period
@@ -58,7 +58,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public abstract ZoneOffsetPeriod GetPeriod(LocalInstant localInstant);
+        public abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
 
         public abstract void Write(DateTimeZoneWriter writer);
 
@@ -72,7 +72,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public virtual Offset GetOffsetFromUtc(Instant instant)
         {
-            var period = GetPeriod(instant);
+            var period = this.GetZoneInterval(instant);
             return period.Offset;
         }
 
@@ -84,7 +84,7 @@ namespace NodaTime.TimeZones
         /// <returns>The offset at the specified local time.</returns>
         public virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
-            var period = GetPeriod(localInstant);
+            var period = this.GetZoneInterval(localInstant);
             return period.Offset;
 #if false
             // TODO: Try to find offsets less frequently
@@ -152,9 +152,9 @@ namespace NodaTime.TimeZones
         /// it represents. For example in the Pacific Standard Time (UTC-8) it will return either
         /// PST or PDT depending on the time of year.
         /// </remarks>
-        public virtual string Name(Instant instant)
+        public virtual string GetName(Instant instant)
         {
-            var period = GetPeriod(instant);
+            var period = this.GetZoneInterval(instant);
             return period.Name;
         }
 

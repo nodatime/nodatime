@@ -22,8 +22,8 @@ using NodaTime.TimeZones;
 namespace NodaTime
 {
     /// <summary>
-    /// Interface describing a time zone. Most users won't need to call any
-    /// of the methods on this, instead 
+    /// Interface describing a time zone. Most users won't need to call any of the methods on this,
+    /// instead 
     /// </summary>   
     public interface IDateTimeZone
     {
@@ -38,8 +38,8 @@ namespace NodaTime
         bool IsFixed { get; }
 
         /// <summary>
-        /// Returns the offset from UTC, where a positive duration indicates that local time is later
-        /// than UTC. In other words, local time = UTC + offset.
+        /// Returns the offset from UTC, where a positive duration indicates that local time is
+        /// later than UTC. In other words, local time = UTC + offset.
         /// </summary>
         /// <param name="instant">The instant for which to calculate the offset.</param>
         /// <returns>The offset from UTC at the specified instant.</returns>
@@ -51,32 +51,30 @@ namespace NodaTime
         /// <param name="localInstant">The local instant to get the offset of.</param>
         /// <returns>The offset to subtract from the specified local time to obtain a UTC instant.</returns>
         /// <remarks>
-        /// Around a DST transition, local times behave peculiarly. When
-        /// the time springs forward, (e.g. 12:59 to 02:00) some times never
-        /// occur; when the time falls back (e.g. 1:59 to 01:00) some times
-        /// occur twice. This method always returns a smaller offset when
-        /// there is ambiguity, i.e. it treats the local time as the later
-        /// of the possibilities.
+        /// Around a DST transition, local times behave peculiarly. When the time springs forward,
+        /// (e.g. 12:59 to 02:00) some times never occur; when the time falls back (e.g. 1:59 to
+        /// 01:00) some times occur twice. This method always returns a smaller offset when there is
+        /// ambiguity, i.e. it treats the local time as the later of the possibilities.
         /// </remarks>
         /// <exception cref="SkippedTimeException">The local instant doesn't occur in this time zone
         /// due to zone transitions.</exception>
         Offset GetOffsetFromLocal(LocalInstant localInstant);
 
         /// <summary>
-        /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
-        /// for the given instant.
+        /// Gets the zone interval for the given instant. Null is returned if no intervval is
+        /// defined by the time zone for the given instant.
         /// </summary>
-        /// <param name="instant">The Instant to test.</param>
-        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        ZoneOffsetPeriod GetPeriod(Instant instant);
+        /// <param name="instant">The Instant to query.</param>
+        /// <returns>The defined <see cref="ZoneInterval"/> or <c>null</c>.</returns>
+        ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
-        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
-        /// for the given local instant.
+        /// Gets the zone interval for the given local instant. Null is returned if no intervval is
+        /// defined by the time zone for the given local instant.
         /// </summary>
-        /// <param name="localInstant">The LocalInstant to test.</param>
-        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        ZoneOffsetPeriod GetPeriod(LocalInstant localInstant);
+        /// <param name="localInstant">The <see cref="LocalInstant"/> to query.</param>
+        /// <returns>The defined <see cref="ZoneInterval"/> or <c>null</c>.</returns>
+        ZoneInterval GetZoneInterval(LocalInstant localInstant);
 
         /// <summary>
         /// Returns the name associated with the given instant.
@@ -86,11 +84,10 @@ namespace NodaTime
         /// honors daylight savings this will return a different name depending on the time of year
         /// it represents. For example in the Pacific Standard Time (UTC-8) it will return either
         /// PST or PDT depending on the time of year.
-        /// TODO: Change this to GetName?
         /// </remarks>
         /// <param name="instant">The instant to get the name for.</param>
         /// <returns>The name of this time. Never returns null.</returns>
-        string Name(Instant instant);
+        string GetName(Instant instant);
 
         /// <summary>
         /// Writes the time zone to the specified writer.

@@ -322,7 +322,7 @@ namespace NodaTime.Format
                     {
                         value = text[i++] - '0';
                     }
-                    catch (IndexOutOfRangeException e)
+                    catch (IndexOutOfRangeException)
                     {
                         return ~position;
                     }
@@ -994,7 +994,7 @@ namespace NodaTime.Format
                 //switch (printKind)
                 //{
                 //    case TimeZoneNamePrintKind.LongName:
-                //        return displayZone.Name(instant);
+                //        return displayZone.GetName(instant);
                 //    case TimeZoneNamePrintKind.ShortName:
                 //        return displayZone.getShortName(instant, locale);
                 //    case TimeZoneNamePrintKind.Id:
