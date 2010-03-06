@@ -44,46 +44,46 @@ namespace NodaTime.Test.TimeZones
         private Instant summer;
 
         [Test]
-        public void GetPeriodInstant_NotNull()
+        public void GetZoneIntervalInstant_NotNull()
         {
-            var period = this.timeZone.GetPeriod(this.summer);
-            Assert.IsNotNull(period);
+            var actual = this.timeZone.GetZoneInterval(this.summer);
+            Assert.IsNotNull(actual);
         }
 
         [Test]
-        public void GetPeriodInstant_RepeatedCallsReturnDifferentObject()
+        public void GetZoneIntervalInstant_RepeatedCallsReturnDifferentObject()
         {
-            var period = this.timeZone.GetPeriod(Instant.UnixEpoch);
-            for (int i = 0; i < CachedDateTimeZone.DefaultCacheSize + 1; i++)
+            var actual = this.timeZone.GetZoneInterval(Instant.UnixEpoch);
+            for (int i = 0; i < CachedDateTimeZone.CachedUsingMruList.CacheSize + 1; i++)
             {
                 var instant = Instant.UnixEpoch + Duration.StandardWeeks(52 * (i + 1));
-                Assert.IsNotNull(this.timeZone.GetPeriod(instant));
+                Assert.IsNotNull(this.timeZone.GetZoneInterval(instant));
             }
-            var newPeriod = this.timeZone.GetPeriod(this.summer);
-            Assert.AreNotSame(period, newPeriod);
+            var newPeriod = this.timeZone.GetZoneInterval(this.summer);
+            Assert.AreNotSame(actual, newPeriod);
         }
 
         [Test]
-        public void GetPeriodInstant_RepeatedCallsReturnSameObject()
+        public void GetZoneIntervalInstant_RepeatedCallsReturnSameObject()
         {
-            var period = this.timeZone.GetPeriod(this.summer);
+            var actual = this.timeZone.GetZoneInterval(this.summer);
             for (int i = 0; i < 100; i++)
             {
-                var newPeriod = this.timeZone.GetPeriod(this.summer);
-                Assert.AreSame(period, newPeriod);
+                var newPeriod = this.timeZone.GetZoneInterval(this.summer);
+                Assert.AreSame(actual, newPeriod);
             }
         }
 
         [Test]
-        public void GetPeriodInstant_RepeatedCallsReturnSameObjectWithOthersInterspersed()
+        public void GetZoneIntervalInstant_RepeatedCallsReturnSameObjectWithOthersInterspersed()
         {
-            var period = this.timeZone.GetPeriod(this.summer);
-            Assert.IsNotNull(this.timeZone.GetPeriod(Instant.UnixEpoch));
-            Assert.IsNotNull(this.timeZone.GetPeriod(Instant.UnixEpoch + Duration.StandardWeeks(2000)));
-            Assert.IsNotNull(this.timeZone.GetPeriod(Instant.UnixEpoch + Duration.StandardWeeks(3000)));
-            Assert.IsNotNull(this.timeZone.GetPeriod(Instant.UnixEpoch + Duration.StandardWeeks(4000)));
-            var newPeriod = this.timeZone.GetPeriod(this.summer);
-            Assert.AreSame(period, newPeriod);
+            var actual = this.timeZone.GetZoneInterval(this.summer);
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch));
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.StandardWeeks(2000)));
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.StandardWeeks(3000)));
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.StandardWeeks(4000)));
+            var newPeriod = this.timeZone.GetZoneInterval(this.summer);
+            Assert.AreSame(actual, newPeriod);
         }
     }
 }

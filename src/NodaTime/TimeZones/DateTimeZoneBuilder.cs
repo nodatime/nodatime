@@ -335,7 +335,7 @@ namespace NodaTime.TimeZones
             {
                 tailZone = NullDateTimeZone.Instance;
             }
-            var precalcedEnd = nextTransition != null ? nextTransition.Instant - Duration.One : Instant.MaxValue;
+            var precalcedEnd = nextTransition != null ? nextTransition.Instant : Instant.MaxValue;
             var zone = new PrecalculatedDateTimeZone(zoneId, transitions, precalcedEnd, tailZone);
             if (zone.IsCachable())
             {

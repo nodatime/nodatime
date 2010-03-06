@@ -163,7 +163,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="instant">The Instant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneOffsetPeriod GetPeriod(Instant instant)
+        public override ZoneInterval GetZoneInterval(Instant instant)
         {
             var previous = PreviousTransition(instant + Duration.One);
             var next = NextTransition(instant);
@@ -173,7 +173,7 @@ namespace NodaTime.TimeZones
                 return null;
             }
             var recurrence = FindMatchingRecurrence(instant);
-            return new ZoneOffsetPeriod(recurrence.Name, previous.Value.Instant, next.Value.Instant - Duration.One,
+            return new ZoneInterval(recurrence.Name, previous.Value.Instant, next.Value.Instant,
                                         StandardOffset + recurrence.Savings, recurrence.Savings);
         }
 
@@ -184,7 +184,7 @@ namespace NodaTime.TimeZones
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <exception cref="SkippedTimeException"></exception>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneOffsetPeriod GetPeriod(LocalInstant localInstant)
+        public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             var normal = localInstant - StandardOffset;
             var daylight = localInstant - (StandardOffset + this.startRecurrence.Savings);
@@ -202,7 +202,7 @@ namespace NodaTime.TimeZones
                 }
                 throw new SkippedTimeException(localInstant, this, instant);
             }
-            return GetPeriod(normal);
+            return this.GetZoneInterval(normal);
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace NodaTime.TimeZones
         /// it represents. For example in the Pacific Standard Time (UTC-8) it will return either
         /// PST or PDT depending on the time of year.
         /// </remarks>
-        public override string Name(Instant instant)
+        public override string GetName(Instant instant)
         {
             return FindMatchingRecurrence(instant).Name;
         }

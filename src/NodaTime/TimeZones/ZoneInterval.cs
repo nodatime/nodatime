@@ -31,24 +31,27 @@ namespace NodaTime.TimeZones
     /// This type is immutable and thread-safe.
     /// </para>
     /// </remarks>
-    public class ZoneOffsetPeriod
-        : IEquatable<ZoneOffsetPeriod>
+    public class ZoneInterval
+        : IEquatable<ZoneInterval>
     {
         private readonly Instant end;
+        private readonly LocalInstant localEnd;
         private readonly string name;
         private readonly Offset offset;
         private readonly Offset savings;
         private readonly Instant start;
+        private readonly LocalInstant localStart;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZoneOffsetPeriod"/> class.
+        /// Initializes a new instance of the <see cref="ZoneInterval"/> class.
         /// </summary>
         /// <param name="name">The name of this offset period (e.g. PST or PDT).</param>
         /// <param name="start">The first Instant that the Offset applies.</param>
-        /// <param name="end">The last Instant (inclusive) that the Offset applies.</param>
+        /// <param name="end">The last Instant (exclusive) that the Offset applies.</param>
         /// <param name="offset">The offset from UTC for this period.</param>
         /// <param name="savings">The daylight savings contribution to the offset.</param>
-        public ZoneOffsetPeriod(string name, Instant start, Instant end, Offset offset, Offset savings)
+        /// <exception cref="ArgumentNullException">If the name parameter is null.</exception>
+        public ZoneInterval(string name, Instant start, Instant end, Offset offset, Offset savings)
         {
             if (ReferenceEquals(null, name))
             {
@@ -59,6 +62,22 @@ namespace NodaTime.TimeZones
             this.end = end;
             this.offset = offset;
             this.savings = savings;
+            try
+            {
+                this.localStart = this.start + this.offset;
+            }
+            catch (OverflowException)
+            {
+                this.localStart = LocalInstant.MinValue;
+            }
+            try
+            {
+                this.localEnd = this.end + (this.offset - this.savings);
+            }
+            catch (OverflowException)
+            {
+                this.localEnd = LocalInstant.MaxValue;
+            }
         }
 
         #region Properties
@@ -73,9 +92,9 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Gets the last Instant (inclusive) that the Offset applies.
+        /// Gets the last Instant (exclusive) that the Offset applies.
         /// </summary>
-        /// <value>The last Instant (inclusive) that the Offset applies.</value>
+        /// <value>The last Instant (exclusive) that the Offset applies.</value>
         public Instant End
         {
             get { return this.end; }
@@ -125,12 +144,12 @@ namespace NodaTime.TimeZones
         /// Gets the duration of this period.
         /// </summary>
         /// <remarks>
-        /// This is effectively <c>Start - End + 1</c>.
+        /// This is effectively <c>Start - End</c>.
         /// </remarks>
         /// <value>The Duration of this period.</value>
         public Duration Duration
         {
-            get { return End - Start + Duration.One; }
+            get { return End - Start; }
         }
 
         /// <summary>
@@ -142,7 +161,7 @@ namespace NodaTime.TimeZones
         /// <value>The starting LocalInstant.</value>
         public LocalInstant LocalStart
         {
-            get { return Start + Offset; }
+            get { return this.localStart; }
         }
 
         /// <summary>
@@ -154,7 +173,7 @@ namespace NodaTime.TimeZones
         /// <value>The ending LocalInstant.</value>
         public LocalInstant LocalEnd
         {
-            get { return End + (Offset - Savings); }
+            get { return this.localEnd; }
         }
 
         #endregion // Properties
@@ -170,7 +189,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public bool Contains(Instant instant)
         {
-            return Start <= instant && instant <= End;
+            return Start <= instant && instant < End;
         }
 
         /// <summary>
@@ -182,7 +201,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public bool Contains(LocalInstant localInstant)
         {
-            return LocalStart <= localInstant && localInstant <= LocalEnd;
+            return LocalStart <= localInstant && localInstant < LocalEnd;
         }
 
         #endregion // Contains
@@ -197,7 +216,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         /// <param name="other">An object to compare with this object.
         ///                 </param>
-        public bool Equals(ZoneOffsetPeriod other)
+        public bool Equals(ZoneInterval other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -231,8 +250,8 @@ namespace NodaTime.TimeZones
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (ZoneOffsetPeriod)) return false;
-            return Equals((ZoneOffsetPeriod) obj);
+            if (obj.GetType() != typeof (ZoneInterval)) return false;
+            return Equals((ZoneInterval) obj);
         }
 
         /// <summary>
@@ -267,7 +286,7 @@ namespace NodaTime.TimeZones
             buffer.Append(Start);
             buffer.Append(@", ");
             buffer.Append(End);
-            buffer.Append(@"] ");
+            buffer.Append(@") ");
             buffer.Append(Offset);
             buffer.Append(@" (");
             buffer.Append(Savings);
@@ -285,7 +304,7 @@ namespace NodaTime.TimeZones
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ZoneOffsetPeriod left, ZoneOffsetPeriod right)
+        public static bool operator ==(ZoneInterval left, ZoneInterval right)
         {
             return Equals(left, right);
         }
@@ -296,7 +315,7 @@ namespace NodaTime.TimeZones
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ZoneOffsetPeriod left, ZoneOffsetPeriod right)
+        public static bool operator !=(ZoneInterval left, ZoneInterval right)
         {
             return !Equals(left, right);
         }
@@ -323,14 +342,14 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns></returns>
-        public static ZoneOffsetPeriod Read(DateTimeZoneReader reader)
+        public static ZoneInterval Read(DateTimeZoneReader reader)
         {
             var name = reader.ReadString();
             var start = new Instant(reader.ReadTicks());
             var end  = new Instant(reader.ReadTicks());
             var offset = reader.ReadOffset();
             var savings = reader.ReadOffset();
-            return new ZoneOffsetPeriod(name, start, end, offset, savings);
+            return new ZoneInterval(name, start, end, offset, savings);
         }
 
         #endregion // I/O

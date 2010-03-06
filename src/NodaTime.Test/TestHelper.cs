@@ -252,7 +252,7 @@ namespace NodaTime.Test
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="unEqualValue">The value not equal to the base value.</param>
-        /// <param name="unEqualName">Name of the not equal value error messages..</param>
+        /// <param name="unEqualName">GetName of the not equal value error messages..</param>
         private static void ValidateInput(object value, object equalValue, object unEqualValue, string unEqualName)
         {
             Assert.NotNull(value, "value cannot be null in TestObjectEquals() method");

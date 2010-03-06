@@ -41,7 +41,7 @@ namespace NodaTime.Test.TimeZones
             string name = "abc";
             var actual = new ZoneTransition(Instant.UnixEpoch, name, Offset.Zero, Offset.Zero);
             Assert.AreEqual(Instant.UnixEpoch, actual.Instant, "Instant");
-            Assert.AreEqual(name, actual.Name, "Name");
+            Assert.AreEqual(name, actual.Name, "GetName");
             Assert.AreEqual(Offset.Zero, actual.WallOffset, "WallOffset");
             Assert.AreEqual(Offset.Zero, actual.StandardOffset, "StandardOffset");
         }

@@ -47,9 +47,9 @@ namespace NodaTime.Test.TimeZones
             var nameChangeInstant = new ZonedDateTime(1891, 3, 14, 23, 51, 39, DateTimeZones.Utc).ToInstant();
             var utcChangeInstant = new ZonedDateTime(1911, 3, 10, 23, 51, 39, DateTimeZones.Utc).ToInstant();
 
-            var beforeNameChange = Paris.GetPeriod(nameChangeInstant - Duration.One);
-            var afterNameChange = Paris.GetPeriod(nameChangeInstant);
-            var afterSmallChange = Paris.GetPeriod(utcChangeInstant);
+            var beforeNameChange = Paris.GetZoneInterval(nameChangeInstant - Duration.One);
+            var afterNameChange = Paris.GetZoneInterval(nameChangeInstant);
+            var afterSmallChange = Paris.GetZoneInterval(utcChangeInstant);
 
             Assert.AreEqual("LMT", beforeNameChange.Name);
             Assert.AreEqual(InitialOffset, beforeNameChange.Offset);

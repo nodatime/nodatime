@@ -45,47 +45,19 @@ namespace NodaTime.Test.TimeZones
         private Instant summer;
 
         [Test]
-        public void GetPeriodInstant_Start()
+        public void GetZoneIntervalInstant_End()
         {
-            var period = this.timeZone.GetPeriod(this.summer);
-            var start = this.timeZone.GetPeriod(period.Start);
-            Assert.AreEqual(period, start);
+            var expected = this.timeZone.GetZoneInterval(this.summer);
+            var actual = this.timeZone.GetZoneInterval(expected.End - Duration.One);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void GetPeriodInstant_End()
+        public void GetZoneIntervalInstant_Start()
         {
-            var period = this.timeZone.GetPeriod(this.summer);
-            var end = this.timeZone.GetPeriod(period.End);
-            Assert.AreEqual(period, end);
+            var expected = this.timeZone.GetZoneInterval(this.summer);
+            var actual = this.timeZone.GetZoneInterval(expected.Start);
+            Assert.AreEqual(expected, actual);
         }
-
-        /*
-                       // PreviousTransition is tricky, as the Info for a period may be wrong for the first
-                       // tick (or for all other ones, if you're not careful)
-
-                       [Test]
-                       public void PreviousTransition_SucceedsOffTransitionPoint()
-                       {
-                           // This fails with naive caching
-                           var cached = DateTimeZones.ForId("Europe/Paris");
-                           var uncached = cached.Uncached();
-                           Instant summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
-                           Instant nextTransitionTick = uncached.NextTransition(summer).Value.Instant;
-                           Assert.AreEqual(uncached.PreviousTransition(nextTransitionTick + Duration.One),
-                                           cached.PreviousTransition(nextTransitionTick + Duration.One));
-                       }
-
-                       [Test]
-                       public void PreviousTransition_SucceedsOnTransitionPoint()
-                       {
-                           var cached = DateTimeZones.ForId("Europe/Paris");
-                           var uncached = cached.Uncached();
-                           Instant summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
-                           Instant nextTransitionTick = uncached.NextTransition(summer).Value.Instant;
-                           Assert.AreEqual(uncached.PreviousTransition(nextTransitionTick),
-                                           cached.PreviousTransition(nextTransitionTick));
-                       }
-               */
     }
 }

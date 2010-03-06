@@ -34,16 +34,16 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void GetPeriodInstant_Null()
+        public void GetZoneIntervalInstant_Null()
         {
-            var actual = TimeZone.GetPeriod(Instant.UnixEpoch);
+            var actual = TimeZone.GetZoneInterval(Instant.UnixEpoch);
             Assert.IsNull(actual);
         }
 
         [Test]
-        public void GetPeriodLocalInstant_Null()
+        public void GetZoneIntervalLocalInstant_Null()
         {
-            var actual = TimeZone.GetPeriod(LocalInstant.LocalUnixEpoch);
+            var actual = TimeZone.GetZoneInterval(LocalInstant.LocalUnixEpoch);
             Assert.IsNull(actual);
         }
 

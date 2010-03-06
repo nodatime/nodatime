@@ -207,7 +207,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
             else if (keyword == KeywordZone)
             {
-                string name = NextString(tokens, "Name");
+                string name = NextString(tokens, "GetName");
                 Zone zone = ParseZone(name, tokens);
                 database.AddZone(zone);
             }
@@ -244,7 +244,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <returns>The Rule object.</returns>
         internal ZoneRule ParseRule(Tokens tokens)
         {
-            string name = NextString(tokens, "Name");
+            string name = NextString(tokens, "GetName");
             int fromYear = NextYear(tokens, "FromYear", 0);
             int toYear = NextYear(tokens, "ToYear", fromYear);
             if (toYear < fromYear)

@@ -37,24 +37,18 @@ namespace NodaTime.Test.TimeZones
         public void GetPeriod_BeforeLast()
         {
             var april1981 = new ZonedDateTime(1981, 4, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
-            var period = Algiers.GetPeriod(april1981);
-            Assert.AreEqual("WET", period.Name);
-            Assert.AreEqual(new Instant(3418020000000000L), period.Start);
-            Assert.AreEqual(new Instant(3575231999999999L), period.End);
-            Assert.AreEqual(Offset.Zero, period.Offset);
-            Assert.AreEqual(Offset.Zero, period.Savings);
+            var actual = Algiers.GetZoneInterval(april1981);
+            var expected = new ZoneInterval("WET", new Instant(3418020000000000L), new Instant(3575232000000000L), Offset.Zero, Offset.Zero);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GetPeriod_AfterLastTransition()
         {
             var may1981 = new ZonedDateTime(1981, 5, 1, 0, 0, 1, DateTimeZones.Utc).ToInstant();
-            var period = Algiers.GetPeriod(may1981);
-            Assert.AreEqual("CET", period.Name);
-            Assert.AreEqual(new Instant(3575232000000000L), period.Start);
-            Assert.AreEqual(Instant.MaxValue, period.End);
-            Assert.AreEqual(new Offset(NodaConstants.MillisecondsPerHour), period.Offset);
-            Assert.AreEqual(Offset.Zero, period.Savings);
+            var actual = Algiers.GetZoneInterval(may1981);
+            var expected = new ZoneInterval("CET", new Instant(3575232000000000L), Instant.MaxValue, new Offset(NodaConstants.MillisecondsPerHour), Offset.Zero);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
