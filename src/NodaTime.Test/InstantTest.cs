@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 using NUnit.Framework;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test
 {
@@ -74,6 +75,20 @@ namespace NodaTime.Test
             Assert.AreEqual(diff, duration.Ticks);
             Assert.AreEqual(TestTime2, (time1 + duration).Ticks);
             Assert.AreEqual(TestTime1, (time2 - duration).Ticks);
+        }
+
+        [Test]
+        public void FromUtcNoSeconds()
+        {
+            Instant viaUtc = new ZonedDateTime(2008, 4, 3, 10, 35, 0, DateTimeZones.Utc).ToInstant();
+            Assert.AreEqual(viaUtc, Instant.FromUtc(2008, 4, 3, 10, 35));
+        }
+
+        [Test]
+        public void FromUtcWithSeconds()
+        {
+            Instant viaUtc = new ZonedDateTime(2008, 4, 3, 10, 35, 23, DateTimeZones.Utc).ToInstant();
+            Assert.AreEqual(viaUtc, Instant.FromUtc(2008, 4, 3, 10, 35, 23));
         }
     }
 }

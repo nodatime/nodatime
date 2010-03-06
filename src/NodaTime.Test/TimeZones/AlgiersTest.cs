@@ -36,7 +36,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetPeriod_BeforeLast()
         {
-            var april1981 = new ZonedDateTime(1981, 4, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+            Instant april1981 = Instant.FromUtc(1981, 4, 1, 0, 0);
             var actual = Algiers.GetZoneInterval(april1981);
             var expected = new ZoneInterval("WET", new Instant(3418020000000000L), new Instant(3575232000000000L), Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);

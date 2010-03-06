@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 using System;
+using NodaTime.Calendars;
 
 namespace NodaTime
 {
@@ -54,6 +55,36 @@ namespace NodaTime
         public Instant(long ticks)
         {
             this.ticks = ticks;
+        }
+
+        /// <summary>
+        /// Returns a new instant corresponding to the given UTC date and
+        /// time in the ISO calendar. In most cases applications should 
+        /// use <see cref="ZonedDateTime" />
+        /// to represent a date and time, but this method is useful in some 
+        /// situations where an Instant is required, such as time zone testing.
+        /// </summary>
+        public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth,
+            int hourOfDay, int minuteOfHour)
+        {
+            LocalInstant local = IsoCalendarSystem.Instance.GetLocalInstant
+                (year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
+            return new Instant(local.Ticks);
+        }
+
+        /// <summary>
+        /// Returns a new instant corresponding to the given UTC date and
+        /// time in the ISO calendar. In most cases applications should 
+        /// use <see cref="ZonedDateTime" />
+        /// to represent a date and time, but this method is useful in some 
+        /// situations where an Instant is required, such as time zone testing.
+        /// </summary>
+        public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth,
+            int hourOfDay, int minuteOfHour, int secondOfMinute)
+        {
+            LocalInstant local = IsoCalendarSystem.Instance.GetLocalInstant
+                (year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
+            return new Instant(local.Ticks);
         }
 
         #region Operators
