@@ -28,20 +28,25 @@ namespace NodaTime.TimeZones
     {
         internal const long MaxHalfHours = 0x3f;
         private const long MinHalfHours = -MaxHalfHours;
-        private const long MaskHalfHour = (MaxHalfHours << 1) + 1;
+
+        internal const int MaxMillisHalfHours = 0x3f;
+        private const int MinMillisHalfHours = -MaxMillisHalfHours;
 
         internal const long MaxMinutes = 0x1fffffL;
         private const long MinMinutes = -MaxMinutes;
-        private const long MaskMinutes = (MaxMinutes << 1) + 1;
 
         internal const long MaxSeconds = 0x1fffffffffL;
         private const long MinSeconds = -MaxSeconds;
-        private const long MaskSeconds = (MaxSeconds << 1) + 1;
+
+        internal const int MaxMillisSeconds = 0x3ffff;
+        private const int MinMillisSeconds = -MaxMillisSeconds;
 
         internal const byte FlagHalfHour = 0x00;
         internal const byte FlagMinutes = 0x40;
         internal const byte FlagSeconds = 0x80;
+        internal const byte FlagMillisSeconds = 0x80;
         internal const byte FlagTicks = 0xc0;
+        internal const byte FlagMilliseconds = 0xfd;
         internal const byte FlagMaxValue = 0xfe;
         internal const byte FlagMinValue = 0xff;
 
@@ -50,6 +55,7 @@ namespace NodaTime.TimeZones
         internal const byte FlagTimeZoneCached = 2;
         internal const byte FlagTimeZonePrecalculated = 3;
         internal const byte FlagTimeZoneDst = 4;
+        internal const byte FlagTimeZoneNull = 5;
 
         private readonly Stream stream;
 
@@ -102,6 +108,10 @@ namespace NodaTime.TimeZones
             {
                 WriteInt8(FlagTimeZoneDst);
             }
+            else if (timeZone is NullDateTimeZone)
+            {
+                WriteInt8(FlagTimeZoneNull);
+            }
             else
             {
                 WriteInt8(FlagTimeZoneUser);
@@ -146,7 +156,7 @@ namespace NodaTime.TimeZones
                     long units = ticks / (30 * NodaConstants.TicksPerMinute);
                     if (MinHalfHours <= units && units <= MaxHalfHours)
                     {
-                        units = units + MaskHalfHour;
+                        units = units + MaxHalfHours;
                         WriteInt8((byte)(units & 0x3f));
                         return;
                     }
@@ -186,6 +196,67 @@ namespace NodaTime.TimeZones
             }
         }
 
+        /**
+         * Milliseconds encoding formats:
+         *
+         * upper bits      units       field length  approximate range
+         * ---------------------------------------------------------------
+         * 0xxxxxxx        30 minutes  1 byte        +/- 24 hours
+         * 10xxxxxx        seconds     3 bytes       +/- 24 hours
+         * 11111101  0xfd  millis      5 byte        Full range
+         * 11111110  0xfe              1 byte        Int32.MaxValue
+         * 11111111  0xff              1 byte        Int32.MinValue
+         *
+         * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
+         */
+        public void WriteMilliseconds(int milliseconds)
+        {
+            unchecked
+            {
+                if (milliseconds == Int32.MinValue)
+                {
+                    WriteInt8(FlagMinValue);
+                    return;
+                }
+                else if (milliseconds == Int32.MaxValue)
+                {
+                    WriteInt8(FlagMaxValue);
+                    return;
+                }
+                if (milliseconds % (30 * NodaConstants.MillisecondsPerMinute) == 0)
+                {
+                    // Try to write in 30 minute units.
+                    int units = milliseconds / (30 * NodaConstants.MillisecondsPerMinute);
+                    if (MinMillisHalfHours <= units && units <= MaxMillisHalfHours)
+                    {
+                        units = units + MaxMillisHalfHours;
+                        WriteInt8((byte)(units & 0x7f));
+                        return;
+                    }
+                }
+
+                if (milliseconds % NodaConstants.MillisecondsPerSecond == 0)
+                {
+                    // Try to write seconds.
+                    int seconds = milliseconds / NodaConstants.MillisecondsPerSecond;
+                    if (MinMillisSeconds <= seconds && seconds <= MaxMillisSeconds)
+                    {
+                        seconds = seconds + MaxMillisSeconds;
+                        WriteInt8((byte)(FlagMillisSeconds | (byte)((seconds >> 16) & 0x3f)));
+                        WriteInt16((short)(seconds & 0xffff));
+                        return;
+                    }
+                }
+
+                // Write milliseconds either because the additional precision is
+                // required or the minutes didn't fit in the field.
+
+                // Form 11 (64 bits effective precision, but write as if 70 bits)
+                WriteInt8(FlagMilliseconds);
+                WriteInt32(milliseconds);
+            }
+        }
+
         /// <summary>
         /// Writes the given dictionary of string to string to the stream.
         /// </summary>
@@ -196,7 +267,7 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("dictionary");
             }
-            WriteNumber(dictionary.Count);
+            this.WriteCount(dictionary.Count);
             foreach (var entry in dictionary)
             {
                 WriteString(entry.Key);
@@ -210,7 +281,25 @@ namespace NodaTime.TimeZones
         /// <param name="value">The offset to write.</param>
         public void WriteOffset(Offset value)
         {
-            WriteNumber(value.Milliseconds);
+            this.WriteMilliseconds(value.Milliseconds);
+        }
+
+        /// <summary>
+        /// Writes the offset value to the stream
+        /// </summary>
+        /// <param name="value">The offset to write.</param>
+        public void WriteInstant(Instant value)
+        {
+            this.WriteTicks(value.Ticks);
+        }
+
+        /// <summary>
+        /// Writes the offset value to the stream
+        /// </summary>
+        /// <param name="value">The offset to write.</param>
+        public void WriteLocalInstant(LocalInstant value)
+        {
+            this.WriteTicks(value.Ticks);
         }
 
         /// <summary>
@@ -231,7 +320,7 @@ namespace NodaTime.TimeZones
         /// negative numbers are likely, then <see cref="WriteIn32"/> should be used.
         /// </remarks>
         /// <param name="value">The value to write.</param>
-        public void WriteNumber(int value)
+        public void WriteCount(int value)
         {
             unchecked
             {
@@ -339,7 +428,7 @@ namespace NodaTime.TimeZones
         {
             byte[] data = Encoding.UTF8.GetBytes(value);
             int length = data.Length;
-            WriteNumber(length);
+            this.WriteCount(length);
             this.stream.Write(data, 0, data.Length);
         }
     }

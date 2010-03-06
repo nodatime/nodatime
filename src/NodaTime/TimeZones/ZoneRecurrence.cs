@@ -195,8 +195,8 @@ namespace NodaTime.TimeZones
             writer.WriteString(Name);
             writer.WriteOffset(Savings);
             YearOffset.Write(writer);
-            writer.WriteNumber(this.fromYear);
-            writer.WriteNumber(this.toYear);
+            writer.WriteCount(this.fromYear);
+            writer.WriteCount(this.toYear);
         }
 
         /// <summary>
@@ -213,8 +213,8 @@ namespace NodaTime.TimeZones
             string name = reader.ReadString();
             Offset savings = reader.ReadOffset();
             ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
-            int fromYear = reader.ReadNumber();
-            int toYear = reader.ReadNumber();
+            int fromYear = reader.ReadCount();
+            int toYear = reader.ReadCount();
             return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
         }
 

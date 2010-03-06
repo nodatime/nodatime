@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
 using System.Globalization;
 
@@ -31,7 +34,7 @@ namespace NodaTime
     /// as it goes around the world multiple times.
     /// </para>
     /// <para>
-    /// Internally, offsets are stored as an <see cref="Int32"/> number of milliseconds instead of
+    /// Internally, offsets are stored as an <see cref="int"/> number of milliseconds instead of
     /// as ticks. This is because as a description of the offset of a time zone from UTC, there is
     /// no offset of less than one second. Using milliseconds gives more than enough resolution and
     /// allows us to save 4 bytes per Offset.
@@ -43,6 +46,7 @@ namespace NodaTime
     public struct Offset
         : IEquatable<Offset>, IComparable<Offset>
     {
+        private const string MinimalFormat = "M";
         private const string ShortFormat = "S";
         private const string LongFormat = "L";
 
@@ -55,7 +59,10 @@ namespace NodaTime
         /// <summary>
         /// Gets the number of milliseconds in the offset.
         /// </summary>
-        public int Milliseconds { get { return milliseconds; } }
+        public int Milliseconds
+        {
+            get { return this.milliseconds; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Offset"/> struct.
@@ -78,7 +85,7 @@ namespace NodaTime
         /// <returns></returns>
         public static Offset FromTicks(long ticks)
         {
-            return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
+            return new Offset((int) (ticks / NodaConstants.TicksPerMillisecond));
         }
 
         /// <summary>
@@ -154,7 +161,7 @@ namespace NodaTime
         /// <returns>The number of ticks.</returns>
         public long AsTicks()
         {
-            return Milliseconds * NodaConstants.TicksPerMillisecond;
+            return this.Milliseconds * NodaConstants.TicksPerMillisecond;
         }
 
         #region Operators
@@ -283,7 +290,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Offset other)
         {
-            return Milliseconds == other.Milliseconds;
+            return this.Milliseconds == other.Milliseconds;
         }
 
         #endregion
@@ -318,7 +325,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Offset other)
         {
-            return Milliseconds.CompareTo(other.Milliseconds);
+            return this.Milliseconds.CompareTo(other.Milliseconds);
         }
 
         #endregion
@@ -337,7 +344,7 @@ namespace NodaTime
         {
             if (obj is Offset)
             {
-                return Equals((Offset)obj);
+                return this.Equals((Offset) obj);
             }
             return false;
         }
@@ -351,7 +358,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return Milliseconds.GetHashCode();
+            return this.Milliseconds.GetHashCode();
         }
 
         /// <summary>
@@ -362,7 +369,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return ToString(ShortFormat);
+            return this.ToString(MinimalFormat);
         }
 
         /// <summary>
@@ -376,41 +383,64 @@ namespace NodaTime
         {
             if (format == ShortFormat)
             {
-                return Format(false);
+                return this.Format(FormatType.FormatLong);
             }
             if (format == LongFormat)
             {
-                return Format(true);
+                return this.Format(FormatType.FormatShort);
             }
-            throw new ArgumentOutOfRangeException("format", format, "The format parameter is not valid: " + format);
+            if (format == MinimalFormat)
+            {
+                return this.Format(FormatType.FormatMinimal);
+            }
+            throw new ArgumentOutOfRangeException("format", format, @"The format parameter is not valid: " + format);
+        }
+        #endregion  // Object overrides
+
+        #region Format utilities
+
+        private enum FormatType
+        {
+            FormatLong,
+            FormatShort,
+            FormatMinimal
         }
 
         /// <summary>
-        /// Returns a string formatted version of this offset. The trailing milliseconds and seconds
-        /// are omitted if they are zero unless the <paramref name="forceAll"/> flag is set.
+        /// Returns a string formatted version of this offset.
         /// </summary>
-        /// <param name="forceAll">if set to <c>true</c> if all of the fields should be shown reguardless.</param>
+        /// <param name="formatType">Determines how much of the offset is forced to display.</param>
         /// <returns></returns>
-        private string Format(bool forceAll)
+        private string Format(FormatType formatType)
         {
-            bool negative = Milliseconds < 0;
-            int millisecondsValue = negative ? -Milliseconds : Milliseconds;
+            bool negative = this.Milliseconds < 0;
+            int millisecondsValue = negative ? -this.Milliseconds : this.Milliseconds;
             int hours = millisecondsValue / NodaConstants.MillisecondsPerHour;
             int minutes = (millisecondsValue % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
-            int seconds = (millisecondsValue % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
+            int seconds = (millisecondsValue % NodaConstants.MillisecondsPerMinute) /
+                          NodaConstants.MillisecondsPerSecond;
             millisecondsValue = millisecondsValue % NodaConstants.MillisecondsPerSecond;
             string sign = negative ? "-" : "+";
-            if (forceAll || millisecondsValue != 0)
+            string pattern;
+            if (formatType == FormatType.FormatLong || millisecondsValue != 0)
             {
-                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}:{3:D2}.{4:D3}", sign, hours, minutes, seconds, millisecondsValue);
+                pattern = @"{0}{1:D}:{2:D2}:{3:D2}.{4:D3}";
             }
-            if (seconds != 0)
+            else if (seconds != 0)
             {
-                return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}:{3:D2}", sign, hours, minutes, seconds);
+                pattern = @"{0}{1:D}:{2:D2}:{3:D2}";
             }
-            return string.Format(CultureInfo.InvariantCulture, "{0}{1:D}:{2:D2}", sign, hours, minutes);
+            else if (formatType == FormatType.FormatShort || minutes != 0)
+            {
+                pattern = @"{0}{1:D}:{2:D2}";
+            }
+            else
+            {
+                pattern = @"{0}{1:D}";
+            }
+            return string.Format(CultureInfo.InvariantCulture, pattern, sign, hours, minutes, seconds, millisecondsValue);
         }
 
-        #endregion  // Object overrides
+        #endregion // Format utilities
     }
 }

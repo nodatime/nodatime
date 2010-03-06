@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,11 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
@@ -26,29 +25,65 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class CachedDateTimeZoneTest
     {
-        // PreviousTransition is tricky, as the Info for a period may be wrong for the first
-        // tick (or for all other ones, if you're not careful)
-        [Test]
-        public void PreviousTransition_SucceedsOnTransitionPoint()
+        #region Setup/Teardown
+
+        [SetUp]
+        public void Setup()
         {
-            var cached = DateTimeZones.ForId("Europe/Paris");
-            var uncached = cached.Uncached();
+            this.timeZone = DateTimeZones.ForId("America/Los_Angeles") as CachedDateTimeZone;
+            if (this.timeZone == null)
             Instant summer = Instant.FromUtc(2010, 6, 1, 0, 0);
-            Instant nextTransitionTick = uncached.NextTransition(summer).Value.Instant;
-            Assert.AreEqual(uncached.PreviousTransition(nextTransitionTick),
-                cached.PreviousTransition(nextTransitionTick));
+                Assert.Fail(@"The America/Los_Angeles time zone does not contain a CachedDateTimeZone.");
+            }
+            this.summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+        }
+
+        #endregion
+
+        private CachedDateTimeZone timeZone;
+        private Instant summer;
+
+        [Test]
+        public void GetZoneIntervalInstant_NotNull()
+        {
+            var actual = this.timeZone.GetZoneInterval(this.summer);
+            Assert.IsNotNull(actual);
         }
 
         [Test]
-        public void PreviousTransition_SucceedsOffTransitionPoint()
+        public void GetZoneIntervalInstant_RepeatedCallsReturnDifferentObject()
         {
-            // This fails with naive caching
-            var cached = DateTimeZones.ForId("Europe/Paris");
-            var uncached = cached.Uncached();
-            Instant summer = Instant.FromUtc(2010, 6, 1, 0, 0);
-            Instant nextTransitionTick = uncached.NextTransition(summer).Value.Instant;
-            Assert.AreEqual(uncached.PreviousTransition(nextTransitionTick + Duration.One),
-                cached.PreviousTransition(nextTransitionTick + Duration.One));
+            var actual = this.timeZone.GetZoneInterval(Instant.UnixEpoch);
+            for (int i = 0; i < CachedDateTimeZone.CachedUsingMruList.CacheSize + 1; i++)
+            {
+                var instant = Instant.UnixEpoch + Duration.StandardWeeks(52 * (i + 1));
+                Assert.IsNotNull(this.timeZone.GetZoneInterval(instant));
+            }
+            var newPeriod = this.timeZone.GetZoneInterval(this.summer);
+            Assert.AreNotSame(actual, newPeriod);
+        }
+
+        [Test]
+        public void GetZoneIntervalInstant_RepeatedCallsReturnSameObject()
+        {
+            var actual = this.timeZone.GetZoneInterval(this.summer);
+            for (int i = 0; i < 100; i++)
+            {
+                var newPeriod = this.timeZone.GetZoneInterval(this.summer);
+                Assert.AreSame(actual, newPeriod);
+            }
+        }
+
+        [Test]
+        public void GetZoneIntervalInstant_RepeatedCallsReturnSameObjectWithOthersInterspersed()
+        {
+            var actual = this.timeZone.GetZoneInterval(this.summer);
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch));
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.StandardWeeks(2000)));
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.StandardWeeks(3000)));
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.StandardWeeks(4000)));
+            var newPeriod = this.timeZone.GetZoneInterval(this.summer);
+            Assert.AreSame(actual, newPeriod);
         }
     }
 }

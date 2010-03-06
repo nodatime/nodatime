@@ -37,7 +37,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider"/> class.
         /// </summary>
-        /// <param name="baseName">Name of the base.</param>
+        /// <param name="baseName">GetName of the base.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static WindowsToPosixResource()
         {
