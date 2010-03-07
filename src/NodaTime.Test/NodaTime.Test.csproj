@@ -77,6 +77,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChronologyTest.cs" />
+    <Compile Include="Format\DateTimeFormatterTest.cs" />
+    <Compile Include="Format\DateTimeFormatterTest.Construction.cs">
+      <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Format\DateTimeFormatterTest.CreationMehods.cs">
+       <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Format\DateTimeFormatterTest.Mocks.cs">
+      <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Format\IsoDateTimeFormatsTest.Parse.cs" />
     <Compile Include="Format\IsoDateTimeFormatsTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
