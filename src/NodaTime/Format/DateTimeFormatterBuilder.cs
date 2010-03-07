@@ -810,7 +810,7 @@ namespace NodaTime.Format
 
             public int ParseInto(DateTimeParserBucket bucket, string text, int position)
             {
-                IDateTimeField field = fieldType.GetField(bucket.Chronology.Calendar);
+                IDateTimeField field = fieldType.GetField(bucket.CalendarSystem);
 
                 int limit = Math.Min(maxDigits, text.Length - position);
 
