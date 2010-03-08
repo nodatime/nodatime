@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Text;
 using NodaTime.Calendars;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Format
 {
@@ -34,6 +35,7 @@ namespace NodaTime.Format
         private readonly IDateTimePrinter printer;
         // The internal parser used to output the datetime.
         private readonly IDateTimeParser parser;
+
         // The locale to use for printing and parsing.
         private readonly IFormatProvider provider;
         // Whether the offset is parsed.
@@ -295,6 +297,43 @@ namespace NodaTime.Format
 
         #endregion
 
+        #region Parsing
+
+        public ZonedDateTime Parse(string text)
+        {
+            VerifyParser();
+
+            var calendarSystem = SelectCalendarSystem();
+            var bucket = new DateTimeParserBucket(LocalInstant.LocalUnixEpoch, calendarSystem, provider);
+
+
+            int newPos = Parser.ParseInto(bucket, text, 0);
+            if (newPos >= 0)
+            {
+                if (newPos >= text.Length)
+                {
+                    Instant instant = bucket.Compute(true, text);
+                    var chronology = new Chronology(SelectZone(), calendarSystem);
+
+                    //if (offsetParsed && bucket.Chronology.Zone == null)
+                    //{
+                    //    Offset parsedOffset = bucket.Offset;
+                    //    IDateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+                    //    chrono = chrono.withZone(parsedZone);
+                    //}
+                    return new ZonedDateTime(instant, chronology);
+                }
+            }
+            else
+            {
+                newPos = ~newPos;
+            }
+
+            throw new ArgumentException(FormatUtils.CreateErrorMessage(text, newPos));
+        }
+
+        #endregion
+
         private void VerifyPrinter()
         {
             if (printer == null)
@@ -313,12 +352,22 @@ namespace NodaTime.Format
 
         private ICalendarSystem SelectCalendarSystem(ZonedDateTime dateTime)
         {
-            return calendarSystem == null ? dateTime.Chronology.Calendar : calendarSystem;
+            return calendarSystem ?? dateTime.Chronology.Calendar ?? IsoCalendarSystem.Instance;
+        }
+
+        private ICalendarSystem SelectCalendarSystem()
+        {
+            return calendarSystem ?? IsoCalendarSystem.Instance;
         }
 
         private IDateTimeZone SelectZone(ZonedDateTime dateTime)
         {
-            return zone == null ? dateTime.Zone : zone;
+            return zone ?? dateTime.Zone ?? DateTimeZones.Utc;
+        }
+
+        private IDateTimeZone SelectZone()
+        {
+            return zone ?? DateTimeZones.Utc;
         }
     }
 }

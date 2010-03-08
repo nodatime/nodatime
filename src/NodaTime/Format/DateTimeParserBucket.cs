@@ -14,9 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using NodaTime.Fields;
+
 using System;
+using NodaTime.Fields;
 using NodaTime.Calendars;
+
 namespace NodaTime.Format
 {
     /// <summary>
@@ -48,7 +50,7 @@ namespace NodaTime.Format
     /// </remarks>
     public class DateTimeParserBucket
     {
-        private class SavedField
+        private class SavedField:IComparable<SavedField>
         {
             private readonly IDateTimeField field;
             private readonly int value;
@@ -81,9 +83,46 @@ namespace NodaTime.Format
                 return instant;
             }
 
+            public int CompareTo(SavedField other)
+            {
+                if (other == null)
+                {
+                    return 1;
+                }
+
+                IDateTimeField otherField = other.field;
+                int result = CompareReverse(field.RangeDurationField, otherField.RangeDurationField);
+
+                if (result != 0)
+                {
+                    return result;
+                }
+                else
+                {
+                    return CompareReverse(field.DurationField, otherField.DurationField);
+                }
+            }
+
+            private int CompareReverse(DurationField a, DurationField b)
+            {
+                if (a == null || !a.IsSupported)
+                {
+                    if (b == null || !b.IsSupported)
+                    {
+                        return 0;
+                    }
+                    return -1;
+                }
+                if (b == null || !b.IsSupported)
+                {
+                    return 1;
+                }
+                return -a.CompareTo(b);
+            }
+
         }
 
-        private readonly Chronology chronology;
+        private readonly ICalendarSystem calendarSystem;
         private Offset offset;
         private IDateTimeZone zone;
         private readonly LocalInstant instant;
@@ -101,18 +140,18 @@ namespace NodaTime.Format
         /// two-digit year parsing.
         /// </summary>
         /// <param name="instant">The initial local instant</param>
-        /// <param name="chronology">The chronology to use</param>
+        /// <param name="calendarSystem">The calendar system to use</param>
         /// <param name="provider">The format provider to use</param>
         /// <param name="pivotYear">The pivot year to use when parsing two-digit years</param>
-        public DateTimeParserBucket(LocalInstant instant, Chronology chronology, IFormatProvider provider, int? pivotYear)
+        public DateTimeParserBucket(LocalInstant instant, ICalendarSystem calendarSystem, IFormatProvider provider, int? pivotYear)
         {
-            if (chronology == null)
+            if (calendarSystem == null)
             {
-                throw new ArgumentNullException("chronology");
+                throw new ArgumentNullException("calendarSystem");
             }
 
             this.instant = instant;
-            this.chronology = chronology;
+            this.calendarSystem = calendarSystem;
             this.provider = provider;
             this.pivotYear = pivotYear;
         }
@@ -121,17 +160,17 @@ namespace NodaTime.Format
         /// Initializes a bucket.
         /// </summary>
         /// <param name="instant">The initial local instant</param>
-        /// <param name="chronology">The chronology to use</param>
+        /// <param name="calendarSystem">The calendar system to use</param>
         /// <param name="provider">The format provider to use</param>
-        public DateTimeParserBucket(LocalInstant instant, Chronology chronology, IFormatProvider provider)
-            :this(instant, chronology, provider, null)
+        public DateTimeParserBucket(LocalInstant instant, ICalendarSystem calendarSystem, IFormatProvider provider)
+            :this(instant, calendarSystem, provider, null)
         {
         }
 
         /// <summary>
-        /// Gets the chronology of the bucket
+        /// Gets the calendar system of the bucket
         /// </summary>
-        public Chronology Chronology { get { return chronology; } }
+        public ICalendarSystem CalendarSystem { get { return calendarSystem; } }
 
         /// <summary>
         /// Gets the format provider to be used during parsing.
@@ -175,7 +214,7 @@ namespace NodaTime.Format
         /// <param name="value">The value</param>
         public void SaveField(DateTimeFieldType fieldType, int value)
         {
-            SaveField(new SavedField(fieldType.GetField(chronology.Calendar), value));
+            SaveField(new SavedField(fieldType.GetField(calendarSystem), value));
         }
 
         /// <summary>
@@ -186,7 +225,7 @@ namespace NodaTime.Format
         /// <param name="provider">The format provider to use</param>
         public void SaveField(DateTimeFieldType fieldType, string text, IFormatProvider provider)
         {
-            SaveField(new SavedField(fieldType.GetField(chronology.Calendar), text, provider));
+            SaveField(new SavedField(fieldType.GetField(calendarSystem), text, provider));
         }
 
         private void SaveField(SavedField field)
@@ -218,6 +257,60 @@ namespace NodaTime.Format
         public bool RestoreState(Object state)
         {
             return true;
+        }
+
+        public Instant Compute(bool resetField, string text)
+        {
+            var savedFieldsLocal = savedFields;
+            var savedFieldCountLocal = savedFieldsCount;
+
+            if (savedFieldsShared)
+            {
+                savedFieldsLocal = savedFields = (SavedField[])savedFields.Clone();
+                savedFieldsShared = false;
+            }
+
+            Array.Sort(savedFieldsLocal,0, savedFieldCountLocal);
+
+            LocalInstant instant = this.instant;
+            try
+            {
+                for (int i = 0; i < savedFieldCountLocal; i++)
+                {
+                    instant = savedFields[i].Set(instant, resetField);
+                }
+            }
+            catch (FieldValueException e)
+            {
+                if (text != null)
+                {
+                    e.PrependMessage("Cannot parse \"" + text + '"');
+                }
+                throw e;
+            }
+
+            Instant result;
+            if (zone == null)
+            {
+                result = instant - offset;
+            }
+            else
+            {
+                Offset offset = zone.GetOffsetFromLocal(instant);
+                result = instant - offset;
+                if (offset != zone.GetOffsetFromUtc(result))
+                {
+                    String message =
+                        "Illegal instant due to time zone offset transition (" + zone + ')';
+                    if (text != null)
+                    {
+                        message = "Cannot parse \"" + text + "\": " + message;
+                    }
+                    throw new ArgumentException(message);
+                }
+            }
+
+            return result;
         }
     }
 }
