@@ -27,7 +27,7 @@ namespace NodaTime.Fields
     /// Note: Can't easily copy the tests for this until we've got a real DurationField.
     /// Note: The fact that this is an abstract class and IDateTimeField is an interface is slightly irksome. Suggestions welcome.
     /// </summary>
-    public abstract class DurationField
+    public abstract class DurationField:IComparable<DurationField>
     {
         /// <summary>
         /// Get the type of the field.
@@ -212,6 +212,16 @@ namespace NodaTime.Fields
         public override string ToString()
         {
             return FieldType.ToString();
+        }
+
+        public int CompareTo(DurationField other)
+        {
+            // cannot do (thisMillis - otherMillis) as can overflow
+
+            long otherMillis = other.UnitTicks;
+            long thisMillis = UnitTicks;
+
+            return thisMillis == otherMillis ? 0 : thisMillis < otherMillis ? -1 : 1;
         }
     }
 }

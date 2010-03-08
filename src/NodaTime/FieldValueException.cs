@@ -117,5 +117,17 @@ namespace NodaTime
 
             return sb.ToString();
         }
+
+        public void PrependMessage(String message)
+        {
+            //if (this.Message == null)
+            //{
+            //    this.Message = message;
+            //}
+            //else if (this.Message != null)
+            //{
+            //    this.Message = this.Message + ": " + message;
+            //}
+        }
     }
 }
