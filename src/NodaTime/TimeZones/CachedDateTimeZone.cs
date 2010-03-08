@@ -210,9 +210,7 @@ namespace NodaTime.TimeZones
             /// <returns>The period added.</returns>
             private ZoneInterval AddNode(MruCacheNode last, ZoneInterval period)
             {
-                var newNode = new MruCacheNode(period);
-                newNode.Next = this.head;
-                this.head = newNode;
+                this.head = new MruCacheNode(period, this.head);
                 if (last != null)
                 {
                     last.Next = null;
@@ -266,9 +264,11 @@ namespace NodaTime.TimeZones
                 /// Initializes a new instance of the <see cref="MruCacheNode"/> class.
                 /// </summary>
                 /// <param name="period">The period contained in this node.</param>
-                public MruCacheNode(ZoneInterval period)
+                /// <param name="next"></param>
+                public MruCacheNode(ZoneInterval period, MruCacheNode next)
                 {
                     this.period = period;
+                    Next = next;
                 }
 
                 /// <summary>

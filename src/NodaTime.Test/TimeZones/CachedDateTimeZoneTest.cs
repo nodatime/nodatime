@@ -32,10 +32,10 @@ namespace NodaTime.Test.TimeZones
         {
             this.timeZone = DateTimeZones.ForId("America/Los_Angeles") as CachedDateTimeZone;
             if (this.timeZone == null)
-            Instant summer = Instant.FromUtc(2010, 6, 1, 0, 0);
+            {
                 Assert.Fail(@"The America/Los_Angeles time zone does not contain a CachedDateTimeZone.");
             }
-            this.summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+            this.summer = Instant.FromUtc(2010, 6, 1, 0, 0);
         }
 
         #endregion
