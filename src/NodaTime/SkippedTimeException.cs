@@ -49,18 +49,11 @@ namespace NodaTime
         /// </summary>
         public IDateTimeZone Zone { get { return zone; } }
 
-        private readonly Instant transition;
-        /// <summary>
-        /// The daylight saving transition causing the failure
-        /// </summary>
-        public Instant Transition { get { return transition; } }
-
-        public SkippedTimeException(LocalInstant localInstant, IDateTimeZone zone, Instant transition)
+        public SkippedTimeException(LocalInstant localInstant, IDateTimeZone zone)
             : base("Local time " + localInstant + " is invalid in time zone " + zone.Id)
         {
             this.localInstant = localInstant;
             this.zone = zone;
-            this.transition = transition;
         }
     }
 }
