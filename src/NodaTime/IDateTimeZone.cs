@@ -61,7 +61,7 @@ namespace NodaTime
         Offset GetOffsetFromLocal(LocalInstant localInstant);
 
         /// <summary>
-        /// Gets the zone interval for the given instant. Null is returned if no intervval is
+        /// Gets the zone interval for the given instant. Null is returned if no interval is
         /// defined by the time zone for the given instant.
         /// </summary>
         /// <param name="instant">The Instant to query.</param>
@@ -69,7 +69,7 @@ namespace NodaTime
         ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
-        /// Gets the zone interval for the given local instant. Null is returned if no intervval is
+        /// Gets the zone interval for the given local instant. Null is returned if no interval is
         /// defined by the time zone for the given local instant.
         /// </summary>
         /// <param name="localInstant">The <see cref="LocalInstant"/> to query.</param>

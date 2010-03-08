@@ -200,7 +200,7 @@ namespace NodaTime.TimeZones
                 {
                     instant = previous.Value.Instant;
                 }
-                throw new SkippedTimeException(localInstant, this, instant);
+                throw new SkippedTimeException(localInstant, this);
             }
             return this.GetZoneInterval(normal);
         }

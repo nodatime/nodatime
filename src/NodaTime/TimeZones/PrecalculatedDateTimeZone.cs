@@ -85,13 +85,13 @@ namespace NodaTime.TimeZones
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
             int last = this.periods.Length - 1;
-            if (this.periods[last].End < instant)
+            if (this.periods[last].End <= instant)
             {
                 return this.tailZone.GetZoneInterval(instant);
             }
             for (var p = last; p >= 0; p--)
             {
-                if (this.periods[last].End < instant)
+                if (this.periods[p].End <= instant)
                 {
                     break;
                 }
@@ -112,13 +112,13 @@ namespace NodaTime.TimeZones
         public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             int last = this.periods.Length - 1;
-            if (this.periods[last].LocalEnd < localInstant)
+            if (this.periods[last].LocalEnd <= localInstant)
             {
                 return this.tailZone.GetZoneInterval(localInstant);
             }
             for (var p = last; p >= 0; p--)
             {
-                if (this.periods[last].LocalEnd < localInstant)
+                if (this.periods[p].LocalEnd <= localInstant)
                 {
                     break;
                 }

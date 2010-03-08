@@ -54,7 +54,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervalInstant_RepeatedCallsReturnDifferentObject()
         {
             var actual = this.timeZone.GetZoneInterval(Instant.UnixEpoch);
-            for (int i = 0; i < CachedDateTimeZone.CachedUsingMruList.CacheSize + 1; i++)
+            for (int i = 0; i < this.timeZone.CacheSize + 1; i++)
             {
                 var instant = Instant.UnixEpoch + Duration.StandardWeeks(52 * (i + 1));
                 Assert.IsNotNull(this.timeZone.GetZoneInterval(instant));
