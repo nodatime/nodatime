@@ -37,12 +37,6 @@ namespace NodaTime.Test.TimeZones
         // Make sure we deal with the uncached time zone
         private static readonly IDateTimeZone Paris = DateTimeZones.ForId("Europe/Paris").Uncached();
 
-            (Instant.FromUtc(2009, 10, 25, 1, 0), DaylightOffset, StandardOffset);
-            (Instant.FromUtc(2010, 3, 28, 1, 0), StandardOffset, DaylightOffset);
-            (Instant.FromUtc(2010, 10, 31, 1, 0), DaylightOffset, StandardOffset);
-            (Instant.FromUtc(2011, 3, 27, 1, 0), StandardOffset, DaylightOffset);
-        private static readonly Instant Summer2010 = Instant.FromUtc(2010, 6, 19, 0, 0);
-        private static readonly Instant Winter2010 = Instant.FromUtc(2010, 12, 1, 0, 0);
         // Until 1911, Paris was 9 minutes and 21 seconds off UTC.
         private static readonly Offset InitialOffset = Offset.Create(0, 9, 21);
 
@@ -50,8 +44,8 @@ namespace NodaTime.Test.TimeZones
         public void FirstTransitions()
         {
             // Paris had a name change in 1891, and then moved from +0:09:21 to UTC in 1911
-            var nameChangeInstant = new ZonedDateTime(1891, 3, 14, 23, 51, 39, DateTimeZones.Utc).ToInstant();
-            var utcChangeInstant = new ZonedDateTime(1911, 3, 10, 23, 51, 39, DateTimeZones.Utc).ToInstant();
+            var nameChangeInstant = Instant.FromUtc(1891, 3, 14, 23, 51, 39);
+            var utcChangeInstant = Instant.FromUtc(1911, 3, 10, 23, 51, 39);
 
             var beforeNameChange = Paris.GetZoneInterval(nameChangeInstant - Duration.One);
             var afterNameChange = Paris.GetZoneInterval(nameChangeInstant);
