@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,9 +14,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#endregion
 
-using System;
+#endregion
 
 namespace NodaTime.TimeZones
 {
@@ -86,57 +86,6 @@ namespace NodaTime.TimeZones
         {
             var period = this.GetZoneInterval(localInstant);
             return period.Offset;
-#if false
-            // TODO: Try to find offsets less frequently
-
-            // Find an instant somewhere near the right time by assuming UTC temporarily
-            var instant = new Instant(localInstant.Ticks);
-
-            // Find the offset at that instant
-            var candidateOffset1 = GetOffsetFromUtc(instant);
-
-            // Adjust localInstant using the estimate, as a guess
-            // at the real UTC instant for the local time
-            var candidateInstant1 = localInstant - candidateOffset1;
-            // Now find the offset at that candidate instant
-            var candidateOffset2 = GetOffsetFromUtc(candidateInstant1);
-
-            // If the offsets are the same, we need to check for ambiguous
-            // local times.
-            if (candidateOffset1 == candidateOffset2)
-            {
-                // It doesn't matter whether we use instant or candidateInstant1;
-                // both are the same side of the next transition (as they have the same offset)
-                var nextTransition = NextTransition(candidateInstant1);
-                if (nextTransition == null)
-                {
-                    // No more transitions, so we must be okay
-                    return candidateOffset1;
-                }
-                // Try to apply the offset for the later transition to
-                // the local time we were originally given. If the result is
-                // after the transition, then it's the correct offset - it means
-                // the local time is ambiguous and we want to return the offset
-                // leading to the later UTC instant.
-                var candidateInstant2 = localInstant - nextTransition.Value.NewOffset;
-                return (candidateInstant2 >= nextTransition.Value.Instant) ? nextTransition.Value.NewOffset : candidateOffset1;
-            }
-            else
-            {
-                // We know that candidateOffset1 doesn't work from the localInstant;
-                // try candidateOffset2 instead. If that works, then all is well,
-                // and we've just coped with with a DST transition between
-                // instant and candidateInstant1. If it doesn't, we've been
-                // given an invalid local time.
-                var candidateInstant2 = localInstant - candidateOffset2;
-                if (GetOffsetFromUtc(candidateInstant2) == candidateOffset2)
-                {
-                    return candidateOffset2;
-                }
-                var laterInstant = candidateInstant1 > candidateInstant2 ? candidateInstant1 : candidateInstant2;
-                throw new SkippedTimeException(localInstant, this, PreviousTransition(laterInstant).Value.Instant);
-            }
-#endif
         }
 
         /// <summary>
@@ -161,12 +110,18 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// The database ID for the time zone.
         /// </summary>
-        public string Id { get { return id; } }
+        public string Id
+        {
+            get { return id; }
+        }
 
         /// <summary>
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
-        public bool IsFixed { get { return isFixed; } }
+        public bool IsFixed
+        {
+            get { return isFixed; }
+        }
 
         #endregion
 

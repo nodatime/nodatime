@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +14,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using NodaTime.Calendars;
 
@@ -35,22 +39,42 @@ namespace NodaTime.TimeZones
         // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
         // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the
         // future, then it won't be observed.
-        private static readonly int yearLimit = IsoCalendarSystem.Instance.Fields.Year.GetValue(LocalInstant.Now) + 100;
-
-        internal Offset StandardOffset { get; set; }
+        private static readonly int YearLimit = IsoCalendarSystem.Instance.Fields.Year.GetValue(LocalInstant.Now) + 100;
 
         private readonly List<ZoneRecurrence> rules = new List<ZoneRecurrence>();
         private string initialNameKey;
         private Offset initialSavings;
         private int upperYear = Int32.MaxValue;
         private ZoneYearOffset upperYearOffset;
+        internal Offset StandardOffset { private get; set; }
+
+        #region IEnumerable<ZoneRecurrence> Members
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZoneRecurrenceCollection"/> class.
+        /// Returns an enumerator that iterates through the collection.
         /// </summary>
-        public ZoneRecurrenceCollection()
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate
+        /// through the collection.
+        /// </returns>
+        public IEnumerator<ZoneRecurrence> GetEnumerator()
         {
+            return this.rules.GetEnumerator();
         }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate
+        /// through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.rules.GetEnumerator();
+        }
+
+        #endregion
 
         /// <summary>
         /// Sets the fixed savings for this rule set.
@@ -90,8 +114,8 @@ namespace NodaTime.TimeZones
         /// Gets the inclusive upper limit of time that this rule set applies to.
         /// </summary>
         /// <param name="savings">The daylight savings value.</param>
-        /// <returns>The <see cref="LocaolInstant"/> of the upper limit for this rule set.</returns>
-        internal Instant getUpperLimit(Offset savings)
+        /// <returns>The <see cref="LocalInstant"/> of the upper limit for this rule set.</returns>
+        internal Instant GetUpperLimit(Offset savings)
         {
             if (upperYear == Int32.MaxValue)
             {
@@ -109,6 +133,8 @@ namespace NodaTime.TimeZones
         {
             return new TransitionIterator(this, startingInstant);
         }
+
+        #region Nested type: TransitionIterator
 
         /// <summary>
         /// Iterates through all of the time transitions starting with the given instant using the
@@ -145,15 +171,13 @@ namespace NodaTime.TimeZones
         /// </remarks>
         internal class TransitionIterator
         {
-            private readonly ZoneRecurrenceCollection ruleSet;
             private readonly ICalendarSystem calendar;
+            private readonly ZoneRecurrenceCollection ruleSet;
             private readonly Instant startingInstant;
+            private Instant instant;
 
             private List<ZoneRecurrence> rules;
             private Offset savings;
-            private Instant instant;
-
-            internal Offset Savings { get { return this.savings; } }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="TransitionIterator"/> class.
@@ -165,6 +189,11 @@ namespace NodaTime.TimeZones
                 this.calendar = IsoCalendarSystem.Instance;
                 this.ruleSet = ruleSet;
                 this.startingInstant = startingInstant;
+            }
+
+            internal Offset Savings
+            {
+                get { return this.savings; }
             }
 
             /// <summary>
@@ -224,7 +253,8 @@ namespace NodaTime.TimeZones
                 if (this.ruleSet.initialNameKey != null)
                 {
                     // Initial zone info explicitly set, so don't search the rules.
-                    return new ZoneTransition(this.startingInstant, this.ruleSet.initialNameKey, this.ruleSet.StandardOffset, this.ruleSet.initialSavings);
+                    return new ZoneTransition(this.startingInstant, this.ruleSet.initialNameKey,
+                                              this.ruleSet.StandardOffset, this.ruleSet.initialSavings);
                 }
 
                 // Make a copy before we destroy the rules.
@@ -256,7 +286,8 @@ namespace NodaTime.TimeZones
                             {
                                 if (rule.Savings == Offset.Zero)
                                 {
-                                    firstTransition = new ZoneTransition(this.startingInstant, rule.Name, this.ruleSet.StandardOffset, Offset.Zero);
+                                    firstTransition = new ZoneTransition(this.startingInstant, rule.Name,
+                                                                         this.ruleSet.StandardOffset, Offset.Zero);
                                     break;
                                 }
                             }
@@ -265,14 +296,16 @@ namespace NodaTime.TimeZones
                         {
                             // Found no rule without savings. Create a transition with no savings
                             // anyhow, and use the best available name key.
-                            firstTransition = new ZoneTransition(this.startingInstant, next.Name, this.ruleSet.StandardOffset, Offset.Zero);
+                            firstTransition = new ZoneTransition(this.startingInstant, next.Name,
+                                                                 this.ruleSet.StandardOffset, Offset.Zero);
                         }
                         break;
                     }
 
                     // Set first to the best transition found so far, but next iteration may find
                     // something closer to lower limit.
-                    firstTransition = new ZoneTransition(this.startingInstant, next.Name, next.StandardOffset, next.Savings);
+                    firstTransition = new ZoneTransition(this.startingInstant, next.Name, next.StandardOffset,
+                                                         next.Savings);
                     savings = next.Savings;
                 }
                 // Restore rules
@@ -314,7 +347,7 @@ namespace NodaTime.TimeZones
 
                 // Stop precalculating if year reaches some arbitrary limit. We can cheat in the
                 // conversion because it is an approximation anyway.
-                if (calendar.Fields.Year.GetValue(nextTicks + Offset.Zero) >= yearLimit)
+                if (calendar.Fields.Year.GetValue(nextTicks + Offset.Zero) >= YearLimit)
                 {
                     return null;
                 }
@@ -322,7 +355,9 @@ namespace NodaTime.TimeZones
                 // Check if upper limit reached or passed.
                 if (this.ruleSet.upperYear < Int32.MaxValue)
                 {
-                    Instant upperMillis = this.ruleSet.upperYearOffset.MakeInstant(this.ruleSet.upperYear, this.ruleSet.StandardOffset, this.savings);
+                    Instant upperMillis = this.ruleSet.upperYearOffset.MakeInstant(this.ruleSet.upperYear,
+                                                                                   this.ruleSet.StandardOffset,
+                                                                                   this.savings);
                     if (nextTicks >= upperMillis)
                     {
                         // At or after upper limit.
@@ -344,36 +379,6 @@ namespace NodaTime.TimeZones
                     this.savings = transition.Savings;
                 }
             }
-        }
-
-        #region IEnumerable<ZoneRecurrence> Members
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate
-        /// through the collection.
-        /// </returns>
-        public IEnumerator<ZoneRecurrence> GetEnumerator()
-        {
-            return this.rules.GetEnumerator();
-        }
-
-        #endregion
-
-        #region IEnumerable Members
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate
-        /// through the collection.
-        /// </returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this.rules.GetEnumerator();
         }
 
         #endregion

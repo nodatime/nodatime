@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 
@@ -38,7 +41,7 @@ namespace NodaTime.TimeZones
     /// </para>
     /// <para>
     /// The majority of time zones will be provided by the <see
-    /// cref="DatetimeZoneResourceProvider"/> implementation which reads the time zones from an
+    /// cref="DateTimeZoneResourceProvider"/> implementation which reads the time zones from an
     /// internal set of precompiled resources built using the <see cref="ZoneInfoCompiler"/> tool.
     /// </para>
     /// </remarks>
@@ -49,18 +52,9 @@ namespace NodaTime.TimeZones
         /// </summary>
         public const string UtcId = "UTC";
 
-        private static readonly IDateTimeZone utc = new FixedDateTimeZone(Offset.Zero);
+        private static readonly IDateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
 
-        private readonly static Impl implementation = new Impl();
-
-        /// <summary>
-        /// Initializes the <see cref="DateTimeZones"/> class.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
-        static DateTimeZones()
-        {
-            implementation.AddStandardProvider();
-        }
+        private static readonly Impl Implementation = new Impl();
 
         /// <summary>
         /// Gets the system default time zone which can only be changed by the system.
@@ -78,27 +72,22 @@ namespace NodaTime.TimeZones
             get
             {
                 var systemName = TimeZone.CurrentTimeZone.StandardName;
-                string timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName);
+                var timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName);
                 if (timeZoneId == null)
                 {
                     timeZoneId = UtcId;
                 }
-                var timeZone = ForId(timeZoneId);
-                if (timeZone == null)
-                {
-                    timeZone = Utc;
-                }
-                return timeZone;
+                return ForId(timeZoneId) ?? Utc;
             }
         }
 
         /// <summary>
         /// Gets the UTC (Coordinated Univeral Time) time zone.
         /// </summary>
-        /// <value>The UTC <see cref="IDateTimezone"/>.</value>
+        /// <value>The UTC <see cref="IDateTimeZone"/>.</value>
         public static IDateTimeZone Utc
         {
-            get { return utc; }
+            get { return UtcZone; }
         }
 
         /// <summary>
@@ -112,8 +101,18 @@ namespace NodaTime.TimeZones
         /// <value>The current <see cref="IDateTimeZone"/>. This will never be <c>null</c>.</value>
         public static IDateTimeZone Current
         {
-            get { return implementation.Current; }
-            set { implementation.Current = value; }
+            get { return Implementation.DoCurrent; }
+            set { Implementation.DoCurrent = value; }
+        }
+
+        /// <summary>
+        /// Gets the complete list of valid time zone ids provided by all of the registered
+        /// providers. This list will be sorted in lexigraphical order by the id name.
+        /// </summary>
+        /// <value>The <see cref="IEnumerable{T}"/> of string ids.</value>
+        public static IEnumerable<string> Ids
+        {
+            get { return Implementation.DoIds; }
         }
 
         /// <summary>
@@ -128,7 +127,7 @@ namespace NodaTime.TimeZones
         /// <param name="provider">The <see cref="IDateTimeZoneProvider"/> to add.</param>
         public static void AddProvider(IDateTimeZoneProvider provider)
         {
-            implementation.AddProvider(provider);
+            Implementation.DoAddProvider(provider);
         }
 
         /// <summary>
@@ -141,17 +140,7 @@ namespace NodaTime.TimeZones
         /// <returns><c>true</c> if the provider was removed.</returns>
         public static bool RemoveProvider(IDateTimeZoneProvider provider)
         {
-            return implementation.RemoveProvider(provider);
-        }
-
-        /// <summary>
-        /// Gets the complete list of valid time zone ids provided by all of the registered
-        /// providers. This list will be sorted in lexigraphical order by the id name.
-        /// </summary>
-        /// <value>The <see cref="IEnumerable"/> of string ids.</value>
-        public static IEnumerable<string> Ids
-        {
-            get { return implementation.Ids; }
+            return Implementation.DoRemoveProvider(provider);
         }
 
         /// <summary>
@@ -161,27 +150,29 @@ namespace NodaTime.TimeZones
         /// <returns>The <see cref="IDateTimeZone"/> with the given id or <c>null</c> if there isn't one defined.</returns>
         public static IDateTimeZone ForId(string id)
         {
-            return implementation.ForId(id);
+            return Implementation.DoForId(id);
         }
+
+        #region Nested type: Impl
 
         /// <summary>
         /// Provides a standard object that implements the functionality of the static class <see
-        /// cref="DateTimeZones"/>. This makes testing simpler because all of the logic is here only
-        /// this class needs to be tested and it can use the standard testing methods.
+        /// cref="DateTimeZones"/>. This makes testing simpler because all of the logic is
+        /// here--only this class needs to be tested and it can use the standard testing methods.
         /// </summary>
-        internal class Impl
+        private class Impl
         {
-            private IDateTimeZone current;
-            private readonly LinkedList<IDateTimeZoneProvider> providers = new LinkedList<IDateTimeZoneProvider>();
             private readonly SortedDictionary<string, string> idList = new SortedDictionary<string, string>();
+            private readonly LinkedList<IDateTimeZoneProvider> providers = new LinkedList<IDateTimeZoneProvider>();
             private readonly IDictionary<string, IDateTimeZone> timeZoneMap = new Dictionary<string, IDateTimeZone>();
+            private IDateTimeZone current;
 
             /// <summary>
-            /// Adds the standard provider to the list of providers.
+            /// Initializes a new instance of the <see cref="Impl"/> class.
             /// </summary>
-            internal void AddStandardProvider()
+            public Impl()
             {
-                AddProvider(new DateTimeZoneResourceProvider("NodaTime.TimeZones.Tzdb"));
+                AddStandardProvider();
             }
 
             /// <summary>
@@ -193,65 +184,18 @@ namespace NodaTime.TimeZones
             /// cref="SystemDefault"/> time zone to be used.
             /// </remarks>
             /// <value>The current <see cref="IDateTimeZone"/>. This will never be <c>null</c>.</value>
-            internal IDateTimeZone Current
+            internal IDateTimeZone DoCurrent
             {
-                get
-                {
-                    if (this.current == null)
-                    {
-                        return SystemDefault;
-                    }
-                    return this.current;
-                }
+                get { return this.current ?? SystemDefault; }
                 set { this.current = value; }
-            }
-
-            /// <summary>
-            /// Adds the given time zone provider to the front of the provider list.
-            /// </summary>
-            /// <remarks>
-            /// Because this adds the new provider to the from of the list, it will be checked first for
-            /// time zone definitions and therefore can override the default system definitions. This
-            /// allows for adding new or replacing existing time zones without updating the system. If
-            /// the provider is already on the list nothing changes.
-            /// </remarks>
-            /// <param name="provider">The <see cref="IDateTimeZoneProvider"/> to add.</param>
-            internal void AddProvider(IDateTimeZoneProvider provider)
-            {
-                if (!this.providers.Contains(provider))
-                {
-                    this.providers.AddFirst(provider);
-                    this.timeZoneMap.Clear();
-                    this.idList.Clear();
-                }
-            }
-
-            /// <summary>
-            /// Removes the given time zone provider from the provider list.
-            /// </summary>
-            /// <remarks>
-            /// If the provider is not on the list nothing changes.
-            /// </remarks>
-            /// <param name="provider">The <see cref="IDateTimeZoneProvider"/> to remove.</param>
-            /// <returns><c>true</c> if the provider was removed.</returns>
-            internal bool RemoveProvider(IDateTimeZoneProvider provider)
-            {
-                if (this.providers.Contains(provider))
-                {
-                    this.providers.Remove(provider);
-                    this.timeZoneMap.Clear();
-                    this.idList.Clear();
-                    return true;
-                }
-                return false;
             }
 
             /// <summary>
             /// Gets the complete list of valid time zone ids provided by all of the registered
             /// providers. This list will be sorted in lexigraphical order by the id name.
             /// </summary>
-            /// <value>The <see cref="IEnumerable"/> of string ids.</value>
-            internal IEnumerable<string> Ids
+            /// <value>The <see cref="IEnumerable{T}"/> of string ids.</value>
+            internal IEnumerable<string> DoIds
             {
                 get
                 {
@@ -271,11 +215,59 @@ namespace NodaTime.TimeZones
             }
 
             /// <summary>
+            /// Adds the standard provider to the list of providers.
+            /// </summary>
+            private void AddStandardProvider()
+            {
+                DoAddProvider(new DateTimeZoneResourceProvider("NodaTime.TimeZones.Tzdb"));
+            }
+
+            /// <summary>
+            /// Adds the given time zone provider to the front of the provider list.
+            /// </summary>
+            /// <remarks>
+            /// Because this adds the new provider to the from of the list, it will be checked first for
+            /// time zone definitions and therefore can override the default system definitions. This
+            /// allows for adding new or replacing existing time zones without updating the system. If
+            /// the provider is already on the list nothing changes.
+            /// </remarks>
+            /// <param name="provider">The <see cref="IDateTimeZoneProvider"/> to add.</param>
+            internal void DoAddProvider(IDateTimeZoneProvider provider)
+            {
+                if (!this.providers.Contains(provider))
+                {
+                    this.providers.AddFirst(provider);
+                    this.timeZoneMap.Clear();
+                    this.idList.Clear();
+                }
+            }
+
+            /// <summary>
+            /// Removes the given time zone provider from the provider list.
+            /// </summary>
+            /// <remarks>
+            /// If the provider is not on the list nothing changes.
+            /// </remarks>
+            /// <param name="provider">The <see cref="IDateTimeZoneProvider"/> to remove.</param>
+            /// <returns><c>true</c> if the provider was removed.</returns>
+            internal bool DoRemoveProvider(IDateTimeZoneProvider provider)
+            {
+                if (this.providers.Contains(provider))
+                {
+                    this.providers.Remove(provider);
+                    this.timeZoneMap.Clear();
+                    this.idList.Clear();
+                    return true;
+                }
+                return false;
+            }
+
+            /// <summary>
             /// Returns the time zone with the given id.
             /// </summary>
             /// <param name="id">The time zone id to find.</param>
             /// <returns>The <see cref="IDateTimeZone"/> with the given id or <c>null</c> if there isn't one defined.</returns>
-            internal IDateTimeZone ForId(string id)
+            internal IDateTimeZone DoForId(string id)
             {
                 IDateTimeZone result = Utc;
                 if (id != UtcId)
@@ -296,5 +288,7 @@ namespace NodaTime.TimeZones
                 return result;
             }
         }
+
+        #endregion
     }
 }

@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,11 +14,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
-using NodaTime.Utility;
 using System.Text;
 using NodaTime.Calendars;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
@@ -38,18 +41,11 @@ namespace NodaTime.TimeZones
     public class ZoneRecurrence
         : IEquatable<ZoneRecurrence>
     {
-        public string Name { get { return this.name; } }
-        public Offset Savings { get { return this.savings; } }
-        public ZoneYearOffset YearOffset { get { return this.yearOffset; } }
-        public int FromYear { get { return this.fromYear; } }
-        public int ToYear { get { return this.toYear; } }
-        public bool IsInfinite { get { return ToYear == Int32.MaxValue; } }
-
-        private readonly string name;
-        private readonly ZoneYearOffset yearOffset;
-        private readonly Offset savings;
         private readonly int fromYear;
+        private readonly string name;
+        private readonly Offset savings;
         private readonly int toYear;
+        private readonly ZoneYearOffset yearOffset;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneRecurrence"/> class.
@@ -57,6 +53,8 @@ namespace NodaTime.TimeZones
         /// <param name="name">The name of the time zone period e.g. PST.</param>
         /// <param name="savings">The savings for this period.</param>
         /// <param name="yearOffset">The year offset of when this period starts in a year.</param>
+        /// <param name="fromYear"></param>
+        /// <param name="toYear"></param>
         public ZoneRecurrence(String name, Offset savings, ZoneYearOffset yearOffset, int fromYear, int toYear)
         {
             if (name == null)
@@ -73,6 +71,96 @@ namespace NodaTime.TimeZones
             this.fromYear = fromYear;
             this.toYear = toYear;
         }
+
+        public string Name
+        {
+            get { return this.name; }
+        }
+
+        public Offset Savings
+        {
+            get { return this.savings; }
+        }
+
+        public ZoneYearOffset YearOffset
+        {
+            get { return this.yearOffset; }
+        }
+
+        public int FromYear
+        {
+            get { return this.fromYear; }
+        }
+
+        public int ToYear
+        {
+            get { return this.toYear; }
+        }
+
+        public bool IsInfinite
+        {
+            get { return ToYear == Int32.MaxValue; }
+        }
+
+        #region IEquatable<ZoneRecurrence> Members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter;
+        /// otherwise, false.
+        /// </returns>
+        public bool Equals(ZoneRecurrence other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return
+                this.savings == other.savings &&
+                this.fromYear == other.fromYear &&
+                this.toYear == other.toYear &&
+                this.name == other.name &&
+                this.yearOffset == other.yearOffset;
+        }
+
+        #endregion
+
+        #region Operator overloads
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ZoneRecurrence left, ZoneRecurrence right)
+        {
+            if (ReferenceEquals(null, left))
+            {
+                return ReferenceEquals(null, right);
+            }
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ZoneRecurrence left, ZoneRecurrence right)
+        {
+            return !(left == right);
+        }
+
+        #endregion
 
         /// <summary>
         /// Returns the given instant adjusted one year forward taking into account leap years and other
@@ -94,15 +182,9 @@ namespace NodaTime.TimeZones
 
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year;
-            if (instant == Instant.MinValue)
-            {
-                year = Int32.MinValue;
-            }
-            else
-            {
-                year = calendar.Fields.Year.GetValue(instant + wallOffset);
-            }
+            int year = instant == Instant.MinValue
+                           ? Int32.MinValue
+                           : calendar.Fields.Year.GetValue(instant + wallOffset);
 
             if (year < this.fromYear)
             {
@@ -141,15 +223,9 @@ namespace NodaTime.TimeZones
 
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year;
-            if (instant == Instant.MaxValue)
-            {
-                year = Int32.MaxValue;
-            }
-            else
-            {
-                year = calendar.Fields.Year.GetValue(instant + wallOffset);
-            }
+            int year = instant == Instant.MaxValue
+                           ? Int32.MaxValue
+                           : calendar.Fields.Year.GetValue(instant + wallOffset);
 
             if (year > this.toYear)
             {
@@ -168,15 +244,15 @@ namespace NodaTime.TimeZones
                 }
             }
 
-            return new Transition(previous, wallOffset, standardOffset + Savings);;
+            return new Transition(previous, wallOffset, standardOffset + Savings);
         }
 
         /// <summary>
-        /// Returns a new <see cref="Recurrence"/> with the same settings and given suffix appended
+        /// Returns a new <see cref="ZoneRecurrence"/> with the same settings and given suffix appended
         /// to the original name. Used to created "-Summer" versions of conflicting recurrences.
         /// </summary>
-        /// <param name="appendNameKey">The append name key.</param>
-        /// <returns></returns>
+        /// <param name="suffix">The suffix to append to the name key.</param>
+        /// <returns>The newly created <see cref="ZoneRecurrence"/> with the new name.</returns>
         internal ZoneRecurrence RenameAppend(String suffix)
         {
             if (suffix == null)
@@ -233,12 +309,7 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            ZoneRecurrence recurrence = obj as ZoneRecurrence;
-            if (recurrence != null)
-            {
-                return Equals(recurrence);
-            }
-            return false;
+            return Equals(obj as ZoneRecurrence);
         }
 
         /// <summary>
@@ -265,7 +336,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append(Name);
             builder.Append(" ").Append(Savings);
             builder.Append(" ").Append(YearOffset);
@@ -274,60 +345,5 @@ namespace NodaTime.TimeZones
         }
 
         #endregion // Object overrides
-
-        #region IEquatable<ZoneRecurrence> Members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter;
-        /// otherwise, false.
-        /// </returns>
-        public bool Equals(ZoneRecurrence other)
-        {
-            if (other == null) {
-                return false;
-            }
-            return
-                this.savings == other.savings &&
-                this.fromYear == other.fromYear &&
-                this.toYear == other.toYear &&
-                this.name == other.name &&
-                this.yearOffset == other.yearOffset;
-        }
-
-        #endregion
-
-        #region Operator overloads
-
-        /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ZoneRecurrence left, ZoneRecurrence right)
-        {
-            if ((object)left == null || (object)right == null)
-            {
-                return (object)left == (object)right;
-            }
-            return left.Equals(right);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ZoneRecurrence left, ZoneRecurrence right)
-        {
-            return !(left == right);
-        }
-
-        #endregion
     }
 }

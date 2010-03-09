@@ -18,13 +18,14 @@
 #endregion
 
 using System;
-using NodaTime.Utility;
 using System.Globalization;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Basic <see cref="IDateTimeZone" /> implementation that has a fixed name key and offset.
+    /// Basic <see cref="IDateTimeZone" /> implementation that has a fixed name key and offset i.e.
+    /// no daylight savings.
     /// </summary>
     /// <remarks>
     /// This type is thread-safe and immutable.
@@ -38,7 +39,6 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Creates a new fixed time zone.
         /// </summary>
-        /// <param name="id">The ID of the time zone.</param>
         /// <param name="offset">The <see cref="Offset"/> from UTC.</param>
         public FixedDateTimeZone(Offset offset)
             : this(MakeId(offset), offset)

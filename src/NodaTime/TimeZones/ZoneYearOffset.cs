@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +14,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using NodaTime.Calendars;
 using NodaTime.Fields;
@@ -38,7 +42,7 @@ namespace NodaTime.TimeZones
     /// adjusted to the nearest day that falls on the given day of the week. If then month and day
     /// fall on that day of the week then nothing changes. Otherwise the offset is moved forward or
     /// backward up to 6 days to make the day fall on the correct day of the week. The direction the
-    /// offset is moved is determined by the <see cref="Advance"/> property.
+    /// offset is moved is determined by the <see cref="AdvanceDayOfWeek"/> property.
     /// </para>
     /// <para>
     /// Finally the <see cref="Mode"/> property deterines whether the <see cref="TickOfDay"/> value
@@ -54,15 +58,9 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// An offset that specifies the beginning of the year.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification="ZoneYearOffset is immutable")]
-        public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
-
-        private readonly TransitionMode mode;
-        private readonly int monthOfYear;
-        private readonly int dayOfMonth;
-        private readonly int dayOfWeek;
-        private readonly bool advance;
-        private readonly Offset tickOfDay;
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes",
+            Justification = "ZoneYearOffset is immutable")] public static readonly ZoneYearOffset StartOfYear =
+                new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
 
         // TODO: find a better home for these two arrays
 
@@ -71,66 +69,44 @@ namespace NodaTime.TimeZones
         /// always the short name in US English. Extra blank name at the beginning helps
         /// to make the indexes to come out right.
         /// </summary>
-        private static readonly string[] Months = { 
-                                             "",
-                                             "Jan",
-                                             "Feb",
-                                             "Mar",
-                                             "Apr",
-                                             "May",
-                                             "Jun",
-                                             "Jul",
-                                             "Aug",
-                                             "Sep",
-                                             "Oct",
-                                             "Nov",
-                                             "Dec"
-                                         };
+        private static readonly string[] Months = {
+                                                      "",
+                                                      "Jan",
+                                                      "Feb",
+                                                      "Mar",
+                                                      "Apr",
+                                                      "May",
+                                                      "Jun",
+                                                      "Jul",
+                                                      "Aug",
+                                                      "Sep",
+                                                      "Oct",
+                                                      "Nov",
+                                                      "Dec"
+                                                  };
 
         /// <summary>
         /// The days of the week names as they appear in the TZDB zone files. They are
         /// always the short name in US English.
         /// </summary>
         private static readonly string[] DaysOfWeek = {
-                                                         "",
-                                                         "Mon",
-                                                         "Tue",
-                                                         "Wed",
-                                                         "Thu",
-                                                         "Fri",
-                                                         "Sat",
-                                                         "Sun"
-                                                     };
-        /// <summary>
-        /// Gets the method by which offsets are added to Instants to get LocalInstants.
-        /// </summary>
-        public TransitionMode Mode { get { return this.mode; } }
+                                                          "",
+                                                          "Mon",
+                                                          "Tue",
+                                                          "Wed",
+                                                          "Thu",
+                                                          "Fri",
+                                                          "Sat",
+                                                          "Sun"
+                                                      };
 
-        /// <summary>
-        /// Gets the month of year the rule starts.
-        /// </summary>
-        public int MonthOfYear { get { return this.monthOfYear; } }
+        private readonly bool advance;
 
-        /// <summary>
-        /// Gets the day of month this rule starts.
-        /// </summary>
-        public int DayOfMonth { get { return this.dayOfMonth; } }
-
-        /// <summary>
-        /// Gets the day of week this rule starts.
-        /// </summary>
-        /// <value>The integer day of week (1=Mon, 2=Tue, etc.). 0 means not set.</value>
-        public int DayOfWeek { get { return this.dayOfWeek; } }
-
-        /// <summary>
-        /// Gets a value indicating whether [advance day of week].
-        /// </summary>
-        public bool AdvanceDayOfWeek { get { return this.advance; } }
-
-        /// <summary>
-        /// Gets the tick of day when the rule takes effect.
-        /// </summary>
-        public Offset TickOfDay { get { return this.tickOfDay; } }
+        private readonly int dayOfMonth;
+        private readonly int dayOfWeek;
+        private readonly TransitionMode mode;
+        private readonly int monthOfYear;
+        private readonly Offset tickOfDay;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneYearOffset"/> class.
@@ -142,11 +118,11 @@ namespace NodaTime.TimeZones
         /// <param name="advance">if set to <c>true</c> [advance].</param>
         /// <param name="tickOfDay">The tick within the day.</param>
         public ZoneYearOffset(TransitionMode mode,
-                                int monthOfYear,
-                                int dayOfMonth,
-                                int dayOfWeek,
-                                bool advance,
-                                Offset tickOfDay)
+                              int monthOfYear,
+                              int dayOfMonth,
+                              int dayOfWeek,
+                              bool advance,
+                              Offset tickOfDay)
         {
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
@@ -163,6 +139,85 @@ namespace NodaTime.TimeZones
             this.advance = advance;
             this.tickOfDay = tickOfDay;
         }
+
+        /// <summary>
+        /// Gets the method by which offsets are added to Instants to get LocalInstants.
+        /// </summary>
+        public TransitionMode Mode
+        {
+            get { return this.mode; }
+        }
+
+        /// <summary>
+        /// Gets the month of year the rule starts.
+        /// </summary>
+        public int MonthOfYear
+        {
+            get { return this.monthOfYear; }
+        }
+
+        /// <summary>
+        /// Gets the day of month this rule starts.
+        /// </summary>
+        public int DayOfMonth
+        {
+            get { return this.dayOfMonth; }
+        }
+
+        /// <summary>
+        /// Gets the day of week this rule starts.
+        /// </summary>
+        /// <value>The integer day of week (1=Mon, 2=Tue, etc.). 0 means not set.</value>
+        public int DayOfWeek
+        {
+            get { return this.dayOfWeek; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether [advance day of week].
+        /// </summary>
+        public bool AdvanceDayOfWeek
+        {
+            get { return this.advance; }
+        }
+
+        /// <summary>
+        /// Gets the tick of day when the rule takes effect.
+        /// </summary>
+        public Offset TickOfDay
+        {
+            get { return this.tickOfDay; }
+        }
+
+        #region IEquatable<ZoneYearOffset> Members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        public bool Equals(ZoneYearOffset other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return
+                this.mode == other.mode &&
+                this.monthOfYear == other.monthOfYear &&
+                this.dayOfMonth == other.dayOfMonth &&
+                this.dayOfWeek == other.dayOfWeek &&
+                this.advance == other.advance &&
+                this.tickOfDay == other.tickOfDay;
+        }
+
+        #endregion
 
         /// <summary>
         /// Normalizes the transition mode characater.
@@ -183,8 +238,6 @@ namespace NodaTime.TimeZones
                 case 'z':
                 case 'Z':
                     return TransitionMode.Utc;
-                case 'w':
-                case 'W':
                 default:
                     return TransitionMode.Wall;
             }
@@ -245,12 +298,12 @@ namespace NodaTime.TimeZones
         /// <param name="writer">Where to send the output.</param>
         internal void Write(DateTimeZoneWriter writer)
         {
-            writer.WriteInt8((byte)Mode);
-            writer.WriteInt8((byte)MonthOfYear);
+            writer.WriteInt8((byte) Mode);
+            writer.WriteInt8((byte) MonthOfYear);
             // Day or month can range from -(max value) to max value so if we add max value it will
             // force it into the positive range
-            writer.WriteInt8((byte)(DayOfMonth + IsoCalendarSystem.Instance.Fields.DayOfMonth.GetMaximumValue()));
-            writer.WriteInt8((byte)DayOfWeek);
+            writer.WriteInt8((byte) (DayOfMonth + IsoCalendarSystem.Instance.Fields.DayOfMonth.GetMaximumValue()));
+            writer.WriteInt8((byte) DayOfWeek);
             writer.WriteBoolean(AdvanceDayOfWeek);
             writer.WriteOffset(TickOfDay);
         }
@@ -261,14 +314,14 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("reader");
             }
-            TransitionMode mode = (TransitionMode)reader.ReadByte();
+            var mode = (TransitionMode) reader.ReadByte();
             int monthOfYear = reader.ReadByte();
             // Day or month can range from -(max value) to max value so we added max value so it will
             // force it into the positive range
-            int dayOfMonth = (int)(reader.ReadByte() - IsoCalendarSystem.Instance.Fields.DayOfMonth.GetMaximumValue());
+            int dayOfMonth = (int) (reader.ReadByte() - IsoCalendarSystem.Instance.Fields.DayOfMonth.GetMaximumValue());
             int dayOfWeek = reader.ReadByte();
             bool advance = reader.ReadBoolean();
-            Offset ticksOfDay = reader.ReadOffset();
+            var ticksOfDay = reader.ReadOffset();
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay);
         }
 
@@ -341,6 +394,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="calendar">The calendar to use to set the values.</param>
         /// <param name="instant">The instant to adjust.</param>
+        /// <param name="direction"></param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
         private LocalInstant SetDayOfMonthWithLeap(ICalendarSystem calendar, LocalInstant instant, int direction)
         {
@@ -439,6 +493,32 @@ namespace NodaTime.TimeZones
             return offset;
         }
 
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ZoneYearOffset left, ZoneYearOffset right)
+        {
+            if (ReferenceEquals(null, left))
+            {
+                return ReferenceEquals(null, right);
+            }
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ZoneYearOffset left, ZoneYearOffset right)
+        {
+            return !(left == right);
+        }
+
         #region Object overrides
 
         /// <summary>
@@ -454,12 +534,7 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            ZoneYearOffset offset = obj as ZoneYearOffset;
-            if (offset != null)
-            {
-                return Equals(offset);
-            }
-            return false;
+            return Equals(obj as ZoneYearOffset);
         }
 
         /// <summary>
@@ -489,7 +564,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append(Months[MonthOfYear]).Append(" ");
             if (DayOfMonth == -1)
             {
@@ -502,14 +577,7 @@ namespace NodaTime.TimeZones
             else
             {
                 builder.Append(DaysOfWeek[DayOfWeek]);
-                if (AdvanceDayOfWeek)
-                {
-                    builder.Append(">=");
-                }
-                else
-                {
-                    builder.Append("<=");
-                }
+                builder.Append(this.AdvanceDayOfWeek ? ">=" : "<=");
                 builder.Append(DayOfMonth).Append(" ");
             }
             builder.Append(TickOfDay);
@@ -528,57 +596,5 @@ namespace NodaTime.TimeZones
         }
 
         #endregion // Object overrides
-
-        #region IEquatable<ZoneYearOffset> Members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        public bool Equals(ZoneYearOffset other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-            return
-                this.mode == other.mode &&
-                this.monthOfYear == other.monthOfYear &&
-                this.dayOfMonth == other.dayOfMonth &&
-                this.dayOfWeek == other.dayOfWeek &&
-                this.advance == other.advance &&
-                this.tickOfDay == other.tickOfDay;
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ZoneYearOffset left, ZoneYearOffset right)
-        {
-            if ((object)left == null || (object)right == null)
-            {
-                return (object)left == (object)right;
-            }
-            return left.Equals(right);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ZoneYearOffset left, ZoneYearOffset right)
-        {
-            return !(left == right);
-        }
     }
 }

@@ -164,6 +164,8 @@ namespace NodaTime.TimeZones
             /// </summary>
             private const int PeriodShift = 45;
 
+            private const long PeriodEndMask = 0x1fffffffffffL;
+
             private readonly int cachePeriodMask;
 
             private readonly HashCacheNode[] instantCache;
@@ -274,11 +276,10 @@ namespace NodaTime.TimeZones
             /// <returns></returns>
             private HashCacheNode CreateInstantNode(int period)
             {
-                // TODO: Extract constants?
                 var periodStart = new Instant((long) period << PeriodShift);
                 var interval = TimeZone.GetZoneInterval(periodStart);
                 var node = new HashCacheNode(interval, period, null);
-                var periodEnd = new Instant(periodStart.Ticks | 0x1fffffffffffL);
+                var periodEnd = new Instant(periodStart.Ticks | PeriodEndMask);
                 while (true)
                 {
                     periodStart = node.Interval.End;
@@ -300,11 +301,10 @@ namespace NodaTime.TimeZones
             /// <returns></returns>
             private HashCacheNode CreateLocalInstantNode(int period)
             {
-                // TODO: Extract constants?
                 var periodStart = new LocalInstant((long) period << PeriodShift);
                 var interval = TimeZone.GetZoneInterval(periodStart);
                 var node = new HashCacheNode(interval, period, null);
-                var periodEnd = new LocalInstant(periodStart.Ticks | 0x1fffffffffffL);
+                var periodEnd = new LocalInstant(periodStart.Ticks | PeriodEndMask);
                 while (true)
                 {
                     periodStart = node.Interval.LocalEnd;
@@ -417,7 +417,7 @@ namespace NodaTime.TimeZones
         /// object we increase the performance by a factor of 2.
         /// </para>
         /// </remarks>
-        internal class MruListCache
+        private class MruListCache
             : CachedDateTimeZone
         {
             private MruCacheNode head;
