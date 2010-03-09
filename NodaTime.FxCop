@@ -2288,30 +2288,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ResourceOutput">
-          <Members>
-           <Member Name="#Dispose()">
-            <Messages>
-             <Message Id="memory" TypeName="DisposableFieldsShouldBeDisposed" Category="Microsoft.Usage" CheckId="CA2213" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'ResourceOutput'</Item>
-               <Item>'ResourceOutput.memory'</Item>
-               <Item>'MemoryStream'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#GetResourceWriter(System.String,NodaTime.ZoneInfoCompiler.ResourceOutputType)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'ResourceOutput.GetResourceWriter(string, ResourceOutputType)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="Tokens">
           <Members>
            <Member Name="#Tokenize(System.String)">
@@ -2353,245 +2329,13 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ParserHelper">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Created="2010-03-09 01:02:44Z">
-            <Issue>
-             <Item>'ParserHelper'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#ParseOffset(System.String)">
-            <Messages>
-             <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2010-03-09 01:02:44Z">
-              <Issue Name="IncorrectParameterName">
-               <Item>'ParserHelper.ParseOffset(string)'</Item>
-               <Item>value cannot be null</Item>
-               <Item>'paramName'</Item>
-               <Item>'ArgumentNullException'</Item>
-              </Issue>
-             </Message>
-             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'ParserHelper.ParseOffset(string)'</Item>
-               <Item>'string.StartsWith(string)'</Item>
-               <Item>'string.StartsWith(string, StringComparison)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ParseOptional(System.String)">
-            <Messages>
-             <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2010-03-09 01:02:44Z">
-              <Issue Name="IncorrectParameterName">
-               <Item>'ParserHelper.ParseOptional(string)'</Item>
-               <Item>value cannot be null</Item>
-               <Item>'paramName'</Item>
-               <Item>'ArgumentNullException'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ParseYear(System.String,System.Int32)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2010-03-09 01:02:44Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'ParserHelper.ParseYear(string, int)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="TzdbCompilerOptions">
           <Members>
-           <Member Name="#.ctor()">
-            <Messages>
-             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'TzdbCompilerOptions.TzdbCompilerOptions()'</Item>
-               <Item>'TzdbCompilerOptions.InputFiles'</Item>
-               <Item>'IList&lt;string&gt;'</Item>
-               <Item>null</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="#GetUsage()">
             <Messages>
              <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2010-03-09 01:02:44Z">
               <Issue>
                <Item>'TzdbCompilerOptions.GetUsage()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="TzdbDatabase">
-          <Members>
-           <Member Name="#AddZone(NodaTime.ZoneInfoCompiler.Tzdb.Zone)">
-            <Messages>
-             <Message TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820" Created="2010-03-09 01:02:44Z">
-              <Issue Name="IsNullOrEmpty">
-               <Item>'string.operator ==(string, string)'</Item>
-               <Item>'TzdbDatabase.AddZone(Zone)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="TzdbZoneInfoCompiler">
-          <Members>
-           <Member Name="#AddRecurring(NodaTime.TimeZones.DateTimeZoneBuilder,System.String,System.Collections.Generic.IList`1&lt;NodaTime.ZoneInfoCompiler.Tzdb.ZoneRule&gt;)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'TzdbZoneInfoCompiler.AddRecurring(DateTimeZoneBuilder, string, IList&lt;ZoneRule&gt;)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ValidateArguments(System.IO.DirectoryInfo,System.Collections.Generic.IEnumerable`1&lt;System.IO.FileInfo&gt;,System.IO.FileInfo)">
-            <Messages>
-             <Message Id="target" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'target'</Item>
-               <Item>'TzdbZoneInfoCompiler.ValidateArguments(DirectoryInfo, IEnumerable&lt;FileInfo&gt;, FileInfo)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ValidateExistingDirectory(System.IO.DirectoryInfo,System.String)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'TzdbZoneInfoCompiler.ValidateExistingDirectory(DirectoryInfo, string)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="TzdbZoneInfoParser">
-          <Members>
-           <Member Name="#Informational(System.String,System.Object[])">
-            <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.Informational(string, params object[])'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#NextInteger(NodaTime.ZoneInfoCompiler.Tokens,System.String)">
-            <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.NextInteger(Tokens, string)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#NextInteger(NodaTime.ZoneInfoCompiler.Tokens,System.String,System.Int32)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.NextInteger(Tokens, string, int)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#NextOffset(NodaTime.ZoneInfoCompiler.Tokens,System.String,NodaTime.Offset)">
-            <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.NextOffset(Tokens, string, Offset)'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.NextOffset(Tokens, string, Offset)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#NextString(NodaTime.ZoneInfoCompiler.Tokens,System.String,System.String)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.NextString(Tokens, string, string)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#NextYear(NodaTime.ZoneInfoCompiler.Tokens,System.String,System.Int32)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.NextYear(Tokens, string, int)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Parse(System.IO.TextReader,NodaTime.ZoneInfoCompiler.Tzdb.TzdbDatabase)">
-            <Messages>
-             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.Parse(TextReader, TzdbDatabase)'</Item>
-               <Item>'string.StartsWith(string)'</Item>
-               <Item>'string.StartsWith(string, StringComparison)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ParseDayOfWeek(System.String)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.ParseDayOfWeek(string)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ParseLine(System.String,NodaTime.ZoneInfoCompiler.Tzdb.TzdbDatabase)">
-            <Messages>
-             <Message TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820" Created="2010-03-09 01:02:44Z">
-              <Issue Name="IsNullOrEmpty">
-               <Item>'string.operator ==(string, string)'</Item>
-               <Item>'TzdbZoneInfoParser.ParseLine(string, TzdbDatabase)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ParseMonth(System.String)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.ParseMonth(string)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ParseRule(NodaTime.ZoneInfoCompiler.Tokens)">
-            <Messages>
-             <Message Id="type" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.ParseRule(Tokens)'</Item>
-               <Item>'type'</Item>
-               <Item>'string'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Warning(System.String,System.Object[])">
-            <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'TzdbZoneInfoParser.Warning(string, params object[])'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -2618,39 +2362,10 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="Zone">
-          <Members>
-           <Member Name="#Equals(System.Object)">
-            <Messages>
-             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2010-03-09 01:02:44Z">
-              <Issue Name="Parameter">
-               <Item>'obj'</Item>
-               <Item>'Zone'</Item>
-               <Item>'Zone.Equals(object)'</Item>
-               <Item>castclass</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
         </Types>
        </Namespace>
        <Namespace Name="NodaTime.ZoneInfoCompiler.winmap">
         <Types>
-         <Type Name="WindowsMapperCompiler">
-          <Members>
-           <Member Name="#ReadInput(System.IO.FileInfo)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'WindowsMapperCompiler.ReadInput(FileInfo)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="WindowsMapperCompilerOptions">
           <Members>
            <Member Name="#GetUsage()">
@@ -2689,9 +2404,6 @@
    </Rule>
    <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
     <Resolution Name="MemberShouldBeDiscreteTerm">The compound word '{0}' in member name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
-   </Rule>
-   <Rule TypeName="DisposableFieldsShouldBeDisposed" Category="Microsoft.Usage" CheckId="CA2213">
-    <Resolution Name="Default">{0} contains field {1} that is of IDisposable type: {2}. Change the Dispose method on {0} to call Dispose or Close on this field.</Resolution>
    </Rule>
    <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
     <Resolution Name="Default">{0} contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: {1}</Resolution>
@@ -2746,7 +2458,6 @@
     <Resolution Name="Default">Initialize all static fields in {0} when those fields are declared and remove the explicit static constructor.</Resolution>
    </Rule>
    <Rule TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208">
-    <Resolution Name="IncorrectParameterName">Method {0} passes '{1}' as the {2} argument to a {3} constructor. Replace this argument with one of the method's parameter names. Note that the provided parameter name should have the exact casing as declared on the method.</Resolution>
     <Resolution Name="NoArguments">Call the {0} constructor that contains a message and/or paramName parameter.</Resolution>
    </Rule>
    <Rule TypeName="MarkISerializableTypesWithSerializable" Category="Microsoft.Usage" CheckId="CA2237">
@@ -2760,9 +2471,6 @@
    </Rule>
    <Rule TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034">
     <Resolution Name="Default">Do not nest type {0}. Alternatively, change its accessibility so that it is not externally visible.</Resolution>
-   </Rule>
-   <Rule TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308">
-    <Resolution Name="ToUpperInvariant">In method {0}, replace the call to {1} with String.ToUpperInvariant().</Resolution>
    </Rule>
    <Rule TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225">
     <Resolution Name="Default">Provide a method named '{0}' as a friendly alternate for operator {1}.</Resolution>
