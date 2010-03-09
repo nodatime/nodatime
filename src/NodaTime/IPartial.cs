@@ -65,6 +65,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="fieldType">A DateTimeFieldType instance that is supported by this partial</param>
         /// <returns>The value of that field</returns>
+        /// TODO: Get is a .NET language reserved word. This needs to be renamed
         int Get(DateTimeFieldType fieldType);
 
         /// <summary>

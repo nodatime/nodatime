@@ -81,9 +81,8 @@ namespace NodaTime.Calendars
             return builder.Build();
         }
 
-        protected BasicCalendarSystem(ICalendarSystem baseCalendar, 
-            int minDaysInFirstWeek)
-            : base(baseCalendar)
+        protected BasicCalendarSystem(string name, ICalendarSystem baseCalendar, int minDaysInFirstWeek)
+            : base(name, baseCalendar)
         {
             if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7)
             {

@@ -474,21 +474,21 @@ namespace ZoneInfoCompiler.Test
         public void ParseMonth_nullArgument_default()
         {
             string month = null;
-            Assert.AreEqual(0, Parser.ParseMonth(month));
+            Assert.AreEqual(0, TzdbZoneInfoParser.ParseMonth(month));
         }
 
         [Test]
         public void ParseMonth_emptyString_default()
         {
             string month = string.Empty;
-            Assert.AreEqual(0, Parser.ParseMonth(month));
+            Assert.AreEqual(0, TzdbZoneInfoParser.ParseMonth(month));
         }
 
         [Test]
         public void ParseMonth_invalidMonth_default()
         {
             string month = "Able";
-            Assert.AreEqual(0, Parser.ParseMonth(month));
+            Assert.AreEqual(0, TzdbZoneInfoParser.ParseMonth(month));
         }
 
         [Test]
@@ -497,7 +497,7 @@ namespace ZoneInfoCompiler.Test
             for (int i = 0; i < MonthNames.Length; i++)
             {
                 string month = MonthNames[i];
-                Assert.AreEqual(i + 1, Parser.ParseMonth(month));
+                Assert.AreEqual(i + 1, TzdbZoneInfoParser.ParseMonth(month));
             }
         }
 

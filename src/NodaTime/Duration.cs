@@ -355,7 +355,7 @@ namespace NodaTime
             return new Duration(millisecondValue * NodaConstants.TicksPerMillisecond);
         }
 
-        public static Duration Parse(string s)
+        public static Duration Parse(string value)
         {
             throw new NotImplementedException();
         }

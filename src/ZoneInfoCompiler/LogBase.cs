@@ -170,14 +170,15 @@ namespace NodaTime.ZoneInfoCompiler
         private class LogTextWriter
             : TextWriter
         {
-            private StringBuilder builder = new StringBuilder();
-            private LogOutputMethod output;
+            private readonly StringBuilder builder = new StringBuilder();
+            private readonly LogOutputMethod output;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="LogTextWriter"/> class.
             /// </summary>
-            /// <param name="log">The log.</param>
+            /// <param name="output">The log.</param>
             public LogTextWriter(LogOutputMethod output)
+                : base(CultureInfo.InvariantCulture)
             {
                 this.output = output;
             }

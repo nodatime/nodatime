@@ -35,6 +35,7 @@ namespace NodaTime
     /// such as entering "15" for a month number.
     /// </para>
     /// </remarks>
+    [Serializable]
     public class SkippedTimeException : ArgumentOutOfRangeException
     {
         private readonly LocalInstant localInstant;

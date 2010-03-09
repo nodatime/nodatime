@@ -39,6 +39,8 @@ namespace NodaTime.Calendars
     {
         public static readonly IsoCalendarSystem Instance = new IsoCalendarSystem(GregorianCalendarSystem.Default);
 
+        private const string IsoName = "ISO";
+
         // We precompute useful values for each month between these years, as we anticipate most
         // dates will be in this range.
         private const int FirstOptimizedYear = 1900;
@@ -60,7 +62,7 @@ namespace NodaTime.Calendars
         }
 
         private IsoCalendarSystem(ICalendarSystem baseSystem)
-            : base(baseSystem)
+            : base(IsoName, baseSystem)
         {
         }
 

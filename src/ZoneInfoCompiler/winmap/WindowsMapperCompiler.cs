@@ -69,7 +69,7 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         /// </summary>
         /// <param name="inputFile">The input file.</param>
         /// <returns>An <see cref="IDictionary"/> of Windows time zone names to POSIX names.</returns>
-        private IDictionary<string, string> ReadInput(FileInfo inputFile)
+        private static IDictionary<string, string> ReadInput(FileInfo inputFile)
         {
             var mappings = new Dictionary<string, string>();
             using (var reader = inputFile.OpenText())
@@ -78,7 +78,7 @@ namespace NodaTime.ZoneInfoCompiler.winmap
                 var readerSettings = new XmlReaderSettings();
                 readerSettings.XmlResolver = null;
                 readerSettings.ProhibitDtd = false;
-                using (var xmlReader = XmlTextReader.Create(reader, readerSettings))
+                using (var xmlReader = XmlReader.Create(reader, readerSettings))
                 {
                     var document = new XPathDocument(xmlReader);
                     var navigator = document.CreateNavigator();

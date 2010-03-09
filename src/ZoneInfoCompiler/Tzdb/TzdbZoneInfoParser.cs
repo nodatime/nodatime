@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
 using System.Globalization;
 using System.IO;
@@ -46,21 +49,21 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// always the short name in US English. Extra blank name at the beginning helps
         /// to make the indexes to come out right.
         /// </summary>
-        public static readonly string[] Months = { 
-                                             "",
-                                             "Jan",
-                                             "Feb",
-                                             "Mar",
-                                             "Apr",
-                                             "May",
-                                             "Jun",
-                                             "Jul",
-                                             "Aug",
-                                             "Sep",
-                                             "Oct",
-                                             "Nov",
-                                             "Dec"
-                                         };
+        public static readonly string[] Months = {
+                                                     "",
+                                                     "Jan",
+                                                     "Feb",
+                                                     "Mar",
+                                                     "Apr",
+                                                     "May",
+                                                     "Jun",
+                                                     "Jul",
+                                                     "Aug",
+                                                     "Sep",
+                                                     "Oct",
+                                                     "Nov",
+                                                     "Dec"
+                                                 };
 
         /// <summary>
         /// The days of the week names as they appear in the TZDB zone files. They are
@@ -78,12 +81,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                                                      };
 
         /// <summary>
-        /// Gets or sets the log to use for logging messages.
-        /// </summary>
-        /// <value>The log object.</value>
-        internal ILog Log { get; private set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TzdbZoneInfoParser"/> class.
         /// </summary>
         /// <param name="log">The log to use for logging messages.</param>
@@ -91,6 +88,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             Log = log;
         }
+
+        /// <summary>
+        /// Gets or sets the log to use for logging messages.
+        /// </summary>
+        /// <value>The log object.</value>
+        internal ILog Log { get; private set; }
 
         /// <summary>
         /// Parses the TZDB time zone info file from the given stream and merges its information
@@ -120,7 +123,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     {
                         if (Log.LineNumber == 1)
                         {
-                            if (!line.StartsWith("# "))
+                            if (!line.StartsWith("# ", StringComparison.Ordinal))
                             {
                                 return;
                             }
@@ -211,7 +214,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 Zone zone = ParseZone(name, tokens);
                 database.AddZone(zone);
             }
-            else if (keyword == string.Empty)
+            else if (string.IsNullOrEmpty(keyword))
             {
                 Zone zone = ParseZone(string.Empty, tokens);
                 database.AddZone(zone);
@@ -249,14 +252,16 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             int toYear = NextYear(tokens, "ToYear", fromYear);
             if (toYear < fromYear)
             {
-                throw new ArgumentException("To year cannot be before the from year in a Rule: " + toYear + " < " + fromYear);
+                throw new ArgumentException("To year cannot be before the from year in a Rule: " + toYear + " < " +
+                                            fromYear);
             }
-            string type = NextOptional(tokens, "Type");
+            /* string type = */
+            NextOptional(tokens, "Type");
             ZoneYearOffset yearOffset = ParseDateTimeOfYear(tokens);
             Offset savings = NextOffset(tokens, "SaveMillis");
             string letterS = NextOptional(tokens, "LetterS");
-            ZoneRecurrence recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
-            return new ZoneRule(recurrence, letterS); ;
+            var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
+            return new ZoneRule(recurrence, letterS);
         }
 
         /// <summary>
@@ -270,13 +275,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal ZoneYearOffset ParseDateTimeOfYear(Tokens tokens)
         {
             TransitionMode mode = ZoneYearOffset.StartOfYear.Mode;
-            int monthOfYear = ZoneYearOffset.StartOfYear.MonthOfYear;
-            int dayOfMonth = ZoneYearOffset.StartOfYear.DayOfMonth;
-            int dayOfWeek = ZoneYearOffset.StartOfYear.DayOfWeek;
-            bool advanceDayOfWeek = ZoneYearOffset.StartOfYear.AdvanceDayOfWeek;
             Offset tickOfDay = ZoneYearOffset.StartOfYear.TickOfDay;
 
-            monthOfYear = NextMonth(tokens, "MonthOfYear");
+            int monthOfYear = NextMonth(tokens, "MonthOfYear");
+
+            int dayOfMonth;
+            int dayOfWeek;
+            bool advanceDayOfWeek;
 
             String on = NextString(tokens, "When");
             if (on.StartsWith("last", StringComparison.Ordinal))
@@ -320,7 +325,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
 
             string atTime = NextString(tokens, "AT");
-            if (atTime != null && atTime.Length > 0)
+            if (!string.IsNullOrEmpty(atTime))
             {
                 if (Char.IsLetter(atTime[atTime.Length - 1]))
                 {
@@ -339,6 +344,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <remarks>
         /// # GMTOFF RULES FORMAT [ UntilYear [ UntilMonth [ UntilDay [ UntilTime [ ZoneCharacter ] ] ] ] ]
         /// </remarks>
+        /// <param name="name">The name of the zone being parsed.</param>
         /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The Zone object.</returns>
         internal Zone ParseZone(string name, Tokens tokens)
@@ -350,9 +356,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             int monthOfYear = NextMonth(tokens, "Until Month", NodaConstants.January);
             int dayOfMonth = NextInteger(tokens, "Until Day", 1);
             Offset tickOfDay = Offset.Zero;
-            char zoneCharacter = (char)0;
+            char zoneCharacter = (char) 0;
             string untilTime = NextString(tokens, "Until Time", null);
-            if (untilTime != null && untilTime.Length > 0)
+            if (!string.IsNullOrEmpty(untilTime))
             {
                 if (Char.IsLetter(untilTime[untilTime.Length - 1]))
                 {
@@ -369,7 +375,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns>The month number 1-12 or 0 if the month is not valid</returns>
-        internal int ParseMonth(String text)
+        internal static int ParseMonth(String text)
         {
             for (int i = 1; i < Months.Length; i++)
             {
@@ -386,7 +392,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns></returns>
-        internal int ParseDayOfWeek(String text)
+        internal static int ParseDayOfWeek(String text)
         {
             for (int i = 1; i < DaysOfWeek.Length; i++)
             {
@@ -403,21 +409,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
-        private int NextInteger(Tokens tokens, string name)
-        {
-            string value = NextString(tokens, name);
-            return ParserHelper.ParseInteger(value);
-        }
-
-        /// <summary>
-        /// Nexts the offset.
-        /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
-        private int NextInteger(Tokens tokens, string name, int defaultValue)
+        private static int NextInteger(Tokens tokens, string name, int defaultValue)
         {
             int result = defaultValue;
             string text;
@@ -441,31 +435,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        /// Nexts the offset.
-        /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <returns></returns>
-        private Offset NextOffset(Tokens tokens, string name, Offset defaultValue)
-        {
-            Offset result = defaultValue;
-            string text;
-            if (tokens.TryNextToken(name, out text))
-            {
-                result = ParserHelper.ParseOffset(text);
-            }
-            return result;
-        }
-
-        /// <summary>
         /// Nexts the year.
         /// </summary>
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
-        private int NextYear(Tokens tokens, string name, int defaultValue)
+        private static int NextYear(Tokens tokens, string name, int defaultValue)
         {
             int result = defaultValue;
             string text;
@@ -500,7 +476,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="name">The name.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
-        private int NextMonth(Tokens tokens, string name, int defaultValue)
+        private static int NextMonth(Tokens tokens, string name, int defaultValue)
         {
             int result = defaultValue;
             string text;
@@ -549,7 +525,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="name">The name.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
-        private string NextString(Tokens tokens, string name, string defaultValue)
+        private static string NextString(Tokens tokens, string name, string defaultValue)
         {
             string result;
             if (!tokens.TryNextToken(name, out result))
@@ -557,26 +533,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 result = defaultValue;
             }
             return result;
-        }
-
-        /// <summary>
-        /// Logs the given informational message.
-        /// </summary>
-        /// <param name="format">The message format.</param>
-        /// <param name="arguments">The optional arguments for the message.</param>
-        private void Informational(string format, params object[] arguments)
-        {
-            Log.Info(format, arguments);
-        }
-
-        /// <summary>
-        /// Logs the given warning message.
-        /// </summary>
-        /// <param name="format">The message format.</param>
-        /// <param name="arguments">The optional arguments for the message.</param>
-        private void Warning(string format, params object[] arguments)
-        {
-            Log.Warn(format, arguments);
         }
 
         /// <summary>
@@ -590,6 +546,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             throw new ParseException();
         }
 
+        #region Nested type: ParseException
+
         /// <summary>
         /// Private exception to use to end the parsing of a line and return to the top level.
         /// This should NEVER propagate out of this file. Must be internal so the tests can see it.
@@ -598,5 +556,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             : Exception
         {
         }
+
+        #endregion
     }
 }

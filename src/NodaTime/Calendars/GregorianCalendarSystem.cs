@@ -23,6 +23,8 @@ namespace NodaTime.Calendars
     /// </summary>
     public class GregorianCalendarSystem : BasicGJCalendarSystem
     {
+        private const string GregorianName = "Gregorian";
+
         private const int DaysFrom0000To1970 = 719527;
         private const long AverageTicksPerGregorianYear = (long) (365.2425m * NodaConstants.TicksPerDay);
 
@@ -30,7 +32,8 @@ namespace NodaTime.Calendars
         // It roughly maps onto GregorianChronology.getInstanceUTC() except of course we don't have a time zone...
         internal static readonly GregorianCalendarSystem Default = new GregorianCalendarSystem(4);
 
-        private GregorianCalendarSystem(int minDaysInFirstWeek) : base(null, minDaysInFirstWeek)
+        private GregorianCalendarSystem(int minDaysInFirstWeek)
+            : base(GregorianName, null, minDaysInFirstWeek)
         {
         }
 

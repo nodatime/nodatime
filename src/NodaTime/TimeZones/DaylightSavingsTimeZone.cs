@@ -194,12 +194,6 @@ namespace NodaTime.TimeZones
             if (ReferenceEquals(normalRecurrence, this.startRecurrence) &&
                 ReferenceEquals(daylightRecurrence, this.endRecurrence))
             {
-                var instant = Instant.MaxValue;
-                var previous = PreviousTransition(normal);
-                if (previous.HasValue)
-                {
-                    instant = previous.Value.Instant;
-                }
                 throw new SkippedTimeException(localInstant, this);
             }
             return this.GetZoneInterval(normal);

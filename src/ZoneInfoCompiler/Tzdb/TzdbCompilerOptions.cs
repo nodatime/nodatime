@@ -25,7 +25,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// </summary>
     internal class TzdbCompilerOptions
     {
-        private static readonly HeadingInfo headingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
+        private static readonly HeadingInfo HeadingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
 
         #region Standard Option Attribute
         [Option("s", "source",
@@ -46,13 +46,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 
         #region Specialized Option Attribute
         [ValueList(typeof(List<string>))]
-        public IList<string> InputFiles = null;
+        public IList<string> InputFiles;
 
         [HelpOption(
                 HelpText = "Display this help.")]
         public string GetUsage()
         {
-            var help = new HelpText(headingInfo);
+            var help = new HelpText(HeadingInfo);
             help.AdditionalNewLineAfterOption = true;
             help.Copyright = new CopyrightInfo("Jon Skeet", 2009);
             help.AddPreOptionsLine(" ");

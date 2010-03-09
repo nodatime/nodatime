@@ -36,11 +36,11 @@ namespace NodaTime.TimeZones
     {
         private readonly Instant end;
         private readonly LocalInstant localEnd;
+        private readonly LocalInstant localStart;
         private readonly string name;
         private readonly Offset offset;
         private readonly Offset savings;
         private readonly Instant start;
-        private readonly LocalInstant localStart;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneInterval"/> class.
@@ -206,7 +206,7 @@ namespace NodaTime.TimeZones
 
         #endregion // Contains
 
-        #region IEquatable<ZoneOffsetPeriod> Members
+        #region IEquatable<ZoneInterval> Members
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -330,6 +330,10 @@ namespace NodaTime.TimeZones
         /// <param name="writer">The writer.</param>
         public void Write(DateTimeZoneWriter writer)
         {
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
             writer.WriteString(Name);
             writer.WriteInstant(Start);
             writer.WriteInstant(End);
@@ -344,9 +348,13 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         public static ZoneInterval Read(DateTimeZoneReader reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
             var name = reader.ReadString();
             var start = new Instant(reader.ReadTicks());
-            var end  = new Instant(reader.ReadTicks());
+            var end = new Instant(reader.ReadTicks());
             var offset = reader.ReadOffset();
             var savings = reader.ReadOffset();
             return new ZoneInterval(name, start, end, offset, savings);
