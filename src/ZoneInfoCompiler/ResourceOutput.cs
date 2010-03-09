@@ -26,7 +26,7 @@ namespace NodaTime.ZoneInfoCompiler
     /// <summary>
     /// Abstraction for handling the writing of objects to resources.
     /// </summary>
-    public class ResourceOutput
+    public sealed class ResourceOutput
         : IDisposable
     {
         private readonly IResourceWriter resourceWriter;
@@ -93,7 +93,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="name">The name of the output file.</param>
         /// <param name="type">The output file type.</param>
         /// <returns>The <see cref="IResourceWriter"/> to write to.</returns>
-        private IResourceWriter GetResourceWriter(string name, ResourceOutputType type)
+        private static IResourceWriter GetResourceWriter(string name, ResourceOutputType type)
         {
             IResourceWriter result;
             if (type == ResourceOutputType.Resource)
@@ -129,6 +129,7 @@ namespace NodaTime.ZoneInfoCompiler
         public void Dispose()
         {
             this.resourceWriter.Close();
+            this.memory.Close();
         }
 
         #endregion

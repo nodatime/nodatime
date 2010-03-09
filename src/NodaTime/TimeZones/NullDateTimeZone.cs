@@ -1,6 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#region Copyright and license information
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
@@ -14,7 +32,7 @@ namespace NodaTime.TimeZones
     public sealed class NullDateTimeZone
         : DateTimeZoneBase, IEquatable<NullDateTimeZone>
     {
-        public static readonly NullDateTimeZone Instance = new NullDateTimeZone("NullTimeZone");
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")] public static readonly NullDateTimeZone Instance = new NullDateTimeZone("NullTimeZone");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NullDateTimeZone"/> class.
@@ -64,9 +82,9 @@ namespace NodaTime.TimeZones
         /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
         /// than local time. In other words, UTC = local time - (offset from local).
         /// </summary>
-        /// <param name="instant">The instant for which to calculate the offset.</param>
+        /// <param name="localInstant">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
-        public override Offset GetOffsetFromLocal(LocalInstant instant)
+        public override Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
             return Offset.Zero;
         }
@@ -85,6 +103,8 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "reader",
+            Justification = "For consistency all Read() methods take a reader")]
         public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             return new NullDateTimeZone(id);

@@ -16,6 +16,7 @@
 #endregion
 using System;
 using NodaTime.TimeZones;
+using System.Globalization;
 
 namespace NodaTime
 {
@@ -309,7 +310,7 @@ namespace NodaTime
         {
             // TODO: Use proper formatting!
             var utc = new LocalDateTime(new LocalInstant(Ticks));
-            return string.Format("{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00} LOC", utc.Year, utc.MonthOfYear, utc.DayOfMonth,
+            return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00} LOC", utc.Year, utc.MonthOfYear, utc.DayOfMonth,
                                  utc.HourOfDay, utc.MinuteOfHour, utc.SecondOfMinute);
             //return Ticks.ToString("N0", CultureInfo.CurrentCulture);
         }

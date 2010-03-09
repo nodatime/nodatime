@@ -96,7 +96,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal void AddZone(Zone zone)
         {
             string name = zone.Name;
-            if (name == null || name == string.Empty)
+            if (string.IsNullOrEmpty(name))
             {
                 if (CurrentZoneList == null)
                 {

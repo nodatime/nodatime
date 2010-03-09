@@ -47,8 +47,8 @@ namespace NodaTime.Calendars
             }
         }
 
-        protected BasicGJCalendarSystem(ICalendarSystem baseCalendar,
-            int minDaysInFirstWeek) : base(baseCalendar, minDaysInFirstWeek)
+        protected BasicGJCalendarSystem(string name, ICalendarSystem baseCalendar, int minDaysInFirstWeek)
+            : base(name, baseCalendar, minDaysInFirstWeek)
         {
         }
 

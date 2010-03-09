@@ -57,6 +57,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="field">the field type to query, null return zero</param>
         /// <returns>the value of that field, zero if field not supported</returns>
+        /// TODO: Get is a .NET language reserved word. This needs to be renamed
         int Get(DurationFieldType field);
 
         /// <summary>

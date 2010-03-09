@@ -131,7 +131,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append(Name).Append(" ");
             builder.Append(Offset.ToString()).Append(" ");
             builder.Append(ParserHelper.FormatOptional(Rules)).Append(" ");
@@ -172,11 +172,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </exception>
         public override bool Equals(object obj)
         {
-            if (obj is Zone)
-            {
-                return Equals((Zone)obj);
-            }
-            return false;
+            return Equals(obj as Zone);
         }
 
         /// <summary>
@@ -213,6 +209,14 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </returns>
         public bool Equals(Zone other)
         {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
             return
                 Name == other.Name &&
                 Offset == other.Offset &&

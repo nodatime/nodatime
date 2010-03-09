@@ -41,7 +41,7 @@ namespace NodaTime.TimeZones
         public enum CacheType
         {
             Mru,
-            HashTable
+            Hashtable
         }
 
         #endregion
@@ -83,7 +83,7 @@ namespace NodaTime.TimeZones
         /// <returns>The cached time zone.</returns>
         public static IDateTimeZone ForZone(IDateTimeZone timeZone)
         {
-            return ForZone(timeZone, CacheType.HashTable);
+            return ForZone(timeZone, CacheType.Hashtable);
         }
 
         /// <summary>
@@ -108,10 +108,10 @@ namespace NodaTime.TimeZones
             {
                 case CacheType.Mru:
                     return new MruListCache(timeZone);
-                case CacheType.HashTable:
+                case CacheType.Hashtable:
                     return new HashArrayCache(timeZone);
                 default:
-                    throw new ArgumentException("type");
+                    throw new ArgumentException(@"The type parameter is invalid", "type");
             }
         }
 

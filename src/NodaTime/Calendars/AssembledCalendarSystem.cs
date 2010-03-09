@@ -34,7 +34,8 @@ namespace NodaTime.Calendars
 
         private readonly ICalendarSystem baseCalendar;
 
-        protected AssembledCalendarSystem(ICalendarSystem baseCalendar)
+        protected AssembledCalendarSystem(string name, ICalendarSystem baseCalendar)
+            : base(name)
         {
             this.baseCalendar = baseCalendar;
             fields = ConstructFields();

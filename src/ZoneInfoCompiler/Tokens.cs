@@ -56,7 +56,6 @@ namespace NodaTime.ZoneInfoCompiler
         private Tokens(IList<string> words)
         {
             this.words = words;
-            this.index = 0;
         }
 
         /// <summary>
@@ -70,11 +69,11 @@ namespace NodaTime.ZoneInfoCompiler
         {
             if (text == null)
             {
-                throw new ArgumentNullException("text cannot be null");
+                throw new ArgumentNullException("text");
             }
             text = text.TrimEnd();
             string[] parts = Regex.Split(text, @"\s+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-            if (parts.Length == 1 && parts[0] == string.Empty)
+            if (parts.Length == 1 && string.IsNullOrEmpty(parts[0]))
             {
                 parts = NoTokens;
             }

@@ -38,6 +38,11 @@ namespace NodaTime.Calendars
     /// </remarks>
     public interface ICalendarSystem
     {
+        /// <summary>
+        /// Gets the name of this calendar system. Each calendar system must have a unique name.
+        /// </summary>
+        /// <value>The calendar system name.</value>
+        string Name { get; }
 
         FieldSet Fields { get; }
 

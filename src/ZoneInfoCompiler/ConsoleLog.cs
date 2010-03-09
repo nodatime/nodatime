@@ -53,7 +53,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// Writes the specified message to the console or the debug output.
         /// </summary>
         /// <param name="message">The message to write.</param>
-        private void Write(string message)
+        private static void Write(string message)
         {
 #if DEBUG
             System.Diagnostics.Debug.Write(message);
@@ -65,7 +65,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         /// Writes an end-of-line to the console or the debug output.
         /// </summary>
-        private void EndLine()
+        private static void EndLine()
         {
 #if DEBUG
             System.Diagnostics.Debug.WriteLine("");

@@ -45,7 +45,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -82,7 +82,7 @@
       <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Format\DateTimeFormatterTest.CreationMehods.cs">
-       <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
+      <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Format\DateTimeFormatterTest.Mocks.cs">
       <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>

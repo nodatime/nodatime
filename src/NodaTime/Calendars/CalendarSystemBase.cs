@@ -27,8 +27,26 @@ namespace NodaTime.Calendars
     /// as well.
     /// </para>
     /// </summary>
-    public abstract class CalendarSystemBase : ICalendarSystem
+    public abstract class CalendarSystemBase
+        : ICalendarSystem
     {
+        private readonly string name;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CalendarSystemBase"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        protected CalendarSystemBase(string name)
+        {
+            this.name = name;
+        }
+
+        /// <summary>
+        /// Gets the name of this calendar system. Each calendar system must have a unique name.
+        /// </summary>
+        /// <value>The calendar system name.</value>
+        public string Name { get { return this.name; } }
+
         public abstract FieldSet Fields { get; }
 
         /// <summary>
@@ -299,6 +317,15 @@ namespace NodaTime.Calendars
                                 .SetValue(localInstant, partial.GetValue(i));
             }
             return localInstant;        
+        }
+
+        #endregion
+
+        #region object overrides
+
+        public override string ToString()
+        {
+            return Name;
         }
 
         #endregion

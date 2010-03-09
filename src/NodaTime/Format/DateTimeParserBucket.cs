@@ -286,7 +286,7 @@ namespace NodaTime.Format
                 {
                     e.PrependMessage("Cannot parse \"" + text + '"');
                 }
-                throw e;
+                throw;
             }
 
             Instant result;

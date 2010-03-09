@@ -19,6 +19,7 @@
 
 using System;
 using NodaTime.Utility;
+using System.Globalization;
 
 namespace NodaTime.TimeZones
 {
@@ -67,7 +68,7 @@ namespace NodaTime.TimeZones
             {
                 return DateTimeZones.UtcId;
             }
-            return string.Format(@"{0}{1}", DateTimeZones.UtcId, theOffset.ToString("M"));
+            return string.Format(CultureInfo.InvariantCulture, @"{0}{1}", DateTimeZones.UtcId, theOffset.ToString("M"));
         }
 
         /// <summary>
@@ -109,9 +110,9 @@ namespace NodaTime.TimeZones
         /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
         /// than local time. In other words, UTC = local time - (offset from local).
         /// </summary>
-        /// <param name="instant">The instant for which to calculate the offset.</param>
+        /// <param name="localInstant">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
-        public override Offset GetOffsetFromLocal(LocalInstant instant)
+        public override Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
             return this.offset;
         }

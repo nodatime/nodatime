@@ -171,7 +171,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         internal class Impl
         {
-            private IDateTimeZone current = null;
+            private IDateTimeZone current;
             private readonly LinkedList<IDateTimeZoneProvider> providers = new LinkedList<IDateTimeZoneProvider>();
             private readonly SortedDictionary<string, string> idList = new SortedDictionary<string, string>();
             private readonly IDictionary<string, IDateTimeZone> timeZoneMap = new Dictionary<string, IDateTimeZone>();
