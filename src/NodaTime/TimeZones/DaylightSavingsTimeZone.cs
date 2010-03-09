@@ -76,7 +76,7 @@ namespace NodaTime.TimeZones
         /// Gets the standard offset.
         /// </summary>
         /// <value>The standard offset.</value>
-        internal Offset StandardOffset
+        private Offset StandardOffset
         {
             get { return this.standardOffset; }
         }
@@ -85,7 +85,7 @@ namespace NodaTime.TimeZones
         /// Gets the start recurrence.
         /// </summary>
         /// <value>The start recurrence.</value>
-        internal ZoneRecurrence StartRecurrence
+        private ZoneRecurrence StartRecurrence
         {
             get { return this.startRecurrence; }
         }
@@ -94,7 +94,7 @@ namespace NodaTime.TimeZones
         /// Gets the end recurrence.
         /// </summary>
         /// <value>The end recurrence.</value>
-        internal ZoneRecurrence EndRecurrence
+        private ZoneRecurrence EndRecurrence
         {
             get { return this.endRecurrence; }
         }
@@ -174,7 +174,7 @@ namespace NodaTime.TimeZones
             }
             var recurrence = FindMatchingRecurrence(instant);
             return new ZoneInterval(recurrence.Name, previous.Value.Instant, next.Value.Instant,
-                                        StandardOffset + recurrence.Savings, recurrence.Savings);
+                                    StandardOffset + recurrence.Savings, recurrence.Savings);
         }
 
         /// <summary>

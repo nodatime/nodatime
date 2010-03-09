@@ -23,7 +23,10 @@ using System.Collections.Generic;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// 
+    /// Most time zones have a relatively small set of transitions at their start until they finally 
+    /// settle down to either a fixed time zone or a daylight savings time zone. This provides the
+    /// container for the initial zone intervals and a pointer to the time zone that handles all of
+    /// the rest until the end of time.
     /// </summary>
     internal class PrecalculatedDateTimeZone
         : DateTimeZoneBase
@@ -58,7 +61,7 @@ namespace NodaTime.TimeZones
                 var transition = transitions[i];
                 var endInstant = i == size - 1 ? precalcedEnd : transitions[i + 1].Instant;
                 var period = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset,
-                                                  transition.Savings);
+                                              transition.Savings);
                 this.periods[i] = period;
             }
         }
@@ -131,17 +134,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///    Returns true if this time zone is worth caching. Small time zones or time zones with
-        ///    lots of quick changes do not work well with
-        ///    <see cref="CachedDateTimeZone"/>
-        ///    .
+        /// Returns true if this time zone is worth caching. Small time zones or time zones with
+        /// lots of quick changes do not work well with <see cref="CachedDateTimeZone"/>.
         /// </summary>
-        /// <returns>
-        ///    <c>true</c>
-        ///    if this instance is cachable; otherwise,
-        ///    <c>false</c>
-        ///    .
-        /// </returns>
+        /// <returns><c>true</c> if this instance is cachable; otherwise, <c>false</c>.</returns>
         public bool IsCachable()
         {
             return this.tailZone != null;

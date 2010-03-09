@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using NodaTime.Calendars;
 using NodaTime.Fields;
-using System.IO;
-using System.Text;
-using System.Diagnostics;
 
 namespace NodaTime.TimeZones
 {
@@ -77,14 +77,20 @@ namespace NodaTime.TimeZones
     {
         private readonly IList<ZoneRecurrenceCollection> ruleSets = new List<ZoneRecurrenceCollection>();
 
-        public string Name { get; private set; }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeZoneBuilder"/> class.
+        /// Gets the last rule set if there are no rule sets one that spans all of time is created and returned.
         /// </summary>
-        public DateTimeZoneBuilder(string name)
+        /// <value>The last rule set.</value>
+        private ZoneRecurrenceCollection LastRuleSet
         {
-            Name = name;
+            get
+            {
+                if (ruleSets.Count == 0)
+                {
+                    AddEndOfTimeRuleSet();
+                }
+                return ruleSets[ruleSets.Count - 1];
+            }
         }
 
         /// <summary>
@@ -121,7 +127,8 @@ namespace NodaTime.TimeZones
             }
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.AsTicks());
 
-            return AddCutover(year, new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay));
+            return AddCutover(year,
+                              new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay));
         }
 
         /// <summary>
@@ -269,6 +276,7 @@ namespace NodaTime.TimeZones
          * @param id  time zone id to assign
          * @param outputID  true if the zone id should be output
          */
+
         public IDateTimeZone ToDateTimeZone(String zoneId)
         {
             if (zoneId == null)
@@ -313,7 +321,7 @@ namespace NodaTime.TimeZones
                     }
                 }
 
-                instant = ruleSet.getUpperLimit(transitionIterator.Savings);
+                instant = ruleSet.GetUpperLimit(transitionIterator.Savings);
             }
 
             // Check if a simpler zone implementation can be returned.
@@ -381,22 +389,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Gets the last rule set if there are no rule sets one that spans all of time is created and returned.
-        /// </summary>
-        /// <value>The last rule set.</value>
-        private ZoneRecurrenceCollection LastRuleSet
-        {
-            get
-            {
-                if (ruleSets.Count == 0)
-                {
-                    AddEndOfTimeRuleSet();
-                }
-                return ruleSets[ruleSets.Count - 1];
-            }
-        }
-
-        /// <summary>
         /// Adds a rule set that spans from the last one to the end of time.
         /// </summary>
         private void AddEndOfTimeRuleSet()
@@ -405,192 +397,3 @@ namespace NodaTime.TimeZones
         }
     }
 }
-#if FOO
-
-public class DateTimeZoneBuilder {
-    /**
-     * Decodes a built DateTimeZone from the given stream, as encoded by
-     * writeTo.
-     *
-     * @param in input stream to read encoded DateTimeZone from.
-     * @param id time zone id to assign
-     */
-    public static DateTimeZone readFrom(InputStream in, String id) throws IOException {
-        if (in instanceof DataInput) {
-            return readFrom((DataInput)in, id);
-        } else {
-            return readFrom((DataInput)new DataInputStream(in), id);
-        }
-    }
-
-    /**
-     * Decodes a built DateTimeZone from the given stream, as encoded by
-     * writeTo.
-     *
-     * @param in input stream to read encoded DateTimeZone from.
-     * @param id time zone id to assign
-     */
-    public static DateTimeZone readFrom(DataInput in, String id) throws IOException {
-        switch (in.readUnsignedByte()) {
-        case 'F':
-            DateTimeZone fixed = new FixedDateTimeZone
-                (id, in.readUTF(), (int)readMillis(in), (int)readMillis(in));
-            if (fixed.equals(DateTimeZone.UTC)) {
-                fixed = DateTimeZone.UTC;
-            }
-            return fixed;
-        case 'C':
-            return CachedDateTimeZone.forZone(PrecalculatedZone.readFrom(in, id));
-        case 'P':
-            return PrecalculatedZone.readFrom(in, id);
-        default:
-            throw new IOException("Invalid encoding");
-        }
-    }
-
-    /**
-     * Millisecond encoding formats:
-     *
-     * upper two bits  units       field length  approximate range
-     * ---------------------------------------------------------------
-     * 00              30 minutes  1 byte        +/- 16 hours
-     * 01              minutes     4 bytes       +/- 1020 years
-     * 10              seconds     5 bytes       +/- 4355 years
-     * 11              millis      9 bytes       +/- 292,000,000 years
-     *
-     * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
-     */
-    static void writeMillis(DataOutput out, long millis) throws IOException {
-        if (millis % (30 * 60000L) == 0) {
-            // Try to write in 30 minute units.
-            long units = millis / (30 * 60000L);
-            if (((units << (64 - 6)) >> (64 - 6)) == units) {
-                // Form 00 (6 bits effective precision)
-                out.writeByte((int)(units & 0x3f));
-                return;
-            }
-        }
-
-        if (millis % 60000L == 0) {
-            // Try to write minutes.
-            long minutes = millis / 60000L;
-            if (((minutes << (64 - 30)) >> (64 - 30)) == minutes) {
-                // Form 01 (30 bits effective precision)
-                out.writeInt(0x40000000 | (int)(minutes & 0x3fffffff));
-                return;
-            }
-        }
-        
-        if (millis % 1000L == 0) {
-            // Try to write seconds.
-            long seconds = millis / 1000L;
-            if (((seconds << (64 - 38)) >> (64 - 38)) == seconds) {
-                // Form 10 (38 bits effective precision)
-                out.writeByte(0x80 | (int)((seconds >> 32) & 0x3f));
-                out.writeInt((int)(seconds & 0xffffffff));
-                return;
-            }
-        }
-
-        // Write milliseconds either because the additional precision is
-        // required or the minutes didn't fit in the field.
-        
-        // Form 11 (64 bits effective precision, but write as if 70 bits)
-        out.writeByte(millis < 0 ? 0xff : 0xc0);
-        out.writeLong(millis);
-    }
-
-    /**
-     * Reads encoding generated by writeMillis.
-     */
-    static long readMillis(DataInput in) throws IOException {
-        int v = in.readUnsignedByte();
-        switch (v >> 6) {
-        case 0: default:
-            // Form 00 (6 bits effective precision)
-            v = (v << (32 - 6)) >> (32 - 6);
-            return v * (30 * 60000L);
-
-        case 1:
-            // Form 01 (30 bits effective precision)
-            v = (v << (32 - 6)) >> (32 - 30);
-            v |= (in.readUnsignedByte()) << 16;
-            v |= (in.readUnsignedByte()) << 8;
-            v |= (in.readUnsignedByte());
-            return v * 60000L;
-
-        case 2:
-            // Form 10 (38 bits effective precision)
-            long w = (((long)v) << (64 - 6)) >> (64 - 38);
-            w |= (in.readUnsignedByte()) << 24;
-            w |= (in.readUnsignedByte()) << 16;
-            w |= (in.readUnsignedByte()) << 8;
-            w |= (in.readUnsignedByte());
-            return w * 1000L;
-
-        case 3:
-            // Form 11 (64 bits effective precision)
-            return in.readLong();
-        }
-    }
-
-    private static DateTimeZone buildFixedZone(String id, String nameKey,
-                                               int wallOffset, int standardOffset) {
-        if ("UTC".equals(id) && id.equals(nameKey) &&
-            wallOffset == 0 && standardOffset == 0) {
-            return DateTimeZone.UTC;
-        }
-        return new FixedDateTimeZone(id, nameKey, wallOffset, standardOffset);
-    }
-
-    private RuleSet getLastRuleSet() {
-        if (iRuleSets.size() == 0) {
-            addCutover(Integer.MIN_VALUE, 'w', 1, 1, 0, false, 0);
-        }
-        return (RuleSet)iRuleSets.get(iRuleSets.size() - 1);
-    }
-    
-
-    /**
-     * Encodes a built DateTimeZone to the given stream. Call readFrom to
-     * decode the data into a DateTimeZone object.
-     *
-     * @param out output stream to receive encoded DateTimeZone.
-     * @since 1.5 (parameter added)
-     */
-    public void writeTo(String zoneID, OutputStream out) throws IOException {
-        if (out instanceof DataOutput) {
-            writeTo(zoneID, (DataOutput)out);
-        } else {
-            writeTo(zoneID, (DataOutput)new DataOutputStream(out));
-        }
-    }
-
-    /**
-     * Encodes a built DateTimeZone to the given stream. Call readFrom to
-     * decode the data into a DateTimeZone object.
-     *
-     * @param out output stream to receive encoded DateTimeZone.
-     * @since 1.5 (parameter added)
-     */
-    public void writeTo(String zoneID, DataOutput out) throws IOException {
-        // pass false so zone id is not written out
-        DateTimeZone zone = toDateTimeZone(zoneID, false);
-
-        if (zone instanceof FixedDateTimeZone) {
-            out.writeByte('F'); // 'F' for fixed
-            out.writeUTF(zone.getNameKey(0));
-            writeMillis(out, zone.getOffset(0));
-            writeMillis(out, zone.getStandardOffset(0));
-        } else {
-            if (zone instanceof CachedDateTimeZone) {
-                out.writeByte('C'); // 'C' for cached, precalculated
-                zone = ((CachedDateTimeZone)zone).getUncachedZone();
-            } else {
-                out.writeByte('P'); // 'P' for precalculated, uncached
-            }
-            ((PrecalculatedZone)zone).writeTo(out);
-        }
-    }
-}
-#endif

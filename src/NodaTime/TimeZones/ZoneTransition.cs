@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
 using System.Text;
 
@@ -34,16 +37,10 @@ namespace NodaTime.TimeZones
     internal class ZoneTransition
         : IEquatable<ZoneTransition>, IComparable<ZoneTransition>
     {
-        internal Instant Instant { get { return this.instant; } }
-        internal string Name { get { return this.name; } }
-        internal Offset StandardOffset { get { return this.standardOffset; } }
-        internal Offset Savings { get { return this.savings; } }
-        internal Offset WallOffset { get { return StandardOffset + Savings; } }
-
         private readonly Instant instant;
         private readonly string name;
-        private readonly Offset standardOffset;
         private readonly Offset savings;
+        private readonly Offset standardOffset;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneTransition"/> class.
@@ -69,7 +66,7 @@ namespace NodaTime.TimeZones
         {
             if (name == null)
             {
-                throw new ArgumentNullException("name", "name cannot be null");
+                throw new ArgumentNullException("name");
             }
             this.instant = instant;
             this.name = name;
@@ -97,6 +94,115 @@ namespace NodaTime.TimeZones
                 }
             }
         }
+
+        internal Instant Instant
+        {
+            get { return this.instant; }
+        }
+
+        internal string Name
+        {
+            get { return this.name; }
+        }
+
+        internal Offset StandardOffset
+        {
+            get { return this.standardOffset; }
+        }
+
+        internal Offset Savings
+        {
+            get { return this.savings; }
+        }
+
+        internal Offset WallOffset
+        {
+            get { return StandardOffset + Savings; }
+        }
+
+        #region IComparable<ZoneTransition> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. 
+        /// The return value has the following meanings:
+        /// Value
+        /// Meaning
+        /// Less than zero
+        /// This object is less than the <paramref name="other"/> parameter.
+        /// Zero
+        /// This object is equal to <paramref name="other"/>.
+        /// Greater than zero
+        /// This object is greater than <paramref name="other"/>.
+        /// </returns>
+        public int CompareTo(ZoneTransition other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            return Instant.CompareTo(other.Instant);
+        }
+
+        #endregion
+
+        #region Operator overloads
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ZoneTransition left, ZoneTransition right)
+        {
+            if (ReferenceEquals(null, left))
+            {
+                return ReferenceEquals(null, right);
+            }
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ZoneTransition left, ZoneTransition right)
+        {
+            return !(left == right);
+        }
+
+        #endregion
+
+        #region IEquatable<ZoneTransition> Members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter;
+        /// otherwise, false.
+        /// </returns>
+        public bool Equals(ZoneTransition other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return Instant == other.Instant;
+        }
+
+        #endregion
 
         /// <summary>
         /// Determines whether is a transition from the given transition.
@@ -138,12 +244,7 @@ namespace NodaTime.TimeZones
         /// </exception>
         public override bool Equals(object obj)
         {
-            ZoneTransition transition = obj as ZoneTransition;
-            if (transition != null)
-            {
-                return Equals(transition);
-            }
-            return false;
+            return Equals(obj as ZoneTransition);
         }
 
         /// <summary>
@@ -166,7 +267,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append(name);
             builder.Append(" at ").Append(Instant);
             builder.Append(" ").Append(StandardOffset);
@@ -175,85 +276,5 @@ namespace NodaTime.TimeZones
         }
 
         #endregion // Object overrides
-
-        #region IEquatable<ZoneTransition> Members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter;
-        /// otherwise, false.
-        /// </returns>
-        public bool Equals(ZoneTransition other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-            return Instant == other.Instant;
-        }
-
-        #endregion
-
-        #region IComparable<ZoneTransition> Members
-
-        /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. 
-        /// The return value has the following meanings:
-        /// Value
-        /// Meaning
-        /// Less than zero
-        /// This object is less than the <paramref name="other"/> parameter.
-        /// Zero
-        /// This object is equal to <paramref name="other"/>.
-        /// Greater than zero
-        /// This object is greater than <paramref name="other"/>.
-        /// </returns>
-        public int CompareTo(ZoneTransition other)
-        {
-            if (other == null)
-            {
-                return 1;
-            }
-            return Instant.CompareTo(other.Instant);
-        }
-
-        #endregion
-
-        #region Operator overloads
-
-        /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ZoneTransition left, ZoneTransition right)
-        {
-            if ((object)left == null || (object)right == null)
-            {
-                return (object)left == (object)right;
-            }
-            return left.Equals(right);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ZoneTransition left, ZoneTransition right)
-        {
-            return !(left == right);
-        }
-
-        #endregion
     }
 }

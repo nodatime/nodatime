@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System.Collections.Generic;
 
 namespace NodaTime.TimeZones
@@ -28,6 +31,12 @@ namespace NodaTime.TimeZones
     public interface IDateTimeZoneProvider
     {
         /// <summary>
+        /// Returns an enumeration of the available ids from this provider.
+        /// </summary>
+        /// <value>The <see cref="IEnumerable{T}"/> of ids.</value>
+        IEnumerable<string> Ids { get; }
+
+        /// <summary>
         /// Returns the time zone definition associated with the given id.
         /// </summary>
         /// <remarks>
@@ -38,11 +47,5 @@ namespace NodaTime.TimeZones
         /// <param name="id">The id of the time zone to return.</param>
         /// <returns>The <see cref="IDateTimeZone"/> or <c>null</c> if there is no time zone with the given id.</returns>
         IDateTimeZone ForId(string id);
-
-        /// <summary>
-        /// Returns an enumeration of the available ids from this provider.
-        /// </summary>
-        /// <value>The <see cref="IEnumerable"/> of ids.</value>
-        IEnumerable<string> Ids { get; }
     }
 }

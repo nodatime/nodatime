@@ -32,7 +32,8 @@ namespace NodaTime.TimeZones
     public sealed class NullDateTimeZone
         : DateTimeZoneBase, IEquatable<NullDateTimeZone>
     {
-        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")] public static readonly NullDateTimeZone Instance = new NullDateTimeZone("NullTimeZone");
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")] 
+        public static readonly NullDateTimeZone Instance = new NullDateTimeZone("NullTimeZone");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NullDateTimeZone"/> class.

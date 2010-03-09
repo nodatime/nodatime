@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,18 +14,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
 using System.Collections.Generic;
-using NodaTime.Calendars;
-using NodaTime.Fields;
 using System.IO;
 using System.Text;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace NodaTime.TimeZones
 {
+    /// <summary>
+    /// A very specifc compressing binary stream reader for time zones.
+    /// </summary>
     public class DateTimeZoneReader
     {
         private readonly Stream stream;
@@ -53,8 +55,7 @@ namespace NodaTime.TimeZones
         /// stream. Therefore, we make sure that the stream is always closed.
         /// </para>
         /// </remarks>
-        /// <param name="stream">The stream to write to. Closed on return.</param>
-        /// <param name="timeZone">The <see cref="IDateTimeZone"/> to write.</param>
+        /// <param name="id">The id of the <see cref="IDateTimeZone"/> object to read.</param>
         /// <returns><c>true</c> if the time zone was successfully written.</returns>
         public IDateTimeZone ReadTimeZone(string id)
         {
@@ -63,35 +64,32 @@ namespace NodaTime.TimeZones
             {
                 return FixedDateTimeZone.Read(this, id);
             }
-            else if (flag == DateTimeZoneWriter.FlagTimeZonePrecalculated)
+            if (flag == DateTimeZoneWriter.FlagTimeZonePrecalculated)
             {
                 return PrecalculatedDateTimeZone.Read(this, id);
             }
-            else if (flag == DateTimeZoneWriter.FlagTimeZoneCached)
+            if (flag == DateTimeZoneWriter.FlagTimeZoneCached)
             {
                 return CachedDateTimeZone.Read(this, id);
             }
-            else if (flag == DateTimeZoneWriter.FlagTimeZoneDst)
+            if (flag == DateTimeZoneWriter.FlagTimeZoneDst)
             {
                 return DaylightSavingsTimeZone.Read(this, id);
             }
-            else if (flag == DateTimeZoneWriter.FlagTimeZoneNull)
+            if (flag == DateTimeZoneWriter.FlagTimeZoneNull)
             {
                 return NullDateTimeZone.Read(this, id);
             }
-            else
+            var className = ReadString();
+            var type = Type.GetType(className);
+            if (type == null)
             {
-                string className = ReadString();
-                Type type = Type.GetType(className);
-                if (type == null)
-                {
-                    throw new InvalidOperationException(@"Unknown IDateTimeZone type: " + className);
-                }
-                MethodInfo method = type.GetMethod("Read", new Type[] { typeof(DateTimeZoneReader), typeof(string) });
-                if (method != null)
-                {
-                    return method.Invoke(null, new object[] { this, id }) as IDateTimeZone;
-                }
+                throw new InvalidOperationException(@"Unknown IDateTimeZone type: " + className);
+            }
+            var method = type.GetMethod("Read", new[] {typeof (DateTimeZoneReader), typeof (string)});
+            if (method != null)
+            {
+                return method.Invoke(null, new object[] {this, id}) as IDateTimeZone;
             }
             return null;
         }
@@ -112,23 +110,24 @@ namespace NodaTime.TimeZones
          *
          * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
          */
+
         public long ReadTicks()
         {
             unchecked
             {
-                byte flag = (byte)ReadByte();
+                byte flag = (byte) ReadByte();
                 if (flag == DateTimeZoneWriter.FlagMinValue)
                 {
                     return Int64.MinValue;
                 }
-                else if (flag == DateTimeZoneWriter.FlagMaxValue)
+                if (flag == DateTimeZoneWriter.FlagMaxValue)
                 {
                     return Int64.MaxValue;
                 }
 
                 if ((flag & 0xc0) == DateTimeZoneWriter.FlagHalfHour)
                 {
-                    long units = (long)flag - DateTimeZoneWriter.MaxHalfHours;
+                    long units = flag - DateTimeZoneWriter.MaxHalfHours;
                     return units * (30 * NodaConstants.TicksPerMinute);
                 }
                 if ((flag & 0xc0) == DateTimeZoneWriter.FlagMinutes)
@@ -145,7 +144,7 @@ namespace NodaTime.TimeZones
                 if ((flag & 0xc0) == DateTimeZoneWriter.FlagSeconds)
                 {
                     long first = flag & ~0xc0;
-                    long second = (long)ReadInt32() & 0xffffffffL;
+                    long second = this.ReadInt32() & 0xffffffffL;
 
                     long units = (first << 32) + second;
                     units = units - DateTimeZoneWriter.MaxSeconds;
@@ -169,16 +168,17 @@ namespace NodaTime.TimeZones
          *
          * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
          */
+
         public int ReadMilliseconds()
         {
             unchecked
             {
-                byte flag = (byte)ReadByte();
+                byte flag = (byte) ReadByte();
                 if (flag == DateTimeZoneWriter.FlagMinValue)
                 {
                     return Int32.MinValue;
                 }
-                else if (flag == DateTimeZoneWriter.FlagMaxValue)
+                if (flag == DateTimeZoneWriter.FlagMaxValue)
                 {
                     return Int32.MaxValue;
                 }
@@ -205,15 +205,15 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Reads a dictionary of string to string from the stream.
         /// </summary>
-        /// <returns>The <see cref="IDictionary"/> to read.</returns>
+        /// <returns>The <see cref="IDictionary{TKey,TValue}"/> to read.</returns>
         public IDictionary<string, string> ReadDictionary()
         {
             IDictionary<string, string> results = new Dictionary<string, string>();
             int count = this.ReadCount();
             for (int i = 0; i < count; i++)
             {
-                string key = ReadString();
-                string value = ReadString();
+                var key = ReadString();
+                var value = ReadString();
                 results.Add(key, value);
             }
             return results;
@@ -222,7 +222,6 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Writes the offset value to the stream
         /// </summary>
-        /// <param name="value">The offset to write.</param>
         public Offset ReadOffset()
         {
             int milliseconds = this.ReadMilliseconds();
@@ -232,7 +231,6 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Writes the offset value to the stream
         /// </summary>
-        /// <param name="value">The offset to write.</param>
         public Instant ReadInstant()
         {
             long ticks = this.ReadTicks();
@@ -242,7 +240,6 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Writes the offset value to the stream
         /// </summary>
-        /// <param name="value">The offset to write.</param>
         public LocalInstant ReadLocalInstant()
         {
             long ticks = this.ReadTicks();
@@ -267,7 +264,7 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                byte flag = (byte)ReadByte();
+                byte flag = (byte) ReadByte();
                 if (flag == 0xff)
                 {
                     return ReadInt32();
@@ -306,7 +303,7 @@ namespace NodaTime.TimeZones
             }
         }
 
-        public long ReadInt64()
+        private long ReadInt64()
         {
             unchecked
             {
@@ -316,7 +313,7 @@ namespace NodaTime.TimeZones
             }
         }
 
-        public int ReadInt32()
+        private int ReadInt32()
         {
             unchecked
             {
@@ -326,7 +323,7 @@ namespace NodaTime.TimeZones
             }
         }
 
-        public int ReadInt16()
+        private int ReadInt16()
         {
             unchecked
             {
@@ -344,11 +341,10 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Writes the given string to the stream.
         /// </summary>
-        /// <param name="value">The value to write.</param>
         public string ReadString()
         {
             int length = this.ReadCount();
-            byte[] data = new byte[length];
+            var data = new byte[length];
             stream.Read(data, 0, length);
             return Encoding.UTF8.GetString(data);
         }

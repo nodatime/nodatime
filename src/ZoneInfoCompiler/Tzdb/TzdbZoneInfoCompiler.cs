@@ -190,7 +190,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="ruleSets">The rule sets map to use in looking up rules for the time zones..</param>
         private static IDateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, IList<ZoneRule>> ruleSets)
         {
-            var builder = new DateTimeZoneBuilder(zoneList.Name);
+            var builder = new DateTimeZoneBuilder();
             foreach (var zone in zoneList)
             {
                 builder.SetStandardOffset(zone.Offset);

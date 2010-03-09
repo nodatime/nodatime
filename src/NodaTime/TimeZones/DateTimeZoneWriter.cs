@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,17 +14,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
 using System.Collections.Generic;
-using NodaTime.Calendars;
-using NodaTime.Fields;
 using System.IO;
 using System.Text;
-using System.Diagnostics;
 
 namespace NodaTime.TimeZones
 {
+    /// <summary>
+    /// Very specific compressing binary writer for time zones.
+    /// </summary>
     public class DateTimeZoneWriter
     {
         internal const long MaxHalfHours = 0x3f;
@@ -32,7 +35,7 @@ namespace NodaTime.TimeZones
         internal const int MaxMillisHalfHours = 0x3f;
         private const int MinMillisHalfHours = -MaxMillisHalfHours;
 
-        internal const long MaxMinutes = 0x1fffffL;
+        private const long MaxMinutes = 0x1fffffL;
         private const long MinMinutes = -MaxMinutes;
 
         internal const long MaxSeconds = 0x1fffffffffL;
@@ -45,12 +48,12 @@ namespace NodaTime.TimeZones
         internal const byte FlagMinutes = 0x40;
         internal const byte FlagSeconds = 0x80;
         internal const byte FlagMillisSeconds = 0x80;
-        internal const byte FlagTicks = 0xc0;
-        internal const byte FlagMilliseconds = 0xfd;
+        private const byte FlagTicks = 0xc0;
+        private const byte FlagMilliseconds = 0xfd;
         internal const byte FlagMaxValue = 0xfe;
         internal const byte FlagMinValue = 0xff;
 
-        internal const byte FlagTimeZoneUser = 0;
+        private const byte FlagTimeZoneUser = 0;
         internal const byte FlagTimeZoneFixed = 1;
         internal const byte FlagTimeZoneCached = 2;
         internal const byte FlagTimeZonePrecalculated = 3;
@@ -83,7 +86,6 @@ namespace NodaTime.TimeZones
         /// stream. Therefore, we make sure that the stream is always closed.
         /// </para>
         /// </remarks>
-        /// <param name="stream">The stream to write to. Closed on return.</param>
         /// <param name="timeZone">The <see cref="IDateTimeZone"/> to write.</param>
         /// <returns><c>true</c> if the time zone was successfully written.</returns>
         public void WriteTimeZone(IDateTimeZone timeZone)
@@ -136,6 +138,7 @@ namespace NodaTime.TimeZones
          *
          * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
          */
+
         public void WriteTicks(long ticks)
         {
             unchecked
@@ -145,7 +148,7 @@ namespace NodaTime.TimeZones
                     WriteInt8(FlagMinValue);
                     return;
                 }
-                else if (ticks == Int64.MaxValue)
+                if (ticks == Int64.MaxValue)
                 {
                     WriteInt8(FlagMaxValue);
                     return;
@@ -157,7 +160,7 @@ namespace NodaTime.TimeZones
                     if (MinHalfHours <= units && units <= MaxHalfHours)
                     {
                         units = units + MaxHalfHours;
-                        WriteInt8((byte)(units & 0x3f));
+                        WriteInt8((byte) (units & 0x3f));
                         return;
                     }
                 }
@@ -169,7 +172,7 @@ namespace NodaTime.TimeZones
                     if (MinMinutes <= minutes && minutes <= MaxMinutes)
                     {
                         minutes = minutes + MaxMinutes;
-                        WriteInt32((int)((FlagMinutes << 24) | (int)(minutes & 0x3fffffff)));
+                        WriteInt32(((FlagMinutes << 24) | (int) (minutes & 0x3fffffff)));
                         return;
                     }
                 }
@@ -181,8 +184,8 @@ namespace NodaTime.TimeZones
                     if (MinSeconds <= seconds && seconds <= MaxSeconds)
                     {
                         seconds = seconds + MaxSeconds;
-                        WriteInt8((byte)(FlagSeconds | (byte)((seconds >> 32) & 0x3f)));
-                        WriteInt32((int)(seconds & 0xffffffff));
+                        WriteInt8((byte) (FlagSeconds | (byte) ((seconds >> 32) & 0x3f)));
+                        WriteInt32((int) (seconds & 0xffffffff));
                         return;
                     }
                 }
@@ -209,6 +212,7 @@ namespace NodaTime.TimeZones
          *
          * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
          */
+
         public void WriteMilliseconds(int milliseconds)
         {
             unchecked
@@ -218,7 +222,7 @@ namespace NodaTime.TimeZones
                     WriteInt8(FlagMinValue);
                     return;
                 }
-                else if (milliseconds == Int32.MaxValue)
+                if (milliseconds == Int32.MaxValue)
                 {
                     WriteInt8(FlagMaxValue);
                     return;
@@ -230,7 +234,7 @@ namespace NodaTime.TimeZones
                     if (MinMillisHalfHours <= units && units <= MaxMillisHalfHours)
                     {
                         units = units + MaxMillisHalfHours;
-                        WriteInt8((byte)(units & 0x7f));
+                        WriteInt8((byte) (units & 0x7f));
                         return;
                     }
                 }
@@ -242,8 +246,8 @@ namespace NodaTime.TimeZones
                     if (MinMillisSeconds <= seconds && seconds <= MaxMillisSeconds)
                     {
                         seconds = seconds + MaxMillisSeconds;
-                        WriteInt8((byte)(FlagMillisSeconds | (byte)((seconds >> 16) & 0x3f)));
-                        WriteInt16((short)(seconds & 0xffff));
+                        WriteInt8((byte) (FlagMillisSeconds | (byte) ((seconds >> 16) & 0x3f)));
+                        WriteInt16((short) (seconds & 0xffff));
                         return;
                     }
                 }
@@ -260,7 +264,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Writes the given dictionary of string to string to the stream.
         /// </summary>
-        /// <param name="dictionary">The <see cref="IDictionary"/> to write.</param>
+        /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}"/> to write.</param>
         public void WriteDictionary(IDictionary<string, string> dictionary)
         {
             if (dictionary == null)
@@ -308,7 +312,7 @@ namespace NodaTime.TimeZones
         /// <param name="value">if set to <c>true</c> [value].</param>
         public void WriteBoolean(bool value)
         {
-            WriteInt8((byte)(value ? 1 : 0));
+            WriteInt8((byte) (value ? 1 : 0));
         }
 
         /// <summary>
@@ -317,7 +321,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>
         /// This method is optimized for positive numbers. Negative number always take 5 bytes so if
-        /// negative numbers are likely, then <see cref="WriteIn32"/> should be used.
+        /// negative numbers are likely, then <see cref="WriteInt32"/> should be used.
         /// </remarks>
         /// <param name="value">The value to write.</param>
         public void WriteCount(int value)
@@ -326,45 +330,45 @@ namespace NodaTime.TimeZones
             {
                 if (value < 0)
                 {
-                    WriteInt8((byte)0xff);
+                    WriteInt8(0xff);
                     WriteInt32(value);
                     return;
                 }
                 if (value <= 0x0e)
                 {
-                    WriteInt8((byte)(0xf0 + value));
+                    WriteInt8((byte) (0xf0 + value));
                     return;
                 }
                 value -= 0x0f;
                 if (value <= 0x7f)
                 {
-                    WriteInt8((byte)value);
+                    WriteInt8((byte) value);
                     return;
                 }
                 value -= 0x80;
                 if (value <= 0x3fff)
                 {
-                    WriteInt8((byte)(0x80 + (value >> 8)));
-                    WriteInt8((byte)(value & 0xff));
+                    WriteInt8((byte) (0x80 + (value >> 8)));
+                    WriteInt8((byte) (value & 0xff));
                     return;
                 }
                 value -= 0x4000;
 
                 if (value <= 0x1fffff)
                 {
-                    WriteInt8((byte)(0xc0 + (value >> 16)));
-                    WriteInt16((short)(value & 0xffff));
+                    WriteInt8((byte) (0xc0 + (value >> 16)));
+                    WriteInt16((short) (value & 0xffff));
                     return;
                 }
                 value -= 0x200000;
                 if (value <= 0x0fffffff)
                 {
-                    WriteInt8((byte)(0xe0 + (value >> 24)));
-                    WriteInt8((byte)((value >> 16) & 0xff));
-                    WriteInt16((short)(value & 0xffff));
+                    WriteInt8((byte) (0xe0 + (value >> 24)));
+                    WriteInt8((byte) ((value >> 16) & 0xff));
+                    WriteInt16((short) (value & 0xffff));
                     return;
                 }
-                WriteInt8((byte)0xff);
+                WriteInt8(0xff);
                 WriteInt32(value + 0x200000 + 0x4000 + 0x80 + 0x0f);
             }
         }
@@ -373,12 +377,12 @@ namespace NodaTime.TimeZones
         /// Writes the given value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        public void WriteInt64(long value)
+        private void WriteInt64(long value)
         {
             unchecked
             {
-                WriteInt32((int)(value >> 32));
-                WriteInt32((int)value);
+                WriteInt32((int) (value >> 32));
+                WriteInt32((int) value);
             }
         }
 
@@ -386,12 +390,12 @@ namespace NodaTime.TimeZones
         /// Writes the given value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        public void WriteInt32(int value)
+        private void WriteInt32(int value)
         {
             unchecked
             {
-                WriteInt16((short)(value >> 16));
-                WriteInt16((short)value);
+                WriteInt16((short) (value >> 16));
+                WriteInt16((short) value);
             }
         }
 
@@ -399,12 +403,12 @@ namespace NodaTime.TimeZones
         /// Writes the given value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        public void WriteInt16(short value)
+        private void WriteInt16(short value)
         {
             unchecked
             {
-                WriteInt8((byte)((value >> 8) & 0xff));
-                WriteInt8((byte)(value & 0xff));
+                WriteInt8((byte) ((value >> 8) & 0xff));
+                WriteInt8((byte) (value & 0xff));
             }
         }
 
