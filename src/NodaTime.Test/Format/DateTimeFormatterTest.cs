@@ -66,7 +66,7 @@ namespace NodaTime.Test.Format
 
             fullFormatterWithoutOffset = new DateTimeFormatter(printer, parser)
                 .WithProvider(provider1)
-                .WithCalendarSystem(calendar1)
+                .WithCalendar(calendar1)
                 .WithZone(zone1)
                 .WithPivotYear(pivotYear1);
 

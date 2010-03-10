@@ -31,7 +31,7 @@ namespace NodaTime.Test.Format
             Assert.That(sutWithProvider, Is.Not.SameAs(fullFormatterWithOffset));
             Assert.That(sutWithProvider.Provider, Is.SameAs(provider2));
 
-            Assert.That(sutWithProvider.CalendarSystem, Is.SameAs(fullFormatterWithOffset.CalendarSystem));
+            Assert.That(sutWithProvider.Calendar, Is.SameAs(fullFormatterWithOffset.Calendar));
             Assert.That(sutWithProvider.Zone, Is.SameAs(fullFormatterWithOffset.Zone));
             Assert.That(sutWithProvider.PivotYear, Is.EqualTo(fullFormatterWithOffset.PivotYear));
             Assert.That(sutWithProvider.IsOffsetParsed, Is.EqualTo(fullFormatterWithOffset.IsOffsetParsed));
@@ -50,18 +50,19 @@ namespace NodaTime.Test.Format
         #region WithOffsetParsed
 
         [Test]
-        public void WithOffsetParsed_CreatesNewInstance_ForDifferentProvider()
+        public void WithOffsetParsed_CreatesNewInstanceAndClearsZone_ForNotOffsetParsed()
         {
+            Assert.That(fullFormatterWithoutOffset.Zone, Is.Not.Null);
+
             var sutWithOffset = fullFormatterWithoutOffset.WithOffsetParsed();
 
             Assert.That(sutWithOffset, Is.Not.SameAs(fullFormatterWithoutOffset));
             Assert.That(sutWithOffset.IsOffsetParsed, Is.True);
 
-            Assert.That(sutWithOffset.CalendarSystem, Is.SameAs(fullFormatterWithoutOffset.CalendarSystem));
-            Assert.That(sutWithOffset.Zone, Is.SameAs(fullFormatterWithoutOffset.Zone));
+            Assert.That(sutWithOffset.Calendar, Is.SameAs(fullFormatterWithoutOffset.Calendar));
+            Assert.That(sutWithOffset.Zone, Is.Null);
             Assert.That(sutWithOffset.PivotYear, Is.EqualTo(fullFormatterWithoutOffset.PivotYear));
             Assert.That(sutWithOffset.Provider, Is.SameAs(fullFormatterWithoutOffset.Provider));
-
         }
 
         [Test]
@@ -79,10 +80,10 @@ namespace NodaTime.Test.Format
         [Test]
         public void WithCalendarSystem_CreatesNewInstance_ForDifferentCalendarSystem()
         {
-            var sutWithCalendar = fullFormatterWithOffset.WithCalendarSystem(calendar2);
+            var sutWithCalendar = fullFormatterWithOffset.WithCalendar(calendar2);
 
             Assert.That(sutWithCalendar, Is.Not.SameAs(fullFormatterWithOffset));
-            Assert.That(sutWithCalendar.CalendarSystem, Is.SameAs(calendar2));
+            Assert.That(sutWithCalendar.Calendar, Is.SameAs(calendar2));
 
             Assert.That(sutWithCalendar.Provider, Is.SameAs(fullFormatterWithOffset.Provider));
             Assert.That(sutWithCalendar.Zone, Is.SameAs(fullFormatterWithOffset.Zone));
@@ -93,7 +94,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void WithCalendarSystem_ReturnsTheSameInstance_ForTheSameCalendarSystem()
         {
-            var sutWithCalendar = fullFormatterWithOffset.WithCalendarSystem(calendar1);
+            var sutWithCalendar = fullFormatterWithOffset.WithCalendar(calendar1);
 
             Assert.That(sutWithCalendar, Is.SameAs(fullFormatterWithOffset));
         }
@@ -103,25 +104,27 @@ namespace NodaTime.Test.Format
         #region WithZone
 
         [Test]
-        public void WithZone_CreatesNewInstance_ForDifferentZone()
+        public void WithZone_CreatesNewInstanceAndClearsOffset_ForDifferentZone()
         {
+            Assert.That(fullFormatterWithOffset.IsOffsetParsed, Is.True);
+
             var sutWithZone = fullFormatterWithOffset.WithZone(zone2);
 
             Assert.That(sutWithZone, Is.Not.SameAs(fullFormatterWithOffset));
             Assert.That(sutWithZone.Zone, Is.SameAs(zone2));
 
             Assert.That(sutWithZone.Provider, Is.SameAs(fullFormatterWithOffset.Provider));
-            Assert.That(sutWithZone.CalendarSystem, Is.SameAs(fullFormatterWithOffset.CalendarSystem));
+            Assert.That(sutWithZone.Calendar, Is.SameAs(fullFormatterWithOffset.Calendar));
             Assert.That(sutWithZone.PivotYear, Is.EqualTo(fullFormatterWithOffset.PivotYear));
-            Assert.That(sutWithZone.IsOffsetParsed, Is.EqualTo(fullFormatterWithOffset.IsOffsetParsed));
+            Assert.That(sutWithZone.IsOffsetParsed, Is.False);
         }
 
         [Test]
         public void WithZone_ReturnsTheSameInstance_ForTheSameZone()
         {
-            var sutWithZone = fullFormatterWithOffset.WithZone(zone1);
+            var sutWithZone = fullFormatterWithoutOffset.WithZone(zone1);
 
-            Assert.That(sutWithZone, Is.SameAs(fullFormatterWithOffset));
+            Assert.That(sutWithZone, Is.SameAs(fullFormatterWithoutOffset));
         }
 
         #endregion
@@ -137,7 +140,7 @@ namespace NodaTime.Test.Format
             Assert.That(sutWithPivotYear.PivotYear, Is.EqualTo(pivotYear2));
 
             Assert.That(sutWithPivotYear.Provider, Is.SameAs(fullFormatterWithOffset.Provider));
-            Assert.That(sutWithPivotYear.CalendarSystem, Is.SameAs(fullFormatterWithOffset.CalendarSystem));
+            Assert.That(sutWithPivotYear.Calendar, Is.SameAs(fullFormatterWithOffset.Calendar));
             Assert.That(sutWithPivotYear.Zone, Is.SameAs(fullFormatterWithOffset.Zone));
             Assert.That(sutWithPivotYear.IsOffsetParsed, Is.EqualTo(fullFormatterWithOffset.IsOffsetParsed));
         }

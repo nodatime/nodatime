@@ -125,7 +125,7 @@ namespace NodaTime.Format
         private readonly ICalendarSystem calendarSystem;
         private Offset offset;
         private IDateTimeZone zone;
-        private readonly LocalInstant instant;
+        private readonly LocalInstant localInstant;
         private readonly IFormatProvider provider;
         private int? pivotYear;
 
@@ -150,7 +150,7 @@ namespace NodaTime.Format
                 throw new ArgumentNullException("calendarSystem");
             }
 
-            this.instant = instant;
+            this.localInstant = instant;
             this.calendarSystem = calendarSystem;
             this.provider = provider;
             this.pivotYear = pivotYear;
@@ -168,9 +168,14 @@ namespace NodaTime.Format
         }
 
         /// <summary>
+        /// Gets an initial local instant to start computing
+        /// </summary>
+        public LocalInstant InitialLocalInstant { get { return localInstant; } }
+
+        /// <summary>
         /// Gets the calendar system of the bucket
         /// </summary>
-        public ICalendarSystem CalendarSystem { get { return calendarSystem; } }
+        public ICalendarSystem Calendar { get { return calendarSystem; } }
 
         /// <summary>
         /// Gets the format provider to be used during parsing.
@@ -197,6 +202,7 @@ namespace NodaTime.Format
             }
 
         }
+
         /// <summary>
         /// Saves a datetime field value.
         /// </summary>
@@ -272,7 +278,7 @@ namespace NodaTime.Format
 
             Array.Sort(savedFieldsLocal,0, savedFieldCountLocal);
 
-            LocalInstant instant = this.instant;
+            LocalInstant instant = this.localInstant;
             try
             {
                 for (int i = 0; i < savedFieldCountLocal; i++)
