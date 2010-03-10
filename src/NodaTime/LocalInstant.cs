@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,10 +14,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
-using NodaTime.TimeZones;
 using System.Globalization;
+using NodaTime.TimeZones;
 
 namespace NodaTime
 {
@@ -36,20 +39,20 @@ namespace NodaTime
         private readonly long ticks;
 
         /// <summary>
-        /// Ticks since the Unix epoch.
-        /// </summary>
-        public long Ticks
-        {
-            get { return this.ticks; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
         /// </summary>
         /// <param name="ticks">The number of ticks from the Unix Epoch.</param>
         public LocalInstant(long ticks)
         {
             this.ticks = ticks;
+        }
+
+        /// <summary>
+        /// Ticks since the Unix epoch.
+        /// </summary>
+        public long Ticks
+        {
+            get { return this.ticks; }
         }
 
         /// <summary>
@@ -60,8 +63,8 @@ namespace NodaTime
         {
             get
             {
-                Instant rightNow = Clock.Now;
-                Offset offsetToLocal = DateTimeZones.Current.GetOffsetFromUtc(rightNow);
+                var rightNow = Clock.Now;
+                var offsetToLocal = DateTimeZones.Current.GetOffsetFromUtc(rightNow);
                 return rightNow + offsetToLocal;
             }
         }
@@ -71,9 +74,9 @@ namespace NodaTime
         /// <summary>
         /// Returns an instant after adding the given duration
         /// </summary>
-        public static LocalInstant operator +(LocalInstant instant, Duration duration)
+        public static LocalInstant operator +(LocalInstant left, Duration right)
         {
-            return new LocalInstant(instant.Ticks + duration.Ticks);
+            return new LocalInstant(left.Ticks + right.Ticks);
         }
 
         /// <summary>
@@ -89,31 +92,30 @@ namespace NodaTime
 
         /// <summary>
         /// Returns the difference between two instants as a duration.
-        /// TODO: It *could* return an interval... but I think this is better.
         /// </summary>
-        public static Duration operator -(LocalInstant first, LocalInstant second)
+        public static Duration operator -(LocalInstant left, LocalInstant right)
         {
-            return new Duration(first.Ticks - second.Ticks);
+            return new Duration(left.Ticks - right.Ticks);
         }
 
         /// <summary>
         /// Implements the operator - (subtraction) for <see cref="LocalInstant"/> - <see
         /// cref="Offset"/>.
         /// </summary>
-        /// <param name="instant">The left hand side of the operator.</param>
-        /// <param name="offset">The right hand side of the operator.</param>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
-        public static Instant operator -(LocalInstant instant, Offset offset)
+        public static Instant operator -(LocalInstant left, Offset right)
         {
-            return new Instant(instant.Ticks - offset.AsTicks());
+            return new Instant(left.Ticks - right.Ticks);
         }
 
         /// <summary>
         /// Returns an instant after subtracting the given duration
         /// </summary>
-        public static LocalInstant operator -(LocalInstant instant, Duration duration)
+        public static LocalInstant operator -(LocalInstant left, Duration right)
         {
-            return new LocalInstant(instant.Ticks - duration.Ticks);
+            return new LocalInstant(left.Ticks - right.Ticks);
         }
 
         /// <summary>
@@ -217,23 +219,6 @@ namespace NodaTime
 
         #endregion // Operators
 
-        #region IEquatable<LocalInstant> Members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter;
-        /// otherwise, false.
-        /// </returns>
-        public bool Equals(LocalInstant other)
-        {
-            return Ticks == other.Ticks;
-        }
-
-        #endregion
-
         #region IComparable<LocalInstant> Members
 
         /// <summary>
@@ -310,11 +295,28 @@ namespace NodaTime
         {
             // TODO: Use proper formatting!
             var utc = new LocalDateTime(new LocalInstant(Ticks));
-            return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00} LOC", utc.Year, utc.MonthOfYear, utc.DayOfMonth,
+            return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00} LOC", utc.Year,
+                                 utc.MonthOfYear, utc.DayOfMonth,
                                  utc.HourOfDay, utc.MinuteOfHour, utc.SecondOfMinute);
-            //return Ticks.ToString("N0", CultureInfo.CurrentCulture);
         }
 
         #endregion  // Object overrides
+
+        #region IEquatable<LocalInstant> Members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter;
+        /// otherwise, false.
+        /// </returns>
+        public bool Equals(LocalInstant other)
+        {
+            return Ticks == other.Ticks;
+        }
+
+        #endregion
     }
 }

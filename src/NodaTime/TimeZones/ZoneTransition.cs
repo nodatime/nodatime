@@ -78,7 +78,7 @@ namespace NodaTime.TimeZones
             if (instant.Ticks < 0 && WallOffset.Milliseconds < 0)
             {
                 long distanceFromEndOfTime = instant.Ticks - Instant.MinValue.Ticks;
-                if (distanceFromEndOfTime < Math.Abs(WallOffset.AsTicks()))
+                if (distanceFromEndOfTime < Math.Abs(this.WallOffset.Ticks))
                 {
                     this.standardOffset = Offset.FromTicks(-distanceFromEndOfTime);
                     this.savings = Offset.Zero;
@@ -87,7 +87,7 @@ namespace NodaTime.TimeZones
             else if (instant.Ticks > 0 && savings.Milliseconds > 0)
             {
                 long distanceFromEndOfTime = Instant.MaxValue.Ticks - instant.Ticks;
-                if (distanceFromEndOfTime < WallOffset.AsTicks())
+                if (distanceFromEndOfTime < this.WallOffset.Ticks)
                 {
                     this.standardOffset = Offset.FromTicks(distanceFromEndOfTime);
                     this.savings = Offset.Zero;

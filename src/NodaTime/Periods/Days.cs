@@ -573,7 +573,7 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Days left, Days right)
         {
             return Object.Equals(left, right);
@@ -584,7 +584,7 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator !=(Days left, Days right)
         {
             return !(left == right);
@@ -595,7 +595,7 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Days left, Days right)
         {
             return SingleFieldPeriodBase.Compare(left, right) < 0;
@@ -606,7 +606,7 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Days left, Days right)
         {
             return SingleFieldPeriodBase.Compare(left, right) <= 0;
@@ -617,7 +617,7 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Days left, Days right)
         {
             return SingleFieldPeriodBase.Compare(left, right) > 0;
@@ -628,7 +628,7 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Days left, Days right)
         {
             return SingleFieldPeriodBase.Compare(left, right) >= 0;

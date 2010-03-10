@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,10 +14,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
-using NodaTime.Calendars;
 using System.Globalization;
+using NodaTime.Calendars;
 
 namespace NodaTime
 {
@@ -26,7 +29,6 @@ namespace NodaTime
     /// (There are 10,000 ticks in a millisecond.)
     /// </summary>
     /// <remarks>
-    /// The default value of this struct is the Unix epoch.
     /// This type is immutable and thread-safe.
     /// </remarks>
     public struct Instant
@@ -42,14 +44,6 @@ namespace NodaTime
         private readonly long ticks;
 
         /// <summary>
-        /// Ticks since the Unix epoch.
-        /// </summary>
-        public long Ticks
-        {
-            get { return this.ticks; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Instant"/> struct.
         /// </summary>
         /// <param name="ticks">The ticks from the unix epoch.</param>
@@ -59,184 +53,12 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a new instant corresponding to the given UTC date and
-        /// time in the ISO calendar. In most cases applications should 
-        /// use <see cref="ZonedDateTime" />
-        /// to represent a date and time, but this method is useful in some 
-        /// situations where an Instant is required, such as time zone testing.
+        /// Ticks since the Unix epoch.
         /// </summary>
-        public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth,
-            int hourOfDay, int minuteOfHour)
+        public long Ticks
         {
-            LocalInstant local = IsoCalendarSystem.Instance.GetLocalInstant
-                (year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
-            return new Instant(local.Ticks);
+            get { return this.ticks; }
         }
-
-        /// <summary>
-        /// Returns a new instant corresponding to the given UTC date and
-        /// time in the ISO calendar. In most cases applications should 
-        /// use <see cref="ZonedDateTime" />
-        /// to represent a date and time, but this method is useful in some 
-        /// situations where an Instant is required, such as time zone testing.
-        /// </summary>
-        public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth,
-            int hourOfDay, int minuteOfHour, int secondOfMinute)
-        {
-            LocalInstant local = IsoCalendarSystem.Instance.GetLocalInstant
-                (year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
-            return new Instant(local.Ticks);
-        }
-
-        #region Operators
-
-        /// <summary>
-        /// Returns an instant after adding the given duration
-        /// </summary>
-        public static Instant operator +(Instant instant, Duration duration)
-        {
-            return new Instant(instant.Ticks + duration.Ticks);
-        }
-
-        /// <summary>
-        /// Implements the operator + (addition) for <see cref="Instant"/> + <see cref="Offset"/>.
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
-        public static LocalInstant operator +(Instant instant, Offset offset)
-        {
-            return new LocalInstant(instant.Ticks + offset.AsTicks());
-        }
-
-        /// <summary>
-        /// Adds a duration to an instant. Friendly alternative to <c>operator-()</c>.
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Instant"/> representing the sum of the given values.</returns>
-        public static Instant Add(Instant left, Duration right)
-        {
-            return left + right;
-        }
-
-        /// <summary>
-        /// Adds an offset to an instant. Friendly alternative to <c>operator-()</c>.
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
-        public static LocalInstant Add(Instant left, Offset right)
-        {
-            return left + right;
-        }
-
-        /// <summary>
-        /// Returns the difference between two instants as a duration.
-        /// TODO: It *could* return an interval... but I think this is better.
-        /// </summary>
-        public static Duration operator -(Instant first, Instant second)
-        {
-            return new Duration(first.Ticks - second.Ticks);
-        }
-
-        /// <summary>
-        /// Returns an instant after subtracting the given duration
-        /// </summary>
-        public static Instant operator -(Instant instant, Duration duration)
-        {
-            return new Instant(instant.Ticks - duration.Ticks);
-        }
-
-        /// <summary>
-        /// Subtracts one instant from another. Friendly alternative to <c>operator-()</c>.
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Duration"/> representing the difference of the given values.</returns>
-        public static Duration Subtract(Instant left, Instant right)
-        {
-            return left - right;
-        }
-
-        /// <summary>
-        /// Subtracts a duration from an instant. Friendly alternative to <c>operator-()</c>.
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
-        public static Instant Subtract(Instant left, Duration right)
-        {
-            return left - right;
-        }
-
-        /// <summary>
-        /// Implements the operator == (equality).
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator ==(Instant left, Instant right)
-        {
-            return left.Equals(right);
-        }
-
-        /// <summary>
-        /// Implements the operator != (inequality).
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator !=(Instant left, Instant right)
-        {
-            return !(left == right);
-        }
-
-        /// <summary>
-        /// Implements the operator &lt; (less than).
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
-        public static bool operator <(Instant left, Instant right)
-        {
-            return left.CompareTo(right) < 0;
-        }
-
-        /// <summary>
-        /// Implements the operator &lt;= (less than or equal).
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
-        public static bool operator <=(Instant left, Instant right)
-        {
-            return left.CompareTo(right) <= 0;
-        }
-
-        /// <summary>
-        /// Implements the operator &gt; (greater than).
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
-        public static bool operator >(Instant left, Instant right)
-        {
-            return left.CompareTo(right) > 0;
-        }
-
-        /// <summary>
-        /// Implements the operator &gt;= (greater than or equal).
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
-        public static bool operator >=(Instant left, Instant right)
-        {
-            return left.CompareTo(right) >= 0;
-        }
-
-        #endregion // Operators
 
         #region IEquatable<Instant> Members
 
@@ -340,11 +162,202 @@ namespace NodaTime
 
             // TODO: Use proper formatting!
             var utc = new LocalDateTime(new LocalInstant(Ticks));
-            return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.MonthOfYear, utc.DayOfMonth,
+            return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year,
+                                 utc.MonthOfYear, utc.DayOfMonth,
                                  utc.HourOfDay, utc.MinuteOfHour, utc.SecondOfMinute);
             //return Ticks.ToString("N0", CultureInfo.CurrentCulture);
         }
 
         #endregion  // Object overrides
+
+        #region Operators
+
+        /// <summary>
+        /// Implements the operator + (addition) for <see cref="Instant"/> + <see cref="Duration"/>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant"/> representing the sum of the given values.</returns>
+        public static Instant operator +(Instant left, Duration right)
+        {
+            return new Instant(left.Ticks + right.Ticks);
+        }
+
+        /// <summary>
+        /// Implements the operator + (addition) for <see cref="Instant"/> + <see cref="Offset"/>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
+        public static LocalInstant operator +(Instant left, Offset right)
+        {
+            return new LocalInstant(left.Ticks + right.Ticks);
+        }
+
+        /// <summary>
+        /// Adds a duration to an instant. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant"/> representing the sum of the given values.</returns>
+        public static Instant Add(Instant left, Duration right)
+        {
+            return left + right;
+        }
+
+        /// <summary>
+        /// Adds an offset to an instant. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
+        public static LocalInstant Add(Instant left, Offset right)
+        {
+            return left + right;
+        }
+
+        /// <summary>
+        /// Implements the operator - (subtraction) for <see cref="Instant"/> - <see cref="Instant"/>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant"/> representing the sum of the given values.</returns>
+        public static Duration operator -(Instant left, Instant right)
+        {
+            return new Duration(left.Ticks - right.Ticks);
+        }
+
+        /// <summary>
+        /// Implements the operator - (subtraction) for <see cref="Instant"/> - <see cref="Duration"/>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant"/> representing the sum of the given values.</returns>
+        public static Instant operator -(Instant left, Duration right)
+        {
+            return new Instant(left.Ticks - right.Ticks);
+        }
+
+        /// <summary>
+        /// Subtracts one instant from another. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the difference of the given values.</returns>
+        public static Duration Subtract(Instant left, Instant right)
+        {
+            return left - right;
+        }
+
+        /// <summary>
+        /// Subtracts a duration from an instant. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
+        public static Instant Subtract(Instant left, Duration right)
+        {
+            return left - right;
+        }
+
+        /// <summary>
+        /// Implements the operator == (equality).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
+        public static bool operator ==(Instant left, Instant right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator != (inequality).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
+        public static bool operator !=(Instant left, Instant right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Implements the operator &lt; (less than).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
+        public static bool operator <(Instant left, Instant right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        /// <summary>
+        /// Implements the operator &lt;= (less than or equal).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
+        public static bool operator <=(Instant left, Instant right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        /// <summary>
+        /// Implements the operator &gt; (greater than).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
+        public static bool operator >(Instant left, Instant right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        /// <summary>
+        /// Implements the operator &gt;= (greater than or equal).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
+        public static bool operator >=(Instant left, Instant right)
+        {
+            return left.CompareTo(right) >= 0;
+        }
+
+        #endregion // Operators
+
+        #region Convenience methods
+
+        /// <summary>
+        /// Returns a new instant corresponding to the given UTC date and time in the ISO calendar.
+        /// In most cases applications should use <see cref="ZonedDateTime"/> to represent a date
+        /// and time, but this method is useful in some situations where an <see cref="Instant"/> is
+        /// required, such as time zone testing.
+        /// </summary>
+        public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth,
+                                      int hourOfDay, int minuteOfHour)
+        {
+            var local = IsoCalendarSystem.Instance.GetLocalInstant
+                (year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
+            return new Instant(local.Ticks);
+        }
+
+        /// <summary>
+        /// Returns a new instant corresponding to the given UTC date and
+        /// time in the ISO calendar. In most cases applications should 
+        /// use <see cref="ZonedDateTime" />
+        /// to represent a date and time, but this method is useful in some 
+        /// situations where an Instant is required, such as time zone testing.
+        /// </summary>
+        public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth,
+                                      int hourOfDay, int minuteOfHour, int secondOfMinute)
+        {
+            var local = IsoCalendarSystem.Instance.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
+            return new Instant(local.Ticks);
+        }
+
+        #endregion
     }
 }

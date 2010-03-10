@@ -57,14 +57,6 @@ namespace NodaTime
         private readonly int milliseconds;
 
         /// <summary>
-        /// Gets the number of milliseconds in the offset.
-        /// </summary>
-        public int Milliseconds
-        {
-            get { return this.milliseconds; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Offset"/> struct.
         /// </summary>
         /// <remarks>
@@ -79,89 +71,20 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Froms the ticks.
+        /// Gets the number of milliseconds in the offset.
         /// </summary>
-        /// <param name="ticks">The ticks.</param>
-        /// <returns></returns>
-        public static Offset FromTicks(long ticks)
+        public int Milliseconds
         {
-            return new Offset((int) (ticks / NodaConstants.TicksPerMillisecond));
-        }
-
-        /// <summary>
-        /// Creates an offset with the specified number of hours.
-        /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <returns>
-        /// A new <see cref="Offset"/> representing the given value.
-        /// </returns>
-        public static Offset ForHours(int hours)
-        {
-            return Create(hours, 0, 0, 0);
-        }
-
-        /// <summary>
-        /// Creates an offset with the specified number of hours and minutes.
-        /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <returns>
-        /// A new <see cref="Offset"/> representing the given values.
-        /// </returns>
-        /// <remarks>
-        /// TODO: not sure about the name. Anyone got a better one?
-        /// </remarks>
-        public static Offset Create(int hours, int minutes)
-        {
-            return Create(hours, minutes, 0, 0);
-        }
-
-        /// <summary>
-        /// Creates an offset with the specified number of hours, minutes, and seconds.
-        /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <param name="seconds">The number of seconds.</param>
-        /// <returns>
-        /// A new <see cref="Offset"/> representing the given values.
-        /// </returns>
-        /// <remarks>
-        /// TODO: not sure about the name. Anyone got a better one?
-        /// </remarks>
-        public static Offset Create(int hours, int minutes, int seconds)
-        {
-            return Create(hours, minutes, seconds, 0);
-        }
-
-        /// <summary>
-        /// Creates an offset with the specified number of hours, minutes, seconds, and
-        /// milliseconds.
-        /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <param name="seconds">The number of seconds.</param>
-        /// <param name="milliseconds">The number of milliseconds.</param>
-        /// <returns>
-        /// A new <see cref="Offset"/> representing the given values.
-        /// </returns>
-        /// <remarks>
-        /// TODO: not sure about the name. Anyone got a better one?
-        /// </remarks>
-        public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
-        {
-            return new Offset((hours * NodaConstants.MillisecondsPerHour) +
-                              (minutes * NodaConstants.MillisecondsPerMinute) +
-                              (seconds * NodaConstants.MillisecondsPerSecond) +
-                              milliseconds);
+            get { return this.milliseconds; }
         }
 
         /// <summary>
         /// Returns the number of ticks represented by this offset.
         /// </summary>
-        /// <returns>The number of ticks.</returns>
-        public long AsTicks()
+        /// <value>The number of ticks.</value>
+        public long Ticks
         {
-            return this.Milliseconds * NodaConstants.TicksPerMillisecond;
+            get { return this.Milliseconds * NodaConstants.TicksPerMillisecond; }
         }
 
         #region Operators
@@ -278,23 +201,6 @@ namespace NodaTime
 
         #endregion // Operators
 
-        #region IEquatable<Offset> Members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter;
-        /// otherwise, false.
-        /// </returns>
-        public bool Equals(Offset other)
-        {
-            return this.Milliseconds == other.Milliseconds;
-        }
-
-        #endregion
-
         #region IComparable<Offset> Members
 
         /// <summary>
@@ -395,16 +301,10 @@ namespace NodaTime
             }
             throw new ArgumentOutOfRangeException("format", format, @"The format parameter is not valid: " + format);
         }
+
         #endregion  // Object overrides
 
         #region Format utilities
-
-        private enum FormatType
-        {
-            FormatLong,
-            FormatShort,
-            FormatMinimal
-        }
 
         /// <summary>
         /// Returns a string formatted version of this offset.
@@ -441,6 +341,107 @@ namespace NodaTime
             return string.Format(CultureInfo.InvariantCulture, pattern, sign, hours, minutes, seconds, millisecondsValue);
         }
 
+        private enum FormatType
+        {
+            FormatLong,
+            FormatShort,
+            FormatMinimal
+        }
+
         #endregion // Format utilities
+
+        #region IEquatable<Offset> Members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter;
+        /// otherwise, false.
+        /// </returns>
+        public bool Equals(Offset other)
+        {
+            return this.Milliseconds == other.Milliseconds;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Froms the ticks.
+        /// </summary>
+        /// <param name="ticks">The ticks.</param>
+        /// <returns></returns>
+        public static Offset FromTicks(long ticks)
+        {
+            return new Offset((int) (ticks / NodaConstants.TicksPerMillisecond));
+        }
+
+        /// <summary>
+        /// Creates an offset with the specified number of hours.
+        /// </summary>
+        /// <param name="hours">The number of hours.</param>
+        /// <returns>
+        /// A new <see cref="Offset"/> representing the given value.
+        /// </returns>
+        public static Offset ForHours(int hours)
+        {
+            return Create(hours, 0, 0, 0);
+        }
+
+        /// <summary>
+        /// Creates an offset with the specified number of hours and minutes.
+        /// </summary>
+        /// <param name="hours">The number of hours.</param>
+        /// <param name="minutes">The number of minutes.</param>
+        /// <returns>
+        /// A new <see cref="Offset"/> representing the given values.
+        /// </returns>
+        /// <remarks>
+        /// TODO: not sure about the name. Anyone got a better one?
+        /// </remarks>
+        public static Offset Create(int hours, int minutes)
+        {
+            return Create(hours, minutes, 0, 0);
+        }
+
+        /// <summary>
+        /// Creates an offset with the specified number of hours, minutes, and seconds.
+        /// </summary>
+        /// <param name="hours">The number of hours.</param>
+        /// <param name="minutes">The number of minutes.</param>
+        /// <param name="seconds">The number of seconds.</param>
+        /// <returns>
+        /// A new <see cref="Offset"/> representing the given values.
+        /// </returns>
+        /// <remarks>
+        /// TODO: not sure about the name. Anyone got a better one?
+        /// </remarks>
+        public static Offset Create(int hours, int minutes, int seconds)
+        {
+            return Create(hours, minutes, seconds, 0);
+        }
+
+        /// <summary>
+        /// Creates an offset with the specified number of hours, minutes, seconds, and
+        /// milliseconds.
+        /// </summary>
+        /// <param name="hours">The number of hours.</param>
+        /// <param name="minutes">The number of minutes.</param>
+        /// <param name="seconds">The number of seconds.</param>
+        /// <param name="milliseconds">The number of milliseconds.</param>
+        /// <returns>
+        /// A new <see cref="Offset"/> representing the given values.
+        /// </returns>
+        /// <remarks>
+        /// TODO: not sure about the name. Anyone got a better one?
+        /// </remarks>
+        public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
+        {
+            return new Offset((hours * NodaConstants.MillisecondsPerHour) +
+                              (minutes * NodaConstants.MillisecondsPerMinute) +
+                              (seconds * NodaConstants.MillisecondsPerSecond) +
+                              milliseconds);
+        }
     }
 }

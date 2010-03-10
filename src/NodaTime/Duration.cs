@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
 using System.Globalization;
 
@@ -40,13 +43,14 @@ namespace NodaTime
         public static readonly Duration One = new Duration(1L);
         public static readonly Duration MinValue = new Duration(Int64.MinValue);
         public static readonly Duration MaxValue = new Duration(Int64.MaxValue);
+        public static readonly Duration OneWeek = new Duration(NodaConstants.TicksPerWeek);
+        public static readonly Duration OneDay = new Duration(NodaConstants.TicksPerDay);
+        public static readonly Duration OneHour = new Duration(NodaConstants.TicksPerHour);
+        public static readonly Duration OneMinute = new Duration(NodaConstants.TicksPerMinute);
+        public static readonly Duration OneSecond = new Duration(NodaConstants.TicksPerSecond);
+        public static readonly Duration OneMillisecond = new Duration(NodaConstants.TicksPerMillisecond);
 
         private readonly long ticks;
-
-        /// <summary>
-        /// The number of ticks in the duration.
-        /// </summary>
-        public long Ticks { get { return ticks; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Duration"/> struct.
@@ -57,19 +61,37 @@ namespace NodaTime
             this.ticks = ticks;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Duration"/> struct as the difference
+        /// betweeen the given ticks. This is effectively <c>new Duration(end - start)</c>.
+        /// </summary>
+        /// <param name="startTicks">The start ticks.</param>
+        /// <param name="endTicks">The end ticks.</param>
         public Duration(long startTicks, long endTicks)
+            : this(endTicks - startTicks)
         {
-            ticks = endTicks - startTicks;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Duration"/> struct as the difference
+        /// betweeen the given <see cref="Instant"/> values. This is effectively <c>new
+        /// Duration(end.Ticks - start.Ticks)</c>.
+        /// </summary>
+        /// <param name="start">The start <see cref="Instant"/> value.</param>
+        /// <param name="end">The end <see cref="Instant"/> value.</param>
         public Duration(Instant start, Instant end)
+            : this(end.Ticks - start.Ticks)
         {
-            ticks = end.Ticks - start.Ticks;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Duration"/> struct as the duration of the
+        /// given <see cref="Interval"/> object.
+        /// </summary>
+        /// <param name="interval">The interval.</param>
         public Duration(Interval interval)
+            : this(interval.Duration.Ticks)
         {
-            ticks = interval.Duration.Ticks;
         }
 
         #region Operators
@@ -135,9 +157,9 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Duration"/> representing the quotient of the given values.</returns>
-        public static Duration Divide(Duration left, Duration right)
+        public static Duration Divide(Duration left, long right)
         {
-            return left - right;
+            return left / right;
         }
 
         /// <summary>
@@ -152,14 +174,36 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Implements the operator * (multiplication).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the duration multiplied by the scale.</returns>
+        public static Duration operator *(long left, Duration right)
+        {
+            return new Duration(left * right.Ticks);
+        }
+
+        /// <summary>
         /// Multiplies a duration by a number. Friendly alternative to <c>operator*()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Duration"/> representing the product of the given values.</returns>
-        public static Duration Multiply(Duration left, Duration right)
+        public static Duration Multiply(Duration left, long right)
         {
-            return left - right;
+            return left * right;
+        }
+
+        /// <summary>
+        /// Multiplies a duration by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the product of the given values.</returns>
+        public static Duration Multiply(long left, Duration right)
+        {
+            return left * right;
         }
 
         /// <summary>
@@ -167,7 +211,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Duration left, Duration right)
         {
             return left.Equals(right);
@@ -178,7 +222,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator !=(Duration left, Duration right)
         {
             return !(left == right);
@@ -189,7 +233,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Duration left, Duration right)
         {
             return left.CompareTo(right) < 0;
@@ -200,7 +244,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Duration left, Duration right)
         {
             return left.CompareTo(right) <= 0;
@@ -211,7 +255,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Duration left, Duration right)
         {
             return left.CompareTo(right) > 0;
@@ -222,7 +266,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Duration left, Duration right)
         {
             return left.CompareTo(right) >= 0;
@@ -230,22 +274,13 @@ namespace NodaTime
 
         #endregion // Operators
 
-        #region IEquatable<Duration> Members
-
         /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
+        /// The number of ticks in the duration.
         /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter;
-        /// otherwise, false.
-        /// </returns>
-        public bool Equals(Duration other)
+        public long Ticks
         {
-            return this.Ticks == other.Ticks;
+            get { return ticks; }
         }
-
-        #endregion
 
         #region IComparable<Duration> Members
 
@@ -294,8 +329,9 @@ namespace NodaTime
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (obj is Duration) {
-                return Equals((Duration)obj);
+            if (obj is Duration)
+            {
+                return Equals((Duration) obj);
             }
             return false;
         }
@@ -325,39 +361,103 @@ namespace NodaTime
 
         #endregion  // Object overrides
 
+        #region IEquatable<Duration> Members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter;
+        /// otherwise, false.
+        /// </returns>
+        public bool Equals(Duration other)
+        {
+            return Ticks == other.Ticks;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the given number of standard weeks made
+        /// up from 7 24-hour days.
+        /// </summary>
+        /// <param name="weeks">The number of weeks.</param>
+        /// <returns>A <see cref="Duration"/> number of weeks.</returns>
         public static Duration StandardWeeks(long weeks)
         {
-            return new Duration(weeks * NodaConstants.TicksPerWeek);
+            return OneWeek * weeks;
         }
 
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the given number of standard days made
+        /// up from 24 hours.
+        /// </summary>
+        /// <param name="days">The number of days.</param>
+        /// <returns>A <see cref="Duration"/> number of days.</returns>
         public static Duration StandardDays(long days)
         {
-            return new Duration(days * NodaConstants.TicksPerDay);
+            return OneDay * days;
         }
 
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the given number of standard hours made
+        /// up from 60 minutes.
+        /// </summary>
+        /// <param name="hours">The number of hours.</param>
+        /// <returns>A <see cref="Duration"/> number of hours.</returns>
         public static Duration StandardHours(long hours)
         {
-            return new Duration(hours * NodaConstants.TicksPerHour);
+            return OneHour * hours;
         }
 
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the given number of standard minutes made
+        /// up from 60 seconds.
+        /// </summary>
+        /// <param name="minutes">The number of minutes.</param>
+        /// <returns>A <see cref="Duration"/> number of minutes.</returns>
         public static Duration StandardMinutes(long minutes)
         {
-            return new Duration(minutes * NodaConstants.TicksPerMinute);
+            return OneMinute * minutes;
         }
 
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the given number of standard seconds made
+        /// up from 1000 milliseconds.
+        /// </summary>
+        /// <param name="seconds">The number of seconds.</param>
+        /// <returns>A <see cref="Duration"/> number of seconds.</returns>
         public static Duration StandardSeconds(long seconds)
         {
-            return new Duration(seconds * NodaConstants.TicksPerSecond);
+            return OneSecond * seconds;
         }
 
-        public static Duration Milliseconds(long millisecondValue)
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the given number of standard milliseconds made
+        /// up from 10000 ticks.
+        /// </summary>
+        /// <param name="milliseconds">The number of milliseconds.</param>
+        /// <returns>A <see cref="Duration"/> number of milliseconds.</returns>
+        public static Duration Milliseconds(long milliseconds)
         {
-            return new Duration(millisecondValue * NodaConstants.TicksPerMillisecond);
+            return OneMillisecond * milliseconds;
         }
 
+        /// <summary>
+        /// Parses the specified value into a <see cref="Duration"/>.
+        /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <exception cref="FormatException">If the <paramref name="value"/> is badly formatted./**/</exception>
+        /// <exception cref="ArgumentNullException">If the <paramref name="value"/> is <c>null</c>.</exception>
+        /// <returns>The <see cref="Duration"/>.</returns>
         public static Duration Parse(string value)
         {
-            throw new NotImplementedException();
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+            throw new FormatException(@"The value format is not correct");
         }
     }
 }
