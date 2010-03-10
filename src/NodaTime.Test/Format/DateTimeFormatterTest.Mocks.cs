@@ -32,9 +32,17 @@ namespace NodaTime.Test.Format
                 get { throw new NotImplementedException(); }
             }
 
+            public ICalendarSystem Calendar;
+            public IDateTimeZone Zone;
+            public TextWriter DtWriter;
+            public IFormatProvider DtProvider;
             public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
             {
-                throw new NotImplementedException();
+                DtWriter = writer;
+                DtProvider = provider;
+
+                this.Calendar = calendarSystem;
+                this.Zone = dateTimeZone;
             }
 
             public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
@@ -51,9 +59,15 @@ namespace NodaTime.Test.Format
                 get { throw new NotImplementedException(); }
             }
 
+            public DateTimeParserBucket Bucket;
+            public string Text;
+            public int Position;
             public int ParseInto(DateTimeParserBucket bucket, string text, int position)
             {
-                throw new NotImplementedException();
+                Bucket = bucket;
+                Text = text;
+                Position = position;
+                return text.Length;
             }
         }
 

@@ -87,6 +87,9 @@
     <Compile Include="Format\DateTimeFormatterTest.Mocks.cs">
       <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Format\DateTimeFormatterTest.PrintingAndParsing.cs">
+      <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Format\IsoDateTimeFormatsTest.Parse.cs" />
     <Compile Include="Format\IsoDateTimeFormatsTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />

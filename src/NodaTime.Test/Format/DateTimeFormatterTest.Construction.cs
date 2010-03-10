@@ -29,7 +29,7 @@ namespace NodaTime.Test.Format
 
             Assert.That(sut.Provider, Is.Null);
             Assert.That(sut.IsOffsetParsed, Is.False);
-            Assert.That(sut.CalendarSystem, Is.Null);
+            Assert.That(sut.Calendar, Is.Null);
             Assert.That(sut.Zone, Is.Null);
             Assert.That(sut.PivotYear, Is.Null);
         }

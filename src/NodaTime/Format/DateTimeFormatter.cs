@@ -149,13 +149,13 @@ namespace NodaTime.Format
                 return this;
             }
 
-            return new DateTimeFormatter(printer, parser, provider, true, calendarSystem, zone, pivotYear);
+            return new DateTimeFormatter(printer, parser, provider, true, calendarSystem, null, pivotYear);
         }
 
         /// <summary>
         /// Gets the calendar system to use as an override.
         /// </summary>
-        public ICalendarSystem CalendarSystem { get { return calendarSystem; } }
+        public ICalendarSystem Calendar { get { return calendarSystem; } }
 
         /// <summary>
         /// Returns a new formatter that will use the specified calendar system in
@@ -175,7 +175,7 @@ namespace NodaTime.Format
         /// A null calendar system means no-override.
         /// </para>
         /// </remarks>
-        public DateTimeFormatter WithCalendarSystem(ICalendarSystem newCalendarSystem)
+        public DateTimeFormatter WithCalendar(ICalendarSystem newCalendarSystem)
         {
             if (Object.Equals(calendarSystem, newCalendarSystem))
             {
@@ -208,7 +208,6 @@ namespace NodaTime.Format
         /// <para>
         /// A null zone means of no-override.
         /// </para>
-        /// <para>
         /// </remarks>
         public DateTimeFormatter WithZone(IDateTimeZone newZone)
         {
@@ -216,7 +215,7 @@ namespace NodaTime.Format
                 // no change, so there's no need to create a new formatter
                 return this;
 
-            return new DateTimeFormatter(printer, parser, provider, offsetParsed, calendarSystem, newZone, pivotYear);
+            return new DateTimeFormatter(printer, parser, provider, false, calendarSystem, newZone, pivotYear);
         }
 
         /// <summary>
@@ -250,7 +249,7 @@ namespace NodaTime.Format
         /// <returns></returns>
         /// <remarks>
         /// This method will use the override zone and the override calendar system if
-        /// they are set. Otherwise it will use the chronology and zone of the dateTime.
+        /// they are set. Otherwise it will use the chronology of the dateTime.
         /// </remarks>
         public string Print(ZonedDateTime dateTime)
         {
@@ -266,12 +265,25 @@ namespace NodaTime.Format
         /// Prints a ZonedDateTime to the specified string builder.
         /// </summary>
         /// <param name="builder">The builder to use</param>
-        /// <param name="dateTime">The dateTime to format</param>
+        /// <param name="dateTime">The dateTime to print</param>
+        /// <remarks>
+        /// This method will use the override zone and the override calendar system if
+        /// they are set. Otherwise it will use the chronology of the dateTime.
+        /// </remarks>
         public void PrintTo(StringBuilder builder, ZonedDateTime dateTime)
         {
-            PrintTo(new StringWriter(builder), dateTime);
+            PrintTo(new StringWriter(builder, Provider), dateTime);
         }
 
+        /// <summary>
+        /// Prints a ZonedDateTime to the specified TextWriter
+        /// </summary>
+        /// <param name="writer">The TextWriter to use</param>
+        /// <param name="dateTime">The dateTime to print</param>
+        /// <remarks>
+        /// This method will use the override zone and the override calendar system if
+        /// they are set. Otherwise it will use the chronology of the dateTime.
+        /// </remarks>
         public void PrintTo(TextWriter writer, ZonedDateTime dateTime)
         {
             VerifyPrinter();
@@ -290,6 +302,7 @@ namespace NodaTime.Format
         {
             if (partial == null)
                 throw new ArgumentNullException("partial");
+
             VerifyPrinter();
 
             printer.PrintTo(new StringWriter(builder), partial, provider);
@@ -299,13 +312,30 @@ namespace NodaTime.Format
 
         #region Parsing
 
+        /// <summary>
+        /// Parses a datetime from the given text, returning a new ZonedDateTime.
+        /// </summary>
+        /// <param name="text">The text to parse</param>
+        /// <returns>Parsed value in a ZonedDateTime object</returns>
+        /// <remarks>
+        /// The parse will use the zone and calendar system specified on this formatter.
+        /// <para>
+        /// If the text contains a time zone string then that will be taken into
+        /// account in adjusting the time of day as follows.
+        /// If the <see cref="WithOffsetParsed"/> has been called, then the resulting
+        /// ZonedDateTime will have a fixed offset based on the parsed time zone.
+        /// Otherwise the resulting ZonedDateTime will have the zone of this formatter,
+        /// but the parsed zone may have caused the time to be adjusted.
+        /// </para>
+        /// </remarks>
+        ///<exception cref="NotSupportedException">If parsing is not supported</exception>
+        ///<exception cref="ArgumentException">If the text to parse is invalid</exception>
         public ZonedDateTime Parse(string text)
         {
             VerifyParser();
 
             var calendarSystem = SelectCalendarSystem();
             var bucket = new DateTimeParserBucket(LocalInstant.LocalUnixEpoch, calendarSystem, provider);
-
 
             int newPos = Parser.ParseInto(bucket, text, 0);
             if (newPos >= 0)
@@ -315,6 +345,7 @@ namespace NodaTime.Format
                     Instant instant = bucket.Compute(true, text);
                     var chronology = new Chronology(SelectZone(), calendarSystem);
 
+                    //TODO:can't port until changes in zones API
                     //if (offsetParsed && bucket.Chronology.Zone == null)
                     //{
                     //    Offset parsedOffset = bucket.Offset;
@@ -346,13 +377,13 @@ namespace NodaTime.Format
         {
             if (parser == null)
             {
-                throw new NotSupportedException("Parser is not supported");
+                throw new NotSupportedException("Parsing is not supported");
             }
         }
 
         private ICalendarSystem SelectCalendarSystem(ZonedDateTime dateTime)
         {
-            return calendarSystem ?? dateTime.Chronology.Calendar ?? IsoCalendarSystem.Instance;
+            return calendarSystem ?? dateTime.Chronology.Calendar;
         }
 
         private ICalendarSystem SelectCalendarSystem()
@@ -362,7 +393,7 @@ namespace NodaTime.Format
 
         private IDateTimeZone SelectZone(ZonedDateTime dateTime)
         {
-            return zone ?? dateTime.Zone ?? DateTimeZones.Utc;
+            return zone ?? dateTime.Zone;
         }
 
         private IDateTimeZone SelectZone()
