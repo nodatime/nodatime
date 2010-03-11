@@ -78,6 +78,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChronologyTest.cs" />
+    <Compile Include="Format\DateTimeFormatterBuilderTest.cs" />
+    <Compile Include="Format\DateTimeFormatterBuilder.Test.Decimal.cs">
+      <DependentUpon>DateTimeFormatterBuilderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Format\DateTimeFormatterBuilderTest.Literal.cs">
+      <DependentUpon>DateTimeFormatterBuilderTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Format\DateTimeFormatterTest.cs" />
     <Compile Include="Format\DateTimeFormatterTest.Construction.cs">
       <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
