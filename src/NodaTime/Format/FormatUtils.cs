@@ -126,7 +126,7 @@ namespace NodaTime.Format
 
             if (value < 10)
             {
-                builder.Append((char) (value + '0'));
+                builder.Append((char)value);
             }
             else if (value < 100)
             {
@@ -143,6 +143,9 @@ namespace NodaTime.Format
                 builder.Append(value);
             }
         }
+
+        //TODO: measure how much this optimized method is faster then .NET intrinsic formatting
+        // value.ToString("D");
 
         /// <summary>
         /// Converts an integer to a string, and writes it to the given writer.
@@ -187,6 +190,9 @@ namespace NodaTime.Format
                 writer.Write(value);
             }
         }
+
+        //TODO: measure how much this optimized method is faster then .NET intrinsic formatting
+        // value.ToString("D" + size.ToString);
 
         /// <summary>
         /// Converts an integer to a string, prepended with a variable amount of '0'

@@ -125,7 +125,7 @@ namespace NodaTime.Format
                 }
                 catch (SystemException)
                 {
-                    writer.Write(UnicodeReplacementCharacter);
+                    FormatUtils.WriteUnknownString(writer);
                 }
             }
 
@@ -137,7 +137,7 @@ namespace NodaTime.Format
                 }
                 catch (SystemException)
                 {
-                    writer.Write(UnicodeReplacementCharacter);
+                    FormatUtils.WriteUnknownString(writer);
                 }
             }
 
@@ -356,12 +356,13 @@ namespace NodaTime.Format
             {
                 try
                 {
-                    IDateTimeField field = FieldType.GetField(calendarSystem);
-                    FormatUtils.WriteUnpaddedInteger(writer, field.GetValue(instant));
+                    int value = FieldType.GetField(calendarSystem).GetValue(instant);
+                    
+                    FormatUtils.WriteUnpaddedInteger(writer, value);
                 }
                 catch (SystemException)
                 {
-                    writer.Write(UnicodeReplacementCharacter);
+                    FormatUtils.WriteUnknownString(writer);
                 }
             }
 
@@ -373,10 +374,9 @@ namespace NodaTime.Format
                 }
                 catch (SystemException)
                 {
-                    writer.Write(UnicodeReplacementCharacter);
+                    FormatUtils.WriteUnknownString(writer);
                 }
             }
-
         }
 
         private class PaddedNumber : NumberFormatter, IDateTimePrinter
@@ -396,12 +396,12 @@ namespace NodaTime.Format
             {
                 try
                 {
-                    IDateTimeField field = FieldType.GetField(calendarSystem);
-                    FormatUtils.WritePaddedInteger(writer, field.GetValue(instant), minPrintedDigits);
+                    int value = FieldType.GetField(calendarSystem).GetValue(instant);
+                    FormatUtils.WritePaddedInteger(writer, value, minPrintedDigits);
                 }
                 catch (SystemException)
                 {
-                    writer.Write(UnicodeReplacementCharacter);
+                    FormatUtils.WriteUnknownString(writer);
                 }
             }
 
@@ -413,7 +413,7 @@ namespace NodaTime.Format
                 }
                 catch (SystemException)
                 {
-                    writer.Write(UnicodeReplacementCharacter);
+                    FormatUtils.WriteUnknownString(writer);
                 }
             }
 
@@ -1712,6 +1712,8 @@ namespace NodaTime.Format
             return AppendObject(new TextField(fieldType, true));
         }
 
+        #region Append decimal fields
+
         /// <summary>
         /// Instructs the printer to emit a field value as a decimal number, and the
         /// parser to expect an unsigned decimal number.
@@ -1739,28 +1741,6 @@ namespace NodaTime.Format
 
             return minDigits <= 1 ? AppendObject(new UnpaddedNumber(fieldType, maxDigits, false))
                                 : AppendObject(new PaddedNumber(fieldType, maxDigits, minDigits, false));
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a field value as a fixed-width decimal
-        /// number (smaller numbers will be left-padded with zeros), and the parser
-        /// to expect an unsigned decimal number with the same fixed width.
-        /// </summary>
-        /// <param name="fieldType">Type of field to append</param>
-        /// <param name="numDigits">The exact number of digits to parse or print, except if
-        /// printed value requires more digits</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        /// <exception cref="ArgumentNullException">If field type is null</exception>
-        /// <exception cref="ArgumentException">if <code>numDigits &lte 0</exception>
-        public DateTimeFormatterBuilder AppendFixedDecimal(DateTimeFieldType fieldType, int numDigits)
-        {
-            Guard(fieldType);
-
-            if (numDigits <= 0)
-            {
-                throw new ArgumentException("Illegal number of digits: " + numDigits);
-            }
-            return AppendObject(new FixedNumber(fieldType, numDigits, false));
         }
 
         /// <summary>
@@ -1798,6 +1778,28 @@ namespace NodaTime.Format
         /// <summary>
         /// Instructs the printer to emit a field value as a fixed-width decimal
         /// number (smaller numbers will be left-padded with zeros), and the parser
+        /// to expect an unsigned decimal number with the same fixed width.
+        /// </summary>
+        /// <param name="fieldType">Type of field to append</param>
+        /// <param name="numDigits">The exact number of digits to parse or print, except if
+        /// printed value requires more digits</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        /// <exception cref="ArgumentNullException">If field type is null</exception>
+        /// <exception cref="ArgumentException">if <code>numDigits &lte 0</exception>
+        public DateTimeFormatterBuilder AppendFixedDecimal(DateTimeFieldType fieldType, int numDigits)
+        {
+            Guard(fieldType);
+
+            if (numDigits <= 0)
+            {
+                throw new ArgumentException("Illegal number of digits: " + numDigits);
+            }
+            return AppendObject(new FixedNumber(fieldType, numDigits, false));
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a field value as a fixed-width decimal
+        /// number (smaller numbers will be left-padded with zeros), and the parser
         /// to expect an signed decimal number with the same fixed width.
         /// </summary>
         /// <param name="fieldType">Type of field to append</param>
@@ -1816,6 +1818,227 @@ namespace NodaTime.Format
             }
             return AppendObject(new FixedNumber(fieldType, numDigits, true));
         }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric century of era field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to <i>print</i></param>
+        /// <param name="maxDigits">Maximum number of digits to <i>parse</i>, or the estimated
+        /// maximum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendCenturyOfEra(int minDigits, int maxDigits)
+        {
+            return AppendSignedDecimal(DateTimeFieldType.CenturyOfEra, minDigits, maxDigits);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric year of era field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to <i>print</i></param>
+        /// <param name="maxDigits">Maximum number of digits to <i>parse</i>, or the estimated
+        /// maximum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendYearOfEra(int minDigits, int maxDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.YearOfEra, minDigits, maxDigits);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric year of century field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to <i>print</i></param>
+        /// <param name="maxDigits">Maximum number of digits to <i>parse</i>, or the estimated
+        /// maximum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendYearOfCentury(int minDigits, int maxDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.YearOfCentury, minDigits, maxDigits);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric year field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <param name="maxDigits">Maximum number of digits to <i>parse</i>, or the estimated</param>
+        /// maximum number of digits to print
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendYear(int minDigits, int maxDigits)
+        {
+            return AppendSignedDecimal(DateTimeFieldType.Year, minDigits, maxDigits);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric month of year field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendMonthOfYear(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.MonthOfYear, minDigits, 2);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric week of weekyear field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendWeekOfWeekYear(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.WeekOfWeekYear, minDigits, 2);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric weekYear field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <param name="maxDigits">Maximum number of digits to <i>parse</i>, or the estimated</param>
+        /// maximum number of digits to print
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendWeekYear(int minDigits, int maxDigits)
+        {
+            return AppendSignedDecimal(DateTimeFieldType.WeekYear, minDigits, maxDigits);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric day of year field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendDayOfYear(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.DayOfYear, minDigits, 3);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric day of month field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendDayOfMonth(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.DayOfMonth, minDigits, 2);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric day of week field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendDayOfWeek(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.DayOfWeek, minDigits, 1);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric hour of day field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendHourOfDay(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.HourOfDay, minDigits, 2);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric clock hour of day field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendClockHourOfDay(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.ClockHourOfDay, minDigits, 2);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric hour of halfday field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendHourOfHalfDay(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.HourOfHalfDay, minDigits, 2);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric clock hour of halfday field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendClockHourOfHalfDay(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.ClockHourOfHalfDay, minDigits, 2);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric minute of day field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendMinuteOfDay(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.MinuteOfDay, minDigits, 4);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric minute of hour field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendMinuteOfHour(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.MinuteOfHour, minDigits, 2);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric second of day field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendSecondOfDay(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.SecondOfDay, minDigits, 5);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric second of minute field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendSecondOfMinute(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.SecondOfMinute, minDigits, 2);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric milliseconds of day field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendMillisecondsOfDay(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.MillisecondOfDay, minDigits, 8);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric milliseconds of second field.
+        /// </summary>
+        /// <param name="minDigits">Minumum number of digits to print</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        /// <remarks>
+        /// This method will append a field that prints a three digit value.
+        /// During parsing the value that is parsed is assumed to be three digits.
+        /// If less than three digits are present then they will be counted as the
+        /// smallest parts of the millisecond. This is probably not what you want
+        /// if you are using the field as a fraction. Instead, a fractional
+        /// millisecond should be produced using <see cref="AppendFractionOfSecond"/>.
+        /// </remarks>
+        public DateTimeFormatterBuilder AppendMillisecondsOfSecond(int minDigits)
+        {
+            return AppendDecimal(DateTimeFieldType.MillisecondOfSecond, minDigits, 3);
+        }     
+
+        #endregion
+
 
         /// <summary>
         /// Instructs the printer to emit a remainder of time as a decimal fraction, sans decimal point.
@@ -1882,187 +2105,6 @@ namespace NodaTime.Format
             return AppendFraction(DateTimeFieldType.DayOfYear, minDigits, maxDigits);
         }
 
-        /// <summary>
-        /// Instructs the printer to emit a numeric millisOfSecond field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        /// <remarks>
-        /// This method will append a field that prints a three digit value.
-        /// During parsing the value that is parsed is assumed to be three digits.
-        /// If less than three digits are present then they will be counted as the
-        /// smallest parts of the millisecond. This is probably not what you want
-        /// if you are using the field as a fraction. Instead, a fractional
-        /// millisecond should be produced using <see cref="AppendFractionOfSecond"/>.
-        /// </remarks>
-        public DateTimeFormatterBuilder AppendMillisecondsOfSecond(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.MillisecondOfSecond, minDigits, 3);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric millisOfDay field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendMillisecondsOfDay(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.MillisecondOfDay, minDigits, 8);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric secondOfMinute field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendSecondOfMinute(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.SecondOfMinute, minDigits, 2);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric secondOfDay field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendSecondOfDay(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.SecondOfDay, minDigits, 5);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric minuteOfHour field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendMinuteOfHour(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.MinuteOfHour, minDigits, 2);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric minuteOfDay field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendMinuteOfDay(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.MinuteOfDay, minDigits, 4);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric hourOfDay field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendHourOfDay(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.HourOfDay, minDigits, 2);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric clockhourOfDay field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendClockHourOfDay(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.ClockHourOfDay, minDigits, 2);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric hourOfHalfday field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendHourOfHalfDay(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.HourOfHalfDay, minDigits, 2);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric clockHourOfHalfday field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendClockHourOfHalfDay(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.ClockHourOfHalfDay, minDigits, 2);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric dayOfWeek field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendDayOfWeek(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.DayOfWeek, minDigits, 1);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric dayOfMonth field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendDayOfMonth(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.DayOfMonth, minDigits, 2);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric dayOfYear field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendDayOfYear(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.DayOfYear, minDigits, 3);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric weekOfWeekyear field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendWeekOfWeekYear(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.WeekOfWeekYear, minDigits, 2);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric weekYear field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <param name="maxDigits">Maximum number of digits to <i>parse</i>, or the estimated</param>
-        /// maximum number of digits to print
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendWeekYear(int minDigits, int maxDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.WeekYear, minDigits, maxDigits);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric monthOfYear field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendMonthOfYear(int minDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.MonthOfYear, minDigits, 2);
-        }
-
-        /// <summary>
-        /// Instructs the printer to emit a numeric year field.
-        /// </summary>
-        /// <param name="minDigits">Minumum number of digits to print</param>
-        /// <param name="maxDigits">Maximum number of digits to <i>parse</i>, or the estimated</param>
-        /// maximum number of digits to print
-        /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendYear(int minDigits, int maxDigits)
-        {
-            return AppendDecimal(DateTimeFieldType.Year, minDigits, maxDigits);
-        }
 
         /// <summary>
         /// Instructs the printer to emit a locale-specific time zone name. 
