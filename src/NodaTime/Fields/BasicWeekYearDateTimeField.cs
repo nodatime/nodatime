@@ -96,7 +96,7 @@ namespace NodaTime.Fields
             // Balance leap weekyear differences on remainders.
             if (subtrahendRemainder >= Week53Ticks && calendarSystem.GetWeeksInYear(minuendWeekYear) <= 52)
             {
-                subtrahendRemainder -= NodaConstants.Durations.OneWeek;
+                subtrahendRemainder -= Duration.OneWeek;
             }
 
             int difference = minuendWeekYear - subtrahendWeekYear;
@@ -150,11 +150,11 @@ namespace NodaTime.Fields
             // At most we are off by one year, which can be "fixed" by adding or subtracting a week
             if (workWeekYear < year)
             {
-                workInstant += NodaConstants.Durations.OneWeek;
+                workInstant += Duration.OneWeek;
             } 
             else if (workWeekYear > year)
             {
-                workInstant -= NodaConstants.Durations.OneWeek;
+                workInstant -= Duration.OneWeek;
             }
 
             // Set the proper week in the current weekyear

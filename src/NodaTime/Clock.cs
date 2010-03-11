@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using NodaTime.Clocks;
 
 namespace NodaTime
@@ -34,19 +37,24 @@ namespace NodaTime
             get { return current; }
             set
             {
-                if (value == null) {
+                if (value == null)
+                {
                     current = SystemClock.Instance;
                 }
-                else {
+                else
+                {
                     Current = value;
                 }
             }
         }
 
         /// <summary>
-        /// Gets the time according to the current clock.
+        /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
-        /// <value>The time according to the current clock.</value>
-        public static Instant Now { get { return Current.Now; } }
+        /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
+        public static Instant Now
+        {
+            get { return Current.Now; }
+        }
     }
 }

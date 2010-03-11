@@ -101,7 +101,6 @@ namespace NodaTime.TimeZones
                                                       };
 
         private readonly bool advance;
-
         private readonly int dayOfMonth;
         private readonly int dayOfWeek;
         private readonly TransitionMode mode;
@@ -130,7 +129,7 @@ namespace NodaTime.TimeZones
             {
                 FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
             }
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.AsTicks());
+            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
 
             this.mode = mode;
             this.monthOfYear = monthOfYear;
@@ -257,7 +256,7 @@ namespace NodaTime.TimeZones
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.Fields.MonthOfYear.SetValue(instant, this.monthOfYear);
-            instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay.AsTicks());
+            instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay.Ticks);
             instant = SetDayOfMonth(calendar, instant);
             instant = SetDayOfWeek(calendar, instant);
 
@@ -350,7 +349,7 @@ namespace NodaTime.TimeZones
                 IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
                 LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, this.monthOfYear);
                 // Be lenient with tick of day.
-                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay.AsTicks());
+                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay.Ticks);
                 newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
                 int signDirection = Math.Sign(direction);
@@ -478,17 +477,17 @@ namespace NodaTime.TimeZones
         private Offset GetOffset(Offset standardOffset, Offset savings)
         {
             Offset offset;
-            if (this.mode == TransitionMode.Wall)
+            switch (this.mode)
             {
-                offset = standardOffset + savings;
-            }
-            else if (this.mode == TransitionMode.Standard)
-            {
-                offset = standardOffset;
-            }
-            else
-            {
-                offset = Offset.Zero;
+                case TransitionMode.Wall:
+                    offset = standardOffset + savings;
+                    break;
+                case TransitionMode.Standard:
+                    offset = standardOffset;
+                    break;
+                default:
+                    offset = Offset.Zero;
+                    break;
             }
             return offset;
         }
@@ -501,11 +500,7 @@ namespace NodaTime.TimeZones
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(ZoneYearOffset left, ZoneYearOffset right)
         {
-            if (ReferenceEquals(null, left))
-            {
-                return ReferenceEquals(null, right);
-            }
-            return left.Equals(right);
+            return ReferenceEquals(null, left) ? ReferenceEquals(null, right) : left.Equals(right);
         }
 
         /// <summary>

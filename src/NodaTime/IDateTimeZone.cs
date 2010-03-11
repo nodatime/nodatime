@@ -22,9 +22,12 @@ using NodaTime.TimeZones;
 namespace NodaTime
 {
     /// <summary>
-    /// Interface describing a time zone. Most users won't need to call any of the methods on this,
-    /// instead 
-    /// </summary>   
+    /// Interface describing a time zone.
+    /// </summary>
+    /// <remarks>
+    /// Time zones primarily encapsulate two facts: and offset from UTC and a set of rules on how
+    /// the values are adjusted.
+    /// </remarks>
     public interface IDateTimeZone
     {
         /// <summary>
@@ -46,7 +49,7 @@ namespace NodaTime
         Offset GetOffsetFromUtc(Instant instant);
 
         /// <summary>
-        /// Gets the offset from to subtract from a local time to get the UTC time.
+        /// Gets the offset to subtract from a local time to get the UTC time.
         /// </summary>
         /// <param name="localInstant">The local instant to get the offset of.</param>
         /// <returns>The offset to subtract from the specified local time to obtain a UTC instant.</returns>
@@ -86,7 +89,7 @@ namespace NodaTime
         /// PST or PDT depending on the time of year.
         /// </remarks>
         /// <param name="instant">The instant to get the name for.</param>
-        /// <returns>The name of this time. Never returns null.</returns>
+        /// <returns>The name of this time. Never returns <c>null</c>.</returns>
         string GetName(Instant instant);
 
         /// <summary>

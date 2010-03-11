@@ -26,14 +26,18 @@ namespace NodaTime
     /// <summary>
     /// A date and time in a particular calendar system.
     /// </summary>
-    /// <remarks><para>A LocalDateTime value does not
-    /// represent an instant on the time line, mostly because it has no associated
-    /// time zone: "November 12th 2009 7pm, ISO calendar" occurred at different instants
-    /// for different people around the world.
+    /// <remarks>
+    /// <para>
+    /// A LocalDateTime value does not represent an instant on the time line, mostly because it has
+    /// no associated time zone: "November 12th 2009 7pm, ISO calendar" occurred at different
+    /// instants for different people around the world.
     /// </para>
     /// <para>
-    /// This type defaults to using the IsoCalendarSystem unless a different calendar
-    /// system is specified.
+    /// This type defaults to using the IsoCalendarSystem unless a different calendar system is
+    /// specified.
+    /// </para>
+    /// <para>
+    /// This type is immutable and thread-safe.
     /// </para>
     /// </remarks>
     public struct LocalDateTime
@@ -42,11 +46,21 @@ namespace NodaTime
         private readonly ICalendarSystem calendar;
         private readonly LocalInstant localInstant;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// </summary>
+        /// <param name="localInstant">The local instant.</param>
         public LocalDateTime(LocalInstant localInstant)
             : this(localInstant, IsoCalendarSystem.Instance)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// </summary>
+        /// <param name="localInstant">The local instant.</param>
+        /// <param name="calendar">The calendar system.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
         public LocalDateTime(LocalInstant localInstant, ICalendarSystem calendar)
         {
             if (calendar == null)
@@ -57,71 +71,163 @@ namespace NodaTime
             this.calendar = calendar;
         }
 
-        public LocalDateTime(int year, int month, int day,
-                             int hour, int minute)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="month">The month.</param>
+        /// <param name="day">The day.</param>
+        /// <param name="hour">The hour.</param>
+        /// <param name="minute">The minute.</param>
+        public LocalDateTime(int year, int month, int day, int hour, int minute)
             : this(year, month, day, hour, minute, IsoCalendarSystem.Instance)
         {
         }
 
-        public LocalDateTime(int year, int month, int day,
-                             int hour, int minute, ICalendarSystem calendar)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="month">The month.</param>
+        /// <param name="day">The day.</param>
+        /// <param name="hour">The hour.</param>
+        /// <param name="minute">The minute.</param>
+        /// <param name="calendar">The calendar.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        public LocalDateTime(int year, int month, int day, int hour, int minute, ICalendarSystem calendar)
         {
-            if (calendar == null) {throw new ArgumentNullException("calendar");}
+            if (calendar == null)
+            {
+                throw new ArgumentNullException("calendar");
+            }
             localInstant = calendar.GetLocalInstant(year, month, day, hour, minute);
             this.calendar = calendar;
         }
 
-        public LocalDateTime(int year, int month, int day,
-                             int hour, int minute, int second)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="month">The month.</param>
+        /// <param name="day">The day.</param>
+        /// <param name="hour">The hour.</param>
+        /// <param name="minute">The minute.</param>
+        /// <param name="second">The second.</param>
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second)
             : this(year, month, day, hour, minute, second, IsoCalendarSystem.Instance)
         {
         }
 
-        public LocalDateTime(int year, int month, int day,
-                             int hour, int minute, int second,
-                             ICalendarSystem calendar)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="month">The month.</param>
+        /// <param name="day">The day.</param>
+        /// <param name="hour">The hour.</param>
+        /// <param name="minute">The minute.</param>
+        /// <param name="second">The second.</param>
+        /// <param name="calendar">The calendar.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, ICalendarSystem calendar)
         {
-            if (calendar == null) { throw new ArgumentNullException("calendar"); }
+            if (calendar == null)
+            {
+                throw new ArgumentNullException("calendar");
+            }
             localInstant = calendar.GetLocalInstant(year, month, day, hour, minute, second);
             this.calendar = calendar;
         }
 
-        public LocalDateTime(int year, int month, int day,
-                             int hour, int minute, int second, int millisecond)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="month">The month.</param>
+        /// <param name="day">The day.</param>
+        /// <param name="hour">The hour.</param>
+        /// <param name="minute">The minute.</param>
+        /// <param name="second">The second.</param>
+        /// <param name="millisecond">The millisecond.</param>
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
             : this(year, month, day, hour, minute, second, millisecond, 0, IsoCalendarSystem.Instance)
         {
         }
 
-        public LocalDateTime(int year, int month, int day,
-                             int hour, int minute, int second, int millisecond,
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="month">The month.</param>
+        /// <param name="day">The day.</param>
+        /// <param name="hour">The hour.</param>
+        /// <param name="minute">The minute.</param>
+        /// <param name="second">The second.</param>
+        /// <param name="millisecond">The millisecond.</param>
+        /// <param name="calendar">The calendar.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond,
                              ICalendarSystem calendar)
             : this(year, month, day, hour, minute, second, millisecond, 0, calendar)
         {
         }
 
-        public LocalDateTime(int year, int month, int day,
-                             int hour, int minute, int second, int millisecond,
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="month">The month.</param>
+        /// <param name="day">The day.</param>
+        /// <param name="hour">The hour.</param>
+        /// <param name="minute">The minute.</param>
+        /// <param name="second">The second.</param>
+        /// <param name="millisecond">The millisecond.</param>
+        /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond,
                              int tickWithinMillisecond)
             : this(
                 year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, IsoCalendarSystem.Instance)
         {
         }
 
-        public LocalDateTime(int year, int month, int day,
-                             int hour, int minute, int second, int millisecond,
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="month">The month.</param>
+        /// <param name="day">The day.</param>
+        /// <param name="hour">The hour.</param>
+        /// <param name="minute">The minute.</param>
+        /// <param name="second">The second.</param>
+        /// <param name="millisecond">The millisecond.</param>
+        /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
+        /// <param name="calendar">The calendar.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond,
                              int tickWithinMillisecond, ICalendarSystem calendar)
         {
-            if (calendar == null) { throw new ArgumentNullException("calendar"); }
+            if (calendar == null)
+            {
+                throw new ArgumentNullException("calendar");
+            }
             localInstant = calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond,
                                                     tickWithinMillisecond);
             this.calendar = calendar;
         }
 
+        /// <summary>
+        /// Gets the local instant.
+        /// </summary>
+        /// <value>The local instant.</value>
         public LocalInstant LocalInstant
         {
             get { return localInstant; }
         }
 
+        /// <summary>
+        /// Gets the calendar.
+        /// </summary>
+        /// <value>The calendar.</value>
         public ICalendarSystem Calendar
         {
             get { return calendar; }
