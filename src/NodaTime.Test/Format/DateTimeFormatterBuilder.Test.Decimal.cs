@@ -33,80 +33,78 @@ namespace NodaTime.Test.Format
 
         object[] PrintTestData =
         {
-//TODO: is this a bug in CenturyOfYearField ? (formatter prints 20, but not 21)
-            //new TestCaseData( new DateTimeFormatterBuilder()
-            //                    .AppendCenturyOfEra(0, 4)
-            //                    .ToFormatter(),
-            //                    new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-            //                    "21"),
+//TODO: is this a bug in CenturyOfEraField ? (formatter prints 20, but not 21)
+            new TestCaseData( Build(b=>b.AppendCenturyOfEra(0,4)),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                "21").SetName("CenturyOfEra").Ignore(),
 
             new TestCaseData( Build(b=>b.AppendYear(0,4)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "2004"),
+                                "2004").SetName("Year"),
 
             new TestCaseData( Build(b=>b.AppendYearOfCentury(0,4)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "4"),
+                                "4").SetName("YearOfCentury"),
 
             new TestCaseData( Build(b=>b.AppendMonthOfYear(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "6"),
+                                "6").SetName("MonthOfYear"),
 
             new TestCaseData( Build(b=>b.AppendWeekOfWeekYear(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "24"),
+                                "24").SetName("WeekOfWeekYear"),
 
             new TestCaseData( Build(b=>b.AppendDayOfYear(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "161"),
+                                "161").SetName("DayOfYear"),
 
             new TestCaseData( Build(b=>b.AppendDayOfMonth(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "9"),
+                                "9").SetName("DayOfMonth"),
 
             new TestCaseData( Build(b=>b.AppendDayOfWeek(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "3"),
+                                "3").SetName("DayOfWeek"),
 
             new TestCaseData( Build(b=>b.AppendHourOfDay(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "10"),
+                                "10").SetName("HourOfDay"),
 
             new TestCaseData( Build(b=>b.AppendClockHourOfDay(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "10"),
+                                "10").SetName("ClockHourofDay"),
 
             new TestCaseData( Build(b=>b.AppendHourOfHalfDay(0)),
                                 new ZonedDateTime(2004, 6, 9, 18, 20, 30, 40, DateTimeZones.Utc),
-                                "6"),
+                                "6").SetName("HourOfHalfDay"),
 
             new TestCaseData( Build(b=>b.AppendClockHourOfHalfDay(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "10"),
+                                "10").SetName("ClockHourOfHalfDay"),
 
             new TestCaseData( Build(b=>b.AppendMinuteOfDay(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "620"),
+                                "620").SetName("MinuteOfDay"),
 
             new TestCaseData( Build(b=>b.AppendMinuteOfHour(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "20"),
+                                "20").SetName("MinuteOfHour"),
 
             new TestCaseData( Build(b=>b.AppendSecondOfDay(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "37230"),
+                                "37230").SetName("SecondOfDay"),
 
             new TestCaseData( Build(b=>b.AppendSecondOfMinute(0)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "30"),
-//TODO: Bug?
-            //new TestCaseData( Build(b=>b.AppendMillisecondsOfDay(0)),
-            //                    new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-            //                    "37230040"),
+                                "30").SetName("SecondOfMinute"),
+//TODO: Bug? (results are interchanged)
+            new TestCaseData( Build(b=>b.AppendMillisecondsOfDay(0)),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                "37230040").SetName("MillisecondsOfDay").Ignore(),
 
-            //new TestCaseData( Build(b=>b.AppendMillisecondsOfSecond(0)),
-            //                    new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-            //                    "40"),
+            new TestCaseData( Build(b=>b.AppendMillisecondsOfSecond(0)),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                "40").SetName("MillisecondsOfSecond").Ignore(),
 
         };
 
