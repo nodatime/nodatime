@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +14,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System.Diagnostics.CodeAnalysis;
 
 namespace NodaTime.Utility
@@ -29,9 +32,9 @@ namespace NodaTime.Utility
     ///    public override int GetHashCode()
     ///    {
     ///        int hash = HashCodeHelper.Initialize();
-    ///        hash = HashCodeHelper.Hash(hash, Value1);
-    ///        hash = HashCodeHelper.Hash(hash, Value2);
-    ///        hash = HashCodeHelper.Hash(hash, Value3);
+    ///        hash = HashCodeHelper.Hash(hash, Field1);
+    ///        hash = HashCodeHelper.Hash(hash, Field1);
+    ///        hash = HashCodeHelper.Hash(hash, Field1);
     ///        ...
     ///        return hash;
     ///    }
@@ -69,7 +72,8 @@ namespace NodaTime.Utility
         public static int Hash<T>(int code, T value)
         {
             int hash = 0;
-            if (value != null) {
+            if (value != null)
+            {
                 hash = value.GetHashCode();
             }
             return MakeHash(code, hash);
@@ -81,7 +85,8 @@ namespace NodaTime.Utility
         /// <param name="code">The previous hash code.</param>
         /// <param name="value">The value to add to the hash code.</param>
         /// <returns>The new hash code.</returns>
-        [SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", Justification = "Deliberately overflowing.")]
+        [SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow",
+            Justification = "Deliberately overflowing.")]
         private static int MakeHash(int code, int value)
         {
             unchecked

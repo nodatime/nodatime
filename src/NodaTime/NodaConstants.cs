@@ -1,6 +1,7 @@
 #region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+
+// Copyright 2001-2010 Stephen Colebourne
+// Copyright 2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +14,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NodaTime
 {
@@ -29,13 +33,15 @@ namespace NodaTime
     public static class NodaConstants
     {
         // TODO: Enum for this instead? (With duplicate values where appropriate.)
-        public const int BeforeCommonEra = 0;
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BCE", Justification="BCE is the expected initialism")]
+
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BCE",
+            Justification = "BCE is the expected initialism")]
         public const int BCE = 0;
-        public const int BC = 0;
-        public const int CommonEra = 1;
+        public const int BC = BCE;
+        public const int BeforeCommonEra = BCE;
         public const int CE = 1;
-        public const int AD = 1;
+        public const int CommonEra = CE;
+        public const int AD = CE;
 
         // TODO: Enum for this instead?
         public const int January = 1;
@@ -51,95 +57,31 @@ namespace NodaTime
         public const int November = 11;
         public const int December = 12;
 
-
-        /// <summary>
-        /// As per <see cref="TimeSpan.TicksPerMillisecond" />, 
-        /// included here for consistency.
-        /// </summary>
         public const long TicksPerMillisecond = TimeSpan.TicksPerMillisecond;
-
-        /// <summary>
-        /// Original name: MILLIS_PER_MINUTE
-        /// </summary>
-        public const int MillisecondsPerSecond = 1000;
-
         public const long TicksPerSecond = TicksPerMillisecond * MillisecondsPerSecond;
-        
-        /// <summary>
-        /// Original name: SECONDS_PER_MINUTE
-        /// </summary>
-        public const int SecondsPerMinute = 60;
-        /// <summary>
-        /// Original name: MILLIS_PER_MINUTE
-        /// </summary>
+        public const long TicksPerMinute = TicksPerSecond * SecondsPerMinute;
+        public const long TicksPerHour = TicksPerMinute * MinutesPerHour;
+        public const long TicksPerDay = TicksPerHour * HoursPerDay;
+        public const long TicksPerWeek = TicksPerDay * DaysPerWeek;
+
+        public const int MillisecondsPerSecond = 1000;
         public const int MillisecondsPerMinute = MillisecondsPerSecond * SecondsPerMinute;
-
-        public const long TicksPerMinute = TicksPerMillisecond * MillisecondsPerMinute;
-
-        /// <summary>
-        /// Original name: MINUTES_PER_HOUR
-        /// </summary>
-        public const int MinutesPerHour = 60;
-        /// <summary>
-        /// Original name: SECONDS_PER_HOUR
-        /// </summary>
-        public const int SecondsPerHour = SecondsPerMinute * MinutesPerHour;
-        /// <summary>
-        /// Original name: MILLIS_PER_HOUR
-        /// </summary>
         public const int MillisecondsPerHour = MillisecondsPerMinute * MinutesPerHour;
-
-        public const long TicksPerHour = TicksPerMillisecond * MillisecondsPerHour;
-
-        /// <summary>
-        /// Original name: HOURS_PER_DAY
-        /// </summary>
-        public const int HoursPerDay = 24;
-        /// <summary>
-        /// Original name: MINUTES_PER_DAY
-        /// </summary>
-        public const int MinutesPerDay = MinutesPerHour * HoursPerDay;
-        /// <summary>
-        /// Original name: MINUTES_PER_DAY
-        /// </summary>
-        public const int SecondsPerDay = SecondsPerHour * HoursPerDay;
-        /// <summary>
-        /// Original name: MILLIS_PER_DAY
-        /// </summary>
         public const int MillisecondsPerDay = MillisecondsPerHour * HoursPerDay;
-
-        public const long TicksPerDay = TicksPerMillisecond * MillisecondsPerDay;
-
-        /// <summary>
-        /// Original name: DAYS_PER_WEEK
-        /// </summary>
-        public const int DaysPerWeek = 7;
-        /// <summary>
-        /// Original name: HOURS_PER_WEEK
-        /// </summary>
-        public const int HoursPerWeek = HoursPerDay * DaysPerWeek;
-        /// <summary>
-        /// Original name: MINUTES_PER_WEEK
-        /// </summary>
-        public const int MinutesPerWeek = MinutesPerDay * DaysPerWeek;
-        /// <summary>
-        /// Original name: MINUTES_PER_WEEK
-        /// </summary>
-        public const int SecondsPerWeek = SecondsPerDay * DaysPerWeek;
-        /// <summary>
-        /// Original name: MILLIS_PER_WEEK
-        /// </summary>
         public const int MillisecondsPerWeek = MillisecondsPerDay * DaysPerWeek;
 
-        public const long TicksPerWeek = TicksPerMillisecond * MillisecondsPerWeek;
+        public const int SecondsPerMinute = 60;
+        public const int SecondsPerHour = SecondsPerMinute * MinutesPerHour;
+        public const int SecondsPerDay = SecondsPerHour * HoursPerDay;
+        public const int SecondsPerWeek = SecondsPerDay * DaysPerWeek;
 
-        public static class Durations
-        {
-            public static readonly Duration OneWeek = new Duration(TicksPerWeek);
-            public static readonly Duration OneDay = new Duration(TicksPerDay);
-            public static readonly Duration OneHour = new Duration(TicksPerHour);
-            public static readonly Duration OneMinute = new Duration(TicksPerMinute);
-            public static readonly Duration OneSecond = new Duration(TicksPerSecond);
-        }
+        public const int MinutesPerHour = 60;
+        public const int MinutesPerDay = MinutesPerHour * HoursPerDay;
+        public const int MinutesPerWeek = MinutesPerDay * DaysPerWeek;
+
+        public const int HoursPerDay = 24;
+        public const int HoursPerWeek = HoursPerDay * DaysPerWeek;
+
+        public const int DaysPerWeek = 7;
     }
 }
