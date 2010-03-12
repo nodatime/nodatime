@@ -333,7 +333,7 @@ namespace NodaTime
             return localInstant - offset;
         }
 
-        #region Implementation of IEquatable<ZonedDateTime>
+        #region Equality
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -350,10 +350,6 @@ namespace NodaTime
                    Chronology == other.Chronology;
         }
 
-        #endregion
-
-        #region object overrides
-
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
         /// </summary>
@@ -366,7 +362,7 @@ namespace NodaTime
         {
             if (obj is ZonedDateTime)
             {
-                return Equals((ZonedDateTime) obj);
+                return Equals((ZonedDateTime)obj);
             }
             return false;
         }
