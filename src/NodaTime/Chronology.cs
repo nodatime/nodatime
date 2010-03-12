@@ -18,6 +18,7 @@ using System;
 
 using NodaTime.Calendars;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 
 namespace NodaTime
 {
@@ -27,7 +28,7 @@ namespace NodaTime
     /// TODO: Make this a struct? The hard work will be done in the calendar system
     /// and time zone classes.
     /// </summary>
-    public sealed class Chronology
+    public sealed class Chronology:IEquatable<Chronology>
     {
         private static readonly Chronology isoUtc = new Chronology(DateTimeZones.Utc, IsoCalendarSystem.Instance);
 
@@ -60,5 +61,59 @@ namespace NodaTime
         {
             return new Chronology(zone, IsoCalendarSystem.Instance);
         }
+
+        #region Equality
+
+        public bool Equals(Chronology other)
+        {
+            if (Object.ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return Zone == other.Zone && Calendar == other.Calendar;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Chronology);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = HashCodeHelper.Initialize();
+            hash = HashCodeHelper.Hash(hash, Zone);
+            hash = HashCodeHelper.Hash(hash, Calendar);
+            return hash;
+        }
+
+        #endregion
+
+        #region Operators
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(Chronology left, Chronology right)
+        {
+            return Object.Equals(left, right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(Chronology left, Chronology right)
+        {
+            return !(left == right);
+        }
+
+        #endregion
+
     }
 }
