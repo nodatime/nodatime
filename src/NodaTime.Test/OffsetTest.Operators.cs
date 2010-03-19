@@ -35,6 +35,22 @@ namespace NodaTime.Test
             TestHelper.TestOperatorComparisonEquality(value, equalValue, greaterValue);
         }
 
+        [Test]
+        public void UnaryPlusOperator()
+        {
+            Assert.AreEqual(Offset.Zero, +Offset.Zero, "+ 0");
+            Assert.AreEqual(new Offset(1), + new Offset(1), "+ 1");
+            Assert.AreEqual(new Offset(-7), + new Offset(-7), "+ (-7)");
+        }
+
+        [Test]
+        public void NegateOperator()
+        {
+            Assert.AreEqual(Offset.Zero, -Offset.Zero, "-0");
+            Assert.AreEqual(new Offset(-1), -new Offset(1), "-1");
+            Assert.AreEqual(new Offset(7), -new Offset(-7), "- (-7)");
+        }
+
         #region operator +
 
         [Test]
