@@ -606,7 +606,7 @@ namespace NodaTime.Format
                             {
                                 value = text[i++] - '0';
                             }
-                            catch (IndexOutOfRangeException e)
+                            catch (IndexOutOfRangeException)
                             {
                                 return ~position;
                             }
@@ -772,7 +772,7 @@ namespace NodaTime.Format
                 int maxDigitsLocal = maxDigits;
                 while (true)
                 {
-                    switch (maxDigits)
+                    switch (maxDigitsLocal)
                     {
                         default: scalar = 1L; break;
                         case 1: scalar = 10L; break;
@@ -1049,25 +1049,24 @@ namespace NodaTime.Format
 
             public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
             {
-                //TODO: use intrinsic operator after add it to Offset
-
                 if (dateTimeZone == null)
                 {
-                    return;  // no zone
+                    return;  
                 }
+
                 if (timezoneOffset == Offset.Zero && zeroOffsetText != null)
                 {
                     writer.Write(zeroOffsetText);
                     return;
                 }
-                if (timezoneOffset.Milliseconds >= 0)
+                if (timezoneOffset > Offset.Zero)
                 {
                     writer.Write('+');
                 }
                 else
                 {
                     writer.Write('-');
-                    timezoneOffset = new Offset(-timezoneOffset.Milliseconds);
+                    timezoneOffset = -timezoneOffset;
                 }
 
                 int hours = timezoneOffset.Milliseconds / NodaConstants.MillisecondsPerHour;
@@ -1076,7 +1075,7 @@ namespace NodaTime.Format
                 {
                     return;
                 }
-                timezoneOffset = timezoneOffset - new Offset(hours * NodaConstants.MillisecondsPerHour);
+                timezoneOffset = timezoneOffset - Offset.ForHours(hours);
                 if (timezoneOffset == Offset.Zero && minFields <= 1)
                 {
                     return;
@@ -1158,7 +1157,8 @@ namespace NodaTime.Format
 
                 // Format to expect is sign character followed by at least one digit.
 
-                if (limit <= 1) {
+                if (limit <= 1) 
+                {
                     return ~position;
                 }
 
@@ -1201,9 +1201,11 @@ namespace NodaTime.Format
                 int offset;
 
                 int hours = FormatUtils.ParseTwoDigits(text, position);
-                if (hours > 23) {
+                if (hours > 23) 
+                {
                     return ~position;
                 }
+
                 offset = hours * NodaConstants.MillisecondsPerHour;
                 limit -= 2;
                 position += 2;
@@ -1213,7 +1215,8 @@ namespace NodaTime.Format
                     // Need to decide now if separators are expected or parsing
                     // stops at hour field.
 
-                    if (limit <= 0) {
+                    if (limit <= 0) 
+                    {
                         goto parse;
                     }
 
@@ -1248,7 +1251,8 @@ namespace NodaTime.Format
                     }
 
                     int minutes = FormatUtils.ParseTwoDigits(text, position);
-                    if (minutes > 59) {
+                    if (minutes > 59) 
+                    {
                         return ~position;
                     }
                     offset += minutes * NodaConstants.MillisecondsPerMinute;
@@ -1257,7 +1261,8 @@ namespace NodaTime.Format
 
                     // Proceed to parse seconds.
 
-                    if (limit <= 0) {
+                    if (limit <= 0) 
+                    {
                         goto parse;
                     }
 
@@ -1293,7 +1298,8 @@ namespace NodaTime.Format
 
                     // Proceed to parse fraction of second.
 
-                    if (limit <= 0) {
+                    if (limit <= 0) 
+                    {
                         goto parse;
                     }
 
@@ -1656,6 +1662,8 @@ namespace NodaTime.Format
             return AppendPair(null, new MatchingParser(parsers));
         }
 
+        #region Literal, Text
+
         /// <summary>
         /// Instructs the printer to emit a specific character, and the parser to
         /// expect it. The parser is case-insensitive.
@@ -1712,7 +1720,9 @@ namespace NodaTime.Format
             return AppendObject(new TextField(fieldType, true));
         }
 
-        #region Append decimal fields
+        #endregion
+
+        #region Decimal fields
 
         /// <summary>
         /// Instructs the printer to emit a field value as a decimal number, and the
@@ -2039,6 +2049,97 @@ namespace NodaTime.Format
 
         #endregion
 
+        #region Two digit year
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric year field which always prints
+        /// two digits.
+        /// </summary>
+        /// <param name="pivot">Pivot year to use when parsing</param>
+        /// <param name="lenientParse">When true, if digit count is not two, it is treated
+        /// as an absolute year</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        /// <remarks>
+        /// A pivot year is used during parsing to determine the range
+        /// of supported years as <code>(pivot - 50) .. (pivot + 49)</code>. If
+        /// parse is instructed to be lenient and the digit count is not two, it is
+        /// treated as an absolute year. With lenient parsing, specifying a positive
+        /// or negative sign before the year also makes it absolute.        
+        /// </remarks>
+        public DateTimeFormatterBuilder AppendTwoDigitYear(int pivot, bool lenientParse)
+        {
+            return AppendObject(new TwoDigitYear(DateTimeFieldType.Year, pivot, lenientParse));
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric year field which always prints
+        /// and parses two digits.
+        /// </summary>
+        /// <param name="pivot">Pivot year to use when parsing</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        /// <remarks>
+        ///  A pivot year is used during parsing to determine
+        ///  the range of supported years as <code>(pivot - 50) .. (pivot + 49)</code>.
+        ///  
+        ///  pivot   supported range   00 is   20 is   40 is   60 is   80 is
+        ///  ---------------------------------------------------------------
+        ///  1950      1900..1999      1900    1920    1940    1960    1980
+        ///  1975      1925..2024      2000    2020    1940    1960    1980
+        ///  2000      1950..2049      2000    2020    2040    1960    1980
+        ///  2025      1975..2074      2000    2020    2040    2060    1980
+        ///  2050      2000..2099      2000    2020    2040    2060    2080
+        /// </remarks>
+        public DateTimeFormatterBuilder AppendTwoDigitYear(int pivot)
+        {
+            return AppendTwoDigitYear(pivot, false);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric week year field which always prints
+        /// two digits.
+        /// </summary>
+        /// <param name="pivot">Pivot week year to use when parsing</param>
+        /// <param name="lenientParse">When true, if digit count is not two, it is treated
+        /// as an absolute week year</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        /// <remarks>
+        /// A pivot year is used during parsing to determine the range
+        /// of supported years as <code>(pivot - 50) .. (pivot + 49)</code>. If
+        /// parse is instructed to be lenient and the digit count is not two, it is
+        /// treated as an absolute week year. With lenient parsing, specifying a positive
+        /// or negative sign before the week year also makes it absolute.        
+        /// </remarks>
+        public DateTimeFormatterBuilder AppendTwoDigitWeekYear(int pivot, bool lenientParse)
+        {
+            return AppendObject(new TwoDigitYear(DateTimeFieldType.WeekYear, pivot, lenientParse));
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a numeric week year field which always prints
+        /// and parses two digits.
+        /// </summary>
+        /// <param name="pivot">Pivot week year to use when parsing</param>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        /// <remarks>
+        ///  A pivot week year is used during parsing to determine
+        ///  the range of supported years as <code>(pivot - 50) .. (pivot + 49)</code>.
+        ///  
+        ///  pivot   supported range   00 is   20 is   40 is   60 is   80 is
+        ///  ---------------------------------------------------------------
+        ///  1950      1900..1999      1900    1920    1940    1960    1980
+        ///  1975      1925..2024      2000    2020    1940    1960    1980
+        ///  2000      1950..2049      2000    2020    2040    1960    1980
+        ///  2025      1975..2074      2000    2020    2040    2060    1980
+        ///  2050      2000..2099      2000    2020    2040    2060    2080
+        /// </remarks>
+        public DateTimeFormatterBuilder AppendTwoDigitWeekYear(int pivot)
+        {
+            return AppendTwoDigitWeekYear(pivot, false);
+        }
+
+        #endregion
+
+        #region Fraction
 
         /// <summary>
         /// Instructs the printer to emit a remainder of time as a decimal fraction, sans decimal point.
@@ -2055,8 +2156,15 @@ namespace NodaTime.Format
         public DateTimeFormatterBuilder AppendFraction(DateTimeFieldType fieldType, int minDigits, int maxDigits)
         {
             Guard(fieldType);
-            Guard(minDigits, maxDigits);
 
+            if (maxDigits < minDigits)
+            {
+                maxDigits = minDigits;
+            }
+            if (minDigits < 0 || maxDigits <= 0)
+            {
+                throw new ArgumentException();
+            } 
 
             return AppendObject(new Fraction(fieldType, minDigits, maxDigits));
         }
@@ -2105,6 +2213,9 @@ namespace NodaTime.Format
             return AppendFraction(DateTimeFieldType.DayOfYear, minDigits, maxDigits);
         }
 
+        #endregion
+
+        #region TimeZone
 
         /// <summary>
         /// Instructs the printer to emit a locale-specific time zone name. 
@@ -2157,6 +2268,8 @@ namespace NodaTime.Format
             return AppendObject(new TimeZoneOffset
                            (zeroOffsetText, showSeparators, minFields, maxFields));
         }
+
+        #endregion
 
         #endregion
 
@@ -2395,18 +2508,6 @@ namespace NodaTime.Format
             }
         }
 
-        private static void Guard(int minDigits, int maxDigits)
-        {
-            if (maxDigits < minDigits)
-            {
-                maxDigits = minDigits;
-            }
-            if (minDigits < 0 || maxDigits <= 0)
-            {
-                throw new ArgumentException();
-            } 
-
-        }
         #endregion
     }
 }

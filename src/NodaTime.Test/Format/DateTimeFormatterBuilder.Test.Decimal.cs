@@ -33,10 +33,9 @@ namespace NodaTime.Test.Format
 
         object[] PrintTestData =
         {
-//TODO: is this a bug in CenturyOfEraField ? (formatter prints 20, but not 21)
             new TestCaseData( Build(b=>b.AppendCenturyOfEra(0,4)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
-                                "21").SetName("CenturyOfEra").Ignore(),
+                                "20").SetName("CenturyOfEra"),
 
             new TestCaseData( Build(b=>b.AppendYearOfCentury(0,4)),
                                 new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),

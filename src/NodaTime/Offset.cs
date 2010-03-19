@@ -90,6 +90,26 @@ namespace NodaTime
         #region Operators
 
         /// <summary>
+        /// Implements the unary operator - (negation).
+        /// </summary>
+        /// <param name="Offset">The offset to negate.</param>
+        /// <returns>A new <see cref="Offset"/> instance with a negated value.</returns>
+        public static Offset operator -(Offset offset)
+        {
+            return new Offset(-offset.Milliseconds);
+        }
+
+        /// <summary>
+        /// Implements the unary operator + .
+        /// </summary>
+        /// <param name="offset">The operand.</param>
+        /// <returns>The same <see cref="Offset"/> instance</returns>
+        public static Offset operator +(Offset offset)
+        {
+            return offset;
+        }
+
+        /// <summary>
         /// Implements the operator + (addition).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
