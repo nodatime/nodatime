@@ -74,6 +74,7 @@
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
     <Compile Include="FieldValueException.cs" />
+    <Compile Include="Format\DateTimeFormats.StandardPattern.cs" />
     <Compile Include="Format\PeriodBuilder.cs" />
     <Compile Include="NodaDefaults.cs" />
     <Compile Include="Offset.cs" />
@@ -162,7 +163,7 @@
     <Compile Include="TimeZones\DateTimeZoneResourceProvider.cs" />
     <Compile Include="Partials\MonthDay.cs" />
     <Compile Include="Format\DateTimeFormatter.cs" />
-    <Compile Include="Format\DateTimeFormatterFactory.cs" />
+    <Compile Include="Format\DateTimeFormats.Pattern.cs" />
     <Compile Include="Format\DateTimeParserBucket.cs" />
     <Compile Include="Format\FormatUtils.cs" />
     <Compile Include="Format\IDateTimeParser.cs" />

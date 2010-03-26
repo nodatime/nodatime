@@ -1707,6 +1707,48 @@ namespace NodaTime.Format
         }
 
         /// <summary>
+        /// Instructs the printer to emit a locale-specific era text (BC/AD), and
+        /// the parser to expect it. The parser is case-insensitive.
+        /// </summary>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendEraText()
+        {
+            return AppendText(DateTimeFieldType.Era);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a locale-specific month of year text.
+        /// The parser will accept a long or short month of year text. 
+        /// The parser is case-insensitive.
+        /// </summary>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendMonthOfYearText()
+        {
+            return AppendText(DateTimeFieldType.MonthOfYear);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a locale-specific day of week text.
+        /// The parser will accept a long or short day of week text. 
+        /// The parser is case-insensitive.
+        /// </summary>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendDayOfWeekText()
+        {
+            return AppendText(DateTimeFieldType.DayOfWeek);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a locale-specific AM/PM text, and the
+        /// parser tp expect it. The parser is case-insensitive.
+        /// </summary>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendHalfDayOfDayText()
+        {
+            return AppendText(DateTimeFieldType.HalfDayOfDay);
+        }
+
+        /// <summary>
         /// Instructs the printer to emit a field value as short text, and the
         /// parser to expect text.
         /// </summary>
@@ -1718,6 +1760,28 @@ namespace NodaTime.Format
             Guard(fieldType);
 
             return AppendObject(new TextField(fieldType, true));
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a locale-specific short month of year text.
+        /// The parser will accept a long or short month of year text. 
+        /// The parser is case-insensitive.
+        /// </summary>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendMonthOfYearShortText()
+        {
+            return AppendShortText(DateTimeFieldType.MonthOfYear);
+        }
+
+        /// <summary>
+        /// Instructs the printer to emit a locale-specific short day of week text.
+        /// The parser will accept a long or short day of week text. 
+        /// The parser is case-insensitive.
+        /// </summary>
+        /// <returns>This DateTimeFormatterBuilder</returns>
+        public DateTimeFormatterBuilder AppendDayOfWeekShortText()
+        {
+            return AppendText(DateTimeFieldType.DayOfWeek);
         }
 
         #endregion
