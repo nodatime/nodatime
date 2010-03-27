@@ -3,95 +3,89 @@
   <Class Name="NodaTime.Periods.SingleFieldPeriodBase" Collapsed="true">
     <Position X="2.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAgAAAAQugAAAAAAACAAAAIABEAAgAiAAgAA=</HashCode>
+      <HashCode>BAAAAABAIAAAgARKgAAAAAAAAiAAAKAAAABgAAAAAAA=</HashCode>
       <FileName>Periods\SingleFieldPeriodBase.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="NodaTime.Periods.AbstractPeriod" Collapsed="true">
-    <Position X="0.75" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>BAAAAAAAIAAAgABKAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Periods\AbstractPeriod.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Periods.Period" Collapsed="true">
     <Position X="0.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAIAAAgABKAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>DBIiABAk4oiQgABo5A0DQABiAWgAMIgcYABBoAAQAiE=</HashCode>
       <FileName>Periods\Period.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Periods.Days" Collapsed="true">
     <Position X="8" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAFAAAAAAAgIEAAEAIAAAQAEAEAAAAggAAgAgKA=</HashCode>
+      <HashCode>CgIggABgAQAwAAwM8AWPIoAAAQAECKIABQhkAAhAZ6A=</HashCode>
       <FileName>Periods\Days.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Periods.Hours" Collapsed="true">
     <Position X="6.25" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>CgIggABgAQAwAAwM8AWPIoAACQAFCKIABQhkAQhAJ6A=</HashCode>
       <FileName>Periods\Hours.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Periods.Minutes" Collapsed="true">
     <Position X="4.5" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AgIggABAAQAwAAwM8AWLIgAACQAACKYABQhkAABAJ6A=</HashCode>
       <FileName>Periods\Minutes.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Periods.Months" Collapsed="true">
     <Position X="11.5" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>CsIggABAAQAQgAwM8IWPIoAAAQAFDKIABQxkQAjAJ6A=</HashCode>
       <FileName>Periods\Months.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Periods.Seconds" Collapsed="true">
     <Position X="2.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AgIggABgAQAQAAwM8AWLIgAACQAACKIABQhkAABAJ6A=</HashCode>
       <FileName>Periods\Seconds.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Periods.Weeks" Collapsed="true">
     <Position X="9.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AgIggABgAQAwAAwM8AWLIgAACQAACKIABQh0AABAJ6A=</HashCode>
       <FileName>Periods\Weeks.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Periods.Years" Collapsed="true">
     <Position X="13.25" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AgIggCBAAQAQAAwM8AWLIgAAAQAACKIAAAhkAABAJ6A=</HashCode>
       <FileName>Periods\Years.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="NodaTime.Periods.PeriodBase" Collapsed="true">
-    <Position X="0.75" Y="3" Width="1.5" />
+  <Class Name="NodaTime.Periods.PeriodType" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Periods\PeriodBase.cs</FileName>
+      <HashCode>BNQhaZCICADQiAAEwAAAgAQgAKQUqIAEWCgBBGgkYyE=</HashCode>
+      <FileName>Periods\PeriodType.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="NodaTime.IPeriod" Collapsed="true">
-    <Position X="1.75" Y="0.5" Width="1.5" />
+    <Position X="0.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAIAAAgABKAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>BAAAAAAAIAAAgABIAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IPeriod.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Enum Name="NodaTime.Periods.PeriodType" Collapsed="true">
-    <Position X="5.25" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAIAAAAACQCAAAQAAAAAAAAIAQoAAESAgBAAAEAQE=</HashCode>
-      <FileName>Periods\PeriodType.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
