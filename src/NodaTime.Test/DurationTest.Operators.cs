@@ -17,6 +17,8 @@
 
 #endregion
 
+using System;
+
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -40,7 +42,7 @@ namespace NodaTime.Test
         [Test]
         public void IEquatableEquals_WithDifferentTicks_IsFalse()
         {
-            Assert.False(Duration.One.Equals(negativeOne), "1 == -1");
+            Assert.False(Duration.One.Equals(Duration.NegativeOne), "1 == -1");
             Assert.False(Duration.One.Equals(threeMillion), "1 == 3,000,000");
             Assert.False(Duration.One.Equals(negativeFiftyMillion), "1 == -50,000,000");
             Assert.False(Duration.MinValue.Equals(Duration.MaxValue), "MinValue == MaxValue");
@@ -79,7 +81,7 @@ namespace NodaTime.Test
         public void ObjectEquals_WithDifferentTicks_IsFalse()
         {
             object oOne = Duration.One;
-            object oNegativeOne = negativeOne;
+            object oNegativeOne = Duration.NegativeOne;
             object oThreeMillion = threeMillion;
             object oNegativeFiftyMillion = negativeFiftyMillion;
             object oMinimum = Duration.MinValue;
@@ -144,7 +146,7 @@ namespace NodaTime.Test
         {
             Assert.Greater(Duration.One.CompareTo(negativeFiftyMillion), 0, "1 > -50,000,000");
             Assert.Greater(threeMillion.CompareTo(Duration.One), 0, "3,000,000 > 1");
-            Assert.Greater(negativeOne.CompareTo(negativeFiftyMillion), 0, "-1 > -50,000,000");
+            Assert.Greater(Duration.NegativeOne.CompareTo(negativeFiftyMillion), 0, "-1 > -50,000,000");
             Assert.Greater(Duration.MaxValue.CompareTo(Duration.MinValue), 0, "MaxValue > MinValue");
         }
 
@@ -153,7 +155,7 @@ namespace NodaTime.Test
         {
             Assert.Less(negativeFiftyMillion.CompareTo(Duration.One), 0, "-50,000,000 < 1");
             Assert.Less(Duration.One.CompareTo(threeMillion), 0, "1 < 3,000,000");
-            Assert.Less(negativeFiftyMillion.CompareTo(negativeOne), 0, "-50,000,000 > -1");
+            Assert.Less(negativeFiftyMillion.CompareTo(Duration.NegativeOne), 0, "-50,000,000 > -1");
             Assert.Less(Duration.MinValue.CompareTo(Duration.MaxValue), 0, "MinValue < MaxValue");
         }
 
@@ -180,7 +182,7 @@ namespace NodaTime.Test
         [Test]
         public void OperatorEquals_WithDifferentTicks_IsFalse()
         {
-            Assert.False(Duration.One == negativeOne, "1 == -1");
+            Assert.False(Duration.One == Duration.NegativeOne, "1 == -1");
             Assert.False(Duration.One == threeMillion, "1 == 3,000,000");
             Assert.False(Duration.One == negativeFiftyMillion, "1 == -50,000,000");
             Assert.False(Duration.MinValue == Duration.MaxValue, "MinValue == MaxValue");
@@ -209,7 +211,7 @@ namespace NodaTime.Test
         [Test]
         public void OperatorNotEquals_WithDifferentTicks_IsTrue()
         {
-            Assert.True(Duration.One != negativeOne, "1 != -1");
+            Assert.True(Duration.One != Duration.NegativeOne, "1 != -1");
             Assert.True(Duration.One != threeMillion, "1 != 3,000,000");
             Assert.True(Duration.One != negativeFiftyMillion, "1 != -50,000,000");
             Assert.True(Duration.MinValue != Duration.MaxValue, "MinValue != MaxValue");
@@ -239,7 +241,7 @@ namespace NodaTime.Test
         public void OperatorLessThan_MoreTicks_IsTrue()
         {
             Assert.True(Duration.One < threeMillion, "1 < 3,000,000");
-            Assert.True(negativeFiftyMillion < negativeOne, "-50,000,000 < -1");
+            Assert.True(negativeFiftyMillion < Duration.NegativeOne, "-50,000,000 < -1");
             Assert.True(Duration.MinValue < Duration.MaxValue, "MinValue < MaxValue");
         }
 
@@ -247,7 +249,7 @@ namespace NodaTime.Test
         public void OperatorLessThan_LessTicks_IsFalse()
         {
             Assert.False(threeMillion < Duration.One, "3,000,000 < 1");
-            Assert.False(negativeOne < negativeFiftyMillion, "-1 < -50,000,000");
+            Assert.False(Duration.NegativeOne < negativeFiftyMillion, "-1 < -50,000,000");
             Assert.False(Duration.MaxValue < Duration.MinValue, "MaxValue < MinValue");
         }
 
@@ -275,7 +277,7 @@ namespace NodaTime.Test
         public void OperatorLessThanOrEqual_MoreTicks_IsTrue()
         {
             Assert.True(Duration.One <= threeMillion, "1 <= 3,000,000");
-            Assert.True(negativeFiftyMillion <= negativeOne, "-50,000,000 <= -1");
+            Assert.True(negativeFiftyMillion <= Duration.NegativeOne, "-50,000,000 <= -1");
             Assert.True(Duration.MinValue <= Duration.MaxValue, "MinValue <= MaxValue");
         }
 
@@ -283,7 +285,7 @@ namespace NodaTime.Test
         public void OperatorLessThanOrEqual_LessTicks_IsFalse()
         {
             Assert.False(threeMillion <= Duration.One, "3,000,000 <= 1");
-            Assert.False(negativeOne <= negativeFiftyMillion, "-1 <= -50,000,000");
+            Assert.False(Duration.NegativeOne <= negativeFiftyMillion, "-1 <= -50,000,000");
             Assert.False(Duration.MaxValue <= Duration.MinValue, "MaxValue <= MinValue");
         }
 
@@ -311,7 +313,7 @@ namespace NodaTime.Test
         public void OperatorGreaterThan_MoreTicks_IsFalse()
         {
             Assert.False(Duration.One > threeMillion, "1 > 3,000,000");
-            Assert.False(negativeFiftyMillion > negativeOne, "-50,000,000 > -1");
+            Assert.False(negativeFiftyMillion > Duration.NegativeOne, "-50,000,000 > -1");
             Assert.False(Duration.MinValue > Duration.MaxValue, "MinValue > MaxValue");
         }
 
@@ -319,7 +321,7 @@ namespace NodaTime.Test
         public void OperatorGreaterThan_LessTicks_IsTrue()
         {
             Assert.True(threeMillion > Duration.One, "3,000,000 > 1");
-            Assert.True(negativeOne > negativeFiftyMillion, "-1 > -50,000,000");
+            Assert.True(Duration.NegativeOne > negativeFiftyMillion, "-1 > -50,000,000");
             Assert.True(Duration.MaxValue > Duration.MinValue, "MaxValue > MinValue");
         }
 
@@ -347,7 +349,7 @@ namespace NodaTime.Test
         public void OperatorGreaterThanOrEqual_MoreTicks_IsFalse()
         {
             Assert.False(Duration.One >= threeMillion, "1 >= 3,000,000");
-            Assert.False(negativeFiftyMillion >= negativeOne, "-50,000,000 >= -1");
+            Assert.False(negativeFiftyMillion >= Duration.NegativeOne, "-50,000,000 >= -1");
             Assert.False(Duration.MinValue >= Duration.MaxValue, "MinValue >= MaxValue");
         }
 
@@ -355,7 +357,7 @@ namespace NodaTime.Test
         public void OperatorGreaterThanOrEqual_LessTicks_IsTrue()
         {
             Assert.True(threeMillion >= Duration.One, "3,000,000 >= 1");
-            Assert.True(negativeOne >= negativeFiftyMillion, "-1 >= -50,000,000");
+            Assert.True(Duration.NegativeOne >= negativeFiftyMillion, "-1 >= -50,000,000");
             Assert.True(Duration.MaxValue >= Duration.MinValue, "MaxValue >= MinValue");
         }
 
@@ -375,7 +377,7 @@ namespace NodaTime.Test
         public void OperatorPlus_NonZero()
         {
             Assert.AreEqual(3000001L, (threeMillion + Duration.One).Ticks, "3,000,000 + 1");
-            Assert.AreEqual(0L, (Duration.One + negativeOne).Ticks, "1 + (-1)");
+            Assert.AreEqual(0L, (Duration.One + Duration.NegativeOne).Ticks, "1 + (-1)");
             Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.One).Ticks, "-50,000,000 + 1");
         }
 
@@ -395,7 +397,7 @@ namespace NodaTime.Test
         public void OperatorMinus_NonZero()
         {
             Assert.AreEqual(2999999L, (threeMillion - Duration.One).Ticks, "3,000,000 - 1");
-            Assert.AreEqual(2L, (Duration.One - negativeOne).Ticks, "1 - (-1)");
+            Assert.AreEqual(2L, (Duration.One - Duration.NegativeOne).Ticks, "1 - (-1)");
             Assert.AreEqual(-50000001L, (negativeFiftyMillion - Duration.One).Ticks, "-50,000,000 - 1");
         }
 
@@ -403,23 +405,48 @@ namespace NodaTime.Test
 
         #region operator /
         [Test]
-        public void OperatorDivision()
+        public void OperatorDivision_ByNonZero()
         {
-            Assert.AreEqual(1000, (threeMillion / 3000).Ticks);
+            Assert.AreEqual(1000, (threeMillion / 3000).Ticks, "3000000 / 3000");
         }
 
         [Test]
-        public void OperatorDivisionTruncates()
+        public void OperatorDivision_ByZero_Throws()
         {
-            Assert.AreEqual(1, (threeMillion / 2000000).Ticks);
+            Assert.Throws<DivideByZeroException>(() => { var unused = threeMillion / 0; }, "3000000 / 0");
+        }
+
+        [Test]
+        public void OperatorDivision_Truncates()
+        {
+            Assert.AreEqual(1, (threeMillion / 2000000).Ticks, "3000000 / 2000000");
+            Assert.AreEqual(-1, (threeMillion / -2000000).Ticks, "3000000 / -2000000");
         }
         #endregion
 
         #region operator *
         [Test]
-        public void OperatorMultiplication()
+        public void OperatorMultiplication_NonZeroNonOne()
         {
-            Assert.AreEqual(threeMillion, new Duration(3000) * 1000);
+            Assert.AreEqual(threeMillion, new Duration(3000) * 1000, "3000 * 1000");
+            Assert.AreEqual(negativeFiftyMillion, new Duration(50000) * -1000, "50000 * -1000");
+            Assert.AreEqual(negativeFiftyMillion, new Duration(-50000) * 1000, "-50000 * 1000");
+            Assert.AreEqual(threeMillion, new Duration(-3000) * -1000, "-3000 * -1000");
+        }
+        [Test]
+        public void OperatorMultiplication_Zero_IsAbsorbingElement()
+        {
+            Assert.AreEqual(Duration.Zero, Duration.Zero * 0, "0 * 0");
+            Assert.AreEqual(Duration.Zero, Duration.One * 0, "1 * 0");
+            Assert.AreEqual(Duration.Zero, threeMillion * 0, "3000000 * 0");
+            Assert.AreEqual(Duration.Zero, negativeFiftyMillion * 0, "-50000000 * 0");
+        }
+        [Test]
+        public void OperatorMultiplication_One_IsNeutralElement()
+        {
+            Assert.AreEqual(threeMillion, threeMillion * 1, "3000000 * 1");
+            Assert.AreEqual(Duration.Zero, Duration.Zero * 1, "0 * 1");
+            Assert.AreEqual(negativeFiftyMillion, negativeFiftyMillion * 1, "-50000000 * 1");
         }
         #endregion
     }
