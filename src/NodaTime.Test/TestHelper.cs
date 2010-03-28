@@ -94,12 +94,12 @@ namespace NodaTime.Test
             where T : class, IComparable<T>
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
-            Assert.True(value.CompareTo((T)null) > 0, "value.CompareTo<T>(null)");
-            Assert.True(value.CompareTo(value) == 0, "value.CompareTo<T>(value)");
-            Assert.True(value.CompareTo(equalValue) == 0, "value.CompareTo<T>(equalValue)");
-            Assert.True(equalValue.CompareTo(value) == 0, "equalValue.CompareTo<T>(value)");
-            Assert.True(value.CompareTo(greaterValue) < 0, "value.CompareTo<T>(greaterValue)");
-            Assert.True(greaterValue.CompareTo(value) > 0, "greaterValue.CompareTo<T>(value)");
+            Assert.Greater(value.CompareTo((T)null), 0, "value.CompareTo<T>(null)");
+            Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo<T>(value)");
+            Assert.AreEqual(value.CompareTo(equalValue), 0, "value.CompareTo<T>(equalValue)");
+            Assert.AreEqual(equalValue.CompareTo(value), 0, "equalValue.CompareTo<T>(value)");
+            Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo<T>(greaterValue)");
+            Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo<T>(value)");
         }
 
         /// <summary>
@@ -113,11 +113,11 @@ namespace NodaTime.Test
             where T : struct, IComparable<T>
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
-            Assert.True(value.CompareTo(value) == 0, "value.CompareTo<T>(value)");
-            Assert.True(value.CompareTo(equalValue) == 0, "value.CompareTo<T>(equalValue)");
-            Assert.True(equalValue.CompareTo(value) == 0, "equalValue.CompareTo<T>(value)");
-            Assert.True(value.CompareTo(greaterValue) < 0, "value.CompareTo<T>(greaterValue)");
-            Assert.True(greaterValue.CompareTo(value) > 0, "greaterValue.CompareTo<T>(value)");
+            Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo<T>(value)");
+            Assert.AreEqual(value.CompareTo(equalValue), 0, "value.CompareTo<T>(equalValue)");
+            Assert.AreEqual(equalValue.CompareTo(value), 0, "equalValue.CompareTo<T>(value)");
+            Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo<T>(greaterValue)");
+            Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo<T>(value)");
         }
 
         /// <summary>
