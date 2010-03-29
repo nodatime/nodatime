@@ -111,7 +111,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void Get_ValidField()
+        public void Get_SupportedField()
         {
             Assert.AreEqual(10, twentyPastTen.Get(DateTimeFieldType.HourOfDay), "hour of day");
             Assert.AreEqual(20, twentyPastTen.Get(DateTimeFieldType.MinuteOfHour), "minute of hour");
@@ -124,7 +124,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void Get_NonExistentField_Throws()
+        public void Get_NotSupportedField_Throws()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => twentyPastTen.Get(DateTimeFieldType.SecondOfMinute));
         }
@@ -160,7 +160,7 @@ namespace NodaTime.Test.Partials
         public void GetField_ValidIndex()
         {
             Assert.AreSame(isoCalendar.Fields.HourOfDay, twentyPastTen.GetField(0), "index 0, hour of day");
-            Assert.AreSame(isoCalendar.Fields.HourOfDay, twentyPastTen.GetField(1), "index 1, minute of hour");
+            Assert.AreSame(isoCalendar.Fields.MinuteOfHour, twentyPastTen.GetField(1), "index 1, minute of hour");
         }
 
         [Test]
@@ -215,25 +215,20 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void ObjectEquals_SameFieldTypes()
+        public void Equality()
         {
             TestHelper.TestEqualsClass<IPartial>(twentyPastTen, twentyPastTenCopy, twentyPastFifteen);
+            TestHelper.TestEqualsClass<IPartial>(twentyPastTen, twentyPastTenCopy, december31);
         }
 
         [Test]
-        public void ObjectEquals_DifferentFieldTypes_Throws()
-        {
-            Assert.Throws<InvalidOperationException>(() => december31.Equals(twentyPastTen));
-        }
-
-        [Test]
-        public void Comparison_SameFields()
+        public void Comparison_SameFieldTypes()
         {
             TestHelper.TestCompareToClass<IPartial>(twentyPastTen, twentyPastTenCopy, twentyPastFifteen);
         }
 
         [Test]
-        public void Comparison_DifferentFields_Throws()
+        public void Comparison_DifferentFieldTypes_Throws()
         {
             Assert.Throws<InvalidOperationException>(() => december31.CompareTo(twentyPastTen));
         }
@@ -242,7 +237,7 @@ namespace NodaTime.Test.Partials
         public void WithCalendar_FieldsStillValid()
         {
             Partial december31Gregorian = december31.WithCalendar(gregorianCalendar);
-            Assert.AreEqual(december31.Calendar, december31Gregorian.Calendar);
+            Assert.AreEqual(gregorianCalendar, december31Gregorian.Calendar);
             CollectionAssert.AreEqual(december31.GetValues(), december31Gregorian.GetValues());
             CollectionAssert.AreEqual(december31.GetFieldTypes(), december31Gregorian.GetFieldTypes());
         }
@@ -267,7 +262,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void With_ExistingValidField()
+        public void With_SupportedField()
         {
             Partial tenToEleven = twentyPastTen.With(DateTimeFieldType.MinuteOfHour, 50);
             AssertHourMinute(10, 50, tenToEleven);
@@ -280,7 +275,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void With_NewField_AddsFieldOrdered1()
+        public void With_NotSupportedField_AddsFieldOrdered1()
         {
             Partial withDay = twentyPastTen.With(DateTimeFieldType.DayOfMonth, 15);
             var fieldTypes = new[] { DateTimeFieldType.DayOfMonth, DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfHour };
@@ -289,7 +284,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void With_NewField_AddsFieldOrdered2()
+        public void With_NotSupportedField_AddsFieldOrdered2()
         {
             Partial withMinuteOfDay = twentyPastTen.With(DateTimeFieldType.MinuteOfDay, 15);
             var fieldTypes = new[] { DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfDay, DateTimeFieldType.MinuteOfHour };
@@ -298,7 +293,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void With_NewField_AddsFieldOrdered3()
+        public void With_NotSupportedField_AddsFieldOrdered3()
         {
             Partial withSeconds = twentyPastTen.With(DateTimeFieldType.SecondOfMinute, 15);
             var fieldTypes = new[] { DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfHour, DateTimeFieldType.SecondOfMinute };
@@ -314,7 +309,13 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void Without_NonExistingField_ReturnsSame()
+        public void With_OutOfRange_Throws()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => twentyPastTen.With(DateTimeFieldType.MinuteOfHour, 70));
+        }
+
+        [Test]
+        public void Without_NotSupportedField_ReturnsSame()
         {
             Partial copy = twentyPastTen.Without(DateTimeFieldType.Year);
             Assert.AreSame(twentyPastTen, copy);
@@ -327,7 +328,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void Without_ExistingField_RemovesField()
+        public void Without_SupportedField_RemovesField()
         {
             Partial minutesOnly = twentyPastTen.Without(DateTimeFieldType.HourOfDay);
             Assert.AreEqual(1, minutesOnly.Size);
@@ -345,7 +346,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void WithField_ExistentField()
+        public void WithField_SupportedField()
         {
             Partial twentyPastNoon = twentyPastTen.WithField(DateTimeFieldType.HourOfDay, 12);
             AssertHourMinute(12, 20, twentyPastNoon);
@@ -358,7 +359,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void WithField_InexistentField_Throws()
+        public void WithField_NotSupportedField_Throws()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => twentyPastTen.WithField(DateTimeFieldType.DayOfMonth, 6));
         }
@@ -371,7 +372,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void WithFieldAdded_ExistingField()
+        public void WithFieldAdded_SupportedField()
         {
             Partial tenToEleven = twentyPastTen.WithFieldAdded(DurationFieldType.Minutes, 30);
             AssertHourMinute(10, 50, tenToEleven);
@@ -385,7 +386,7 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void WithFieldAdded_InexistentField_Throws()
+        public void WithFieldAdded_NotSupportedField_Throws()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => twentyPastTen.WithFieldAdded(DurationFieldType.Days, 6));
         }
@@ -393,8 +394,10 @@ namespace NodaTime.Test.Partials
         [Test]
         public void WithFieldAdded_OverflowLargestField_Throws()
         {
-            Assert.Throws<OverflowException>(() => twentyPastTen.WithFieldAdded(DurationFieldType.Hours, 16));
-            Assert.Throws<OverflowException>(() => december31.WithFieldAdded(DurationFieldType.Days, 1));
+            Assert.Throws<ArgumentException>(() => twentyPastTen.WithFieldAdded(DurationFieldType.Hours, 16));
+            //TODO: Why does this return January 1 instead of throwing due to overflow?
+            // Commented out to remain compliant with Joda Time behavior
+            //Assert.Throws<ArgumentException>(() => december31.WithFieldAdded(DurationFieldType.Days, 1));
         }
 
         [Test]
@@ -407,26 +410,26 @@ namespace NodaTime.Test.Partials
         [Test]
         public void WithFieldAdded_UnderflowLargestField_Throws()
         {
-            Assert.Throws<OverflowException>(() => twentyPastTen.WithFieldAdded(DurationFieldType.Hours, -11));
-            Assert.Throws<OverflowException>(() => midnight.WithFieldAdded(DurationFieldType.Minutes, -1));
+            Assert.Throws<ArgumentException>(() => twentyPastTen.WithFieldAdded(DurationFieldType.Hours, -11));
+            Assert.Throws<ArgumentException>(() => midnight.WithFieldAdded(DurationFieldType.Minutes, -1));
         }
 
         [Test]
         public void WithFieldAdded_UnderflowNonLargestField_Carries()
         {
-            Partial fiveToTen = twentyPastTen.WithFieldAdded(DurationFieldType.Minutes, -5);
+            Partial fiveToTen = twentyPastTen.WithFieldAdded(DurationFieldType.Minutes, -25);
             AssertHourMinute(9, 55, fiveToTen);
         }
         
         [Test]
-        public void WithFieldAddWrapped_ExistentField()
+        public void WithFieldAddWrapped_SupportedField()
         {
             Partial twentyPastNoon = twentyPastTen.WithFieldAddWrapped(DurationFieldType.Hours, 2);
             AssertHourMinute(12, 20, twentyPastNoon);
         }
 
         [Test]
-        public void WithFieldAddWrapped_InexistentField_Throws()
+        public void WithFieldAddWrapped_NotSupportedField_Throws()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => twentyPastTen.WithFieldAddWrapped(DurationFieldType.Days, 1));
         }
@@ -471,9 +474,34 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void Plus_IgnoresUnusedFields()
+        public void WithPeriodAdded_IgnoresNotSupportedFields()
         {
-            Period oneDayTwoHoursTenMinutes = Period.FromDays(1).WithDays(2).WithMinutes(10);
+            Period oneDayOneHourFiveMinutes = Period.FromDays(1).WithHours(1).WithMinutes(5);
+            Partial halfPastNoon = twentyPastTen.WithPeriodAdded(oneDayOneHourFiveMinutes, 2);
+            AssertHourMinute(12, 30, halfPastNoon);
+
+            Partial tenPastEight = twentyPastTen.WithPeriodAdded(oneDayOneHourFiveMinutes, -2);
+            AssertHourMinute(8, 10, tenPastEight);
+        }
+
+        [Test]
+        public void WithPeriodAdded_Null_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => twentyPastTen.WithPeriodAdded(null, 42));
+        }
+
+        [Test]
+        public void WithPeriodAdded_ZeroFactor_ReturnsSame()
+        {
+            Period oneDayOneHourFiveMinutes = Period.FromDays(1).WithHours(1).WithMinutes(5);
+            Partial copy2 = twentyPastTen.WithPeriodAdded(oneDayOneHourFiveMinutes, 0);
+            Assert.AreSame(twentyPastTen, copy2);
+        }
+
+        [Test]
+        public void Plus_IgnoresNotSupportedFields()
+        {
+            Period oneDayTwoHoursTenMinutes = Period.FromDays(1).WithHours(2).WithMinutes(10);
             Partial halfPastNoon = twentyPastTen.Plus(oneDayTwoHoursTenMinutes);
             AssertHourMinute(12, 30, halfPastNoon);
         }
@@ -485,11 +513,11 @@ namespace NodaTime.Test.Partials
         }
 
         [Test]
-        public void Minus_IgnoresUnusedFields()
+        public void Minus_IgnoresNotSupportedFields()
         {
-            Period oneDayTwoHoursTenMinutes = Period.FromDays(1).WithDays(2).WithMinutes(10);
+            Period oneDayTwoHoursTenMinutes = Period.FromDays(1).WithHours(2).WithMinutes(10);
             Partial tenPastEight = twentyPastTen.Minus(oneDayTwoHoursTenMinutes);
-            AssertHourMinute(9, 10, tenPastEight);
+            AssertHourMinute(8, 10, tenPastEight);
         }
 
         [Test]

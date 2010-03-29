@@ -334,8 +334,8 @@ namespace NodaTime.Fields
                         throw new ArgumentException("Fields invalid for add");
                     }
                 }
-                valueToAdd -= ((int)max + 1) - values[fieldIndex];  // reduce the amount to add
-                values = nextField.Add(instant, fieldIndex - 1, values, 1);  // add 1 to next bigger field
+                valueToAdd -= (max + 1) - values[fieldIndex];  // reduce the amount to add
+                values = nextField.AddWrapPartial(instant, fieldIndex - 1, values, 1);  // add 1 to next bigger field
                 values[fieldIndex] = (int)GetMinimumValue(instant, values);  // reset this field to zero
             }
             while (valueToAdd < 0)

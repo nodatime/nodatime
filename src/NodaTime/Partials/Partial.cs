@@ -17,6 +17,8 @@
 using System;
 using NodaTime.Calendars;
 using NodaTime.Fields;
+using NodaTime.Periods;
+using NodaTime.Utility;
 
 namespace NodaTime.Partials
 {
@@ -31,6 +33,10 @@ namespace NodaTime.Partials
 
         public Partial(DateTimeFieldType[] types, int[] values, ICalendarSystem calendar)
         {
+            if (calendar == null)
+            {
+                throw new ArgumentNullException("calendar");
+            }
             this.calendar = calendar;
             if (types == null)
             {
@@ -58,10 +64,9 @@ namespace NodaTime.Partials
                 }
             }
 
-
             this.types = (DateTimeFieldType[])types.Clone();
             calendar.Validate(this, values);
-            values = (int[])values.Clone();
+            this.values = (int[])values.Clone();
         }
 
         /// <summary>
@@ -80,64 +85,215 @@ namespace NodaTime.Partials
             get { return calendar; }
         }
 
-        protected override DateTimeFieldBase GetField(int index, ICalendarSystem calendar)
+        protected override IDateTimeField GetField(int index, ICalendarSystem calendar)
         {
-            throw new NotImplementedException();
+            if (index < 0 || index >= types.Length)
+                throw new ArgumentOutOfRangeException("index");
+            return types[index].GetField(calendar);
         }
 
         public override int GetValue(int index)
         {
-            throw new NotImplementedException();
+            if (index < 0 || index >= values.Length)
+                throw new ArgumentOutOfRangeException("index");
+            return values[index];
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return false;
+            if (ReferenceEquals(this, obj))
+                return true;
+            var asPartial = obj as IPartial;
+            return asPartial != null && Equals(asPartial);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = HashCodeHelper.Initialize();
+            hash = HashCodeHelper.Hash(hash, calendar);
+            foreach (DateTimeFieldType type in types)
+                hash = HashCodeHelper.Hash(hash, type);
+            foreach (int value in values)
+                hash = HashCodeHelper.Hash(hash, value);
+            return hash;
         }
 
         public override bool Equals(IPartial other)
         {
-            throw new NotImplementedException();
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.Calendar != Calendar)
+                return false;
+            if (Size != other.Size)
+                return false;
+            for (int i = 0; i < Size; i++)
+            {
+                if (types[i] != other.GetFieldType(i))
+                    return false;
+                if (values[i] != other.GetValue(i))
+                    return false;
+            }
+            return true;
         }
 
         public override int CompareTo(IPartial other)
         {
-            throw new NotImplementedException();
+            if (other == null)
+                return 1;
+            if (this == other)
+                return 0;
+            const string differentFieldMessage = "Cannot compare partials with different fields";
+            if (Size != other.Size)
+            {
+                throw new InvalidOperationException(differentFieldMessage);
+            }
+            for (int i = 0; i < Size; i++)
+            {
+                if (types[i] != other.GetFieldType(i))
+                    throw new InvalidOperationException(differentFieldMessage);
+            }
+            for (int i = 0; i < Size; i++)
+            {
+                if (values[i] > other.GetValue(i))
+                    return 1;
+                if (values[i] < other.GetValue(i))
+                    return -1;
+            }
+            return 0;
         }
 
-        public Partial WithCalendar(ICalendarSystem calendar)
+        public Partial WithCalendar(ICalendarSystem newCalendar)
         {
-            throw new NotImplementedException();
+            if (calendar == newCalendar)
+                return this;
+            return new Partial(types, values, newCalendar);
         }
 
         public Partial With(DateTimeFieldType fieldType, int value)
         {
-            throw new NotImplementedException();
+            if (fieldType == null)
+                throw new ArgumentNullException("fieldType");
+            int index = IndexOf(fieldType);
+            if (index == -1)
+            {
+                var newTypes = new DateTimeFieldType[Size + 1];
+                var newValues = new int[newTypes.Length];
+                long fieldDurationTicks = fieldType.GetField(calendar).DurationField.UnitTicks;
+                long fieldRangeTicks = fieldType.GetField(calendar).RangeDurationField.UnitTicks;
+                int i;
+                for(i = 0; i < types.Length; i++)
+                {
+                    long iDurationTicks = types[i].GetField(calendar).DurationField.UnitTicks;
+                    if (fieldDurationTicks > iDurationTicks)
+                        break;
+                    if (fieldDurationTicks == iDurationTicks)
+                    {
+                        long iRangeTicks = types[i].GetField(calendar).RangeDurationField.UnitTicks;
+                        if (fieldRangeTicks > iRangeTicks)
+                            break;
+                    }
+                }
+                Array.Copy(types, newTypes, i);
+                Array.Copy(values, newValues, i);
+                newTypes[i] = fieldType;
+                newValues[i] = value;
+                Array.Copy(types, i, newTypes, i + 1, types.Length - i);
+                Array.Copy(values, i, newValues, i + 1, values.Length - i);
+                return new Partial(newTypes, newValues, calendar);
+            }
+            else
+            {
+                return this.WithField(fieldType, value);
+            }
         }
 
         public Partial Without(DateTimeFieldType fieldType)
         {
-            throw new NotImplementedException();
+            if (fieldType == null)
+                throw new ArgumentNullException("fieldType");
+            int index = IndexOf(fieldType);
+            if (index == -1)
+                return this;
+
+            var newTypes = new DateTimeFieldType[Size - 1];
+            var newValues = new int[newTypes.Length];
+
+            Array.Copy(types, newTypes, index);
+            Array.Copy(values, newValues, index);
+            Array.Copy(types, index + 1, newTypes, index, newTypes.Length - index);
+            Array.Copy(values, index + 1, newValues, index, newValues.Length - index);
+            return new Partial(newTypes, newValues, calendar);
         }
 
         public Partial WithField(DateTimeFieldType fieldType, int value)
         {
-            throw new NotImplementedException();
+            if (fieldType == null)
+                throw new ArgumentNullException("fieldType");
+            int index = IndexOf(fieldType);
+            if (index == -1)
+                throw new ArgumentOutOfRangeException("fieldType");
+            if (Get(fieldType) == value)
+                return this;
+
+            if (Get(fieldType) == value)
+                return this;
+            var newValues = (int[])values.Clone();
+            newValues[index] = value;
+            GetField(index).SetValue(this, index, newValues, value);
+            return new Partial(types, newValues, calendar);
         }
 
         public Partial WithFieldAdded(DurationFieldType fieldType, int amount)
         {
-            throw new NotImplementedException();
+            if (amount == 0)
+                return this;
+            int index = IndexOf(fieldType);
+            int[] newValues = GetValues();
+            newValues = GetField(index).Add(this, index, newValues, amount);
+            return new Partial(types, newValues, calendar);
         }
 
         public Partial WithFieldAddWrapped(DurationFieldType fieldType, int amount)
         {
-            throw new NotImplementedException();
+            if (amount == 0)
+                return this;
+            int index = IndexOf(fieldType);
+            int[] newValues = GetValues();
+            newValues = GetField(index).AddWrapPartial(this, index, newValues, amount);
+            return new Partial(types, newValues, calendar);
+        }
+
+        public Partial WithPeriodAdded(IPeriod period, int factor)
+        {
+            if (period == null)
+                throw new ArgumentNullException("period");
+            if (factor == 0)
+                return this;
+            int[] newValues = GetValues();
+            for (int i = 0; i < period.Size; i++)
+            {
+                var fieldType = period.GetFieldType(i);
+                int index = IndexOf(fieldType);
+                if(index != -1)
+                {
+                    newValues = GetField(index).Add(this, index, newValues, period.GetValue(i) * factor);
+                }
+            }
+            return new Partial(types, newValues, calendar);
         }
 
         public Partial Plus(IPeriod period)
         {
-            throw new NotImplementedException();
+            return WithPeriodAdded(period, 1);
         }
 
         public Partial Minus(IPeriod period)
         {
-            throw new NotImplementedException();
+            return WithPeriodAdded(period, -1);
         }
     }
 }
