@@ -89,5 +89,55 @@ namespace NodaTime.Partials
         {
             throw new NotImplementedException();
         }
+
+        public override bool Equals(IPartial other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int CompareTo(IPartial other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Partial WithCalendar(ICalendarSystem calendar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Partial With(DateTimeFieldType fieldType, int value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Partial Without(DateTimeFieldType fieldType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Partial WithField(DateTimeFieldType fieldType, int value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Partial WithFieldAdded(DurationFieldType fieldType, int amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Partial WithFieldAddWrapped(DurationFieldType fieldType, int amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Partial Plus(IPeriod period)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Partial Minus(IPeriod period)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

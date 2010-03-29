@@ -235,5 +235,43 @@ namespace NodaTime.Partials
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.
+        ///                 </param>
+        public abstract bool Equals(IPartial other);
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings:
+        /// <list type="table">
+        /// <listheader>
+        /// <term>Value</term>
+        /// <description>Meaning</description>
+        /// </listheader>
+        /// <item>
+        /// <term>&lt; 0</term>
+        /// <description>This object is less than the <paramref name="other"/> parameter.</description>
+        /// </item>
+        /// <item>
+        /// <term>0</term>
+        /// <description>This object is equal to <paramref name="other"/>.</description>
+        /// </item>
+        /// <item>
+        /// <term>&gt; 0</term>
+        /// <description>This object is greater than <paramref name="other"/>.</description>
+        /// </item>
+        /// </list>
+        /// </returns>
+        public abstract int CompareTo(IPartial other);
     }
 }
