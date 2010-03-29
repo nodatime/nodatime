@@ -25,7 +25,7 @@ namespace NodaTime.Partials
     /// </summary>
     public sealed class LocalTime : LocalBase
     {
-        protected override DateTimeFieldBase GetField(int index, ICalendarSystem calendar)
+        protected override IDateTimeField GetField(int index, ICalendarSystem calendar)
         {
             throw new NotImplementedException();
         }

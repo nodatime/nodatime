@@ -56,7 +56,7 @@ namespace NodaTime
         /// <summary>
         /// Checks whether the field type specified is supported by this partial.
         /// </summary>
-        /// <param name="field">The field to check, may be null which returns false</param>
+        /// <param name="fieldType">The field to check, may be null which returns false</param>
         /// <returns>True if the field is supported, false otherwise</returns>
         bool IsSupported(DateTimeFieldType fieldType);
 
@@ -82,7 +82,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="index">The index to retrieve</param>
         /// <returns>The field at the specified index</returns>
-        DateTimeFieldBase GetField(int index);
+        IDateTimeField GetField(int index);
 
         /// <summary>
         /// Gets the value at the specified index.

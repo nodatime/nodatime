@@ -241,7 +241,7 @@ namespace NodaTime.Calendars
             for (int i = 0; i < size; i++)
             {
                 int value = values[i];
-                DateTimeFieldBase field = partial.GetField(i);
+                IDateTimeField field = partial.GetField(i);
                 if (value < field.GetMinimumValue())
                 {
                     throw new FieldValueException(field.FieldType, value, field.GetMinimumValue(), null);
@@ -256,7 +256,7 @@ namespace NodaTime.Calendars
             for (int i = 0; i < size; i++)
             {
                 int value = values[i];
-                DateTimeFieldBase field = partial.GetField(i);
+                IDateTimeField field = partial.GetField(i);
                 if (value < field.GetMinimumValue(partial, values))
                 {
                     throw new FieldValueException(field.FieldType, value, field.GetMinimumValue(partial, values), null);

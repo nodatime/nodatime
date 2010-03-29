@@ -39,12 +39,12 @@ namespace NodaTime.Fields
         /// <param name="value">The value to verify</param>
         /// <param name="lowerBound">The minimum valid value</param>
         /// <param name="upperBound">The maximum valid value</param>
-        internal static void VerifyValueBounds(DateTimeFieldType field, long value, long lowerBound, long upperBound)
+        internal static void VerifyValueBounds(DateTimeFieldType fieldType, long value, long lowerBound, long upperBound)
         {
             // TODO: i18n or decide whether we want our own custom type with lower and upper bounds
             if ((value < lowerBound) || (value > upperBound))
             {
-                throw new ArgumentOutOfRangeException("value", value, "Value of type " + field + " should be in range [" + lowerBound + "-" + upperBound + "]");
+                throw new ArgumentOutOfRangeException("value", value, "Value of type " + fieldType + " should be in range [" + lowerBound + "-" + upperBound + "]");
             }
         }
         /// <summary>
