@@ -56,7 +56,7 @@ namespace NodaTime.Utility
         /// </summary>
         /// <param name="manager">The <see cref="ResourceManager"/> to load from.</param>
         /// <param name="name">The resource name.</param>
-        /// <returns>The <see cref="IDictionary"/> or <c>null</c> if there is no such resource.</returns>
+        /// <returns>The <see cref="IDictionary{TKey,TValue}"/> or <c>null</c> if there is no such resource.</returns>
         public static IDictionary<string, string> LoadDictionary(ResourceManager manager, string name)
         {
             if (manager == null)
