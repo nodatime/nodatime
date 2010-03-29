@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
+
 using NodaTime.Calendars;
 using NodaTime.Fields;
 
@@ -34,7 +37,7 @@ namespace NodaTime
     /// instant that can be used to 'fill in the gaps' and specify a time zone.
     /// </para>
     /// </summary>
-    public interface IPartial
+    public interface IPartial : IEquatable<IPartial>, IComparable<IPartial>
     {
         /// <summary>
         /// Gets the calendar system of the partial which is never null.

@@ -44,5 +44,15 @@ namespace NodaTime.Partials
         {
             throw new NotImplementedException();
         }
+
+        public override bool Equals(IPartial other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int CompareTo(IPartial other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
