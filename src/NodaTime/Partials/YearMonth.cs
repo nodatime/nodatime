@@ -25,7 +25,7 @@ namespace NodaTime.Partials
     /// </summary>
     public sealed class YearMonth : PartialBase
     {
-        protected override DateTimeFieldBase GetField(int index, ICalendarSystem calendar)
+        protected override IDateTimeField GetField(int index, ICalendarSystem calendar)
         {
             throw new NotImplementedException();
         }
@@ -33,6 +33,16 @@ namespace NodaTime.Partials
         public override int Size
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public override bool Equals(IPartial other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int CompareTo(IPartial other)
+        {
+            throw new NotImplementedException();
         }
     }
 }

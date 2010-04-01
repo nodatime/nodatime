@@ -65,6 +65,8 @@ namespace NodaTime.Partials
         /// <returns>The index of the field, -1 if unsupported</returns>
         public int IndexOf(DateTimeFieldType type)
         {
+            if (type == null)
+                throw new ArgumentNullException("type");
             for (int i = 0; i < Size; i++)
             {
                 if (GetFieldType(i) == type)
@@ -86,7 +88,7 @@ namespace NodaTime.Partials
             int index = IndexOf(type);
             if (index == -1)
             {
-                throw new ArgumentException("Field '" + type + "' is not supported");
+                throw new ArgumentOutOfRangeException("Field '" + type + "' is not supported");
             }
             return index;
         }
@@ -107,7 +109,7 @@ namespace NodaTime.Partials
         /// The field specified must be one of those that is supported by the partial.
         /// </para>
         /// </summary>
-        /// <param name="field">A DateTimeFieldType instance that is supported by this partial</param>
+        /// <param name="fieldType">A DateTimeFieldType instance that is supported by this partial</param>
         /// <returns>Value of that field</returns>
         public int Get(DateTimeFieldType fieldType)
         {
@@ -129,7 +131,7 @@ namespace NodaTime.Partials
         /// </summary>
         /// <param name="index">The index</param>
         /// <returns>The field</returns>
-        public DateTimeFieldBase GetField(int index)
+        public IDateTimeField GetField(int index)
         {
             return GetField(index, Calendar);
         }
@@ -139,9 +141,9 @@ namespace NodaTime.Partials
         /// The fields are returned largest to smallest, for example Hour, Minute, Second.
         /// </summary>
         /// <returns>The fields supported in an array that may be altered, largest to smallest</returns>
-        public DateTimeFieldBase[] GetFields()
+        public IDateTimeField[] GetFields()
         {
-            DateTimeFieldBase[] result = new DateTimeFieldBase[Size];
+            IDateTimeField[] result = new IDateTimeField[Size];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = GetField(i);
@@ -181,9 +183,9 @@ namespace NodaTime.Partials
         /// </para>
         /// </summary>
         /// <param name="index">The index to retrieve</param>
-        /// <param name="chrono">The chronology to use</param>
+        /// <param name="calendar">The chronology to use</param>
         /// <returns>The field</returns>
-        protected abstract DateTimeFieldBase GetField(int index, ICalendarSystem calendar);
+        protected abstract IDateTimeField GetField(int index, ICalendarSystem calendar);
 
         /// <summary>
         /// Gets the index of the first fields to have the specified duration,
@@ -193,7 +195,8 @@ namespace NodaTime.Partials
         /// <returns>The index of the field, -1 if unsupported</returns>
         protected int IndexOf(DurationFieldType type)
         {
-            for (int i = 0, isize = Size; i < isize; i++)
+            int size = Size;
+            for (int i = 0; i < size; i++)
             {
                 if (GetFieldType(i).DurationFieldType == type)
                 {
@@ -235,5 +238,43 @@ namespace NodaTime.Partials
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.
+        ///                 </param>
+        public abstract bool Equals(IPartial other);
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings:
+        /// <list type="table">
+        /// <listheader>
+        /// <term>Value</term>
+        /// <description>Meaning</description>
+        /// </listheader>
+        /// <item>
+        /// <term>&lt; 0</term>
+        /// <description>This object is less than the <paramref name="other"/> parameter.</description>
+        /// </item>
+        /// <item>
+        /// <term>0</term>
+        /// <description>This object is equal to <paramref name="other"/>.</description>
+        /// </item>
+        /// <item>
+        /// <term>&gt; 0</term>
+        /// <description>This object is greater than <paramref name="other"/>.</description>
+        /// </item>
+        /// </list>
+        /// </returns>
+        public abstract int CompareTo(IPartial other);
     }
 }
