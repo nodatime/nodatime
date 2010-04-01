@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
+
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -22,9 +22,7 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class DurationTest
     {
-        Duration onePrime = new Duration(1L);
-        Duration negativeOne = new Duration(-1L);
-        Duration threeMillion = new Duration(3000000L);
-        Duration negativeFiftyMillion = new Duration(-50000000L);
+        readonly Duration threeMillion = new Duration(3000000L);
+        readonly Duration negativeFiftyMillion = new Duration(-50000000L);
     }
 }

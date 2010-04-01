@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
+
 using NodaTime.Calendars;
 using NodaTime.Fields;
 
@@ -34,7 +37,7 @@ namespace NodaTime
     /// instant that can be used to 'fill in the gaps' and specify a time zone.
     /// </para>
     /// </summary>
-    public interface IPartial
+    public interface IPartial : IEquatable<IPartial>, IComparable<IPartial>
     {
         /// <summary>
         /// Gets the calendar system of the partial which is never null.
@@ -53,7 +56,7 @@ namespace NodaTime
         /// <summary>
         /// Checks whether the field type specified is supported by this partial.
         /// </summary>
-        /// <param name="field">The field to check, may be null which returns false</param>
+        /// <param name="fieldType">The field to check, may be null which returns false</param>
         /// <returns>True if the field is supported, false otherwise</returns>
         bool IsSupported(DateTimeFieldType fieldType);
 
@@ -80,7 +83,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="index">The index to retrieve</param>
         /// <returns>The field at the specified index</returns>
-        DateTimeFieldBase GetField(int index);
+        IDateTimeField GetField(int index);
 
         /// <summary>
         /// Gets the value at the specified index.
