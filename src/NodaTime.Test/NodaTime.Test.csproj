@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChronologyTest.cs" />
+    <Compile Include="Format\DateTimeFormats.cs" />
     <Compile Include="Format\DateTimeFormatterBuilderTest.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.Test.Decimal.cs">
       <DependentUpon>DateTimeFormatterBuilderTest.cs</DependentUpon>

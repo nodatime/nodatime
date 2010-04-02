@@ -72,7 +72,7 @@ namespace NodaTime.Format
 
             private DateTimeFormatter GetFormatter(IFormatProvider provider) 
             {
-                var pattern = GetPattern(provider);
+                var pattern = DateTimeFormats.PatternForStandardPattern(standardFormatString, provider);
                 lock (patternToFormatterMap)
                 {
                     if (!patternToFormatterMap.ContainsKey(pattern))
@@ -82,78 +82,204 @@ namespace NodaTime.Format
                     return patternToFormatterMap[pattern];
                 }
             }
-
-            private string GetPattern(IFormatProvider provider) 
-            {
-                DateTimeFormatInfo dtfi = DateTimeFormatInfo.GetInstance(provider);
-
-                switch (standardFormatString)
-                {
-                    case 'D':
-                        return dtfi.LongDatePattern;
-
-                    case 'F':
-                        return dtfi.FullDateTimePattern;
-
-                    case 'G':
-                        return dtfi.ShortDatePattern + " " + dtfi.LongTimePattern;
-
-                    case 'M':
-                    case 'm':
-                        return dtfi.MonthDayPattern;
-
-                    case 'O':
-                    case 'o':
-                        return "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK";
-
-                    case 'R':
-                    case 'r':
-                        return dtfi.RFC1123Pattern;
-
-                    case 'T':
-                        return dtfi.LongTimePattern;
-
-                    case 'U':
-                        return dtfi.FullDateTimePattern;
-
-                    case 'd':
-                        return dtfi.ShortDatePattern;
-
-                    case 'f':
-                        return (dtfi.LongDatePattern + " " + dtfi.ShortTimePattern);
-
-                    case 'g':
-                        return dtfi.ShortDatePattern + " " + dtfi.ShortTimePattern;
-
-                    case 'Y':
-                    case 'y':
-                        return dtfi.YearMonthPattern;
-
-                    case 's':
-                        return dtfi.SortableDateTimePattern;
-
-                    case 't':
-                        return dtfi.ShortTimePattern;
-
-                    case 'u':
-                        return dtfi.UniversalSortableDateTimePattern;
-
-                    default:
-                        throw new ArgumentException("Invalid standard date and time format string");
-                }
-            }
         }
 
         private static readonly Dictionary<char, DateTimeFormatter> mapStandardPatternToDateTimeFormatter = new Dictionary<char, DateTimeFormatter>(19);
 
         /// <summary>
-        /// Factory to create a format from a standard date and time format string.
+        /// Gets a format that outputs a short date format.
         /// </summary>
-        /// <param name="standardPattern">Standard date and time format string</param>
+        /// <remarks>
+        /// The format will change as you change the format provider of the formatter.
+        /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
+        /// </remarks>
+        public static DateTimeFormatter ShortDate
+        {
+            get { return CreateFormatterForStandardPattern('d'); }
+        }
+
+        /// <summary>
+        /// Gets a format that outputs a long date format.
+        /// </summary>
+        /// <remarks>
+        /// The format will change as you change the format provider of the formatter.
+        /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
+        /// </remarks>        
+        public static DateTimeFormatter LongDate
+        {
+            get { return CreateFormatterForStandardPattern('D'); }
+        }
+
+        /// <summary>
+        /// Gets a format that outputs a full date/time pattern (short time)
+        /// </summary>
+        /// <remarks>
+        /// The format will change as you change the format provider of the formatter.
+        /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
+        /// </remarks>        
+        public static DateTimeFormatter FullShortTime
+        {
+            get { return CreateFormatterForStandardPattern('f'); }
+        }
+
+        /// <summary>
+        /// Gets a format that outputs a full date/time pattern (long time)
+        /// </summary>
+        /// <remarks>
+        /// The format will change as you change the format provider of the formatter.
+        /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
+        /// </remarks>        
+        public static DateTimeFormatter FullLongTime
+        {
+            get { return CreateFormatterForStandardPattern('F'); }
+        }
+
+        /// <summary>
+        /// Gets a format that outputs a general date/time pattern (short time)
+        /// </summary>
+        /// <remarks>
+        /// The format will change as you change the format provider of the formatter.
+        /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
+        /// </remarks>        
+        public static DateTimeFormatter GeneralShortTime
+        {
+            get { return CreateFormatterForStandardPattern('g'); }
+        }
+
+        /// <summary>
+        /// Gets a format that outputs a general date/time pattern (long time)
+        /// </summary>
+        /// <remarks>
+        /// The format will change as you change the format provider of the formatter.
+        /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
+        /// </remarks>        
+        public static DateTimeFormatter GeneralLongTime
+        {
+            get { return CreateFormatterForStandardPattern('G'); }
+        }
+
+        /// <summary>
+        /// Gets a format that outputs a month day pattern
+        /// </summary>
+        /// <remarks>
+        /// The format will change as you change the format provider of the formatter.
+        /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
+        /// </remarks>        
+        public static DateTimeFormatter MonthDay
+        {
+            get { return CreateFormatterForStandardPattern('m'); }
+        }
+
+        /// <summary>
+        /// Gets a format that outputs a short time pattern
+        /// </summary>
+        /// <remarks>
+        /// The format will change as you change the format provider of the formatter.
+        /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
+        /// </remarks>        
+        public static DateTimeFormatter ShortTime
+        {
+            get { return CreateFormatterForStandardPattern('t'); }
+        }
+
+        /// <summary>
+        /// Gets a format that outputs a long time pattern
+        /// </summary>
+        /// <remarks>
+        /// The format will change as you change the format provider of the formatter.
+        /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
+        /// </remarks>        
+        public static DateTimeFormatter LongTime
+        {
+            get { return CreateFormatterForStandardPattern('T'); }
+        }
+
+        /// <summary>
+        /// Gets a format that outputs a year month pattern
+        /// </summary>
+        /// <remarks>
+        /// The format will change as you change the format provider of the formatter.
+        /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
+        /// </remarks>        
+        public static DateTimeFormatter YearMonth
+        {
+            get { return CreateFormatterForStandardPattern('Y'); }
+        }
+        
+        /// <summary>
+        /// Factory to create a format from a standard date and time pattern.
+        /// </summary>
+        /// <param name="standardPattern">Standard date and time pattern</param>
         /// <returns>The formatter</returns>
         public static DateTimeFormatter ForStandardPattern(char standardPattern)
         {
             return CreateFormatterForStandardPattern(standardPattern);
+        }
+
+        /// <summary>
+        /// Returns the pattern used by a particular standard pattern and format provider.
+        /// </summary>
+        /// <param name="standardPattern">Standard date and time format string</param>
+        /// <param name="provider">The provider to use, null means default</param>
+        /// <returns>Date and time pattern</returns>
+        public static string PatternForStandardPattern(char standardPattern, IFormatProvider provider)
+        {
+            DateTimeFormatInfo dtfi = DateTimeFormatInfo.GetInstance(provider);
+
+            switch (standardPattern)
+            {
+                case 'D':
+                    return dtfi.LongDatePattern;
+
+                case 'd':
+                    return dtfi.ShortDatePattern;
+
+                case 'F':
+                    return dtfi.FullDateTimePattern;
+
+                case 'f':
+                    return (dtfi.LongDatePattern + " " + dtfi.ShortTimePattern);
+
+                case 'G':
+                    return dtfi.ShortDatePattern + " " + dtfi.LongTimePattern;
+
+                case 'g':
+                    return dtfi.ShortDatePattern + " " + dtfi.ShortTimePattern;
+
+                case 'M':
+                case 'm':
+                    return dtfi.MonthDayPattern;
+
+                case 'T':
+                    return dtfi.LongTimePattern;
+
+                case 't':
+                    return dtfi.ShortTimePattern;
+
+                case 'Y':
+                case 'y':
+                    return dtfi.YearMonthPattern;
+
+                case 's':
+                    return dtfi.SortableDateTimePattern;
+
+                case 'R':
+                case 'r':
+                    return dtfi.RFC1123Pattern;
+
+                case 'U':
+                    return dtfi.FullDateTimePattern;
+
+                case 'u':
+                    return dtfi.UniversalSortableDateTimePattern;
+
+                case 'O':
+                case 'o':
+                    return "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK";
+
+                default:
+                    throw new FormatException("Invalid standard date and time pattern");
+            }
         }
 
         private static DateTimeFormatter CreateFormatterForStandardPattern(char standardPattern)
