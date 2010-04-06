@@ -101,6 +101,12 @@
     </Compile>
     <Compile Include="Format\IsoDateTimeFormatsTest.Parse.cs" />
     <Compile Include="Format\IsoDateTimeFormatsTest.cs" />
+    <Compile Include="Format\PeriodFormatterBuilderTest.Affix.cs">
+      <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Format\PeriodFormatterBuilderTest.Literal.cs">
+      <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Partials\PartialTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
