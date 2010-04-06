@@ -26,12 +26,6 @@ namespace NodaTime.Test.Format
         #region Singular prefix
 
         [Test]
-        public void AppendPrefixNull_ThrowsArgumentNull_ForNullPrefixString()
-        {
-            Assert.Throws<ArgumentNullException>(() => builder.AppendPrefix(null));
-        }
-
-        [Test]
         public void AppendPrefixBeforeYears_BuildsCorrectPrinter_For1YearsStandardPeriod()
         {
             var formatter = builder.AppendPrefix("Years:")

@@ -126,7 +126,7 @@ namespace NodaTime.Format
 
             if (value < 10)
             {
-                builder.Append((char)value);
+                builder.Append((char)(value + '0'));
             }
             else if (value < 100)
             {

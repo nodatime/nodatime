@@ -14,9 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
+
 using NodaTime.Format;
 using NodaTime.Periods;
+
 using NUnit.Framework;
 
 namespace NodaTime.Test.Format
@@ -48,21 +51,6 @@ namespace NodaTime.Test.Format
 
             yearDayTimePeriodEmpty = new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime);
             yearDayTimePeriodFull = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime);
-        }
-
-        [Test]
-        public void AppendLiteral_BuildsCorrectPrinter_ForStandardPeriod()
-        {
-            var formatter = builder
-                .AppendLiteral("HELLO")
-                .ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
-
-            Assert.AreEqual("HELLO", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(0, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
         }
 
         [Test]
