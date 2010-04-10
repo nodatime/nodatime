@@ -26,7 +26,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void ConstantProperties_ReturnExpectedValues()
         {
-            DurationField field = UnsupportedDurationField.Seconds;
+            IDurationField field = UnsupportedDurationField.Seconds;
             Assert.IsFalse(field.IsSupported);
             Assert.IsTrue(field.IsPrecise);
             Assert.AreEqual(0, field.UnitTicks);
@@ -35,9 +35,9 @@ namespace NodaTime.Test.Fields
         [Test]
         public void CachedValuesAreSingletons()
         {
-            DurationField field1 = UnsupportedDurationField.Seconds;
-            DurationField field2 = UnsupportedDurationField.ForFieldType(DurationFieldType.Seconds);
-            DurationField field3 = UnsupportedDurationField.ForFieldType(DurationFieldType.Seconds);
+            IDurationField field1 = UnsupportedDurationField.Seconds;
+            IDurationField field2 = UnsupportedDurationField.ForFieldType(DurationFieldType.Seconds);
+            IDurationField field3 = UnsupportedDurationField.ForFieldType(DurationFieldType.Seconds);
 
             Assert.AreSame(field1, field2);
             Assert.AreSame(field1, field3);

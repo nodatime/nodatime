@@ -34,7 +34,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Always returns null(not supported)
         /// </summary>
-        public override DurationField RangeDurationField { get { return null; } }
+        public override IDurationField RangeDurationField { get { return null; } }
 
         /// <summary>
         /// Always returns false, that means that it does not accept values that
@@ -114,7 +114,7 @@ namespace NodaTime.Fields
             return IsLeap(localInstant) ? 1 : 0;
         }
 
-        public override DurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
+        public override IDurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
 
         #endregion
 

@@ -108,6 +108,8 @@ namespace NodaTime.Test.Fields
             {
             }
 
+            public override bool IsSupported { get { return true; } }
+
             public override bool IsPrecise
             {
                 get { return true; }

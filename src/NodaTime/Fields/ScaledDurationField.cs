@@ -25,7 +25,7 @@ namespace NodaTime.Fields
     {
         private readonly int scale;
 
-        public ScaledDurationField(DurationField wrappedField, DurationFieldType fieldType, int scale)
+        public ScaledDurationField(IDurationField wrappedField, DurationFieldType fieldType, int scale)
             : base(wrappedField, fieldType)
         {
             if (scale == 0 || scale == 1) {
@@ -33,6 +33,8 @@ namespace NodaTime.Fields
             }
             this.scale = scale;
         }
+
+        public override bool IsSupported { get { return true; } }
 
         public override int GetValue(Duration duration)
         {

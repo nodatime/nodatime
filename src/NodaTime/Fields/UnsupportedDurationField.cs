@@ -24,7 +24,7 @@ namespace NodaTime.Fields
     /// UnsupportedDurationField is thread-safe and immutable.
     /// </para>
     /// </summary>
-    internal sealed class UnsupportedDurationField : DurationField
+    internal sealed class UnsupportedDurationField : DurationFieldBase
     {
         private static readonly UnsupportedDurationField[] cache = Array.ConvertAll
             ((DurationFieldType[]) Enum.GetValues(typeof(DurationFieldType)),
@@ -45,12 +45,9 @@ namespace NodaTime.Fields
         public static readonly UnsupportedDurationField Milliseconds = cache[(int) DurationFieldType.Milliseconds];
         public static readonly UnsupportedDurationField Ticks = cache[(int) DurationFieldType.Ticks];
 
-        private readonly DurationFieldType fieldType;
 
         private UnsupportedDurationField(DurationFieldType fieldType)
-        {
-            this.fieldType = fieldType;
-        }
+            : base(fieldType) { }
 
         /// <summary>
         /// Gets an instance of UnsupportedDurationField for a specific named field.
@@ -67,10 +64,6 @@ namespace NodaTime.Fields
             return cache[(int) fieldType];
         }
 
-        /// <summary>
-        /// Get the type of the field.
-        /// </summary>
-        public override DurationFieldType FieldType { get { return fieldType; } }
 
         /// <summary>
         /// This field is not supported, always returns false

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -24,8 +25,13 @@ namespace NodaTime.Fields
     /// DurationFieldBase is thread-safe and immutable, and its subclasses must be as well.
     /// </para>
     /// </summary>
-    public abstract class DurationFieldBase : DurationField
+    public abstract class DurationFieldBase : IDurationField
     {
+        public static bool IsTypeValid(DurationFieldType type)
+        {
+            return type >= 0 && type <= DurationFieldType.Ticks;
+        }
+
         private readonly DurationFieldType fieldType;
 
         protected DurationFieldBase(DurationFieldType fieldType)
@@ -40,41 +46,105 @@ namespace NodaTime.Fields
         /// <summary>
         /// Get the type of the field.
         /// </summary>
-        public override DurationFieldType FieldType { get { return fieldType; } }
+        public DurationFieldType FieldType { get { return fieldType; } }
 
         /// <summary>
-        /// Fields derived from this class are always supported.
+        /// Returns true if this field is supported.
         /// </summary>
-        public override bool IsSupported { get { return true; } }
+        public abstract bool IsSupported { get; }
 
-        public override int GetValue(Duration duration)
+        /// <summary>
+        /// Is this field precise. A precise field can calculate its value from
+        /// milliseconds without needing a reference date. Put another way, a
+        /// precise field's unit size is not variable.
+        /// </summary>
+        public abstract bool IsPrecise { get; }
+
+        /// <summary>
+        /// Returns the amount of ticks per unit value of this field.
+        /// For example, if this field represents "seconds", then this returns the
+        /// ticks in one second.
+        /// </summary>
+        public abstract long UnitTicks { get; }
+
+        #region Extract field value from a duration
+
+        public virtual int GetValue(Duration duration)
         {
  	        return (int) GetInt64Value(duration);
         }
 
-        public override long GetInt64Value(Duration duration)
+        public virtual long GetInt64Value(Duration duration)
         {
  	        return duration.Ticks / UnitTicks;
         }
 
-        public override int GetValue(Duration duration, LocalInstant localInstant)
+        public virtual int GetValue(Duration duration, LocalInstant localInstant)
         {
  	        return (int) GetInt64Value(duration, localInstant);
         }
 
-        public override Duration GetDuration(long value)
+        public abstract long GetInt64Value(Duration duration, LocalInstant localInstant);
+
+        #endregion
+
+        #region Create a duration from a field value
+
+        public virtual Duration GetDuration(long value)
         {
             return new Duration(value * UnitTicks);
         }
 
-        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        public abstract Duration GetDuration(long value, LocalInstant localInstant);
+
+        #endregion
+
+        #region Add, subtract, difference
+
+        public abstract LocalInstant Add(LocalInstant localInstant, int value);
+
+        public abstract LocalInstant Add(LocalInstant localInstant, long value);
+
+        public LocalInstant Subtract(LocalInstant localInstant, int value)
+        {
+            if (value == int.MinValue)
+            {
+                return Subtract(localInstant, (long)value);
+            }
+            return Add(localInstant, -value);
+        }
+
+        public LocalInstant Subtract(LocalInstant instant, long value)
+        {
+            if (value == long.MinValue)
+            {
+                throw new ArithmeticException("Int64.MinValue cannot be negated");
+            }
+            return Add(instant, -value);
+        }
+
+        public virtual int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return (int) GetInt64Difference(minuendInstant, subtrahendInstant);
         }
 
-        public static bool IsTypeValid(DurationFieldType type)
+        public abstract long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
+
+        #endregion
+
+        public int CompareTo(IDurationField other)
         {
-            return type >= 0 && type <= DurationFieldType.Ticks;
+            // cannot do (thisMillis - otherMillis) as can overflow
+
+            long otherMillis = other.UnitTicks;
+            long thisMillis = UnitTicks;
+
+            return thisMillis == otherMillis ? 0 : thisMillis < otherMillis ? -1 : 1;
+        }
+
+        public override string ToString()
+        {
+            return FieldType.ToString();
         }
     }
 }

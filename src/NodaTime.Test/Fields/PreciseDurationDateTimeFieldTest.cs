@@ -32,14 +32,14 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_GivenZeroTicksDurationField_ThrowsArgumentException()
         {
-            DurationField badField = new FakeDurationField(0, true);
+            IDurationField badField = new FakeDurationField(0, true);
             Assert.Throws<ArgumentException>(() => new StubPreciseDurationDateTimeField(badField));
         }
 
         [Test]
         public void Constructor_GivenImpreciseDurationField_ThrowsArgumentException()
         {
-            DurationField badField = new FakeDurationField(1, false);
+            IDurationField badField = new FakeDurationField(1, false);
             Assert.Throws<ArgumentException>(() => new StubPreciseDurationDateTimeField(badField));
         }
 
@@ -174,7 +174,7 @@ namespace NodaTime.Test.Fields
 
         private class StubPreciseDurationDateTimeField : PreciseDurationDateTimeField
         {
-            internal StubPreciseDurationDateTimeField(DurationField unit)
+            internal StubPreciseDurationDateTimeField(IDurationField unit)
                 : base(DateTimeFieldType.SecondOfMinute, unit)
             {
             }
@@ -190,7 +190,7 @@ namespace NodaTime.Test.Fields
                 return localInstant.Ticks / 60L;
             }
 
-            public override DurationField RangeDurationField
+            public override IDurationField RangeDurationField
             {
                 get { return new MockCountingDurationField(DurationFieldType.Minutes); }
             }

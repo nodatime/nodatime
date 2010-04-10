@@ -23,19 +23,19 @@ namespace NodaTime.Fields
     /// </summary>
     public sealed class FieldSet
     {
-        private readonly DurationField ticks;
-        private readonly DurationField milliseconds;
-        private readonly DurationField seconds;
-        private readonly DurationField minutes;
-        private readonly DurationField hours;
-        private readonly DurationField halfDays;
-        private readonly DurationField days;
-        private readonly DurationField weeks;
-        private readonly DurationField weekYears;
-        private readonly DurationField months;
-        private readonly DurationField years;
-        private readonly DurationField centuries;
-        private readonly DurationField eras;
+        private readonly IDurationField ticks;
+        private readonly IDurationField milliseconds;
+        private readonly IDurationField seconds;
+        private readonly IDurationField minutes;
+        private readonly IDurationField hours;
+        private readonly IDurationField halfDays;
+        private readonly IDurationField days;
+        private readonly IDurationField weeks;
+        private readonly IDurationField weekYears;
+        private readonly IDurationField months;
+        private readonly IDurationField years;
+        private readonly IDurationField centuries;
+        private readonly IDurationField eras;
 
         private readonly IDateTimeField tickOfMillisecond;
         private readonly IDateTimeField tickOfDay;
@@ -63,19 +63,19 @@ namespace NodaTime.Fields
         private readonly IDateTimeField centruryOfEra;
         private readonly IDateTimeField era;
 
-        public DurationField Ticks { get { return ticks; } }
-        public DurationField Milliseconds { get { return milliseconds; } }
-        public DurationField Seconds { get { return seconds; } }
-        public DurationField Minutes { get { return minutes; } }
-        public DurationField Hours { get { return hours; } }
-        public DurationField HalfDays { get { return halfDays; } }
-        public DurationField Days { get { return days; } }
-        public DurationField Weeks { get { return weeks; } }
-        public DurationField WeekYears { get { return weekYears; } }
-        public DurationField Months { get { return months; } }
-        public DurationField Years { get { return years; } }
-        public DurationField Centuries { get { return centuries; } }
-        public DurationField Eras { get { return eras; } }
+        public IDurationField Ticks { get { return ticks; } }
+        public IDurationField Milliseconds { get { return milliseconds; } }
+        public IDurationField Seconds { get { return seconds; } }
+        public IDurationField Minutes { get { return minutes; } }
+        public IDurationField Hours { get { return hours; } }
+        public IDurationField HalfDays { get { return halfDays; } }
+        public IDurationField Days { get { return days; } }
+        public IDurationField Weeks { get { return weeks; } }
+        public IDurationField WeekYears { get { return weekYears; } }
+        public IDurationField Months { get { return months; } }
+        public IDurationField Years { get { return years; } }
+        public IDurationField Centuries { get { return centuries; } }
+        public IDurationField Eras { get { return eras; } }
 
         public IDateTimeField TickOfMillisecond { get { return tickOfMillisecond; } }
         public IDateTimeField TickOfDay { get { return tickOfDay; } }
@@ -161,19 +161,19 @@ namespace NodaTime.Fields
         // Cons: Builders aren't reusable, and FieldSet isn't as obviously thread-safe.
         public class Builder
         {
-            public DurationField Ticks { get; set; }
-            public DurationField Milliseconds { get; set; }
-            public DurationField Seconds { get; set; }
-            public DurationField Minutes { get; set; }
-            public DurationField Hours { get; set; }
-            public DurationField HalfDays { get; set; }
-            public DurationField Days { get; set; }
-            public DurationField Weeks { get; set; }
-            public DurationField WeekYears { get; set; }
-            public DurationField Months { get; set; }
-            public DurationField Years { get; set; }
-            public DurationField Centuries { get; set; }
-            public DurationField Eras { get; set; }
+            public IDurationField Ticks { get; set; }
+            public IDurationField Milliseconds { get; set; }
+            public IDurationField Seconds { get; set; }
+            public IDurationField Minutes { get; set; }
+            public IDurationField Hours { get; set; }
+            public IDurationField HalfDays { get; set; }
+            public IDurationField Days { get; set; }
+            public IDurationField Weeks { get; set; }
+            public IDurationField WeekYears { get; set; }
+            public IDurationField Months { get; set; }
+            public IDurationField Years { get; set; }
+            public IDurationField Centuries { get; set; }
+            public IDurationField Eras { get; set; }
 
             public IDateTimeField TickOfMillisecond { get; set; }
             public IDateTimeField TickOfDay { get; set; }

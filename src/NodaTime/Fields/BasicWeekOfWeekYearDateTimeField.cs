@@ -26,7 +26,7 @@ namespace NodaTime.Fields
         private static readonly Duration ThreeDays = Duration.FromStandardDays(3);
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal BasicWeekOfWeekYearDateTimeField(BasicCalendarSystem calendarSystem, DurationField weeks)
+        internal BasicWeekOfWeekYearDateTimeField(BasicCalendarSystem calendarSystem, IDurationField weeks)
             : base(DateTimeFieldType.WeekOfWeekYear, weeks)
         {
             this.calendarSystem = calendarSystem;
@@ -42,7 +42,7 @@ namespace NodaTime.Fields
             return calendarSystem.GetWeekOfWeekYear(localInstant);
         }
 
-        public override DurationField RangeDurationField { get { return calendarSystem.Fields.WeekYears; } }
+        public override IDurationField RangeDurationField { get { return calendarSystem.Fields.WeekYears; } }
 
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {

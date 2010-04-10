@@ -24,7 +24,7 @@ namespace NodaTime.Fields
     internal sealed class RemainderDateTimeField : DecoratedDateTimeField
     {
         private readonly int divisor;
-        private readonly DurationField remainderRangeField;
+        private readonly IDurationField remainderRangeField;
 
         internal RemainderDateTimeField(IDateTimeField field, DateTimeFieldType fieldType, int divisor)
             : base(field, fieldType)
@@ -34,7 +34,7 @@ namespace NodaTime.Fields
                 throw new ArgumentOutOfRangeException("divisor", "The divisor must be at least 2");
             }
 
-            DurationField durationField = field.DurationField;
+            IDurationField durationField = field.DurationField;
             remainderRangeField = durationField == null ? null : new ScaledDurationField(durationField, fieldType.RangeDurationFieldType.Value, divisor);
             this.divisor = divisor;
         }
@@ -51,7 +51,7 @@ namespace NodaTime.Fields
             remainderRangeField = dividedField.DivisorDurationField;
         }
 
-        internal DurationField RemainderRangeField { get { return remainderRangeField; } }
+        internal IDurationField RemainderRangeField { get { return remainderRangeField; } }
 
         internal int Divisor { get { return divisor; } }
 
@@ -69,7 +69,7 @@ namespace NodaTime.Fields
             return WrappedField.SetValue(localInstant, divided * divisor + value);
         }
 
-        public override DurationField RangeDurationField { get { return remainderRangeField; } }
+        public override IDurationField RangeDurationField { get { return remainderRangeField; } }
 
         public override long GetMinimumValue()
         {
