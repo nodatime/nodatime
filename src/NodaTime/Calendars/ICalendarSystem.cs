@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 using NodaTime.Fields;
+using NodaTime.Periods;
 
 namespace NodaTime.Calendars
 {
@@ -141,22 +142,14 @@ namespace NodaTime.Calendars
 
         #region Periods
 
-        /// <summary>
-        /// Gets the values of a period from a duration.
+         /// <summary>
+        /// Gets the values of a period type from an interval.
         /// </summary>
-        /// <param name="period">The period instant to use</param>
-        /// <param name="duration">The duration to query</param>
-        /// <returns>The values of the period extracted from the duration</returns>
-        int[] GetPeriodValues(IPeriod period, Duration duration);
-
-        /// <summary>
-        /// Gets the values of a period from an interval.
-        /// </summary>
-        /// <param name="period">The period instant to use</param>
+        /// <param name="periodType">The period type to use</param>
         /// <param name="start">The start instant of an interval to query</param>
         /// <param name="end">The end instant of an interval to query</param>
         /// <returns>The values of the period extracted from the interval</returns>
-        int[] GetPeriodValues(IPeriod period, LocalInstant start, LocalInstant end);
+        int[] GetPeriodValues(PeriodType periodType, LocalInstant start, LocalInstant end);
 
         /// <summary>
         /// Adds the period to the instant, specifying the number of times to add.

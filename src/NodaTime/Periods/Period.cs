@@ -250,20 +250,8 @@ namespace NodaTime.Periods
         /// <param name="calendar">The calendar system to use to split the duration</param>
         /// <param name="periodType">Which set of fields this period supports</param>
         public Period(Duration duration, ICalendarSystem calendar, PeriodType periodType)
-        {
-            if (calendar == null)
-            {
-                throw new ArgumentNullException("calendar");
-            }
+            : this(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, calendar, PeriodType.Standard) { }
 
-            if (periodType == null)
-            {
-                throw new ArgumentNullException("periodType");
-            }
-
-            this.periodType = periodType;
-            this.fieldValues = calendar.GetPeriodValues(this, duration);
-        }
 
         /// <summary>
         /// Creates a period from the given duration using the standard set of fields.
@@ -379,7 +367,7 @@ namespace NodaTime.Periods
             }
 
             this.periodType = periodType;
-            this.fieldValues = calendar.GetPeriodValues(this, start, end);
+            this.fieldValues = calendar.GetPeriodValues(periodType, start, end);
         }
 
         /// <summary>
