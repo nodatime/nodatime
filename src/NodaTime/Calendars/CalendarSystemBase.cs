@@ -16,6 +16,7 @@
 #endregion
 using System;
 using NodaTime.Fields;
+using NodaTime.Periods;
 
 namespace NodaTime.Calendars
 {
@@ -139,59 +140,31 @@ namespace NodaTime.Calendars
 
         #region Periods
 
-        /// <summary>
-        /// Gets the values of a period from a duration.
+         /// <summary>
+        /// Gets the values of a period type from an interval.
         /// </summary>
-        /// <param name="period">The period instant to use</param>
-        /// <param name="duration">The duration to query</param>
-        /// <returns>The values of the period extracted from the duration</returns>
-        public int[] GetPeriodValues(IPeriod period, Duration duration)
-        {
-            int size = period.Size;
-            int[] values = new int[size];
-            if (duration != Duration.Zero)
-            {
-                LocalInstant current = LocalInstant.LocalUnixEpoch;
-                LocalInstant end = LocalInstant.LocalUnixEpoch + duration;
-
-                for (int i = 0; i < size; i++)
-                {
-                    DurationField field = GetField(period.GetFieldType(i));
-                    if (field.IsPrecise)
-                    {
-                        int value = field.GetDifference(end, current);
-                        values[i] = value;
-
-                        current = field.Add(current, value);
-                    }
-                }
-            }
-            return values;
-        }
-
-        /// <summary>
-        /// Gets the values of a period from an interval.
-        /// </summary>
-        /// <param name="period">The period instant to use</param>
+        /// <param name="periodType">The period type to use</param>
         /// <param name="start">The start instant of an interval to query</param>
         /// <param name="end">The end instant of an interval to query</param>
         /// <returns>The values of the period extracted from the interval</returns>
-        public int[] GetPeriodValues(IPeriod period, LocalInstant start, LocalInstant end)
+        public int[] GetPeriodValues(PeriodType periodType, LocalInstant start, LocalInstant end)
         {
-            int size = period.Size;
+            int size = periodType.Size;
             int[] values = new int[size];
 
-            LocalInstant result = start;
-            if (start != end)
+            if (start == end)
             {
-                for (int i = 0; i < size; i++)
-                {
-                    DurationField field = GetField(period.GetFieldType(i));
-                    int value = field.GetDifference(end, result);
-                    values[i] = value;
+                return values;
+            }
 
-                    result = field.Add(result, value);
-                }
+            LocalInstant result = start;
+            for (int i = 0; i < size; i++)
+            {
+                DurationField field = GetField(periodType.GetFieldType(i));
+                int value = field.GetDifference(end, result);
+                values[i] = value;
+
+                result = field.Add(result, value);
             }
             return values;
         }
