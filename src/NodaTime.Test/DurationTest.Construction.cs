@@ -38,65 +38,65 @@ namespace NodaTime.Test
         [Test]
         public void Factory_StandardDays()
         {
-            Duration test = Duration.StandardDays(1);
+            Duration test = Duration.FromStandardDays(1);
             Assert.AreEqual(1 * NodaConstants.TicksPerDay, test.Ticks);
 
-            test = Duration.StandardDays(2);
+            test = Duration.FromStandardDays(2);
             Assert.AreEqual(2 * NodaConstants.TicksPerDay, test.Ticks);
 
-            test = Duration.StandardDays(0);
+            test = Duration.FromStandardDays(0);
             Assert.AreEqual(Duration.Zero, test);
         }
 
         [Test]
         public void Factory_StandardHours()
         {
-            Duration test = Duration.StandardHours(1);
+            Duration test = Duration.FromHours(1);
             Assert.AreEqual(1* NodaConstants.TicksPerHour, test.Ticks);
 
-            test = Duration.StandardHours(2);
+            test = Duration.FromHours(2);
             Assert.AreEqual(2 * NodaConstants.TicksPerHour, test.Ticks);
 
-            test = Duration.StandardHours(0);
+            test = Duration.FromHours(0);
             Assert.AreEqual(Duration.Zero, test);
         }
 
         [Test]
         public void Factory_StandardMinutes()
         {
-            Duration test = Duration.StandardMinutes(1);
+            Duration test = Duration.FromMinutes(1);
             Assert.AreEqual(1 * NodaConstants.TicksPerMinute, test.Ticks);
 
-            test = Duration.StandardMinutes(2);
+            test = Duration.FromMinutes(2);
             Assert.AreEqual(2 * NodaConstants.TicksPerMinute, test.Ticks);
 
-            test = Duration.StandardMinutes(0);
+            test = Duration.FromMinutes(0);
             Assert.AreEqual(Duration.Zero, test);
         }
 
         [Test]
         public void Factory_StandardSeconds()
         {
-            Duration test = Duration.StandardSeconds(1);
+            Duration test = Duration.FromSeconds(1);
             Assert.AreEqual(1 * NodaConstants.TicksPerSecond, test.Ticks);
 
-            test = Duration.StandardSeconds(2);
+            test = Duration.FromSeconds(2);
             Assert.AreEqual(2 * NodaConstants.TicksPerSecond, test.Ticks);
 
-            test = Duration.StandardSeconds(0);
+            test = Duration.FromSeconds(0);
             Assert.AreEqual(Duration.Zero, test);
         }
 
         [Test]
         public void Factory_Milliseconds()
         {
-            Duration test = Duration.Milliseconds(1);
+            Duration test = Duration.FromMilliseconds(1);
             Assert.AreEqual(1 * NodaConstants.TicksPerMillisecond, test.Ticks);
 
-            test = Duration.Milliseconds(2);
+            test = Duration.FromMilliseconds(2);
             Assert.AreEqual(2 * NodaConstants.TicksPerMillisecond, test.Ticks);
 
-            test = Duration.Milliseconds(0);
+            test = Duration.FromMilliseconds(0);
             Assert.AreEqual(Duration.Zero, test);
         }
 
