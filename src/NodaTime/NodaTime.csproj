@@ -129,6 +129,7 @@
     <Compile Include="Format\PeriodFormats.cs" />
     <Compile Include="Clocks\SystemClock.cs" />
     <Compile Include="Partials\PartialUtils.cs" />
+    <Compile Include="Periods\Period.Creation.cs" />
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\NullDateTimeZone.cs" />

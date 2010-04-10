@@ -43,7 +43,7 @@ namespace NodaTime.Test.Periods
                                         6 * NodaConstants.TicksPerMinute +
                                         7 * NodaConstants.TicksPerSecond + 
                                         8 *NodaConstants.TicksPerMillisecond);
-            var sut = new Period(length);
+            var sut = Period.From(length);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(0, sut.Months);
             Assert.AreEqual(0, sut.Days);
@@ -62,7 +62,7 @@ namespace NodaTime.Test.Periods
                                         6 * NodaConstants.TicksPerMinute +
                                         7 * NodaConstants.TicksPerSecond +
                                         8 * NodaConstants.TicksPerMillisecond);
-            var sut = new Period(length);
+            var sut = Period.From(length);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(0, sut.Months);
             Assert.AreEqual(0, sut.Days);
@@ -75,7 +75,7 @@ namespace NodaTime.Test.Periods
         [Test]
         public void ConstructorDuration_InitPeriodTypeToStandard()
         {
-            var sut = new Period(new Duration(0));
+            var sut = Period.From(new Duration(0));
             Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
         }
 
