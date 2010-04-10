@@ -325,7 +325,7 @@ namespace NodaTime.Calendars
             }
             else if (week > 51)
             {
-                return GetYear(localInstant - Duration.StandardWeeks(2));
+                return GetYear(localInstant - Duration.FromStandardWeeks(2));
             }
             else
             {

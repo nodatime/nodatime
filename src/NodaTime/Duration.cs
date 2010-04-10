@@ -384,7 +384,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="weeks">The number of weeks.</param>
         /// <returns>A <see cref="Duration"/> number of weeks.</returns>
-        public static Duration StandardWeeks(long weeks)
+        public static Duration FromStandardWeeks(long weeks)
         {
             return OneWeek * weeks;
         }
@@ -395,51 +395,47 @@ namespace NodaTime
         /// </summary>
         /// <param name="days">The number of days.</param>
         /// <returns>A <see cref="Duration"/> number of days.</returns>
-        public static Duration StandardDays(long days)
+        public static Duration FromStandardDays(long days)
         {
             return OneDay * days;
         }
 
         /// <summary>
-        /// Returns a <see cref="Duration"/> that represents the given number of standard hours made
-        /// up from 60 minutes.
+        /// Returns a <see cref="Duration"/> that represents the given number of hours.
         /// </summary>
         /// <param name="hours">The number of hours.</param>
         /// <returns>A <see cref="Duration"/> number of hours.</returns>
-        public static Duration StandardHours(long hours)
+        public static Duration FromHours(long hours)
         {
             return OneHour * hours;
         }
 
         /// <summary>
-        /// Returns a <see cref="Duration"/> that represents the given number of standard minutes made
-        /// up from 60 seconds.
+        /// Returns a <see cref="Duration"/> that represents the given number of minutes.
         /// </summary>
         /// <param name="minutes">The number of minutes.</param>
         /// <returns>A <see cref="Duration"/> number of minutes.</returns>
-        public static Duration StandardMinutes(long minutes)
+        public static Duration FromMinutes(long minutes)
         {
             return OneMinute * minutes;
         }
 
         /// <summary>
-        /// Returns a <see cref="Duration"/> that represents the given number of standard seconds made
-        /// up from 1000 milliseconds.
+        /// Returns a <see cref="Duration"/> that represents the given number of seconds.
         /// </summary>
         /// <param name="seconds">The number of seconds.</param>
         /// <returns>A <see cref="Duration"/> number of seconds.</returns>
-        public static Duration StandardSeconds(long seconds)
+        public static Duration FromSeconds(long seconds)
         {
             return OneSecond * seconds;
         }
 
         /// <summary>
-        /// Returns a <see cref="Duration"/> that represents the given number of standard milliseconds made
-        /// up from 10000 ticks.
+        /// Returns a <see cref="Duration"/> that represents the given number of milliseconds.
         /// </summary>
         /// <param name="milliseconds">The number of milliseconds.</param>
         /// <returns>A <see cref="Duration"/> number of milliseconds.</returns>
-        public static Duration Milliseconds(long milliseconds)
+        public static Duration FromMilliseconds(long milliseconds)
         {
             return OneMillisecond * milliseconds;
         }

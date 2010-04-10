@@ -24,7 +24,7 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class BasicWeekYearDateTimeField : ImpreciseDateTimeField
     {
-        private static readonly Duration Week53Ticks = Duration.StandardWeeks(52);
+        private static readonly Duration Week53Ticks = Duration.FromStandardWeeks(52);
         private readonly BasicCalendarSystem calendarSystem;
 
         internal BasicWeekYearDateTimeField(BasicCalendarSystem calendarSystem)
@@ -161,7 +161,7 @@ namespace NodaTime.Fields
 
             // BEGIN: possible set WeekOfWeekyear logic.
             int currentWeekYearWeek = calendarSystem.GetWeekOfWeekYear(workInstant);
-            workInstant += Duration.StandardWeeks(setToWeek - currentWeekYearWeek);
+            workInstant += Duration.FromStandardWeeks(setToWeek - currentWeekYearWeek);
             // END: possible set WeekOfWeekyear logic.
 
             // Reset DayOfWeek to previous value.
@@ -215,7 +215,7 @@ namespace NodaTime.Fields
             int wow = calendarSystem.GetWeekOfWeekYear(localInstant);
             if (wow > 1)
             {
-                localInstant -= Duration.StandardWeeks(wow - 1);
+                localInstant -= Duration.FromStandardWeeks(wow - 1);
             }
             return localInstant;
         }

@@ -56,7 +56,7 @@ namespace NodaTime.Test.TimeZones
             var actual = this.timeZone.GetZoneInterval(Instant.UnixEpoch);
             for (int i = 0; i < this.timeZone.CacheSize + 1; i++)
             {
-                var instant = Instant.UnixEpoch + Duration.StandardWeeks(52 * (i + 1));
+                var instant = Instant.UnixEpoch + Duration.FromStandardWeeks(52 * (i + 1));
                 Assert.IsNotNull(this.timeZone.GetZoneInterval(instant));
             }
             var newPeriod = this.timeZone.GetZoneInterval(this.summer);
@@ -79,9 +79,9 @@ namespace NodaTime.Test.TimeZones
         {
             var actual = this.timeZone.GetZoneInterval(this.summer);
             Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch));
-            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.StandardWeeks(2000)));
-            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.StandardWeeks(3000)));
-            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.StandardWeeks(4000)));
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.FromStandardWeeks(2000)));
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.FromStandardWeeks(3000)));
+            Assert.IsNotNull(this.timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.FromStandardWeeks(4000)));
             var newPeriod = this.timeZone.GetZoneInterval(this.summer);
             Assert.AreSame(actual, newPeriod);
         }

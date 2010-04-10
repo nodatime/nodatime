@@ -23,7 +23,7 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class BasicWeekOfWeekYearDateTimeField : PreciseDurationDateTimeField
     {
-        private static readonly Duration ThreeDays = Duration.StandardDays(3);
+        private static readonly Duration ThreeDays = Duration.FromStandardDays(3);
         private readonly BasicCalendarSystem calendarSystem;
 
         internal BasicWeekOfWeekYearDateTimeField(BasicCalendarSystem calendarSystem, DurationField weeks)
