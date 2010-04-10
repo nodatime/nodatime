@@ -44,6 +44,11 @@ namespace NodaTime.Fields
         /// </summary>
         public override bool IsPrecise { get { return true; } }
 
+        /// <summary>
+        /// Always returns true.
+        /// </summary>
+        public override bool IsSupported { get { return true; } }
+
         public override long UnitTicks { get { return unitTicks; } }
 
         public override long GetInt64Value(Duration duration, LocalInstant localInstant)

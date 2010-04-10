@@ -30,14 +30,14 @@ namespace NodaTime.Fields
         private static readonly UnsupportedDateTimeField[] cache = new UnsupportedDateTimeField[DateTimeFieldType.MaxOrdinal + 1];
 
         private readonly DateTimeFieldType fieldType;
-        private readonly DurationField durationField;
+        private readonly IDurationField durationField;
 
         /// <summary>
         /// Returns an instance for the specified field type and duration field.
         /// The returned value is cached.
         /// TODO: Potentially use ReaderWriterLockSlim? Assess performance of caching in the first place...
         /// </summary>
-        public static UnsupportedDateTimeField GetInstance(DateTimeFieldType fieldType, DurationField durationField)
+        public static UnsupportedDateTimeField GetInstance(DateTimeFieldType fieldType, IDurationField durationField)
         {
             if (fieldType == null)
             {
@@ -60,7 +60,7 @@ namespace NodaTime.Fields
             
         }
 
-        private UnsupportedDateTimeField(DateTimeFieldType fieldType, DurationField durationField)
+        private UnsupportedDateTimeField(DateTimeFieldType fieldType, IDurationField durationField)
         {
             this.fieldType = fieldType;
             this.durationField = durationField;
@@ -70,11 +70,11 @@ namespace NodaTime.Fields
 
         public string Name { get { return FieldType.ToString(); } }
 
-        public DurationField DurationField { get { return durationField; } }
+        public IDurationField DurationField { get { return durationField; } }
         
-        public DurationField RangeDurationField { get { return null; } }
+        public IDurationField RangeDurationField { get { return null; } }
 
-        public DurationField LeapDurationField { get { return null; } }
+        public IDurationField LeapDurationField { get { return null; } }
 
         public bool IsSupported { get { return false; } }
 

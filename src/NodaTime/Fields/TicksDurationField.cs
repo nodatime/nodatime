@@ -19,24 +19,20 @@ namespace NodaTime.Fields
     /// <summary>
     /// Singleton duration field for a fixed duration of 1 tick.
     /// </summary>
-    internal sealed class TicksDurationField : DurationField
+    internal sealed class TicksDurationField : DurationFieldBase
     {
         private static readonly TicksDurationField instance = new TicksDurationField();
 
         public static TicksDurationField Instance { get { return instance; } }
 
         private TicksDurationField()
-        {
-            // Prevent instantiation
-        }
+            : base(DurationFieldType.Ticks) { }
 
         public override bool IsSupported { get { return true; } }
 
         public override bool IsPrecise { get { return true; } }
 
         public override long UnitTicks { get { return 1; } }
-
-        public override DurationFieldType FieldType { get { return DurationFieldType.Ticks; } }
 
         public override int GetValue(Duration duration)
         {

@@ -282,12 +282,12 @@ namespace NodaTime.Test.Fields
                 return localInstant;
             }
 
-            public override DurationField DurationField
+            public override IDurationField DurationField
             {
                 get { return new MockCountingDurationField(DurationFieldType.Seconds); }
             }
 
-            public override DurationField RangeDurationField
+            public override IDurationField RangeDurationField
             {
                 get { return new MockCountingDurationField(DurationFieldType.Minutes);  }
             }

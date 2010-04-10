@@ -1,56 +1,81 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="NodaTime.Fields.UnsupportedDurationField" Collapsed="true">
-    <Position X="6.25" Y="3" Width="2" />
+    <Position X="5.75" Y="4.25" Width="2.25" />
+    <InheritanceLine Type="NodaTime.Fields.DurationFieldBase" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="3.556" />
+        <Point X="4" Y="4.625" />
+        <Point X="5.75" Y="4.625" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>CGIgAIBgIACQAMAAQYAAAAAAICAAKAAEQAADAAAAAAE=</HashCode>
+      <HashCode>CGIgAIAgIACQAMAAQYAAAAAAICAAKAAEQAADAAAAAAE=</HashCode>
       <FileName>Fields\UnsupportedDurationField.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NodaTime.Fields.DurationField" Collapsed="true">
-    <Position X="1.75" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAIgAIBgIAAAAMAEAQACAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Fields\DurationField.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="NodaTime.Fields.DurationFieldBase" Collapsed="true">
-    <Position X="1.75" Y="3" Width="1.5" />
+    <Position X="3" Y="3" Width="2" />
     <TypeIdentifier>
-      <HashCode>AEAAAIBgIAAAAEAAAAAAAAAAACAAAAAAAAAAAIAAAAA=</HashCode>
+      <HashCode>AEIgAIBgIAAAAMQEAQACAAAAACAAAAAAAAAAAIAAAAA=</HashCode>
       <FileName>Fields\DurationFieldBase.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Fields.PreciseDurationField" Collapsed="true">
-    <Position X="4" Y="4.5" Width="1.5" />
+    <Position X="5.75" Y="1.75" Width="2.25" />
+    <InheritanceLine Type="NodaTime.Fields.DurationFieldBase" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="3" />
+        <Point X="4" Y="2.062" />
+        <Point X="5.75" Y="2.062" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAIgAIAgIACQAIAAQYAAAAAAAAAAAAAAQAABAAAAAAE=</HashCode>
       <FileName>Fields\PreciseDurationField.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Fields.DecoratedDurationField" Collapsed="true">
-    <Position X="1.75" Y="4.5" Width="1.5" />
+    <Position X="0.75" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIgEIAgABAAAIAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Fields\DecoratedDurationField.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Fields.ScaledDurationField" Collapsed="true">
-    <Position X="1.75" Y="6" Width="1.5" />
+    <Position X="0.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIgAIAgIAAAAEAAAQAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Fields\ScaledDurationField.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Fields.TicksDurationField" Collapsed="true">
-    <Position X="4" Y="3" Width="1.5" />
+    <Position X="5.75" Y="3" Width="2.25" />
+    <InheritanceLine Type="NodaTime.Fields.DurationFieldBase" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="3.375" />
+        <Point X="5.75" Y="3.375" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAIgAIBgIAAAAMAAAQAAAAAAACBAAAAAQAAAAAAAAAA=</HashCode>
+      <HashCode>AAIgAIAgIAAAAMAAAQAAAAAAACBAAAAAQAAAAAAAAAA=</HashCode>
       <FileName>Fields\TicksDurationField.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Interface Name="NodaTime.Fields.IDurationField" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAIBgIAAAAMAAAQACAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fields\IDurationField.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="System.IComparable&lt;T&gt;" Collapsed="true">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
   <Enum Name="NodaTime.Fields.DurationFieldType" Collapsed="true">
-    <Position X="5.5" Y="1.75" Width="2" />
+    <Position X="0.5" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACQAAAAQIAAAAAAIAAAKAAEQAADAAAAAAE=</HashCode>
       <FileName>Fields\DurationFieldType.cs</FileName>

@@ -32,9 +32,9 @@ namespace NodaTime.Fields
             this.calendarSystem = calendarSystem;
         }
 
-        public override DurationField DurationField { get { return UnsupportedDurationField.Eras; } }
+        public override IDurationField DurationField { get { return UnsupportedDurationField.Eras; } }
 
-        public override DurationField RangeDurationField { get { return null; } }
+        public override IDurationField RangeDurationField { get { return null; } }
 
         public override bool IsLenient { get { return false; } }
 

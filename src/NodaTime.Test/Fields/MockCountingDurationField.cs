@@ -34,6 +34,8 @@ namespace NodaTime.Test.Fields
             this.unitTicks = unitTicks;
         }
 
+        public override bool IsSupported { get { return true; } }
+
         public override bool IsPrecise { get { return true; } }
 
         public override long UnitTicks { get { return unitTicks; } }
