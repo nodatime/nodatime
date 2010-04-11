@@ -103,12 +103,12 @@ namespace NodaTime.Fields
         /// an invalid value for a smaller field. In this case the smaller field is
         /// adjusted to be in range.
         /// </para>
-        /// For example, in the ISO chronology:<br>
-        /// 2000-08-20 add six months is 2001-02-20<br>
-        /// 2000-08-20 add twenty months is 2002-04-20<br>
-        /// 2000-08-20 add minus nine months is 1999-11-20<br>
-        /// 2001-01-31 add one month  is 2001-02-28<br>
-        /// 2001-01-31 add two months is 2001-03-31<br>
+        /// For example, in the ISO chronology:<br />
+        /// 2000-08-20 add six months is 2001-02-20<br />
+        /// 2000-08-20 add twenty months is 2002-04-20<br />
+        /// 2000-08-20 add minus nine months is 1999-11-20<br />
+        /// 2001-01-31 add one month  is 2001-02-28<br />
+        /// 2001-01-31 add two months is 2001-03-31<br />
         /// </summary>
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
@@ -127,12 +127,12 @@ namespace NodaTime.Fields
         /// an invalid value for a smaller field. In this case the smaller field is
         /// adjusted to be in range.
         /// </para>
-        /// For example, in the ISO chronology:<br>
-        /// 2000-08-20 add six months is 2001-02-20<br>
-        /// 2000-08-20 add twenty months is 2002-04-20<br>
-        /// 2000-08-20 add minus nine months is 1999-11-20<br>
-        /// 2001-01-31 add one month  is 2001-02-28<br>
-        /// 2001-01-31 add two months is 2001-03-31<br>
+        /// For example, in the ISO chronology:<br />
+        /// 2000-08-20 add six months is 2001-02-20<br />
+        /// 2000-08-20 add twenty months is 2002-04-20<br />
+        /// 2000-08-20 add minus nine months is 1999-11-20<br />
+        /// 2001-01-31 add one month  is 2001-02-28<br />
+        /// 2001-01-31 add two months is 2001-03-31<br />
         /// </summary>
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
@@ -158,12 +158,12 @@ namespace NodaTime.Fields
         /// smaller field is adjusted to be in range.
         /// </para>
         /// <example>
-        /// For example, in the ISO chronology:<br>
-        /// 2000-08-20 AddWrapField six months is 2000-02-20<br>
-        /// 2000-08-20 AddWrapField twenty months is 2000-04-20<br>
-        /// 2000-08-20 AddWrapField minus nine months is 2000-11-20<br>
-        /// 2001-01-31 AddWrapField one month  is 2001-02-28<br>
-        /// 2001-01-31 AddWrapField two months is 2001-03-31<br>
+        /// For example, in the ISO chronology:<br />
+        /// 2000-08-20 AddWrapField six months is 2000-02-20<br />
+        /// 2000-08-20 AddWrapField twenty months is 2000-04-20<br />
+        /// 2000-08-20 AddWrapField minus nine months is 2000-11-20<br />
+        /// 2001-01-31 AddWrapField one month  is 2001-02-28<br />
+        /// 2001-01-31 AddWrapField two months is 2001-03-31<br />
         /// </example>
         /// </remarks>
         public virtual LocalInstant AddWrapField(LocalInstant localInstant, int value)
@@ -195,12 +195,12 @@ namespace NodaTime.Fields
         /// limit is reached by the add an exception is thrown.
         /// </para>
         /// <example>
-        /// For example, in the ISO chronology:<br>
-        /// 2000-08-20 add six months is 2000-02-20<br>
-        /// 2000-08-20 add twenty months is 2000-04-20<br>
-        /// 2000-08-20 add minus nine months is 2000-11-20<br>
-        /// 2001-01-31 add one month  is 2001-02-28<br>
-        /// 2001-01-31 add two months is 2001-03-31<br>
+        /// For example, in the ISO chronology:<br />
+        /// 2000-08-20 add six months is 2000-02-20<br />
+        /// 2000-08-20 add twenty months is 2000-04-20<br />
+        /// 2000-08-20 add minus nine months is 2000-11-20<br />
+        /// 2001-01-31 add one month  is 2001-02-28<br />
+        /// 2001-01-31 add two months is 2001-03-31<br />
         /// </example>
         /// </remarks>
         public virtual int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
@@ -293,10 +293,10 @@ namespace NodaTime.Fields
         /// classes that have a limitation such as this.
         /// </para>
         /// <example>
-        /// For example, in the ISO chronology:<br>
-        /// 10:20:30 add 20 minutes is 10:40:30<br>
-        /// 10:20:30 add 45 minutes is 11:05:30<br>
-        /// 10:20:30 add 16 hours is 02:20:30<br>
+        /// For example, in the ISO chronology:<br />
+        /// 10:20:30 add 20 minutes is 10:40:30<br />
+        /// 10:20:30 add 45 minutes is 11:05:30<br />
+        /// 10:20:30 add 16 hours is 02:20:30<br />
         /// </example>
         /// </remarks>
         public int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
@@ -795,7 +795,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Get the human-readable, text value of this field from the milliseconds.
         /// <para>
-        /// The default implementation calls <see cref="GetAsText(int, IFormatProvider"/>.
+        /// The default implementation calls <see cref="GetAsText(int, IFormatProvider)"/>.
         /// </para>
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
@@ -809,7 +809,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Get the human-readable, text value of this field from the milliseconds.
         /// <para>
-        /// The default implementation calls <see cref="GetAsText(int, IFormatProvider"/>.
+        /// The default implementation calls <see cref="GetAsText(int, IFormatProvider)"/>.
         /// </para>
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
@@ -838,7 +838,7 @@ namespace NodaTime.Fields
         /// Get the human-readable, text value of this field from a partial instant.
         /// <para>
         /// The default implementation calls <see cref="IPartial.Get(DateTimeFieldType)"/>
-        /// and <see cref="GetAsText(IPartial, int IFormatProvider"/>
+        /// and <see cref="GetAsText(IPartial, int, IFormatProvider)"/>
         /// </para>
         /// </summary>
         /// <param name="partial">The partial instant to query</param>
@@ -870,7 +870,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Get the human-readable, short text value of this field from the milliseconds.
         /// <para>
-        /// The default implementation calls <see cref="GetAsShortText(int, IFormatProvider"/>.
+        /// The default implementation calls <see cref="GetAsShortText(int, IFormatProvider)"/>.
         /// </para>
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
@@ -884,7 +884,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Get the human-readable, short text value of this field from the milliseconds.
         /// <para>
-        /// The default implementation calls <see cref="GetAsShortText(int, IFormatProvider"/>.
+        /// The default implementation calls <see cref="GetAsShortText(int, IFormatProvider)"/>.
         /// </para>
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
@@ -913,7 +913,7 @@ namespace NodaTime.Fields
         /// Get the human-readable, short text value of this field from a partial instant.
         /// <para>
         /// The default implementation calls <see cref="IPartial.Get(DateTimeFieldType)"/>
-        /// and <see cref="GetAsShortText(IPartial, int IFormatProvider"/>
+        /// and <see cref="GetAsShortText(IPartial, int, IFormatProvider)"/>
         /// </para>
         /// </summary>
         /// <param name="partial">The partial instant to query</param>
@@ -927,7 +927,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Get the human-readable, short text value of this field from the field value.
         /// <para>
-        /// The default implementation calls <see cref="GetAsText(int, IFormatProvider"/>.
+        /// The default implementation calls <see cref="GetAsText(int, IFormatProvider)"/>.
         /// </para>
         /// <para>
         /// Note: subclasses that override this method should also override

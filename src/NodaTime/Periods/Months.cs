@@ -118,6 +118,7 @@ namespace NodaTime.Periods
         /// </summary>
         public static Months Eleven { get { return eleven; } }
 
+        /// <summary>
         /// Gets a period representing twelve months
         /// </summary>
         public static Months Twelve { get { return twelve; } }
@@ -381,14 +382,14 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the months multiplied by the specified scalar.
         /// </summary>
-        /// <param name="months">The amount to multiply by, may be negative</param>
+        /// <param name="scalar">The amount to multiply by, may be negative</param>
         /// <returns>The new period multiplied by the specified scalar</returns>
         /// <remarks>
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Months Multiply(int months)
+        public Months Multiply(int scalar)
         {
-            return months == 1 ? this : Months.From(Value * months);
+            return scalar == 1 ? this : Months.From(Value * scalar);
         }
 
         /// <summary>
@@ -420,15 +421,15 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the months divided by the specified divisor.
         /// </summary>
-        /// <param name="months">The amount to divide by, may be negative</param>
+        /// <param name="divisor">The amount to divide by, may be negative</param>
         /// <returns>The new months period divided by the specified dvisor</returns>
         /// <remarks>
         /// The calculation uses integer division, thus 3 divided by 2 is 1.
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Months Divide(int months)
+        public Months Divide(int divisor)
         {
-            return months == 1 ? this : Months.From(Value / months);
+            return divisor == 1 ? this : Months.From(Value / divisor);
         }
 
         /// <summary>

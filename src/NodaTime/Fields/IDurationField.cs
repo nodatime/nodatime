@@ -155,7 +155,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to subtract from</param>
         /// <param name="value">The value to subtract, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        LocalInstant Subtract(LocalInstant instant, long value);
+        LocalInstant Subtract(LocalInstant localInstant, long value);
 
         /// <summary>
         /// Computes the difference between two instants, as measured in the units

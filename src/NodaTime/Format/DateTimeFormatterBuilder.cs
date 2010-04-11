@@ -1859,7 +1859,7 @@ namespace NodaTime.Format
         /// printed value requires more digits</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If field type is null</exception>
-        /// <exception cref="ArgumentException">if <code>numDigits &lte 0</exception>
+        /// <exception cref="ArgumentException">if <code>numDigits &lt;= 0</code></exception>
         public DateTimeFormatterBuilder AppendFixedDecimal(DateTimeFieldType fieldType, int numDigits)
         {
             Guard(fieldType);
@@ -1881,7 +1881,7 @@ namespace NodaTime.Format
         /// printed value requires more digits</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If field type is null</exception>
-        /// <exception cref="ArgumentException">if <code>numDigits &lte 0</code></exception>
+        /// <exception cref="ArgumentException">if <code>numDigits &lt;= 0</code></exception>
         public DateTimeFormatterBuilder AppendFixedSignedDecimal(DateTimeFieldType fieldType, int numDigits)
         {
             Guard(fieldType);

@@ -109,7 +109,7 @@ namespace NodaTime.Periods
         /// <summary>
         /// Creates a new <code>Weeks</code> by parsing a string in the ISO8601 format 'PnW'.
         /// </summary>
-        /// <param name="months">The period string, null returns zero</param>
+        /// <param name="weeks">The period string, null returns zero</param>
         /// <returns>The period in months</returns>
         /// <remarks>
         /// <para>
@@ -420,14 +420,14 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the weeks multiplied by the specified scalar.
         /// </summary>
-        /// <param name="weeks">The amount to multiply by, may be negative</param>
+        /// <param name="scalar">The amount to multiply by, may be negative</param>
         /// <returns>The new weeks period multiplied by the specified scalar</returns>
         /// <remarks>
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Weeks Multiply(int weeks)
+        public Weeks Multiply(int scalar)
         {
-            return weeks == 1 ? this : Weeks.From(Value * weeks);
+            return scalar == 1 ? this : Weeks.From(Value * scalar);
         }
 
         /// <summary>
@@ -459,15 +459,15 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the weeks divided by the specified divisor.
         /// </summary>
-        /// <param name="weeks">The amount to divide by, may be negative</param>
+        /// <param name="divisor">The amount to divide by, may be negative</param>
         /// <returns>The new weeks period divided by the specified dvisor</returns>
         /// <remarks>
         /// The calculation uses integer division, thus 3 divided by 2 is 1.
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Weeks Divide(int weeks)
+        public Weeks Divide(int divisor)
         {
-            return weeks == 1 ? this : Weeks.From(Value / weeks);
+            return divisor == 1 ? this : Weeks.From(Value / divisor);
         }
 
         /// <summary>

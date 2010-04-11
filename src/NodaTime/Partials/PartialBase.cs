@@ -33,7 +33,7 @@ namespace NodaTime.Partials
         /// Initializes a partial with specified time field values and chronology.
         /// </summary>
         /// <param name="values"></param>
-        /// <param name="chronology"></param>
+        /// <param name="calendar"></param>
         protected PartialBase(int[] values, ICalendarSystem calendar)
         {
             this.calendar = calendar;

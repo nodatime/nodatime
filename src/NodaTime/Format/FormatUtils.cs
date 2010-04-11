@@ -201,7 +201,7 @@ namespace NodaTime.Format
         /// <remarks>
         /// This method is optimized for converting small values to strings.
         /// </remarks>
-        /// <param name="builder">Receives integer converted to a string</param>
+        /// <param name="writer">Receives integer converted to a string</param>
         /// <param name="value">Value to convert to a string</param>
         /// <param name="size">Minumum amount of digits to append</param>
         internal static void WritePaddedInteger(TextWriter writer, int value, int size)

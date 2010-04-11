@@ -42,7 +42,7 @@ namespace NodaTime.TimeZones
     /// <para>
     /// The majority of time zones will be provided by the <see
     /// cref="DateTimeZoneResourceProvider"/> implementation which reads the time zones from an
-    /// internal set of precompiled resources built using the <see cref="ZoneInfoCompiler"/> tool.
+    /// internal set of precompiled resources built using the NodaTime.ZoneInfoCompiler tool.
     /// </para>
     /// </remarks>
     public static class DateTimeZones

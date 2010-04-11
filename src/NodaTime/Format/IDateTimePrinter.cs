@@ -49,7 +49,7 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="writer">Formatted partial is written to this builder, not null</param>
         /// <param name="partial">A partial instance to print</param>
-        /// <param name="locale">Provider to use</param>
+        /// <param name="provider">Provider to use</param>
         void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider);
     }
 }

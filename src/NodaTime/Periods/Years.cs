@@ -321,14 +321,14 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the years multiplied by the specified scalar.
         /// </summary>
-        /// <param name="years">The amount to multiply by, may be negative</param>
+        /// <param name="scalar">The amount to multiply by, may be negative</param>
         /// <returns>The new period multiplied by the specified scalar</returns>
         /// <remarks>
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Years Multiply(int years)
+        public Years Multiply(int scalar)
         {
-            return years == 1 ? this : Years.From(Value * years);
+            return scalar == 1 ? this : Years.From(Value * scalar);
         }
 
         /// <summary>
@@ -360,15 +360,15 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the years divided by the specified divisor.
         /// </summary>
-        /// <param name="years">The amount to divide by, may be negative</param>
+        /// <param name="divisor">The amount to divide by, may be negative</param>
         /// <returns>The new period divided by the specified dvisor</returns>
         /// <remarks>
         /// The calculation uses integer division, thus 3 divided by 2 is 1.
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Years Divide(int years)
+        public Years Divide(int divisor)
         {
-            return years == 1 ? this : Years.From(Value / years);
+            return divisor == 1 ? this : Years.From(Value / divisor);
         }
 
         /// <summary>

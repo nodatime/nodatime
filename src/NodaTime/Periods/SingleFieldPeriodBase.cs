@@ -222,7 +222,7 @@ namespace NodaTime.Periods
         /// </summary>
         /// <returns>A <see cref="Period"/> representing the same field value</returns>
         /// <remarks>
-        /// The period will use <see cref="PeriodType.Standard"/>.
+        /// The period will use <see cref="NodaTime.Periods.PeriodType.Standard"/>.
         /// </remarks>
         public Period ToPeriod()
         {

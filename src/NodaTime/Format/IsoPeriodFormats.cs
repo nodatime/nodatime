@@ -23,7 +23,7 @@ namespace NodaTime.Format
     /// <para>
     /// Period formatting is performed by the <see cref="PeriodFormatter"/> class.
     /// Three classes provide factory methods to create formatters, and this is one.
-    /// The others are <see cref="PeriodFormatterFactory"/> and <see cref="PeriodFormatterBuilder"/>.
+    /// The others are <see cref="PeriodFormats"/> and <see cref="PeriodFormatterBuilder"/>.
     /// </para>
     /// <para>
     /// IsoPeriodFormats is thread-safe and immutable, and the formatters it

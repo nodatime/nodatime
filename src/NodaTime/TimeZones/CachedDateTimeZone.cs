@@ -93,6 +93,7 @@ namespace NodaTime.TimeZones
         /// If the time zone is already cached or it is fixed then it is returned unchanged.
         /// </remarks>
         /// <param name="timeZone">The time zone to cache.</param>
+        /// <param name="type">The type of cache to store the zone in.</param>
         /// <returns>The cached time zone.</returns>
         public static IDateTimeZone ForZone(IDateTimeZone timeZone, CacheType type)
         {

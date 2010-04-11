@@ -34,9 +34,9 @@ namespace NodaTime.Format
     /// <description>Summary</description>
     /// </listheader>
     /// <item>
-    /// <term><see cref="PeriodFormatterFactory"/></term>
+    /// <term><see cref="PeriodFormats"/></term>
     /// <description>Formats by pattern and style</description>
-    /// <term><see cref="IsoPeriodFormatterFactory"/></term>
+    /// <term><see cref="IsoPeriodFormats"/></term>
     /// <description>ISO8601 formats</description>
     /// <term><see cref="PeriodFormatterBuilder"/></term>
     /// <description>Complex formats created via method calls</description>

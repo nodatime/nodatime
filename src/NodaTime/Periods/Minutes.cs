@@ -381,7 +381,7 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the specified number of minutes taken away.
         /// </summary>
-        /// <param name="minutes">The amount of minutes to take away, may be negative</param>
+        /// <param name="hours">The amount of minutes to take away, may be negative</param>
         /// <returns>The new period minus the specified number of minutes</returns>
         /// <remarks>
         /// This instance is immutable and unaffected by this method call.
@@ -420,14 +420,14 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the minutes multiplied by the specified scalar.
         /// </summary>
-        /// <param name="minutes">The amount to multiply by, may be negative</param>
+        /// <param name="scalar">The amount to multiply by, may be negative</param>
         /// <returns>The new minutes period multiplied by the specified scalar</returns>
         /// <remarks>
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Minutes Multiply(int minutes)
+        public Minutes Multiply(int scalar)
         {
-            return minutes == 1 ? this : Minutes.From(Value * minutes);
+            return scalar == 1 ? this : Minutes.From(Value * scalar);
         }
 
         /// <summary>
@@ -459,15 +459,15 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the minutes divided by the specified divisor.
         /// </summary>
-        /// <param name="minutes">The amount to divide by, may be negative</param>
+        /// <param name="divisor">The amount to divide by, may be negative</param>
         /// <returns>The new minutes period divided by the specified divisor</returns>
         /// <remarks>
         /// The calculation uses integer division, thus 3 divided by 2 is 1.
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Minutes Divide(int minutes)
+        public Minutes Divide(int divisor)
         {
-            return minutes == 1 ? this : Minutes.From(Value / minutes);
+            return divisor == 1 ? this : Minutes.From(Value / divisor);
         }
 
         /// <summary>
