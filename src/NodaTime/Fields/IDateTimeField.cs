@@ -83,20 +83,23 @@ namespace NodaTime.Fields
 
         /// <summary>
         /// Adds a value (which may be negative) to the local instant value.
+        /// </summary>
+        /// <remarks>
         /// <para>
         /// The value will be added to this field. If the value is too large to be
         /// added solely to this field, larger fields will increase as required.
         /// Smaller fields should be unaffected, except where the result would be
         /// an invalid value for a smaller field. In this case the smaller field is
-        /// adjusted to be in range.
+        /// adjusted to be in range. For example, in the ISO chronology:
         /// </para>
-        /// For example, in the ISO chronology:<br>
-        /// 2000-08-20 add six months is 2001-02-20<br>
-        /// 2000-08-20 add twenty months is 2002-04-20<br>
-        /// 2000-08-20 add minus nine months is 1999-11-20<br>
-        /// 2001-01-31 add one month  is 2001-02-28<br>
-        /// 2001-01-31 add two months is 2001-03-31<br>
-        /// </summary>
+        /// <list>
+        /// <item>2000-08-20 add six months is 2001-02-20</item>
+        /// <item>2000-08-20 add twenty months is 2002-04-20</item>
+        /// <item>2000-08-20 add minus nine months is 1999-11-20</item>
+        /// <item>2001-01-31 add one month  is 2001-02-28</item>
+        /// <item>2001-01-31 add two months is 2001-03-31</item>
+        /// </list>
+        /// </remarks>
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
@@ -104,20 +107,23 @@ namespace NodaTime.Fields
 
         /// <summary>
         /// Adds a value (which may be negative) to the local instant value.
+        /// </summary>
+        /// <remarks>
         /// <para>
         /// The value will be added to this field. If the value is too large to be
         /// added solely to this field, larger fields will increase as required.
         /// Smaller fields should be unaffected, except where the result would be
         /// an invalid value for a smaller field. In this case the smaller field is
-        /// adjusted to be in range.
+        /// adjusted to be in range. For example, in the ISO chronology:
         /// </para>
-        /// For example, in the ISO chronology:<br>
-        /// 2000-08-20 add six months is 2001-02-20<br>
-        /// 2000-08-20 add twenty months is 2002-04-20<br>
-        /// 2000-08-20 add minus nine months is 1999-11-20<br>
-        /// 2001-01-31 add one month  is 2001-02-28<br>
-        /// 2001-01-31 add two months is 2001-03-31<br>
-        /// </summary>
+        /// <list>
+        /// <item>2000-08-20 add six months is 2001-02-20</item>
+        /// <item>2000-08-20 add twenty months is 2002-04-20</item>
+        /// <item>2000-08-20 add minus nine months is 1999-11-20</item>
+        /// <item>2001-01-31 add one month  is 2001-02-28</item>
+        /// <item>2001-01-31 add two months is 2001-03-31</item>
+        /// </list>
+        /// </remarks>
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
@@ -136,16 +142,15 @@ namespace NodaTime.Fields
         /// added solely to this field then it wraps. Larger fields are always
         /// unaffected. Smaller fields should be unaffected, except where the
         /// result would be an invalid value for a smaller field. In this case the
-        /// smaller field is adjusted to be in range.
+        /// smaller field is adjusted to be in range. For example, in the ISO chronology:
         /// </para>
-        /// <example>
-        /// For example, in the ISO chronology:<br>
-        /// 2000-08-20 AddWrapField six months is 2000-02-20<br>
-        /// 2000-08-20 AddWrapField twenty months is 2000-04-20<br>
-        /// 2000-08-20 AddWrapField minus nine months is 2000-11-20<br>
-        /// 2001-01-31 AddWrapField one month  is 2001-02-28<br>
-        /// 2001-01-31 AddWrapField two months is 2001-03-31<br>
-        /// </example>
+        /// <list>
+        /// <item>2000-08-20 add six months is 2001-02-20</item>
+        /// <item>2000-08-20 add twenty months is 2002-04-20</item>
+        /// <item>2000-08-20 add minus nine months is 1999-11-20</item>
+        /// <item>2001-01-31 add one month  is 2001-02-28</item>
+        /// <item>2001-01-31 add two months is 2001-03-31</item>
+        /// </list>
         /// </remarks>
         LocalInstant AddWrapField(LocalInstant localInstant, int value);
 
@@ -171,12 +176,12 @@ namespace NodaTime.Fields
         /// limit is reached by the add an exception is thrown.
         /// </para>
         /// <example>
-        /// For example, in the ISO chronology:<br>
-        /// 2000-08-20 add six months is 2000-02-20<br>
-        /// 2000-08-20 add twenty months is 2000-04-20<br>
-        /// 2000-08-20 add minus nine months is 2000-11-20<br>
-        /// 2001-01-31 add one month  is 2001-02-28<br>
-        /// 2001-01-31 add two months is 2001-03-31<br>
+        /// For example, in the ISO chronology:<br />
+        /// 2000-08-20 add six months is 2000-02-20<br />
+        /// 2000-08-20 add twenty months is 2000-04-20<br />
+        /// 2000-08-20 add minus nine months is 2000-11-20<br />
+        /// 2001-01-31 add one month  is 2001-02-28<br />
+        /// 2001-01-31 add two months is 2001-03-31<br />
         /// </example>
         /// </remarks>
         int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd);
@@ -205,10 +210,10 @@ namespace NodaTime.Fields
         /// classes that have a limitation such as this.
         /// </para>
         /// <example>
-        /// For example, in the ISO chronology:<br>
-        /// 10:20:30 add 20 minutes is 10:40:30<br>
-        /// 10:20:30 add 45 minutes is 11:05:30<br>
-        /// 10:20:30 add 16 hours is 02:20:30<br>
+        /// For example, in the ISO chronology:<br />
+        /// 10:20:30 add 20 minutes is 10:40:30<br />
+        /// 10:20:30 add 45 minutes is 11:05:30<br />
+        /// 10:20:30 add 16 hours is 02:20:30<br />
         /// </example>
         /// </remarks>
         int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd);

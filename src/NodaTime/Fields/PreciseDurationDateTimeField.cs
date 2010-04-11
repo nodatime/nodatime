@@ -102,8 +102,8 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Called by <see cref="DateTimeFieldBase.SetValue" /> to get the maximum allowed
-        /// value. By default, returns GetMaximumValue(localInstant). Override to provide
+        /// Called by <see cref="DateTimeFieldBase.SetValue(NodaTime.LocalInstant,long)" /> (and related overloads)
+        /// to get the maximum allowed value. By default, returns GetMaximumValue(localInstant). Override to provide
         /// a faster implementation.
         /// </summary>
         protected long GetMaximumValueForSet(LocalInstant localInstant, long value)

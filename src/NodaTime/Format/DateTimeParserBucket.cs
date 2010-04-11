@@ -226,7 +226,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Saves a datetime field text value.
         /// </summary>
-        /// <param name="field">The field type</param>
+        /// <param name="fieldType">The field type</param>
         /// <param name="text">The text value</param>
         /// <param name="provider">The format provider to use</param>
         public void SaveField(DateTimeFieldType fieldType, string text, IFormatProvider provider)

@@ -92,7 +92,7 @@ namespace NodaTime
         /// <summary>
         /// Implements the unary operator - (negation).
         /// </summary>
-        /// <param name="Offset">The offset to negate.</param>
+        /// <param name="offset">The offset to negate.</param>
         /// <returns>A new <see cref="Offset"/> instance with a negated value.</returns>
         public static Offset operator -(Offset offset)
         {

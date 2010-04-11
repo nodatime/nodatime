@@ -452,14 +452,14 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the hours multiplied by the specified scalar.
         /// </summary>
-        /// <param name="hours">The amount to multiply by, may be negative</param>
+        /// <param name="scalar">The amount to multiply by, may be negative</param>
         /// <returns>The new hours period multiplied by the specified scalar</returns>
         /// <remarks>
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Hours Multiply(int hours)
+        public Hours Multiply(int scalar)
         {
-            return hours == 1 ? this : Hours.From(Value * hours);
+            return scalar == 1 ? this : Hours.From(Value * scalar);
         }
 
         /// <summary>
@@ -491,15 +491,15 @@ namespace NodaTime.Periods
         /// <summary>
         /// Returns a new instance with the hours divided by the specified divisor.
         /// </summary>
-        /// <param name="hours">The amount to divide by, may be negative</param>
+        /// <param name="divisor">The amount to divide by, may be negative</param>
         /// <returns>The new hours period divided by the specified divisor</returns>
         /// <remarks>
         /// The calculation uses integer division, thus 3 divided by 2 is 1.
         /// This instance is immutable and unaffected by this method call.
         /// </remarks>
-        public Hours Divide(int days)
+        public Hours Divide(int divisor)
         {
-            return days == 1 ? this : Hours.From(Value / days);
+            return divisor == 1 ? this : Hours.From(Value / divisor);
         }
 
         /// <summary>

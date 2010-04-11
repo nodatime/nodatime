@@ -44,7 +44,7 @@ namespace NodaTime.Format
         /// will print.
         /// </summary>
         /// <param name="period">>The period to use</param>
-        /// <param name="stopAt">Stop counting at this value, enter a number &gt= 256 to count all</param>
+        /// <param name="stopAt">Stop counting at this value, enter a number &gt; 256 to count all</param>
         /// <param name="provider">The IFormatProvider to use</param>
         /// <returns>Amount of fields printed</returns>
         int CountFieldsToPrint(IPeriod period, int stopAt, IFormatProvider provider);

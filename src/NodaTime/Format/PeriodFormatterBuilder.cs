@@ -33,7 +33,7 @@ namespace NodaTime.Format
     /// <para>
     /// Period formatting is performed by the <see cref="PeriodFormatter"/> class.
     /// Three classes provide factory methods to create formatters, and this is one.
-    /// The others are <see cref="PeriodFormaterFactory"/> and <see cref="ISOPeriodFormatterFactory"/>.
+    /// The others are <see cref="PeriodFormats"/> and <see cref="IsoPeriodFormats"/>.
     /// </para>
     /// <para>
     /// PeriodFormatterBuilder is used for constructing formatters which are then
@@ -1664,7 +1664,8 @@ namespace NodaTime.Format
         /// Appends a field prefix which applies only to the next appended field. If
         /// the field is not printed, neither is the prefix.
         /// </summary>
-        /// <param name="text">Text to print before field only if field is printed</param>
+        /// <param name="singularText">Text to print before field only if field is printed, for singular values</param>
+        /// <param name="pluralText">Text to print before field only if field is printed, for plural values</param>
         /// <returns>This PeriodFormatterBuilder</returns>
         public PeriodFormatterBuilder AppendPrefix(string singularText, string pluralText)
         {
@@ -1834,9 +1835,9 @@ namespace NodaTime.Format
         /// <para>
         /// For example,
         /// <code>
-        /// builder.AppendDays().AppendSeparator(",", "&").AppendHours().AppendSeparator(",", "&").AppendMinutes()
+        /// builder.AppendDays().AppendSeparator(",", "&amp;").AppendHours().AppendSeparator(",", "&amp;").AppendMinutes()
         /// </code>
-        /// will output '1,2&3' if all three fields are output, '1&2' if two fields are output
+        /// will output '1,2&amp;3' if all three fields are output, '1&amp;2' if two fields are output
         /// and '1' if just one field is output.
         /// </para>
         /// <para>
@@ -1866,9 +1867,9 @@ namespace NodaTime.Format
         /// <para>
         /// For example,
         /// <code>
-        /// builder.AppendDays().AppendSeparator(",", "&").AppendHours().AppendSeparator(",", "&").AppendMinutes()
+        /// builder.AppendDays().AppendSeparator(",", "&amp;").AppendHours().AppendSeparator(",", "&amp;").AppendMinutes()
         /// </code>
-        /// will output '1,2&3' if all three fields are output, '1&2' if two fields are output
+        /// will output '1,2&amp;3' if all three fields are output, '1&amp;2' if two fields are output
         /// and '1' if just one field is output.
         /// </para>
         /// <para>
