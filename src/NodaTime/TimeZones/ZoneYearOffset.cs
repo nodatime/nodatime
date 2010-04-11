@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -70,35 +68,35 @@ namespace NodaTime.TimeZones
         /// to make the indexes to come out right.
         /// </summary>
         private static readonly string[] Months = {
-                                                      "",
-                                                      "Jan",
-                                                      "Feb",
-                                                      "Mar",
-                                                      "Apr",
-                                                      "May",
-                                                      "Jun",
-                                                      "Jul",
-                                                      "Aug",
-                                                      "Sep",
-                                                      "Oct",
-                                                      "Nov",
-                                                      "Dec"
-                                                  };
+            "",
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
+        };
 
         /// <summary>
         /// The days of the week names as they appear in the TZDB zone files. They are
         /// always the short name in US English.
         /// </summary>
         private static readonly string[] DaysOfWeek = {
-                                                          "",
-                                                          "Mon",
-                                                          "Tue",
-                                                          "Wed",
-                                                          "Thu",
-                                                          "Fri",
-                                                          "Sat",
-                                                          "Sun"
-                                                      };
+            "",
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun"
+        };
 
         private readonly bool advance;
         private readonly int dayOfMonth;
@@ -142,54 +140,35 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Gets the method by which offsets are added to Instants to get LocalInstants.
         /// </summary>
-        public TransitionMode Mode
-        {
-            get { return this.mode; }
-        }
+        public TransitionMode Mode { get { return mode; } }
 
         /// <summary>
         /// Gets the month of year the rule starts.
         /// </summary>
-        public int MonthOfYear
-        {
-            get { return this.monthOfYear; }
-        }
+        public int MonthOfYear { get { return monthOfYear; } }
 
         /// <summary>
         /// Gets the day of month this rule starts.
         /// </summary>
-        public int DayOfMonth
-        {
-            get { return this.dayOfMonth; }
-        }
+        public int DayOfMonth { get { return dayOfMonth; } }
 
         /// <summary>
         /// Gets the day of week this rule starts.
         /// </summary>
         /// <value>The integer day of week (1=Mon, 2=Tue, etc.). 0 means not set.</value>
-        public int DayOfWeek
-        {
-            get { return this.dayOfWeek; }
-        }
+        public int DayOfWeek { get { return dayOfWeek; } }
 
         /// <summary>
         /// Gets a value indicating whether [advance day of week].
         /// </summary>
-        public bool AdvanceDayOfWeek
-        {
-            get { return this.advance; }
-        }
+        public bool AdvanceDayOfWeek { get { return advance; } }
 
         /// <summary>
         /// Gets the tick of day when the rule takes effect.
         /// </summary>
-        public Offset TickOfDay
-        {
-            get { return this.tickOfDay; }
-        }
+        public Offset TickOfDay { get { return tickOfDay; } }
 
         #region IEquatable<ZoneYearOffset> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -208,14 +187,13 @@ namespace NodaTime.TimeZones
                 return true;
             }
             return
-                this.mode == other.mode &&
-                this.monthOfYear == other.monthOfYear &&
-                this.dayOfMonth == other.dayOfMonth &&
-                this.dayOfWeek == other.dayOfWeek &&
-                this.advance == other.advance &&
-                this.tickOfDay == other.tickOfDay;
+                mode == other.mode &&
+                monthOfYear == other.monthOfYear &&
+                dayOfMonth == other.dayOfMonth &&
+                dayOfWeek == other.dayOfWeek &&
+                advance == other.advance &&
+                tickOfDay == other.tickOfDay;
         }
-
         #endregion
 
         /// <summary>
@@ -255,8 +233,8 @@ namespace NodaTime.TimeZones
         {
             ICalendarSystem calendar = IsoCalendarSystem.Instance;
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
-            instant = calendar.Fields.MonthOfYear.SetValue(instant, this.monthOfYear);
-            instant = calendar.Fields.TickOfDay.SetValue(instant, this.tickOfDay.Ticks);
+            instant = calendar.Fields.MonthOfYear.SetValue(instant, monthOfYear);
+            instant = calendar.Fields.TickOfDay.SetValue(instant, tickOfDay.Ticks);
             instant = SetDayOfMonth(calendar, instant);
             instant = SetDayOfWeek(calendar, instant);
 
@@ -347,13 +325,13 @@ namespace NodaTime.TimeZones
                 LocalInstant localInstant = instant + offset;
 
                 IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
-                LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, this.monthOfYear);
+                LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, monthOfYear);
                 // Be lenient with tick of day.
-                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, this.tickOfDay.Ticks);
+                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, tickOfDay.Ticks);
                 newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
                 int signDirection = Math.Sign(direction);
-                if (this.dayOfWeek == 0)
+                if (dayOfWeek == 0)
                 {
                     int signDifference = Math.Sign((localInstant - newInstant).Ticks);
                     if (signDifference == 0 || signDirection == signDifference)
@@ -369,7 +347,7 @@ namespace NodaTime.TimeZones
                     if (signDifference == 0 || signDirection == signDifference)
                     {
                         newInstant = calendar.Fields.Year.Add(newInstant, direction);
-                        newInstant = calendar.Fields.MonthOfYear.SetValue(newInstant, this.monthOfYear);
+                        newInstant = calendar.Fields.MonthOfYear.SetValue(newInstant, monthOfYear);
                         newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
                         newInstant = SetDayOfWeek(calendar, newInstant);
                     }
@@ -397,7 +375,7 @@ namespace NodaTime.TimeZones
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
         private LocalInstant SetDayOfMonthWithLeap(ICalendarSystem calendar, LocalInstant instant, int direction)
         {
-            if (this.monthOfYear == 2 && this.dayOfMonth == 29)
+            if (monthOfYear == 2 && dayOfMonth == 29)
             {
                 while (calendar.Fields.Year.IsLeap(instant) == false)
                 {
@@ -417,15 +395,15 @@ namespace NodaTime.TimeZones
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
         private LocalInstant SetDayOfMonth(ICalendarSystem calendar, LocalInstant instant)
         {
-            if (this.dayOfMonth > 0)
+            if (dayOfMonth > 0)
             {
-                instant = calendar.Fields.DayOfMonth.SetValue(instant, this.dayOfMonth);
+                instant = calendar.Fields.DayOfMonth.SetValue(instant, dayOfMonth);
             }
-            else if (this.dayOfMonth < 0)
+            else if (dayOfMonth < 0)
             {
                 instant = calendar.Fields.DayOfMonth.SetValue(instant, 1);
                 instant = calendar.Fields.MonthOfYear.Add(instant, 1);
-                instant = calendar.Fields.DayOfMonth.Add(instant, this.dayOfMonth);
+                instant = calendar.Fields.DayOfMonth.Add(instant, dayOfMonth);
             }
             return instant;
         }
@@ -442,13 +420,13 @@ namespace NodaTime.TimeZones
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
         private LocalInstant SetDayOfWeek(ICalendarSystem calendar, LocalInstant instant)
         {
-            if (this.dayOfWeek != 0)
+            if (dayOfWeek != 0)
             {
                 int dayOfWeekOfInstant = calendar.Fields.DayOfWeek.GetValue(instant);
-                int daysToAdd = this.dayOfWeek - dayOfWeekOfInstant;
+                int daysToAdd = dayOfWeek - dayOfWeekOfInstant;
                 if (daysToAdd != 0)
                 {
-                    if (this.advance)
+                    if (advance)
                     {
                         if (daysToAdd < 0)
                         {
@@ -477,7 +455,7 @@ namespace NodaTime.TimeZones
         private Offset GetOffset(Offset standardOffset, Offset savings)
         {
             Offset offset;
-            switch (this.mode)
+            switch (mode)
             {
                 case TransitionMode.Wall:
                     offset = standardOffset + savings;
@@ -515,7 +493,6 @@ namespace NodaTime.TimeZones
         }
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -542,12 +519,12 @@ namespace NodaTime.TimeZones
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, this.mode);
-            hash = HashCodeHelper.Hash(hash, this.monthOfYear);
-            hash = HashCodeHelper.Hash(hash, this.dayOfMonth);
-            hash = HashCodeHelper.Hash(hash, this.dayOfWeek);
-            hash = HashCodeHelper.Hash(hash, this.advance);
-            hash = HashCodeHelper.Hash(hash, this.tickOfDay);
+            hash = HashCodeHelper.Hash(hash, mode);
+            hash = HashCodeHelper.Hash(hash, monthOfYear);
+            hash = HashCodeHelper.Hash(hash, dayOfMonth);
+            hash = HashCodeHelper.Hash(hash, dayOfWeek);
+            hash = HashCodeHelper.Hash(hash, advance);
+            hash = HashCodeHelper.Hash(hash, tickOfDay);
             return hash;
         }
 
@@ -572,7 +549,7 @@ namespace NodaTime.TimeZones
             else
             {
                 builder.Append(DaysOfWeek[DayOfWeek]);
-                builder.Append(this.AdvanceDayOfWeek ? ">=" : "<=");
+                builder.Append(AdvanceDayOfWeek ? ">=" : "<=");
                 builder.Append(DayOfMonth).Append(" ");
             }
             builder.Append(TickOfDay);
@@ -589,7 +566,6 @@ namespace NodaTime.TimeZones
             }
             return builder.ToString();
         }
-
         #endregion // Object overrides
     }
 }

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NUnit.Framework;
@@ -107,7 +108,7 @@ namespace NodaTime.Test.Fields
         public void Add_Int32Value_Overflows()
         {
             Assert.Throws<OverflowException>(() =>
-                TicksDurationField.Instance.Add(new LocalInstant(long.MaxValue), 1));
+                                             TicksDurationField.Instance.Add(new LocalInstant(long.MaxValue), 1));
         }
 
         [Test]
@@ -122,7 +123,7 @@ namespace NodaTime.Test.Fields
         public void Add_Int64Value_Overflows()
         {
             Assert.Throws<OverflowException>(() =>
-                TicksDurationField.Instance.Add(new LocalInstant(long.MaxValue), 1L));
+                                             TicksDurationField.Instance.Add(new LocalInstant(long.MaxValue), 1L));
         }
 
         [Test]
@@ -137,7 +138,7 @@ namespace NodaTime.Test.Fields
         public void GetInt32Difference_Overflows()
         {
             Assert.Throws<OverflowException>(() =>
-                TicksDurationField.Instance.GetDifference(new LocalInstant(long.MaxValue), new LocalInstant(1L)));
+                                             TicksDurationField.Instance.GetDifference(new LocalInstant(long.MaxValue), new LocalInstant(1L)));
         }
 
         [Test]
@@ -153,7 +154,7 @@ namespace NodaTime.Test.Fields
         public void GetInt64Difference_Overflows()
         {
             Assert.Throws<OverflowException>(() =>
-                TicksDurationField.Instance.GetInt64Difference(new LocalInstant(long.MaxValue), new LocalInstant(-1L)));
+                                             TicksDurationField.Instance.GetInt64Difference(new LocalInstant(long.MaxValue), new LocalInstant(-1L)));
         }
     }
 }

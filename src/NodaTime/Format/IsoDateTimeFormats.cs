@@ -29,7 +29,7 @@ namespace NodaTime.Format
     {
         // year element (yyyy)
         private static readonly DateTimeFormatter ye = new DateTimeFormatterBuilder()
-            .AppendYear(4,9)
+            .AppendYear(4, 9)
             .ToFormatter();
 
         // monthOfYear element (-MM)
@@ -87,7 +87,7 @@ namespace NodaTime.Format
         // fractionOfSecond element (.SSSSSSSSS)
         private static readonly DateTimeFormatter fse = new DateTimeFormatterBuilder()
             .AppendLiteral('.')
-            .AppendFractionOfSecond(3,9)
+            .AppendFractionOfSecond(3, 9)
             .ToFormatter();
 
         // zone offset element
@@ -145,7 +145,7 @@ namespace NodaTime.Format
             .Append(mhe)
             .Append(sme)
             .AppendLiteral('.')
-            .AppendFractionOfSecond(3,3)
+            .AppendFractionOfSecond(3, 3)
             .ToFormatter();
 
         // hour minute second fraction
@@ -153,7 +153,7 @@ namespace NodaTime.Format
             .Append(hde)
             .Append(mhe)
             .Append(sme)
-            .Append(fse)                                            
+            .Append(fse)
             .ToFormatter();
 
         // date hour
@@ -271,7 +271,7 @@ namespace NodaTime.Format
             .AppendFixedDecimal(DateTimeFieldType.SecondOfMinute, 2)
             .AppendLiteral('.')
             .AppendFractionOfSecond(3, 9)
-            .AppendTimeZoneOffset("Z", false, 2, 2)          
+            .AppendTimeZoneOffset("Z", false, 2, 2)
             .ToFormatter();
 
         // basic time no milliseconds
@@ -308,8 +308,8 @@ namespace NodaTime.Format
 
         // basic ordinal date
         private static readonly DateTimeFormatter bod = new DateTimeFormatterBuilder()
-            .AppendYear(4,4)
-            .AppendFixedDecimal(DateTimeFieldType.DayOfYear,3)
+            .AppendYear(4, 4)
+            .AppendFixedDecimal(DateTimeFieldType.DayOfYear, 3)
             .ToFormatter();
 
         // basic ordinal date time
@@ -326,7 +326,7 @@ namespace NodaTime.Format
 
         // basic week date
         private static readonly DateTimeFormatter bwd = new DateTimeFormatterBuilder()
-            .AppendWeekYear(4,4)
+            .AppendWeekYear(4, 4)
             .AppendLiteral('W')
             .AppendFixedDecimal(DateTimeFieldType.WeekOfWeekYear, 2)
             .AppendFixedDecimal(DateTimeFieldType.DayOfWeek, 1)
@@ -346,53 +346,53 @@ namespace NodaTime.Format
 
         // date parser element
         private static readonly DateTimeFormatter dpe = new DateTimeFormatterBuilder()
-            .Append(null, new IDateTimeParser[] 
-                                {
-                                    new DateTimeFormatterBuilder()
-                                        .Append(ye)
-                                        .AppendOptional(
-                                            new DateTimeFormatterBuilder()
-                                                .Append(mye)
-                                                .AppendOptional(dme.Parser)
-                                                .ToParser())
-                                        .ToParser(),
-                                    new DateTimeFormatterBuilder()
-                                        .Append(we)
-                                        .Append(wwe)
-                                        .AppendOptional(dwe.Parser)
-                                        .ToParser(),
-                                    new DateTimeFormatterBuilder()
-                                        .Append(ye)
-                                        .Append(dye)
-                                        .ToParser()
-                                })
+            .Append(null, new[]
+                          {
+                              new DateTimeFormatterBuilder()
+                              .Append(ye)
+                              .AppendOptional(
+                                  new DateTimeFormatterBuilder()
+                                      .Append(mye)
+                                      .AppendOptional(dme.Parser)
+                                      .ToParser())
+                              .ToParser(),
+                              new DateTimeFormatterBuilder()
+                              .Append(we)
+                              .Append(wwe)
+                              .AppendOptional(dwe.Parser)
+                              .ToParser(),
+                              new DateTimeFormatterBuilder()
+                              .Append(ye)
+                              .Append(dye)
+                              .ToParser()
+                          })
             .ToFormatter();
 
         // decimal point parser
         private static readonly IDateTimeParser dec = new DateTimeFormatterBuilder()
-            .Append(null, new IDateTimeParser[] 
-                        {
-                            new DateTimeFormatterBuilder()
-                                .AppendLiteral('.')
-                                .ToParser(),
-                            new DateTimeFormatterBuilder()
-                                .AppendLiteral(',')
-                                .ToParser()
-                        })
+            .Append(null, new[]
+                          {
+                              new DateTimeFormatterBuilder()
+                              .AppendLiteral('.')
+                              .ToParser(),
+                              new DateTimeFormatterBuilder()
+                              .AppendLiteral(',')
+                              .ToParser()
+                          })
             .ToParser();
 
         // time parser element
         private static readonly DateTimeFormatter tpe = new DateTimeFormatterBuilder()
             // time-element
-                .Append(hde)
-                .Append(null, new IDateTimeParser[] 
-                        {
-                            new DateTimeFormatterBuilder()
-                                // minute-element
-                                .Append(mhe)
-                                .Append(null, new IDateTimeParser[] 
-                                        {
-                                            new DateTimeFormatterBuilder()
+            .Append(hde)
+            .Append(null, new[]
+                          {
+                              new DateTimeFormatterBuilder()
+                              // minute-element
+                              .Append(mhe)
+                              .Append(null, new[]
+                                            {
+                                                new DateTimeFormatterBuilder()
                                                 // second-element
                                                 .Append(sme)
                                                 // second fraction
@@ -401,22 +401,22 @@ namespace NodaTime.Format
                                                                     .AppendFractionOfSecond(1, 9)
                                                                     .ToParser())
                                                 .ToParser(),
-                                            // minute fraction
-                                            new DateTimeFormatterBuilder()
+                                                // minute fraction
+                                                new DateTimeFormatterBuilder()
                                                 .Append(dec)
                                                 .AppendFractionOfMinute(1, 9)
                                                 .ToParser(),
-                                            null
-                                        })
-                                .ToParser(),
-                            // hour fraction
-                            new DateTimeFormatterBuilder()
-                                .Append(dec)
-                                .AppendFractionOfHour(1, 9)
-                                .ToParser(),
-                            null
-                        })
-                .ToFormatter();
+                                                null
+                                            })
+                              .ToParser(),
+                              // hour fraction
+                              new DateTimeFormatterBuilder()
+                              .Append(dec)
+                              .AppendFractionOfHour(1, 9)
+                              .ToParser(),
+                              null
+                          })
+            .ToFormatter();
 
         // offset parser
         private static readonly IDateTimeParser offset = new DateTimeFormatterBuilder()
@@ -446,7 +446,6 @@ namespace NodaTime.Format
             .Append(tpe)
             .ToFormatter()
             .WithZone(DateTimeZones.Utc);
-
 
         /// <summary>
         /// Gets a formatter for a four digit year. (yyyy)

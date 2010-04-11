@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NUnit.Framework;
@@ -26,15 +27,15 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetInstance_WithNullDurationField_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => 
-                UnsupportedDateTimeField.GetInstance(DateTimeFieldType.SecondOfMinute, null));
+            Assert.Throws<ArgumentNullException>(() =>
+                                                 UnsupportedDateTimeField.GetInstance(DateTimeFieldType.SecondOfMinute, null));
         }
 
         [Test]
         public void GetInstance_WithInvalidDateTimeFieldType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentNullException>(() => 
-                UnsupportedDateTimeField.GetInstance(null, UnsupportedDurationField.Years));
+            Assert.Throws<ArgumentNullException>(() =>
+                                                 UnsupportedDateTimeField.GetInstance(null, UnsupportedDurationField.Years));
         }
 
         [Test]
@@ -100,7 +101,7 @@ namespace NodaTime.Test.Fields
         private static void AssertUnsupported(Action<IDateTimeField> action)
         {
             IDateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear,
-                new MockCountingDurationField(DurationFieldType.Seconds));
+                                                                        new MockCountingDurationField(DurationFieldType.Seconds));
             Assert.Throws<NotSupportedException>(() => action(field));
         }
 
@@ -143,6 +144,5 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(30, field.GetInt64Difference(new LocalInstant(), new LocalInstant()));
             Assert.AreEqual(1, MockCountingDurationField.differences64);
         }
-
     }
 }

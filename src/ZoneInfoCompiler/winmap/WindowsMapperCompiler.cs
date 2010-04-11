@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -25,7 +26,7 @@ namespace NodaTime.ZoneInfoCompiler.winmap
 {
     public class WindowsMapperCompiler
     {
-        private ILog log;
+        private readonly ILog log;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowsMapperCompiler"/> class.
@@ -44,7 +45,7 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         internal int Execute(string[] arguments)
         {
             var options = new WindowsMapperCompilerOptions();
-            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(this.log.InfoWriter));
+            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(log.InfoWriter));
             if (!parser.ParseArguments(arguments, options))
             {
                 return 1;
@@ -53,7 +54,7 @@ namespace NodaTime.ZoneInfoCompiler.winmap
             FileInfo inputFile = new FileInfo(options.SourceFileName);
             if (!inputFile.Exists)
             {
-                this.log.Error("Source file {0} does not exist", inputFile.FullName);
+                log.Error("Source file {0} does not exist", inputFile.FullName);
                 return 2;
             }
             var mappings = ReadInput(inputFile);

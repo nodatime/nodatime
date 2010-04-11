@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
@@ -48,7 +49,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             : base(message)
         {
             Name = name;
-
         }
     }
 }

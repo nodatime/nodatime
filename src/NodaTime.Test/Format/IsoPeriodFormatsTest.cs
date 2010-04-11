@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Format;
 using NodaTime.Periods;
 using NUnit.Framework;
@@ -21,19 +22,19 @@ using NUnit.Framework;
 namespace NodaTime.Test.Format
 {
     [TestFixture]
-    public partial class IsoPeriodFormatsTest
+    public class IsoPeriodFormatsTest
     {
-        Period standardPeriodEmpty = new Period(0, 0, 0, 0, 0, 0, 0, 0);
+        private readonly Period standardPeriodEmpty = new Period(0, 0, 0, 0, 0, 0, 0, 0);
 
-        object[] StandardFormatterTestData =
-        {
-            new TestCaseData( new Period(1, 2, 3, 4, 5, 6, 7, 8), "P1Y2M3W4DT5H6M7.008S"),
-            new TestCaseData( new Period(1, 2, 3, 4, 5, 6, 7, 0), "P1Y2M3W4DT5H6M7S"),
-            new TestCaseData( new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime), "P1Y4DT5H6M7.008S"),
-            new TestCaseData( new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime), "PT0S"),
-            new TestCaseData( new Period(1, 2, 3, 4, 0, 0, 0, 0), "P1Y2M3W4D"),
-            new TestCaseData( new Period(0, 0, 0, 0, 5, 6, 7, 8), "PT5H6M7.008S"),
-        };
+        private object[] StandardFormatterTestData =
+            {
+                new TestCaseData(new Period(1, 2, 3, 4, 5, 6, 7, 8), "P1Y2M3W4DT5H6M7.008S"),
+                new TestCaseData(new Period(1, 2, 3, 4, 5, 6, 7, 0), "P1Y2M3W4DT5H6M7S"),
+                new TestCaseData(new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime), "P1Y4DT5H6M7.008S"),
+                new TestCaseData(new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime), "PT0S"),
+                new TestCaseData(new Period(1, 2, 3, 4, 0, 0, 0, 0), "P1Y2M3W4D"),
+                new TestCaseData(new Period(0, 0, 0, 0, 5, 6, 7, 8), "PT5H6M7.008S"),
+            };
 
         [Test]
         [TestCaseSource("StandardFormatterTestData")]
@@ -49,16 +50,15 @@ namespace NodaTime.Test.Format
             Assert.That(IsoPeriodFormats.Standard.Parse(periodText), Is.EqualTo(standardPeriodEmpty.With(period)));
         }
 
-        object[] AlternateFormatterTestData =
-        {
-            new TestCaseData( new Period(1, 2, 3, 4, 5, 6, 7, 8), "P00010204T050607.008"),
-            new TestCaseData( new Period(1, 2, 3, 4, 5, 6, 7, 0), "P00010204T050607"),
-            new TestCaseData( new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime), "P00010004T050607.008"),
-            new TestCaseData( new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime), "P00000000T000000"),
-            new TestCaseData( new Period(1, 2, 3, 4, 0, 0, 0, 0), "P00010204T000000"),
-            new TestCaseData( new Period(0, 0, 0, 0, 5, 6, 7, 8), "P00000000T050607.008"),
-        };
-
+        private object[] AlternateFormatterTestData =
+            {
+                new TestCaseData(new Period(1, 2, 3, 4, 5, 6, 7, 8), "P00010204T050607.008"),
+                new TestCaseData(new Period(1, 2, 3, 4, 5, 6, 7, 0), "P00010204T050607"),
+                new TestCaseData(new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime), "P00010004T050607.008"),
+                new TestCaseData(new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime), "P00000000T000000"),
+                new TestCaseData(new Period(1, 2, 3, 4, 0, 0, 0, 0), "P00010204T000000"),
+                new TestCaseData(new Period(0, 0, 0, 0, 5, 6, 7, 8), "P00000000T050607.008"),
+            };
 
         [Test]
         [TestCaseSource("AlternateFormatterTestData")]
@@ -75,17 +75,15 @@ namespace NodaTime.Test.Format
             Assert.That(IsoPeriodFormats.Alternate.Parse(periodText), Is.EqualTo(standardPeriodEmpty.With(period)));
         }
 
-
-        object[] AlternateExtendedFormatterTestData =
-        {
-            new TestCaseData( new Period(1, 2, 3, 4, 5, 6, 7, 8)).Returns("P0001-02-04T05:06:07.008"),
-            new TestCaseData( new Period(1, 2, 3, 4, 5, 6, 7, 0)).Returns("P0001-02-04T05:06:07"),
-            new TestCaseData( new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime)).Returns("P0001-00-04T05:06:07.008"),
-            new TestCaseData( new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime)).Returns("P0000-00-00T00:00:00"),
-            new TestCaseData( new Period(1, 2, 3, 4, 0, 0, 0, 0)).Returns("P0001-02-04T00:00:00"),
-            new TestCaseData( new Period(0, 0, 0, 0, 5, 6, 7, 8)).Returns("P0000-00-00T05:06:07.008"),
-        };
-
+        private object[] AlternateExtendedFormatterTestData =
+            {
+                new TestCaseData(new Period(1, 2, 3, 4, 5, 6, 7, 8)).Returns("P0001-02-04T05:06:07.008"),
+                new TestCaseData(new Period(1, 2, 3, 4, 5, 6, 7, 0)).Returns("P0001-02-04T05:06:07"),
+                new TestCaseData(new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime)).Returns("P0001-00-04T05:06:07.008"),
+                new TestCaseData(new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime)).Returns("P0000-00-00T00:00:00"),
+                new TestCaseData(new Period(1, 2, 3, 4, 0, 0, 0, 0)).Returns("P0001-02-04T00:00:00"),
+                new TestCaseData(new Period(0, 0, 0, 0, 5, 6, 7, 8)).Returns("P0000-00-00T05:06:07.008"),
+            };
 
         [Test]
         [TestCaseSource("AlternateExtendedFormatterTestData")]
@@ -94,16 +92,15 @@ namespace NodaTime.Test.Format
             return IsoPeriodFormats.AlternateExtended.Print(period);
         }
 
-        object[] AlternateExtendedWithWeeksFormatterTestData =
-        {
-            new TestCaseData( new Period(1, 2, 3, 4, 5, 6, 7, 8)).Returns("P0001-W03-04T05:06:07.008"),
-            new TestCaseData( new Period(1, 2, 3, 4, 5, 6, 7, 0)).Returns("P0001-W03-04T05:06:07"),
-            new TestCaseData( new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime)).Returns("P0001-W00-04T05:06:07.008"),
-            new TestCaseData( new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime)).Returns("P0000-W00-00T00:00:00"),
-            new TestCaseData( new Period(1, 2, 3, 4, 0, 0, 0, 0)).Returns("P0001-W03-04T00:00:00"),
-            new TestCaseData( new Period(0, 0, 0, 0, 5, 6, 7, 8)).Returns("P0000-W00-00T05:06:07.008"),
-        };
-
+        private object[] AlternateExtendedWithWeeksFormatterTestData =
+            {
+                new TestCaseData(new Period(1, 2, 3, 4, 5, 6, 7, 8)).Returns("P0001-W03-04T05:06:07.008"),
+                new TestCaseData(new Period(1, 2, 3, 4, 5, 6, 7, 0)).Returns("P0001-W03-04T05:06:07"),
+                new TestCaseData(new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime)).Returns("P0001-W00-04T05:06:07.008"),
+                new TestCaseData(new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.YearDayTime)).Returns("P0000-W00-00T00:00:00"),
+                new TestCaseData(new Period(1, 2, 3, 4, 0, 0, 0, 0)).Returns("P0001-W03-04T00:00:00"),
+                new TestCaseData(new Period(0, 0, 0, 0, 5, 6, 7, 8)).Returns("P0000-W00-00T05:06:07.008"),
+            };
 
         [Test]
         [TestCaseSource("AlternateExtendedWithWeeksFormatterTestData")]

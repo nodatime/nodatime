@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 namespace NodaTime.Fields
 {
     /// <summary>
@@ -26,7 +27,9 @@ namespace NodaTime.Fields
         public static TicksDurationField Instance { get { return instance; } }
 
         private TicksDurationField()
-            : base(DurationFieldType.Ticks) { }
+            : base(DurationFieldType.Ticks)
+        {
+        }
 
         public override bool IsSupported { get { return true; } }
 
@@ -36,7 +39,7 @@ namespace NodaTime.Fields
 
         public override int GetValue(Duration duration)
         {
-            return (int)duration.Ticks;
+            return (int) duration.Ticks;
         }
 
         public override long GetInt64Value(Duration duration)
@@ -46,7 +49,7 @@ namespace NodaTime.Fields
 
         public override int GetValue(Duration duration, LocalInstant localInstant)
         {
-            return (int)duration.Ticks;
+            return (int) duration.Ticks;
         }
 
         public override long GetInt64Value(Duration duration, LocalInstant localInstant)
@@ -76,7 +79,7 @@ namespace NodaTime.Fields
 
         public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            return (int)(minuendInstant.Ticks - subtrahendInstant.Ticks);
+            return (int) (minuendInstant.Ticks - subtrahendInstant.Ticks);
         }
 
         public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 
@@ -22,10 +23,10 @@ namespace NodaTime.Calendars
     // TODO: Optimisations of GetLocalInstant etc.
     public abstract class BasicCalendarSystem : AssembledCalendarSystem
     {
-        private readonly static FieldSet preciseFields = CreatePreciseFields();
+        private static readonly FieldSet preciseFields = CreatePreciseFields();
 
-        const int YearCacheSize = 1 << 10;
-        const int YearCacheMask = YearCacheSize - 1;
+        private const int YearCacheSize = 1 << 10;
+        private const int YearCacheMask = YearCacheSize - 1;
         private static readonly YearInfo[] yearCache = new YearInfo[YearCacheSize];
 
         private readonly int minDaysInFirstWeek;
@@ -35,6 +36,7 @@ namespace NodaTime.Calendars
         /// TODO: We always add this to the ticks at the start of the year. Why not just do it?
         /// </summary>
         protected abstract long GetTotalTicksByYearMonth(int year, int month);
+
         public abstract int MinYear { get; }
         public abstract int MaxYear { get; }
         public abstract long AverageTicksPerMonth { get; }
@@ -53,17 +55,17 @@ namespace NodaTime.Calendars
         {
             // First create the simple durations, then fill in date/time fields,
             // which rely on the other properties
-            FieldSet.Builder builder = new FieldSet.Builder()
-            {
-                Ticks = TicksDurationField.Instance,
-                Milliseconds = PreciseDurationField.Milliseconds,
-                Seconds = PreciseDurationField.Seconds,
-                Minutes = PreciseDurationField.Minutes,
-                Hours = PreciseDurationField.Hours,
-                HalfDays = PreciseDurationField.HalfDays,
-                Days = PreciseDurationField.Days,
-                Weeks = PreciseDurationField.Weeks
-            };
+            FieldSet.Builder builder = new FieldSet.Builder
+                                       {
+                                           Ticks = TicksDurationField.Instance,
+                                           Milliseconds = PreciseDurationField.Milliseconds,
+                                           Seconds = PreciseDurationField.Seconds,
+                                           Minutes = PreciseDurationField.Minutes,
+                                           Hours = PreciseDurationField.Hours,
+                                           HalfDays = PreciseDurationField.HalfDays,
+                                           Days = PreciseDurationField.Days,
+                                           Weeks = PreciseDurationField.Weeks
+                                       };
             builder.TickOfMillisecond = new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, builder.Ticks, builder.Milliseconds);
             builder.TickOfDay = new PreciseDateTimeField(DateTimeFieldType.TickOfDay, builder.Ticks, builder.Days);
             builder.MillisecondOfSecond = new PreciseDateTimeField(DateTimeFieldType.MillisecondOfSecond, builder.Milliseconds, builder.Seconds);
@@ -73,7 +75,7 @@ namespace NodaTime.Calendars
             builder.MinuteOfHour = new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, builder.Minutes, builder.Hours);
             builder.MinuteOfDay = new PreciseDateTimeField(DateTimeFieldType.MinuteOfDay, builder.Minutes, builder.Days);
             builder.HourOfDay = new PreciseDateTimeField(DateTimeFieldType.HourOfDay, builder.Hours, builder.Days);
-            builder.HourOfHalfDay = new PreciseDateTimeField(DateTimeFieldType.HourOfHalfDay, builder.Hours, builder.HalfDays);            
+            builder.HourOfHalfDay = new PreciseDateTimeField(DateTimeFieldType.HourOfHalfDay, builder.Hours, builder.HalfDays);
             builder.ClockHourOfDay = new ZeroIsMaxDateTimeField(builder.HourOfDay, DateTimeFieldType.ClockHourOfDay);
             builder.ClockHourOfHalfDay = new ZeroIsMaxDateTimeField(builder.HourOfHalfDay, DateTimeFieldType.ClockHourOfHalfDay);
             // TODO: This was a separate subclass in Joda, for i18n purposes
@@ -111,7 +113,7 @@ namespace NodaTime.Calendars
             IDateTimeField field = new OffsetDateTimeField(builder.YearOfEra, 99);
             builder.CenturyOfEra = new DividedDateTimeField(field, DateTimeFieldType.CenturyOfEra, 100);
 
-            field = new RemainderDateTimeField((DividedDateTimeField)builder.CenturyOfEra);
+            field = new RemainderDateTimeField((DividedDateTimeField) builder.CenturyOfEra);
             builder.YearOfCentury = new OffsetDateTimeField(field, DateTimeFieldType.YearOfCentury, 1);
 
             builder.Era = new GJEraDateTimeField(this);
@@ -148,7 +150,6 @@ namespace NodaTime.Calendars
             return info.StartOfYearTicks;
         }
 
-
         internal int GetDayOfWeek(LocalInstant localInstant)
         {
             // 1970-01-01 is day of week 4, Thursday.
@@ -162,14 +163,14 @@ namespace NodaTime.Calendars
             else
             {
                 daysSince19700101 = (ticks - (NodaConstants.TicksPerDay - 1))
-                    / NodaConstants.TicksPerDay;
+                                    / NodaConstants.TicksPerDay;
                 if (daysSince19700101 < -3)
                 {
-                    return 7 + (int)((daysSince19700101 + 4) % 7);
+                    return 7 + (int) ((daysSince19700101 + 4) % 7);
                 }
             }
 
-            return 1 + (int)((daysSince19700101 + 3) % 7);
+            return 1 + (int) ((daysSince19700101 + 3) % 7);
         }
 
         internal int GetDayOfMonth(LocalInstant localInstant)
@@ -189,7 +190,7 @@ namespace NodaTime.Calendars
         {
             long dateTicks = GetYearTicks(year);
             dateTicks += GetTotalTicksByYearMonth(year, month);
-            return (int)((localInstant.Ticks - dateTicks) / NodaConstants.TicksPerDay) + 1;
+            return (int) ((localInstant.Ticks - dateTicks) / NodaConstants.TicksPerDay) + 1;
         }
 
         internal int GetDaysInMonthMax()
@@ -223,7 +224,7 @@ namespace NodaTime.Calendars
             {
                 i2 = i2 - unitTicks + 1;
             }
-            int year = (int)(i2 / unitTicks);
+            int year = (int) (i2 / unitTicks);
 
             long yearStart = GetYearTicks(year);
             long diff = ticks - yearStart;
@@ -248,7 +249,6 @@ namespace NodaTime.Calendars
             return year;
         }
 
-
         internal int GetDaysInYearMax()
         {
             return 366;
@@ -267,7 +267,7 @@ namespace NodaTime.Calendars
         internal int GetDayOfYear(LocalInstant localInstant, int year)
         {
             long yearStart = GetYearTicks(year);
-            return (int)((localInstant.Ticks - yearStart) / NodaConstants.TicksPerDay) + 1;
+            return (int) ((localInstant.Ticks - yearStart) / NodaConstants.TicksPerDay) + 1;
         }
 
         // Note: no overload taking the year, as it's never used in Joda
@@ -279,8 +279,9 @@ namespace NodaTime.Calendars
         internal long GetTickOfDay(LocalInstant localInstant)
         {
             long ticks = localInstant.Ticks;
-            return ticks >= 0 ? ticks % NodaConstants.TicksPerDay :
-                (NodaConstants.TicksPerDay - 1) + ((ticks + 1) % NodaConstants.TicksPerDay);            
+            return ticks >= 0
+                       ? ticks % NodaConstants.TicksPerDay
+                       : (NodaConstants.TicksPerDay - 1) + ((ticks + 1) % NodaConstants.TicksPerDay);
         }
 
         internal long GetYearMonthDayTicks(int year, int month, int dayOfMonth)
@@ -305,6 +306,7 @@ namespace NodaTime.Calendars
         {
             private readonly int year;
             private readonly long startOfYear;
+
             internal YearInfo(int year, long startOfYear)
             {
                 this.year = year;
@@ -331,7 +333,6 @@ namespace NodaTime.Calendars
             {
                 return year;
             }
-
         }
 
         internal int GetWeekOfWeekYear(LocalInstant localInstant)
@@ -351,7 +352,7 @@ namespace NodaTime.Calendars
             {
                 return 1;
             }
-            return (int)((localInstant.Ticks - firstWeekTicks1) / NodaConstants.TicksPerWeek) + 1;
+            return (int) ((localInstant.Ticks - firstWeekTicks1) / NodaConstants.TicksPerWeek) + 1;
         }
 
         internal int GetWeeksInYear(int year)
@@ -365,11 +366,14 @@ namespace NodaTime.Calendars
         {
             long jan1Millis = GetYearTicks(year);
             int jan1DayOfWeek = GetDayOfWeek(new LocalInstant(jan1Millis));
-        
-            if (jan1DayOfWeek > (8 - minDaysInFirstWeek)) {
+
+            if (jan1DayOfWeek > (8 - minDaysInFirstWeek))
+            {
                 // First week is end of previous year because it doesn't have enough days.
                 return jan1Millis + (8 - jan1DayOfWeek) * NodaConstants.TicksPerDay;
-            } else {
+            }
+            else
+            {
                 // First week is start of this year because it has enough days.
                 return jan1Millis - (jan1DayOfWeek - 1) * NodaConstants.TicksPerDay;
             }
@@ -395,7 +399,7 @@ namespace NodaTime.Calendars
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
 
             return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) +
-                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute);
+                                    hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute);
         }
 
         public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
@@ -403,23 +407,24 @@ namespace NodaTime.Calendars
             if (BaseCalendar != null)
             {
                 return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour,
-                    secondOfMinute);
+                                                    secondOfMinute);
             }
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, secondOfMinute, 0, 59);
 
             return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) +
-                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
-                secondOfMinute * NodaConstants.TicksPerSecond);
+                                    hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
+                                    secondOfMinute * NodaConstants.TicksPerSecond);
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+                                                     int millisecondOfSecond, int tickOfMillisecond)
         {
             if (BaseCalendar != null)
             {
-                return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, 
-                    secondOfMinute, millisecondOfSecond, tickOfMillisecond);
+                return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour,
+                                                    secondOfMinute, millisecondOfSecond, tickOfMillisecond);
             }
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
@@ -428,8 +433,8 @@ namespace NodaTime.Calendars
             FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfMillisecond, tickOfMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
 
             return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) +
-                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
-                secondOfMinute * NodaConstants.TicksPerSecond + millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond);
+                                    hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
+                                    secondOfMinute * NodaConstants.TicksPerSecond + millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond);
         }
 
         public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)

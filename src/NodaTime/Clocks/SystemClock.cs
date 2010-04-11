@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
+
 namespace NodaTime.Clocks
 {
     /// <summary>
@@ -32,19 +35,14 @@ namespace NodaTime.Clocks
 
         // TODO: We'll want to do better than this, but it'll do for now.
         // private static readonly System.DateTime UnixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        private static readonly long UnixEpochTicks = (new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc)).Ticks;
+        private static readonly long UnixEpochTicks = (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks;
 
         #region IClock Members
-
         /// <summary>
         /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
         /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
-        public Instant Now
-        {
-            get { return new Instant(System.DateTime.UtcNow.Ticks - UnixEpochTicks); }
-        }
-
+        public Instant Now { get { return new Instant(DateTime.UtcNow.Ticks - UnixEpochTicks); } }
         #endregion
     }
 }

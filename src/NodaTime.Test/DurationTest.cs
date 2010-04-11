@@ -22,7 +22,7 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class DurationTest
     {
-        readonly Duration threeMillion = new Duration(3000000L);
-        readonly Duration negativeFiftyMillion = new Duration(-50000000L);
+        private readonly Duration threeMillion = new Duration(3000000L);
+        private readonly Duration negativeFiftyMillion = new Duration(-50000000L);
     }
 }

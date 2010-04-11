@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Linq;
 using NodaTime.Fields;
@@ -27,7 +28,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithInvalidType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new StubDurationFieldBase((DurationFieldType)(-1)));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new StubDurationFieldBase((DurationFieldType) (-1)));
         }
 
         [Test]
@@ -82,7 +83,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void IsTypeValid_AllEnumValues_AreValid()
         {
-            foreach (DurationFieldType type in Enum.GetValues(typeof(DurationFieldType)))
+            foreach (DurationFieldType type in Enum.GetValues(typeof (DurationFieldType)))
             {
                 Assert.IsTrue(DurationFieldBase.IsTypeValid(type));
             }
@@ -91,8 +92,8 @@ namespace NodaTime.Test.Fields
         [Test]
         public void IsTypeValid_ValuesOutOfRange_AreInvalid()
         {
-            Assert.IsFalse(DurationFieldBase.IsTypeValid((DurationFieldType)(-1)));
-            DurationFieldType max = Enum.GetValues(typeof(DurationFieldType))
+            Assert.IsFalse(DurationFieldBase.IsTypeValid((DurationFieldType) (-1)));
+            DurationFieldType max = Enum.GetValues(typeof (DurationFieldType))
                 .Cast<DurationFieldType>().Max();
             Assert.IsFalse(DurationFieldBase.IsTypeValid(max + 1));
         }
@@ -110,24 +111,18 @@ namespace NodaTime.Test.Fields
 
             public override bool IsSupported { get { return true; } }
 
-            public override bool IsPrecise
-            {
-                get { return true; }
-            }
+            public override bool IsPrecise { get { return true; } }
 
-            public override long UnitTicks
-            {
-                get { return 123; }
-            }
+            public override long UnitTicks { get { return 123; } }
 
             public override long GetInt64Value(Duration duration, LocalInstant localInstant)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             public override Duration GetDuration(long value, LocalInstant localInstant)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             public override LocalInstant Add(LocalInstant localInstant, int value)
@@ -142,7 +137,7 @@ namespace NodaTime.Test.Fields
 
             public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
         }
     }

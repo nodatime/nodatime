@@ -14,22 +14,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
-using NodaTime.TimeZones;
-using NUnit.Framework;
-using NodaTime.Calendars;
-using NodaTime.ZoneInfoCompiler.Tzdb;
+
 using NodaTime;
+using NodaTime.Calendars;
+using NodaTime.TimeZones;
+using NodaTime.ZoneInfoCompiler.Tzdb;
+using NUnit.Framework;
 
 namespace ZoneInfoCompiler.Test
 {
     [TestFixture]
-    public partial class ZoneRuleTest
+    public class ZoneRuleTest
     {
         [Test]
         public void WriteRead()
         {
-            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
             var actual = new ZoneRule(recurrence, "D");
             var expected = new ZoneRule(recurrence, "D");

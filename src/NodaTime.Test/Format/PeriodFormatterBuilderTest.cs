@@ -16,10 +16,8 @@
 #endregion
 
 using System;
-
 using NodaTime.Format;
 using NodaTime.Periods;
-
 using NUnit.Framework;
 
 namespace NodaTime.Test.Format
@@ -27,16 +25,16 @@ namespace NodaTime.Test.Format
     [TestFixture]
     public partial class PeriodFormatterBuilderTest
     {
-        PeriodFormatterBuilder builder;
+        private PeriodFormatterBuilder builder;
 
-        Period standardPeriodEmpty;
-        Period standardPeriodFull;
+        private Period standardPeriodEmpty;
+        private Period standardPeriodFull;
 
-        Period timePeriod;
-        Period datePeriod;
+        private Period timePeriod;
+        private Period datePeriod;
 
-        Period yearDayTimePeriodEmpty;
-        Period yearDayTimePeriodFull;
+        private Period yearDayTimePeriodEmpty;
+        private Period yearDayTimePeriodFull;
 
         [SetUp]
         public void Init()
@@ -75,11 +73,10 @@ namespace NodaTime.Test.Format
         }
 
         #region AppendPrinterParser
-
         [Test]
         public void AppendPrinterParser_Throws_IfBothNull()
         {
-            Assert.Throws<ArgumentException>(()=>builder.Append(null, null));
+            Assert.Throws<ArgumentException>(() => builder.Append(null, null));
         }
 
         [Test]
@@ -89,7 +86,7 @@ namespace NodaTime.Test.Format
                 .AppendYears()
                 .AppendLiteral("-")
                 .ToPrinter();
-            
+
             var builder2 = new PeriodFormatterBuilder()
                 .Append(printer, null)
                 .AppendMonths();
@@ -100,9 +97,8 @@ namespace NodaTime.Test.Format
             var formatter = builder2.ToFormatter();
 
             Assert.AreEqual("1-2", formatter.Print(standardPeriodFull));
-            Assert.Throws<NotSupportedException>(()=>formatter.Parse("1-3"));
+            Assert.Throws<NotSupportedException>(() => formatter.Parse("1-3"));
         }
-
         #endregion
     }
 }

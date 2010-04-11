@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 
@@ -81,7 +82,8 @@ namespace NodaTime.Calendars
             fields.Centuries = centuryOfEra.DurationField;
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+                                                     int millisecondOfSecond, int tickOfMillisecond)
         {
             int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
             if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 ||
@@ -97,10 +99,11 @@ namespace NodaTime.Calendars
                 return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
             }
             // This is guaranteed not to overflow, as we've already validated the arguments
-            return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] + 
-                (dayOfMonth - 1) * NodaConstants.TicksPerDay +
-                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
-                secondOfMinute * NodaConstants.TicksPerSecond + millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond));
+            return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] +
+                                              (dayOfMonth - 1) * NodaConstants.TicksPerDay +
+                                              hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
+                                              secondOfMinute * NodaConstants.TicksPerSecond + millisecondOfSecond * NodaConstants.TicksPerMillisecond +
+                                              tickOfMillisecond));
         }
 
         public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
@@ -118,9 +121,9 @@ namespace NodaTime.Calendars
             }
             // This is guaranteed not to overflow, as we've already validated the arguments
             return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] +
-                (dayOfMonth - 1) * NodaConstants.TicksPerDay +
-                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
-                secondOfMinute * NodaConstants.TicksPerSecond));
+                                              (dayOfMonth - 1) * NodaConstants.TicksPerDay +
+                                              hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
+                                              secondOfMinute * NodaConstants.TicksPerSecond));
         }
 
         public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
@@ -137,8 +140,8 @@ namespace NodaTime.Calendars
             }
             // This is guaranteed not to overflow, as we've already validated the arguments
             return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] +
-                (dayOfMonth - 1) * NodaConstants.TicksPerDay +
-                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute));
+                                              (dayOfMonth - 1) * NodaConstants.TicksPerDay +
+                                              hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute));
         }
 
         // TODO: Try overriding the GetLocalInstant methods to micro-optimise them (they will be called for almost every ZonedDateTime/LocalDateTime)

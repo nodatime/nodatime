@@ -14,9 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
-using System.Text;
 using System.IO;
+using System.Text;
+
 namespace NodaTime.Format
 {
     /// <summary>
@@ -29,7 +31,7 @@ namespace NodaTime.Format
         private const int LengthOfDots = 3;
         private const string Dots = "...";
 
-        static readonly double Log10 = Math.Log(10);
+        private static readonly double Log10 = Math.Log(10);
 
         private const char UnicodeReplacementCharacter = '\ufffd';
 
@@ -58,7 +60,7 @@ namespace NodaTime.Format
                     {
                         builder.Append('0');
                     }
-                    builder.Append(-(long)int.MinValue);
+                    builder.Append(-(long) int.MinValue);
                     return;
                 }
             }
@@ -69,7 +71,7 @@ namespace NodaTime.Format
                 {
                     builder.Append('0');
                 }
-                builder.Append((char)(value + '0'));
+                builder.Append((char) (value + '0'));
             }
             else if (value < 100)
             {
@@ -81,15 +83,17 @@ namespace NodaTime.Format
                 {
                     builder.Append('0');
                 }
-                builder.Append((char)(d + '0'));
+                builder.Append((char) (d + '0'));
                 // Append remainder by calculating (value - d * 10).
-                builder.Append((char)(value - (d << 3) - (d << 1) + '0'));
+                builder.Append((char) (value - (d << 3) - (d << 1) + '0'));
             }
             else
             {
-                int digits = value < 1000 ? 3
-                    : value < 10000 ? 4
-                    : (int)(Math.Log(value) / Log10) + 1;
+                int digits = value < 1000
+                                 ? 3
+                                 : value < 10000
+                                       ? 4
+                                       : (int) (Math.Log(value) / Log10) + 1;
 
                 for (; size > digits; size--)
                 {
@@ -126,7 +130,7 @@ namespace NodaTime.Format
 
             if (value < 10)
             {
-                builder.Append((char)(value + '0'));
+                builder.Append((char) (value + '0'));
             }
             else if (value < 100)
             {
@@ -134,9 +138,9 @@ namespace NodaTime.Format
                 // division operations. (2 ^ 27) / 10 = 13421772. Add one to
                 // value to correct rounding error.
                 int d = ((value + 1) * 13421772) >> 27;
-                builder.Append((char)(d + '0'));
+                builder.Append((char) (d + '0'));
                 // Append remainder by calculating (value - d * 10).
-                builder.Append((char)(value - (d << 3) - (d << 1) + '0'));
+                builder.Append((char) (value - (d << 3) - (d << 1) + '0'));
             }
             else
             {
@@ -181,9 +185,9 @@ namespace NodaTime.Format
                 // division operations. (2 ^ 27) / 10 = 13421772. Add one to
                 // value to correct rounding error.
                 int d = ((value + 1) * 13421772) >> 27;
-                writer.Write((char)(d + '0'));
+                writer.Write((char) (d + '0'));
                 // Append remainder by calculating (value - d * 10).
-                writer.Write((char)(value - (d << 3) - (d << 1) + '0'));
+                writer.Write((char) (value - (d << 3) - (d << 1) + '0'));
             }
             else
             {
@@ -219,7 +223,7 @@ namespace NodaTime.Format
                     {
                         writer.Write('0');
                     }
-                    writer.Write(-(long)int.MinValue);
+                    writer.Write(-(long) int.MinValue);
                     return;
                 }
             }
@@ -230,7 +234,7 @@ namespace NodaTime.Format
                 {
                     writer.Write('0');
                 }
-                writer.Write((char)(value + '0'));
+                writer.Write((char) (value + '0'));
             }
             else if (value < 100)
             {
@@ -242,15 +246,17 @@ namespace NodaTime.Format
                 {
                     writer.Write('0');
                 }
-                writer.Write((char)(d + '0'));
+                writer.Write((char) (d + '0'));
                 // Append remainder by calculating (value - d * 10).
-                writer.Write((char)(value - (d << 3) - (d << 1) + '0'));
+                writer.Write((char) (value - (d << 3) - (d << 1) + '0'));
             }
             else
             {
-                int digits = value < 1000 ? 3
-                    : value < 10000 ? 4
-                    : (int)(Math.Log(value) / Log10) + 1;
+                int digits = value < 1000
+                                 ? 3
+                                 : value < 10000
+                                       ? 4
+                                       : (int) (Math.Log(value) / Log10) + 1;
 
                 for (; size > digits; size--)
                 {
@@ -269,11 +275,15 @@ namespace NodaTime.Format
             }
 
             return
-                value < 10 ? 1 :
-                value < 100 ? 2 :
-                value < 1000 ? 3 :
-                value < 10000 ? 4 :
-                (int)(Math.Log(value) / Log10 + 1);
+                value < 10
+                    ? 1
+                    : value < 100
+                          ? 2
+                          : value < 1000
+                                ? 3
+                                : value < 10000
+                                      ? 4
+                                      : (int) (Math.Log(value) / Log10 + 1);
         }
 
         internal static int ParseTwoDigits(String text, int position)
@@ -285,14 +295,17 @@ namespace NodaTime.Format
         internal static string CreateErrorMessage(string text, int errorPosition)
         {
             int sampleLen = errorPosition + LengthOfSampleText;
-            string sampleText = text.Length <= sampleLen + LengthOfDots ? text
-                : text.Substring(0, sampleLen) + Dots;
+            string sampleText = text.Length <= sampleLen + LengthOfDots
+                                    ? text
+                                    : text.Substring(0, sampleLen) + Dots;
 
             string prefix = "Invalid format: \"" + sampleText + '"';
 
-            return errorPosition <= 0 ? prefix
-                : errorPosition >= text.Length ? prefix + " is too short"
-                : prefix + " is malformed at \"" + sampleText.Substring(errorPosition) + '"';
+            return errorPosition <= 0
+                       ? prefix
+                       : errorPosition >= text.Length
+                             ? prefix + " is too short"
+                             : prefix + " is malformed at \"" + sampleText.Substring(errorPosition) + '"';
         }
 
         internal static int MatchSubstring(string targetString, int startAt, string textToFind)
@@ -309,9 +322,9 @@ namespace NodaTime.Format
 
             string targetSubString = targetString.Substring(startAt, textToFind.Length);
 
-            return targetSubString.Equals(textToFind, StringComparison.OrdinalIgnoreCase) 
-                ? startAt + textToFind.Length
-                : ~startAt;
+            return targetSubString.Equals(textToFind, StringComparison.OrdinalIgnoreCase)
+                       ? startAt + textToFind.Length
+                       : ~startAt;
         }
 
         internal static void WriteUnknownString(TextWriter writer)
@@ -321,7 +334,7 @@ namespace NodaTime.Format
 
         internal static void WriteUnknownString(TextWriter writer, int len)
         {
-            for (int i = len; --i >= 0; )
+            for (int i = len; --i >= 0;)
             {
                 writer.Write(UnicodeReplacementCharacter);
             }

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Fields;
 using NodaTime.Periods;
 
@@ -36,10 +37,7 @@ namespace NodaTime.Format
             values = new int[this.periodType.Size];
         }
 
-        public PeriodType PeriodType
-        {
-            get { return periodType; }
-        }
+        public PeriodType PeriodType { get { return periodType; } }
 
         public PeriodBuilder Append(DurationFieldType fieldType, int value)
         {

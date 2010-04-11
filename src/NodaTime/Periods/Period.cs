@@ -43,14 +43,12 @@ namespace NodaTime.Periods
         private int[] fieldValues;
 
         #region Construction
-
         internal Period(int[] values, PeriodType periodType)
         {
             this.periodType = periodType;
-            this.fieldValues = values;
-
+            fieldValues = values;
         }
-        
+
         /// <summary>
         /// Initializes a new empty period with the standard set of fields.
         /// </summary>
@@ -71,8 +69,9 @@ namespace NodaTime.Periods
         /// </code>
         /// </remarks>
         public Period()
-            : this(new int[] { 0, 0, 0, 0, 0, 0, 0, 0 }, PeriodType.Standard) { }
-
+            : this(new[] {0, 0, 0, 0, 0, 0, 0, 0}, PeriodType.Standard)
+        {
+        }
 
         /// <summary>
         /// Initializes a period from a set of field values.
@@ -100,7 +99,6 @@ namespace NodaTime.Periods
             this.periodType = NodaDefaults.CheckPeriodType(periodType);
 
             SetPeriodInternal(years, months, weeks, days, hours, minutes, seconds, milliseconds);
-
         }
 
         /// <summary>
@@ -117,7 +115,9 @@ namespace NodaTime.Periods
         public Period(
             int years, int months, int weeks, int days,
             int hours, int minutes, int seconds, int millis)
-            : this(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.Standard){}
+            : this(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.Standard)
+        {
+        }
 
         /// <summary>
         /// Initializes a period from a set of field values using the standard set of fields.
@@ -131,21 +131,15 @@ namespace NodaTime.Periods
         /// seconds and millis, not the date fields.
         /// </remarks>
         public Period(int hours, int minutes, int seconds, int millis)
-            : this(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.Standard) { }
-
+            : this(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.Standard)
+        {
+        }
         #endregion
 
         #region IPeriod Members
+        public PeriodType PeriodType { get { return periodType; } }
 
-        public PeriodType PeriodType
-        {
-            get { return periodType; }
-        }
-
-        public int Size
-        {
-            get { return periodType.Size; }
-        }
+        public int Size { get { return periodType.Size; } }
 
         public DurationFieldType GetFieldType(int index)
         {
@@ -171,117 +165,65 @@ namespace NodaTime.Periods
             }
             return GetValue(index);
         }
-
         #endregion
 
         #region Public Properties
-
         /// <summary>
         /// Gets the years field part of the period.
         /// </summary>
         /// <returns>The number of years in the period, zero if unsupported</returns>
-        public int Years
-        {
-            get
-            {
-                return GetIndexedField(PeriodType.Index.Year);
-            }
-        }
+        public int Years { get { return GetIndexedField(PeriodType.Index.Year); } }
 
         /// <summary>
         /// Gets the months field part of the period.
         /// </summary>
         /// <returns>The number of months in the period, zero if unsupported</returns>
-        public int Months
-        {
-            get
-            {
-                return GetIndexedField(PeriodType.Index.Month);
-            }
-        }
+        public int Months { get { return GetIndexedField(PeriodType.Index.Month); } }
 
         /// <summary>
         /// Gets the weeks field part of the period.
         /// </summary>
         /// <returns>The number of weeks in the period, zero if unsupported</returns>
-        public int Weeks
-        {
-            get
-            {
-                return GetIndexedField(PeriodType.Index.Week);
-            }
-        }
+        public int Weeks { get { return GetIndexedField(PeriodType.Index.Week); } }
 
         /// <summary>
         /// Gets the days field part of the period.
         /// </summary>
         /// <returns>The number of days in the period, zero if unsupported</returns>
-        public int Days
-        {
-            get
-            {
-                return GetIndexedField(PeriodType.Index.Day);
-            }
-        }
+        public int Days { get { return GetIndexedField(PeriodType.Index.Day); } }
 
         /// <summary>
         /// Gets the hours field part of the period.
         /// </summary>
         /// <returns>The number of hours in the period, zero if unsupported</returns>
-        public int Hours
-        {
-            get
-            {
-                return GetIndexedField(PeriodType.Index.Hour);
-            }
-        }
+        public int Hours { get { return GetIndexedField(PeriodType.Index.Hour); } }
 
         /// <summary>
         /// Gets the minutes field part of the period.
         /// </summary>
         /// <returns>The number of minutes in the period, zero if unsupported</returns>
-        public int Minutes
-        {
-            get
-            {
-                return GetIndexedField(PeriodType.Index.Minute);
-            }
-        }
+        public int Minutes { get { return GetIndexedField(PeriodType.Index.Minute); } }
 
         /// <summary>
         /// Gets the seconds field part of the period.
         /// </summary>
         /// <returns>The number of seconds in the period, zero if unsupported</returns>
-        public int Seconds
-        {
-            get
-            {
-                return GetIndexedField(PeriodType.Index.Second);
-            }
-        }
+        public int Seconds { get { return GetIndexedField(PeriodType.Index.Second); } }
 
         /// <summary>
         /// Gets the milliseconds field part of the period.
         /// </summary>
         /// <returns>The number of milliseconds in the period, zero if unsupported</returns>
-        public int Milliseconds
-        {
-            get
-            {
-                return GetIndexedField(PeriodType.Index.Millisecond);
-            }
-        }
+        public int Milliseconds { get { return GetIndexedField(PeriodType.Index.Millisecond); } }
 
         private int GetIndexedField(PeriodType.Index index)
         {
             int realIndex = PeriodType.GetRealIndex(index);
             return realIndex == -1 ? 0 : GetValue(realIndex);
         }
-
         #endregion
 
         #region Creation methods
-
         private int[] WithIndexedField(PeriodType.Index index, int newValue)
         {
             return WithIndexedField(index, newValue, false);
@@ -321,7 +263,9 @@ namespace NodaTime.Periods
         public Period With(IPeriod period)
         {
             if (period == null)
+            {
                 return this;
+            }
 
             var values = GetValues();
             MergePeriodInto(values, period);
@@ -479,7 +423,9 @@ namespace NodaTime.Periods
         public Period Add(IPeriod period)
         {
             if (period == null)
+            {
                 return this;
+            }
 
             var values = GetValues();
             PeriodType.UpdateIndexedField(values, PeriodType.Index.Year, period.Get(DurationFieldType.Years), true);
@@ -507,7 +453,9 @@ namespace NodaTime.Periods
         public Period AddField(DurationFieldType fieldType, int value)
         {
             if (value == 0)
+            {
                 return this;
+            }
 
             var values = WithAnyField(fieldType, value, true);
             return new Period(values, PeriodType);
@@ -524,7 +472,9 @@ namespace NodaTime.Periods
         public Period AddYears(int years)
         {
             if (years == 0)
+            {
                 return this;
+            }
 
             var values = WithIndexedField(PeriodType.Index.Year, years, true);
             return new Period(values, PeriodType);
@@ -541,7 +491,9 @@ namespace NodaTime.Periods
         public Period AddMonths(int months)
         {
             if (months == 0)
+            {
                 return this;
+            }
 
             var values = WithIndexedField(PeriodType.Index.Month, months, true);
             return new Period(values, PeriodType);
@@ -558,7 +510,9 @@ namespace NodaTime.Periods
         public Period AddWeeks(int weeks)
         {
             if (weeks == 0)
+            {
                 return this;
+            }
 
             var values = WithIndexedField(PeriodType.Index.Week, weeks, true);
             return new Period(values, PeriodType);
@@ -575,7 +529,9 @@ namespace NodaTime.Periods
         public Period AddDays(int days)
         {
             if (days == 0)
+            {
                 return this;
+            }
 
             var values = WithIndexedField(PeriodType.Index.Day, days, true);
             return new Period(values, PeriodType);
@@ -592,7 +548,9 @@ namespace NodaTime.Periods
         public Period AddHours(int hours)
         {
             if (hours == 0)
+            {
                 return this;
+            }
 
             var values = WithIndexedField(PeriodType.Index.Hour, hours, true);
             return new Period(values, PeriodType);
@@ -609,7 +567,9 @@ namespace NodaTime.Periods
         public Period AddMinutes(int minutes)
         {
             if (minutes == 0)
+            {
                 return this;
+            }
 
             var values = WithIndexedField(PeriodType.Index.Minute, minutes, true);
             return new Period(values, PeriodType);
@@ -626,7 +586,9 @@ namespace NodaTime.Periods
         public Period AddSeconds(int seconds)
         {
             if (seconds == 0)
+            {
                 return this;
+            }
 
             var values = WithIndexedField(PeriodType.Index.Second, seconds, true);
             return new Period(values, PeriodType);
@@ -643,8 +605,9 @@ namespace NodaTime.Periods
         public Period AddMilliseconds(int milliseconds)
         {
             if (milliseconds == 0)
+            {
                 return this;
-
+            }
 
             var values = WithIndexedField(PeriodType.Index.Millisecond, milliseconds, true);
             return new Period(values, PeriodType);
@@ -673,7 +636,9 @@ namespace NodaTime.Periods
         public Period Subtract(IPeriod period)
         {
             if (period == null)
+            {
                 return this;
+            }
 
             var values = GetValues();
             PeriodType.UpdateIndexedField(values, PeriodType.Index.Year, -period.Get(DurationFieldType.Years), true);
@@ -791,7 +756,6 @@ namespace NodaTime.Periods
         {
             return AddMilliseconds(-milliseconds);
         }
-
         #endregion
 
         /// <summary>
@@ -816,7 +780,7 @@ namespace NodaTime.Periods
         /// <returns>The current values of each field in an array that may be altered, largest to smallest</returns>
         public int[] GetValues()
         {
-            return (int[])fieldValues.Clone();
+            return (int[]) fieldValues.Clone();
         }
 
         private void SetPeriodInternal(int years, int months, int weeks, int days,
@@ -845,10 +809,9 @@ namespace NodaTime.Periods
         }
 
         #region IEquality
-
         public bool Equals(Period other)
         {
-            if (Object.ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
@@ -880,9 +843,9 @@ namespace NodaTime.Periods
             return true;
         }
 
-        public override bool  Equals(object obj)
+        public override bool Equals(object obj)
         {
- 	        return Equals(obj as Period);
+            return Equals(obj as Period);
         }
 
         public override int GetHashCode()
@@ -900,18 +863,16 @@ namespace NodaTime.Periods
 
         public static bool operator ==(Period left, Period right)
         {
-            return Object.Equals(left, right);
+            return Equals(left, right);
         }
 
         public static bool operator !=(Period left, Period right)
         {
-            return !Object.Equals(left, right);
+            return !Equals(left, right);
         }
-
         #endregion
 
         #region Operators
-
         /// <summary>
         /// Implements the operator + (addition).
         /// </summary>
@@ -921,9 +882,13 @@ namespace NodaTime.Periods
         public static Period operator +(Period left, Period right)
         {
             if (left == null)
+            {
                 return right;
+            }
             else
+            {
                 return left.Add(right);
+            }
         }
 
         /// <summary>
@@ -946,9 +911,13 @@ namespace NodaTime.Periods
         public static Period operator -(Period left, Period right)
         {
             if (left == null)
+            {
                 return right;
+            }
             else
+            {
                 return left.Subtract(right);
+            }
         }
 
         /// <summary>
@@ -961,7 +930,6 @@ namespace NodaTime.Periods
         {
             return left - right;
         }
-
         #endregion
     }
 }

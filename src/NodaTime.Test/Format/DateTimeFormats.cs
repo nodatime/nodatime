@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -16,39 +16,38 @@
 #endregion
 
 using System;
+using System.Globalization;
 using NodaTime.Format;
 using NodaTime.TimeZones;
 using NUnit.Framework;
-using System.Globalization;
 
 namespace NodaTime.Test.Format
 {
     [TestFixture]
-    public partial class DateTimeFormatsTest
+    public class DateTimeFormatsTest
     {
         #region Zones
-
-        private static IDateTimeZone UTC = DateTimeZones.Utc;
+        private static readonly IDateTimeZone UTC = DateTimeZones.Utc;
         private static IDateTimeZone London = DateTimeZones.ForId("Europe/London");
         private static IDateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
-
         #endregion
 
         #region Cultures
-
-        private static IFormatProvider EnUs = CultureInfo.GetCultureInfo("en-US");          //English (United States) 
-        private static IFormatProvider PortuBrazil = CultureInfo.GetCultureInfo("pt-BR");   //Portuguese (Brazil) 
-        private static IFormatProvider CroCro = CultureInfo.GetCultureInfo("hr-HR");        //Croatian (Croatia) 
-
+        private static readonly IFormatProvider EnUs = CultureInfo.GetCultureInfo("en-US"); //English (United States) 
+        private static readonly IFormatProvider PortuBrazil = CultureInfo.GetCultureInfo("pt-BR"); //Portuguese (Brazil) 
+        private static readonly IFormatProvider CroCro = CultureInfo.GetCultureInfo("hr-HR"); //Croatian (Croatia) 
         #endregion
 
-        object[] StandardPatternTestData =
-        {
-            new TestCaseData( 'd', (IFormatProvider)null, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
-            new TestCaseData( 'd', EnUs, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
-            new TestCaseData( 'd', PortuBrazil, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
-            new TestCaseData( 'd', CroCro, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
-        };
+        private object[] StandardPatternTestData =
+            {
+                new TestCaseData('d', (IFormatProvider) null, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC),
+                                 new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
+                new TestCaseData('d', EnUs, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
+                new TestCaseData('d', PortuBrazil, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC),
+                                 new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
+                new TestCaseData('d', CroCro, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero))
+                ,
+            };
 
         [Test]
         [TestCaseSource("StandardPatternTestData")]
@@ -59,6 +58,5 @@ namespace NodaTime.Test.Format
 
             Assert.That(nodaOutput, Is.EqualTo(bclOutput));
         }
-
     }
 }

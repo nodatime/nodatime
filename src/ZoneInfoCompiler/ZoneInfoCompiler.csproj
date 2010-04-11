@@ -136,7 +136,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tzdb\Data\Readme.txt" />
-    <Content Include="Tzdb\Data\supplementalData.xml" />
+    <Content Include="Tzdb\Data\supplementalData.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">

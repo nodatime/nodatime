@@ -14,9 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
-using NodaTime.TimeZones;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -25,7 +25,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// </summary>
     internal class TzdbDatabase
     {
-        private SortedList<string, ZoneList> zoneLists;
+        private readonly SortedList<string, ZoneList> zoneLists;
 
         /// <summary>
         /// Gets or sets the daylight savings rule sets.
@@ -37,7 +37,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// Gets or sets the time zone definitions.
         /// </summary>
         /// <value>The time zone definitions.</value>
-        internal IList<ZoneList> Zones { get { return this.zoneLists.Values; } }
+        internal IList<ZoneList> Zones { get { return zoneLists.Values; } }
 
         /// <summary>
         /// Gets or sets the time zone alias links.
@@ -57,7 +57,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         internal TzdbDatabase()
         {
-            this.zoneLists = new SortedList<string, ZoneList>();
+            zoneLists = new SortedList<string, ZoneList>();
             Rules = new Dictionary<string, IList<ZoneRule>>();
             Aliases = new Dictionary<string, string>();
             CurrentZoneList = null;
@@ -107,7 +107,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             if (CurrentZoneList == null || CurrentZoneList.Name != name)
             {
                 CurrentZoneList = new ZoneList();
-                this.zoneLists.Add(name, CurrentZoneList);
+                zoneLists.Add(name, CurrentZoneList);
             }
             CurrentZoneList.Add(zone);
         }

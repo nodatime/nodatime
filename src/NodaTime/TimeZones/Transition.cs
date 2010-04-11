@@ -14,9 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NodaTime.TimeZones
 {
@@ -31,6 +30,7 @@ namespace NodaTime.TimeZones
         public Instant Instant { get { return instant; } }
 
         private readonly Offset oldOffset;
+
         /// <summary>
         /// The offset which applied from the previous transition until this
         /// one.
@@ -38,6 +38,7 @@ namespace NodaTime.TimeZones
         public Offset OldOffset { get { return oldOffset; } }
 
         private readonly Offset newOffset;
+
         /// <summary>
         /// The offset from the time when this transition occurs until the next transition.
         /// </summary>
@@ -53,8 +54,8 @@ namespace NodaTime.TimeZones
         public bool Equals(Transition other)
         {
             return instant == other.Instant &&
-                oldOffset == other.OldOffset &&
-                newOffset == other.NewOffset;
+                   oldOffset == other.OldOffset &&
+                   newOffset == other.NewOffset;
         }
 
         #region Operators
@@ -82,7 +83,6 @@ namespace NodaTime.TimeZones
         #endregion
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -95,7 +95,7 @@ namespace NodaTime.TimeZones
         {
             if (obj is Transition)
             {
-                return Equals((Transition)obj);
+                return Equals((Transition) obj);
             }
             return false;
         }

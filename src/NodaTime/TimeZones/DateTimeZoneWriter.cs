@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -271,7 +269,7 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("dictionary");
             }
-            this.WriteCount(dictionary.Count);
+            WriteCount(dictionary.Count);
             foreach (var entry in dictionary)
             {
                 WriteString(entry.Key);
@@ -285,7 +283,7 @@ namespace NodaTime.TimeZones
         /// <param name="value">The offset to write.</param>
         public void WriteOffset(Offset value)
         {
-            this.WriteMilliseconds(value.Milliseconds);
+            WriteMilliseconds(value.Milliseconds);
         }
 
         /// <summary>
@@ -294,7 +292,7 @@ namespace NodaTime.TimeZones
         /// <param name="value">The offset to write.</param>
         public void WriteInstant(Instant value)
         {
-            this.WriteTicks(value.Ticks);
+            WriteTicks(value.Ticks);
         }
 
         /// <summary>
@@ -303,7 +301,7 @@ namespace NodaTime.TimeZones
         /// <param name="value">The offset to write.</param>
         public void WriteLocalInstant(LocalInstant value)
         {
-            this.WriteTicks(value.Ticks);
+            WriteTicks(value.Ticks);
         }
 
         /// <summary>
@@ -420,7 +418,7 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                this.stream.WriteByte(value);
+                stream.WriteByte(value);
             }
         }
 
@@ -432,8 +430,8 @@ namespace NodaTime.TimeZones
         {
             byte[] data = Encoding.UTF8.GetBytes(value);
             int length = data.Length;
-            this.WriteCount(length);
-            this.stream.Write(data, 0, data.Length);
+            WriteCount(length);
+            stream.Write(data, 0, data.Length);
         }
     }
 }

@@ -14,9 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NUnit.Framework;
+
 namespace NodaTime.Test.Fields
 {
     [TestFixture]
@@ -33,7 +35,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithInvalidType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new PreciseDurationField((DurationFieldType)(-1), 10));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PreciseDurationField((DurationFieldType) (-1), 10));
         }
 
         [Test]
@@ -60,7 +62,7 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(0, field.GetValue(new Duration(0L)));
             Assert.AreEqual(12345, field.GetValue(new Duration(123456789L)));
             Assert.AreEqual(-1, field.GetValue(new Duration(-12345L)));
-            Assert.AreEqual(int.MaxValue, field.GetValue(new Duration(int.MaxValue * 10000L + 9999L)));            
+            Assert.AreEqual(int.MaxValue, field.GetValue(new Duration(int.MaxValue * 10000L + 9999L)));
         }
 
         [Test]

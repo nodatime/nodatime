@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
@@ -45,12 +46,12 @@ namespace NodaTime.Fields
 
         public override long GetMaximumValue()
         {
-            return (long)DaysOfWeek.Sunday;
+            return (long) DaysOfWeek.Sunday;
         }
 
         public override long GetMinimumValue()
         {
-            return (long)DaysOfWeek.Monday;
+            return (long) DaysOfWeek.Monday;
         }
     }
 }

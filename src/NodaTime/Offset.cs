@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -73,22 +71,15 @@ namespace NodaTime
         /// <summary>
         /// Gets the number of milliseconds in the offset.
         /// </summary>
-        public int Milliseconds
-        {
-            get { return this.milliseconds; }
-        }
+        public int Milliseconds { get { return milliseconds; } }
 
         /// <summary>
         /// Returns the number of ticks represented by this offset.
         /// </summary>
         /// <value>The number of ticks.</value>
-        public long Ticks
-        {
-            get { return this.Milliseconds * NodaConstants.TicksPerMillisecond; }
-        }
+        public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
 
         #region Operators
-
         /// <summary>
         /// Implements the unary operator - (negation).
         /// </summary>
@@ -218,11 +209,9 @@ namespace NodaTime
         {
             return left.CompareTo(right) >= 0;
         }
-
         #endregion // Operators
 
         #region IComparable<Offset> Members
-
         /// <summary>
         /// Compares the current object with another object of the same type.
         /// </summary>
@@ -251,13 +240,11 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Offset other)
         {
-            return this.Milliseconds.CompareTo(other.Milliseconds);
+            return Milliseconds.CompareTo(other.Milliseconds);
         }
-
         #endregion
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -270,7 +257,7 @@ namespace NodaTime
         {
             if (obj is Offset)
             {
-                return this.Equals((Offset) obj);
+                return Equals((Offset) obj);
             }
             return false;
         }
@@ -284,7 +271,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return this.Milliseconds.GetHashCode();
+            return Milliseconds.GetHashCode();
         }
 
         /// <summary>
@@ -295,7 +282,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return this.ToString(MinimalFormat);
+            return ToString(MinimalFormat);
         }
 
         /// <summary>
@@ -309,23 +296,21 @@ namespace NodaTime
         {
             if (format == ShortFormat)
             {
-                return this.Format(FormatType.FormatLong);
+                return Format(FormatType.FormatLong);
             }
             if (format == LongFormat)
             {
-                return this.Format(FormatType.FormatShort);
+                return Format(FormatType.FormatShort);
             }
             if (format == MinimalFormat)
             {
-                return this.Format(FormatType.FormatMinimal);
+                return Format(FormatType.FormatMinimal);
             }
             throw new ArgumentOutOfRangeException("format", format, @"The format parameter is not valid: " + format);
         }
-
         #endregion  // Object overrides
 
         #region Format utilities
-
         /// <summary>
         /// Returns a string formatted version of this offset.
         /// </summary>
@@ -333,8 +318,8 @@ namespace NodaTime
         /// <returns></returns>
         private string Format(FormatType formatType)
         {
-            bool negative = this.Milliseconds < 0;
-            int millisecondsValue = negative ? -this.Milliseconds : this.Milliseconds;
+            bool negative = Milliseconds < 0;
+            int millisecondsValue = negative ? -Milliseconds : Milliseconds;
             int hours = millisecondsValue / NodaConstants.MillisecondsPerHour;
             int minutes = (millisecondsValue % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
             int seconds = (millisecondsValue % NodaConstants.MillisecondsPerMinute) /
@@ -367,11 +352,9 @@ namespace NodaTime
             FormatShort,
             FormatMinimal
         }
-
         #endregion // Format utilities
 
         #region IEquatable<Offset> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -382,9 +365,8 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Offset other)
         {
-            return this.Milliseconds == other.Milliseconds;
+            return Milliseconds == other.Milliseconds;
         }
-
         #endregion
 
         /// <summary>

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NodaTime.Format;
@@ -40,7 +41,6 @@ namespace NodaTime.Periods
     public sealed class Hours : SingleFieldPeriodBase, IEquatable<Hours>, IComparable<Hours>
     {
         #region Static Properties
-
         private static readonly Hours zero = new Hours(0);
         private static readonly Hours one = new Hours(1);
         private static readonly Hours two = new Hours(2);
@@ -122,17 +122,28 @@ namespace NodaTime.Periods
         {
             switch (hours)
             {
-                case 0: return zero;
-                case 1: return one;
-                case 2: return two;
-                case 3: return three;
-                case 4: return four;
-                case 5: return five;
-                case 6: return six;
-                case 7: return seven;
-                case 8: return eight;
-                case int.MaxValue: return maxValue;
-                case int.MinValue: return minValue;
+                case 0:
+                    return zero;
+                case 1:
+                    return one;
+                case 2:
+                    return two;
+                case 3:
+                    return three;
+                case 4:
+                    return four;
+                case 5:
+                    return five;
+                case 6:
+                    return six;
+                case 7:
+                    return seven;
+                case 8:
+                    return eight;
+                case int.MaxValue:
+                    return maxValue;
+                case int.MinValue:
+                    return minValue;
                 default:
                     return new Hours(hours);
             }
@@ -156,35 +167,29 @@ namespace NodaTime.Periods
         {
             if (String.IsNullOrEmpty(hours))
             {
-                return Hours.Zero;
+                return Zero;
             }
 
             Period p = parser.Parse(hours);
-            return Hours.From(p.Hours);
+            return From(p.Hours);
         }
-
         #endregion
 
-        private Hours(int value) : base(value) { }
+        private Hours(int value) : base(value)
+        {
+        }
 
         /// <summary>
         /// Gets the duration field type, which is <code>DurationFieldType.Hours</code>.
         /// </summary>
-        public override DurationFieldType FieldType
-        {
-            get { return DurationFieldType.Hours; }
-        }
+        public override DurationFieldType FieldType { get { return DurationFieldType.Hours; } }
 
         /// <summary>
         /// Gets the period type, which is <code>PeriodType.Hours</code>.
         /// </summary>
-        public override PeriodType PeriodType
-        {
-            get { return PeriodType.Hours; }
-        }
+        public override PeriodType PeriodType { get { return PeriodType.Hours; } }
 
         #region ToStandart
-
         /// <summary>
         /// Converts this period in hours to a period in weeks assuming a
         /// 7 day week and 24 hour day.
@@ -272,11 +277,9 @@ namespace NodaTime.Periods
         {
             return new Duration(Value * NodaConstants.MillisecondsPerHour);
         }
-
         #endregion
 
         #region Conversion
-
         /// <summary>
         /// Creates a new int from the specified <see cref="Hours"/> instance
         /// </summary>
@@ -294,13 +297,11 @@ namespace NodaTime.Periods
         /// <returns>New <see cref="Hours"/> instance whose Value property is initialized to the given value</returns>
         public static explicit operator Hours(int value)
         {
-            return Hours.From(value);
+            return From(value);
         }
-
         #endregion
 
         #region Negation
-
         /// <summary>
         /// Returns a new instance with the hours value negated.
         /// </summary>
@@ -310,7 +311,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Hours Negated()
         {
-            return Hours.From(-Value);
+            return From(-Value);
         }
 
         /// <summary>
@@ -320,7 +321,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Hours"/> instance with a negated value.</returns>
         public static Hours operator -(Hours period)
         {
-            return Object.ReferenceEquals(period, null) ? null : period.Negated();
+            return ReferenceEquals(period, null) ? null : period.Negated();
         }
 
         /// <summary>
@@ -332,11 +333,9 @@ namespace NodaTime.Periods
         {
             return -period;
         }
-
         #endregion
 
         #region Unary operators
-
         /// <summary>
         /// Implements the unary operator + .
         /// </summary>
@@ -354,7 +353,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Hours"/> instance with incremented value.</returns>
         public static Hours operator ++(Hours period)
         {
-            return Object.ReferenceEquals(period, null) ? null : period.Add(1);
+            return ReferenceEquals(period, null) ? null : period.Add(1);
         }
 
         /// <summary>
@@ -364,13 +363,11 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Hours"/> instance with decremented value.</returns>
         public static Hours operator --(Hours period)
         {
-            return Object.ReferenceEquals(period, null) ? null : period.Subtract(1);
+            return ReferenceEquals(period, null) ? null : period.Subtract(1);
         }
-
         #endregion
 
         #region Add
-
         /// <summary>
         /// Returns a new instance with the specified number of hours added.
         /// </summary>
@@ -381,7 +378,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Hours Add(int hours)
         {
-            return hours == 0 ? this : Hours.From(Value + hours);
+            return hours == 0 ? this : From(Value + hours);
         }
 
         /// <summary>
@@ -392,7 +389,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Hours"/> representing the sum of the given values.</returns>
         public static Hours operator +(Hours left, Hours right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Add(right);
+            return ReferenceEquals(left, null) ? right : left.Add(right);
         }
 
         /// <summary>
@@ -405,11 +402,9 @@ namespace NodaTime.Periods
         {
             return left + right;
         }
-
         #endregion
 
         #region Subtract
-
         /// <summary>
         /// Returns a new instance with the specified number of hours taken away.
         /// </summary>
@@ -431,7 +426,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Hours"/> representing the difference of the given values.</returns>
         public static Hours operator -(Hours left, Hours right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Subtract(right);
+            return ReferenceEquals(left, null) ? right : left.Subtract(right);
         }
 
         /// <summary>
@@ -444,11 +439,9 @@ namespace NodaTime.Periods
         {
             return left - right;
         }
-
         #endregion
 
         #region Multiplication
-
         /// <summary>
         /// Returns a new instance with the hours multiplied by the specified scalar.
         /// </summary>
@@ -459,7 +452,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Hours Multiply(int scalar)
         {
-            return scalar == 1 ? this : Hours.From(Value * scalar);
+            return scalar == 1 ? this : From(Value * scalar);
         }
 
         /// <summary>
@@ -470,7 +463,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Hours"/> representing the multiplication of the given values.</returns>
         public static Hours operator *(Hours left, Hours right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Multiply(right);
+            return ReferenceEquals(left, null) ? right : left.Multiply(right);
         }
 
         /// <summary>
@@ -483,11 +476,9 @@ namespace NodaTime.Periods
         {
             return left * right;
         }
-
         #endregion
 
         #region Division
-
         /// <summary>
         /// Returns a new instance with the hours divided by the specified divisor.
         /// </summary>
@@ -499,7 +490,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Hours Divide(int divisor)
         {
-            return divisor == 1 ? this : Hours.From(Value / divisor);
+            return divisor == 1 ? this : From(Value / divisor);
         }
 
         /// <summary>
@@ -510,7 +501,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Hours"/> representing the divison of the given values.</returns>
         public static Hours operator /(Hours left, Hours right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Divide(right);
+            return ReferenceEquals(left, null) ? right : left.Divide(right);
         }
 
         /// <summary>
@@ -523,11 +514,9 @@ namespace NodaTime.Periods
         {
             return left / right;
         }
-
         #endregion
 
         #region Comparison
-
         /// <summary>
         /// Indicates whether the current period is equal to another period.
         /// </summary>
@@ -580,7 +569,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Hours left, Hours right)
         {
-            return Object.Equals(left, right);
+            return Equals(left, right);
         }
 
         /// <summary>
@@ -602,7 +591,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Hours left, Hours right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) < 0;
+            return Compare(left, right) < 0;
         }
 
         /// <summary>
@@ -613,7 +602,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Hours left, Hours right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) <= 0;
+            return Compare(left, right) <= 0;
         }
 
         /// <summary>
@@ -624,7 +613,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Hours left, Hours right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) > 0;
+            return Compare(left, right) > 0;
         }
 
         /// <summary>
@@ -635,13 +624,11 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Hours left, Hours right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) >= 0;
+            return Compare(left, right) >= 0;
         }
-
         #endregion
 
         #region Object Overrides
-
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
@@ -656,8 +643,6 @@ namespace NodaTime.Periods
         {
             return "PT" + Value + "H";
         }
-
         #endregion
-
     }
 }

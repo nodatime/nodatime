@@ -14,15 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
+using NodaTime.Calendars;
 using NodaTime.TimeZones;
 using NUnit.Framework;
-using NodaTime.Calendars;
 
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public partial class ZoneYearOffsetTest
+    public class ZoneYearOffsetTest
     {
         private const long TicksPerStandardYear = NodaConstants.TicksPerDay * 365;
         private const long TicksPerLeapYear = NodaConstants.TicksPerDay * 366;
@@ -34,34 +35,41 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Construct_InvalidMonth_Exception()
         {
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 0, 1, 1, true, Offset.Zero), "Month 0");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 34, 1, 1, true, Offset.Zero), "Month 34");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, -3, 1, 1, true, Offset.Zero), "Month -3");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 0, 1, 1, true, Offset.Zero), "Month 0");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 34, 1, 1, true, Offset.Zero), "Month 34");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, -3, 1, 1, true, Offset.Zero), "Month -3");
         }
 
         [Test]
         public void Construct_InvalidDayOfMonth_Exception()
         {
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 0, 1, true, Offset.Zero), "Day of Month 0");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 32, 1, true, Offset.Zero), "Day of Month 32");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 475, 1, true, Offset.Zero), "Day of Month 475");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, -32, 1, true, Offset.Zero), "Day of Month -32");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 0, 1, true, Offset.Zero), "Day of Month 0");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 32, 1, true, Offset.Zero),
+                          "Day of Month 32");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 475, 1, true, Offset.Zero),
+                          "Day of Month 475");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, -32, 1, true, Offset.Zero),
+                          "Day of Month -32");
         }
 
         [Test]
         public void Construct_InvalidDayOfWeek_Exception()
         {
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -1, true, Offset.Zero), "Day of Week -1");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 8, true, Offset.Zero), "Day of Week 8");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 5756, true, Offset.Zero), "Day of Week 5856");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -347, true, Offset.Zero), "Day of Week -347");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -1, true, Offset.Zero), "Day of Week -1");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 8, true, Offset.Zero), "Day of Week 8");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 5756, true, Offset.Zero),
+                          "Day of Week 5856");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -347, true, Offset.Zero),
+                          "Day of Week -347");
         }
 
         [Test]
         public void Construct_InvalidTickOfDay_Exception()
         {
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -1, true, Offset.MinValue), "Tick of day MinValue");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 8, true, new Offset(-1)), "Tick of day MinValue -1");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -1, true, Offset.MinValue),
+                          "Tick of day MinValue");
+            Assert.Throws(typeof (ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 8, true, new Offset(-1)),
+                          "Tick of day MinValue -1");
         }
 
         [Test]
@@ -138,7 +146,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Standard, 1, 1, 0, true, Offset.Zero);
             Instant actual = offset.MakeInstant(1970, twoHours, oneHour);
-            Instant expected = new Instant((1L - 1) * NodaConstants.TicksPerDay - this.twoHours.Ticks);
+            Instant expected = new Instant((1L - 1) * NodaConstants.TicksPerDay - twoHours.Ticks);
             Assert.AreEqual(expected, actual);
         }
 
@@ -147,7 +155,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
             Instant actual = offset.MakeInstant(1970, twoHours, oneHour);
-            Instant expected = new Instant((1L - 1) * NodaConstants.TicksPerDay - (this.twoHours.Ticks + this.oneHour.Ticks));
+            Instant expected = new Instant((1L - 1) * NodaConstants.TicksPerDay - (twoHours.Ticks + oneHour.Ticks));
             Assert.AreEqual(expected, actual);
         }
 
@@ -163,7 +171,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_WednesdayForward()
         {
-            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, (int)DayOfWeek.Wednesday, true, Offset.Zero);
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, (int) DayOfWeek.Wednesday, true, Offset.Zero);
             Instant actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             Instant expected = new Instant((7L - 1) * NodaConstants.TicksPerDay);
             Assert.AreEqual(expected, actual);
@@ -172,7 +180,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_WednesdayBackward()
         {
-            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 1, 15, (int)DayOfWeek.Wednesday, false, Offset.Zero);
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 1, 15, (int) DayOfWeek.Wednesday, false, Offset.Zero);
             Instant actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             Instant expected = new Instant((14L - 1) * NodaConstants.TicksPerDay);
             Assert.AreEqual(expected, actual);
@@ -308,7 +316,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Next_WednesdayForward()
         {
-            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
             Instant actual = offset.MakeInstant(2006, Offset.Zero, Offset.Zero); // Nov 1 2006
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero); // Oct 31 2007
@@ -319,7 +327,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void NextTwice_WednesdayForward()
         {
-            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
             Instant actual = offset.MakeInstant(2006, Offset.Zero, Offset.Zero); // Nov 1 2006
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero); // Oct 31 2007
@@ -332,12 +340,12 @@ namespace NodaTime.Test.TimeZones
         public void WriteRead()
         {
             var dio = new DtzIoHelper();
-            var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
             var actual = dio.WriteRead(expected);
             Assert.AreEqual(expected, actual);
 
             dio = new DtzIoHelper();
-            expected = new ZoneYearOffset(TransitionMode.Utc, 10, -31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            expected = new ZoneYearOffset(TransitionMode.Utc, 10, -31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
             actual = dio.WriteRead(expected);
             Assert.AreEqual(expected, actual);
         }
@@ -345,9 +353,9 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void IEquatable_Tests()
         {
-            var value = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
-            var equalValue = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
-            var unequalValue = new ZoneYearOffset(TransitionMode.Utc, 9, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var value = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
+            var equalValue = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
+            var unequalValue = new ZoneYearOffset(TransitionMode.Utc, 9, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
 
             TestHelper.TestEqualsClass(value, equalValue, unequalValue);
             TestHelper.TestOperatorEquality(value, equalValue, unequalValue);

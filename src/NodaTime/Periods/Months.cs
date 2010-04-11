@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NodaTime.Format;
@@ -40,7 +41,6 @@ namespace NodaTime.Periods
     public sealed class Months : SingleFieldPeriodBase, IEquatable<Months>, IComparable<Months>
     {
         #region Static Properties
-
         private static readonly Months zero = new Months(0);
         private static readonly Months one = new Months(1);
         private static readonly Months two = new Months(2);
@@ -142,30 +142,45 @@ namespace NodaTime.Periods
         /// <code>Months</code> is immutable, so instances can be cached and shared.
         /// This factory method provides access to shared instances.
         /// </remarks>
-        public static Months From (int months)
+        public static Months From(int months)
         {
             switch (months)
             {
-                case 0: return zero;
-                case 1: return one;
-                case 2: return two;
-                case 3: return three;
-                case 4: return four;
-                case 5: return five;
-                case 6: return six;
-                case 7: return seven;
-                case 8: return eight;
-                case 9: return nine;
-                case 10: return ten;
-                case 11: return eleven;
-                case 12: return twelve;
-                case int.MaxValue: return maxValue;
-                case int.MinValue: return minValue;
-                default: 
+                case 0:
+                    return zero;
+                case 1:
+                    return one;
+                case 2:
+                    return two;
+                case 3:
+                    return three;
+                case 4:
+                    return four;
+                case 5:
+                    return five;
+                case 6:
+                    return six;
+                case 7:
+                    return seven;
+                case 8:
+                    return eight;
+                case 9:
+                    return nine;
+                case 10:
+                    return ten;
+                case 11:
+                    return eleven;
+                case 12:
+                    return twelve;
+                case int.MaxValue:
+                    return maxValue;
+                case int.MinValue:
+                    return minValue;
+                default:
                     return new Months(months);
             }
-        }      
-        
+        }
+
         private static readonly PeriodFormatter parser = IsoPeriodFormats.Standard.WithParseType(PeriodType.Months);
 
         /// <summary>
@@ -184,16 +199,17 @@ namespace NodaTime.Periods
         {
             if (String.IsNullOrEmpty(months))
             {
-                return Months.Zero;
+                return Zero;
             }
 
             Period p = parser.Parse(months);
-            return Months.From(p.Months);
+            return From(p.Months);
         }
-
         #endregion
 
-        private Months(int months) : base(months) { }
+        private Months(int months) : base(months)
+        {
+        }
 
         /// <summary>
         /// Gets the duration field type, which is <code>DurationFieldType.Months</code>.
@@ -206,7 +222,6 @@ namespace NodaTime.Periods
         public override PeriodType PeriodType { get { return PeriodType.Months; } }
 
         #region Conversion
-
         /// <summary>
         /// Creates a new int from the specified <see cref="Months"/> instance
         /// </summary>
@@ -224,13 +239,11 @@ namespace NodaTime.Periods
         /// <returns>New <see cref="Months"/> instance whose Value property is initialized to the given value</returns>
         public static explicit operator Months(int value)
         {
-            return Months.From(value);
+            return From(value);
         }
-
         #endregion
 
         #region Negation
-
         /// <summary>
         /// Returns a new instance with the weeks value negated.
         /// </summary>
@@ -240,7 +253,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Months Negated()
         {
-            return Months.From(-Value);
+            return From(-Value);
         }
 
         /// <summary>
@@ -250,7 +263,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Months"/> instance with a negated value.</returns>
         public static Months operator -(Months period)
         {
-            return Object.ReferenceEquals(period, null) ? null : period.Negated();
+            return ReferenceEquals(period, null) ? null : period.Negated();
         }
 
         /// <summary>
@@ -262,11 +275,9 @@ namespace NodaTime.Periods
         {
             return -period;
         }
-
         #endregion
 
         #region Unary operators
-
         /// <summary>
         /// Implements the unary operator + .
         /// </summary>
@@ -284,7 +295,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Months"/> instance with incremented value.</returns>
         public static Months operator ++(Months period)
         {
-            return Object.ReferenceEquals(period, null) ? null : period.Add(1);
+            return ReferenceEquals(period, null) ? null : period.Add(1);
         }
 
         /// <summary>
@@ -294,13 +305,11 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Months"/> instance with decremented value.</returns>
         public static Months operator --(Months period)
         {
-            return Object.ReferenceEquals(period, null) ? null : period.Subtract(1);
+            return ReferenceEquals(period, null) ? null : period.Subtract(1);
         }
-
         #endregion
 
         #region Add
-
         /// <summary>
         /// Returns a new instance with the specified number of months added.
         /// </summary>
@@ -311,7 +320,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Months Add(int months)
         {
-            return months == 0 ? this : Months.From(Value + months);
+            return months == 0 ? this : From(Value + months);
         }
 
         /// <summary>
@@ -322,7 +331,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Months"/> representing the sum of the given values.</returns>
         public static Months operator +(Months left, Months right)
         {
-            return object.ReferenceEquals(left, null) ? right : left.Add(right);
+            return ReferenceEquals(left, null) ? right : left.Add(right);
         }
 
         /// <summary>
@@ -335,11 +344,9 @@ namespace NodaTime.Periods
         {
             return left + right;
         }
-
         #endregion
 
         #region Subtract
-
         /// <summary>
         /// Returns a new instance with the specified number of months taken away.
         /// </summary>
@@ -361,7 +368,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Months"/> representing the difference of the given values.</returns>
         public static Months operator -(Months left, Months right)
         {
-            return object.ReferenceEquals(left, null) ? right : left.Subtract(right);
+            return ReferenceEquals(left, null) ? right : left.Subtract(right);
         }
 
         /// <summary>
@@ -374,11 +381,9 @@ namespace NodaTime.Periods
         {
             return left - right;
         }
-
         #endregion
 
         #region Multiplication
-
         /// <summary>
         /// Returns a new instance with the months multiplied by the specified scalar.
         /// </summary>
@@ -389,7 +394,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Months Multiply(int scalar)
         {
-            return scalar == 1 ? this : Months.From(Value * scalar);
+            return scalar == 1 ? this : From(Value * scalar);
         }
 
         /// <summary>
@@ -400,7 +405,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Months"/> representing the multiplication of the given values.</returns>
         public static Months operator *(Months left, Months right)
         {
-            return object.ReferenceEquals(left, null) ? right : left.Multiply(right);
+            return ReferenceEquals(left, null) ? right : left.Multiply(right);
         }
 
         /// <summary>
@@ -413,11 +418,9 @@ namespace NodaTime.Periods
         {
             return left * right;
         }
-
         #endregion
 
         #region Division
-
         /// <summary>
         /// Returns a new instance with the months divided by the specified divisor.
         /// </summary>
@@ -429,7 +432,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Months Divide(int divisor)
         {
-            return divisor == 1 ? this : Months.From(Value / divisor);
+            return divisor == 1 ? this : From(Value / divisor);
         }
 
         /// <summary>
@@ -440,7 +443,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Years"/> Representing the divison of the given values.</returns>
         public static Months operator /(Months left, Months right)
         {
-            return object.ReferenceEquals(left, null) ? right : left.Divide(right);
+            return ReferenceEquals(left, null) ? right : left.Divide(right);
         }
 
         /// <summary>
@@ -453,11 +456,9 @@ namespace NodaTime.Periods
         {
             return left / right;
         }
-
         #endregion
 
         #region Comparison
-
         /// <summary>
         /// Indicates whether the current period is equal to another period.
         /// </summary>
@@ -510,7 +511,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Months left, Months right)
         {
-            return Object.Equals(left, right);
+            return Equals(left, right);
         }
 
         /// <summary>
@@ -532,7 +533,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Months left, Months right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) < 0;
+            return Compare(left, right) < 0;
         }
 
         /// <summary>
@@ -543,7 +544,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Months left, Months right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) <= 0;
+            return Compare(left, right) <= 0;
         }
 
         /// <summary>
@@ -554,7 +555,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Months left, Months right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) > 0;
+            return Compare(left, right) > 0;
         }
 
         /// <summary>
@@ -565,13 +566,11 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Months left, Months right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) >= 0;
+            return Compare(left, right) >= 0;
         }
-
         #endregion
 
         #region Object Overrides
-
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
@@ -586,7 +585,6 @@ namespace NodaTime.Periods
         {
             return "P" + Value + "M";
         }
-
         #endregion
     }
 }

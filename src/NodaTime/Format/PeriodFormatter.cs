@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.IO;
 using System.Text;
@@ -87,7 +88,6 @@ namespace NodaTime.Format
         private readonly IFormatProvider provider;
 
         #region Construction
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PeriodFormatter"/> class with specified arguments.
         /// </summary>
@@ -96,7 +96,7 @@ namespace NodaTime.Format
         /// <param name="provider">The format provider to use</param>
         /// <param name="parsePeriodType">The period type to use for parsing</param>
         private PeriodFormatter(IPeriodParser periodParser, IPeriodPrinter periodPrinter,
-            IFormatProvider provider, PeriodType parsePeriodType)
+                                IFormatProvider provider, PeriodType parsePeriodType)
         {
             this.periodParser = periodParser;
             this.periodPrinter = periodPrinter;
@@ -110,7 +110,9 @@ namespace NodaTime.Format
         /// <param name="periodParser">The internal parser, null if cannot parse</param>
         /// <param name="periodPrinter">The internal printer, null if cannot print</param>
         private PeriodFormatter(IPeriodParser periodParser, IPeriodPrinter periodPrinter)
-            : this(periodParser, periodPrinter, null, null) { }
+            : this(periodParser, periodPrinter, null, null)
+        {
+        }
 
         /// <summary>
         /// Creates a new instance of the <see cref="PeriodFormatter"/> class with the supplied <see cref="IPeriodPrinter"/>
@@ -169,7 +171,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the PeriodType that will be used for parsing.
         /// </summary>
-        public PeriodType ParsePeriodType { get { return parsePeriodType; } } 
+        public PeriodType ParsePeriodType { get { return parsePeriodType; } }
 
         /// <summary>
         /// Indicates whether this formatter is capable of printing.
@@ -212,7 +214,7 @@ namespace NodaTime.Format
         /// <returns>The new formatter</returns>
         public PeriodFormatter WithProvider(IFormatProvider newProvider)
         {
-            if (Object.Equals(newProvider, provider))
+            if (Equals(newProvider, provider))
             {
                 return this;
             }
@@ -307,7 +309,6 @@ namespace NodaTime.Format
 
             throw new ArgumentException(FormatUtils.CreateErrorMessage(text, newPosition));
         }
-
         #endregion
 
         private void VerifyPrinter()

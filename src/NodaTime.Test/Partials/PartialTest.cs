@@ -1,7 +1,6 @@
 #region Copyright and license information
-
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,16 +13,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
-
 using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Partials;
 using NodaTime.Periods;
-
 using NUnit.Framework;
 
 namespace NodaTime.Test.Partials
@@ -33,8 +29,8 @@ namespace NodaTime.Test.Partials
     {
         private static readonly ICalendarSystem isoCalendar = IsoCalendarSystem.Instance;
         private static readonly ICalendarSystem gregorianCalendar = GregorianCalendarSystem.Default;
-        private static readonly DateTimeFieldType[] hourMinuteFieldTypes = new[] { DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfHour };
-        private static readonly DateTimeFieldType[] monthDayFieldTypes = new[] { DateTimeFieldType.MonthOfYear, DateTimeFieldType.DayOfMonth };
+        private static readonly DateTimeFieldType[] hourMinuteFieldTypes = new[] {DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfHour};
+        private static readonly DateTimeFieldType[] monthDayFieldTypes = new[] {DateTimeFieldType.MonthOfYear, DateTimeFieldType.DayOfMonth};
         private Partial twentyPastTen;
         private Partial twentyPastTenCopy;
         private Partial twentyPastFifteen;
@@ -91,23 +87,23 @@ namespace NodaTime.Test.Partials
         private static void AssertMonthDay(int month, int day, Partial monthDayPartial)
         {
             CollectionAssert.AreEqual(monthDayFieldTypes, monthDayPartial.GetFieldTypes());
-            CollectionAssert.AreEqual(new[] { month, day }, monthDayPartial.GetValues());
+            CollectionAssert.AreEqual(new[] {month, day}, monthDayPartial.GetValues());
         }
 
         private static void AssertHourMinute(int hour, int minute, Partial hourMinPartial)
         {
             CollectionAssert.AreEqual(hourMinuteFieldTypes, hourMinPartial.GetFieldTypes());
-            CollectionAssert.AreEqual(new[] { hour, minute }, hourMinPartial.GetValues());
+            CollectionAssert.AreEqual(new[] {hour, minute}, hourMinPartial.GetValues());
         }
 
         private static Partial CreateHourMinPartial(int hour, int min, ICalendarSystem calendarSystem)
         {
-            return new Partial(hourMinuteFieldTypes, new[] { hour, min }, calendarSystem);
+            return new Partial(hourMinuteFieldTypes, new[] {hour, min}, calendarSystem);
         }
 
         private static Partial CreateMonthDayPartial(int month, int day, ICalendarSystem calendarSystem)
         {
-            return new Partial(monthDayFieldTypes, new[] { month, day }, calendarSystem);
+            return new Partial(monthDayFieldTypes, new[] {month, day}, calendarSystem);
         }
 
         [Test]
@@ -174,7 +170,7 @@ namespace NodaTime.Test.Partials
         public void GetFields()
         {
             var fields = twentyPastTen.GetFields();
-            var expectedFields = new[] { isoCalendar.Fields.HourOfDay, isoCalendar.Fields.MinuteOfHour };
+            var expectedFields = new[] {isoCalendar.Fields.HourOfDay, isoCalendar.Fields.MinuteOfHour};
             CollectionAssert.AreEqual(expectedFields, fields);
         }
 
@@ -196,7 +192,7 @@ namespace NodaTime.Test.Partials
         public void GetValues()
         {
             var values = twentyPastTen.GetValues();
-            CollectionAssert.AreEqual(new[] { 10, 20 }, values);
+            CollectionAssert.AreEqual(new[] {10, 20}, values);
         }
 
         [Test]
@@ -278,27 +274,27 @@ namespace NodaTime.Test.Partials
         public void With_NotSupportedField_AddsFieldOrdered1()
         {
             Partial withDay = twentyPastTen.With(DateTimeFieldType.DayOfMonth, 15);
-            var fieldTypes = new[] { DateTimeFieldType.DayOfMonth, DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfHour };
+            var fieldTypes = new[] {DateTimeFieldType.DayOfMonth, DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfHour};
             CollectionAssert.AreEqual(fieldTypes, withDay.GetFieldTypes());
-            CollectionAssert.AreEqual(new[] { 15, 10, 20 }, withDay.GetValues());
+            CollectionAssert.AreEqual(new[] {15, 10, 20}, withDay.GetValues());
         }
 
         [Test]
         public void With_NotSupportedField_AddsFieldOrdered2()
         {
             Partial withMinuteOfDay = twentyPastTen.With(DateTimeFieldType.MinuteOfDay, 15);
-            var fieldTypes = new[] { DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfDay, DateTimeFieldType.MinuteOfHour };
+            var fieldTypes = new[] {DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfDay, DateTimeFieldType.MinuteOfHour};
             CollectionAssert.AreEqual(fieldTypes, withMinuteOfDay.GetFieldTypes());
-            CollectionAssert.AreEqual(new[] { 10, 15, 20 }, withMinuteOfDay.GetValues());
+            CollectionAssert.AreEqual(new[] {10, 15, 20}, withMinuteOfDay.GetValues());
         }
 
         [Test]
         public void With_NotSupportedField_AddsFieldOrdered3()
         {
             Partial withSeconds = twentyPastTen.With(DateTimeFieldType.SecondOfMinute, 15);
-            var fieldTypes = new[] { DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfHour, DateTimeFieldType.SecondOfMinute };
+            var fieldTypes = new[] {DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfHour, DateTimeFieldType.SecondOfMinute};
             CollectionAssert.AreEqual(fieldTypes, withSeconds.GetFieldTypes());
-            CollectionAssert.AreEqual(new[] { 10, 20, 15 }, withSeconds.GetValues());
+            CollectionAssert.AreEqual(new[] {10, 20, 15}, withSeconds.GetValues());
         }
 
         [Test]
@@ -339,7 +335,7 @@ namespace NodaTime.Test.Partials
         [Test]
         public void Without_LastField()
         {
-            Partial hoursOnly = new Partial(new[] { DateTimeFieldType.HourOfDay }, new[] { 10 }, isoCalendar);
+            Partial hoursOnly = new Partial(new[] {DateTimeFieldType.HourOfDay}, new[] {10}, isoCalendar);
             Partial nothing = hoursOnly.Without(DateTimeFieldType.HourOfDay);
             Assert.AreEqual(0, nothing.Size);
             Assert.False(nothing.IsSupported(DateTimeFieldType.HourOfDay));
@@ -420,7 +416,7 @@ namespace NodaTime.Test.Partials
             Partial fiveToTen = twentyPastTen.WithFieldAdded(DurationFieldType.Minutes, -25);
             AssertHourMinute(9, 55, fiveToTen);
         }
-        
+
         [Test]
         public void WithFieldAddWrapped_SupportedField()
         {

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -53,8 +54,9 @@ namespace NodaTime.Fields
         public override long GetInt64Value(LocalInstant localInstant)
         {
             long ticks = localInstant.Ticks;
-            return ticks >= 0 ? (ticks / UnitTicks) % effectiveRange
-                : effectiveRange - 1 + (((ticks + 1) / UnitTicks) % effectiveRange);
+            return ticks >= 0
+                       ? (ticks / UnitTicks) % effectiveRange
+                       : effectiveRange - 1 + (((ticks + 1) / UnitTicks) % effectiveRange);
         }
 
         // TODO: addWrapField

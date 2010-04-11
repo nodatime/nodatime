@@ -16,11 +16,9 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
 using NodaTime.Fields;
 using NodaTime.Periods;
 
@@ -63,7 +61,6 @@ namespace NodaTime.Format
     public class PeriodFormatterBuilder
     {
         #region Internal classes
-
         private enum PrintZeroSetting
         {
             RarelyFirst = 1,
@@ -88,7 +85,7 @@ namespace NodaTime.Format
             SecondsMillisecondsOptional
         }
 
-        private const int MaxField = (int)FormatterDurationFieldType.SecondsMillisecondsOptional + 1;
+        private const int MaxField = (int) FormatterDurationFieldType.SecondsMillisecondsOptional + 1;
 
         /// <summary>
         /// Defines a formatted field's prefix or suffix text.
@@ -130,9 +127,8 @@ namespace NodaTime.Format
             {
                 this.text = text;
             }
-             
-            #region IPeriodFieldAffix Members
 
+            #region IPeriodFieldAffix Members
             public int CalculatePrintedLength(int value)
             {
                 return text.Length;
@@ -158,14 +154,27 @@ namespace NodaTime.Format
                 for (int startAt = position; startAt < periodString.Length; startAt++)
                 {
                     if (FormatUtils.MatchSubstring(periodString, startAt, text) > 0)
+                    {
                         return startAt;
+                    }
 
                     // Only allow number characters to be skipped in search of suffix.
-                    switch (periodString[startAt]) 
+                    switch (periodString[startAt])
                     {
-                        case '0': case '1': case '2': case '3': case '4':
-                        case '5': case '6': case '7': case '8': case '9':
-                        case '.': case ',': case '+': case '-':
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                        case '8':
+                        case '9':
+                        case '.':
+                        case ',':
+                        case '+':
+                        case '-':
                             continue;
                         default:
                             return ~position;
@@ -173,7 +182,6 @@ namespace NodaTime.Format
                 }
                 return ~position;
             }
-
             #endregion
         }
 
@@ -193,7 +201,6 @@ namespace NodaTime.Format
             }
 
             #region IPeriodFieldAffix Members
-
             public int CalculatePrintedLength(int value)
             {
                 return (value == 1 ? singularText : pluralText).Length;
@@ -257,7 +264,6 @@ namespace NodaTime.Format
                     secondToCheck = singularText;
                 }
             }
-
             #endregion
         }
 
@@ -266,8 +272,8 @@ namespace NodaTime.Format
         /// </summary>
         internal class CompositeAffix : IPeriodFieldAffix
         {
-            readonly IPeriodFieldAffix left;
-            readonly IPeriodFieldAffix right;
+            private readonly IPeriodFieldAffix left;
+            private readonly IPeriodFieldAffix right;
 
             public CompositeAffix(IPeriodFieldAffix left, IPeriodFieldAffix right)
             {
@@ -276,11 +282,10 @@ namespace NodaTime.Format
             }
 
             #region IPeriodFieldAffix Members
-
             public int CalculatePrintedLength(int value)
             {
                 return left.CalculatePrintedLength(value)
-                    + right.CalculatePrintedLength(value);
+                       + right.CalculatePrintedLength(value);
             }
 
             public void PrintTo(StringBuilder stringBuilder, int value)
@@ -306,7 +311,6 @@ namespace NodaTime.Format
                 position = left.Scan(periodString, position);
                 return position >= 0 ? right.Scan(periodString, position) : position;
             }
-
             #endregion
         }
 
@@ -325,7 +329,6 @@ namespace NodaTime.Format
             }
 
             #region IPeriodPrinter Members
-
             public int CalculatePrintedLength(IPeriod period, IFormatProvider provider)
             {
                 return text.Length;
@@ -348,12 +351,10 @@ namespace NodaTime.Format
             #endregion
 
             #region IPeriodParser Members
-
             public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 return FormatUtils.MatchSubstring(periodString, position, text);
             }
-
             #endregion
         }
 
@@ -373,8 +374,8 @@ namespace NodaTime.Format
             private readonly IPeriodFieldAffix suffix;
 
             public FieldFormatter(int minPrintedDigits, PrintZeroSetting printZero, int maxParsedDigits,
-                bool rejectSignedValues, FormatterDurationFieldType fieldType, FieldFormatter[] fieldFormatters,
-                IPeriodFieldAffix prefix, IPeriodFieldAffix suffix)
+                                  bool rejectSignedValues, FormatterDurationFieldType fieldType, FieldFormatter[] fieldFormatters,
+                                  IPeriodFieldAffix prefix, IPeriodFieldAffix suffix)
             {
                 this.minPrintedDigits = minPrintedDigits;
                 this.printZero = printZero;
@@ -388,26 +389,28 @@ namespace NodaTime.Format
 
             public FieldFormatter(FieldFormatter initialFieldFormatter, IPeriodFieldAffix suffix)
             {
-                this.minPrintedDigits = initialFieldFormatter.minPrintedDigits;
-                this.printZero = initialFieldFormatter.printZero;
-                this.maxParsedDigits = initialFieldFormatter.maxParsedDigits;
-                this.rejectSignedValues = initialFieldFormatter.rejectSignedValues;
-                this.fieldType = initialFieldFormatter.fieldType;
-                this.fieldFormatters = initialFieldFormatter.fieldFormatters;
-                this.prefix = initialFieldFormatter.prefix;
-                this.suffix = initialFieldFormatter.suffix == null ? suffix
-                    : new CompositeAffix(initialFieldFormatter.suffix, suffix);
+                minPrintedDigits = initialFieldFormatter.minPrintedDigits;
+                printZero = initialFieldFormatter.printZero;
+                maxParsedDigits = initialFieldFormatter.maxParsedDigits;
+                rejectSignedValues = initialFieldFormatter.rejectSignedValues;
+                fieldType = initialFieldFormatter.fieldType;
+                fieldFormatters = initialFieldFormatter.fieldFormatters;
+                prefix = initialFieldFormatter.prefix;
+                this.suffix = initialFieldFormatter.suffix == null
+                                  ? suffix
+                                  : new CompositeAffix(initialFieldFormatter.suffix, suffix);
             }
 
             public FormatterDurationFieldType FieldType { get { return fieldType; } }
 
             #region IPeriodPrinter Members
-
             public int CalculatePrintedLength(IPeriod period, IFormatProvider provider)
             {
                 var fieldValue = GetFieldValue(period);
                 if (fieldValue == long.MaxValue)
+                {
                     return 0;
+                }
 
                 int digitCount = Math.Max(minPrintedDigits, FormatUtils.CalculateDigitCount(fieldValue));
                 if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
@@ -418,7 +421,7 @@ namespace NodaTime.Format
                     // plus one for the decimal point
                     digitCount++;
                     if (fieldType == FormatterDurationFieldType.SecondsMillisecondsOptional &&
-                            (Math.Abs(fieldValue) % NodaConstants.MillisecondsPerSecond) == 0)
+                        (Math.Abs(fieldValue) % NodaConstants.MillisecondsPerSecond) == 0)
                     {
                         digitCount -= 4; // remove three digits and decimal point
                     }
@@ -426,11 +429,15 @@ namespace NodaTime.Format
                     fieldValue = fieldValue / NodaConstants.MillisecondsPerSecond;
                 }
 
-                var intVlaue = (int)fieldValue;
+                var intVlaue = (int) fieldValue;
                 if (prefix != null)
+                {
                     digitCount += prefix.CalculatePrintedLength(intVlaue);
+                }
                 if (suffix != null)
+                {
                     digitCount += suffix.CalculatePrintedLength(intVlaue);
+                }
 
                 return digitCount;
             }
@@ -458,10 +465,10 @@ namespace NodaTime.Format
                     return;
                 }
 
-                int intValue = (int)fieldValue;
+                int intValue = (int) fieldValue;
                 if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
                 {
-                    intValue = (int)(fieldValue / NodaConstants.MillisecondsPerSecond);
+                    intValue = (int) (fieldValue / NodaConstants.MillisecondsPerSecond);
                 }
                 if (prefix != null)
                 {
@@ -480,7 +487,7 @@ namespace NodaTime.Format
 
                 if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
                 {
-                    int dp = (int)(Math.Abs(fieldValue) % NodaConstants.MillisecondsPerSecond);
+                    int dp = (int) (Math.Abs(fieldValue) % NodaConstants.MillisecondsPerSecond);
                     if (fieldType == FormatterDurationFieldType.SecondsMilliseconds || dp > 0)
                     {
                         stringBuilder.Append('.');
@@ -502,10 +509,10 @@ namespace NodaTime.Format
                     return;
                 }
 
-                int intValue = (int)fieldValue;
+                int intValue = (int) fieldValue;
                 if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
                 {
-                    intValue = (int)(fieldValue / NodaConstants.MillisecondsPerSecond);
+                    intValue = (int) (fieldValue / NodaConstants.MillisecondsPerSecond);
                 }
 
                 if (prefix != null)
@@ -525,7 +532,7 @@ namespace NodaTime.Format
 
                 if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
                 {
-                    int dp = (int)(Math.Abs(fieldValue) % NodaConstants.MillisecondsPerSecond);
+                    int dp = (int) (Math.Abs(fieldValue) % NodaConstants.MillisecondsPerSecond);
                     if (fieldType == FormatterDurationFieldType.SecondsMilliseconds || dp > 0)
                     {
                         textWriter.Write('.');
@@ -538,11 +545,9 @@ namespace NodaTime.Format
                     suffix.PrintTo(textWriter, intValue);
                 }
             }
-
             #endregion
 
             #region IPeriodParser Members
-
             public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 bool mustParse = (printZero == PrintZeroSetting.Always);
@@ -584,16 +589,16 @@ namespace NodaTime.Format
                     }
                 }
 
-                if (!mustParse && !IsSupported(builder.PeriodType,fieldType))
+                if (!mustParse && !IsSupported(builder.PeriodType, fieldType))
                 {
                     // If parsing is not required and the field is not supported,
                     // exit gracefully so that another parser can continue on.
                     return position;
                 }
 
-                int limit = suffixPos > 0 
-                    ? Math.Min(maxParsedDigits, suffixPos - position) 
-                    : Math.Min(maxParsedDigits, periodString.Length - position);
+                int limit = suffixPos > 0
+                                ? Math.Min(maxParsedDigits, suffixPos - position)
+                                : Math.Min(maxParsedDigits, periodString.Length - position);
 
                 // validate input number
                 int length = 0;
@@ -634,7 +639,8 @@ namespace NodaTime.Format
                     else
                     {
                         if ((c == '.' || c == ',')
-                             && (fieldType == FormatterDurationFieldType.SecondsMilliseconds || fieldType == FormatterDurationFieldType.SecondsMillisecondsOptional))
+                            &&
+                            (fieldType == FormatterDurationFieldType.SecondsMilliseconds || fieldType == FormatterDurationFieldType.SecondsMillisecondsOptional))
                         {
                             if (fractPos >= 0)
                             {
@@ -724,7 +730,6 @@ namespace NodaTime.Format
 
                 return position;
             }
-
             #endregion
 
             private long GetFieldValue(IPeriod period)
@@ -766,7 +771,7 @@ namespace NodaTime.Format
                     case FormatterDurationFieldType.SecondsMillisecondsOptional:
                         int seconds = period.Get(DurationFieldType.Seconds);
                         int millis = period.Get(DurationFieldType.Milliseconds);
-                        value = (seconds * (long)NodaConstants.MillisecondsPerSecond) + millis;
+                        value = (seconds * (long) NodaConstants.MillisecondsPerSecond) + millis;
                         break;
                     default:
                         return long.MaxValue;
@@ -798,15 +803,17 @@ namespace NodaTime.Format
             //determines if a given period is zero and this is the last formatted field
             private bool IsLastFieldInEmptyPeriod(IPeriod period)
             {
-                if (!IsZero(period) || fieldFormatters[(int)fieldType] != this)
-                    return false;
-
-                for (int nextFieldType = (int)fieldType + 1; nextFieldType < MaxField; nextFieldType++)
+                if (!IsZero(period) || fieldFormatters[(int) fieldType] != this)
                 {
-                    if (IsSupported(period.PeriodType, (FormatterDurationFieldType)nextFieldType) && fieldFormatters[nextFieldType] != null)
+                    return false;
+                }
+
+                for (int nextFieldType = (int) fieldType + 1; nextFieldType < MaxField; nextFieldType++)
+                {
+                    if (IsSupported(period.PeriodType, (FormatterDurationFieldType) nextFieldType) && fieldFormatters[nextFieldType] != null)
                     {
                         return false;
-                    }                        
+                    }
                 }
                 return true;
             }
@@ -814,12 +821,16 @@ namespace NodaTime.Format
             //determines if a given period is zero and this is the first formatted field
             private bool IsFirstFieldInEmptyPeriod(IPeriod period)
             {
-                if (!IsZero(period) || fieldFormatters[(int)fieldType] != this)
-                    return false;
-
-                for (int previousFieldType = Math.Min((int)fieldType, (int)FormatterDurationFieldType.Milliseconds) - 1; previousFieldType >= 0; previousFieldType--)
+                if (!IsZero(period) || fieldFormatters[(int) fieldType] != this)
                 {
-                    if (IsSupported(period.PeriodType, (FormatterDurationFieldType)previousFieldType) && fieldFormatters[previousFieldType] != null)
+                    return false;
+                }
+
+                for (int previousFieldType = Math.Min((int) fieldType, (int) FormatterDurationFieldType.Milliseconds) - 1;
+                     previousFieldType >= 0;
+                     previousFieldType--)
+                {
+                    if (IsSupported(period.PeriodType, (FormatterDurationFieldType) previousFieldType) && fieldFormatters[previousFieldType] != null)
                     {
                         return false;
                     }
@@ -862,9 +873,9 @@ namespace NodaTime.Format
                 return negative ? -value : value;
             }
 
-            private static bool IsZero(IPeriod period) 
+            private static bool IsZero(IPeriod period)
             {
-                for (int i = 0, isize = period.Size; i < isize; i++) 
+                for (int i = 0, isize = period.Size; i < isize; i++)
                 {
                     if (period.GetValue(i) != 0)
                     {
@@ -929,7 +940,7 @@ namespace NodaTime.Format
                         return type.IsSupported(DurationFieldType.Seconds);
                     case FormatterDurationFieldType.Milliseconds:
                         return type.IsSupported(DurationFieldType.Milliseconds);
-                    case FormatterDurationFieldType.SecondsMilliseconds: 
+                    case FormatterDurationFieldType.SecondsMilliseconds:
                         // drop through
                     case FormatterDurationFieldType.SecondsMillisecondsOptional:
                         return type.IsSupported(DurationFieldType.Seconds) ||
@@ -944,7 +955,7 @@ namespace NodaTime.Format
         private class Composite : IPeriodParser, IPeriodPrinter
         {
             private readonly IList<IPeriodPrinter> periodPrinters;
-            private readonly IList<IPeriodParser>  periodParsers;
+            private readonly IList<IPeriodParser> periodParsers;
 
             public Composite(IList<IPeriodPrinter> periodPrinters, IList<IPeriodParser> periodParsers)
             {
@@ -956,7 +967,6 @@ namespace NodaTime.Format
             public IList<IPeriodPrinter> Printers { get { return periodPrinters; } }
 
             #region IPeriodParser Members
-
             public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 int len = periodParsers.Count;
@@ -966,11 +976,9 @@ namespace NodaTime.Format
                 }
                 return position;
             }
-
             #endregion
 
             #region IPeriodPrinter Members
-
             public int CalculatePrintedLength(IPeriod period, IFormatProvider provider)
             {
                 int sum = 0;
@@ -1006,7 +1014,6 @@ namespace NodaTime.Format
                     printer.PrintTo(textWriter, period, provider);
                 }
             }
-
             #endregion
         }
 
@@ -1028,8 +1035,8 @@ namespace NodaTime.Format
             private IPeriodParser afterParser;
 
             public Separator(string text, string finalText, string[] variants,
-                IPeriodPrinter beforePrinter, IPeriodParser beforeParser,
-                bool useBefore, bool useAfter)
+                             IPeriodPrinter beforePrinter, IPeriodParser beforeParser,
+                             bool useBefore, bool useAfter)
             {
                 this.text = text;
                 this.finalText = finalText;
@@ -1037,7 +1044,7 @@ namespace NodaTime.Format
                 if ((finalText == null || text.Equals(finalText, StringComparison.Ordinal))
                     && (variants == null || variants.Length == 0))
                 {
-                    parsedForms = new string[] { text };
+                    parsedForms = new[] {text};
                 }
                 else
                 {
@@ -1080,11 +1087,10 @@ namespace NodaTime.Format
             }
 
             #region IPeriodPrinter Members
-
             public int CalculatePrintedLength(IPeriod period, IFormatProvider provider)
             {
                 int sum = beforePrinter.CalculatePrintedLength(period, provider)
-                    + afterPrinter.CalculatePrintedLength(period, provider);
+                          + afterPrinter.CalculatePrintedLength(period, provider);
 
                 if (useBefore)
                 {
@@ -1167,7 +1173,7 @@ namespace NodaTime.Format
                         }
                         else
                         {
-                           textWriter.Write(text);
+                            textWriter.Write(text);
                         }
                     }
                 }
@@ -1177,11 +1183,9 @@ namespace NodaTime.Format
                 }
                 afterPrinter.PrintTo(textWriter, period, provider);
             }
-
             #endregion
 
             #region IPeriodParser Members
-
             public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 int oldPos = position;
@@ -1199,7 +1203,7 @@ namespace NodaTime.Format
                     for (int i = 0; i < parsedForms.Length; i++)
                     {
                         int newPosition;
-                        if((newPosition = FormatUtils.MatchSubstring(periodString, position, parsedForms[i])) > 0)
+                        if ((newPosition = FormatUtils.MatchSubstring(periodString, position, parsedForms[i])) > 0)
                         {
                             position = newPosition;
                             found = true;
@@ -1230,10 +1234,8 @@ namespace NodaTime.Format
 
                 return position;
             }
-
             #endregion
         }
-
         #endregion
 
         /// <summary>
@@ -1264,7 +1266,6 @@ namespace NodaTime.Format
         }
 
         #region Options
-
         private PrintZeroSetting printZero;
         private int maximumParsedDigits;
         private int minimumPrintedDigits;
@@ -1364,11 +1365,9 @@ namespace NodaTime.Format
             rejectSignedValues = reject;
             return this;
         }
-
         #endregion
 
         #region Append
-
         private IPeriodFieldAffix prefix;
         private readonly List<IPeriodPrinter> printers = new List<IPeriodPrinter>();
         private readonly List<IPeriodParser> parsers = new List<IPeriodParser>();
@@ -1458,7 +1457,6 @@ namespace NodaTime.Format
         }
 
         #region Fields
-
         private PeriodFormatterBuilder AppendField(FormatterDurationFieldType fieldType)
         {
             return AppendField(fieldType, minimumPrintedDigits);
@@ -1467,8 +1465,8 @@ namespace NodaTime.Format
         private PeriodFormatterBuilder AppendField(FormatterDurationFieldType fieldType, int minDigits)
         {
             var newFieldFormatter = new FieldFormatter(minDigits, printZero, maximumParsedDigits,
-                rejectSignedValues, fieldType, fieldFormatters, prefix, null);
-            fieldFormatters[(int)fieldType] = newFieldFormatter;
+                                                       rejectSignedValues, fieldType, fieldFormatters, prefix, null);
+            fieldFormatters[(int) fieldType] = newFieldFormatter;
             prefix = null;
 
             return AppendImpl(newFieldFormatter, newFieldFormatter);
@@ -1630,16 +1628,14 @@ namespace NodaTime.Format
         {
             return AppendField(FormatterDurationFieldType.Milliseconds, 3);
         }
-
         #endregion
 
         #region Prefix
-
         private PeriodFormatterBuilder AppendPrefix(IPeriodFieldAffix newPrefix)
         {
-            this.prefix = this.prefix == null 
-                            ? newPrefix 
-                            : new CompositeAffix(this.prefix, newPrefix);
+            prefix = prefix == null
+                         ? newPrefix
+                         : new CompositeAffix(prefix, newPrefix);
             return this;
         }
 
@@ -1680,12 +1676,10 @@ namespace NodaTime.Format
 
             return AppendPrefix(new PluralAffix(singularText, pluralText));
         }
-
         #endregion
 
         #region Suffix
-
-        PeriodFormatterBuilder AppendSuffix(IPeriodFieldAffix suffix)
+        private PeriodFormatterBuilder AppendSuffix(IPeriodFieldAffix suffix)
         {
             IPeriodPrinter originalPrinter = default(IPeriodPrinter);
             IPeriodParser originalParser = default(IPeriodParser);
@@ -1710,7 +1704,7 @@ namespace NodaTime.Format
             var newFieldFormater = new FieldFormatter(originalFormatter, suffix);
             printers[PairsCount - 1] = newFieldFormater;
             parsers[PairsCount - 1] = newFieldFormater;
-            fieldFormatters[(int)newFieldFormater.FieldType] = newFieldFormater;
+            fieldFormatters[(int) newFieldFormater.FieldType] = newFieldFormater;
 
             return this;
         }
@@ -1756,13 +1750,11 @@ namespace NodaTime.Format
             }
             return AppendSuffix(new PluralAffix(singularText, pluralText));
         }
-
         #endregion
 
         #region Separator
-
-        PeriodFormatterBuilder AppendSeparator(string text, string finalText, string[] variants,
-            bool useBefore, bool useAfter)
+        private PeriodFormatterBuilder AppendSeparator(string text, string finalText, string[] variants,
+                                                       bool useBefore, bool useAfter)
         {
             if (text == null)
             {
@@ -1781,7 +1773,7 @@ namespace NodaTime.Format
                 if (useAfter && !useBefore)
                 {
                     var newSeparator = new Separator(text, finalText, variants,
-                        Literal.Empty, Literal.Empty, useBefore, useAfter);
+                                                     Literal.Empty, Literal.Empty, useBefore, useAfter);
                     AppendImpl(newSeparator, newSeparator);
                 }
                 return this;
@@ -1800,7 +1792,9 @@ namespace NodaTime.Format
 
             //merge formatters
             if (lastSeparator != null && (i + 1) == PairsCount)
+            {
                 throw new InvalidOperationException("Cannot have two adjacent separators");
+            }
             else
             {
                 int rangeIndex = i + 1;
@@ -1809,9 +1803,9 @@ namespace NodaTime.Format
                 IPeriodParser afterParser;
                 Compose(printers.GetRange(rangeIndex, rangeCount), parsers.GetRange(rangeIndex, rangeCount), out afterPrinter, out afterParser);
                 var separator = new Separator(
-                         text, finalText, variants,
-                         afterPrinter, afterParser,
-                         useBefore, useAfter);
+                    text, finalText, variants,
+                    afterPrinter, afterParser,
+                    useBefore, useAfter);
 
                 printers.RemoveRange(rangeIndex, rangeCount);
                 parsers.RemoveRange(rangeIndex, rangeCount);
@@ -1819,7 +1813,6 @@ namespace NodaTime.Format
             }
             return this;
         }
-
 
         /// <summary>
         /// Append a separator, which is output if fields are printed both before
@@ -1966,11 +1959,9 @@ namespace NodaTime.Format
         {
             return AppendSeparator(text, text, null, true, true);
         }
-
         #endregion
 
         #region Composition
-
         private static void Compose(IList<IPeriodPrinter> printers, IList<IPeriodParser> parsers, out IPeriodPrinter printer, out IPeriodParser parser)
         {
             int length = printers.Count;
@@ -1978,24 +1969,24 @@ namespace NodaTime.Format
             switch (length)
             {
                 case (0):
-                    {
-                        parser = Literal.Empty;
-                        printer = Literal.Empty;
-                        break;
-                    }
+                {
+                    parser = Literal.Empty;
+                    printer = Literal.Empty;
+                    break;
+                }
                 case (1):
-                    {
-                        printer = printers[0];
-                        parser = parsers[0];
-                        break;
-                    }
+                {
+                    printer = printers[0];
+                    parser = parsers[0];
+                    break;
+                }
                 default:
-                    {
-                        var merged = new Composite(printers, parsers);
-                        parser = merged;
-                        printer = merged;
-                        break;
-                    }
+                {
+                    var merged = new Composite(printers, parsers);
+                    parser = merged;
+                    printer = merged;
+                    break;
+                }
             }
         }
 
@@ -2008,7 +1999,7 @@ namespace NodaTime.Format
             int size = printers.Count;
             if (size >= 1 && printers[0] is Separator)
             {
-                Separator sep = (Separator)printers[0];
+                Separator sep = (Separator) printers[0];
 
                 PeriodFormatter f = ToFormatter(printers.GetRange(1, size - 1), parsers.GetRange(1, size - 1));
                 sep = sep.Finish(f.Printer, f.Parser);
@@ -2020,10 +2011,11 @@ namespace NodaTime.Format
                 IPeriodParser afterParser;
                 Compose(printers, parsers, out afterPrinter, out afterParser);
 
-                return notPrinter ? PeriodFormatter.FromParser(afterParser)
-                        : notParser ? PeriodFormatter.FromPrinter(afterPrinter)
-                        : PeriodFormatter.FromPrinterAndParser(afterPrinter, afterParser);
-
+                return notPrinter
+                           ? PeriodFormatter.FromParser(afterParser)
+                           : notParser
+                                 ? PeriodFormatter.FromPrinter(afterPrinter)
+                                 : PeriodFormatter.FromPrinterAndParser(afterPrinter, afterParser);
             }
         }
 
@@ -2050,7 +2042,7 @@ namespace NodaTime.Format
         public PeriodFormatter ToFormatter()
         {
             var newPeriodFormatter = ToFormatter(printers, parsers);
-            fieldFormatters = (FieldFormatter[])fieldFormatters.Clone();
+            fieldFormatters = (FieldFormatter[]) fieldFormatters.Clone();
 
             return newPeriodFormatter;
         }
@@ -2104,7 +2096,6 @@ namespace NodaTime.Format
 
             return ToFormatter().Parser;
         }
-
         #endregion
 
         #endregion

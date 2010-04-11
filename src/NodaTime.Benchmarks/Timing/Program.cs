@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace NodaTime.Benchmarks.Timing
         {
             BenchmarkOptions options = BenchmarkOptions.FromCommandLine(args);
 
-            var types = typeof(Program).Assembly.GetTypes()
+            var types = typeof (Program).Assembly.GetTypes()
                 .OrderBy(type => GetTypeDisplayName(type))
                 .Where(type => type.GetMethods(AllInstance).Any(IsBenchmark));
 
@@ -78,7 +79,7 @@ namespace NodaTime.Benchmarks.Timing
 
         private static BenchmarkResult RunBenchmark(MethodInfo method, object instance, BenchmarkOptions options)
         {
-            Action action = (Action) Delegate.CreateDelegate(typeof(Action), instance, method);
+            Action action = (Action) Delegate.CreateDelegate(typeof (Action), instance, method);
             // Start small, double until we've hit our warm-up time
             int iterations = 100;
             while (true)
@@ -88,7 +89,7 @@ namespace NodaTime.Benchmarks.Timing
                 {
                     // Scale up the iterations to work out the full test time
                     double scale = ((double) options.TestTime.Ticks) / duration.Ticks;
-                    iterations = (int)(iterations * scale);
+                    iterations = (int) (iterations * scale);
                     break;
                 }
                 iterations *= 2;
@@ -117,7 +118,7 @@ namespace NodaTime.Benchmarks.Timing
 
         private static bool IsBenchmark(MethodInfo method)
         {
-            return method.IsDefined(typeof(BenchmarkAttribute), false);
+            return method.IsDefined(typeof (BenchmarkAttribute), false);
         }
     }
 }

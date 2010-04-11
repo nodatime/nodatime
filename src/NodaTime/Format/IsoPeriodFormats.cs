@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 namespace NodaTime.Format
 {
     /// <summary>
@@ -45,7 +46,8 @@ namespace NodaTime.Format
             .ToFormatter();
 
         /** Alternate months format. */
-        private static readonly PeriodFormatter alternate= new PeriodFormatterBuilder()
+
+        private static readonly PeriodFormatter alternate = new PeriodFormatterBuilder()
             .AppendLiteral("P")
             .PrintZeroAlways()
             .MinimumPrintedDigits(4)
@@ -130,7 +132,7 @@ namespace NodaTime.Format
         /// Even if weeks are present in the period, they are not output.
         /// Fractional seconds (milliseconds) will appear if required.
         /// </remarks>
-        public static PeriodFormatter Alternate { get { return alternate; } } 
+        public static PeriodFormatter Alternate { get { return alternate; } }
 
         /// <summary>
         /// The alternate ISO format, Pyyyy-mm-ddThh:mm:ss, which excludes weeks.
@@ -140,7 +142,7 @@ namespace NodaTime.Format
         /// Even if weeks are present in the period, they are not output.
         /// Fractional seconds (milliseconds) will appear if required.
         /// </remarks>
-        public static PeriodFormatter AlternateExtended { get { return alternateExtended; } } 
+        public static PeriodFormatter AlternateExtended { get { return alternateExtended; } }
 
         /// <summary>
         /// The alternate ISO format, PyyyyWwwddThhmmss, which excludes months.
@@ -150,7 +152,7 @@ namespace NodaTime.Format
         /// Even if months are present in the period, they are not output.
         /// Fractional seconds (milliseconds) will appear if required.
         /// </remarks>
-        public static PeriodFormatter AlternateWithWeeks { get { return alternateWithWeeks; } } 
+        public static PeriodFormatter AlternateWithWeeks { get { return alternateWithWeeks; } }
 
         /// <summary>
         /// The alternate ISO format, Pyyyy-Www-ddThh:mm:ss, which excludes months.
@@ -161,5 +163,5 @@ namespace NodaTime.Format
         /// Fractional seconds (milliseconds) will appear if required.
         /// </remarks>
         public static PeriodFormatter AlternateExtendedWithWeeks { get { return alternateExtendedWithWeeks; } }
-   }
+    }
 }

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Fields;
 using NUnit.Framework;
 
@@ -24,7 +25,7 @@ namespace NodaTime.Test.Fields
     {
         private readonly ZeroIsMaxDateTimeField field = new ZeroIsMaxDateTimeField
             (new PreciseDateTimeField(DateTimeFieldType.HourOfDay,
-                 PreciseDurationField.Hours, PreciseDurationField.Days),
+                                      PreciseDurationField.Hours, PreciseDurationField.Days),
              DateTimeFieldType.ClockHourOfDay);
 
         [Test]
@@ -63,7 +64,7 @@ namespace NodaTime.Test.Fields
         public void TestSetValue_WithNonMaximumPassesValueThrough()
         {
             Assert.AreEqual(NodaConstants.TicksPerHour * 2,
-                field.SetValue(new LocalInstant(0), 2).Ticks);
+                            field.SetValue(new LocalInstant(0), 2).Ticks);
         }
     }
 }

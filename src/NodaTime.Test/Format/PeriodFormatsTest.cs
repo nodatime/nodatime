@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Format;
 using NodaTime.Periods;
 using NUnit.Framework;
@@ -21,17 +22,17 @@ using NUnit.Framework;
 namespace NodaTime.Test.Format
 {
     [TestFixture]
-    public partial class PeriodFormatsTest
+    public class PeriodFormatsTest
     {
-        Period standardPeriodEmpty = new Period(0, 0, 0, 0, 0, 0, 0, 0);
+        private readonly Period standardPeriodEmpty = new Period(0, 0, 0, 0, 0, 0, 0, 0);
 
-        object[] DefaultFormatterTestData =
-        {
-            new TestCaseData( new Period(0, 0, 0, 1, 5, 6, 7, 8), "1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds"),
-            new TestCaseData( new Period(6, 3, 0, 2, 0, 0, 0, 0), "6 years, 3 months and 2 days"),
-            new TestCaseData( Period.FromDays(2), "2 days"),
-            new TestCaseData( Period.FromDays(2).WithHours(5), "2 days and 5 hours"),
-        };
+        private object[] DefaultFormatterTestData =
+            {
+                new TestCaseData(new Period(0, 0, 0, 1, 5, 6, 7, 8), "1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds"),
+                new TestCaseData(new Period(6, 3, 0, 2, 0, 0, 0, 0), "6 years, 3 months and 2 days"),
+                new TestCaseData(Period.FromDays(2), "2 days"),
+                new TestCaseData(Period.FromDays(2).WithHours(5), "2 days and 5 hours"),
+            };
 
         [Test]
         [TestCaseSource("DefaultFormatterTestData")]

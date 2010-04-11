@@ -14,8 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
 
+using System;
 using NodaTime.Fields;
 using NodaTime.Utility;
 
@@ -26,7 +26,7 @@ namespace NodaTime.Periods
     /// manages a single duration field, such as days or minutes.
     /// </summary>
     public abstract class SingleFieldPeriodBase : IPeriod, IEquatable<SingleFieldPeriodBase>
-                                                    , IComparable<SingleFieldPeriodBase>, IComparable
+                                                  , IComparable<SingleFieldPeriodBase>, IComparable
     {
         private readonly int value;
 
@@ -50,7 +50,6 @@ namespace NodaTime.Periods
         public abstract DurationFieldType FieldType { get; }
 
         #region IPeriod Members
-
         /// <summary>
         /// Gets the period type which matches the duration field type.
         /// </summary>
@@ -123,11 +122,9 @@ namespace NodaTime.Periods
         {
             return field == FieldType;
         }
-
         #endregion
 
         #region Equality
-
         public override bool Equals(object obj)
         {
             return Equals(obj as SingleFieldPeriodBase);
@@ -143,23 +140,21 @@ namespace NodaTime.Periods
 
         public bool Equals(SingleFieldPeriodBase other)
         {
-            if (Object.ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
 
-            if (Object.ReferenceEquals(other, null))
+            if (ReferenceEquals(other, null))
             {
                 return false;
             }
 
             return FieldType == other.FieldType && Value == other.Value;
         }
-
         #endregion
 
         #region Comparison
-
         /// <summary>
         /// Compares the current object with another object of the same type.
         /// </summary>
@@ -188,7 +183,7 @@ namespace NodaTime.Periods
         /// </returns>
         public int CompareTo(SingleFieldPeriodBase other)
         {
-            if (Object.ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return 0;
             }
@@ -214,7 +209,6 @@ namespace NodaTime.Periods
         {
             return CompareTo(obj as SingleFieldPeriodBase);
         }
-
         #endregion
 
         /// <summary>

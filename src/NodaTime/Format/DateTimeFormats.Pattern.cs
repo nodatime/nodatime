@@ -29,9 +29,7 @@ namespace NodaTime.Format
     /// </summary>
     public static partial class DateTimeFormats
     {
-        private static Dictionary<string, DateTimeFormatter> formattersCache = new Dictionary<string,DateTimeFormatter>(7);
-
-        static DateTimeFormats() { }
+        private static readonly Dictionary<string, DateTimeFormatter> formattersCache = new Dictionary<string, DateTimeFormatter>(7);
 
         /// <summary>
         /// Factory to create a formatter from a pattern string.
@@ -354,7 +352,5 @@ namespace NodaTime.Format
             }
             return false;
         }
-
-
     }
 }

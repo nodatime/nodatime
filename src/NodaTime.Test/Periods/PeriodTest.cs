@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Fields;
 using NodaTime.Periods;
 using NUnit.Framework;
@@ -53,7 +54,7 @@ namespace NodaTime.Test.Periods
         public void GetValues_ForYearDayTimePeriod()
         {
             Period sut = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime);
-            var values  = sut.GetValues();
+            var values = sut.GetValues();
 
             Assert.AreEqual(6, values.Length);
             Assert.AreEqual(1, values[0]);
@@ -124,6 +125,5 @@ namespace NodaTime.Test.Periods
             Assert.IsTrue(sut.IsSupported(DurationFieldType.Seconds));
             Assert.IsTrue(sut.IsSupported(DurationFieldType.Milliseconds));
         }
-
     }
 }

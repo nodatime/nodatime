@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NUnit.Framework;
 
@@ -58,7 +59,7 @@ namespace NodaTime.Test
             where T : class, IEquatable<T>
         {
             TestObjectEquals(value, equalValue, unEqualValue);
-            Assert.False(value.Equals((T)null), "value.Equals<T>(null)");
+            Assert.False(value.Equals(null), "value.Equals<T>(null)");
             Assert.True(value.Equals(value), "value.Equals<T>(value)");
             Assert.True(value.Equals(equalValue), "value.Equals<T>(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals<T>(value)");
@@ -94,7 +95,7 @@ namespace NodaTime.Test
             where T : class, IComparable<T>
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
-            Assert.Greater(value.CompareTo((T)null), 0, "value.CompareTo<T>(null)");
+            Assert.Greater(value.CompareTo(null), 0, "value.CompareTo<T>(null)");
             Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo<T>(value)");
             Assert.AreEqual(value.CompareTo(equalValue), 0, "value.CompareTo<T>(equalValue)");
             Assert.AreEqual(equalValue.CompareTo(value), 0, "equalValue.CompareTo<T>(value)");
@@ -130,35 +131,35 @@ namespace NodaTime.Test
         public static void TestOperatorEquality<T>(T value, T equalValue, T unEqualValue)
         {
             ValidateInput(value, equalValue, unEqualValue, "unEqualValue");
-            Type type = typeof(T);
+            Type type = typeof (T);
             string name = type.Name;
-            var equality = type.GetMethod("op_Equality", new Type[] { type, type });
+            var equality = type.GetMethod("op_Equality", new[] {type, type});
             if (equality != null)
             {
                 if (!type.IsValueType)
                 {
-                    Assert.True((bool)equality.Invoke(null, new object[] { null, null }), "null == null");
-                    Assert.False((bool)equality.Invoke(null, new object[] { value, null }), "value == null");
-                    Assert.False((bool)equality.Invoke(null, new object[] { null, value }), "null == value");
+                    Assert.True((bool) equality.Invoke(null, new object[] {null, null}), "null == null");
+                    Assert.False((bool) equality.Invoke(null, new object[] {value, null}), "value == null");
+                    Assert.False((bool) equality.Invoke(null, new object[] {null, value}), "null == value");
                 }
-                Assert.True((bool)equality.Invoke(null, new object[] { value, value }), "value == value");
-                Assert.True((bool)equality.Invoke(null, new object[] { value, equalValue }), "value == equalValue");
-                Assert.True((bool)equality.Invoke(null, new object[] { equalValue, value }), "equalValue == value");
-                Assert.False((bool)equality.Invoke(null, new object[] { value, unEqualValue }), "value == unEqualValue");
+                Assert.True((bool) equality.Invoke(null, new object[] {value, value}), "value == value");
+                Assert.True((bool) equality.Invoke(null, new object[] {value, equalValue}), "value == equalValue");
+                Assert.True((bool) equality.Invoke(null, new object[] {equalValue, value}), "equalValue == value");
+                Assert.False((bool) equality.Invoke(null, new object[] {value, unEqualValue}), "value == unEqualValue");
             }
-            var inequality = type.GetMethod("op_Inequality", new Type[] { type, type });
+            var inequality = type.GetMethod("op_Inequality", new[] {type, type});
             if (inequality != null)
             {
                 if (!type.IsValueType)
                 {
-                    Assert.False((bool)inequality.Invoke(null, new object[] { null, null }), "null != null");
-                    Assert.True((bool)inequality.Invoke(null, new object[] { value, null }), "value != null");
-                    Assert.True((bool)inequality.Invoke(null, new object[] { null, value }), "null != value");
+                    Assert.False((bool) inequality.Invoke(null, new object[] {null, null}), "null != null");
+                    Assert.True((bool) inequality.Invoke(null, new object[] {value, null}), "value != null");
+                    Assert.True((bool) inequality.Invoke(null, new object[] {null, value}), "null != value");
                 }
-                Assert.False((bool)inequality.Invoke(null, new object[] { value, value }), "value != value");
-                Assert.False((bool)inequality.Invoke(null, new object[] { value, equalValue }), "value != equalValue");
-                Assert.False((bool)inequality.Invoke(null, new object[] { equalValue, value }), "equalValue != value");
-                Assert.True((bool)inequality.Invoke(null, new object[] { value, unEqualValue }), "value != unEqualValue");
+                Assert.False((bool) inequality.Invoke(null, new object[] {value, value}), "value != value");
+                Assert.False((bool) inequality.Invoke(null, new object[] {value, equalValue}), "value != equalValue");
+                Assert.False((bool) inequality.Invoke(null, new object[] {equalValue, value}), "equalValue != value");
+                Assert.True((bool) inequality.Invoke(null, new object[] {value, unEqualValue}), "value != unEqualValue");
             }
         }
 
@@ -172,34 +173,34 @@ namespace NodaTime.Test
         public static void TestOperatorComparison<T>(T value, T equalValue, T greaterValue)
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
-            Type type = typeof(T);
-            var greaterThan = type.GetMethod("op_GreaterThan", new Type[] { type, type });
+            Type type = typeof (T);
+            var greaterThan = type.GetMethod("op_GreaterThan", new[] {type, type});
             if (greaterThan != null)
             {
                 if (!type.IsValueType)
                 {
-                    Assert.True((bool)greaterThan.Invoke(null, new object[] { value, null }), "value > null");
-                    Assert.False((bool)greaterThan.Invoke(null, new object[] { null, value }), "null > value");
+                    Assert.True((bool) greaterThan.Invoke(null, new object[] {value, null}), "value > null");
+                    Assert.False((bool) greaterThan.Invoke(null, new object[] {null, value}), "null > value");
                 }
-                Assert.False((bool)greaterThan.Invoke(null, new object[] { value, value }), "value > value");
-                Assert.False((bool)greaterThan.Invoke(null, new object[] { value, equalValue }), "value > equalValue");
-                Assert.False((bool)greaterThan.Invoke(null, new object[] { equalValue, value }), "equalValue > value");
-                Assert.False((bool)greaterThan.Invoke(null, new object[] { value, greaterValue }), "value > greaterValue");
-                Assert.True((bool)greaterThan.Invoke(null, new object[] { greaterValue, value }), "greaterValue > value");
+                Assert.False((bool) greaterThan.Invoke(null, new object[] {value, value}), "value > value");
+                Assert.False((bool) greaterThan.Invoke(null, new object[] {value, equalValue}), "value > equalValue");
+                Assert.False((bool) greaterThan.Invoke(null, new object[] {equalValue, value}), "equalValue > value");
+                Assert.False((bool) greaterThan.Invoke(null, new object[] {value, greaterValue}), "value > greaterValue");
+                Assert.True((bool) greaterThan.Invoke(null, new object[] {greaterValue, value}), "greaterValue > value");
             }
-            var lessThan = type.GetMethod("op_LessThan", new Type[] { type, type });
+            var lessThan = type.GetMethod("op_LessThan", new[] {type, type});
             if (lessThan != null)
             {
                 if (!type.IsValueType)
                 {
-                    Assert.False((bool)lessThan.Invoke(null, new object[] { value, null }), "value < null");
-                    Assert.True((bool)lessThan.Invoke(null, new object[] { null, value }), "null < value");
+                    Assert.False((bool) lessThan.Invoke(null, new object[] {value, null}), "value < null");
+                    Assert.True((bool) lessThan.Invoke(null, new object[] {null, value}), "null < value");
                 }
-                Assert.False((bool)lessThan.Invoke(null, new object[] { value, value }), "value < value");
-                Assert.False((bool)lessThan.Invoke(null, new object[] { value, equalValue }), "value < equalValue");
-                Assert.False((bool)lessThan.Invoke(null, new object[] { equalValue, value }), "equalValue < value");
-                Assert.True((bool)lessThan.Invoke(null, new object[] { value, greaterValue }), "value < greaterValue");
-                Assert.False((bool)lessThan.Invoke(null, new object[] { greaterValue, value }), "greaterValue < value");
+                Assert.False((bool) lessThan.Invoke(null, new object[] {value, value}), "value < value");
+                Assert.False((bool) lessThan.Invoke(null, new object[] {value, equalValue}), "value < equalValue");
+                Assert.False((bool) lessThan.Invoke(null, new object[] {equalValue, value}), "equalValue < value");
+                Assert.True((bool) lessThan.Invoke(null, new object[] {value, greaterValue}), "value < greaterValue");
+                Assert.False((bool) lessThan.Invoke(null, new object[] {greaterValue, value}), "greaterValue < value");
             }
         }
 
@@ -215,34 +216,34 @@ namespace NodaTime.Test
         {
             TestOperatorEquality(value, equalValue, greaterValue);
             TestOperatorComparison(value, equalValue, greaterValue);
-            Type type = typeof(T);
-            var greaterThanOrEqual = type.GetMethod("op_GreaterThanOrEqual", new Type[] { type, type });
+            Type type = typeof (T);
+            var greaterThanOrEqual = type.GetMethod("op_GreaterThanOrEqual", new[] {type, type});
             if (greaterThanOrEqual != null)
             {
                 if (!type.IsValueType)
                 {
-                    Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { value, null }), "value >= null");
-                    Assert.False((bool)greaterThanOrEqual.Invoke(null, new object[] { null, value }), "null >= value");
+                    Assert.True((bool) greaterThanOrEqual.Invoke(null, new object[] {value, null}), "value >= null");
+                    Assert.False((bool) greaterThanOrEqual.Invoke(null, new object[] {null, value}), "null >= value");
                 }
-                Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { value, value }), "value >= value");
-                Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { value, equalValue }), "value >= equalValue");
-                Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { equalValue, value }), "equalValue >= value");
-                Assert.False((bool)greaterThanOrEqual.Invoke(null, new object[] { value, greaterValue }), "value >= greaterValue");
-                Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { greaterValue, value }), "greaterValue >= value");
+                Assert.True((bool) greaterThanOrEqual.Invoke(null, new object[] {value, value}), "value >= value");
+                Assert.True((bool) greaterThanOrEqual.Invoke(null, new object[] {value, equalValue}), "value >= equalValue");
+                Assert.True((bool) greaterThanOrEqual.Invoke(null, new object[] {equalValue, value}), "equalValue >= value");
+                Assert.False((bool) greaterThanOrEqual.Invoke(null, new object[] {value, greaterValue}), "value >= greaterValue");
+                Assert.True((bool) greaterThanOrEqual.Invoke(null, new object[] {greaterValue, value}), "greaterValue >= value");
             }
-            var lessThanOrEqual = type.GetMethod("op_LessThanOrEqual", new Type[] { type, type });
+            var lessThanOrEqual = type.GetMethod("op_LessThanOrEqual", new[] {type, type});
             if (lessThanOrEqual != null)
             {
                 if (!type.IsValueType)
                 {
-                    Assert.False((bool)lessThanOrEqual.Invoke(null, new object[] { value, null }), "value <= null");
-                    Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { null, value }), "null <= value");
+                    Assert.False((bool) lessThanOrEqual.Invoke(null, new object[] {value, null}), "value <= null");
+                    Assert.True((bool) lessThanOrEqual.Invoke(null, new object[] {null, value}), "null <= value");
                 }
-                Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { value, value }), "value <= value");
-                Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { value, equalValue }), "value <= equalValue");
-                Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { equalValue, value }), "equalValue <= value");
-                Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { value, greaterValue }), "value <= greaterValue");
-                Assert.False((bool)lessThanOrEqual.Invoke(null, new object[] { greaterValue, value }), "greaterValue <= value");
+                Assert.True((bool) lessThanOrEqual.Invoke(null, new object[] {value, value}), "value <= value");
+                Assert.True((bool) lessThanOrEqual.Invoke(null, new object[] {value, equalValue}), "value <= equalValue");
+                Assert.True((bool) lessThanOrEqual.Invoke(null, new object[] {equalValue, value}), "equalValue <= value");
+                Assert.True((bool) lessThanOrEqual.Invoke(null, new object[] {value, greaterValue}), "value <= greaterValue");
+                Assert.False((bool) lessThanOrEqual.Invoke(null, new object[] {greaterValue, value}), "greaterValue <= value");
             }
         }
 

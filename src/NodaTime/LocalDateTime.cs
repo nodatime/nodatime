@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -219,117 +217,53 @@ namespace NodaTime
         /// Gets the local instant.
         /// </summary>
         /// <value>The local instant.</value>
-        public LocalInstant LocalInstant
-        {
-            get { return localInstant; }
-        }
+        public LocalInstant LocalInstant { get { return localInstant; } }
 
         /// <summary>
         /// Gets the calendar.
         /// </summary>
         /// <value>The calendar.</value>
-        public ICalendarSystem Calendar
-        {
-            get { return calendar; }
-        }
+        public ICalendarSystem Calendar { get { return calendar; } }
 
-        public int Era
-        {
-            get { return calendar.Fields.Era.GetValue(localInstant); }
-        }
+        public int Era { get { return calendar.Fields.Era.GetValue(localInstant); } }
 
-        public int CenturyOfEra
-        {
-            get { return calendar.Fields.CenturyOfEra.GetValue(localInstant); }
-        }
+        public int CenturyOfEra { get { return calendar.Fields.CenturyOfEra.GetValue(localInstant); } }
 
-        public int Year
-        {
-            get { return calendar.Fields.Year.GetValue(localInstant); }
-        }
+        public int Year { get { return calendar.Fields.Year.GetValue(localInstant); } }
 
-        public int YearOfCentury
-        {
-            get { return calendar.Fields.YearOfCentury.GetValue(localInstant); }
-        }
+        public int YearOfCentury { get { return calendar.Fields.YearOfCentury.GetValue(localInstant); } }
 
-        public int YearOfEra
-        {
-            get { return calendar.Fields.YearOfEra.GetValue(localInstant); }
-        }
+        public int YearOfEra { get { return calendar.Fields.YearOfEra.GetValue(localInstant); } }
 
-        public int WeekYear
-        {
-            get { return calendar.Fields.WeekYear.GetValue(localInstant); }
-        }
+        public int WeekYear { get { return calendar.Fields.WeekYear.GetValue(localInstant); } }
 
-        public int MonthOfYear
-        {
-            get { return calendar.Fields.MonthOfYear.GetValue(localInstant); }
-        }
+        public int MonthOfYear { get { return calendar.Fields.MonthOfYear.GetValue(localInstant); } }
 
-        public int WeekOfWeekYear
-        {
-            get { return calendar.Fields.WeekOfWeekYear.GetValue(localInstant); }
-        }
+        public int WeekOfWeekYear { get { return calendar.Fields.WeekOfWeekYear.GetValue(localInstant); } }
 
-        public int DayOfYear
-        {
-            get { return calendar.Fields.DayOfYear.GetValue(localInstant); }
-        }
+        public int DayOfYear { get { return calendar.Fields.DayOfYear.GetValue(localInstant); } }
 
-        public int DayOfMonth
-        {
-            get { return calendar.Fields.DayOfMonth.GetValue(localInstant); }
-        }
+        public int DayOfMonth { get { return calendar.Fields.DayOfMonth.GetValue(localInstant); } }
 
-        public int DayOfWeek
-        {
-            get { return calendar.Fields.DayOfWeek.GetValue(localInstant); }
-        }
+        public int DayOfWeek { get { return calendar.Fields.DayOfWeek.GetValue(localInstant); } }
 
-        public int HourOfDay
-        {
-            get { return calendar.Fields.HourOfDay.GetValue(localInstant); }
-        }
+        public int HourOfDay { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
 
-        public int MinuteOfHour
-        {
-            get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); }
-        }
+        public int MinuteOfHour { get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
 
-        public int SecondOfMinute
-        {
-            get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); }
-        }
+        public int SecondOfMinute { get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
 
-        public int SecondOfDay
-        {
-            get { return calendar.Fields.SecondOfDay.GetValue(localInstant); }
-        }
+        public int SecondOfDay { get { return calendar.Fields.SecondOfDay.GetValue(localInstant); } }
 
-        public int MillisecondOfSecond
-        {
-            get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); }
-        }
+        public int MillisecondOfSecond { get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
 
-        public int MillisecondOfDay
-        {
-            get { return calendar.Fields.MillisecondOfDay.GetValue(localInstant); }
-        }
+        public int MillisecondOfDay { get { return calendar.Fields.MillisecondOfDay.GetValue(localInstant); } }
 
-        public int TickOfMillisecond
-        {
-            get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); }
-        }
+        public int TickOfMillisecond { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
 
-        public long TickOfDay
-        {
-            get { return calendar.Fields.TickOfDay.GetInt64Value(localInstant); }
-        }
+        public long TickOfDay { get { return calendar.Fields.TickOfDay.GetInt64Value(localInstant); } }
 
         #region Implementation of IEquatable<LocalDateTime>
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -340,14 +274,12 @@ namespace NodaTime
         ///                 </param>
         public bool Equals(LocalDateTime other)
         {
-            return this.localInstant == other.localInstant &&
-                   this.calendar.Equals(other.calendar);
+            return localInstant == other.localInstant &&
+                   calendar.Equals(other.calendar);
         }
-
         #endregion
 
         #region operators
-
         /// <summary>
         /// Implements the operator == (equality).
         /// </summary>
@@ -369,11 +301,9 @@ namespace NodaTime
         {
             return !(left == right);
         }
-
         #endregion
 
         #region object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -386,7 +316,7 @@ namespace NodaTime
         {
             if (obj is LocalDateTime)
             {
-                return this.Equals((LocalDateTime) obj);
+                return Equals((LocalDateTime) obj);
             }
             return false;
         }
@@ -417,7 +347,6 @@ namespace NodaTime
         {
             return Calendar + ": " + LocalInstant;
         }
-
         #endregion
     }
 }

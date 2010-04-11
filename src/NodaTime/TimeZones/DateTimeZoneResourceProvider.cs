@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System.Collections.Generic;
@@ -41,12 +39,11 @@ namespace NodaTime.TimeZones
         /// <param name="baseName">GetName of the base.</param>
         public DateTimeZoneResourceProvider(string baseName)
         {
-            this.manager = new ResourceManager(baseName, Assembly.GetExecutingAssembly());
-            this.timeZoneIdMap = ResourceHelper.LoadDictionary(this.manager, IdMapKey);
+            manager = new ResourceManager(baseName, Assembly.GetExecutingAssembly());
+            timeZoneIdMap = ResourceHelper.LoadDictionary(manager, IdMapKey);
         }
 
         #region IDateTimeZoneProvider Members
-
         /// <summary>
         /// Returns the time zone definition associated with the given id.
         /// </summary>
@@ -66,18 +63,14 @@ namespace NodaTime.TimeZones
             {
                 queryId = timeZoneIdMap[queryId];
             }
-            return ResourceHelper.LoadTimeZone(this.manager, queryId, id);
+            return ResourceHelper.LoadTimeZone(manager, queryId, id);
         }
 
         /// <summary>
         /// Returns an enumeration of the available ids from this provider.
         /// </summary>
         /// <value>The <see cref="IEnumerable{T}"/> of ids.</value>
-        public IEnumerable<string> Ids
-        {
-            get { return this.timeZoneIdMap.Keys; }
-        }
-
+        public IEnumerable<string> Ids { get { return timeZoneIdMap.Keys; } }
         #endregion
     }
 }

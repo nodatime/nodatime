@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Fields;
 
 namespace NodaTime.Calendars
@@ -27,7 +28,8 @@ namespace NodaTime.Calendars
         private readonly FieldSet fields;
 
         protected delegate void FieldAssembler(FieldSet.Builder builder,
-            ICalendarSystem baseCalendar);
+                                               ICalendarSystem baseCalendar);
+
         private readonly bool useBaseTimeOfDayFields;
         private readonly bool useBaseTickOfDayFields;
         private readonly bool useBaseYearMonthDayFields;
@@ -85,14 +87,15 @@ namespace NodaTime.Calendars
         /// </summary>
         protected abstract void AssembleFields(FieldSet.Builder builder);
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+                                                     int millisecondOfSecond, int tickOfMillisecond)
         {
             if (useBaseYearMonthDayFields && useBaseTimeOfDayFields)
             {
                 // Only call specialized implementation if applicable fields are the same.
                 return baseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth,
-                                            hourOfDay, minuteOfHour, secondOfMinute,
-                                            millisecondOfSecond, tickOfMillisecond);
+                                                    hourOfDay, minuteOfHour, secondOfMinute,
+                                                    millisecondOfSecond, tickOfMillisecond);
             }
             return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
         }
@@ -107,13 +110,14 @@ namespace NodaTime.Calendars
             return base.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
         }
 
-        public override LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        public override LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
+                                                     int tickOfMillisecond)
         {
             if (useBaseTimeOfDayFields)
             {
                 // Only call specialized implementation if applicable fields are the same.
-                return baseCalendar.GetLocalInstant(localInstant, hourOfDay, 
-                    minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
+                return baseCalendar.GetLocalInstant(localInstant, hourOfDay,
+                                                    minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
             }
 
             return base.GetLocalInstant(localInstant, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);

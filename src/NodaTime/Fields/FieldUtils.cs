@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -44,9 +45,11 @@ namespace NodaTime.Fields
             // TODO: i18n or decide whether we want our own custom type with lower and upper bounds
             if ((value < lowerBound) || (value > upperBound))
             {
-                throw new ArgumentOutOfRangeException("value", value, "Value of type " + fieldType + " should be in range [" + lowerBound + "-" + upperBound + "]");
+                throw new ArgumentOutOfRangeException("value", value,
+                                                      "Value of type " + fieldType + " should be in range [" + lowerBound + "-" + upperBound + "]");
             }
         }
+
         /// <summary>
         /// Verifies the input value against the valid range of the calendar field.
         /// </summary>

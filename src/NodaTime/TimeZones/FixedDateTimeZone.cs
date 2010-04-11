@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -54,7 +52,7 @@ namespace NodaTime.TimeZones
             : base(id, true)
         {
             this.offset = offset;
-            this.period = new ZoneInterval(id, Instant.MinValue, Instant.MaxValue, offset, Offset.Zero);
+            period = new ZoneInterval(id, Instant.MinValue, Instant.MaxValue, offset, Offset.Zero);
         }
 
         /// <summary>
@@ -79,7 +77,7 @@ namespace NodaTime.TimeZones
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
-            return this.period;
+            return period;
         }
 
         /// <summary>
@@ -90,7 +88,7 @@ namespace NodaTime.TimeZones
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
-            return this.period;
+            return period;
         }
 
         /// <summary>
@@ -103,7 +101,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override Offset GetOffsetFromUtc(Instant instant)
         {
-            return this.offset;
+            return offset;
         }
 
         /// <summary>
@@ -114,7 +112,7 @@ namespace NodaTime.TimeZones
         /// <returns>The offset at the specified local time.</returns>
         public override Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
-            return this.offset;
+            return offset;
         }
 
         /// <summary>
@@ -127,7 +125,7 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("writer");
             }
-            writer.WriteOffset(this.offset);
+            writer.WriteOffset(offset);
         }
 
         /// <summary>
@@ -147,7 +145,6 @@ namespace NodaTime.TimeZones
         }
 
         #region Implementation of IEquatable<FixedDateTimeZone>
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -170,11 +167,9 @@ namespace NodaTime.TimeZones
                    offset == other.offset &&
                    Id == other.Id;
         }
-
         #endregion
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
         /// </summary>
@@ -223,7 +218,6 @@ namespace NodaTime.TimeZones
         {
             return Id;
         }
-
         #endregion // Object overrides
     }
 }

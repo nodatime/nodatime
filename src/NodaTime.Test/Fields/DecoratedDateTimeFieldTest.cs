@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NUnit.Framework;
@@ -33,8 +34,8 @@ namespace NodaTime.Test.Fields
         public void Constructor_WithUnsupportedWrappedField_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentException>(() => new SimpleDecoratedDateTimeField(
-                UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MinuteOfDay, UnsupportedDurationField.Minutes),
-                DateTimeFieldType.SecondOfMinute));
+                                                       UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MinuteOfDay, UnsupportedDurationField.Minutes),
+                                                       DateTimeFieldType.SecondOfMinute));
         }
 
         [Test]
@@ -78,8 +79,8 @@ namespace NodaTime.Test.Fields
 
         private static IDateTimeField CreateSampleField()
         {
-            return new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, 
-                TicksDurationField.Instance, PreciseDurationField.Milliseconds);            
+            return new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond,
+                                            TicksDurationField.Instance, PreciseDurationField.Milliseconds);
         }
 
         private class SimpleDecoratedDateTimeField : DecoratedDateTimeField

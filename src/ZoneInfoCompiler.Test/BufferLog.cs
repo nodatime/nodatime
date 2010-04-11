@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Collections.Generic;
 using NodaTime.ZoneInfoCompiler;
 
@@ -42,7 +43,7 @@ namespace ZoneInfoCompiler.Test
         /// </summary>
         /// <param name="type">The type of log message.</param>
         /// <param name="message">The message to log.</param>
-        protected override void LogMessage(LogBase.LogType type, string message)
+        protected override void LogMessage(LogType type, string message)
         {
             Lines.Add(message);
         }

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NUnit.Framework;
@@ -25,7 +26,8 @@ namespace NodaTime.Test.Fields
     {
         private readonly ScaledDurationField sample =
             new ScaledDurationField(TicksDurationField.Instance,
-                DurationFieldType.Minutes, 90);
+                                    DurationFieldType.Minutes, 90);
+
         private readonly LocalInstant localInstant = new LocalInstant(567L);
 
         [Test]
@@ -43,7 +45,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithInvalidFieldType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ScaledDurationField(TicksDurationField.Instance, (DurationFieldType)(-1), 10));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ScaledDurationField(TicksDurationField.Instance, (DurationFieldType) (-1), 10));
         }
 
         [Test]

@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 namespace NodaTime.TimeZones
@@ -43,7 +41,6 @@ namespace NodaTime.TimeZones
         }
 
         #region IDateTimeZone Members
-
         /// <summary>
         /// Gets the zone offset period for the given instant. Null is returned if no period is
         /// defined by the time zone for the given instant.
@@ -72,7 +69,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public virtual Offset GetOffsetFromUtc(Instant instant)
         {
-            var period = this.GetZoneInterval(instant);
+            var period = GetZoneInterval(instant);
             return period.Offset;
         }
 
@@ -84,7 +81,7 @@ namespace NodaTime.TimeZones
         /// <returns>The offset at the specified local time.</returns>
         public virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
-            var period = this.GetZoneInterval(localInstant);
+            var period = GetZoneInterval(localInstant);
             return period.Offset;
         }
 
@@ -103,30 +100,22 @@ namespace NodaTime.TimeZones
         /// </remarks>
         public virtual string GetName(Instant instant)
         {
-            var period = this.GetZoneInterval(instant);
+            var period = GetZoneInterval(instant);
             return period.Name;
         }
 
         /// <summary>
         /// The database ID for the time zone.
         /// </summary>
-        public string Id
-        {
-            get { return id; }
-        }
+        public string Id { get { return id; } }
 
         /// <summary>
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
-        public bool IsFixed
-        {
-            get { return isFixed; }
-        }
-
+        public bool IsFixed { get { return isFixed; } }
         #endregion
 
         #region Object overrides
-
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
@@ -137,7 +126,6 @@ namespace NodaTime.TimeZones
         {
             return Id;
         }
-
         #endregion
     }
 }

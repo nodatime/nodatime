@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -49,7 +47,6 @@ namespace NodaTime.TimeZones
         internal Offset StandardOffset { private get; set; }
 
         #region IEnumerable<ZoneRecurrence> Members
-
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
@@ -59,7 +56,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public IEnumerator<ZoneRecurrence> GetEnumerator()
         {
-            return this.rules.GetEnumerator();
+            return rules.GetEnumerator();
         }
 
         /// <summary>
@@ -71,9 +68,8 @@ namespace NodaTime.TimeZones
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.rules.GetEnumerator();
+            return rules.GetEnumerator();
         }
-
         #endregion
 
         /// <summary>
@@ -135,7 +131,6 @@ namespace NodaTime.TimeZones
         }
 
         #region Nested type: TransitionIterator
-
         /// <summary>
         /// Iterates through all of the time transitions starting with the given instant using the
         /// rules in the RuleSet to generate each one.
@@ -186,15 +181,12 @@ namespace NodaTime.TimeZones
             /// <param name="startingInstant">The starting instant.</param>
             internal TransitionIterator(ZoneRecurrenceCollection ruleSet, Instant startingInstant)
             {
-                this.calendar = IsoCalendarSystem.Instance;
+                calendar = IsoCalendarSystem.Instance;
                 this.ruleSet = ruleSet;
                 this.startingInstant = startingInstant;
             }
 
-            internal Offset Savings
-            {
-                get { return this.savings; }
-            }
+            internal Offset Savings { get { return savings; } }
 
             /// <summary>
             /// Returns the first transition. If called after iteration has started, resets to the
@@ -203,8 +195,8 @@ namespace NodaTime.TimeZones
             /// <returns>The first <see cref="ZoneTransition"/> or <c>null</c> there are none.</returns>
             internal ZoneTransition First()
             {
-                this.rules = new List<ZoneRecurrence>(ruleSet.rules);
-                this.savings = Offset.Zero;
+                rules = new List<ZoneRecurrence>(ruleSet.rules);
+                savings = Offset.Zero;
                 var result = GetFirst();
                 SetupNext(result);
                 return result;
@@ -216,7 +208,7 @@ namespace NodaTime.TimeZones
             /// <returns>The next <see cref="ZoneTransition"/> or <c>null</c> if no more.</returns>
             internal ZoneTransition Next()
             {
-                var result = GetNext(this.instant);
+                var result = GetNext(instant);
                 SetupNext(result);
                 return result;
             }
@@ -230,10 +222,10 @@ namespace NodaTime.TimeZones
             /// <returns>The new <see cref="IDateTimeZone"/> or <c>null</c>.</returns>
             internal IDateTimeZone BuildTailZone(String id)
             {
-                if (this.rules.Count == 2)
+                if (rules.Count == 2)
                 {
-                    ZoneRecurrence startRule = this.rules[0];
-                    ZoneRecurrence endRule = this.rules[1];
+                    ZoneRecurrence startRule = rules[0];
+                    ZoneRecurrence endRule = rules[1];
                     if (startRule.IsInfinite && endRule.IsInfinite)
                     {
                         // With exactly two infinitely recurring rules left, a simple DaylightSavingsTimeZone can be
@@ -242,7 +234,7 @@ namespace NodaTime.TimeZones
                         // The order of rules can come in any order, and it doesn't really matter
                         // which rule was chosen the 'start' and which is chosen the 'end'. DaylightSavingsTimeZone
                         // works properly either way.
-                        return new DaylightSavingsTimeZone(id, this.ruleSet.StandardOffset, startRule, endRule);
+                        return new DaylightSavingsTimeZone(id, ruleSet.StandardOffset, startRule, endRule);
                     }
                 }
                 return null;
@@ -250,15 +242,15 @@ namespace NodaTime.TimeZones
 
             private ZoneTransition GetFirst()
             {
-                if (this.ruleSet.initialNameKey != null)
+                if (ruleSet.initialNameKey != null)
                 {
                     // Initial zone info explicitly set, so don't search the rules.
-                    return new ZoneTransition(this.startingInstant, this.ruleSet.initialNameKey,
-                                              this.ruleSet.StandardOffset, this.ruleSet.initialSavings);
+                    return new ZoneTransition(startingInstant, ruleSet.initialNameKey,
+                                              ruleSet.StandardOffset, ruleSet.initialSavings);
                 }
 
                 // Make a copy before we destroy the rules.
-                var saveRules = new List<ZoneRecurrence>(this.rules);
+                var saveRules = new List<ZoneRecurrence>(rules);
 
                 // Iterate through all the transitions until firstMillis is reached. Use the name key
                 // and savings for whatever rule reaches the limit.
@@ -270,13 +262,13 @@ namespace NodaTime.TimeZones
                 {
                     nextInstant = next.Instant;
 
-                    if (nextInstant == this.startingInstant)
+                    if (nextInstant == startingInstant)
                     {
                         firstTransition = next;
                         break;
                     }
 
-                    if (nextInstant > this.startingInstant)
+                    if (nextInstant > startingInstant)
                     {
                         if (firstTransition == null)
                         {
@@ -286,8 +278,8 @@ namespace NodaTime.TimeZones
                             {
                                 if (rule.Savings == Offset.Zero)
                                 {
-                                    firstTransition = new ZoneTransition(this.startingInstant, rule.Name,
-                                                                         this.ruleSet.StandardOffset, Offset.Zero);
+                                    firstTransition = new ZoneTransition(startingInstant, rule.Name,
+                                                                         ruleSet.StandardOffset, Offset.Zero);
                                     break;
                                 }
                             }
@@ -296,20 +288,20 @@ namespace NodaTime.TimeZones
                         {
                             // Found no rule without savings. Create a transition with no savings
                             // anyhow, and use the best available name key.
-                            firstTransition = new ZoneTransition(this.startingInstant, next.Name,
-                                                                 this.ruleSet.StandardOffset, Offset.Zero);
+                            firstTransition = new ZoneTransition(startingInstant, next.Name,
+                                                                 ruleSet.StandardOffset, Offset.Zero);
                         }
                         break;
                     }
 
                     // Set first to the best transition found so far, but next iteration may find
                     // something closer to lower limit.
-                    firstTransition = new ZoneTransition(this.startingInstant, next.Name, next.StandardOffset,
+                    firstTransition = new ZoneTransition(startingInstant, next.Name, next.StandardOffset,
                                                          next.Savings);
                     savings = next.Savings;
                 }
                 // Restore rules
-                this.rules = saveRules;
+                rules = saveRules;
                 return firstTransition;
             }
 
@@ -319,14 +311,14 @@ namespace NodaTime.TimeZones
                 ZoneRecurrence nextRule = null;
                 Instant nextTicks = Instant.MaxValue;
 
-                for (int i = 0; i < this.rules.Count; i++)
+                for (int i = 0; i < rules.Count; i++)
                 {
-                    ZoneRecurrence rule = this.rules[i];
-                    Transition? nextTransition = rule.Next(nextInstant, this.ruleSet.StandardOffset, this.savings);
+                    ZoneRecurrence rule = rules[i];
+                    Transition? nextTransition = rule.Next(nextInstant, ruleSet.StandardOffset, savings);
                     Instant? next = nextTransition == null ? (Instant?) null : nextTransition.Value.Instant;
                     if (!next.HasValue || next.Value <= nextInstant)
                     {
-                        this.rules.RemoveAt(i);
+                        rules.RemoveAt(i);
                         i--;
                         continue;
                     }
@@ -353,18 +345,18 @@ namespace NodaTime.TimeZones
                 }
 
                 // Check if upper limit reached or passed.
-                if (this.ruleSet.upperYear < Int32.MaxValue)
+                if (ruleSet.upperYear < Int32.MaxValue)
                 {
-                    Instant upperMillis = this.ruleSet.upperYearOffset.MakeInstant(this.ruleSet.upperYear,
-                                                                                   this.ruleSet.StandardOffset,
-                                                                                   this.savings);
+                    Instant upperMillis = ruleSet.upperYearOffset.MakeInstant(ruleSet.upperYear,
+                                                                              ruleSet.StandardOffset,
+                                                                              savings);
                     if (nextTicks >= upperMillis)
                     {
                         // At or after upper limit.
                         return null;
                     }
                 }
-                return new ZoneTransition(nextTicks, nextRule.Name, this.ruleSet.StandardOffset, nextRule.Savings);
+                return new ZoneTransition(nextTicks, nextRule.Name, ruleSet.StandardOffset, nextRule.Savings);
             }
 
             /// <summary>
@@ -375,12 +367,11 @@ namespace NodaTime.TimeZones
             {
                 if (transition != null)
                 {
-                    this.instant = transition.Instant;
-                    this.savings = transition.Savings;
+                    instant = transition.Instant;
+                    savings = transition.Savings;
                 }
             }
         }
-
         #endregion
     }
 }

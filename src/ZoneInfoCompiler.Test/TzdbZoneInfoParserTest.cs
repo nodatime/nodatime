@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.IO;
 using NodaTime;
@@ -28,9 +29,9 @@ namespace ZoneInfoCompiler.Test
     /// This is a test class for containing all of the TzdbZoneInfoParser unit tests.
     ///</summary>
     [TestFixture]
-    public partial class TzdbZoneInfoParserTest
+    public class TzdbZoneInfoParserTest
     {
-        private static readonly string[] MonthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+        private static readonly string[] MonthNames = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
         private BufferLog Log { get; set; }
         private TzdbZoneInfoParser Parser { get; set; }
@@ -49,7 +50,7 @@ namespace ZoneInfoCompiler.Test
         {
             string text = string.Empty;
             Tokens tokens = Tokens.Tokenize(text);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
+            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
         }
 
         [Test]
@@ -57,7 +58,7 @@ namespace ZoneInfoCompiler.Test
         {
             string text = "Mar";
             Tokens tokens = Tokens.Tokenize(text);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
+            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
         }
 
         [Test]
@@ -65,7 +66,7 @@ namespace ZoneInfoCompiler.Test
         {
             string text = "Mar lastSun";
             Tokens tokens = Tokens.Tokenize(text);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
+            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
         }
 
         [Test]
@@ -78,7 +79,7 @@ namespace ZoneInfoCompiler.Test
                 TransitionMode.Wall,
                 3,
                 -1,
-                (int)DayOfWeek.Tuesday,
+                (int) DayOfWeek.Tuesday,
                 false,
                 ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
@@ -94,7 +95,7 @@ namespace ZoneInfoCompiler.Test
                 TransitionMode.Wall,
                 3,
                 14,
-                (int)DayOfWeek.Tuesday,
+                (int) DayOfWeek.Tuesday,
                 true,
                 ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
@@ -110,7 +111,7 @@ namespace ZoneInfoCompiler.Test
                 TransitionMode.Wall,
                 3,
                 14,
-                (int)DayOfWeek.Tuesday,
+                (int) DayOfWeek.Tuesday,
                 false,
                 ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
@@ -295,14 +296,14 @@ namespace ZoneInfoCompiler.Test
         public void ParseLink_emptyString_exception()
         {
             Tokens tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseLink(tokens));
+            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseLink(tokens));
         }
 
         [Test]
         public void ParseLink_tooFewWords_exception()
         {
             Tokens tokens = Tokens.Tokenize("from");
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseLink(tokens));
+            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseLink(tokens));
         }
 
         [Test]
@@ -320,21 +321,21 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_emptyString_exception()
         {
             Tokens tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_tooFewWords2_exception()
         {
             Tokens tokens = Tokens.Tokenize("2:00");
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_tooFewWords1_exception()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US");
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
@@ -350,7 +351,7 @@ namespace ZoneInfoCompiler.Test
                 NodaConstants.January,
                 1,
                 Offset.Zero,
-                (char)0
+                (char) 0
                 );
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
@@ -368,7 +369,7 @@ namespace ZoneInfoCompiler.Test
                 NodaConstants.January,
                 1,
                 Offset.Zero,
-                (char)0
+                (char) 0
                 );
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
@@ -386,7 +387,7 @@ namespace ZoneInfoCompiler.Test
                 NodaConstants.January,
                 1,
                 Offset.Zero,
-                (char)0
+                (char) 0
                 );
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
@@ -404,7 +405,7 @@ namespace ZoneInfoCompiler.Test
                 NodaConstants.March,
                 23,
                 Offset.Zero,
-                (char)0
+                (char) 0
                 );
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
@@ -422,7 +423,7 @@ namespace ZoneInfoCompiler.Test
                 NodaConstants.March,
                 23,
                 ToOffset(14, 53, 27, 856),
-                (char)0
+                (char) 0
                 );
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
@@ -460,7 +461,7 @@ namespace ZoneInfoCompiler.Test
                 ToOffset(14, 53, 27, 856),
                 's'
                 );
-            Assert.Throws(typeof(FormatException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof (FormatException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         private static Offset ToOffset(int hours, int minutes, int seconds, int fractions)

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
@@ -43,7 +44,6 @@ namespace NodaTime.Fields
         public override bool IsLenient { get { return false; } }
 
         #region Values
-
         /// <summary>
         /// Get the Year component of the specified local instant.
         /// </summary>
@@ -63,7 +63,7 @@ namespace NodaTime.Fields
         {
             return calendarSystem.GetYear(localInstant);
         }
-        
+
         public override LocalInstant Add(LocalInstant localInstant, int value)
         {
             return value == 0 ? localInstant : SetValue(localInstant, GetValue(localInstant) + value);
@@ -71,7 +71,7 @@ namespace NodaTime.Fields
 
         public override LocalInstant Add(LocalInstant localInstant, long value)
         {
-            return Add(localInstant, (int)value);
+            return Add(localInstant, (int) value);
         }
 
         public override LocalInstant AddWrapField(LocalInstant localInstant, int value)
@@ -96,14 +96,13 @@ namespace NodaTime.Fields
 
         public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            return minuendInstant < subtrahendInstant ? -calendarSystem.GetYearDifference(subtrahendInstant, minuendInstant)
-                : calendarSystem.GetYearDifference(minuendInstant, subtrahendInstant);
+            return minuendInstant < subtrahendInstant
+                       ? -calendarSystem.GetYearDifference(subtrahendInstant, minuendInstant)
+                       : calendarSystem.GetYearDifference(minuendInstant, subtrahendInstant);
         }
-
         #endregion
 
         #region Leap
-
         public override bool IsLeap(LocalInstant localInstant)
         {
             return calendarSystem.IsLeapYear(GetValue(localInstant));
@@ -115,11 +114,9 @@ namespace NodaTime.Fields
         }
 
         public override IDurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
-
         #endregion
 
         #region Ranges
-
         public override long GetMinimumValue()
         {
             return calendarSystem.MinYear;
@@ -129,11 +126,9 @@ namespace NodaTime.Fields
         {
             return calendarSystem.MaxYear;
         }
-
         #endregion
 
         #region Rounding
-
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             return new LocalInstant(calendarSystem.GetYearTicks(GetValue(localInstant)));
@@ -143,10 +138,10 @@ namespace NodaTime.Fields
         {
             int year = GetValue(localInstant);
             long yearStartTicks = calendarSystem.GetYearTicks(year);
-            return localInstant.Ticks == yearStartTicks ? localInstant
-                : new LocalInstant(calendarSystem.GetYearTicks(year + 1));
+            return localInstant.Ticks == yearStartTicks
+                       ? localInstant
+                       : new LocalInstant(calendarSystem.GetYearTicks(year + 1));
         }
-
         #endregion
     }
 }

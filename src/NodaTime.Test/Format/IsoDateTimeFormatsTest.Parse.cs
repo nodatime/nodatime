@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -16,26 +16,22 @@
 #endregion
 
 using NodaTime.Format;
-using NodaTime.TimeZones;
-
 using NUnit.Framework;
-using System;
 
 namespace NodaTime.Test.Format
 {
     public partial class IsoDateTimeFormatsTest
     {
-        object[] DateElementParserTestData =
-        {
-            new TestCaseData("2006-06-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC) ),
-            new TestCaseData("2006-06-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC) ),
-            new TestCaseData("2006-6-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC) ),
-            new TestCaseData("2006-6-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC) ),
-            //Bug with weeks calculation
-            //new TestCaseData("2006-W27-3", new ZonedDateTime(2006, 7, 5, 0, 0, 0, 0, UTC) ),
-            new TestCaseData("2006-123", new ZonedDateTime(2006, 5, 3, 0, 0, 0, 0, UTC) ),
-
-        };
+        private object[] DateElementParserTestData =
+            {
+                new TestCaseData("2006-06-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+                new TestCaseData("2006-06-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+                new TestCaseData("2006-6-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+                new TestCaseData("2006-6-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+                //Bug with weeks calculation
+                //new TestCaseData("2006-W27-3", new ZonedDateTime(2006, 7, 5, 0, 0, 0, 0, UTC) ),
+                new TestCaseData("2006-123", new ZonedDateTime(2006, 5, 3, 0, 0, 0, 0, UTC)),
+            };
 
         [Test]
         [TestCaseSource("DateElementParserTestData")]
@@ -45,17 +41,16 @@ namespace NodaTime.Test.Format
             Assert.That(result.ToInstant(), Is.EqualTo(dateTime.ToInstant()));
         }
 
-        object[] DateParserTestData =
-        {
-            new TestCaseData("2006-06-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC) ),
-            new TestCaseData("2006-06-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC) ),
-            new TestCaseData("2006-6-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC) ),
-            new TestCaseData("2006-6-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC) ),
-            //Bug with weeks calculation
-            //new TestCaseData("2006-W27-3", new ZonedDateTime(2006, 7, 5, 0, 0, 0, 0, UTC) ),
-            new TestCaseData("2006-123", new ZonedDateTime(2006, 5, 3, 0, 0, 0, 0, UTC) ),
-
-        };
+        private object[] DateParserTestData =
+            {
+                new TestCaseData("2006-06-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+                new TestCaseData("2006-06-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+                new TestCaseData("2006-6-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+                new TestCaseData("2006-6-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+                //Bug with weeks calculation
+                //new TestCaseData("2006-W27-3", new ZonedDateTime(2006, 7, 5, 0, 0, 0, 0, UTC) ),
+                new TestCaseData("2006-123", new ZonedDateTime(2006, 5, 3, 0, 0, 0, 0, UTC)),
+            };
 
         [Test]
         [TestCaseSource("DateParserTestData")]
@@ -64,6 +59,5 @@ namespace NodaTime.Test.Format
             var result = IsoDateTimeFormats.DateParser.Parse(dateTimeText);
             Assert.That(result.ToInstant(), Is.EqualTo(dateTime.ToInstant()));
         }
-
     }
 }

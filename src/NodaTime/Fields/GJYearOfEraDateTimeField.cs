@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
@@ -26,7 +27,7 @@ namespace NodaTime.Fields
         private readonly BasicCalendarSystem calendarSystem;
 
         internal GJYearOfEraDateTimeField(IDateTimeField yearField, BasicCalendarSystem calendarSystem)
-            : base (yearField, DateTimeFieldType.YearOfEra)
+            : base(yearField, DateTimeFieldType.YearOfEra)
         {
             this.calendarSystem = calendarSystem;
         }

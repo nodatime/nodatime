@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 namespace NodaTime.Fields
 {
     /// <summary>
@@ -43,7 +44,7 @@ namespace NodaTime.Fields
             : base(fieldType)
         {
             this.unitTicks = unitTicks;
-            this.durationField = new LinkedDurationField(this, fieldType.DurationFieldType);
+            durationField = new LinkedDurationField(this, fieldType.DurationFieldType);
         }
 
         public long UnitTicks { get { return unitTicks; } }
@@ -56,9 +57,9 @@ namespace NodaTime.Fields
         public abstract override LocalInstant Add(LocalInstant localInstant, long value);
         public abstract override LocalInstant SetValue(LocalInstant localInstant, long value);
 
-        public override int  GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
- 	         return (int) GetInt64Difference(minuendInstant, subtrahendInstant);
+            return (int) GetInt64Difference(minuendInstant, subtrahendInstant);
         }
 
         public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)

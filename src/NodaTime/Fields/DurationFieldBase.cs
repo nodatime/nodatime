@@ -42,7 +42,7 @@ namespace NodaTime.Fields
             }
             this.fieldType = fieldType;
         }
-        
+
         /// <summary>
         /// Get the type of the field.
         /// </summary>
@@ -68,39 +68,34 @@ namespace NodaTime.Fields
         public abstract long UnitTicks { get; }
 
         #region Extract field value from a duration
-
         public virtual int GetValue(Duration duration)
         {
- 	        return (int) GetInt64Value(duration);
+            return (int) GetInt64Value(duration);
         }
 
         public virtual long GetInt64Value(Duration duration)
         {
- 	        return duration.Ticks / UnitTicks;
+            return duration.Ticks / UnitTicks;
         }
 
         public virtual int GetValue(Duration duration, LocalInstant localInstant)
         {
- 	        return (int) GetInt64Value(duration, localInstant);
+            return (int) GetInt64Value(duration, localInstant);
         }
 
         public abstract long GetInt64Value(Duration duration, LocalInstant localInstant);
-
         #endregion
 
         #region Create a duration from a field value
-
         public virtual Duration GetDuration(long value)
         {
             return new Duration(value * UnitTicks);
         }
 
         public abstract Duration GetDuration(long value, LocalInstant localInstant);
-
         #endregion
 
         #region Add, subtract, difference
-
         public abstract LocalInstant Add(LocalInstant localInstant, int value);
 
         public abstract LocalInstant Add(LocalInstant localInstant, long value);
@@ -109,7 +104,7 @@ namespace NodaTime.Fields
         {
             if (value == int.MinValue)
             {
-                return Subtract(localInstant, (long)value);
+                return Subtract(localInstant, (long) value);
             }
             return Add(localInstant, -value);
         }
@@ -129,7 +124,6 @@ namespace NodaTime.Fields
         }
 
         public abstract long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
-
         #endregion
 
         public int CompareTo(IDurationField other)

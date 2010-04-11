@@ -14,11 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
-using NodaTime.Calendars;
-using NodaTime.Utility;
 using System.Text;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -31,9 +31,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     public class ZoneRule
         : IEquatable<ZoneRule>
     {
-        public ZoneRecurrence Recurrence { get { return this.recurrence; } }
+        public ZoneRecurrence Recurrence { get { return recurrence; } }
         public string Name { get { return Recurrence.Name; } }
-        public string LetterS { get { return this.letterS; } }
+        public string LetterS { get { return letterS; } }
 
         private readonly ZoneRecurrence recurrence;
         private readonly string letterS;
@@ -94,7 +94,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -147,11 +146,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
             return builder.ToString();
         }
-
         #endregion Object overrides
 
         #region IEquatable<ZoneRule> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -166,17 +163,15 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             {
                 return false;
             }
-            if (this.recurrence != other.recurrence)
+            if (recurrence != other.recurrence)
             {
                 return false;
             }
-            return object.Equals(LetterS, other.LetterS);
+            return Equals(LetterS, other.LetterS);
         }
-
         #endregion
 
         #region Operator overloads
-
         /// <summary>
         /// Implements the operator ==.
         /// </summary>
@@ -185,9 +180,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(ZoneRule left, ZoneRule right)
         {
-            if ((object)left == null || (object)right == null)
+            if ((object) left == null || (object) right == null)
             {
-                return (object)left == (object)right;
+                return left == (object) right;
             }
             return left.Equals(right);
         }
@@ -202,7 +197,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             return !(left == right);
         }
-
         #endregion
     }
 }

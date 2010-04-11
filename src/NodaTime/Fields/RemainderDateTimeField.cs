@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -62,10 +63,10 @@ namespace NodaTime.Fields
         }
 
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
-        {            
+        {
             FieldUtils.VerifyValueBounds(this, value, 0, divisor - 1);
             int wrappedValue = WrappedField.GetValue(localInstant);
-            int divided = wrappedValue >= 0 ? wrappedValue / divisor : ((wrappedValue + 1)/divisor) - 1;
+            int divided = wrappedValue >= 0 ? wrappedValue / divisor : ((wrappedValue + 1) / divisor) - 1;
             return WrappedField.SetValue(localInstant, divided * divisor + value);
         }
 

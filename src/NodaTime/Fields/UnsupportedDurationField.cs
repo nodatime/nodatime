@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -27,7 +28,7 @@ namespace NodaTime.Fields
     internal sealed class UnsupportedDurationField : DurationFieldBase
     {
         private static readonly UnsupportedDurationField[] cache = Array.ConvertAll
-            ((DurationFieldType[]) Enum.GetValues(typeof(DurationFieldType)),
+            ((DurationFieldType[]) Enum.GetValues(typeof (DurationFieldType)),
              type => new UnsupportedDurationField(type));
 
         // Convenience fields
@@ -45,9 +46,10 @@ namespace NodaTime.Fields
         public static readonly UnsupportedDurationField Milliseconds = cache[(int) DurationFieldType.Milliseconds];
         public static readonly UnsupportedDurationField Ticks = cache[(int) DurationFieldType.Ticks];
 
-
         private UnsupportedDurationField(DurationFieldType fieldType)
-            : base(fieldType) { }
+            : base(fieldType)
+        {
+        }
 
         /// <summary>
         /// Gets an instance of UnsupportedDurationField for a specific named field.
@@ -57,13 +59,12 @@ namespace NodaTime.Fields
         /// <returns>The instance</returns>
         public static UnsupportedDurationField ForFieldType(DurationFieldType fieldType)
         {
-            if (!DurationFieldBase.IsTypeValid(fieldType))
+            if (!IsTypeValid(fieldType))
             {
                 throw new ArgumentOutOfRangeException("fieldType");
             }
             return cache[(int) fieldType];
         }
-
 
         /// <summary>
         /// This field is not supported, always returns false

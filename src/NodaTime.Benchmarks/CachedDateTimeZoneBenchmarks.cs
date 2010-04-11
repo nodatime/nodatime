@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using NodaTime.Benchmarks.Timing;
@@ -41,104 +39,104 @@ namespace NodaTime.Benchmarks
         public CachedDateTimeZoneBenchmarks()
         {
             var adjustment = new Duration(NodaConstants.TicksPerDay * 365);
-            for (int i = 0; i < this.noCacheInstants.Length; i++)
+            for (int i = 0; i < noCacheInstants.Length; i++)
             {
-                this.noCacheInstants[i] = Instant.UnixEpoch + (adjustment * i);
+                noCacheInstants[i] = Instant.UnixEpoch + (adjustment * i);
             }
-            for (int i = 0; i < this.cacheInstants.Length; i++)
+            for (int i = 0; i < cacheInstants.Length; i++)
             {
-                this.cacheInstants[i] = Instant.UnixEpoch + (adjustment * i);
+                cacheInstants[i] = Instant.UnixEpoch + (adjustment * i);
             }
             var twoDays = new Duration(NodaConstants.TicksPerDay * 2);
-            for (int i = 0; i < this.twoYearsCacheInstants.Length; i++)
+            for (int i = 0; i < twoYearsCacheInstants.Length; i++)
             {
-                this.twoYearsCacheInstants[i] = Instant.UnixEpoch + (twoDays * i);
+                twoYearsCacheInstants[i] = Instant.UnixEpoch + (twoDays * i);
             }
 
-            for (int i = 0; i < this.noCacheLocalInstants.Length; i++)
+            for (int i = 0; i < noCacheLocalInstants.Length; i++)
             {
-                this.noCacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (adjustment * i);
+                noCacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (adjustment * i);
             }
-            for (int i = 0; i < this.cacheLocalInstants.Length; i++)
+            for (int i = 0; i < cacheLocalInstants.Length; i++)
             {
-                this.cacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (adjustment * i);
+                cacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (adjustment * i);
             }
-            for (int i = 0; i < this.twoYearsCacheLocalInstants.Length; i++)
+            for (int i = 0; i < twoYearsCacheLocalInstants.Length; i++)
             {
-                this.twoYearsCacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (twoDays * i);
+                twoYearsCacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (twoDays * i);
             }
         }
 
         [Benchmark]
         public void GetPeriodInstant()
         {
-            this.paris.GetZoneInterval(Instant.UnixEpoch);
+            paris.GetZoneInterval(Instant.UnixEpoch);
         }
 
         [Benchmark]
         public void GetPeriodInstant_NoCache()
         {
-            this.paris.GetZoneInterval(this.noCacheInstants[this.noCacheIndex]);
-            this.noCacheIndex = (this.noCacheIndex + 1) % this.noCacheInstants.Length;
+            paris.GetZoneInterval(noCacheInstants[noCacheIndex]);
+            noCacheIndex = (noCacheIndex + 1) % noCacheInstants.Length;
         }
 
         [Benchmark]
         public void GetPeriodInstant_Cache()
         {
-            this.paris.GetZoneInterval(this.cacheInstants[this.cacheIndex]);
-            this.cacheIndex = (this.cacheIndex + 1) % this.cacheInstants.Length;
+            paris.GetZoneInterval(cacheInstants[cacheIndex]);
+            cacheIndex = (cacheIndex + 1) % cacheInstants.Length;
         }
 
         [Benchmark]
         public void GetPeriodInstant_TwoYears()
         {
-            this.paris.GetZoneInterval(this.twoYearsCacheInstants[this.twoYearsCacheIndex]);
-            this.twoYearsCacheIndex = (this.twoYearsCacheIndex + 1) % this.twoYearsCacheInstants.Length;
+            paris.GetZoneInterval(twoYearsCacheInstants[twoYearsCacheIndex]);
+            twoYearsCacheIndex = (twoYearsCacheIndex + 1) % twoYearsCacheInstants.Length;
         }
 
         [Benchmark]
         public void GetPeriodLocalInstant()
         {
-            this.paris.GetZoneInterval(LocalInstant.LocalUnixEpoch);
+            paris.GetZoneInterval(LocalInstant.LocalUnixEpoch);
         }
 
         [Benchmark]
         public void GetPerioLocaldInstant_NoCache()
         {
-            this.paris.GetZoneInterval(this.noCacheLocalInstants[this.noCacheLocalIndex]);
-            this.noCacheLocalIndex = (this.noCacheLocalIndex + 1) % this.noCacheLocalInstants.Length;
+            paris.GetZoneInterval(noCacheLocalInstants[noCacheLocalIndex]);
+            noCacheLocalIndex = (noCacheLocalIndex + 1) % noCacheLocalInstants.Length;
         }
 
         [Benchmark]
         public void GetPeriodLocalInstant_Cache()
         {
-            this.paris.GetZoneInterval(this.cacheLocalInstants[this.cacheLocalIndex]);
-            this.cacheLocalIndex = (this.cacheLocalIndex + 1) % this.cacheLocalInstants.Length;
+            paris.GetZoneInterval(cacheLocalInstants[cacheLocalIndex]);
+            cacheLocalIndex = (cacheLocalIndex + 1) % cacheLocalInstants.Length;
         }
 
         [Benchmark]
         public void GetPeriodLocalInstant_TwoYears()
         {
-            this.paris.GetZoneInterval(this.twoYearsCacheLocalInstants[this.twoYearsCacheLocalIndex]);
-            this.twoYearsCacheLocalIndex = (this.twoYearsCacheLocalIndex + 1) % this.twoYearsCacheLocalInstants.Length;
+            paris.GetZoneInterval(twoYearsCacheLocalInstants[twoYearsCacheLocalIndex]);
+            twoYearsCacheLocalIndex = (twoYearsCacheLocalIndex + 1) % twoYearsCacheLocalInstants.Length;
         }
 
         [Benchmark]
         public void GetOffsetFromUtc()
         {
-            this.paris.GetOffsetFromUtc(Instant.UnixEpoch);
+            paris.GetOffsetFromUtc(Instant.UnixEpoch);
         }
 
         [Benchmark]
         public void GetOffsetFromLocal()
         {
-            this.paris.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch);
+            paris.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch);
         }
 
         [Benchmark]
         public void Name()
         {
-            this.paris.GetName(Instant.UnixEpoch);
+            paris.GetName(Instant.UnixEpoch);
         }
     }
 }

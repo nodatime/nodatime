@@ -14,10 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System.Globalization;
-using System.Text;
-using System.IO;
+
 using System;
+using System.IO;
+using System.Text;
+
 namespace NodaTime.Format
 {
     /// <summary>
@@ -64,7 +65,5 @@ namespace NodaTime.Format
         /// <param name="period">The period to format</param>
         /// <param name="provider">The IFormatProvider to use</param>
         void PrintTo(TextWriter textWriter, IPeriod period, IFormatProvider provider);
-
-
     }
 }

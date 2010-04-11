@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -85,10 +83,7 @@ namespace NodaTime.TimeZones
         /// Gets the UTC (Coordinated Univeral Time) time zone.
         /// </summary>
         /// <value>The UTC <see cref="IDateTimeZone"/>.</value>
-        public static IDateTimeZone Utc
-        {
-            get { return UtcZone; }
-        }
+        public static IDateTimeZone Utc { get { return UtcZone; } }
 
         /// <summary>
         /// Gets or sets the current time zone.
@@ -99,21 +94,14 @@ namespace NodaTime.TimeZones
         /// cref="SystemDefault"/> time zone to be used.
         /// </remarks>
         /// <value>The current <see cref="IDateTimeZone"/>. This will never be <c>null</c>.</value>
-        public static IDateTimeZone Current
-        {
-            get { return Implementation.DoCurrent; }
-            set { Implementation.DoCurrent = value; }
-        }
+        public static IDateTimeZone Current { get { return Implementation.DoCurrent; } set { Implementation.DoCurrent = value; } }
 
         /// <summary>
         /// Gets the complete list of valid time zone ids provided by all of the registered
         /// providers. This list will be sorted in lexigraphical order by the id name.
         /// </summary>
         /// <value>The <see cref="IEnumerable{T}"/> of string ids.</value>
-        public static IEnumerable<string> Ids
-        {
-            get { return Implementation.DoIds; }
-        }
+        public static IEnumerable<string> Ids { get { return Implementation.DoIds; } }
 
         /// <summary>
         /// Adds the given time zone provider to the front of the provider list.
@@ -154,7 +142,6 @@ namespace NodaTime.TimeZones
         }
 
         #region Nested type: Impl
-
         /// <summary>
         /// Provides a standard object that implements the functionality of the static class <see
         /// cref="DateTimeZones"/>. This makes testing simpler because all of the logic is
@@ -184,11 +171,7 @@ namespace NodaTime.TimeZones
             /// cref="SystemDefault"/> time zone to be used.
             /// </remarks>
             /// <value>The current <see cref="IDateTimeZone"/>. This will never be <c>null</c>.</value>
-            internal IDateTimeZone DoCurrent
-            {
-                get { return this.current ?? SystemDefault; }
-                set { this.current = value; }
-            }
+            internal IDateTimeZone DoCurrent { get { return current ?? SystemDefault; } set { current = value; } }
 
             /// <summary>
             /// Gets the complete list of valid time zone ids provided by all of the registered
@@ -199,18 +182,18 @@ namespace NodaTime.TimeZones
             {
                 get
                 {
-                    if (this.idList.Count == 0)
+                    if (idList.Count == 0)
                     {
-                        this.idList.Add(UtcId, null);
-                        foreach (var provider in this.providers)
+                        idList.Add(UtcId, null);
+                        foreach (var provider in providers)
                         {
                             foreach (var id in provider.Ids)
                             {
-                                this.idList.Add(id, null);
+                                idList.Add(id, null);
                             }
                         }
                     }
-                    return this.idList.Keys;
+                    return idList.Keys;
                 }
             }
 
@@ -234,11 +217,11 @@ namespace NodaTime.TimeZones
             /// <param name="provider">The <see cref="IDateTimeZoneProvider"/> to add.</param>
             internal void DoAddProvider(IDateTimeZoneProvider provider)
             {
-                if (!this.providers.Contains(provider))
+                if (!providers.Contains(provider))
                 {
-                    this.providers.AddFirst(provider);
-                    this.timeZoneMap.Clear();
-                    this.idList.Clear();
+                    providers.AddFirst(provider);
+                    timeZoneMap.Clear();
+                    idList.Clear();
                 }
             }
 
@@ -252,11 +235,11 @@ namespace NodaTime.TimeZones
             /// <returns><c>true</c> if the provider was removed.</returns>
             internal bool DoRemoveProvider(IDateTimeZoneProvider provider)
             {
-                if (this.providers.Contains(provider))
+                if (providers.Contains(provider))
                 {
-                    this.providers.Remove(provider);
-                    this.timeZoneMap.Clear();
-                    this.idList.Clear();
+                    providers.Remove(provider);
+                    timeZoneMap.Clear();
+                    idList.Clear();
                     return true;
                 }
                 return false;
@@ -272,9 +255,9 @@ namespace NodaTime.TimeZones
                 IDateTimeZone result = Utc;
                 if (id != UtcId)
                 {
-                    if (!this.timeZoneMap.TryGetValue(id, out result))
+                    if (!timeZoneMap.TryGetValue(id, out result))
                     {
-                        foreach (var provider in this.providers)
+                        foreach (var provider in providers)
                         {
                             result = provider.ForId(id);
                             if (result != null)
@@ -282,13 +265,12 @@ namespace NodaTime.TimeZones
                                 break;
                             }
                         }
-                        this.timeZoneMap.Add(id, result);
+                        timeZoneMap.Add(id, result);
                     }
                 }
                 return result;
             }
         }
-
         #endregion
     }
 }

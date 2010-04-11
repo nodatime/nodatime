@@ -1,7 +1,6 @@
-﻿#region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+#region Copyright and license information
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -76,31 +74,21 @@ namespace NodaTime.TimeZones
         /// Gets the standard offset.
         /// </summary>
         /// <value>The standard offset.</value>
-        private Offset StandardOffset
-        {
-            get { return this.standardOffset; }
-        }
+        private Offset StandardOffset { get { return standardOffset; } }
 
         /// <summary>
         /// Gets the start recurrence.
         /// </summary>
         /// <value>The start recurrence.</value>
-        private ZoneRecurrence StartRecurrence
-        {
-            get { return this.startRecurrence; }
-        }
+        private ZoneRecurrence StartRecurrence { get { return startRecurrence; } }
 
         /// <summary>
         /// Gets the end recurrence.
         /// </summary>
         /// <value>The end recurrence.</value>
-        private ZoneRecurrence EndRecurrence
-        {
-            get { return this.endRecurrence; }
-        }
+        private ZoneRecurrence EndRecurrence { get { return endRecurrence; } }
 
         #region IEquatable<DaylightSavingsTimeZone> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -111,19 +99,23 @@ namespace NodaTime.TimeZones
         ///                 </param>
         public bool Equals(DaylightSavingsTimeZone other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
             return
                 Id == other.Id &&
                 StandardOffset == other.StandardOffset &&
                 StartRecurrence.Equals(other.StartRecurrence) &&
                 EndRecurrence.Equals(other.EndRecurrence);
         }
-
         #endregion
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
         /// </summary>
@@ -154,7 +146,6 @@ namespace NodaTime.TimeZones
             hashCode = HashCodeHelper.Hash(hashCode, EndRecurrence);
             return hashCode;
         }
-
         #endregion // Object overrides
 
         /// <summary>
@@ -187,16 +178,16 @@ namespace NodaTime.TimeZones
         public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             var normal = localInstant - StandardOffset;
-            var daylight = localInstant - (StandardOffset + this.startRecurrence.Savings);
+            var daylight = localInstant - (StandardOffset + startRecurrence.Savings);
             var normalRecurrence = FindMatchingRecurrence(normal);
             var daylightRecurrence = FindMatchingRecurrence(daylight);
 
-            if (ReferenceEquals(normalRecurrence, this.startRecurrence) &&
-                ReferenceEquals(daylightRecurrence, this.endRecurrence))
+            if (ReferenceEquals(normalRecurrence, startRecurrence) &&
+                ReferenceEquals(daylightRecurrence, endRecurrence))
             {
                 throw new SkippedTimeException(localInstant, this);
             }
-            return this.GetZoneInterval(normal);
+            return GetZoneInterval(normal);
         }
 
         /// <summary>

@@ -14,15 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
+using NodaTime.Calendars;
 using NodaTime.TimeZones;
 using NUnit.Framework;
-using NodaTime.Calendars;
 
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public partial class ZoneRecurrenceTest
+    public class ZoneRecurrenceTest
     {
         private const long TicksPerStandardYear = NodaConstants.TicksPerDay * 365;
         private const long TicksPerLeapYear = NodaConstants.TicksPerDay * 366;
@@ -30,28 +31,28 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Constructor_nullName_exception()
         {
-            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
-            Assert.Throws(typeof(ArgumentNullException), () => new ZoneRecurrence(null, Offset.Zero, yearOffset, 1971, 2009), "Null name");
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
+            Assert.Throws(typeof (ArgumentNullException), () => new ZoneRecurrence(null, Offset.Zero, yearOffset, 1971, 2009), "Null name");
         }
 
         [Test]
         public void Constructor_nullYearOffset_exception()
         {
-            Assert.Throws(typeof(ArgumentNullException), () => new ZoneRecurrence("bob", Offset.Zero, null, 1971, 2009), "Null yearOffset");
+            Assert.Throws(typeof (ArgumentNullException), () => new ZoneRecurrence("bob", Offset.Zero, null, 1971, 2009), "Null yearOffset");
         }
 
         [Test]
         public void RenameAppend_nullSuffix()
         {
-            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
             var old = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
-            Assert.Throws(typeof(ArgumentNullException), () => old.RenameAppend(null), "Null suffix");
+            Assert.Throws(typeof (ArgumentNullException), () => old.RenameAppend(null), "Null suffix");
         }
 
         [Test]
         public void RenameAppend()
         {
-            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
             var old = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
             var actual = old.RenameAppend("-Summer");
             var expected = new ZoneRecurrence("bob-Summer", Offset.Zero, yearOffset, 1971, 2009);
@@ -75,7 +76,7 @@ namespace NodaTime.Test.TimeZones
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
             Transition? actual = recurrence.Next(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
             Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (1 * TicksPerStandardYear)),
-                Offset.Zero, Offset.Zero);
+                                                  Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
@@ -87,7 +88,7 @@ namespace NodaTime.Test.TimeZones
             Transition? actual = recurrence.Next(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
             actual = recurrence.Next(actual.Value.Instant, Offset.Zero, Offset.Zero);
             Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear)),
-                Offset.Zero, Offset.Zero);
+                                                  Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
@@ -109,7 +110,7 @@ namespace NodaTime.Test.TimeZones
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
             Transition? actual = recurrence.Previous(Instant.MaxValue, Offset.Zero, Offset.Zero);
             Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear)),
-                Offset.Zero, Offset.Zero);
+                                                  Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
@@ -158,7 +159,7 @@ namespace NodaTime.Test.TimeZones
         public void WriteRead()
         {
             var dio = new DtzIoHelper();
-            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
             var actual = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
             var expected = dio.WriteRead(actual);
             Assert.AreEqual(expected, actual);
@@ -167,7 +168,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void IEquatable_Tests()
         {
-            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int) DaysOfWeek.Wednesday, true, Offset.Zero);
 
             var value = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
             var equalValue = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);

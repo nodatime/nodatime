@@ -1,7 +1,6 @@
-﻿#region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+#region Copyright and license information
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -64,68 +62,52 @@ namespace NodaTime.TimeZones
             this.savings = savings;
             try
             {
-                this.localStart = this.start + this.offset;
+                localStart = this.start + this.offset;
             }
             catch (OverflowException)
             {
-                this.localStart = LocalInstant.MinValue;
+                localStart = LocalInstant.MinValue;
             }
             try
             {
-                this.localEnd = this.end + (this.offset - this.savings);
+                localEnd = this.end + (this.offset - this.savings);
             }
             catch (OverflowException)
             {
-                this.localEnd = LocalInstant.MaxValue;
+                localEnd = LocalInstant.MaxValue;
             }
         }
 
         #region Properties
-
         /// <summary>
         /// Gets the first Instant that the Offset applies.
         /// </summary>
         /// <value>The first Instant that the Offset applies.</value>
-        public Instant Start
-        {
-            get { return this.start; }
-        }
+        public Instant Start { get { return start; } }
 
         /// <summary>
         /// Gets the last Instant (exclusive) that the Offset applies.
         /// </summary>
         /// <value>The last Instant (exclusive) that the Offset applies.</value>
-        public Instant End
-        {
-            get { return this.end; }
-        }
+        public Instant End { get { return end; } }
 
         /// <summary>
         /// Gets the name of this offset period (e.g. PST or PDT).
         /// </summary>
         /// <value>The name of this offset period (e.g. PST or PDT).</value>
-        public string Name
-        {
-            get { return this.name; }
-        }
+        public string Name { get { return name; } }
 
         /// <summary>
         /// Gets the offset from UTC for this period. This includes any daylight savings value.
         /// </summary>
         /// <value>The offset from UTC for this period.</value>
-        public Offset Offset
-        {
-            get { return this.offset; }
-        }
+        public Offset Offset { get { return offset; } }
 
         /// <summary>
         /// Gets the daylight savings value for this period.
         /// </summary>
         /// <value>The savings value.</value>
-        public Offset Savings
-        {
-            get { return this.savings; }
-        }
+        public Offset Savings { get { return savings; } }
 
         /// <summary>
         /// Gets the base offset for this period. This is the offset without any daylight savings
@@ -135,10 +117,7 @@ namespace NodaTime.TimeZones
         /// This is effectively <c>Offset - Savings</c>.
         /// </remarks>
         /// <value>The base Offset.</value>
-        public Offset BaseOffset
-        {
-            get { return Offset - Savings; }
-        }
+        public Offset BaseOffset { get { return Offset - Savings; } }
 
         /// <summary>
         /// Gets the duration of this period.
@@ -147,10 +126,7 @@ namespace NodaTime.TimeZones
         /// This is effectively <c>Start - End</c>.
         /// </remarks>
         /// <value>The Duration of this period.</value>
-        public Duration Duration
-        {
-            get { return End - Start; }
-        }
+        public Duration Duration { get { return End - Start; } }
 
         /// <summary>
         /// Gets the start time as a LocalInstant.
@@ -159,10 +135,7 @@ namespace NodaTime.TimeZones
         /// This is effectively <c>Start + Offset</c>.
         /// </remarks>
         /// <value>The starting LocalInstant.</value>
-        public LocalInstant LocalStart
-        {
-            get { return this.localStart; }
-        }
+        public LocalInstant LocalStart { get { return localStart; } }
 
         /// <summary>
         /// Gets the end time as a LocalInstant.
@@ -171,15 +144,10 @@ namespace NodaTime.TimeZones
         /// This is effectively <c>End + Offset</c>.
         /// </remarks>
         /// <value>The ending LocalInstant.</value>
-        public LocalInstant LocalEnd
-        {
-            get { return this.localEnd; }
-        }
-
+        public LocalInstant LocalEnd { get { return localEnd; } }
         #endregion // Properties
 
         #region Contains
-
         /// <summary>
         /// Determines whether this period contains the given Instant in its range.
         /// </summary>
@@ -203,11 +171,9 @@ namespace NodaTime.TimeZones
         {
             return LocalStart <= localInstant && localInstant < LocalEnd;
         }
-
         #endregion // Contains
 
         #region IEquatable<ZoneInterval> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -232,11 +198,9 @@ namespace NodaTime.TimeZones
                    Offset == other.Offset &&
                    Savings == other.Savings;
         }
-
         #endregion
 
         #region object Overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
         /// </summary>
@@ -248,9 +212,18 @@ namespace NodaTime.TimeZones
         ///                 </exception><filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (ZoneInterval)) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != typeof (ZoneInterval))
+            {
+                return false;
+            }
             return Equals((ZoneInterval) obj);
         }
 
@@ -293,11 +266,9 @@ namespace NodaTime.TimeZones
             buffer.Append(@")");
             return buffer.ToString();
         }
-
         #endregion // object Overrides
 
         #region operators
-
         /// <summary>
         /// Implements the operator ==.
         /// </summary>
@@ -319,11 +290,9 @@ namespace NodaTime.TimeZones
         {
             return !Equals(left, right);
         }
-
         #endregion // operators
 
         #region I/O
-
         /// <summary>
         /// Writes the specified writer.
         /// </summary>
@@ -359,7 +328,6 @@ namespace NodaTime.TimeZones
             var savings = reader.ReadOffset();
             return new ZoneInterval(name, start, end, offset, savings);
         }
-
         #endregion // I/O
     }
 }

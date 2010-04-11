@@ -14,7 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
+
 namespace NodaTime.Fields
 {
     /// <summary>
@@ -66,7 +68,6 @@ namespace NodaTime.Fields
         bool IsLenient { get; }
 
         #region Values
-
         /// <summary>
         /// Get the value of this field from the local instant.
         /// </summary>
@@ -329,11 +330,9 @@ namespace NodaTime.Fields
         /// <param name="provider">The format provider to use</param>
         /// <returns>The passed in values</returns>
         int[] SetValue(IPartial instant, int fieldIndex, int[] values, String text, IFormatProvider provider);
-
         #endregion
 
         #region Leap
-
         /// <summary>
         /// Returns whether this field is 'leap' for the specified instant.
         /// <para>
@@ -359,11 +358,9 @@ namespace NodaTime.Fields
         /// returned duration. If this field doesn't ever leap, null is returned.
         /// </summary>
         IDurationField LeapDurationField { get; }
-
         #endregion
 
         #region Ranges
-
         /// <summary>
         /// Get the maximum allowable value for this field.
         /// </summary>
@@ -420,11 +417,9 @@ namespace NodaTime.Fields
         /// <param name="values">The values to use</param>
         /// <returns>The minimum value for this field, in the units of the field</returns>
         long GetMinimumValue(IPartial instant, int[] values);
-
         #endregion
 
         #region Rounding
-
         /// <summary>
         /// Round to the lowest whole unit of this field. After rounding, the value
         /// of this field and all fields of a higher magnitude are retained. The
@@ -494,11 +489,9 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to get the remainder</param>
         /// <returns>Remainder duration</returns>
         Duration Remainder(LocalInstant localInstant);
-
         #endregion
 
         #region Text
-
         /// <summary>
         /// Get the maximum text value for this field.
         /// </summary>
@@ -592,7 +585,6 @@ namespace NodaTime.Fields
         /// <param name="provider">Format provider to use</param>
         /// <returns>The text value of the field</returns>
         string GetAsShortText(int fieldValue, IFormatProvider provider);
-
         #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -17,7 +17,6 @@
 
 using NodaTime.Format;
 using NodaTime.TimeZones;
-
 using NUnit.Framework;
 
 namespace NodaTime.Test.Format
@@ -26,15 +25,15 @@ namespace NodaTime.Test.Format
     public partial class IsoDateTimeFormatsTest
     {
         #region Zones
-        private static IDateTimeZone UTC = DateTimeZones.Utc;
-        private static IDateTimeZone London = DateTimeZones.ForId("Europe/London");
-        private static IDateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
+        private static readonly IDateTimeZone UTC = DateTimeZones.Utc;
+        private static readonly IDateTimeZone London = DateTimeZones.ForId("Europe/London");
+        private static readonly IDateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
         #endregion
 
-        object[] DateFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09"),
-        };
+        private object[] DateFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09"),
+            };
 
         [Test]
         [TestCaseSource("DateFormatterTestData")]
@@ -43,13 +42,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.Date.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] TimeFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20:30.040Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "10:20:30.040+01:00"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "10:20:30.040+02:00"),
-
-        };
+        private object[] TimeFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20:30.040Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "10:20:30.040+01:00"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "10:20:30.040+02:00"),
+            };
 
         [Test]
         [TestCaseSource("TimeFormatterTestData")]
@@ -58,13 +56,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.Time.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] TimeWithNoMillisecondsFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20:30Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "10:20:30+01:00"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "10:20:30+02:00"),
-
-        };
+        private object[] TimeWithNoMillisecondsFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20:30Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "10:20:30+01:00"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "10:20:30+02:00"),
+            };
 
         [Test]
         [TestCaseSource("TimeWithNoMillisecondsFormatterTestData")]
@@ -73,13 +70,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.TimeNoMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] TTimeFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "T10:20:30.040Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "T10:20:30.040+01:00"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "T10:20:30.040+02:00"),
-
-        };
+        private object[] TTimeFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "T10:20:30.040Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "T10:20:30.040+01:00"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "T10:20:30.040+02:00"),
+            };
 
         [Test]
         [TestCaseSource("TTimeFormatterTestData")]
@@ -88,13 +84,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.TTime.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] TTimeNoMillisecondsFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "T10:20:30Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "T10:20:30+01:00"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "T10:20:30+02:00"),
-
-        };
+        private object[] TTimeNoMillisecondsFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "T10:20:30Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "T10:20:30+01:00"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "T10:20:30+02:00"),
+            };
 
         [Test]
         [TestCaseSource("TTimeNoMillisecondsFormatterTestData")]
@@ -103,13 +98,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.TTimeNoMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] DateTimeFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20:30.040Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "2004-06-09T10:20:30.040+01:00"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "2004-06-09T10:20:30.040+02:00"),
-
-        };
+        private object[] DateTimeFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20:30.040Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "2004-06-09T10:20:30.040+01:00"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "2004-06-09T10:20:30.040+02:00"),
+            };
 
         [Test]
         [TestCaseSource("DateTimeFormatterTestData")]
@@ -118,13 +112,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.DateTime.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] DateTimeNoMillisecondsFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20:30Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "2004-06-09T10:20:30+01:00"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "2004-06-09T10:20:30+02:00"),
-
-        };
+        private object[] DateTimeNoMillisecondsFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20:30Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "2004-06-09T10:20:30+01:00"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "2004-06-09T10:20:30+02:00"),
+            };
 
         [Test]
         [TestCaseSource("DateTimeNoMillisecondsFormatterTestData")]
@@ -133,13 +126,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.DateTimeNoMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] OrdinalDateFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-161"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "2004-161"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "2004-161"),
-
-        };
+        private object[] OrdinalDateFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-161"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, London), "2004-161"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, Paris), "2004-161"),
+            };
 
         [Test]
         [TestCaseSource("OrdinalDateFormatterTestData")]
@@ -148,13 +140,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.OrdinalDate.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] OrdinalDateTimeFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-161T10:20:30.040Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-161T11:20:30.040+01:00"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-161T12:20:30.040+02:00"),
-
-        };
+        private object[] OrdinalDateTimeFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-161T10:20:30.040Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-161T11:20:30.040+01:00"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-161T12:20:30.040+02:00"),
+            };
 
         [Test]
         [TestCaseSource("OrdinalDateTimeFormatterTestData")]
@@ -163,13 +154,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.OrdinalDateTime.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] OrdinalDateTimeNoMillisecondsFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-161T10:20:30Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-161T11:20:30+01:00"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-161T12:20:30+02:00"),
-
-        };
+        private object[] OrdinalDateTimeNoMillisecondsFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-161T10:20:30Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-161T11:20:30+01:00"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-161T12:20:30+02:00"),
+            };
 
         [Test]
         [TestCaseSource("OrdinalDateTimeNoMillisecondsFormatterTestData")]
@@ -178,13 +168,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] WeekDateFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-W24-3"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-W24-3"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-W24-3"),
-
-        };
+        private object[] WeekDateFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-W24-3"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-W24-3"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-W24-3"),
+            };
 
         [Test]
         [TestCaseSource("WeekDateFormatterTestData")]
@@ -193,13 +182,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.WeekDate.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] WeekDateTimeFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-W24-3T10:20:30.040Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-W24-3T11:20:30.040+01:00"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-W24-3T12:20:30.040+02:00"),
-
-        };
+        private object[] WeekDateTimeFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-W24-3T10:20:30.040Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-W24-3T11:20:30.040+01:00"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-W24-3T12:20:30.040+02:00"),
+            };
 
         [Test]
         [TestCaseSource("WeekDateTimeFormatterTestData")]
@@ -208,13 +196,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.WeekDateTime.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] WeekDateTimeNoMillisecondsFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-W24-3T10:20:30Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-W24-3T11:20:30+01:00"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-W24-3T12:20:30+02:00"),
-
-        };
+        private object[] WeekDateTimeNoMillisecondsFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-W24-3T10:20:30Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-W24-3T11:20:30+01:00"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-W24-3T12:20:30+02:00"),
+            };
 
         [Test]
         [TestCaseSource("WeekDateTimeNoMillisecondsFormatterTestData")]
@@ -223,13 +210,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.WeekDateTimeNoMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicDateFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "20040609"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "20040609"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "20040609"),
-
-        };
+        private object[] BasicDateFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "20040609"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "20040609"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "20040609"),
+            };
 
         [Test]
         [TestCaseSource("BasicDateFormatterTestData")]
@@ -238,13 +224,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicDate.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicTimeFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "102030.040Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "112030.040+0100"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "122030.040+0200"),
-
-        };
+        private object[] BasicTimeFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "102030.040Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "112030.040+0100"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "122030.040+0200"),
+            };
 
         [Test]
         [TestCaseSource("BasicTimeFormatterTestData")]
@@ -253,13 +238,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicTime.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicTimeNoMillisecondsFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "102030Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "112030+0100"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "122030+0200"),
-
-        };
+        private object[] BasicTimeNoMillisecondsFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "102030Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "112030+0100"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "122030+0200"),
+            };
 
         [Test]
         [TestCaseSource("BasicTimeNoMillisecondsFormatterTestData")]
@@ -268,13 +252,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicTimeNoMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicTTimeFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "T102030.040Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "T112030.040+0100"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "T122030.040+0200"),
-
-        };
+        private object[] BasicTTimeFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "T102030.040Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "T112030.040+0100"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "T122030.040+0200"),
+            };
 
         [Test]
         [TestCaseSource("BasicTTimeFormatterTestData")]
@@ -283,13 +266,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicTTime.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicTTimeNoMillisecondsFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "T102030Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "T112030+0100"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "T122030+0200"),
-
-        };
+        private object[] BasicTTimeNoMillisecondsFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "T102030Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "T112030+0100"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "T122030+0200"),
+            };
 
         [Test]
         [TestCaseSource("BasicTTimeNoMillisecondsFormatterTestData")]
@@ -298,13 +280,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicTTimeNoMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicDateTimeFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "20040609T102030.040Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "20040609T112030.040+0100"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "20040609T122030.040+0200"),
-
-        };
+        private object[] BasicDateTimeFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "20040609T102030.040Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "20040609T112030.040+0100"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "20040609T122030.040+0200"),
+            };
 
         [Test]
         [TestCaseSource("BasicDateTimeFormatterTestData")]
@@ -313,13 +294,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicDateTime.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicDateTimeNoMillisecondsFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "20040609T102030Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "20040609T112030+0100"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "20040609T122030+0200"),
-
-        };
+        private object[] BasicDateTimeNoMillisecondsFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "20040609T102030Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "20040609T112030+0100"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "20040609T122030+0200"),
+            };
 
         [Test]
         [TestCaseSource("BasicDateTimeNoMillisecondsFormatterTestData")]
@@ -328,13 +308,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicDateTimeNoMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicOrdinalDateFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004161"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004161"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004161"),
-
-        };
+        private object[] BasicOrdinalDateFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004161"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004161"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004161"),
+            };
 
         [Test]
         [TestCaseSource("BasicOrdinalDateFormatterTestData")]
@@ -343,13 +322,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicOrdinalDate.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicOrdinalDateTimeFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004161T102030.040Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004161T112030.040+0100"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004161T122030.040+0200"),
-
-        };
+        private object[] BasicOrdinalDateTimeFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004161T102030.040Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004161T112030.040+0100"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004161T122030.040+0200"),
+            };
 
         [Test]
         [TestCaseSource("BasicOrdinalDateTimeFormatterTestData")]
@@ -358,13 +336,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicOrdinalDateTime.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicOrdinalDateTimeNoMillisecondsFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004161T102030Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004161T112030+0100"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004161T122030+0200"),
-
-        };
+        private object[] BasicOrdinalDateTimeNoMillisecondsFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004161T102030Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004161T112030+0100"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004161T122030+0200"),
+            };
 
         [Test]
         [TestCaseSource("BasicOrdinalDateTimeNoMillisecondsFormatterTestData")]
@@ -373,13 +350,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicWeekDateFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004W243"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004W243"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004W243"),
-
-        };
+        private object[] BasicWeekDateFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004W243"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004W243"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004W243"),
+            };
 
         [Test]
         [TestCaseSource("BasicWeekDateFormatterTestData")]
@@ -388,13 +364,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicWeekDate.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicWeekDateTimeFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004W243T102030.040Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004W243T112030.040+0100"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004W243T122030.040+0200"),
-
-        };
+        private object[] BasicWeekDateTimeFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004W243T102030.040Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004W243T112030.040+0100"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004W243T122030.040+0200"),
+            };
 
         [Test]
         [TestCaseSource("BasicWeekDateTimeFormatterTestData")]
@@ -403,13 +378,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicWeekDateTime.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] BasicWeekDateTimeNoMillisecondsFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004W243T102030Z"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004W243T112030+0100"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004W243T122030+0200"),
-
-        };
+        private object[] BasicWeekDateTimeNoMillisecondsFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004W243T102030Z"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004W243T112030+0100"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004W243T122030+0200"),
+            };
 
         [Test]
         [TestCaseSource("BasicWeekDateTimeNoMillisecondsFormatterTestData")]
@@ -418,13 +392,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] YearFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004"),
-
-        };
+        private object[] YearFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004"),
+            };
 
         [Test]
         [TestCaseSource("YearFormatterTestData")]
@@ -433,13 +406,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.Year.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] YearMonthFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06"),
-
-        };
+        private object[] YearMonthFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06"),
+            };
 
         [Test]
         [TestCaseSource("YearMonthFormatterTestData")]
@@ -448,13 +420,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.YearMonth.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] YearMonthDayFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09"),
-
-        };
+        private object[] YearMonthDayFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09"),
+            };
 
         [Test]
         [TestCaseSource("YearMonthDayFormatterTestData")]
@@ -463,13 +434,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.YearMonthDay.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] WeekYearFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004"),
-
-        };
+        private object[] WeekYearFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004"),
+            };
 
         [Test]
         [TestCaseSource("WeekYearFormatterTestData")]
@@ -478,13 +448,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.WeekYear.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] WeekYearWeekFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-W24"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-W24"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-W24"),
-
-        };
+        private object[] WeekYearWeekFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-W24"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-W24"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-W24"),
+            };
 
         [Test]
         [TestCaseSource("WeekYearWeekFormatterTestData")]
@@ -493,13 +462,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.WeekYearWeek.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] WeekYearWeekDayFormatterTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-W24-3"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-W24-3"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-W24-3"),
-
-        };
+        private object[] WeekYearWeekDayFormatterTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-W24-3"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-W24-3"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-W24-3"),
+            };
 
         [Test]
         [TestCaseSource("WeekYearWeekDayFormatterTestData")]
@@ -508,13 +476,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.WeekYearWeekDay.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] HourTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "11"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "12"),
-
-        };
+        private object[] HourTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "11"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "12"),
+            };
 
         [Test]
         [TestCaseSource("HourTestData")]
@@ -523,13 +490,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.Hour.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] HourMinuteTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "11:20"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "12:20"),
-
-        };
+        private object[] HourMinuteTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "11:20"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "12:20"),
+            };
 
         [Test]
         [TestCaseSource("HourMinuteTestData")]
@@ -538,13 +504,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.HourMinute.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] HourMinuteSecondTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20:30"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "11:20:30"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "12:20:30"),
-
-        };
+        private object[] HourMinuteSecondTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20:30"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "11:20:30"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "12:20:30"),
+            };
 
         [Test]
         [TestCaseSource("HourMinuteSecondTestData")]
@@ -553,13 +518,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.HourMinuteSecond.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] HourMinuteSecondMillisecondsTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20:30.040"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "11:20:30.040"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "12:20:30.040"),
-
-        };
+        private object[] HourMinuteSecondMillisecondsTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20:30.040"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "11:20:30.040"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "12:20:30.040"),
+            };
 
         [Test]
         [TestCaseSource("HourMinuteSecondMillisecondsTestData")]
@@ -568,13 +532,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.HourMinuteSecondMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] HourMinuteSecondFractionTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20:30.040"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "11:20:30.040"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "12:20:30.040"),
-
-        };
+        private object[] HourMinuteSecondFractionTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "10:20:30.040"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "11:20:30.040"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "12:20:30.040"),
+            };
 
         [Test]
         [TestCaseSource("HourMinuteSecondFractionTestData")]
@@ -583,13 +546,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.HourMinuteSecondFraction.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] DateHourTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09T11"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09T12"),
-
-        };
+        private object[] DateHourTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09T11"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09T12"),
+            };
 
         [Test]
         [TestCaseSource("DateHourTestData")]
@@ -598,13 +560,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.DateHour.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] DateHourMinuteTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09T11:20"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09T12:20"),
-
-        };
+        private object[] DateHourMinuteTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09T11:20"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09T12:20"),
+            };
 
         [Test]
         [TestCaseSource("DateHourMinuteTestData")]
@@ -613,13 +574,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.DateHourMinute.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] DateHourMinuteSecondTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20:30"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09T11:20:30"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09T12:20:30"),
-
-        };
+        private object[] DateHourMinuteSecondTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20:30"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09T11:20:30"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09T12:20:30"),
+            };
 
         [Test]
         [TestCaseSource("DateHourMinuteSecondTestData")]
@@ -628,13 +588,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.DateHourMinuteSecond.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] DateHourMinuteSecondMillisecondsTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20:30.040"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09T11:20:30.040"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09T12:20:30.040"),
-
-        };
+        private object[] DateHourMinuteSecondMillisecondsTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20:30.040"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09T11:20:30.040"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09T12:20:30.040"),
+            };
 
         [Test]
         [TestCaseSource("DateHourMinuteSecondMillisecondsTestData")]
@@ -643,13 +602,12 @@ namespace NodaTime.Test.Format
             Assert.That(IsoDateTimeFormats.DateHourMinuteSecondMilliseconds.Print(dateTime), Is.EqualTo(dateTimeText));
         }
 
-        object[] DateHourMinuteSecondFractionTestData =
-        {
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20:30.040"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09T11:20:30.040"),
-            new TestCaseData( new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09T12:20:30.040"),
-
-        };
+        private object[] DateHourMinuteSecondFractionTestData =
+            {
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09T10:20:30.040"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 11, 20, 30, 40, London), "2004-06-09T11:20:30.040"),
+                new TestCaseData(new ZonedDateTime(2004, 6, 9, 12, 20, 30, 40, Paris), "2004-06-09T12:20:30.040"),
+            };
 
         [Test]
         [TestCaseSource("DateHourMinuteSecondFractionTestData")]

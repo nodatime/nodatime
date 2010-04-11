@@ -14,14 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
-using NodaTime.TimeZones;
+
 using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public partial class TzdbTest
+    public class TzdbTest
     {
         ////[Test]
         ////public void CurrentTimeZone_LocalTimeZone_AlwaysFails()

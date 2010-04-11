@@ -14,6 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System.IO;
 using System.Reflection;
 
 namespace NodaTime.ZoneInfoCompiler
@@ -33,16 +35,16 @@ namespace NodaTime.ZoneInfoCompiler
                 Assembly program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+                    object[] attributes = program.GetCustomAttributes(typeof (AssemblyTitleAttribute), false);
                     if (attributes.Length > 0)
                     {
-                        AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
+                        AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute) attributes[0];
                         if (!string.IsNullOrEmpty(titleAttribute.Title))
                         {
                             return titleAttribute.Title;
                         }
                     }
-                    return System.IO.Path.GetFileNameWithoutExtension(program.CodeBase);
+                    return Path.GetFileNameWithoutExtension(program.CodeBase);
                 }
                 return "Title";
             }
@@ -74,10 +76,10 @@ namespace NodaTime.ZoneInfoCompiler
                 Assembly program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+                    object[] attributes = program.GetCustomAttributes(typeof (AssemblyDescriptionAttribute), false);
                     if (attributes.Length > 0)
                     {
-                        return ((AssemblyDescriptionAttribute)attributes[0]).Description;
+                        return ((AssemblyDescriptionAttribute) attributes[0]).Description;
                     }
                 }
                 return "Description";
@@ -94,10 +96,10 @@ namespace NodaTime.ZoneInfoCompiler
                 Assembly program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+                    object[] attributes = program.GetCustomAttributes(typeof (AssemblyProductAttribute), false);
                     if (attributes.Length > 0)
                     {
-                        return ((AssemblyProductAttribute)attributes[0]).Product;
+                        return ((AssemblyProductAttribute) attributes[0]).Product;
                     }
                 }
                 return "Product";
@@ -114,10 +116,10 @@ namespace NodaTime.ZoneInfoCompiler
                 Assembly program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+                    object[] attributes = program.GetCustomAttributes(typeof (AssemblyCopyrightAttribute), false);
                     if (attributes.Length > 0)
                     {
-                        return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
+                        return ((AssemblyCopyrightAttribute) attributes[0]).Copyright;
                     }
                 }
                 return "Copyright";
@@ -134,10 +136,10 @@ namespace NodaTime.ZoneInfoCompiler
                 Assembly program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+                    object[] attributes = program.GetCustomAttributes(typeof (AssemblyCompanyAttribute), false);
                     if (attributes.Length > 0)
                     {
-                        return ((AssemblyCompanyAttribute)attributes[0]).Company;
+                        return ((AssemblyCompanyAttribute) attributes[0]).Company;
                     }
                 }
                 return "Company";

@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime
@@ -39,12 +40,14 @@ namespace NodaTime
     public class SkippedTimeException : ArgumentOutOfRangeException
     {
         private readonly LocalInstant localInstant;
+
         /// <summary>
         /// The local instant which is invalid in the time zone
         /// </summary>
         public LocalInstant LocalInstant { get { return localInstant; } }
 
         private readonly IDateTimeZone zone;
+
         /// <summary>
         /// The time zone in which the local instant is invalid
         /// </summary>

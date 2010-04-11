@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Calendars;
 using NodaTime.Partials;
@@ -44,7 +45,6 @@ namespace NodaTime.Fields
         public override bool IsLenient { get { return false; } }
 
         #region Values
-
         /// <summary>
         /// Get the Month component of the specified local instant.
         /// </summary>
@@ -138,7 +138,7 @@ namespace NodaTime.Fields
             // Keep the parameter name the same as the original declaration, but
             // use a more meaningful name in the method
             long months = value;
-            int intMonths = unchecked((int)months);
+            int intMonths = unchecked((int) months);
             if (intMonths == months)
             {
                 return Add(localInstant, intMonths);
@@ -166,7 +166,7 @@ namespace NodaTime.Fields
             {
                 yearToUse = thisYear + (monthToUse / max) - 1;
                 monthToUse = Math.Abs(monthToUse);
-                int remMonthToUse = (int)(monthToUse % max);
+                int remMonthToUse = (int) (monthToUse % max);
                 // Take care of the boundary condition
                 if (remMonthToUse == 0)
                 {
@@ -186,8 +186,8 @@ namespace NodaTime.Fields
                 throw new ArgumentOutOfRangeException("value", "Magnitude of add amount is too large: " + months);
             }
 
-            int intYearToUse = (int)yearToUse;
-            int intMonthToUse = (int)monthToUse;
+            int intYearToUse = (int) yearToUse;
+            int intMonthToUse = (int) monthToUse;
 
             // Quietly force DOM to nearest sane value.
             int dayToUse = calendarSystem.GetDayOfMonth(localInstant, thisYear, thisMonth);
@@ -196,7 +196,6 @@ namespace NodaTime.Fields
             // Get proper date part, and return result
             long datePart = calendarSystem.GetYearMonthDayTicks(intYearToUse, intMonthToUse, dayToUse);
             return new LocalInstant(datePart + timePart);
-
         }
 
         /// <summary>
@@ -248,7 +247,7 @@ namespace NodaTime.Fields
             int subtrahendYear = calendarSystem.GetYear(subtrahendInstant);
             int subtrahendMonth = calendarSystem.GetMonthOfYear(subtrahendInstant, subtrahendYear);
 
-            long difference = (minuendYear - subtrahendYear) * ((long)max) + minuendMonth - subtrahendMonth;
+            long difference = (minuendYear - subtrahendYear) * ((long) max) + minuendMonth - subtrahendMonth;
 
             // Before adjusting for remainder, account for special case of add
             // where the day-of-month is forced to the nearest sane value.
@@ -282,28 +281,26 @@ namespace NodaTime.Fields
         {
             FieldUtils.VerifyValueBounds(this, value, MinimumValue, max);
 
-            int month = (int)value;
+            int month = (int) value;
             int thisYear = calendarSystem.GetYear(localInstant);
             int thisDom = calendarSystem.GetDayOfMonth(localInstant, thisYear);
-            int maxDom = calendarSystem.GetDaysInYearMonth(thisYear, (int)month);
+            int maxDom = calendarSystem.GetDaysInYearMonth(thisYear, month);
             if (thisDom > maxDom)
             {
                 // Quietly force DOM to nearest sane value.
                 thisDom = maxDom;
             }
             return new LocalInstant(calendarSystem.GetYearMonthDayTicks(thisYear, month, thisDom) +
-                calendarSystem.GetTickOfDay(localInstant));
+                                    calendarSystem.GetTickOfDay(localInstant));
         }
-
         #endregion
 
         #region Leap
-
         public override bool IsLeap(LocalInstant localInstant)
         {
             int thisYear = calendarSystem.GetYear(localInstant);
             return calendarSystem.IsLeapYear(thisYear) &&
-                calendarSystem.GetMonthOfYear(localInstant, thisYear) == leapMonth;
+                   calendarSystem.GetMonthOfYear(localInstant, thisYear) == leapMonth;
         }
 
         public override int GetLeapAmount(LocalInstant localInstant)
@@ -312,11 +309,9 @@ namespace NodaTime.Fields
         }
 
         public override IDurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
-
         #endregion
 
         #region Ranges
-
         public override long GetMinimumValue()
         {
             return MinimumValue;
@@ -326,11 +321,9 @@ namespace NodaTime.Fields
         {
             return max;
         }
-
         #endregion
 
         #region Rounding
-
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             int year = calendarSystem.GetYear(localInstant);
@@ -342,7 +335,6 @@ namespace NodaTime.Fields
         {
             return localInstant - RoundFloor(localInstant);
         }
-
         #endregion
     }
 }

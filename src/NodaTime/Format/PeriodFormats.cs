@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 namespace NodaTime.Format
 {
     /// <summary>
@@ -45,7 +46,7 @@ namespace NodaTime.Format
 
         private static PeriodFormatter BuildEnglishWordsFormatter()
         {
-            var variants = new[] { " ", ",", ",and ", ", and " };
+            var variants = new[] {" ", ",", ",and ", ", and "};
             return new PeriodFormatterBuilder()
                 .AppendYears().AppendSuffix(" year", " years")
                 .AppendSeparator(", ", " and ", variants)

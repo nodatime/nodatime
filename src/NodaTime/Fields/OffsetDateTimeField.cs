@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -32,18 +33,18 @@ namespace NodaTime.Fields
             // base constructor throw the exception, rather than
             // fail to dereference it properly here.
             : this(field, field == null ? null : field.FieldType,
-                offset, int.MinValue, int.MaxValue)
+                   offset, int.MinValue, int.MaxValue)
         {
         }
 
-        internal OffsetDateTimeField(IDateTimeField field, 
-            DateTimeFieldType fieldType, int offset)
+        internal OffsetDateTimeField(IDateTimeField field,
+                                     DateTimeFieldType fieldType, int offset)
             : this(field, fieldType, offset, int.MinValue, int.MaxValue)
         {
         }
 
-        public OffsetDateTimeField(IDateTimeField field, 
-            DateTimeFieldType fieldType, int offset, int minValue, int maxValue)
+        public OffsetDateTimeField(IDateTimeField field,
+                                   DateTimeFieldType fieldType, int offset, int minValue, int maxValue)
             : base(field, fieldType)
         {
             if (offset == 0)
@@ -54,14 +55,13 @@ namespace NodaTime.Fields
             this.offset = offset;
             // This field is only really used for weeks etc - not ticks -
             // so casting the min and max to int should be fine.
-            this.min = Math.Max(minValue, (int) field.GetMinimumValue() + offset);
-            this.max = Math.Min(maxValue, (int) field.GetMaximumValue() + offset);
+            min = Math.Max(minValue, (int) field.GetMinimumValue() + offset);
+            max = Math.Min(maxValue, (int) field.GetMaximumValue() + offset);
         }
 
         // Note: no need to override GetValue, as that delegates to GetInt64Value.
 
         #region Values
-
         public override long GetInt64Value(LocalInstant localInstant)
         {
             return base.GetInt64Value(localInstant) + offset;
@@ -84,18 +84,16 @@ namespace NodaTime.Fields
         public override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             return SetValue(localInstant, FieldUtils.GetWrappedValue(GetValue(localInstant), value, min, max));
-
         }
+
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, min, max);
             return base.SetValue(localInstant, value - offset);
         }
-
         #endregion
 
         #region Leap
-
         public override bool IsLeap(LocalInstant localInstant)
         {
             return WrappedField.IsLeap(localInstant);
@@ -107,11 +105,9 @@ namespace NodaTime.Fields
         }
 
         public override IDurationField LeapDurationField { get { return WrappedField.LeapDurationField; } }
-
         #endregion
 
         #region Ranges
-
         public override long GetMinimumValue()
         {
             return min;
@@ -121,11 +117,9 @@ namespace NodaTime.Fields
         {
             return max;
         }
-
         #endregion
 
         #region Rounding
-
         // No need to override RoundFloor again - it already just delegates.
 
         public override LocalInstant RoundCeiling(LocalInstant localInstant)
@@ -153,6 +147,5 @@ namespace NodaTime.Fields
             return WrappedField.Remainder(localInstant);
         }
         #endregion
-
     }
 }

@@ -14,8 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
-using System.Collections.Generic;
 using System.Text;
 using NodaTime.Fields;
 
@@ -24,7 +24,7 @@ namespace NodaTime
     /// <summary>
     /// Exception thrown when attempting to set a field outside its supported range.
     /// </summary>
-    public class FieldValueException:Exception
+    public class FieldValueException : Exception
     {
         private readonly DateTimeFieldType dateTimefieldType;
         private readonly DurationFieldType? durationFieldType;
@@ -35,7 +35,7 @@ namespace NodaTime
         private readonly long? upperBound;
 
         public FieldValueException(DateTimeFieldType fieldType, String value)
-            :base(CreateMessage(fieldType.ToString(), value))
+            : base(CreateMessage(fieldType.ToString(), value))
         {
             dateTimefieldType = fieldType;
             durationFieldType = null;
@@ -44,10 +44,10 @@ namespace NodaTime
             numberValue = 0;
             lowerBound = null;
             upperBound = null;
-    }   
+        }
 
         public FieldValueException(DateTimeFieldType fieldType, int value, long? lowerBound, long? upperBound)
-            :base(CreateMessage(fieldType.ToString(), value, lowerBound, upperBound, null))
+            : base(CreateMessage(fieldType.ToString(), value, lowerBound, upperBound, null))
         {
             dateTimefieldType = fieldType;
             durationFieldType = null;
@@ -57,7 +57,6 @@ namespace NodaTime
             this.lowerBound = lowerBound;
             this.upperBound = upperBound;
         }
-
 
         private static String CreateMessage(String fieldName, String value)
         {
@@ -80,7 +79,7 @@ namespace NodaTime
         }
 
         private static String CreateMessage(string fieldName, int value,
-                                        long? lowerBound, long? upperBound, String explain)
+                                            long? lowerBound, long? upperBound, String explain)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("Value ").Append(value)

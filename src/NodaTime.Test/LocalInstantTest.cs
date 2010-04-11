@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -33,6 +34,7 @@ namespace NodaTime.Test
                                        366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 +
                                        365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
                                        366 + 365;
+
         private const long Y2003Days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
                                        366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 +
                                        365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
@@ -55,12 +57,12 @@ namespace NodaTime.Test
             + 28L * NodaConstants.MillisecondsPerMinute;
 
         private LocalInstant one = new LocalInstant(1L);
-        private LocalInstant onePrime = new LocalInstant(1L);
+        private readonly LocalInstant onePrime = new LocalInstant(1L);
         private LocalInstant negativeOne = new LocalInstant(-1L);
         private LocalInstant threeMillion = new LocalInstant(3000000L);
         private LocalInstant negativeFiftyMillion = new LocalInstant(-50000000L);
 
-        private Offset offsetOneHour = Offset.ForHours(1);
+        private readonly Offset offsetOneHour = Offset.ForHours(1);
 
         [Test]
         public void TestLocalInstantOperators()
@@ -70,7 +72,7 @@ namespace NodaTime.Test
             LocalInstant time1 = new LocalInstant(TestTime1);
             LocalInstant time2 = new LocalInstant(TestTime2);
             Duration duration = time2 - time1;
-            
+
             Assert.AreEqual(diff, duration.Ticks);
             Assert.AreEqual(TestTime2, (time1 + duration).Ticks);
             Assert.AreEqual(TestTime1, (time2 - duration).Ticks);

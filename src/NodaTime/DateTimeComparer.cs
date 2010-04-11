@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 
@@ -23,7 +24,7 @@ namespace NodaTime
     /// Original name: DateTimeComparator. Need to carefully consider this, as it's
     /// slighty odd to be able to compare any two objects. We may well want to remove this class.
     /// </summary>
-    class DateTimeComparer : IComparer<object>
+    internal class DateTimeComparer : IComparer<object>
     {
         public int Compare(object x, object y)
         {

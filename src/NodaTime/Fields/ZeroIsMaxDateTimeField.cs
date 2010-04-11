@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -26,7 +27,7 @@ namespace NodaTime.Fields
     internal sealed class ZeroIsMaxDateTimeField : DecoratedDateTimeField
     {
         internal ZeroIsMaxDateTimeField(IDateTimeField wrappedField,
-            DateTimeFieldType fieldType)
+                                        DateTimeFieldType fieldType)
             : base(wrappedField, fieldType)
         {
             if (wrappedField.GetMinimumValue() != 0)
@@ -36,7 +37,6 @@ namespace NodaTime.Fields
         }
 
         #region Values
-
         public override int GetValue(LocalInstant localInstant)
         {
             int value = WrappedField.GetValue(localInstant);
@@ -65,11 +65,9 @@ namespace NodaTime.Fields
         {
             return WrappedField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }
-
         #endregion
 
         #region Leap
-
         public override bool IsLeap(LocalInstant localInstant)
         {
             return WrappedField.IsLeap(localInstant);
@@ -81,11 +79,9 @@ namespace NodaTime.Fields
         }
 
         public override IDurationField LeapDurationField { get { return WrappedField.LeapDurationField; } }
-
         #endregion
 
         #region Ranges
-
         public override long GetMinimumValue()
         {
             return 1;
@@ -105,41 +101,38 @@ namespace NodaTime.Fields
         {
             return WrappedField.GetMaximumValue() + 1;
         }
-
         #endregion
 
         #region Rounding
-
         public override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
-             return WrappedField.RoundCeiling(localInstant);
+            return WrappedField.RoundCeiling(localInstant);
         }
 
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
-             return WrappedField.RoundFloor(localInstant);
+            return WrappedField.RoundFloor(localInstant);
         }
 
         public override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
         {
-             return WrappedField.RoundHalfCeiling(localInstant);
+            return WrappedField.RoundHalfCeiling(localInstant);
         }
 
         public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
         {
-             return WrappedField.RoundHalfFloor(localInstant);
+            return WrappedField.RoundHalfFloor(localInstant);
         }
 
         public override LocalInstant RoundHalfEven(LocalInstant localInstant)
         {
-             return WrappedField.RoundHalfEven(localInstant);
+            return WrappedField.RoundHalfEven(localInstant);
         }
 
         public override Duration Remainder(LocalInstant localInstant)
         {
             return WrappedField.Remainder(localInstant);
         }
-
         #endregion
     }
 }

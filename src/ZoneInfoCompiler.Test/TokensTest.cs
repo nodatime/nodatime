@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime;
 using NodaTime.ZoneInfoCompiler;
@@ -28,22 +29,22 @@ namespace ZoneInfoCompiler.Test
     [TestFixture]
     public class TokensTest
     {
-        private static string[] EmptyTokenList = new string[0];
+        private static readonly string[] EmptyTokenList = new string[0];
 
         private static string OneInput = "One";
-        private static string[] OneTokenList = { "One" };
+        private static readonly string[] OneTokenList = {"One"};
 
         private static string MultipleInput = "One Two  \tThree\n\nFour   ";
-        private static string[] MultipleTokenList = { "One", "Two", "Three", "Four" };
+        private static readonly string[] MultipleTokenList = {"One", "Two", "Three", "Four"};
 
         private static string LeadingSpacesMultipleInput = "  One Two  \tThree\n\nFour   ";
-        private static string[] LeadingSpacesMultipleTokenList = { "", "One", "Two", "Three", "Four" };
+        private static readonly string[] LeadingSpacesMultipleTokenList = {"", "One", "Two", "Three", "Four"};
 
         [Test]
         public void Tokenize_nullArgument_Exception()
         {
             string line = null;
-            Assert.Throws(typeof(ArgumentNullException), () => Tokens.Tokenize(line));
+            Assert.Throws(typeof (ArgumentNullException), () => Tokens.Tokenize(line));
         }
 
         [Test]

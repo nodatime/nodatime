@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -42,7 +43,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         /// The list of words. This will never be null but may be empty.
         /// </summary>
-        private IList<string> words;
+        private readonly IList<string> words;
 
         /// <summary>
         /// The current index into the words list.
@@ -91,7 +92,7 @@ namespace NodaTime.ZoneInfoCompiler
         {
             if (HasNextToken)
             {
-                return this.words[this.index++];
+                return words[index++];
             }
             throw new MissingTokenException(name);
         }
@@ -119,6 +120,6 @@ namespace NodaTime.ZoneInfoCompiler
         /// <value>
         /// <c>true</c> if this instance has another token; otherwise, <c>false</c>.
         /// </value>
-        public bool HasNextToken { get { return this.index < this.words.Count; } }
+        public bool HasNextToken { get { return index < words.Count; } }
     }
 }

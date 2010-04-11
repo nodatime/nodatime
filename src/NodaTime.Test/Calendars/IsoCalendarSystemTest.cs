@@ -14,17 +14,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Calendars;
-using NUnit.Framework;
 using NodaTime.Fields;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
 {
     [TestFixture]
     public partial class IsoCalendarSystemTest
     {
-        private static readonly DateTime UnixEpochDateTime = new  DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime UnixEpochDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         // This was when I was writing the tests, having finally made everything work - several thousand lines
         // of shockingly untested code.
         private static readonly DateTime TimeOfGreatAchievement =
@@ -32,7 +33,7 @@ namespace NodaTime.Test.Calendars
 
         private static readonly ICalendarSystem Iso = IsoCalendarSystem.Instance;
 
-        private static FieldSet isoFields = IsoCalendarSystem.Instance.Fields;
+        private static readonly FieldSet isoFields = IsoCalendarSystem.Instance.Fields;
 
         [Test]
         public void FieldsOf_UnixEpoch()
@@ -50,7 +51,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(1, epoch.MonthOfYear);
             Assert.AreEqual(1, epoch.DayOfMonth);
             Assert.AreEqual(1, epoch.DayOfYear);
-            Assert.AreEqual((int)DayOfWeek.Thursday, epoch.DayOfWeek);
+            Assert.AreEqual((int) DayOfWeek.Thursday, epoch.DayOfWeek);
             Assert.AreEqual(NodaConstants.CommonEra, epoch.Era);
             Assert.AreEqual(0, epoch.HourOfDay);
             Assert.AreEqual(0, epoch.MinuteOfHour);
@@ -66,7 +67,7 @@ namespace NodaTime.Test.Calendars
         public void FieldsOf_GreatAchievement()
         {
             LocalDateTime now = new LocalDateTime(new LocalInstant((TimeOfGreatAchievement - UnixEpochDateTime).Ticks),
-                IsoCalendarSystem.Instance);
+                                                  IsoCalendarSystem.Instance);
 
             Assert.AreEqual(2009, now.Year);
             Assert.AreEqual(2009, now.YearOfEra);
@@ -77,7 +78,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(11, now.MonthOfYear);
             Assert.AreEqual(27, now.DayOfMonth);
             Assert.AreEqual(TimeOfGreatAchievement.DayOfYear, now.DayOfYear);
-            Assert.AreEqual((int)DayOfWeek.Friday, now.DayOfWeek);
+            Assert.AreEqual((int) DayOfWeek.Friday, now.DayOfWeek);
             Assert.AreEqual(NodaConstants.CommonEra, now.Era);
             Assert.AreEqual(18, now.HourOfDay);
             Assert.AreEqual(38, now.MinuteOfHour);

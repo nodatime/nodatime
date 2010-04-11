@@ -14,25 +14,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.TimeZones;
 using NUnit.Framework;
-using NodaTime.Calendars;
 
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public partial class ZoneTransitionTest
+    public class ZoneTransitionTest
     {
-        private Offset threeHours = Offset.Create(3, 0, 0, 0);
+        private readonly Offset threeHours = Offset.Create(3, 0, 0, 0);
         private Offset oneHour = Offset.Create(1, 0, 0, 0);
         private Offset minusOneHour = Offset.Create(-1, 0, 0, 0);
-        private Offset minusTwoHours = Offset.Create(-2, 0, 0, 0);
+        private readonly Offset minusTwoHours = Offset.Create(-2, 0, 0, 0);
 
         [Test]
         public void Construct_NullName_Exception()
         {
-            Assert.Throws(typeof(ArgumentNullException), () => new ZoneTransition(Instant.UnixEpoch, null, Offset.Zero, Offset.Zero));
+            Assert.Throws(typeof (ArgumentNullException), () => new ZoneTransition(Instant.UnixEpoch, null, Offset.Zero, Offset.Zero));
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace NodaTime.Test.TimeZones
         public void Construct_BeginningOfTime_Truncated()
         {
             string name = "abc";
-            Instant instant = new Instant(Instant.MinValue.Ticks + this.oneHour.Ticks);
+            Instant instant = new Instant(Instant.MinValue.Ticks + oneHour.Ticks);
             var actual = new ZoneTransition(instant, name, minusTwoHours, minusTwoHours);
             Assert.AreEqual(instant, actual.Instant, "Instant");
             Assert.AreEqual(minusOneHour, actual.StandardOffset, "StandardOffset");
@@ -61,7 +61,7 @@ namespace NodaTime.Test.TimeZones
         public void Construct_EndOfTime_Truncated()
         {
             string name = "abc";
-            Instant instant = new Instant(Instant.MaxValue.Ticks + this.minusOneHour.Ticks);
+            Instant instant = new Instant(Instant.MaxValue.Ticks + minusOneHour.Ticks);
             var actual = new ZoneTransition(instant, name, threeHours, threeHours);
             Assert.AreEqual(instant, actual.Instant, "Instant");
             Assert.AreEqual(oneHour, actual.StandardOffset, "StandardOffset");

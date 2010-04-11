@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -17,40 +17,39 @@
 
 using System;
 using System.Globalization;
-
-using NUnit.Framework;
 using NodaTime.Calendars;
-using NodaTime.TimeZones;
 using NodaTime.Format;
+using NodaTime.TimeZones;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {
     [TestFixture]
     public partial class DateTimeFormatterTest
     {
-        DateTimeFormatterTest.DateTimePrinterMock printer;
-        DateTimeFormatterTest.DateTimeParserMock parser;
+        private DateTimePrinterMock printer;
+        private DateTimeParserMock parser;
 
-        IFormatProvider provider1;
-        IFormatProvider provider2;
+        private IFormatProvider provider1;
+        private IFormatProvider provider2;
 
-        ICalendarSystem calendar1;
-        ICalendarSystem calendar2;
+        private ICalendarSystem calendar1;
+        private ICalendarSystem calendar2;
 
-        IDateTimeZone zone1;
-        IDateTimeZone zone2;
+        private IDateTimeZone zone1;
+        private IDateTimeZone zone2;
 
-        int? pivotYear1;
-        int? pivotYear2;
+        private int? pivotYear1;
+        private int? pivotYear2;
 
-        DateTimeFormatter fullFormatterWithOffset;
-        DateTimeFormatter fullFormatterWithoutOffset;
+        private DateTimeFormatter fullFormatterWithOffset;
+        private DateTimeFormatter fullFormatterWithoutOffset;
 
         [SetUp]
         public void Init()
         {
-            printer = new DateTimeFormatterTest.DateTimePrinterMock();
-            parser = new DateTimeFormatterTest.DateTimeParserMock();
+            printer = new DateTimePrinterMock();
+            parser = new DateTimeParserMock();
 
             provider1 = CultureInfo.InvariantCulture;
             provider2 = CultureInfo.CreateSpecificCulture("ar");

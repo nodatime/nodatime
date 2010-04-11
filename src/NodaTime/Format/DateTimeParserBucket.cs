@@ -16,8 +16,8 @@
 #endregion
 
 using System;
-using NodaTime.Fields;
 using NodaTime.Calendars;
+using NodaTime.Fields;
 
 namespace NodaTime.Format
 {
@@ -50,7 +50,7 @@ namespace NodaTime.Format
     /// </remarks>
     public class DateTimeParserBucket
     {
-        private class SavedField:IComparable<SavedField>
+        private class SavedField : IComparable<SavedField>
         {
             private readonly IDateTimeField field;
             private readonly int value;
@@ -72,8 +72,9 @@ namespace NodaTime.Format
 
             public LocalInstant Set(LocalInstant instant, bool reset)
             {
-                instant = text == null ? field.SetValue(instant, value) 
-                                        : field.SetValue(instant, text, provider);
+                instant = text == null
+                              ? field.SetValue(instant, value)
+                              : field.SetValue(instant, text, provider);
 
                 if (reset)
                 {
@@ -119,7 +120,6 @@ namespace NodaTime.Format
                 }
                 return -a.CompareTo(b);
             }
-
         }
 
         private readonly ICalendarSystem calendarSystem;
@@ -127,13 +127,11 @@ namespace NodaTime.Format
         private IDateTimeZone zone;
         private readonly LocalInstant localInstant;
         private readonly IFormatProvider provider;
-        private int? pivotYear;
 
         private SavedField[] savedFields = new SavedField[8];
         private int savedFieldsCount;
         private bool savedFieldsShared;
         private object savedFieldsState;
-
 
         /// <summary>
         /// Initializes a bucket, with the option of specifying the pivot year for
@@ -150,10 +148,10 @@ namespace NodaTime.Format
                 throw new ArgumentNullException("calendarSystem");
             }
 
-            this.localInstant = instant;
+            localInstant = instant;
             this.calendarSystem = calendarSystem;
             this.provider = provider;
-            this.pivotYear = pivotYear;
+            this.PivotYear = pivotYear;
         }
 
         /// <summary>
@@ -163,7 +161,7 @@ namespace NodaTime.Format
         /// <param name="calendarSystem">The calendar system to use</param>
         /// <param name="provider">The format provider to use</param>
         public DateTimeParserBucket(LocalInstant instant, ICalendarSystem calendarSystem, IFormatProvider provider)
-            :this(instant, calendarSystem, provider, null)
+            : this(instant, calendarSystem, provider, null)
         {
         }
 
@@ -185,11 +183,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets/sets the pivot year to use when parsing two digit years.
         /// </summary>
-        public int? PivotYear
-        {
-            get { return pivotYear; }
-            set { pivotYear = value; }
-        }
+        public int? PivotYear { get; set; }
 
         public Offset Offset
         {
@@ -200,7 +194,6 @@ namespace NodaTime.Format
                 offset = value;
                 zone = null;
             }
-
         }
 
         /// <summary>
@@ -272,13 +265,13 @@ namespace NodaTime.Format
 
             if (savedFieldsShared)
             {
-                savedFieldsLocal = savedFields = (SavedField[])savedFields.Clone();
+                savedFieldsLocal = savedFields = (SavedField[]) savedFields.Clone();
                 savedFieldsShared = false;
             }
 
-            Array.Sort(savedFieldsLocal,0, savedFieldCountLocal);
+            Array.Sort(savedFieldsLocal, 0, savedFieldCountLocal);
 
-            LocalInstant instant = this.localInstant;
+            LocalInstant instant = localInstant;
             try
             {
                 for (int i = 0; i < savedFieldCountLocal; i++)

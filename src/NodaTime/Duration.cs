@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -95,7 +93,6 @@ namespace NodaTime
         }
 
         #region Operators
-
         /// <summary>
         /// Implements the operator + (addition).
         /// </summary>
@@ -271,19 +268,14 @@ namespace NodaTime
         {
             return left.CompareTo(right) >= 0;
         }
-
         #endregion // Operators
 
         /// <summary>
         /// The number of ticks in the duration.
         /// </summary>
-        public long Ticks
-        {
-            get { return ticks; }
-        }
+        public long Ticks { get { return ticks; } }
 
         #region IComparable<Duration> Members
-
         /// <summary>
         /// Compares the current object with another object of the same type.
         /// </summary>
@@ -314,11 +306,9 @@ namespace NodaTime
         {
             return Ticks.CompareTo(other.Ticks);
         }
-
         #endregion
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -358,11 +348,9 @@ namespace NodaTime
         {
             return Ticks.ToString("+#,##0' ticks';-#,##0' ticks'", CultureInfo.InvariantCulture);
         }
-
         #endregion  // Object overrides
 
         #region IEquatable<Duration> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -375,7 +363,6 @@ namespace NodaTime
         {
             return Ticks == other.Ticks;
         }
-
         #endregion
 
         /// <summary>

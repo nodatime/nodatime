@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NodaTime.Utility;
@@ -59,50 +60,54 @@ namespace NodaTime.Periods
         }
 
         #region Static fields backing properties
-
         private static readonly PeriodType years = new PeriodType("Years", DurationFieldType.Years);
-        private static readonly PeriodType months = new PeriodType("Months",  DurationFieldType.Months);
-        private static readonly PeriodType weeks = new PeriodType("Weeks",  DurationFieldType.Weeks);
-        private static readonly PeriodType days = new PeriodType("Days",  DurationFieldType.Days);
-        private static readonly PeriodType hours = new PeriodType("Hours",  DurationFieldType.Hours);
-        private static readonly PeriodType minutes = new PeriodType("Minutes",  DurationFieldType.Minutes);
-        private static readonly PeriodType seconds = new PeriodType("Seconds",  DurationFieldType.Seconds);
-        private static readonly PeriodType milliseconds = new PeriodType("Milliseconds",  DurationFieldType.Milliseconds);
-        private static readonly PeriodType standard = new PeriodType("Standard", 
-            DurationFieldType.Years, DurationFieldType.Months, DurationFieldType.Weeks, DurationFieldType.Days,
-            DurationFieldType.Hours, DurationFieldType.Minutes,DurationFieldType.Seconds, DurationFieldType.Milliseconds);
-        private static readonly PeriodType yearMonthDayTime = new PeriodType("YearMonthDayTime", 
-            DurationFieldType.Years, DurationFieldType.Months, DurationFieldType.Days,
-            DurationFieldType.Hours, DurationFieldType.Minutes, DurationFieldType.Seconds, DurationFieldType.Milliseconds);
+        private static readonly PeriodType months = new PeriodType("Months", DurationFieldType.Months);
+        private static readonly PeriodType weeks = new PeriodType("Weeks", DurationFieldType.Weeks);
+        private static readonly PeriodType days = new PeriodType("Days", DurationFieldType.Days);
+        private static readonly PeriodType hours = new PeriodType("Hours", DurationFieldType.Hours);
+        private static readonly PeriodType minutes = new PeriodType("Minutes", DurationFieldType.Minutes);
+        private static readonly PeriodType seconds = new PeriodType("Seconds", DurationFieldType.Seconds);
+        private static readonly PeriodType milliseconds = new PeriodType("Milliseconds", DurationFieldType.Milliseconds);
 
-        private static readonly PeriodType yearMonthDay = new PeriodType("YearMonthDay", DurationFieldType.Years, DurationFieldType.Months, DurationFieldType.Days);
+        private static readonly PeriodType standard = new PeriodType("Standard",
+                                                                     DurationFieldType.Years, DurationFieldType.Months, DurationFieldType.Weeks,
+                                                                     DurationFieldType.Days,
+                                                                     DurationFieldType.Hours, DurationFieldType.Minutes, DurationFieldType.Seconds,
+                                                                     DurationFieldType.Milliseconds);
 
-        private static readonly PeriodType yearWeekDayTime = new PeriodType("YearWeekDayTime", 
-            DurationFieldType.Years, DurationFieldType.Weeks, DurationFieldType.Days,
-            DurationFieldType.Hours, DurationFieldType.Minutes,
-            DurationFieldType.Seconds, DurationFieldType.Milliseconds);
+        private static readonly PeriodType yearMonthDayTime = new PeriodType("YearMonthDayTime",
+                                                                             DurationFieldType.Years, DurationFieldType.Months, DurationFieldType.Days,
+                                                                             DurationFieldType.Hours, DurationFieldType.Minutes, DurationFieldType.Seconds,
+                                                                             DurationFieldType.Milliseconds);
+
+        private static readonly PeriodType yearMonthDay = new PeriodType("YearMonthDay", DurationFieldType.Years, DurationFieldType.Months,
+                                                                         DurationFieldType.Days);
+
+        private static readonly PeriodType yearWeekDayTime = new PeriodType("YearWeekDayTime",
+                                                                            DurationFieldType.Years, DurationFieldType.Weeks, DurationFieldType.Days,
+                                                                            DurationFieldType.Hours, DurationFieldType.Minutes,
+                                                                            DurationFieldType.Seconds, DurationFieldType.Milliseconds);
 
         private static readonly PeriodType yearWeekDay = new PeriodType("YearWeekDay",
-            DurationFieldType.Years, DurationFieldType.Weeks, DurationFieldType.Days);
+                                                                        DurationFieldType.Years, DurationFieldType.Weeks, DurationFieldType.Days);
 
-        private static readonly PeriodType yearDayTime = new PeriodType("YearDayTime", 
-            DurationFieldType.Years, DurationFieldType.Days,
-            DurationFieldType.Hours, DurationFieldType.Minutes,
-            DurationFieldType.Seconds, DurationFieldType.Milliseconds);
+        private static readonly PeriodType yearDayTime = new PeriodType("YearDayTime",
+                                                                        DurationFieldType.Years, DurationFieldType.Days,
+                                                                        DurationFieldType.Hours, DurationFieldType.Minutes,
+                                                                        DurationFieldType.Seconds, DurationFieldType.Milliseconds);
 
         private static readonly PeriodType yearDay = new PeriodType("YearDay", DurationFieldType.Years, DurationFieldType.Days);
 
-        private static readonly PeriodType dayTime = new PeriodType("DayTime", 
-            DurationFieldType.Days, DurationFieldType.Hours, DurationFieldType.Minutes,
-            DurationFieldType.Seconds, DurationFieldType.Milliseconds);
+        private static readonly PeriodType dayTime = new PeriodType("DayTime",
+                                                                    DurationFieldType.Days, DurationFieldType.Hours, DurationFieldType.Minutes,
+                                                                    DurationFieldType.Seconds, DurationFieldType.Milliseconds);
 
-        private static readonly PeriodType time = new PeriodType("Time", 
-            DurationFieldType.Hours, DurationFieldType.Minutes,
-            DurationFieldType.Seconds, DurationFieldType.Milliseconds);
+        private static readonly PeriodType time = new PeriodType("Time",
+                                                                 DurationFieldType.Hours, DurationFieldType.Minutes,
+                                                                 DurationFieldType.Seconds, DurationFieldType.Milliseconds);
         #endregion
 
         #region Static Properties
-
         /// <summary>Gets a type that defines just the years field.</summary>
         public static PeriodType Years { get { return years; } }
 
@@ -284,7 +289,7 @@ namespace NodaTime.Periods
         /// </list>
         /// </remarks>
         public static PeriodType YearDayTime { get { return yearDayTime; } }
-        
+
         /// <summary>
         /// Gets a type that defines the year and day fields.
         /// </summary>
@@ -373,20 +378,37 @@ namespace NodaTime.Periods
         /// </summary>
         private static int[] BuildIndices(DurationFieldType[] fieldTypes)
         {
-            int[] ret = new[] { -1, -1, -1, -1, -1, -1, -1, -1 };
+            int[] ret = new[] {-1, -1, -1, -1, -1, -1, -1, -1};
             for (int i = 0; i < fieldTypes.Length; i++)
             {
                 switch (fieldTypes[i])
                 {
-                    case DurationFieldType.Days: ret[(int)Index.Day] = i; break;
-                    case DurationFieldType.Hours: ret[(int)Index.Hour] = i; break;
-                    case DurationFieldType.Milliseconds: ret[(int)Index.Millisecond] = i; break;
-                    case DurationFieldType.Minutes: ret[(int)Index.Minute] = i; break;
-                    case DurationFieldType.Months: ret[(int)Index.Month] = i; break;
-                    case DurationFieldType.Seconds: ret[(int)Index.Second] = i; break;
-                    case DurationFieldType.Weeks: ret[(int)Index.Week] = i; break;
-                    case DurationFieldType.Years: ret[(int)Index.Year] = i; break;
-                    default: throw new ArgumentException("Invalid duration field type for period type");
+                    case DurationFieldType.Days:
+                        ret[(int) Index.Day] = i;
+                        break;
+                    case DurationFieldType.Hours:
+                        ret[(int) Index.Hour] = i;
+                        break;
+                    case DurationFieldType.Milliseconds:
+                        ret[(int) Index.Millisecond] = i;
+                        break;
+                    case DurationFieldType.Minutes:
+                        ret[(int) Index.Minute] = i;
+                        break;
+                    case DurationFieldType.Months:
+                        ret[(int) Index.Month] = i;
+                        break;
+                    case DurationFieldType.Seconds:
+                        ret[(int) Index.Second] = i;
+                        break;
+                    case DurationFieldType.Weeks:
+                        ret[(int) Index.Week] = i;
+                        break;
+                    case DurationFieldType.Years:
+                        ret[(int) Index.Year] = i;
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid duration field type for period type");
                 }
             }
             return ret;
@@ -402,18 +424,12 @@ namespace NodaTime.Periods
         /// <summary>
         /// Gets the name of the period type.
         /// </summary>
-        public string Name
-        {
-            get { return name; }
-        }
+        public string Name { get { return name; } }
 
         /// <summary>
         /// Gets the number of fields in the period type.
         /// </summary>
-        public int Size
-        {
-            get { return fieldTypes.Length; }
-        }
+        public int Size { get { return fieldTypes.Length; } }
 
         /// <summary>
         /// Creates an array of the field types that this period type supports.
@@ -425,7 +441,7 @@ namespace NodaTime.Periods
         /// <returns>The fields supported in an array that may be altered, largest to smallest</returns>
         public DurationFieldType[] GetFieldTypes()
         {
-            return (DurationFieldType[])fieldTypes.Clone();
+            return (DurationFieldType[]) fieldTypes.Clone();
         }
 
         /// <summary>
@@ -459,14 +475,13 @@ namespace NodaTime.Periods
             return (IndexOf(fieldType) >= 0);
         }
 
-        internal int GetRealIndex(PeriodType.Index index)
+        internal int GetRealIndex(Index index)
         {
-            return indices[(int)index];
+            return indices[(int) index];
         }
 
         #region Masking
-
-        private PeriodType WithFieldRemoved(PeriodType.Index index, string suffix)
+        private PeriodType WithFieldRemoved(Index index, string suffix)
         {
             int fieldIndex = GetRealIndex(index);
             if (fieldIndex == -1)
@@ -490,7 +505,7 @@ namespace NodaTime.Periods
 
             //construct new indices
             int[] newIndices = new int[8];
-            int indicesIndex = (int)index;
+            int indicesIndex = (int) index;
             for (int i = 0; i < indicesIndex; i++)
             {
                 newIndices[i] = indices[i];
@@ -575,14 +590,12 @@ namespace NodaTime.Periods
         {
             return WithFieldRemoved(Index.Millisecond, "NoMilliseconds");
         }
-
         #endregion
 
         #region Equality
-
         public bool Equals(PeriodType other)
         {
-            if (Object.ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
@@ -627,17 +640,16 @@ namespace NodaTime.Periods
 
         public static bool operator ==(PeriodType left, PeriodType right)
         {
-            return Object.Equals(left, right);
+            return Equals(left, right);
         }
 
         public static bool operator !=(PeriodType left, PeriodType right)
         {
-            return !Object.Equals(left, right);
+            return !Equals(left, right);
         }
-
         #endregion
 
-        internal void UpdateIndexedField(int[] values, PeriodType.Index index, int newValue, bool add)
+        internal void UpdateIndexedField(int[] values, Index index, int newValue, bool add)
         {
             int realIndex = GetRealIndex(index);
             Update(values, realIndex, newValue, add);

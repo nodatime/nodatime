@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NUnit.Framework;
@@ -45,7 +46,6 @@ namespace NodaTime.Test.Fields
         }
 
         #region Values
-
         [Test]
         public void GetValue_DelegatesToGetInt64Value()
         {
@@ -68,9 +68,9 @@ namespace NodaTime.Test.Fields
 
             field.Add(instantArg, valueArg);
 
-             Assert.That(MockCountingDurationField.int32Additions, Is.EqualTo(1));
-             Assert.That(MockCountingDurationField.AddInstantArg, Is.EqualTo(instantArg));
-             Assert.That(MockCountingDurationField.AddValueArg, Is.EqualTo(valueArg));
+            Assert.That(MockCountingDurationField.int32Additions, Is.EqualTo(1));
+            Assert.That(MockCountingDurationField.AddInstantArg, Is.EqualTo(instantArg));
+            Assert.That(MockCountingDurationField.AddValueArg, Is.EqualTo(valueArg));
         }
 
         [Test]
@@ -83,9 +83,9 @@ namespace NodaTime.Test.Fields
 
             field.Add(instantArg, valueArg);
 
-             Assert.That(MockCountingDurationField.int64Additions, Is.EqualTo(1));
-             Assert.That(MockCountingDurationField.Add64InstantArg, Is.EqualTo(instantArg));
-             Assert.That(MockCountingDurationField.Add64ValueArg, Is.EqualTo(valueArg));
+            Assert.That(MockCountingDurationField.int64Additions, Is.EqualTo(1));
+            Assert.That(MockCountingDurationField.Add64InstantArg, Is.EqualTo(instantArg));
+            Assert.That(MockCountingDurationField.Add64ValueArg, Is.EqualTo(valueArg));
         }
 
         [Test]
@@ -117,11 +117,9 @@ namespace NodaTime.Test.Fields
             Assert.That(MockCountingDurationField.Diff64FirstArg, Is.EqualTo(firstInstant));
             Assert.That(MockCountingDurationField.Diff64SecondArg, Is.EqualTo(secondInstant));
         }
-
         #endregion
 
         #region Leap
-
         [Test]
         public void IsLeap_DefaultsToFalse()
         {
@@ -142,11 +140,9 @@ namespace NodaTime.Test.Fields
             var field = new StubDateTimeFieldBase();
             Assert.IsNull(field.LeapDurationField);
         }
-
         #endregion
 
         #region Ranges
-
         [Test]
         public void GetMinimumValue_OnStub_DefaultsTo0()
         {
@@ -154,7 +150,7 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(0L, field.GetMinimumValue());
             Assert.That(field.GetMinWasCalled, Is.True);
         }
-                
+
         [Test]
         public void GetMinimumValueForInstant_DelegatesToAbsolute()
         {
@@ -178,11 +174,9 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(59L, field.GetMaximumValue(new LocalInstant(0)));
             Assert.That(field.GetMaxWasCalled, Is.True);
         }
-
         #endregion
 
         #region Rounding
-
         [Test]
         public void RoundFloor_OnStub_RoundsTo60()
         {
@@ -251,12 +245,10 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(31L, field.Remainder(new LocalInstant(31L)).Ticks);
             Assert.AreEqual(0L, field.Remainder(new LocalInstant(60L)).Ticks);
         }
-
         #endregion
 
         private class StubDateTimeFieldBase : DateTimeFieldBase
         {
-
             internal StubDateTimeFieldBase(DateTimeFieldType type)
                 : base(type)
             {
@@ -269,6 +261,7 @@ namespace NodaTime.Test.Fields
 
             public bool GetInt64ValueWasCalled;
             public LocalInstant GetInt64ValueArg;
+
             public override long GetInt64Value(LocalInstant localInstant)
             {
                 GetInt64ValueWasCalled = true;
@@ -282,15 +275,9 @@ namespace NodaTime.Test.Fields
                 return localInstant;
             }
 
-            public override IDurationField DurationField
-            {
-                get { return new MockCountingDurationField(DurationFieldType.Seconds); }
-            }
+            public override IDurationField DurationField { get { return new MockCountingDurationField(DurationFieldType.Seconds); } }
 
-            public override IDurationField RangeDurationField
-            {
-                get { return new MockCountingDurationField(DurationFieldType.Minutes);  }
-            }
+            public override IDurationField RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
 
             public bool GetMaxWasCalled;
 
@@ -301,6 +288,7 @@ namespace NodaTime.Test.Fields
             }
 
             public bool GetMinWasCalled;
+
             public override long GetMinimumValue()
             {
                 GetMinWasCalled = true;
@@ -312,10 +300,7 @@ namespace NodaTime.Test.Fields
                 return new LocalInstant((localInstant.Ticks / 60L) * 60L);
             }
 
-            public override bool IsLenient
-            {
-                get { return false; }
-            }
+            public override bool IsLenient { get { return false; } }
         }
     }
 }

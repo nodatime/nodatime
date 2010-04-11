@@ -14,7 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
+using NodaTime.Fields;
 
 namespace NodaTime.Calendars
 {
@@ -37,7 +39,7 @@ namespace NodaTime.Calendars
         {
         }
 
-        protected override void AssembleFields(Fields.FieldSet.Builder builder)
+        protected override void AssembleFields(FieldSet.Builder builder)
         {
             // TODO: This pattern appears all over the place. It *may* not be necessary
             // now we've separated out all the time zone stuff.
@@ -49,7 +51,7 @@ namespace NodaTime.Calendars
 
         public override long AverageTicksPerYear { get { return AverageTicksPerGregorianYear; } }
         public override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerGregorianYear / 2; } }
-        public override long AverageTicksPerMonth { get { return (long)(365.2425m * NodaConstants.TicksPerDay / 12); } }
+        public override long AverageTicksPerMonth { get { return (long) (365.2425m * NodaConstants.TicksPerDay / 12); } }
         public override long ApproxTicksAtEpochDividedByTwo { get { return (1970 * AverageTicksPerGregorianYear) / 2; } }
         // TODO: Check that this is still valid now we've moved to ticks. I suspect it's not... (divide by 10000?)
         public override int MinYear { get { return -27258; } }
