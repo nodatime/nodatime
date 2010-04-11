@@ -32,7 +32,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Construct_NullName_Exception()
         {
-            Assert.Throws(typeof (ArgumentNullException), () => new ZoneTransition(Instant.UnixEpoch, null, Offset.Zero, Offset.Zero));
+            Assert.Throws(typeof(ArgumentNullException), () => new ZoneTransition(Instant.UnixEpoch, null, Offset.Zero, Offset.Zero));
         }
 
         [Test]

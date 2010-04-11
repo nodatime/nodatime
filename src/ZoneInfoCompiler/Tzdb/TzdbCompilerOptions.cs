@@ -42,7 +42,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         #endregion
 
         #region Specialized Option Attribute
-        [ValueList(typeof (List<string>))] public IList<string> InputFiles;
+        [ValueList(typeof(List<string>))] public IList<string> InputFiles;
 
         [HelpOption(
             HelpText = "Display this help.")]

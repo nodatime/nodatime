@@ -47,7 +47,7 @@ namespace NodaTime.Test
 
         public Type GetSupportedType()
         {
-            return typeof (int);
+            return typeof(int);
         }
     }
 }

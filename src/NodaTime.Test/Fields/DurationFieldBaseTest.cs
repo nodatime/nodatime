@@ -83,7 +83,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void IsTypeValid_AllEnumValues_AreValid()
         {
-            foreach (DurationFieldType type in Enum.GetValues(typeof (DurationFieldType)))
+            foreach (DurationFieldType type in Enum.GetValues(typeof(DurationFieldType)))
             {
                 Assert.IsTrue(DurationFieldBase.IsTypeValid(type));
             }
@@ -93,7 +93,7 @@ namespace NodaTime.Test.Fields
         public void IsTypeValid_ValuesOutOfRange_AreInvalid()
         {
             Assert.IsFalse(DurationFieldBase.IsTypeValid((DurationFieldType) (-1)));
-            DurationFieldType max = Enum.GetValues(typeof (DurationFieldType))
+            DurationFieldType max = Enum.GetValues(typeof(DurationFieldType))
                 .Cast<DurationFieldType>().Max();
             Assert.IsFalse(DurationFieldBase.IsTypeValid(max + 1));
         }

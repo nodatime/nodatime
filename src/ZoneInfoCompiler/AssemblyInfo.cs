@@ -35,7 +35,7 @@ namespace NodaTime.ZoneInfoCompiler
                 Assembly program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof (AssemblyTitleAttribute), false);
+                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
                     if (attributes.Length > 0)
                     {
                         AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute) attributes[0];
@@ -76,7 +76,7 @@ namespace NodaTime.ZoneInfoCompiler
                 Assembly program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof (AssemblyDescriptionAttribute), false);
+                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
                     if (attributes.Length > 0)
                     {
                         return ((AssemblyDescriptionAttribute) attributes[0]).Description;
@@ -96,7 +96,7 @@ namespace NodaTime.ZoneInfoCompiler
                 Assembly program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof (AssemblyProductAttribute), false);
+                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                     if (attributes.Length > 0)
                     {
                         return ((AssemblyProductAttribute) attributes[0]).Product;
@@ -116,7 +116,7 @@ namespace NodaTime.ZoneInfoCompiler
                 Assembly program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof (AssemblyCopyrightAttribute), false);
+                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                     if (attributes.Length > 0)
                     {
                         return ((AssemblyCopyrightAttribute) attributes[0]).Copyright;
@@ -136,7 +136,7 @@ namespace NodaTime.ZoneInfoCompiler
                 Assembly program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof (AssemblyCompanyAttribute), false);
+                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
                     if (attributes.Length > 0)
                     {
                         return ((AssemblyCompanyAttribute) attributes[0]).Company;

@@ -220,7 +220,7 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            if (obj.GetType() != typeof (ZoneInterval))
+            if (obj.GetType() != typeof(ZoneInterval))
             {
                 return false;
             }

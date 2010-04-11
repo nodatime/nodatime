@@ -84,7 +84,7 @@ namespace NodaTime.TimeZones
             {
                 throw new InvalidOperationException(@"Unknown IDateTimeZone type: " + className);
             }
-            var method = type.GetMethod("Read", new[] {typeof (DateTimeZoneReader), typeof (string)});
+            var method = type.GetMethod("Read", new[] {typeof(DateTimeZoneReader), typeof(string)});
             if (method != null)
             {
                 return method.Invoke(null, new object[] {this, id}) as IDateTimeZone;

@@ -28,7 +28,7 @@ namespace NodaTime.Fields
     internal sealed class UnsupportedDurationField : DurationFieldBase
     {
         private static readonly UnsupportedDurationField[] cache = Array.ConvertAll
-            ((DurationFieldType[]) Enum.GetValues(typeof (DurationFieldType)),
+            ((DurationFieldType[]) Enum.GetValues(typeof(DurationFieldType)),
              type => new UnsupportedDurationField(type));
 
         // Convenience fields

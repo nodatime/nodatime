@@ -131,7 +131,7 @@ namespace NodaTime.Test
         public static void TestOperatorEquality<T>(T value, T equalValue, T unEqualValue)
         {
             ValidateInput(value, equalValue, unEqualValue, "unEqualValue");
-            Type type = typeof (T);
+            Type type = typeof(T);
             string name = type.Name;
             var equality = type.GetMethod("op_Equality", new[] {type, type});
             if (equality != null)
@@ -173,7 +173,7 @@ namespace NodaTime.Test
         public static void TestOperatorComparison<T>(T value, T equalValue, T greaterValue)
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
-            Type type = typeof (T);
+            Type type = typeof(T);
             var greaterThan = type.GetMethod("op_GreaterThan", new[] {type, type});
             if (greaterThan != null)
             {
@@ -216,7 +216,7 @@ namespace NodaTime.Test
         {
             TestOperatorEquality(value, equalValue, greaterValue);
             TestOperatorComparison(value, equalValue, greaterValue);
-            Type type = typeof (T);
+            Type type = typeof(T);
             var greaterThanOrEqual = type.GetMethod("op_GreaterThanOrEqual", new[] {type, type});
             if (greaterThanOrEqual != null)
             {

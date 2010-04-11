@@ -50,7 +50,7 @@ namespace ZoneInfoCompiler.Test
         {
             string text = string.Empty;
             Tokens tokens = Tokens.Tokenize(text);
-            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace ZoneInfoCompiler.Test
         {
             string text = "Mar";
             Tokens tokens = Tokens.Tokenize(text);
-            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace ZoneInfoCompiler.Test
         {
             string text = "Mar lastSun";
             Tokens tokens = Tokens.Tokenize(text);
-            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens));
         }
 
         [Test]
@@ -296,14 +296,14 @@ namespace ZoneInfoCompiler.Test
         public void ParseLink_emptyString_exception()
         {
             Tokens tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseLink(tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseLink(tokens));
         }
 
         [Test]
         public void ParseLink_tooFewWords_exception()
         {
             Tokens tokens = Tokens.Tokenize("from");
-            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseLink(tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseLink(tokens));
         }
 
         [Test]
@@ -321,21 +321,21 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_emptyString_exception()
         {
             Tokens tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_tooFewWords2_exception()
         {
             Tokens tokens = Tokens.Tokenize("2:00");
-            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_tooFewWords1_exception()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US");
-            Assert.Throws(typeof (TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
@@ -461,7 +461,7 @@ namespace ZoneInfoCompiler.Test
                 ToOffset(14, 53, 27, 856),
                 's'
                 );
-            Assert.Throws(typeof (FormatException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(FormatException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         private static Offset ToOffset(int hours, int minutes, int seconds, int fractions)

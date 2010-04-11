@@ -151,7 +151,7 @@ namespace NodaTime.Format
             localInstant = instant;
             this.calendarSystem = calendarSystem;
             this.provider = provider;
-            this.PivotYear = pivotYear;
+            PivotYear = pivotYear;
         }
 
         /// <summary>
