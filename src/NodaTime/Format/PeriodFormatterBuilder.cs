@@ -739,33 +739,33 @@ namespace NodaTime.Format
                 switch (fieldType)
                 {
                     case FormatterDurationFieldType.Years:
-                        value = period.Get(DurationFieldType.Years);
+                        value = period[DurationFieldType.Years];
                         break;
                     case FormatterDurationFieldType.Months:
-                        value = period.Get(DurationFieldType.Months);
+                        value = period[DurationFieldType.Months];
                         break;
                     case FormatterDurationFieldType.Weeks:
-                        value = period.Get(DurationFieldType.Weeks);
+                        value = period[DurationFieldType.Weeks];
                         break;
                     case FormatterDurationFieldType.Days:
-                        value = period.Get(DurationFieldType.Days);
+                        value = period[DurationFieldType.Days];
                         break;
                     case FormatterDurationFieldType.Hours:
-                        value = period.Get(DurationFieldType.Hours);
+                        value = period[DurationFieldType.Hours];
                         break;
                     case FormatterDurationFieldType.Minutes:
-                        value = period.Get(DurationFieldType.Minutes);
+                        value = period[DurationFieldType.Minutes];
                         break;
                     case FormatterDurationFieldType.Seconds:
-                        value = period.Get(DurationFieldType.Seconds);
+                        value = period[DurationFieldType.Seconds];
                         break;
                     case FormatterDurationFieldType.Milliseconds:
-                        value = period.Get(DurationFieldType.Milliseconds);
+                        value = period[DurationFieldType.Milliseconds];
                         break;
                     case FormatterDurationFieldType.SecondsMilliseconds: // drop through
                     case FormatterDurationFieldType.SecondsMillisecondsOptional:
-                        int seconds = period.Get(DurationFieldType.Seconds);
-                        int millis = period.Get(DurationFieldType.Milliseconds);
+                        int seconds = period[DurationFieldType.Seconds];
+                        int millis = period[DurationFieldType.Milliseconds];
                         value = (seconds * (long)NodaConstants.MillisecondsPerSecond) + millis;
                         break;
                     default:
@@ -866,7 +866,7 @@ namespace NodaTime.Format
             {
                 for (int i = 0, isize = period.Size; i < isize; i++) 
                 {
-                    if (period.GetValue(i) != 0)
+                    if (period[i] != 0)
                     {
                         return false;
                     }

@@ -63,12 +63,13 @@ namespace NodaTime.Periods
 
         /// <summary>
         /// Gets the field type at the specified index.
-        /// 
-        /// The only index supported by this period is zero which returns the field type of this class.
         /// </summary>
-        /// <param name="index">the index to retrieve, which must be 0</param>
+        /// <param name="index">The zero-based index of the value to get</param>
         /// <returns>The field at the specified index</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown if index != 0</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">if index != 0</exception>
+        /// <remarks>
+        /// The only index supported by this period is zero which returns the field type of this class.
+        /// </remarks>
         public DurationFieldType GetFieldType(int index)
         {
             if (index != 0)
@@ -80,48 +81,54 @@ namespace NodaTime.Periods
         }
 
         /// <summary>
-        /// Gets the value at the specfied index.
-        /// 
-        /// The only index supported by this period is zero.
+        /// Checks whether the field type specified is supported by this period.
         /// </summary>
-        /// <param name="index">the index to retrieve, which must be zero</param>
-        /// <returns>the value of the field at the specified index</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown if index != 0</exception>
-        public int GetValue(int index)
-        {
-            if (index != 0)
-            {
-                throw new ArgumentOutOfRangeException("index", "Index must be 0 for a SingleFieldPeriod.");
-            }
-
-            return Value;
-        }
-
-        /// <summary>
-        /// Gets the value of a duration field represented by this period.
-        /// 
-        /// If the field type specified does not match the type used by this class then zero is returned.
-        /// </summary>
-        /// <param name="field">the field type to query, null returns zero</param>
-        /// <returns>the value of that field, zero if field not supported</returns>
-        public int Get(DurationFieldType field)
-        {
-            if (field == FieldType)
-            {
-                return Value;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Checks whether the duration field specified is supported by this period.
-        /// </summary>
-        /// <param name="field">the type to check, may be null which returns false</param>
-        /// <returns>true if the field is supported</returns>
+        /// <param name="field">The field to check, may be null which returns false</param>
+        /// <returns>True if the field is supported</returns>
         public bool IsSupported(DurationFieldType field)
         {
             return field == FieldType;
+        }
+
+        /// <summary>
+        /// Gets the value at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index of the value to get</param>
+        /// <returns>The value of the field at the specified index</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">if the index is not equal to zero</exception>
+        /// <remarks>The only index supported by this period is zero.</remarks>
+        public int this[int index] 
+        { 
+            get 
+            {
+                if (index != 0)
+                {
+                    throw new ArgumentOutOfRangeException("index", "Index must be 0 for a SingleFieldPeriod.");
+                }
+
+                return Value;
+            } 
+        }
+
+        /// <summary>
+        /// Gets the value of one of the fields.
+        /// </summary>
+        /// <param name="field">The field type to query, null return zero</param>
+        /// <returns>The value of that field, zero if field not supported</returns>
+        /// <remarks>
+        /// If the field type specified is not supported by the period then zero is returned.
+        /// </remarks>
+        public int this[DurationFieldType field]
+        {
+            get
+            {
+                if (field == FieldType)
+                {
+                    return Value;
+                }
+
+                return 0;
+            }
         }
 
         #endregion

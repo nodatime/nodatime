@@ -20,8 +20,15 @@ using NodaTime.Periods;
 namespace NodaTime
 {
     /// <summary>
-    /// Original name: ReadablePeriod
+    /// Defines a time period specified in terms of individual duration fields
+    /// such as years and days.
     /// </summary>
+    /// <remarks>
+    /// Periods are split up into multiple fields, for example days and seconds.
+    /// Implementations are not required to evenly distribute the values across the fields.
+    /// The value for each field may be positive or negative.
+    /// 
+    /// </remarks>
     public interface IPeriod
     {
         /// <summary>
@@ -37,34 +44,34 @@ namespace NodaTime
         /// <summary>
         /// Gets the field type at the specified index.
         /// </summary>
-        /// <param name="index">the index the retrieve</param>
-        /// <returns>the field at the specified index</returns>
+        /// <param name="index">The zero-based index of the value to get</param>
+        /// <returns>The field at the specified index</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">if the index is invalid</exception>
         DurationFieldType GetFieldType(int index);
 
         /// <summary>
+        /// Checks whether the field type specified is supported by this period.
+        /// </summary>
+        /// <param name="field">The field to check, may be null which returns false</param>
+        /// <returns>True if the field is supported</returns>
+        bool IsSupported(DurationFieldType field);
+
+        /// <summary>
         /// Gets the value at the specified index.
         /// </summary>
-        /// <param name="index">the index to retrieve</param>
-        /// <returns>the value of the field at the specified index</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">if the index is invalid</exception>
-        int GetValue(int index);
+        /// <param name="index">The zero-based index of the value to get </param>
+        /// <returns>The value of the field at the specified index</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">if the index is less than 0 or equal to or greater than Size</exception>
+        int this[int index] { get; }
 
         /// <summary>
         /// Gets the value of one of the fields.
-        /// 
+        /// </summary>
+        /// <param name="field">The field type to query, null return zero</param>
+        /// <returns>The value of that field, zero if field not supported</returns>
+        /// <remarks>
         /// If the field type specified is not supported by the period then zero is returned.
-        /// </summary>
-        /// <param name="field">the field type to query, null return zero</param>
-        /// <returns>the value of that field, zero if field not supported</returns>
-        /// TODO: Get is a .NET language reserved word. This needs to be renamed
-        int Get(DurationFieldType field);
-
-        /// <summary>
-        /// Checks whether the field type specified is supported by this period.
-        /// </summary>
-        /// <param name="field">the field to check, may be null which returns false</param>
-        /// <returns>true if the field is supported</returns>
-        bool IsSupported(DurationFieldType field);
+        /// </remarks>
+        int this[DurationFieldType field] { get; }
     }
 }

@@ -41,12 +41,12 @@ namespace NodaTime.Test.Periods
         {
             Period sut = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime);
             Assert.AreEqual(6, sut.Size);
-            Assert.AreEqual(1, sut.GetValue(0));
-            Assert.AreEqual(4, sut.GetValue(1));
-            Assert.AreEqual(5, sut.GetValue(2));
-            Assert.AreEqual(6, sut.GetValue(3));
-            Assert.AreEqual(7, sut.GetValue(4));
-            Assert.AreEqual(8, sut.GetValue(5));
+            Assert.AreEqual(1, sut[0]);
+            Assert.AreEqual(4, sut[1]);
+            Assert.AreEqual(5, sut[2]);
+            Assert.AreEqual(6, sut[3]);
+            Assert.AreEqual(7, sut[4]);
+            Assert.AreEqual(8, sut[5]);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(8, values[5]);
 
             values[0] = 42;
-            Assert.AreEqual(1, sut.GetValue(0));
+            Assert.AreEqual(1, sut[0]);
         }
 
         [Test]
@@ -100,12 +100,12 @@ namespace NodaTime.Test.Periods
         public void Get_ForYearDayTimePeriod()
         {
             Period sut = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime);
-            Assert.AreEqual(1, sut.Get(DurationFieldType.Years));
-            Assert.AreEqual(4, sut.Get(DurationFieldType.Days));
-            Assert.AreEqual(5, sut.Get(DurationFieldType.Hours));
-            Assert.AreEqual(6, sut.Get(DurationFieldType.Minutes));
-            Assert.AreEqual(7, sut.Get(DurationFieldType.Seconds));
-            Assert.AreEqual(8, sut.Get(DurationFieldType.Milliseconds));
+            Assert.AreEqual(1, sut[DurationFieldType.Years]);
+            Assert.AreEqual(4, sut[DurationFieldType.Days]);
+            Assert.AreEqual(5, sut[DurationFieldType.Hours]);
+            Assert.AreEqual(6, sut[DurationFieldType.Minutes]);
+            Assert.AreEqual(7, sut[DurationFieldType.Seconds]);
+            Assert.AreEqual(8, sut[DurationFieldType.Milliseconds]);
         }
 
         [Test]

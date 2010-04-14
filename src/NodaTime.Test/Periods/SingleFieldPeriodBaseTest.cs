@@ -56,28 +56,28 @@ namespace NodaTime.Test.Periods
         public void GetValue_ReturnsSingleValue_ForZeroIndex()
         {
             var sut = new Single(10);
-            Assert.AreEqual(sut.Value, sut.GetValue(0));
+            Assert.AreEqual(sut.Value, sut[0]);
         }
 
         [Test]
         public void GetValue_ThrowsArgumentOutOfRange_ForNonZeroIndex()
         {
             var sut = new Single(10);
-            Assert.Throws<ArgumentOutOfRangeException>(() => sut.GetValue(1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => { var _ = sut[1]; });
         }
 
         [Test]
         public void Get_ReturnsSingleValue_ForTheSupportedDurationFieldType()
         {
             var sut = new Single(10);
-            Assert.AreEqual(sut.Value, sut.Get(DurationFieldType.Days));
+            Assert.AreEqual(sut.Value, sut[DurationFieldType.Days]);
         }
 
         [Test]
         public void Get_ReturnsZero_ForUnsupportedDurationFieldType()
         {
             var sut = new Single(10);
-            Assert.AreEqual(0, sut.Get(DurationFieldType.Centuries));
+            Assert.AreEqual(0, sut[DurationFieldType.Centuries]);
         }
 
         [Test]
