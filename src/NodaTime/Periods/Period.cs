@@ -137,39 +137,70 @@ namespace NodaTime.Periods
 
         #region IPeriod Members
 
+        /// <summary>
+        /// Gets the period type that defines which fields are included in the period.
+        /// </summary>
         public PeriodType PeriodType
         {
             get { return periodType; }
         }
 
+        /// <summary>
+        /// Gets the number of fields this period supports.
+        /// </summary>
         public int Size
         {
             get { return periodType.Size; }
         }
 
+        /// <summary>
+        /// Gets the field type at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index of the value to get</param>
+        /// <returns>The field at the specified index</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">if the index is invalid</exception>
         public DurationFieldType GetFieldType(int index)
         {
             return periodType.GetFieldType(index);
         }
 
+        /// <summary>
+        /// Checks whether the field type specified is supported by this period.
+        /// </summary>
+        /// <param name="field">The field to check, may be null which returns false</param>
+        /// <returns>True if the field is supported</returns>
         public bool IsSupported(DurationFieldType field)
         {
             return PeriodType.IsSupported(field);
         }
 
-        public int GetValue(int index)
-        {
-            return fieldValues[index];
-        }
+        /// <summary>
+        /// Gets the value at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index of the value to get </param>
+        /// <returns>The value of the field at the specified index</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">if the index is less than 0 or equal to or greater than Size</exception>
+        public int this[int index] { get { return fieldValues[index]; } }
 
-        public int Get(DurationFieldType field)
+        /// <summary>
+        /// Gets the value of one of the fields.
+        /// </summary>
+        /// <param name="field">The field type to query, null return zero</param>
+        /// <returns>The value of that field, zero if field not supported</returns>
+        /// <remarks>
+        /// If the field type specified is not supported by the period then zero is returned.
+        /// </remarks>
+        public int this[DurationFieldType field] 
         {
-            int index = PeriodType.IndexOf(field);
-            if (index == -1)
+            get
             {
-                return 0;
+                int index = PeriodType.IndexOf(field);
+                if (index == -1)
+                {
+                    return 0;
+                }
+                return this[index];
             }
-            return GetValue(index);
         }
 
         #endregion
@@ -275,7 +306,7 @@ namespace NodaTime.Periods
         private int GetIndexedField(PeriodType.Index index)
         {
             int realIndex = PeriodType.GetRealIndex(index);
-            return realIndex == -1 ? 0 : GetValue(realIndex);
+            return realIndex == -1 ? 0 : this[realIndex];
         }
 
         #endregion
@@ -482,14 +513,14 @@ namespace NodaTime.Periods
                 return this;
 
             var values = GetValues();
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Year, period.Get(DurationFieldType.Years), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Month, period.Get(DurationFieldType.Months), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Week, period.Get(DurationFieldType.Weeks), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Day, period.Get(DurationFieldType.Days), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Hour, period.Get(DurationFieldType.Hours), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Minute, period.Get(DurationFieldType.Minutes), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Second, period.Get(DurationFieldType.Seconds), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Millisecond, period.Get(DurationFieldType.Milliseconds), true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Year, period[DurationFieldType.Years], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Month, period[DurationFieldType.Months], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Week, period[DurationFieldType.Weeks], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Day, period[DurationFieldType.Days], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Hour, period[DurationFieldType.Hours], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Minute, period[DurationFieldType.Minutes], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Second, period[DurationFieldType.Seconds], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Millisecond, period[DurationFieldType.Milliseconds], true);
 
             return new Period(values, PeriodType);
         }
@@ -676,14 +707,14 @@ namespace NodaTime.Periods
                 return this;
 
             var values = GetValues();
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Year, -period.Get(DurationFieldType.Years), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Month, -period.Get(DurationFieldType.Months), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Week, -period.Get(DurationFieldType.Weeks), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Day, -period.Get(DurationFieldType.Days), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Hour, -period.Get(DurationFieldType.Hours), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Minute, -period.Get(DurationFieldType.Minutes), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Second, -period.Get(DurationFieldType.Seconds), true);
-            PeriodType.UpdateIndexedField(values, PeriodType.Index.Millisecond, -period.Get(DurationFieldType.Milliseconds), true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Year, -period[DurationFieldType.Years], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Month, -period[DurationFieldType.Months], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Week, -period[DurationFieldType.Weeks], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Day, -period[DurationFieldType.Days], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Hour, -period[DurationFieldType.Hours], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Minute, -period[DurationFieldType.Minutes], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Second, -period[DurationFieldType.Seconds], true);
+            PeriodType.UpdateIndexedField(values, PeriodType.Index.Millisecond, -period[DurationFieldType.Milliseconds], true);
 
             return new Period(values, PeriodType);
         }
@@ -839,7 +870,7 @@ namespace NodaTime.Periods
             for (int i = 0, isize = period.Size; i < isize; i++)
             {
                 DurationFieldType type = period.GetFieldType(i);
-                int value = period.GetValue(i);
+                int value = period[i];
                 PeriodType.UpdateAnyField(values, type, value, false);
             }
         }

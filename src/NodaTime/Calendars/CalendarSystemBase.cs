@@ -184,7 +184,7 @@ namespace NodaTime.Calendars
             {
                 for (int i = 0, isize = period.Size; i < isize; i++)
                 {
-                    long value = period.GetValue(i); // use long to allow for multiplication (fits OK)
+                    long value = period[i]; // use long to allow for multiplication (fits OK)
                     if (value != 0)
                     {
                         result = GetField(period.GetFieldType(i)).Add(result, value * scalar);

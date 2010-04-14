@@ -280,7 +280,7 @@ namespace NodaTime.Partials
                 int index = IndexOf(fieldType);
                 if(index != -1)
                 {
-                    newValues = GetField(index).Add(this, index, newValues, period.GetValue(i) * factor);
+                    newValues = GetField(index).Add(this, index, newValues, period[i] * factor);
                 }
             }
             return new Partial(types, newValues, calendar);
