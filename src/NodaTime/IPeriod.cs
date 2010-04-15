@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Fields;
 using NodaTime.Periods;
 
@@ -27,7 +28,6 @@ namespace NodaTime
     /// Periods are split up into multiple fields, for example days and seconds.
     /// Implementations are not required to evenly distribute the values across the fields.
     /// The value for each field may be positive or negative.
-    /// 
     /// </remarks>
     public interface IPeriod
     {
