@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 using NodaTime.Fields;
@@ -25,8 +26,8 @@ namespace NodaTime.Periods
     /// SingleFieldPeriodBase is an abstract implementation of IPeriod that
     /// manages a single duration field, such as days or minutes.
     /// </summary>
-    public abstract class SingleFieldPeriodBase : IPeriod, IEquatable<SingleFieldPeriodBase>
-                                                    , IComparable<SingleFieldPeriodBase>, IComparable
+    public abstract class SingleFieldPeriodBase 
+        : IPeriod, IEquatable<SingleFieldPeriodBase>, IComparable<SingleFieldPeriodBase>, IComparable
     {
         private readonly int value;
 
@@ -135,11 +136,22 @@ namespace NodaTime.Periods
 
         #region Equality
 
+        /// <summary>
+        /// Determines whether this instance of <see cref="SingleFieldPeriodBase"/> derived class 
+        /// and a specified object, which must be of the same type, have the same value.
+        /// </summary>
+        /// <param name="obj">An object</param>
+        /// <returns>True if obj is of the same type and its value is the same as this instance;
+        /// otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return Equals(obj as SingleFieldPeriodBase);
         }
 
+        /// <summary>
+        /// Returns the hash code for this instance of <see cref="SingleFieldPeriodBase"/> derived class.
+        /// </summary>
+        /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
@@ -148,6 +160,12 @@ namespace NodaTime.Periods
             return hash;
         }
 
+        /// <summary>
+        /// Determines whether this instance and another specified instance of <see cref="SingleFieldPeriodBase"/> derived class 
+        /// have the same value.
+        /// </summary>
+        /// <param name="other">An instance of <see cref="SingleFieldPeriodBase"/> derived class</param>
+        /// <returns>True if the value of the parameter is the same as this instance; otherwise, false.</returns>
         public bool Equals(SingleFieldPeriodBase other)
         {
             if (Object.ReferenceEquals(this, other))
@@ -200,6 +218,11 @@ namespace NodaTime.Periods
                 return 0;
             }
 
+            if (other != null && other.GetType() != this.GetType())
+            {
+                throw new ArgumentException("Other object must be of type " + this.GetType(), "other");
+
+            }
             if (other == null)
             {
                 return 1;
@@ -212,13 +235,72 @@ namespace NodaTime.Periods
             return Value.CompareTo(other.Value);
         }
 
+        /// <summary>
+        /// Compares two specified <see cref="SingleFieldPeriodBase"/> derived objects.
+        /// </summary>
+        /// <param name="left">The first <see cref="SingleFieldPeriodBase"/> derived object.</param>
+        /// <param name="right">The second <see cref="SingleFieldPeriodBase"/> derived object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings:
+        /// <list type="table">
+        /// <listheader>
+        /// <term>Value</term>
+        /// <description>Meaning</description>
+        /// </listheader>
+        /// <item>
+        /// <term>&lt; 0</term>
+        /// <description>This object is less than the <paramref name="other"/> parameter.</description>
+        /// </item>
+        /// <item>
+        /// <term>0</term>
+        /// <description>This object is equal to <paramref name="other"/>.</description>
+        /// </item>
+        /// <item>
+        /// <term>&gt; 0</term>
+        /// <description>This object is greater than <paramref name="other"/>.</description>
+        /// </item>
+        /// </list>
+        /// </returns>
         public static int Compare(SingleFieldPeriodBase left, SingleFieldPeriodBase right)
         {
             return left == null ? -1 : left.CompareTo(right);
         }
 
+        /// <summary>
+        /// Compares the current object to a specified object and returns an indication of their relative values.
+        /// </summary>
+        /// <param name="obj">An object to compare, or null. </param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings:
+        /// <list type="table">
+        /// <listheader>
+        /// <term>Value</term>
+        /// <description>Meaning</description>
+        /// </listheader>
+        /// <item>
+        /// <term>&lt; 0</term>
+        /// <description>This object is less than the <paramref name="other"/> parameter.</description>
+        /// </item>
+        /// <item>
+        /// <term>0</term>
+        /// <description>This object is equal to <paramref name="other"/>.</description>
+        /// </item>
+        /// <item>
+        /// <term>&gt; 0</term>
+        /// <description>This object is greater than <paramref name="other"/>.</description>
+        /// </item>
+        /// </list>
+        /// </returns>
         int IComparable.CompareTo(object obj)
         {
+            if (obj != null && obj.GetType() != this.GetType())
+            {
+                throw new ArgumentException("Obj must be of type " + this.GetType(), "obj");
+
+            }
+
             return CompareTo(obj as SingleFieldPeriodBase);
         }
 
