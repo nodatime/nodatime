@@ -103,7 +103,7 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void GetPerioLocaldInstant_NoCache()
+        public void GetPeriodLocalInstant_NoCache()
         {
             this.paris.GetZoneInterval(this.noCacheLocalInstants[this.noCacheLocalIndex]);
             this.noCacheLocalIndex = (this.noCacheLocalIndex + 1) % this.noCacheLocalInstants.Length;
