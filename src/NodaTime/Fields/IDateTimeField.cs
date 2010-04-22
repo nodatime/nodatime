@@ -92,7 +92,7 @@ namespace NodaTime.Fields
         /// an invalid value for a smaller field. In this case the smaller field is
         /// adjusted to be in range. For example, in the ISO chronology:
         /// </para>
-        /// <list>
+        /// <list type="bullet">
         /// <item>2000-08-20 add six months is 2001-02-20</item>
         /// <item>2000-08-20 add twenty months is 2002-04-20</item>
         /// <item>2000-08-20 add minus nine months is 1999-11-20</item>
@@ -116,7 +116,7 @@ namespace NodaTime.Fields
         /// an invalid value for a smaller field. In this case the smaller field is
         /// adjusted to be in range. For example, in the ISO chronology:
         /// </para>
-        /// <list>
+        /// <list type="bullet">
         /// <item>2000-08-20 add six months is 2001-02-20</item>
         /// <item>2000-08-20 add twenty months is 2002-04-20</item>
         /// <item>2000-08-20 add minus nine months is 1999-11-20</item>
@@ -144,7 +144,7 @@ namespace NodaTime.Fields
         /// result would be an invalid value for a smaller field. In this case the
         /// smaller field is adjusted to be in range. For example, in the ISO chronology:
         /// </para>
-        /// <list>
+        /// <list type="bullet">
         /// <item>2000-08-20 add six months is 2001-02-20</item>
         /// <item>2000-08-20 add twenty months is 2002-04-20</item>
         /// <item>2000-08-20 add minus nine months is 1999-11-20</item>
@@ -173,16 +173,15 @@ namespace NodaTime.Fields
         /// <para>
         /// Partial instants only contain some fields. This may result in a maximum
         /// possible value, such as TimeOfDay being limited to 23:59:59:999. If this
-        /// limit is reached by the add an exception is thrown.
+        /// limit is reached by the add an exception is thrown. For example, in the ISO chronology:
         /// </para>
-        /// <example>
-        /// For example, in the ISO chronology:<br />
-        /// 2000-08-20 add six months is 2000-02-20<br />
-        /// 2000-08-20 add twenty months is 2000-04-20<br />
-        /// 2000-08-20 add minus nine months is 2000-11-20<br />
-        /// 2001-01-31 add one month  is 2001-02-28<br />
-        /// 2001-01-31 add two months is 2001-03-31<br />
-        /// </example>
+        /// <list type="bullet">
+        /// <item>2000-08-20 add six months is 2000-02-20</item>
+        /// <item>2000-08-20 add twenty months is 2000-04-20</item>
+        /// <item>2000-08-20 add minus nine months is 2000-11-20</item>
+        /// <item>2001-01-31 add one month  is 2001-02-28</item>
+        /// <item>2001-01-31 add two months is 2001-03-31</item>
+        /// </list>
         /// </remarks>
         int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd);
 
@@ -207,14 +206,13 @@ namespace NodaTime.Fields
         /// possible value, such as TimeOfDay normally being limited to 23:59:59:999.
         /// If ths limit is reached by the addition, this method will wrap back to
         /// 00:00:00.000. In fact, you would generally only use this method for
-        /// classes that have a limitation such as this.
+        /// classes that have a limitation such as this. For example, in the ISO chronology:
         /// </para>
-        /// <example>
-        /// For example, in the ISO chronology:<br />
-        /// 10:20:30 add 20 minutes is 10:40:30<br />
-        /// 10:20:30 add 45 minutes is 11:05:30<br />
-        /// 10:20:30 add 16 hours is 02:20:30<br />
-        /// </example>
+        /// <list type="bullet">
+        /// <item>10:20:30 add 20 minutes is 10:40:30</item>
+        /// <item>10:20:30 add 45 minutes is 11:05:30</item>
+        /// <item>10:20:30 add 16 hours is 02:20:30</item>
+        /// </list>
         /// </remarks>
         int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd);
 

@@ -250,15 +250,15 @@ namespace NodaTime.Periods
         /// </listheader>
         /// <item>
         /// <term>&lt; 0</term>
-        /// <description>This object is less than the <paramref name="other"/> parameter.</description>
+        /// <description><paramref name="left"/> is less than <paramref name="right"/>.</description>
         /// </item>
         /// <item>
         /// <term>0</term>
-        /// <description>This object is equal to <paramref name="other"/>.</description>
+        /// <description><paramref name="left"/> is equal to<paramref name="right"/>.</description>
         /// </item>
         /// <item>
         /// <term>&gt; 0</term>
-        /// <description>This object is greater than <paramref name="other"/>.</description>
+        /// <description><paramref name="left"/> is greater than <paramref name="right"/>.</description>
         /// </item>
         /// </list>
         /// </returns>
@@ -281,15 +281,15 @@ namespace NodaTime.Periods
         /// </listheader>
         /// <item>
         /// <term>&lt; 0</term>
-        /// <description>This object is less than the <paramref name="other"/> parameter.</description>
+        /// <description>This object is less than the <paramref name="obj"/> parameter.</description>
         /// </item>
         /// <item>
         /// <term>0</term>
-        /// <description>This object is equal to <paramref name="other"/>.</description>
+        /// <description>This object is equal to <paramref name="obj"/>.</description>
         /// </item>
         /// <item>
         /// <term>&gt; 0</term>
-        /// <description>This object is greater than <paramref name="other"/>.</description>
+        /// <description>This object is greater than <paramref name="obj"/>.</description>
         /// </item>
         /// </list>
         /// </returns>
