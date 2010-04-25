@@ -57,23 +57,7 @@ namespace NodaTime.Periods
         /// <summary>
         /// Initializes a new empty period with the standard set of fields.
         /// </summary>
-        /// <remarks>
-        /// One way to initialise a period is as follows:
-        /// <code>
-        /// Period = new Period().WithYears(6).WithMonths(3).WithSeconds(23);
-        /// </code>
-        /// Bear in mind that this creates four period instances in total, three of
-        /// which are immediately discarded.
-        /// The alternative is more efficient, but less readable:
-        /// <code>
-        /// Period = new Period(6, 3, 0, 0, 0, 0, 23, 0);
-        /// </code>
-        /// The following is also slightly less wasteful:
-        /// <code>
-        /// Period = Period.Years(6).WithMonths(3).WithSeconds(23);
-        /// </code>
-        /// </remarks>
-        public Period()
+        private Period()
             : this(new int[] { 0, 0, 0, 0, 0, 0, 0, 0 }, PeriodType.Standard) { }
 
 
