@@ -306,6 +306,16 @@ namespace NodaTime.Periods
         #region Unary operators
 
         /// <summary>
+        /// Returns the same instance. Friendly alternative for <c>Seconds.operator +(Seconds)</c> operator.
+        /// </summary>
+        /// <param name="period">The operand.</param>
+        /// <returns>The same <see cref="Seconds"/> instance</returns>
+        public static Seconds Plus(Seconds period)
+        {
+            return period;
+        }
+
+        /// <summary>
         /// Implements the unary operator + .
         /// </summary>
         /// <param name="period">The operand.</param>
@@ -313,6 +323,17 @@ namespace NodaTime.Periods
         public static Seconds operator +(Seconds period)
         {
             return period;
+        }
+
+
+        /// <summary>
+        /// Increments the given period by 1. Friendly alternative for <c>Seconds.operator ++(Seconds)</c> operator.
+        /// </summary>
+        /// <param name="period">The period to increment.</param>
+        /// <returns>A new <see cref="Seconds"/> instance with incremented value.</returns>
+        public static Seconds Increment(Seconds period)
+        {
+            return ++period;
         }
 
         /// <summary>
@@ -323,6 +344,16 @@ namespace NodaTime.Periods
         public static Seconds operator ++(Seconds period)
         {
             return Object.ReferenceEquals(period, null) ? null : period.Add(1);
+        }
+
+        /// <summary>
+        /// Decrements the given period by 1. Friendly alternative for <c>Seconds.operator --(Seconds)</c> operator.
+        /// </summary>
+        /// <param name="period">The period to decrement.</param>
+        /// <returns>A new <see cref="Seconds"/> instance with decremented value.</returns>
+        public static Seconds Decrement(Seconds period)
+        {
+            return --period;
         }
 
         /// <summary>
@@ -364,7 +395,7 @@ namespace NodaTime.Periods
         }
 
         /// <summary>
-        /// Adds one Hours instance to another. Friendly alternative to <c>operator+()</c>.
+        /// Adds one <see cref="Seconds"/> instance to another. Friendly alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>

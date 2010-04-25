@@ -306,6 +306,16 @@ namespace NodaTime.Periods
         #region Unary operators
 
         /// <summary>
+        /// Returns the same instance. Friendly alternative for <c>Weeks.operator +(Weeks)</c> operator.
+        /// </summary>
+        /// <param name="period">The operand.</param>
+        /// <returns>The same <see cref="Weeks"/> instance</returns>
+        public static Weeks Plus(Weeks period)
+        {
+            return period;
+        }
+
+        /// <summary>
         /// Implements the unary operator + .
         /// </summary>
         /// <param name="period">The operand.</param>
@@ -316,6 +326,16 @@ namespace NodaTime.Periods
         }
 
         /// <summary>
+        /// Increments the given period by 1. Friendly alternative for <c>Weeks.operator ++(Weeks)</c> operator.
+        /// </summary>
+        /// <param name="period">The period to increment.</param>
+        /// <returns>A new <see cref="Weeks"/> instance with incremented value.</returns>
+        public static Weeks Increment(Weeks period)
+        {
+            return ++period;
+        }
+
+        /// <summary>
         /// Implements the unary operator ++ (increment).
         /// </summary>
         /// <param name="period">The period to increment.</param>
@@ -323,6 +343,16 @@ namespace NodaTime.Periods
         public static Weeks operator ++(Weeks period)
         {
             return Object.ReferenceEquals(period, null) ? null : period.Add(1);
+        }
+
+        /// <summary>
+        /// Decrements the given period by 1. Friendly alternative for <c>Weeks.operator --(Weeks)</c> operator.
+        /// </summary>
+        /// <param name="period">The period to decrement.</param>
+        /// <returns>A new <see cref="Weeks"/> instance with decremented value.</returns>
+        public static Weeks Decrement(Weeks period)
+        {
+            return --period;
         }
 
         /// <summary>

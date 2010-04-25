@@ -55,7 +55,15 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(0, (+Years.Zero).Value, "+0");
             Assert.AreEqual(1, (+Years.One).Value, "+1");
-            Assert.AreEqual(7, (+Years.From(+7)).Value, "+ (+7)");
+            Assert.AreEqual(-7, (+Years.From(-7)).Value, "+ (-7)");
+        }
+
+        [Test]
+        public void UnaryPlusAlternativeMethod()
+        {
+            Assert.AreEqual(0, Years.Plus(Years.Zero).Value, "+0");
+            Assert.AreEqual(1, Years.Plus(Years.One).Value, "+1");
+            Assert.AreEqual(-7, Years.Plus(Years.From(-7)).Value, "+ (-7)");
         }
 
         [Test]
@@ -68,12 +76,30 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
+        public void UnaryIncrementAlternativeMethod()
+        {
+            var twoYears = Years.Two;
+            var threeYears = Years.Increment(twoYears);
+
+            Assert.AreEqual(3, (threeYears).Value, "++2 = 3");
+        }
+
+        [Test]
         public void UnaryDecrementOperator()
         {
             var twoYears = Years.Two;
             --twoYears;
 
             Assert.AreEqual(1, (twoYears).Value, "--2 = 1");
+        }
+
+        [Test]
+        public void UnaryDecrementAlternativeMethod()
+        {
+            var twoYears = Years.Two;
+            var oneYear = Years.Decrement(twoYears);
+
+            Assert.AreEqual(1, (oneYear).Value, "--2 = 1");
         }
 
         #endregion

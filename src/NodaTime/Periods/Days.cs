@@ -334,6 +334,16 @@ namespace NodaTime.Periods
         #region Unary operators
 
         /// <summary>
+        /// Returns the same instance. Friendly alternative for <c>Days.operator +(Days)</c> operator.
+        /// </summary>
+        /// <param name="period">The operand.</param>
+        /// <returns>The same <see cref="Days"/> instance</returns>
+        public static Days Plus(Days period)
+        {
+            return period;
+        }
+
+        /// <summary>
         /// Implements the unary operator + .
         /// </summary>
         /// <param name="period">The operand.</param>
@@ -344,6 +354,16 @@ namespace NodaTime.Periods
         }
 
         /// <summary>
+        /// Increments the given period by 1. Friendly alternative for <c>Days.operator ++(Days)</c> operator.
+        /// </summary>
+        /// <param name="period">The period to increment.</param>
+        /// <returns>A new <see cref="Days"/> instance with incremented value.</returns>
+        public static Days Increment(Days period)
+        {
+            return ++period;
+        }
+
+        /// <summary>
         /// Implements the unary operator ++ (increment).
         /// </summary>
         /// <param name="period">The period to increment.</param>
@@ -351,6 +371,16 @@ namespace NodaTime.Periods
         public static Days operator ++(Days period)
         {
             return Object.ReferenceEquals(period, null) ? null : period.Add(1);
+        }
+
+        /// <summary>
+        /// Decrements the given period by 1. Friendly alternative for <c>Days.operator --(Days)</c> operator.
+        /// </summary>
+        /// <param name="period">The period to decrement.</param>
+        /// <returns>A new <see cref="Days"/> instance with decremented value.</returns>
+        public static Days Decrement(Days period)
+        {
+            return --period;
         }
 
         /// <summary>

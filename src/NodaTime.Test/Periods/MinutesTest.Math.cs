@@ -59,6 +59,14 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
+        public void UnaryPlusAlternativeMethod()
+        {
+            Assert.AreEqual(0, Minutes.Plus(Minutes.Zero).Value, "+0");
+            Assert.AreEqual(1, Minutes.Plus(Minutes.One).Value, "+1");
+            Assert.AreEqual(-7, Minutes.Plus(Minutes.From(-7)).Value, "+ (-7)");
+        }
+
+        [Test]
         public void UnaryIncrementOperator()
         {
             var twoMinutes = Minutes.Two;
@@ -68,12 +76,30 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
+        public void UnaryIncrementAlternativeMethod()
+        {
+            var twoMinutes = Minutes.Two;
+            var threMinutes = Minutes.Increment(twoMinutes);
+
+            Assert.AreEqual(3, (threMinutes).Value, "++2 = 3");
+        }
+
+        [Test]
         public void UnaryDecrementOperator()
         {
             var twoMinutes = Minutes.Two;
             --twoMinutes;
 
             Assert.AreEqual(1, (twoMinutes).Value, "--2 = 1");
+        }
+
+        [Test]
+        public void UnaryDecrementAlternativeMethod()
+        {
+            var twoMinutes = Minutes.Two;
+            var oneMinute = --twoMinutes;
+
+            Assert.AreEqual(1, (oneMinute).Value, "--2 = 1");
         }
 
         #endregion
