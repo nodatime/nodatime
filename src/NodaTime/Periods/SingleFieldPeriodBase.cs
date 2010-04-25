@@ -218,14 +218,15 @@ namespace NodaTime.Periods
                 return 0;
             }
 
-            if (other != null && other.GetType() != this.GetType())
-            {
-                throw new ArgumentException("Other object must be of type " + this.GetType(), "other");
-
-            }
             if (other == null)
             {
                 return 1;
+            }
+
+            if (other.GetType() != this.GetType())
+            {
+                throw new ArgumentException("Other object must be of type " + this.GetType(), "other");
+
             }
 
             if (other.FieldType != FieldType)

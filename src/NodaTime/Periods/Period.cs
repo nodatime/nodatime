@@ -172,9 +172,9 @@ namespace NodaTime.Periods
         /// <summary>
         /// Gets the value at the specified index.
         /// </summary>
-        /// <param name="index">The zero-based index of the value to get </param>
+        /// <param name="index">The zero-based index of the value to get</param>
         /// <returns>The value of the field at the specified index</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">if the index is less than 0 or equal to or greater than Size</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">if <c>index &lt; 0 || Size &lt;= index</c></exception>
         public int this[int index] { get { return fieldValues[index]; } }
 
         /// <summary>
