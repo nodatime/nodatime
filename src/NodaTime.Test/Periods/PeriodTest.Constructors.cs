@@ -23,18 +23,7 @@ namespace NodaTime.Test.Periods
 {
     public partial class PeriodTest
     {
-        [Test]
-        public void ConstructorDefault_InitZeroValues()
-        {
-            var sut = new Period();
-            Assert.AreEqual(0, sut.Years);
-            Assert.AreEqual(0, sut.Months);
-            Assert.AreEqual(0, sut.Days);
-            Assert.AreEqual(0, sut.Hours);
-            Assert.AreEqual(0, sut.Minutes);
-            Assert.AreEqual(0, sut.Seconds);
-            Assert.AreEqual(0, sut.Milliseconds);
-        }
+
 
         [Test]
         public void ConstructorDuration_SplitIntoFields_Precize()
