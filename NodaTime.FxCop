@@ -123,20 +123,6 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="Duration">
-          <Members>
-           <Member Name="#Parse(System.String)">
-            <Messages>
-             <Message Id="value" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-03-09 01:04:58Z" FixCategory="DependsOnFix">
-              <Issue>
-               <Item>'value'</Item>
-               <Item>'Duration.Parse(string)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="FieldValueException">
           <Messages>
            <Message TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032" Created="2010-03-09 01:02:44Z">
@@ -241,18 +227,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="Interval">
-          <Messages>
-           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2010-03-09 01:02:44Z">
-            <Issue Name="Equals">
-             <Item>'Interval'</Item>
-            </Issue>
-            <Issue Name="op_Equality">
-             <Item>'Interval'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
          <Type Name="IPartial">
           <Members>
            <Member Name="#Get(NodaTime.Fields.DateTimeFieldType)">
@@ -267,14 +241,15 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="IPeriod">
+         <Type Name="NodaConstants">
           <Members>
-           <Member Name="#Get(NodaTime.Fields.DurationFieldType)">
+           <Member Name="#BCE">
             <Messages>
-             <Message Id="Get" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2010-03-09 01:02:44Z">
+             <Message Id="BCE" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2010-04-25 19:39:27Z">
               <Issue Name="Member">
-               <Item>'IPeriod.Get(DurationFieldType)'</Item>
-               <Item>Get</Item>
+               <Item>BCE</Item>
+               <Item>'NodaConstants.BCE'</Item>
+               <Item>Bce</Item>
               </Issue>
              </Message>
             </Messages>
@@ -290,6 +265,30 @@
             </Issue>
            </Message>
           </Messages>
+         </Type>
+         <Type Name="Offset">
+          <Members>
+           <Member Name="#op_UnaryNegation(NodaTime.Offset)">
+            <Messages>
+             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-04-25 19:39:27Z">
+              <Issue>
+               <Item>Negate</Item>
+               <Item>'Offset.operator -(Offset)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#op_UnaryPlus(NodaTime.Offset)">
+            <Messages>
+             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-04-25 19:39:27Z">
+              <Issue>
+               <Item>Plus</Item>
+               <Item>'Offset.operator +(Offset)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
          <Type Name="SkippedTimeException">
           <Messages>
@@ -314,18 +313,6 @@
             <Issue Name="MissingConstructor">
              <Item>'SkippedTimeException'</Item>
              <Item>public SkippedTimeException(String, Exception)</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="ZonedDateTime">
-          <Messages>
-           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2010-03-09 01:02:44Z">
-            <Issue Name="Equals">
-             <Item>'ZonedDateTime'</Item>
-            </Issue>
-            <Issue Name="op_Equality">
-             <Item>'ZonedDateTime'</Item>
             </Issue>
            </Message>
           </Messages>
@@ -447,6 +434,17 @@
                <Item>'ICalendarSystem.GetPartialValues(IPartial, LocalInstant)'</Item>
                <Item>'partial'</Item>
                <Item>Partial</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetPeriodValues(NodaTime.Periods.PeriodType,NodaTime.LocalInstant,NodaTime.LocalInstant)">
+            <Messages>
+             <Message Id="End" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2010-04-25 19:39:27Z">
+              <Issue Name="MemberParameter">
+               <Item>'ICalendarSystem.GetPeriodValues(PeriodType, LocalInstant, LocalInstant)'</Item>
+               <Item>'end'</Item>
+               <Item>End</Item>
               </Issue>
              </Message>
             </Messages>
@@ -899,6 +897,45 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="DurationFieldBase">
+          <Messages>
+           <Message TypeName="OverrideMethodsOnComparableTypes" Category="Microsoft.Design" CheckId="CA1036" Created="2010-04-25 19:39:27Z">
+            <Issue Name="Equals">
+             <Item>'DurationFieldBase'</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'DurationFieldBase'</Item>
+             <Item>!=</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'DurationFieldBase'</Item>
+             <Item>&lt;</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'DurationFieldBase'</Item>
+             <Item>==</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'DurationFieldBase'</Item>
+             <Item>&gt;</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#Subtract(NodaTime.LocalInstant,System.Int64)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2010-04-25 19:39:27Z">
+              <Issue>
+               <Item>'DurationFieldBase.Subtract(LocalInstant, long)'</Item>
+               <Item>'instant'</Item>
+               <Item>'localInstant'</Item>
+               <Item>'IDurationField.Subtract(LocalInstant, long)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="FieldSet">
           <Members>
            <Member Name="#WithSupportedFieldsFrom(NodaTime.Fields.FieldSet)">
@@ -1062,6 +1099,19 @@
        </Namespace>
        <Namespace Name="NodaTime.Format">
         <Types>
+         <Type Name="DateTimeFormats">
+          <Members>
+           <Member Name="#.cctor()">
+            <Messages>
+             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Created="2010-04-25 19:39:27Z">
+              <Issue>
+               <Item>'DateTimeFormats'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="DateTimeFormatter">
           <Members>
            <Member Name="#.ctor(NodaTime.Format.IDateTimePrinter,NodaTime.Format.IDateTimeParser)">
@@ -1105,17 +1155,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#PrintTo(System.Text.StringBuilder,NodaTime.ZonedDateTime)">
-            <Messages>
-             <Message Id="System.IO.StringWriter.#ctor(System.Text.StringBuilder)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'StringWriter.StringWriter(StringBuilder)'</Item>
-               <Item>'DateTimeFormatter.PrintTo(StringBuilder, ZonedDateTime)'</Item>
-               <Item>'StringWriter.StringWriter(StringBuilder, IFormatProvider)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
           </Members>
          </Type>
          <Type Name="DateTimeFormatterBuilder">
@@ -1147,6 +1186,15 @@
                <Item>'DateTimeFormatterBuilder.AppendFixedSignedDecimal(DateTimeFieldType, int)'</Item>
                <Item>num</Item>
                <Item>'numDigits'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AppendFraction(NodaTime.Fields.DateTimeFieldType,System.Int32,System.Int32)">
+            <Messages>
+             <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2010-04-25 19:39:27Z">
+              <Issue Name="NoArguments">
+               <Item>'ArgumentException'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -1380,13 +1428,6 @@
           </Members>
          </Type>
          <Type Name="DateTimeFormatterBuilder+TwoDigitYear">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Created="2010-03-09 01:02:44Z">
-            <Issue>
-             <Item>'DateTimeFormatterBuilder.TwoDigitYear'</Item>
-            </Issue>
-           </Message>
-          </Messages>
           <Members>
            <Member Name="#GetTwoDigitYear(NodaTime.IPartial)">
             <Messages>
@@ -1410,13 +1451,6 @@
            </Member>
            <Member Name="#ParseInto(NodaTime.Format.DateTimeParserBucket,System.String,System.Int32)">
             <Messages>
-             <Message Id="e" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'DateTimeFormatterBuilder.TwoDigitYear.ParseInto(DateTimeParserBucket, string, int)'</Item>
-               <Item>'e'</Item>
-               <Item>'IndexOutOfRangeException'</Item>
-              </Issue>
-             </Message>
              <Message Id="System.Int32.Parse(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-03-09 01:02:44Z">
               <Issue>
                <Item>'int.Parse(string)'</Item>
@@ -1498,13 +1532,13 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="FormatUtils">
+         <Type Name="DateTimeParserBucket+SavedField">
           <Members>
-           <Member Name="#WriteUnknownString(System.IO.TextWriter)">
+           <Member Name="#CompareReverse(NodaTime.Fields.IDurationField,NodaTime.Fields.IDurationField)">
             <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2010-03-09 01:02:44Z">
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-04-25 19:39:27Z" FixCategory="NonBreaking">
               <Issue>
-               <Item>'FormatUtils.WriteUnknownString(TextWriter)'</Item>
+               <Item>'DateTimeParserBucket.SavedField.CompareReverse(IDurationField, IDurationField)'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -1619,6 +1653,36 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="PeriodFormatterBuilder+Composite">
+          <Members>
+           <Member Name="#Parsers">
+            <Accessors>
+             <Accessor Name="#get_Parsers()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2010-04-25 19:39:27Z">
+                <Issue>
+                 <Item>'PeriodFormatterBuilder.Composite.Parsers.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#Printers">
+            <Accessors>
+             <Accessor Name="#get_Printers()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2010-04-25 19:39:27Z">
+                <Issue>
+                 <Item>'PeriodFormatterBuilder.Composite.Printers.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="PeriodFormatterBuilder+FieldFormatter">
           <Members>
            <Member Name="#ParseInt(System.String,System.Int32,System.Int32)">
@@ -1668,6 +1732,31 @@
        </Namespace>
        <Namespace Name="NodaTime.Partials">
         <Types>
+         <Type Name="AbstractPartial">
+          <Messages>
+           <Message TypeName="OverrideMethodsOnComparableTypes" Category="Microsoft.Design" CheckId="CA1036" Created="2010-04-25 19:39:27Z">
+            <Issue Name="Equals">
+             <Item>'AbstractPartial'</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'AbstractPartial'</Item>
+             <Item>!=</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'AbstractPartial'</Item>
+             <Item>&lt;</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'AbstractPartial'</Item>
+             <Item>==</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'AbstractPartial'</Item>
+             <Item>&gt;</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="LocalDate">
           <Members>
            <Member Name="#Calendar">
@@ -1759,17 +1848,6 @@
             </Issue>
            </Message>
           </Messages>
-          <Members>
-           <Member Name="#values">
-            <Messages>
-             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>'Partial.values'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
          <Type Name="PartialUtils">
           <Messages>
@@ -1803,136 +1881,26 @@
        </Namespace>
        <Namespace Name="NodaTime.Periods">
         <Types>
-         <Type Name="Days">
+         <Type Name="Period">
           <Members>
-           <Member Name="#op_Decrement(NodaTime.Periods.Days)">
+           <Member Name="#Negate(NodaTime.Periods.Period)">
             <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Created="2010-04-25 19:39:27Z">
               <Issue>
-               <Item>Decrement</Item>
-               <Item>'Days.operator --(Days)'</Item>
+               <Item>'period'</Item>
+               <Item>'Period.Negate(Period)'</Item>
+               <Item>'Period'</Item>
+               <Item>'IPeriod'</Item>
               </Issue>
              </Message>
             </Messages>
            </Member>
-           <Member Name="#op_Increment(NodaTime.Periods.Days)">
+           <Member Name="#op_UnaryPlus(NodaTime.Periods.Period)">
             <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Increment</Item>
-               <Item>'Days.operator ++(Days)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_UnaryPlus(NodaTime.Periods.Days)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
+             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-04-25 19:39:27Z">
               <Issue>
                <Item>Plus</Item>
-               <Item>'Days.operator +(Days)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="Hours">
-          <Members>
-           <Member Name="#op_Decrement(NodaTime.Periods.Hours)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Decrement</Item>
-               <Item>'Hours.operator --(Hours)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_Increment(NodaTime.Periods.Hours)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Increment</Item>
-               <Item>'Hours.operator ++(Hours)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_UnaryPlus(NodaTime.Periods.Hours)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Plus</Item>
-               <Item>'Hours.operator +(Hours)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="Minutes">
-          <Members>
-           <Member Name="#op_Decrement(NodaTime.Periods.Minutes)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Decrement</Item>
-               <Item>'Minutes.operator --(Minutes)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_Increment(NodaTime.Periods.Minutes)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Increment</Item>
-               <Item>'Minutes.operator ++(Minutes)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_UnaryPlus(NodaTime.Periods.Minutes)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Plus</Item>
-               <Item>'Minutes.operator +(Minutes)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="Months">
-          <Members>
-           <Member Name="#op_Decrement(NodaTime.Periods.Months)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Decrement</Item>
-               <Item>'Months.operator --(Months)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_Increment(NodaTime.Periods.Months)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Increment</Item>
-               <Item>'Months.operator ++(Months)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_UnaryPlus(NodaTime.Periods.Months)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Plus</Item>
-               <Item>'Months.operator +(Months)'</Item>
+               <Item>'Period.operator +(Period)'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -2005,40 +1973,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="Seconds">
-          <Members>
-           <Member Name="#op_Decrement(NodaTime.Periods.Seconds)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Decrement</Item>
-               <Item>'Seconds.operator --(Seconds)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_Increment(NodaTime.Periods.Seconds)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Increment</Item>
-               <Item>'Seconds.operator ++(Seconds)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_UnaryPlus(NodaTime.Periods.Seconds)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Plus</Item>
-               <Item>'Seconds.operator +(Seconds)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="SingleFieldPeriodBase">
           <Messages>
            <Message TypeName="OverrideMethodsOnComparableTypes" Category="Microsoft.Design" CheckId="CA1036" Created="2010-03-09 01:02:44Z">
@@ -2071,84 +2005,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#Value">
-            <Messages>
-             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue Name="SameType">
-               <Item>'SingleFieldPeriodBase.Value'</Item>
-               <Item>'SingleFieldPeriodBase.GetValue(int)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="Weeks">
-          <Members>
-           <Member Name="#op_Decrement(NodaTime.Periods.Weeks)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Decrement</Item>
-               <Item>'Weeks.operator --(Weeks)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_Increment(NodaTime.Periods.Weeks)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Increment</Item>
-               <Item>'Weeks.operator ++(Weeks)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_UnaryPlus(NodaTime.Periods.Weeks)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Plus</Item>
-               <Item>'Weeks.operator +(Weeks)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="Years">
-          <Members>
-           <Member Name="#op_Decrement(NodaTime.Periods.Years)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Decrement</Item>
-               <Item>'Years.operator --(Years)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_Increment(NodaTime.Periods.Years)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Increment</Item>
-               <Item>'Years.operator ++(Years)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_UnaryPlus(NodaTime.Periods.Years)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-03-09 01:02:44Z">
-              <Issue>
-               <Item>Plus</Item>
-               <Item>'Years.operator +(Years)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
           </Members>
          </Type>
         </Types>
@@ -2163,6 +2019,57 @@
             </Issue>
            </Message>
           </Messages>
+         </Type>
+         <Type Name="NullDateTimeZone">
+          <Members>
+           <Member Name="#Instance">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2010-04-25 19:39:27Z">
+              <Issue>
+               <Item>'NullDateTimeZone.Instance'</Item>
+               <Item>'NullDateTimeZone'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Read(NodaTime.TimeZones.DateTimeZoneReader,System.String)">
+            <Messages>
+             <Message Id="reader" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-04-25 19:39:27Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'reader'</Item>
+               <Item>'NullDateTimeZone.Read(DateTimeZoneReader, string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WindowsToPosixResource">
+          <Members>
+           <Member Name="#.cctor()">
+            <Messages>
+             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Created="2010-04-25 19:39:27Z">
+              <Issue>
+               <Item>'WindowsToPosixResource'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ZoneYearOffset">
+          <Members>
+           <Member Name="#StartOfYear">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2010-04-25 19:39:27Z">
+              <Issue>
+               <Item>'ZoneYearOffset.StartOfYear'</Item>
+               <Item>'ZoneYearOffset'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
         </Types>
        </Namespace>
@@ -2197,20 +2104,6 @@
               <Issue Name="Member">
                <Item>'ILog.Error(string, params object[])'</Item>
                <Item>Error</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="Tokens">
-          <Members>
-           <Member Name="#Tokenize(System.String)">
-            <Messages>
-             <Message TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820" Created="2010-03-09 01:02:44Z">
-              <Issue Name="IsNullOrEmpty">
-               <Item>'string.operator ==(string, string)'</Item>
-               <Item>'Tokens.Tokenize(string)'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -2320,6 +2213,9 @@
    <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
     <Resolution Name="MemberShouldBeDiscreteTerm">The compound word '{0}' in member name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
    </Rule>
+   <Rule TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011">
+    <Resolution Name="Default">Consider changing the type of parameter {0} in {1} from {2} to its base type {3}. This method appears to only require base class members in its implementation. Suppress this violation if there is a compelling reason to require the more derived type in the method signature.</Resolution>
+   </Rule>
    <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
     <Resolution Name="Default">{0} contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: {1}</Resolution>
    </Rule>
@@ -2343,6 +2239,7 @@
     <Resolution Name="Default">Make exception class {0} public.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+    <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
     <Resolution Name="Namespace">Correct the casing of '{0}' in namespace name '{1}' by changing it to '{2}'.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
@@ -2389,12 +2286,12 @@
    <Rule TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225">
     <Resolution Name="Default">Provide a method named '{0}' as a friendly alternate for operator {1}.</Resolution>
    </Rule>
-   <Rule TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815">
-    <Resolution Name="Equals">{0} should override Equals.</Resolution>
-    <Resolution Name="op_Equality">{0} should override the equality (==) and inequality (!=) operators.</Resolution>
-   </Rule>
    <Rule TypeName="OverrideMethodsOnComparableTypes" Category="Microsoft.Design" CheckId="CA1036">
+    <Resolution Name="Equals">{0} should override Equals since it implements IComparable.</Resolution>
     <Resolution Name="Operator">{0} should define operator '{1}' since it implements IComparable.</Resolution>
+   </Rule>
+   <Rule TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725">
+    <Resolution Name="Default">In member {0}, change parameter name {1} to {2} in order to match the identifier as it has been declared in {3}.</Resolution>
    </Rule>
    <Rule TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721">
     <Resolution Name="SameType">The property name {0} is confusing given the existence of method {1}. Rename or remove one of these members.</Resolution>
@@ -2410,9 +2307,6 @@
    </Rule>
    <Rule TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307">
     <Resolution Name="Default">{0} makes a call to {1} that does not explicitly provide a StringComparison. This should be replaced with a call to {2}.</Resolution>
-   </Rule>
-   <Rule TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820">
-    <Resolution Name="IsNullOrEmpty">Replace the call to {0} in {1} with a call to 'String.IsNullOrEmpty'.</Resolution>
    </Rule>
    <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
     <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>
