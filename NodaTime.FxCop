@@ -281,15 +281,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="NodaConstants+Durations">
-          <Messages>
-           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2010-03-09 01:02:44Z">
-            <Issue>
-             <Item>'NodaConstants.Durations'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
          <Type Name="NodaTimePermission">
           <Messages>
            <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2010-03-09 01:02:44Z">
@@ -456,17 +447,6 @@
                <Item>'ICalendarSystem.GetPartialValues(IPartial, LocalInstant)'</Item>
                <Item>'partial'</Item>
                <Item>Partial</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#GetPeriodValues(NodaTime.IPeriod,NodaTime.LocalInstant,NodaTime.LocalInstant)">
-            <Messages>
-             <Message Id="End" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2010-03-09 01:02:44Z">
-              <Issue Name="MemberParameter">
-               <Item>'ICalendarSystem.GetPeriodValues(IPeriod, LocalInstant, LocalInstant)'</Item>
-               <Item>'end'</Item>
-               <Item>End</Item>
               </Issue>
              </Message>
             </Messages>
@@ -919,31 +899,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="DurationField">
-          <Messages>
-           <Message TypeName="OverrideMethodsOnComparableTypes" Category="Microsoft.Design" CheckId="CA1036" Created="2010-03-09 01:02:44Z">
-            <Issue Name="Equals">
-             <Item>'DurationField'</Item>
-            </Issue>
-            <Issue Name="Operator">
-             <Item>'DurationField'</Item>
-             <Item>!=</Item>
-            </Issue>
-            <Issue Name="Operator">
-             <Item>'DurationField'</Item>
-             <Item>&lt;</Item>
-            </Issue>
-            <Issue Name="Operator">
-             <Item>'DurationField'</Item>
-             <Item>==</Item>
-            </Issue>
-            <Issue Name="Operator">
-             <Item>'DurationField'</Item>
-             <Item>&gt;</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
          <Type Name="FieldSet">
           <Members>
            <Member Name="#WithSupportedFieldsFrom(NodaTime.Fields.FieldSet)">
@@ -1197,15 +1152,6 @@
             </Messages>
            </Member>
            <Member Name="#AppendSignedDecimal(NodaTime.Fields.DateTimeFieldType,System.Int32,System.Int32)">
-            <Messages>
-             <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2010-03-09 01:02:44Z">
-              <Issue Name="NoArguments">
-               <Item>'ArgumentException'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Guard(System.Int32,System.Int32)">
             <Messages>
              <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2010-03-09 01:02:44Z">
               <Issue Name="NoArguments">
@@ -1552,19 +1498,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="DateTimeParserBucket+SavedField">
-          <Members>
-           <Member Name="#CompareReverse(NodaTime.Fields.DurationField,NodaTime.Fields.DurationField)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-03-09 01:02:44Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'DateTimeParserBucket.SavedField.CompareReverse(DurationField, DurationField)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="FormatUtils">
           <Members>
            <Member Name="#WriteUnknownString(System.IO.TextWriter)">
@@ -1680,24 +1613,6 @@
              <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2010-03-09 01:02:44Z">
               <Issue Name="NoArguments">
                <Item>'ArgumentNullException'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Decompose(System.Collections.IList,System.Collections.ArrayList,System.Collections.ArrayList)">
-            <Messages>
-             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2010-03-09 01:02:44Z">
-              <Issue Name="Local">
-               <Item>'firstItem'</Item>
-               <Item>'PeriodFormatterBuilder.Composite'</Item>
-               <Item>'PeriodFormatterBuilder.Decompose(IList, ArrayList, ArrayList)'</Item>
-               <Item>castclass</Item>
-              </Issue>
-              <Issue Name="Local">
-               <Item>'secondItem'</Item>
-               <Item>'PeriodFormatterBuilder.Composite'</Item>
-               <Item>'PeriodFormatterBuilder.Decompose(IList, ArrayList, ArrayList)'</Item>
-               <Item>castclass</Item>
               </Issue>
              </Message>
             </Messages>
@@ -2428,7 +2343,6 @@
     <Resolution Name="Default">Make exception class {0} public.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
-    <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
     <Resolution Name="Namespace">Correct the casing of '{0}' in namespace name '{1}' by changing it to '{2}'.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
@@ -2480,7 +2394,6 @@
     <Resolution Name="op_Equality">{0} should override the equality (==) and inequality (!=) operators.</Resolution>
    </Rule>
    <Rule TypeName="OverrideMethodsOnComparableTypes" Category="Microsoft.Design" CheckId="CA1036">
-    <Resolution Name="Equals">{0} should override Equals since it implements IComparable.</Resolution>
     <Resolution Name="Operator">{0} should define operator '{1}' since it implements IComparable.</Resolution>
    </Rule>
    <Rule TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721">
