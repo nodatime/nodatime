@@ -56,7 +56,15 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(0, (+Months.Zero).Value, "+0");
             Assert.AreEqual(1, (+Months.One).Value, "+1");
-            Assert.AreEqual(7, (+Months.From(+7)).Value, "+ (+7)");
+            Assert.AreEqual(-7, (+Months.From(-7)).Value, "+ (-7)");
+        }
+
+        [Test]
+        public void UnaryPlusAlternativeMethod()
+        {
+            Assert.AreEqual(0, Months.Plus(Months.Zero).Value, "+0");
+            Assert.AreEqual(1, Months.Plus(Months.One).Value, "+1");
+            Assert.AreEqual(-7, Months.Plus(Months.From(-7)).Value, "+ (-7)");
         }
 
         [Test]
@@ -69,12 +77,30 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
+        public void UnaryIncrementAlternativeMethod()
+        {
+            var twoMonths = Months.Two;
+            var threeMonths = Months.Increment(twoMonths);
+
+            Assert.AreEqual(3, (threeMonths).Value, "++2 = 3");
+        }
+
+        [Test]
         public void UnaryDecrementOperator()
         {
             var twoMonths = Months.Two;
             --twoMonths;
 
             Assert.AreEqual(1, (twoMonths).Value, "--2 = 1");
+        }
+
+        [Test]
+        public void UnaryDecrementAlternativeMethod()
+        {
+            var twoMonths = Months.Two;
+            var oneMonth = Months.Decrement(twoMonths);
+
+            Assert.AreEqual(1, (oneMonth).Value, "--2 = 1");
         }
 
         #endregion

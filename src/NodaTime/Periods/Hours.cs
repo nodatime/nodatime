@@ -338,6 +338,16 @@ namespace NodaTime.Periods
         #region Unary operators
 
         /// <summary>
+        /// Returns the same instance. Friendly alternative for <c>Hours.operator +(Hours)</c> operator.
+        /// </summary>
+        /// <param name="period">The operand.</param>
+        /// <returns>The same <see cref="Hours"/> instance</returns>
+        public static Hours Plus(Hours period)
+        {
+            return period;
+        }
+
+        /// <summary>
         /// Implements the unary operator + .
         /// </summary>
         /// <param name="period">The operand.</param>
@@ -348,6 +358,16 @@ namespace NodaTime.Periods
         }
 
         /// <summary>
+        /// Increments the given period by 1. Friendly alternative for <c>Hours.operator ++(Hours)</c> operator.
+        /// </summary>
+        /// <param name="period">The period to increment.</param>
+        /// <returns>A new <see cref="Hours"/> instance with incremented value.</returns>
+        public static Hours Increment(Hours period)
+        {
+            return ++period;
+        }
+
+        /// <summary>
         /// Implements the unary operator ++ (increment).
         /// </summary>
         /// <param name="period">The period to increment.</param>
@@ -355,6 +375,16 @@ namespace NodaTime.Periods
         public static Hours operator ++(Hours period)
         {
             return Object.ReferenceEquals(period, null) ? null : period.Add(1);
+        }
+
+        /// <summary>
+        /// Decrements the given period by 1. Friendly alternative for <c>Hours.operator --(Hours)</c> operator.
+        /// </summary>
+        /// <param name="period">The period to decrement.</param>
+        /// <returns>A new <see cref="Hours"/> instance with decremented value.</returns>
+        public static Hours Decrement(Hours period)
+        {
+            return --period;
         }
 
         /// <summary>

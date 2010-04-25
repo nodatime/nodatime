@@ -55,7 +55,15 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(0, (+Hours.Zero).Value, "+0");
             Assert.AreEqual(1, (+Hours.One).Value, "+1");
-            Assert.AreEqual(7, (+Hours.From(+7)).Value, "+ (+7)");
+            Assert.AreEqual(-7, (+Hours.From(-7)).Value, "+ (-7)");
+        }
+
+        [Test]
+        public void UnaryPlusAlternativeMethod()
+        {
+            Assert.AreEqual(0, Hours.Plus(Hours.Zero).Value, "+0");
+            Assert.AreEqual(1, Hours.Plus(Hours.One).Value, "+1");
+            Assert.AreEqual(-7, Hours.Plus(Hours.From(-7)).Value, "+ (-7)");
         }
 
         [Test]
@@ -68,12 +76,30 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
+        public void UnaryIncrementAlternativeMethod()
+        {
+            var twoHours = Hours.Two;
+            var threeHours = Hours.Increment(twoHours);
+
+            Assert.AreEqual(3, (threeHours).Value, "++2 = 3");
+        }
+
+        [Test]
         public void UnaryDecrementOperator()
         {
             var twoHours = Hours.Two;
             --twoHours;
 
             Assert.AreEqual(1, (twoHours).Value, "--2 = 1");
+        }
+
+        [Test]
+        public void UnaryDecrementAlternativeMethod()
+        {
+            var twoHours = Hours.Two;
+            var oneHour = Hours.Decrement(twoHours);
+
+            Assert.AreEqual(1, (oneHour).Value, "--2 = 1");
         }
 
         #endregion

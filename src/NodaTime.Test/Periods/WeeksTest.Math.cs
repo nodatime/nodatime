@@ -55,7 +55,15 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(0, (+Weeks.Zero).Value, "+0");
             Assert.AreEqual(1, (+Weeks.One).Value, "+1");
-            Assert.AreEqual(7, (+Weeks.From(+7)).Value, "+ (+7)");
+            Assert.AreEqual(-7, (+Weeks.From(-7)).Value, "+ (-7)");
+        }
+
+        [Test]
+        public void UnaryPlusAlternativeMethod()
+        {
+            Assert.AreEqual(0, Weeks.Plus(Weeks.Zero).Value, "+0");
+            Assert.AreEqual(1, Weeks.Plus(Weeks.One).Value, "+1");
+            Assert.AreEqual(-7, Weeks.Plus(Weeks.From(-7)).Value, "+ (-7)");
         }
 
         [Test]
@@ -68,12 +76,30 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
+        public void UnaryIncrementAlternativeMethod()
+        {
+            var twoWeeks = Weeks.Two;
+            var threeWeeks = Weeks.Increment(twoWeeks);
+
+            Assert.AreEqual(3, (threeWeeks).Value, "++2 = 3");
+        }
+
+        [Test]
         public void UnaryDecrementOperator()
         {
             var twoWeeks = Weeks.Two;
             --twoWeeks;
 
             Assert.AreEqual(1, (twoWeeks).Value, "--2 = 1");
+        }
+
+        [Test]
+        public void UnaryDecrementAlternativeMethod()
+        {
+            var twoWeeks = Weeks.Two;
+            var oneWeek = Weeks.Decrement(twoWeeks);
+
+            Assert.AreEqual(1, (oneWeek).Value, "--2 = 1");
         }
 
         #endregion

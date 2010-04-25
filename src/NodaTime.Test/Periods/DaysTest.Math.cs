@@ -55,7 +55,15 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(0, (+Days.Zero).Value, "+0");
             Assert.AreEqual(1, (+Days.One).Value, "+1");
-            Assert.AreEqual(7, (+Days.From(+7)).Value, "+ (+7)");
+            Assert.AreEqual(-7, (+Days.From(-7)).Value, "+ (-7)");
+        }
+
+        [Test]
+        public void UnaryPlusAlternativeMethod()
+        {
+            Assert.AreEqual(0, Days.Plus(Days.Zero).Value, "+0");
+            Assert.AreEqual(1, Days.Plus(Days.One).Value, "+1");
+            Assert.AreEqual(-7, Days.Plus(Days.From(-7)).Value, "+ (-7)");
         }
 
         [Test]
@@ -68,12 +76,30 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
+        public void UnaryIncrementAlternativeMethod()
+        {
+            var twoDays = Days.Two;
+            var threeDays = Days.Increment(twoDays);
+
+            Assert.AreEqual(3, (threeDays).Value, "++2 = 3");
+        }
+
+        [Test]
         public void UnaryDecrementOperator()
         {
-            var twoDayss = Days.Two;
-            --twoDayss;
+            var twoDays = Days.Two;
+            --twoDays;
 
-            Assert.AreEqual(1, (twoDayss).Value, "--2 = 1");
+            Assert.AreEqual(1, (twoDays).Value, "--2 = 1");
+        }
+
+        [Test]
+        public void UnaryDecrementAlternativeMehod()
+        {
+            var twoDays = Days.Two;
+            var oneDay = Days.Decrement(twoDays);
+
+            Assert.AreEqual(1, (oneDay).Value, "--2 = 1");
         }
 
         #endregion
