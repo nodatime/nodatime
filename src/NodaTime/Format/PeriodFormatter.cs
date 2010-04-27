@@ -245,20 +245,20 @@ namespace NodaTime.Format
         /// <summary>
         /// Prints an IPeriod to a <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="stringBuilder">The formatted period is appended to this builder</param>
+        /// <param name="sb">The formatted period is appended to this builder</param>
         /// <param name="period">The period to format, not null</param>
         /// <exception cref="ArgumentNullException">if either period or stringBuilder is null</exception>
         /// <exception cref="NotSupportedException">if this formatter can't be used for printing</exception>
-        public void PrintTo(StringBuilder stringBuilder, IPeriod period)
+        public void PrintTo(StringBuilder sb, IPeriod period)
         {
             VerifyPrinter();
             VerifyPeriodArgument(period);
-            if (stringBuilder == null)
+            if (sb == null)
             {
-                throw new ArgumentNullException("stringBuilder");
+                throw new ArgumentNullException("sb");
             }
 
-            Printer.PrintTo(new StringWriter(stringBuilder), period, provider);
+            Printer.PrintTo(new StringWriter(sb, Provider), period, provider);
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace NodaTime.Format
             VerifyPeriodArgument(period);
 
             var sb = new StringBuilder(periodPrinter.CalculatePrintedLength(period, provider));
-            var sw = new StringWriter(sb);
+            var sw = new StringWriter(sb, Provider);
             Printer.PrintTo(sw, period, provider);
 
             return sb.ToString();
