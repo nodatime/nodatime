@@ -19,11 +19,14 @@ using System;
 using System.IO;
 using NodaTime.Format;
 using NUnit.Framework;
+using NodaTime.Periods;
 
 namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterBuilderTest
     {
+        #region SimpleAffix
+
         [Test]
         public void SimpleAffix_CalculatesLength()
         {
@@ -143,6 +146,10 @@ namespace NodaTime.Test.Format
             Assert.That(position, Is.EqualTo(~0));
         }
 
+        #endregion
+
+        #region PluralAffix
+
         [Test]
         public void PluralAffix_CalculatesLength_GivenSingularValue()
         {
@@ -245,6 +252,9 @@ namespace NodaTime.Test.Format
             Assert.That(position, Is.EqualTo(pluralText.Length));
         }
 
+        #endregion
+
+        #region AppendPrefixSimple
 
         [Test]
         public void AppendPrefixSimple_ThrowsArgumentNull_ForNullPrefixText()
@@ -257,6 +267,61 @@ namespace NodaTime.Test.Format
         {
             Assert.Throws<ArgumentNullException>(() => builder.AppendPrefix(String.Empty));
         }
+
+        [Test]
+        public void AppendPrefixSimple_BuildsCorrectPrinter()
+        {
+            var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
+
+            var printedValue = formatter.Print(standardPeriodFull);
+
+            Assert.That(printedValue, Is.EqualTo("Years:1"));
+        }
+
+        [Test]
+        public void AppendPrefixSimple_BuildsCorrectPrinter_MultipleCall()
+        {
+            const string text1 = "Month";
+            const string text2 = "s:";
+
+            var formatter = builder.AppendPrefix(text1).AppendPrefix(text2).AppendYears().ToFormatter();
+
+            var printedValue = formatter.Print(standardPeriodFull);
+
+            Assert.That(printedValue, Is.EqualTo(text1 + text2 + "1"));
+        }
+
+        [Test]
+        public void AppendPrefixSimple_Parses()
+        {
+            var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
+
+            var period = formatter.Parse("Years:1");
+
+            Assert.That(period, Is.EqualTo(Period.FromYears(1)));
+        }
+
+        [Test]
+        public void AppendPrefixSimple_Parses_MultipleCall()
+        {
+            var formatter = builder.AppendPrefix("Ye").AppendPrefix("ars:").AppendYears().ToFormatter();
+
+            var period = formatter.Parse("Years:1");
+
+            Assert.That(period, Is.EqualTo(Period.FromYears(1)));
+        }
+
+
+        [Test]
+        public void AppendPrefixSimple_ParseThrowsArgument_ForTextWithoutPrefixString()
+        {
+            var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
+            Assert.Throws<FormatException>(() => formatter.Parse("1"));
+        }
+
+        #endregion
+
+        #region AppendPrefixPlural
 
         [Test]
         public void AppendPrefixPlural_ThrowsArgumentNull_ForNullSingularText()
@@ -281,5 +346,38 @@ namespace NodaTime.Test.Format
         {
             Assert.Throws<ArgumentNullException>(() => builder.AppendPrefix("notnull", String.Empty));
         }
+
+        [Test]
+        public void AppendPrefixPlural_BuildsCorrectPrinter_ForNonSinguralFieldAmount()
+        {
+            var formatter = builder.AppendPrefix("Year:", "Years:").AppendYears().ToFormatter();
+
+            var printedValue = formatter.Print(standardPeriodEmpty);
+
+            Assert.That(printedValue, Is.EqualTo("Years:0"));
+        }
+
+        [Test]
+        public void AppendPrefixPlural_BuildsCorrectPrinter_ForSingularFieldAmount()
+        {
+            var formatter = builder.AppendPrefix("Year:", "Years:").AppendYears().ToFormatter();
+
+            var printedValue = formatter.Print(standardPeriodFull);
+
+            Assert.That(printedValue, Is.EqualTo("Year:1"));
+        }
+
+        [Test]
+        public void AppendPrefixPlural_BuildsCorrectPrinter_MultipleCall()
+        {
+            var formatter = builder.AppendPrefix("Y", "YY").AppendPrefix("ear:", "ears:").AppendYears().ToFormatter();
+
+            var printedValue = formatter.Print(standardPeriodFull);
+
+            Assert.That(printedValue, Is.EqualTo("Year:1"));
+        }
+
+
+        #endregion
     }
 }
