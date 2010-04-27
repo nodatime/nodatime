@@ -241,44 +241,61 @@ namespace NodaTime.Format
         #endregion
 
         #region Printing and parsing
+
         /// <summary>
-        /// Prints an IPeriod to a StringBuilder.
+        /// Prints an IPeriod to a <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="stringBuilder">The formatted period is appended to this buffer</param>
+        /// <param name="stringBuilder">The formatted period is appended to this builder</param>
         /// <param name="period">The period to format, not null</param>
+        /// <exception cref="ArgumentNullException">if either period or stringBuilder is null</exception>
+        /// <exception cref="NotSupportedException">if this formatter can't be used for printing</exception>
         public void PrintTo(StringBuilder stringBuilder, IPeriod period)
         {
             VerifyPrinter();
             VerifyPeriodArgument(period);
+            if (stringBuilder == null)
+            {
+                throw new ArgumentNullException("stringBuilder");
+            }
 
-            Printer.PrintTo(stringBuilder, period, provider);
+            Printer.PrintTo(new StringWriter(stringBuilder), period, provider);
         }
 
         /// <summary>
-        /// Prints an IPeriod to a TextWriter.
+        /// Prints an IPeriod to a <see cref="TextWriter"/>.
         /// </summary>
         /// <param name="textWriter">the formatted period is written out</param>
         /// <param name="period">The period to format, not null</param>
+        /// <exception cref="ArgumentNullException">if either period or textWriter is null</exception>
+        /// <exception cref="NotSupportedException">if this formatter can't be used for printing</exception>        
         public void PrintTo(TextWriter textWriter, IPeriod period)
         {
             VerifyPrinter();
             VerifyPeriodArgument(period);
+            if (textWriter == null)
+            {
+                throw new ArgumentNullException("textWriter");
+            }
 
             Printer.PrintTo(textWriter, period, provider);
         }
 
         /// <summary>
-        /// Prints an IPeriod to a new String.
+        /// Prints an IPeriod to a new <see cref="String"/>.
         /// </summary>
         /// <param name="period">The period to format, not null</param>
         /// <returns>The printed result</returns>
+        /// <exception cref="ArgumentNullException">if period argument is null</exception>
+        /// <exception cref="NotSupportedException">if this formatter can't be used for printing</exception>        
         public string Print(IPeriod period)
         {
             VerifyPrinter();
             VerifyPeriodArgument(period);
 
             var sb = new StringBuilder(periodPrinter.CalculatePrintedLength(period, provider));
-            Printer.PrintTo(sb, period, provider);
+            var sw = new StringWriter(sb);
+            Printer.PrintTo(sw, period, provider);
+
             return sb.ToString();
         }
 
@@ -287,17 +304,17 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="text">Text to parse</param>
         /// <returns>Parsed pariod</returns>
+        /// <exception cref="FormatException">text does not contain a valid string representation of a period.</exception>
         public Period Parse(String text)
         {
             VerifyParser();
 
             var builder = new PeriodBuilder(parsePeriodType);
             int newPosition = Parser.Parse(text, 0, builder, provider);
-            var period = builder.ToPeriod();
 
             if (newPosition >= text.Length)
             {
-                return period;
+                return builder.ToPeriod();
             }
 
             if (newPosition < 0)
@@ -305,7 +322,7 @@ namespace NodaTime.Format
                 newPosition = ~newPosition;
             }
 
-            throw new ArgumentException(FormatUtils.CreateErrorMessage(text, newPosition));
+            throw new FormatException(FormatUtils.CreateErrorMessage(text, newPosition));
         }
 
         #endregion

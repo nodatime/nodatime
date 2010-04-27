@@ -73,7 +73,7 @@ namespace NodaTime.Test.Format
         {
             var formatter = builder.AppendYears().ToFormatter();
 
-            Assert.Throws<ArgumentException>(() => formatter.Parse("--1"));
+            Assert.Throws<FormatException>(() => formatter.Parse("--1"));
         }
 
         [Test]

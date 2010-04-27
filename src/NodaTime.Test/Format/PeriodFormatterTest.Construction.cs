@@ -14,73 +14,79 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
-using NUnit.Framework;
 using NodaTime.Format;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterTest
     {
-
         [Test]
-        public void Construct_FromNotNullPrinter()
+        public void FromPrinter_InitMembers_ForNotNullPrinter()
         {
             var sut = PeriodFormatter.FromPrinter(printer);
-            Assert.IsNull(sut.Parser);
-            Assert.AreEqual(printer, sut.Printer);
-            Assert.IsNull(sut.Provider);
 
-            Assert.IsTrue(sut.IsPrinter);
-            Assert.IsFalse(sut.IsParser);
+            Assert.That(sut.Printer, Is.SameAs(printer));
+            Assert.That(sut.IsPrinter, Is.True);
+
+            Assert.That(sut.Parser, Is.Null);
+            Assert.That(sut.IsParser, Is.False);
+
+            Assert.That(sut.Provider, Is.Null);
         }
 
         [Test]
-        public void Construct_FromNullPrinter()
+        public void FromPrinter_ThrowsArgumentNull_ForNullPrinter()
         {
-            Assert.Throws<ArgumentNullException>(() => PeriodFormatter.FromPrinter(null));
+            Assert.That(() => PeriodFormatter.FromPrinter(null), Throws.InstanceOf<ArgumentNullException>());
         }
 
         [Test]
-        public void Construct_FromNotNullParser()
+        public void FromParser_InitMembers_ForNotNullParser()
         {
             var sut = PeriodFormatter.FromParser(parser);
-            Assert.AreEqual(parser, sut.Parser);
-            Assert.IsNull(sut.Printer);
-            Assert.IsNull(sut.Provider);
 
-            Assert.IsFalse(sut.IsPrinter);
-            Assert.IsTrue(sut.IsParser);
+            Assert.That(sut.Parser, Is.SameAs(parser));
+            Assert.That(sut.IsParser, Is.True);
+
+            Assert.That(sut.Printer, Is.Null);
+            Assert.That(sut.IsPrinter, Is.False);
+
+            Assert.That(sut.Provider, Is.Null);
         }
 
         [Test]
-        public void Construct_FromNullParser()
+        public void FromParser_ThrowsArgumentNull_ForNullParser()
         {
-            Assert.Throws<ArgumentNullException>(() => PeriodFormatter.FromParser(null));
+            Assert.That(() => PeriodFormatter.FromParser(null), Throws.InstanceOf<ArgumentNullException>());
         }
 
         [Test]
-        public void Construct_FromPrinterAndParser()
+        public void FromPrinterAndParser_InitMembers_ForNotNullPrinterAndParser()
         {
             var sut = PeriodFormatter.FromPrinterAndParser(printer, parser);
-            Assert.AreEqual(parser, sut.Parser);
-            Assert.AreEqual(printer, sut.Printer);
-            Assert.IsNull(sut.Provider);
 
-            Assert.IsTrue(sut.IsPrinter);
-            Assert.IsTrue(sut.IsParser);
+            Assert.That(sut.Printer, Is.SameAs(printer));
+            Assert.That(sut.IsPrinter, Is.True);
+
+            Assert.That(sut.Parser, Is.SameAs(parser));
+            Assert.That(sut.IsParser, Is.True);
+
+            Assert.That(sut.Provider, Is.Null);
         }
 
         [Test]
-        public void Construct_FromNotNullPrinterAndNullParser()
+        public void FromPrinterAndParser_ThrowsArgumentNull_ForNullPrinter()
         {
-            Assert.Throws<ArgumentNullException>(() => PeriodFormatter.FromPrinterAndParser(printer, null));
+            Assert.That(() => PeriodFormatter.FromPrinterAndParser(null, parser), Throws.InstanceOf<ArgumentNullException>());
         }
 
         [Test]
-        public void Construct_FromNullPrinterAndNotNullParser()
+        public void FromPrinterAndParser_ThrowsArgumentNull_ForNullParser()
         {
-            Assert.Throws<ArgumentNullException>(() => PeriodFormatter.FromPrinterAndParser(null, parser));
+            Assert.That(() => PeriodFormatter.FromPrinterAndParser(printer, null), Throws.InstanceOf<ArgumentNullException>());
         }
 
     }

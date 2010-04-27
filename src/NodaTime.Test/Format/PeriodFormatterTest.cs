@@ -30,7 +30,9 @@ namespace NodaTime.Test.Format
         PeriodFormatterTest.PeriodParserMock parser;
         PeriodType daysPeriodType;
         PeriodType monthsPeriodType;
-        IFormatProvider provider;
+
+        IFormatProvider provider1;
+        IFormatProvider provider2;
 
         [SetUp]
         public void Init()
@@ -39,7 +41,9 @@ namespace NodaTime.Test.Format
             parser = new PeriodFormatterTest.PeriodParserMock();
             daysPeriodType = PeriodType.Days;
             monthsPeriodType = PeriodType.Months;
-            provider = CultureInfo.InvariantCulture;
+            provider1 = CultureInfo.InvariantCulture;
+            provider2 = CultureInfo.GetCultureInfo("en-US");
+
         }
     }
 }

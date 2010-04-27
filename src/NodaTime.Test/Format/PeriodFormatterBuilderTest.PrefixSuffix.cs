@@ -93,14 +93,14 @@ namespace NodaTime.Test.Format
         public void AppendPrefixBeforeYears_ParseThrowsArgument_ForFieldWithoutPrefixString()
         {
             var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
-            Assert.Throws<ArgumentException>(() => formatter.Parse("1"));
+            Assert.Throws<FormatException>(() => formatter.Parse("1"));
         }
 
         [Test]
         public void AppendPrefixBeforeYears_ParseThrowsArgument_ForPrefixWithoutFieldString()
         {
             var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
-            Assert.Throws<ArgumentException>(() => formatter.Parse("Years:"));
+            Assert.Throws<FormatException>(() => formatter.Parse("Years:"));
         }
         [Test]
         public void AppendPrefixBeforeMonths_ParsesTo2MonthsStandardPeriod_FromPrefixWithFieldString()
@@ -113,17 +113,17 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
-        public void AppendPrefixBeforeMonths_ParseThrowsArgument_ForFieldWithoutPrefixString()
+        public void AppendPrefixBeforeMonths_ParseThrowsFormat_ForFieldWithoutPrefixString()
         {
             var formatter = builder.AppendPrefix("Months:").AppendMonths().ToFormatter();
-            Assert.Throws<ArgumentException>(() => formatter.Parse("2"));
+            Assert.Throws<FormatException>(() => formatter.Parse("2"));
         }
 
         [Test]
         public void AppendPrefixBeforeMonths_ParseThrowsArgument_ForPrefixWithoutFieldString()
         {
             var formatter = builder.AppendPrefix("Months:").AppendMonths().ToFormatter();
-            Assert.Throws<ArgumentException>(() => formatter.Parse("Months:"));
+            Assert.Throws<FormatException>(() => formatter.Parse("Months:"));
         }
 
         #endregion
@@ -293,14 +293,14 @@ namespace NodaTime.Test.Format
         public void AppendSuffixAfterYears_ParseThrowsArgument_FromFieldWithoutSuffix()
         {
             var formatter = builder.AppendYears().AppendSuffix(" year").ToFormatter();
-            Assert.Throws<ArgumentException>(() => formatter.Parse("1"));
+            Assert.Throws<FormatException>(() => formatter.Parse("1"));
         }
 
         [Test]
         public void AppendSuffixAfterYears_ParseThrowsArgument_FromSuffixWithoutField()
         {
             var formatter = builder.AppendYears().AppendSuffix(" year").ToFormatter();
-            Assert.Throws<ArgumentException>(() => formatter.Parse("year"));
+            Assert.Throws<FormatException>(() => formatter.Parse("year"));
         }
 
         #endregion
@@ -387,14 +387,14 @@ namespace NodaTime.Test.Format
         public void AppendSuffixPluralAfterYears_ParseThrowsArgument_FromFieldWithoutSuffix()
         {
             var formatter = builder.AppendYears().AppendSuffix(" year", " years").ToFormatter();
-            Assert.Throws<ArgumentException>(() => formatter.Parse("1"));
+            Assert.Throws<FormatException>(() => formatter.Parse("1"));
         }
 
         [Test]
         public void AppendSuffixPluralAfterYears_ParseThrowsArgument_FromSuffixWithoutField()
         {
             var formatter = builder.AppendYears().AppendSuffix(" year", " years").ToFormatter();
-            Assert.Throws<ArgumentException>(() => formatter.Parse("year"));
+            Assert.Throws<FormatException>(() => formatter.Parse("year"));
         }
         #endregion
 

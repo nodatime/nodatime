@@ -14,70 +14,133 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
-using NUnit.Framework;
+
 using NodaTime.Format;
 using NodaTime.Periods;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterTest
     {
+        #region WithProvider
+
         [Test]
-        public void WithProvider_CreatesNewInstance()
+        public void WithProvider_CreatesNewInstanceWithGivenProvider_ForNotNullProvider()
         {
             var sutDefault = PeriodFormatter.FromParser(parser);
-            Assert.IsNull(sutDefault.Provider);
-            var sutWithProvider = sutDefault.WithProvider(provider);
-            Assert.AreEqual(provider, sutWithProvider.Provider);
-            Assert.AreNotSame(sutDefault, sutWithProvider);
+            Assert.That(sutDefault.Provider, Is.Null, "precondition");
+
+            var sutWithProvider = sutDefault.WithProvider(provider1);
+
+            Assert.That(sutWithProvider.Provider, Is.SameAs(provider1));
+            Assert.That(sutWithProvider, Is.Not.SameAs(sutDefault));
         }
 
+        [Test]
+        public void WithProvider_CreatesNewInstanceWithGivenProvider_ForDifferentProvider()
+        {
+            var sutWithProvider1 = PeriodFormatter.FromParser(parser).WithProvider(provider1);
+
+            var sutWithProvider2 = sutWithProvider1.WithProvider(provider2);
+
+            Assert.That(sutWithProvider2.Provider, Is.SameAs(provider2));
+            Assert.That(sutWithProvider2, Is.Not.SameAs(sutWithProvider1));
+        }
 
         [Test]
-        public void WithProvider_ReturnsTheSameInistance_IfNewProviderIsNull()
+        public void WithProvider_CreatesNewInstanceWithGivenProvider_ForNullProvider()
+        {
+            var sutWithProvider1 = PeriodFormatter.FromParser(parser).WithProvider(provider1);
+
+            var sutWithNullProvider = sutWithProvider1.WithProvider(null);
+
+            Assert.That(sutWithNullProvider.Provider, Is.Null);
+            Assert.That(sutWithNullProvider, Is.Not.SameAs(sutWithProvider1));
+        }
+
+        [Test]
+        public void WithProvider_ReturnsTheSame_ForNullProvider()
         {
             var sutDefault = PeriodFormatter.FromParser(parser);
-            Assert.IsNull(sutDefault.Provider);
+            Assert.That(sutDefault.Provider, Is.Null, "precondition");
+
             var sutWithProvider = sutDefault.WithProvider(null);
-            Assert.IsNull(sutWithProvider.Provider);
-            Assert.AreSame(sutDefault, sutWithProvider);
+
+            Assert.That(sutWithProvider.Provider, Is.Null);
+            Assert.That(sutWithProvider, Is.SameAs(sutDefault));
         }
 
         [Test]
-        public void WithProvider_ReturnsTheSameInstance_IfNewProviderIsTheSame()
+        public void WithProvider_ReturnsTheSame_ForTheSameProvider()
         {
-            var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider);
-            var sutWithProvider = sutDefault.WithProvider(provider);
-            Assert.AreSame(sutDefault, sutWithProvider);
+            var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider1);
+
+            var sutWithProvider = sutDefault.WithProvider(provider1);
+
+            Assert.That(sutWithProvider, Is.SameAs(sutDefault));
         }
 
-        [Test]
-        public void WithParsePeriodType_CreatesNewInstance()
-        {
-            var sutDefault = PeriodFormatter.FromParser(parser);
-            Assert.IsNull(sutDefault.ParsePeriodType);
-            var sutWithParseType = sutDefault.WithParseType(PeriodType.Days);
-            Assert.AreEqual(PeriodType.Days, sutWithParseType.ParsePeriodType);
-            Assert.AreNotSame(sutDefault, sutWithParseType);
-        }
+        #endregion
+
+        #region WithParseType
 
         [Test]
-        public void WithParsePeriodType_ReturnsTheSameInstance_IfNewPeriodTypeIsNull()
+        public void WithParsePeriodType_CreatesNewInstanceWithGivenParseType_ForNotNullParseType()
         {
             var sutDefault = PeriodFormatter.FromParser(parser);
-            Assert.IsNull(sutDefault.ParsePeriodType);
+            Assert.That(sutDefault.ParsePeriodType, Is.Null, "precondition");
+
+            var sutWithParseType = sutDefault.WithParseType(monthsPeriodType);
+
+            Assert.That(sutWithParseType.ParsePeriodType, Is.SameAs(monthsPeriodType));
+            Assert.That(sutWithParseType, Is.Not.SameAs(sutDefault));
+        }
+
+        [Test]
+        public void WithParsePeriodType_CreatesNewInstanceWithGivenParseType_ForDifferentParseType()
+        {
+            var sutMonths = PeriodFormatter.FromParser(parser).WithParseType(monthsPeriodType);
+
+            var sutDays = sutMonths.WithParseType(daysPeriodType);
+
+            Assert.That(sutDays.ParsePeriodType, Is.SameAs(daysPeriodType));
+            Assert.That(sutDays, Is.Not.SameAs(sutMonths));
+        }
+
+        [Test]
+        public void WithParsePeriodType_CreatesNewInstanceWithGivenParseType_ForNullParseType()
+        {
+            var sutMonths = PeriodFormatter.FromParser(parser).WithParseType(monthsPeriodType);
+
+            var sutNullPeriodType = sutMonths.WithParseType(null);
+
+            Assert.That(sutNullPeriodType.ParsePeriodType, Is.Null);
+            Assert.That(sutNullPeriodType, Is.Not.SameAs(sutMonths));
+        }
+
+        [Test]
+        public void WithParsePeriodType_ReturnsTheSame_ForNullPeriodType()
+        {
+            var sutDefault = PeriodFormatter.FromParser(parser);
+            Assert.That(sutDefault.ParsePeriodType, Is.Null, "precondition");
+
             var sutWithParseType = sutDefault.WithParseType(null);
-            Assert.IsNull(sutWithParseType.ParsePeriodType);
-            Assert.AreSame(sutDefault, sutWithParseType);
+
+            Assert.That(sutWithParseType.ParsePeriodType, Is.Null);
+            Assert.That(sutWithParseType, Is.SameAs(sutDefault));
         }
 
         [Test]
-        public void WithParsePeriodType_ReturnsTheSameInstance_IfNewPeriodTypeIsTheSame()
+        public void WithParsePeriodType_ReturnsTheSame_ForTheSamePeriodType()
         {
-            var sutDefault = PeriodFormatter.FromParser(parser).WithParseType(PeriodType.Years);
-            var sutWithParseType = sutDefault.WithParseType(PeriodType.Years);
-            Assert.AreSame(sutDefault, sutWithParseType);
+            var sutDefault = PeriodFormatter.FromParser(parser).WithParseType(daysPeriodType);
+
+            var sutWithParseType = sutDefault.WithParseType(daysPeriodType);
+
+            Assert.That(sutWithParseType, Is.SameAs(sutDefault));
         }
+
+        #endregion
     }
 }
