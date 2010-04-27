@@ -304,10 +304,16 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="text">Text to parse</param>
         /// <returns>Parsed pariod</returns>
+        /// <exception cref="ArgumentNullException">if text argument is null</exception>
         /// <exception cref="FormatException">text does not contain a valid string representation of a period.</exception>
+        /// <exception cref="NotSupportedException">if this formatter can't be used for parsing</exception>        
         public Period Parse(String text)
         {
             VerifyParser();
+            if (text == null)
+            {
+                throw new ArgumentNullException(text);
+            }
 
             var builder = new PeriodBuilder(parsePeriodType);
             int newPosition = Parser.Parse(text, 0, builder, provider);

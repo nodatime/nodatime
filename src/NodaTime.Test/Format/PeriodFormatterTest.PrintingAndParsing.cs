@@ -169,6 +169,14 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
+        public void Parse_ThrowsArgumentNull_ForNullText()
+        {
+            var sutDefault = PeriodFormatter.FromParser(parser);
+
+            Assert.Throws<ArgumentNullException>(() => sutDefault.Parse(null));
+        }
+
+        [Test]
         public void Parse_DelegatesToParser()
         {
             var sutDefault = PeriodFormatter.FromParser(parser).WithProvider(provider1);
