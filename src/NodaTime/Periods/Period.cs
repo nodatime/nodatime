@@ -854,14 +854,12 @@ namespace NodaTime.Periods
 
         private Duration ToStandardDurationUnchecked()
         {
-            long millis = Milliseconds;  // no overflow can happen
-            millis += (((long)Seconds) * ((long)NodaConstants.MillisecondsPerSecond));
-            millis += (((long)Minutes) * ((long)NodaConstants.MillisecondsPerMinute));
-            millis += (((long)Hours) * ((long)NodaConstants.MillisecondsPerHour));
-            millis += (((long)Days) * ((long)NodaConstants.MillisecondsPerDay));
-            millis += (((long)Weeks) * ((long)NodaConstants.MillisecondsPerWeek));
-
-            return new Duration(millis * NodaConstants.TicksPerMillisecond);
+            return Duration.FromStandardWeeks(Weeks)
+                + Duration.FromStandardDays(Days)
+                + Duration.FromHours(Hours)
+                + Duration.FromMinutes(Minutes)
+                + Duration.FromSeconds(Seconds)
+                + Duration.FromMilliseconds(Milliseconds);
         }
 
         /// <summary>
@@ -905,12 +903,7 @@ namespace NodaTime.Periods
         {
             VerifyAbsenceOfYearsAndMonths("Seconds");
 
-            long seconds = (long)Milliseconds / (long)NodaConstants.MillisecondsPerSecond;  
-            seconds += Seconds;
-            seconds += (((long)Minutes) * ((long)NodaConstants.SecondsPerMinute));
-            seconds += (((long)Hours) * ((long)NodaConstants.SecondsPerHour));
-            seconds += (((long)Days) * ((long)NodaConstants.SecondsPerDay));
-            seconds += (((long)Weeks) * ((long)NodaConstants.SecondsPerWeek));
+            var seconds = ToStandardDuration().Ticks / NodaConstants.TicksPerSecond;
 
             return NodaTime.Periods.Seconds.From((int)seconds);
         }
@@ -934,13 +927,7 @@ namespace NodaTime.Periods
         {
             VerifyAbsenceOfYearsAndMonths("Minutes");
 
-            long milliseconds = Milliseconds;
-            milliseconds += (((long)Seconds) * ((long)NodaConstants.MillisecondsPerSecond));
-            long minutes = milliseconds / ((long)NodaConstants.MillisecondsPerMinute);
-            minutes += Minutes;
-            minutes += (((long)Hours) * ((long)NodaConstants.MinutesPerHour));
-            minutes += (((long)Days) * ((long)NodaConstants.MinutesPerDay));
-            minutes += (((long)Weeks) * ((long)NodaConstants.MinutesPerWeek));
+            var minutes = ToStandardDuration().Ticks / NodaConstants.TicksPerMinute;
 
             return NodaTime.Periods.Minutes.From((int)minutes);
         }
@@ -964,13 +951,7 @@ namespace NodaTime.Periods
         {
             VerifyAbsenceOfYearsAndMonths("Hours");
 
-            long milliseconds = Milliseconds;
-            milliseconds += (((long)Seconds) * ((long)NodaConstants.MillisecondsPerSecond));
-            milliseconds += (((long)Minutes) * ((long)NodaConstants.MillisecondsPerMinute));
-            long hours = milliseconds / ((long)NodaConstants.MillisecondsPerHour);
-            hours += Hours;
-            hours += (((long)Days) * ((long)NodaConstants.HoursPerDay));
-            hours += (((long)Weeks) * ((long)NodaConstants.HoursPerWeek));
+            var hours = ToStandardDuration().Ticks / NodaConstants.TicksPerHour;
 
             return NodaTime.Periods.Hours.From((int)hours);
         }
@@ -994,13 +975,7 @@ namespace NodaTime.Periods
         {
             VerifyAbsenceOfYearsAndMonths("Days");
 
-            long milliseconds = Milliseconds;
-            milliseconds += (((long)Seconds) * ((long)NodaConstants.MillisecondsPerSecond));
-            milliseconds += (((long)Minutes) * ((long)NodaConstants.MillisecondsPerMinute));
-            milliseconds += (((long)Hours) * ((long)NodaConstants.MillisecondsPerHour));
-            long days = milliseconds / ((long)NodaConstants.MillisecondsPerDay);
-            days += Days;
-            days += (((long)Weeks) * ((long)NodaConstants.DaysPerWeek));
+            var days = ToStandardDuration().Ticks / NodaConstants.TicksPerDay;
 
             return NodaTime.Periods.Days.From((int)days);
         }
@@ -1024,13 +999,7 @@ namespace NodaTime.Periods
         {
             VerifyAbsenceOfYearsAndMonths("Weeks");
 
-            long milliseconds = Milliseconds;
-            milliseconds += (((long)Seconds) * ((long)NodaConstants.MillisecondsPerSecond));
-            milliseconds += (((long)Minutes) * ((long)NodaConstants.MillisecondsPerMinute));
-            milliseconds += (((long)Hours) * ((long)NodaConstants.MillisecondsPerHour));
-            milliseconds += (((long)Days) * ((long)NodaConstants.MillisecondsPerDay));
-            long weeks = milliseconds / ((long)NodaConstants.MillisecondsPerWeek);
-            weeks += Weeks;
+            var weeks = ToStandardDuration().Ticks / NodaConstants.TicksPerWeek;
 
             return NodaTime.Periods.Weeks.From((int)weeks);
         }
@@ -1333,7 +1302,7 @@ namespace NodaTime.Periods
         }
 
         /// <summary>
-        /// Returns the value of the Decimal operand.
+        /// Implements the unary operator + .
         /// </summary>
         /// <param name="period">The <see cref="Period"/> operand.</param>
         /// <returns>The same <see cref="Period"/> instance</returns>
@@ -1341,7 +1310,16 @@ namespace NodaTime.Periods
         {
             return period;
         }
-        
+
+        /// <summary>
+        /// Returns the same instance. Friendly alternative for <c>Period.operator +(Period)</c> operator.
+        /// </summary>
+        /// <param name="period">The <see cref="Period"/> operand.</param>
+        /// <returns>The same <see cref="Period"/> instance</returns>
+        public static Period Plus(Period period)
+        {
+            return period;
+        }
         #endregion
 
         /// <summary>

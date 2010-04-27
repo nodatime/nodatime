@@ -260,6 +260,9 @@
     <Compile Include="Periods\PeriodTest.Operators.cs">
       <DependentUpon>PeriodTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Periods\PeriodTest.Normalization.cs">
+      <DependentUpon>PeriodTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Periods\YearsTest.Parse.cs">
       <DependentUpon>YearsTest.cs</DependentUpon>
     </Compile>

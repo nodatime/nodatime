@@ -1598,7 +1598,7 @@ namespace NodaTime.Format
         {
             if (text == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("text");
             }
 
             return AppendSuffix(new SimpleAffix(text));
