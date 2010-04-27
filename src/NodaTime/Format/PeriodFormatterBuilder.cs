@@ -16,10 +16,8 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 using NodaTime.Fields;
 using NodaTime.Periods;
@@ -98,24 +96,10 @@ namespace NodaTime.Format
         {
             int CalculatePrintedLength(int value);
 
-            void PrintTo(StringBuilder stringBuilder, int value);
-
             void PrintTo(TextWriter textWriter, int value);
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="periodString"></param>
-            /// <param name="position"></param>
-            /// <returns>new position after parsing affix, or ~position of failure</returns>
             int Parse(string periodString, int position);
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="periodstring"></param>
-            /// <param name="position"></param>
-            /// <returns>position where affix starts, or original ~position if not found</returns>
             int Scan(string periodstring, int position);
         }
 
@@ -131,16 +115,9 @@ namespace NodaTime.Format
                 this.text = text;
             }
              
-            #region IPeriodFieldAffix Members
-
             public int CalculatePrintedLength(int value)
             {
                 return text.Length;
-            }
-
-            public void PrintTo(StringBuilder stringBuilder, int value)
-            {
-                stringBuilder.Append(text);
             }
 
             public void PrintTo(TextWriter textWriter, int value)
@@ -174,7 +151,6 @@ namespace NodaTime.Format
                 return ~position;
             }
 
-            #endregion
         }
 
         /// <summary>
@@ -192,16 +168,9 @@ namespace NodaTime.Format
                 this.pluralText = pluralText;
             }
 
-            #region IPeriodFieldAffix Members
-
             public int CalculatePrintedLength(int value)
             {
                 return (value == 1 ? singularText : pluralText).Length;
-            }
-
-            public void PrintTo(StringBuilder stringBuilder, int value)
-            {
-                stringBuilder.Append(value == 1 ? singularText : pluralText);
             }
 
             public void PrintTo(TextWriter textWriter, int value)
@@ -257,8 +226,6 @@ namespace NodaTime.Format
                     secondToCheck = singularText;
                 }
             }
-
-            #endregion
         }
 
         /// <summary>
@@ -275,18 +242,10 @@ namespace NodaTime.Format
                 this.right = right;
             }
 
-            #region IPeriodFieldAffix Members
-
             public int CalculatePrintedLength(int value)
             {
                 return left.CalculatePrintedLength(value)
                     + right.CalculatePrintedLength(value);
-            }
-
-            public void PrintTo(StringBuilder stringBuilder, int value)
-            {
-                left.PrintTo(stringBuilder, value);
-                right.PrintTo(stringBuilder, value);
             }
 
             public void PrintTo(TextWriter textWriter, int value)
@@ -306,8 +265,6 @@ namespace NodaTime.Format
                 position = left.Scan(periodString, position);
                 return position >= 0 ? right.Scan(periodString, position) : position;
             }
-
-            #endregion
         }
 
         /// <summary>
@@ -334,11 +291,6 @@ namespace NodaTime.Format
             public int CountFieldsToPrint(IPeriod period, int stopAt, IFormatProvider provider)
             {
                 return 0;
-            }
-
-            public void PrintTo(StringBuilder stringBuilder, IPeriod period, IFormatProvider provider)
-            {
-                stringBuilder.Append(text);
             }
 
             public void PrintTo(TextWriter textWriter, IPeriod period, IFormatProvider provider)
@@ -448,50 +400,6 @@ namespace NodaTime.Format
                 }
 
                 return 0;
-            }
-
-            public void PrintTo(StringBuilder stringBuilder, IPeriod period, IFormatProvider provider)
-            {
-                long fieldValue = GetFieldValue(period);
-                if (fieldValue == long.MaxValue)
-                {
-                    return;
-                }
-
-                int intValue = (int)fieldValue;
-                if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
-                {
-                    intValue = (int)(fieldValue / NodaConstants.MillisecondsPerSecond);
-                }
-                if (prefix != null)
-                {
-                    prefix.PrintTo(stringBuilder, intValue);
-                }
-
-                int minDigits = minPrintedDigits;
-                if (minDigits <= 1)
-                {
-                    FormatUtils.AppendUnpaddedInteger(stringBuilder, intValue);
-                }
-                else
-                {
-                    FormatUtils.AppendPaddedInteger(stringBuilder, intValue, minDigits);
-                }
-
-                if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
-                {
-                    int dp = (int)(Math.Abs(fieldValue) % NodaConstants.MillisecondsPerSecond);
-                    if (fieldType == FormatterDurationFieldType.SecondsMilliseconds || dp > 0)
-                    {
-                        stringBuilder.Append('.');
-                        FormatUtils.AppendPaddedInteger(stringBuilder, dp, 3);
-                    }
-                }
-
-                if (suffix != null)
-                {
-                    suffix.PrintTo(stringBuilder, intValue);
-                }
             }
 
             public void PrintTo(TextWriter textWriter, IPeriod period, IFormatProvider provider)
@@ -991,14 +899,6 @@ namespace NodaTime.Format
                 return sum;
             }
 
-            public void PrintTo(StringBuilder stringBuilder, IPeriod period, IFormatProvider provider)
-            {
-                foreach (var printer in periodPrinters)
-                {
-                    printer.PrintTo(stringBuilder, period, provider);
-                }
-            }
-
             public void PrintTo(TextWriter textWriter, IPeriod period, IFormatProvider provider)
             {
                 foreach (var printer in periodPrinters)
@@ -1120,34 +1020,6 @@ namespace NodaTime.Format
                     sum += afterPrinter.CountFieldsToPrint(period, stopAt, provider);
                 }
                 return sum;
-            }
-
-            public void PrintTo(StringBuilder stringBuilder, IPeriod period, IFormatProvider provider)
-            {
-                beforePrinter.PrintTo(stringBuilder, period, provider);
-                if (useBefore)
-                {
-                    if (beforePrinter.CountFieldsToPrint(period, 1, provider) > 0)
-                    {
-                        if (useAfter)
-                        {
-                            int afterCount = afterPrinter.CountFieldsToPrint(period, 2, provider);
-                            if (afterCount > 0)
-                            {
-                                stringBuilder.Append(afterCount > 1 ? text : finalText);
-                            }
-                        }
-                        else
-                        {
-                            stringBuilder.Append(text);
-                        }
-                    }
-                }
-                else if (useAfter && afterPrinter.CountFieldsToPrint(period, 1, provider) > 0)
-                {
-                    stringBuilder.Append(text);
-                }
-                afterPrinter.PrintTo(stringBuilder, period, provider);
             }
 
             public void PrintTo(TextWriter textWriter, IPeriod period, IFormatProvider provider)
