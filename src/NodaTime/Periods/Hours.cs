@@ -183,7 +183,7 @@ namespace NodaTime.Periods
             get { return PeriodType.Hours; }
         }
 
-        #region ToStandart
+        #region ToStandard
 
         /// <summary>
         /// Converts this period in hours to a period in weeks assuming a

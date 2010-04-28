@@ -14,9 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+using System;
 using NodaTime.Fields;
 using NodaTime.Format;
-using System;
 
 namespace NodaTime.Periods
 {
@@ -148,7 +148,7 @@ namespace NodaTime.Periods
             get { return PeriodType.Seconds; }
         }
 
-        #region ToStandart
+        #region ToStandard
 
         /// <summary>
         /// Converts this period in seconds to a period in weeks assuming a

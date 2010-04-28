@@ -245,39 +245,39 @@ namespace NodaTime.Format
         /// <summary>
         /// Prints an IPeriod to a <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="sb">The formatted period is appended to this builder</param>
+        /// <param name="builder">The formatted period is appended to this builder</param>
         /// <param name="period">The period to format, not null</param>
-        /// <exception cref="ArgumentNullException">if either period or stringBuilder is null</exception>
+        /// <exception cref="ArgumentNullException">if either period or builder is null</exception>
         /// <exception cref="NotSupportedException">if this formatter can't be used for printing</exception>
-        public void PrintTo(StringBuilder sb, IPeriod period)
+        public void PrintTo(StringBuilder builder, IPeriod period)
         {
-            VerifyPrinter();
-            VerifyPeriodArgument(period);
-            if (sb == null)
+            if (builder == null)
             {
-                throw new ArgumentNullException("sb");
+                throw new ArgumentNullException("builder");
             }
+            VerifyPeriodArgument(period);
+            VerifyPrinter();
 
-            Printer.PrintTo(new StringWriter(sb, Provider), period, provider);
+            Printer.PrintTo(new StringWriter(builder, Provider), period, provider);
         }
 
         /// <summary>
         /// Prints an IPeriod to a <see cref="TextWriter"/>.
         /// </summary>
-        /// <param name="textWriter">the formatted period is written out</param>
+        /// <param name="writer">the formatted period is written out</param>
         /// <param name="period">The period to format, not null</param>
-        /// <exception cref="ArgumentNullException">if either period or textWriter is null</exception>
+        /// <exception cref="ArgumentNullException">if either period or writer is null</exception>
         /// <exception cref="NotSupportedException">if this formatter can't be used for printing</exception>        
-        public void PrintTo(TextWriter textWriter, IPeriod period)
+        public void PrintTo(TextWriter writer, IPeriod period)
         {
-            VerifyPrinter();
-            VerifyPeriodArgument(period);
-            if (textWriter == null)
+            if (writer == null)
             {
-                throw new ArgumentNullException("textWriter");
+                throw new ArgumentNullException("writer");
             }
+            VerifyPeriodArgument(period);
+            VerifyPrinter();
 
-            Printer.PrintTo(textWriter, period, provider);
+            Printer.PrintTo(writer, period, provider);
         }
 
         /// <summary>
@@ -289,8 +289,8 @@ namespace NodaTime.Format
         /// <exception cref="NotSupportedException">if this formatter can't be used for printing</exception>        
         public string Print(IPeriod period)
         {
-            VerifyPrinter();
             VerifyPeriodArgument(period);
+            VerifyPrinter();
 
             var sb = new StringBuilder(periodPrinter.CalculatePrintedLength(period, provider));
             var sw = new StringWriter(sb, Provider);
@@ -309,11 +309,11 @@ namespace NodaTime.Format
         /// <exception cref="NotSupportedException">if this formatter can't be used for parsing</exception>        
         public Period Parse(String text)
         {
-            VerifyParser();
             if (text == null)
             {
                 throw new ArgumentNullException(text);
             }
+            VerifyParser();
 
             var builder = new PeriodBuilder(parsePeriodType);
             int newPosition = Parser.Parse(text, 0, builder, provider);
