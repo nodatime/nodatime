@@ -1545,6 +1545,28 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="FormatUtils">
+          <Members>
+           <Member Name="#AppendPaddedInteger(System.Text.StringBuilder,System.Int32,System.Int32)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2010-04-27 17:31:03Z">
+              <Issue>
+               <Item>'FormatUtils.AppendPaddedInteger(StringBuilder, int, int)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AppendUnpaddedInteger(System.Text.StringBuilder,System.Int32)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2010-04-27 17:31:03Z">
+              <Issue>
+               <Item>'FormatUtils.AppendUnpaddedInteger(StringBuilder, int)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="IDateTimePrinter">
           <Members>
            <Member Name="#PrintTo(System.IO.TextWriter,NodaTime.IPartial,System.IFormatProvider)">
@@ -1586,21 +1608,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="IPeriodPrinter">
-          <Members>
-           <Member Name="#PrintTo(System.Text.StringBuilder,NodaTime.IPeriod,System.IFormatProvider)">
-            <Messages>
-             <Message Id="string" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Created="2010-03-09 01:02:44Z">
-              <Issue Name="LanguageIndependentMemberParameter">
-               <Item>'IPeriodPrinter.PrintTo(StringBuilder, IPeriod, IFormatProvider)'</Item>
-               <Item>string</Item>
-               <Item>'stringBuilder'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="IsoDateTimeFormats">
           <Members>
            <Member Name="#dhmsf">
@@ -1619,34 +1626,6 @@
                <Item>WeekDay</Item>
                <Item>'IsoDateTimeFormats.WeekYearWeekDay'</Item>
                <Item>Weekday</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="PeriodFormatter">
-          <Members>
-           <Member Name="#PrintTo(System.Text.StringBuilder,NodaTime.IPeriod)">
-            <Messages>
-             <Message Id="string" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Created="2010-03-09 01:02:44Z">
-              <Issue Name="LanguageIndependentMemberParameter">
-               <Item>'PeriodFormatter.PrintTo(StringBuilder, IPeriod)'</Item>
-               <Item>string</Item>
-               <Item>'stringBuilder'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="PeriodFormatterBuilder">
-          <Members>
-           <Member Name="#AppendSuffix(System.String)">
-            <Messages>
-             <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2010-03-09 01:02:44Z">
-              <Issue Name="NoArguments">
-               <Item>'ArgumentNullException'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -1891,16 +1870,6 @@
                <Item>'Period.Negate(Period)'</Item>
                <Item>'Period'</Item>
                <Item>'IPeriod'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#op_UnaryPlus(NodaTime.Periods.Period)">
-            <Messages>
-             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2010-04-25 19:39:27Z">
-              <Issue>
-               <Item>Plus</Item>
-               <Item>'Period.operator +(Period)'</Item>
               </Issue>
              </Message>
             </Messages>

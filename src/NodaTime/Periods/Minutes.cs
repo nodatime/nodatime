@@ -148,7 +148,7 @@ namespace NodaTime.Periods
             get { return PeriodType.Minutes; }
         }
 
-        #region ToStandart
+        #region ToStandard
 
         /// <summary>
         /// Converts this period in minutes to a period in weeks assuming a
@@ -465,19 +465,41 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Minutes"/> representing the multiplication of the given values.</returns>
-        public static Minutes operator *(Minutes left, Minutes right)
+        /// <returns>A new <see cref="Minutes"/> representing the minutes period multiplied by the scale.</returns>
+        public static Minutes operator *(Minutes left, int right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Multiply(right);
+            return Object.ReferenceEquals(left, null) ? Minutes.Zero : left.Multiply(right);
         }
 
         /// <summary>
-        /// Multiply one minutes period by an another. Friendly alternative to <c>operator*()</c>.
+        /// Implements the operator * (multiplication).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Minutes"/> instance representing the multiplication of the given values.</returns>
-        public static Minutes Multiply(Minutes left, Minutes right)
+        /// <returns>A new <see cref="Minutes"/> representing the minutes period multiplied by the scale.</returns>
+        public static Minutes operator *(int left, Minutes right)
+        {
+            return Object.ReferenceEquals(right, null) ? Minutes.Zero : right.Multiply(left);
+        }
+
+        /// <summary>
+        /// Multiply one minutes period by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Minutes"/> instance representing the minutes period multiplied by the scale.</returns>
+        public static Minutes Multiply(Minutes left, int right)
+        {
+            return left * right;
+        }
+
+        /// <summary>
+        /// Multiply one minutes period by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Minutes"/> instance representing the minutes period multiplied by the scale.</returns>
+        public static Minutes Multiply(int left, Minutes right)
         {
             return left * right;
         }
@@ -505,10 +527,10 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Minutes"/> representing the divison of the given values.</returns>
-        public static Minutes operator /(Minutes left, Minutes right)
+        /// <returns>A new <see cref="Minutes"/> representing the minutes period divided by the scale.</returns>
+        public static Minutes operator /(Minutes left, int right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Divide(right);
+            return Object.ReferenceEquals(left, null) ? Minutes.Zero : left.Divide(right);
         }
 
         /// <summary>
@@ -516,8 +538,8 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Minutes"/> instance representing the division of the given values.</returns>
-        public static Minutes Divide(Minutes left, Minutes right)
+        /// <returns>A new <see cref="Minutes"/> instance representing minutes period divided by the scale.</returns>
+        public static Minutes Divide(Minutes left, int right)
         {
             return left / right;
         }

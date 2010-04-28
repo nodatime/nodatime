@@ -178,7 +178,7 @@ namespace NodaTime.Periods
             get { return PeriodType.Days; }
         }
 
-        #region ToStandart
+        #region ToStandard
 
         /// <summary>
         /// Converts this period in days to a period in weeks assuming a
