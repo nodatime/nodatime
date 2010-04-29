@@ -15,14 +15,419 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using NodaTime.Periods;
 using System;
+using System.IO;
+using NodaTime.Format;
+using NodaTime.Periods;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterBuilderTest
     {
+        private class FieldFormatterBuilder
+        {
+            private int minimumPrintedDigits = 1;
+            private int maximumParsedDigits = 10;
+            private bool rejectSignedValues = false;
+            private PeriodFormatterBuilder.FieldFormatter[] fieldFormatters = new PeriodFormatterBuilder.FieldFormatter[11];
+
+            public PeriodFormatterBuilder.FormatterDurationFieldType FieldType { get; set; }
+            public PeriodFormatterBuilder.PrintZeroSetting PrintZero { get; set; }
+            public PeriodFormatterBuilder.IPeriodFieldAffix Prefix { get; set; }
+            public PeriodFormatterBuilder.IPeriodFieldAffix Suffix { get; set; }
+
+            public FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Days;
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast;
+            }
+
+            public PeriodFormatterBuilder.FieldFormatter Build()
+            {
+                var fieldFormatter = new PeriodFormatterBuilder.FieldFormatter(minimumPrintedDigits, PrintZero, maximumParsedDigits, rejectSignedValues, FieldType, fieldFormatters, Prefix, Suffix);
+                fieldFormatters[(int)FieldType] = fieldFormatter;
+                return fieldFormatter;
+            }
+        }
+
+        #region FieldFormatter
+
+        [Test]
+        public void FieldFormatter_PrintsFieldValue()
+        {
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var writer = new StringWriter();
+            var period = Period.FromDays(42);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("42"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsPaddedCombinedValue_ForSecondsMillisecondsFieldTypeAndMillisecondsIsZero()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromSeconds(1).WithMilliseconds(0);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("1.000"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsPaddedCombinedValue_ForSecondsMillisecondsFieldTypeAndMillisecondsLessThan1000()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+                {
+                    FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+                }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromSeconds(1).WithMilliseconds(2);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("1.002"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndMillisecondsGreaterThan1000()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromSeconds(1).WithMilliseconds(2345);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("3.345"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsOnlySeconds_ForSecondsMillisecondsOptionalFieldTypeAndMillisecondsIsZero()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMillisecondsOptional
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromSeconds(1).WithMilliseconds(0);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("1"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsOptionalFieldTypeAndMillisecondsIsNotZero()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMillisecondsOptional
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromSeconds(1).WithMilliseconds(234);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("1.234"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsFieldValueWithPrefix_IfPrefixIsSpecified()
+        {
+            var fieldFormatter = new FieldFormatterBuilder() 
+                                    { 
+                                        Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:")
+                                    }
+                                    .Build();
+            var writer = new StringWriter();
+            var period = Period.FromDays(42);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("Day:42"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsFieldValueWithSuffix_IfSuffixIsSpecified()
+        {
+            var fieldFormatter = new FieldFormatterBuilder() 
+                                    { 
+                                        Suffix = new PeriodFormatterBuilder.SimpleAffix("days") 
+                                    }
+                                    .Build();
+            var writer = new StringWriter();
+            var period = Period.FromDays(42);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("42days"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsNothing_IfFieldTypeIsNotSupported()
+        {
+            var fieldFormatter = new FieldFormatterBuilder() 
+                                    { Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
+                                      Suffix = new PeriodFormatterBuilder.SimpleAffix("days") 
+                                    }
+                                    .Build();
+
+            var writer = new StringWriter();
+            var period = Years.One;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(""));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsValue_IfFieldTypeIsNotSupportedButPrintAlwaysSet()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+                                    {
+                                        PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always,
+                                    }
+                                    .Build();
+            var writer = new StringWriter();
+            var period = Years.One;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsFieldValue_IfFieldTypeIsSupportedAndZero()
+        {
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+
+            var writer = new StringWriter();
+            var period = Days.Zero;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndValueIsZeroAndPrintsNeverSet()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+                                    {
+                                        PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Never
+                                    }.Build();
+
+            var writer = new StringWriter();
+            var period = Days.Zero;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(""));
+        }
+
+        #region RarelyLast
+
+        [Test]
+        public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyLastAndNoOtherFormattersExists()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast
+            }.Build();
+
+            var writer = new StringWriter();
+            var period = Days.Zero;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyLastAndOtherFormattersExistsButNotSupported()
+        {
+            var builder = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast
+            };
+
+            var fieldFormatter = builder.Build();
+            builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Hours;
+            builder.Build();
+
+            var writer = new StringWriter();
+            var period = Days.Zero;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyLastAndOtherFormattersExistsAndIsSupportedAndGreaterByType()
+        {
+            var builder = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast
+            };
+
+            var fieldFormatter = builder.Build();
+            builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Years;
+            builder.Build();
+
+            var writer = new StringWriter();
+            var period = Period.FromDays(0).WithYears(0);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyLastAndOtherFormattersExistsAndIsSupportedButLessByType()
+        {
+            var builder = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast
+            };
+
+            var fieldFormatter = builder.Build();
+            builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Hours;
+            builder.Build();
+
+            var writer = new StringWriter();
+            var period = Period.FromDays(0).WithHours(0);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(""));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsNothing_IfValueIsZeroAndPrintRarelyLastButPeriodIsNotZero()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast
+            }.Build();
+
+            var writer = new StringWriter();
+            var period = Period.FromDays(0).WithHours(1);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(""));
+        }
+
+        #endregion
+
+        #region RarelyFirst
+
+        public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyFirstAndNoOtherFormattersExists()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst
+            }.Build();
+
+            var writer = new StringWriter();
+            var period = Days.Zero;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyFirstAndOtherFormattersExistsButNotSupported()
+        {
+            var builder = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst
+            };
+
+            var fieldFormatter = builder.Build();
+            builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Years;
+            builder.Build();
+
+            var writer = new StringWriter();
+            var period = Days.Zero;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyFirstAndOtherFormattersExistsAndIsSupportedAndLessByType()
+        {
+            var builder = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst
+            };
+
+            var fieldFormatter = builder.Build();
+            builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Hours;
+            builder.Build();
+
+            var writer = new StringWriter();
+            var period = Period.FromDays(0).WithHours(0);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyFirstAndOtherFormattersExistsAndIsSupportedButGreaterByType()
+        {
+            var builder = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst
+            };
+
+            var fieldFormatter = builder.Build();
+            builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Years;
+            builder.Build();
+
+            var writer = new StringWriter();
+            var period = Period.FromDays(0).WithYears(0);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(""));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndPeriodIsNotZeroAndPrintsRarelyFirstAndOtherFormattersExistsAndIsSupportedButGreaterByType()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst
+            }.Build();
+
+            var writer = new StringWriter();
+            var period = Period.FromDays(0).WithYears(1);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(""));
+        }
+
+        #endregion
+
+        #endregion
+
+
         #region Years
 
         [Test]
