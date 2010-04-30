@@ -27,11 +27,11 @@ namespace NodaTime.Test.Format
     {
         private class FieldFormatterBuilder
         {
-            private int minimumPrintedDigits = 1;
             private int maximumParsedDigits = 10;
             private bool rejectSignedValues = false;
             private PeriodFormatterBuilder.FieldFormatter[] fieldFormatters = new PeriodFormatterBuilder.FieldFormatter[11];
 
+            public int MinimumPrintedDigits { get; set; }
             public PeriodFormatterBuilder.FormatterDurationFieldType FieldType { get; set; }
             public PeriodFormatterBuilder.PrintZeroSetting PrintZero { get; set; }
             public PeriodFormatterBuilder.IPeriodFieldAffix Prefix { get; set; }
@@ -39,13 +39,14 @@ namespace NodaTime.Test.Format
 
             public FieldFormatterBuilder()
             {
+                MinimumPrintedDigits = 1;
                 FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Days;
                 PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast;
             }
 
             public PeriodFormatterBuilder.FieldFormatter Build()
             {
-                var fieldFormatter = new PeriodFormatterBuilder.FieldFormatter(minimumPrintedDigits, PrintZero, maximumParsedDigits, rejectSignedValues, FieldType, fieldFormatters, Prefix, Suffix);
+                var fieldFormatter = new PeriodFormatterBuilder.FieldFormatter(MinimumPrintedDigits, PrintZero, maximumParsedDigits, rejectSignedValues, FieldType, fieldFormatters, Prefix, Suffix);
                 fieldFormatters[(int)FieldType] = fieldFormatter;
                 return fieldFormatter;
             }
@@ -64,6 +65,176 @@ namespace NodaTime.Test.Format
 
             Assert.That(writer.ToString(), Is.EqualTo("42"));
         }
+
+        #region MinimumPrintedDigits
+
+        [Test]
+        public void FieldFormatter_PrintsPaddedFieldValue_WithMinimumDigitsSet()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+                {
+                    MinimumPrintedDigits = 5
+                }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromDays(42);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("00042"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsUnpaddedFieldValue_WithMinimumDigitsIsZero()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                MinimumPrintedDigits = 0
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromDays(42);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("42"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsUnpaddedFieldValue_WithNegativeMinimumDigits()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                MinimumPrintedDigits = -2
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromDays(42);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("42"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsPaddedFieldValue_WithMinimumDigitsSetAndNegativeFieldValue()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                MinimumPrintedDigits = 5
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromDays(-42);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("-00042"));
+        }
+
+        #endregion
+
+        #region Supported/Unsupported field type
+
+        [Test]
+        public void FieldFormatter_PrintsNothing_IfFieldTypeIsNotSupported()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
+                Suffix = new PeriodFormatterBuilder.SimpleAffix("days")
+            }
+                                    .Build();
+
+            var writer = new StringWriter();
+            var period = Years.One;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(""));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsValue_IfFieldTypeIsNotSupportedButPrintAlwaysSet()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always,
+            }
+                                    .Build();
+            var writer = new StringWriter();
+            var period = Years.One;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsFieldValue_IfFieldTypeIsSupportedAndZero()
+        {
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+
+            var writer = new StringWriter();
+            var period = Days.Zero;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndValueIsZeroAndPrintsNeverSet()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Never
+            }.Build();
+
+            var writer = new StringWriter();
+            var period = Days.Zero;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(""));
+        }
+
+        #endregion
+
+        #region Prefix/Suffix
+
+        [Test]
+        public void FieldFormatter_PrintsFieldValueWithPrefix_IfPrefixIsSpecified()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:")
+            }
+                                    .Build();
+            var writer = new StringWriter();
+            var period = Period.FromDays(42);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("Day:42"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsFieldValueWithSuffix_IfSuffixIsSpecified()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Suffix = new PeriodFormatterBuilder.SimpleAffix("days")
+            }
+                                    .Build();
+            var writer = new StringWriter();
+            var period = Period.FromDays(42);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("42days"));
+        }
+
+
+        #endregion
+
+        #region SecondsMilliseconds
 
         [Test]
         public void FieldFormatter_PrintsPaddedCombinedValue_ForSecondsMillisecondsFieldTypeAndMillisecondsIsZero()
@@ -111,6 +282,142 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
+        public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndNegativeSecondsAndMilliseconds()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromSeconds(-1).WithMilliseconds(-2);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("-1.002"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndNegativeSecondsButPositiveMillisecondsZeroSeconds()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromSeconds(-1).WithMilliseconds(2);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("-0.998"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndNegativeSecondsButPositiveMillisecondsNonZeroSeconds()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromSeconds(-7).WithMilliseconds(5);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("-6.995"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndPositiveSecondsButNegativeMilliseconds()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromSeconds(1).WithMilliseconds(-2);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0.998"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndZeroSecondsAndNotZeroMilliseconds()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.FromMilliseconds(12);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0.012"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndUnsupportedSeconds()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = new Period(0, 0, 0, 0, 0, 0, 0, 2345, PeriodType.Milliseconds);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("2.345"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndUnsupportedMilliSeconds()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = new Period(0, 0, 0, 0, 0, 0, 6, 0, PeriodType.Seconds);
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("6.000"));
+        }
+
+        [Test]
+        public void FieldFormatter_PrintsNothing_ForSecondsMillisecondsFieldTypeAndBothUnsupported()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = Years.Three;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(""));
+        }
+
+
+        [Test]
+        public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndZeroPeriod()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
+            }.Build();
+            var writer = new StringWriter();
+            var period = Period.Zero;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("0.000"));
+        }
+
+        [Test]
         public void FieldFormatter_PrintsOnlySeconds_ForSecondsMillisecondsOptionalFieldTypeAndMillisecondsIsZero()
         {
             var fieldFormatter = new FieldFormatterBuilder()
@@ -140,99 +447,7 @@ namespace NodaTime.Test.Format
             Assert.That(writer.ToString(), Is.EqualTo("1.234"));
         }
 
-        [Test]
-        public void FieldFormatter_PrintsFieldValueWithPrefix_IfPrefixIsSpecified()
-        {
-            var fieldFormatter = new FieldFormatterBuilder() 
-                                    { 
-                                        Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:")
-                                    }
-                                    .Build();
-            var writer = new StringWriter();
-            var period = Period.FromDays(42);
-
-            fieldFormatter.PrintTo(writer, period, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo("Day:42"));
-        }
-
-        [Test]
-        public void FieldFormatter_PrintsFieldValueWithSuffix_IfSuffixIsSpecified()
-        {
-            var fieldFormatter = new FieldFormatterBuilder() 
-                                    { 
-                                        Suffix = new PeriodFormatterBuilder.SimpleAffix("days") 
-                                    }
-                                    .Build();
-            var writer = new StringWriter();
-            var period = Period.FromDays(42);
-
-            fieldFormatter.PrintTo(writer, period, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo("42days"));
-        }
-
-        [Test]
-        public void FieldFormatter_PrintsNothing_IfFieldTypeIsNotSupported()
-        {
-            var fieldFormatter = new FieldFormatterBuilder() 
-                                    { Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
-                                      Suffix = new PeriodFormatterBuilder.SimpleAffix("days") 
-                                    }
-                                    .Build();
-
-            var writer = new StringWriter();
-            var period = Years.One;
-
-            fieldFormatter.PrintTo(writer, period, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo(""));
-        }
-
-        [Test]
-        public void FieldFormatter_PrintsValue_IfFieldTypeIsNotSupportedButPrintAlwaysSet()
-        {
-            var fieldFormatter = new FieldFormatterBuilder()
-                                    {
-                                        PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always,
-                                    }
-                                    .Build();
-            var writer = new StringWriter();
-            var period = Years.One;
-
-            fieldFormatter.PrintTo(writer, period, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo("0"));
-        }
-
-        [Test]
-        public void FieldFormatter_PrintsFieldValue_IfFieldTypeIsSupportedAndZero()
-        {
-            var fieldFormatter = new FieldFormatterBuilder().Build();
-
-            var writer = new StringWriter();
-            var period = Days.Zero;
-
-            fieldFormatter.PrintTo(writer, period, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo("0"));
-        }
-
-        [Test]
-        public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndValueIsZeroAndPrintsNeverSet()
-        {
-            var fieldFormatter = new FieldFormatterBuilder()
-                                    {
-                                        PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Never
-                                    }.Build();
-
-            var writer = new StringWriter();
-            var period = Days.Zero;
-
-            fieldFormatter.PrintTo(writer, period, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo(""));
-        }
+        #endregion
 
         #region RarelyLast
 
@@ -426,7 +641,6 @@ namespace NodaTime.Test.Format
         #endregion
 
         #endregion
-
 
         #region Years
 
@@ -930,19 +1144,6 @@ namespace NodaTime.Test.Format
         #region Milliseconds
 
         [Test]
-        public void AppendMilliseconds_Prints8_For8MillisecondsStandardPeriod()
-        {
-            var formatter = builder.AppendMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
-
-            Assert.AreEqual("8", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
-        }
-
-        [Test]
         public void AppendMilliseconds_Parses8_To8MillisecondsStandardPeriod()
         {
             var formatter = builder.AppendMillis().ToFormatter();
@@ -950,19 +1151,6 @@ namespace NodaTime.Test.Format
             var parsedPeriod = formatter.Parse("8");
 
             Assert.AreEqual(Period.FromMilliseconds(8), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendMilliseconds_Prints0_ForZeroMillisecondsStandardPeriod()
-        {
-            var formatter = builder.AppendMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodEmpty);
-
-            Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
 
         [Test]
@@ -1006,20 +1194,6 @@ namespace NodaTime.Test.Format
         #region SecondsWithMilliseconds
 
         [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectPrinter_For7SecondsStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, 0);
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("7.000", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
         public void AppendSecondsWithMilliseconds_BuildsCorrectParser_To7SecondsStandardPeriod()
         {
             var formatter = builder.AppendSecondsWithMillis().ToFormatter();
@@ -1027,20 +1201,6 @@ namespace NodaTime.Test.Format
             var parsedPeriod = formatter.Parse("7.000");
 
             Assert.AreEqual(Period.FromSeconds(7), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectPrinter_For7Seconds1MillisecondStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, 1);
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("7.001", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
         }
 
         [Test]
@@ -1054,20 +1214,6 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectPrinter_For7Seconds999MillisecondStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, 999);
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("7.999", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
         public void AppendSecondsWithMilliseconds_BuildsCorrectParser_To7Seconds999MillisecondsStandardPeriod()
         {
             var formatter = builder.AppendSecondsWithMillis().ToFormatter();
@@ -1075,20 +1221,6 @@ namespace NodaTime.Test.Format
             var parsedPeriod = formatter.Parse("7.999");
 
             Assert.AreEqual(Period.FromSeconds(7).WithMilliseconds(999), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectPrinter_For7Seconds1000MillisecondStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, 1000);
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("8.000", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
         }
 
         [Test]
@@ -1100,206 +1232,6 @@ namespace NodaTime.Test.Format
 
             //only 3 digits are considering when parsing milliseconds
             Assert.AreEqual(Period.FromSeconds(7).WithMilliseconds(100), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectPrinter_For7Seconds1001MillisecondStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, 1001);
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("8.001", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectPrinter_For7SecondsMinus1MillisecondStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, -1);
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("6.999", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectPrinter_ForMinus7Seconds1MillisecondStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, -7, 1);
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("-6.999", printedValue);
-            Assert.AreEqual(6, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectPrinter_ForMinus7SecondsMinus1MillisecondStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, -7, -1);
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("-7.001", printedValue);
-            Assert.AreEqual(6, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectPrinter_For0Seconds0MillisecondStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 0, 0);
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("0.000", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        #endregion
-
-        #region SecondsWithOptionalMilliseconds
-
-        [Test]
-        public void AppendSecondsWithOptionalMilliseconds_BuildsCorrectPrinter_For7SecondsStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, 0);
-            var formatter = builder.AppendSecondsWithOptionalMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("7", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithOptionalMilliseconds_BuildsCorrectPrinter_For7Seconds1MillisecondsStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, 1);
-            var formatter = builder.AppendSecondsWithOptionalMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("7.001", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithOptionalMilliseconds_BuildsCorrectPrinter_For7Seconds999MillisecondsStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, 999);
-            var formatter = builder.AppendSecondsWithOptionalMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("7.999", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithOptionalMilliseconds_BuildsCorrectPrinter_For7Seconds1000MillisecondsStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, 1000);
-            var formatter = builder.AppendSecondsWithOptionalMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("8", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithOptionalMilliseconds_BuildsCorrectPrinter_For7Seconds1001MillisecondsStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, 1001);
-            var formatter = builder.AppendSecondsWithOptionalMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("8.001", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithOptionalMilliseconds_BuildsCorrectPrinter_For7SecondsMinus1MillisecondsStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 7, -1);
-            var formatter = builder.AppendSecondsWithOptionalMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("6.999", printedValue);
-            Assert.AreEqual(5, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithOptionalMilliseconds_BuildsCorrectPrinter_ForMinus7Seconds1MillisecondsStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, -7, 1);
-            var formatter = builder.AppendSecondsWithOptionalMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("-6.999", printedValue);
-            Assert.AreEqual(6, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithOptionalMilliseconds_BuildsCorrectPrinter_ForMinus7SecondsMinus1MillisecondsStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, -7, -1);
-            var formatter = builder.AppendSecondsWithOptionalMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("-7.001", printedValue);
-            Assert.AreEqual(6, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSecondsWithOptionalMilliseconds_BuildsCorrectPrinter_ForZeroSecondsZeroMillisecondsStandardPeriod()
-        {
-            Period p = new Period(0, 0, 0, 0, 0, 0, 0, 0);
-            var formatter = builder.AppendSecondsWithOptionalMillis().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(p);
-
-            Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(p, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(p, int.MaxValue, null));
         }
 
         #endregion

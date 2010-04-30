@@ -97,7 +97,6 @@ namespace NodaTime.Format
             public Fraction(int high, int low, long scale)
             {
                 norm = (high * scale) + low;
-
                 this.high = (int)(norm / scale);
                 this.low = (int)(Math.Abs(norm) % scale);
             }
@@ -120,7 +119,9 @@ namespace NodaTime.Format
                 return high == 0 && low == 0;
             }
 
+            public bool NeedNegate { get { return norm < 0 && high == 0; } }
         }
+
         /// <summary>
         /// Defines a formatted field's prefix or suffix text.
         /// This can be used for fields such as 'n hours' or 'nH' or 'Hour:n'.
@@ -434,11 +435,18 @@ namespace NodaTime.Format
                     return;
                 }
 
-                int intValue = fieldValue.Value.High;
+                Fraction value = fieldValue.Value;
+
+                int intValue = value.High;
 
                 if (prefix != null)
                 {
                     prefix.PrintTo(textWriter, intValue);
+                }
+
+                if (value.NeedNegate)
+                {
+                    textWriter.Write('-');
                 }
 
                 if (minPrintedDigits <= 1)
@@ -452,7 +460,7 @@ namespace NodaTime.Format
 
                 if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
                 {
-                    int dp = fieldValue.Value.Low;
+                    int dp = value.Low;
                     if (fieldType == FormatterDurationFieldType.SecondsMilliseconds || dp > 0)
                     {
                         textWriter.Write('.');
