@@ -114,10 +114,7 @@ namespace NodaTime.Format
 
             public int Low { get { return low; } }
 
-            public bool IsZero()
-            {
-                return high == 0 && low == 0;
-            }
+            public bool IsZero { get { return high == 0 && low == 0; } }
 
             public bool NeedNegate { get { return norm < 0 && high == 0; } }
         }
@@ -700,7 +697,7 @@ namespace NodaTime.Format
                         return null;
                 }
 
-                if (fraction.IsZero())
+                if (fraction.IsZero)
                 {
                     switch (printZero)
                     {
@@ -891,7 +888,7 @@ namespace NodaTime.Format
         /// Handles a separator, that splits the fields into multiple parts.
         /// For example, the 'T' in the ISO8601 standard.
         /// </summary>
-        private class Separator : IPeriodPrinter, IPeriodParser
+        internal class Separator : IPeriodPrinter, IPeriodParser
         {
             private readonly string text;
             private readonly string finalText;
@@ -958,11 +955,8 @@ namespace NodaTime.Format
 
             #region IPeriodPrinter Members
 
-            public int CalculatePrintedLength(IPeriod period, IFormatProvider provider)
+            private string GetTextToPrint(IPeriod period, IFormatProvider provider)
             {
-                int sum = beforePrinter.CalculatePrintedLength(period, provider)
-                    + afterPrinter.CalculatePrintedLength(period, provider);
-
                 if (useBefore)
                 {
                     if (beforePrinter.CountFieldsToPrint(period, 1, provider) > 0)
@@ -972,19 +966,31 @@ namespace NodaTime.Format
                             int afterCount = afterPrinter.CountFieldsToPrint(period, 2, provider);
                             if (afterCount > 0)
                             {
-                                sum += ((afterCount > 1) ? text : finalText).Length;
+                                return afterCount > 1 ? text : finalText;
                             }
                         }
                         else
                         {
-                            sum += text.Length;
+                            return text;
                         }
                     }
                 }
                 else if (useAfter && afterPrinter.CountFieldsToPrint(period, 1, provider) > 0)
                 {
-                    sum += text.Length;
+                    return text;
                 }
+
+                return String.Empty;
+
+            }
+
+            public int CalculatePrintedLength(IPeriod period, IFormatProvider provider)
+            {
+                int sum = beforePrinter.CalculatePrintedLength(period, provider)
+                    + afterPrinter.CalculatePrintedLength(period, provider);
+
+                var separatorText = GetTextToPrint(period, provider);
+                sum += separatorText.Length;
 
                 return sum;
             }
@@ -1002,28 +1008,11 @@ namespace NodaTime.Format
             public void PrintTo(TextWriter writer, IPeriod period, IFormatProvider provider)
             {
                 beforePrinter.PrintTo(writer, period, provider);
-                if (useBefore)
-                {
-                    if (beforePrinter.CountFieldsToPrint(period, 1, provider) > 0)
-                    {
-                        if (useAfter)
-                        {
-                            int afterCount = afterPrinter.CountFieldsToPrint(period, 2, provider);
-                            if (afterCount > 0)
-                            {
-                                writer.Write(afterCount > 1 ? text : finalText);
-                            }
-                        }
-                        else
-                        {
-                           writer.Write(text);
-                        }
-                    }
-                }
-                else if (useAfter && afterPrinter.CountFieldsToPrint(period, 1, provider) > 0)
-                {
-                    writer.Write(text);
-                }
+
+                var separatorText = GetTextToPrint(period, provider);
+                if(!String.IsNullOrEmpty(separatorText))
+                    writer.Write(separatorText);
+
                 afterPrinter.PrintTo(writer, period, provider);
             }
 
@@ -1252,38 +1241,40 @@ namespace NodaTime.Format
         /// Appends another formatter.
         /// </summary>
         /// <param name="formatter">Another formatter to append</param>
-        /// <exception cref="ArgumentNullException"> If formatter is null</exception>
         /// <returns>This PeriodFormatterBuilder</returns>
+        /// <exception cref="ArgumentNullException">If formatter is null</exception>
+        /// <exception cref="InvalidOperationException">If this formatter follows a prefix</exception>
         public PeriodFormatterBuilder Append(PeriodFormatter formatter)
         {
             if (formatter == null)
             {
                 throw new ArgumentNullException("formatter");
             }
-
             VerifyPrefix();
+
             return AppendImpl(formatter.Printer, formatter.Parser);
         }
 
         /// <summary>
         /// Appends a printer parser pair.
+        /// </summary>
+        /// <param name="printer">Appends a printer to the builder, null if printing is not supported</param>
+        /// <param name="parser">Appends a parser to the builder, null if parsing is not supported</param>
+        /// <returns>This PeriodFormatterBuilder</returns>
         /// <remarks>
         /// Either the printer or the parser may be null, in which case the builder will
         /// be unable to produce a parser or printer repectively.
         /// </remarks>
-        /// </summary>
         /// <exception cref="ArgumentException">If both the printer and parser are null</exception>
-        /// <param name="printer">Appends a printer to the builder, null if printing is not supported</param>
-        /// <param name="parser">Appends a parser to the builder, null if parsing is not supported</param>
-        /// <returns>This PeriodFormatterBuilder</returns>
+        /// <exception cref="InvalidOperationException">If these printer and parser follow a prefix</exception>
         public PeriodFormatterBuilder Append(IPeriodPrinter printer, IPeriodParser parser)
         {
             if (printer == null && parser == null)
             {
                 throw new ArgumentException("No printer or parser supplied");
             }
-
             VerifyPrefix();
+
             return AppendImpl(printer, parser);
         }
 
@@ -1291,17 +1282,18 @@ namespace NodaTime.Format
         /// Instructs the printer to emit specific text, and the parser to expect it.
         /// The parser is case-insensitive.
         /// </summary>
-        /// <exception cref="ArgumentNullException">If text is null or empty string</exception>
         /// <param name="text">The text of the literal to append</param>
         /// <returns>This PeriodFormatterBuilder</returns>
+        /// <exception cref="ArgumentNullException">If text is null or empty string</exception>
+        /// <exception cref="InvalidOperationException">If this literal follows a prefix</exception>
         public PeriodFormatterBuilder AppendLiteral(string text)
         {
             if (String.IsNullOrEmpty(text))
             {
                 throw new ArgumentNullException("text");
             }
-
             VerifyPrefix();
+
             var newLiteral = new Literal(text);
             return AppendImpl(newLiteral, newLiteral);
         }
