@@ -17,11 +17,57 @@
 
 using NUnit.Framework;
 using NodaTime.Periods;
+using NodaTime.Format;
+using System.IO;
 
 namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterBuilderTest
     {
+
+        private class SeparatorBuilder
+        {
+            private string text;
+            private string finalText;
+            private string[] variants;
+
+            private bool useBefore;
+            private bool useAfter;
+
+            public SeparatorBuilder()
+            {
+                text = "A";
+                finalText = "AA";
+                variants = null;
+                useBefore = true;
+                useAfter = true;
+            }
+            public PeriodFormatterBuilder.Separator Build()
+            {
+                PeriodFormatterBuilder.FieldFormatter[] fieldFormatters = new PeriodFormatterBuilder.FieldFormatter[2];
+                var beforeFormatter = new PeriodFormatterBuilder.FieldFormatter(-1, PeriodFormatterBuilder.PrintZeroSetting.RarelyLast, 10, false, PeriodFormatterBuilder.FormatterDurationFieldType.Years, fieldFormatters, null, null);
+                var afterFormatter = new PeriodFormatterBuilder.FieldFormatter(-1, PeriodFormatterBuilder.PrintZeroSetting.RarelyLast, 10, false, PeriodFormatterBuilder.FormatterDurationFieldType.Months, fieldFormatters, null, null);
+                fieldFormatters[0] = beforeFormatter;
+                fieldFormatters[1] = afterFormatter;
+
+                var separator = new PeriodFormatterBuilder.Separator(text, finalText, variants, beforeFormatter, beforeFormatter, useBefore, useAfter);
+                separator.Finish(afterFormatter, afterFormatter);
+                return separator;
+            }
+
+        }
+
+        [Test]
+        public void Separator_PrintsItself_IfBeforeAndAfterSetAndBothPrintersPrintFieldValues()
+        {
+            var separator = new SeparatorBuilder().Build();
+            var writer = new StringWriter();
+
+            separator.PrintTo(writer, standardPeriodFull, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo("1AA2"));
+        }
+
         [Test]
         public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForStandardPeriod()
         {
