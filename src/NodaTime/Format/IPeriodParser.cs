@@ -27,8 +27,8 @@ namespace NodaTime.Format
     public interface IPeriodParser
     {
         /// <summary>
-        /// Parses a period from the given text, at the given position, passing the
-        /// result into the given IPeriod.
+        /// Parses a period from the given text, at the given position, appending the
+        /// result into the given PeriodBuilder.
         /// </summary>
         /// <remarks>
         /// If the parse succeeds, the return value is the new text position.

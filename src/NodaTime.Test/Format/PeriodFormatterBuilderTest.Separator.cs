@@ -24,24 +24,25 @@ namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterBuilderTest
     {
-
         private class SeparatorBuilder
         {
             private string text;
             private string finalText;
             private string[] variants;
 
-            private bool useBefore;
-            private bool useAfter;
-
             public SeparatorBuilder()
             {
                 text = "A";
                 finalText = "AA";
                 variants = null;
-                useBefore = true;
-                useAfter = true;
+                UseBefore = true;
+                UseAfter = true;
             }
+
+            public bool UseBefore { get; set; }
+
+            public bool UseAfter { get; set; }
+
             public PeriodFormatterBuilder.Separator Build()
             {
                 PeriodFormatterBuilder.FieldFormatter[] fieldFormatters = new PeriodFormatterBuilder.FieldFormatter[2];
@@ -50,230 +51,254 @@ namespace NodaTime.Test.Format
                 fieldFormatters[0] = beforeFormatter;
                 fieldFormatters[1] = afterFormatter;
 
-                var separator = new PeriodFormatterBuilder.Separator(text, finalText, variants, beforeFormatter, beforeFormatter, useBefore, useAfter);
+                var separator = new PeriodFormatterBuilder.Separator(text, finalText, variants, beforeFormatter, beforeFormatter, UseBefore, UseAfter);
                 separator.Finish(afterFormatter, afterFormatter);
                 return separator;
             }
-
         }
 
-        [Test]
-        public void Separator_PrintsItself_IfBeforeAndAfterSetAndBothPrintersPrintFieldValues()
+        object[] SeparatorPrintTestData =
         {
-            var separator = new SeparatorBuilder().Build();
+            new TestCaseData(true, true, new Period(1, 2, 0, 0, 0, 0, 0, 0), "1AA2").SetName("before:true; after:true; bothFieldsArePrinted"),
+            new TestCaseData(true, true, new Period(0, 0, 0, 3, 0, 0, 0, 0, PeriodType.Days), "").SetName("before:true; after:true; bothFieldAreNotPrinted"),
+            new TestCaseData(true, true, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "4").SetName("before:true; after:true; afterFieldIsOnlyPrinted"),
+            new TestCaseData(true, true, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5").SetName("before:true; after:true; beforeFieldIsOnlyPrinted"),
+
+            new TestCaseData(true, false, new Period(1, 2, 0, 0, 0, 0, 0, 0), "1A2").SetName("before:true; after:false; bothFieldsArePrinted"),
+            new TestCaseData(true, false, new Period(0, 0, 0, 3, 0, 0, 0, 0, PeriodType.Days), "").SetName("before:true; after:false; bothFieldAreNotPrinted"),
+            new TestCaseData(true, false, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "4").SetName("before:true; after:false; afterFieldIsOnlyPrinted"),
+            new TestCaseData(true, false, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5A").SetName("before:true; after:false; beforeFieldIsOnlyPrinted"),
+
+            new TestCaseData(false, true, new Period(1, 2, 0, 0, 0, 0, 0, 0), "1AA2").SetName("before:false; after:true; bothFieldsArePrinted"),
+            new TestCaseData(false, true, new Period(0, 0, 0, 3, 0, 0, 0, 0, PeriodType.Days), "").SetName("before:false; after:true; bothFieldAreNotPrinted"),
+            new TestCaseData(false, true, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "AA4").SetName("before:false; after:true; afterFieldIsOnlyPrinted"),
+            new TestCaseData(false, true, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5").SetName("before:false; after:true; beforeFieldIsOnlyPrinted"),
+
+            new TestCaseData(false, false, new Period(1, 2, 0, 0, 0, 0, 0, 0), "12").SetName("before:false; after:false; bothFieldsArePrinted"),
+            new TestCaseData(false, false, new Period(0, 0, 0, 3, 0, 0, 0, 0, PeriodType.Days), "").SetName("before:false; after:false; bothFieldAreNotPrinted"),
+            new TestCaseData(false, false, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "4").SetName("before:false; after:false; afterFieldIsOnlyPrinted"),
+            new TestCaseData(false, false, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5").SetName("before:false; after:false; beforeFieldIsOnlyPrinted"),
+
+        };
+
+        [Test]
+        [TestCaseSource("SeparatorPrintTestData")]        
+        public void Separator_Prints(bool useBefore, bool useAfter, IPeriod period, string periodText)
+        {
+            var separator = new SeparatorBuilder() { UseBefore = useBefore, UseAfter = useAfter }.Build();
             var writer = new StringWriter();
 
-            separator.PrintTo(writer, standardPeriodFull, null);
+            separator.PrintTo(writer, period, null);
 
-            Assert.That(writer.ToString(), Is.EqualTo("1AA2"));
+            Assert.That(writer.ToString(), Is.EqualTo(periodText));
         }
 
-        [Test]
-        public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForStandardPeriod()
-        {
-            var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
+        //[Test]
+        //public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForStandardPeriod()
+        //{
+        //    var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(standardPeriodFull);
 
-            Assert.AreEqual("1T5", printedValue);
-            Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(2, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("1T5", printedValue);
+        //    Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodFull, null));
+        //    Assert.AreEqual(2, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
+        //}
 
-        [Test]
-        public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForTimePeriod()
-        {
-            var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
+        //[Test]
+        //public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForTimePeriod()
+        //{
+        //    var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(timePeriod);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(timePeriod);
 
-            Assert.AreEqual("5", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(timePeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("5", printedValue);
+        //    Assert.AreEqual(1, printer.CalculatePrintedLength(timePeriod, null));
+        //    Assert.AreEqual(1, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
+        //}
 
-        [Test]
-        public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForDatePeriod()
-        {
-            var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
+        //[Test]
+        //public void AppendSeparatorBetweenYearsAndHours_BuildsCorrectPrinter_ForDatePeriod()
+        //{
+        //    var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(datePeriod);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(datePeriod);
 
-            Assert.AreEqual("1", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("1", printedValue);
+        //    Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
+        //    Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
+        //}
 
-        [Test]
-        public void AppendSeparatorBetweenYearsAndHours_ParsesTo1yesr5MonthsStandardPeriod_FromFieldsWithSeparator()
-        {
-            var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
+        //[Test]
+        //public void AppendSeparatorBetweenYearsAndHours_ParsesTo1yesr5MonthsStandardPeriod_FromFieldsWithSeparator()
+        //{
+        //    var formatter = builder.AppendYears().AppendSeparator("T").AppendHours().ToFormatter();
 
-            var period = formatter.Parse("1T5");
+        //    var period = formatter.Parse("1T5");
 
-            Assert.AreEqual(Period.FromYears(1).WithHours(5), period);
-        }
+        //    Assert.AreEqual(Period.FromYears(1).WithHours(5), period);
+        //}
 
-        #region FinalText
+        //#region FinalText
 
-        [Test]
-        public void AppendSeparatorFinalText_BuildsCorrectPrinter_ForStandardPeriod()
-        {
-            var formatter = builder
-                .AppendYears().AppendSeparator(", ", " and ")
-                .AppendHours().AppendSeparator(", ", " and ")
-                .AppendMinutes().AppendSeparator(", ", " and ")
-                .ToFormatter();
+        //[Test]
+        //public void AppendSeparatorFinalText_BuildsCorrectPrinter_ForStandardPeriod()
+        //{
+        //    var formatter = builder
+        //        .AppendYears().AppendSeparator(", ", " and ")
+        //        .AppendHours().AppendSeparator(", ", " and ")
+        //        .AppendMinutes().AppendSeparator(", ", " and ")
+        //        .ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(standardPeriodFull);
 
-            Assert.AreEqual("1, 5 and 6", printedValue);
-            Assert.AreEqual(10, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(3, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("1, 5 and 6", printedValue);
+        //    Assert.AreEqual(10, printer.CalculatePrintedLength(standardPeriodFull, null));
+        //    Assert.AreEqual(3, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
+        //}
 
-        [Test]
-        public void AppendSeparatorFinalText_BuildsCorrectPrinter_ForTimePeriod()
-        {
-            var formatter = builder
-                .AppendYears().AppendSeparator(", ", " and ")
-                .AppendHours().AppendSeparator(", ", " and ")
-                .AppendMinutes().AppendSeparator(", ", " and ")
-                .ToFormatter();
+        //[Test]
+        //public void AppendSeparatorFinalText_BuildsCorrectPrinter_ForTimePeriod()
+        //{
+        //    var formatter = builder
+        //        .AppendYears().AppendSeparator(", ", " and ")
+        //        .AppendHours().AppendSeparator(", ", " and ")
+        //        .AppendMinutes().AppendSeparator(", ", " and ")
+        //        .ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(timePeriod);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(timePeriod);
 
-            Assert.AreEqual("5 and 6", printedValue);
-            Assert.AreEqual(7, printer.CalculatePrintedLength(timePeriod, null));
-            Assert.AreEqual(2, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("5 and 6", printedValue);
+        //    Assert.AreEqual(7, printer.CalculatePrintedLength(timePeriod, null));
+        //    Assert.AreEqual(2, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
+        //}
 
-        [Test]
-        public void AppendSeparatorFinalText_BuildsCorrectPrinter_ForDatePeriod()
-        {
-            var formatter = builder
-                .AppendYears().AppendSeparator(", ", " and ")
-                .AppendHours().AppendSeparator(", ", " and ")
-                .AppendMinutes().AppendSeparator(", ", " and ")
-                .ToFormatter();
+        //[Test]
+        //public void AppendSeparatorFinalText_BuildsCorrectPrinter_ForDatePeriod()
+        //{
+        //    var formatter = builder
+        //        .AppendYears().AppendSeparator(", ", " and ")
+        //        .AppendHours().AppendSeparator(", ", " and ")
+        //        .AppendMinutes().AppendSeparator(", ", " and ")
+        //        .ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(datePeriod);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(datePeriod);
 
-            Assert.AreEqual("1", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("1", printedValue);
+        //    Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
+        //    Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
+        //}
 
-        #endregion
+        //#endregion
 
-        #region FieldsAfter
+        //#region FieldsAfter
 
-        [Test]
-        public void AppendSeparatorIfFieldsAfter_BuildsCorrectPrinter_ForStandardPeriod()
-        {
-            var formatter = builder
-                .AppendYears().AppendSeparatorIfFieldsAfter("T")
-                .AppendHours()
-                .ToFormatter();
+        //[Test]
+        //public void AppendSeparatorIfFieldsAfter_BuildsCorrectPrinter_ForStandardPeriod()
+        //{
+        //    var formatter = builder
+        //        .AppendYears().AppendSeparatorIfFieldsAfter("T")
+        //        .AppendHours()
+        //        .ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(standardPeriodFull);
 
-            Assert.AreEqual("1T5", printedValue);
-            Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(2, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("1T5", printedValue);
+        //    Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodFull, null));
+        //    Assert.AreEqual(2, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
+        //}
 
-        [Test]
-        public void AppendSeparatorIfFieldsAfter_BuildsCorrectPrinter_ForTimePeriod()
-        {
-            var formatter = builder
-                .AppendYears().AppendSeparatorIfFieldsAfter("T")
-                .AppendHours()
-                .ToFormatter();
+        //[Test]
+        //public void AppendSeparatorIfFieldsAfter_BuildsCorrectPrinter_ForTimePeriod()
+        //{
+        //    var formatter = builder
+        //        .AppendYears().AppendSeparatorIfFieldsAfter("T")
+        //        .AppendHours()
+        //        .ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(timePeriod);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(timePeriod);
 
-            Assert.AreEqual("T5", printedValue);
-            Assert.AreEqual(2, printer.CalculatePrintedLength(timePeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("T5", printedValue);
+        //    Assert.AreEqual(2, printer.CalculatePrintedLength(timePeriod, null));
+        //    Assert.AreEqual(1, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
+        //}
 
-        [Test]
-        public void AppendSeparatorIfFieldsAfter_BuildsCorrectPrinter_ForDatePeriod()
-        {
-            var formatter = builder
-                .AppendYears().AppendSeparatorIfFieldsAfter("T")
-                .AppendHours()
-                .ToFormatter();
+        //[Test]
+        //public void AppendSeparatorIfFieldsAfter_BuildsCorrectPrinter_ForDatePeriod()
+        //{
+        //    var formatter = builder
+        //        .AppendYears().AppendSeparatorIfFieldsAfter("T")
+        //        .AppendHours()
+        //        .ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(datePeriod);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(datePeriod);
 
-            Assert.AreEqual("1", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("1", printedValue);
+        //    Assert.AreEqual(1, printer.CalculatePrintedLength(datePeriod, null));
+        //    Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
+        //}
 
-        #endregion
+        //#endregion
 
-        #region FieldsBefore
+        //#region FieldsBefore
 
-        [Test]
-        public void AppendSeparatorIfFieldsBefore_BuildsCorrectPrinter_ForStandardPeriod()
-        {
-            var formatter = builder
-                .AppendYears().AppendSeparatorIfFieldsBefore("T")
-                .AppendHours()
-                .ToFormatter();
+        //[Test]
+        //public void AppendSeparatorIfFieldsBefore_BuildsCorrectPrinter_ForStandardPeriod()
+        //{
+        //    var formatter = builder
+        //        .AppendYears().AppendSeparatorIfFieldsBefore("T")
+        //        .AppendHours()
+        //        .ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(standardPeriodFull);
 
-            Assert.AreEqual("1T5", printedValue);
-            Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(2, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("1T5", printedValue);
+        //    Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodFull, null));
+        //    Assert.AreEqual(2, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
+        //}
 
-        [Test]
-        public void AppendSeparatorIfFieldsBefore_BuildsCorrectPrinter_ForTimePeriod()
-        {
-            var formatter = builder
-                .AppendYears().AppendSeparatorIfFieldsBefore("T")
-                .AppendHours()
-                .ToFormatter();
+        //[Test]
+        //public void AppendSeparatorIfFieldsBefore_BuildsCorrectPrinter_ForTimePeriod()
+        //{
+        //    var formatter = builder
+        //        .AppendYears().AppendSeparatorIfFieldsBefore("T")
+        //        .AppendHours()
+        //        .ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(timePeriod);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(timePeriod);
 
-            Assert.AreEqual("5", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(timePeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("5", printedValue);
+        //    Assert.AreEqual(1, printer.CalculatePrintedLength(timePeriod, null));
+        //    Assert.AreEqual(1, printer.CountFieldsToPrint(timePeriod, int.MaxValue, null));
+        //}
 
-        [Test]
-        public void AppendSeparatorIfFieldsBefore_BuildsCorrectPrinter_ForDatePeriod()
-        {
-            var formatter = builder
-                .AppendYears().AppendSeparatorIfFieldsBefore("T")
-                .AppendHours()
-                .ToFormatter();
+        //[Test]
+        //public void AppendSeparatorIfFieldsBefore_BuildsCorrectPrinter_ForDatePeriod()
+        //{
+        //    var formatter = builder
+        //        .AppendYears().AppendSeparatorIfFieldsBefore("T")
+        //        .AppendHours()
+        //        .ToFormatter();
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(datePeriod);
+        //    var printer = formatter.Printer;
+        //    var printedValue = formatter.Print(datePeriod);
 
-            Assert.AreEqual("1T", printedValue);
-            Assert.AreEqual(2, printer.CalculatePrintedLength(datePeriod, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
-        }
+        //    Assert.AreEqual("1T", printedValue);
+        //    Assert.AreEqual(2, printer.CalculatePrintedLength(datePeriod, null));
+        //    Assert.AreEqual(1, printer.CountFieldsToPrint(datePeriod, int.MaxValue, null));
+        //}
 
-        #endregion
+        //#endregion
     }
 }
