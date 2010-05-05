@@ -204,7 +204,7 @@ namespace NodaTime.Format
         /// </remarks>
         /// <param name="writer">Receives integer converted to a string</param>
         /// <param name="value">Value to convert to a string</param>
-        /// <param name="size">Minumum amount of digits to append</param>
+        /// <param name="size">Minumum amount of significant digits to append(negative sign is not counted)</param>
         internal static void WritePaddedInteger(TextWriter writer, int value, int size)
         {
             if (size <= 1)
@@ -268,11 +268,11 @@ namespace NodaTime.Format
             }
         }
 
-        internal static int CalculateDigitCount(long value)
+        internal static int CalculateDigitsCount(int value)
         {
             if (value < 0)
             {
-                return value == long.MinValue ? 20 : CalculateDigitCount(-value) + 1;
+                return value == int.MinValue ? 10 : CalculateDigitsCount(-value);
             }
 
             return
@@ -371,7 +371,7 @@ namespace NodaTime.Format
                 return startAt;
             }
 
-            if (startAt + textToFind.Length > targetString.Length)
+            if (targetString.Length < textToFind.Length + startAt)
             {
                 return ~startAt;
             }
@@ -381,6 +381,23 @@ namespace NodaTime.Format
             return targetSubString.Equals(textToFind, StringComparison.OrdinalIgnoreCase) 
                 ? startAt + textToFind.Length
                 : ~startAt;
+        }
+
+        internal static int MatchChar(string targetString, int position, char value)
+        {
+            if (position >= targetString.Length)
+            {
+                return ~position;
+            }
+
+            char a = targetString[position];
+            char b = value;
+            if (a == b || Char.ToUpperInvariant(a) == Char.ToUpperInvariant(b))
+            {
+                return position + 1;
+            }
+
+            return ~position;
         }
 
         internal static void WriteUnknownString(TextWriter writer)

@@ -29,11 +29,9 @@ namespace NodaTime.Format
     /// </summary>
     public class DateTimeFormatterBuilder
     {
-        private const char UnicodeReplacementCharacter = '\ufffd';
-
         #region Private classes
 
-        private class CharacterLiteral : IDateTimePrinter, IDateTimeParser
+        internal class CharacterLiteral : IDateTimePrinter, IDateTimeParser
         {
             private readonly char value;
 
@@ -58,23 +56,11 @@ namespace NodaTime.Format
 
             public int ParseInto(DateTimeParserBucket bucket, string text, int position)
             {
-                if (position >= text.Length)
-                {
-                    return ~position;
-                }
-
-                char a = text[position];
-                char b = value;
-                if (a == b || Char.ToUpperInvariant(a) == Char.ToUpperInvariant(b))
-                {
-                    return position + 1;
-                }
-
-                return ~position;
+                return FormatUtils.MatchChar(text, position, value);
             }
         }
 
-        private class StringLiteral : IDateTimePrinter, IDateTimeParser
+        internal class StringLiteral : IDateTimePrinter, IDateTimeParser
         {
             private readonly string value;
 
@@ -1676,16 +1662,17 @@ namespace NodaTime.Format
         }
 
         /// <summary>
-        /// Instructs the printer to emit specific text, and the parser to expect
-        /// it. The parser is case-insensitive.
+        /// Instructs the printer to emit specific text, and the parser to expect it. 
+        /// The parser is case-insensitive.
         /// </summary>
-        /// <param name="text">The text to emit/expect</param>
+        /// <param name="text">The text of the literal to append</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
+        /// <exception cref="ArgumentNullException">If text argument is null or empty string</exception>
         public DateTimeFormatterBuilder AppendLiteral(string text)
         {
             if (String.IsNullOrEmpty(text))
             {
-                return this;
+                throw new ArgumentNullException("text");
             }
 
             return text.Length == 1 ? AppendObject(new CharacterLiteral(text[0]))

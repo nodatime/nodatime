@@ -16,170 +16,200 @@
 #endregion
 
 using System;
-
-using NodaTime.TimeZones;
+using System.IO;
+using NodaTime.Format;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {
     public partial class DateTimeFormatterBuilderTest
     {
-        #region AppendLiteralChar
+        #region CharacterLiteral
 
         [Test]
-        public void AppendLiteralChar_PrinterEstimateLengthAs1Always()
+        public void CharacterLiteral_EstimatesPrintedLengthAs1Always()
         {
-            var printer = builder
-                .AppendLiteral('q')
-                .ToPrinter();
+            const char value = 'a';
+            var literal = new DateTimeFormatterBuilder.CharacterLiteral(value);
 
-            Assert.That(printer.EstimatedPrintedLength, Is.EqualTo(1));
+            var actualLength = literal.EstimatedPrintedLength;
+
+            Assert.That(actualLength, Is.EqualTo(1));
         }
 
         [Test]
-        public void AppendLiteralChar_PrintsChar()
+        public void CharacterLiteral_PrintsCharacter_ForAnyLocalInstant()
         {
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc);
-            var formatter = builder
-                .AppendLiteral('q')
-                .ToFormatter();
+            const char value = 'c';
+            var literal = new DateTimeFormatterBuilder.CharacterLiteral(value);
+            var writer = new StringWriter();
 
-            var printedValue = formatter.Print(dt);
+            literal.PrintTo(writer, LocalInstant.Now, null, Offset.Zero, null, null);
 
-            Assert.That(printedValue, Is.EqualTo("q"));
+            Assert.That(writer.ToString(), Is.EqualTo(value.ToString()));
         }
 
         [Test]
-        public void AppendLiteralChar_ParserEstimateLengthAs1Always()
+        public void CharacterLiteral_PrintsCharacter_ForAnyPartial()
         {
-            var parser = builder
-                .AppendLiteral('z')
-                .ToParser();
+            const char value = 'z';
+            var literal = new DateTimeFormatterBuilder.CharacterLiteral(value);
+            var writer = new StringWriter();
 
-            Assert.That(parser.EstimatedParsedLength, Is.EqualTo(1));
+            literal.PrintTo(writer, null, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(value.ToString()));
         }
 
         [Test]
-        public void AppendLiteralChar_ParsesChar()
+        public void CharacterLiteral_EstimatesParsedLengthAs1Always()
         {
-            var formatter = builder
-                .AppendLiteral('z')
-                .ToFormatter();
+            const char value = 'x';
+            var literal = new DateTimeFormatterBuilder.CharacterLiteral(value);
 
-            formatter.Parse("z");
+            var actualLength = literal.EstimatedParsedLength;
+
+            Assert.That(actualLength, Is.EqualTo(1));
         }
 
-        [Test]
-        public void AppendLiteralChar_ParsesChar_CaseInsensitive()
+        object[] CharacterLiteralParseGoodTestData =
         {
-            var formatter = builder
-                .AppendLiteral('z')
-                .ToFormatter();
+            new TestCaseData("a", 0, 'a').SetName("a -> a : commom"),
+            new TestCaseData("B", 0, 'b').SetName("B -> b : case insensitive"),
+            new TestCaseData("c", 0, 'C').SetName("c -> C : case insensitive"),
+            new TestCaseData("bar", 0, 'b').SetName("bar -> b: zero position in large string"),
+            new TestCaseData("hello", 2, 'l').SetName("hello[2] -> l: non-zero average position"),
+            new TestCaseData("foo", 2, 'o').SetName("foo[2] -> o: non-zero last position"),
+        };
+        [Test]
+        [TestCaseSource("CharacterLiteralParseGoodTestData")]
+        public void CharacterLiteral_ParsesCharacter(string text, int position, char value)
+        {
+            var literal = new DateTimeFormatterBuilder.CharacterLiteral(value);
 
-            formatter.Parse("Z");
+            var newPosition = literal.ParseInto(null, text, position);
+
+            Assert.That(newPosition, Is.EqualTo(position + 1));
         }
 
-        [Test]
-        public void AppendLiteralChar_Throws_DifferentChar()
+        object[] CharacterLiteralParseBadTestData =
         {
-            var formatter = builder
-                .AppendLiteral('z')
-                .ToFormatter();
-
-            Assert.Throws<ArgumentException>(() => formatter.Parse("s"));
-        }
-
-        #endregion
-
-        #region AppendLiteralString
-
+            new TestCaseData("a", 0, 'b').SetName("a -> b : non equal characters"),
+            new TestCaseData("oops", 4, 's').SetName("oops[4] -> s : position outside of length"),
+        };
         [Test]
-        public void AppendLiteralString_ReturnsThis_ForEmptyString()
+        [TestCaseSource("CharacterLiteralParseBadTestData")]
+        public void CharacterLiteral_Fails_ForWrongArguments(string text, int position, char value)
         {
-            var newBuilder = builder.AppendLiteral("hi");
+            var literal = new DateTimeFormatterBuilder.CharacterLiteral(value);
 
-            Assert.That(newBuilder, Is.SameAs(builder));
-        }
+            var newPosition = literal.ParseInto(null, text, position);
 
-        [Test]
-        public void AppendLiteralString_PrinterEstimateLengthAsStringLength()
-        {
-            var literal = "hi";
-            var printer = builder
-                .AppendLiteral(literal)
-                .ToPrinter();
-
-            Assert.That(printer.EstimatedPrintedLength, Is.EqualTo(literal.Length));
-        }
-
-        [Test]
-        public void AppendLiteralString_PrintsString()
-        {
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc);
-            var literal = "hi";
-            var formatter = builder
-                .AppendLiteral(literal)
-                .ToFormatter();
-
-            var printedValue = formatter.Print(dt);
-
-            Assert.That(printedValue, Is.EqualTo(literal));
-        }
-
-        [Test]
-        public void AppendLiteralString_ParserEstimateLengthAsStringLength()
-        {
-            var literal = "hi";
-            var parser = builder
-                .AppendLiteral(literal)
-                .ToParser();
-
-            Assert.That(parser.EstimatedParsedLength, Is.EqualTo(literal.Length));
-        }
-
-        [Test]
-        public void AppendLiteralString_ParsesString()
-        {
-            var literal = "hi";
-            var formatter = builder
-                .AppendLiteral(literal)
-                .ToFormatter();
-
-            formatter.Parse(literal);
-        }
-
-        [Test]
-        public void AppendLiteralString_ParsesString_IgnoreCase()
-        {
-            var formatter = builder
-                .AppendLiteral("hi")
-                .ToFormatter();
-
-            formatter.Parse("Hi");
-        }
-
-        [Test]
-        public void AppendLiteralString_ParsesString_Partially()
-        {
-            var formatter = builder
-                .AppendLiteral("hi")
-                .AppendLiteral(", people!")
-                .ToFormatter();
-
-            formatter.Parse("Hi, people!");
-        }
-
-        [Test]
-        public void AppendLiteralString_Trows_DifferentString()
-        {
-            var formatter = builder
-                .AppendLiteral("hi")
-                .ToFormatter();
-
-            Assert.Throws<ArgumentException>(() => formatter.Parse("by"));
+            Assert.That(newPosition, Is.EqualTo(~position));
         }
 
         #endregion
 
+        #region StringLiteral
+
+        [Test]
+        public void StringLiteral_EstimatesPrintedLengthAsStringLength()
+        {
+            const string value = "hi";
+            var literal = new DateTimeFormatterBuilder.StringLiteral(value);
+
+            var actualLength = literal.EstimatedPrintedLength;
+
+            Assert.That(actualLength, Is.EqualTo(value.Length));
+        }
+
+        [Test]
+        public void StringLiteral_PrintsString_ForAnyLocalInstant()
+        {
+            const string value = "hi";
+            var literal = new DateTimeFormatterBuilder.StringLiteral(value);
+            var writer = new StringWriter();
+
+            literal.PrintTo(writer, LocalInstant.Now, null, Offset.Zero, null, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(value));
+        }
+
+        [Test]
+        public void StringLiteral_PrintsString_ForAnyPartial()
+        {
+            const string value = "hi";
+            var literal = new DateTimeFormatterBuilder.StringLiteral(value);
+            var writer = new StringWriter();
+
+            literal.PrintTo(writer, null, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(value));
+        }
+
+        [Test]
+        public void StringLiteral_EstimatesParsedLengthAsStringLength()
+        {
+            const string value = "hi";
+            var literal = new DateTimeFormatterBuilder.StringLiteral(value);
+
+            var actualLength = literal.EstimatedParsedLength;
+
+            Assert.That(actualLength, Is.EqualTo(value.Length));
+        }
+
+
+        object[] StringLiteralParseGoodTestData =
+        {
+            new TestCaseData("abc", 0, "abc").SetName("abc -> abc : commom"),
+            new TestCaseData("aBc", 0, "abc").SetName("aBc -> abc : case insensitive"),
+            new TestCaseData("abc", 0, "ABC").SetName("abc -> ABC : case insensitive"),
+            new TestCaseData("bar", 0, "ba").SetName("bar -> ba: zero position in large string"),
+            new TestCaseData("hello", 2, "ll").SetName("hello[2] -> ll: non-zero average position"),
+            new TestCaseData("foo", 1, "oo").SetName("foo[2] -> oo: non-zero last position"),
+        };
+        [Test]
+        [TestCaseSource("StringLiteralParseGoodTestData")]
+        public void StringLiteral_ParsesString(string text, int position, string value)
+        {
+            var literal = new DateTimeFormatterBuilder.StringLiteral(value);
+
+            var newPosition = literal.ParseInto(null, text, position);
+
+            Assert.That(newPosition, Is.EqualTo(position + value.Length));
+        }
+
+        object[] StringLiteralParseBadTestData =
+        {
+            new TestCaseData("abc", 0, "def").SetName("abc -> def : non equal string"),
+            new TestCaseData("abc", 0, "abd").SetName("abc -> abd : non equal string"),
+            new TestCaseData("abc", 0, "zbc").SetName("abc -> zbc : non equal string"),
+            new TestCaseData("oops", 4, "s").SetName("oops[4] -> s : position outside of length"),
+        };
+        [Test]
+        [TestCaseSource("StringLiteralParseBadTestData")]
+        public void StringLiteral_Fails_ForWrongArguments(string text, int position, string value)
+        {
+            var literal = new DateTimeFormatterBuilder.StringLiteral(value);
+
+            var newPosition = literal.ParseInto(null, text, position);
+
+            Assert.That(newPosition, Is.EqualTo(~position));
+        }
+
+
+        #endregion
+
+        [Test]
+        public void AppendLiteral_ThrowsArgumentNull_ForNullTextArg()
+        {
+            Assert.That(() => (new DateTimeFormatterBuilder().AppendLiteral(null)), Throws.InstanceOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void AppendLiteral_ThrowsArgumentNull_ForEmptyTextArg()
+        {
+            Assert.That(() => (new DateTimeFormatterBuilder().AppendLiteral(String.Empty)), Throws.InstanceOf<ArgumentNullException>());
+        }
     }
 }

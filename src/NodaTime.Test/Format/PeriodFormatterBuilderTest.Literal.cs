@@ -25,7 +25,7 @@ namespace NodaTime.Test.Format
     public partial class PeriodFormatterBuilderTest
     {
         [Test]
-        public void Literal_CalculatesLength()
+        public void Literal_CalculatesLengthAsLiteralLength()
         {
             const string literalText = "Hi";
             var literal = new PeriodFormatterBuilder.Literal(literalText);
@@ -36,12 +36,13 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
-        public void Literal_ReturnsFieldsCountAlwaysZero()
+        public void Literal_CountsFieldsToPrintAsZeroAlways()
         {
             const string literalText = "Hi";
             var literal = new PeriodFormatterBuilder.Literal(literalText);
 
             var actualFieldsCount = literal.CountFieldsToPrint(null, 0, null);
+
             Assert.That(actualFieldsCount, Is.EqualTo(0));
         }
 
@@ -57,85 +58,54 @@ namespace NodaTime.Test.Format
             Assert.That(writer.ToString(), Is.EqualTo(literalText));
         }
 
-        [Test]
-        public void Literal_ParseMovePostision_GivenZeroPosition()
+        object[] LiteralParseGoodTestData =
         {
-            const string literalText = "abc";
-            var literal = new PeriodFormatterBuilder.Literal(literalText);
-            var writer = new StringWriter();
+            new TestCaseData("abc", 0, "abc").SetName("abc -> abc : commom"),
+            new TestCaseData("aBc", 0, "abc").SetName("aBc -> abc : case insensitive"),
+            new TestCaseData("abc", 0, "ABC").SetName("abc -> ABC : case insensitive"),
+            new TestCaseData("bar", 0, "ba").SetName("bar -> ba: zero position in large string"),
+            new TestCaseData("hello", 2, "ll").SetName("hello[2] -> ll: non-zero average position"),
+            new TestCaseData("foo", 1, "oo").SetName("foo[2] -> oo: non-zero last position"),
+        };
+        [Test]
+        [TestCaseSource("LiteralParseGoodTestData")]
+        public void Literal_ParsesString(string text, int position, string value)
+        {
+            var literal = new PeriodFormatterBuilder.Literal(value);
 
-            var position = literal.Parse(literalText, 0, null, null);
+            var newPosition = literal.Parse(text, position, null, null);
 
-            Assert.That(position, Is.EqualTo(literalText.Length));
+            Assert.That(newPosition, Is.EqualTo(position + value.Length));
         }
 
-        [Test]
-        public void Literal_ParseMovePostision_GivenLargeText()
+        object[] LiteralParseBadTestData =
         {
-            const string literalText = "abc";
-            const string periodString = "abcdefg";
-
-            var literal = new PeriodFormatterBuilder.Literal(literalText);
-            var writer = new StringWriter();
-
-            var position = literal.Parse(periodString, 0, null, null);
-
-            Assert.That(position, Is.EqualTo(literalText.Length));
-        }
-
+            new TestCaseData("abc", 0, "def").SetName("abc -> def : non equal string"),
+            new TestCaseData("abc", 0, "abd").SetName("abc -> abd : non equal string"),
+            new TestCaseData("abc", 0, "zbc").SetName("abc -> zbc : non equal string"),
+            new TestCaseData("oops", 4, "s").SetName("oops[4] -> s : position outside of length"),
+        };
         [Test]
-        public void Literal_ParseMovePostision_IgnoreCase()
+        [TestCaseSource("LiteralParseBadTestData")]
+        public void Literal_Fails_ForWrongArguments(string text, int position, string value)
         {
-            const string literalText = "abc";
-            const string periodString = "aBc";
+            var literal = new PeriodFormatterBuilder.Literal(value);
 
-            var literal = new PeriodFormatterBuilder.Literal(literalText);
-            var writer = new StringWriter();
+            var newPosition = literal.Parse(text, position, null, null);
 
-            var position = literal.Parse(periodString, 0, null, null);
-
-            Assert.That(position, Is.EqualTo(literalText.Length));
+            Assert.That(newPosition, Is.EqualTo(~position));
         }
-
-        [Test]
-        public void Literal_ParseMovePostision_GivenNonZeroPosition()
-        {
-            const string literalText = "abc";
-            const string periodString = "OOabc";
-
-            var literal = new PeriodFormatterBuilder.Literal(literalText);
-            var writer = new StringWriter();
-
-            var position = literal.Parse(periodString, 2, null, null);
-
-            Assert.That(position, Is.EqualTo(periodString.Length));
-        }
-
-        [Test]
-        public void Literal_ParseReturnsFailurePositionComplement_GivenNotMatchedString()
-        {
-            const string literalText = "abc";
-            const string periodString = "OOOZ";
-
-            var literal = new PeriodFormatterBuilder.Literal(literalText);
-            var writer = new StringWriter();
-
-            var position = literal.Parse(periodString, 3, null, null);
-
-            Assert.That(position, Is.EqualTo(~3));
-        }
-
 
         [Test]
         public void AppendLiteral_ThrowsArgumentNull_ForNullTextArg()
         {
-            Assert.Throws<ArgumentNullException>(() => builder.AppendLiteral(null));
+            Assert.That(() => (new PeriodFormatterBuilder().AppendLiteral(null)), Throws.InstanceOf<ArgumentNullException>());
         }
 
         [Test]
         public void AppendLiteral_ThrowsArgumentNull_ForEmptyTextArg()
         {
-            Assert.Throws<ArgumentNullException>(() => builder.AppendLiteral(String.Empty));
+            Assert.That(() => (new PeriodFormatterBuilder().AppendLiteral(String.Empty)), Throws.InstanceOf<ArgumentNullException>());
         }
 
         [Test]
@@ -143,20 +113,5 @@ namespace NodaTime.Test.Format
         {
             Assert.Throws<InvalidOperationException>(() => builder.AppendPrefix("prefix").AppendLiteral("literal"));
         }
-
-        [Test]
-        public void AppendLiteral_BuildsCorrectPrinter_ForStandardPeriod()
-        {
-            const string literalText = "HELLO";
-
-            var formatter = builder
-                .AppendLiteral(literalText)
-                .ToFormatter();
-
-            var printedValue = formatter.Print(standardPeriodFull);
-
-            Assert.That(printedValue, Is.EqualTo(literalText));
-        }
-
     }
 }

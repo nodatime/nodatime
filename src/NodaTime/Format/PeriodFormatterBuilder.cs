@@ -93,12 +93,14 @@ namespace NodaTime.Format
             private readonly int high;
             private readonly int low;
             private readonly long norm;
+            private readonly bool lowRequired;
 
-            public Fraction(int high, int low, long scale)
+            public Fraction(int high, int low, int scale, bool lowRequired)
             {
-                norm = (high * scale) + low;
+                norm = (high * (long)scale) + low;
                 this.high = (int)(norm / scale);
                 this.low = (int)(Math.Abs(norm) % scale);
+                this.lowRequired = lowRequired;
             }
 
             public Fraction(int value)
@@ -106,6 +108,7 @@ namespace NodaTime.Format
                 this.norm = value;
                 this.high = value;
                 this.low = 0;
+                this.lowRequired = false;
             }
 
             public long Norm { get { return norm; } }
@@ -114,9 +117,13 @@ namespace NodaTime.Format
 
             public int Low { get { return low; } }
 
+            public bool LowExists { get { return lowRequired || low != 0; } }
+
             public bool IsZero { get { return high == 0 && low == 0; } }
 
             public bool NeedNegate { get { return norm < 0 && high == 0; } }
+
+
         }
 
         /// <summary>
@@ -339,6 +346,11 @@ namespace NodaTime.Format
         /// </summary>
         internal class FieldFormatter : IPeriodPrinter, IPeriodParser
         {
+            private const char fractionSeparator = '.';
+            private const int fractionSeparatorLength = 1;
+            private const char negativeSign = '-';
+            private const int negativeSignLength = 1;
+
             private readonly int minPrintedDigits;
             private readonly PrintZeroSetting printZero;
             private readonly int maxParsedDigits;
@@ -386,33 +398,35 @@ namespace NodaTime.Format
                 if (fieldValue == null)
                     return 0;
 
-                int digitCount = Math.Max(minPrintedDigits, FormatUtils.CalculateDigitCount(fieldValue.Value.Norm));
-                if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
+                Fraction value = fieldValue.Value;
+
+                int digitCount = FormatUtils.CalculateDigitsCount(value.High);
+                int length = Math.Max(minPrintedDigits, digitCount);
+
+                if (value.High < 0 || value.NeedNegate)
                 {
-                    // fieldValue contains the seconds and millis fields
-                    // the minimum output is 0.000, which is 4 digits
-                    digitCount = Math.Max(digitCount, 4);
-                    // plus one for the decimal point
-                    digitCount++;
-                    if (fieldType == FormatterDurationFieldType.SecondsMillisecondsOptional 
-                        && fieldValue.Value.Low == 0)
-                    {
-                        digitCount -= 4; // remove three digits and decimal point
-                    }
+                    length = length + negativeSignLength;
+                }
+                if (value.LowExists)
+                {
+                    length = length + fractionSeparatorLength;   
                 }
 
-                var intVlaue = fieldValue.Value.High;
                 if (prefix != null)
-                    digitCount += prefix.CalculatePrintedLength(intVlaue);
-                if (suffix != null)
-                    digitCount += suffix.CalculatePrintedLength(intVlaue);
+                {
+                    length += prefix.CalculatePrintedLength(value.High);
+                }
 
-                return digitCount;
+                if (suffix != null)
+                {
+                    length += suffix.CalculatePrintedLength(value.High);
+                }
+                return length;
             }
 
             public int CountFieldsToPrint(IPeriod period, int stopAt, IFormatProvider provider)
             {
-                if (stopAt < 0)
+                if (stopAt <= 0)
                 {
                     return 0;
                 }
@@ -444,19 +458,15 @@ namespace NodaTime.Format
 
                 if (value.NeedNegate)
                 {
-                    writer.Write('-');
+                    writer.Write(negativeSign);
                 }
 
                 FormatUtils.WritePaddedInteger(writer, intValue, minPrintedDigits);
 
-                if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
+                if (value.LowExists)
                 {
-                    int dp = value.Low;
-                    if (fieldType == FormatterDurationFieldType.SecondsMilliseconds || dp > 0)
-                    {
-                        writer.Write('.');
-                        FormatUtils.WritePaddedInteger(writer, dp, 3);
-                    }
+                    writer.Write(fractionSeparator);
+                    FormatUtils.WritePaddedInteger(writer, value.Low, 3);
                 }
 
                 if (suffix != null)
@@ -689,9 +699,11 @@ namespace NodaTime.Format
                     case FormatterDurationFieldType.Milliseconds:
                         fraction = new Fraction(period[DurationFieldType.Milliseconds]);
                         break;
-                    case FormatterDurationFieldType.SecondsMilliseconds: // drop through
+                    case FormatterDurationFieldType.SecondsMilliseconds:
+                        fraction = new Fraction(period[DurationFieldType.Seconds], period[DurationFieldType.Milliseconds], NodaConstants.MillisecondsPerSecond, true);
+                        break;
                     case FormatterDurationFieldType.SecondsMillisecondsOptional:
-                        fraction = new Fraction(period[DurationFieldType.Seconds], period[DurationFieldType.Milliseconds], (long)NodaConstants.MillisecondsPerSecond);
+                        fraction = new Fraction(period[DurationFieldType.Seconds], period[DurationFieldType.Milliseconds], NodaConstants.MillisecondsPerSecond, false);
                         break;
                     default:
                         return null;
@@ -975,9 +987,13 @@ namespace NodaTime.Format
                         }
                     }
                 }
-                else if (useAfter && afterPrinter.CountFieldsToPrint(period, 1, provider) > 0)
+                else if (useAfter)                
                 {
-                    return text;
+                    int afterCount = afterPrinter.CountFieldsToPrint(period, 2, provider);
+                    if (afterCount > 0)
+                    {
+                        return afterCount > 1 ? text : finalText;
+                    }
                 }
 
                 return String.Empty;
@@ -1022,51 +1038,54 @@ namespace NodaTime.Format
 
             public int Parse(string periodText, int position, PeriodBuilder builder, IFormatProvider provider)
             {
-                int oldPos = position;
-                position = beforeParser.Parse(periodText, position, builder, provider);
+                //start parsing at the given position
+                int newPosition = position;
+                newPosition = beforeParser.Parse(periodText, newPosition, builder, provider);
 
-                if (position < 0)
+                if (newPosition < 0)
                 {
-                    return position;
+                    //"before field" value is failed to parse, indicate failure
+                    return newPosition;
                 }
 
                 bool found = false;
-                if (position > oldPos)
+                if (newPosition > position)
                 {
                     // Consume this separator.
                     for (int i = 0; i < parsedForms.Length; i++)
                     {
-                        int newPosition;
-                        if((newPosition = FormatUtils.MatchSubstring(periodText, position, parsedForms[i])) > 0)
+                        int temp;
+                        if ((temp = FormatUtils.MatchSubstring(periodText, newPosition, parsedForms[i])) > 0)
                         {
-                            position = newPosition;
+                            newPosition = temp;
                             found = true;
                             break;
                         }
                     }
                 }
 
-                oldPos = position;
-                position = afterParser.Parse(periodText, position, builder, provider);
+                int afterPosition = newPosition;
+                newPosition = afterParser.Parse(periodText, newPosition, builder, provider);
 
-                if (position < 0)
+                if (newPosition < 0)
                 {
-                    return position;
+                    //"after field" value is failed to parse, indicate failure
+                    return newPosition;
                 }
 
-                if (found && position == oldPos)
+                if (found && newPosition == afterPosition)
                 {
                     // Separator should not have been supplied.
-                    return ~oldPos;
+                    return ~afterPosition;
                 }
 
-                if (position > oldPos && !found && !useBefore)
+                if (newPosition > afterPosition && !found && !useBefore)
                 {
                     // Separator was required.
-                    return ~oldPos;
+                    return ~afterPosition;
                 }
 
-                return position;
+                return newPosition;
             }
 
             #endregion
@@ -1169,11 +1188,17 @@ namespace NodaTime.Format
 
         /// <summary>
         /// Set the minimum digits printed for the next and following appended
-        /// fields. By default, the minimum digits printed is one. If the field value
-        /// is zero, it is not printed unless a printZero rule is applied.
+        /// fields. By default, the minimum digits printed is one. 
+        /// Any values that are not greater than 1 are neutral and do not change default output.
+        /// If the field value is zero, it is not printed unless a PrintZero rule is applied.
         /// </summary>
         /// <param name="minDigits">The minimum digits value</param>
         /// <returns>This PeriodFormatterBuilder</returns>
+        /// <remarks>
+        /// This setting affects only significiant digits, that is negative sign doesn't take part in counting.
+        /// For composed fields, such as SecondsWithMilliseconds and SecondsWithOptionalMilliseconds,
+        /// this setting have an influence on just seconds value, milliseconds are always printed with additional 3 digits.
+        /// </remarks>
         public PeriodFormatterBuilder MinimumPrintedDigits(int minDigits)
         {
             minimumPrintedDigits = minDigits;
@@ -1284,7 +1309,7 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="text">The text of the literal to append</param>
         /// <returns>This PeriodFormatterBuilder</returns>
-        /// <exception cref="ArgumentNullException">If text is null or empty string</exception>
+        /// <exception cref="ArgumentNullException">If text argument is null or empty string</exception>
         /// <exception cref="InvalidOperationException">If this literal follows a prefix</exception>
         public PeriodFormatterBuilder AppendLiteral(string text)
         {
