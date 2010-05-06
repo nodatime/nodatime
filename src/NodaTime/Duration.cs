@@ -41,19 +41,103 @@ namespace NodaTime
     public struct Duration
         : IEquatable<Duration>, IComparable<Duration>
     {
+        #region Public readonly fields
+
+        /// <summary>
+        /// Represents <see cref="Duration"/> value equal to negative 1 tick. 
+        /// This field is read-only.
+        /// </summary>
         public static readonly Duration NegativeOne = new Duration(-1L);
+
+        /// <summary>
+        /// Represents the zero <see cref="Duration"/> value. 
+        /// This field is read-only.
+        /// </summary>
         public static readonly Duration Zero = new Duration(0L);
+
+        /// <summary>
+        /// Represents the <see cref="Duration"/> value equals to 1 tick. 
+        /// This field is read-only.
+        /// </summary>
         public static readonly Duration One = new Duration(1L);
+
+        /// <summary>
+        /// Represents the mimimum <see cref="Duration"/> value. 
+        /// This field is read-only.
+        /// </summary>
+        /// <remarks>
+        /// The value of this field is equivalent to <see cref="Int64.MinValue"/> ticks. 
+        /// The string representation of this value is PT-922337203685.477S.
+        /// </remarks>
         public static readonly Duration MinValue = new Duration(Int64.MinValue);
+
+        /// <summary>
+        /// Represents the maximum <see cref="Duration"/> value. 
+        /// This field is read-only.
+        /// </summary>
+        /// <remarks>
+        /// The value of this field is equivalent to <see cref="Int64.MaxValue"/> ticks. 
+        /// The string representation of this value is PT922337203685.477S.
+        /// </remarks>
         public static readonly Duration MaxValue = new Duration(Int64.MaxValue);
+
+        /// <summary>
+        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 week.
+        /// This field is constant.
+        /// </summary>
+        /// <remarks>
+        /// The value of this constant is 6,048.000,000,000 ticks.
+        /// </remarks>
         public static readonly Duration OneWeek = new Duration(NodaConstants.TicksPerWeek);
+
+        /// <summary>
+        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 day.
+        /// This field is constant.
+        /// </summary>
+        /// <remarks>
+        /// The value of this constant is 864 billion ticks; that is, 864,000,000,000 ticks.
+        /// </remarks>
         public static readonly Duration OneDay = new Duration(NodaConstants.TicksPerDay);
+
+        /// <summary>
+        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 hour.
+        /// This field is constant.
+        /// </summary>
+        /// <remarks>
+        /// The value of this constant is 36 billion ticks; that is, 36,000,000,000 ticks.
+        /// </remarks>
         public static readonly Duration OneHour = new Duration(NodaConstants.TicksPerHour);
+
+        /// <summary>
+        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 minute.
+        /// This field is constant.
+        /// </summary>
+        /// <remarks>
+        /// The value of this constant is 600 million ticks; that is, 600,000,000 ticks.
+        /// </remarks>
         public static readonly Duration OneMinute = new Duration(NodaConstants.TicksPerMinute);
+
+        /// <summary>
+        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 second.
+        /// This field is constant.
+        /// </summary>
+        /// <remarks>
+        /// The value of this constant is 10 million ticks; that is, 10,000,000 ticks.
+        /// </remarks>
         public static readonly Duration OneSecond = new Duration(NodaConstants.TicksPerSecond);
+
+        /// <summary>
+        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 millisecond.
+        /// This field is constant.
+        /// </summary>
+        /// <remarks>
+        /// TThe value of this constant is 10 thousand; that is, 10,000.
+        /// </remarks>
         public static readonly Duration OneMillisecond = new Duration(NodaConstants.TicksPerMillisecond);
 
-        private readonly long ticks;
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Duration"/> struct.
@@ -96,6 +180,82 @@ namespace NodaTime
             : this(interval.Duration.Ticks)
         {
         }
+
+        #endregion
+
+        private readonly long ticks;
+
+        /// <summary>
+        /// The number of ticks in the duration.
+        /// </summary>
+        public long Ticks
+        {
+            get { return ticks; }
+        }
+
+        #region Object overrides
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is Duration)
+            {
+                return Equals((Duration)obj);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data
+        /// structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return Ticks.GetHashCode();
+        }
+
+        /// <summary>
+        /// Gets the value as a <see cref="String"/> in the ISO8601 duration format including
+        /// only seconds and milliseconds.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents the instance as an ISO8601 string
+        /// </returns>
+        /// <example>
+        /// For example, "PT72.345S" represents 1 minute, 12 seconds and 345 milliseconds.
+        /// </example>
+        public override string ToString()
+        {
+            long milliseconds = Ticks / NodaConstants.TicksPerMillisecond;
+
+            var writer = new StringWriter(CultureInfo.InvariantCulture);
+            writer.Write("PT");
+
+            long seconds = milliseconds / NodaConstants.MillisecondsPerSecond;
+            writer.Write(seconds);
+
+            int remainder = (int)Math.Abs(milliseconds % NodaConstants.MillisecondsPerSecond);
+            if (remainder > 0)
+            {
+                writer.Write(".");
+                FormatUtils.WritePaddedInteger(writer, remainder, 3);
+            }
+
+            writer.Write("S");
+            return writer.ToString();
+        }
+
+        #endregion  // Object overrides
 
         #region Operators
 
@@ -277,14 +437,6 @@ namespace NodaTime
 
         #endregion // Operators
 
-        /// <summary>
-        /// The number of ticks in the duration.
-        /// </summary>
-        public long Ticks
-        {
-            get { return ticks; }
-        }
-
         #region IComparable<Duration> Members
 
         /// <summary>
@@ -319,70 +471,6 @@ namespace NodaTime
         }
 
         #endregion
-
-        #region Object overrides
-
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is Duration)
-            {
-                return Equals((Duration) obj);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
-        /// </returns>
-        public override int GetHashCode()
-        {
-            return Ticks.GetHashCode();
-        }
-
-        /// <summary>
-        /// Gets the value as a <see cref="String"/> in the ISO8601 duration format including
-        /// only seconds and milliseconds.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents the instance as an ISO8601 string
-        /// </returns>
-        /// <example>
-        /// For example, "PT72.345S" represents 1 minute, 12 seconds and 345 milliseconds.
-        /// </example>
-        public override string ToString()
-        {
-            long milliseconds = Ticks / NodaConstants.TicksPerMillisecond;
-
-            var writer = new StringWriter();
-            writer.Write("PT");
-
-            int seconds = (int)(milliseconds / NodaConstants.MillisecondsPerSecond);
-            FormatUtils.WriteUnpaddedInteger(writer, seconds);
-
-            int remainder = (int)Math.Abs(milliseconds % NodaConstants.MillisecondsPerSecond);
-            if (remainder > 0)
-            {
-                writer.Write(".");
-                FormatUtils.WritePaddedInteger(writer, remainder, 3);
-            }
-
-            writer.Write("S");
-            return writer.ToString();
-        }
-
-        #endregion  // Object overrides
 
         #region IEquatable<Duration> Members
 
