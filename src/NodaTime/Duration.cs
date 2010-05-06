@@ -19,6 +19,9 @@
 
 using System;
 using System.Globalization;
+using System.Text;
+using NodaTime.Format;
+using System.IO;
 
 namespace NodaTime
 {
@@ -349,14 +352,34 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Gets the value as a <see cref="String"/> in the ISO8601 duration format including
+        /// only seconds and milliseconds.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="System.String"/> that represents the instance as an ISO8601 string
         /// </returns>
+        /// <example>
+        /// For example, "PT72.345S" represents 1 minute, 12 seconds and 345 milliseconds.
+        /// </example>
         public override string ToString()
         {
-            return Ticks.ToString("+#,##0' ticks';-#,##0' ticks'", CultureInfo.InvariantCulture);
+            long milliseconds = Ticks / NodaConstants.TicksPerMillisecond;
+
+            var writer = new StringWriter();
+            writer.Write("PT");
+
+            int seconds = (int)(milliseconds / NodaConstants.MillisecondsPerSecond);
+            FormatUtils.WriteUnpaddedInteger(writer, seconds);
+
+            int remainder = (int)Math.Abs(milliseconds % NodaConstants.MillisecondsPerSecond);
+            if (remainder > 0)
+            {
+                writer.Write(".");
+                FormatUtils.WritePaddedInteger(writer, remainder, 3);
+            }
+
+            writer.Write("S");
+            return writer.ToString();
         }
 
         #endregion  // Object overrides
@@ -441,6 +464,79 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Converts the string representation of a duration to its <see cref="Duration"/> equivalent 
+        /// and returns a value that indicates whether the conversion succeeded.
+        /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="result">When this method returns, contains an object that represents the duration specified by value,
+        /// or Duration.Zero if the conversion failed. This parameter is passed uninitialized.</param>
+        /// <returns>True if value was converted successfully; otherwise, false.</returns>
+        public static bool TryParse(string value, out Duration result)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+
+            result = Duration.Zero;
+
+            int len = value.Length;
+            if (len >= 4 &&
+                (value[0] == 'P' || value[0] == 'p') &&
+                (value[1] == 'T' || value[1] == 't') &&
+                (value[len - 1] == 'S' || value[len - 1] == 's'))
+            {
+                // ok
+            }
+            else
+            {
+                return false;
+            }
+
+            var body = value.Substring(2, len - 3);
+            int dot = -1;
+            for (int i = 0; i < body.Length; i++)
+            {
+                if ((body[i] >= '0' && body[i] <= '9') || (i == 0 && body[0] == '-'))
+                {
+                    // ok
+                }
+                else if (i > 0 && body[i] == '.' && dot == -1)
+                {
+                    // ok
+                    dot = i;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            long milliseconds = 0, seconds = 0;
+            if (dot > 0)
+            {
+                seconds = long.Parse(body.Substring(0, dot), CultureInfo.InvariantCulture);
+                var millisValue = body.Substring(dot + 1);
+                if (millisValue.Length != 3)
+                {
+                    millisValue = (millisValue + "000").Substring(0, 3);
+                }
+                milliseconds = int.Parse(millisValue, CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                seconds = long.Parse(body, CultureInfo.InvariantCulture);
+            }
+
+
+            result = seconds < 0 ? Duration.FromSeconds(seconds) - Duration.FromMilliseconds(milliseconds)
+                : Duration.FromSeconds(seconds) + Duration.FromMilliseconds(milliseconds);
+
+            return true;
+
+        }
+
+        /// <summary>
         /// Parses the specified value into a <see cref="Duration"/>.
         /// </summary>
         /// <param name="value">The value to parse.</param>
@@ -449,11 +545,11 @@ namespace NodaTime
         /// <returns>The <see cref="Duration"/>.</returns>
         public static Duration Parse(string value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
-            }
-            throw new FormatException(@"The value format is not correct");
+            Duration result;
+            if (Duration.TryParse(value, out result))
+                return result;
+            else
+                throw new FormatException("Invalid format: \"" + value + '"');
         }
     }
 }

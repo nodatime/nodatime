@@ -100,14 +100,6 @@ namespace NodaTime.Test
             Assert.AreEqual(Duration.Zero, test);
         }
 
-        [Test] 
-        [Ignore("Not enough code")]
-        public void Factory_Parse()
-        {
-            Duration test = Duration.Parse("PT72.3456S");
-            Assert.Equals(72345600, test.Ticks);
-        }
-
         [Test]
         public void ConstructFrom_Int64()
         {
