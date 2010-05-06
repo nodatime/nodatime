@@ -35,6 +35,9 @@ namespace NodaTime.Test
             new TestCaseData(12 * NodaConstants.TicksPerMillisecond + 345L, "PT0.012S").SetName("12ms => PT0.012S"),
             new TestCaseData(345 * NodaConstants.TicksPerMillisecond + 678L, "PT0.345S").SetName("345ms => PT0.345S"),
             new TestCaseData(1234 * NodaConstants.TicksPerMillisecond, "PT1.234S").SetName("1234ms => PT1.234S"),
+            new TestCaseData(Duration.MinValue.Ticks, "PT-922337203685.477S").SetName("MinValue => PT-922337203685.477S"),
+            new TestCaseData(Duration.MaxValue.Ticks, "PT922337203685.477S").SetName("MaxValue => PT922337203685.477S"),
+
         };
 
         [Test]
