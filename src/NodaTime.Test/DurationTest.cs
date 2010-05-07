@@ -32,11 +32,11 @@ namespace NodaTime.Test
         object[] ToStringTestData =
         {
             new TestCaseData(0, "PT0S").SetName("0 => PT0S"),
-            new TestCaseData(12 * NodaConstants.TicksPerMillisecond + 345L, "PT0.012S").SetName("12ms => PT0.012S"),
-            new TestCaseData(345 * NodaConstants.TicksPerMillisecond + 678L, "PT0.345S").SetName("345ms => PT0.345S"),
-            new TestCaseData(1234 * NodaConstants.TicksPerMillisecond, "PT1.234S").SetName("1234ms => PT1.234S"),
-            new TestCaseData(Duration.MinValue.Ticks, "PT-922337203685.477S").SetName("MinValue => PT-922337203685.477S"),
-            new TestCaseData(Duration.MaxValue.Ticks, "PT922337203685.477S").SetName("MaxValue => PT922337203685.477S"),
+            new TestCaseData(12 * NodaConstants.TicksPerMillisecond, "PT0.0120000S").SetName("12ms => PT0.0120000S"),
+            new TestCaseData(345 * NodaConstants.TicksPerMillisecond + 678L, "PT0.3450678S").SetName("345.0678ms => PT0.3450678S"),
+            new TestCaseData(1234 * NodaConstants.TicksPerMillisecond, "PT1.2340000S").SetName("1234ms => PT1.2340000S"),
+            new TestCaseData(Duration.MinValue.Ticks, "PT-922337203685.4775808S").SetName("MinValue => PT-922337203685.4775808S"),
+            new TestCaseData(Duration.MaxValue.Ticks, "PT922337203685.4775807S").SetName("MaxValue => PT922337203685.4775807S"),
 
         };
 
@@ -71,12 +71,14 @@ namespace NodaTime.Test
         object[] ParseGoodTestData =
         {
             new TestCaseData("PT0S", 0).SetName("PT0S => 0"),
-            new TestCaseData("PT12.345S", 12345 * NodaConstants.TicksPerMillisecond).SetName("PT12.345S => 12.345 * 10 000"),
-            new TestCaseData("pt12.345s", 12345 * NodaConstants.TicksPerMillisecond).SetName("pt12.345s => 12.345 * 10 000"),
+            new TestCaseData("PT12.3450000S", 12345 * NodaConstants.TicksPerMillisecond).SetName("PT12.3450000S => 12.345 * 10 000"),
+            new TestCaseData("PT12.3456789S", 12 * NodaConstants.TicksPerSecond + 3456789).SetName("PT12.3456789S => 12*10 000 000 + 3456789"),
+
+            new TestCaseData("pt12.3450000s", 12345 * NodaConstants.TicksPerMillisecond).SetName("pt12.345s => 12.345 * 10 000"),
             new TestCaseData("pt12s", 12000 * NodaConstants.TicksPerMillisecond).SetName("pt12s => 12.000 * 10 000"),
             new TestCaseData("pt12.s", 12000 * NodaConstants.TicksPerMillisecond).SetName("pt12.s => 12.000 * 10 000"),
-            new TestCaseData("pt-12.32s", -12320 * NodaConstants.TicksPerMillisecond).SetName("pt-12.32s => -12.320 * 10 000"),
-            new TestCaseData("pt12.3456s", 12345 * NodaConstants.TicksPerMillisecond).SetName("pt12.3456s => 12.345 * 10 000"),
+            new TestCaseData("pt-12.320000s", -12320 * NodaConstants.TicksPerMillisecond).SetName("pt-12.32s => -12.320 * 10 000"),
+            new TestCaseData("pt12.34567891s", 12 * NodaConstants.TicksPerSecond + 3456789).SetName("PT12.34567891S => 12*10 000 000 + 3456789"),
 
         };
 
