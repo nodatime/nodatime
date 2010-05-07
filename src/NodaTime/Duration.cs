@@ -19,9 +19,11 @@
 
 using System;
 using System.Globalization;
-using System.Text;
-using NodaTime.Format;
 using System.IO;
+
+using NodaTime.Format;
+using NodaTime.Periods;
+using NodaTime.Calendars;
 
 namespace NodaTime
 {
@@ -67,7 +69,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// The value of this field is equivalent to <see cref="Int64.MinValue"/> ticks. 
-        /// The string representation of this value is PT-922337203685.477S.
+        /// The string representation of this value is PT-922337203685.4775808S.
         /// </remarks>
         public static readonly Duration MinValue = new Duration(Int64.MinValue);
 
@@ -77,7 +79,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// The value of this field is equivalent to <see cref="Int64.MaxValue"/> ticks. 
-        /// The string representation of this value is PT922337203685.477S.
+        /// The string representation of this value is PT922337203685.4775807S.
         /// </remarks>
         public static readonly Duration MaxValue = new Duration(Int64.MaxValue);
 
@@ -226,29 +228,27 @@ namespace NodaTime
 
         /// <summary>
         /// Gets the value as a <see cref="String"/> in the ISO8601 duration format including
-        /// only seconds and milliseconds.
+        /// only seconds and ticks.
         /// </summary>
         /// <returns>
         /// A <see cref="System.String"/> that represents the instance as an ISO8601 string
         /// </returns>
         /// <example>
-        /// For example, "PT72.345S" represents 1 minute, 12 seconds and 345 milliseconds.
+        /// For example, "PT72.3450000S" represents 1 minute, 12 seconds and 345 milliseconds.
         /// </example>
         public override string ToString()
         {
-            long milliseconds = Ticks / NodaConstants.TicksPerMillisecond;
-
             var writer = new StringWriter(CultureInfo.InvariantCulture);
             writer.Write("PT");
 
-            long seconds = milliseconds / NodaConstants.MillisecondsPerSecond;
+            long seconds = Ticks / NodaConstants.TicksPerSecond;
             writer.Write(seconds);
 
-            int remainder = (int)Math.Abs(milliseconds % NodaConstants.MillisecondsPerSecond);
-            if (remainder > 0)
+            int ticks = (int)Math.Abs(Ticks % NodaConstants.TicksPerSecond);
+            if (ticks > 0)
             {
                 writer.Write(".");
-                FormatUtils.WritePaddedInteger(writer, remainder, 3);
+                FormatUtils.WritePaddedInteger(writer, ticks, 7);
             }
 
             writer.Write("S");
@@ -489,6 +489,270 @@ namespace NodaTime
 
         #endregion
 
+        #region Conversions
+
+        /// <summary>
+        /// Converts this duration to an <see cref="Interval"/> starting at the specified instant.
+        /// </summary>
+        /// <param name="start">The instant to start the interval at</param>
+        /// <returns>An <see cref="Interval"/> starting at the specified instant</returns>
+        public Interval ToIntervalFrom(Instant start)
+        {
+            return new Interval(start, start + this);
+        }
+
+        /// <summary>
+        /// Converts this duration to an <see cref="Interval"/> ending at the specified instant.
+        /// </summary>
+        /// <param name="end">The instant to end the interval at</param>
+        /// <returns>An <see cref="Interval"/> ending at the specified instant</returns>
+        public Interval ToIntervalTo(Instant end)
+        {
+            return new Interval(end - this, end);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance using the specified period type and calendar.
+        /// </summary>
+        /// <param name="type">The period type to use</param>
+        /// <param name="calendar">The calendar system to use</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// Only precise fields in the period type will be used.
+        /// Exactly which fields are precise depends on the calendar system.
+        /// Only the time fields are precise for ISO calendar.
+        /// </para>
+        /// <para>
+        /// For more control over the conversion process, you must pair the duration with an instant
+        /// </para>
+        /// </remarks>
+        public Period ToPeriod(PeriodType type, ICalendarSystem calendar)
+        {
+            return Period.From(this, calendar, type);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance using the specified period type and the ISO calendar.
+        /// </summary>
+        /// <param name="type">The period type to use</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// Only precise fields in the period type will be used.
+        /// At most these are hours, minutes, seconds and millis - the period
+        /// type may restrict the selection further.
+        /// </para>
+        /// <para>
+        /// For more control over the conversion process, you must pair the duration with an instant
+        /// </para>
+        /// </remarks>
+        public Period ToPeriod(PeriodType type)
+        {
+            return Period.From(this, type);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance using the standard period type and calendar.
+        /// </summary>
+        /// <param name="calendar">The calendar system to use</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// Only precise fields in the period type will be used.
+        /// Exactly which fields are precise depends on the calendar system.
+        /// Only the time fields are precise for ISO calendar.
+        /// </para>
+        /// <para>
+        /// For more control over the conversion process, you must pair the duration with an instant
+        /// </para>
+        /// </remarks>
+        public Period ToPeriod(ICalendarSystem calendar)
+        {
+            return Period.From(this, calendar);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance using the standard period type and the ISO calendar.
+        /// </summary>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// Only precise fields in the period type will be used. Thus, only the hour,
+        /// minute, second and millisecond fields on the period will be used.
+        /// The year, month, week and day fields will not be populated.
+        /// </para>
+        /// <para>
+        /// If the duration is small, less than one day, then this method will perform
+        /// as you might expect and split the fields evenly.
+        /// If the duration is larger than one day then all the remaining duration will
+        /// be stored in the largest available field, hours in this case.
+        /// For example, a duration effectively equal to (365 + 60 + 5) days will be
+        /// converted to ((365 + 60 + 5) * 24) hours by this constructor.
+        /// </para>
+        /// <para>
+        /// For more control over the conversion process, you must pair the duration with an instant
+        /// </para>
+        /// </remarks>
+        public Period ToPeriod()
+        {
+            return Period.From(this);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance by adding the duration to a start
+        /// instant to obtain an interval.
+        /// </summary>
+        /// <param name="start">The instant to calculate the period from</param>
+        /// <param name="type">The period type determining how to split the duration into fields</param>
+        /// <param name="calendar"> The calendar system to use</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// This conversion will determine the fields of a period accurately.
+        /// The results are based on the instant ticks, the calendar system,
+        /// the period type and the length of this duration.
+        /// </para>
+        /// </remarks>
+        public Period ToPeriodFrom(LocalInstant start, PeriodType type, ICalendarSystem calendar)
+        {
+            return Period.From(start, this, calendar, type);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance by adding the duration to a start
+        /// instant to obtain an interval using the standard period type.
+        /// </summary>
+        /// <param name="start">The instant to calculate the period from</param>
+        /// <param name="type">The period type determining how to split the duration into fields</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// This conversion will determine the fields of a period accurately.
+        /// The results are based on the instant ticks, the ISO calendar system,
+        /// the period type and the length of this duration.
+        /// </para>
+        /// </remarks>
+        public Period ToPeriodFrom(LocalInstant start, PeriodType type)
+        {
+            return Period.From(start, this, type);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance by adding the duration to a start
+        /// instant to obtain an interval using the standard period type.
+        /// </summary>
+        /// <param name="start">The instant to calculate the period from</param>
+        /// <param name="calendar"> The calendar system to use</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// This conversion will determine the fields of a period accurately.
+        /// The results are based on the instant ticks, the calendar system,
+        /// the period type and the length of this duration.
+        /// </para>
+        /// </remarks>
+        public Period ToPeriodFrom(LocalInstant start, ICalendarSystem calendar)
+        {
+            return Period.From(start, this, calendar);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance by adding the duration to a start
+        /// instant to obtain an interval using the standard period type.
+        /// </summary>
+        /// <param name="start">The instant to calculate the period from</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// This conversion will determine the fields of a period accurately.
+        /// The results are based on the instant ticks, the ISO calendar system,
+        /// the standard period type and the length of this duration.
+        /// </para>
+        /// </remarks>
+        public Period ToPeriodFrom(LocalInstant start)
+        {
+            return Period.From(start, this);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance by subtracting the duration
+        /// from an end instant to obtain an interval.
+        /// </summary>
+        /// <param name="end">The instant to calculate the period to</param>
+        /// <param name="type">The period type determining how to split the duration into fields</param>
+        /// <param name="calendar">The calendar system to use</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// This conversion will determine the fields of a period accurately.
+        /// The results are based on the instant ticks, the calendar system,
+        /// the period type and the length of this duration.
+        /// </para>
+        /// </remarks>
+        public Period ToPeriodTo(LocalInstant end, PeriodType type, ICalendarSystem calendar)
+        {
+            return Period.From(this, end, calendar, type);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance by subtracting the duration
+        /// from an end instant to obtain an interval.
+        /// </summary>
+        /// <param name="end">The instant to calculate the period to</param>
+        /// <param name="type">The period type determining how to split the duration into fields</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// This conversion will determine the fields of a period accurately.
+        /// The results are based on the instant ticks, the ISO calendar system,
+        /// the period type and the length of this duration.
+        /// </para>
+        /// </remarks>
+        public Period ToPeriodTo(LocalInstant end, PeriodType type)
+        {
+            return Period.From(this, end, type);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance by subtracting the duration
+        /// from an end instant to obtain an interval using the standard period type.
+        /// </summary>
+        /// <param name="end">The instant to calculate the period to</param>
+        /// <param name="calendar">The calendar system to use</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// This conversion will determine the fields of a period accurately.
+        /// The results are based on the instant ticks, the calendar system,
+        /// the standard period type and the length of this duration.
+        /// </para>
+        /// </remarks>
+        public Period ToPeriodTo(LocalInstant end, ICalendarSystem calendar)
+        {
+            return Period.From(this, end, calendar);
+        }
+
+        /// <summary>
+        /// Converts this duration to a <see cref="Period"/> instance by subtracting the duration
+        /// from an end instant to obtain an interval using the standard period type.
+        /// </summary>
+        /// <param name="end">The instant to calculate the period to</param>
+        /// <returns>A Period created using the ticks duration from this instance</returns>
+        /// <remarks>
+        /// <para>
+        /// This conversion will determine the fields of a period accurately.
+        /// The results are based on the instant ticks, the ISO calendar system,
+        /// the standard period type and the length of this duration.
+        /// </para>
+        /// </remarks>
+        public Period ToPeriodTo(LocalInstant end)
+        {
+            return Period.From(this, end);
+        }
+
+        #endregion
+
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of standard weeks made
         /// up from 7 24-hour days.
@@ -600,16 +864,17 @@ namespace NodaTime
                 }
             }
 
-            long milliseconds = 0, seconds = 0;
+            long seconds = 0;
+            int ticks = 0;
             if (dot > 0)
             {
                 seconds = long.Parse(body.Substring(0, dot), CultureInfo.InvariantCulture);
-                var millisValue = body.Substring(dot + 1);
-                if (millisValue.Length != 3)
+                var ticksValue = body.Substring(dot + 1);
+                if (ticksValue.Length != 7)
                 {
-                    millisValue = (millisValue + "000").Substring(0, 3);
+                    ticksValue = ticksValue + "0000000";
                 }
-                milliseconds = int.Parse(millisValue, CultureInfo.InvariantCulture);
+                ticks = FormatUtils.ParseDigits(ticksValue, 0, 7);
             }
             else
             {
@@ -617,8 +882,8 @@ namespace NodaTime
             }
 
 
-            result = seconds < 0 ? Duration.FromSeconds(seconds) - Duration.FromMilliseconds(milliseconds)
-                : Duration.FromSeconds(seconds) + Duration.FromMilliseconds(milliseconds);
+            result = seconds < 0 ? Duration.FromSeconds(seconds) - new Duration(ticks)
+                : Duration.FromSeconds(seconds) + new Duration(ticks);
 
             return true;
 

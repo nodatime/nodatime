@@ -349,5 +349,102 @@ namespace NodaTime.Periods
         {
             return From(start, end, IsoCalendarSystem.Instance, PeriodType.Standard);
         }
+
+        /// <summary>
+        /// Creates a period from the given start point and duration.
+        /// </summary>
+        /// <param name="start">The interval start</param>
+        /// <param name="duration">The duration of the interval</param>
+        /// <param name="calendar">The calendar system to use</param>
+        /// <param name="periodType">Which set of fields this period supports</param>
+        /// <returns>The period</returns>
+        public static Period From(LocalInstant start, Duration duration, ICalendarSystem calendar, PeriodType periodType)
+        {
+            return From(start, start + duration, calendar, periodType);
+        }
+
+        /// <summary>
+        /// Creates a period from the given start point and duration with the standard set of fields.
+        /// </summary>
+        /// <param name="start">The interval start</param>
+        /// <param name="duration">The duration of the interval</param>
+        /// <param name="calendar">The calendar system to use</param>
+        /// <returns>The period</returns>
+        public static Period From(LocalInstant start, Duration duration, ICalendarSystem calendar)
+        {
+            return From(start, start + duration, calendar, PeriodType.Standard);
+        }
+
+        /// <summary>
+        /// Creates a period from the given start point and duration using the ISO calendar system.
+        /// </summary>
+        /// <param name="start">The interval start</param>
+        /// <param name="duration">The duration of the interval</param>
+        /// <param name="periodType">Which set of fields this period supports</param>
+        /// <returns>The period</returns>
+        public static Period From(LocalInstant start, Duration duration, PeriodType periodType)
+        {
+            return From(start, start + duration, IsoCalendarSystem.Instance, periodType);
+        }
+
+        /// <summary>
+        /// Creates a period from the given start point and duration with the standard set of fields using the ISO calendar system.
+        /// </summary>
+        /// <param name="start">The interval start</param>
+        /// <param name="duration">The duration of the interval</param>
+        /// <returns>The period</returns>
+        public static Period From(LocalInstant start, Duration duration)
+        {
+            return From(start, start + duration, IsoCalendarSystem.Instance, PeriodType.Standard);
+        }
+
+        /// <summary>
+        /// Creates a period from the given duration and end point.
+        /// </summary>
+        /// <param name="duration">The duration of the interval</param>
+        /// <param name="end">The interval end</param>
+        /// <param name="calendar">The calendar system to use</param>
+        /// <param name="periodType">Which set of fields this period supports</param>
+        /// <returns>The period</returns>
+        public static Period From(Duration duration, LocalInstant end, ICalendarSystem calendar, PeriodType periodType)
+        {
+            return From(end - duration, end, calendar, periodType);
+        }
+
+        /// <summary>
+        /// Creates a period from the given duration and end point with the standard set of fields.
+        /// </summary>
+        /// <param name="duration">The duration of the interval</param>
+        /// <param name="end">The interval end</param>
+        /// <param name="calendar">The calendar system to use</param>
+        /// <returns>The period</returns>
+        public static Period From(Duration duration, LocalInstant end, ICalendarSystem calendar)
+        {
+            return From(end - duration, end, calendar, PeriodType.Standard);
+        }
+
+        /// <summary>
+        /// Creates a period from the given duration and end point using the ISO calendar system.
+        /// </summary>
+        /// <param name="duration">The duration of the interval</param>
+        /// <param name="end">The interval end</param>
+        /// <param name="periodType">Which set of fields this period supports</param>
+        /// <returns>The period</returns>
+        public static Period From(Duration duration, LocalInstant end, PeriodType periodType)
+        {
+            return From(end - duration, end, IsoCalendarSystem.Instance, periodType);
+        }
+
+        /// <summary>
+        /// Creates a period from the given duration and end point with the standard set of fields using the ISO calendar system.
+        /// </summary>
+        /// <param name="duration">The duration of the interval</param>
+        /// <param name="end">The interval end</param>
+        /// <returns>The period</returns>
+        public static Period From(Duration duration, LocalInstant end)
+        {
+            return From(end - duration, end, IsoCalendarSystem.Instance, PeriodType.Standard);
+        }
+
     }
 }
