@@ -104,6 +104,11 @@ namespace NodaTime
         /// method will be the datetime from the specified base instant plus the
         /// time from this partial.
         /// </para>
+        /// <para>
+        /// TODO: I suspect this should actually return a LocalDateTime instead,
+        /// given that an Instant doesn't have a time zone. It should possibly
+        /// take a LocalInstant as well...
+        /// </para>
         /// </summary>
         /// <param name="baseInstant">The instant that provides the missing fields, null means now</param>
         /// <returns>The combined datetime</returns>

@@ -47,6 +47,10 @@ namespace NodaTime.Partials
         /// Gets an array of the field types that this partial supports.
         /// The fields are returned largest to smallest, for example Hour, Minute, Second.
         /// </summary>
+        /// <remarks>
+        /// TODO: Consider returning an IList[DateTimeFieldType] instead, so that types can
+        /// override this and return a singleton immutable value.
+        /// </remarks>
         /// <returns>The fields supported in an array that may be altered, largest to smallest</returns>
         public DateTimeFieldType[] GetFieldTypes()
         {
@@ -183,7 +187,7 @@ namespace NodaTime.Partials
         /// </para>
         /// </summary>
         /// <param name="index">The index to retrieve</param>
-        /// <param name="calendar">The chronology to use</param>
+        /// <param name="calendar">The calendar system to use</param>
         /// <returns>The field</returns>
         protected abstract IDateTimeField GetField(int index, ICalendarSystem calendar);
 
