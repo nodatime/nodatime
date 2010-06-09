@@ -333,6 +333,7 @@ namespace NodaTime.Periods
 
         /// <summary>
         /// Returns a new instance with the specified number of months added.
+        /// TODO: Consider renaming this to "Plus"? Need a naming consistency fixit...
         /// </summary>
         /// <param name="months">The amount of months to add, may be negative</param>
         /// <returns>The new period plus the specified number of months</returns>

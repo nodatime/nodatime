@@ -79,6 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="ChronologyTest.cs" />
     <Compile Include="Format\DateTimeFormats.cs" />
     <Compile Include="Format\DateTimeFormatterBuilderTest.cs" />

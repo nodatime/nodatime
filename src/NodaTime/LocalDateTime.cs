@@ -346,7 +346,7 @@ namespace NodaTime
 
         #endregion
 
-        #region operators
+        #region Operators
 
         /// <summary>
         /// Implements the operator == (equality).
@@ -370,6 +370,29 @@ namespace NodaTime
             return !(left == right);
         }
 
+        /// <summary>
+        /// Adds a period to a local date/time. Fields are added in the order provided by the period.
+        /// </summary>
+        /// <param name="localDateTime">Initial local date and time</param>
+        /// <param name="period">Period to add</param>
+        /// <returns>The resulting local date and time</returns>
+        public static LocalDateTime operator +(LocalDateTime localDateTime, IPeriod period)
+        {
+            ICalendarSystem calendar = localDateTime.Calendar;
+            return new LocalDateTime(calendar.Add(period, localDateTime.LocalInstant, 1));
+        }
+
+        /// <summary>
+        /// Adds a period to a local date/time. Fields are added in the order provided by the period.
+        /// </summary>
+        /// <param name="localDateTime">Initial local date and time</param>
+        /// <param name="period">Period to add</param>
+        /// <returns>The resulting local date and time</returns>
+        public static LocalDateTime operator -(LocalDateTime localDateTime, IPeriod period)
+        {
+            ICalendarSystem calendar = localDateTime.Calendar;
+            return new LocalDateTime(calendar.Add(period, localDateTime.LocalInstant, -1));
+        }
         #endregion
 
         #region object overrides
