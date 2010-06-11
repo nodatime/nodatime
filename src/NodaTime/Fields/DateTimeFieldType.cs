@@ -68,7 +68,8 @@ namespace NodaTime.Fields
         public DurationFieldType DurationFieldType { get { return durationFieldType; } }
         public DurationFieldType? RangeDurationFieldType { get { return rangeDurationFieldType; } }
 
-        //TODO:make sure that there is no better place for this method
+        //TODO: make sure that there is no better place for this method
+        //TODO: consider making it a delegate within the enum value.
 
         /// <summary>
         /// Gets a suitable field for this type from the given calendar.
@@ -108,6 +109,8 @@ namespace NodaTime.Fields
                 case 20: return calendar.Fields.SecondOfDay;
                 case 21: return calendar.Fields.MillisecondOfDay;
                 case 22: return calendar.Fields.MillisecondOfSecond;
+                case 23: return calendar.Fields.TickOfMillisecond;
+                case 24: return calendar.Fields.TickOfDay;
                 default: throw new InvalidOperationException();
             }
         }
