@@ -14,15 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
+using NodaTime.Calendars;
 using NodaTime.TimeZones;
 using NUnit.Framework;
-using NodaTime.Calendars;
 
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public partial class ZoneRecurrenceTest
+    public class ZoneRecurrenceTest
     {
         private const long TicksPerStandardYear = NodaConstants.TicksPerDay * 365;
         private const long TicksPerLeapYear = NodaConstants.TicksPerDay * 366;
@@ -74,8 +75,7 @@ namespace NodaTime.Test.TimeZones
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
             Transition? actual = recurrence.Next(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
-            Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (1 * TicksPerStandardYear)),
-                Offset.Zero, Offset.Zero);
+            Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (1 * TicksPerStandardYear)), Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
@@ -86,8 +86,7 @@ namespace NodaTime.Test.TimeZones
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
             Transition? actual = recurrence.Next(Instant.UnixEpoch, Offset.Zero, Offset.Zero);
             actual = recurrence.Next(actual.Value.Instant, Offset.Zero, Offset.Zero);
-            Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear)),
-                Offset.Zero, Offset.Zero);
+            Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear)), Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
@@ -108,8 +107,7 @@ namespace NodaTime.Test.TimeZones
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
             Transition? actual = recurrence.Previous(Instant.MaxValue, Offset.Zero, Offset.Zero);
-            Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear)),
-                Offset.Zero, Offset.Zero);
+            Transition? expected = new Transition(new Instant(Instant.UnixEpoch.Ticks + (2 * TicksPerStandardYear)), Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 

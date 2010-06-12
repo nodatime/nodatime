@@ -14,14 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
 {
     internal sealed class GJMonthOfYearDateTimeField : BasicMonthOfYearDateTimeField
     {
-        internal GJMonthOfYearDateTimeField(BasicCalendarSystem calendarSystem)
-            : base(calendarSystem, NodaConstants.February)
+        internal GJMonthOfYearDateTimeField(BasicCalendarSystem calendarSystem) : base(calendarSystem, NodaConstants.February)
         {
         }
 

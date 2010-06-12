@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Collections.Generic;
 using CommandLine;
 using CommandLine.Text;
@@ -28,28 +29,17 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private static readonly HeadingInfo HeadingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
 
         #region Standard Option Attribute
-        [Option("s", "source",
-                Required = true,
-                HelpText = "Source directory containing the input files.")]
-        public string SourceDirectoryName = string.Empty;
+        [Option("s", "source", Required = true, HelpText = "Source directory containing the input files.")] public string SourceDirectoryName = string.Empty;
 
-        [Option("o", "output",
-                Required = true,
-                HelpText = "The name of the output file.")]
-        public string OutputFileName = string.Empty;
+        [Option("o", "output", Required = true, HelpText = "The name of the output file.")] public string OutputFileName = string.Empty;
 
-        [Option("t", "type",
-                HelpText = "The type of the output file { ResX, Resource }.")]
-        public ResourceOutputType OutputType = ResourceOutputType.ResX;
-
+        [Option("t", "type", HelpText = "The type of the output file { ResX, Resource }.")] public ResourceOutputType OutputType = ResourceOutputType.ResX;
         #endregion
 
         #region Specialized Option Attribute
-        [ValueList(typeof(List<string>))]
-        public IList<string> InputFiles;
+        [ValueList(typeof(List<string>))] public IList<string> InputFiles;
 
-        [HelpOption(
-                HelpText = "Display this help.")]
+        [HelpOption(HelpText = "Display this help.")]
         public string GetUsage()
         {
             var help = new HelpText(HeadingInfo);

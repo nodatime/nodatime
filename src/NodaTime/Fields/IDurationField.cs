@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -23,7 +24,7 @@ namespace NodaTime.Fields
     /// The interface defines a set of methods that manipulate a millisecond duration
     /// with regards to a single field, such as months or seconds.
     /// </summary>
-    public interface IDurationField:IComparable<IDurationField>
+    public interface IDurationField : IComparable<IDurationField>
     {
         /// <summary>
         /// Gets the type of the field.
@@ -50,7 +51,6 @@ namespace NodaTime.Fields
         long UnitTicks { get; }
 
         #region Extract field value from a duration
-
         /// <summary>
         /// Get the value of this field from the milliseconds, which is approximate
         /// if this field is imprecise.
@@ -94,11 +94,9 @@ namespace NodaTime.Fields
         /// <param name="localInstant">the start instant to calculate relative to</param>
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
         long GetInt64Value(Duration duration, LocalInstant localInstant);
-
         #endregion
 
         #region Create a duration from a field value
-
         /// <summary>
         /// Get the duration of this field from its value, which is
         /// approximate if this field is imprecise.
@@ -120,11 +118,9 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The instant to calculate relative to</param>
         /// <returns>The duration that the field represents, which may be negative</returns>
         Duration GetDuration(long value, LocalInstant localInstant);
-
         #endregion
 
         #region Add, subtract, difference
-
         /// <summary>
         /// Adds a duration value (which may be negative) to the instant.
         /// </summary>
@@ -188,9 +184,6 @@ namespace NodaTime.Fields
         /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
         /// <returns>The difference in the units of this field</returns>
         long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
-
         #endregion
-
-
     }
 }

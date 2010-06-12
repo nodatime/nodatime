@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Diagnostics;
 
 namespace NodaTime.Benchmarks.Timing
@@ -31,9 +32,6 @@ namespace NodaTime.Benchmarks.Timing
             stopwatch.Start();
         }
 
-        public Duration ElapsedTime
-        {
-            get { return new Duration(stopwatch.Elapsed.Ticks); }
-        }
+        public Duration ElapsedTime { get { return new Duration(stopwatch.Elapsed.Ticks); } }
     }
 }

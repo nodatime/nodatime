@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-
 using NodaTime.Calendars;
 
 namespace NodaTime.Format
@@ -36,15 +35,14 @@ namespace NodaTime.Format
                 this.standardFormatString = standardFormatString;
             }
 
-            public int EstimatedPrintedLength 
-            { 
-                get 
-                { 
-                    return 40; //guess
-                } 
+            public int EstimatedPrintedLength
+            {
+                get { return 40; //guess
+                }
             }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
                 var formatter = GetFormatter(provider);
                 formatter.Printer.PrintTo(writer, instant, calendarSystem, timezoneOffset, dateTimeZone, provider);
@@ -58,9 +56,7 @@ namespace NodaTime.Format
 
             public int EstimatedParsedLength
             {
-                get
-                {
-                    return 40; //guess
+                get { return 40; //guess
                 }
             }
 
@@ -70,14 +66,14 @@ namespace NodaTime.Format
                 return formatter.Parser.ParseInto(bucket, text, position);
             }
 
-            private DateTimeFormatter GetFormatter(IFormatProvider provider) 
+            private DateTimeFormatter GetFormatter(IFormatProvider provider)
             {
-                var pattern = DateTimeFormats.PatternForStandardPattern(standardFormatString, provider);
+                var pattern = PatternForStandardPattern(standardFormatString, provider);
                 lock (patternToFormatterMap)
                 {
                     if (!patternToFormatterMap.ContainsKey(pattern))
                     {
-                        patternToFormatterMap[pattern] = DateTimeFormats.ForPattern(pattern);
+                        patternToFormatterMap[pattern] = ForPattern(pattern);
                     }
                     return patternToFormatterMap[pattern];
                 }
@@ -93,10 +89,7 @@ namespace NodaTime.Format
         /// The format will change as you change the format provider of the formatter.
         /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
         /// </remarks>
-        public static DateTimeFormatter ShortDate
-        {
-            get { return CreateFormatterForStandardPattern('d'); }
-        }
+        public static DateTimeFormatter ShortDate { get { return CreateFormatterForStandardPattern('d'); } }
 
         /// <summary>
         /// Gets a format that outputs a long date format.
@@ -105,10 +98,7 @@ namespace NodaTime.Format
         /// The format will change as you change the format provider of the formatter.
         /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
         /// </remarks>        
-        public static DateTimeFormatter LongDate
-        {
-            get { return CreateFormatterForStandardPattern('D'); }
-        }
+        public static DateTimeFormatter LongDate { get { return CreateFormatterForStandardPattern('D'); } }
 
         /// <summary>
         /// Gets a format that outputs a full date/time pattern (short time)
@@ -117,10 +107,7 @@ namespace NodaTime.Format
         /// The format will change as you change the format provider of the formatter.
         /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
         /// </remarks>        
-        public static DateTimeFormatter FullShortTime
-        {
-            get { return CreateFormatterForStandardPattern('f'); }
-        }
+        public static DateTimeFormatter FullShortTime { get { return CreateFormatterForStandardPattern('f'); } }
 
         /// <summary>
         /// Gets a format that outputs a full date/time pattern (long time)
@@ -129,10 +116,7 @@ namespace NodaTime.Format
         /// The format will change as you change the format provider of the formatter.
         /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
         /// </remarks>        
-        public static DateTimeFormatter FullLongTime
-        {
-            get { return CreateFormatterForStandardPattern('F'); }
-        }
+        public static DateTimeFormatter FullLongTime { get { return CreateFormatterForStandardPattern('F'); } }
 
         /// <summary>
         /// Gets a format that outputs a general date/time pattern (short time)
@@ -141,10 +125,7 @@ namespace NodaTime.Format
         /// The format will change as you change the format provider of the formatter.
         /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
         /// </remarks>        
-        public static DateTimeFormatter GeneralShortTime
-        {
-            get { return CreateFormatterForStandardPattern('g'); }
-        }
+        public static DateTimeFormatter GeneralShortTime { get { return CreateFormatterForStandardPattern('g'); } }
 
         /// <summary>
         /// Gets a format that outputs a general date/time pattern (long time)
@@ -153,10 +134,7 @@ namespace NodaTime.Format
         /// The format will change as you change the format provider of the formatter.
         /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
         /// </remarks>        
-        public static DateTimeFormatter GeneralLongTime
-        {
-            get { return CreateFormatterForStandardPattern('G'); }
-        }
+        public static DateTimeFormatter GeneralLongTime { get { return CreateFormatterForStandardPattern('G'); } }
 
         /// <summary>
         /// Gets a format that outputs a month day pattern
@@ -165,10 +143,7 @@ namespace NodaTime.Format
         /// The format will change as you change the format provider of the formatter.
         /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
         /// </remarks>        
-        public static DateTimeFormatter MonthDay
-        {
-            get { return CreateFormatterForStandardPattern('m'); }
-        }
+        public static DateTimeFormatter MonthDay { get { return CreateFormatterForStandardPattern('m'); } }
 
         /// <summary>
         /// Gets a format that outputs a short time pattern
@@ -177,10 +152,7 @@ namespace NodaTime.Format
         /// The format will change as you change the format provider of the formatter.
         /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
         /// </remarks>        
-        public static DateTimeFormatter ShortTime
-        {
-            get { return CreateFormatterForStandardPattern('t'); }
-        }
+        public static DateTimeFormatter ShortTime { get { return CreateFormatterForStandardPattern('t'); } }
 
         /// <summary>
         /// Gets a format that outputs a long time pattern
@@ -189,10 +161,7 @@ namespace NodaTime.Format
         /// The format will change as you change the format provider of the formatter.
         /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
         /// </remarks>        
-        public static DateTimeFormatter LongTime
-        {
-            get { return CreateFormatterForStandardPattern('T'); }
-        }
+        public static DateTimeFormatter LongTime { get { return CreateFormatterForStandardPattern('T'); } }
 
         /// <summary>
         /// Gets a format that outputs a year month pattern
@@ -201,11 +170,8 @@ namespace NodaTime.Format
         /// The format will change as you change the format provider of the formatter.
         /// Call <see cref="DateTimeFormatter.WithProvider"/> to switch the format provider.
         /// </remarks>        
-        public static DateTimeFormatter YearMonth
-        {
-            get { return CreateFormatterForStandardPattern('Y'); }
-        }
-        
+        public static DateTimeFormatter YearMonth { get { return CreateFormatterForStandardPattern('Y'); } }
+
         /// <summary>
         /// Factory to create a format from a standard date and time pattern.
         /// </summary>
@@ -292,9 +258,7 @@ namespace NodaTime.Format
                     mapStandardPatternToDateTimeFormatter[standardPattern] = new DateTimeFormatter(standardPatternFormatter, standardPatternFormatter);
                 }
                 return mapStandardPatternToDateTimeFormatter[standardPattern];
-
             }
         }
-
     }
 }

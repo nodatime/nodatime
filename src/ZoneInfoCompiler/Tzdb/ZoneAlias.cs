@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Utility;
 
@@ -26,8 +27,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// <remarks>
     /// Immutable, thread-safe.
     /// </remarks>
-    internal class ZoneAlias
-        : IEquatable<ZoneAlias>
+    internal class ZoneAlias : IEquatable<ZoneAlias>
     {
         private readonly string existing;
         private readonly string alias;
@@ -36,13 +36,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// Gets or sets the existing time zone name.
         /// </summary>
         /// <value>The existing name.</value>
-        internal string Existing { get { return this.existing; } }
+        internal string Existing { get { return existing; } }
 
         /// <summary>
         /// Gets or sets the time zone alias name.
         /// </summary>
         /// <value>The alias name.</value>
-        internal string Alias { get { return this.alias; } }
+        internal string Alias { get { return alias; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneAlias"/> class.
@@ -98,7 +98,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         #region IEquatable<Alias> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -115,7 +114,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
             return Existing == other.Existing && Alias == other.Alias;
         }
-
         #endregion
     }
 }

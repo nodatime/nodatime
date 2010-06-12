@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
 using NodaTime.Calendars;
 using NodaTime.Fields;
 
@@ -30,7 +29,6 @@ namespace NodaTime.Format
     public class DateTimeFormatterBuilder
     {
         #region Private classes
-
         internal class CharacterLiteral : IDateTimePrinter, IDateTimeParser
         {
             private readonly char value;
@@ -42,7 +40,8 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return 1; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
                 writer.Write(value);
             }
@@ -71,7 +70,8 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return value.Length; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
                 writer.Write(value);
             }
@@ -87,7 +87,6 @@ namespace NodaTime.Format
             {
                 return FormatUtils.MatchSubstring(text, position, value);
             }
-
         }
 
         private class TextField : IDateTimePrinter, IDateTimeParser
@@ -103,7 +102,8 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return isShort ? 6 : 20; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
                 try
                 {
@@ -131,8 +131,7 @@ namespace NodaTime.Format
             {
                 IDateTimeField field = fieldType.GetField(calendar);
 
-                return isShort ? field.GetAsShortText(instant, provider)
-                                : field.GetAsText(instant, provider);
+                return isShort ? field.GetAsShortText(instant, provider) : field.GetAsText(instant, provider);
             }
 
             private String Print(IPartial partial, IFormatProvider provider)
@@ -141,8 +140,7 @@ namespace NodaTime.Format
                 {
                     IDateTimeField field = fieldType.GetField(partial.Calendar);
 
-                    return isShort ? field.GetAsShortText(partial, provider)
-                                    : field.GetAsText(partial, provider);
+                    return isShort ? field.GetAsShortText(partial, provider) : field.GetAsText(partial, provider);
                 }
                 else
                 {
@@ -152,7 +150,8 @@ namespace NodaTime.Format
 
             public int EstimatedParsedLength { get { return EstimatedPrintedLength; } }
 
-            private static Dictionary<IFormatProvider, Dictionary<DateTimeFieldType, Object[]>> cParseCache = new Dictionary<IFormatProvider, Dictionary<DateTimeFieldType, Object[]>>();
+            private static readonly Dictionary<IFormatProvider, Dictionary<DateTimeFieldType, Object[]>> cParseCache =
+                new Dictionary<IFormatProvider, Dictionary<DateTimeFieldType, Object[]>>();
 
             public int ParseInto(DateTimeParserBucket bucket, string text, int position)
             {
@@ -161,19 +160,19 @@ namespace NodaTime.Format
                 // bug 1788282
                 Dictionary<string, string> validValues = null;
                 int maxLength = 0;
-                lock (cParseCache) 
+                lock (cParseCache)
                 {
                     var innerMap = cParseCache[provider];
-                    if (innerMap == null) 
+                    if (innerMap == null)
                     {
                         innerMap = new Dictionary<DateTimeFieldType, Object[]>();
                         cParseCache[provider] = innerMap;
                     }
                     var array = innerMap[fieldType];
-                    if (array == null) 
+                    if (array == null)
                     {
                         validValues = new Dictionary<string, string>(32);
-                        
+
                         //TODO: I don't know how to handle this at the moment(Dmitry)
 
                         //ZonedDateTime dt = new ZonedDateTime();
@@ -201,10 +200,10 @@ namespace NodaTime.Format
                         //    validValues.add("ce");
                         //    maxLength = 3;
                         //}
-                        array = new Object[] {validValues, maxLength};
+                        array = new Object[] { validValues, maxLength };
                         innerMap[fieldType] = array;
-                    } 
-                    else 
+                    }
+                    else
                     {
                         validValues = (Dictionary<string, string>)array[0];
                         maxLength = (int)array[1];
@@ -212,21 +211,20 @@ namespace NodaTime.Format
                 }
                 // match the longest string first using our knowledge of the max length
                 int limit = Math.Min(text.Length, position + maxLength);
-                for (int i = limit; i > position; i--) 
+                for (int i = limit; i > position; i--)
                 {
                     String match = text.Substring(position, i);
-                    if (validValues.ContainsKey(match)) 
+                    if (validValues.ContainsKey(match))
                     {
                         bucket.SaveField(fieldType, match, provider);
                         return i;
                     }
                 }
-                return ~position;            
+                return ~position;
             }
-
         }
 
-        private abstract class NumberFormatter:IDateTimeParser
+        private abstract class NumberFormatter : IDateTimeParser
         {
             private readonly DateTimeFieldType fieldType;
             private readonly int maxParsedDigits;
@@ -259,8 +257,7 @@ namespace NodaTime.Format
                         negative = c == '-';
 
                         // Next character must be a digit.
-                        if (length + 1 >= limit ||
-                            (c = text[position + length + 1]) < '0' || c > '9')
+                        if (length + 1 >= limit || (c = text[position + length + 1]) < '0' || c > '9')
                         {
                             break;
                         }
@@ -330,20 +327,19 @@ namespace NodaTime.Format
 
         private class UnpaddedNumber : NumberFormatter, IDateTimePrinter
         {
-            public UnpaddedNumber(DateTimeFieldType fieldType, int maxParsedDigits, bool signed)
-                : base(fieldType, maxParsedDigits, signed)
+            public UnpaddedNumber(DateTimeFieldType fieldType, int maxParsedDigits, bool signed) : base(fieldType, maxParsedDigits, signed)
             {
-
             }
 
             public int EstimatedPrintedLength { get { return MaxParsedDigits; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
                 try
                 {
                     int value = FieldType.GetField(calendarSystem).GetValue(instant);
-                    
+
                     FormatUtils.WriteUnpaddedInteger(writer, value);
                 }
                 catch (SystemException)
@@ -369,16 +365,15 @@ namespace NodaTime.Format
         {
             private readonly int minPrintedDigits;
 
-            public PaddedNumber(DateTimeFieldType fieldType, int maxParsedDigits,
-                int minPrintedDigits, bool signed)
-                : base(fieldType, maxParsedDigits, signed)
+            public PaddedNumber(DateTimeFieldType fieldType, int maxParsedDigits, int minPrintedDigits, bool signed) : base(fieldType, maxParsedDigits, signed)
             {
                 this.minPrintedDigits = minPrintedDigits;
             }
 
             public int EstimatedPrintedLength { get { return MaxParsedDigits; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
                 try
                 {
@@ -402,16 +397,14 @@ namespace NodaTime.Format
                     FormatUtils.WriteUnknownString(writer);
                 }
             }
-
         }
 
         private class FixedNumber : PaddedNumber
         {
-            public FixedNumber(DateTimeFieldType fieldType, int numDigits,bool signed)
-                : base(fieldType, numDigits, numDigits, signed)
+            public FixedNumber(DateTimeFieldType fieldType, int numDigits, bool signed) : base(fieldType, numDigits, numDigits, signed)
             {
-
             }
+
             public override int ParseInto(DateTimeParserBucket bucket, string text, int position)
             {
                 int newPos = base.ParseInto(bucket, text, position);
@@ -443,7 +436,6 @@ namespace NodaTime.Format
                 }
                 return newPos;
             }
-
         }
 
         private class TwoDigitYear : IDateTimePrinter, IDateTimeParser
@@ -461,7 +453,8 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return 2; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
                 int year = GetTwoDigitYear(instant, calendarSystem);
                 WriteYear(writer, year);
@@ -503,7 +496,9 @@ namespace NodaTime.Format
                         }
                         return year % 100;
                     }
-                    catch (SystemException) { }
+                    catch (SystemException)
+                    {
+                    }
                 }
                 return -1;
             }
@@ -519,7 +514,6 @@ namespace NodaTime.Format
                 {
                     FormatUtils.WritePaddedInteger(writer, year, 2);
                 }
-
             }
 
             public int EstimatedParsedLength { get { return lenient ? 4 : 2; } }
@@ -650,7 +644,6 @@ namespace NodaTime.Format
                 bucket.SaveField(fieldType, year);
                 return position + 2;
             }
-
         }
 
         private class Fraction : IDateTimePrinter, IDateTimeParser
@@ -673,9 +666,10 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return maxDigits; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
-                Print(writer, instant, calendarSystem);            
+                Print(writer, instant, calendarSystem);
             }
 
             public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
@@ -692,19 +686,19 @@ namespace NodaTime.Format
                 int minDigitsLocal = minDigits;
 
                 Duration fraction;
-                try 
+                try
                 {
                     fraction = field.Remainder(instant);
-                } 
-                catch (SystemException) 
+                }
+                catch (SystemException)
                 {
                     FormatUtils.WriteUnknownString(writer, minDigits);
                     return;
                 }
 
-                if (fraction == Duration.Zero) 
+                if (fraction == Duration.Zero)
                 {
-                    while (--minDigitsLocal >= 0) 
+                    while (--minDigitsLocal >= 0)
                     {
                         writer.Write('0');
                     }
@@ -715,39 +709,39 @@ namespace NodaTime.Format
                 Duration scaled;
                 int maxDigits;
                 GetFractionData(fraction, field, out scaled, out maxDigits);
-            
+
                 String str = scaled.Ticks.ToString();
 
                 int length = str.Length;
                 int digits = maxDigits;
-                while (length < digits) 
+                while (length < digits)
                 {
                     writer.Write('0');
                     minDigitsLocal--;
                     digits--;
                 }
 
-                if (minDigitsLocal < digits) 
+                if (minDigitsLocal < digits)
                 {
                     // Chop off as many trailing zero digits as necessary.
-                    while (minDigitsLocal < digits) 
+                    while (minDigitsLocal < digits)
                     {
-                        if (length <= 1 || str[length - 1] != '0') 
+                        if (length <= 1 || str[length - 1] != '0')
                         {
                             break;
                         }
                         digits--;
                         length--;
                     }
-                    if (length < str.Length) 
+                    if (length < str.Length)
                     {
-                        for (int i=0; i<length; i++) 
+                        for (int i = 0; i < length; i++)
                         {
                             writer.Write(str[i]);
                         }
                     }
                     return;
-                }            
+                }
                 writer.Write(str);
             }
 
@@ -760,25 +754,63 @@ namespace NodaTime.Format
                 {
                     switch (maxDigitsLocal)
                     {
-                        default: scalar = 1L; break;
-                        case 1: scalar = 10L; break;
-                        case 2: scalar = 100L; break;
-                        case 3: scalar = 1000L; break;
-                        case 4: scalar = 10000L; break;
-                        case 5: scalar = 100000L; break;
-                        case 6: scalar = 1000000L; break;
-                        case 7: scalar = 10000000L; break;
-                        case 8: scalar = 100000000L; break;
-                        case 9: scalar = 1000000000L; break;
-                        case 10: scalar = 10000000000L; break;
-                        case 11: scalar = 100000000000L; break;
-                        case 12: scalar = 1000000000000L; break;
-                        case 13: scalar = 10000000000000L; break;
-                        case 14: scalar = 100000000000000L; break;
-                        case 15: scalar = 1000000000000000L; break;
-                        case 16: scalar = 10000000000000000L; break;
-                        case 17: scalar = 100000000000000000L; break;
-                        case 18: scalar = 1000000000000000000L; break;
+                        default:
+                            scalar = 1L;
+                            break;
+                        case 1:
+                            scalar = 10L;
+                            break;
+                        case 2:
+                            scalar = 100L;
+                            break;
+                        case 3:
+                            scalar = 1000L;
+                            break;
+                        case 4:
+                            scalar = 10000L;
+                            break;
+                        case 5:
+                            scalar = 100000L;
+                            break;
+                        case 6:
+                            scalar = 1000000L;
+                            break;
+                        case 7:
+                            scalar = 10000000L;
+                            break;
+                        case 8:
+                            scalar = 100000000L;
+                            break;
+                        case 9:
+                            scalar = 1000000000L;
+                            break;
+                        case 10:
+                            scalar = 10000000000L;
+                            break;
+                        case 11:
+                            scalar = 100000000000L;
+                            break;
+                        case 12:
+                            scalar = 1000000000000L;
+                            break;
+                        case 13:
+                            scalar = 10000000000000L;
+                            break;
+                        case 14:
+                            scalar = 100000000000000L;
+                            break;
+                        case 15:
+                            scalar = 1000000000000000L;
+                            break;
+                        case 16:
+                            scalar = 10000000000000000L;
+                            break;
+                        case 17:
+                            scalar = 100000000000000000L;
+                            break;
+                        case 18:
+                            scalar = 1000000000000000000L;
+                            break;
                     }
                     if (((rangeMillis * scalar) / scalar) == rangeMillis)
                     {
@@ -830,10 +862,8 @@ namespace NodaTime.Format
                     return ~position;
                 }
 
-                IDateTimeField parseField = new PreciseDateTimeField(
-                    DateTimeFieldType.MillisecondOfSecond,
-                    PreciseDurationField.Milliseconds,
-                    field.DurationField);
+                IDateTimeField parseField = new PreciseDateTimeField(DateTimeFieldType.MillisecondOfSecond, PreciseDurationField.Milliseconds,
+                                                                     field.DurationField);
 
                 bucket.SaveField(parseField, (int)value);
 
@@ -849,7 +879,7 @@ namespace NodaTime.Format
             public MatchingParser(IDateTimeParser[] parsers)
             {
                 int parsedLengthEstimate = 0;
-                for (int i = parsers.Length; --i >= 0; )
+                for (int i = parsers.Length; --i >= 0;)
                 {
                     IDateTimeParser parser = parsers[i];
                     if (parser != null)
@@ -880,62 +910,60 @@ namespace NodaTime.Format
 
                 int bestInvalidPos = position;
 
-                for (int i=0; i<length; i++) 
+                for (int i = 0; i < length; i++)
                 {
                     IDateTimeParser parser = parsersLocal[i];
-                    if (parser == null) 
+                    if (parser == null)
                     {
                         // The empty parser wins only if nothing is better.
-                        if (bestValidPos <= position) 
+                        if (bestValidPos <= position)
                         {
                             return position;
                         }
-                    isOptional = true;
-                    break;
-                }
-                int parsePos = parser.ParseInto(bucket, text, position);
-                if (parsePos >= position) 
-                {
-                    if (parsePos > bestValidPos) 
-                    {
-                        if (parsePos >= text.Length ||
-                            (i + 1) >= length || parsers[i + 1] == null) 
-                        {
-                            // Completely parsed text or no more parsers to
-                            // check. Skip the rest.
-                            return parsePos;
-                        }
-                        bestValidPos = parsePos;
-                        bestValidState = bucket.SaveState();
+                        isOptional = true;
+                        break;
                     }
-                } 
-                else 
-                {
-                    if (parsePos < 0) 
+                    int parsePos = parser.ParseInto(bucket, text, position);
+                    if (parsePos >= position)
                     {
-                        parsePos = ~parsePos;
-                        if (parsePos > bestInvalidPos) 
+                        if (parsePos > bestValidPos)
                         {
-                            bestInvalidPos = parsePos;
+                            if (parsePos >= text.Length || (i + 1) >= length || parsers[i + 1] == null)
+                            {
+                                // Completely parsed text or no more parsers to
+                                // check. Skip the rest.
+                                return parsePos;
+                            }
+                            bestValidPos = parsePos;
+                            bestValidState = bucket.SaveState();
                         }
                     }
+                    else
+                    {
+                        if (parsePos < 0)
+                        {
+                            parsePos = ~parsePos;
+                            if (parsePos > bestInvalidPos)
+                            {
+                                bestInvalidPos = parsePos;
+                            }
+                        }
+                    }
+                    bucket.RestoreState(originalState);
                 }
-                bucket.RestoreState(originalState);
-            }
 
-            if (bestValidPos > position || (bestValidPos == position && isOptional)) 
-            {
-                // Restore the state to the best valid parse.
-                if (bestValidState != null) 
+                if (bestValidPos > position || (bestValidPos == position && isOptional))
                 {
-                    bucket.RestoreState(bestValidState);
+                    // Restore the state to the best valid parse.
+                    if (bestValidState != null)
+                    {
+                        bucket.RestoreState(bestValidState);
+                    }
+                    return bestValidPos;
                 }
-                return bestValidPos;
-            }
 
-            return ~bestInvalidPos;
+                return ~bestInvalidPos;
             }
-
         }
 
         private enum TimeZoneNamePrintKind
@@ -954,12 +982,10 @@ namespace NodaTime.Format
                 this.printKind = printKind;
             }
 
-            public int EstimatedPrintedLength 
-            { 
-                get { return printKind == TimeZoneNamePrintKind.ShortName ? 4 : 20; } 
-            }
+            public int EstimatedPrintedLength { get { return printKind == TimeZoneNamePrintKind.ShortName ? 4 : 20; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
                 writer.Write(Print(instant - timezoneOffset, dateTimeZone, provider));
             }
@@ -971,10 +997,9 @@ namespace NodaTime.Format
 
             private String Print(Instant instant, IDateTimeZone displayZone, IFormatProvider provider)
             {
-
                 if (displayZone == null)
                 {
-                    return "";  // no zone
+                    return ""; // no zone
                 }
                 //TODO: can't be ported until the required changes in timezone API
                 //switch (printKind)
@@ -997,8 +1022,7 @@ namespace NodaTime.Format
             private readonly int minFields;
             private readonly int maxFields;
 
-            public TimeZoneOffset(string zeroOffsetText, bool showSeparators,
-                int minFields, int maxFields)
+            public TimeZoneOffset(string zeroOffsetText, bool showSeparators, int minFields, int maxFields)
             {
                 this.zeroOffsetText = zeroOffsetText;
                 this.showSeparators = showSeparators;
@@ -1013,12 +1037,11 @@ namespace NodaTime.Format
 
                 this.minFields = minFields;
                 this.maxFields = maxFields;
-
             }
 
-            public int EstimatedPrintedLength 
-            { 
-                get 
+            public int EstimatedPrintedLength
+            {
+                get
                 {
                     int est = 1 + minFields << 1;
                     if (showSeparators)
@@ -1030,14 +1053,15 @@ namespace NodaTime.Format
                         est = zeroOffsetText.Length;
                     }
                     return est;
-                } 
+                }
             }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
                 if (dateTimeZone == null)
                 {
-                    return;  
+                    return;
                 }
 
                 if (timezoneOffset == Offset.Zero && zeroOffsetText != null)
@@ -1118,15 +1142,15 @@ namespace NodaTime.Format
                 int limit = text.Length - position;
 
                 zeroOffset:
-                if (zeroOffsetText != null) 
+                if (zeroOffsetText != null)
                 {
-                    if (zeroOffsetText.Length == 0) 
+                    if (zeroOffsetText.Length == 0)
                     {
                         // Peek ahead, looking for sign character.
-                        if (limit > 0) 
+                        if (limit > 0)
                         {
                             char c = text[position];
-                            if (c == '-' || c == '+') 
+                            if (c == '-' || c == '+')
                             {
                                 goto zeroOffset;
                             }
@@ -1134,7 +1158,7 @@ namespace NodaTime.Format
                         bucket.Offset = Offset.Zero;
                         return position;
                     }
-                    if (FormatUtils.MatchSubstring(text,position, zeroOffsetText) > 0)
+                    if (FormatUtils.MatchSubstring(text, position, zeroOffsetText) > 0)
                     {
                         bucket.Offset = Offset.Zero;
                         return position + zeroOffsetText.Length;
@@ -1143,22 +1167,22 @@ namespace NodaTime.Format
 
                 // Format to expect is sign character followed by at least one digit.
 
-                if (limit <= 1) 
+                if (limit <= 1)
                 {
                     return ~position;
                 }
 
                 bool negative;
                 char cr = text[position];
-                if (cr == '-') 
+                if (cr == '-')
                 {
                     negative = true;
-                } 
-                else if (cr == '+') 
+                }
+                else if (cr == '+')
                 {
                     negative = false;
-                } 
-                else 
+                }
+                else
                 {
                     return ~position;
                 }
@@ -1178,7 +1202,7 @@ namespace NodaTime.Format
 
                 // First parse hours.
 
-                if (DigitCount(text, position, 2) < 2) 
+                if (DigitCount(text, position, 2) < 2)
                 {
                     // Need two digits for hour.
                     return ~position;
@@ -1187,7 +1211,7 @@ namespace NodaTime.Format
                 int offset;
 
                 int hours = FormatUtils.ParseTwoDigits(text, position);
-                if (hours > 23) 
+                if (hours > 23)
                 {
                     return ~position;
                 }
@@ -1196,29 +1220,29 @@ namespace NodaTime.Format
                 limit -= 2;
                 position += 2;
 
-                parse: 
-                    {
+                parse:
+                {
                     // Need to decide now if separators are expected or parsing
                     // stops at hour field.
 
-                    if (limit <= 0) 
+                    if (limit <= 0)
                     {
                         goto parse;
                     }
 
                     bool expectSeparators;
                     cr = text[position];
-                    if (cr == ':') 
+                    if (cr == ':')
                     {
                         expectSeparators = true;
                         limit--;
                         position++;
-                    } 
-                    else if (cr >= '0' && cr <= '9') 
+                    }
+                    else if (cr >= '0' && cr <= '9')
                     {
                         expectSeparators = false;
-                    } 
-                    else 
+                    }
+                    else
                     {
                         goto parse;
                     }
@@ -1226,18 +1250,18 @@ namespace NodaTime.Format
                     // Proceed to parse minutes.
 
                     int count = DigitCount(text, position, 2);
-                    if (count == 0 && !expectSeparators) 
+                    if (count == 0 && !expectSeparators)
                     {
                         goto parse;
-                    } 
-                    else if (count < 2) 
+                    }
+                    else if (count < 2)
                     {
                         // Need two digits for minute.
                         return ~position;
                     }
 
                     int minutes = FormatUtils.ParseTwoDigits(text, position);
-                    if (minutes > 59) 
+                    if (minutes > 59)
                     {
                         return ~position;
                     }
@@ -1247,14 +1271,14 @@ namespace NodaTime.Format
 
                     // Proceed to parse seconds.
 
-                    if (limit <= 0) 
+                    if (limit <= 0)
                     {
                         goto parse;
                     }
 
-                    if (expectSeparators) 
+                    if (expectSeparators)
                     {
-                        if (text[position] != ':') 
+                        if (text[position] != ':')
                         {
                             goto parse;
                         }
@@ -1263,18 +1287,18 @@ namespace NodaTime.Format
                     }
 
                     count = DigitCount(text, position, 2);
-                    if (count == 0 && !expectSeparators) 
+                    if (count == 0 && !expectSeparators)
                     {
                         goto parse;
-                    } 
-                    else if (count < 2) 
+                    }
+                    else if (count < 2)
                     {
                         // Need two digits for second.
                         return ~position;
                     }
 
                     int seconds = FormatUtils.ParseTwoDigits(text, position);
-                    if (seconds > 59) 
+                    if (seconds > 59)
                     {
                         return ~position;
                     }
@@ -1284,36 +1308,38 @@ namespace NodaTime.Format
 
                     // Proceed to parse fraction of second.
 
-                    if (limit <= 0) 
+                    if (limit <= 0)
                     {
                         goto parse;
                     }
 
-                    if (expectSeparators) 
+                    if (expectSeparators)
                     {
-                        if (text[position] != '.' && text[position] != ',') 
+                        if (text[position] != '.' && text[position] != ',')
                         {
                             goto parse;
                         }
                         limit--;
                         position++;
                     }
-                    
+
                     count = DigitCount(text, position, 3);
-                    if (count == 0 && !expectSeparators) 
+                    if (count == 0 && !expectSeparators)
                     {
                         goto parse;
-                    } 
-                    else if (count < 1) 
+                    }
+                    else if (count < 1)
                     {
                         // Need at least one digit for fraction of second.
                         return ~position;
                     }
 
                     offset += (text[position++] - '0') * 100;
-                    if (count > 1) {
+                    if (count > 1)
+                    {
                         offset += (text[position++] - '0') * 10;
-                        if (count > 2) {
+                        if (count > 2)
+                        {
                             offset += text[position++] - '0';
                         }
                     }
@@ -1338,7 +1364,6 @@ namespace NodaTime.Format
                 }
                 return amount;
             }
-
         }
 
         private class Composite : IDateTimePrinter, IDateTimeParser
@@ -1397,7 +1422,8 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return printedLengthEstimate; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+                                IFormatProvider provider)
             {
                 IDateTimePrinter[] elements = printers;
                 if (elements == null)
@@ -1445,42 +1471,36 @@ namespace NodaTime.Format
                 return position;
             }
 
-            public bool IsPrinter
-            {
-                get { return printers != null; }
-            }
+            public bool IsPrinter { get { return printers != null; } }
 
-            public bool IsParser
-            {
-                get { return parsers != null; }
-            }
+            public bool IsParser { get { return parsers != null; } }
 
             private static void Decompose(List<object> elementPairs, List<IDateTimePrinter> printers, List<IDateTimeParser> parsers)
             {
                 int size = elementPairs.Count;
-                for (int i=0; i<size; i+=2) 
+                for (int i = 0; i < size; i += 2)
                 {
                     var element = elementPairs[i];
-                    if (element is IDateTimePrinter) 
+                    if (element is IDateTimePrinter)
                     {
-                        if (element is Composite) 
+                        if (element is Composite)
                         {
                             printers.AddRange(((Composite)element).printers);
-                        } 
-                        else 
+                        }
+                        else
                         {
                             printers.Add(element as IDateTimePrinter);
                         }
                     }
 
                     element = elementPairs[i + 1];
-                    if (element is IDateTimeParser) 
+                    if (element is IDateTimeParser)
                     {
-                        if (element is Composite) 
+                        if (element is Composite)
                         {
                             parsers.AddRange(((Composite)element).parsers);
-                        } 
-                        else 
+                        }
+                        else
                         {
                             parsers.Add(element as IDateTimeParser);
                         }
@@ -1488,18 +1508,10 @@ namespace NodaTime.Format
                 }
             }
         }
-
         #endregion
 
         private readonly List<object> elementPairs = new List<object>();
         private object formatter;
-
-        /// <summary>
-        /// Initializes a new instance.
-        /// </summary>
-        public DateTimeFormatterBuilder()
-        {
-        }
 
         /// <summary>
         /// Clears out all the appended elements, allowing this builder to be
@@ -1512,7 +1524,6 @@ namespace NodaTime.Format
         }
 
         #region Append
-
         private DateTimeFormatterBuilder AppendObject(object @object)
         {
             elementPairs.Add(@object);
@@ -1538,7 +1549,6 @@ namespace NodaTime.Format
             Guard(formatter);
 
             return AppendPair(formatter.Printer, formatter.Parser);
-
         }
 
         /// <summary>
@@ -1554,7 +1564,6 @@ namespace NodaTime.Format
             Guard(parser);
 
             return AppendPair(printer, parser);
-
         }
 
         /// <summary>
@@ -1644,12 +1653,11 @@ namespace NodaTime.Format
         public DateTimeFormatterBuilder AppendOptional(IDateTimeParser parser)
         {
             Guard(parser);
-            IDateTimeParser[] parsers = new IDateTimeParser[] { parser, null };
+            IDateTimeParser[] parsers = new[] { parser, null };
             return AppendPair(null, new MatchingParser(parsers));
         }
 
         #region Literal, Text
-
         /// <summary>
         /// Instructs the printer to emit a specific character, and the parser to
         /// expect it. The parser is case-insensitive.
@@ -1675,8 +1683,7 @@ namespace NodaTime.Format
                 throw new ArgumentNullException("text");
             }
 
-            return text.Length == 1 ? AppendObject(new CharacterLiteral(text[0]))
-                : AppendObject(new StringLiteral(text));
+            return text.Length == 1 ? AppendObject(new CharacterLiteral(text[0])) : AppendObject(new StringLiteral(text));
         }
 
         /// <summary>
@@ -1770,11 +1777,9 @@ namespace NodaTime.Format
         {
             return AppendText(DateTimeFieldType.DayOfWeek);
         }
-
         #endregion
 
         #region Decimal fields
-
         /// <summary>
         /// Instructs the printer to emit a field value as a decimal number, and the
         /// parser to expect an unsigned decimal number.
@@ -1789,7 +1794,7 @@ namespace NodaTime.Format
         public DateTimeFormatterBuilder AppendDecimal(DateTimeFieldType fieldType, int minDigits, int maxDigits)
         {
             Guard(fieldType);
-                
+
             if (minDigits < 0 || maxDigits <= 0)
             {
                 throw new ArgumentException();
@@ -1800,8 +1805,9 @@ namespace NodaTime.Format
                 maxDigits = minDigits;
             }
 
-            return minDigits <= 1 ? AppendObject(new UnpaddedNumber(fieldType, maxDigits, false))
-                                : AppendObject(new PaddedNumber(fieldType, maxDigits, minDigits, false));
+            return minDigits <= 1
+                       ? AppendObject(new UnpaddedNumber(fieldType, maxDigits, false))
+                       : AppendObject(new PaddedNumber(fieldType, maxDigits, minDigits, false));
         }
 
         /// <summary>
@@ -2096,12 +2102,10 @@ namespace NodaTime.Format
         public DateTimeFormatterBuilder AppendMillisecondsOfSecond(int minDigits)
         {
             return AppendDecimal(DateTimeFieldType.MillisecondOfSecond, minDigits, 3);
-        }     
-
+        }
         #endregion
 
         #region Two digit year
-
         /// <summary>
         /// Instructs the printer to emit a numeric year field which always prints
         /// two digits.
@@ -2187,11 +2191,9 @@ namespace NodaTime.Format
         {
             return AppendTwoDigitWeekYear(pivot, false);
         }
-
         #endregion
 
         #region Fraction
-
         /// <summary>
         /// Instructs the printer to emit a remainder of time as a decimal fraction, sans decimal point.
         /// </summary>
@@ -2215,7 +2217,7 @@ namespace NodaTime.Format
             if (minDigits < 0 || maxDigits <= 0)
             {
                 throw new ArgumentException();
-            } 
+            }
 
             return AppendObject(new Fraction(fieldType, minDigits, maxDigits));
         }
@@ -2227,7 +2229,7 @@ namespace NodaTime.Format
         /// <param name="maxDigits">Maximum number of digits to print or parse</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
         public DateTimeFormatterBuilder AppendFractionOfSecond(int minDigits, int maxDigits)
-        {          
+        {
             return AppendFraction(DateTimeFieldType.SecondOfDay, minDigits, maxDigits);
         }
 
@@ -2263,11 +2265,9 @@ namespace NodaTime.Format
         {
             return AppendFraction(DateTimeFieldType.DayOfYear, minDigits, maxDigits);
         }
-
         #endregion
 
         #region TimeZone
-
         /// <summary>
         /// Instructs the printer to emit a locale-specific time zone name. 
         /// A parser cannot be created from this builder 
@@ -2313,19 +2313,15 @@ namespace NodaTime.Format
         /// more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction</param>
         /// <param name="maxFields">Maximum number of fields to print</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendTimeZoneOffset(String zeroOffsetText, bool showSeparators,
-                        int minFields, int maxFields)
+        public DateTimeFormatterBuilder AppendTimeZoneOffset(String zeroOffsetText, bool showSeparators, int minFields, int maxFields)
         {
-            return AppendObject(new TimeZoneOffset
-                           (zeroOffsetText, showSeparators, minFields, maxFields));
+            return AppendObject(new TimeZoneOffset(zeroOffsetText, showSeparators, minFields, maxFields));
         }
-
         #endregion
 
         #endregion
 
         #region Composition
-
         /// <summary>
         /// Returns true if toPrinter can be called without throwing an
         /// NotSupportedException.
@@ -2406,7 +2402,6 @@ namespace NodaTime.Format
                 return (IDateTimeParser)f;
             }
             throw new NotSupportedException("Parsing is not supported");
-
         }
 
         /// <summary>
@@ -2514,11 +2509,9 @@ namespace NodaTime.Format
 
             return f;
         }
-
         #endregion
 
         #region Guards
-
         private static void Guard(DateTimeFieldType fieldType)
         {
             if (fieldType == null)
@@ -2558,7 +2551,6 @@ namespace NodaTime.Format
                 throw new ArgumentNullException("parsers");
             }
         }
-
         #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
@@ -28,7 +29,7 @@ namespace NodaTime.Test
     [TestFixture]
     public class ZonedDateTimeTest
     {
-        private static IDateTimeZone Pacific = DateTimeZones.ForId("America/Los_Angeles");
+        private static readonly IDateTimeZone Pacific = DateTimeZones.ForId("America/Los_Angeles");
 
         [Test]
         public void Constructor_SpecifyingDateAndTimeToMinutesInWinter()

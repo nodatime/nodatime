@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Clocks
@@ -25,8 +26,7 @@ namespace NodaTime.Clocks
     /// <remarks>
     /// This is used for testing where having a known value simplfies the tests.
     /// </remarks>
-    public sealed class FixedClock
-        : IClock, IDisposable
+    public sealed class FixedClock : IClock, IDisposable
     {
         /// <summary>
         /// The original <see cref="IClock"/>.
@@ -67,20 +67,14 @@ namespace NodaTime.Clocks
         }
 
         #region IClock Members
-
         /// <summary>
         /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
         /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
-        public Instant Now
-        {
-            get { return instant; }
-        }
-
+        public Instant Now { get { return instant; } }
         #endregion
 
         #region IDisposable Members
-
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting
         /// unmanaged resources.
@@ -92,7 +86,6 @@ namespace NodaTime.Clocks
         {
             Clock.Current = original;
         }
-
         #endregion
     }
 }

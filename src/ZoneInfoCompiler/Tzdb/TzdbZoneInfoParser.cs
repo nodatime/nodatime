@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -49,36 +47,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// always the short name in US English. Extra blank name at the beginning helps
         /// to make the indexes to come out right.
         /// </summary>
-        public static readonly string[] Months = {
-                                                     "",
-                                                     "Jan",
-                                                     "Feb",
-                                                     "Mar",
-                                                     "Apr",
-                                                     "May",
-                                                     "Jun",
-                                                     "Jul",
-                                                     "Aug",
-                                                     "Sep",
-                                                     "Oct",
-                                                     "Nov",
-                                                     "Dec"
-                                                 };
+        public static readonly string[] Months = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
         /// <summary>
         /// The days of the week names as they appear in the TZDB zone files. They are
         /// always the short name in US English.
         /// </summary>
-        public static readonly string[] DaysOfWeek = {
-                                                         "",
-                                                         "Mon",
-                                                         "Tue",
-                                                         "Wed",
-                                                         "Thu",
-                                                         "Fri",
-                                                         "Sat",
-                                                         "Sun"
-                                                     };
+        public static readonly string[] DaysOfWeek = { "", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbZoneInfoParser"/> class.
@@ -252,8 +227,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             int toYear = NextYear(tokens, "ToYear", fromYear);
             if (toYear < fromYear)
             {
-                throw new ArgumentException("To year cannot be before the from year in a Rule: " + toYear + " < " +
-                                            fromYear);
+                throw new ArgumentException("To year cannot be before the from year in a Rule: " + toYear + " < " + fromYear);
             }
             /* string type = */
             NextOptional(tokens, "Type");
@@ -356,7 +330,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             int monthOfYear = NextMonth(tokens, "Until Month", NodaConstants.January);
             int dayOfMonth = NextInteger(tokens, "Until Day", 1);
             Offset tickOfDay = Offset.Zero;
-            char zoneCharacter = (char) 0;
+            char zoneCharacter = (char)0;
             string untilTime = NextString(tokens, "Until Time", null);
             if (!string.IsNullOrEmpty(untilTime))
             {
@@ -547,16 +521,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         #region Nested type: ParseException
-
         /// <summary>
         /// Private exception to use to end the parsing of a line and return to the top level.
         /// This should NEVER propagate out of this file. Must be internal so the tests can see it.
         /// </summary>
-        internal class ParseException
-            : Exception
+        internal class ParseException : Exception
         {
         }
-
         #endregion
     }
 }

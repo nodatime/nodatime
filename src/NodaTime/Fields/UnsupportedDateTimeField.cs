@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -50,14 +51,13 @@ namespace NodaTime.Fields
             lock (cacheLock)
             {
                 UnsupportedDateTimeField cached = cache[fieldType.Ordinal];
-                if (cached == null || !object.ReferenceEquals(cached.DurationField, durationField))
+                if (cached == null || !ReferenceEquals(cached.DurationField, durationField))
                 {
                     cached = new UnsupportedDateTimeField(fieldType, durationField);
                     cache[fieldType.Ordinal] = cached;
                 }
                 return cached;
             }
-            
         }
 
         private UnsupportedDateTimeField(DateTimeFieldType fieldType, IDurationField durationField)
@@ -71,7 +71,7 @@ namespace NodaTime.Fields
         public string Name { get { return FieldType.ToString(); } }
 
         public IDurationField DurationField { get { return durationField; } }
-        
+
         public IDurationField RangeDurationField { get { return null; } }
 
         public IDurationField LeapDurationField { get { return null; } }
@@ -185,7 +185,6 @@ namespace NodaTime.Fields
             throw new NotImplementedException();
         }
 
-
         public long GetMaximumValue(IPartial instant)
         {
             throw new NotImplementedException();
@@ -195,7 +194,6 @@ namespace NodaTime.Fields
         {
             throw new NotImplementedException();
         }
-
 
         public string GetAsText(LocalInstant localInstant, IFormatProvider provider)
         {
@@ -247,7 +245,6 @@ namespace NodaTime.Fields
             throw new NotImplementedException();
         }
 
-
         public int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
         {
             throw new NotImplementedException();
@@ -263,12 +260,10 @@ namespace NodaTime.Fields
             throw new NotImplementedException();
         }
 
-
         public LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             throw new NotImplementedException();
         }
-
 
         public LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
         {
@@ -284,9 +279,6 @@ namespace NodaTime.Fields
         {
             throw new NotImplementedException();
         }
-
-
-
 
         public int GetMaximumTextLength(IFormatProvider provider)
         {

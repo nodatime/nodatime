@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -86,10 +84,10 @@ namespace NodaTime.TimeZones
             {
                 throw new InvalidOperationException(@"Unknown IDateTimeZone type: " + className);
             }
-            var method = type.GetMethod("Read", new[] {typeof (DateTimeZoneReader), typeof (string)});
+            var method = type.GetMethod("Read", new[] { typeof(DateTimeZoneReader), typeof(string) });
             if (method != null)
             {
-                return method.Invoke(null, new object[] {this, id}) as IDateTimeZone;
+                return method.Invoke(null, new object[] { this, id }) as IDateTimeZone;
             }
             return null;
         }
@@ -115,7 +113,7 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                byte flag = (byte) ReadByte();
+                byte flag = (byte)ReadByte();
                 if (flag == DateTimeZoneWriter.FlagMinValue)
                 {
                     return Int64.MinValue;
@@ -144,7 +142,7 @@ namespace NodaTime.TimeZones
                 if ((flag & 0xc0) == DateTimeZoneWriter.FlagSeconds)
                 {
                     long first = flag & ~0xc0;
-                    long second = this.ReadInt32() & 0xffffffffL;
+                    long second = ReadInt32() & 0xffffffffL;
 
                     long units = (first << 32) + second;
                     units = units - DateTimeZoneWriter.MaxSeconds;
@@ -173,7 +171,7 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                byte flag = (byte) ReadByte();
+                byte flag = (byte)ReadByte();
                 if (flag == DateTimeZoneWriter.FlagMinValue)
                 {
                     return Int32.MinValue;
@@ -209,7 +207,7 @@ namespace NodaTime.TimeZones
         public IDictionary<string, string> ReadDictionary()
         {
             IDictionary<string, string> results = new Dictionary<string, string>();
-            int count = this.ReadCount();
+            int count = ReadCount();
             for (int i = 0; i < count; i++)
             {
                 var key = ReadString();
@@ -224,7 +222,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         public Offset ReadOffset()
         {
-            int milliseconds = this.ReadMilliseconds();
+            int milliseconds = ReadMilliseconds();
             return new Offset(milliseconds);
         }
 
@@ -233,7 +231,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         public Instant ReadInstant()
         {
-            long ticks = this.ReadTicks();
+            long ticks = ReadTicks();
             return new Instant(ticks);
         }
 
@@ -242,7 +240,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         public LocalInstant ReadLocalInstant()
         {
-            long ticks = this.ReadTicks();
+            long ticks = ReadTicks();
             return new LocalInstant(ticks);
         }
 
@@ -264,7 +262,7 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                byte flag = (byte) ReadByte();
+                byte flag = (byte)ReadByte();
                 if (flag == 0xff)
                 {
                     return ReadInt32();
@@ -335,7 +333,7 @@ namespace NodaTime.TimeZones
 
         public int ReadByte()
         {
-            return this.stream.ReadByte();
+            return stream.ReadByte();
         }
 
         /// <summary>
@@ -343,7 +341,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         public string ReadString()
         {
-            int length = this.ReadCount();
+            int length = ReadCount();
             var data = new byte[length];
             stream.Read(data, 0, length);
             return Encoding.UTF8.GetString(data);

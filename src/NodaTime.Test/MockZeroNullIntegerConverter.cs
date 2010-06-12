@@ -14,8 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
 
+using System;
 using NodaTime.Converters;
 using NodaTime.Format;
 

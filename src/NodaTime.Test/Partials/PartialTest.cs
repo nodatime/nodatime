@@ -1,7 +1,6 @@
 #region Copyright and license information
-
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,16 +13,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
-
 using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Partials;
 using NodaTime.Periods;
-
 using NUnit.Framework;
 
 namespace NodaTime.Test.Partials
@@ -420,7 +416,7 @@ namespace NodaTime.Test.Partials
             Partial fiveToTen = twentyPastTen.WithFieldAdded(DurationFieldType.Minutes, -25);
             AssertHourMinute(9, 55, fiveToTen);
         }
-        
+
         [Test]
         public void WithFieldAddWrapped_SupportedField()
         {

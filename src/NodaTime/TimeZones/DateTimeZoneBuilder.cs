@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -111,12 +109,7 @@ namespace NodaTime.TimeZones
         /// advance to dayOfWeek when true, otherwise retreat to dayOfWeek when true.</param>
         /// <param name="tickOfDay">The <see cref="Duration"/> into the day. Additional precision for specifying time of day of transitions</param>
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
-        public DateTimeZoneBuilder AddCutover(int year,
-                                              TransitionMode mode,
-                                              int monthOfYear,
-                                              int dayOfMonth,
-                                              int dayOfWeek,
-                                              bool advanceDayOfWeek,
+        public DateTimeZoneBuilder AddCutover(int year, TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advanceDayOfWeek,
                                               Offset tickOfDay)
         {
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
@@ -127,8 +120,7 @@ namespace NodaTime.TimeZones
             }
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
 
-            return AddCutover(year,
-                              new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay));
+            return AddCutover(year, new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay));
         }
 
         /// <summary>
@@ -205,16 +197,8 @@ namespace NodaTime.TimeZones
         /// advance to dayOfWeek when true, otherwise retreat to dayOfWeek when true.</param>
         /// <param name="tickOfDay">The <see cref="Duration"/> into the day. Additional precision for specifying time of day of transitions</param>
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
-        public DateTimeZoneBuilder AddRecurringSavings(String nameKey,
-                                                       Offset savings,
-                                                       int fromYear,
-                                                       int toYear,
-                                                       TransitionMode mode,
-                                                       int monthOfYear,
-                                                       int dayOfMonth,
-                                                       int dayOfWeek,
-                                                       bool advanceDayOfWeek,
-                                                       Offset tickOfDay)
+        public DateTimeZoneBuilder AddRecurringSavings(String nameKey, Offset savings, int fromYear, int toYear, TransitionMode mode, int monthOfYear,
+                                                       int dayOfMonth, int dayOfWeek, bool advanceDayOfWeek, Offset tickOfDay)
         {
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
@@ -236,11 +220,7 @@ namespace NodaTime.TimeZones
         /// <param name="toYear">Last year (inclusive) that rule is in effect. <see cref="Int32.MaxValue"/> indicates end of time.</param>
         /// <param name="yearOffset">The offset into the year.</param>
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns> 
-        public DateTimeZoneBuilder AddRecurringSavings(String nameKey,
-                                                       Offset savings,
-                                                       int fromYear,
-                                                       int toYear,
-                                                       ZoneYearOffset yearOffset)
+        public DateTimeZoneBuilder AddRecurringSavings(String nameKey, Offset savings, int fromYear, int toYear, ZoneYearOffset yearOffset)
         {
             if (yearOffset == null)
             {
@@ -289,10 +269,10 @@ namespace NodaTime.TimeZones
             Instant instant = Instant.MinValue;
 
             ZoneTransition nextTransition = null;
-            int ruleSetCount = this.ruleSets.Count;
+            int ruleSetCount = ruleSets.Count;
             for (int i = 0; i < ruleSetCount; i++)
             {
-                var ruleSet = this.ruleSets[i];
+                var ruleSet = ruleSets[i];
                 var transitionIterator = ruleSet.Iterator(instant);
                 nextTransition = transitionIterator.First();
                 if (nextTransition == null)

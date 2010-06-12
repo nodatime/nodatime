@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -16,7 +16,6 @@
 #endregion
 
 using NodaTime.Format;
-using NodaTime.TimeZones;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Format
@@ -24,7 +23,7 @@ namespace NodaTime.Test.Format
     [TestFixture]
     public partial class DateTimeFormatterBuilderTest
     {
-        DateTimeFormatterBuilder builder;
+        private DateTimeFormatterBuilder builder;
 
         [SetUp]
         public void Init()

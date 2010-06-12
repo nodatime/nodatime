@@ -1,7 +1,6 @@
 ﻿#region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -39,8 +37,7 @@ namespace NodaTime
     /// assumed rather than specified.
     /// </para>
     /// </remarks>
-    public struct ZonedDateTime
-        : IEquatable<ZonedDateTime>
+    public struct ZonedDateTime : IEquatable<ZonedDateTime>
     {
         private readonly Chronology chronology;
         private readonly LocalInstant localInstant;
@@ -58,9 +55,9 @@ namespace NodaTime
             {
                 throw new ArgumentNullException("zone");
             }
-            this.localInstant = localDateTime.LocalInstant;
-            this.offset = zone.GetOffsetFromLocal(localInstant);
-            this.chronology = new Chronology(zone, localDateTime.Calendar);
+            localInstant = localDateTime.LocalInstant;
+            offset = zone.GetOffsetFromLocal(localInstant);
+            chronology = new Chronology(zone, localDateTime.Calendar);
         }
 
         /// <summary>
@@ -75,8 +72,8 @@ namespace NodaTime
             {
                 throw new ArgumentNullException("chronology");
             }
-            this.offset = chronology.Zone.GetOffsetFromUtc(instant);
-            this.localInstant = instant + offset;
+            offset = chronology.Zone.GetOffsetFromUtc(instant);
+            localInstant = instant + offset;
             this.chronology = chronology;
         }
 
@@ -121,8 +118,7 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="zone">The zone.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond,
-                             IDateTimeZone zone)
+        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, IDateTimeZone zone)
             : this(year, month, day, hour, minute, second, millisecond, Chronology.IsoForZone(zone))
         {
         }
@@ -138,8 +134,7 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="chronology">The chronology.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond,
-                             Chronology chronology)
+        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, Chronology chronology)
             : this(year, month, day, hour, minute, second, millisecond, 0, chronology)
         {
         }
@@ -156,8 +151,7 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="tick">The tick.</param>
         /// <param name="zone">The zone.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tick,
-                             IDateTimeZone zone)
+        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tick, IDateTimeZone zone)
             : this(year, month, day, hour, minute, second, millisecond, tick, Chronology.IsoForZone(zone))
         {
         }
@@ -174,8 +168,7 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="tick">The tick.</param>
         /// <param name="chronology">The chronology.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tick,
-                             Chronology chronology)
+        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tick, Chronology chronology)
         {
             if (chronology == null)
             {
@@ -190,134 +183,65 @@ namespace NodaTime
         /// Gets the chronology.
         /// </summary>
         /// <value>The chronology.</value>
-        public Chronology Chronology
-        {
-            get { return chronology; }
-        }
+        public Chronology Chronology { get { return chronology; } }
 
         /// <summary>
         /// Gets the offset.
         /// </summary>
         /// <value>The offset.</value>
-        public Offset Offset { get { return this.offset; } }
+        public Offset Offset { get { return offset; } }
 
         /// <summary>
         /// Gets the zone.
         /// </summary>
         /// <value>The zone.</value>
-        public IDateTimeZone Zone
-        {
-            get { return Chronology.Zone; }
-        }
+        public IDateTimeZone Zone { get { return Chronology.Zone; } }
 
         /// <summary>
         /// Gets the local instant.
         /// </summary>
         /// <value>The local instant.</value>
-        public LocalInstant LocalInstant
-        {
-            get { return localInstant; }
-        }
+        public LocalInstant LocalInstant { get { return localInstant; } }
 
-        public LocalDateTime LocalDateTime
-        {
-            get { return new LocalDateTime(LocalInstant, chronology.Calendar); }
-        }
+        public LocalDateTime LocalDateTime { get { return new LocalDateTime(LocalInstant, chronology.Calendar); } }
 
-        public int Era
-        {
-            get { return LocalDateTime.Era; }
-        }
+        public int Era { get { return LocalDateTime.Era; } }
 
-        public int CenturyOfEra
-        {
-            get { return LocalDateTime.CenturyOfEra; }
-        }
+        public int CenturyOfEra { get { return LocalDateTime.CenturyOfEra; } }
 
-        public int Year
-        {
-            get { return LocalDateTime.Year; }
-        }
+        public int Year { get { return LocalDateTime.Year; } }
 
-        public int YearOfCentury
-        {
-            get { return LocalDateTime.YearOfCentury; }
-        }
+        public int YearOfCentury { get { return LocalDateTime.YearOfCentury; } }
 
-        public int YearOfEra
-        {
-            get { return LocalDateTime.YearOfEra; }
-        }
+        public int YearOfEra { get { return LocalDateTime.YearOfEra; } }
 
-        public int WeekYear
-        {
-            get { return LocalDateTime.WeekYear; }
-        }
+        public int WeekYear { get { return LocalDateTime.WeekYear; } }
 
-        public int MonthOfYear
-        {
-            get { return LocalDateTime.MonthOfYear; }
-        }
+        public int MonthOfYear { get { return LocalDateTime.MonthOfYear; } }
 
-        public int WeekOfWeekYear
-        {
-            get { return LocalDateTime.WeekOfWeekYear; }
-        }
+        public int WeekOfWeekYear { get { return LocalDateTime.WeekOfWeekYear; } }
 
-        public int DayOfYear
-        {
-            get { return LocalDateTime.DayOfYear; }
-        }
+        public int DayOfYear { get { return LocalDateTime.DayOfYear; } }
 
-        public int DayOfMonth
-        {
-            get { return LocalDateTime.DayOfMonth; }
-        }
+        public int DayOfMonth { get { return LocalDateTime.DayOfMonth; } }
 
-        public int DayOfWeek
-        {
-            get { return LocalDateTime.DayOfWeek; }
-        }
+        public int DayOfWeek { get { return LocalDateTime.DayOfWeek; } }
 
-        public int HourOfDay
-        {
-            get { return LocalDateTime.HourOfDay; }
-        }
+        public int HourOfDay { get { return LocalDateTime.HourOfDay; } }
 
-        public int MinuteOfHour
-        {
-            get { return LocalDateTime.MinuteOfHour; }
-        }
+        public int MinuteOfHour { get { return LocalDateTime.MinuteOfHour; } }
 
-        public int SecondOfMinute
-        {
-            get { return LocalDateTime.SecondOfMinute; }
-        }
+        public int SecondOfMinute { get { return LocalDateTime.SecondOfMinute; } }
 
-        public int SecondOfDay
-        {
-            get { return LocalDateTime.SecondOfDay; }
-        }
+        public int SecondOfDay { get { return LocalDateTime.SecondOfDay; } }
 
-        public int MillisecondOfSecond
-        {
-            get { return LocalDateTime.MillisecondOfSecond; }
-        }
+        public int MillisecondOfSecond { get { return LocalDateTime.MillisecondOfSecond; } }
 
-        public int MillisecondOfDay
-        {
-            get { return LocalDateTime.MillisecondOfDay; }
-        }
+        public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
 
-        public int TickOfMillisecond
-        {
-            get { return LocalDateTime.TickOfMillisecond; }
-        }
+        public int TickOfMillisecond { get { return LocalDateTime.TickOfMillisecond; } }
 
-        public long TickOfDay
-        {
-            get { return LocalDateTime.TickOfDay; }
-        }
+        public long TickOfDay { get { return LocalDateTime.TickOfDay; } }
 
         /// <summary>
         /// Converts this value to the instant it represents on the time line.
@@ -334,7 +258,6 @@ namespace NodaTime
         }
 
         #region Equality
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -345,9 +268,7 @@ namespace NodaTime
         ///                 </param>
         public bool Equals(ZonedDateTime other)
         {
-            return LocalInstant == other.LocalInstant &&
-                   Offset == other.Offset &&
-                   Chronology == other.Chronology;
+            return LocalInstant == other.LocalInstant && Offset == other.Offset && Chronology == other.Chronology;
         }
 
         /// <summary>
@@ -382,11 +303,9 @@ namespace NodaTime
             hash = HashCodeHelper.Hash(hash, Chronology);
             return hash;
         }
-
         #endregion
 
         #region Operators
-
         /// <summary>
         /// Implements the operator ==.
         /// </summary>
@@ -408,7 +327,6 @@ namespace NodaTime
         {
             return !(left == right);
         }
-
         #endregion
     }
 }

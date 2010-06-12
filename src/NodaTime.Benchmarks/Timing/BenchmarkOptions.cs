@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Linq;
 
 namespace NodaTime.Benchmarks.Timing
@@ -40,14 +41,14 @@ namespace NodaTime.Benchmarks.Timing
         {
             // TODO: Use command line:)
             return new BenchmarkOptions
-            {
-                TypeFilter = args.FirstOrDefault(),
-                MethodFilter = args.Skip(1).FirstOrDefault(),
-                WarmUpTime = Duration.FromSeconds(1),
-                TestTime = Duration.FromSeconds(3),
-                Timer = new WallTimer(),
-                DisplayRawData = args.Contains("-rawData")
-            };
+                   {
+                       TypeFilter = args.FirstOrDefault(),
+                       MethodFilter = args.Skip(1).FirstOrDefault(),
+                       WarmUpTime = Duration.FromSeconds(1),
+                       TestTime = Duration.FromSeconds(3),
+                       Timer = new WallTimer(),
+                       DisplayRawData = args.Contains("-rawData")
+                   };
         }
     }
 }

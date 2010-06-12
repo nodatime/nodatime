@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Globalization;
 using System.Text;
@@ -29,8 +30,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// <remarks>
     /// Immutable, thread-safe
     /// </remarks>
-    internal class Zone
-        : IEquatable<Zone>
+    internal class Zone : IEquatable<Zone>
     {
         private readonly string name;
         private readonly Offset offset;
@@ -46,68 +46,60 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// Gets or sets the name of the time zone
         /// </summary>
         /// <value>The time zone name.</value>
-        internal string Name { get { return this.name; } }
+        internal string Name { get { return name; } }
 
         /// <summary>
         /// Gets or sets the offset to add to UTC for this time zone.
         /// </summary>
         /// <value>The offset from UTC.</value>
-        internal Offset Offset { get { return this.offset; } }
+        internal Offset Offset { get { return offset; } }
 
         /// <summary>
         /// Gets or sets the daylight savings rules name applicable to this zone line.
         /// </summary>
         /// <value>The rules name.</value>
-        internal string Rules { get { return this.rules; } }
+        internal string Rules { get { return rules; } }
 
         /// <summary>
         /// Gets or sets the format for generating the label for this time zone.
         /// </summary>
         /// <value>The format string.</value>
-        internal string Format { get { return this.format; } }
+        internal string Format { get { return format; } }
 
         /// <summary>
         /// Gets or sets the until year if defined.
         /// </summary>
         /// <value>The until year or 0.</value>
-        internal int Year { get { return this.year; } }
+        internal int Year { get { return year; } }
 
         /// <summary>
         /// Gets or sets the until month if defined.
         /// </summary>
         /// <value>The month or 0.</value>
-        internal int MonthOfYear { get { return this.monthOfYear; } }
+        internal int MonthOfYear { get { return monthOfYear; } }
 
         /// <summary>
         /// Gets or sets the until day if defined.
         /// </summary>
         /// <value>The day number or 0.</value>
-        internal int DayOfMonth { get { return this.dayOfMonth; } }
+        internal int DayOfMonth { get { return dayOfMonth; } }
 
         /// <summary>
         /// Gets or sets the until offset time of the day if defined.
         /// </summary>
         /// <value>The offset or Offset.MinValue.</value>
-        internal Offset TickOfDay { get { return this.tickOfDay; } }
+        internal Offset TickOfDay { get { return tickOfDay; } }
 
         /// <summary>
         /// Gets or sets the until zone character if defined.
         /// </summary>
         /// <value>The zone character or NUL.</value>
-        internal char ZoneCharacter { get { return this.zoneCharacter; } }
+        internal char ZoneCharacter { get { return zoneCharacter; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Zone"/> class.
         /// </summary>
-        public Zone(string name,
-                    Offset offset,
-                    string rules,
-                    string format,
-                    int year,
-                    int monthOfYear,
-                    int dayOfMonth,
-                    Offset tickOfDay,
-                    char zoneCharacter)
+        public Zone(string name, Offset offset, string rules, string format, int year, int monthOfYear, int dayOfMonth, Offset tickOfDay, char zoneCharacter)
         {
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
             FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth);
@@ -198,7 +190,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         #region IEquatable<Zone> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -217,18 +208,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             {
                 return true;
             }
-            return
-                Name == other.Name &&
-                Offset == other.Offset &&
-                Rules == other.Rules &&
-                Format == other.Format &&
-                Year == other.Year &&
-                MonthOfYear == other.MonthOfYear &&
-                DayOfMonth == other.DayOfMonth &&
-                TickOfDay == other.TickOfDay &&
-                ZoneCharacter == other.ZoneCharacter;
+            return Name == other.Name && Offset == other.Offset && Rules == other.Rules && Format == other.Format && Year == other.Year &&
+                   MonthOfYear == other.MonthOfYear && DayOfMonth == other.DayOfMonth && TickOfDay == other.TickOfDay && ZoneCharacter == other.ZoneCharacter;
         }
-
         #endregion
     }
 }

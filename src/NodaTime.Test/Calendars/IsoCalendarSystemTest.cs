@@ -14,25 +14,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Calendars;
-using NUnit.Framework;
 using NodaTime.Fields;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
 {
     [TestFixture]
     public partial class IsoCalendarSystemTest
     {
-        private static readonly DateTime UnixEpochDateTime = new  DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime UnixEpochDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         // This was when I was writing the tests, having finally made everything work - several thousand lines
         // of shockingly untested code.
-        private static readonly DateTime TimeOfGreatAchievement =
-            new DateTime(2009, 11, 27, 18, 38, 25, 345, DateTimeKind.Utc) + TimeSpan.FromTicks(8765);
+        private static readonly DateTime TimeOfGreatAchievement = new DateTime(2009, 11, 27, 18, 38, 25, 345, DateTimeKind.Utc) + TimeSpan.FromTicks(8765);
 
         private static readonly ICalendarSystem Iso = IsoCalendarSystem.Instance;
 
-        private static FieldSet isoFields = IsoCalendarSystem.Instance.Fields;
+        private static readonly FieldSet isoFields = IsoCalendarSystem.Instance.Fields;
 
         [Test]
         public void FieldsOf_UnixEpoch()
@@ -65,8 +65,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void FieldsOf_GreatAchievement()
         {
-            LocalDateTime now = new LocalDateTime(new LocalInstant((TimeOfGreatAchievement - UnixEpochDateTime).Ticks),
-                IsoCalendarSystem.Instance);
+            LocalDateTime now = new LocalDateTime(new LocalInstant((TimeOfGreatAchievement - UnixEpochDateTime).Ticks), IsoCalendarSystem.Instance);
 
             Assert.AreEqual(2009, now.Year);
             Assert.AreEqual(2009, now.YearOfEra);

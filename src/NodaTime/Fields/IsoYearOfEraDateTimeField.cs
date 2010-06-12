@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Calendars;
 
@@ -26,8 +27,7 @@ namespace NodaTime.Fields
     {
         internal static readonly IDateTimeField Instance = new IsoYearOfEraDateTimeField();
 
-        private IsoYearOfEraDateTimeField()
-            : base(GregorianCalendarSystem.Default.Fields.Year, DateTimeFieldType.YearOfEra)
+        private IsoYearOfEraDateTimeField() : base(GregorianCalendarSystem.Default.Fields.Year, DateTimeFieldType.YearOfEra)
         {
         }
 

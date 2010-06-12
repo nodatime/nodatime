@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
+
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -22,10 +22,10 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class OffsetTest
     {
-        Offset threeHours = MakeOffset(3, 0, 0, 0);
-        Offset threeHoursPrime = MakeOffset(3, 0, 0, 0);
-        Offset negativeThreeHours = MakeOffset(-3, 0, 0, 0);
-        Offset negativeTwelveHours = MakeOffset(-12, 0, 0, 0);
+        private readonly Offset threeHours = MakeOffset(3, 0, 0, 0);
+        private Offset threeHoursPrime = MakeOffset(3, 0, 0, 0);
+        private readonly Offset negativeThreeHours = MakeOffset(-3, 0, 0, 0);
+        private readonly Offset negativeTwelveHours = MakeOffset(-12, 0, 0, 0);
 
         private static Offset MakeOffset(int hours, int minutes, int seconds, int milliseconds)
         {

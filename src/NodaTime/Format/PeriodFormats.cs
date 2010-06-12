@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 namespace NodaTime.Format
 {
     /// <summary>
@@ -46,23 +47,14 @@ namespace NodaTime.Format
         private static PeriodFormatter BuildEnglishWordsFormatter()
         {
             var variants = new[] { " ", ",", ",and ", ", and " };
-            return new PeriodFormatterBuilder()
-                .AppendYears().AppendSuffix(" year", " years")
-                .AppendSeparator(", ", " and ", variants)
-                .AppendMonths().AppendSuffix(" month", " months")
-                .AppendSeparator(", ", " and ", variants)
-                .AppendWeeks().AppendSuffix(" week", " weeks")
-                .AppendSeparator(", ", " and ", variants)
-                .AppendDays().AppendSuffix(" day", " days")
-                .AppendSeparator(", ", " and ", variants)
-                .AppendHours().AppendSuffix(" hour", " hours")
-                .AppendSeparator(", ", " and ", variants)
-                .AppendMinutes().AppendSuffix(" minute", " minutes")
-                .AppendSeparator(", ", " and ", variants)
-                .AppendSeconds().AppendSuffix(" second", " seconds")
-                .AppendSeparator(", ", " and ", variants)
-                .AppendMilliseconds().AppendSuffix(" millisecond", " milliseconds")
-                .ToFormatter();
+            return
+                new PeriodFormatterBuilder().AppendYears().AppendSuffix(" year", " years").AppendSeparator(", ", " and ", variants).AppendMonths().AppendSuffix(
+                    " month", " months").AppendSeparator(", ", " and ", variants).AppendWeeks().AppendSuffix(" week", " weeks").AppendSeparator(", ", " and ",
+                                                                                                                                                variants).
+                    AppendDays().AppendSuffix(" day", " days").AppendSeparator(", ", " and ", variants).AppendHours().AppendSuffix(" hour", " hours").
+                    AppendSeparator(", ", " and ", variants).AppendMinutes().AppendSuffix(" minute", " minutes").AppendSeparator(", ", " and ", variants).
+                    AppendSeconds().AppendSuffix(" second", " seconds").AppendSeparator(", ", " and ", variants).AppendMilliseconds().AppendSuffix(
+                        " millisecond", " milliseconds").ToFormatter();
         }
     }
 }

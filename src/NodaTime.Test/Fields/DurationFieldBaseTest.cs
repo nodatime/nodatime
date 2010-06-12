@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Linq;
 using NodaTime.Fields;
@@ -92,8 +93,7 @@ namespace NodaTime.Test.Fields
         public void IsTypeValid_ValuesOutOfRange_AreInvalid()
         {
             Assert.IsFalse(DurationFieldBase.IsTypeValid((DurationFieldType)(-1)));
-            DurationFieldType max = Enum.GetValues(typeof(DurationFieldType))
-                .Cast<DurationFieldType>().Max();
+            DurationFieldType max = Enum.GetValues(typeof(DurationFieldType)).Cast<DurationFieldType>().Max();
             Assert.IsFalse(DurationFieldBase.IsTypeValid(max + 1));
         }
 
@@ -103,31 +103,24 @@ namespace NodaTime.Test.Fields
             {
             }
 
-            internal StubDurationFieldBase(DurationFieldType fieldType)
-                : base(fieldType)
+            internal StubDurationFieldBase(DurationFieldType fieldType) : base(fieldType)
             {
             }
 
             public override bool IsSupported { get { return true; } }
 
-            public override bool IsPrecise
-            {
-                get { return true; }
-            }
+            public override bool IsPrecise { get { return true; } }
 
-            public override long UnitTicks
-            {
-                get { return 123; }
-            }
+            public override long UnitTicks { get { return 123; } }
 
             public override long GetInt64Value(Duration duration, LocalInstant localInstant)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             public override Duration GetDuration(long value, LocalInstant localInstant)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             public override LocalInstant Add(LocalInstant localInstant, int value)
@@ -142,7 +135,7 @@ namespace NodaTime.Test.Fields
 
             public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
         }
     }

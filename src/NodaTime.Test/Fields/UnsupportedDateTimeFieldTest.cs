@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NUnit.Framework;
@@ -26,15 +27,13 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetInstance_WithNullDurationField_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => 
-                UnsupportedDateTimeField.GetInstance(DateTimeFieldType.SecondOfMinute, null));
+            Assert.Throws<ArgumentNullException>(() => UnsupportedDateTimeField.GetInstance(DateTimeFieldType.SecondOfMinute, null));
         }
 
         [Test]
         public void GetInstance_WithInvalidDateTimeFieldType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentNullException>(() => 
-                UnsupportedDateTimeField.GetInstance(null, UnsupportedDurationField.Years));
+            Assert.Throws<ArgumentNullException>(() => UnsupportedDateTimeField.GetInstance(null, UnsupportedDurationField.Years));
         }
 
         [Test]
@@ -58,8 +57,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetInstance_ReturnsCorrectValues()
         {
-            IDateTimeField field = UnsupportedDateTimeField.GetInstance(
-                DateTimeFieldType.MonthOfYear, UnsupportedDurationField.Years);
+            IDateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, UnsupportedDurationField.Years);
 
             Assert.AreEqual(DateTimeFieldType.MonthOfYear, field.FieldType);
             Assert.AreSame(UnsupportedDurationField.Years, field.DurationField);
@@ -89,8 +87,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void ConstantProperties_ReturnExpectedValues()
         {
-            IDateTimeField field = UnsupportedDateTimeField.GetInstance(
-                DateTimeFieldType.MonthOfYear, UnsupportedDurationField.Years);
+            IDateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, UnsupportedDurationField.Years);
             Assert.IsFalse(field.IsLenient);
             Assert.IsFalse(field.IsSupported);
             Assert.IsNull(field.LeapDurationField);
@@ -99,8 +96,7 @@ namespace NodaTime.Test.Fields
 
         private static void AssertUnsupported(Action<IDateTimeField> action)
         {
-            IDateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear,
-                new MockCountingDurationField(DurationFieldType.Seconds));
+            IDateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
             Assert.Throws<NotSupportedException>(() => action(field));
         }
 
@@ -108,8 +104,7 @@ namespace NodaTime.Test.Fields
         public void AddInt32_DelegatesToDurationField()
         {
             MockCountingDurationField.int32Additions = 0;
-            IDateTimeField field = UnsupportedDateTimeField.GetInstance(
-                DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
+            IDateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
             Assert.AreEqual(61, field.Add(new LocalInstant(1), 1).Ticks);
             Assert.AreEqual(1, MockCountingDurationField.int32Additions);
         }
@@ -118,8 +113,7 @@ namespace NodaTime.Test.Fields
         public void AddInt64_DelegatesToDurationField()
         {
             MockCountingDurationField.int64Additions = 0;
-            IDateTimeField field = UnsupportedDateTimeField.GetInstance(
-                DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
+            IDateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
             Assert.AreEqual(61, field.Add(new LocalInstant(1), 1L).Ticks);
             Assert.AreEqual(1, MockCountingDurationField.int64Additions);
         }
@@ -128,8 +122,7 @@ namespace NodaTime.Test.Fields
         public void GetDifference_DelegatesToDurationFieldGetDifference()
         {
             MockCountingDurationField.differences = 0;
-            IDateTimeField field = UnsupportedDateTimeField.GetInstance(
-                DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
+            IDateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
             Assert.AreEqual(30, field.GetDifference(new LocalInstant(), new LocalInstant()));
             Assert.AreEqual(1, MockCountingDurationField.differences);
         }
@@ -138,11 +131,9 @@ namespace NodaTime.Test.Fields
         public void GetInt64Difference_DelegatesToDurationFieldGetInt64Difference()
         {
             MockCountingDurationField.differences64 = 0;
-            IDateTimeField field = UnsupportedDateTimeField.GetInstance(
-                DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
+            IDateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
             Assert.AreEqual(30, field.GetInt64Difference(new LocalInstant(), new LocalInstant()));
             Assert.AreEqual(1, MockCountingDurationField.differences64);
         }
-
     }
 }

@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -44,7 +42,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal TzdbZoneInfoCompiler(ILog log)
         {
             this.log = log;
-            this.tzdbParser = new TzdbZoneInfoParser(this.log);
+            tzdbParser = new TzdbZoneInfoParser(this.log);
         }
 
         /// <summary>
@@ -55,7 +53,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public int Execute(string[] arguments)
         {
             var options = new TzdbCompilerOptions();
-            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(this.log.InfoWriter));
+            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(log.InfoWriter));
             if (!parser.ParseArguments(arguments, options))
             {
                 return 1;
@@ -79,7 +77,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 }
                 catch (Exception e)
                 {
-                    this.log.Error("{0}", e.Message);
+                    log.Error("{0}", e.Message);
                     return 2;
                 }
 #endif
@@ -111,7 +109,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             foreach (var file in files)
             {
-                this.log.Info("Parsing file {0} . . .", file.Name);
+                log.Info("Parsing file {0} . . .", file.Name);
                 ParseFile(file, database);
             }
         }
@@ -126,17 +124,17 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="database">The <see cref="TzdbDatabase"/> where the parsed data is placed.</param>
         internal void ParseFile(FileInfo file, TzdbDatabase database)
         {
-            this.log.FileName = file.Name;
+            log.FileName = file.Name;
             try
             {
                 using (FileStream stream = file.OpenRead())
                 {
-                    this.tzdbParser.Parse(stream, database);
+                    tzdbParser.Parse(stream, database);
                 }
             }
             finally
             {
-                this.log.FileName = null;
+                log.FileName = null;
             }
         }
 
@@ -221,13 +219,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     break;
                 }
 
-                builder.AddCutover(zone.Year,
-                                   TransitionMode.Wall,
-                                   zone.MonthOfYear,
-                                   zone.DayOfMonth,
-                                   0,
-                                   true,
-                                   zone.TickOfDay);
+                builder.AddCutover(zone.Year, TransitionMode.Wall, zone.MonthOfYear, zone.DayOfMonth, 0, true, zone.TickOfDay);
             }
             return builder.ToDateTimeZone(zoneList.Name);
         }
@@ -242,15 +234,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             foreach (var rule in ruleSet)
             {
-                builder.AddRecurringSavings(rule.FormatName(nameFormat),
-                                            rule.Recurrence.Savings,
-                                            rule.Recurrence.FromYear,
-                                            rule.Recurrence.ToYear,
-                                            rule.Recurrence.YearOffset.Mode,
-                                            rule.Recurrence.YearOffset.MonthOfYear,
-                                            rule.Recurrence.YearOffset.DayOfMonth,
-                                            rule.Recurrence.YearOffset.DayOfWeek,
-                                            rule.Recurrence.YearOffset.AdvanceDayOfWeek,
+                builder.AddRecurringSavings(rule.FormatName(nameFormat), rule.Recurrence.Savings, rule.Recurrence.FromYear, rule.Recurrence.ToYear,
+                                            rule.Recurrence.YearOffset.Mode, rule.Recurrence.YearOffset.MonthOfYear, rule.Recurrence.YearOffset.DayOfMonth,
+                                            rule.Recurrence.YearOffset.DayOfWeek, rule.Recurrence.YearOffset.AdvanceDayOfWeek,
                                             rule.Recurrence.YearOffset.TickOfDay);
             }
         }
@@ -284,7 +270,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     var fileInfo = new FileInfo(Path.Combine(source.ToString(), fileName));
                     if (!fileInfo.Exists)
                     {
-                        this.log.Error("File [{0}] does not exist", fileInfo.FullName);
+                        log.Error("File [{0}] does not exist", fileInfo.FullName);
                     }
                     else
                     {
@@ -323,8 +309,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
             if (!directory.Exists)
             {
-                throw new ArgumentException(
-                    @"The " + name + @" location does not exist or is not a directory: " + directory.FullName, name);
+                throw new ArgumentException(@"The " + name + @" location does not exist or is not a directory: " + directory.FullName, name);
             }
         }
 
@@ -334,11 +319,11 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="database">The database to query for the counts.</param>
         private void LogCounts(TzdbDatabase database)
         {
-            this.log.Info("=======================================");
-            this.log.Info("Rule sets: {0:D}", database.Rules.Count);
-            this.log.Info("Zones:     {0:D}", database.Zones.Count);
-            this.log.Info("Aliases:   {0:D}", database.Aliases.Count);
-            this.log.Info("=======================================");
+            log.Info("=======================================");
+            log.Info("Rule sets: {0:D}", database.Rules.Count);
+            log.Info("Zones:     {0:D}", database.Zones.Count);
+            log.Info("Aliases:   {0:D}", database.Aliases.Count);
+            log.Info("=======================================");
         }
     }
 }

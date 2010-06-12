@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System.Collections.Generic;
@@ -28,13 +26,11 @@ namespace NodaTime.TimeZones
     /// <remarks>
     /// Original name: UTCProvider
     /// </remarks>
-    public sealed class UtcProvider
-        : IDateTimeZoneProvider
+    public sealed class UtcProvider : IDateTimeZoneProvider
     {
-        private static readonly string[] UtcIds = {DateTimeZones.UtcId};
+        private static readonly string[] UtcIds = { DateTimeZones.UtcId };
 
         #region IDateTimeZoneProvider Members
-
         /// <summary>
         /// Returns the time zone definition associated with the given id.
         /// </summary>
@@ -60,11 +56,7 @@ namespace NodaTime.TimeZones
         /// Returns an enumeration of the available ids from this provider.
         /// </summary>
         /// <value>The <see cref="IEnumerable{T}"/> of ids.</value>
-        public IEnumerable<string> Ids
-        {
-            get { return UtcIds; }
-        }
-
+        public IEnumerable<string> Ids { get { return UtcIds; } }
         #endregion
     }
 }

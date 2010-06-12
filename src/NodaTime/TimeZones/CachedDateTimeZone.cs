@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -33,17 +31,14 @@ namespace NodaTime.TimeZones
     /// user can tune the performance based on their knowledge of how they are using the system.
     /// </para>
     /// </remarks>
-    public abstract class CachedDateTimeZone
-        : DateTimeZoneBase
+    public abstract class CachedDateTimeZone : DateTimeZoneBase
     {
         #region CacheType enum
-
         public enum CacheType
         {
             Mru,
             Hashtable
         }
-
         #endregion
 
         private readonly IDateTimeZone timeZone;
@@ -52,8 +47,7 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
         /// </summary>
         /// <param name="timeZone">The time zone to cache.</param>
-        private CachedDateTimeZone(IDateTimeZone timeZone)
-            : base(timeZone.Id, false)
+        private CachedDateTimeZone(IDateTimeZone timeZone) : base(timeZone.Id, false)
         {
             this.timeZone = timeZone;
         }
@@ -62,10 +56,7 @@ namespace NodaTime.TimeZones
         /// Gets the cached time zone.
         /// </summary>
         /// <value>The time zone.</value>
-        internal IDateTimeZone TimeZone
-        {
-            get { return this.timeZone; }
-        }
+        internal IDateTimeZone TimeZone { get { return timeZone; } }
 
         /// <summary>
         /// Gets the size of the cache used by this time zone cache.
@@ -117,7 +108,6 @@ namespace NodaTime.TimeZones
         }
 
         #region Overrides of DateTimeZoneBase
-
         /// <summary>
         /// Writes the time zone to the specified writer.
         /// </summary>
@@ -128,7 +118,7 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("writer");
             }
-            writer.WriteTimeZone(this.timeZone);
+            writer.WriteTimeZone(timeZone);
         }
 
         /// <summary>
@@ -146,16 +136,13 @@ namespace NodaTime.TimeZones
             var timeZone = reader.ReadTimeZone(id);
             return ForZone(timeZone);
         }
-
         #endregion
 
         #region Nested type: HashArrayCache
-
         /// <summary>
         /// This provides a simple hash able cache.
         /// </summary>
-        private class HashArrayCache
-            : CachedDateTimeZone
+        private class HashArrayCache : CachedDateTimeZone
         {
             private const int DefaultCacheSize = 512;
 
@@ -176,20 +163,18 @@ namespace NodaTime.TimeZones
             /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
             /// </summary>
             /// <param name="timeZone">The time zone to cache.</param>
-            public HashArrayCache(IDateTimeZone timeZone)
-                : base(timeZone)
+            public HashArrayCache(IDateTimeZone timeZone) : base(timeZone)
             {
                 if (timeZone == null)
                 {
                     throw new ArgumentNullException("timeZone");
                 }
-                this.cachePeriodMask = MakeMask(0);
-                this.instantCache = new HashCacheNode[CachePeriodMask + 1];
-                this.localInstantCache = new HashCacheNode[CachePeriodMask + 1];
+                cachePeriodMask = MakeMask(0);
+                instantCache = new HashCacheNode[CachePeriodMask + 1];
+                localInstantCache = new HashCacheNode[CachePeriodMask + 1];
             }
 
             #region Overrides of DateTimeZoneBase
-
             /// <summary>
             /// Gets the zone offset period for the given instant. Null is returned if no period is
             /// defined by the time zone for the given instant.
@@ -198,7 +183,7 @@ namespace NodaTime.TimeZones
             /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
             public override ZoneInterval GetZoneInterval(Instant instant)
             {
-                int period = (int) (instant.Ticks >> PeriodShift);
+                int period = (int)(instant.Ticks >> PeriodShift);
                 int index = period & CachePeriodMask;
                 var node = InstantCache[index];
                 if (node == null || node.Period != period)
@@ -221,7 +206,7 @@ namespace NodaTime.TimeZones
             /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
             public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
             {
-                int period = (int) (localInstant.Ticks >> PeriodShift);
+                int period = (int)(localInstant.Ticks >> PeriodShift);
                 int index = period & CachePeriodMask;
                 var node = LocalInstantCache[index];
                 if (node == null || node.Period != period)
@@ -239,36 +224,21 @@ namespace NodaTime.TimeZones
                 }
                 return node.Interval;
             }
-
             #endregion
 
             #region Overrides of CachedDateTimeZone
-
             /// <summary>
             /// Gets the size of the cache used by this time zone cache.
             /// </summary>
             /// <value>The size of the cache or 1 if not applicable.</value>
-            internal override int CacheSize
-            {
-                get { return this.InstantCache.Length; }
-            }
-
+            internal override int CacheSize { get { return InstantCache.Length; } }
             #endregion
 
-            private int CachePeriodMask
-            {
-                get { return this.cachePeriodMask; }
-            }
+            private int CachePeriodMask { get { return cachePeriodMask; } }
 
-            private HashCacheNode[] InstantCache
-            {
-                get { return this.instantCache; }
-            }
+            private HashCacheNode[] InstantCache { get { return instantCache; } }
 
-            private HashCacheNode[] LocalInstantCache
-            {
-                get { return this.localInstantCache; }
-            }
+            private HashCacheNode[] LocalInstantCache { get { return localInstantCache; } }
 
             /// <summary>
             /// Creates the info.
@@ -277,7 +247,7 @@ namespace NodaTime.TimeZones
             /// <returns></returns>
             private HashCacheNode CreateInstantNode(int period)
             {
-                var periodStart = new Instant((long) period << PeriodShift);
+                var periodStart = new Instant((long)period << PeriodShift);
                 var interval = TimeZone.GetZoneInterval(periodStart);
                 var node = new HashCacheNode(interval, period, null);
                 var periodEnd = new Instant(periodStart.Ticks | PeriodEndMask);
@@ -302,7 +272,7 @@ namespace NodaTime.TimeZones
             /// <returns></returns>
             private HashCacheNode CreateLocalInstantNode(int period)
             {
-                var periodStart = new LocalInstant((long) period << PeriodShift);
+                var periodStart = new LocalInstant((long)period << PeriodShift);
                 var interval = TimeZone.GetZoneInterval(periodStart);
                 var node = new HashCacheNode(interval, period, null);
                 var periodEnd = new LocalInstant(periodStart.Ticks | PeriodEndMask);
@@ -354,7 +324,6 @@ namespace NodaTime.TimeZones
             }
 
             #region Nested type: HashCacheNode
-
             /// <summary>
             /// 
             /// </summary>
@@ -377,29 +346,17 @@ namespace NodaTime.TimeZones
                     this.previous = previous;
                 }
 
-                public int Period
-                {
-                    get { return this.period; }
-                }
+                public int Period { get { return period; } }
 
-                public ZoneInterval Interval
-                {
-                    get { return this.interval; }
-                }
+                public ZoneInterval Interval { get { return interval; } }
 
-                public HashCacheNode Previous
-                {
-                    get { return previous; }
-                }
+                public HashCacheNode Previous { get { return previous; } }
             }
-
             #endregion
         }
-
         #endregion
 
         #region Nested type: MruListCache
-
         /// <summary>
         /// Implements a Most-recently-usage ordered cache list.
         /// </summary>
@@ -418,32 +375,24 @@ namespace NodaTime.TimeZones
         /// object we increase the performance by a factor of 2.
         /// </para>
         /// </remarks>
-        private class MruListCache
-            : CachedDateTimeZone
+        private class MruListCache : CachedDateTimeZone
         {
             private MruCacheNode head;
 
             #region Overrides of CachedDateTimeZone
-
             /// <summary>
             /// Gets the size of the cache used by this time zone cache.
             /// </summary>
             /// <value>The size of the cache or 1 if not applicable.</value>
-            internal override int CacheSize
-            {
-                get { return 128; }
-            }
-
+            internal override int CacheSize { get { return 128; } }
             #endregion
 
             #region Overrides of DateTimeZoneBase
-
             /// <summary>
             /// Initializes a new instance of the <see cref="CachedDateTimeZone.MruListCache"/> class.
             /// </summary>
             /// <param name="timeZone">The time zone to cache.</param>
-            internal MruListCache(IDateTimeZone timeZone)
-                : base(timeZone)
+            internal MruListCache(IDateTimeZone timeZone) : base(timeZone)
             {
             }
 
@@ -457,7 +406,7 @@ namespace NodaTime.TimeZones
             {
                 MruCacheNode previous = null;
                 int count = 0;
-                for (var node = this.head; node != null; node = node.Next)
+                for (var node = head; node != null; node = node.Next)
                 {
                     if (node.Period.Contains(instant))
                     {
@@ -482,7 +431,7 @@ namespace NodaTime.TimeZones
             {
                 MruCacheNode previous = null;
                 int count = 0;
-                for (var node = this.head; node != null; node = node.Next)
+                for (var node = head; node != null; node = node.Next)
                 {
                     if (node.Period.Contains(localInstant))
                     {
@@ -519,7 +468,7 @@ namespace NodaTime.TimeZones
             /// <returns>The period added.</returns>
             private ZoneInterval AddNode(MruCacheNode last, ZoneInterval period)
             {
-                this.head = new MruCacheNode(period, this.head);
+                head = new MruCacheNode(period, head);
                 if (last != null)
                 {
                     last.Next = null;
@@ -553,16 +502,14 @@ namespace NodaTime.TimeZones
                 if (previous != null)
                 {
                     previous.Next = node.Next;
-                    node.Next = this.head;
-                    this.head = node;
+                    node.Next = head;
+                    head = node;
                 }
                 return node.Period;
             }
-
             #endregion
 
             #region Nested type: MruCacheNode
-
             /// <summary>
             /// </summary>
             private class MruCacheNode
@@ -584,10 +531,7 @@ namespace NodaTime.TimeZones
                 /// Gets the period in this node.
                 /// </summary>
                 /// <value>The ZoneOffsetPeriod.</value>
-                public ZoneInterval Period
-                {
-                    get { return this.period; }
-                }
+                public ZoneInterval Period { get { return period; } }
 
                 /// <summary>
                 /// Gets or sets the next.
@@ -595,10 +539,8 @@ namespace NodaTime.TimeZones
                 /// <value>The next.</value>
                 public MruCacheNode Next { get; set; }
             }
-
             #endregion
         }
-
         #endregion
     }
 }

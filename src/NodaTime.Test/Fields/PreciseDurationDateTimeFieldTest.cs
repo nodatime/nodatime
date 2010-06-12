@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NUnit.Framework;
@@ -28,7 +29,7 @@ namespace NodaTime.Test.Fields
         {
             Assert.Throws<ArgumentNullException>(() => new StubPreciseDurationDateTimeField(null));
         }
-        
+
         [Test]
         public void Constructor_GivenZeroTicksDurationField_ThrowsArgumentException()
         {
@@ -174,26 +175,20 @@ namespace NodaTime.Test.Fields
 
         private class StubPreciseDurationDateTimeField : PreciseDurationDateTimeField
         {
-            internal StubPreciseDurationDateTimeField(IDurationField unit)
-                : base(DateTimeFieldType.SecondOfMinute, unit)
+            internal StubPreciseDurationDateTimeField(IDurationField unit) : base(DateTimeFieldType.SecondOfMinute, unit)
             {
             }
 
-            internal StubPreciseDurationDateTimeField() 
-                : base(DateTimeFieldType.SecondOfMinute, new MockCountingDurationField(DurationFieldType.Seconds))
+            internal StubPreciseDurationDateTimeField() : base(DateTimeFieldType.SecondOfMinute, new MockCountingDurationField(DurationFieldType.Seconds))
             {
             }
-
 
             public override long GetInt64Value(LocalInstant localInstant)
             {
                 return localInstant.Ticks / 60L;
             }
 
-            public override IDurationField RangeDurationField
-            {
-                get { return new MockCountingDurationField(DurationFieldType.Minutes); }
-            }
+            public override IDurationField RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
 
             public override long GetMaximumValue()
             {

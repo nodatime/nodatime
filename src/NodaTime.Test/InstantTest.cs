@@ -14,8 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using NUnit.Framework;
+
 using NodaTime.TimeZones;
+using NUnit.Framework;
 
 namespace NodaTime.Test
 {
@@ -30,38 +31,34 @@ namespace NodaTime.Test
         private static readonly DateTimeZone London = DateTimeZone.ForID("Europe/London");
          */
 
-        private const long Y2002Days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
-                                       366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 +
-                                       365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
-                                       366 + 365;
-        private const long Y2003Days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
-                                       366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 +
-                                       365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
-                                       366 + 365 + 365;
+        private const long Y2002Days =
+            365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 +
+            365 + 366 + 365 + 365 + 365 + 366 + 365;
+
+        private const long Y2003Days =
+            365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 +
+            365 + 366 + 365 + 365 + 365 + 366 + 365 + 365;
 
         // 2002-06-09
-        private const long TestTimeNow =
-            (Y2002Days + 31L + 28L + 31L + 30L + 31L + 9L - 1L) * NodaConstants.MillisecondsPerDay;
+        private const long TestTimeNow = (Y2002Days + 31L + 28L + 31L + 30L + 31L + 9L - 1L) * NodaConstants.MillisecondsPerDay;
 
         // 2002-04-05
         private const long TestTime1 =
-            (Y2002Days + 31L + 28L + 31L + 5L - 1L) * NodaConstants.MillisecondsPerDay
-            + 12L * NodaConstants.MillisecondsPerHour
-            + 24L * NodaConstants.MillisecondsPerMinute;
+            (Y2002Days + 31L + 28L + 31L + 5L - 1L) * NodaConstants.MillisecondsPerDay + 12L * NodaConstants.MillisecondsPerHour +
+            24L * NodaConstants.MillisecondsPerMinute;
 
         // 2003-05-06
         private const long TestTime2 =
-            (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * NodaConstants.MillisecondsPerDay
-            + 14L * NodaConstants.MillisecondsPerHour
-            + 28L * NodaConstants.MillisecondsPerMinute;
+            (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * NodaConstants.MillisecondsPerDay + 14L * NodaConstants.MillisecondsPerHour +
+            28L * NodaConstants.MillisecondsPerMinute;
 
         private Instant one = new Instant(1L);
-        private Instant onePrime = new Instant(1L);
+        private readonly Instant onePrime = new Instant(1L);
         private Instant negativeOne = new Instant(-1L);
         private Instant threeMillion = new Instant(3000000L);
         private Instant negativeFiftyMillion = new Instant(-50000000L);
 
-        private Offset offsetOneHour = Offset.ForHours(1);
+        private readonly Offset offsetOneHour = Offset.ForHours(1);
 
         [Test]
         public void TestInstantOperators()
@@ -71,7 +68,7 @@ namespace NodaTime.Test
             Instant time1 = new Instant(TestTime1);
             Instant time2 = new Instant(TestTime2);
             Duration duration = time2 - time1;
-            
+
             Assert.AreEqual(diff, duration.Ticks);
             Assert.AreEqual(TestTime2, (time1 + duration).Ticks);
             Assert.AreEqual(TestTime1, (time2 - duration).Ticks);

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,8 +27,7 @@ namespace NodaTime.ZoneInfoCompiler
     /// <summary>
     /// Abstraction for handling the writing of objects to resources.
     /// </summary>
-    public sealed class ResourceOutput
-        : IDisposable
+    public sealed class ResourceOutput : IDisposable
     {
         private readonly IResourceWriter resourceWriter;
         private readonly MemoryStream memory;
@@ -40,10 +40,10 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="type">The resource type.</param>
         public ResourceOutput(string name, ResourceOutputType type)
         {
-            string fileName = ResourceOutput.ChangeExtension(name, type);
-            this.resourceWriter = GetResourceWriter(fileName, type);
-            this.memory = new MemoryStream();
-            this.timeZoneWriter = new DateTimeZoneWriter(this.memory);
+            string fileName = ChangeExtension(name, type);
+            resourceWriter = GetResourceWriter(fileName, type);
+            memory = new MemoryStream();
+            timeZoneWriter = new DateTimeZoneWriter(memory);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="timeZone">The <see cref="IDateTimeZone"/> to write.</param>
         public void WriteTimeZone(string name, IDateTimeZone timeZone)
         {
-            this.timeZoneWriter.WriteTimeZone(timeZone);
+            timeZoneWriter.WriteTimeZone(timeZone);
             WriteResource(name);
         }
 
@@ -82,7 +82,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="dictionary">The <see cref="IDictionary"/> to write.</param>
         public void WriteDictionary(string name, IDictionary<string, string> dictionary)
         {
-            this.timeZoneWriter.WriteDictionary(dictionary);
+            timeZoneWriter.WriteDictionary(dictionary);
             WriteResource(name);
         }
 
@@ -113,25 +113,23 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="name">The name of the resource to write.</param>
         private void WriteResource(string name)
         {
-            this.memory.Flush();
-            byte[] bytes = this.memory.ToArray();
+            memory.Flush();
+            byte[] bytes = memory.ToArray();
             string normalizedName = ResourceHelper.NormalizeAsResourceName(name);
-            this.resourceWriter.AddResource(normalizedName, bytes);
-            this.memory.SetLength(0);
+            resourceWriter.AddResource(normalizedName, bytes);
+            memory.SetLength(0);
         }
 
         #region IDisposable Members
-
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting
         /// unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            this.resourceWriter.Close();
-            this.memory.Close();
+            resourceWriter.Close();
+            memory.Close();
         }
-
         #endregion
     }
 

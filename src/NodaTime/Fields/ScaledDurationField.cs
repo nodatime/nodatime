@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -25,10 +26,10 @@ namespace NodaTime.Fields
     {
         private readonly int scale;
 
-        public ScaledDurationField(IDurationField wrappedField, DurationFieldType fieldType, int scale)
-            : base(wrappedField, fieldType)
+        public ScaledDurationField(IDurationField wrappedField, DurationFieldType fieldType, int scale) : base(wrappedField, fieldType)
         {
-            if (scale == 0 || scale == 1) {
+            if (scale == 0 || scale == 1)
+            {
                 throw new ArgumentOutOfRangeException("scale", "The scale must not be 0 or 1");
             }
             this.scale = scale;

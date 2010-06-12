@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NodaTime.Format;
@@ -42,7 +43,6 @@ namespace NodaTime.Periods
     public sealed class Years : SingleFieldPeriodBase, IEquatable<Years>, IComparable<Years>
     {
         #region Static Properties and Methods
-
         private static readonly Years zero = new Years(0);
         private static readonly Years one = new Years(1);
         private static readonly Years two = new Years(2);
@@ -90,17 +90,23 @@ namespace NodaTime.Periods
         /// <code>Years</code> is immutable, so instances can be cached and shared.
         /// This factory method provides access to shared instances.
         /// </remarks>
-        public static Years From (int years)
+        public static Years From(int years)
         {
             switch (years)
             {
-                case 0: return zero;
-                case 1: return one;
-                case 2: return two;
-                case 3: return three;
-                case int.MaxValue: return maxValue;
-                case int.MinValue: return minValue;
-                default: 
+                case 0:
+                    return zero;
+                case 1:
+                    return one;
+                case 2:
+                    return two;
+                case 3:
+                    return three;
+                case int.MaxValue:
+                    return maxValue;
+                case int.MinValue:
+                    return minValue;
+                default:
                     return new Years(years);
             }
         }
@@ -123,16 +129,17 @@ namespace NodaTime.Periods
         {
             if (String.IsNullOrEmpty(years))
             {
-                return Years.Zero;
+                return Zero;
             }
 
             Period p = parser.Parse(years);
-            return Years.From(p.Years);
+            return From(p.Years);
         }
-
         #endregion
 
-        private Years(int years) : base(years) { }
+        private Years(int years) : base(years)
+        {
+        }
 
         /// <summary>
         /// Gets the duration field type, which is <code>DurationFieldType.Years</code>.
@@ -145,7 +152,6 @@ namespace NodaTime.Periods
         public override PeriodType PeriodType { get { return PeriodType.Years; } }
 
         #region Conversion
-
         /// <summary>
         /// Creates a new int from the specified <see cref="Years"/> instance
         /// </summary>
@@ -163,13 +169,11 @@ namespace NodaTime.Periods
         /// <returns>New <see cref="Years"/> instance whose Value property is initialized to the given value</returns>
         public static explicit operator Years(int value)
         {
-            return Years.From(value);
+            return From(value);
         }
-
         #endregion
 
         #region Negation
-
         /// <summary>
         /// Returns a new instance with the years value negated.
         /// </summary>
@@ -179,7 +183,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Years Negated()
         {
-            return Years.From(-Value);
+            return From(-Value);
         }
 
         /// <summary>
@@ -189,7 +193,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Years"/> instance with a negated value.</returns>
         public static Years operator -(Years period)
         {
-            return Object.ReferenceEquals(period, null) ? null : period.Negated();
+            return ReferenceEquals(period, null) ? null : period.Negated();
         }
 
         /// <summary>
@@ -201,11 +205,9 @@ namespace NodaTime.Periods
         {
             return -period;
         }
-
         #endregion
 
         #region Unary operators
-
         /// <summary>
         /// Returns the same instance. Friendly alternative for <c>Years.operator +(Years)</c> operator.
         /// </summary>
@@ -243,7 +245,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Years"/> instance with incremented value.</returns>
         public static Years operator ++(Years period)
         {
-            return Object.ReferenceEquals(period, null) ? null : period.Add(1);
+            return ReferenceEquals(period, null) ? null : period.Add(1);
         }
 
         /// <summary>
@@ -263,13 +265,11 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Years"/> instance with decremented value.</returns>
         public static Years operator --(Years period)
         {
-            return Object.ReferenceEquals(period, null) ? null : period.Subtract(1);
+            return ReferenceEquals(period, null) ? null : period.Subtract(1);
         }
-
         #endregion
 
         #region Add
-
         /// <summary>
         /// Returns a new instance with the specified number of years added.
         /// </summary>
@@ -280,7 +280,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Years Add(int years)
         {
-            return years == 0 ? this : Years.From(Value + years);
+            return years == 0 ? this : From(Value + years);
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Years"/> representing the sum of the given values.</returns>
         public static Years operator +(Years left, Years right)
         {
-            return object.ReferenceEquals(left, null) ? right : left.Add(right);
+            return ReferenceEquals(left, null) ? right : left.Add(right);
         }
 
         /// <summary>
@@ -304,11 +304,9 @@ namespace NodaTime.Periods
         {
             return left + right;
         }
-
         #endregion
 
         #region Subtract
-
         /// <summary>
         /// Returns a new instance with the specified number of years taken away.
         /// </summary>
@@ -330,7 +328,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Years"/> representing the difference of the given values.</returns>
         public static Years operator -(Years left, Years right)
         {
-            return object.ReferenceEquals(left, null) ? right : left.Subtract(right);
+            return ReferenceEquals(left, null) ? right : left.Subtract(right);
         }
 
         /// <summary>
@@ -343,11 +341,9 @@ namespace NodaTime.Periods
         {
             return left - right;
         }
-
         #endregion
 
         #region Multiplication
-
         /// <summary>
         /// Returns a new instance with the years multiplied by the specified scalar.
         /// </summary>
@@ -358,7 +354,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Years Multiply(int scalar)
         {
-            return scalar == 1 ? this : Years.From(Value * scalar);
+            return scalar == 1 ? this : From(Value * scalar);
         }
 
         /// <summary>
@@ -369,7 +365,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Years"/> representing the years period multiplied by the scale.</returns>
         public static Years operator *(Years left, int right)
         {
-            return object.ReferenceEquals(left, null) ? Years.Zero : left.Multiply(right);
+            return ReferenceEquals(left, null) ? Zero : left.Multiply(right);
         }
 
         /// <summary>
@@ -380,7 +376,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Years"/> representing the years period multiplied by the scale.</returns>
         public static Years operator *(int left, Years right)
         {
-            return object.ReferenceEquals(right, null) ? Years.Zero : right.Multiply(left);
+            return ReferenceEquals(right, null) ? Zero : right.Multiply(left);
         }
 
         /// <summary>
@@ -404,11 +400,9 @@ namespace NodaTime.Periods
         {
             return left * right;
         }
-
         #endregion
 
         #region Division
-
         /// <summary>
         /// Returns a new instance with the years divided by the specified divisor.
         /// </summary>
@@ -420,7 +414,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public Years Divide(int divisor)
         {
-            return divisor == 1 ? this : Years.From(Value / divisor);
+            return divisor == 1 ? this : From(Value / divisor);
         }
 
         /// <summary>
@@ -431,7 +425,7 @@ namespace NodaTime.Periods
         /// <returns>A new <see cref="Years"/> Representing the years period divided by the scale.</returns>
         public static Years operator /(Years left, int right)
         {
-            return object.ReferenceEquals(left, null) ? Years.Zero : left.Divide(right);
+            return ReferenceEquals(left, null) ? Zero : left.Divide(right);
         }
 
         /// <summary>
@@ -444,11 +438,9 @@ namespace NodaTime.Periods
         {
             return left / right;
         }
-
         #endregion
 
         #region Comparison
-
         /// <summary>
         /// Indicates whether the current period is equal to another period.
         /// </summary>
@@ -501,7 +493,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Years left, Years right)
         {
-            return Object.Equals(left, right);
+            return Equals(left, right);
         }
 
         /// <summary>
@@ -523,7 +515,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Years left, Years right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) < 0;
+            return Compare(left, right) < 0;
         }
 
         /// <summary>
@@ -534,7 +526,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Years left, Years right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) <= 0;
+            return Compare(left, right) <= 0;
         }
 
         /// <summary>
@@ -545,7 +537,7 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Years left, Years right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) > 0;
+            return Compare(left, right) > 0;
         }
 
         /// <summary>
@@ -556,13 +548,11 @@ namespace NodaTime.Periods
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Years left, Years right)
         {
-            return SingleFieldPeriodBase.Compare(left, right) >= 0;
+            return Compare(left, right) >= 0;
         }
-
         #endregion
 
         #region Object Overrides
-
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
@@ -577,8 +567,6 @@ namespace NodaTime.Periods
         {
             return "P" + Value + "Y";
         }
-
         #endregion
     }
-
 }

@@ -14,10 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using NUnit.Framework;
+
 using System;
 using NodaTime.Fields;
 using NodaTime.Periods;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Periods
 {
@@ -47,9 +48,9 @@ namespace NodaTime.Test.Periods
 
         [Test]
         public void GetFieldType_ThrowsArgumentOutOfRange_ForNonZeroIndex()
-        {            
+        {
             var sut = new Single(10);
-            Assert.Throws<ArgumentOutOfRangeException>(()=> sut.GetFieldType(1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => sut.GetFieldType(1));
         }
 
         [Test]
@@ -104,24 +105,19 @@ namespace NodaTime.Test.Periods
         [Test]
         public void Equality()
         {
-            TestHelper.TestEqualsClass<SingleFieldPeriodBase>(new Single(2),
-                new Single(2), new Single(4));
+            TestHelper.TestEqualsClass<SingleFieldPeriodBase>(new Single(2), new Single(2), new Single(4));
 
-            TestHelper.TestEqualsClass<SingleFieldPeriodBase>(new Single(2),
-                new Single(2), new Single2(2));
+            TestHelper.TestEqualsClass<SingleFieldPeriodBase>(new Single(2), new Single(2), new Single2(2));
 
-            TestHelper.TestOperatorEquality<SingleFieldPeriodBase>(new Single(2),
-                new Single(2), new Single(4));
+            TestHelper.TestOperatorEquality<SingleFieldPeriodBase>(new Single(2), new Single(2), new Single(4));
         }
 
         [Test]
         public void Comparison()
         {
-            TestHelper.TestCompareToClass<SingleFieldPeriodBase>(new Single(2),
-                new Single(2), new Single(4));
+            TestHelper.TestCompareToClass<SingleFieldPeriodBase>(new Single(2), new Single(2), new Single(4));
 
-            TestHelper.TestOperatorComparisonEquality<SingleFieldPeriodBase>(new Single(2),
-                new Single(2), new Single(4));
+            TestHelper.TestOperatorComparisonEquality<SingleFieldPeriodBase>(new Single(2), new Single(2), new Single(4));
         }
     }
 }

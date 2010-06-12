@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -41,8 +42,7 @@ namespace NodaTime.Fields
     {
         private readonly IDateTimeField wrappedField;
 
-        protected DecoratedDateTimeField(IDateTimeField wrappedField, DateTimeFieldType fieldType) 
-            : base(fieldType)
+        protected DecoratedDateTimeField(IDateTimeField wrappedField, DateTimeFieldType fieldType) : base(fieldType)
         {
             if (wrappedField == null)
             {
@@ -90,7 +90,5 @@ namespace NodaTime.Fields
         {
             return wrappedField.RoundFloor(localInstant);
         }
-
-
     }
 }

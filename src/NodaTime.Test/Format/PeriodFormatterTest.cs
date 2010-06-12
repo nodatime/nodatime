@@ -17,7 +17,6 @@
 
 using System;
 using System.Globalization;
-
 using NodaTime.Periods;
 using NUnit.Framework;
 
@@ -26,24 +25,23 @@ namespace NodaTime.Test.Format
     [TestFixture]
     public partial class PeriodFormatterTest
     {
-        PeriodFormatterTest.PeriodPrinterMock printer;
-        PeriodFormatterTest.PeriodParserMock parser;
-        PeriodType daysPeriodType;
-        PeriodType monthsPeriodType;
+        private PeriodPrinterMock printer;
+        private PeriodParserMock parser;
+        private PeriodType daysPeriodType;
+        private PeriodType monthsPeriodType;
 
-        IFormatProvider provider1;
-        IFormatProvider provider2;
+        private IFormatProvider provider1;
+        private IFormatProvider provider2;
 
         [SetUp]
         public void Init()
         {
-            printer = new PeriodFormatterTest.PeriodPrinterMock();
-            parser = new PeriodFormatterTest.PeriodParserMock();
+            printer = new PeriodPrinterMock();
+            parser = new PeriodParserMock();
             daysPeriodType = PeriodType.Days;
             monthsPeriodType = PeriodType.Months;
             provider1 = CultureInfo.InvariantCulture;
             provider2 = CultureInfo.GetCultureInfo("en-US");
-
         }
     }
 }

@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -31,8 +29,7 @@ namespace NodaTime
     /// <remarks>
     /// This type is immutable and thread-safe.
     /// </remarks>
-    public struct Instant
-        : IEquatable<Instant>, IComparable<Instant>
+    public struct Instant : IEquatable<Instant>, IComparable<Instant>
     {
         public const string BeginningOfTimeLabel = "BOT";
         public const string EndOfTimeLabel = "EOT";
@@ -55,13 +52,9 @@ namespace NodaTime
         /// <summary>
         /// Ticks since the Unix epoch.
         /// </summary>
-        public long Ticks
-        {
-            get { return this.ticks; }
-        }
+        public long Ticks { get { return ticks; } }
 
         #region IEquatable<Instant> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -74,11 +67,9 @@ namespace NodaTime
         {
             return Ticks == other.Ticks;
         }
-
         #endregion
 
         #region IComparable<Instant> Members
-
         /// <summary>
         /// Compares the current object with another object of the same type.
         /// </summary>
@@ -109,11 +100,9 @@ namespace NodaTime
         {
             return Ticks.CompareTo(other.Ticks);
         }
-
         #endregion
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -126,7 +115,7 @@ namespace NodaTime
         {
             if (obj is Instant)
             {
-                return Equals((Instant) obj);
+                return Equals((Instant)obj);
             }
             return false;
         }
@@ -162,16 +151,13 @@ namespace NodaTime
 
             // TODO: Use proper formatting!
             var utc = new LocalDateTime(new LocalInstant(Ticks));
-            return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year,
-                                 utc.MonthOfYear, utc.DayOfMonth,
+            return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.MonthOfYear, utc.DayOfMonth,
                                  utc.HourOfDay, utc.MinuteOfHour, utc.SecondOfMinute);
             //return Ticks.ToString("N0", CultureInfo.CurrentCulture);
         }
-
         #endregion  // Object overrides
 
         #region Operators
-
         /// <summary>
         /// Implements the operator + (addition) for <see cref="Instant"/> + <see cref="Duration"/>.
         /// </summary>
@@ -325,22 +311,18 @@ namespace NodaTime
         {
             return left.CompareTo(right) >= 0;
         }
-
         #endregion // Operators
 
         #region Convenience methods
-
         /// <summary>
         /// Returns a new instant corresponding to the given UTC date and time in the ISO calendar.
         /// In most cases applications should use <see cref="ZonedDateTime"/> to represent a date
         /// and time, but this method is useful in some situations where an <see cref="Instant"/> is
         /// required, such as time zone testing.
         /// </summary>
-        public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth,
-                                      int hourOfDay, int minuteOfHour)
+        public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
-            var local = IsoCalendarSystem.Instance.GetLocalInstant
-                (year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
+            var local = IsoCalendarSystem.Instance.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
             return new Instant(local.Ticks);
         }
 
@@ -351,13 +333,11 @@ namespace NodaTime
         /// to represent a date and time, but this method is useful in some 
         /// situations where an Instant is required, such as time zone testing.
         /// </summary>
-        public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth,
-                                      int hourOfDay, int minuteOfHour, int secondOfMinute)
+        public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
             var local = IsoCalendarSystem.Instance.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
             return new Instant(local.Ticks);
         }
-
         #endregion
     }
 }

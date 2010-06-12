@@ -22,7 +22,6 @@ namespace NodaTime.Demo
     [TestFixture]
     public class InstantDemo
     {
-
         [Test]
         public void Construction()
         {

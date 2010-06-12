@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -24,7 +25,7 @@ namespace NodaTime.Fields
     public abstract class DateTimeFieldBase : IDateTimeField
     {
         private readonly DateTimeFieldType fieldType;
-        
+
         protected DateTimeFieldBase(DateTimeFieldType fieldType)
         {
             if (fieldType == null)
@@ -76,7 +77,6 @@ namespace NodaTime.Fields
         public abstract bool IsLenient { get; }
 
         #region Values
-
         /// <summary>
         /// Get the value of this field from the local instant.
         /// </summary>
@@ -84,7 +84,7 @@ namespace NodaTime.Fields
         /// <returns>The value of the field, in the units of the field</returns>
         public virtual int GetValue(LocalInstant localInstant)
         {
-            return (int) GetInt64Value(localInstant);
+            return (int)GetInt64Value(localInstant);
         }
 
         /// <summary>
@@ -241,9 +241,9 @@ namespace NodaTime.Fields
                         throw new ArgumentException("Fields invalid for add");
                     }
                 }
-                valueToAdd -= ((int)max + 1) - values[fieldIndex];  // reduce the amount to add
-                values = nextField.Add(instant, fieldIndex - 1, values, 1);  // add 1 to next bigger field
-                values[fieldIndex] = (int)GetMinimumValue(instant, values);  // reset this field to zero
+                valueToAdd -= ((int)max + 1) - values[fieldIndex]; // reduce the amount to add
+                values = nextField.Add(instant, fieldIndex - 1, values, 1); // add 1 to next bigger field
+                values[fieldIndex] = (int)GetMinimumValue(instant, values); // reset this field to zero
             }
             while (valueToAdd < 0)
             {
@@ -266,12 +266,12 @@ namespace NodaTime.Fields
                         throw new ArgumentException("Fields invalid for add");
                     }
                 }
-                valueToAdd -= ((int)min - 1) - values[fieldIndex];  // reduce the amount to add
-                values = nextField.Add(instant, fieldIndex - 1, values, -1);  // subtract 1 from next bigger field
-                values[fieldIndex] = (int)GetMaximumValue(instant, values);  // reset this field to max value
+                valueToAdd -= ((int)min - 1) - values[fieldIndex]; // reduce the amount to add
+                values = nextField.Add(instant, fieldIndex - 1, values, -1); // subtract 1 from next bigger field
+                values[fieldIndex] = (int)GetMaximumValue(instant, values); // reset this field to max value
             }
 
-            return SetValue(instant, fieldIndex, values, values[fieldIndex]);  // adjusts smaller fields
+            return SetValue(instant, fieldIndex, values, values[fieldIndex]); // adjusts smaller fields
         }
 
         /// <summary>
@@ -338,9 +338,9 @@ namespace NodaTime.Fields
                         throw new ArgumentException("Fields invalid for add");
                     }
                 }
-                valueToAdd -= (max + 1) - values[fieldIndex];  // reduce the amount to add
-                values = nextField.AddWrapPartial(instant, fieldIndex - 1, values, 1);  // add 1 to next bigger field
-                values[fieldIndex] = (int)GetMinimumValue(instant, values);  // reset this field to zero
+                valueToAdd -= (max + 1) - values[fieldIndex]; // reduce the amount to add
+                values = nextField.AddWrapPartial(instant, fieldIndex - 1, values, 1); // add 1 to next bigger field
+                values[fieldIndex] = (int)GetMinimumValue(instant, values); // reset this field to zero
             }
             while (valueToAdd < 0)
             {
@@ -365,12 +365,12 @@ namespace NodaTime.Fields
                         throw new ArgumentException("Fields invalid for add");
                     }
                 }
-                valueToAdd -= ((int)min - 1) - values[fieldIndex];  // reduce the amount to add
-                values = nextField.AddWrapPartial(instant, fieldIndex - 1, values, -1);  // subtract 1 from next bigger field
-                values[fieldIndex] = (int)GetMaximumValue(instant, values);  // reset this field to max value
+                valueToAdd -= (min - 1) - values[fieldIndex]; // reduce the amount to add
+                values = nextField.AddWrapPartial(instant, fieldIndex - 1, values, -1); // subtract 1 from next bigger field
+                values[fieldIndex] = (int)GetMaximumValue(instant, values); // reset this field to max value
             }
 
-            return SetValue(instant, fieldIndex, values, values[fieldIndex]);  // adjusts smaller fields
+            return SetValue(instant, fieldIndex, values, values[fieldIndex]); // adjusts smaller fields
         }
 
         /// <summary>
@@ -520,11 +520,9 @@ namespace NodaTime.Fields
             int value = ConvertText(text, provider);
             return SetValue(instant, fieldIndex, values, value);
         }
-
         #endregion
 
         #region Leap
-
         /// <summary>
         /// Defaults to non-leap.
         /// </summary>
@@ -545,11 +543,9 @@ namespace NodaTime.Fields
         /// Defaults to null, i.e. no leap duration field.
         /// </summary>
         public virtual IDurationField LeapDurationField { get { return null; } }
-
         #endregion
 
         #region Ranges
-
         /// <summary>
         /// Defaults to the absolute maximum for the field.
         /// </summary>
@@ -619,11 +615,9 @@ namespace NodaTime.Fields
         /// </summary>
         /// <returns>The minimum valid value for this field, in the units of the field</returns>
         public abstract long GetMinimumValue();
-
         #endregion
 
         #region Rounding
-
         /// <summary>
         /// Round to the lowest whole unit of this field. After rounding, the value
         /// of this field and all fields of a higher magnitude are retained. The
@@ -676,7 +670,7 @@ namespace NodaTime.Fields
             Duration diffFromFloor = localInstant - floor;
             Duration diffToCeiling = ceiling - localInstant;
 
-             // Closer to the floor, or halfway - round floor
+            // Closer to the floor, or halfway - round floor
             return diffFromFloor <= diffToCeiling ? floor : ceiling;
         }
 
@@ -696,7 +690,7 @@ namespace NodaTime.Fields
             long diffFromFloor = localInstant.Ticks - floor.Ticks;
             long diffToCeiling = ceiling.Ticks - localInstant.Ticks;
 
-             // Closer to the ceiling, or halfway - round ceiling
+            // Closer to the ceiling, or halfway - round ceiling
             return diffToCeiling <= diffFromFloor ? ceiling : floor;
         }
 
@@ -721,7 +715,7 @@ namespace NodaTime.Fields
             {
                 return floor;
             }
-            // Closer to the ceiling - round ceiling
+                // Closer to the ceiling - round ceiling
             else if (diffToCeiling < diffFromFloor)
             {
                 return ceiling;
@@ -748,11 +742,9 @@ namespace NodaTime.Fields
         {
             return localInstant - RoundFloor(localInstant);
         }
-
         #endregion
 
         #region Text
-
         /// <summary>
         /// Get the maximum text value for this field.
         /// </summary>
@@ -945,7 +937,6 @@ namespace NodaTime.Fields
         {
             return GetAsText(fieldValue, provider);
         }
-
         #endregion
 
         protected int ConvertText(String text, IFormatProvider provider)

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 namespace NodaTime.Format
 {
     /// <summary>
@@ -32,84 +33,30 @@ namespace NodaTime.Format
     /// </remarks>
     public static class IsoPeriodFormats
     {
-        private static readonly PeriodFormatter standard = new PeriodFormatterBuilder()
-            .AppendLiteral("P")
-            .AppendYears().AppendSuffix("Y")
-            .AppendMonths().AppendSuffix("M")
-            .AppendWeeks().AppendSuffix("W")
-            .AppendDays().AppendSuffix("D")
-            .AppendSeparatorIfFieldsAfter("T")
-            .AppendHours().AppendSuffix("H")
-            .AppendMinutes().AppendSuffix("M")
-            .AppendSecondsWithOptionalMilliseconds().AppendSuffix("S")
-            .ToFormatter();
+        private static readonly PeriodFormatter standard =
+            new PeriodFormatterBuilder().AppendLiteral("P").AppendYears().AppendSuffix("Y").AppendMonths().AppendSuffix("M").AppendWeeks().AppendSuffix("W").
+                AppendDays().AppendSuffix("D").AppendSeparatorIfFieldsAfter("T").AppendHours().AppendSuffix("H").AppendMinutes().AppendSuffix("M").
+                AppendSecondsWithOptionalMilliseconds().AppendSuffix("S").ToFormatter();
 
         /** Alternate months format. */
-        private static readonly PeriodFormatter alternate= new PeriodFormatterBuilder()
-            .AppendLiteral("P")
-            .PrintZeroAlways()
-            .MinimumPrintedDigits(4)
-            .AppendYears()
-            .MinimumPrintedDigits(2)
-            .AppendMonths()
-            .AppendDays()
-            .AppendSeparatorIfFieldsAfter("T")
-            .AppendHours()
-            .AppendMinutes()
-            .AppendSecondsWithOptionalMilliseconds()
-            .ToFormatter();
 
-        private static readonly PeriodFormatter alternateExtended = new PeriodFormatterBuilder()
-            .AppendLiteral("P")
-            .PrintZeroAlways()
-            .MinimumPrintedDigits(4)
-            .AppendYears()
-            .AppendSeparator("-")
-            .MinimumPrintedDigits(2)
-            .AppendMonths()
-            .AppendSeparator("-")
-            .AppendDays()
-            .AppendSeparatorIfFieldsAfter("T")
-            .AppendHours()
-            .AppendSeparator(":")
-            .AppendMinutes()
-            .AppendSeparator(":")
-            .AppendSecondsWithOptionalMilliseconds()
-            .ToFormatter();
+        private static readonly PeriodFormatter alternate =
+            new PeriodFormatterBuilder().AppendLiteral("P").PrintZeroAlways().MinimumPrintedDigits(4).AppendYears().MinimumPrintedDigits(2).AppendMonths().
+                AppendDays().AppendSeparatorIfFieldsAfter("T").AppendHours().AppendMinutes().AppendSecondsWithOptionalMilliseconds().ToFormatter();
 
-        private static readonly PeriodFormatter alternateWithWeeks = new PeriodFormatterBuilder()
-            .AppendLiteral("P")
-            .PrintZeroAlways()
-            .MinimumPrintedDigits(4)
-            .AppendYears()
-            .MinimumPrintedDigits(2)
-            .AppendPrefix("W")
-            .AppendWeeks()
-            .AppendDays()
-            .AppendSeparatorIfFieldsAfter("T")
-            .AppendHours()
-            .AppendMinutes()
-            .AppendSecondsWithOptionalMilliseconds()
-            .ToFormatter();
+        private static readonly PeriodFormatter alternateExtended =
+            new PeriodFormatterBuilder().AppendLiteral("P").PrintZeroAlways().MinimumPrintedDigits(4).AppendYears().AppendSeparator("-").MinimumPrintedDigits(2)
+                .AppendMonths().AppendSeparator("-").AppendDays().AppendSeparatorIfFieldsAfter("T").AppendHours().AppendSeparator(":").AppendMinutes().
+                AppendSeparator(":").AppendSecondsWithOptionalMilliseconds().ToFormatter();
 
-        private static readonly PeriodFormatter alternateExtendedWithWeeks = new PeriodFormatterBuilder()
-            .AppendLiteral("P")
-            .PrintZeroAlways()
-            .MinimumPrintedDigits(4)
-            .AppendYears()
-            .AppendSeparator("-")
-            .MinimumPrintedDigits(2)
-            .AppendPrefix("W")
-            .AppendWeeks()
-            .AppendSeparator("-")
-            .AppendDays()
-            .AppendSeparatorIfFieldsAfter("T")
-            .AppendHours()
-            .AppendSeparator(":")
-            .AppendMinutes()
-            .AppendSeparator(":")
-            .AppendSecondsWithOptionalMilliseconds()
-            .ToFormatter();
+        private static readonly PeriodFormatter alternateWithWeeks =
+            new PeriodFormatterBuilder().AppendLiteral("P").PrintZeroAlways().MinimumPrintedDigits(4).AppendYears().MinimumPrintedDigits(2).AppendPrefix("W").
+                AppendWeeks().AppendDays().AppendSeparatorIfFieldsAfter("T").AppendHours().AppendMinutes().AppendSecondsWithOptionalMilliseconds().ToFormatter();
+
+        private static readonly PeriodFormatter alternateExtendedWithWeeks =
+            new PeriodFormatterBuilder().AppendLiteral("P").PrintZeroAlways().MinimumPrintedDigits(4).AppendYears().AppendSeparator("-").MinimumPrintedDigits(2)
+                .AppendPrefix("W").AppendWeeks().AppendSeparator("-").AppendDays().AppendSeparatorIfFieldsAfter("T").AppendHours().AppendSeparator(":").
+                AppendMinutes().AppendSeparator(":").AppendSecondsWithOptionalMilliseconds().ToFormatter();
 
         /// <summary>
         /// The standard ISO format - PyYmMwWdDThHmMsS.
@@ -130,7 +77,7 @@ namespace NodaTime.Format
         /// Even if weeks are present in the period, they are not output.
         /// Fractional seconds (milliseconds) will appear if required.
         /// </remarks>
-        public static PeriodFormatter Alternate { get { return alternate; } } 
+        public static PeriodFormatter Alternate { get { return alternate; } }
 
         /// <summary>
         /// The alternate ISO format, Pyyyy-mm-ddThh:mm:ss, which excludes weeks.
@@ -140,7 +87,7 @@ namespace NodaTime.Format
         /// Even if weeks are present in the period, they are not output.
         /// Fractional seconds (milliseconds) will appear if required.
         /// </remarks>
-        public static PeriodFormatter AlternateExtended { get { return alternateExtended; } } 
+        public static PeriodFormatter AlternateExtended { get { return alternateExtended; } }
 
         /// <summary>
         /// The alternate ISO format, PyyyyWwwddThhmmss, which excludes months.
@@ -150,7 +97,7 @@ namespace NodaTime.Format
         /// Even if months are present in the period, they are not output.
         /// Fractional seconds (milliseconds) will appear if required.
         /// </remarks>
-        public static PeriodFormatter AlternateWithWeeks { get { return alternateWithWeeks; } } 
+        public static PeriodFormatter AlternateWithWeeks { get { return alternateWithWeeks; } }
 
         /// <summary>
         /// The alternate ISO format, Pyyyy-Www-ddThh:mm:ss, which excludes months.
@@ -161,5 +108,5 @@ namespace NodaTime.Format
         /// Fractional seconds (milliseconds) will appear if required.
         /// </remarks>
         public static PeriodFormatter AlternateExtendedWithWeeks { get { return alternateExtendedWithWeeks; } }
-   }
+    }
 }
