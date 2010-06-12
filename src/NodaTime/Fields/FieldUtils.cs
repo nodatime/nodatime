@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -44,9 +45,11 @@ namespace NodaTime.Fields
             // TODO: i18n or decide whether we want our own custom type with lower and upper bounds
             if ((value < lowerBound) || (value > upperBound))
             {
-                throw new ArgumentOutOfRangeException("value", value, "Value of type " + fieldType + " should be in range [" + lowerBound + "-" + upperBound + "]");
+                throw new ArgumentOutOfRangeException("value", value,
+                                                      "Value of type " + fieldType + " should be in range [" + lowerBound + "-" + upperBound + "]");
             }
         }
+
         /// <summary>
         /// Verifies the input value against the valid range of the calendar field.
         /// </summary>
@@ -111,8 +114,7 @@ namespace NodaTime.Fields
         /// <param name="maxValue">The wrap range maximum value. This must be greater than minValue (checked by the method).</param>
         /// <returns>The wrapped value</returns>
         /// <exception cref="ArgumentException">If minValue is greater than or equal to maxValue</exception>
-        public static int GetWrappedValue(int currentValue, int wrapValue,
-                                          int minValue, int maxValue)
+        public static int GetWrappedValue(int currentValue, int wrapValue, int minValue, int maxValue)
         {
             return GetWrappedValue(currentValue + wrapValue, minValue, maxValue);
         }

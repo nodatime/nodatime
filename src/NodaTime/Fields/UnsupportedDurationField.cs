@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -26,28 +27,27 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class UnsupportedDurationField : DurationFieldBase
     {
-        private static readonly UnsupportedDurationField[] cache = Array.ConvertAll
-            ((DurationFieldType[]) Enum.GetValues(typeof(DurationFieldType)),
-             type => new UnsupportedDurationField(type));
+        private static readonly UnsupportedDurationField[] cache = Array.ConvertAll((DurationFieldType[])Enum.GetValues(typeof(DurationFieldType)),
+                                                                                    type => new UnsupportedDurationField(type));
 
         // Convenience fields
-        public static readonly UnsupportedDurationField Eras = cache[(int) DurationFieldType.Eras];
-        public static readonly UnsupportedDurationField Centuries = cache[(int) DurationFieldType.Centuries];
-        public static readonly UnsupportedDurationField WeekYears = cache[(int) DurationFieldType.WeekYears];
-        public static readonly UnsupportedDurationField Years = cache[(int) DurationFieldType.Years];
-        public static readonly UnsupportedDurationField Months = cache[(int) DurationFieldType.Months];
-        public static readonly UnsupportedDurationField Weeks = cache[(int) DurationFieldType.Weeks];
-        public static readonly UnsupportedDurationField Days = cache[(int) DurationFieldType.Days];
-        public static readonly UnsupportedDurationField HalfDays = cache[(int) DurationFieldType.HalfDays];
-        public static readonly UnsupportedDurationField Hours = cache[(int) DurationFieldType.Hours];
-        public static readonly UnsupportedDurationField Minutes = cache[(int) DurationFieldType.Minutes];
-        public static readonly UnsupportedDurationField Seconds = cache[(int) DurationFieldType.Seconds];
-        public static readonly UnsupportedDurationField Milliseconds = cache[(int) DurationFieldType.Milliseconds];
-        public static readonly UnsupportedDurationField Ticks = cache[(int) DurationFieldType.Ticks];
+        public static readonly UnsupportedDurationField Eras = cache[(int)DurationFieldType.Eras];
+        public static readonly UnsupportedDurationField Centuries = cache[(int)DurationFieldType.Centuries];
+        public static readonly UnsupportedDurationField WeekYears = cache[(int)DurationFieldType.WeekYears];
+        public static readonly UnsupportedDurationField Years = cache[(int)DurationFieldType.Years];
+        public static readonly UnsupportedDurationField Months = cache[(int)DurationFieldType.Months];
+        public static readonly UnsupportedDurationField Weeks = cache[(int)DurationFieldType.Weeks];
+        public static readonly UnsupportedDurationField Days = cache[(int)DurationFieldType.Days];
+        public static readonly UnsupportedDurationField HalfDays = cache[(int)DurationFieldType.HalfDays];
+        public static readonly UnsupportedDurationField Hours = cache[(int)DurationFieldType.Hours];
+        public static readonly UnsupportedDurationField Minutes = cache[(int)DurationFieldType.Minutes];
+        public static readonly UnsupportedDurationField Seconds = cache[(int)DurationFieldType.Seconds];
+        public static readonly UnsupportedDurationField Milliseconds = cache[(int)DurationFieldType.Milliseconds];
+        public static readonly UnsupportedDurationField Ticks = cache[(int)DurationFieldType.Ticks];
 
-
-        private UnsupportedDurationField(DurationFieldType fieldType)
-            : base(fieldType) { }
+        private UnsupportedDurationField(DurationFieldType fieldType) : base(fieldType)
+        {
+        }
 
         /// <summary>
         /// Gets an instance of UnsupportedDurationField for a specific named field.
@@ -57,13 +57,12 @@ namespace NodaTime.Fields
         /// <returns>The instance</returns>
         public static UnsupportedDurationField ForFieldType(DurationFieldType fieldType)
         {
-            if (!DurationFieldBase.IsTypeValid(fieldType))
+            if (!IsTypeValid(fieldType))
             {
                 throw new ArgumentOutOfRangeException("fieldType");
             }
-            return cache[(int) fieldType];
+            return cache[(int)fieldType];
         }
-
 
         /// <summary>
         /// This field is not supported, always returns false

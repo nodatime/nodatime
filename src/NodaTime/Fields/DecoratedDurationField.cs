@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -25,8 +26,7 @@ namespace NodaTime.Fields
     {
         private readonly IDurationField wrappedField;
 
-        internal DecoratedDurationField(IDurationField wrappedField, DurationFieldType fieldType)
-            : base(fieldType)
+        internal DecoratedDurationField(IDurationField wrappedField, DurationFieldType fieldType) : base(fieldType)
         {
             if (wrappedField == null)
             {

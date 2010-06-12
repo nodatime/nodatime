@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -38,8 +36,7 @@ namespace NodaTime.TimeZones
     /// Immutable, thread safe.
     /// </para>
     /// </remarks>
-    public class ZoneRecurrence
-        : IEquatable<ZoneRecurrence>
+    public class ZoneRecurrence : IEquatable<ZoneRecurrence>
     {
         private readonly int fromYear;
         private readonly string name;
@@ -72,38 +69,19 @@ namespace NodaTime.TimeZones
             this.toYear = toYear;
         }
 
-        public string Name
-        {
-            get { return this.name; }
-        }
+        public string Name { get { return name; } }
 
-        public Offset Savings
-        {
-            get { return this.savings; }
-        }
+        public Offset Savings { get { return savings; } }
 
-        public ZoneYearOffset YearOffset
-        {
-            get { return this.yearOffset; }
-        }
+        public ZoneYearOffset YearOffset { get { return yearOffset; } }
 
-        public int FromYear
-        {
-            get { return this.fromYear; }
-        }
+        public int FromYear { get { return fromYear; } }
 
-        public int ToYear
-        {
-            get { return this.toYear; }
-        }
+        public int ToYear { get { return toYear; } }
 
-        public bool IsInfinite
-        {
-            get { return ToYear == Int32.MaxValue; }
-        }
+        public bool IsInfinite { get { return ToYear == Int32.MaxValue; } }
 
         #region IEquatable<ZoneRecurrence> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -122,18 +100,11 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return
-                this.savings == other.savings &&
-                this.fromYear == other.fromYear &&
-                this.toYear == other.toYear &&
-                this.name == other.name &&
-                this.yearOffset == other.yearOffset;
+            return savings == other.savings && fromYear == other.fromYear && toYear == other.toYear && name == other.name && yearOffset == other.yearOffset;
         }
-
         #endregion
 
         #region Operator overloads
-
         /// <summary>
         /// Implements the operator ==.
         /// </summary>
@@ -159,7 +130,6 @@ namespace NodaTime.TimeZones
         {
             return !(left == right);
         }
-
         #endregion
 
         /// <summary>
@@ -182,25 +152,23 @@ namespace NodaTime.TimeZones
 
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MinValue
-                           ? Int32.MinValue
-                           : calendar.Fields.Year.GetValue(instant + wallOffset);
+            int year = instant == Instant.MinValue ? Int32.MinValue : calendar.Fields.Year.GetValue(instant + wallOffset);
 
-            if (year < this.fromYear)
+            if (year < fromYear)
             {
                 // First advance instant to start of from year.
-                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.fromYear) - wallOffset;
+                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, fromYear) - wallOffset;
                 // Back off one tick to account for next recurrence being exactly at the beginning
                 // of the year.
                 instant = instant - Duration.One;
             }
 
-            Instant next = this.yearOffset.Next(instant, standardOffset, previousSavings);
+            Instant next = yearOffset.Next(instant, standardOffset, previousSavings);
 
             if (next >= instant)
             {
                 year = calendar.Fields.Year.GetValue(next + wallOffset);
-                if (year > this.toYear)
+                if (year > toYear)
                 {
                     return null;
                 }
@@ -223,22 +191,20 @@ namespace NodaTime.TimeZones
 
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MaxValue
-                           ? Int32.MaxValue
-                           : calendar.Fields.Year.GetValue(instant + wallOffset);
+            int year = instant == Instant.MaxValue ? Int32.MaxValue : calendar.Fields.Year.GetValue(instant + wallOffset);
 
-            if (year > this.toYear)
+            if (year > toYear)
             {
                 // First advance instant to start of year after toYear
-                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, this.toYear + 1) - wallOffset;
+                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, toYear + 1) - wallOffset;
             }
 
-            Instant previous = this.yearOffset.Previous(instant, standardOffset, previousSavings);
+            Instant previous = yearOffset.Previous(instant, standardOffset, previousSavings);
 
             if (previous <= instant)
             {
                 year = calendar.Fields.Year.GetValue(previous + wallOffset);
-                if (year < this.fromYear)
+                if (year < fromYear)
                 {
                     return null;
                 }
@@ -259,7 +225,7 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("suffix");
             }
-            return new ZoneRecurrence(Name + suffix, Savings, this.yearOffset, this.fromYear, this.toYear);
+            return new ZoneRecurrence(Name + suffix, Savings, yearOffset, fromYear, toYear);
         }
 
         /// <summary>
@@ -271,8 +237,8 @@ namespace NodaTime.TimeZones
             writer.WriteString(Name);
             writer.WriteOffset(Savings);
             YearOffset.Write(writer);
-            writer.WriteCount(this.fromYear);
-            writer.WriteCount(this.toYear);
+            writer.WriteCount(fromYear);
+            writer.WriteCount(toYear);
         }
 
         /// <summary>
@@ -295,7 +261,6 @@ namespace NodaTime.TimeZones
         }
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -322,9 +287,9 @@ namespace NodaTime.TimeZones
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, this.savings);
-            hash = HashCodeHelper.Hash(hash, this.name);
-            hash = HashCodeHelper.Hash(hash, this.yearOffset);
+            hash = HashCodeHelper.Hash(hash, savings);
+            hash = HashCodeHelper.Hash(hash, name);
+            hash = HashCodeHelper.Hash(hash, yearOffset);
             return hash;
         }
 
@@ -343,7 +308,6 @@ namespace NodaTime.TimeZones
             builder.Append(" [").Append(FromYear).Append("-").Append(ToYear).Append("]");
             return builder.ToString();
         }
-
         #endregion // Object overrides
     }
 }

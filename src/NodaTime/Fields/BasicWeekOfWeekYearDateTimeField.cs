@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
@@ -26,8 +27,7 @@ namespace NodaTime.Fields
         private static readonly Duration ThreeDays = Duration.FromStandardDays(3);
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal BasicWeekOfWeekYearDateTimeField(BasicCalendarSystem calendarSystem, IDurationField weeks)
-            : base(DateTimeFieldType.WeekOfWeekYear, weeks)
+        internal BasicWeekOfWeekYearDateTimeField(BasicCalendarSystem calendarSystem, IDurationField weeks) : base(DateTimeFieldType.WeekOfWeekYear, weeks)
         {
             this.calendarSystem = calendarSystem;
         }

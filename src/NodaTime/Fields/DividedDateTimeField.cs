@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -28,8 +29,7 @@ namespace NodaTime.Fields
         private readonly long min;
         private readonly long max;
 
-        internal DividedDateTimeField(IDateTimeField field, DateTimeFieldType fieldType, int divisor)
-            : base(field, fieldType)
+        internal DividedDateTimeField(IDateTimeField field, DateTimeFieldType fieldType, int divisor) : base(field, fieldType)
         {
             if (divisor < 2)
             {
@@ -47,8 +47,7 @@ namespace NodaTime.Fields
             max = fieldMax >= 0 ? fieldMax / divisor : ((fieldMax + 1) / divisor - 1);
         }
 
-        internal DividedDateTimeField(RemainderDateTimeField remainderField, DateTimeFieldType fieldType)
-            : base(remainderField.WrappedField, fieldType)
+        internal DividedDateTimeField(RemainderDateTimeField remainderField, DateTimeFieldType fieldType) : base(remainderField.WrappedField, fieldType)
         {
             divisor = remainderField.Divisor;
             divisorDurationField = remainderField.RemainderRangeField;

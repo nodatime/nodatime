@@ -14,7 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
+using NodaTime.Fields;
 
 namespace NodaTime.Calendars
 {
@@ -26,18 +28,17 @@ namespace NodaTime.Calendars
         private const string GregorianName = "Gregorian";
 
         private const int DaysFrom0000To1970 = 719527;
-        private const long AverageTicksPerGregorianYear = (long) (365.2425m * NodaConstants.TicksPerDay);
+        private const long AverageTicksPerGregorianYear = (long)(365.2425m * NodaConstants.TicksPerDay);
 
         // TODO: Consider making this public, but with a different name?
         // It roughly maps onto GregorianChronology.getInstanceUTC() except of course we don't have a time zone...
         internal static readonly GregorianCalendarSystem Default = new GregorianCalendarSystem(4);
 
-        private GregorianCalendarSystem(int minDaysInFirstWeek)
-            : base(GregorianName, null, minDaysInFirstWeek)
+        private GregorianCalendarSystem(int minDaysInFirstWeek) : base(GregorianName, null, minDaysInFirstWeek)
         {
         }
 
-        protected override void AssembleFields(Fields.FieldSet.Builder builder)
+        protected override void AssembleFields(FieldSet.Builder builder)
         {
             // TODO: This pattern appears all over the place. It *may* not be necessary
             // now we've separated out all the time zone stuff.

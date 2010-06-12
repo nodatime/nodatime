@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,16 +13,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
 using System.Globalization;
 using System.IO;
-
+using NodaTime.Calendars;
 using NodaTime.Format;
 using NodaTime.Periods;
-using NodaTime.Calendars;
 
 namespace NodaTime
 {
@@ -40,11 +37,9 @@ namespace NodaTime
     /// This type is immutable and thread-safe.
     /// </para>
     /// </remarks>
-    public struct Duration
-        : IEquatable<Duration>, IComparable<Duration>
+    public struct Duration : IEquatable<Duration>, IComparable<Duration>
     {
         #region Public readonly fields
-
         /// <summary>
         /// Represents <see cref="Duration"/> value equal to negative 1 tick. 
         /// This field is read-only.
@@ -136,11 +131,9 @@ namespace NodaTime
         /// TThe value of this constant is 10 thousand; that is, 10,000.
         /// </remarks>
         public static readonly Duration OneMillisecond = new Duration(NodaConstants.TicksPerMillisecond);
-
         #endregion
 
         #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Duration"/> struct.
         /// </summary>
@@ -156,8 +149,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="startTicks">The start ticks.</param>
         /// <param name="endTicks">The end ticks.</param>
-        public Duration(long startTicks, long endTicks)
-            : this(endTicks - startTicks)
+        public Duration(long startTicks, long endTicks) : this(endTicks - startTicks)
         {
         }
 
@@ -168,8 +160,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="start">The start <see cref="Instant"/> value.</param>
         /// <param name="end">The end <see cref="Instant"/> value.</param>
-        public Duration(Instant start, Instant end)
-            : this(end.Ticks - start.Ticks)
+        public Duration(Instant start, Instant end) : this(end.Ticks - start.Ticks)
         {
         }
 
@@ -178,11 +169,9 @@ namespace NodaTime
         /// given <see cref="Interval"/> object.
         /// </summary>
         /// <param name="interval">The interval.</param>
-        public Duration(Interval interval)
-            : this(interval.Duration.Ticks)
+        public Duration(Interval interval) : this(interval.Duration.Ticks)
         {
         }
-
         #endregion
 
         private readonly long ticks;
@@ -190,13 +179,9 @@ namespace NodaTime
         /// <summary>
         /// The number of ticks in the duration.
         /// </summary>
-        public long Ticks
-        {
-            get { return ticks; }
-        }
+        public long Ticks { get { return ticks; } }
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -254,11 +239,9 @@ namespace NodaTime
             writer.Write("S");
             return writer.ToString();
         }
-
         #endregion  // Object overrides
 
         #region Operators
-
         /// <summary>
         /// Implements the operator + (addition).
         /// </summary>
@@ -434,11 +417,9 @@ namespace NodaTime
         {
             return left.CompareTo(right) >= 0;
         }
-
         #endregion // Operators
 
         #region IComparable<Duration> Members
-
         /// <summary>
         /// Compares the current object with another object of the same type.
         /// </summary>
@@ -469,11 +450,9 @@ namespace NodaTime
         {
             return Ticks.CompareTo(other.Ticks);
         }
-
         #endregion
 
         #region IEquatable<Duration> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -486,11 +465,9 @@ namespace NodaTime
         {
             return Ticks == other.Ticks;
         }
-
         #endregion
 
         #region Conversions
-
         /// <summary>
         /// Converts this duration to an <see cref="Interval"/> starting at the specified instant.
         /// </summary>
@@ -750,7 +727,6 @@ namespace NodaTime
         {
             return Period.From(this, end);
         }
-
         #endregion
 
         /// <summary>
@@ -830,13 +806,10 @@ namespace NodaTime
                 throw new ArgumentNullException("value");
             }
 
-            result = Duration.Zero;
+            result = Zero;
 
             int len = value.Length;
-            if (len >= 4 &&
-                (value[0] == 'P' || value[0] == 'p') &&
-                (value[1] == 'T' || value[1] == 't') &&
-                (value[len - 1] == 'S' || value[len - 1] == 's'))
+            if (len >= 4 && (value[0] == 'P' || value[0] == 'p') && (value[1] == 'T' || value[1] == 't') && (value[len - 1] == 'S' || value[len - 1] == 's'))
             {
                 // ok
             }
@@ -881,12 +854,9 @@ namespace NodaTime
                 seconds = long.Parse(body, CultureInfo.InvariantCulture);
             }
 
-
-            result = seconds < 0 ? Duration.FromSeconds(seconds) - new Duration(ticks)
-                : Duration.FromSeconds(seconds) + new Duration(ticks);
+            result = seconds < 0 ? FromSeconds(seconds) - new Duration(ticks) : FromSeconds(seconds) + new Duration(ticks);
 
             return true;
-
         }
 
         /// <summary>
@@ -899,10 +869,14 @@ namespace NodaTime
         public static Duration Parse(string value)
         {
             Duration result;
-            if (Duration.TryParse(value, out result))
+            if (TryParse(value, out result))
+            {
                 return result;
+            }
             else
+            {
                 throw new FormatException("Invalid format: \"" + value + '"');
+            }
         }
     }
 }

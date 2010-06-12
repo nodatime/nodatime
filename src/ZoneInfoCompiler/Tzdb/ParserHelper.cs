@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -117,7 +115,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 }
             }
             ticks = ticks * sign;
-            return new Offset((int) (ticks / NodaConstants.TicksPerMillisecond));
+            return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
         }
 
         /// <summary>
@@ -146,8 +144,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 59].</exception>
         internal static long ConvertMinuteToTicks(string text)
         {
-            int value = Int32.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite,
-                                    CultureInfo.InvariantCulture);
+            int value = Int32.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture);
             if (value < 0 || value > 59)
             {
                 throw new FormatException("minutes out of valid range of [0, 59]: " + value);
@@ -164,14 +161,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 60).</exception>
         internal static long ConvertSecondsWithFractionalToTicks(string text)
         {
-            double number = Double.Parse(text,
-                                         NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite |
-                                         NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+            double number = Double.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowDecimalPoint,
+                                         CultureInfo.InvariantCulture);
             if (number < 0.0 || number >= 60.0)
             {
                 throw new FormatException("seconds out of valid range of [0, 60): " + number);
             }
-            long value = (long) (number * NodaConstants.MillisecondsPerSecond) * NodaConstants.TicksPerMillisecond;
+            long value = (long)(number * NodaConstants.MillisecondsPerSecond) * NodaConstants.TicksPerMillisecond;
             return value;
         }
 

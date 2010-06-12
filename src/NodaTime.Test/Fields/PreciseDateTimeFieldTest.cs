@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NUnit.Framework;
@@ -26,33 +27,29 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithNullRangeField_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-                new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
-                    new FakeDurationField(1, true), null));
+            Assert.Throws<ArgumentNullException>(() => new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, new FakeDurationField(1, true), null));
         }
 
         [Test]
         public void Constructor_WithTooSmallRangeField_ThrowsArgumentException()
         {
             // Effectively like "seconds per second" - effective range = 1
-            Assert.Throws<ArgumentException>(() =>
-                new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
-                    new FakeDurationField(1, true), new FakeDurationField(1, true)));
+            Assert.Throws<ArgumentException>(
+                () => new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, new FakeDurationField(1, true), new FakeDurationField(1, true)));
         }
 
         [Test]
         public void Constructor_WithImprecise_RangeField_ThrowsArgumentException()
         {
-            Assert.Throws<ArgumentException>(() =>
-                new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
-                    new FakeDurationField(1, true), new FakeDurationField(60, false)));
+            Assert.Throws<ArgumentException>(
+                () => new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, new FakeDurationField(1, true), new FakeDurationField(60, false)));
         }
 
         [Test]
         public void FieldType()
         {
-            PreciseDateTimeField field = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
-                    new FakeDurationField(1, true), new FakeDurationField(60, true));
+            PreciseDateTimeField field = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, new FakeDurationField(1, true),
+                                                                  new FakeDurationField(60, true));
             Assert.AreEqual(DateTimeFieldType.SecondOfMinute, field.FieldType);
         }
 
@@ -186,7 +183,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(60L, field.RoundHalfFloor(new LocalInstant(60L)).Ticks);
         }
 
-
         [Test]
         public void RoundHalfCeiling()
         {
@@ -225,9 +221,8 @@ namespace NodaTime.Test.Fields
 
         private static PreciseDateTimeField CreateSecondOfMinuteField()
         {
-            return new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute,
-                    new MockCountingDurationField(DurationFieldType.Seconds, 60),
-                    new MockCountingDurationField(DurationFieldType.Minutes, 60 * 60));
+            return new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, new MockCountingDurationField(DurationFieldType.Seconds, 60),
+                                            new MockCountingDurationField(DurationFieldType.Minutes, 60 * 60));
         }
     }
 }

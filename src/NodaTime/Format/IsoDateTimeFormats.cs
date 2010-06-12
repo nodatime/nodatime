@@ -28,425 +28,224 @@ namespace NodaTime.Format
     public static class IsoDateTimeFormats
     {
         // year element (yyyy)
-        private static readonly DateTimeFormatter ye = new DateTimeFormatterBuilder()
-            .AppendYear(4,9)
-            .ToFormatter();
+        private static readonly DateTimeFormatter ye = new DateTimeFormatterBuilder().AppendYear(4, 9).ToFormatter();
 
         // monthOfYear element (-MM)
-        private static readonly DateTimeFormatter mye = new DateTimeFormatterBuilder()
-            .AppendLiteral('-')
-            .AppendMonthOfYear(2)
-            .ToFormatter();
+        private static readonly DateTimeFormatter mye = new DateTimeFormatterBuilder().AppendLiteral('-').AppendMonthOfYear(2).ToFormatter();
 
         // dayOfMonth element (-dd)
-        private static readonly DateTimeFormatter dme = new DateTimeFormatterBuilder()
-            .AppendLiteral('-')
-            .AppendDayOfMonth(2)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dme = new DateTimeFormatterBuilder().AppendLiteral('-').AppendDayOfMonth(2).ToFormatter();
 
         // weekyear element (xxxx)
-        private static readonly DateTimeFormatter we = new DateTimeFormatterBuilder()
-            .AppendWeekYear(4, 9)
-            .ToFormatter();
+        private static readonly DateTimeFormatter we = new DateTimeFormatterBuilder().AppendWeekYear(4, 9).ToFormatter();
 
         // weekOfWeekyear element (-ww)
-        private static readonly DateTimeFormatter wwe = new DateTimeFormatterBuilder()
-            .AppendLiteral("-W")
-            .AppendWeekOfWeekYear(2)
-            .ToFormatter();
+        private static readonly DateTimeFormatter wwe = new DateTimeFormatterBuilder().AppendLiteral("-W").AppendWeekOfWeekYear(2).ToFormatter();
 
         // dayOfWeek element (-ee)
-        private static readonly DateTimeFormatter dwe = new DateTimeFormatterBuilder()
-            .AppendLiteral('-')
-            .AppendDayOfWeek(1)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dwe = new DateTimeFormatterBuilder().AppendLiteral('-').AppendDayOfWeek(1).ToFormatter();
 
         // dayOfYear element (-DDD)
-        private static readonly DateTimeFormatter dye = new DateTimeFormatterBuilder()
-            .AppendLiteral('-')
-            .AppendDayOfYear(3)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dye = new DateTimeFormatterBuilder().AppendLiteral('-').AppendDayOfYear(3).ToFormatter();
 
         // hourOfDay element (HH)
-        private static readonly DateTimeFormatter hde = new DateTimeFormatterBuilder()
-            .AppendHourOfDay(2)
-            .ToFormatter();
+        private static readonly DateTimeFormatter hde = new DateTimeFormatterBuilder().AppendHourOfDay(2).ToFormatter();
 
         // minuteOfHour element (:mm)
-        private static readonly DateTimeFormatter mhe = new DateTimeFormatterBuilder()
-            .AppendLiteral(':')
-            .AppendMinuteOfHour(2)
-            .ToFormatter();
+        private static readonly DateTimeFormatter mhe = new DateTimeFormatterBuilder().AppendLiteral(':').AppendMinuteOfHour(2).ToFormatter();
 
         // secondOfMinute element (:ss)
-        private static readonly DateTimeFormatter sme = new DateTimeFormatterBuilder()
-            .AppendLiteral(':')
-            .AppendSecondOfMinute(2)
-            .ToFormatter();
+        private static readonly DateTimeFormatter sme = new DateTimeFormatterBuilder().AppendLiteral(':').AppendSecondOfMinute(2).ToFormatter();
 
         // fractionOfSecond element (.SSSSSSSSS)
-        private static readonly DateTimeFormatter fse = new DateTimeFormatterBuilder()
-            .AppendLiteral('.')
-            .AppendFractionOfSecond(3,9)
-            .ToFormatter();
+        private static readonly DateTimeFormatter fse = new DateTimeFormatterBuilder().AppendLiteral('.').AppendFractionOfSecond(3, 9).ToFormatter();
 
         // zone offset element
-        private static readonly DateTimeFormatter ze = new DateTimeFormatterBuilder()
-            .AppendTimeZoneOffset("Z", true, 2, 4)
-            .ToFormatter();
+        private static readonly DateTimeFormatter ze = new DateTimeFormatterBuilder().AppendTimeZoneOffset("Z", true, 2, 4).ToFormatter();
 
         // literal 'T' element
-        private static readonly DateTimeFormatter lte = new DateTimeFormatterBuilder()
-            .AppendLiteral('T')
-            .ToFormatter();
+        private static readonly DateTimeFormatter lte = new DateTimeFormatterBuilder().AppendLiteral('T').ToFormatter();
 
         // year month
-        private static readonly DateTimeFormatter ym = new DateTimeFormatterBuilder()
-            .Append(ye)
-            .Append(mye)
-            .ToFormatter();
+        private static readonly DateTimeFormatter ym = new DateTimeFormatterBuilder().Append(ye).Append(mye).ToFormatter();
 
         // year month day
-        private static readonly DateTimeFormatter ymd = new DateTimeFormatterBuilder()
-            .Append(ye)
-            .Append(mye)
-            .Append(dme)
-            .ToFormatter();
+        private static readonly DateTimeFormatter ymd = new DateTimeFormatterBuilder().Append(ye).Append(mye).Append(dme).ToFormatter();
 
         // weekyear week
-        private static readonly DateTimeFormatter ww = new DateTimeFormatterBuilder()
-            .Append(we)
-            .Append(wwe)
-            .ToFormatter();
+        private static readonly DateTimeFormatter ww = new DateTimeFormatterBuilder().Append(we).Append(wwe).ToFormatter();
 
         // weekyear week day
-        private static readonly DateTimeFormatter wwd = new DateTimeFormatterBuilder()
-            .Append(we)
-            .Append(wwe)
-            .Append(dwe)
-            .ToFormatter();
+        private static readonly DateTimeFormatter wwd = new DateTimeFormatterBuilder().Append(we).Append(wwe).Append(dwe).ToFormatter();
 
         // hour minute
-        private static readonly DateTimeFormatter hm = new DateTimeFormatterBuilder()
-            .Append(hde)
-            .Append(mhe)
-            .ToFormatter();
+        private static readonly DateTimeFormatter hm = new DateTimeFormatterBuilder().Append(hde).Append(mhe).ToFormatter();
 
         // hour minute second
-        private static readonly DateTimeFormatter hms = new DateTimeFormatterBuilder()
-            .Append(hde)
-            .Append(mhe)
-            .Append(sme)
-            .ToFormatter();
+        private static readonly DateTimeFormatter hms = new DateTimeFormatterBuilder().Append(hde).Append(mhe).Append(sme).ToFormatter();
 
         // hour minute second milliseconds
-        private static readonly DateTimeFormatter hmsl = new DateTimeFormatterBuilder()
-            .Append(hde)
-            .Append(mhe)
-            .Append(sme)
-            .AppendLiteral('.')
-            .AppendFractionOfSecond(3,3)
-            .ToFormatter();
+        private static readonly DateTimeFormatter hmsl =
+            new DateTimeFormatterBuilder().Append(hde).Append(mhe).Append(sme).AppendLiteral('.').AppendFractionOfSecond(3, 3).ToFormatter();
 
         // hour minute second fraction
-        private static readonly DateTimeFormatter hmsf = new DateTimeFormatterBuilder()
-            .Append(hde)
-            .Append(mhe)
-            .Append(sme)
-            .Append(fse)                                            
-            .ToFormatter();
+        private static readonly DateTimeFormatter hmsf = new DateTimeFormatterBuilder().Append(hde).Append(mhe).Append(sme).Append(fse).ToFormatter();
 
         // date hour
-        private static readonly DateTimeFormatter dh = new DateTimeFormatterBuilder()
-            .Append(ymd)
-            .Append(lte)
-            .Append(hde)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dh = new DateTimeFormatterBuilder().Append(ymd).Append(lte).Append(hde).ToFormatter();
 
         // date hour minute
-        private static readonly DateTimeFormatter dhm = new DateTimeFormatterBuilder()
-            .Append(ymd)
-            .Append(lte)
-            .Append(hm)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dhm = new DateTimeFormatterBuilder().Append(ymd).Append(lte).Append(hm).ToFormatter();
 
         // date hour minute second
-        private static readonly DateTimeFormatter dhms = new DateTimeFormatterBuilder()
-            .Append(ymd)
-            .Append(lte)
-            .Append(hms)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dhms = new DateTimeFormatterBuilder().Append(ymd).Append(lte).Append(hms).ToFormatter();
 
         // date hour minute second milliseconds
-        private static readonly DateTimeFormatter dhmsl = new DateTimeFormatterBuilder()
-            .Append(ymd)
-            .Append(lte)
-            .Append(hmsl)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dhmsl = new DateTimeFormatterBuilder().Append(ymd).Append(lte).Append(hmsl).ToFormatter();
 
         // date hour minute second fraction
-        private static readonly DateTimeFormatter dhmsf = new DateTimeFormatterBuilder()
-            .Append(ymd)
-            .Append(lte)
-            .Append(hmsf)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dhmsf = new DateTimeFormatterBuilder().Append(ymd).Append(lte).Append(hmsf).ToFormatter();
 
         // time
-        private static readonly DateTimeFormatter t = new DateTimeFormatterBuilder()
-            .Append(hmsf)
-            .Append(ze)
-            .ToFormatter();
+        private static readonly DateTimeFormatter t = new DateTimeFormatterBuilder().Append(hmsf).Append(ze).ToFormatter();
 
         // time no milliseconds
-        private static readonly DateTimeFormatter tx = new DateTimeFormatterBuilder()
-            .Append(hms)
-            .Append(ze)
-            .ToFormatter();
+        private static readonly DateTimeFormatter tx = new DateTimeFormatterBuilder().Append(hms).Append(ze).ToFormatter();
 
         // Ttime
-        private static readonly DateTimeFormatter tt = new DateTimeFormatterBuilder()
-            .Append(lte)
-            .Append(t)
-            .ToFormatter();
+        private static readonly DateTimeFormatter tt = new DateTimeFormatterBuilder().Append(lte).Append(t).ToFormatter();
 
         // Ttime no milliseconds
-        private static readonly DateTimeFormatter ttx = new DateTimeFormatterBuilder()
-            .Append(lte)
-            .Append(tx)
-            .ToFormatter();
+        private static readonly DateTimeFormatter ttx = new DateTimeFormatterBuilder().Append(lte).Append(tx).ToFormatter();
 
         // date time
-        private static readonly DateTimeFormatter dt = new DateTimeFormatterBuilder()
-            .Append(ymd)
-            .Append(tt)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dt = new DateTimeFormatterBuilder().Append(ymd).Append(tt).ToFormatter();
 
         // date time no milliseconds
-        private static readonly DateTimeFormatter dtx = new DateTimeFormatterBuilder()
-            .Append(ymd)
-            .Append(ttx)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dtx = new DateTimeFormatterBuilder().Append(ymd).Append(ttx).ToFormatter();
 
         // week date time
-        private static readonly DateTimeFormatter wdt = new DateTimeFormatterBuilder()
-            .Append(wwd)
-            .Append(tt)
-            .ToFormatter();
+        private static readonly DateTimeFormatter wdt = new DateTimeFormatterBuilder().Append(wwd).Append(tt).ToFormatter();
 
         // week date time no milliseconds
-        private static readonly DateTimeFormatter wdtx = new DateTimeFormatterBuilder()
-            .Append(wwd)
-            .Append(ttx)
-            .ToFormatter();
+        private static readonly DateTimeFormatter wdtx = new DateTimeFormatterBuilder().Append(wwd).Append(ttx).ToFormatter();
 
         // ordinal date(same as yd)
-        private static readonly DateTimeFormatter od = new DateTimeFormatterBuilder()
-            .Append(ye)
-            .Append(dye)
-            .ToFormatter();
+        private static readonly DateTimeFormatter od = new DateTimeFormatterBuilder().Append(ye).Append(dye).ToFormatter();
 
         // ordinal date time
-        private static readonly DateTimeFormatter odt = new DateTimeFormatterBuilder()
-            .Append(od)
-            .Append(tt)
-            .ToFormatter();
+        private static readonly DateTimeFormatter odt = new DateTimeFormatterBuilder().Append(od).Append(tt).ToFormatter();
 
         // ordinal date time no milliseconds
-        private static readonly DateTimeFormatter odtx = new DateTimeFormatterBuilder()
-            .Append(od)
-            .Append(ttx)
-            .ToFormatter();
+        private static readonly DateTimeFormatter odtx = new DateTimeFormatterBuilder().Append(od).Append(ttx).ToFormatter();
 
         // basic date
-        private static readonly DateTimeFormatter bd = new DateTimeFormatterBuilder()
-            .AppendYear(4, 4)
-            .AppendFixedDecimal(DateTimeFieldType.MonthOfYear, 2)
-            .AppendFixedDecimal(DateTimeFieldType.DayOfMonth, 2)
-            .ToFormatter();
+        private static readonly DateTimeFormatter bd =
+            new DateTimeFormatterBuilder().AppendYear(4, 4).AppendFixedDecimal(DateTimeFieldType.MonthOfYear, 2).AppendFixedDecimal(
+                DateTimeFieldType.DayOfMonth, 2).ToFormatter();
 
         // basic time
-        private static readonly DateTimeFormatter bt = new DateTimeFormatterBuilder()
-            .AppendFixedDecimal(DateTimeFieldType.HourOfDay, 2)
-            .AppendFixedDecimal(DateTimeFieldType.MinuteOfHour, 2)
-            .AppendFixedDecimal(DateTimeFieldType.SecondOfMinute, 2)
-            .AppendLiteral('.')
-            .AppendFractionOfSecond(3, 9)
-            .AppendTimeZoneOffset("Z", false, 2, 2)          
-            .ToFormatter();
+        private static readonly DateTimeFormatter bt =
+            new DateTimeFormatterBuilder().AppendFixedDecimal(DateTimeFieldType.HourOfDay, 2).AppendFixedDecimal(DateTimeFieldType.MinuteOfHour, 2).
+                AppendFixedDecimal(DateTimeFieldType.SecondOfMinute, 2).AppendLiteral('.').AppendFractionOfSecond(3, 9).AppendTimeZoneOffset("Z", false, 2, 2).
+                ToFormatter();
 
         // basic time no milliseconds
-        private static readonly DateTimeFormatter btx = new DateTimeFormatterBuilder()
-            .AppendFixedDecimal(DateTimeFieldType.HourOfDay, 2)
-            .AppendFixedDecimal(DateTimeFieldType.MinuteOfHour, 2)
-            .AppendFixedDecimal(DateTimeFieldType.SecondOfMinute, 2)
-            .AppendTimeZoneOffset("Z", false, 2, 2)
-            .ToFormatter();
+        private static readonly DateTimeFormatter btx =
+            new DateTimeFormatterBuilder().AppendFixedDecimal(DateTimeFieldType.HourOfDay, 2).AppendFixedDecimal(DateTimeFieldType.MinuteOfHour, 2).
+                AppendFixedDecimal(DateTimeFieldType.SecondOfMinute, 2).AppendTimeZoneOffset("Z", false, 2, 2).ToFormatter();
 
         // basic Ttime
-        private static readonly DateTimeFormatter btt = new DateTimeFormatterBuilder()
-            .Append(lte)
-            .Append(bt)
-            .ToFormatter();
+        private static readonly DateTimeFormatter btt = new DateTimeFormatterBuilder().Append(lte).Append(bt).ToFormatter();
 
         // basic Ttime no milliseconds
-        private static readonly DateTimeFormatter bttx = new DateTimeFormatterBuilder()
-            .Append(lte)
-            .Append(btx)
-            .ToFormatter();
+        private static readonly DateTimeFormatter bttx = new DateTimeFormatterBuilder().Append(lte).Append(btx).ToFormatter();
 
         // basic date time
-        private static readonly DateTimeFormatter bdt = new DateTimeFormatterBuilder()
-            .Append(bd)
-            .Append(btt)
-            .ToFormatter();
+        private static readonly DateTimeFormatter bdt = new DateTimeFormatterBuilder().Append(bd).Append(btt).ToFormatter();
 
         // basic date time no milliseconds
-        private static readonly DateTimeFormatter bdtx = new DateTimeFormatterBuilder()
-            .Append(bd)
-            .Append(bttx)
-            .ToFormatter();
+        private static readonly DateTimeFormatter bdtx = new DateTimeFormatterBuilder().Append(bd).Append(bttx).ToFormatter();
 
         // basic ordinal date
-        private static readonly DateTimeFormatter bod = new DateTimeFormatterBuilder()
-            .AppendYear(4,4)
-            .AppendFixedDecimal(DateTimeFieldType.DayOfYear,3)
-            .ToFormatter();
+        private static readonly DateTimeFormatter bod =
+            new DateTimeFormatterBuilder().AppendYear(4, 4).AppendFixedDecimal(DateTimeFieldType.DayOfYear, 3).ToFormatter();
 
         // basic ordinal date time
-        private static readonly DateTimeFormatter bodt = new DateTimeFormatterBuilder()
-            .Append(bod)
-            .Append(btt)
-            .ToFormatter();
+        private static readonly DateTimeFormatter bodt = new DateTimeFormatterBuilder().Append(bod).Append(btt).ToFormatter();
 
         // basic ordinal date time
-        private static readonly DateTimeFormatter bodtx = new DateTimeFormatterBuilder()
-            .Append(bod)
-            .Append(bttx)
-            .ToFormatter();
+        private static readonly DateTimeFormatter bodtx = new DateTimeFormatterBuilder().Append(bod).Append(bttx).ToFormatter();
 
         // basic week date
-        private static readonly DateTimeFormatter bwd = new DateTimeFormatterBuilder()
-            .AppendWeekYear(4,4)
-            .AppendLiteral('W')
-            .AppendFixedDecimal(DateTimeFieldType.WeekOfWeekYear, 2)
-            .AppendFixedDecimal(DateTimeFieldType.DayOfWeek, 1)
-            .ToFormatter();
+        private static readonly DateTimeFormatter bwd =
+            new DateTimeFormatterBuilder().AppendWeekYear(4, 4).AppendLiteral('W').AppendFixedDecimal(DateTimeFieldType.WeekOfWeekYear, 2).AppendFixedDecimal(
+                DateTimeFieldType.DayOfWeek, 1).ToFormatter();
 
         // basic week date time
-        private static readonly DateTimeFormatter bwdt = new DateTimeFormatterBuilder()
-            .Append(bwd)
-            .Append(btt)
-            .ToFormatter();
+        private static readonly DateTimeFormatter bwdt = new DateTimeFormatterBuilder().Append(bwd).Append(btt).ToFormatter();
 
         // basic week date time no milliseconds
-        private static readonly DateTimeFormatter bwdtx = new DateTimeFormatterBuilder()
-            .Append(bwd)
-            .Append(bttx)
-            .ToFormatter();
+        private static readonly DateTimeFormatter bwdtx = new DateTimeFormatterBuilder().Append(bwd).Append(bttx).ToFormatter();
 
         // date parser element
-        private static readonly DateTimeFormatter dpe = new DateTimeFormatterBuilder()
-            .Append(null, new IDateTimeParser[] 
-                                {
-                                    new DateTimeFormatterBuilder()
-                                        .Append(ye)
-                                        .AppendOptional(
-                                            new DateTimeFormatterBuilder()
-                                                .Append(mye)
-                                                .AppendOptional(dme.Parser)
-                                                .ToParser())
-                                        .ToParser(),
-                                    new DateTimeFormatterBuilder()
-                                        .Append(we)
-                                        .Append(wwe)
-                                        .AppendOptional(dwe.Parser)
-                                        .ToParser(),
-                                    new DateTimeFormatterBuilder()
-                                        .Append(ye)
-                                        .Append(dye)
-                                        .ToParser()
-                                })
-            .ToFormatter();
+        private static readonly DateTimeFormatter dpe =
+            new DateTimeFormatterBuilder().Append(null,
+                                                  new[]
+                                                  {
+                                                      new DateTimeFormatterBuilder().Append(ye).AppendOptional(
+                                                          new DateTimeFormatterBuilder().Append(mye).AppendOptional(dme.Parser).ToParser()).ToParser(),
+                                                      new DateTimeFormatterBuilder().Append(we).Append(wwe).AppendOptional(dwe.Parser).ToParser(),
+                                                      new DateTimeFormatterBuilder().Append(ye).Append(dye).ToParser()
+                                                  }).ToFormatter();
 
         // decimal point parser
-        private static readonly IDateTimeParser dec = new DateTimeFormatterBuilder()
-            .Append(null, new IDateTimeParser[] 
-                        {
-                            new DateTimeFormatterBuilder()
-                                .AppendLiteral('.')
-                                .ToParser(),
-                            new DateTimeFormatterBuilder()
-                                .AppendLiteral(',')
-                                .ToParser()
-                        })
-            .ToParser();
+        private static readonly IDateTimeParser dec =
+            new DateTimeFormatterBuilder().Append(null,
+                                                  new[]
+                                                  {
+                                                      new DateTimeFormatterBuilder().AppendLiteral('.').ToParser(),
+                                                      new DateTimeFormatterBuilder().AppendLiteral(',').ToParser()
+                                                  }).ToParser();
 
         // time parser element
         private static readonly DateTimeFormatter tpe = new DateTimeFormatterBuilder()
             // time-element
-                .Append(hde)
-                .Append(null, new IDateTimeParser[] 
-                        {
-                            new DateTimeFormatterBuilder()
-                                // minute-element
-                                .Append(mhe)
-                                .Append(null, new IDateTimeParser[] 
-                                        {
-                                            new DateTimeFormatterBuilder()
-                                                // second-element
-                                                .Append(sme)
-                                                // second fraction
-                                                .AppendOptional(new DateTimeFormatterBuilder()
-                                                                    .Append(dec)
-                                                                    .AppendFractionOfSecond(1, 9)
-                                                                    .ToParser())
-                                                .ToParser(),
-                                            // minute fraction
-                                            new DateTimeFormatterBuilder()
-                                                .Append(dec)
-                                                .AppendFractionOfMinute(1, 9)
-                                                .ToParser(),
-                                            null
-                                        })
-                                .ToParser(),
-                            // hour fraction
-                            new DateTimeFormatterBuilder()
-                                .Append(dec)
-                                .AppendFractionOfHour(1, 9)
-                                .ToParser(),
-                            null
-                        })
-                .ToFormatter();
+            .Append(hde).Append(null, new[]
+                                      {
+                                          new DateTimeFormatterBuilder()
+                                          // minute-element
+                                          .Append(mhe).Append(null, new[]
+                                                                    {
+                                                                        new DateTimeFormatterBuilder()
+                                                                        // second-element
+                                                                        .Append(sme)
+                                                                        // second fraction
+                                                                        .AppendOptional(
+                                                                            new DateTimeFormatterBuilder().Append(dec).AppendFractionOfSecond(1, 9).ToParser()).
+                                                                        ToParser(), // minute fraction
+                                                                        new DateTimeFormatterBuilder().Append(dec).AppendFractionOfMinute(1, 9).ToParser(), null
+                                                                    }).ToParser(),
+                                          // hour fraction
+                                          new DateTimeFormatterBuilder().Append(dec).AppendFractionOfHour(1, 9).ToParser(), null
+                                      }).ToFormatter();
 
         // offset parser
-        private static readonly IDateTimeParser offset = new DateTimeFormatterBuilder()
-            .AppendLiteral('T')
-            .Append(ze)
-            .ToParser();
+        private static readonly IDateTimeParser offset = new DateTimeFormatterBuilder().AppendLiteral('T').Append(ze).ToParser();
 
         // date parser
-        private static readonly DateTimeFormatter dp = new DateTimeFormatterBuilder()
-            .Append(dpe)
-            .AppendOptional(offset)
-            .ToFormatter();
+        private static readonly DateTimeFormatter dp = new DateTimeFormatterBuilder().Append(dpe).AppendOptional(offset).ToFormatter();
 
         // local date parser
         private static readonly DateTimeFormatter ldp = dpe.WithZone(DateTimeZones.Utc);
 
         // time parser
-        private static readonly DateTimeFormatter tp = new DateTimeFormatterBuilder()
-            .AppendOptional(lte.Parser)
-            .Append(tpe)
-            .AppendOptional(ze.Parser)
-            .ToFormatter();
+        private static readonly DateTimeFormatter tp =
+            new DateTimeFormatterBuilder().AppendOptional(lte.Parser).Append(tpe).AppendOptional(ze.Parser).ToFormatter();
 
         // local time parser
-        private static readonly DateTimeFormatter ltp = new DateTimeFormatterBuilder()
-            .AppendOptional(lte.Parser)
-            .Append(tpe)
-            .ToFormatter()
-            .WithZone(DateTimeZones.Utc);
-
+        private static readonly DateTimeFormatter ltp =
+            new DateTimeFormatterBuilder().AppendOptional(lte.Parser).Append(tpe).ToFormatter().WithZone(DateTimeZones.Utc);
 
         /// <summary>
         /// Gets a formatter for a four digit year. (yyyy)

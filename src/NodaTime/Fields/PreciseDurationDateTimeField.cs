@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -24,7 +25,7 @@ namespace NodaTime.Fields
     /// <remarks>
     /// </remarks>
     internal abstract class PreciseDurationDateTimeField : DateTimeFieldBase
-    {        
+    {
         /// <summary>
         /// The fractional unit in ticks
         /// </summary>
@@ -32,8 +33,7 @@ namespace NodaTime.Fields
 
         private readonly IDurationField unitField;
 
-        protected PreciseDurationDateTimeField(DateTimeFieldType fieldType, IDurationField unit)
-            : base(fieldType)
+        protected PreciseDurationDateTimeField(DateTimeFieldType fieldType, IDurationField unit) : base(fieldType)
         {
             if (unit == null)
             {
@@ -52,7 +52,6 @@ namespace NodaTime.Fields
             unitField = unit;
         }
 
-
         internal long UnitTicks { get { return unitTicks; } }
 
         /// <summary>
@@ -68,7 +67,6 @@ namespace NodaTime.Fields
         public override bool IsLenient { get { return false; } }
 
         #region Values
-
         /// <summary>
         /// Sets a value in the milliseconds supplied.
         /// <para>
@@ -87,15 +85,12 @@ namespace NodaTime.Fields
         /// <returns>The updated local instant</returns>
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            FieldUtils.VerifyValueBounds(this, value, GetMinimumValue(),
-                                         GetMaximumValueForSet(localInstant, value));
+            FieldUtils.VerifyValueBounds(this, value, GetMinimumValue(), GetMaximumValueForSet(localInstant, value));
             return new LocalInstant(localInstant.Ticks + (value - GetInt64Value(localInstant)) * unitTicks);
         }
-
         #endregion
 
         #region Ranges
-
         public override long GetMinimumValue()
         {
             return 0;
@@ -110,11 +105,9 @@ namespace NodaTime.Fields
         {
             return GetMaximumValue(localInstant);
         }
-
         #endregion
 
         #region Rounding
-
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             long ticks = localInstant.Ticks;
@@ -148,7 +141,6 @@ namespace NodaTime.Fields
             long ticks = localInstant.Ticks;
             return new Duration(ticks >= 0 ? ticks % unitTicks : ((ticks + 1) % unitTicks) + unitTicks - 1);
         }
-
         #endregion
     }
 }

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Reflection;
 
 namespace NodaTime.Benchmarks.Timing
@@ -29,8 +30,7 @@ namespace NodaTime.Benchmarks.Timing
         private readonly int iterations;
         private readonly Duration duration;
 
-        internal BenchmarkResult(MethodInfo method,
-            int iterations, Duration duration)
+        internal BenchmarkResult(MethodInfo method, int iterations, Duration duration)
         {
             this.method = method;
             this.iterations = iterations;
@@ -45,8 +45,7 @@ namespace NodaTime.Benchmarks.Timing
         public string ToString(BenchmarkOptions options)
         {
             string formatString = options.DisplayRawData ? LongFormatString : ShortFormatString;
-            return string.Format(formatString,
-                Method.Name, CallsPerSecond, Iterations, Duration.Ticks);
+            return string.Format(formatString, Method.Name, CallsPerSecond, Iterations, Duration.Ticks);
         }
     }
 }

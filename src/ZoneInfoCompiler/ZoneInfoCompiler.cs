@@ -14,10 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using NodaTime.ZoneInfoCompiler.Tzdb;
+
 using System;
-using NodaTime.ZoneInfoCompiler.winmap;
 using NodaTime.TimeZones;
+using NodaTime.ZoneInfoCompiler.Tzdb;
+using NodaTime.ZoneInfoCompiler.winmap;
 
 namespace NodaTime.ZoneInfoCompiler
 {
@@ -36,7 +37,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// </summary>
         /// <param name="arguments">The command line arguments. Each compiler defines its own.</param>
         /// <returns>0 for success, non-0 for error.</returns>
-        static int Main(string[] arguments)
+        private static int Main(string[] arguments)
         {
             DateTimeZones.Current = DateTimeZones.Utc;
             int result = 0;

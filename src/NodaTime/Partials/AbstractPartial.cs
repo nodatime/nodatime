@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Calendars;
 using NodaTime.Fields;
@@ -27,7 +28,7 @@ namespace NodaTime.Partials
     /// Calculations on are performed using a <see cref="ICalendarSystem"/>.
     /// </para>
     /// </summary>
-    public abstract class AbstractPartial: IPartial
+    public abstract class AbstractPartial : IPartial
     {
         /// <summary>
         /// Gets the calendar system of the partial which is never null.
@@ -70,7 +71,9 @@ namespace NodaTime.Partials
         public int IndexOf(DateTimeFieldType type)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type");
+            }
             for (int i = 0; i < Size; i++)
             {
                 if (GetFieldType(i) == type)

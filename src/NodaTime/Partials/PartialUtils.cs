@@ -14,9 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NodaTime.Fields;
 
 namespace NodaTime.Partials
@@ -47,20 +46,20 @@ namespace NodaTime.Partials
         /// the range Month is not equal to the next field Day.
         /// </para>
         /// </remarks>
-        public static bool IsContiguous(IPartial partial) 
+        public static bool IsContiguous(IPartial partial)
         {
-            if (partial == null) 
+            if (partial == null)
             {
                 throw new ArgumentNullException("partial");
             }
 
             DurationFieldType lastType = default(DurationFieldType);
-            for (int i = 0; i < partial.Size; i++) 
+            for (int i = 0; i < partial.Size; i++)
             {
                 IDateTimeField loopField = partial.GetField(i);
-                if (i > 0) 
+                if (i > 0)
                 {
-                    if (loopField.RangeDurationField.FieldType != lastType) 
+                    if (loopField.RangeDurationField.FieldType != lastType)
                     {
                         return false;
                     }

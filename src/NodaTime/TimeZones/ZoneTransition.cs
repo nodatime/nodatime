@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -34,8 +32,7 @@ namespace NodaTime.TimeZones
     /// Immutable, thread safe.
     /// </para>
     /// </remarks>
-    internal class ZoneTransition
-        : IEquatable<ZoneTransition>, IComparable<ZoneTransition>
+    internal class ZoneTransition : IEquatable<ZoneTransition>, IComparable<ZoneTransition>
     {
         private readonly Instant instant;
         private readonly string name;
@@ -78,7 +75,7 @@ namespace NodaTime.TimeZones
             if (instant.Ticks < 0 && WallOffset.Milliseconds < 0)
             {
                 long distanceFromEndOfTime = instant.Ticks - Instant.MinValue.Ticks;
-                if (distanceFromEndOfTime < Math.Abs(this.WallOffset.Ticks))
+                if (distanceFromEndOfTime < Math.Abs(WallOffset.Ticks))
                 {
                     this.standardOffset = Offset.FromTicks(-distanceFromEndOfTime);
                     this.savings = Offset.Zero;
@@ -87,7 +84,7 @@ namespace NodaTime.TimeZones
             else if (instant.Ticks > 0 && savings.Milliseconds > 0)
             {
                 long distanceFromEndOfTime = Instant.MaxValue.Ticks - instant.Ticks;
-                if (distanceFromEndOfTime < this.WallOffset.Ticks)
+                if (distanceFromEndOfTime < WallOffset.Ticks)
                 {
                     this.standardOffset = Offset.FromTicks(distanceFromEndOfTime);
                     this.savings = Offset.Zero;
@@ -95,33 +92,17 @@ namespace NodaTime.TimeZones
             }
         }
 
-        internal Instant Instant
-        {
-            get { return this.instant; }
-        }
+        internal Instant Instant { get { return instant; } }
 
-        internal string Name
-        {
-            get { return this.name; }
-        }
+        internal string Name { get { return name; } }
 
-        internal Offset StandardOffset
-        {
-            get { return this.standardOffset; }
-        }
+        internal Offset StandardOffset { get { return standardOffset; } }
 
-        internal Offset Savings
-        {
-            get { return this.savings; }
-        }
+        internal Offset Savings { get { return savings; } }
 
-        internal Offset WallOffset
-        {
-            get { return StandardOffset + Savings; }
-        }
+        internal Offset WallOffset { get { return StandardOffset + Savings; } }
 
         #region IComparable<ZoneTransition> Members
-
         /// <summary>
         /// Compares the current object with another object of the same type.
         /// </summary>
@@ -146,11 +127,9 @@ namespace NodaTime.TimeZones
             }
             return Instant.CompareTo(other.Instant);
         }
-
         #endregion
 
         #region Operator overloads
-
         /// <summary>
         /// Implements the operator ==.
         /// </summary>
@@ -176,11 +155,9 @@ namespace NodaTime.TimeZones
         {
             return !(left == right);
         }
-
         #endregion
 
         #region IEquatable<ZoneTransition> Members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -201,7 +178,6 @@ namespace NodaTime.TimeZones
             }
             return Instant == other.Instant;
         }
-
         #endregion
 
         /// <summary>
@@ -230,7 +206,6 @@ namespace NodaTime.TimeZones
         }
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -274,7 +249,6 @@ namespace NodaTime.TimeZones
             builder.Append(" [").Append(Savings).Append("]");
             return builder.ToString();
         }
-
         #endregion // Object overrides
     }
 }

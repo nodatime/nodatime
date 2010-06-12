@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.IO;
 using NodaTime;
@@ -28,7 +29,7 @@ namespace ZoneInfoCompiler.Test
     /// This is a test class for containing all of the TzdbZoneInfoParser unit tests.
     ///</summary>
     [TestFixture]
-    public partial class TzdbZoneInfoParserTest
+    public class TzdbZoneInfoParserTest
     {
         private static readonly string[] MonthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
@@ -74,13 +75,7 @@ namespace ZoneInfoCompiler.Test
             string text = "Mar lastTue 2:00";
             Tokens tokens = Tokens.Tokenize(text);
             ZoneYearOffset actual = Parser.ParseDateTimeOfYear(tokens);
-            ZoneYearOffset expected = new ZoneYearOffset(
-                TransitionMode.Wall,
-                3,
-                -1,
-                (int)DayOfWeek.Tuesday,
-                false,
-                ToOffset(2, 0, 0, 0));
+            ZoneYearOffset expected = new ZoneYearOffset(TransitionMode.Wall, 3, -1, (int)DayOfWeek.Tuesday, false, ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
         }
 
@@ -90,13 +85,7 @@ namespace ZoneInfoCompiler.Test
             string text = "Mar Tue>=14 2:00";
             Tokens tokens = Tokens.Tokenize(text);
             ZoneYearOffset actual = Parser.ParseDateTimeOfYear(tokens);
-            ZoneYearOffset expected = new ZoneYearOffset(
-                TransitionMode.Wall,
-                3,
-                14,
-                (int)DayOfWeek.Tuesday,
-                true,
-                ToOffset(2, 0, 0, 0));
+            ZoneYearOffset expected = new ZoneYearOffset(TransitionMode.Wall, 3, 14, (int)DayOfWeek.Tuesday, true, ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
         }
 
@@ -106,13 +95,7 @@ namespace ZoneInfoCompiler.Test
             string text = "Mar Tue<=14 2:00";
             Tokens tokens = Tokens.Tokenize(text);
             ZoneYearOffset actual = Parser.ParseDateTimeOfYear(tokens);
-            ZoneYearOffset expected = new ZoneYearOffset(
-                TransitionMode.Wall,
-                3,
-                14,
-                (int)DayOfWeek.Tuesday,
-                false,
-                ToOffset(2, 0, 0, 0));
+            ZoneYearOffset expected = new ZoneYearOffset(TransitionMode.Wall, 3, 14, (int)DayOfWeek.Tuesday, false, ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
         }
 
@@ -130,9 +113,7 @@ namespace ZoneInfoCompiler.Test
         [Test]
         public void Parse_twoLines()
         {
-            string text =
-                "# A comment\n" +
-                "Zone PST 2:00 US P%sT\n";
+            string text = "# A comment\n" + "Zone PST 2:00 US P%sT\n";
             StringReader reader = new StringReader(text);
             TzdbDatabase database = new TzdbDatabase();
             Parser.Parse(reader, database);
@@ -143,10 +124,7 @@ namespace ZoneInfoCompiler.Test
         [Test]
         public void Parse_threeLines()
         {
-            string text =
-                "# A comment\n" +
-                "Zone PST 2:00 US P%sT\n" +
-                "         3:00 -  P%sT\n";
+            string text = "# A comment\n" + "Zone PST 2:00 US P%sT\n" + "         3:00 -  P%sT\n";
             StringReader reader = new StringReader(text);
             TzdbDatabase database = new TzdbDatabase();
             Parser.Parse(reader, database);
@@ -157,10 +135,7 @@ namespace ZoneInfoCompiler.Test
         [Test]
         public void Parse_threeLinesWithComment()
         {
-            string text =
-                "# A comment\n" +
-                "Zone PST 2:00 US P%sT # An end of line comment\n" +
-                "         3:00 -  P%sT\n";
+            string text = "# A comment\n" + "Zone PST 2:00 US P%sT # An end of line comment\n" + "         3:00 -  P%sT\n";
             StringReader reader = new StringReader(text);
             TzdbDatabase database = new TzdbDatabase();
             Parser.Parse(reader, database);
@@ -171,13 +146,8 @@ namespace ZoneInfoCompiler.Test
         [Test]
         public void Parse_twoZones()
         {
-            string text =
-                "# A comment\n" +
-                "Zone PST 2:00 US P%sT # An end of line comment\n" +
-                "         3:00 -  P%sT\n" +
-                "         4:00 -  P%sT\n" +
-                "Zone EST 2:00 US E%sT # An end of line comment\n" +
-                "         3:00 -  E%sT\n";
+            string text = "# A comment\n" + "Zone PST 2:00 US P%sT # An end of line comment\n" + "         3:00 -  P%sT\n" + "         4:00 -  P%sT\n" +
+                          "Zone EST 2:00 US E%sT # An end of line comment\n" + "         3:00 -  E%sT\n";
             StringReader reader = new StringReader(text);
             TzdbDatabase database = new TzdbDatabase();
             Parser.Parse(reader, database);
@@ -189,15 +159,9 @@ namespace ZoneInfoCompiler.Test
         [Test]
         public void Parse_twoZonesTwoRule()
         {
-            string text =
-                "# A comment\n" +
-                "Rule US 1987 2006 - Apr Sun>=1 2:00 1:00 D\n" +
-                "Rule US 2007 max  - Mar Sun>=8 2:00 1:00 D\n" +
-                "Zone PST 2:00 US P%sT # An end of line comment\n" +
-                "         3:00 -  P%sT\n" +
-                "         4:00 -  P%sT\n" +
-                "Zone EST 2:00 US E%sT # An end of line comment\n" +
-                "         3:00 -  E%sT\n";
+            string text = "# A comment\n" + "Rule US 1987 2006 - Apr Sun>=1 2:00 1:00 D\n" + "Rule US 2007 max  - Mar Sun>=8 2:00 1:00 D\n" +
+                          "Zone PST 2:00 US P%sT # An end of line comment\n" + "         3:00 -  P%sT\n" + "         4:00 -  P%sT\n" +
+                          "Zone EST 2:00 US E%sT # An end of line comment\n" + "         3:00 -  E%sT\n";
             StringReader reader = new StringReader(text);
             TzdbDatabase database = new TzdbDatabase();
             Parser.Parse(reader, database);
@@ -209,10 +173,7 @@ namespace ZoneInfoCompiler.Test
         [Test]
         public void Parse_twoLinks()
         {
-            string text =
-                "# First line must be a comment\n" +
-                "Link from to\n" +
-                "Link target source\n";
+            string text = "# First line must be a comment\n" + "Link from to\n" + "Link target source\n";
             StringReader reader = new StringReader(text);
             TzdbDatabase database = new TzdbDatabase();
             Parser.Parse(reader, database);
@@ -341,17 +302,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_simple()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT");
-            Zone expected = new Zone(
-                string.Empty,
-                ToOffset(2, 0, 0, 0),
-                "US",
-                "P%sT",
-                0,
-                NodaConstants.January,
-                1,
-                Offset.Zero,
-                (char)0
-                );
+            Zone expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 0, NodaConstants.January, 1, Offset.Zero, (char)0);
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -359,17 +310,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_optionalRule()
         {
             Tokens tokens = Tokens.Tokenize("2:00 - P%sT");
-            Zone expected = new Zone(
-                string.Empty,
-                ToOffset(2, 0, 0, 0),
-                null,
-                "P%sT",
-                0,
-                NodaConstants.January,
-                1,
-                Offset.Zero,
-                (char)0
-                );
+            Zone expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), null, "P%sT", 0, NodaConstants.January, 1, Offset.Zero, (char)0);
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -377,17 +318,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYear()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969");
-            Zone expected = new Zone(
-                string.Empty,
-                ToOffset(2, 0, 0, 0),
-                "US",
-                "P%sT",
-                1969,
-                NodaConstants.January,
-                1,
-                Offset.Zero,
-                (char)0
-                );
+            Zone expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, NodaConstants.January, 1, Offset.Zero, (char)0);
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -395,17 +326,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYearMonthDay()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23");
-            Zone expected = new Zone(
-                string.Empty,
-                ToOffset(2, 0, 0, 0),
-                "US",
-                "P%sT",
-                1969,
-                NodaConstants.March,
-                23,
-                Offset.Zero,
-                (char)0
-                );
+            Zone expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, NodaConstants.March, 23, Offset.Zero, (char)0);
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -413,17 +334,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYearMonthDayTime()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856");
-            Zone expected = new Zone(
-                string.Empty,
-                ToOffset(2, 0, 0, 0),
-                "US",
-                "P%sT",
-                1969,
-                NodaConstants.March,
-                23,
-                ToOffset(14, 53, 27, 856),
-                (char)0
-                );
+            Zone expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, NodaConstants.March, 23, ToOffset(14, 53, 27, 856), (char)0);
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -431,17 +342,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYearMonthDayTimeZone()
         {
             Tokens tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856s");
-            Zone expected = new Zone(
-                string.Empty,
-                ToOffset(2, 0, 0, 0),
-                "US",
-                "P%sT",
-                1969,
-                NodaConstants.March,
-                23,
-                ToOffset(14, 53, 27, 856),
-                's'
-                );
+            Zone expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, NodaConstants.March, 23, ToOffset(14, 53, 27, 856), 's');
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -449,17 +350,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_badOffset_exception()
         {
             Tokens tokens = Tokens.Tokenize("asd US P%sT 1969 Mar 23 14:53:27.856s");
-            Zone expected = new Zone(
-                string.Empty,
-                ToOffset(2, 0, 0, 0),
-                "US",
-                "P%sT",
-                1969,
-                NodaConstants.March,
-                23,
-                ToOffset(14, 53, 27, 856),
-                's'
-                );
+            Zone expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, NodaConstants.March, 23, ToOffset(14, 53, 27, 856), 's');
             Assert.Throws(typeof(FormatException), () => Parser.ParseZone(string.Empty, tokens));
         }
 

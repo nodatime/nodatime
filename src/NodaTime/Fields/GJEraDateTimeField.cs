@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
@@ -26,8 +27,7 @@ namespace NodaTime.Fields
     {
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal GJEraDateTimeField(BasicCalendarSystem calendarSystem) 
-            : base(DateTimeFieldType.Era)
+        internal GJEraDateTimeField(BasicCalendarSystem calendarSystem) : base(DateTimeFieldType.Era)
         {
             this.calendarSystem = calendarSystem;
         }
@@ -39,7 +39,6 @@ namespace NodaTime.Fields
         public override bool IsLenient { get { return false; } }
 
         #region Values
-
         public override long GetInt64Value(LocalInstant localInstant)
         {
             return calendarSystem.GetYear(localInstant) <= 0 ? NodaConstants.BeforeCommonEra : NodaConstants.CommonEra;
@@ -60,11 +59,9 @@ namespace NodaTime.Fields
                 return localInstant;
             }
         }
-
         #endregion
 
         #region Ranges
-
         public override long GetMaximumValue()
         {
             return NodaConstants.CommonEra;
@@ -74,21 +71,19 @@ namespace NodaTime.Fields
         {
             return NodaConstants.BeforeCommonEra;
         }
-
         #endregion
 
         #region Rounding
-
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
-            return GetValue(localInstant) == NodaConstants.CommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
-                : new LocalInstant(long.MinValue);
+            return GetValue(localInstant) == NodaConstants.CommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1) : new LocalInstant(long.MinValue);
         }
 
         public override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
-            return GetValue(localInstant) == NodaConstants.BeforeCommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
-                : new LocalInstant(long.MaxValue);
+            return GetValue(localInstant) == NodaConstants.BeforeCommonEra
+                       ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
+                       : new LocalInstant(long.MaxValue);
         }
 
         public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
@@ -108,7 +103,6 @@ namespace NodaTime.Fields
             // In reality, the era is infinite, so there is no halfway point.
             return RoundFloor(localInstant);
         }
-
         #endregion
     }
 }

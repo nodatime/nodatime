@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 namespace NodaTime.Fields
 {
     /// <summary>
@@ -25,8 +26,9 @@ namespace NodaTime.Fields
 
         public static TicksDurationField Instance { get { return instance; } }
 
-        private TicksDurationField()
-            : base(DurationFieldType.Ticks) { }
+        private TicksDurationField() : base(DurationFieldType.Ticks)
+        {
+        }
 
         public override bool IsSupported { get { return true; } }
 

@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -40,8 +38,7 @@ namespace NodaTime
     /// This type is immutable and thread-safe.
     /// </para>
     /// </remarks>
-    public struct LocalDateTime
-        : IEquatable<LocalDateTime>
+    public struct LocalDateTime : IEquatable<LocalDateTime>
     {
         private readonly ICalendarSystem calendar;
         private readonly LocalInstant localInstant;
@@ -50,8 +47,7 @@ namespace NodaTime
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
         /// </summary>
         /// <param name="localInstant">The local instant.</param>
-        public LocalDateTime(LocalInstant localInstant)
-            : this(localInstant, IsoCalendarSystem.Instance)
+        public LocalDateTime(LocalInstant localInstant) : this(localInstant, IsoCalendarSystem.Instance)
         {
         }
 
@@ -79,8 +75,7 @@ namespace NodaTime
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
-        public LocalDateTime(int year, int month, int day, int hour, int minute)
-            : this(year, month, day, hour, minute, IsoCalendarSystem.Instance)
+        public LocalDateTime(int year, int month, int day, int hour, int minute) : this(year, month, day, hour, minute, IsoCalendarSystem.Instance)
         {
         }
 
@@ -166,8 +161,7 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond,
-                             ICalendarSystem calendar)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, ICalendarSystem calendar)
             : this(year, month, day, hour, minute, second, millisecond, 0, calendar)
         {
         }
@@ -183,10 +177,8 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond,
-                             int tickWithinMillisecond)
-            : this(
-                year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, IsoCalendarSystem.Instance)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
+            : this(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, IsoCalendarSystem.Instance)
         {
         }
 
@@ -203,15 +195,14 @@ namespace NodaTime
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond,
-                             int tickWithinMillisecond, ICalendarSystem calendar)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond,
+                             ICalendarSystem calendar)
         {
             if (calendar == null)
             {
                 throw new ArgumentNullException("calendar");
             }
-            localInstant = calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond,
-                                                    tickWithinMillisecond);
+            localInstant = calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond);
             this.calendar = calendar;
         }
 
@@ -219,117 +210,53 @@ namespace NodaTime
         /// Gets the local instant.
         /// </summary>
         /// <value>The local instant.</value>
-        public LocalInstant LocalInstant
-        {
-            get { return localInstant; }
-        }
+        public LocalInstant LocalInstant { get { return localInstant; } }
 
         /// <summary>
         /// Gets the calendar.
         /// </summary>
         /// <value>The calendar.</value>
-        public ICalendarSystem Calendar
-        {
-            get { return calendar; }
-        }
+        public ICalendarSystem Calendar { get { return calendar; } }
 
-        public int Era
-        {
-            get { return calendar.Fields.Era.GetValue(localInstant); }
-        }
+        public int Era { get { return calendar.Fields.Era.GetValue(localInstant); } }
 
-        public int CenturyOfEra
-        {
-            get { return calendar.Fields.CenturyOfEra.GetValue(localInstant); }
-        }
+        public int CenturyOfEra { get { return calendar.Fields.CenturyOfEra.GetValue(localInstant); } }
 
-        public int Year
-        {
-            get { return calendar.Fields.Year.GetValue(localInstant); }
-        }
+        public int Year { get { return calendar.Fields.Year.GetValue(localInstant); } }
 
-        public int YearOfCentury
-        {
-            get { return calendar.Fields.YearOfCentury.GetValue(localInstant); }
-        }
+        public int YearOfCentury { get { return calendar.Fields.YearOfCentury.GetValue(localInstant); } }
 
-        public int YearOfEra
-        {
-            get { return calendar.Fields.YearOfEra.GetValue(localInstant); }
-        }
+        public int YearOfEra { get { return calendar.Fields.YearOfEra.GetValue(localInstant); } }
 
-        public int WeekYear
-        {
-            get { return calendar.Fields.WeekYear.GetValue(localInstant); }
-        }
+        public int WeekYear { get { return calendar.Fields.WeekYear.GetValue(localInstant); } }
 
-        public int MonthOfYear
-        {
-            get { return calendar.Fields.MonthOfYear.GetValue(localInstant); }
-        }
+        public int MonthOfYear { get { return calendar.Fields.MonthOfYear.GetValue(localInstant); } }
 
-        public int WeekOfWeekYear
-        {
-            get { return calendar.Fields.WeekOfWeekYear.GetValue(localInstant); }
-        }
+        public int WeekOfWeekYear { get { return calendar.Fields.WeekOfWeekYear.GetValue(localInstant); } }
 
-        public int DayOfYear
-        {
-            get { return calendar.Fields.DayOfYear.GetValue(localInstant); }
-        }
+        public int DayOfYear { get { return calendar.Fields.DayOfYear.GetValue(localInstant); } }
 
-        public int DayOfMonth
-        {
-            get { return calendar.Fields.DayOfMonth.GetValue(localInstant); }
-        }
+        public int DayOfMonth { get { return calendar.Fields.DayOfMonth.GetValue(localInstant); } }
 
-        public int DayOfWeek
-        {
-            get { return calendar.Fields.DayOfWeek.GetValue(localInstant); }
-        }
+        public int DayOfWeek { get { return calendar.Fields.DayOfWeek.GetValue(localInstant); } }
 
-        public int HourOfDay
-        {
-            get { return calendar.Fields.HourOfDay.GetValue(localInstant); }
-        }
+        public int HourOfDay { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
 
-        public int MinuteOfHour
-        {
-            get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); }
-        }
+        public int MinuteOfHour { get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
 
-        public int SecondOfMinute
-        {
-            get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); }
-        }
+        public int SecondOfMinute { get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
 
-        public int SecondOfDay
-        {
-            get { return calendar.Fields.SecondOfDay.GetValue(localInstant); }
-        }
+        public int SecondOfDay { get { return calendar.Fields.SecondOfDay.GetValue(localInstant); } }
 
-        public int MillisecondOfSecond
-        {
-            get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); }
-        }
+        public int MillisecondOfSecond { get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
 
-        public int MillisecondOfDay
-        {
-            get { return calendar.Fields.MillisecondOfDay.GetValue(localInstant); }
-        }
+        public int MillisecondOfDay { get { return calendar.Fields.MillisecondOfDay.GetValue(localInstant); } }
 
-        public int TickOfMillisecond
-        {
-            get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); }
-        }
+        public int TickOfMillisecond { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
 
-        public long TickOfDay
-        {
-            get { return calendar.Fields.TickOfDay.GetInt64Value(localInstant); }
-        }
+        public long TickOfDay { get { return calendar.Fields.TickOfDay.GetInt64Value(localInstant); } }
 
         #region Implementation of IEquatable<LocalDateTime>
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -340,14 +267,11 @@ namespace NodaTime
         ///                 </param>
         public bool Equals(LocalDateTime other)
         {
-            return this.localInstant == other.localInstant &&
-                   this.calendar.Equals(other.calendar);
+            return localInstant == other.localInstant && calendar.Equals(other.calendar);
         }
-
         #endregion
 
         #region Operators
-
         /// <summary>
         /// Implements the operator == (equality).
         /// </summary>
@@ -396,7 +320,6 @@ namespace NodaTime
         #endregion
 
         #region object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -409,7 +332,7 @@ namespace NodaTime
         {
             if (obj is LocalDateTime)
             {
-                return this.Equals((LocalDateTime) obj);
+                return Equals((LocalDateTime)obj);
             }
             return false;
         }
@@ -440,7 +363,6 @@ namespace NodaTime
         {
             return Calendar + ": " + LocalInstant;
         }
-
         #endregion
     }
 }

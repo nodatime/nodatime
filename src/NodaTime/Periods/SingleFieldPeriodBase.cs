@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-
 using NodaTime.Fields;
 using NodaTime.Utility;
 
@@ -26,8 +25,7 @@ namespace NodaTime.Periods
     /// SingleFieldPeriodBase is an abstract implementation of IPeriod that
     /// manages a single duration field, such as days or minutes.
     /// </summary>
-    public abstract class SingleFieldPeriodBase 
-        : IPeriod, IEquatable<SingleFieldPeriodBase>, IComparable<SingleFieldPeriodBase>, IComparable
+    public abstract class SingleFieldPeriodBase : IPeriod, IEquatable<SingleFieldPeriodBase>, IComparable<SingleFieldPeriodBase>, IComparable
     {
         private readonly int value;
 
@@ -51,7 +49,6 @@ namespace NodaTime.Periods
         public abstract DurationFieldType FieldType { get; }
 
         #region IPeriod Members
-
         /// <summary>
         /// Gets the period type which matches the duration field type.
         /// </summary>
@@ -98,9 +95,9 @@ namespace NodaTime.Periods
         /// <returns>The value of the field at the specified index</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">if the index is not equal to zero</exception>
         /// <remarks>The only index supported by this period is zero.</remarks>
-        public int this[int index] 
-        { 
-            get 
+        public int this[int index]
+        {
+            get
             {
                 if (index != 0)
                 {
@@ -108,7 +105,7 @@ namespace NodaTime.Periods
                 }
 
                 return Value;
-            } 
+            }
         }
 
         /// <summary>
@@ -131,11 +128,9 @@ namespace NodaTime.Periods
                 return 0;
             }
         }
-
         #endregion
 
         #region Equality
-
         /// <summary>
         /// Determines whether this instance of <see cref="SingleFieldPeriodBase"/> derived class 
         /// and a specified object, which must be of the same type, have the same value.
@@ -168,23 +163,21 @@ namespace NodaTime.Periods
         /// <returns>True if the value of the parameter is the same as this instance; otherwise, false.</returns>
         public bool Equals(SingleFieldPeriodBase other)
         {
-            if (Object.ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
 
-            if (Object.ReferenceEquals(other, null))
+            if (ReferenceEquals(other, null))
             {
                 return false;
             }
 
             return FieldType == other.FieldType && Value == other.Value;
         }
-
         #endregion
 
         #region Comparison
-
         /// <summary>
         /// Compares the current object with another object of the same type.
         /// </summary>
@@ -213,7 +206,7 @@ namespace NodaTime.Periods
         /// </returns>
         public int CompareTo(SingleFieldPeriodBase other)
         {
-            if (Object.ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return 0;
             }
@@ -223,10 +216,9 @@ namespace NodaTime.Periods
                 return 1;
             }
 
-            if (other.GetType() != this.GetType())
+            if (other.GetType() != GetType())
             {
-                throw new ArgumentException("Other object must be of type " + this.GetType(), "other");
-
+                throw new ArgumentException("Other object must be of type " + GetType(), "other");
             }
 
             if (other.FieldType != FieldType)
@@ -296,15 +288,13 @@ namespace NodaTime.Periods
         /// </returns>
         int IComparable.CompareTo(object obj)
         {
-            if (obj != null && obj.GetType() != this.GetType())
+            if (obj != null && obj.GetType() != GetType())
             {
-                throw new ArgumentException("Obj must be of type " + this.GetType(), "obj");
-
+                throw new ArgumentException("Obj must be of type " + GetType(), "obj");
             }
 
             return CompareTo(obj as SingleFieldPeriodBase);
         }
-
         #endregion
 
         /// <summary>

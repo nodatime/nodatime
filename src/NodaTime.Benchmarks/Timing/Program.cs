@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,9 +33,8 @@ namespace NodaTime.Benchmarks.Timing
         {
             BenchmarkOptions options = BenchmarkOptions.FromCommandLine(args);
 
-            var types = typeof(Program).Assembly.GetTypes()
-                .OrderBy(type => GetTypeDisplayName(type))
-                .Where(type => type.GetMethods(AllInstance).Any(IsBenchmark));
+            var types =
+                typeof(Program).Assembly.GetTypes().OrderBy(type => GetTypeDisplayName(type)).Where(type => type.GetMethods(AllInstance).Any(IsBenchmark));
 
             var results = new List<BenchmarkResult>();
             foreach (Type type in types)
@@ -78,7 +78,7 @@ namespace NodaTime.Benchmarks.Timing
 
         private static BenchmarkResult RunBenchmark(MethodInfo method, object instance, BenchmarkOptions options)
         {
-            Action action = (Action) Delegate.CreateDelegate(typeof(Action), instance, method);
+            Action action = (Action)Delegate.CreateDelegate(typeof(Action), instance, method);
             // Start small, double until we've hit our warm-up time
             int iterations = 100;
             while (true)
@@ -87,7 +87,7 @@ namespace NodaTime.Benchmarks.Timing
                 if (duration >= options.WarmUpTime)
                 {
                     // Scale up the iterations to work out the full test time
-                    double scale = ((double) options.TestTime.Ticks) / duration.Ticks;
+                    double scale = ((double)options.TestTime.Ticks) / duration.Ticks;
                     iterations = (int)(iterations * scale);
                     break;
                 }

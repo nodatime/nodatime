@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 namespace NodaTime.Calendars
 {
     public abstract class BasicGJCalendarSystem : BasicCalendarSystem
@@ -21,12 +22,8 @@ namespace NodaTime.Calendars
         // These arrays are NOT public. We trust ourselves not to alter the array.
         // They use zero-based array indexes so the that valid range of months is
         // automatically checked.
-        private static readonly int[] MinDaysPerMonth = {
-            31,28,31,30,31,30,31,31,30,31,30,31
-        };
-        private static readonly int[] MaxDaysPerMonth = {
-            31,29,31,30,31,30,31,31,30,31,30,31
-        };
+        private static readonly int[] MinDaysPerMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        private static readonly int[] MaxDaysPerMonth = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
         private static readonly long[] MinTotalTicksByMonth;
         private static readonly long[] MaxTotalTicksByMonth;
@@ -47,8 +44,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        protected BasicGJCalendarSystem(string name, ICalendarSystem baseCalendar, int minDaysInFirstWeek)
-            : base(name, baseCalendar, minDaysInFirstWeek)
+        protected BasicGJCalendarSystem(string name, ICalendarSystem baseCalendar, int minDaysInFirstWeek) : base(name, baseCalendar, minDaysInFirstWeek)
         {
         }
 
@@ -61,24 +57,19 @@ namespace NodaTime.Calendars
             // ticks per day contains 1024 * 10000 as a factor. After the division,
             // the instant isn't measured in ticks, but in units of
             // (128/125)seconds.
-            int i = (int) ((((localInstant.Ticks - GetYearTicks(year))) >> 10) / NodaConstants.TicksPerMillisecond);
+            int i = (int)((((localInstant.Ticks - GetYearTicks(year))) >> 10) / NodaConstants.TicksPerMillisecond);
 
-            return
-                (IsLeapYear(year))
-                ? ((i < 182 * 84375)
-                   ? ((i < 91 * 84375)
-                      ? ((i < 31 * 84375) ? 1 : (i < 60 * 84375) ? 2 : 3)
-                      : ((i < 121 * 84375) ? 4 : (i < 152 * 84375) ? 5 : 6))
-                   : ((i < 274 * 84375)
-                      ? ((i < 213 * 84375) ? 7 : (i < 244 * 84375) ? 8 : 9)
-                      : ((i < 305 * 84375) ? 10 : (i < 335 * 84375) ? 11 : 12)))
-                : ((i < 181 * 84375)
-                   ? ((i < 90 * 84375)
-                      ? ((i < 31 * 84375) ? 1 : (i < 59 * 84375) ? 2 : 3)
-                      : ((i < 120 * 84375) ? 4 : (i < 151 * 84375) ? 5 : 6))
-                   : ((i < 273 * 84375)
-                      ? ((i < 212 * 84375) ? 7 : (i < 243 * 84375) ? 8 : 9)
-                      : ((i < 304 * 84375) ? 10 : (i < 334 * 84375) ? 11 : 12)));
+            return (IsLeapYear(year))
+                       ? ((i < 182 * 84375)
+                              ? ((i < 91 * 84375) ? ((i < 31 * 84375) ? 1 : (i < 60 * 84375) ? 2 : 3) : ((i < 121 * 84375) ? 4 : (i < 152 * 84375) ? 5 : 6))
+                              : ((i < 274 * 84375)
+                                     ? ((i < 213 * 84375) ? 7 : (i < 244 * 84375) ? 8 : 9)
+                                     : ((i < 305 * 84375) ? 10 : (i < 335 * 84375) ? 11 : 12)))
+                       : ((i < 181 * 84375)
+                              ? ((i < 90 * 84375) ? ((i < 31 * 84375) ? 1 : (i < 59 * 84375) ? 2 : 3) : ((i < 120 * 84375) ? 4 : (i < 151 * 84375) ? 5 : 6))
+                              : ((i < 273 * 84375)
+                                     ? ((i < 212 * 84375) ? 7 : (i < 243 * 84375) ? 8 : 9)
+                                     : ((i < 304 * 84375) ? 10 : (i < 334 * 84375) ? 11 : 12)));
         }
 
         public override int GetDaysInYearMonth(int year, int month)
@@ -136,7 +127,8 @@ namespace NodaTime.Calendars
             long tickOfDay = GetTickOfDay(localInstant);
 
             if (dayOfYear > (31 + 28))
-            { // after Feb 28
+            {
+                // after Feb 28
                 if (IsLeapYear(thisYear))
                 {
                     // Current date is Feb 29 or later.
@@ -160,5 +152,5 @@ namespace NodaTime.Calendars
             long ticks = GetYearMonthDayTicks(year, 1, dayOfYear);
             return new LocalInstant(ticks + tickOfDay);
         }
-   }
+    }
 }

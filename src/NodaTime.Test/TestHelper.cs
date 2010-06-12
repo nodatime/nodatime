@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NUnit.Framework;
 
@@ -54,11 +55,10 @@ namespace NodaTime.Test
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestEqualsClass<T>(T value, T equalValue, T unEqualValue)
-            where T : class, IEquatable<T>
+        public static void TestEqualsClass<T>(T value, T equalValue, T unEqualValue) where T : class, IEquatable<T>
         {
             TestObjectEquals(value, equalValue, unEqualValue);
-            Assert.False(value.Equals((T)null), "value.Equals<T>(null)");
+            Assert.False(value.Equals(null), "value.Equals<T>(null)");
             Assert.True(value.Equals(value), "value.Equals<T>(value)");
             Assert.True(value.Equals(equalValue), "value.Equals<T>(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals<T>(value)");
@@ -73,8 +73,7 @@ namespace NodaTime.Test
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestEqualsStruct<T>(T value, T equalValue, T unEqualValue)
-            where T : struct, IEquatable<T>
+        public static void TestEqualsStruct<T>(T value, T equalValue, T unEqualValue) where T : struct, IEquatable<T>
         {
             TestObjectEquals(value, equalValue, unEqualValue);
             Assert.True(value.Equals(value), "value.Equals<T>(value)");
@@ -90,11 +89,10 @@ namespace NodaTime.Test
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="greaterValue">The value greater than the base value..</param>
-        public static void TestCompareToClass<T>(T value, T equalValue, T greaterValue)
-            where T : class, IComparable<T>
+        public static void TestCompareToClass<T>(T value, T equalValue, T greaterValue) where T : class, IComparable<T>
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
-            Assert.Greater(value.CompareTo((T)null), 0, "value.CompareTo<T>(null)");
+            Assert.Greater(value.CompareTo(null), 0, "value.CompareTo<T>(null)");
             Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo<T>(value)");
             Assert.AreEqual(value.CompareTo(equalValue), 0, "value.CompareTo<T>(equalValue)");
             Assert.AreEqual(equalValue.CompareTo(value), 0, "equalValue.CompareTo<T>(value)");
@@ -109,8 +107,7 @@ namespace NodaTime.Test
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="greaterValue">The value greater than the base value..</param>
-        public static void TestCompareToStruct<T>(T value, T equalValue, T greaterValue)
-            where T : struct, IComparable<T>
+        public static void TestCompareToStruct<T>(T value, T equalValue, T greaterValue) where T : struct, IComparable<T>
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
             Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo<T>(value)");
@@ -132,7 +129,7 @@ namespace NodaTime.Test
             ValidateInput(value, equalValue, unEqualValue, "unEqualValue");
             Type type = typeof(T);
             string name = type.Name;
-            var equality = type.GetMethod("op_Equality", new Type[] { type, type });
+            var equality = type.GetMethod("op_Equality", new[] { type, type });
             if (equality != null)
             {
                 if (!type.IsValueType)
@@ -146,7 +143,7 @@ namespace NodaTime.Test
                 Assert.True((bool)equality.Invoke(null, new object[] { equalValue, value }), "equalValue == value");
                 Assert.False((bool)equality.Invoke(null, new object[] { value, unEqualValue }), "value == unEqualValue");
             }
-            var inequality = type.GetMethod("op_Inequality", new Type[] { type, type });
+            var inequality = type.GetMethod("op_Inequality", new[] { type, type });
             if (inequality != null)
             {
                 if (!type.IsValueType)
@@ -173,7 +170,7 @@ namespace NodaTime.Test
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
             Type type = typeof(T);
-            var greaterThan = type.GetMethod("op_GreaterThan", new Type[] { type, type });
+            var greaterThan = type.GetMethod("op_GreaterThan", new[] { type, type });
             if (greaterThan != null)
             {
                 if (!type.IsValueType)
@@ -187,7 +184,7 @@ namespace NodaTime.Test
                 Assert.False((bool)greaterThan.Invoke(null, new object[] { value, greaterValue }), "value > greaterValue");
                 Assert.True((bool)greaterThan.Invoke(null, new object[] { greaterValue, value }), "greaterValue > value");
             }
-            var lessThan = type.GetMethod("op_LessThan", new Type[] { type, type });
+            var lessThan = type.GetMethod("op_LessThan", new[] { type, type });
             if (lessThan != null)
             {
                 if (!type.IsValueType)
@@ -216,7 +213,7 @@ namespace NodaTime.Test
             TestOperatorEquality(value, equalValue, greaterValue);
             TestOperatorComparison(value, equalValue, greaterValue);
             Type type = typeof(T);
-            var greaterThanOrEqual = type.GetMethod("op_GreaterThanOrEqual", new Type[] { type, type });
+            var greaterThanOrEqual = type.GetMethod("op_GreaterThanOrEqual", new[] { type, type });
             if (greaterThanOrEqual != null)
             {
                 if (!type.IsValueType)
@@ -230,7 +227,7 @@ namespace NodaTime.Test
                 Assert.False((bool)greaterThanOrEqual.Invoke(null, new object[] { value, greaterValue }), "value >= greaterValue");
                 Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { greaterValue, value }), "greaterValue >= value");
             }
-            var lessThanOrEqual = type.GetMethod("op_LessThanOrEqual", new Type[] { type, type });
+            var lessThanOrEqual = type.GetMethod("op_LessThanOrEqual", new[] { type, type });
             if (lessThanOrEqual != null)
             {
                 if (!type.IsValueType)

@@ -15,15 +15,15 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.Calendars;
 using NodaTime.Format;
 using NodaTime.TimeZones;
 using NUnit.Framework;
-using NodaTime.Calendars;
 
 namespace NodaTime.Demo
 {
     [TestFixture]
-    class ZonedDateTimeDemo
+    internal class ZonedDateTimeDemo
     {
         private static readonly IDateTimeZone Dublin = DateTimeZones.ForId("Europe/Dublin");
 
@@ -45,20 +45,15 @@ namespace NodaTime.Demo
         public void Ambiguity()
         {
             ZonedDateTime late = new ZonedDateTime(2010, 10, 31, 1, 15, 0, Dublin);
-            Assert.AreEqual("20101031T011500.000Z",
-                IsoDateTimeFormats.BasicDateTime.Print(late));
-            ZonedDateTime early = new ZonedDateTime(late.ToInstant() - Duration.OneHour,
-                new Chronology(Dublin, IsoCalendarSystem.Instance));
-            Assert.AreEqual("20101031T011500.000+0100",
-                IsoDateTimeFormats.BasicDateTime.Print(early));
+            Assert.AreEqual("20101031T011500.000Z", IsoDateTimeFormats.BasicDateTime.Print(late));
+            ZonedDateTime early = new ZonedDateTime(late.ToInstant() - Duration.OneHour, new Chronology(Dublin, IsoCalendarSystem.Instance));
+            Assert.AreEqual("20101031T011500.000+0100", IsoDateTimeFormats.BasicDateTime.Print(early));
         }
 
         [Test]
         public void Impossibility()
         {
-            Assert.Throws<SkippedTimeException>(() =>
-                 new ZonedDateTime(2010, 3, 28, 1, 15, 0, Dublin)
-            );
+            Assert.Throws<SkippedTimeException>(() => new ZonedDateTime(2010, 3, 28, 1, 15, 0, Dublin));
         }
     }
 }

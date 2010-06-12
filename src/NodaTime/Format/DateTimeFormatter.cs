@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.IO;
 using System.Text;
@@ -47,8 +48,7 @@ namespace NodaTime.Format
         // The pivot year to use for two-digit year parsing.
         private readonly int? pivotYear;
 
-        public DateTimeFormatter(
-              IDateTimePrinter printer, IDateTimeParser parser)
+        public DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser)
         {
             this.printer = printer;
             this.parser = parser;
@@ -59,15 +59,12 @@ namespace NodaTime.Format
             pivotYear = null;
         }
 
-        private DateTimeFormatter(
-            IDateTimePrinter printer, IDateTimeParser parser,
-            IFormatProvider locale, bool offsetParsed,
-            ICalendarSystem calendarSystem, IDateTimeZone zone,
-            int? pivotYear)
+        private DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser, IFormatProvider locale, bool offsetParsed, ICalendarSystem calendarSystem,
+                                  IDateTimeZone zone, int? pivotYear)
         {
             this.printer = printer;
             this.parser = parser;
-            this.provider = locale;
+            provider = locale;
             this.offsetParsed = offsetParsed;
             this.calendarSystem = calendarSystem;
             this.zone = zone;
@@ -75,7 +72,6 @@ namespace NodaTime.Format
         }
 
         #region Properties and With* methods
-
         /// <summary>
         /// Indicates whether this formatter capable of printing.
         /// </summary>
@@ -111,7 +107,7 @@ namespace NodaTime.Format
         /// and the original is unaltered and still usable.</remarks>
         public DateTimeFormatter WithProvider(IFormatProvider newProvider)
         {
-            if (Object.Equals(this.provider, newProvider))
+            if (Equals(provider, newProvider))
             {
                 // no change, so there's no need to create a new formatter
                 return this;
@@ -177,7 +173,7 @@ namespace NodaTime.Format
         /// </remarks>
         public DateTimeFormatter WithCalendar(ICalendarSystem newCalendarSystem)
         {
-            if (Object.Equals(calendarSystem, newCalendarSystem))
+            if (Equals(calendarSystem, newCalendarSystem))
             {
                 // no change, so there's no need to create a new formatter
                 return this;
@@ -211,9 +207,11 @@ namespace NodaTime.Format
         /// </remarks>
         public DateTimeFormatter WithZone(IDateTimeZone newZone)
         {
-            if (this.zone == newZone)
+            if (zone == newZone)
+            {
                 // no change, so there's no need to create a new formatter
                 return this;
+            }
 
             return new DateTimeFormatter(printer, parser, provider, false, calendarSystem, newZone, pivotYear);
         }
@@ -231,17 +229,17 @@ namespace NodaTime.Format
         /// <returns></returns>
         public DateTimeFormatter WithPivotYear(int? newPivotYear)
         {
-            if (this.pivotYear == newPivotYear)
+            if (pivotYear == newPivotYear)
+            {
                 // no change, so there's no need to create a new formatter
                 return this;
+            }
 
             return new DateTimeFormatter(printer, parser, provider, offsetParsed, calendarSystem, zone, newPivotYear);
         }
-
         #endregion
 
         #region Printing
-
         /// <summary>
         /// Prints a ZonedDateTime to a String.
         /// </summary>
@@ -301,17 +299,17 @@ namespace NodaTime.Format
         public void PrintTo(StringBuilder builder, IPartial partial)
         {
             if (partial == null)
+            {
                 throw new ArgumentNullException("partial");
+            }
 
             VerifyPrinter();
 
             printer.PrintTo(new StringWriter(builder), partial, provider);
         }
-
         #endregion
 
         #region Parsing
-
         /// <summary>
         /// Parses a datetime from the given text, returning a new ZonedDateTime.
         /// </summary>
@@ -362,7 +360,6 @@ namespace NodaTime.Format
 
             throw new ArgumentException(FormatUtils.CreateErrorMessage(text, newPos));
         }
-
         #endregion
 
         private void VerifyPrinter()

@@ -16,10 +16,8 @@
 #endregion
 
 using System;
-
 using NodaTime.Format;
 using NodaTime.Periods;
-
 using NUnit.Framework;
 
 namespace NodaTime.Test.Format
@@ -27,16 +25,16 @@ namespace NodaTime.Test.Format
     [TestFixture]
     public partial class PeriodFormatterBuilderTest
     {
-        PeriodFormatterBuilder builder;
+        private PeriodFormatterBuilder builder;
 
-        Period standardPeriodEmpty;
-        Period standardPeriodFull;
+        private Period standardPeriodEmpty;
+        private Period standardPeriodFull;
 
-        Period timePeriod;
-        Period datePeriod;
+        private Period timePeriod;
+        private Period datePeriod;
 
-        Period yearDayTimePeriodEmpty;
-        Period yearDayTimePeriodFull;
+        private Period yearDayTimePeriodEmpty;
+        private Period yearDayTimePeriodFull;
 
         [SetUp]
         public void Init()
@@ -56,7 +54,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void AppendFormatter_ThrowsArgumentNull_ForNullFormatterArgument()
         {
-            Assert.That(()=> new PeriodFormatterBuilder().Append(null), Throws.InstanceOf<ArgumentNullException>());
+            Assert.That(() => new PeriodFormatterBuilder().Append(null), Throws.InstanceOf<ArgumentNullException>());
         }
 
         [Test]
@@ -64,10 +62,7 @@ namespace NodaTime.Test.Format
         {
             var builder = new PeriodFormatterBuilder().AppendPrefix("prefix");
 
-            var baseFormatter = new PeriodFormatterBuilder()
-                .AppendYears()
-                .AppendLiteral("-")
-                .ToFormatter();
+            var baseFormatter = new PeriodFormatterBuilder().AppendYears().AppendLiteral("-").ToFormatter();
 
             Assert.That(() => builder.Append(baseFormatter), Throws.InstanceOf<InvalidOperationException>());
         }
@@ -75,15 +70,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void AppendFormatter_MergesFormatters()
         {
-            var baseFormatter = new PeriodFormatterBuilder()
-                .AppendYears()
-                .AppendLiteral("-")
-                .ToFormatter();
+            var baseFormatter = new PeriodFormatterBuilder().AppendYears().AppendLiteral("-").ToFormatter();
 
-            var formatter = new PeriodFormatterBuilder()
-                .Append(baseFormatter)
-                .AppendYears()
-                .ToFormatter();
+            var formatter = new PeriodFormatterBuilder().Append(baseFormatter).AppendYears().ToFormatter();
             var periodText = "1-1";
 
             var printer = formatter.Printer;
@@ -95,7 +84,6 @@ namespace NodaTime.Test.Format
 
             var periodValue = formatter.Parse(periodText);
             Assert.That(periodValue, Is.EqualTo(Period.FromYears(1)));
-
         }
 
         [Test]
@@ -109,10 +97,7 @@ namespace NodaTime.Test.Format
         {
             var builder = new PeriodFormatterBuilder().AppendPrefix("prefix");
 
-            var baseFormatter = new PeriodFormatterBuilder()
-                .AppendYears()
-                .AppendLiteral("-")
-                .ToFormatter();
+            var baseFormatter = new PeriodFormatterBuilder().AppendYears().AppendLiteral("-").ToFormatter();
 
             Assert.That(() => builder.Append(baseFormatter.Printer, baseFormatter.Parser), Throws.InstanceOf<InvalidOperationException>());
         }
@@ -120,38 +105,27 @@ namespace NodaTime.Test.Format
         [Test]
         public void AppendPrinterParser_BuildsOnlyPrinter_IfParserIsNull()
         {
-            var printer = new PeriodFormatterBuilder()
-                .AppendYears()
-                .AppendLiteral("-")
-                .ToPrinter();
-            
-            var builder2 = new PeriodFormatterBuilder()
-                .Append(printer, null)
-                .AppendMonths();
+            var printer = new PeriodFormatterBuilder().AppendYears().AppendLiteral("-").ToPrinter();
+
+            var builder2 = new PeriodFormatterBuilder().Append(printer, null).AppendMonths();
 
             var formatter = builder2.ToFormatter();
 
             Assert.That(formatter.Print(standardPeriodFull), Is.EqualTo("1-2"));
-            Assert.Throws<NotSupportedException>(()=>formatter.Parse("1-3"));
+            Assert.Throws<NotSupportedException>(() => formatter.Parse("1-3"));
         }
 
         [Test]
         public void AppendPrinterParser_BuildsOnlyParser_IfPrinterIsNull()
         {
-            var parser = new PeriodFormatterBuilder()
-                .AppendYears()
-                .AppendLiteral("-")
-                .ToParser();
+            var parser = new PeriodFormatterBuilder().AppendYears().AppendLiteral("-").ToParser();
 
-            var builder2 = new PeriodFormatterBuilder()
-                .Append(null, parser)
-                .AppendMonths();
+            var builder2 = new PeriodFormatterBuilder().Append(null, parser).AppendMonths();
 
             var formatter = builder2.ToFormatter();
 
             Assert.That(formatter.Parse("1-2"), Is.EqualTo(Period.FromYears(1).WithMonths(2)));
             Assert.Throws<NotSupportedException>(() => formatter.Print(standardPeriodFull));
         }
-
     }
 }

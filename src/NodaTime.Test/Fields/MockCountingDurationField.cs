@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Fields;
 
 namespace NodaTime.Test.Fields
@@ -23,13 +24,11 @@ namespace NodaTime.Test.Fields
         // FIXME: Use a proper mock?
         private readonly long unitTicks;
 
-        internal MockCountingDurationField(DurationFieldType fieldType)
-            : this(fieldType, 60)
+        internal MockCountingDurationField(DurationFieldType fieldType) : this(fieldType, 60)
         {
         }
 
-        internal MockCountingDurationField(DurationFieldType fieldType, long unitTicks)
-            : base(fieldType)
+        internal MockCountingDurationField(DurationFieldType fieldType, long unitTicks) : base(fieldType)
         {
             this.unitTicks = unitTicks;
         }
@@ -65,6 +64,7 @@ namespace NodaTime.Test.Fields
         internal static int int64Additions;
         internal static LocalInstant Add64InstantArg;
         internal static long Add64ValueArg;
+
         public override LocalInstant Add(LocalInstant localInstant, long value)
         {
             int64Additions++;
@@ -77,6 +77,7 @@ namespace NodaTime.Test.Fields
         internal static int differences;
         internal static LocalInstant DiffFirstArg;
         internal static LocalInstant DiffSecondArg;
+
         public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             differences++;
@@ -88,6 +89,7 @@ namespace NodaTime.Test.Fields
         internal static int differences64;
         internal static LocalInstant Diff64FirstArg;
         internal static LocalInstant Diff64SecondArg;
+
         public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             differences64++;

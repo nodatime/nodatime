@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using CommandLine;
 using CommandLine.Text;
 
@@ -27,20 +28,13 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         private static readonly HeadingInfo headingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
 
         #region Standard Option Attribute
-        [Option("s", "source",
-                Required = true,
-                HelpText = "Source XML file defining the mappings.")]
-        public string SourceFileName = string.Empty;
+        [Option("s", "source", Required = true, HelpText = "Source XML file defining the mappings.")] public string SourceFileName = string.Empty;
 
-        [Option("t", "type",
-                HelpText = "The type of the output file { ResX, Resource }.")]
-        public ResourceOutputType OutputType = ResourceOutputType.ResX;
-
+        [Option("t", "type", HelpText = "The type of the output file { ResX, Resource }.")] public ResourceOutputType OutputType = ResourceOutputType.ResX;
         #endregion
 
         #region Specialized Option Attribute
-        [HelpOption(
-                HelpText = "Display this help.")]
+        [HelpOption(HelpText = "Display this help.")]
         public string GetUsage()
         {
             var help = new HelpText(headingInfo);

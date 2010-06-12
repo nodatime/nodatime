@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Calendars;
 
 namespace NodaTime.Partials
@@ -27,7 +28,9 @@ namespace NodaTime.Partials
         private readonly ICalendarSystem calendar;
         private readonly int[] values;
 
-        protected PartialBase() { }
+        protected PartialBase()
+        {
+        }
 
         /// <summary>
         /// Initializes a partial with specified time field values and chronology.
@@ -48,10 +51,7 @@ namespace NodaTime.Partials
         /// provides conversion and validation of the fields in a particular calendar system.
         /// </para>
         /// </summary>
-        public override ICalendarSystem Calendar
-        {
-            get { return calendar; }
-        }
+        public override ICalendarSystem Calendar { get { return calendar; } }
 
         /// <summary>
         /// Gets the value of the field at the specifed index.

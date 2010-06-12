@@ -1,7 +1,6 @@
-﻿#region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+#region Copyright and license information
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -29,18 +27,16 @@ namespace NodaTime.TimeZones
     /// <remarks>
     /// This type is thread-safe and immutable.
     /// </remarks>
-    public sealed class NullDateTimeZone
-        : DateTimeZoneBase, IEquatable<NullDateTimeZone>
+    public sealed class NullDateTimeZone : DateTimeZoneBase, IEquatable<NullDateTimeZone>
     {
-        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")] 
-        public static readonly NullDateTimeZone Instance = new NullDateTimeZone("NullTimeZone");
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")] public static readonly NullDateTimeZone Instance =
+            new NullDateTimeZone("NullTimeZone");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NullDateTimeZone"/> class.
         /// </summary>
         /// <param name="id">The id.</param>
-        private NullDateTimeZone(string id)
-            : base(id, true)
+        private NullDateTimeZone(string id) : base(id, true)
         {
         }
 
@@ -112,7 +108,6 @@ namespace NodaTime.TimeZones
         }
 
         #region Implementation of IEquatable<NullDateTimeZone>
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -131,14 +126,11 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return IsFixed == other.IsFixed &&
-                   Id == other.Id;
+            return IsFixed == other.IsFixed && Id == other.Id;
         }
-
         #endregion
 
         #region Object overrides
-
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
         /// </summary>
@@ -175,7 +167,6 @@ namespace NodaTime.TimeZones
             hash = HashCodeHelper.Hash(hash, Id);
             return hash;
         }
-
         #endregion // Object overrides
     }
 }

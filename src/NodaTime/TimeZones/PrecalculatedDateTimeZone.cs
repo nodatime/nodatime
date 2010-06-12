@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
@@ -28,8 +26,7 @@ namespace NodaTime.TimeZones
     /// container for the initial zone intervals and a pointer to the time zone that handles all of
     /// the rest until the end of time.
     /// </summary>
-    internal class PrecalculatedDateTimeZone
-        : DateTimeZoneBase
+    internal class PrecalculatedDateTimeZone : DateTimeZoneBase
     {
         private readonly ZoneInterval[] periods;
         private readonly IDateTimeZone tailZone;
@@ -41,9 +38,7 @@ namespace NodaTime.TimeZones
         /// <param name="transitions">The transitions.</param>
         /// <param name="precalcedEnd">The precalced end.</param>
         /// <param name="tailZone">The tail zone.</param>
-        public PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd,
-                                         IDateTimeZone tailZone)
-            : base(id, false)
+        public PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, IDateTimeZone tailZone) : base(id, false)
         {
             if (transitions == null)
             {
@@ -55,14 +50,13 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentException(@"There must be at least one transition", "transitions");
             }
-            this.periods = new ZoneInterval[size];
+            periods = new ZoneInterval[size];
             for (int i = 0; i < size; i++)
             {
                 var transition = transitions[i];
                 var endInstant = i == size - 1 ? precalcedEnd : transitions[i + 1].Instant;
-                var period = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset,
-                                              transition.Savings);
-                this.periods[i] = period;
+                var period = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset, transition.Savings);
+                periods[i] = period;
             }
         }
 
@@ -72,8 +66,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The id.</param>
         /// <param name="periods">The periods.</param>
         /// <param name="tailZone">The tail zone.</param>
-        private PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, IDateTimeZone tailZone)
-            : base(id, false)
+        private PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, IDateTimeZone tailZone) : base(id, false)
         {
             this.tailZone = tailZone;
             this.periods = periods;
@@ -87,20 +80,20 @@ namespace NodaTime.TimeZones
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
-            int last = this.periods.Length - 1;
-            if (this.periods[last].End <= instant)
+            int last = periods.Length - 1;
+            if (periods[last].End <= instant)
             {
-                return this.tailZone.GetZoneInterval(instant);
+                return tailZone.GetZoneInterval(instant);
             }
             for (var p = last; p >= 0; p--)
             {
-                if (this.periods[p].End <= instant)
+                if (periods[p].End <= instant)
                 {
                     break;
                 }
-                if (this.periods[p].Contains(instant))
+                if (periods[p].Contains(instant))
                 {
-                    return this.periods[p];
+                    return periods[p];
                 }
             }
             return null;
@@ -114,20 +107,20 @@ namespace NodaTime.TimeZones
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
-            int last = this.periods.Length - 1;
-            if (this.periods[last].LocalEnd <= localInstant)
+            int last = periods.Length - 1;
+            if (periods[last].LocalEnd <= localInstant)
             {
-                return this.tailZone.GetZoneInterval(localInstant);
+                return tailZone.GetZoneInterval(localInstant);
             }
             for (var p = last; p >= 0; p--)
             {
-                if (this.periods[p].LocalEnd <= localInstant)
+                if (periods[p].LocalEnd <= localInstant)
                 {
                     break;
                 }
-                if (this.periods[p].Contains(localInstant))
+                if (periods[p].Contains(localInstant))
                 {
-                    return this.periods[p];
+                    return periods[p];
                 }
             }
             return null;
@@ -140,11 +133,10 @@ namespace NodaTime.TimeZones
         /// <returns><c>true</c> if this instance is cachable; otherwise, <c>false</c>.</returns>
         public bool IsCachable()
         {
-            return this.tailZone != null;
+            return tailZone != null;
         }
 
         #region I/O
-
         /// <summary>
         /// Writes the time zone to the specified writer.
         /// </summary>
@@ -155,21 +147,21 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("writer");
             }
-            writer.WriteCount(this.periods.Length);
-            foreach (var period in this.periods)
+            writer.WriteCount(periods.Length);
+            foreach (var period in periods)
             {
                 writer.WriteInstant(period.Start);
                 writer.WriteString(period.Name);
                 writer.WriteOffset(period.Offset);
                 writer.WriteOffset(period.Savings);
             }
-            var end = this.periods[this.periods.Length - 1].End;
+            var end = periods[periods.Length - 1].End;
             if (end != Instant.MaxValue)
             {
                 end = end + Duration.One;
             }
             writer.WriteInstant(end);
-            writer.WriteTimeZone(this.tailZone);
+            writer.WriteTimeZone(tailZone);
         }
 
         /// <summary>
@@ -195,7 +187,6 @@ namespace NodaTime.TimeZones
             var tailZone = reader.ReadTimeZone(id + "-tail");
             return new PrecalculatedDateTimeZone(id, periods, tailZone);
         }
-
         #endregion // I/O
     }
 }

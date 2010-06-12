@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Collections.Generic;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
@@ -22,8 +23,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// Provides for a list of Zone objects. All of the Zone objects will have the same
     /// name which is made available on the list.
     /// </summary>
-    internal class ZoneList
-        : List<Zone>
+    internal class ZoneList : List<Zone>
     {
         /// <summary>
         /// Gets the name of the Zone objects in this list.

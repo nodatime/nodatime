@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Converters
@@ -26,10 +27,7 @@ namespace NodaTime.Converters
         /// <summary>
         /// Original name: GetInstance
         /// </summary>
-        public static ConverterManager Instance
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public static ConverterManager Instance { get { throw new NotImplementedException(); } }
 
         /// <summary>
         /// Original name: addInstantConverter

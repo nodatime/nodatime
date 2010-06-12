@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -23,8 +24,7 @@ namespace NodaTime.ZoneInfoCompiler
     /// <summary>
     /// Proveides a base clase for logging instances.
     /// </summary>
-    internal abstract class LogBase
-        : ILog
+    internal abstract class LogBase : ILog
     {
         private delegate void LogOutputMethod(string format, params object[] arguments);
 
@@ -38,7 +38,6 @@ namespace NodaTime.ZoneInfoCompiler
         protected abstract void LogMessage(LogType type, string message);
 
         #region ILog Members
-
         /// <summary>
         /// Gets or sets the name of the file where the logging ocurred. If null then the log message
         /// is outside of file processing.
@@ -86,38 +85,19 @@ namespace NodaTime.ZoneInfoCompiler
         /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Info"/>.
         /// </summary>
         /// <value>The <see cref="TextWriter"/>.</value>
-        public TextWriter InfoWriter
-        {
-            get
-            {
-                return new LogTextWriter(this.Info);
-            }
-        }
+        public TextWriter InfoWriter { get { return new LogTextWriter(Info); } }
 
         /// <summary>
         /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Warn"/>.
         /// </summary>
         /// <value>The <see cref="TextWriter"/>.</value>
-        public TextWriter WarnWriter
-        {
-            get
-            {
-                return new LogTextWriter(this.Warn);
-            }
-        }
+        public TextWriter WarnWriter { get { return new LogTextWriter(Warn); } }
 
         /// <summary>
         /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Error"/>.
         /// </summary>
         /// <value>The <see cref="TextWriter"/>.</value>
-        public TextWriter ErrorWriter
-        {
-            get
-            {
-                return new LogTextWriter(this.Error);
-            }
-        }
-
+        public TextWriter ErrorWriter { get { return new LogTextWriter(Error); } }
         #endregion
 
         /// <summary>
@@ -167,8 +147,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// Private class to implement a <see cref="Textwriter"/> that sends its output
         /// to the given output method.
         /// </summary>
-        private class LogTextWriter
-            : TextWriter
+        private class LogTextWriter : TextWriter
         {
             private readonly StringBuilder builder = new StringBuilder();
             private readonly LogOutputMethod output;
@@ -177,8 +156,7 @@ namespace NodaTime.ZoneInfoCompiler
             /// Initializes a new instance of the <see cref="LogTextWriter"/> class.
             /// </summary>
             /// <param name="output">The log.</param>
-            public LogTextWriter(LogOutputMethod output)
-                : base(CultureInfo.InvariantCulture)
+            public LogTextWriter(LogOutputMethod output) : base(CultureInfo.InvariantCulture)
             {
                 this.output = output;
             }
@@ -187,10 +165,7 @@ namespace NodaTime.ZoneInfoCompiler
             /// When overridden in a derived class, returns the <see cref="T:System.Text.Encoding"/> in which the output is written.
             /// </summary>
             /// <returns>The Encoding in which the output is written.</returns>
-            public override Encoding Encoding
-            {
-                get { return Encoding.UTF8; }
-            }
+            public override Encoding Encoding { get { return Encoding.UTF8; } }
 
             /// <summary>
             /// Writes a character to the text stream.
@@ -210,13 +185,13 @@ namespace NodaTime.ZoneInfoCompiler
                 }
                 else if (value == '\n')
                 {
-                    string message = this.builder.ToString();
+                    string message = builder.ToString();
                     output("{0}", message);
-                    this.builder.Remove(0, message.Length);
+                    builder.Remove(0, message.Length);
                 }
                 else
                 {
-                    this.builder.Append(value);
+                    builder.Append(value);
                 }
             }
         }

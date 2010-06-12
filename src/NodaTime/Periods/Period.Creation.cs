@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -47,7 +47,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromYears(int years)
         {
-            return new Period(new int[] { years, 0, 0, 0, 0, 0, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { years, 0, 0, 0, 0, 0, 0, 0 }, PeriodType.Standard);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromMonths(int months)
         {
-            return new Period(new int[] { 0, months, 0, 0, 0, 0, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, months, 0, 0, 0, 0, 0, 0 }, PeriodType.Standard);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromWeeks(int weeks)
         {
-            return new Period(new int[] { 0, 0, weeks, 0, 0, 0, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, weeks, 0, 0, 0, 0, 0 }, PeriodType.Standard);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromDays(int days)
         {
-            return new Period(new int[] { 0, 0, 0, days, 0, 0, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, 0, days, 0, 0, 0, 0 }, PeriodType.Standard);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromHours(int hours)
         {
-            return new Period(new int[] { 0, 0, 0, 0, hours, 0, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, 0, 0, hours, 0, 0, 0 }, PeriodType.Standard);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromMinutes(int minutes)
         {
-            return new Period(new int[] { 0, 0, 0, 0, 0, minutes, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, 0, 0, 0, minutes, 0, 0 }, PeriodType.Standard);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromSeconds(int seconds)
         {
-            return new Period(new int[] { 0, 0, 0, 0, 0, 0, seconds, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, 0, 0, 0, 0, seconds, 0 }, PeriodType.Standard);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromMilliseconds(int milliseconds)
         {
-            return new Period(new int[] { 0, 0, 0, 0, 0, 0, 0, milliseconds }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, 0, 0, 0, 0, 0, milliseconds }, PeriodType.Standard);
         }
 
         /// <summary>
@@ -445,6 +445,5 @@ namespace NodaTime.Periods
         {
             return From(end - duration, end, IsoCalendarSystem.Instance, PeriodType.Standard);
         }
-
     }
 }

@@ -14,6 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System.IO;
 using System.Reflection;
 
 namespace NodaTime.ZoneInfoCompiler
@@ -42,7 +44,7 @@ namespace NodaTime.ZoneInfoCompiler
                             return titleAttribute.Title;
                         }
                     }
-                    return System.IO.Path.GetFileNameWithoutExtension(program.CodeBase);
+                    return Path.GetFileNameWithoutExtension(program.CodeBase);
                 }
                 return "Title";
             }

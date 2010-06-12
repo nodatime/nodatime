@@ -14,8 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System;
 
+using System;
 using NodaTime.Calendars;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
@@ -28,15 +28,15 @@ namespace NodaTime
     /// TODO: Make this a struct? The hard work will be done in the calendar system
     /// and time zone classes.
     /// </summary>
-    public sealed class Chronology:IEquatable<Chronology>
+    public sealed class Chronology : IEquatable<Chronology>
     {
         private static readonly Chronology isoUtc = new Chronology(DateTimeZones.Utc, IsoCalendarSystem.Instance);
 
         public static Chronology IsoUtc { get { return isoUtc; } }
-        
+
         private readonly IDateTimeZone zone;
         private readonly ICalendarSystem calendarSystem;
-        
+
         public IDateTimeZone Zone { get { return zone; } }
         public ICalendarSystem Calendar { get { return calendarSystem; } }
 
@@ -63,10 +63,9 @@ namespace NodaTime
         }
 
         #region Equality
-
         public bool Equals(Chronology other)
         {
-            if (Object.ReferenceEquals(other, null))
+            if (ReferenceEquals(other, null))
             {
                 return false;
             }
@@ -86,11 +85,9 @@ namespace NodaTime
             hash = HashCodeHelper.Hash(hash, Calendar);
             return hash;
         }
-
         #endregion
 
         #region Operators
-
         /// <summary>
         /// Implements the operator ==.
         /// </summary>
@@ -99,7 +96,7 @@ namespace NodaTime
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(Chronology left, Chronology right)
         {
-            return Object.Equals(left, right);
+            return Equals(left, right);
         }
 
         /// <summary>
@@ -112,8 +109,6 @@ namespace NodaTime
         {
             return !(left == right);
         }
-
         #endregion
-
     }
 }

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 
@@ -61,8 +62,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        private IsoCalendarSystem(ICalendarSystem baseSystem)
-            : base(IsoName, baseSystem)
+        private IsoCalendarSystem(ICalendarSystem baseSystem) : base(IsoName, baseSystem)
         {
         }
 
@@ -73,72 +73,67 @@ namespace NodaTime.Calendars
                 throw new ArgumentNullException("fields");
             }
             // Use zero based century and year of century.
-            DividedDateTimeField centuryOfEra = new DividedDateTimeField
-                (IsoYearOfEraDateTimeField.Instance, DateTimeFieldType.CenturyOfEra, 100);
+            DividedDateTimeField centuryOfEra = new DividedDateTimeField(IsoYearOfEraDateTimeField.Instance, DateTimeFieldType.CenturyOfEra, 100);
             fields.CenturyOfEra = centuryOfEra;
             fields.YearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.YearOfCentury);
             fields.WeekYearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.WeekYearOfCentury);
             fields.Centuries = centuryOfEra.DurationField;
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+                                                     int millisecondOfSecond, int tickOfMillisecond)
         {
             int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
-            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 ||
-                monthOfYear < 1 || monthOfYear > 12 ||
-                dayOfMonth < 1 || dayOfMonth > MonthLengths[yearMonthIndex] ||
-                hourOfDay < 0 || hourOfDay > 23 ||
-                minuteOfHour < 0 || minuteOfHour > 59 ||
-                secondOfMinute < 0 || secondOfMinute > 59 ||
-                millisecondOfSecond < 0 || millisecondOfSecond > 999 ||
-                tickOfMillisecond < 0 || tickOfMillisecond > NodaConstants.TicksPerMillisecond - 1)
+            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
+                dayOfMonth > MonthLengths[yearMonthIndex] || hourOfDay < 0 || hourOfDay > 23 || minuteOfHour < 0 || minuteOfHour > 59 || secondOfMinute < 0 ||
+                secondOfMinute > 59 || millisecondOfSecond < 0 || millisecondOfSecond > 999 || tickOfMillisecond < 0 ||
+                tickOfMillisecond > NodaConstants.TicksPerMillisecond - 1)
             {
                 // It may still be okay - let's take the long way to find out
                 return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
             }
             // This is guaranteed not to overflow, as we've already validated the arguments
-            return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] + 
-                (dayOfMonth - 1) * NodaConstants.TicksPerDay +
-                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
-                secondOfMinute * NodaConstants.TicksPerSecond + millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond));
+            return
+                new LocalInstant(
+                    unchecked(
+                        MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerDay + hourOfDay * NodaConstants.TicksPerHour +
+                        minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond +
+                        millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond));
         }
 
         public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
             int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
-            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 ||
-                monthOfYear < 1 || monthOfYear > 12 ||
-                dayOfMonth < 1 || dayOfMonth > MonthLengths[yearMonthIndex] ||
-                hourOfDay < 0 || hourOfDay > 23 ||
-                minuteOfHour < 0 || minuteOfHour > 59 ||
-                secondOfMinute < 0 || secondOfMinute > 59)
+            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
+                dayOfMonth > MonthLengths[yearMonthIndex] || hourOfDay < 0 || hourOfDay > 23 || minuteOfHour < 0 || minuteOfHour > 59 || secondOfMinute < 0 ||
+                secondOfMinute > 59)
             {
                 // It may still be okay - let's take the long way to find out
                 return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
             }
             // This is guaranteed not to overflow, as we've already validated the arguments
-            return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] +
-                (dayOfMonth - 1) * NodaConstants.TicksPerDay +
-                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute +
-                secondOfMinute * NodaConstants.TicksPerSecond));
+            return
+                new LocalInstant(
+                    unchecked(
+                        MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerDay + hourOfDay * NodaConstants.TicksPerHour +
+                        minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond));
         }
 
         public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
             int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
-            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 ||
-                monthOfYear < 1 || monthOfYear > 12 ||
-                dayOfMonth < 1 || dayOfMonth > MonthLengths[yearMonthIndex] ||
-                hourOfDay < 0 || hourOfDay > 23 ||
-                minuteOfHour < 0 || minuteOfHour > 59)
+            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
+                dayOfMonth > MonthLengths[yearMonthIndex] || hourOfDay < 0 || hourOfDay > 23 || minuteOfHour < 0 || minuteOfHour > 59)
             {
                 // It may still be okay - let's take the long way to find out
                 return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
             }
             // This is guaranteed not to overflow, as we've already validated the arguments
-            return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] +
-                (dayOfMonth - 1) * NodaConstants.TicksPerDay +
-                hourOfDay * NodaConstants.TicksPerHour + minuteOfHour * NodaConstants.TicksPerMinute));
+            return
+                new LocalInstant(
+                    unchecked(
+                        MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerDay + hourOfDay * NodaConstants.TicksPerHour +
+                        minuteOfHour * NodaConstants.TicksPerMinute));
         }
 
         // TODO: Try overriding the GetLocalInstant methods to micro-optimise them (they will be called for almost every ZonedDateTime/LocalDateTime)

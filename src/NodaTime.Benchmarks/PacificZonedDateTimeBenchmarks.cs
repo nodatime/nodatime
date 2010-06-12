@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Benchmarks.Extensions;
 using NodaTime.Benchmarks.Timing;
 using NodaTime.TimeZones;
@@ -43,7 +44,7 @@ namespace NodaTime.Benchmarks
         {
             sample.MonthOfYear.Consume();
         }
-        
+
         [Benchmark]
         public void DayOfMonth()
         {

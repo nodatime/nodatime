@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Fields;
 using NodaTime.Periods;
 
@@ -79,8 +80,7 @@ namespace NodaTime.Calendars
         /// <param name="minuteOfHour">Minute to use</param>
         /// <param name="secondOfMinute">Second to use</param>
         /// <returns>A LocalInstant instance</returns>
-        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth,
-                                     int hourOfDay, int minuteOfHour, int secondOfMinute);
+        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute);
 
         /// <summary>
         /// Returns a local instant, formed from the given year, month, day, 
@@ -97,8 +97,7 @@ namespace NodaTime.Calendars
         /// <param name="hourOfDay">Hour to use</param>
         /// <param name="minuteOfHour">Minute to use</param>
         /// <returns>A LocalInstant instance</returns>
-        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth,
-                                     int hourOfDay, int minuteOfHour);
+        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour);
 
         /// <summary>
         /// Returns a local instant, formed from the given year, month, day, 
@@ -118,8 +117,8 @@ namespace NodaTime.Calendars
         /// <param name="millisecondOfSecond">Millisecond to use</param>
         /// <param name="tickOfMillisecond">Tick to use</param>
         /// <returns>A LocalInstant instance</returns>
-        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth,
-                                     int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond);
+        LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
+                                     int tickOfMillisecond);
 
         /// <summary>
         /// Returns a local instant, formed from the given instant, hour, minute, second, millisecond and ticks values.
@@ -136,13 +135,11 @@ namespace NodaTime.Calendars
         /// <param name="millisecondOfSecond">Milliscond to use</param>
         /// <param name="tickOfMillisecond">Tick to use</param>
         /// <returns>A LocalInstant instance</returns>
-        LocalInstant GetLocalInstant(LocalInstant localInstant,
-                                     int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond);
-
+        LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
+                                     int tickOfMillisecond);
 
         #region Periods
-
-         /// <summary>
+        /// <summary>
         /// Gets the values of a period type from an interval.
         /// </summary>
         /// <param name="periodType">The period type to use</param>
@@ -159,11 +156,9 @@ namespace NodaTime.Calendars
         /// <param name="scalar">The number of times to add</param>
         /// <returns>The updated instant</returns>
         LocalInstant Add(IPeriod period, LocalInstant instant, int scalar);
-
         #endregion
 
         #region Partials
-
         /// <summary>
         /// Validates whether the values are valid for the fields of a partial instant.
         /// </summary>
@@ -186,7 +181,6 @@ namespace NodaTime.Calendars
         /// <param name="localInstant">The instant to update</param>
         /// <returns>The updated instant</returns>
         LocalInstant SetPartial(IPartial partial, LocalInstant localInstant);
-        
         #endregion
     }
 }

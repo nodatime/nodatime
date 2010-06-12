@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime.Fields
@@ -26,8 +27,7 @@ namespace NodaTime.Fields
         private readonly int divisor;
         private readonly IDurationField remainderRangeField;
 
-        internal RemainderDateTimeField(IDateTimeField field, DateTimeFieldType fieldType, int divisor)
-            : base(field, fieldType)
+        internal RemainderDateTimeField(IDateTimeField field, DateTimeFieldType fieldType, int divisor) : base(field, fieldType)
         {
             if (divisor < 2)
             {
@@ -39,13 +39,11 @@ namespace NodaTime.Fields
             this.divisor = divisor;
         }
 
-        internal RemainderDateTimeField(DividedDateTimeField dividedField)
-            : this(dividedField, dividedField.FieldType)
+        internal RemainderDateTimeField(DividedDateTimeField dividedField) : this(dividedField, dividedField.FieldType)
         {
         }
 
-        internal RemainderDateTimeField(DividedDateTimeField dividedField, DateTimeFieldType fieldType)
-            : base(dividedField.WrappedField, fieldType)
+        internal RemainderDateTimeField(DividedDateTimeField dividedField, DateTimeFieldType fieldType) : base(dividedField.WrappedField, fieldType)
         {
             divisor = dividedField.Divisor;
             remainderRangeField = dividedField.DivisorDurationField;
@@ -62,10 +60,10 @@ namespace NodaTime.Fields
         }
 
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
-        {            
+        {
             FieldUtils.VerifyValueBounds(this, value, 0, divisor - 1);
             int wrappedValue = WrappedField.GetValue(localInstant);
-            int divided = wrappedValue >= 0 ? wrappedValue / divisor : ((wrappedValue + 1)/divisor) - 1;
+            int divided = wrappedValue >= 0 ? wrappedValue / divisor : ((wrappedValue + 1) / divisor) - 1;
             return WrappedField.SetValue(localInstant, divided * divisor + value);
         }
 

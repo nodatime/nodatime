@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 
 namespace NodaTime
@@ -39,19 +40,20 @@ namespace NodaTime
     public class SkippedTimeException : ArgumentOutOfRangeException
     {
         private readonly LocalInstant localInstant;
+
         /// <summary>
         /// The local instant which is invalid in the time zone
         /// </summary>
         public LocalInstant LocalInstant { get { return localInstant; } }
 
         private readonly IDateTimeZone zone;
+
         /// <summary>
         /// The time zone in which the local instant is invalid
         /// </summary>
         public IDateTimeZone Zone { get { return zone; } }
 
-        public SkippedTimeException(LocalInstant localInstant, IDateTimeZone zone)
-            : base("Local time " + localInstant + " is invalid in time zone " + zone.Id)
+        public SkippedTimeException(LocalInstant localInstant, IDateTimeZone zone) : base("Local time " + localInstant + " is invalid in time zone " + zone.Id)
         {
             this.localInstant = localInstant;
             this.zone = zone;

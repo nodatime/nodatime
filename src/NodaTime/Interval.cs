@@ -1,7 +1,6 @@
 #region Copyright and license information
-
-// Copyright 2001-2010 Stephen Colebourne
-// Copyright 2010 Jon Skeet
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +13,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
 using NodaTime.Utility;
+
 namespace NodaTime
 {
     /// <summary>
@@ -27,8 +26,7 @@ namespace NodaTime
     /// <remarks>
     /// This type is immutable and thread-safe.
     /// </remarks>
-    public struct Interval
-        : IEquatable<Interval>
+    public struct Interval : IEquatable<Interval>
     {
         private readonly Instant end;
         private readonly Instant start;
@@ -50,31 +48,21 @@ namespace NodaTime
         /// Gets the start instant.
         /// </summary>
         /// <value>The start <see cref="Instant"/>.</value>
-        public Instant Start
-        {
-            get { return this.start; }
-        }
+        public Instant Start { get { return start; } }
 
         /// <summary>
         /// Gets the end instant.
         /// </summary>
         /// <value>The end <see cref="Instant"/>.</value>
-        public Instant End
-        {
-            get { return this.end; }
-        }
+        public Instant End { get { return end; } }
 
         /// <summary>
         /// Gets the duration.
         /// </summary>
         /// <value>The duration.</value>
-        public Duration Duration
-        {
-            get { return end - start; }
-        }
+        public Duration Duration { get { return end - start; } }
 
         #region Implementation of IEquatable<Interval>
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -87,11 +75,9 @@ namespace NodaTime
         {
             return Start == other.Start && End == other.End;
         }
-
         #endregion
 
         #region object overrides
-
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
         /// </summary>
@@ -123,11 +109,9 @@ namespace NodaTime
             hash = HashCodeHelper.Hash(hash, End);
             return hash;
         }
-
         #endregion
 
         #region Operators
-
         /// <summary>
         /// Implements the operator ==.
         /// </summary>
@@ -149,7 +133,6 @@ namespace NodaTime
         {
             return !(left == right);
         }
-
         #endregion
     }
 }

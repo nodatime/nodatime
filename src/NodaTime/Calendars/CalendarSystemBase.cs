@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Fields;
 using NodaTime.Periods;
@@ -28,8 +29,7 @@ namespace NodaTime.Calendars
     /// as well.
     /// </para>
     /// </summary>
-    public abstract class CalendarSystemBase
-        : ICalendarSystem
+    public abstract class CalendarSystemBase : ICalendarSystem
     {
         private readonly string name;
 
@@ -46,7 +46,7 @@ namespace NodaTime.Calendars
         /// Gets the name of this calendar system. Each calendar system must have a unique name.
         /// </summary>
         /// <value>The calendar system name.</value>
-        public string Name { get { return this.name; } }
+        public string Name { get { return name; } }
 
         public abstract FieldSet Fields { get; }
 
@@ -90,8 +90,8 @@ namespace NodaTime.Calendars
         /// <param name="millisecondOfSecond">Millisecond to use</param>
         /// <param name="tickOfMillisecond">Tick to use</param>
         /// <returns>A LocalInstant instance</returns>
-        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay,
-            int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+                                                    int millisecondOfSecond, int tickOfMillisecond)
         {
             LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
@@ -118,8 +118,8 @@ namespace NodaTime.Calendars
         /// <param name="millisecondOfSecond">Milliscond to use</param>
         /// <param name="tickOfMillisecond">Tick to use</param>
         /// <returns>A LocalInstant instance</returns>
-        public virtual LocalInstant GetLocalInstant(LocalInstant localInstant, 
-            int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
+        public virtual LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
+                                                    int tickOfMillisecond)
         {
             localInstant = Fields.HourOfDay.SetValue(localInstant, hourOfDay);
             localInstant = Fields.MinuteOfHour.SetValue(localInstant, minuteOfHour);
@@ -139,8 +139,7 @@ namespace NodaTime.Calendars
         }
 
         #region Periods
-
-         /// <summary>
+        /// <summary>
         /// Gets the values of a period type from an interval.
         /// </summary>
         /// <param name="periodType">The period type to use</param>
@@ -198,26 +197,37 @@ namespace NodaTime.Calendars
         {
             switch (fieldType)
             {
-                case DurationFieldType.Eras:        return Fields.Eras;
-                case DurationFieldType.Centuries:   return Fields.Centuries;
-                case DurationFieldType.WeekYears:   return Fields.WeekYears;
-                case DurationFieldType.Years:       return Fields.Years;
-                case DurationFieldType.Months:      return Fields.Months;
-                case DurationFieldType.Weeks:       return Fields.Weeks;
-                case DurationFieldType.Days:        return Fields.Days;
-                case DurationFieldType.HalfDays:    return Fields.HalfDays;
-                case DurationFieldType.Hours:       return Fields.Hours;
-                case DurationFieldType.Minutes:     return Fields.Minutes;
-                case DurationFieldType.Seconds:     return Fields.Seconds;
-                case DurationFieldType.Milliseconds:return Fields.Milliseconds;
-                default: throw new InvalidOperationException();
+                case DurationFieldType.Eras:
+                    return Fields.Eras;
+                case DurationFieldType.Centuries:
+                    return Fields.Centuries;
+                case DurationFieldType.WeekYears:
+                    return Fields.WeekYears;
+                case DurationFieldType.Years:
+                    return Fields.Years;
+                case DurationFieldType.Months:
+                    return Fields.Months;
+                case DurationFieldType.Weeks:
+                    return Fields.Weeks;
+                case DurationFieldType.Days:
+                    return Fields.Days;
+                case DurationFieldType.HalfDays:
+                    return Fields.HalfDays;
+                case DurationFieldType.Hours:
+                    return Fields.Hours;
+                case DurationFieldType.Minutes:
+                    return Fields.Minutes;
+                case DurationFieldType.Seconds:
+                    return Fields.Seconds;
+                case DurationFieldType.Milliseconds:
+                    return Fields.Milliseconds;
+                default:
+                    throw new InvalidOperationException();
             }
         }
-
         #endregion
 
         #region Partials
-
         /// <summary>
         /// Validates whether the values are valid for the fields of a partial instant.
         /// </summary>
@@ -284,23 +294,19 @@ namespace NodaTime.Calendars
         /// <returns>The updated instant</returns>
         public LocalInstant SetPartial(IPartial partial, LocalInstant localInstant)
         {
-            for (int i = 0, isize = partial.Size; i < isize; i++) 
+            for (int i = 0, isize = partial.Size; i < isize; i++)
             {
-                localInstant = partial.GetFieldType(i).GetField(this)
-                                .SetValue(localInstant, partial.GetValue(i));
+                localInstant = partial.GetFieldType(i).GetField(this).SetValue(localInstant, partial.GetValue(i));
             }
-            return localInstant;        
+            return localInstant;
         }
-
         #endregion
 
         #region object overrides
-
         public override string ToString()
         {
             return Name;
         }
-
         #endregion
     }
 }

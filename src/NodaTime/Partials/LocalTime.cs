@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Calendars;
 using NodaTime.Fields;
@@ -30,15 +31,9 @@ namespace NodaTime.Partials
             throw new NotImplementedException();
         }
 
-        public override ICalendarSystem Calendar
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public override ICalendarSystem Calendar { get { throw new NotImplementedException(); } }
 
-        public override int Size
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public override int Size { get { throw new NotImplementedException(); } }
 
         public override int GetValue(int index)
         {

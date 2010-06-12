@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Calendars;
 
@@ -27,8 +28,7 @@ namespace NodaTime.Fields
         private static readonly Duration Week53Ticks = Duration.FromStandardWeeks(52);
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal BasicWeekYearDateTimeField(BasicCalendarSystem calendarSystem)
-            : base(DateTimeFieldType.WeekYear, calendarSystem.AverageTicksPerYear)
+        internal BasicWeekYearDateTimeField(BasicCalendarSystem calendarSystem) : base(DateTimeFieldType.WeekYear, calendarSystem.AverageTicksPerYear)
         {
             this.calendarSystem = calendarSystem;
         }
@@ -45,7 +45,6 @@ namespace NodaTime.Fields
         public override bool IsLenient { get { return false; } }
 
         #region Values
-
         /// <summary>
         /// Get the Year of a week based year component of the specified local instant.
         /// </summary>
@@ -53,7 +52,7 @@ namespace NodaTime.Fields
         /// <returns>The year extracted from the input.</returns>
         public override int GetValue(LocalInstant localInstant)
         {
- 	         return calendarSystem.GetWeekYear(localInstant);
+            return calendarSystem.GetWeekYear(localInstant);
         }
 
         /// <summary>
@@ -63,7 +62,7 @@ namespace NodaTime.Fields
         /// <returns>The year extracted from the input.</returns>
         public override long GetInt64Value(LocalInstant localInstant)
         {
- 	         return calendarSystem.GetWeekYear(localInstant);
+            return calendarSystem.GetWeekYear(localInstant);
         }
 
         public override LocalInstant Add(LocalInstant localInstant, int value)
@@ -109,7 +108,7 @@ namespace NodaTime.Fields
 
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            int year = (int) value;
+            int year = (int)value;
             // TODO: Check this. In the Java it uses Math.abs, but I'm not convinced that's correct...
             FieldUtils.VerifyValueBounds(this, year, calendarSystem.MinYear, calendarSystem.MaxYear);
 
@@ -134,7 +133,7 @@ namespace NodaTime.Fields
             // for the target weekyear.  In that case it is adjusted
             // to the maximum possible.
             int setToWeek = Math.Min(maxOutWeeks, calendarSystem.GetWeekOfWeekYear(localInstant));
-            
+
             // Get a working copy of the current date-time. This can be a convenience for debugging
             LocalInstant workInstant = localInstant;
 
@@ -151,7 +150,7 @@ namespace NodaTime.Fields
             if (workWeekYear < year)
             {
                 workInstant += Duration.OneWeek;
-            } 
+            }
             else if (workWeekYear > year)
             {
                 workInstant -= Duration.OneWeek;
@@ -172,27 +171,23 @@ namespace NodaTime.Fields
             // Done!
             return workInstant;
         }
-
         #endregion
 
         #region Leap
-
         public override bool IsLeap(LocalInstant localInstant)
         {
- 	        return GetLeapAmount(localInstant) > 0;
+            return GetLeapAmount(localInstant) > 0;
         }
 
-        public override int  GetLeapAmount(LocalInstant localInstant)
+        public override int GetLeapAmount(LocalInstant localInstant)
         {
- 	        return calendarSystem.GetWeeksInYear(calendarSystem.GetWeekYear(localInstant)) - 52;
+            return calendarSystem.GetWeeksInYear(calendarSystem.GetWeekYear(localInstant)) - 52;
         }
 
         public override IDurationField LeapDurationField { get { return calendarSystem.Fields.Weeks; } }
-
         #endregion
 
         #region Ranges
-
         public override long GetMinimumValue()
         {
             return calendarSystem.MinYear;
@@ -202,11 +197,9 @@ namespace NodaTime.Fields
         {
             return calendarSystem.MaxYear;
         }
-
         #endregion
 
         #region Rounding
-
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             // Note: This works fine, but it ideally shouldn't invoke other
@@ -219,7 +212,6 @@ namespace NodaTime.Fields
             }
             return localInstant;
         }
-
         #endregion
     }
 }
