@@ -307,10 +307,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Adds a period to a local date/time. Fields are added in the order provided by the period.
+        /// Subtracts a period from a local date/time. Fields are subtracted in the order provided by the period.
         /// </summary>
         /// <param name="localDateTime">Initial local date and time</param>
-        /// <param name="period">Period to add</param>
+        /// <param name="period">Period to subtract</param>
         /// <returns>The resulting local date and time</returns>
         public static LocalDateTime operator -(LocalDateTime localDateTime, IPeriod period)
         {
