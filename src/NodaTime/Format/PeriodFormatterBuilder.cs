@@ -130,7 +130,7 @@ namespace NodaTime.Format
         {
             int CalculatePrintedLength(int value);
 
-            void PrintTo(TextWriter textWriter, int value);
+            void PrintTo(TextWriter writer, int value);
 
             int Parse(string periodText, int position);
 
@@ -526,42 +526,48 @@ namespace NodaTime.Format
                     return position;
                 }
 
-                int limit = suffixPos > 0 
+                //Determine the start and end positions of the string to extract digits from
+                //position = "first"
+                //length = "nextIndex"
+                //end = "last"
+                int end = suffixPos > 0 
                     ? Math.Min(maxParsedDigits, suffixPos - position) 
                     : Math.Min(maxParsedDigits, periodText.Length - position);
 
-                // validate input number
                 int length = 0;
-                int fractPos = -1;
-                bool hasDigits = false;
-                while (length < limit)
+
+                //handle optional leading sign
+                char leadingChar = periodText[position];
+                if ((leadingChar == '-' || leadingChar == '+') && !rejectSignedValues)
                 {
-                    char c = periodText[position + length];
-                    // leading sign
-                    if (length == 0 && (c == '-' || c == '+') && !rejectSignedValues)
+                    // Next character must be a digit.
+                    if (position + 1 < end && Char.IsDigit(periodText, position + 1))
                     {
-                        bool negative = c == '-';
-
-                        // Next character must be a digit.
-                        if (length + 1 >= limit || !Char.IsDigit(periodText, position + length + 1))
+                        if (leadingChar == '-')
                         {
-                            break;
-                        }
-
-                        if (negative)
-                        {
-                            length++;
+                            //pass through the leading minus sign
+                            length = 1;
                         }
                         else
                         {
-                            // Skip the '+' for parseInt to succeed.
+                            //skip the leading plus sign
                             position++;
                         }
                         // Expand the limit to disregard the sign character.
-                        limit = Math.Min(limit + 1, periodText.Length - position);
-                        continue;
+                        end = Math.Min(end + 1, periodText.Length - position);
                     }
-                    // main number
+                    else
+                    {
+                        //indicate that we don't want to go ahead and proceed next characters
+                        length = end;
+                    }
+                }
+
+                int fractPos = -1;
+                bool hasDigits = false;
+                while (length < end)
+                {
+                    char c = periodText[position + length];
                     if (Char.IsDigit(c))
                     {
                         hasDigits = true;
@@ -578,7 +584,7 @@ namespace NodaTime.Format
                             }
                             fractPos = position + length + 1;
                             // Expand the limit to disregard the decimal point.
-                            limit = Math.Min(limit + 1, periodText.Length - position);
+                            end = Math.Min(end + 1, periodText.Length - position);
                         }
                         else
                         {
@@ -605,16 +611,16 @@ namespace NodaTime.Format
                 if (fieldType != FormatterDurationFieldType.SecondsMilliseconds && fieldType != FormatterDurationFieldType.SecondsMillisecondsOptional)
                 {
                     //Handle common case.
-                    AppendFieldValue(builder, fieldType, ParseInt(periodText, position, length));
+                    AppendFieldValue(builder, fieldType, FormatUtils.ParseDigits(periodText, position, length));
                 }
                 else if (fractPos < 0)
                 {
-                    AppendFieldValue(builder, FormatterDurationFieldType.Seconds, ParseInt(periodText, position, length));
+                    AppendFieldValue(builder, FormatterDurationFieldType.Seconds, FormatUtils.ParseDigits(periodText, position, length));
                     AppendFieldValue(builder, FormatterDurationFieldType.Milliseconds, 0);
                 }
                 else
                 {
-                    int wholeValue = ParseInt(periodText, position, fractPos - position - 1);
+                    int wholeValue = FormatUtils.ParseDigits(periodText, position, fractPos - position - 1);
                     AppendFieldValue(builder, FormatterDurationFieldType.Seconds, wholeValue);
 
                     int fractLen = position + length - fractPos;
@@ -627,11 +633,11 @@ namespace NodaTime.Format
                     {
                         if (fractLen >= 3)
                         {
-                            fractValue = ParseInt(periodText, fractPos, 3);
+                            fractValue = FormatUtils.ParseDigits(periodText, fractPos, 3);
                         }
                         else
                         {
-                            fractValue = ParseInt(periodText, fractPos, fractLen);
+                            fractValue = FormatUtils.ParseDigits(periodText, fractPos, fractLen);
                             if (fractLen == 1)
                             {
                                 fractValue *= 100;
@@ -759,41 +765,6 @@ namespace NodaTime.Format
                     }
                 }
                 return true;
-            }
-
-            private static int ParseInt(String text, int position, int length)
-            {
-                if (length >= 10)
-                {
-                    // Since value may exceed max, use stock parser which checks for this.
-                    return Int32.Parse(text.Substring(position, position + length));
-                }
-                if (length <= 0)
-                {
-                    return 0;
-                }
-                int value = text[position++];
-                length--;
-                bool negative;
-                if (value == '-')
-                {
-                    if (--length < 0)
-                    {
-                        return 0;
-                    }
-                    negative = true;
-                    value = text[position++];
-                }
-                else
-                {
-                    negative = false;
-                }
-                value -= '0';
-                while (length-- > 0)
-                {
-                    value = ((value << 3) + (value << 1)) + text[position++] - '0';
-                }
-                return negative ? -value : value;
             }
 
             private static bool IsZero(IPeriod period) 

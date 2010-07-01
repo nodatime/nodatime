@@ -1593,21 +1593,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="IPeriodParser">
-          <Members>
-           <Member Name="#Parse(System.String,System.Int32,NodaTime.Format.PeriodBuilder,System.IFormatProvider)">
-            <Messages>
-             <Message Id="string" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Created="2010-03-09 01:02:44Z">
-              <Issue Name="LanguageIndependentMemberParameter">
-               <Item>'IPeriodParser.Parse(string, int, PeriodBuilder, IFormatProvider)'</Item>
-               <Item>String</Item>
-               <Item>'periodString'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="IsoDateTimeFormats">
           <Members>
            <Member Name="#dhmsf">

@@ -17,6 +17,7 @@
 using System;
 using System.Text;
 using System.IO;
+using System.Globalization;
 namespace NodaTime.Format
 {
     /// <summary>
@@ -280,6 +281,42 @@ namespace NodaTime.Format
         {
             int value = text[position] - '0';
             return ((value << 3) + (value << 1)) + text[position + 1] - '0';
+        }
+
+        internal static int ParseDigits(String text, int position, int length)
+        {
+            if (length >= 10)
+            {
+                // Since value may exceed max, use stock parser which checks for this.
+                return Int32.Parse(text.Substring(position, position + length), CultureInfo.InvariantCulture);
+            }
+            if (length <= 0)
+            {
+                return 0;
+            }
+
+            int value = text[position++];
+            length--;
+            bool negative;
+            if (value == '-')
+            {
+                if (--length < 0)
+                {
+                    return 0;
+                }
+                negative = true;
+                value = text[position++];
+            }
+            else
+            {
+                negative = false;
+            }
+            value -= '0';
+            while (length-- > 0)
+            {
+                value = ((value << 3) + (value << 1)) + text[position++] - '0';
+            }
+            return negative ? -value : value;
         }
 
         internal static string CreateErrorMessage(string text, int errorPosition)
