@@ -302,23 +302,23 @@ namespace NodaTime.Format
         /// <summary>
         /// Parses a period from the given text
         /// </summary>
-        /// <param name="text">Text to parse</param>
+        /// <param name="periodText">Text to parse</param>
         /// <returns>Parsed pariod</returns>
         /// <exception cref="ArgumentNullException">if text argument is null</exception>
         /// <exception cref="FormatException">text does not contain a valid string representation of a period.</exception>
         /// <exception cref="NotSupportedException">if this formatter can't be used for parsing</exception>        
-        public Period Parse(String text)
+        public Period Parse(String periodText)
         {
-            if (text == null)
+            if (periodText == null)
             {
-                throw new ArgumentNullException(text);
+                throw new ArgumentNullException("periodText");
             }
             VerifyParser();
 
             var builder = new PeriodBuilder(parsePeriodType);
-            int newPosition = Parser.Parse(text, 0, builder, provider);
+            int newPosition = Parser.Parse(periodText, 0, builder, provider);
 
-            if (newPosition >= text.Length)
+            if (newPosition >= periodText.Length)
             {
                 return builder.ToPeriod();
             }
@@ -328,7 +328,7 @@ namespace NodaTime.Format
                 newPosition = ~newPosition;
             }
 
-            throw new FormatException(FormatUtils.CreateErrorMessage(text, newPosition));
+            throw new FormatException(FormatUtils.CreateErrorMessage(periodText, newPosition));
         }
 
         #endregion
