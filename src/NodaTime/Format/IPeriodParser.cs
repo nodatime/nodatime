@@ -35,11 +35,11 @@ namespace NodaTime.Format
         /// To determine the position where the parse failed, apply the
         /// one's complement operator (~) on the return value.
         /// </remarks>
-        /// <param name="periodString">Text to parse</param>
+        /// <param name="periodText">Text to parse</param>
         /// <param name="position">Position to start parsing from</param>
         /// <param name="builder">Period builder to use</param>
         /// <param name="provider">The IFormatProvider to use for parsing</param>
         /// <returns>New position, if negative, parse failed.</returns>
-        int Parse(String periodString, int position, PeriodBuilder builder, IFormatProvider provider);
+        int Parse(String periodText, int position, PeriodBuilder builder, IFormatProvider provider);
     }
 }

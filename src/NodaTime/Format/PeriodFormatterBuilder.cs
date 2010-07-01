@@ -132,9 +132,9 @@ namespace NodaTime.Format
 
             void PrintTo(TextWriter textWriter, int value);
 
-            int Parse(string periodString, int position);
+            int Parse(string periodText, int position);
 
-            int Scan(string periodstring, int position);
+            int Scan(string periodText, int position);
         }
 
         /// <summary>
@@ -154,25 +154,25 @@ namespace NodaTime.Format
                 return text.Length;
             }
 
-            public void PrintTo(TextWriter textWriter, int value)
+            public void PrintTo(TextWriter writer, int value)
             {
-                textWriter.Write(text);
+                writer.Write(text);
             }
 
-            public int Parse(string periodString, int position)
+            public int Parse(string periodText, int position)
             {
-                return FormatUtils.MatchSubstring(periodString, position, text);
+                return FormatUtils.MatchSubstring(periodText, position, text);
             }
 
-            public int Scan(string periodString, int position)
+            public int Scan(string periodText, int position)
             {
-                for (int startAt = position; startAt < periodString.Length; startAt++)
+                for (int startAt = position; startAt < periodText.Length; startAt++)
                 {
-                    if (FormatUtils.MatchSubstring(periodString, startAt, text) > 0)
+                    if (FormatUtils.MatchSubstring(periodText, startAt, text) > 0)
                         return startAt;
 
                     // Only allow number characters to be skipped in search of suffix.
-                    switch (periodString[startAt]) 
+                    switch (periodText[startAt]) 
                     {
                         case '0': case '1': case '2': case '3': case '4':
                         case '5': case '6': case '7': case '8': case '9':
@@ -207,39 +207,39 @@ namespace NodaTime.Format
                 return (value == 1 ? singularText : pluralText).Length;
             }
 
-            public void PrintTo(TextWriter textWriter, int value)
+            public void PrintTo(TextWriter writer, int value)
             {
-                textWriter.Write(value == 1 ? singularText : pluralText);
+                writer.Write(value == 1 ? singularText : pluralText);
             }
 
-            public int Parse(string periodString, int position)
+            public int Parse(string periodText, int position)
             {
                 string firstToCheck;
                 string secondToCheck;
                 ArrangeByLength(out firstToCheck, out secondToCheck);
 
                 int newPosition;
-                if ((newPosition = FormatUtils.MatchSubstring(periodString, position, firstToCheck)) > 0)
+                if ((newPosition = FormatUtils.MatchSubstring(periodText, position, firstToCheck)) > 0)
                 {
                     return newPosition;
                 }
-                return FormatUtils.MatchSubstring(periodString, position, secondToCheck);
+                return FormatUtils.MatchSubstring(periodText, position, secondToCheck);
             }
 
-            public int Scan(string periodString, int position)
+            public int Scan(string periodText, int position)
             {
                 string firstToCheck;
                 string secondToCheck;
                 ArrangeByLength(out firstToCheck, out secondToCheck);
 
-                for (int startAt = position; startAt < periodString.Length; startAt++)
+                for (int startAt = position; startAt < periodText.Length; startAt++)
                 {
                     int newPosition;
-                    if ((newPosition = FormatUtils.MatchSubstring(periodString, startAt, firstToCheck)) > 0)
+                    if ((newPosition = FormatUtils.MatchSubstring(periodText, startAt, firstToCheck)) > 0)
                     {
                         return startAt;
                     }
-                    if ((newPosition = FormatUtils.MatchSubstring(periodString, startAt, secondToCheck)) > 0)
+                    if ((newPosition = FormatUtils.MatchSubstring(periodText, startAt, secondToCheck)) > 0)
                     {
                         return startAt;
                     }
@@ -282,22 +282,22 @@ namespace NodaTime.Format
                     + right.CalculatePrintedLength(value);
             }
 
-            public void PrintTo(TextWriter textWriter, int value)
+            public void PrintTo(TextWriter writer, int value)
             {
-                left.PrintTo(textWriter, value);
-                right.PrintTo(textWriter, value);
+                left.PrintTo(writer, value);
+                right.PrintTo(writer, value);
             }
 
-            public int Parse(string periodString, int position)
+            public int Parse(string periodText, int position)
             {
-                position = left.Parse(periodString, position);
-                return position >= 0 ? right.Parse(periodString, position) : position;
+                position = left.Parse(periodText, position);
+                return position >= 0 ? right.Parse(periodText, position) : position;
             }
 
-            public int Scan(string periodString, int position)
+            public int Scan(string periodText, int position)
             {
-                position = left.Scan(periodString, position);
-                return position >= 0 ? right.Scan(periodString, position) : position;
+                position = left.Scan(periodText, position);
+                return position >= 0 ? right.Scan(periodText, position) : position;
             }
         }
 
@@ -325,14 +325,14 @@ namespace NodaTime.Format
                 return 0;
             }
 
-            public void PrintTo(TextWriter textWriter, IPeriod period, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, IPeriod period, IFormatProvider provider)
             {
-                textWriter.Write(text);
+                writer.Write(text);
             }
 
-            public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
+            public int Parse(string periodText, int position, PeriodBuilder builder, IFormatProvider provider)
             {
-                return FormatUtils.MatchSubstring(periodString, position, text);
+                return FormatUtils.MatchSubstring(periodText, position, text);
             }
         }
 
@@ -427,7 +427,7 @@ namespace NodaTime.Format
                 return 0;
             }
 
-            public void PrintTo(TextWriter textWriter, IPeriod period, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, IPeriod period, IFormatProvider provider)
             {
                 Fraction? fieldValue = GetFieldValue(period);
                 if (fieldValue == null)
@@ -441,21 +441,21 @@ namespace NodaTime.Format
 
                 if (prefix != null)
                 {
-                    prefix.PrintTo(textWriter, intValue);
+                    prefix.PrintTo(writer, intValue);
                 }
 
                 if (value.NeedNegate)
                 {
-                    textWriter.Write('-');
+                    writer.Write('-');
                 }
 
                 if (minPrintedDigits <= 1)
                 {
-                    FormatUtils.WriteUnpaddedInteger(textWriter, intValue);
+                    FormatUtils.WriteUnpaddedInteger(writer, intValue);
                 }
                 else
                 {
-                    FormatUtils.WritePaddedInteger(textWriter, intValue, minPrintedDigits);
+                    FormatUtils.WritePaddedInteger(writer, intValue, minPrintedDigits);
                 }
 
                 if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
@@ -463,14 +463,14 @@ namespace NodaTime.Format
                     int dp = value.Low;
                     if (fieldType == FormatterDurationFieldType.SecondsMilliseconds || dp > 0)
                     {
-                        textWriter.Write('.');
-                        FormatUtils.WritePaddedInteger(textWriter, dp, 3);
+                        writer.Write('.');
+                        FormatUtils.WritePaddedInteger(writer, dp, 3);
                     }
                 }
 
                 if (suffix != null)
                 {
-                    suffix.PrintTo(textWriter, intValue);
+                    suffix.PrintTo(writer, intValue);
                 }
             }
 
@@ -478,19 +478,19 @@ namespace NodaTime.Format
 
             #region IPeriodParser Members
 
-            public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
+            public int Parse(string periodText, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 bool mustParse = (printZero == PrintZeroSetting.Always);
 
                 // Shortcut test.
-                if (position >= periodString.Length)
+                if (position >= periodText.Length)
                 {
                     return mustParse ? ~position : position;
                 }
 
                 if (prefix != null)
                 {
-                    position = prefix.Parse(periodString, position);
+                    position = prefix.Parse(periodText, position);
                     if (position >= 0)
                     {
                         // If prefix is found, then the parse must finish.
@@ -507,7 +507,7 @@ namespace NodaTime.Format
                 {
                     // Pre-scan the suffix, to help determine if this field must be
                     // parsed.
-                    suffixPos = suffix.Scan(periodString, position);
+                    suffixPos = suffix.Scan(periodText, position);
                     if (suffixPos >= 0)
                     {
                         // If suffix is found, then parse must finish.
@@ -528,7 +528,7 @@ namespace NodaTime.Format
 
                 int limit = suffixPos > 0 
                     ? Math.Min(maxParsedDigits, suffixPos - position) 
-                    : Math.Min(maxParsedDigits, periodString.Length - position);
+                    : Math.Min(maxParsedDigits, periodText.Length - position);
 
                 // validate input number
                 int length = 0;
@@ -536,14 +536,14 @@ namespace NodaTime.Format
                 bool hasDigits = false;
                 while (length < limit)
                 {
-                    char c = periodString[position + length];
+                    char c = periodText[position + length];
                     // leading sign
                     if (length == 0 && (c == '-' || c == '+') && !rejectSignedValues)
                     {
                         bool negative = c == '-';
 
                         // Next character must be a digit.
-                        if (length + 1 >= limit || !Char.IsDigit(periodString, position + length + 1))
+                        if (length + 1 >= limit || !Char.IsDigit(periodText, position + length + 1))
                         {
                             break;
                         }
@@ -558,7 +558,7 @@ namespace NodaTime.Format
                             position++;
                         }
                         // Expand the limit to disregard the sign character.
-                        limit = Math.Min(limit + 1, periodString.Length - position);
+                        limit = Math.Min(limit + 1, periodText.Length - position);
                         continue;
                     }
                     // main number
@@ -578,7 +578,7 @@ namespace NodaTime.Format
                             }
                             fractPos = position + length + 1;
                             // Expand the limit to disregard the decimal point.
-                            limit = Math.Min(limit + 1, periodString.Length - position);
+                            limit = Math.Min(limit + 1, periodText.Length - position);
                         }
                         else
                         {
@@ -605,16 +605,16 @@ namespace NodaTime.Format
                 if (fieldType != FormatterDurationFieldType.SecondsMilliseconds && fieldType != FormatterDurationFieldType.SecondsMillisecondsOptional)
                 {
                     //Handle common case.
-                    AppendFieldValue(builder, fieldType, ParseInt(periodString, position, length));
+                    AppendFieldValue(builder, fieldType, ParseInt(periodText, position, length));
                 }
                 else if (fractPos < 0)
                 {
-                    AppendFieldValue(builder, FormatterDurationFieldType.Seconds, ParseInt(periodString, position, length));
+                    AppendFieldValue(builder, FormatterDurationFieldType.Seconds, ParseInt(periodText, position, length));
                     AppendFieldValue(builder, FormatterDurationFieldType.Milliseconds, 0);
                 }
                 else
                 {
-                    int wholeValue = ParseInt(periodString, position, fractPos - position - 1);
+                    int wholeValue = ParseInt(periodText, position, fractPos - position - 1);
                     AppendFieldValue(builder, FormatterDurationFieldType.Seconds, wholeValue);
 
                     int fractLen = position + length - fractPos;
@@ -627,11 +627,11 @@ namespace NodaTime.Format
                     {
                         if (fractLen >= 3)
                         {
-                            fractValue = ParseInt(periodString, fractPos, 3);
+                            fractValue = ParseInt(periodText, fractPos, 3);
                         }
                         else
                         {
-                            fractValue = ParseInt(periodString, fractPos, fractLen);
+                            fractValue = ParseInt(periodText, fractPos, fractLen);
                             if (fractLen == 1)
                             {
                                 fractValue *= 100;
@@ -654,7 +654,7 @@ namespace NodaTime.Format
 
                 if (position >= 0 && suffix != null)
                 {
-                    position = suffix.Parse(periodString, position);
+                    position = suffix.Parse(periodText, position);
                 }
 
                 return position;
@@ -889,12 +889,12 @@ namespace NodaTime.Format
             public IList<IPeriodParser> Parsers { get { return periodParsers; } }
             public IList<IPeriodPrinter> Printers { get { return periodPrinters; } }
 
-            public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
+            public int Parse(string periodText, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 int len = periodParsers.Count;
                 for (int i = 0; i < len && position >= 0; i++)
                 {
-                    position = periodParsers[i].Parse(periodString, position, builder, provider);
+                    position = periodParsers[i].Parse(periodText, position, builder, provider);
                 }
                 return position;
             }
@@ -919,11 +919,11 @@ namespace NodaTime.Format
                 return sum;
             }
 
-            public void PrintTo(TextWriter textWriter, IPeriod period, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, IPeriod period, IFormatProvider provider)
             {
                 foreach (var printer in periodPrinters)
                 {
-                    printer.PrintTo(textWriter, period, provider);
+                    printer.PrintTo(writer, period, provider);
                 }
             }
         }
@@ -1040,9 +1040,9 @@ namespace NodaTime.Format
                 return sum;
             }
 
-            public void PrintTo(TextWriter textWriter, IPeriod period, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, IPeriod period, IFormatProvider provider)
             {
-                beforePrinter.PrintTo(textWriter, period, provider);
+                beforePrinter.PrintTo(writer, period, provider);
                 if (useBefore)
                 {
                     if (beforePrinter.CountFieldsToPrint(period, 1, provider) > 0)
@@ -1052,30 +1052,30 @@ namespace NodaTime.Format
                             int afterCount = afterPrinter.CountFieldsToPrint(period, 2, provider);
                             if (afterCount > 0)
                             {
-                                textWriter.Write(afterCount > 1 ? text : finalText);
+                                writer.Write(afterCount > 1 ? text : finalText);
                             }
                         }
                         else
                         {
-                           textWriter.Write(text);
+                           writer.Write(text);
                         }
                     }
                 }
                 else if (useAfter && afterPrinter.CountFieldsToPrint(period, 1, provider) > 0)
                 {
-                    textWriter.Write(text);
+                    writer.Write(text);
                 }
-                afterPrinter.PrintTo(textWriter, period, provider);
+                afterPrinter.PrintTo(writer, period, provider);
             }
 
             #endregion
 
             #region IPeriodParser Members
 
-            public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
+            public int Parse(string periodText, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 int oldPos = position;
-                position = beforeParser.Parse(periodString, position, builder, provider);
+                position = beforeParser.Parse(periodText, position, builder, provider);
 
                 if (position < 0)
                 {
@@ -1089,7 +1089,7 @@ namespace NodaTime.Format
                     for (int i = 0; i < parsedForms.Length; i++)
                     {
                         int newPosition;
-                        if((newPosition = FormatUtils.MatchSubstring(periodString, position, parsedForms[i])) > 0)
+                        if((newPosition = FormatUtils.MatchSubstring(periodText, position, parsedForms[i])) > 0)
                         {
                             position = newPosition;
                             found = true;
@@ -1099,7 +1099,7 @@ namespace NodaTime.Format
                 }
 
                 oldPos = position;
-                position = afterParser.Parse(periodString, position, builder, provider);
+                position = afterParser.Parse(periodText, position, builder, provider);
 
                 if (position < 0)
                 {
