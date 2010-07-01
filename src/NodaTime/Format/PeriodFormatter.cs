@@ -305,8 +305,8 @@ namespace NodaTime.Format
         /// <param name="periodText">Text to parse</param>
         /// <returns>Parsed pariod</returns>
         /// <exception cref="ArgumentNullException">if text argument is null</exception>
-        /// <exception cref="FormatException">text does not contain a valid string representation of a period.</exception>
-        /// <exception cref="NotSupportedException">if this formatter can't be used for parsing</exception>        
+        /// <exception cref="FormatException">periodText does not contain a valid string representation of a period.</exception>
+        /// <exception cref="NotSupportedException">if this formatter can't be used for parsing of periodText contains a value of the unsupported field</exception>        
         public Period Parse(String periodText)
         {
             if (periodText == null)

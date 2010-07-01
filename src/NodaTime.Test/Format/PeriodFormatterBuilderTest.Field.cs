@@ -27,11 +27,12 @@ namespace NodaTime.Test.Format
     {
         private class FieldFormatterBuilder
         {
-            private int maximumParsedDigits = 10;
             private bool rejectSignedValues = false;
             private PeriodFormatterBuilder.FieldFormatter[] fieldFormatters = new PeriodFormatterBuilder.FieldFormatter[11];
 
             public int MinimumPrintedDigits { get; set; }
+            public int MaximumParsedDigits { get; set; }
+
             public PeriodFormatterBuilder.FormatterDurationFieldType FieldType { get; set; }
             public PeriodFormatterBuilder.PrintZeroSetting PrintZero { get; set; }
             public PeriodFormatterBuilder.IPeriodFieldAffix Prefix { get; set; }
@@ -40,13 +41,14 @@ namespace NodaTime.Test.Format
             public FieldFormatterBuilder()
             {
                 MinimumPrintedDigits = 1;
+                MaximumParsedDigits = 10;
                 FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Days;
                 PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast;
             }
 
             public PeriodFormatterBuilder.FieldFormatter Build()
             {
-                var fieldFormatter = new PeriodFormatterBuilder.FieldFormatter(MinimumPrintedDigits, PrintZero, maximumParsedDigits, rejectSignedValues, FieldType, fieldFormatters, Prefix, Suffix);
+                var fieldFormatter = new PeriodFormatterBuilder.FieldFormatter(MinimumPrintedDigits, PrintZero, MaximumParsedDigits, rejectSignedValues, FieldType, fieldFormatters, Prefix, Suffix);
                 fieldFormatters[(int)FieldType] = fieldFormatter;
                 return fieldFormatter;
             }
@@ -640,528 +642,174 @@ namespace NodaTime.Test.Format
 
         #endregion
 
-        #endregion
-
-        #region Years
-
         [Test]
-        public void AppendYears_Prints1_For1YearStandardPeriod()
+        public void FieldFormatter_ParsesText()
         {
-            var formatter = builder.AppendYears().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "25";
+            var builder = new PeriodBuilder(PeriodType.Standard);
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
-
-            Assert.AreEqual("1", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));            
+            fieldFormatter.Parse(periodText, 0, builder, null);
+            
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(25)));
         }
 
         [Test]
-        public void AppendYears_Parse1_To1YearStandardPeriod()
+        public void FieldFormatter_ParsesText_WithZeroChar()
         {
-            var formatter = builder.AppendYears().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "0";
+            var builder = new PeriodBuilder(PeriodType.Standard);
 
-            var parsedPeriod = formatter.Parse("1");
+            fieldFormatter.Parse(periodText, 0, builder, null);
 
-            Assert.AreEqual(Period.FromYears(1), parsedPeriod);
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(0)));
         }
 
         [Test]
-        public void AppendYears_ParsePlus1_To1YearStandardPeriod()
+        public void FieldFormatter_ParsesText_LimitedByPositionAndMaximumParsedDigits()
         {
-            var formatter = builder.AppendYears().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                MaximumParsedDigits = 3
+            }.Build();
+            var periodText = "123456789";
+            int startPosition = 4;
 
-            var parsedPeriod = formatter.Parse("+1");
+            var builder = new PeriodBuilder(PeriodType.Standard);
 
-            Assert.AreEqual(Period.FromYears(1), parsedPeriod);
+            fieldFormatter.Parse(periodText, startPosition, builder, null);
+
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(567)));
+        }
+
+        #region Signs
+
+        [Test]
+        public void FieldFormatter_ParsesText_WithLeadingPlusSign()
+        {
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "+25";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(25)));
         }
 
         [Test]
-        public void AppendYears_ParseMinus1_ToMinus1YearStandardPeriod()
+        public void FieldFormatter_Fail_WithLeadingPlusSignAndNoDigitFollow()
         {
-            var formatter = builder.AppendYears().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "+$25";
+            var builder = new PeriodBuilder(PeriodType.Standard);
 
-            var parsedPeriod = formatter.Parse("-1");
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
 
-            Assert.AreEqual(Period.FromYears(-1), parsedPeriod);
+            Assert.That(newPosition, Is.LessThan(0));
         }
 
         [Test]
-        public void AppendYears_ParseMinusMinus1_Throws()
+        public void FieldFormatter_Fail_WithLeadingPlusSignAndMaximumParsedDigitsExceed()
         {
-            var formatter = builder.AppendYears().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder()
+                {
+                    MaximumParsedDigits = 1
+                }.Build();
+            var periodText = "+100";
+            var builder = new PeriodBuilder(PeriodType.Standard);
 
-            Assert.Throws<FormatException>(() => formatter.Parse("--1"));
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.LessThan(0));
         }
 
         [Test]
-        public void AppendYears_Prints0_ForZeroYearStandardPeriod()
+        public void FieldFormatter_ParsesText_WithLeadingMinusSign()
         {
-            var formatter = builder.AppendYears().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "-25";
+            var builder = new PeriodBuilder(PeriodType.Standard);
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodEmpty);
+            fieldFormatter.Parse(periodText, 0, builder, null);
 
-            Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(-25)));
         }
 
         [Test]
-        public void AppendYears_Parses0_ToZeroYearStandardPeriod()
+        public void FieldFormatter_ParsesText_WithLeadingMinusSignAndMaximumParsedDigitsIsUnaffected()
         {
-            var formatter = builder.AppendYears().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder()
+                {
+                    MaximumParsedDigits = 2
+                }.Build();
+            var periodText = "-12345678";
+            var builder = new PeriodBuilder(PeriodType.Standard);
 
-            var parsedPeriod = formatter.Parse("0");
+            fieldFormatter.Parse(periodText, 0, builder, null);
 
-            Assert.AreEqual(Period.FromYears(0), parsedPeriod);
-        }
-
-        #endregion
-
-        #region Months
-
-        [Test]
-        public void AppendMonths_Prints2_For2MonthStandardPeriod()
-        {
-            var formatter = builder.AppendMonths().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
-
-            Assert.AreEqual("2", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(-12)));
         }
 
         [Test]
-        public void AppendMonths_Parse2_To2MonthStandardPeriod()
+        public void FieldFormatter_Fail_WithLeadingMinusSignAndNoDigitFollow()
         {
-            var formatter = builder.AppendMonths().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "-+25";
+            var builder = new PeriodBuilder(PeriodType.Standard);
 
-            var parsedPeriod = formatter.Parse("2");
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
 
-            Assert.AreEqual(Period.FromMonths(2), parsedPeriod);
+            Assert.That(newPosition, Is.LessThan(0));
         }
 
         [Test]
-        public void AppendMonths_ParsePlus2_To2MonthStandardPeriod()
+        public void FieldFormatter_Fail_WithLeadingMinusSignAndMaximumParsedDigitsExceed()
         {
-            var formatter = builder.AppendMonths().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                MaximumParsedDigits = 1
+            }.Build();
+            var periodText = "-200";
+            var builder = new PeriodBuilder(PeriodType.Standard);
 
-            var parsedPeriod = formatter.Parse("+2");
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
 
-            Assert.AreEqual(Period.FromMonths(2), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendMonths_ParseMinus2_ToMinus2MonthStandardPeriod()
-        {
-            var formatter = builder.AppendMonths().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("-2");
-
-            Assert.AreEqual(Period.FromMonths(-2), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendMonths_Prints0_ForZeroMonthStandardPeriod()
-        {
-            var formatter = builder.AppendMonths().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodEmpty);
-
-            Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendMonths_Parse0_ToZeroMonthStandardPeriod()
-        {
-            var formatter = builder.AppendMonths().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("0");
-
-            Assert.AreEqual(Period.FromMonths(0), parsedPeriod);
+            Assert.That(newPosition, Is.LessThan(0));
         }
 
         #endregion
 
-        #region Weeks
-
         [Test]
-        public void AppendWeeks_Prints3_For3WeeksStandardPeriod()
+        public void FieldFormatter_SkipsItself_IfFieldTypeIsUnsupported()
         {
-            var formatter = builder.AppendWeeks().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "25";
+            var builder = new PeriodBuilder(PeriodType.Minutes);
 
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
 
-            Assert.AreEqual("3", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
+            Assert.That(newPosition, Is.EqualTo(0));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(new Period(new int[]{0}, PeriodType.Minutes)));
         }
 
         [Test]
-        public void AppendWeeks_Parse3_To3WeeksStandardPeriod()
+        public void FieldFormatter_Fail_IfFieldTypeIsUnsupportedAndPrintZeroAlways()
         {
-            var formatter = builder.AppendWeeks().ToFormatter();
+            var fieldFormatter = new FieldFormatterBuilder()
+                {
+                    PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always
+                }.Build();
+            var periodText = "25";
+            var builder = new PeriodBuilder(PeriodType.Minutes);
 
-            var parsedPeriod = formatter.Parse("3");
-
-            Assert.AreEqual(Period.FromWeeks(3), parsedPeriod);
+            Assert.That(() => fieldFormatter.Parse(periodText, 0, builder, null), Throws.InstanceOf<NotSupportedException>());
         }
 
-        [Test]
-        public void AppendWeeks_ParsePlus3_To3WeeksStandardPeriod()
-        {
-            var formatter = builder.AppendWeeks().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("+3");
-
-            Assert.AreEqual(Period.FromWeeks(3), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendWeeks_ParseMinus3_ToMinus3WeeksStandardPeriod()
-        {
-            var formatter = builder.AppendWeeks().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("-3");
-
-            Assert.AreEqual(Period.FromWeeks(-3), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendWeeks_Prints0_ForZeroWeeksStandardPeriod()
-        {
-            var formatter = builder.AppendWeeks().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodEmpty);
-
-            Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendWeeks_Parses0_ToZeroWeeksStandardPeriod()
-        {
-            var formatter = builder.AppendWeeks().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("0");
-
-            Assert.AreEqual(Period.FromWeeks(0), parsedPeriod);
-        }
-
-        #endregion
-
-        #region Days
-
-        [Test]
-        public void AppendDays_Prints4_For4DaysStandardPeriod()
-        {
-            var formatter = builder.AppendDays().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
-
-            Assert.AreEqual("4", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendDays_Parses4_To4DaystandardPeriod()
-        {
-            var formatter = builder.AppendDays().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("4");
-
-            Assert.AreEqual(Period.FromDays(4), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendDays_ParsesPlus4_To4DaystandardPeriod()
-        {
-            var formatter = builder.AppendDays().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("+4");
-
-            Assert.AreEqual(Period.FromDays(4), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendDays_ParsesMinus4_ToMinus4DaystandardPeriod()
-        {
-            var formatter = builder.AppendDays().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("-4");
-
-            Assert.AreEqual(Period.FromDays(-4), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendDays_Prints0_ForZeroDaysStandardPeriod()
-        {
-            var formatter = builder.AppendDays().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodEmpty);
-
-            Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendDays_Parses0_ToZeroDaystandardPeriod()
-        {
-            var formatter = builder.AppendDays().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("0");
-
-            Assert.AreEqual(Period.FromDays(0), parsedPeriod);
-        }
-
-
-        #endregion
-
-        #region Hours
-
-        [Test]
-        public void AppendHours_Prints5_For5HoursStandardPeriod()
-        {
-            var formatter = builder.AppendHours().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
-
-            Assert.AreEqual("5", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendHours_Parses5_To5HourStandardPeriod()
-        {
-            var formatter = builder.AppendHours().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("5");
-
-            Assert.AreEqual(Period.FromHours(5), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendHours_ParsesPlus5_To5HourStandardPeriod()
-        {
-            var formatter = builder.AppendHours().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("+5");
-
-            Assert.AreEqual(Period.FromHours(5), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendHours_ParsesMinuss5_ToMinus5HourStandardPeriod()
-        {
-            var formatter = builder.AppendHours().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("-5");
-
-            Assert.AreEqual(Period.FromHours(-5), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendHours_Prints0_ForZeroHoursStandardPeriod()
-        {
-            var formatter = builder.AppendHours().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodEmpty);
-
-            Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendHours_Parses0_ToZeroHourStandardPeriod()
-        {
-            var formatter = builder.AppendHours().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("0");
-
-            Assert.AreEqual(Period.FromHours(0), parsedPeriod);
-        }
-
-        #endregion
-
-        #region Minutes
-
-        [Test]
-        public void AppendMinutes_Prints6_For6MinutesStandardPeriod()
-        {
-            var formatter = builder.AppendMinutes().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
-
-            Assert.AreEqual("6", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendMinutes_Parses6_To6MinutesStandardPeriod()
-        {
-            var formatter = builder.AppendMinutes().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("6");
-
-            Assert.AreEqual(Period.FromMinutes(6), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendMinutes_ParsesPlus6_ToPlus6MinutesStandardPeriod()
-        {
-            var formatter = builder.AppendMinutes().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("+6");
-
-            Assert.AreEqual(Period.FromMinutes(6), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendMinutes_ParsesMinus6_ToMinus6MinutesStandardPeriod()
-        {
-            var formatter = builder.AppendMinutes().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("-6");
-
-            Assert.AreEqual(Period.FromMinutes(-6), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendMinutes_Prints0_ForZeroMinutesStandardPeriod()
-        {
-            var formatter = builder.AppendMinutes().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodEmpty);
-
-            Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendMinutes_Parses0_ToZeroMinutesStandardPeriod()
-        {
-            var formatter = builder.AppendMinutes().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("0");
-
-            Assert.AreEqual(Period.FromMinutes(0), parsedPeriod);
-        }
-
-        #endregion
-
-        #region Seconds
-
-        [Test]
-        public void AppendSeconds_Prints7_For7SecondsStandardPeriod()
-        {
-            var formatter = builder.AppendSeconds().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
-
-            Assert.AreEqual("7", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSeconds_Parses7_To7SecondsStandardPeriod()
-        {
-            var formatter = builder.AppendSeconds().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("7");
-
-            Assert.AreEqual(Period.FromSeconds(7), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendSeconds_ParsesPlus7_To7SecondsStandardPeriod()
-        {
-            var formatter = builder.AppendSeconds().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("+7");
-
-            Assert.AreEqual(Period.FromSeconds(7), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendSeconds_ParsesMinus7_ToMinus7SecondsStandardPeriod()
-        {
-            var formatter = builder.AppendSeconds().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("-7");
-
-            Assert.AreEqual(Period.FromSeconds(-7), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendSeconds_Prints0_ForZeroSecondsStandardPeriod()
-        {
-            var formatter = builder.AppendSeconds().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodEmpty);
-
-            Assert.AreEqual("0", printedValue);
-            Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendSeconds_Parses0_ToZeroSecondsStandardPeriod()
-        {
-            var formatter = builder.AppendSeconds().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("0");
-
-            Assert.AreEqual(Period.FromSeconds(0), parsedPeriod);
-        }
 
         #endregion
 
         #region Milliseconds
-
-        [Test]
-        public void AppendMilliseconds_Parses8_To8MillisecondsStandardPeriod()
-        {
-            var formatter = builder.AppendMillis().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("8");
-
-            Assert.AreEqual(Period.FromMilliseconds(8), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendMilliseconds_Parses0_ToZeroMillisecondsStandardPeriod()
-        {
-            var formatter = builder.AppendMillis().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("0");
-
-            Assert.AreEqual(Period.FromMilliseconds(0), parsedPeriod);
-        }
 
         [Test]
         public void AppendMilliseconds3Digit_Prints008_For8MillisecondsStandardPeriod()
