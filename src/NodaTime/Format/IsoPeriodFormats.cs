@@ -41,7 +41,7 @@ namespace NodaTime.Format
             .AppendSeparatorIfFieldsAfter("T")
             .AppendHours().AppendSuffix("H")
             .AppendMinutes().AppendSuffix("M")
-            .AppendSecondsWithOptionalMillis().AppendSuffix("S")
+            .AppendSecondsWithOptionalMilliseconds().AppendSuffix("S")
             .ToFormatter();
 
         /** Alternate months format. */
@@ -56,7 +56,7 @@ namespace NodaTime.Format
             .AppendSeparatorIfFieldsAfter("T")
             .AppendHours()
             .AppendMinutes()
-            .AppendSecondsWithOptionalMillis()
+            .AppendSecondsWithOptionalMilliseconds()
             .ToFormatter();
 
         private static readonly PeriodFormatter alternateExtended = new PeriodFormatterBuilder()
@@ -74,7 +74,7 @@ namespace NodaTime.Format
             .AppendSeparator(":")
             .AppendMinutes()
             .AppendSeparator(":")
-            .AppendSecondsWithOptionalMillis()
+            .AppendSecondsWithOptionalMilliseconds()
             .ToFormatter();
 
         private static readonly PeriodFormatter alternateWithWeeks = new PeriodFormatterBuilder()
@@ -89,7 +89,7 @@ namespace NodaTime.Format
             .AppendSeparatorIfFieldsAfter("T")
             .AppendHours()
             .AppendMinutes()
-            .AppendSecondsWithOptionalMillis()
+            .AppendSecondsWithOptionalMilliseconds()
             .ToFormatter();
 
         private static readonly PeriodFormatter alternateExtendedWithWeeks = new PeriodFormatterBuilder()
@@ -108,7 +108,7 @@ namespace NodaTime.Format
             .AppendSeparator(":")
             .AppendMinutes()
             .AppendSeparator(":")
-            .AppendSecondsWithOptionalMillis()
+            .AppendSecondsWithOptionalMilliseconds()
             .ToFormatter();
 
         /// <summary>

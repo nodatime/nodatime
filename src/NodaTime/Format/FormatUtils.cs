@@ -207,6 +207,12 @@ namespace NodaTime.Format
         /// <param name="size">Minumum amount of digits to append</param>
         internal static void WritePaddedInteger(TextWriter writer, int value, int size)
         {
+            if (size <= 1)
+            {
+                WriteUnpaddedInteger(writer, value);
+                return;
+            }
+
             if (value < 0)
             {
                 writer.Write('-');
@@ -300,12 +306,13 @@ namespace NodaTime.Format
             bool negative;
             if (value == '-')
             {
-                if (--length < 0)
+                if (length < 0)
                 {
                     return 0;
                 }
                 negative = true;
                 value = text[position++];
+                length--;
             }
             else
             {
@@ -317,6 +324,31 @@ namespace NodaTime.Format
                 value = ((value << 3) + (value << 1)) + text[position++] - '0';
             }
             return negative ? -value : value;
+        }
+
+        internal static bool IsDecimalChar(char c)
+        {
+            switch (c)
+            {
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case '.':
+                case ',':
+                case '+':
+                case '-':
+                    return true;
+                default:
+                    return false;
+            }
+
         }
 
         internal static string CreateErrorMessage(string text, int errorPosition)

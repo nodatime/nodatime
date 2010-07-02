@@ -61,7 +61,7 @@ namespace NodaTime.Format
                 .AppendSeparator(", ", " and ", variants)
                 .AppendSeconds().AppendSuffix(" second", " seconds")
                 .AppendSeparator(", ", " and ", variants)
-                .AppendMillis().AppendSuffix(" millisecond", " milliseconds")
+                .AppendMilliseconds().AppendSuffix(" millisecond", " milliseconds")
                 .ToFormatter();
         }
     }

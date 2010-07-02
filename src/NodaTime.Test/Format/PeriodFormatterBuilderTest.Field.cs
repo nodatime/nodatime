@@ -56,6 +56,8 @@ namespace NodaTime.Test.Format
 
         #region FieldFormatter
 
+        #region Print
+
         [Test]
         public void FieldFormatter_PrintsFieldValue()
         {
@@ -68,81 +70,43 @@ namespace NodaTime.Test.Format
             Assert.That(writer.ToString(), Is.EqualTo("42"));
         }
 
-        #region MinimumPrintedDigits
+        #endregion
+
+        #region Print:MinimumPrintedDigits
+
+        object[] PrintMinimumDigitsTestData =
+        {
+            new TestCaseData(5, Period.FromDays(42), "00042").SetName("5;42 => 00042"),
+            new TestCaseData(3, Period.FromDays(4256), "4256").SetName("3;4256 => 4256"),
+            new TestCaseData(0, Period.FromDays(42), "42").SetName("0;42 => 42(neutral)"),
+            new TestCaseData(-2, Period.FromDays(42), "42").SetName("-2;42 => 42(neutral)"),
+            new TestCaseData(5, Period.FromDays(-42), "-00042").SetName("5;-42 => -00042"),
+
+        };
 
         [Test]
-        public void FieldFormatter_PrintsPaddedFieldValue_WithMinimumDigitsSet()
+        [TestCaseSource("PrintMinimumDigitsTestData")]
+        public void FieldFormatter_PrintsPaddedFieldValue_WithMinimumDigitsSet(int mimimumDigits, Period periodValue, string periodText)
         {
             var fieldFormatter = new FieldFormatterBuilder()
                 {
-                    MinimumPrintedDigits = 5
+                    MinimumPrintedDigits = mimimumDigits
                 }.Build();
             var writer = new StringWriter();
-            var period = Period.FromDays(42);
 
-            fieldFormatter.PrintTo(writer, period, null);
+            fieldFormatter.PrintTo(writer, periodValue, null);
 
-            Assert.That(writer.ToString(), Is.EqualTo("00042"));
-        }
-
-        [Test]
-        public void FieldFormatter_PrintsUnpaddedFieldValue_WithMinimumDigitsIsZero()
-        {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                MinimumPrintedDigits = 0
-            }.Build();
-            var writer = new StringWriter();
-            var period = Period.FromDays(42);
-
-            fieldFormatter.PrintTo(writer, period, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo("42"));
-        }
-
-        [Test]
-        public void FieldFormatter_PrintsUnpaddedFieldValue_WithNegativeMinimumDigits()
-        {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                MinimumPrintedDigits = -2
-            }.Build();
-            var writer = new StringWriter();
-            var period = Period.FromDays(42);
-
-            fieldFormatter.PrintTo(writer, period, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo("42"));
-        }
-
-        [Test]
-        public void FieldFormatter_PrintsPaddedFieldValue_WithMinimumDigitsSetAndNegativeFieldValue()
-        {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                MinimumPrintedDigits = 5
-            }.Build();
-            var writer = new StringWriter();
-            var period = Period.FromDays(-42);
-
-            fieldFormatter.PrintTo(writer, period, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo("-00042"));
+            Assert.That(writer.ToString(), Is.EqualTo(periodText));
         }
 
         #endregion
 
-        #region Supported/Unsupported field type
+        #region Print:Supported/Unsupported field type
 
         [Test]
         public void FieldFormatter_PrintsNothing_IfFieldTypeIsNotSupported()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
-                Suffix = new PeriodFormatterBuilder.SimpleAffix("days")
-            }
-                                    .Build();
+            var fieldFormatter = new FieldFormatterBuilder().Build();
 
             var writer = new StringWriter();
             var period = Years.One;
@@ -159,7 +123,7 @@ namespace NodaTime.Test.Format
             {
                 PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always,
             }
-                                    .Build();
+            .Build();
             var writer = new StringWriter();
             var period = Years.One;
 
@@ -199,7 +163,7 @@ namespace NodaTime.Test.Format
 
         #endregion
 
-        #region Prefix/Suffix
+        #region Print:Prefix/Suffix
 
         [Test]
         public void FieldFormatter_PrintsFieldValueWithPrefix_IfPrefixIsSpecified()
@@ -208,7 +172,7 @@ namespace NodaTime.Test.Format
             {
                 Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:")
             }
-                                    .Build();
+            .Build();
             var writer = new StringWriter();
             var period = Period.FromDays(42);
 
@@ -224,7 +188,7 @@ namespace NodaTime.Test.Format
             {
                 Suffix = new PeriodFormatterBuilder.SimpleAffix("days")
             }
-                                    .Build();
+            .Build();
             var writer = new StringWriter();
             var period = Period.FromDays(42);
 
@@ -233,10 +197,27 @@ namespace NodaTime.Test.Format
             Assert.That(writer.ToString(), Is.EqualTo("42days"));
         }
 
+        [Test]
+        public void FieldFormatter_PrintsNothing_IfFieldTypeIsNotSupportedButPrefixAndSuffixExist()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
+                Suffix = new PeriodFormatterBuilder.SimpleAffix("days")
+            }
+            .Build();
+
+            var writer = new StringWriter();
+            var period = Years.One;
+
+            fieldFormatter.PrintTo(writer, period, null);
+
+            Assert.That(writer.ToString(), Is.EqualTo(""));
+        }
 
         #endregion
 
-        #region SecondsMilliseconds
+        #region Print:SecondsMilliseconds
 
         [Test]
         public void FieldFormatter_PrintsPaddedCombinedValue_ForSecondsMillisecondsFieldTypeAndMillisecondsIsZero()
@@ -451,7 +432,7 @@ namespace NodaTime.Test.Format
 
         #endregion
 
-        #region RarelyLast
+        #region Print:RarelyLast
 
         [Test]
         public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyLastAndNoOtherFormattersExists()
@@ -547,7 +528,7 @@ namespace NodaTime.Test.Format
 
         #endregion
 
-        #region RarelyFirst
+        #region Print:RarelyFirst
 
         public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyFirstAndNoOtherFormattersExists()
         {
@@ -642,6 +623,8 @@ namespace NodaTime.Test.Format
 
         #endregion
 
+        #region Parse
+
         [Test]
         public void FieldFormatter_ParsesText()
         {
@@ -649,9 +632,36 @@ namespace NodaTime.Test.Format
             var periodText = "25";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
-            fieldFormatter.Parse(periodText, 0, builder, null);
-            
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.EqualTo(2));
             Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(25)));
+        }
+
+        [Test]
+        public void FieldFormatter_ParsesText_AndStopAtFirstNonDigitSymbol()
+        {
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "123a";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.EqualTo(3));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(123)));
+        }
+
+        [Test]
+        public void FieldFormatter_Fails_IfNoDigitsWithinTheText()
+        {
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "abc";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.LessThan(0));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.Zero));
         }
 
         [Test]
@@ -661,10 +671,42 @@ namespace NodaTime.Test.Format
             var periodText = "0";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
-            fieldFormatter.Parse(periodText, 0, builder, null);
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
 
+            Assert.That(newPosition, Is.EqualTo(1));
             Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(0)));
         }
+
+        [Test]
+        public void FieldFormatter_SkipsItself_IfFieldTypeIsUnsupported()
+        {
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "25";
+            var builder = new PeriodBuilder(PeriodType.Minutes);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.EqualTo(0));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(new Period(new int[] { 0 }, PeriodType.Minutes)));
+        }
+
+        [Test]
+        public void FieldFormatter_Fail_IfFieldTypeIsUnsupportedAndPrintZeroAlways()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always
+            }.Build();
+            var periodText = "25";
+            var builder = new PeriodBuilder(PeriodType.Minutes);
+
+            Assert.That(() => fieldFormatter.Parse(periodText, 0, builder, null), Throws.InstanceOf<NotSupportedException>());
+        }
+
+
+        #endregion
+
+        #region Parse:Position/MaximumParsedDigits
 
         [Test]
         public void FieldFormatter_ParsesText_LimitedByPositionAndMaximumParsedDigits()
@@ -675,15 +717,210 @@ namespace NodaTime.Test.Format
             }.Build();
             var periodText = "123456789";
             int startPosition = 4;
-
             var builder = new PeriodBuilder(PeriodType.Standard);
 
-            fieldFormatter.Parse(periodText, startPosition, builder, null);
+            int newPosition = fieldFormatter.Parse(periodText, startPosition, builder, null);
 
+            Assert.That(newPosition, Is.EqualTo(7));
             Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(567)));
         }
 
-        #region Signs
+        [Test]
+        public void FieldFormatter_PassThrough_IfPositionNotLessThanTextLength()
+        {
+            var fieldFormatter = new FieldFormatterBuilder().Build();
+            var periodText = "123";
+            int startPosition = 4;
+
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, startPosition, builder, null);
+
+            Assert.That(newPosition, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void FieldFormatter_Fails_IfPositionNotLessThanTextLengthAndPrintZeroAlwaysSet()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+                {
+                    PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always
+                }.Build();
+            var periodText = "123";
+            int startPosition = 4;
+
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, startPosition, builder, null);
+
+            Assert.That(newPosition, Is.LessThan(0));
+        }
+
+        #endregion
+
+        #region Parse:Prefix/Suffix
+
+        [Test]
+        public void FieldFormatter_ParsesPrefixAndValue_IfPrefixIsSpecified()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:")
+            }
+            .Build();
+            var periodText = "Day:25";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.EqualTo(periodText.Length));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(25)));
+        }
+
+        [Test]
+        public void FieldFormatter_ParsesValueAndSuffix_IfSuffixIsSpecified()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Suffix = new PeriodFormatterBuilder.SimpleAffix(" days")
+            }
+            .Build();
+            var periodText = "25 days";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.EqualTo(periodText.Length));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(25)));
+        }
+
+        [Test]
+        public void FieldFormatter_ParsesPrefixAndValueAndSuffix_IfPrefixAndSuffixAreSpecified()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
+                Suffix = new PeriodFormatterBuilder.SimpleAffix(" days")
+            }
+            .Build();
+            var periodText = "Day:47 days";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.EqualTo(11));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.FromDays(47)));
+        }
+
+        [Test]
+        public void FieldFormatter_PassThrough_IfPrefixIsSpecifiedButNotInText()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:")
+            }
+            .Build();
+            var periodText = "47 days";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.EqualTo(0));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.Zero));
+        }
+        
+        [Test]
+        public void FieldFormatter_PassThrough_IfSuffixIsSpecifiedButNotInText()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Suffix = new PeriodFormatterBuilder.SimpleAffix(" days")
+            }
+            .Build();
+            var periodText = "47blah-blah";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.EqualTo(0));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.Zero));
+        }
+
+        [Test]
+        public void FieldFormatter_Fails_IfPrefixIsSpecifiedButNotInTextAndPrintZeroAlwaysSet()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always
+            }
+            .Build();
+            var periodText = "47 days";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.LessThan(0));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.Zero));
+        }
+
+        [Test]
+        public void FieldFormatter_Fails_IfTextContainsPrefixButNotValue()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
+            }
+            .Build();
+            var periodText = "Day:";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.LessThan(0));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.Zero));
+        }
+
+
+        [Test]
+        public void FieldFormatter_Fails_IfSuffixIsSpecifiedButNotInTextAndPrintZeroAlwaysSet()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Suffix = new PeriodFormatterBuilder.SimpleAffix(" days"),
+                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always
+            }
+            .Build();
+            var periodText = "47blah-blah";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.LessThan(0));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.Zero));
+        }
+
+        [Test]
+        public void FieldFormatter_Fails_IfPrefixAndSuffixAreSpecifiedAndPrefixIsParsedButSuffixIsNot()
+        {
+            var fieldFormatter = new FieldFormatterBuilder()
+            {
+                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
+                Suffix = new PeriodFormatterBuilder.SimpleAffix(" days")
+            }
+            .Build();
+            var periodText = "Day:47 oops";
+            var builder = new PeriodBuilder(PeriodType.Standard);
+
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
+
+            Assert.That(newPosition, Is.LessThan(0));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(Period.Zero));
+        }
+
+        #endregion
+
+        #region Parse:Signs
 
         [Test]
         public void FieldFormatter_ParsesText_WithLeadingPlusSign()
@@ -780,107 +1017,35 @@ namespace NodaTime.Test.Format
 
         #endregion
 
-        [Test]
-        public void FieldFormatter_SkipsItself_IfFieldTypeIsUnsupported()
+        #region Parse: Seconds/Milliseconds
+
+        object[] ParseSecondsMillisecondsTestData =
         {
-            var fieldFormatter = new FieldFormatterBuilder().Build();
-            var periodText = "25";
-            var builder = new PeriodBuilder(PeriodType.Minutes);
-
-            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
-
-            Assert.That(newPosition, Is.EqualTo(0));
-            Assert.That(builder.ToPeriod(), Is.EqualTo(new Period(new int[]{0}, PeriodType.Minutes)));
-        }
+            new TestCaseData("1", Period.FromSeconds(1)).SetName("1"),
+            new TestCaseData("2.", Period.FromSeconds(2)).SetName("2."),
+            new TestCaseData("3.4", Period.FromSeconds(3).WithMilliseconds(400)).SetName("3.4"),
+            new TestCaseData("5.67", Period.FromSeconds(5).WithMilliseconds(670)).SetName("5.67"),
+            new TestCaseData("8.901", Period.FromSeconds(8).WithMilliseconds(901)).SetName("8.901"),
+            new TestCaseData("1.234567", Period.FromSeconds(1).WithMilliseconds(234)).SetName("1.234567")
+        };
 
         [Test]
-        public void FieldFormatter_Fail_IfFieldTypeIsUnsupportedAndPrintZeroAlways()
+        [TestCaseSource("ParseSecondsMillisecondsTestData")]
+        public void FieldFormatter_ParsesText_ForSecondsMillisecondsFieldType(string periodText, Period result)
         {
             var fieldFormatter = new FieldFormatterBuilder()
                 {
-                    PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always
+                    FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
                 }.Build();
-            var periodText = "25";
-            var builder = new PeriodBuilder(PeriodType.Minutes);
+            var builder = new PeriodBuilder(PeriodType.Standard);
 
-            Assert.That(() => fieldFormatter.Parse(periodText, 0, builder, null), Throws.InstanceOf<NotSupportedException>());
-        }
+            int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
 
-
-        #endregion
-
-        #region Milliseconds
-
-        [Test]
-        public void AppendMilliseconds3Digit_Prints008_For8MillisecondsStandardPeriod()
-        {
-            var formatter = builder.AppendMillis3Digit().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodFull);
-
-            Assert.AreEqual("008", printedValue);
-            Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodFull, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodFull, int.MaxValue, null));
-        }
-
-        [Test]
-        public void AppendMilliseconds3Digit_Prints000_ForZeroMillisecondsStandardPeriod()
-        {
-            var formatter = builder.AppendMillis3Digit().ToFormatter();
-
-            var printer = formatter.Printer;
-            var printedValue = formatter.Print(standardPeriodEmpty);
-
-            Assert.AreEqual("000", printedValue);
-            Assert.AreEqual(3, printer.CalculatePrintedLength(standardPeriodEmpty, null));
-            Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
+            Assert.That(newPosition, Is.EqualTo(periodText.Length));
+            Assert.That(builder.ToPeriod(), Is.EqualTo(result));
         }
 
         #endregion
-
-        #region SecondsWithMilliseconds
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectParser_To7SecondsStandardPeriod()
-        {
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("7.000");
-
-            Assert.AreEqual(Period.FromSeconds(7), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectParser_To7Seconds1MillisecondsStandardPeriod()
-        {
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("7.001");
-
-            Assert.AreEqual(Period.FromSeconds(7).WithMilliseconds(1), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectParser_To7Seconds999MillisecondsStandardPeriod()
-        {
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("7.999");
-
-            Assert.AreEqual(Period.FromSeconds(7).WithMilliseconds(999), parsedPeriod);
-        }
-
-        [Test]
-        public void AppendSecondsWithMilliseconds_BuildsCorrectParser_To7Seconds100MillisecondsStandardPeriod()
-        {
-            var formatter = builder.AppendSecondsWithMillis().ToFormatter();
-
-            var parsedPeriod = formatter.Parse("7.1000");
-
-            //only 3 digits are considering when parsing milliseconds
-            Assert.AreEqual(Period.FromSeconds(7).WithMilliseconds(100), parsedPeriod);
-        }
 
         #endregion
     }
