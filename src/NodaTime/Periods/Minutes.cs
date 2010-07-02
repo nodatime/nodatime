@@ -245,6 +245,8 @@ namespace NodaTime.Periods
 
         #region Conversion
 
+        //TODO: think more about what conversion is implicit and explicit
+
         /// <summary>
         /// Creates a new int from the specified <see cref="Minutes"/> instance
         /// </summary>

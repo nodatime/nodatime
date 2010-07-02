@@ -186,19 +186,35 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void MultiplyOperator()
+        public void MultiplyOperatorLeft()
         {
-            Assert.AreEqual(1, (Months.One * Months.One).Value, "1 * 1");
-            Assert.AreEqual(0, (Months.Two * Months.Zero).Value, "2 * 0");
-            Assert.AreEqual(-3, (Months.Three * Months.From(-1)).Value, "3 * (-1)");
+            Assert.AreEqual(1, (Months.One * 1).Value, "1 * 1");
+            Assert.AreEqual(0, (Months.Two * 0).Value, "2 * 0");
+            Assert.AreEqual(-3, (Months.Three * -1).Value, "3 * (-1)");
         }
 
         [Test]
-        public void MultiplyStatic()
+        public void MultiplyOperatorRight()
         {
-            Assert.AreEqual(1, (Months.Multiply(Months.One, Months.One)).Value, "1 * 1");
-            Assert.AreEqual(0, (Months.Multiply(Months.One, Months.Zero)).Value, "1 * 0");
-            Assert.AreEqual(-9, (Months.Multiply(Months.From(9), Months.From(-1))).Value, "9 * (-1)");
+            Assert.AreEqual(1, (1 * Months.One).Value, "1 * 1");
+            Assert.AreEqual(0, (0 * Months.Two).Value, "0 * 2");
+            Assert.AreEqual(-3, (-1 * Months.Three).Value, "(-1) * 3");
+        }
+
+        [Test]
+        public void MultiplyStaticLeft()
+        {
+            Assert.AreEqual(1, (Months.Multiply(Months.One, 1)).Value, "1 * 1");
+            Assert.AreEqual(0, (Months.Multiply(Months.One, 0)).Value, "1 * 0");
+            Assert.AreEqual(-9, (Months.Multiply(Months.From(9), -1)).Value, "9 * (-1)");
+        }
+
+        [Test]
+        public void MultiplyStaticRight()
+        {
+            Assert.AreEqual(1, (Months.Multiply(1, Months.One)).Value, "1 * 1");
+            Assert.AreEqual(0, (Months.Multiply(0, Months.One)).Value, "0 * 1");
+            Assert.AreEqual(-9, (Months.Multiply(-1, Months.From(9))).Value, "(-1) * 9");
         }
 
         #endregion
@@ -218,17 +234,17 @@ namespace NodaTime.Test.Periods
         [Test]
         public void DivideOperator()
         {
-            Assert.AreEqual(1, (Months.One / Months.One).Value, "1 / 1");
-            Assert.AreEqual(2, (Months.From(4) / Months.Two).Value, "4 / 2");
-            Assert.AreEqual(-3, (Months.Three / Months.From(-1)).Value, "3 / (-1)");
+            Assert.AreEqual(1, (Months.One / 1).Value, "1 / 1");
+            Assert.AreEqual(2, (Months.From(4) / 2).Value, "4 / 2");
+            Assert.AreEqual(-3, (Months.Three / -1).Value, "3 / (-1)");
         }
 
         [Test]
         public void DivideStatic()
         {
-            Assert.AreEqual(1, (Months.Divide(Months.One, Months.One)).Value, "1 / 1");
-            Assert.AreEqual(1, (Months.Divide(Months.Three, Months.Two)).Value, "3 / 2");
-            Assert.AreEqual(-3, (Months.Divide(Months.From(9), Months.From(-3))).Value, "9 / (-3)");
+            Assert.AreEqual(1, (Months.Divide(Months.One, 1)).Value, "1 / 1");
+            Assert.AreEqual(1, (Months.Divide(Months.Three, 2)).Value, "3 / 2");
+            Assert.AreEqual(-3, (Months.Divide(Months.From(9), -3)).Value, "9 / (-3)");
         }
 
         #endregion

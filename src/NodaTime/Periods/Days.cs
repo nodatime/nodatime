@@ -493,19 +493,41 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Days"/> representing the multiplication of the given values.</returns>
-        public static Days operator *(Days left, Days right)
+        /// <returns>A new <see cref="Days"/> representing the days period multiplied by the scale.</returns>
+        public static Days operator *(Days left, int right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Multiply(right);
+            return Object.ReferenceEquals(left, null) ? Days.Zero : left.Multiply(right);
         }
 
         /// <summary>
-        /// Multiply one days period by an another. Friendly alternative to <c>operator*()</c>.
+        /// Implements the operator * (multiplication).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Days"/> instance representing the multiplication of the given values.</returns>
-        public static Days Multiply(Days left, Days right)
+        /// <returns>A new <see cref="Days"/> representing the days period multiplied by the scale.</returns>
+        public static Days operator *(int left, Days right)
+        {
+            return Object.ReferenceEquals(right, null) ? Days.Zero : right.Multiply(left);
+        }
+
+        /// <summary>
+        /// Multiply one days period by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Days"/> instance representing the days period multiplied by the scale.</returns>
+        public static Days Multiply(Days left, int right)
+        {
+            return left * right;
+        }
+
+        /// <summary>
+        /// Multiply one days period by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Days"/> instance representing the days period multiplied by the scale.</returns>
+        public static Days Multiply(int left, Days right)
         {
             return left * right;
         }
@@ -533,10 +555,10 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Days"/> representing the divison of the given values.</returns>
-        public static Days operator /(Days left, Days right)
+        /// <returns>A new <see cref="Days"/> representing the days period divided by the scale.</returns>
+        public static Days operator /(Days left, int right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Divide(right);
+            return Object.ReferenceEquals(left, null) ? Days.Zero : left.Divide(right);
         }
 
         /// <summary>
@@ -544,8 +566,8 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Days"/> instance representing the division of the given values.</returns>
-        public static Days Divide(Days left, Days right)
+        /// <returns>A new <see cref="Days"/> instance representing the days period divided by the scale.</returns>
+        public static Days Divide(Days left, int right)
         {
             return left / right;
         }

@@ -185,19 +185,36 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void MultiplyOperator()
+        public void MultiplyOperatorLeft()
         {
-            Assert.AreEqual(1, (Years.One * Years.One).Value, "1 * 1");
-            Assert.AreEqual(0, (Years.Two * Years.Zero).Value, "2 * 0");
-            Assert.AreEqual(-3, (Years.Three * Years.From(-1)).Value, "3 * (-1)");
+            Assert.AreEqual(1, (Years.One * 1).Value, "1 * 1");
+            Assert.AreEqual(0, (Years.Two * 0).Value, "2 * 0");
+            Assert.AreEqual(-3, (Years.Three * -1).Value, "3 * (-1)");
         }
 
         [Test]
-        public void MultiplyStatic()
+        public void MultiplyOperatorRight()
         {
-            Assert.AreEqual(1, (Years.Multiply(Years.One, Years.One)).Value, "1 * 1");
-            Assert.AreEqual(0, (Years.Multiply(Years.One, Years.Zero)).Value, "1 * 0");
-            Assert.AreEqual(-9, (Years.Multiply(Years.From(9), Years.From(-1))).Value, "9 * (-1)");
+            Assert.AreEqual(1, (1 * Years.One).Value, "1 * 1");
+            Assert.AreEqual(0, (0 * Years.Two).Value, "0 * 2");
+            Assert.AreEqual(-3, (-1 * Years.Three).Value, "(-1) * 3");
+        }
+
+        [Test]
+        public void MultiplyStaticLeft()
+        {
+            Assert.AreEqual(1, (Years.Multiply(Years.One, 1)).Value, "1 * 1");
+            Assert.AreEqual(0, (Years.Multiply(Years.One, 0)).Value, "1 * 0");
+            Assert.AreEqual(-9, (Years.Multiply(Years.From(9), -1)).Value, "9 * (-1)");
+        }
+
+
+        [Test]
+        public void MultiplyStaticRight()
+        {
+            Assert.AreEqual(1, (Years.Multiply(1, Years.One)).Value, "1 * 1");
+            Assert.AreEqual(0, (Years.Multiply(0, Years.One)).Value, "0 * 1");
+            Assert.AreEqual(-9, (Years.Multiply(-1, Years.From(9))).Value, "(-1) * 9");
         }
 
         #endregion
@@ -217,17 +234,17 @@ namespace NodaTime.Test.Periods
         [Test]
         public void DivideOperator()
         {
-            Assert.AreEqual(1, (Years.One / Years.One).Value, "1 / 1");
-            Assert.AreEqual(2, (Years.From(4) / Years.Two).Value, "4 / 2");
-            Assert.AreEqual(-3, (Years.Three / Years.From(-1)).Value, "3 / (-1)");
+            Assert.AreEqual(1, (Years.One / 1).Value, "1 / 1");
+            Assert.AreEqual(2, (Years.From(4) / 2).Value, "4 / 2");
+            Assert.AreEqual(-3, (Years.Three / -1).Value, "3 / (-1)");
         }
 
         [Test]
         public void DivideStatic()
         {
-            Assert.AreEqual(1, (Years.Divide(Years.One, Years.One)).Value, "1 / 1");
-            Assert.AreEqual(1, (Years.Divide(Years.Three, Years.Two)).Value, "3 / 2");
-            Assert.AreEqual(-3, (Years.Divide(Years.From(9), Years.From(-3))).Value, "9 / (-3)");
+            Assert.AreEqual(1, (Years.Divide(Years.One, 1)).Value, "1 / 1");
+            Assert.AreEqual(1, (Years.Divide(Years.Three, 2)).Value, "3 / 2");
+            Assert.AreEqual(-3, (Years.Divide(Years.From(9), -3)).Value, "9 / (-3)");
         }
 
         #endregion

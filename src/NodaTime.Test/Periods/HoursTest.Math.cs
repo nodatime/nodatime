@@ -186,21 +186,36 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void MultiplyOperator()
+        public void MultiplyOperatorLeft()
         {
-            Assert.AreEqual(1, (Hours.One * Hours.One).Value, "1 * 1");
-            Assert.AreEqual(0, (Hours.Two * Hours.Zero).Value, "2 * 0");
-            Assert.AreEqual(-3, (Hours.Three * Hours.From(-1)).Value, "3 * (-1)");
+            Assert.AreEqual(1, (Hours.One * 1).Value, "1 * 1");
+            Assert.AreEqual(0, (Hours.Two * 0).Value, "2 * 0");
+            Assert.AreEqual(-3, (Hours.Three * -1).Value, "3 * (-1)");
         }
 
         [Test]
-        public void MultiplyStatic()
+        public void MultiplyOperatorRight()
         {
-            Assert.AreEqual(1, (Hours.Multiply(Hours.One, Hours.One)).Value, "1 * 1");
-            Assert.AreEqual(0, (Hours.Multiply(Hours.One, Hours.Zero)).Value, "1 * 0");
-            Assert.AreEqual(-9, (Hours.Multiply(Hours.From(9), Hours.From(-1))).Value, "9 * (-1)");
+            Assert.AreEqual(1, (1 * Hours.One).Value, "1 * 1");
+            Assert.AreEqual(0, (0 * Hours.Two).Value, "0 * 2");
+            Assert.AreEqual(-3, (-1 * Hours.Three).Value, "(-1) * 3");
         }
 
+        [Test]
+        public void MultiplyStaticLeft()
+        {
+            Assert.AreEqual(1, (Hours.Multiply(Hours.One, 1)).Value, "1 * 1");
+            Assert.AreEqual(0, (Hours.Multiply(Hours.One, 0)).Value, "1 * 0");
+            Assert.AreEqual(-9, (Hours.Multiply(Hours.From(9), -1)).Value, "9 * (-1)");
+        }
+
+        [Test]
+        public void MultiplyStaticRight()
+        {
+            Assert.AreEqual(1, (Hours.Multiply(1, Hours.One)).Value, "1 * 1");
+            Assert.AreEqual(0, (Hours.Multiply(0, Hours.One)).Value, "0 * 1");
+            Assert.AreEqual(-9, (Hours.Multiply(-1, Hours.From(9))).Value, "(-1) * 9");
+        }
         #endregion
 
         #region Division
