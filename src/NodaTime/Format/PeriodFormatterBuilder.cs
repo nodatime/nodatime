@@ -172,14 +172,9 @@ namespace NodaTime.Format
                         return startAt;
 
                     // Only allow number characters to be skipped in search of suffix.
-                    switch (periodText[startAt]) 
+                    if (!FormatUtils.IsDecimalChar(periodText[startAt]))
                     {
-                        case '0': case '1': case '2': case '3': case '4':
-                        case '5': case '6': case '7': case '8': case '9':
-                        case '.': case ',': case '+': case '-':
-                            continue;
-                        default:
-                            return ~position;
+                        return ~position;
                     }
                 }
                 return ~position;
@@ -242,6 +237,12 @@ namespace NodaTime.Format
                     if ((newPosition = FormatUtils.MatchSubstring(periodText, startAt, secondToCheck)) > 0)
                     {
                         return startAt;
+                    }
+
+                    // Only allow number characters to be skipped in search of suffix.
+                    if (!FormatUtils.IsDecimalChar(periodText[startAt]))
+                    {
+                        return ~position;
                     }
                 }
                 return ~position;
@@ -449,14 +450,7 @@ namespace NodaTime.Format
                     writer.Write('-');
                 }
 
-                if (minPrintedDigits <= 1)
-                {
-                    FormatUtils.WriteUnpaddedInteger(writer, intValue);
-                }
-                else
-                {
-                    FormatUtils.WritePaddedInteger(writer, intValue, minPrintedDigits);
-                }
+                FormatUtils.WritePaddedInteger(writer, intValue, minPrintedDigits);
 
                 if (fieldType >= FormatterDurationFieldType.SecondsMilliseconds)
                 {
@@ -482,7 +476,6 @@ namespace NodaTime.Format
             {
                 bool mustParse = (printZero == PrintZeroSetting.Always);
 
-                // Shortcut test.
                 if (position >= periodText.Length)
                 {
                     return mustParse ? ~position : position;
@@ -500,6 +493,11 @@ namespace NodaTime.Format
                     {
                         return mustParse ? position : ~position;
                     }
+                }
+
+                if (position >= periodText.Length)
+                {
+                    return mustParse ? ~position : position;
                 }
 
                 int suffixPos = -1;
@@ -526,11 +524,8 @@ namespace NodaTime.Format
                     return position;
                 }
 
-                //Determine the start and end positions of the string to extract digits from
-                //position = "first"
-                //length = "nextIndex"
-                //end = "last"
-                int end = suffixPos > 0 
+                //Determine the start position and length inside the string to extract digits from
+                int totalLength = suffixPos > 0 
                     ? Math.Min(maxParsedDigits, suffixPos - position) 
                     : Math.Min(maxParsedDigits, periodText.Length - position);
 
@@ -541,11 +536,11 @@ namespace NodaTime.Format
                 if ((leadingChar == '-' || leadingChar == '+') && !rejectSignedValues)
                 {
                     // Next character must be a digit.
-                    if (position + 1 < end && Char.IsDigit(periodText, position + 1))
+                    if (position + 1 < totalLength && Char.IsDigit(periodText, position + 1))
                     {
                         if (leadingChar == '-')
                         {
-                            //pass through the leading minus sign
+                            //this is correct, continue scan
                             length = 1;
                         }
                         else
@@ -554,18 +549,19 @@ namespace NodaTime.Format
                             position++;
                         }
                         // Expand the limit to disregard the sign character.
-                        end = Math.Min(end + 1, periodText.Length - position);
+                        totalLength = Math.Min(totalLength + 1, periodText.Length - position);
                     }
                     else
                     {
                         //indicate that we don't want to go ahead and proceed next characters
-                        length = end;
+                        length = totalLength;
                     }
                 }
 
-                int fractPos = -1;
+                //prescan the body to get fraction position and indication whether we have at least one digit
+                int? fractPos = null;
                 bool hasDigits = false;
-                while (length < end)
+                while (length < totalLength)
                 {
                     char c = periodText[position + length];
                     if (Char.IsDigit(c))
@@ -584,7 +580,7 @@ namespace NodaTime.Format
                             }
                             fractPos = position + length + 1;
                             // Expand the limit to disregard the decimal point.
-                            end = Math.Min(end + 1, periodText.Length - position);
+                            totalLength = Math.Min(totalLength + 1, periodText.Length - position);
                         }
                         else
                         {
@@ -599,31 +595,23 @@ namespace NodaTime.Format
                     return ~position;
                 }
 
-                if (suffixPos >= 0 && position + length != suffixPos)
-                {
-                    // If there are additional non-digit characters before the
-                    // suffix is reached, then assume that the suffix found belongs
-                    // to a field not yet reached. Return original position so that
-                    // another parser can continue on.
-                    return position;
-                }
-
                 if (fieldType != FormatterDurationFieldType.SecondsMilliseconds && fieldType != FormatterDurationFieldType.SecondsMillisecondsOptional)
                 {
                     //Handle common case.
                     AppendFieldValue(builder, fieldType, FormatUtils.ParseDigits(periodText, position, length));
                 }
-                else if (fractPos < 0)
+                else if (fractPos  == null)
                 {
                     AppendFieldValue(builder, FormatterDurationFieldType.Seconds, FormatUtils.ParseDigits(periodText, position, length));
                     AppendFieldValue(builder, FormatterDurationFieldType.Milliseconds, 0);
                 }
                 else
                 {
-                    int wholeValue = FormatUtils.ParseDigits(periodText, position, fractPos - position - 1);
+                    int wholeValue = FormatUtils.ParseDigits(periodText, position, fractPos.Value - position - 1);
                     AppendFieldValue(builder, FormatterDurationFieldType.Seconds, wholeValue);
 
-                    int fractLen = position + length - fractPos;
+                    int fractionPosition = fractPos.Value;
+                    int fractLen = position + length - fractionPosition;
                     int fractValue;
                     if (fractLen <= 0)
                     {
@@ -633,11 +621,11 @@ namespace NodaTime.Format
                     {
                         if (fractLen >= 3)
                         {
-                            fractValue = FormatUtils.ParseDigits(periodText, fractPos, 3);
+                            fractValue = FormatUtils.ParseDigits(periodText, fractionPosition, 3);
                         }
                         else
                         {
-                            fractValue = FormatUtils.ParseDigits(periodText, fractPos, fractLen);
+                            fractValue = FormatUtils.ParseDigits(periodText, fractionPosition, fractLen);
                             if (fractLen == 1)
                             {
                                 fractValue *= 100;
@@ -1444,7 +1432,7 @@ namespace NodaTime.Format
         /// and <see cref="MaximumParsedDigits"/>
         /// </remarks>
         /// <returns>This PeriodFormatterBuilder</returns>
-        public PeriodFormatterBuilder AppendSecondsWithMillis()
+        public PeriodFormatterBuilder AppendSecondsWithMilliseconds()
         {
             return AppendField(FormatterDurationFieldType.SecondsMilliseconds);
         }
@@ -1460,7 +1448,7 @@ namespace NodaTime.Format
         /// and <see cref="MaximumParsedDigits"/>
         /// </remarks>
         /// <returns>This PeriodFormatterBuilder</returns>
-        public PeriodFormatterBuilder AppendSecondsWithOptionalMillis()
+        public PeriodFormatterBuilder AppendSecondsWithOptionalMilliseconds()
         {
             return AppendField(FormatterDurationFieldType.SecondsMillisecondsOptional);
         }
@@ -1474,7 +1462,7 @@ namespace NodaTime.Format
         /// and <see cref="MaximumParsedDigits"/>
         /// </remarks>
         /// <returns>This PeriodFormatterBuilder</returns>
-        public PeriodFormatterBuilder AppendMillis()
+        public PeriodFormatterBuilder AppendMilliseconds()
         {
             return AppendField(FormatterDurationFieldType.Milliseconds);
         }
@@ -1487,7 +1475,7 @@ namespace NodaTime.Format
         /// <see cref="MaximumParsedDigits"/>
         /// </remarks>
         /// <returns>This PeriodFormatterBuilder</returns>
-        public PeriodFormatterBuilder AppendMillis3Digit()
+        public PeriodFormatterBuilder AppendMilliseconds3Digit()
         {
             return AppendField(FormatterDurationFieldType.Milliseconds, 3);
         }
