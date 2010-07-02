@@ -427,19 +427,41 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Months"/> representing the multiplication of the given values.</returns>
-        public static Months operator *(Months left, Months right)
+        /// <returns>A new <see cref="Months"/> representing the months period multiplied by the scale.</returns>
+        public static Months operator *(Months left, int right)
         {
-            return object.ReferenceEquals(left, null) ? right : left.Multiply(right);
+            return object.ReferenceEquals(left, null) ? Months.Zero : left.Multiply(right);
         }
 
         /// <summary>
-        /// Multiply one months by an another. Friendly alternative to <c>operator*()</c>.
+        /// Implements the operator * (multiplication).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Months"/> representing the multiplication of the given values.</returns>
-        public static Months Multiply(Months left, Months right)
+        /// <returns>A new <see cref="Months"/> representing the months period multiplied by the scale.</returns>
+        public static Months operator *(int left, Months right)
+        {
+            return object.ReferenceEquals(right, null) ? Months.Zero : right.Multiply(left);
+        }
+
+        /// <summary>
+        /// Multiply one months by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Months"/> representing the months period multiplied by the scale.</returns>
+        public static Months Multiply(Months left, int right)
+        {
+            return left * right;
+        }
+
+        /// <summary>
+        /// Multiply one months by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Months"/> representing the months period multiplied by the scale.</returns>
+        public static Months Multiply(int left, Months right)
         {
             return left * right;
         }
@@ -467,10 +489,10 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Years"/> Representing the divison of the given values.</returns>
-        public static Months operator /(Months left, Months right)
+        /// <returns>A new <see cref="Months"/> representing the months period divided by the scale.</returns>
+        public static Months operator /(Months left, int right)
         {
-            return object.ReferenceEquals(left, null) ? right : left.Divide(right);
+            return object.ReferenceEquals(left, null) ? Months.Zero : left.Divide(right);
         }
 
         /// <summary>
@@ -478,8 +500,8 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Months"/> representing the division of the given values.</returns>
-        public static Months Divide(Months left, Months right)
+        /// <returns>A new <see cref="Months"/> representing the months period divided by the scale.</returns>
+        public static Months Divide(Months left, int right)
         {
             return left / right;
         }

@@ -366,19 +366,41 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Years"/> representing the multiplication of the given values.</returns>
-        public static Years operator *(Years left, Years right)
+        /// <returns>A new <see cref="Years"/> representing the years period multiplied by the scale.</returns>
+        public static Years operator *(Years left, int right)
         {
-            return object.ReferenceEquals(left, null) ? right : left.Multiply(right);
+            return object.ReferenceEquals(left, null) ? Years.Zero : left.Multiply(right);
         }
 
         /// <summary>
-        /// Multiply one year by an another. Friendly alternative to <c>operator*()</c>.
+        /// Implements the operator * (multiplication).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Years"/> representing the multiplication of the given values.</returns>
-        public static Years Multiply(Years left, Years right)
+        /// <returns>A new <see cref="Years"/> representing the years period multiplied by the scale.</returns>
+        public static Years operator *(int left, Years right)
+        {
+            return object.ReferenceEquals(right, null) ? Years.Zero : right.Multiply(left);
+        }
+
+        /// <summary>
+        /// Multiply one year by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Years"/> representing the years period multiplied by the scale.</returns>
+        public static Years Multiply(Years left, int right)
+        {
+            return left * right;
+        }
+
+        /// <summary>
+        /// Multiply one year by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Years"/> representing the years period multiplied by the scale.</returns>
+        public static Years Multiply(int left, Years right)
         {
             return left * right;
         }
@@ -406,19 +428,19 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Years"/> Representing the divison of the given values.</returns>
-        public static Years operator /(Years left, Years right)
+        /// <returns>A new <see cref="Years"/> Representing the years period divided by the scale.</returns>
+        public static Years operator /(Years left, int right)
         {
-            return object.ReferenceEquals(left, null) ? right : left.Divide(right);
+            return object.ReferenceEquals(left, null) ? Years.Zero : left.Divide(right);
         }
 
         /// <summary>
-        /// Divide one year by an another. Friendly alternative to <c>operator/()</c>.
+        /// Divide one year by a number. Friendly alternative to <c>operator/()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Years"/> representing the division of the given values.</returns>
-        public static Years Divide(Years left, Years right)
+        /// <returns>A new <see cref="Years"/> representing the years period divided by the scale.</returns>
+        public static Years Divide(Years left, int right)
         {
             return left / right;
         }

@@ -497,19 +497,41 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Hours"/> representing the multiplication of the given values.</returns>
-        public static Hours operator *(Hours left, Hours right)
+        /// <returns>A new <see cref="Hours"/> representing the hours period multiplied by the scale.</returns>
+        public static Hours operator *(Hours left, int right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Multiply(right);
+            return Object.ReferenceEquals(left, null) ? Hours.Zero : left.Multiply(right);
         }
 
         /// <summary>
-        /// Multiply one hours period by an another. Friendly alternative to <c>operator*()</c>.
+        /// Implements the operator * (multiplication).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Hours"/> instance representing the multiplication of the given values.</returns>
-        public static Hours Multiply(Hours left, Hours right)
+        /// <returns>A new <see cref="Hours"/> representing the hours period multiplied by the scale.</returns>
+        public static Hours operator *(int left, Hours right)
+        {
+            return Object.ReferenceEquals(right, null) ? Hours.Zero : right.Multiply(left);
+        }
+
+        /// <summary>
+        /// Multiply one hours period by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Hours"/> instance representing the hours period multiplied by the scale.</returns>
+        public static Hours Multiply(Hours left, int right)
+        {
+            return left * right;
+        }
+
+        /// <summary>
+        /// Multiply one hours period by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Hours"/> instance representing the hours period multiplied by the scale.</returns>
+        public static Hours Multiply(int left, Hours right)
         {
             return left * right;
         }

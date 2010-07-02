@@ -186,19 +186,35 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void MultiplyOperator()
+        public void MultiplyOperatorLeft()
         {
-            Assert.AreEqual(1, (Days.One * Days.One).Value, "1 * 1");
-            Assert.AreEqual(0, (Days.Two * Days.Zero).Value, "2 * 0");
-            Assert.AreEqual(-3, (Days.Three * Days.From(-1)).Value, "3 * (-1)");
+            Assert.AreEqual(1, (Days.One * 1).Value, "1 * 1");
+            Assert.AreEqual(0, (Days.Two * 0).Value, "2 * 0");
+            Assert.AreEqual(-3, (Days.Three * -1).Value, "3 * (-1)");
         }
 
         [Test]
-        public void MultiplyStatic()
+        public void MultiplyOperatorRight()
         {
-            Assert.AreEqual(1, (Days.Multiply(Days.One, Days.One)).Value, "1 * 1");
-            Assert.AreEqual(0, (Days.Multiply(Days.One, Days.Zero)).Value, "1 * 0");
-            Assert.AreEqual(-9, (Days.Multiply(Days.From(9), Days.From(-1))).Value, "9 * (-1)");
+            Assert.AreEqual(1, (1 * Days.One).Value, "1 * 1");
+            Assert.AreEqual(0, (0 * Days.Two).Value, "0 * 2");
+            Assert.AreEqual(-3, (-1 * Days.Three).Value, "(-1) * 3");
+        }
+
+        [Test]
+        public void MultiplyStaticLeft()
+        {
+            Assert.AreEqual(1, (Days.Multiply(Days.One, 1)).Value, "1 * 1");
+            Assert.AreEqual(0, (Days.Multiply(Days.One, 0)).Value, "1 * 0");
+            Assert.AreEqual(-9, (Days.Multiply(Days.From(9), -1)).Value, "9 * (-1)");
+        }
+
+        [Test]
+        public void MultiplyStaticRight()
+        {
+            Assert.AreEqual(1, (Days.Multiply(1, Days.One)).Value, "1 * 1");
+            Assert.AreEqual(0, (Days.Multiply(0, Days.One)).Value, "0 * 1");
+            Assert.AreEqual(-9, (Days.Multiply(-1, Days.From(9))).Value, "(-1) * 9");
         }
 
         #endregion

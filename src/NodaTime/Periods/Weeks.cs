@@ -465,19 +465,41 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Weeks"/> representing the multiplication of the given values.</returns>
-        public static Weeks operator *(Weeks left, Weeks right)
+        /// <returns>A new <see cref="Weeks"/> representing the weeks period multiplied by the scale.</returns>
+        public static Weeks operator *(Weeks left, int right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Multiply(right);
+            return Object.ReferenceEquals(left, null) ? Weeks.Zero : left.Multiply(right);
         }
 
         /// <summary>
-        /// Multiply one weeks period by an another. Friendly alternative to <c>operator*()</c>.
+        /// Implements the operator * (multiplication).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Weeks"/> instance representing the multiplication of the given values.</returns>
-        public static Weeks Multiply(Weeks left, Weeks right)
+        /// <returns>A new <see cref="Weeks"/> representing the weeks period multiplied by the scale.</returns>
+        public static Weeks operator *(int left, Weeks right)
+        {
+            return Object.ReferenceEquals(right, null) ? Weeks.Zero : right.Multiply(left);
+        }
+
+        /// <summary>
+        /// Multiply one weeks period by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Weeks"/> instance representing the weeks period multiplied by the scale.</returns>
+        public static Weeks Multiply(Weeks left, int right)
+        {
+            return left * right;
+        }
+
+        /// <summary>
+        /// Multiply one weeks period by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Weeks"/> instance representing the weeks period multiplied by the scale.</returns>
+        public static Weeks Multiply(int left, Weeks right)
         {
             return left * right;
         }
@@ -505,10 +527,10 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Years"/> Representing the divison of the given values.</returns>
-        public static Weeks operator /(Weeks left, Weeks right)
+        /// <returns>A new <see cref="Years"/> Representing the weeks period divided by the scale.</returns>
+        public static Weeks operator /(Weeks left, int right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Divide(right);
+            return Object.ReferenceEquals(left, null) ? Weeks.Zero : left.Divide(right);
         }
 
         /// <summary>
@@ -516,8 +538,8 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Weeks"/> instance representing the division of the given values.</returns>
-        public static Weeks Divide(Weeks left, Weeks right)
+        /// <returns>A new <see cref="Weeks"/> instance representing the weeks period divided by the scale.</returns>
+        public static Weeks Divide(Weeks left, int right)
         {
             return left / right;
         }

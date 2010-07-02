@@ -536,7 +536,7 @@ namespace NodaTime.Format
                 if ((leadingChar == '-' || leadingChar == '+') && !rejectSignedValues)
                 {
                     // Next character must be a digit.
-                    if (position + 1 < totalLength && Char.IsDigit(periodText, position + 1))
+                    if (totalLength != 1 && Char.IsDigit(periodText, position + 1))
                     {
                         if (leadingChar == '-')
                         {

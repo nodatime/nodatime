@@ -186,12 +186,21 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void MultiplyOperator()
+        public void MultiplyOperator_Left()
         {
             Assert.AreEqual(1, (Minutes.One * 1).Value, "1 * 1");
             Assert.AreEqual(0, (Minutes.Two * 0).Value, "2 * 0");
             Assert.AreEqual(-3, (Minutes.Three * -1).Value, "3 * (-1)");
         }
+
+        [Test]
+        public void MultiplyOperator_Right()
+        {
+            Assert.AreEqual(1, (1 * Minutes.One).Value, "1 * 1");
+            Assert.AreEqual(0, (0 * Minutes.Two).Value, "0 * 2");
+            Assert.AreEqual(-3, (-1 *Minutes.Three).Value, "(-1) * 3");
+        }
+
 
         [Test]
         public void MultiplyStatic()

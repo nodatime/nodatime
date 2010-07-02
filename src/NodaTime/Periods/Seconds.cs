@@ -449,7 +449,7 @@ namespace NodaTime.Periods
         #region Multiplication
 
         /// <summary>
-        /// Returns a new instance with the minutes multiplied by the specified scalar.
+        /// Returns a new instance with the seconds multiplied by the specified scalar.
         /// </summary>
         /// <param name="scalar">The amount to multiply by, may be negative</param>
         /// <returns>The new seconds period multiplied by the specified scalar</returns>
@@ -466,19 +466,30 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Seconds"/> representing the multiplication of the given values.</returns>
-        public static Seconds operator *(Seconds left, Seconds right)
+        /// <returns>A new <see cref="Seconds"/> representing the seconds period multiplied by the scale.</returns>
+        public static Seconds operator *(Seconds left, int right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Multiply(right);
+            return Object.ReferenceEquals(left, null) ? Seconds.Zero : left.Multiply(right);
         }
 
         /// <summary>
-        /// Multiply one minutes period by an another. Friendly alternative to <c>operator*()</c>.
+        /// Implements the operator * (multiplication).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Seconds"/> instance representing the multiplication of the given values.</returns>
-        public static Seconds Multiply(Seconds left, Seconds right)
+        /// <returns>A new <see cref="Seconds"/> representing the seconds period multiplied by the scale.</returns>
+        public static Seconds operator *(int left, Seconds right)
+        {
+            return Object.ReferenceEquals(right, null) ? Seconds.Zero : right.Multiply(left);
+        }
+
+        /// <summary>
+        /// Multiply one seconds period by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Seconds"/> instance representing the seconds period multiplied by the scale.</returns>
+        public static Seconds Multiply(Seconds left, int right)
         {
             return left * right;
         }
@@ -506,10 +517,10 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Seconds"/> representing the divison of the given values.</returns>
-        public static Seconds operator /(Seconds left, Seconds right)
+        /// <returns>A new <see cref="Seconds"/> representing the minutes period divided by the scale.</returns>
+        public static Seconds operator /(Seconds left, int right)
         {
-            return Object.ReferenceEquals(left, null) ? right : left.Divide(right);
+            return Object.ReferenceEquals(left, null) ? Seconds.Zero : left.Divide(right);
         }
 
         /// <summary>
@@ -517,8 +528,8 @@ namespace NodaTime.Periods
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Seconds"/> instance representing the division of the given values.</returns>
-        public static Seconds Divide(Seconds left, Seconds right)
+        /// <returns>A new <see cref="Seconds"/> instance representing the minutes period divided by the scale.</returns>
+        public static Seconds Divide(Seconds left, int right)
         {
             return left / right;
         }

@@ -186,19 +186,27 @@ namespace NodaTime.Test.Periods
         }
 
         [Test]
-        public void MultiplyOperator()
+        public void MultiplyOperator_Left()
         {
-            Assert.AreEqual(1, (Seconds.One * Seconds.One).Value, "1 * 1");
-            Assert.AreEqual(0, (Seconds.Two * Seconds.Zero).Value, "2 * 0");
-            Assert.AreEqual(-3, (Seconds.Three * Seconds.From(-1)).Value, "3 * (-1)");
+            Assert.AreEqual(1, (Seconds.One * 1).Value, "1 * 1");
+            Assert.AreEqual(0, (Seconds.Two * 0).Value, "2 * 0");
+            Assert.AreEqual(-3, (Seconds.Three * -1).Value, "3 * (-1)");
+        }
+
+        [Test]
+        public void MultiplyOperator_Right()
+        {
+            Assert.AreEqual(1, (1 * Seconds.One).Value, "1 * 1");
+            Assert.AreEqual(0, (0 * Seconds.Two).Value, "0 * 2");
+            Assert.AreEqual(-3, (-1 * Seconds.Three).Value, "(-1) * 3");
         }
 
         [Test]
         public void MultiplyStatic()
         {
-            Assert.AreEqual(1, (Seconds.Multiply(Seconds.One, Seconds.One)).Value, "1 * 1");
-            Assert.AreEqual(0, (Seconds.Multiply(Seconds.One, Seconds.Zero)).Value, "1 * 0");
-            Assert.AreEqual(-9, (Seconds.Multiply(Seconds.From(9), Seconds.From(-1))).Value, "9 * (-1)");
+            Assert.AreEqual(1, (Seconds.Multiply(Seconds.One, 1)).Value, "1 * 1");
+            Assert.AreEqual(0, (Seconds.Multiply(Seconds.One, 0)).Value, "1 * 0");
+            Assert.AreEqual(-9, (Seconds.Multiply(Seconds.From(9), -1)).Value, "9 * (-1)");
         }
 
         #endregion
@@ -219,17 +227,17 @@ namespace NodaTime.Test.Periods
         [Test]
         public void DivideOperator()
         {
-            Assert.AreEqual(1, (Seconds.One / Seconds.One).Value, "1 / 1");
-            Assert.AreEqual(2, (Seconds.From(4) / Seconds.Two).Value, "4 / 2");
-            Assert.AreEqual(-3, (Seconds.Three / Seconds.From(-1)).Value, "3 / (-1)");
+            Assert.AreEqual(1, (Seconds.One / 1).Value, "1 / 1");
+            Assert.AreEqual(2, (Seconds.From(4) / 2).Value, "4 / 2");
+            Assert.AreEqual(-3, (Seconds.Three / -1).Value, "3 / (-1)");
         }
 
         [Test]
         public void DivideStatic()
         {
-            Assert.AreEqual(1, (Seconds.Divide(Seconds.One, Seconds.One)).Value, "1 / 1");
-            Assert.AreEqual(1, (Seconds.Divide(Seconds.Three, Seconds.Two)).Value, "3 / 2");
-            Assert.AreEqual(-3, (Seconds.Divide(Seconds.From(9), Seconds.From(-3))).Value, "9 / (-3)");
+            Assert.AreEqual(1, (Seconds.Divide(Seconds.One, 1)).Value, "1 / 1");
+            Assert.AreEqual(1, (Seconds.Divide(Seconds.Three, 2)).Value, "3 / 2");
+            Assert.AreEqual(-3, (Seconds.Divide(Seconds.From(9), -3)).Value, "9 / (-3)");
         }
 
         #endregion
