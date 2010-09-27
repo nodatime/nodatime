@@ -112,6 +112,9 @@ namespace NodaTime.Format
         // time no milliseconds
         private static readonly DateTimeFormatter tx = new DateTimeFormatterBuilder().Append(hms).Append(ze).ToFormatter();
 
+        // time no milliseconds
+        private static readonly DateTimeFormatter tnz = new DateTimeFormatterBuilder().Append(hmsf).ToFormatter();
+
         // Ttime
         private static readonly DateTimeFormatter tt = new DateTimeFormatterBuilder().Append(lte).Append(t).ToFormatter();
 
@@ -154,6 +157,11 @@ namespace NodaTime.Format
         private static readonly DateTimeFormatter btx =
             new DateTimeFormatterBuilder().AppendFixedDecimal(DateTimeFieldType.HourOfDay, 2).AppendFixedDecimal(DateTimeFieldType.MinuteOfHour, 2).
                 AppendFixedDecimal(DateTimeFieldType.SecondOfMinute, 2).AppendTimeZoneOffset("Z", false, 2, 2).ToFormatter();
+
+        // basic time no zone
+        private static readonly DateTimeFormatter btnz =
+            new DateTimeFormatterBuilder().AppendFixedDecimal(DateTimeFieldType.HourOfDay, 2).AppendFixedDecimal(DateTimeFieldType.MinuteOfHour, 2).
+                AppendFixedDecimal(DateTimeFieldType.SecondOfMinute, 2).AppendLiteral('.').AppendFractionOfSecond(3, 9).ToFormatter();
 
         // basic Ttime
         private static readonly DateTimeFormatter btt = new DateTimeFormatterBuilder().Append(lte).Append(bt).ToFormatter();
@@ -384,6 +392,13 @@ namespace NodaTime.Format
 
         /// <summary>
         /// Gets a formatter for a two digit hour of day, two digit minute of
+        /// hour, two digit second of minute, and three digit fraction of second.
+        /// (HH:mm:ss.SSS)
+        /// </summary>
+        public static DateTimeFormatter TimeNoZone { get { return tnz; } }
+
+        /// <summary>
+        /// Gets a formatter for a two digit hour of day, two digit minute of
         /// hour, two digit second of minute, three digit fraction of second, and
         /// time zone offset prefixed by 'T'.
         /// The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
@@ -482,6 +497,13 @@ namespace NodaTime.Format
         /// (HHmmssZ)
         /// </summary>
         public static DateTimeFormatter BasicTimeNoMilliseconds { get { return btx; } }
+
+        /// <summary>
+        /// Gets a formatter for a two digit hour of day, two digit minute
+        /// of hour, two digit second of minute, and three digit millis.
+        /// (HHmmss.SSS)
+        /// </summary>
+        public static DateTimeFormatter BasicTimeNoZone { get { return btnz; } }
 
         /// <summary>
         /// Gets a formatter for a two digit hour of day, two digit minute
