@@ -446,7 +446,7 @@ namespace NodaTime.Periods
         /// <para>
         /// Each field of the period is added separately. Thus a period of
         /// 2 hours 30 minutes plus 3 hours 40 minutes will produce a result
-        /// of 5 hours 70 minutes - see <see cref="NormalizedStandard"/>.
+        /// of 5 hours 70 minutes - see <see cref="NormalizeStandard"/>.
         /// </para>
         /// <para>
         /// If the period being added contains a non-zero amount for a field that
@@ -659,7 +659,7 @@ namespace NodaTime.Periods
         /// <para>
         /// Each field of the period is subtracted separately. Thus a period of
         /// 3 hours 30 minutes minus 2 hours 40 minutes will produce a result
-        /// of 1 hour and -10 minutes - see <see cref="NormalizedStandard"/>.
+        /// of 1 hour and -10 minutes - see <see cref="NormalizeStandard"/>.
         /// </para>
         /// <para>
         /// If the period being subtracted contains a non-zero amount for a field that
@@ -1017,7 +1017,6 @@ namespace NodaTime.Periods
         /// 7 day week, 24 hour day, 60 minute hour and 60 second minute,
         /// providing control over how the result is split into fields.
         /// </summary>
-        /// <param name="periodType">The period type of the new period</param>
         /// <returns>A normalized period equivalent to this period</returns>
         /// <remarks>
         /// <para>
