@@ -18,44 +18,121 @@
 using System;
 using NodaTime.Calendars;
 using NodaTime.Fields;
+using NodaTime.Format;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Partials
 {
     /// <summary>
-    /// LocalDate is an immutable datetime class representing a date
-    /// without a time zone.
-    /// <para>
-    /// LocalDate implements the <see cref="IPartial"/> interface.
-    /// To do this, the interface methods focus on the key fields -
-    /// Year, MonthOfYear and DayOfMonth.
-    /// However, <b>all</b> date fields may in fact be queried.
-    /// 
-    /// </para>
+    /// LocalDate is an immutable struct representing a date within the calendar,
+    /// with no reference to a particular time zone or time of day.
     /// </summary>
-    public sealed class LocalDate : LocalBase
+    public struct LocalDate
     {
-        protected override IDateTimeField GetField(int index, ICalendarSystem calendar)
+        private readonly LocalDateTime localTime;
+
+        public LocalDate(int year, int month, int day)
+            : this(year, month, day, IsoCalendarSystem.Instance)
         {
-            throw new NotImplementedException();
         }
 
-        public override ICalendarSystem Calendar { get { throw new NotImplementedException(); } }
-
-        public override int Size { get { throw new NotImplementedException(); } }
-
-        public override int GetValue(int index)
-        {
-            throw new NotImplementedException();
+        public LocalDate(int year, int month, int day, IsoCalendarSystem calendar)
+            : this(new LocalDateTime(year, month, day, 0, 0, calendar))
+        {            
         }
 
-        public override bool Equals(IPartial other)
+        private LocalDate(LocalDateTime localTime)
         {
-            throw new NotImplementedException();
+            this.localTime = localTime;
         }
 
-        public override int CompareTo(IPartial other)
+        public int Year { get { return localTime.Year; } }
+        public int MonthOfYear { get { return localTime.MonthOfYear; } }
+        public int DayOfMonth { get { return localTime.DayOfMonth; } }
+        public int DayOfWeek { get { return localTime.DayOfWeek; } }
+        public int WeekOfWeekYear { get { return localTime.WeekOfWeekYear; } }
+        public int YearOfCentury { get { return localTime.YearOfCentury; } }
+        public int YearOfEra { get { return localTime.YearOfEra; } }
+        public int DayOfYear { get { return localTime.DayOfYear; } }
+        public LocalDateTime LocalDateTime { get { return localTime; } }
+
+        /// <summary>
+        /// TODO: Decide policy when changing from (say) 25th February to 30th
+        /// </summary>
+        public LocalDate WithDay(int day)
         {
-            throw new NotImplementedException();
+            return new LocalDate(Year, MonthOfYear, day);
+        }
+
+        /// <summary>
+        /// TODO: Decide policy when changing from (say) 30th March to February
+        /// </summary>
+        public LocalDate WithMonth(int month)
+        {
+            return new LocalDate(Year, month, DayOfMonth);
+        }
+
+        /// <summary>
+        /// TODO: Decide policy when changing from (say) 29th February 2008 to 2007
+        /// </summary>
+        public LocalDate WithYear(int year)
+        {
+            return new LocalDate(year, MonthOfYear, DayOfMonth);
+        }
+
+        /// <summary>
+        /// TODO: Assert no units smaller than a day
+        /// </summary>
+        public static LocalDate operator +(LocalDate date, IPeriod period)
+        {
+            return new LocalDate(date.LocalDateTime + period);
+        }
+
+        public static LocalDateTime operator +(LocalDate date, LocalTime time)
+        {
+            LocalInstant localDateInstant = date.localTime.LocalInstant;
+            LocalInstant localInstant = new LocalInstant(localDateInstant.Ticks + time.TickOfDay);
+            return new LocalDateTime(localInstant, date.localTime.Calendar);
+        }
+
+        /// <summary>
+        /// TODO: Assert no units smaller than a day
+        /// </summary>
+        public static LocalDate operator -(LocalDate date, IPeriod period)
+        {
+            return new LocalDate(date.LocalDateTime - period);
+        }
+
+        public static bool operator ==(LocalDate lhs, LocalDate rhs)
+        {
+            return lhs.localTime == rhs.localTime;
+        }
+
+        public static bool operator !=(LocalDate lhs, LocalDate rhs)
+        {
+            return lhs.localTime != rhs.localTime;
+        }
+
+        // TODO: Implement IEquatable etc
+
+        public override string ToString()
+        {
+            // TODO: Shouldn't need to build a ZonedDateTime!
+            return IsoDateTimeFormats.Date.Print(new ZonedDateTime(localTime, DateTimeZones.Utc));
+        }
+
+        public override int GetHashCode()
+        {
+            return localTime.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is LocalDate))
+            {
+                return false;
+            }
+            return this == (LocalDate)obj;
         }
     }
 }

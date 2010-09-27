@@ -18,36 +18,98 @@
 using System;
 using NodaTime.Calendars;
 using NodaTime.Fields;
+using NodaTime.TimeZones;
+using NodaTime.Format;
 
 namespace NodaTime.Partials
 {
     /// <summary>
-    /// Original name: LocalTime
+    /// LocalTime is an immutable struct representing a time of day, with no reference
+    /// to a particular calendar, time zone or date.
     /// </summary>
-    public sealed class LocalTime : LocalBase
+    public struct LocalTime
     {
-        protected override IDateTimeField GetField(int index, ICalendarSystem calendar)
+        private readonly LocalInstant localInstant;
+
+        public LocalTime(int hour, int minute, int second)
+            : this(hour, minute, second, 0, 0)
         {
-            throw new NotImplementedException();
         }
 
-        public override ICalendarSystem Calendar { get { throw new NotImplementedException(); } }
-
-        public override int Size { get { throw new NotImplementedException(); } }
-
-        public override int GetValue(int index)
+        public LocalTime(int hour, int minute, int second, int millisecond)
+            : this(hour, minute, second, millisecond, 0)
         {
-            throw new NotImplementedException();
         }
 
-        public override bool Equals(IPartial other)
+        public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
-            throw new NotImplementedException();
+            localInstant = new LocalDateTime(1970, 1, 1, hour, minute, second, millisecond,
+                tickWithinMillisecond, IsoCalendarSystem.Instance).LocalInstant;
         }
 
-        public override int CompareTo(IPartial other)
+        private LocalTime(LocalInstant localInstant)
         {
-            throw new NotImplementedException();
+            this.localInstant = localInstant;
         }
+
+        public int HourOfDay { get { return LocalDateTime.HourOfDay; } }
+        public int MinuteOfHour { get { return LocalDateTime.MinuteOfHour; } }
+        public int SecondOfMinute { get { return LocalDateTime.SecondOfMinute; } }
+        public int SecondOfDay { get { return LocalDateTime.SecondOfDay; } }
+        public int MillisecondOfSecond { get { return LocalDateTime.MillisecondOfSecond; } }
+        public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
+        public int TickOfMillisecond { get { return LocalDateTime.TickOfMillisecond; } }
+        public long TickOfDay { get { return LocalDateTime.TickOfDay; } } 
+
+        public LocalDateTime LocalDateTime { get { return new LocalDateTime(localInstant); } }
+
+        /// <summary>
+        /// TODO: Assert no units as large a day
+        /// </summary>
+        public static LocalTime operator +(LocalTime time, IPeriod period)
+        {
+            return (time.LocalDateTime + period).TimeOfDay;
+        }
+
+        /// <summary>
+        /// TODO: Assert no units as large as a day
+        /// </summary>
+        public static LocalTime operator -(LocalTime time, IPeriod period)
+        {
+            return (time.LocalDateTime - period).TimeOfDay;
+        }
+
+        public static bool operator ==(LocalTime lhs, LocalTime rhs)
+        {
+            return lhs.localInstant == rhs.localInstant;
+        }
+
+        public static bool operator !=(LocalTime lhs, LocalTime rhs)
+        {
+            return lhs.localInstant != rhs.localInstant;
+        }
+
+        // TODO: Implement IEquatable etc
+
+        public override string ToString()
+        {
+            // TODO: Shouldn't need to build a ZonedDateTime!
+            return IsoDateTimeFormats.TimeNoZone.Print(new ZonedDateTime(this.LocalDateTime, DateTimeZones.Utc));
+        }
+
+        public override int GetHashCode()
+        {
+            return localInstant.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is LocalTime))
+            {
+                return false;
+            }
+            return this == (LocalTime)obj;
+        }
+
     }
 }
