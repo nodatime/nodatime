@@ -181,7 +181,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             if ((object)left == null || (object)right == null)
             {
-                return left == (object)right;
+                return object.ReferenceEquals(left, right);
             }
             return left.Equals(right);
         }
