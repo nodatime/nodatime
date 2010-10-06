@@ -34,6 +34,25 @@ namespace NodaTime.Demo
         }
 
         [Test]
+        public void AdditionWithDuration()
+        {
+            // Some arbitrary instant. I've no idea when.
+            Instant instant = new Instant(150000000);
+            // A very short duration: a duration is simply a number of ticks.
+            Duration duration = new Duration(1000);
+            Instant later = instant + duration;
+            Assert.AreEqual(new Instant(150001000), later);
+        }
+
+        [Test]
+        public void Comparison()
+        {
+            Instant early = new Instant(1000);
+            Instant late = new Instant(2000);
+            Assert.That(early < late);
+        }
+
+        [Test]
         public void ConvenienceConstruction()
         {
             Instant instant = Instant.FromUtc(2010, 6, 9, 14, 15, 0);
