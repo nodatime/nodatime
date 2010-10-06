@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Calendars;
+using NodaTime.Partials;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -47,8 +48,10 @@ namespace NodaTime
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
         /// </summary>
         /// <param name="localInstant">The local instant.</param>
-        public LocalDateTime(LocalInstant localInstant) : this(localInstant, IsoCalendarSystem.Instance)
+        public LocalDateTime(LocalInstant localInstant)
         {
+            this.localInstant = localInstant;
+            this.calendar = IsoCalendarSystem.Instance;
         }
 
         /// <summary>
@@ -256,7 +259,11 @@ namespace NodaTime
 
         public long TickOfDay { get { return calendar.Fields.TickOfDay.GetInt64Value(localInstant); } }
 
-        #region Implementation of IEquatable<LocalDateTime>
+        public LocalTime TimeOfDay { get { return new LocalTime(HourOfDay, MinuteOfHour, SecondOfMinute, MillisecondOfSecond, TickOfMillisecond); } }
+
+        public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth); } }
+
+            #region Implementation of IEquatable<LocalDateTime>
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
