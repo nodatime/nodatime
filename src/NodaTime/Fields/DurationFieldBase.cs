@@ -68,38 +68,110 @@ namespace NodaTime.Fields
         public abstract long UnitTicks { get; }
 
         #region Extract field value from a duration
+        /// <summary>
+        /// Get the value of this field from the ticks, which is approximate
+        /// if this field is imprecise.
+        /// </summary>
+        /// <param name="duration">The duration to query, which may be negative</param>
+        /// <returns>The value of the field, in the units of the field, which may be negative</returns>
         public virtual int GetValue(Duration duration)
         {
             return (int)GetInt64Value(duration);
         }
 
+        /// <summary>
+        /// Get the value of this field from the ticks, which is approximate
+        /// if this field is imprecise.
+        /// </summary>
+        /// <param name="duration">The duration to query, which may be negative</param>
+        /// <returns>The value of the field, in the units of the field, which may be negative</returns>
         public virtual long GetInt64Value(Duration duration)
         {
             return duration.Ticks / UnitTicks;
         }
 
+        /// <summary>
+        /// Get the value of this field from the duration relative to an
+        /// instant. For precise fields this method produces the same result as for
+        /// the single argument get method.
+        /// <para>
+        /// If the duration is positive, then the instant is treated as a "start instant". 
+        /// If negative, the instant is treated as an "end instant".
+        /// </para>
+        /// </summary>
+        /// <param name="duration">The duration to query, which may be negative</param>
+        /// <param name="localInstant">The start instant to calculate relative to</param>
+        /// <returns>The value of the field, in the units of the field, which may be negative</returns>
         public virtual int GetValue(Duration duration, LocalInstant localInstant)
         {
             return (int)GetInt64Value(duration, localInstant);
         }
 
+        /// <summary>
+        /// Get the value of this field from the duration relative to an
+        /// instant. For precise fields this method produces the same result as for
+        /// the single argument get method.
+        /// <para>
+        /// If the duration is positive, then the instant is treated as a "start instant". 
+        /// If negative, the instant is treated as an "end instant".
+        /// </para>
+        /// </summary>
+        /// <param name="duration">The duration to query, which may be negative</param>
+        /// <param name="localInstant">the start instant to calculate relative to</param>
+        /// <returns>The value of the field, in the units of the field, which may be negative</returns>
         public abstract long GetInt64Value(Duration duration, LocalInstant localInstant);
         #endregion
 
         #region Create a duration from a field value
+        /// <summary>
+        /// Get the duration of this field from its value, which is
+        /// approximate if this field is imprecise.
+        /// </summary>
+        /// <param name="value">The value of the field, which may be negative</param>
+        /// <returns>The duration that the field represents, which may be negative</returns>
         public virtual Duration GetDuration(long value)
         {
             return new Duration(value * UnitTicks);
         }
 
+        /// <summary>
+        /// Get the duration of this field from its value relative to an instant.
+        /// For precise fields this method produces the same result as for
+        /// the single argument GetDuration method.
+        /// <para>
+        /// If the value is positive, then the instant is treated as a "start
+        /// instant". If negative, the instant is treated as an "end instant".
+        /// </para>
+        /// </summary>
+        /// <param name="value">The value of the field, which may be negative</param>
+        /// <param name="localInstant">The instant to calculate relative to</param>
+        /// <returns>The duration that the field represents, which may be negative</returns>
         public abstract Duration GetDuration(long value, LocalInstant localInstant);
         #endregion
 
         #region Add, subtract, difference
+        /// <summary>
+        /// Adds a duration value (which may be negative) to the instant.
+        /// </summary>
+        /// <param name="localInstant">The local instant to add to</param>
+        /// <param name="value">The value to add, in the units of the field</param>
+        /// <returns>The updated local instant</returns>
         public abstract LocalInstant Add(LocalInstant localInstant, int value);
 
+        /// <summary>
+        /// Adds a duration value (which may be negative) to the instant.
+        /// </summary>
+        /// <param name="localInstant">The local instant to add to</param>
+        /// <param name="value">The value to add, in the units of the field</param>
+        /// <returns>The updated local instant</returns>
         public abstract LocalInstant Add(LocalInstant localInstant, long value);
 
+        /// <summary>
+        /// Subtracts a duration value (which may be negative) from the instant.
+        /// </summary>
+        /// <param name="localInstant">The local instant to subtract from</param>
+        /// <param name="value">The value to subtract, in the units of the field</param>
+        /// <returns>The updated local instant</returns>
         public LocalInstant Subtract(LocalInstant localInstant, int value)
         {
             if (value == int.MinValue)
@@ -109,20 +181,54 @@ namespace NodaTime.Fields
             return Add(localInstant, -value);
         }
 
-        public LocalInstant Subtract(LocalInstant instant, long value)
+        /// <summary>
+        /// Subtracts a duration value (which may be negative) from the instant.
+        /// </summary>
+        /// <param name="localInstant">The local instant to subtract from</param>
+        /// <param name="value">The value to subtract, in the units of the field</param>
+        /// <returns>The updated local instant</returns>
+        public LocalInstant Subtract(LocalInstant localInstant, long value)
         {
             if (value == long.MinValue)
             {
                 throw new ArithmeticException("Int64.MinValue cannot be negated");
             }
-            return Add(instant, -value);
+            return Add(localInstant, -value);
         }
 
+        /// <summary>
+        /// Computes the difference between two instants, as measured in the units
+        /// of this field. Any fractional units are dropped from the result. Calling
+        /// GetDifference reverses the effect of calling add. In the following code:
+        /// <code>
+        /// LocalInstant instant = ...
+        /// int v = ...
+        /// int age = GetDifference(Add(instant, v), instant);
+        /// </code>
+        /// The value 'age' is the same as the value 'v'.
+        /// </summary>
+        /// <param name="minuendInstant">The local instant to subtract from</param>
+        /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
+        /// <returns>The difference in the units of this field</returns>
         public virtual int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return (int)GetInt64Difference(minuendInstant, subtrahendInstant);
         }
 
+        /// <summary>
+        /// Computes the difference between two instants, as measured in the units
+        /// of this field. Any fractional units are dropped from the result. Calling
+        /// GetDifference reverses the effect of calling add. In the following code:
+        /// <code>
+        /// LocalInstant instant = ...
+        /// int v = ...
+        /// int age = GetDifference(Add(instant, v), instant);
+        /// </code>
+        /// The value 'age' is the same as the value 'v'.
+        /// </summary>
+        /// <param name="minuendInstant">The local instant to subtract from</param>
+        /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
+        /// <returns>The difference in the units of this field</returns>
         public abstract long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
         #endregion
 

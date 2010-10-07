@@ -52,7 +52,7 @@ namespace NodaTime.Fields
 
         #region Extract field value from a duration
         /// <summary>
-        /// Get the value of this field from the milliseconds, which is approximate
+        /// Get the value of this field from the ticks, which is approximate
         /// if this field is imprecise.
         /// </summary>
         /// <param name="duration">The duration to query, which may be negative</param>
@@ -60,7 +60,7 @@ namespace NodaTime.Fields
         int GetValue(Duration duration);
 
         /// <summary>
-        /// Get the value of this field from the milliseconds, which is approximate
+        /// Get the value of this field from the ticks, which is approximate
         /// if this field is imprecise.
         /// </summary>
         /// <param name="duration">The duration to query, which may be negative</param>
