@@ -54,7 +54,7 @@ namespace NodaTime.Test.Format
             provider1 = CultureInfo.InvariantCulture;
             provider2 = CultureInfo.CreateSpecificCulture("ar");
 
-            calendar1 = IsoCalendarSystem.Instance;
+            calendar1 = CalendarSystem.Iso;
             calendar2 = null;
 
             zone1 = DateTimeZones.Utc;

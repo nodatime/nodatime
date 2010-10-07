@@ -27,7 +27,7 @@ namespace NodaTime.Test.Partials
     [TestFixture]
     public class PartialTest
     {
-        private static readonly CalendarSystem isoCalendar = IsoCalendarSystem.Instance;
+        private static readonly CalendarSystem isoCalendar = CalendarSystem.Iso;
         private static readonly CalendarSystem gregorianCalendar = GregorianCalendarSystem.Default;
         private static readonly DateTimeFieldType[] hourMinuteFieldTypes = new[] { DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfHour };
         private static readonly DateTimeFieldType[] monthDayFieldTypes = new[] { DateTimeFieldType.MonthOfYear, DateTimeFieldType.DayOfMonth };

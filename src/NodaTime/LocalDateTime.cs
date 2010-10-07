@@ -51,7 +51,7 @@ namespace NodaTime
         public LocalDateTime(LocalInstant localInstant)
         {
             this.localInstant = localInstant;
-            this.calendar = IsoCalendarSystem.Instance;
+            this.calendar = CalendarSystem.Iso;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace NodaTime
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
-        public LocalDateTime(int year, int month, int day, int hour, int minute) : this(year, month, day, hour, minute, IsoCalendarSystem.Instance)
+        public LocalDateTime(int year, int month, int day, int hour, int minute) : this(year, month, day, hour, minute, CalendarSystem.Iso)
         {
         }
 
@@ -112,7 +112,7 @@ namespace NodaTime
         /// <param name="minute">The minute.</param>
         /// <param name="second">The second.</param>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second)
-            : this(year, month, day, hour, minute, second, IsoCalendarSystem.Instance)
+            : this(year, month, day, hour, minute, second, CalendarSystem.Iso)
         {
         }
 
@@ -148,7 +148,7 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
-            : this(year, month, day, hour, minute, second, millisecond, 0, IsoCalendarSystem.Instance)
+            : this(year, month, day, hour, minute, second, millisecond, 0, CalendarSystem.Iso)
         {
         }
 
@@ -181,7 +181,7 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
-            : this(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, IsoCalendarSystem.Instance)
+            : this(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, CalendarSystem.Iso)
         {
         }
 

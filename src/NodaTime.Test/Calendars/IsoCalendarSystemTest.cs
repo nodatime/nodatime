@@ -30,16 +30,16 @@ namespace NodaTime.Test.Calendars
         // of shockingly untested code.
         private static readonly DateTime TimeOfGreatAchievement = new DateTime(2009, 11, 27, 18, 38, 25, 345, DateTimeKind.Utc) + TimeSpan.FromTicks(8765);
 
-        private static readonly CalendarSystem Iso = IsoCalendarSystem.Instance;
+        private static readonly CalendarSystem Iso = CalendarSystem.Iso;
 
-        private static readonly FieldSet isoFields = IsoCalendarSystem.Instance.Fields;
+        private static readonly FieldSet isoFields = CalendarSystem.Iso.Fields;
 
         [Test]
         public void FieldsOf_UnixEpoch()
         {
             // It's easiest to test this using a LocalDateTime in the ISO calendar system.
             // LocalDateTime just passes everything through anyway.
-            LocalDateTime epoch = new LocalDateTime(LocalInstant.LocalUnixEpoch, IsoCalendarSystem.Instance);
+            LocalDateTime epoch = new LocalDateTime(LocalInstant.LocalUnixEpoch, CalendarSystem.Iso);
 
             Assert.AreEqual(1970, epoch.Year);
             Assert.AreEqual(1970, epoch.YearOfEra);
@@ -65,7 +65,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void FieldsOf_GreatAchievement()
         {
-            LocalDateTime now = new LocalDateTime(new LocalInstant((TimeOfGreatAchievement - UnixEpochDateTime).Ticks), IsoCalendarSystem.Instance);
+            LocalDateTime now = new LocalDateTime(new LocalInstant((TimeOfGreatAchievement - UnixEpochDateTime).Ticks), CalendarSystem.Iso);
 
             Assert.AreEqual(2009, now.Year);
             Assert.AreEqual(2009, now.YearOfEra);
@@ -91,7 +91,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void GetLocalInstant_WithAllFields()
         {
-            LocalInstant localAchievement = IsoCalendarSystem.Instance.GetLocalInstant(2009, 11, 27, 18, 38, 25, 345, 8765);
+            LocalInstant localAchievement = CalendarSystem.Iso.GetLocalInstant(2009, 11, 27, 18, 38, 25, 345, 8765);
             Assert.AreEqual((TimeOfGreatAchievement - UnixEpochDateTime).Ticks, localAchievement.Ticks);
         }
     }

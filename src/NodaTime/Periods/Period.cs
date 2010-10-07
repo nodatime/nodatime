@@ -999,7 +999,7 @@ namespace NodaTime.Periods
 
             var duration = ToStandardDurationUnchecked();
 
-            var period = Period.From(duration, IsoCalendarSystem.Instance, periodType);
+            var period = Period.From(duration, CalendarSystem.Iso, periodType);
 
             int years = Years;
             int months = Months;

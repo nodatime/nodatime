@@ -90,13 +90,13 @@ namespace NodaTime.TimeZones
         /// <param name="tickOfDay">The tick within the day.</param>
         public ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, Offset tickOfDay)
         {
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
             if (dayOfWeek != 0)
             {
-                FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
+                FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
             }
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
 
             this.mode = mode;
             this.monthOfYear = monthOfYear;
@@ -195,7 +195,7 @@ namespace NodaTime.TimeZones
         /// <returns>The <see cref="Instant"/> of the point in the given year.</returns>
         internal Instant MakeInstant(int year, Offset standardOffset, Offset savings)
         {
-            CalendarSystem calendar = IsoCalendarSystem.Instance;
+            CalendarSystem calendar = CalendarSystem.Iso;
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.Fields.MonthOfYear.SetValue(instant, monthOfYear);
             instant = calendar.Fields.TickOfDay.SetValue(instant, tickOfDay.Ticks);
@@ -243,7 +243,7 @@ namespace NodaTime.TimeZones
             writer.WriteInt8((byte)MonthOfYear);
             // Day or month can range from -(max value) to max value so if we add max value it will
             // force it into the positive range
-            writer.WriteInt8((byte)(DayOfMonth + IsoCalendarSystem.Instance.Fields.DayOfMonth.GetMaximumValue()));
+            writer.WriteInt8((byte)(DayOfMonth + CalendarSystem.Iso.Fields.DayOfMonth.GetMaximumValue()));
             writer.WriteInt8((byte)DayOfWeek);
             writer.WriteBoolean(AdvanceDayOfWeek);
             writer.WriteOffset(TickOfDay);
@@ -259,7 +259,7 @@ namespace NodaTime.TimeZones
             int monthOfYear = reader.ReadByte();
             // Day or month can range from -(max value) to max value so we added max value so it will
             // force it into the positive range
-            int dayOfMonth = (int)(reader.ReadByte() - IsoCalendarSystem.Instance.Fields.DayOfMonth.GetMaximumValue());
+            int dayOfMonth = (int)(reader.ReadByte() - CalendarSystem.Iso.Fields.DayOfMonth.GetMaximumValue());
             int dayOfWeek = reader.ReadByte();
             bool advance = reader.ReadBoolean();
             var ticksOfDay = reader.ReadOffset();
@@ -288,7 +288,7 @@ namespace NodaTime.TimeZones
                 // Convert from UTC to local time.
                 LocalInstant localInstant = instant + offset;
 
-                IsoCalendarSystem calendar = IsoCalendarSystem.Instance;
+                CalendarSystem calendar = CalendarSystem.Iso;
                 LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, monthOfYear);
                 // Be lenient with tick of day.
                 newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, tickOfDay.Ticks);

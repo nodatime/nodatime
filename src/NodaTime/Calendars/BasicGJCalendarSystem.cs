@@ -17,7 +17,7 @@
 
 namespace NodaTime.Calendars
 {
-    public abstract class BasicGJCalendarSystem : BasicCalendarSystem
+    internal abstract class BasicGJCalendarSystem : BasicCalendarSystem
     {
         // These arrays are NOT public. We trust ourselves not to alter the array.
         // They use zero-based array indexes so the that valid range of months is
@@ -72,7 +72,7 @@ namespace NodaTime.Calendars
                                      : ((i < 304 * 84375) ? 10 : (i < 334 * 84375) ? 11 : 12)));
         }
 
-        public override int GetDaysInYearMonth(int year, int month)
+        internal override int GetDaysInYearMonth(int year, int month)
         {
             return IsLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
         }

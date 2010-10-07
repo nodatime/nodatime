@@ -322,7 +322,7 @@ namespace NodaTime
         /// </summary>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
-            var local = IsoCalendarSystem.Instance.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
+            var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
             return new Instant(local.Ticks);
         }
 
@@ -335,7 +335,7 @@ namespace NodaTime
         /// </summary>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
-            var local = IsoCalendarSystem.Instance.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
+            var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
             return new Instant(local.Ticks);
         }
         #endregion
