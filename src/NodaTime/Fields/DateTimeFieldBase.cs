@@ -56,13 +56,13 @@ namespace NodaTime.Fields
         /// For example, if this
         /// field represents "hour of day", then the duration is an hour.
         /// </summary>
-        public abstract IDurationField DurationField { get; }
+        public abstract DurationFieldBase DurationField { get; }
 
         /// <summary>
         /// Returns the range duration of this field. For example, if this field
         /// represents "hour of day", then the range duration is a day.
         /// </summary>
-        public abstract IDurationField RangeDurationField { get; }
+        public abstract DurationFieldBase RangeDurationField { get; }
 
         /// <summary>
         /// Defaults to fields being supported
@@ -542,7 +542,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Defaults to null, i.e. no leap duration field.
         /// </summary>
-        public virtual IDurationField LeapDurationField { get { return null; } }
+        public virtual DurationFieldBase LeapDurationField { get { return null; } }
         #endregion
 
         #region Ranges

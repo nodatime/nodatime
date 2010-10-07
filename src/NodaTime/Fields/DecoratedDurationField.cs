@@ -24,9 +24,9 @@ namespace NodaTime.Fields
     /// </summary>
     internal abstract class DecoratedDurationField : DurationFieldBase
     {
-        private readonly IDurationField wrappedField;
+        private readonly DurationFieldBase wrappedField;
 
-        internal DecoratedDurationField(IDurationField wrappedField, DurationFieldType fieldType) : base(fieldType)
+        internal DecoratedDurationField(DurationFieldBase wrappedField, DurationFieldType fieldType) : base(fieldType)
         {
             if (wrappedField == null)
             {
@@ -39,7 +39,7 @@ namespace NodaTime.Fields
             this.wrappedField = wrappedField;
         }
 
-        protected IDurationField WrappedField { get { return wrappedField; } }
+        protected DurationFieldBase WrappedField { get { return wrappedField; } }
 
         public override bool IsPrecise { get { return wrappedField.IsPrecise; } }
 

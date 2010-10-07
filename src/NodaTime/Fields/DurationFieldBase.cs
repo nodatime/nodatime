@@ -20,12 +20,12 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// DurationFieldBase provides the common behaviour for DurationField implementations.
-    /// <para>
-    /// DurationFieldBase is thread-safe and immutable, and its subclasses must be as well.
-    /// </para>
+    /// Defines the calculation engine for duration fields.
+    /// The abstract class defines a set of methods that manipulate a tick duration
+    /// with regards to a single field, such as months or seconds. This class is
+    /// threadsafe, and all subclasses must be too.
     /// </summary>
-    public abstract class DurationFieldBase : IDurationField
+    public abstract class DurationFieldBase
     {
         public static bool IsTypeValid(DurationFieldType type)
         {
@@ -126,7 +126,7 @@ namespace NodaTime.Fields
         public abstract long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
         #endregion
 
-        public int CompareTo(IDurationField other)
+        public int CompareTo(DurationFieldBase other)
         {
             // cannot do (thisMillis - otherMillis) as can overflow
 

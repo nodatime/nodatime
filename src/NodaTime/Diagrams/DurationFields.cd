@@ -63,11 +63,11 @@
       <FileName>Fields\TicksDurationField.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="NodaTime.Fields.IDurationField" Collapsed="true">
+  <Interface Name="NodaTime.Fields.DurationFieldBase" Collapsed="true">
     <Position X="3" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIgAIBgIAAAAMAAAQACAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Fields\IDurationField.cs</FileName>
+      <FileName>Fields\DurationFieldBase.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="System.IComparable&lt;T&gt;" Collapsed="true">

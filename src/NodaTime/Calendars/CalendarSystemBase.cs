@@ -159,7 +159,7 @@ namespace NodaTime.Calendars
             LocalInstant result = start;
             for (int i = 0; i < size; i++)
             {
-                IDurationField field = GetField(periodType.GetFieldType(i));
+                DurationFieldBase field = GetField(periodType.GetFieldType(i));
                 int value = field.GetDifference(end, result);
                 values[i] = value;
 
@@ -193,7 +193,7 @@ namespace NodaTime.Calendars
             return result;
         }
 
-        private IDurationField GetField(DurationFieldType fieldType)
+        private DurationFieldBase GetField(DurationFieldType fieldType)
         {
             switch (fieldType)
             {
