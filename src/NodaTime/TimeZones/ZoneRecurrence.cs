@@ -148,7 +148,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         internal Transition? Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            ICalendarSystem calendar = IsoCalendarSystem.Instance;
+            CalendarSystem calendar = CalendarSystem.Iso;
 
             Offset wallOffset = standardOffset + previousSavings;
 
@@ -187,7 +187,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         internal Transition? Previous(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            ICalendarSystem calendar = IsoCalendarSystem.Instance;
+            CalendarSystem calendar = CalendarSystem.Iso;
 
             Offset wallOffset = standardOffset + previousSavings;
 

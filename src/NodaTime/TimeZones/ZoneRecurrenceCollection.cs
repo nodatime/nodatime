@@ -36,7 +36,7 @@ namespace NodaTime.TimeZones
         // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
         // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the
         // future, then it won't be observed.
-        private static readonly int YearLimit = IsoCalendarSystem.Instance.Fields.Year.GetValue(LocalInstant.Now) + 100;
+        private static readonly int YearLimit = CalendarSystem.Iso.Fields.Year.GetValue(LocalInstant.Now) + 100;
 
         private readonly List<ZoneRecurrence> rules = new List<ZoneRecurrence>();
         private string initialNameKey;
@@ -165,7 +165,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         internal class TransitionIterator
         {
-            private readonly ICalendarSystem calendar;
+            private readonly CalendarSystem calendar;
             private readonly ZoneRecurrenceCollection ruleSet;
             private readonly Instant startingInstant;
             private Instant instant;
@@ -180,7 +180,7 @@ namespace NodaTime.TimeZones
             /// <param name="startingInstant">The starting instant.</param>
             internal TransitionIterator(ZoneRecurrenceCollection ruleSet, Instant startingInstant)
             {
-                calendar = IsoCalendarSystem.Instance;
+                calendar = CalendarSystem.Iso;
                 this.ruleSet = ruleSet;
                 this.startingInstant = startingInstant;
             }

@@ -21,7 +21,7 @@ using NodaTime.Fields;
 namespace NodaTime.Calendars
 {
     // TODO: Optimisations of GetLocalInstant etc.
-    public abstract class BasicCalendarSystem : AssembledCalendarSystem
+    internal abstract class BasicCalendarSystem : AssembledCalendarSystem
     {
         private static readonly FieldSet preciseFields = CreatePreciseFields();
 
@@ -37,13 +37,13 @@ namespace NodaTime.Calendars
         /// </summary>
         protected abstract long GetTotalTicksByYearMonth(int year, int month);
 
-        public abstract int MinYear { get; }
-        public abstract int MaxYear { get; }
-        public abstract long AverageTicksPerMonth { get; }
-        public abstract long AverageTicksPerYear { get; }
-        public abstract long AverageTicksPerYearDividedByTwo { get; }
-        public abstract long ApproxTicksAtEpochDividedByTwo { get; }
-        public abstract int GetDaysInYearMonth(int year, int month);
+        internal abstract int MinYear { get; }
+        internal abstract int MaxYear { get; }
+        internal abstract long AverageTicksPerMonth { get; }
+        internal abstract long AverageTicksPerYear { get; }
+        internal abstract long AverageTicksPerYearDividedByTwo { get; }
+        internal abstract long ApproxTicksAtEpochDividedByTwo { get; }
+        internal abstract int GetDaysInYearMonth(int year, int month);
         protected abstract LocalInstant CalculateStartOfYear(int year);
         protected internal abstract bool IsLeapYear(int year);
         protected internal abstract int GetMonthOfYear(LocalInstant localInstant, int year);
@@ -83,7 +83,7 @@ namespace NodaTime.Calendars
             return builder.Build();
         }
 
-        protected BasicCalendarSystem(string name, ICalendarSystem baseCalendar, int minDaysInFirstWeek) : base(name, baseCalendar)
+        protected BasicCalendarSystem(string name, CalendarSystem baseCalendar, int minDaysInFirstWeek) : base(name, baseCalendar)
         {
             if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7)
             {
@@ -385,11 +385,11 @@ namespace NodaTime.Calendars
 
         // TODO: Override the remaining GetLocalInstant overload?
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
-            if (BaseCalendar != null)
+            if (Calendar != null)
             {
-                return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
+                return Calendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
             }
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
@@ -399,11 +399,11 @@ namespace NodaTime.Calendars
                                  minuteOfHour * NodaConstants.TicksPerMinute);
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
-            if (BaseCalendar != null)
+            if (Calendar != null)
             {
-                return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
+                return Calendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
             }
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
@@ -414,12 +414,12 @@ namespace NodaTime.Calendars
                                  minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond);
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
                                                      int millisecondOfSecond, int tickOfMillisecond)
         {
-            if (BaseCalendar != null)
+            if (Calendar != null)
             {
-                return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond,
+                return Calendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond,
                                                     tickOfMillisecond);
             }
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
@@ -434,11 +434,11 @@ namespace NodaTime.Calendars
                                  millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond);
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
-            if (BaseCalendar != null)
+            if (Calendar != null)
             {
-                return BaseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
+                return Calendar.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
             }
             // TODO: Report bug in Joda Time, which doesn't have the - 1 here.
             FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfDay, tickOfDay, 0, NodaConstants.TicksPerDay - 1);

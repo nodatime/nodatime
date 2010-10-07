@@ -27,11 +27,11 @@ namespace NodaTime.Partials
     /// </summary>
     public sealed class Partial : AbstractPartial
     {
-        private readonly ICalendarSystem calendar;
+        private readonly CalendarSystem calendar;
         private readonly DateTimeFieldType[] types;
         private readonly int[] values;
 
-        public Partial(DateTimeFieldType[] types, int[] values, ICalendarSystem calendar)
+        public Partial(DateTimeFieldType[] types, int[] values, CalendarSystem calendar)
         {
             if (calendar == null)
             {
@@ -77,9 +77,9 @@ namespace NodaTime.Partials
         /// <summary>
         /// Gets the chronology of the partial which is never null.
         /// </summary>
-        public override ICalendarSystem Calendar { get { return calendar; } }
+        public override CalendarSystem Calendar { get { return calendar; } }
 
-        protected override IDateTimeField GetField(int index, ICalendarSystem calendar)
+        protected override IDateTimeField GetField(int index, CalendarSystem calendar)
         {
             if (index < 0 || index >= types.Length)
             {
@@ -194,7 +194,7 @@ namespace NodaTime.Partials
             return 0;
         }
 
-        public Partial WithCalendar(ICalendarSystem newCalendar)
+        public Partial WithCalendar(CalendarSystem newCalendar)
         {
             if (calendar == newCalendar)
             {

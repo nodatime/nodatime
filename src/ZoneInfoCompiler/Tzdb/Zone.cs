@@ -101,9 +101,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         public Zone(string name, Offset offset, string rules, string format, int year, int monthOfYear, int dayOfMonth, Offset tickOfDay, char zoneCharacter)
         {
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth);
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
             this.name = name;
             this.offset = offset;
             this.rules = rules;

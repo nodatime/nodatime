@@ -23,7 +23,7 @@ namespace NodaTime.Calendars
     /// <summary>
     /// Original name: GregorianChronology
     /// </summary>
-    public class GregorianCalendarSystem : BasicGJCalendarSystem
+    internal class GregorianCalendarSystem : BasicGJCalendarSystem
     {
         private const string GregorianName = "Gregorian";
 
@@ -42,21 +42,21 @@ namespace NodaTime.Calendars
         {
             // TODO: This pattern appears all over the place. It *may* not be necessary
             // now we've separated out all the time zone stuff.
-            if (BaseCalendar == null)
+            if (Calendar == null)
             {
                 base.AssembleFields(builder);
             }
         }
 
-        public override long AverageTicksPerYear { get { return AverageTicksPerGregorianYear; } }
-        public override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerGregorianYear / 2; } }
-        public override long AverageTicksPerMonth { get { return (long)(365.2425m * NodaConstants.TicksPerDay / 12); } }
-        public override long ApproxTicksAtEpochDividedByTwo { get { return (1970 * AverageTicksPerGregorianYear) / 2; } }
+        internal override long AverageTicksPerYear { get { return AverageTicksPerGregorianYear; } }
+        internal override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerGregorianYear / 2; } }
+        internal override long AverageTicksPerMonth { get { return (long)(365.2425m * NodaConstants.TicksPerDay / 12); } }
+        internal override long ApproxTicksAtEpochDividedByTwo { get { return (1970 * AverageTicksPerGregorianYear) / 2; } }
         // TODO: Check that this is still valid now we've moved to ticks. I suspect it's not... (divide by 10000?)
-        public override int MinYear { get { return -27258; } }
-        public override int MaxYear { get { return 31196; } }
+        internal override int MinYear { get { return -27258; } }
+        internal override int MaxYear { get { return 31196; } }
 
-        public static Chronology GetInstance(IDateTimeZone dateTimeZone)
+        internal static Chronology GetInstance(IDateTimeZone dateTimeZone)
         {
             throw new NotImplementedException();
         }
