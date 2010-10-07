@@ -36,13 +36,13 @@ namespace NodaTime.Fields
         /// <summary>
         /// Always returns null(not supported)
         /// </summary>
-        public override DurationField RangeDurationField { get { return null; } }
+        internal override DurationField RangeDurationField { get { return null; } }
 
         /// <summary>
         /// Always returns false, that means that it does not accept values that
         /// are out of bounds.
         /// </summary>
-        public override bool IsLenient { get { return false; } }
+        internal override bool IsLenient { get { return false; } }
 
         #region Values
         /// <summary>
@@ -50,7 +50,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
         /// <returns>The year extracted from the input.</returns>
-        public override int GetValue(LocalInstant localInstant)
+        internal override int GetValue(LocalInstant localInstant)
         {
             return calendarSystem.GetWeekYear(localInstant);
         }
@@ -60,27 +60,27 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
         /// <returns>The year extracted from the input.</returns>
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             return calendarSystem.GetWeekYear(localInstant);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             return value == 0 ? localInstant : SetValue(localInstant, GetValue(localInstant) + value);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, long value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             return Add(localInstant, (int)value);
         }
 
-        public override LocalInstant AddWrapField(LocalInstant localInstant, int value)
+        internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             return Add(localInstant, value);
         }
 
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             if (minuendInstant < subtrahendInstant)
             {
@@ -106,7 +106,7 @@ namespace NodaTime.Fields
             return difference;
         }
 
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             int year = (int)value;
             // TODO: Check this. In the Java it uses Math.abs, but I'm not convinced that's correct...
@@ -174,33 +174,33 @@ namespace NodaTime.Fields
         #endregion
 
         #region Leap
-        public override bool IsLeap(LocalInstant localInstant)
+        internal override bool IsLeap(LocalInstant localInstant)
         {
             return GetLeapAmount(localInstant) > 0;
         }
 
-        public override int GetLeapAmount(LocalInstant localInstant)
+        internal override int GetLeapAmount(LocalInstant localInstant)
         {
             return calendarSystem.GetWeeksInYear(calendarSystem.GetWeekYear(localInstant)) - 52;
         }
 
-        public override DurationField LeapDurationField { get { return calendarSystem.Fields.Weeks; } }
+        internal override DurationField LeapDurationField { get { return calendarSystem.Fields.Weeks; } }
         #endregion
 
         #region Ranges
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return calendarSystem.MinYear;
         }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return calendarSystem.MaxYear;
         }
         #endregion
 
         #region Rounding
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             // Note: This works fine, but it ideally shouldn't invoke other
             // fields from within a field.

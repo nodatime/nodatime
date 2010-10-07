@@ -31,24 +31,24 @@ namespace NodaTime.Fields
             this.calendarSystem = calendarSystem;
         }
 
-        public override int GetValue(LocalInstant localInstant)
+        internal override int GetValue(LocalInstant localInstant)
         {
             return calendarSystem.GetDayOfWeek(localInstant);
         }
 
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             return calendarSystem.GetDayOfWeek(localInstant);
         }
 
-        public override DurationField RangeDurationField { get { return calendarSystem.Fields.Weeks; } }
+        internal override DurationField RangeDurationField { get { return calendarSystem.Fields.Weeks; } }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return (long)DaysOfWeek.Sunday;
         }
 
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return (long)DaysOfWeek.Monday;
         }

@@ -19,8 +19,8 @@ using System;
 using NodaTime.Fields;
 
 namespace NodaTime.Partials
-{
-    public static class PartialUtils
+{    
+    internal static class PartialUtils
     {
         /// <summary>
         /// Checks whether the partial is contiguous.

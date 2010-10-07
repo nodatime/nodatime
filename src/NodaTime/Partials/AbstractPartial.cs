@@ -28,7 +28,7 @@ namespace NodaTime.Partials
     /// Calculations on are performed using a <see cref="CalendarSystem"/>.
     /// </para>
     /// </summary>
-    public abstract class AbstractPartial : IPartial
+    public abstract class AbstractPartial
     {
         /// <summary>
         /// Gets the calendar system of the partial which is never null.

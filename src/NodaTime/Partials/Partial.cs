@@ -22,6 +22,7 @@ using NodaTime.Utility;
 
 namespace NodaTime.Partials
 {
+    /*
     /// <summary>
     /// Original name: Partial.
     /// </summary>
@@ -351,5 +352,5 @@ namespace NodaTime.Partials
         {
             return WithPeriodAdded(period, -1);
         }
-    }
+    }*/
 }

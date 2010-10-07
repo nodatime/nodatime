@@ -40,7 +40,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Get the type of the field.
         /// </summary>
-        public DateTimeFieldType FieldType { get { return fieldType; } }
+        internal DateTimeFieldType FieldType { get { return fieldType; } }
 
         /// <summary>
         /// Get the name of the field.
@@ -51,32 +51,32 @@ namespace NodaTime.Fields
         /// duration range field name. If the range field is not applicable, then
         /// the name of the field is simply the (singular) duration field name.
         /// </remarks>
-        public String Name { get { return FieldType.ToString(); } }
+        internal String Name { get { return FieldType.ToString(); } }
 
         /// <summary>
         /// Gets the duration per unit value of this field, or UnsupportedDurationField if field has no duration.
         /// For example, if this
         /// field represents "hour of day", then the duration is an hour.
         /// </summary>
-        public abstract DurationField DurationField { get; }
+        internal abstract DurationField DurationField { get; }
 
         /// <summary>
         /// Returns the range duration of this field. For example, if this field
         /// represents "hour of day", then the range duration is a day.
         /// </summary>
-        public abstract DurationField RangeDurationField { get; }
+        internal abstract DurationField RangeDurationField { get; }
 
         /// <summary>
         /// Defaults to fields being supported
         /// </summary>
-        public virtual bool IsSupported { get { return true; } }
+        internal virtual bool IsSupported { get { return true; } }
 
         /// <summary>
         /// Returns true if the set method is lenient. If so, it accepts values that
         /// are out of bounds. For example, a lenient day of month field accepts 32
         /// for January, converting it to February 1.
         /// </summary>
-        public abstract bool IsLenient { get; }
+        internal abstract bool IsLenient { get; }
 
         #region Values
         /// <summary>
@@ -84,7 +84,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
         /// <returns>The value of the field, in the units of the field</returns>
-        public virtual int GetValue(LocalInstant localInstant)
+        internal virtual int GetValue(LocalInstant localInstant)
         {
             return (int)GetInt64Value(localInstant);
         }
@@ -94,7 +94,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
         /// <returns>The value of the field, in the units of the field</returns>
-        public abstract long GetInt64Value(LocalInstant localInstant);
+        internal abstract long GetInt64Value(LocalInstant localInstant);
 
         /// <summary>
         /// Adds a value (which may be negative) to the local instant value.
@@ -118,7 +118,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        public virtual LocalInstant Add(LocalInstant localInstant, int value)
+        internal virtual LocalInstant Add(LocalInstant localInstant, int value)
         {
             return DurationField.Add(localInstant, value);
         }
@@ -145,7 +145,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        public virtual LocalInstant Add(LocalInstant localInstant, long value)
+        internal virtual LocalInstant Add(LocalInstant localInstant, long value)
         {
             return DurationField.Add(localInstant, value);
         }
@@ -173,7 +173,7 @@ namespace NodaTime.Fields
         /// <item>2001-01-31 AddWrapField two months is 2001-03-31</item>
         /// </list>
         /// </remarks>
-        public virtual LocalInstant AddWrapField(LocalInstant localInstant, int value)
+        internal virtual LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             int current = GetValue(localInstant);
             int wrapped = FieldUtils.GetWrappedValue(current, value, (int)GetMinimumValue(localInstant), (int)GetMaximumValue(localInstant));
@@ -210,7 +210,7 @@ namespace NodaTime.Fields
         /// <item>2001-01-31 add two months is 2001-03-31</item>
         /// </list>
         /// </remarks>
-        public virtual int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
+        internal virtual int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
         {
             if (valueToAdd == 0)
             {
@@ -305,7 +305,7 @@ namespace NodaTime.Fields
         /// <item>10:20:30 add 16 hours is 02:20:30</item>
         /// </list>
         /// </remarks>
-        public virtual int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
+        internal virtual int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
         {
             if (valueToAdd == 0)
             {
@@ -389,7 +389,7 @@ namespace NodaTime.Fields
         /// <param name="minuendInstant">The local instant to subtract from</param>
         /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
         /// <returns>The difference in the units of this field</returns>
-        public virtual int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal virtual int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return DurationField.GetDifference(minuendInstant, subtrahendInstant);
         }
@@ -408,7 +408,7 @@ namespace NodaTime.Fields
         /// <param name="minuendInstant">The local instant to subtract from</param>
         /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
         /// <returns>The difference in the units of this field</returns>
-        public virtual long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal virtual long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return DurationField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }
@@ -429,7 +429,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to set in</param>
         /// <param name="value">The value to set, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        public abstract LocalInstant SetValue(LocalInstant localInstant, long value);
+        internal abstract LocalInstant SetValue(LocalInstant localInstant, long value);
 
         /// <summary>
         /// Sets a value in the local instant supplied from a human-readable, text value.
@@ -444,7 +444,7 @@ namespace NodaTime.Fields
         /// the month is set to February, the day would be invalid. Instead, the day
         /// would be changed to the closest value - the 28th/29th February as appropriate.
         /// </remarks>
-        public virtual LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
+        internal virtual LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
         {
             int value = ConvertText(text, provider);
             return SetValue(instant, value);
@@ -462,7 +462,7 @@ namespace NodaTime.Fields
         /// the month is set to February, the day would be invalid. Instead, the day
         /// would be changed to the closest value - the 28th/29th February as appropriate.
         /// </remarks>        
-        public virtual LocalInstant SetValue(LocalInstant instant, String text)
+        internal virtual LocalInstant SetValue(LocalInstant instant, String text)
         {
             return SetValue(instant, text, null);
         }
@@ -487,7 +487,7 @@ namespace NodaTime.Fields
         /// would be changed to the closest value - the 28th/29th February as appropriate.
         /// </para>
         /// </remarks>
-        public virtual int[] SetValue(IPartial instant, int fieldIndex, int[] values, int newValue)
+        internal virtual int[] SetValue(IPartial instant, int fieldIndex, int[] values, int newValue)
         {
             FieldUtils.VerifyValueBounds(this, newValue, GetMinimumValue(instant, values), GetMaximumValue(instant, values));
             values[fieldIndex] = newValue;
@@ -517,7 +517,7 @@ namespace NodaTime.Fields
         /// <param name="text">The text value to set</param>
         /// <param name="provider">The format provider to use</param>
         /// <returns>The passed in values</returns>
-        public virtual int[] SetValue(IPartial instant, int fieldIndex, int[] values, String text, IFormatProvider provider)
+        internal virtual int[] SetValue(IPartial instant, int fieldIndex, int[] values, String text, IFormatProvider provider)
         {
             int value = ConvertText(text, provider);
             return SetValue(instant, fieldIndex, values, value);
@@ -528,7 +528,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Defaults to non-leap.
         /// </summary>
-        public virtual bool IsLeap(LocalInstant localInstant)
+        internal virtual bool IsLeap(LocalInstant localInstant)
         {
             return false;
         }
@@ -536,7 +536,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Defaults to 0.
         /// </summary>
-        public virtual int GetLeapAmount(LocalInstant localInstant)
+        internal virtual int GetLeapAmount(LocalInstant localInstant)
         {
             return 0;
         }
@@ -544,14 +544,14 @@ namespace NodaTime.Fields
         /// <summary>
         /// Defaults to null, i.e. no leap duration field.
         /// </summary>
-        public virtual DurationField LeapDurationField { get { return null; } }
+        internal virtual DurationField LeapDurationField { get { return null; } }
         #endregion
 
         #region Ranges
         /// <summary>
         /// Defaults to the absolute maximum for the field.
         /// </summary>
-        public virtual long GetMaximumValue(LocalInstant localInstant)
+        internal virtual long GetMaximumValue(LocalInstant localInstant)
         {
             return GetMaximumValue();
         }
@@ -561,7 +561,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="instant"></param>
         /// <returns></returns>
-        public virtual long GetMaximumValue(IPartial instant)
+        internal virtual long GetMaximumValue(IPartial instant)
         {
             return GetMaximumValue();
         }
@@ -572,7 +572,7 @@ namespace NodaTime.Fields
         /// <param name="instant"></param>
         /// <param name="values"></param>
         /// <returns></returns>
-        public virtual long GetMaximumValue(IPartial instant, int[] values)
+        internal virtual long GetMaximumValue(IPartial instant, int[] values)
         {
             return GetMaximumValue();
         }
@@ -581,12 +581,12 @@ namespace NodaTime.Fields
         /// Get the maximum allowable value for this field.
         /// </summary>
         /// <returns>The maximum valid value for this field, in the units of the field</returns>
-        public abstract long GetMaximumValue();
+        internal abstract long GetMaximumValue();
 
         /// <summary>
         /// Defaults to the absolute minimum for the field.
         /// </summary>
-        public virtual long GetMinimumValue(LocalInstant localInstant)
+        internal virtual long GetMinimumValue(LocalInstant localInstant)
         {
             return GetMinimumValue();
         }
@@ -596,7 +596,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="instant"></param>
         /// <returns></returns>
-        public virtual long GetMinimumValue(IPartial instant)
+        internal virtual long GetMinimumValue(IPartial instant)
         {
             return GetMinimumValue();
         }
@@ -607,7 +607,7 @@ namespace NodaTime.Fields
         /// <param name="instant"></param>
         /// <param name="values"></param>
         /// <returns></returns>
-        public virtual long GetMinimumValue(IPartial instant, int[] values)
+        internal virtual long GetMinimumValue(IPartial instant, int[] values)
         {
             return GetMinimumValue();
         }
@@ -616,7 +616,7 @@ namespace NodaTime.Fields
         /// Get the minimum allowable value for this field.
         /// </summary>
         /// <returns>The minimum valid value for this field, in the units of the field</returns>
-        public abstract long GetMinimumValue();
+        internal abstract long GetMinimumValue();
         #endregion
 
         #region Rounding
@@ -632,7 +632,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to round</param>
         /// <returns>Rounded local instant</returns>
-        public abstract LocalInstant RoundFloor(LocalInstant localInstant);
+        internal abstract LocalInstant RoundFloor(LocalInstant localInstant);
 
         /// <summary>
         /// Round to the highest whole unit of this field. The value of this field
@@ -646,7 +646,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to round</param>
         /// <returns>Rounded local instant</returns>
-        public virtual LocalInstant RoundCeiling(LocalInstant localInstant)
+        internal virtual LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             LocalInstant newInstant = RoundFloor(localInstant);
             if (newInstant != localInstant)
@@ -664,7 +664,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to round</param>
         /// <returns>Rounded local instant</returns>
-        public virtual LocalInstant RoundHalfFloor(LocalInstant localInstant)
+        internal virtual LocalInstant RoundHalfFloor(LocalInstant localInstant)
         {
             LocalInstant floor = RoundFloor(localInstant);
             LocalInstant ceiling = RoundCeiling(localInstant);
@@ -684,7 +684,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to round</param>
         /// <returns>Rounded local instant</returns>
-        public virtual LocalInstant RoundHalfCeiling(LocalInstant localInstant)
+        internal virtual LocalInstant RoundHalfCeiling(LocalInstant localInstant)
         {
             LocalInstant floor = RoundFloor(localInstant);
             LocalInstant ceiling = RoundCeiling(localInstant);
@@ -704,7 +704,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to round</param>
         /// <returns>Rounded local instant</returns>
-        public virtual LocalInstant RoundHalfEven(LocalInstant localInstant)
+        internal virtual LocalInstant RoundHalfEven(LocalInstant localInstant)
         {
             LocalInstant floor = RoundFloor(localInstant);
             LocalInstant ceiling = RoundCeiling(localInstant);
@@ -740,7 +740,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to get the remainder</param>
         /// <returns>Remainder duration</returns>
-        public virtual Duration Remainder(LocalInstant localInstant)
+        internal virtual Duration Remainder(LocalInstant localInstant)
         {
             return localInstant - RoundFloor(localInstant);
         }
@@ -756,7 +756,7 @@ namespace NodaTime.Fields
         /// The default implementation returns the equivalent of 
         /// GetMaximumValue().ToString().Length.
         /// </remarks>
-        public virtual int GetMaximumTextLength(IFormatProvider provider)
+        internal virtual int GetMaximumTextLength(IFormatProvider provider)
         {
             int max = (int)GetMaximumValue();
             if (max >= 0)
@@ -785,7 +785,7 @@ namespace NodaTime.Fields
         /// <remarks>
         /// The default implementation returns GetMaximumTextLength().
         /// </remarks>
-        public virtual int GetMaximumShortTextLength(IFormatProvider provider)
+        internal virtual int GetMaximumShortTextLength(IFormatProvider provider)
         {
             return GetMaximumTextLength(provider);
         }
@@ -799,7 +799,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to query</param>
         /// <param name="provider">Format provider to use</param>
         /// <returns>The text value of the field</returns>
-        public virtual string GetAsText(LocalInstant localInstant, IFormatProvider provider)
+        internal virtual string GetAsText(LocalInstant localInstant, IFormatProvider provider)
         {
             return GetAsText(GetValue(localInstant), provider);
         }
@@ -812,7 +812,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
         /// <returns>The text value of the field</returns>
-        public virtual string GetAsText(LocalInstant localInstant)
+        internal virtual string GetAsText(LocalInstant localInstant)
         {
             return GetAsText(localInstant, null);
         }
@@ -827,7 +827,7 @@ namespace NodaTime.Fields
         /// <param name="fieldValue">The field value of this field, provided for performance</param>
         /// <param name="provider">Format provider to use</param>
         /// <returns>The text value of the field</returns>
-        public virtual string GetAsText(IPartial partial, int fieldValue, IFormatProvider provider)
+        internal virtual string GetAsText(IPartial partial, int fieldValue, IFormatProvider provider)
         {
             return GetAsText(fieldValue, provider);
         }
@@ -842,7 +842,7 @@ namespace NodaTime.Fields
         /// <param name="partial">The partial instant to query</param>
         /// <param name="provider">Format provider to use</param>
         /// <returns>The text value of the field</returns>
-        public virtual string GetAsText(IPartial partial, IFormatProvider provider)
+        internal virtual string GetAsText(IPartial partial, IFormatProvider provider)
         {
             return GetAsText(partial, partial.Get(FieldType), provider);
         }
@@ -860,7 +860,7 @@ namespace NodaTime.Fields
         /// <param name="fieldValue">the numeric value to convert to text</param>
         /// <param name="provider">Format provider to use</param>
         /// <returns>The text value of the field</returns>
-        public virtual string GetAsText(int fieldValue, IFormatProvider provider)
+        internal virtual string GetAsText(int fieldValue, IFormatProvider provider)
         {
             return fieldValue.ToString(provider);
         }
@@ -874,7 +874,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to query</param>
         /// <param name="provider">Format provider to use</param>
         /// <returns>The text value of the field</returns>
-        public virtual string GetAsShortText(LocalInstant localInstant, IFormatProvider provider)
+        internal virtual string GetAsShortText(LocalInstant localInstant, IFormatProvider provider)
         {
             return GetAsShortText(GetValue(localInstant), provider);
         }
@@ -887,7 +887,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
         /// <returns>The text value of the field</returns>
-        public virtual string GetAsShortText(LocalInstant localInstant)
+        internal virtual string GetAsShortText(LocalInstant localInstant)
         {
             return GetAsShortText(localInstant, null);
         }
@@ -902,7 +902,7 @@ namespace NodaTime.Fields
         /// <param name="fieldValue">The field value of this field, provided for performance</param>
         /// <param name="provider">Format provider to use</param>
         /// <returns>The text value of the field</returns>
-        public virtual string GetAsShortText(IPartial partial, int fieldValue, IFormatProvider provider)
+        internal virtual string GetAsShortText(IPartial partial, int fieldValue, IFormatProvider provider)
         {
             return GetAsShortText(fieldValue, provider);
         }
@@ -917,7 +917,7 @@ namespace NodaTime.Fields
         /// <param name="partial">The partial instant to query</param>
         /// <param name="provider">Format provider to use</param>
         /// <returns>The text value of the field</returns>
-        public virtual string GetAsShortText(IPartial partial, IFormatProvider provider)
+        internal virtual string GetAsShortText(IPartial partial, IFormatProvider provider)
         {
             return GetAsShortText(partial, partial.Get(FieldType), provider);
         }
@@ -935,7 +935,7 @@ namespace NodaTime.Fields
         /// <param name="fieldValue">the numeric value to convert to text</param>
         /// <param name="provider">Format provider to use</param>
         /// <returns>The text value of the field</returns>
-        public virtual string GetAsShortText(int fieldValue, IFormatProvider provider)
+        internal virtual string GetAsShortText(int fieldValue, IFormatProvider provider)
         {
             return GetAsText(fieldValue, provider);
         }

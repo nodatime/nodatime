@@ -260,7 +260,7 @@ namespace NodaTime.Test.Fields
             public bool GetInt64ValueWasCalled;
             public LocalInstant GetInt64ValueArg;
 
-            public override long GetInt64Value(LocalInstant localInstant)
+            internal override long GetInt64Value(LocalInstant localInstant)
             {
                 GetInt64ValueWasCalled = true;
                 GetInt64ValueArg = localInstant;
@@ -268,18 +268,18 @@ namespace NodaTime.Test.Fields
                 return localInstant.Ticks / 60L;
             }
 
-            public override LocalInstant SetValue(LocalInstant localInstant, long value)
+            internal override LocalInstant SetValue(LocalInstant localInstant, long value)
             {
                 return localInstant;
             }
 
-            public override DurationField DurationField { get { return new MockCountingDurationField(DurationFieldType.Seconds); } }
+            internal override DurationField DurationField { get { return new MockCountingDurationField(DurationFieldType.Seconds); } }
 
-            public override DurationField RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
+            internal override DurationField RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
 
             public bool GetMaxWasCalled;
 
-            public override long GetMaximumValue()
+            internal override long GetMaximumValue()
             {
                 GetMaxWasCalled = true;
                 return 59;
@@ -287,18 +287,18 @@ namespace NodaTime.Test.Fields
 
             public bool GetMinWasCalled;
 
-            public override long GetMinimumValue()
+            internal override long GetMinimumValue()
             {
                 GetMinWasCalled = true;
                 return 0;
             }
 
-            public override LocalInstant RoundFloor(LocalInstant localInstant)
+            internal override LocalInstant RoundFloor(LocalInstant localInstant)
             {
                 return new LocalInstant((localInstant.Ticks / 60L) * 60L);
             }
 
-            public override bool IsLenient { get { return false; } }
+            internal override bool IsLenient { get { return false; } }
         }
     }
 }

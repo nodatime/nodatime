@@ -17,10 +17,11 @@
 
 namespace NodaTime.Partials
 {
+    /*
     /// <summary>
     /// Original name: BaseLocal.
     /// </summary>
     public abstract class LocalBase : AbstractPartial
     {
-    }
+    }*/
 }

@@ -56,31 +56,31 @@ namespace NodaTime.Fields
         // Note: no need to override GetValue, as that delegates to GetInt64Value.
 
         #region Values
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             return base.GetInt64Value(localInstant) + offset;
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             localInstant = base.Add(localInstant, value);
             FieldUtils.VerifyValueBounds(this, GetInt64Value(localInstant), min, max);
             return localInstant;
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, long value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             localInstant = base.Add(localInstant, value);
             FieldUtils.VerifyValueBounds(this, GetInt64Value(localInstant), min, max);
             return localInstant;
         }
 
-        public override LocalInstant AddWrapField(LocalInstant localInstant, int value)
+        internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             return SetValue(localInstant, FieldUtils.GetWrappedValue(GetValue(localInstant), value, min, max));
         }
 
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, min, max);
             return base.SetValue(localInstant, value - offset);
@@ -88,26 +88,26 @@ namespace NodaTime.Fields
         #endregion
 
         #region Leap
-        public override bool IsLeap(LocalInstant localInstant)
+        internal override bool IsLeap(LocalInstant localInstant)
         {
             return WrappedField.IsLeap(localInstant);
         }
 
-        public override int GetLeapAmount(LocalInstant localInstant)
+        internal override int GetLeapAmount(LocalInstant localInstant)
         {
             return WrappedField.GetLeapAmount(localInstant);
         }
 
-        public override DurationField LeapDurationField { get { return WrappedField.LeapDurationField; } }
+        internal override DurationField LeapDurationField { get { return WrappedField.LeapDurationField; } }
         #endregion
 
         #region Ranges
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return min;
         }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return max;
         }
@@ -116,27 +116,27 @@ namespace NodaTime.Fields
         #region Rounding
         // No need to override RoundFloor again - it already just delegates.
 
-        public override LocalInstant RoundCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             return WrappedField.RoundCeiling(localInstant);
         }
 
-        public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfFloor(LocalInstant localInstant)
         {
             return WrappedField.RoundHalfFloor(localInstant);
         }
 
-        public override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
         {
             return WrappedField.RoundHalfCeiling(localInstant);
         }
 
-        public override LocalInstant RoundHalfEven(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfEven(LocalInstant localInstant)
         {
             return WrappedField.RoundHalfEven(localInstant);
         }
 
-        public override Duration Remainder(LocalInstant localInstant)
+        internal override Duration Remainder(LocalInstant localInstant)
         {
             return WrappedField.Remainder(localInstant);
         }

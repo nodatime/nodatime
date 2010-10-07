@@ -35,99 +35,99 @@ namespace NodaTime.Fields
         }
 
         #region Values
-        public override int GetValue(LocalInstant localInstant)
+        internal override int GetValue(LocalInstant localInstant)
         {
             int value = WrappedField.GetValue(localInstant);
             return value == 0 ? (int)GetMaximumValue() : value;
         }
 
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             long value = WrappedField.GetInt64Value(localInstant);
             return value == 0 ? GetMaximumValue() : value;
         }
 
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             long max = GetMaximumValue();
             FieldUtils.VerifyValueBounds(this, value, 1, max);
             return WrappedField.SetValue(localInstant, value == max ? 0 : value);
         }
 
-        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return WrappedField.GetDifference(minuendInstant, subtrahendInstant);
         }
 
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return WrappedField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }
         #endregion
 
         #region Leap
-        public override bool IsLeap(LocalInstant localInstant)
+        internal override bool IsLeap(LocalInstant localInstant)
         {
             return WrappedField.IsLeap(localInstant);
         }
 
-        public override int GetLeapAmount(LocalInstant localInstant)
+        internal override int GetLeapAmount(LocalInstant localInstant)
         {
             return WrappedField.GetLeapAmount(localInstant);
         }
 
-        public override DurationField LeapDurationField { get { return WrappedField.LeapDurationField; } }
+        internal override DurationField LeapDurationField { get { return WrappedField.LeapDurationField; } }
         #endregion
 
         #region Ranges
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return 1;
         }
 
-        public override long GetMinimumValue(LocalInstant localInstant)
+        internal override long GetMinimumValue(LocalInstant localInstant)
         {
             return 1;
         }
 
-        public override long GetMaximumValue(LocalInstant localInstant)
+        internal override long GetMaximumValue(LocalInstant localInstant)
         {
             return WrappedField.GetMaximumValue(localInstant) + 1;
         }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return WrappedField.GetMaximumValue() + 1;
         }
         #endregion
 
         #region Rounding
-        public override LocalInstant RoundCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             return WrappedField.RoundCeiling(localInstant);
         }
 
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             return WrappedField.RoundFloor(localInstant);
         }
 
-        public override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
         {
             return WrappedField.RoundHalfCeiling(localInstant);
         }
 
-        public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfFloor(LocalInstant localInstant)
         {
             return WrappedField.RoundHalfFloor(localInstant);
         }
 
-        public override LocalInstant RoundHalfEven(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfEven(LocalInstant localInstant)
         {
             return WrappedField.RoundHalfEven(localInstant);
         }
 
-        public override Duration Remainder(LocalInstant localInstant)
+        internal override Duration Remainder(LocalInstant localInstant)
         {
             return WrappedField.Remainder(localInstant);
         }

@@ -183,14 +183,14 @@ namespace NodaTime.Test.Fields
             {
             }
 
-            public override long GetInt64Value(LocalInstant localInstant)
+            internal override long GetInt64Value(LocalInstant localInstant)
             {
                 return localInstant.Ticks / 60L;
             }
 
-            public override DurationField RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
+            internal override DurationField RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
 
-            public override long GetMaximumValue()
+            internal override long GetMaximumValue()
             {
                 return 59;
             }
