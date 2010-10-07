@@ -25,7 +25,7 @@ namespace NodaTime.Fields
     /// with regards to a single field, such as months or seconds. This class is
     /// threadsafe, and all subclasses must be too.
     /// </summary>
-    public abstract class DurationFieldBase
+    public abstract class DurationField
     {
         public static bool IsTypeValid(DurationFieldType type)
         {
@@ -34,7 +34,7 @@ namespace NodaTime.Fields
 
         private readonly DurationFieldType fieldType;
 
-        protected DurationFieldBase(DurationFieldType fieldType)
+        protected DurationField(DurationFieldType fieldType)
         {
             if (!IsTypeValid(fieldType))
             {
@@ -232,7 +232,7 @@ namespace NodaTime.Fields
         public abstract long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
         #endregion
 
-        public int CompareTo(DurationFieldBase other)
+        public int CompareTo(DurationField other)
         {
             // cannot do (thisMillis - otherMillis) as can overflow
 

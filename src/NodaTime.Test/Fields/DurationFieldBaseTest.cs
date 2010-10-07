@@ -28,55 +28,55 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithInvalidType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new StubDurationFieldBase((DurationFieldType)(-1)));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new StubDurationField((DurationFieldType)(-1)));
         }
 
         [Test]
         public void Constructor_WithValidType_RemembersType()
         {
-            DurationFieldBase field = new StubDurationFieldBase(DurationFieldType.HalfDays);
+            DurationField field = new StubDurationField(DurationFieldType.HalfDays);
             Assert.AreEqual(DurationFieldType.HalfDays, field.FieldType);
         }
 
         [Test]
         public void IsSupported_ReturnsTrue()
         {
-            DurationFieldBase field = new StubDurationFieldBase();
+            DurationField field = new StubDurationField();
             Assert.IsTrue(field.IsSupported);
         }
 
         [Test]
         public void GetDurationWithoutLocalInstant_UsesUnitTicks()
         {
-            DurationFieldBase field = new StubDurationFieldBase();
+            DurationField field = new StubDurationField();
             Assert.AreEqual(1230L, field.GetDuration(10).Ticks);
         }
 
         [Test]
         public void GetDurationWithoutLocalInstant_ThrowsOnOverflow()
         {
-            DurationFieldBase field = new StubDurationFieldBase();
+            DurationField field = new StubDurationField();
             Assert.Throws<OverflowException>(() => field.GetDuration(long.MaxValue));
         }
 
         [Test]
         public void GetValueWithoutLocalInstant_UsesUnitTicks()
         {
-            DurationFieldBase field = new StubDurationFieldBase();
+            DurationField field = new StubDurationField();
             Assert.AreEqual(9, field.GetValue(new Duration(1200L)));
         }
 
         [Test]
         public void GetValueWithoutLocalInstant_ThrowsOnOverflow()
         {
-            DurationFieldBase field = new StubDurationFieldBase();
+            DurationField field = new StubDurationField();
             Assert.Throws<OverflowException>(() => field.GetValue(new Duration(long.MaxValue)));
         }
 
         [Test]
         public void GetInt64ValueWithoutLocalInstant_UsesUnitTicks()
         {
-            DurationFieldBase field = new StubDurationFieldBase();
+            DurationField field = new StubDurationField();
             Assert.AreEqual(long.MaxValue / 123, field.GetInt64Value(new Duration(long.MaxValue)));
         }
 
@@ -85,25 +85,25 @@ namespace NodaTime.Test.Fields
         {
             foreach (DurationFieldType type in Enum.GetValues(typeof(DurationFieldType)))
             {
-                Assert.IsTrue(DurationFieldBase.IsTypeValid(type));
+                Assert.IsTrue(DurationField.IsTypeValid(type));
             }
         }
 
         [Test]
         public void IsTypeValid_ValuesOutOfRange_AreInvalid()
         {
-            Assert.IsFalse(DurationFieldBase.IsTypeValid((DurationFieldType)(-1)));
+            Assert.IsFalse(DurationField.IsTypeValid((DurationFieldType)(-1)));
             DurationFieldType max = Enum.GetValues(typeof(DurationFieldType)).Cast<DurationFieldType>().Max();
-            Assert.IsFalse(DurationFieldBase.IsTypeValid(max + 1));
+            Assert.IsFalse(DurationField.IsTypeValid(max + 1));
         }
 
-        private class StubDurationFieldBase : DurationFieldBase
+        private class StubDurationField : DurationField
         {
-            internal StubDurationFieldBase() : base(DurationFieldType.Seconds)
+            internal StubDurationField() : base(DurationFieldType.Seconds)
             {
             }
 
-            internal StubDurationFieldBase(DurationFieldType fieldType) : base(fieldType)
+            internal StubDurationField(DurationFieldType fieldType) : base(fieldType)
             {
             }
 

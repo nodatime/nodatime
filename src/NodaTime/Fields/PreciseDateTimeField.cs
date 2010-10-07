@@ -29,10 +29,10 @@ namespace NodaTime.Fields
     /// </remarks>
     internal sealed class PreciseDateTimeField : PreciseDurationDateTimeField
     {
-        private readonly DurationFieldBase rangeField;
+        private readonly DurationField rangeField;
         private readonly long effectiveRange;
 
-        internal PreciseDateTimeField(DateTimeFieldType type, DurationFieldBase unit, DurationFieldBase rangeField) : base(type, unit)
+        internal PreciseDateTimeField(DateTimeFieldType type, DurationField unit, DurationField rangeField) : base(type, unit)
         {
             if (rangeField == null)
             {
@@ -65,7 +65,7 @@ namespace NodaTime.Fields
             return new LocalInstant(ticks + (value - GetInt64Value(localInstant)) * UnitTicks);
         }
 
-        public override DurationFieldBase RangeDurationField { get { return rangeField; } }
+        public override DurationField RangeDurationField { get { return rangeField; } }
 
         public override long GetMaximumValue()
         {

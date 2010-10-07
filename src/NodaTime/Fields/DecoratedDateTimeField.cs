@@ -60,9 +60,9 @@ namespace NodaTime.Fields
         /// </summary>
         public IDateTimeField WrappedField { get { return wrappedField; } }
 
-        public override DurationFieldBase DurationField { get { return wrappedField.DurationField; } }
+        public override DurationField DurationField { get { return wrappedField.DurationField; } }
 
-        public override DurationFieldBase RangeDurationField { get { return wrappedField.RangeDurationField; } }
+        public override DurationField RangeDurationField { get { return wrappedField.RangeDurationField; } }
 
         public override bool IsLenient { get { return wrappedField.IsLenient; } }
 

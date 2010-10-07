@@ -22,7 +22,7 @@ namespace NodaTime.Test.Fields
     /// <summary>
     /// Class allowing simple construction of fields for testing constructors of other fields.
     /// </summary>
-    internal class FakeDurationField : DurationFieldBase
+    internal class FakeDurationField : DurationField
     {
         private readonly long unitTicks;
         private readonly bool precise;

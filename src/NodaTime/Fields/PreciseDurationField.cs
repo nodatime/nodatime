@@ -20,7 +20,7 @@ namespace NodaTime.Fields
     /// <summary>
     /// Duration field class representing a field with a fixed unit length.
     /// </summary>
-    internal sealed class PreciseDurationField : DurationFieldBase
+    internal sealed class PreciseDurationField : DurationField
     {
         internal static readonly PreciseDurationField Milliseconds = new PreciseDurationField(DurationFieldType.Milliseconds, NodaConstants.TicksPerMillisecond);
         internal static readonly PreciseDurationField Seconds = new PreciseDurationField(DurationFieldType.Seconds, NodaConstants.TicksPerSecond);
