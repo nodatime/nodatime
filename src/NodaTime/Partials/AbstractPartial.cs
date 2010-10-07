@@ -25,7 +25,7 @@ namespace NodaTime.Partials
     /// AbstractPartial provides a standard base implementation of most methods
     /// in the IPartial interface.
     /// <para>
-    /// Calculations on are performed using a <see cref="ICalendarSystem"/>.
+    /// Calculations on are performed using a <see cref="CalendarSystem"/>.
     /// </para>
     /// </summary>
     public abstract class AbstractPartial : IPartial
@@ -33,11 +33,11 @@ namespace NodaTime.Partials
         /// <summary>
         /// Gets the calendar system of the partial which is never null.
         /// <para>
-        /// The <see cref="ICalendarSystem"/> is the calculation engine behind the partial and
+        /// The <see cref="CalendarSystem"/> is the calculation engine behind the partial and
         /// provides conversion and validation of the fields in a particular calendar system.
         /// </para>
         /// </summary>
-        public abstract ICalendarSystem Calendar { get; }
+        public abstract CalendarSystem Calendar { get; }
 
         /// <summary>
         /// Gets the number of fields that this partial supports.
@@ -192,7 +192,7 @@ namespace NodaTime.Partials
         /// <param name="index">The index to retrieve</param>
         /// <param name="calendar">The calendar system to use</param>
         /// <returns>The field</returns>
-        protected abstract IDateTimeField GetField(int index, ICalendarSystem calendar);
+        protected abstract IDateTimeField GetField(int index, CalendarSystem calendar);
 
         /// <summary>
         /// Gets the index of the first fields to have the specified duration,

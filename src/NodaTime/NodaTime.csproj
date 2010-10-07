@@ -114,7 +114,7 @@
     <Compile Include="Calendars\AssembledCalendarSystem.cs" />
     <Compile Include="Calendars\BasicCalendarSystem.cs" />
     <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
-    <Compile Include="Calendars\CalendarSystemBase.cs" />
+    <Compile Include="Calendars\CalendarSystem.cs" />
     <Compile Include="Calendars\GregorianCalendarSystem.cs" />
     <Compile Include="Calendars\IsoCalendarSystem.cs" />
     <Compile Include="Converters\ConverterManager.cs" />

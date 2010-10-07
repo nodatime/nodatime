@@ -40,7 +40,7 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return 1; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 writer.Write(value);
@@ -70,7 +70,7 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return value.Length; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 writer.Write(value);
@@ -102,7 +102,7 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return isShort ? 6 : 20; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 try
@@ -127,7 +127,7 @@ namespace NodaTime.Format
                 }
             }
 
-            private String Print(LocalInstant instant, ICalendarSystem calendar, IFormatProvider provider)
+            private String Print(LocalInstant instant, CalendarSystem calendar, IFormatProvider provider)
             {
                 IDateTimeField field = fieldType.GetField(calendar);
 
@@ -333,7 +333,7 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return MaxParsedDigits; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 try
@@ -372,7 +372,7 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return MaxParsedDigits; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 try
@@ -453,7 +453,7 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return 2; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 int year = GetTwoDigitYear(instant, calendarSystem);
@@ -466,7 +466,7 @@ namespace NodaTime.Format
                 WriteYear(writer, year);
             }
 
-            private int GetTwoDigitYear(LocalInstant instant, ICalendarSystem calendarSystem)
+            private int GetTwoDigitYear(LocalInstant instant, CalendarSystem calendarSystem)
             {
                 try
                 {
@@ -666,7 +666,7 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return maxDigits; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 Print(writer, instant, calendarSystem);
@@ -680,7 +680,7 @@ namespace NodaTime.Format
                 Print(writer, instant, partial.Calendar);
             }
 
-            private void Print(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem)
+            private void Print(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem)
             {
                 IDateTimeField field = fieldType.GetField(calendarSystem);
                 int minDigitsLocal = minDigits;
@@ -984,7 +984,7 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return printKind == TimeZoneNamePrintKind.ShortName ? 4 : 20; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 writer.Write(Print(instant - timezoneOffset, dateTimeZone, provider));
@@ -1056,7 +1056,7 @@ namespace NodaTime.Format
                 }
             }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 if (dateTimeZone == null)
@@ -1422,7 +1422,7 @@ namespace NodaTime.Format
 
             public int EstimatedPrintedLength { get { return printedLengthEstimate; } }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 IDateTimePrinter[] elements = printers;

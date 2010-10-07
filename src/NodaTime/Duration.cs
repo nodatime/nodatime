@@ -504,7 +504,7 @@ namespace NodaTime
         /// For more control over the conversion process, you must pair the duration with an instant
         /// </para>
         /// </remarks>
-        public Period ToPeriod(PeriodType type, ICalendarSystem calendar)
+        public Period ToPeriod(PeriodType type, CalendarSystem calendar)
         {
             return Period.From(this, calendar, type);
         }
@@ -544,7 +544,7 @@ namespace NodaTime
         /// For more control over the conversion process, you must pair the duration with an instant
         /// </para>
         /// </remarks>
-        public Period ToPeriod(ICalendarSystem calendar)
+        public Period ToPeriod(CalendarSystem calendar)
         {
             return Period.From(this, calendar);
         }
@@ -591,7 +591,7 @@ namespace NodaTime
         /// the period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodFrom(LocalInstant start, PeriodType type, ICalendarSystem calendar)
+        public Period ToPeriodFrom(LocalInstant start, PeriodType type, CalendarSystem calendar)
         {
             return Period.From(start, this, calendar, type);
         }
@@ -629,7 +629,7 @@ namespace NodaTime
         /// the period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodFrom(LocalInstant start, ICalendarSystem calendar)
+        public Period ToPeriodFrom(LocalInstant start, CalendarSystem calendar)
         {
             return Period.From(start, this, calendar);
         }
@@ -667,7 +667,7 @@ namespace NodaTime
         /// the period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodTo(LocalInstant end, PeriodType type, ICalendarSystem calendar)
+        public Period ToPeriodTo(LocalInstant end, PeriodType type, CalendarSystem calendar)
         {
             return Period.From(this, end, calendar, type);
         }
@@ -705,7 +705,7 @@ namespace NodaTime
         /// the standard period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodTo(LocalInstant end, ICalendarSystem calendar)
+        public Period ToPeriodTo(LocalInstant end, CalendarSystem calendar)
         {
             return Period.From(this, end, calendar);
         }

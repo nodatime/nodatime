@@ -22,22 +22,40 @@ using NodaTime.Periods;
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// CalendarSystemBase provides a skeleton implementation for ICalendarSystem.
+    /// CalendarSystem provides a skeleton implementation for CalendarSystem.
     /// Many utility methods are defined, but all fields are unsupported.
     /// <para>
-    /// CalendarSystemBase is thread-safe and immutable, and all subclasses must be
+    /// CalendarSystem is thread-safe and immutable, and all subclasses must be
     /// as well.
     /// </para>
     /// </summary>
-    public abstract class CalendarSystemBase : ICalendarSystem
+    public abstract class CalendarSystem
     {
+        /// <summary>
+        /// Returns a calendar system that follows the rules of the ISO8601 standard,
+        /// which is compatible with Gregorian for all modern dates.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// When ISO does not define a field, but it can be determined (such as AM/PM) it is included.
+        /// </para>
+        /// <para>
+        /// With the exception of century related fields, the ISO calendar is exactly the
+        /// same as the Gregorian calendar system. In this system, centuries and year
+        /// of century are zero based. For all years, the century is determined by
+        /// dropping the last two digits of the year, ignoring sign. The year of century
+        /// is the value of the last two year digits.
+        /// </para>
+        /// </remarks>
+        public static readonly CalendarSystem Iso = new IsoCalendarSystem(GregorianCalendarSystem.Default);
+
         private readonly string name;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CalendarSystemBase"/> class.
+        /// Initializes a new instance of the <see cref="CalendarSystem"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        protected CalendarSystemBase(string name)
+        protected CalendarSystem(string name)
         {
             this.name = name;
         }
@@ -48,7 +66,7 @@ namespace NodaTime.Calendars
         /// <value>The calendar system name.</value>
         public string Name { get { return name; } }
 
-        public abstract FieldSet Fields { get; }
+        internal abstract FieldSet Fields { get; }
 
         /// <summary>
         /// Returns a local instant, formed from the given year, month, day, and ticks values.
@@ -64,7 +82,7 @@ namespace NodaTime.Calendars
         /// <param name="dayOfMonth">Day of month to use</param>
         /// <param name="tickOfDay">Tick of day to use</param>
         /// <returns>A LocalInstant instance</returns>
-        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
+        internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
             LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
@@ -90,8 +108,8 @@ namespace NodaTime.Calendars
         /// <param name="millisecondOfSecond">Millisecond to use</param>
         /// <param name="tickOfMillisecond">Tick to use</param>
         /// <returns>A LocalInstant instance</returns>
-        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
-                                                    int millisecondOfSecond, int tickOfMillisecond)
+        internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+                                                      int millisecondOfSecond, int tickOfMillisecond)
         {
             LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
@@ -118,8 +136,8 @@ namespace NodaTime.Calendars
         /// <param name="millisecondOfSecond">Milliscond to use</param>
         /// <param name="tickOfMillisecond">Tick to use</param>
         /// <returns>A LocalInstant instance</returns>
-        public virtual LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
-                                                    int tickOfMillisecond)
+        internal virtual LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
+                                                      int tickOfMillisecond)
         {
             localInstant = Fields.HourOfDay.SetValue(localInstant, hourOfDay);
             localInstant = Fields.MinuteOfHour.SetValue(localInstant, minuteOfHour);
@@ -128,12 +146,12 @@ namespace NodaTime.Calendars
             return Fields.TickOfMillisecond.SetValue(localInstant, tickOfMillisecond);
         }
 
-        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
+        internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
             return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, 0, 0);
         }
 
-        public virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
+        internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
             return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, 0, 0, 0);
         }
@@ -146,7 +164,7 @@ namespace NodaTime.Calendars
         /// <param name="start">The start instant of an interval to query</param>
         /// <param name="end">The end instant of an interval to query</param>
         /// <returns>The values of the period extracted from the interval</returns>
-        public int[] GetPeriodValues(PeriodType periodType, LocalInstant start, LocalInstant end)
+        internal int[] GetPeriodValues(PeriodType periodType, LocalInstant start, LocalInstant end)
         {
             int size = periodType.Size;
             int[] values = new int[size];
@@ -175,7 +193,7 @@ namespace NodaTime.Calendars
         /// <param name="instant">The instant to add to</param>
         /// <param name="scalar">The number of times to add</param>
         /// <returns>The updated instant</returns>
-        public LocalInstant Add(IPeriod period, LocalInstant instant, int scalar)
+        internal LocalInstant Add(IPeriod period, LocalInstant instant, int scalar)
         {
             LocalInstant result = instant;
 
@@ -233,7 +251,7 @@ namespace NodaTime.Calendars
         /// </summary>
         /// <param name="partial">The partial instant to validate</param>
         /// <param name="values">The values to validate, not null, match fields in partial</param>
-        public void Validate(IPartial partial, int[] values)
+        internal void Validate(IPartial partial, int[] values)
         {
             int size = partial.Size;
 
@@ -275,7 +293,7 @@ namespace NodaTime.Calendars
         /// <param name="partial">The partial instant to use</param>
         /// <param name="instant">The instant to query</param>
         /// <returns>The values of this partial extracted from the instant</returns>
-        public int[] GetPartialValues(IPartial partial, LocalInstant instant)
+        internal int[] GetPartialValues(IPartial partial, LocalInstant instant)
         {
             int size = partial.Size;
             int[] values = new int[size];
@@ -292,7 +310,7 @@ namespace NodaTime.Calendars
         /// <param name="partial">The partial instant to use</param>
         /// <param name="localInstant">The instant to update</param>
         /// <returns>The updated instant</returns>
-        public LocalInstant SetPartial(IPartial partial, LocalInstant localInstant)
+        internal LocalInstant SetPartial(IPartial partial, LocalInstant localInstant)
         {
             for (int i = 0, isize = partial.Size; i < isize; i++)
             {
