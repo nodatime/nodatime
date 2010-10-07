@@ -273,9 +273,9 @@ namespace NodaTime.Test.Fields
                 return localInstant;
             }
 
-            public override IDurationField DurationField { get { return new MockCountingDurationField(DurationFieldType.Seconds); } }
+            public override DurationFieldBase DurationField { get { return new MockCountingDurationField(DurationFieldType.Seconds); } }
 
-            public override IDurationField RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
+            public override DurationFieldBase RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
 
             public bool GetMaxWasCalled;
 

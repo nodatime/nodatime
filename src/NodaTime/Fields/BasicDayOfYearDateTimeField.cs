@@ -26,7 +26,7 @@ namespace NodaTime.Fields
     {
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal BasicDayOfYearDateTimeField(BasicCalendarSystem calendarSystem, IDurationField days) : base(DateTimeFieldType.DayOfYear, days)
+        internal BasicDayOfYearDateTimeField(BasicCalendarSystem calendarSystem, DurationFieldBase days) : base(DateTimeFieldType.DayOfYear, days)
         {
             this.calendarSystem = calendarSystem;
         }
@@ -41,7 +41,7 @@ namespace NodaTime.Fields
             return calendarSystem.GetDayOfYear(localInstant);
         }
 
-        public override IDurationField RangeDurationField { get { return calendarSystem.Fields.Years; } }
+        public override DurationFieldBase RangeDurationField { get { return calendarSystem.Fields.Years; } }
 
         public override long GetMaximumValue()
         {

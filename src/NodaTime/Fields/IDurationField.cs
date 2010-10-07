@@ -24,7 +24,7 @@ namespace NodaTime.Fields
     /// The interface defines a set of methods that manipulate a millisecond duration
     /// with regards to a single field, such as months or seconds.
     /// </summary>
-    public interface IDurationField : IComparable<IDurationField>
+    public interface IDurationField : IComparable<DurationFieldBase>
     {
         /// <summary>
         /// Gets the type of the field.

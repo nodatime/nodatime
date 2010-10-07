@@ -31,9 +31,9 @@ namespace NodaTime.Fields
         /// </summary>
         private readonly long unitTicks;
 
-        private readonly IDurationField unitField;
+        private readonly DurationFieldBase unitField;
 
-        protected PreciseDurationDateTimeField(DateTimeFieldType fieldType, IDurationField unit) : base(fieldType)
+        protected PreciseDurationDateTimeField(DateTimeFieldType fieldType, DurationFieldBase unit) : base(fieldType)
         {
             if (unit == null)
             {
@@ -59,7 +59,7 @@ namespace NodaTime.Fields
         /// For example, if this
         /// field represents "hour of day", then the duration is an hour.
         /// </summary>
-        public override IDurationField DurationField { get { return unitField; } }
+        public override DurationFieldBase DurationField { get { return unitField; } }
 
         /// <summary>
         /// Returns false by default.

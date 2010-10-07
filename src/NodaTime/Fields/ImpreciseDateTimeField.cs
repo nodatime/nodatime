@@ -38,7 +38,7 @@ namespace NodaTime.Fields
     internal abstract class ImpreciseDateTimeField : DateTimeFieldBase
     {
         private readonly long unitTicks;
-        private readonly IDurationField durationField;
+        private readonly DurationFieldBase durationField;
 
         protected ImpreciseDateTimeField(DateTimeFieldType fieldType, long unitTicks) : base(fieldType)
         {
@@ -48,9 +48,9 @@ namespace NodaTime.Fields
 
         public long UnitTicks { get { return unitTicks; } }
 
-        public override IDurationField DurationField { get { return durationField; } }
+        public override DurationFieldBase DurationField { get { return durationField; } }
 
-        public abstract override IDurationField RangeDurationField { get; }
+        public abstract override DurationFieldBase RangeDurationField { get; }
         public abstract override int GetValue(LocalInstant localInstant);
         public abstract override LocalInstant Add(LocalInstant localInstant, int value);
         public abstract override LocalInstant Add(LocalInstant localInstant, long value);
