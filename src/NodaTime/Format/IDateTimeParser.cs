@@ -22,7 +22,7 @@ namespace NodaTime.Format
     /// <summary>
     /// Internal interface for parsing textual representations of datetimes.
     /// </summary>
-    public interface IDateTimeParser
+    internal interface IDateTimeParser
     {
         /// <summary>
         /// Gets the expected maximum number of characters consumed.

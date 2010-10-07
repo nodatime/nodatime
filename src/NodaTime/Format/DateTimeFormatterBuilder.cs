@@ -1558,7 +1558,7 @@ namespace NodaTime.Format
         /// <param name="parser">The parser to add</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If printer or parser is null</exception>
-        public DateTimeFormatterBuilder Append(IDateTimePrinter printer, IDateTimeParser parser)
+        internal DateTimeFormatterBuilder Append(IDateTimePrinter printer, IDateTimeParser parser)
         {
             Guard(printer);
             Guard(parser);
@@ -1573,7 +1573,7 @@ namespace NodaTime.Format
         /// <param name="printer">The printer to add</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If printer is null</exception>
-        public DateTimeFormatterBuilder Append(IDateTimePrinter printer)
+        internal DateTimeFormatterBuilder Append(IDateTimePrinter printer)
         {
             Guard(printer);
 
@@ -1587,7 +1587,7 @@ namespace NodaTime.Format
         /// <param name="parser">The parser to add</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If parser is null</exception>
-        public DateTimeFormatterBuilder Append(IDateTimeParser parser)
+        internal DateTimeFormatterBuilder Append(IDateTimeParser parser)
         {
             Guard(parser);
 
@@ -1615,7 +1615,7 @@ namespace NodaTime.Format
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentException">If any parser element but the last is null</exception>
-        public DateTimeFormatterBuilder Append(IDateTimePrinter printer, IDateTimeParser[] parsers)
+        internal DateTimeFormatterBuilder Append(IDateTimePrinter printer, IDateTimeParser[] parsers)
         {
             Guard(parsers);
 
@@ -1650,7 +1650,7 @@ namespace NodaTime.Format
         /// <param name="parser"></param>
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">if parser is null</exception>
-        public DateTimeFormatterBuilder AppendOptional(IDateTimeParser parser)
+        internal DateTimeFormatterBuilder AppendOptional(IDateTimeParser parser)
         {
             Guard(parser);
             IDateTimeParser[] parsers = new[] { parser, null };
@@ -2368,7 +2368,7 @@ namespace NodaTime.Format
         /// </para>
         /// </remarks>
         /// <exception cref="NotSupportedException">If printing is not supported</exception>
-        public IDateTimePrinter ToPrinter()
+        internal IDateTimePrinter ToPrinter()
         {
             var f = GetFormatter();
             if (IsPrinter(f))
@@ -2394,7 +2394,7 @@ namespace NodaTime.Format
         /// </para>
         /// </remarks>
         /// <exception cref="NotSupportedException">If parsing is not supported</exception>
-        public IDateTimeParser ToParser()
+        internal IDateTimeParser ToParser()
         {
             var f = GetFormatter();
             if (IsParser(f))
