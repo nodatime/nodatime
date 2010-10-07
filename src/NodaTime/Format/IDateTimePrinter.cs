@@ -24,7 +24,7 @@ namespace NodaTime.Format
     /// <summary>
     /// Internal interface for creating textual representations of datetimes.
     /// </summary>
-    public interface IDateTimePrinter
+    internal interface IDateTimePrinter
     {
         /// <summary>
         /// Returns the expected maximum number of characters produced.
@@ -41,8 +41,8 @@ namespace NodaTime.Format
         /// <param name="timezoneOffset"></param>
         /// <param name="dateTimeZone">The time zone to use, null means local time</param>
         /// <param name="provider">Provider to use</param>
-        void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
-                     IFormatProvider provider);
+        void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem,
+                     Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider);
 
         /// <summary>
         /// Prints a partial.

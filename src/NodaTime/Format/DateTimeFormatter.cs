@@ -48,7 +48,7 @@ namespace NodaTime.Format
         // The pivot year to use for two-digit year parsing.
         private readonly int? pivotYear;
 
-        public DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser)
+        internal DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser)
         {
             this.printer = printer;
             this.parser = parser;
@@ -80,7 +80,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the internal printer object that performs the real printing work.
         /// </summary>
-        public IDateTimePrinter Printer { get { return printer; } }
+        internal IDateTimePrinter Printer { get { return printer; } }
 
         /// <summary>
         /// Indicates whether this formatter capable of printing.
@@ -90,7 +90,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the internal parser object that performs the real parsing work.
         /// </summary>
-        public IDateTimeParser Parser { get { return parser; } }
+        internal IDateTimeParser Parser { get { return parser; } }
 
         /// <summary>
         /// Gets the format provider that will be used for printing and parsing.
