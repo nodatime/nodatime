@@ -20,7 +20,7 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Derives from <see cref="DateTimeFieldBase" />, implementing
+    /// Derives from <see cref="DateTimeField" />, implementing
     /// only the minimum required set of methods. These implemented methods
     /// delegate to a wrapped field.
     /// Porting status: Done.
@@ -29,7 +29,7 @@ namespace NodaTime.Fields
     /// <para>
     /// This design allows new DateTimeField types to be defined that piggyback
     /// on top of another, inheriting all the safe method implementations from
-    /// DateTimeFieldBase. Should any method require pure delegation to the wrapped
+    /// DateTimeField. Should any method require pure delegation to the wrapped
     /// field, simply override and use the provided WrappedField property.
     /// </para>
     /// <para>
@@ -38,11 +38,11 @@ namespace NodaTime.Fields
     /// However, presumably that's not required as Joda doesn't use it...
     /// </para>
     /// </remarks>
-    public abstract class DecoratedDateTimeField : DateTimeFieldBase
+    public abstract class DecoratedDateTimeField : DateTimeField
     {
-        private readonly DateTimeFieldBase wrappedField;
+        private readonly DateTimeField wrappedField;
 
-        protected DecoratedDateTimeField(DateTimeFieldBase wrappedField, DateTimeFieldType fieldType) : base(fieldType)
+        protected DecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType) : base(fieldType)
         {
             if (wrappedField == null)
             {
@@ -58,7 +58,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Gets the wrapped date time field.
         /// </summary>
-        public DateTimeFieldBase WrappedField { get { return wrappedField; } }
+        public DateTimeField WrappedField { get { return wrappedField; } }
 
         public override DurationField DurationField { get { return wrappedField.DurationField; } }
 

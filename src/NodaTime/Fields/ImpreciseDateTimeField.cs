@@ -35,7 +35,7 @@ namespace NodaTime.Fields
     /// be as well.
     /// </para>
     /// </remarks>
-    internal abstract class ImpreciseDateTimeField : DateTimeFieldBase
+    internal abstract class ImpreciseDateTimeField : DateTimeField
     {
         private readonly long unitTicks;
         private readonly DurationField durationField;

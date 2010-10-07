@@ -109,7 +109,7 @@ namespace NodaTime.Calendars
             builder.YearOfEra = new GJYearOfEraDateTimeField(builder.Year, this);
 
             // Define one-based centuryOfEra and yearOfCentury.
-            DateTimeFieldBase field = new OffsetDateTimeField(builder.YearOfEra, 99);
+            DateTimeField field = new OffsetDateTimeField(builder.YearOfEra, 99);
             builder.CenturyOfEra = new DividedDateTimeField(field, DateTimeFieldType.CenturyOfEra, 100);
 
             field = new RemainderDateTimeField((DividedDateTimeField)builder.CenturyOfEra);

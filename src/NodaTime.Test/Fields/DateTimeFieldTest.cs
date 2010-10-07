@@ -23,25 +23,25 @@ namespace NodaTime.Test.Fields
 {
     // TODO: Refactor a lot of these tests: there's a lot of duplication down the hierarchy.
     [TestFixture]
-    public class DateTimeFieldBaseTest
+    public class DateTimeFieldTest
     {
         [Test]
         public void Constructor_WithInvalidType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentNullException>(() => new StubDateTimeFieldBase(null));
+            Assert.Throws<ArgumentNullException>(() => new StubDateTimeField(null));
         }
 
         [Test]
         public void Constructor_WithValidType_RemembersType()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase(DateTimeFieldType.WeekYear);
+            DateTimeField field = new StubDateTimeField(DateTimeFieldType.WeekYear);
             Assert.AreEqual(DateTimeFieldType.WeekYear, field.FieldType);
         }
 
         [Test]
         public void IsSupported_DefaultsToTrue()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            DateTimeField field = new StubDateTimeField();
             Assert.IsTrue(field.IsSupported);
         }
 
@@ -49,7 +49,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetValue_DelegatesToGetInt64Value()
         {
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
             var arg = new LocalInstant(60);
 
             field.GetValue(arg);
@@ -64,7 +64,7 @@ namespace NodaTime.Test.Fields
             MockCountingDurationField.int32Additions = 0;
             var instantArg = new LocalInstant(1);
             var valueArg = 1;
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
 
             field.Add(instantArg, valueArg);
 
@@ -79,7 +79,7 @@ namespace NodaTime.Test.Fields
             MockCountingDurationField.int64Additions = 0;
             var instantArg = new LocalInstant(2);
             var valueArg = 5L;
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
 
             field.Add(instantArg, valueArg);
 
@@ -94,7 +94,7 @@ namespace NodaTime.Test.Fields
             MockCountingDurationField.differences = 0;
             var firstInstant = new LocalInstant(2);
             var secondInstant = new LocalInstant(3);
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
 
             field.GetDifference(firstInstant, secondInstant);
 
@@ -109,7 +109,7 @@ namespace NodaTime.Test.Fields
             MockCountingDurationField.differences64 = 0;
             var firstInstant = new LocalInstant(4);
             var secondInstant = new LocalInstant(5);
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
 
             field.GetInt64Difference(firstInstant, secondInstant);
 
@@ -123,21 +123,21 @@ namespace NodaTime.Test.Fields
         [Test]
         public void IsLeap_DefaultsToFalse()
         {
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
             Assert.IsFalse(field.IsLeap(new LocalInstant(0)));
         }
 
         [Test]
         public void GetLeapAmount_DefaultsTo0()
         {
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
             Assert.AreEqual(0, field.GetLeapAmount(new LocalInstant(0)));
         }
 
         [Test]
         public void LeapDurationField_DefaultsToNull()
         {
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
             Assert.IsNull(field.LeapDurationField);
         }
         #endregion
@@ -146,7 +146,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetMinimumValue_OnStub_DefaultsTo0()
         {
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
             Assert.AreEqual(0L, field.GetMinimumValue());
             Assert.That(field.GetMinWasCalled, Is.True);
         }
@@ -154,7 +154,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetMinimumValueForInstant_DelegatesToAbsolute()
         {
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
             Assert.AreEqual(0L, field.GetMinimumValue(new LocalInstant(0)));
             Assert.That(field.GetMinWasCalled, Is.True);
         }
@@ -162,7 +162,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetMaximumValue_OnStub_DefaultsTo59()
         {
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
             Assert.AreEqual(59L, field.GetMaximumValue());
             Assert.That(field.GetMaxWasCalled, Is.True);
         }
@@ -170,7 +170,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetMaximumValueForInstant_DelegatesToAbsolute()
         {
-            var field = new StubDateTimeFieldBase();
+            var field = new StubDateTimeField();
             Assert.AreEqual(59L, field.GetMaximumValue(new LocalInstant(0)));
             Assert.That(field.GetMaxWasCalled, Is.True);
         }
@@ -180,7 +180,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundFloor_OnStub_RoundsTo60()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            DateTimeField field = new StubDateTimeField();
             Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(30L)).Ticks);
@@ -191,7 +191,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundCeiling()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            DateTimeField field = new StubDateTimeField();
             Assert.AreEqual(0L, field.RoundCeiling(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(30L)).Ticks);
@@ -202,7 +202,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundHalfFloor()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            DateTimeField field = new StubDateTimeField();
             Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(30L)).Ticks);
@@ -213,7 +213,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundHalfCeiling()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            DateTimeField field = new StubDateTimeField();
             Assert.AreEqual(0L, field.RoundHalfCeiling(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfCeiling(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(60L, field.RoundHalfCeiling(new LocalInstant(30L)).Ticks);
@@ -224,7 +224,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundHalfEven()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            DateTimeField field = new StubDateTimeField();
             Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(30L)).Ticks);
@@ -238,7 +238,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Remainder()
         {
-            DateTimeFieldBase field = new StubDateTimeFieldBase();
+            DateTimeField field = new StubDateTimeField();
             Assert.AreEqual(0L, field.Remainder(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(29L, field.Remainder(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(30L, field.Remainder(new LocalInstant(30L)).Ticks);
@@ -247,13 +247,13 @@ namespace NodaTime.Test.Fields
         }
         #endregion
 
-        private class StubDateTimeFieldBase : DateTimeFieldBase
+        private class StubDateTimeField : DateTimeField
         {
-            internal StubDateTimeFieldBase(DateTimeFieldType type) : base(type)
+            internal StubDateTimeField(DateTimeFieldType type) : base(type)
             {
             }
 
-            internal StubDateTimeFieldBase() : base(DateTimeFieldType.SecondOfMinute)
+            internal StubDateTimeField() : base(DateTimeFieldType.SecondOfMinute)
             {
             }
 

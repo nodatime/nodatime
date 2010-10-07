@@ -129,7 +129,7 @@ namespace NodaTime.Format
 
             private String Print(LocalInstant instant, CalendarSystem calendar, IFormatProvider provider)
             {
-                DateTimeFieldBase field = fieldType.GetField(calendar);
+                DateTimeField field = fieldType.GetField(calendar);
 
                 return isShort ? field.GetAsShortText(instant, provider) : field.GetAsText(instant, provider);
             }
@@ -138,7 +138,7 @@ namespace NodaTime.Format
             {
                 if (partial.IsSupported(fieldType))
                 {
-                    DateTimeFieldBase field = fieldType.GetField(partial.Calendar);
+                    DateTimeField field = fieldType.GetField(partial.Calendar);
 
                     return isShort ? field.GetAsShortText(partial, provider) : field.GetAsText(partial, provider);
                 }
@@ -682,7 +682,7 @@ namespace NodaTime.Format
 
             private void Print(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem)
             {
-                DateTimeFieldBase field = fieldType.GetField(calendarSystem);
+                DateTimeField field = fieldType.GetField(calendarSystem);
                 int minDigitsLocal = minDigits;
 
                 Duration fraction;
@@ -745,7 +745,7 @@ namespace NodaTime.Format
                 writer.Write(str);
             }
 
-            private void GetFractionData(Duration fraction, DateTimeFieldBase field, out Duration fractionResult, out int maxDigitsResult)
+            private void GetFractionData(Duration fraction, DateTimeField field, out Duration fractionResult, out int maxDigitsResult)
             {
                 long rangeMillis = field.DurationField.UnitTicks;
                 long scalar;
@@ -828,7 +828,7 @@ namespace NodaTime.Format
 
             public int ParseInto(DateTimeParserBucket bucket, string text, int position)
             {
-                DateTimeFieldBase field = fieldType.GetField(bucket.Calendar);
+                DateTimeField field = fieldType.GetField(bucket.Calendar);
 
                 int limit = Math.Min(maxDigits, text.Length - position);
 
@@ -862,7 +862,7 @@ namespace NodaTime.Format
                     return ~position;
                 }
 
-                DateTimeFieldBase parseField = new PreciseDateTimeField(DateTimeFieldType.MillisecondOfSecond, PreciseDurationField.Milliseconds,
+                DateTimeField parseField = new PreciseDateTimeField(DateTimeFieldType.MillisecondOfSecond, PreciseDurationField.Milliseconds,
                                                                      field.DurationField);
 
                 bucket.SaveField(parseField, (int)value);

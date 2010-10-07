@@ -38,31 +38,31 @@ namespace NodaTime.Fields
         private readonly DurationField centuries;
         private readonly DurationField eras;
 
-        private readonly DateTimeFieldBase tickOfMillisecond;
-        private readonly DateTimeFieldBase tickOfDay;
-        private readonly DateTimeFieldBase millisecondOfSecond;
-        private readonly DateTimeFieldBase millisecondOfDay;
-        private readonly DateTimeFieldBase secondOfMinute;
-        private readonly DateTimeFieldBase secondOfDay;
-        private readonly DateTimeFieldBase minuteOfHour;
-        private readonly DateTimeFieldBase minuteOfDay;
-        private readonly DateTimeFieldBase hourOfDay;
-        private readonly DateTimeFieldBase clockHourOfDay;
-        private readonly DateTimeFieldBase hourOfHalfDay;
-        private readonly DateTimeFieldBase clockHourOfHalfDay;
-        private readonly DateTimeFieldBase halfDayOfDay;
-        private readonly DateTimeFieldBase dayOfWeek;
-        private readonly DateTimeFieldBase dayOfMonth;
-        private readonly DateTimeFieldBase dayOfYear;
-        private readonly DateTimeFieldBase weekOfWeekYear;
-        private readonly DateTimeFieldBase weekYear;
-        private readonly DateTimeFieldBase weekYearOfCentury;
-        private readonly DateTimeFieldBase monthOfYear;
-        private readonly DateTimeFieldBase year;
-        private readonly DateTimeFieldBase yearOfCentury;
-        private readonly DateTimeFieldBase yearOfEra;
-        private readonly DateTimeFieldBase centruryOfEra;
-        private readonly DateTimeFieldBase era;
+        private readonly DateTimeField tickOfMillisecond;
+        private readonly DateTimeField tickOfDay;
+        private readonly DateTimeField millisecondOfSecond;
+        private readonly DateTimeField millisecondOfDay;
+        private readonly DateTimeField secondOfMinute;
+        private readonly DateTimeField secondOfDay;
+        private readonly DateTimeField minuteOfHour;
+        private readonly DateTimeField minuteOfDay;
+        private readonly DateTimeField hourOfDay;
+        private readonly DateTimeField clockHourOfDay;
+        private readonly DateTimeField hourOfHalfDay;
+        private readonly DateTimeField clockHourOfHalfDay;
+        private readonly DateTimeField halfDayOfDay;
+        private readonly DateTimeField dayOfWeek;
+        private readonly DateTimeField dayOfMonth;
+        private readonly DateTimeField dayOfYear;
+        private readonly DateTimeField weekOfWeekYear;
+        private readonly DateTimeField weekYear;
+        private readonly DateTimeField weekYearOfCentury;
+        private readonly DateTimeField monthOfYear;
+        private readonly DateTimeField year;
+        private readonly DateTimeField yearOfCentury;
+        private readonly DateTimeField yearOfEra;
+        private readonly DateTimeField centruryOfEra;
+        private readonly DateTimeField era;
 
         public DurationField Ticks { get { return ticks; } }
         public DurationField Milliseconds { get { return milliseconds; } }
@@ -78,31 +78,31 @@ namespace NodaTime.Fields
         public DurationField Centuries { get { return centuries; } }
         public DurationField Eras { get { return eras; } }
 
-        public DateTimeFieldBase TickOfMillisecond { get { return tickOfMillisecond; } }
-        public DateTimeFieldBase TickOfDay { get { return tickOfDay; } }
-        public DateTimeFieldBase MillisecondOfSecond { get { return millisecondOfSecond; } }
-        public DateTimeFieldBase MillisecondOfDay { get { return millisecondOfDay; } }
-        public DateTimeFieldBase SecondOfMinute { get { return secondOfMinute; } }
-        public DateTimeFieldBase SecondOfDay { get { return secondOfDay; } }
-        public DateTimeFieldBase MinuteOfHour { get { return minuteOfHour; } }
-        public DateTimeFieldBase MinuteOfDay { get { return minuteOfDay; } }
-        public DateTimeFieldBase HourOfDay { get { return hourOfDay; } }
-        public DateTimeFieldBase ClockHourOfDay { get { return clockHourOfDay; } }
-        public DateTimeFieldBase HourOfHalfDay { get { return hourOfHalfDay; } }
-        public DateTimeFieldBase ClockHourOfHalfDay { get { return clockHourOfHalfDay; } }
-        public DateTimeFieldBase HalfDayOfDay { get { return halfDayOfDay; } }
-        public DateTimeFieldBase DayOfWeek { get { return dayOfWeek; } }
-        public DateTimeFieldBase DayOfMonth { get { return dayOfMonth; } }
-        public DateTimeFieldBase DayOfYear { get { return dayOfYear; } }
-        public DateTimeFieldBase WeekOfWeekYear { get { return weekOfWeekYear; } }
-        public DateTimeFieldBase WeekYear { get { return weekYear; } }
-        public DateTimeFieldBase WeekYearOfCentury { get { return weekYearOfCentury; } }
-        public DateTimeFieldBase MonthOfYear { get { return monthOfYear; } }
-        public DateTimeFieldBase Year { get { return year; } }
-        public DateTimeFieldBase YearOfCentury { get { return yearOfCentury; } }
-        public DateTimeFieldBase YearOfEra { get { return yearOfEra; } }
-        public DateTimeFieldBase CenturyOfEra { get { return centruryOfEra; } }
-        public DateTimeFieldBase Era { get { return era; } }
+        public DateTimeField TickOfMillisecond { get { return tickOfMillisecond; } }
+        public DateTimeField TickOfDay { get { return tickOfDay; } }
+        public DateTimeField MillisecondOfSecond { get { return millisecondOfSecond; } }
+        public DateTimeField MillisecondOfDay { get { return millisecondOfDay; } }
+        public DateTimeField SecondOfMinute { get { return secondOfMinute; } }
+        public DateTimeField SecondOfDay { get { return secondOfDay; } }
+        public DateTimeField MinuteOfHour { get { return minuteOfHour; } }
+        public DateTimeField MinuteOfDay { get { return minuteOfDay; } }
+        public DateTimeField HourOfDay { get { return hourOfDay; } }
+        public DateTimeField ClockHourOfDay { get { return clockHourOfDay; } }
+        public DateTimeField HourOfHalfDay { get { return hourOfHalfDay; } }
+        public DateTimeField ClockHourOfHalfDay { get { return clockHourOfHalfDay; } }
+        public DateTimeField HalfDayOfDay { get { return halfDayOfDay; } }
+        public DateTimeField DayOfWeek { get { return dayOfWeek; } }
+        public DateTimeField DayOfMonth { get { return dayOfMonth; } }
+        public DateTimeField DayOfYear { get { return dayOfYear; } }
+        public DateTimeField WeekOfWeekYear { get { return weekOfWeekYear; } }
+        public DateTimeField WeekYear { get { return weekYear; } }
+        public DateTimeField WeekYearOfCentury { get { return weekYearOfCentury; } }
+        public DateTimeField MonthOfYear { get { return monthOfYear; } }
+        public DateTimeField Year { get { return year; } }
+        public DateTimeField YearOfCentury { get { return yearOfCentury; } }
+        public DateTimeField YearOfEra { get { return yearOfEra; } }
+        public DateTimeField CenturyOfEra { get { return centruryOfEra; } }
+        public DateTimeField Era { get { return era; } }
 
         private FieldSet(Builder builder)
         {
@@ -176,31 +176,31 @@ namespace NodaTime.Fields
             public DurationField Centuries { get; set; }
             public DurationField Eras { get; set; }
 
-            public DateTimeFieldBase TickOfMillisecond { get; set; }
-            public DateTimeFieldBase TickOfDay { get; set; }
-            public DateTimeFieldBase MillisecondOfSecond { get; set; }
-            public DateTimeFieldBase MillisecondOfDay { get; set; }
-            public DateTimeFieldBase SecondOfMinute { get; set; }
-            public DateTimeFieldBase SecondOfDay { get; set; }
-            public DateTimeFieldBase MinuteOfHour { get; set; }
-            public DateTimeFieldBase MinuteOfDay { get; set; }
-            public DateTimeFieldBase HourOfDay { get; set; }
-            public DateTimeFieldBase ClockHourOfDay { get; set; }
-            public DateTimeFieldBase HourOfHalfDay { get; set; }
-            public DateTimeFieldBase ClockHourOfHalfDay { get; set; }
-            public DateTimeFieldBase HalfDayOfDay { get; set; }
-            public DateTimeFieldBase DayOfWeek { get; set; }
-            public DateTimeFieldBase DayOfMonth { get; set; }
-            public DateTimeFieldBase DayOfYear { get; set; }
-            public DateTimeFieldBase WeekOfWeekYear { get; set; }
-            public DateTimeFieldBase WeekYear { get; set; }
-            public DateTimeFieldBase WeekYearOfCentury { get; set; }
-            public DateTimeFieldBase MonthOfYear { get; set; }
-            public DateTimeFieldBase Year { get; set; }
-            public DateTimeFieldBase YearOfCentury { get; set; }
-            public DateTimeFieldBase YearOfEra { get; set; }
-            public DateTimeFieldBase CenturyOfEra { get; set; }
-            public DateTimeFieldBase Era { get; set; }
+            public DateTimeField TickOfMillisecond { get; set; }
+            public DateTimeField TickOfDay { get; set; }
+            public DateTimeField MillisecondOfSecond { get; set; }
+            public DateTimeField MillisecondOfDay { get; set; }
+            public DateTimeField SecondOfMinute { get; set; }
+            public DateTimeField SecondOfDay { get; set; }
+            public DateTimeField MinuteOfHour { get; set; }
+            public DateTimeField MinuteOfDay { get; set; }
+            public DateTimeField HourOfDay { get; set; }
+            public DateTimeField ClockHourOfDay { get; set; }
+            public DateTimeField HourOfHalfDay { get; set; }
+            public DateTimeField ClockHourOfHalfDay { get; set; }
+            public DateTimeField HalfDayOfDay { get; set; }
+            public DateTimeField DayOfWeek { get; set; }
+            public DateTimeField DayOfMonth { get; set; }
+            public DateTimeField DayOfYear { get; set; }
+            public DateTimeField WeekOfWeekYear { get; set; }
+            public DateTimeField WeekYear { get; set; }
+            public DateTimeField WeekYearOfCentury { get; set; }
+            public DateTimeField MonthOfYear { get; set; }
+            public DateTimeField Year { get; set; }
+            public DateTimeField YearOfCentury { get; set; }
+            public DateTimeField YearOfEra { get; set; }
+            public DateTimeField CenturyOfEra { get; set; }
+            public DateTimeField Era { get; set; }
 
             public Builder()
             {

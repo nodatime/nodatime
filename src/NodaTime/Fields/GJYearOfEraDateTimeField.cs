@@ -26,7 +26,7 @@ namespace NodaTime.Fields
     {
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal GJYearOfEraDateTimeField(DateTimeFieldBase yearField, BasicCalendarSystem calendarSystem) : base(yearField, DateTimeFieldType.YearOfEra)
+        internal GJYearOfEraDateTimeField(DateTimeField yearField, BasicCalendarSystem calendarSystem) : base(yearField, DateTimeFieldType.YearOfEra)
         {
             this.calendarSystem = calendarSystem;
         }

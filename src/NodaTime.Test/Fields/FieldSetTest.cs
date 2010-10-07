@@ -29,7 +29,7 @@ namespace NodaTime.Test.Fields
     [TestFixture]
     public class FieldSetTest
     {
-        private readonly DateTimeFieldBase sampleField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, PreciseDurationField.Seconds,
+        private readonly DateTimeField sampleField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, PreciseDurationField.Seconds,
                                                                                PreciseDurationField.Minutes);
 
         [Test]
@@ -44,7 +44,7 @@ namespace NodaTime.Test.Fields
         public void UnsupportedDateTimeFields_AreBuiltFromDurationFields()
         {
             FieldSet fieldSet = new FieldSet.Builder { Seconds = PreciseDurationField.Seconds }.Build();
-            DateTimeFieldBase field = fieldSet.SecondOfMinute;
+            DateTimeField field = fieldSet.SecondOfMinute;
             Assert.IsFalse(field.IsSupported);
             Assert.AreSame(fieldSet.Seconds, field.DurationField);
         }
@@ -65,9 +65,9 @@ namespace NodaTime.Test.Fields
         public void UnspecifiedDateTimeFields_DefaultToUnsupported()
         {
             FieldSet fieldSet = new FieldSet.Builder().Build();
-            foreach (var prop in typeof(FieldSet).GetProperties().Where(p => p.PropertyType == typeof(DateTimeFieldBase)))
+            foreach (var prop in typeof(FieldSet).GetProperties().Where(p => p.PropertyType == typeof(DateTimeField)))
             {
-                DateTimeFieldBase field = (DateTimeFieldBase)prop.GetValue(fieldSet, null);
+                DateTimeField field = (DateTimeField)prop.GetValue(fieldSet, null);
                 Assert.IsNotNull(field);
                 Assert.IsFalse(field.IsSupported);
             }
@@ -99,7 +99,7 @@ namespace NodaTime.Test.Fields
         public void WithSupportedFieldsFrom_CopiedSupportedFields()
         {
             FieldSet originalFieldSet = new FieldSet.Builder { SecondOfMinute = sampleField }.Build();
-            DateTimeFieldBase newField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, PreciseDurationField.Seconds, PreciseDurationField.Minutes);
+            DateTimeField newField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, PreciseDurationField.Seconds, PreciseDurationField.Minutes);
 
             FieldSet newFieldSet = new FieldSet.Builder { SecondOfMinute = newField }.WithSupportedFieldsFrom(originalFieldSet).Build();
             // SecondOfMinute is supported in originalFieldSet, so the field is copied over
@@ -112,7 +112,7 @@ namespace NodaTime.Test.Fields
             FieldSet originalFieldSet = new FieldSet.Builder { SecondOfMinute = sampleField }.Build();
             Assert.IsFalse(originalFieldSet.SecondOfDay.IsSupported);
 
-            DateTimeFieldBase newField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, PreciseDurationField.Seconds, PreciseDurationField.Minutes);
+            DateTimeField newField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, PreciseDurationField.Seconds, PreciseDurationField.Minutes);
 
             FieldSet newFieldSet = new FieldSet.Builder { SecondOfDay = newField }.WithSupportedFieldsFrom(originalFieldSet).Build();
             // SecondOfDay isn't supported in originalFieldSet, so the property we set is kept

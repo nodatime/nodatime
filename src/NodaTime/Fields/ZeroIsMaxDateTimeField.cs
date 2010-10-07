@@ -26,7 +26,7 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class ZeroIsMaxDateTimeField : DecoratedDateTimeField
     {
-        internal ZeroIsMaxDateTimeField(DateTimeFieldBase wrappedField, DateTimeFieldType fieldType) : base(wrappedField, fieldType)
+        internal ZeroIsMaxDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType) : base(wrappedField, fieldType)
         {
             if (wrappedField.GetMinimumValue() != 0)
             {

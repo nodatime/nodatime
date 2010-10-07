@@ -84,7 +84,7 @@
     <Compile Include="Fields\BasicWeekOfWeekYearDateTimeField.cs" />
     <Compile Include="Fields\BasicWeekYearDateTimeField.cs" />
     <Compile Include="Fields\BasicYearDateTimeField.cs" />
-    <Compile Include="Fields\DateTimeFieldBase.cs" />
+    <Compile Include="Fields\DateTimeField.cs" />
     <Compile Include="Fields\DecoratedDateTimeField.cs" />
     <Compile Include="Fields\DecoratedDurationField.cs" />
     <Compile Include="Fields\DividedDateTimeField.cs" />

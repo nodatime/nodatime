@@ -79,7 +79,7 @@ namespace NodaTime.Partials
         /// </summary>
         public override CalendarSystem Calendar { get { return calendar; } }
 
-        protected override DateTimeFieldBase GetField(int index, CalendarSystem calendar)
+        protected override DateTimeField GetField(int index, CalendarSystem calendar)
         {
             if (index < 0 || index >= types.Length)
             {

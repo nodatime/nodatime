@@ -29,7 +29,7 @@ namespace NodaTime.Fields
         private readonly long min;
         private readonly long max;
 
-        internal DividedDateTimeField(DateTimeFieldBase field, DateTimeFieldType fieldType, int divisor) : base(field, fieldType)
+        internal DividedDateTimeField(DateTimeField field, DateTimeFieldType fieldType, int divisor) : base(field, fieldType)
         {
             if (divisor < 2)
             {
@@ -51,7 +51,7 @@ namespace NodaTime.Fields
         {
             divisor = remainderField.Divisor;
             divisorDurationField = remainderField.RemainderRangeField;
-            DateTimeFieldBase field = WrappedField;
+            DateTimeField field = WrappedField;
 
             long fieldMin = field.GetMinimumValue();
             min = fieldMin >= 0 ? fieldMin / divisor : ((fieldMin + 1) / divisor - 1);
@@ -117,7 +117,7 @@ namespace NodaTime.Fields
 
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
-            DateTimeFieldBase field = WrappedField;
+            DateTimeField field = WrappedField;
             return field.RoundFloor(field.SetValue(localInstant, GetInt64Value(localInstant) * divisor));
         }
 

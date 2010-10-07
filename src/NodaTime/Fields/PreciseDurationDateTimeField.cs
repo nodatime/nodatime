@@ -24,7 +24,7 @@ namespace NodaTime.Fields
     /// </summary>
     /// <remarks>
     /// </remarks>
-    internal abstract class PreciseDurationDateTimeField : DateTimeFieldBase
+    internal abstract class PreciseDurationDateTimeField : DateTimeField
     {
         /// <summary>
         /// The fractional unit in ticks
@@ -97,7 +97,7 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Called by <see cref="DateTimeFieldBase.SetValue(NodaTime.LocalInstant,long)" /> (and related overloads)
+        /// Called by <see cref="DateTimeField.SetValue(NodaTime.LocalInstant,long)" /> (and related overloads)
         /// to get the maximum allowed value. By default, returns GetMaximumValue(localInstant). Override to provide
         /// a faster implementation.
         /// </summary>

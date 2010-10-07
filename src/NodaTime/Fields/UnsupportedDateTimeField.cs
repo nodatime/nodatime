@@ -25,7 +25,7 @@ namespace NodaTime.Fields
     /// just throw <see cref="NotSupportedException" />.
     /// TODO: See whether we really need the delegation, or whether DurationField could just throw.
     /// </summary>
-    internal class UnsupportedDateTimeField : DateTimeFieldBase
+    internal class UnsupportedDateTimeField : DateTimeField
     {
         private static readonly object cacheLock = new object();
         private static readonly UnsupportedDateTimeField[] cache = new UnsupportedDateTimeField[DateTimeFieldType.MaxOrdinal + 1];
