@@ -82,7 +82,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="index">The index to retrieve</param>
         /// <returns>The field at the specified index</returns>
-        IDateTimeField GetField(int index);
+        DateTimeFieldBase GetField(int index);
 
         /// <summary>
         /// Gets the value at the specified index.

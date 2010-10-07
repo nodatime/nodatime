@@ -56,7 +56,7 @@ namespace NodaTime.Partials
             DurationFieldType lastType = default(DurationFieldType);
             for (int i = 0; i < partial.Size; i++)
             {
-                IDateTimeField loopField = partial.GetField(i);
+                DateTimeFieldBase loopField = partial.GetField(i);
                 if (i > 0)
                 {
                     if (loopField.RangeDurationField.FieldType != lastType)

@@ -24,7 +24,7 @@ namespace NodaTime.Fields
     /// </summary>
     public static class FieldUtils
     {
-        internal static void VerifyValueBounds(IDateTimeField field, long value, long lowerBound, long upperBound)
+        internal static void VerifyValueBounds(DateTimeFieldBase field, long value, long lowerBound, long upperBound)
         {
             // TODO: i18n or decide whether we want our own custom type with lower and upper bounds
             if ((value < lowerBound) || (value > upperBound))
@@ -57,7 +57,7 @@ namespace NodaTime.Fields
         /// <param name="name">The name of the field for the error message.</param>
         /// <param name="value">The value to check.</param>
         /// <exception cref="ArgumentOutOfRangeException">If the given value is not in the valid range of the given calendar field.</exception>
-        public static void VerifyFieldValue(IDateTimeField field, string name, long value)
+        public static void VerifyFieldValue(DateTimeFieldBase field, string name, long value)
         {
             VerifyFieldValue(field, name, value, false);
         }
@@ -70,7 +70,7 @@ namespace NodaTime.Fields
         /// <param name="value">The value to check.</param>
         /// <param name="allowNegated">if set to <c>true</c> all the range of value to be the negative as well.</param>
         /// <exception cref="ArgumentOutOfRangeException">If the given value is not in the valid range of the given calendar field.</exception>
-        public static void VerifyFieldValue(IDateTimeField field, string name, long value, Boolean allowNegated)
+        public static void VerifyFieldValue(DateTimeFieldBase field, string name, long value, Boolean allowNegated)
         {
             bool failed = false;
             string range = "";

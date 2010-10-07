@@ -27,7 +27,7 @@ namespace NodaTime.Fields
         private readonly int divisor;
         private readonly DurationField remainderRangeField;
 
-        internal RemainderDateTimeField(IDateTimeField field, DateTimeFieldType fieldType, int divisor) : base(field, fieldType)
+        internal RemainderDateTimeField(DateTimeFieldBase field, DateTimeFieldType fieldType, int divisor) : base(field, fieldType)
         {
             if (divisor < 2)
             {

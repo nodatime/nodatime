@@ -20,9 +20,11 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// DateTimeFieldBase provides the common behaviour for DateTimeField implementations.
+    /// Defines the calculation engine for date and time fields.
+    /// The interface defines a set of methods that manipulate a LocalInstant
+    /// with regards to a single field, such as monthOfYear or secondOfMinute.
     /// </summary>
-    public abstract class DateTimeFieldBase : IDateTimeField
+    public abstract class DateTimeFieldBase
     {
         private readonly DateTimeFieldType fieldType;
 
@@ -218,7 +220,7 @@ namespace NodaTime.Fields
             // there are more efficient algorithms than this (especially for time only fields)
             // trouble is when dealing with days and months, so we use this technique of
             // adding/removing one from the larger field at a time
-            IDateTimeField nextField = null;
+            DateTimeFieldBase nextField = null;
             while (valueToAdd > 0)
             {
                 long max = GetMaximumValue(instant, values);
@@ -303,7 +305,7 @@ namespace NodaTime.Fields
         /// <item>10:20:30 add 16 hours is 02:20:30</item>
         /// </list>
         /// </remarks>
-        public int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
+        public virtual int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
         {
             if (valueToAdd == 0)
             {
@@ -313,7 +315,7 @@ namespace NodaTime.Fields
             // there are more efficient algorithms than this (especially for time only fields)
             // trouble is when dealing with days and months, so we use this technique of
             // adding/removing one from the larger field at a time
-            IDateTimeField nextField = null;
+            DateTimeFieldBase nextField = null;
             while (valueToAdd > 0)
             {
                 int max = (int)GetMaximumValue(instant, values);
@@ -412,7 +414,7 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Sets a value in the milliseconds supplied.
+        /// Sets a value in the local instant supplied.
         /// <para>
         /// The value of this field will be set.
         /// If the value is invalid, an exception if thrown.
@@ -442,7 +444,7 @@ namespace NodaTime.Fields
         /// the month is set to February, the day would be invalid. Instead, the day
         /// would be changed to the closest value - the 28th/29th February as appropriate.
         /// </remarks>
-        public LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
+        public virtual LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
         {
             int value = ConvertText(text, provider);
             return SetValue(instant, value);
@@ -460,7 +462,7 @@ namespace NodaTime.Fields
         /// the month is set to February, the day would be invalid. Instead, the day
         /// would be changed to the closest value - the 28th/29th February as appropriate.
         /// </remarks>        
-        public LocalInstant SetValue(LocalInstant instant, String text)
+        public virtual LocalInstant SetValue(LocalInstant instant, String text)
         {
             return SetValue(instant, text, null);
         }
@@ -485,7 +487,7 @@ namespace NodaTime.Fields
         /// would be changed to the closest value - the 28th/29th February as appropriate.
         /// </para>
         /// </remarks>
-        public int[] SetValue(IPartial instant, int fieldIndex, int[] values, int newValue)
+        public virtual int[] SetValue(IPartial instant, int fieldIndex, int[] values, int newValue)
         {
             FieldUtils.VerifyValueBounds(this, newValue, GetMinimumValue(instant, values), GetMaximumValue(instant, values));
             values[fieldIndex] = newValue;
@@ -493,7 +495,7 @@ namespace NodaTime.Fields
             // may need to adjust smaller fields
             for (int i = fieldIndex + 1; i < instant.Size; i++)
             {
-                IDateTimeField field = instant.GetField(i);
+                DateTimeFieldBase field = instant.GetField(i);
                 if (values[i] > field.GetMaximumValue(instant, values))
                 {
                     values[i] = (int)field.GetMaximumValue(instant, values);
@@ -515,7 +517,7 @@ namespace NodaTime.Fields
         /// <param name="text">The text value to set</param>
         /// <param name="provider">The format provider to use</param>
         /// <returns>The passed in values</returns>
-        public int[] SetValue(IPartial instant, int fieldIndex, int[] values, String text, IFormatProvider provider)
+        public virtual int[] SetValue(IPartial instant, int fieldIndex, int[] values, String text, IFormatProvider provider)
         {
             int value = ConvertText(text, provider);
             return SetValue(instant, fieldIndex, values, value);
@@ -621,7 +623,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Round to the lowest whole unit of this field. After rounding, the value
         /// of this field and all fields of a higher magnitude are retained. The
-        /// fractional millis that cannot be expressed in whole increments of this
+        /// fractional ticks that cannot be expressed in whole increments of this
         /// field are set to minimum.
         /// <para>
         /// For example, a datetime of 2002-11-02T23:34:56.789, rounded to the
@@ -635,7 +637,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Round to the highest whole unit of this field. The value of this field
         /// and all fields of a higher magnitude may be incremented in order to
-        /// achieve this result. The fractional millis that cannot be expressed in
+        /// achieve this result. The fractional ticks that cannot be expressed in
         /// whole increments of this field are set to minimum.
         /// <para>
         /// For example, a datetime of 2002-11-02T23:34:56.789, rounded to the
@@ -754,7 +756,7 @@ namespace NodaTime.Fields
         /// The default implementation returns the equivalent of 
         /// GetMaximumValue().ToString().Length.
         /// </remarks>
-        public int GetMaximumTextLength(IFormatProvider provider)
+        public virtual int GetMaximumTextLength(IFormatProvider provider)
         {
             int max = (int)GetMaximumValue();
             if (max >= 0)
@@ -783,13 +785,13 @@ namespace NodaTime.Fields
         /// <remarks>
         /// The default implementation returns GetMaximumTextLength().
         /// </remarks>
-        public int GetMaximumShortTextLength(IFormatProvider provider)
+        public virtual int GetMaximumShortTextLength(IFormatProvider provider)
         {
             return GetMaximumTextLength(provider);
         }
 
         /// <summary>
-        /// Get the human-readable, text value of this field from the milliseconds.
+        /// Get the human-readable, text value of this field from the local instant.
         /// <para>
         /// The default implementation calls <see cref="GetAsText(int, IFormatProvider)"/>.
         /// </para>
@@ -803,7 +805,7 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Get the human-readable, text value of this field from the milliseconds.
+        /// Get the human-readable, text value of this field from the local instant.
         /// <para>
         /// The default implementation calls <see cref="GetAsText(int, IFormatProvider)"/>.
         /// </para>
@@ -864,7 +866,7 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Get the human-readable, short text value of this field from the milliseconds.
+        /// Get the human-readable, short text value of this field from the local instant.
         /// <para>
         /// The default implementation calls <see cref="GetAsShortText(int, IFormatProvider)"/>.
         /// </para>
@@ -878,7 +880,7 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Get the human-readable, short text value of this field from the milliseconds.
+        /// Get the human-readable, short text value of this field from the local instant.
         /// <para>
         /// The default implementation calls <see cref="GetAsShortText(int, IFormatProvider)"/>.
         /// </para>

@@ -28,18 +28,18 @@ namespace NodaTime.Fields
         private readonly int min;
         private readonly int max;
 
-        internal OffsetDateTimeField(IDateTimeField field, int offset) // If the field is null, we want to let the 
+        internal OffsetDateTimeField(DateTimeFieldBase field, int offset) // If the field is null, we want to let the 
             // base constructor throw the exception, rather than
             // fail to dereference it properly here.
             : this(field, field == null ? null : field.FieldType, offset, int.MinValue, int.MaxValue)
         {
         }
 
-        internal OffsetDateTimeField(IDateTimeField field, DateTimeFieldType fieldType, int offset) : this(field, fieldType, offset, int.MinValue, int.MaxValue)
+        internal OffsetDateTimeField(DateTimeFieldBase field, DateTimeFieldType fieldType, int offset) : this(field, fieldType, offset, int.MinValue, int.MaxValue)
         {
         }
 
-        public OffsetDateTimeField(IDateTimeField field, DateTimeFieldType fieldType, int offset, int minValue, int maxValue) : base(field, fieldType)
+        public OffsetDateTimeField(DateTimeFieldBase field, DateTimeFieldType fieldType, int offset, int minValue, int maxValue) : base(field, fieldType)
         {
             if (offset == 0)
             {
