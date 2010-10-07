@@ -189,7 +189,6 @@
     <Compile Include="IDateTimeZone.cs" />
     <Compile Include="Periods\Days.cs" />
     <Compile Include="Duration.cs" />
-    <Compile Include="Fields\IDurationField.cs" />
     <Compile Include="Fields\DurationFieldType.cs" />
     <Compile Include="Periods\Hours.cs" />
     <Compile Include="Instant.cs" />
