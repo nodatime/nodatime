@@ -39,8 +39,8 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetInstance_Caching()
         {
-            DurationFieldBase months = UnsupportedDurationField.Months;
-            DurationFieldBase years = UnsupportedDurationField.Years;
+            DurationField months = UnsupportedDurationField.Months;
+            DurationField years = UnsupportedDurationField.Years;
 
             IDateTimeField field1 = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, months);
             IDateTimeField field2 = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, months);

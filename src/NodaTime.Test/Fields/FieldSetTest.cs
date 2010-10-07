@@ -53,9 +53,9 @@ namespace NodaTime.Test.Fields
         public void UnspecifiedDurationFields_DefaultToUnsupported()
         {
             FieldSet fieldSet = new FieldSet.Builder().Build();
-            foreach (var prop in typeof(FieldSet).GetProperties().Where(p => p.PropertyType == typeof(DurationFieldBase)))
+            foreach (var prop in typeof(FieldSet).GetProperties().Where(p => p.PropertyType == typeof(DurationField)))
             {
-                DurationFieldBase field = (DurationFieldBase)prop.GetValue(fieldSet, null);
+                DurationField field = (DurationField)prop.GetValue(fieldSet, null);
                 Assert.IsNotNull(field);
                 Assert.IsFalse(field.IsSupported);
             }

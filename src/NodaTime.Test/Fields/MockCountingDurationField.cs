@@ -19,7 +19,7 @@ using NodaTime.Fields;
 
 namespace NodaTime.Test.Fields
 {
-    internal class MockCountingDurationField : DurationFieldBase
+    internal class MockCountingDurationField : DurationField
     {
         // FIXME: Use a proper mock?
         private readonly long unitTicks;

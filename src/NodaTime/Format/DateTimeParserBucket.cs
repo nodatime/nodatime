@@ -102,7 +102,7 @@ namespace NodaTime.Format
                 }
             }
 
-            private int CompareReverse(DurationFieldBase a, DurationFieldBase b)
+            private int CompareReverse(DurationField a, DurationField b)
             {
                 if (a == null || !a.IsSupported)
                 {

@@ -36,7 +36,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Always returns null(not supported)
         /// </summary>
-        public override DurationFieldBase RangeDurationField { get { return null; } }
+        public override DurationField RangeDurationField { get { return null; } }
 
         /// <summary>
         /// Always returns false, that means that it does not accept values that
@@ -184,7 +184,7 @@ namespace NodaTime.Fields
             return calendarSystem.GetWeeksInYear(calendarSystem.GetWeekYear(localInstant)) - 52;
         }
 
-        public override DurationFieldBase LeapDurationField { get { return calendarSystem.Fields.Weeks; } }
+        public override DurationField LeapDurationField { get { return calendarSystem.Fields.Weeks; } }
         #endregion
 
         #region Ranges

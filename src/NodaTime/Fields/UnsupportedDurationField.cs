@@ -25,7 +25,7 @@ namespace NodaTime.Fields
     /// UnsupportedDurationField is thread-safe and immutable.
     /// </para>
     /// </summary>
-    internal sealed class UnsupportedDurationField : DurationFieldBase
+    internal sealed class UnsupportedDurationField : DurationField
     {
         private static readonly UnsupportedDurationField[] cache = Array.ConvertAll((DurationFieldType[])Enum.GetValues(typeof(DurationFieldType)),
                                                                                     type => new UnsupportedDurationField(type));

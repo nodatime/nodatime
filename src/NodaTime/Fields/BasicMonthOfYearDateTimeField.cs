@@ -40,7 +40,7 @@ namespace NodaTime.Fields
             this.leapMonth = leapMonth;
         }
 
-        public override DurationFieldBase RangeDurationField { get { return calendarSystem.Fields.Years; } }
+        public override DurationField RangeDurationField { get { return calendarSystem.Fields.Years; } }
 
         public override bool IsLenient { get { return false; } }
 
@@ -306,7 +306,7 @@ namespace NodaTime.Fields
             return IsLeap(localInstant) ? 1 : 0;
         }
 
-        public override DurationFieldBase LeapDurationField { get { return calendarSystem.Fields.Days; } }
+        public override DurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
         #endregion
 
         #region Ranges

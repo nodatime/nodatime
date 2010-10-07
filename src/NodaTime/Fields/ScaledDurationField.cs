@@ -26,7 +26,7 @@ namespace NodaTime.Fields
     {
         private readonly int scale;
 
-        public ScaledDurationField(DurationFieldBase wrappedField, DurationFieldType fieldType, int scale) : base(wrappedField, fieldType)
+        public ScaledDurationField(DurationField wrappedField, DurationFieldType fieldType, int scale) : base(wrappedField, fieldType)
         {
             if (scale == 0 || scale == 1)
             {

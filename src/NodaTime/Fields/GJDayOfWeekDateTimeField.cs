@@ -26,7 +26,7 @@ namespace NodaTime.Fields
     {
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal GJDayOfWeekDateTimeField(BasicCalendarSystem calendarSystem, DurationFieldBase days) : base(DateTimeFieldType.DayOfWeek, days)
+        internal GJDayOfWeekDateTimeField(BasicCalendarSystem calendarSystem, DurationField days) : base(DateTimeFieldType.DayOfWeek, days)
         {
             this.calendarSystem = calendarSystem;
         }
@@ -41,7 +41,7 @@ namespace NodaTime.Fields
             return calendarSystem.GetDayOfWeek(localInstant);
         }
 
-        public override DurationFieldBase RangeDurationField { get { return calendarSystem.Fields.Weeks; } }
+        public override DurationField RangeDurationField { get { return calendarSystem.Fields.Weeks; } }
 
         public override long GetMaximumValue()
         {
