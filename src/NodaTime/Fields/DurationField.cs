@@ -46,26 +46,26 @@ namespace NodaTime.Fields
         /// <summary>
         /// Get the type of the field.
         /// </summary>
-        public DurationFieldType FieldType { get { return fieldType; } }
+        internal DurationFieldType FieldType { get { return fieldType; } }
 
         /// <summary>
         /// Returns true if this field is supported.
         /// </summary>
-        public abstract bool IsSupported { get; }
+        internal abstract bool IsSupported { get; }
 
         /// <summary>
         /// Is this field precise. A precise field can calculate its value from
         /// milliseconds without needing a reference date. Put another way, a
         /// precise field's unit size is not variable.
         /// </summary>
-        public abstract bool IsPrecise { get; }
+        internal abstract bool IsPrecise { get; }
 
         /// <summary>
         /// Returns the amount of ticks per unit value of this field.
         /// For example, if this field represents "seconds", then this returns the
         /// ticks in one second.
         /// </summary>
-        public abstract long UnitTicks { get; }
+        internal abstract long UnitTicks { get; }
 
         #region Extract field value from a duration
         /// <summary>
@@ -74,7 +74,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="duration">The duration to query, which may be negative</param>
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
-        public virtual int GetValue(Duration duration)
+        internal virtual int GetValue(Duration duration)
         {
             return (int)GetInt64Value(duration);
         }
@@ -85,7 +85,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="duration">The duration to query, which may be negative</param>
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
-        public virtual long GetInt64Value(Duration duration)
+        internal virtual long GetInt64Value(Duration duration)
         {
             return duration.Ticks / UnitTicks;
         }
@@ -102,7 +102,7 @@ namespace NodaTime.Fields
         /// <param name="duration">The duration to query, which may be negative</param>
         /// <param name="localInstant">The start instant to calculate relative to</param>
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
-        public virtual int GetValue(Duration duration, LocalInstant localInstant)
+        internal virtual int GetValue(Duration duration, LocalInstant localInstant)
         {
             return (int)GetInt64Value(duration, localInstant);
         }
@@ -119,7 +119,7 @@ namespace NodaTime.Fields
         /// <param name="duration">The duration to query, which may be negative</param>
         /// <param name="localInstant">the start instant to calculate relative to</param>
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
-        public abstract long GetInt64Value(Duration duration, LocalInstant localInstant);
+        internal abstract long GetInt64Value(Duration duration, LocalInstant localInstant);
         #endregion
 
         #region Create a duration from a field value
@@ -129,7 +129,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="value">The value of the field, which may be negative</param>
         /// <returns>The duration that the field represents, which may be negative</returns>
-        public virtual Duration GetDuration(long value)
+        internal virtual Duration GetDuration(long value)
         {
             return new Duration(value * UnitTicks);
         }
@@ -146,7 +146,7 @@ namespace NodaTime.Fields
         /// <param name="value">The value of the field, which may be negative</param>
         /// <param name="localInstant">The instant to calculate relative to</param>
         /// <returns>The duration that the field represents, which may be negative</returns>
-        public abstract Duration GetDuration(long value, LocalInstant localInstant);
+        internal abstract Duration GetDuration(long value, LocalInstant localInstant);
         #endregion
 
         #region Add, subtract, difference
@@ -156,7 +156,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        public abstract LocalInstant Add(LocalInstant localInstant, int value);
+        internal abstract LocalInstant Add(LocalInstant localInstant, int value);
 
         /// <summary>
         /// Adds a duration value (which may be negative) to the instant.
@@ -164,7 +164,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        public abstract LocalInstant Add(LocalInstant localInstant, long value);
+        internal abstract LocalInstant Add(LocalInstant localInstant, long value);
 
         /// <summary>
         /// Subtracts a duration value (which may be negative) from the instant.
@@ -172,7 +172,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to subtract from</param>
         /// <param name="value">The value to subtract, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        public LocalInstant Subtract(LocalInstant localInstant, int value)
+        internal LocalInstant Subtract(LocalInstant localInstant, int value)
         {
             if (value == int.MinValue)
             {
@@ -187,7 +187,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to subtract from</param>
         /// <param name="value">The value to subtract, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        public LocalInstant Subtract(LocalInstant localInstant, long value)
+        internal LocalInstant Subtract(LocalInstant localInstant, long value)
         {
             if (value == long.MinValue)
             {
@@ -210,7 +210,7 @@ namespace NodaTime.Fields
         /// <param name="minuendInstant">The local instant to subtract from</param>
         /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
         /// <returns>The difference in the units of this field</returns>
-        public virtual int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal virtual int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return (int)GetInt64Difference(minuendInstant, subtrahendInstant);
         }
@@ -229,9 +229,10 @@ namespace NodaTime.Fields
         /// <param name="minuendInstant">The local instant to subtract from</param>
         /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
         /// <returns>The difference in the units of this field</returns>
-        public abstract long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
+        internal abstract long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
         #endregion
 
+        // TODO(jon): Do we *really* need this?
         public int CompareTo(DurationField other)
         {
             // cannot do (thisMillis - otherMillis) as can overflow

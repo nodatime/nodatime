@@ -43,36 +43,36 @@ namespace NodaTime.Fields
         /// <summary>
         /// Always returns true.
         /// </summary>
-        public override bool IsPrecise { get { return true; } }
+        internal override bool IsPrecise { get { return true; } }
 
         /// <summary>
         /// Always returns true.
         /// </summary>
-        public override bool IsSupported { get { return true; } }
+        internal override bool IsSupported { get { return true; } }
 
-        public override long UnitTicks { get { return unitTicks; } }
+        internal override long UnitTicks { get { return unitTicks; } }
 
-        public override long GetInt64Value(Duration duration, LocalInstant localInstant)
+        internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
             return duration.Ticks / unitTicks;
         }
 
-        public override Duration GetDuration(long value, LocalInstant localInstant)
+        internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
             return new Duration(value * UnitTicks);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             return new LocalInstant(localInstant.Ticks + value * UnitTicks);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, long value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             return new LocalInstant(localInstant.Ticks + value * UnitTicks);
         }
 
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return (minuendInstant.Ticks - subtrahendInstant.Ticks) / UnitTicks;
         }

@@ -33,33 +33,33 @@ namespace NodaTime.Test.Fields
             this.precise = precise;
         }
 
-        public override bool IsSupported { get { return true; } }
+        internal override bool IsSupported { get { return true; } }
 
-        public override bool IsPrecise { get { return precise; } }
+        internal override bool IsPrecise { get { return precise; } }
 
-        public override long UnitTicks { get { return unitTicks; } }
+        internal override long UnitTicks { get { return unitTicks; } }
 
-        public override long GetInt64Value(Duration duration, LocalInstant localInstant)
+        internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
             return 0;
         }
 
-        public override Duration GetDuration(long value, LocalInstant localInstant)
+        internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
             return new Duration(0);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             return new LocalInstant();
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, long value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             return new LocalInstant();
         }
 
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return 0;
         }

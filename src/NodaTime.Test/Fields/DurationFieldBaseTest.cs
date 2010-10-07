@@ -107,33 +107,33 @@ namespace NodaTime.Test.Fields
             {
             }
 
-            public override bool IsSupported { get { return true; } }
+            internal override bool IsSupported { get { return true; } }
 
-            public override bool IsPrecise { get { return true; } }
+            internal override bool IsPrecise { get { return true; } }
 
-            public override long UnitTicks { get { return 123; } }
+            internal override long UnitTicks { get { return 123; } }
 
-            public override long GetInt64Value(Duration duration, LocalInstant localInstant)
+            internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
             {
                 throw new NotImplementedException();
             }
 
-            public override Duration GetDuration(long value, LocalInstant localInstant)
+            internal override Duration GetDuration(long value, LocalInstant localInstant)
             {
                 throw new NotImplementedException();
             }
 
-            public override LocalInstant Add(LocalInstant localInstant, int value)
+            internal override LocalInstant Add(LocalInstant localInstant, int value)
             {
                 return new LocalInstant(localInstant.Ticks + value * UnitTicks);
             }
 
-            public override LocalInstant Add(LocalInstant localInstant, long value)
+            internal override LocalInstant Add(LocalInstant localInstant, long value)
             {
                 return new LocalInstant(localInstant.Ticks + value * UnitTicks);
             }
 
-            public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
             {
                 throw new NotImplementedException();
             }

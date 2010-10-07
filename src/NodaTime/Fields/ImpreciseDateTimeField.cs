@@ -100,45 +100,45 @@ namespace NodaTime.Fields
                 this.linkedField = linkedField;
             }
 
-            public override bool IsSupported { get { return true; } }
+            internal override bool IsSupported { get { return true; } }
 
-            public override bool IsPrecise { get { return false; } }
+            internal override bool IsPrecise { get { return false; } }
 
-            public override long UnitTicks { get { return linkedField.UnitTicks; } }
+            internal override long UnitTicks { get { return linkedField.UnitTicks; } }
 
-            public override int GetValue(Duration duration, LocalInstant localInstant)
+            internal override int GetValue(Duration duration, LocalInstant localInstant)
             {
                 return linkedField.GetDifference(localInstant + duration, localInstant);
             }
 
-            public override long GetInt64Value(Duration duration, LocalInstant localInstant)
+            internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
             {
                 return linkedField.GetInt64Difference(localInstant + duration, localInstant);
             }
 
-            public override Duration GetDuration(long value, LocalInstant localInstant)
+            internal override Duration GetDuration(long value, LocalInstant localInstant)
             {
                 return linkedField.Add(localInstant, value) - localInstant;
             }
 
             // Note: no GetDuration(int, LocalInstant) to override
 
-            public override LocalInstant Add(LocalInstant localInstant, int value)
+            internal override LocalInstant Add(LocalInstant localInstant, int value)
             {
                 return linkedField.Add(localInstant, value);
             }
 
-            public override LocalInstant Add(LocalInstant localInstant, long value)
+            internal override LocalInstant Add(LocalInstant localInstant, long value)
             {
                 return linkedField.Add(localInstant, value);
             }
 
-            public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
             {
                 return linkedField.GetDifference(minuendInstant, subtrahendInstant);
             }
 
-            public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
             {
                 return linkedField.GetInt64Difference(minuendInstant, subtrahendInstant);
             }
