@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalendarDemo.cs" />
     <Compile Include="InstantDemo.cs" />
     <Compile Include="LocalDateDemo.cs" />
     <Compile Include="LocalDateTimeDemo.cs" />

@@ -153,7 +153,7 @@ namespace NodaTime.Test.Format
             sut.Parse(text);
             Assert.That(parser.Bucket.Calendar, Is.SameAs(sut.Calendar));
             //TODO:for now we have only one calendar system, uncomment once the any second will be mplemented
-            //Assert.That(parser.Bucket.CalendarSystem, Is.Not.SameAs(IsoCalendarSystem.Instance));
+            //Assert.That(parser.Bucket.CalendarSystem, Is.Not.SameAs(CalendarSystem.Iso));
         }
 
         [Test]

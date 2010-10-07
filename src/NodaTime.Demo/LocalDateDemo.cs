@@ -19,7 +19,7 @@ namespace NodaTime.Demo
         [Test]
         public void ExplicitCalendar()
         {
-            LocalDate date = new LocalDate(2010, 6, 16, IsoCalendarSystem.Instance);
+            LocalDate date = new LocalDate(2010, 6, 16, CalendarSystem.Iso);
             Assert.AreEqual(new LocalDate(2010, 6, 16), date);
         }
 
