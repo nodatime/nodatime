@@ -26,7 +26,7 @@ namespace NodaTime.Format
     /// instance of Period is only constructed as a final step,
     /// however.
     /// </summary>
-    public sealed class PeriodBuilder
+    internal sealed class PeriodBuilder
     {
         private readonly PeriodType periodType;
         private readonly int[] values;
@@ -39,13 +39,13 @@ namespace NodaTime.Format
 
         public PeriodType PeriodType { get { return periodType; } }
 
-        public PeriodBuilder Append(DurationFieldType fieldType, int value)
+        internal PeriodBuilder Append(DurationFieldType fieldType, int value)
         {
             periodType.UpdateAnyField(values, fieldType, value, false);
             return this;
         }
 
-        public bool IsSupported(DurationFieldType fieldType)
+        internal bool IsSupported(DurationFieldType fieldType)
         {
             return periodType.IsSupported(fieldType);
         }

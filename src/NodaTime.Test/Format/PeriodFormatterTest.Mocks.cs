@@ -81,7 +81,7 @@ namespace NodaTime.Test.Format
             public IFormatProvider ParseProviderArgument;
             public int ParsePositionToReturn = 42;
 
-            public int Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
+            int IPeriodParser.Parse(string periodString, int position, PeriodBuilder builder, IFormatProvider provider)
             {
                 ParseCalled = true;
                 ParseStringArgument = periodString;
@@ -89,8 +89,6 @@ namespace NodaTime.Test.Format
                 ParseProviderArgument = provider;
                 return ParsePositionToReturn;
             }
-
         }
-
     }
 }

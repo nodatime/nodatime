@@ -1279,7 +1279,7 @@ namespace NodaTime.Format
         /// </remarks>
         /// <exception cref="ArgumentException">If both the printer and parser are null</exception>
         /// <exception cref="InvalidOperationException">If these printer and parser follow a prefix</exception>
-        public PeriodFormatterBuilder Append(IPeriodPrinter printer, IPeriodParser parser)
+        internal PeriodFormatterBuilder Append(IPeriodPrinter printer, IPeriodParser parser)
         {
             if (printer == null && parser == null)
             {
@@ -1929,7 +1929,7 @@ namespace NodaTime.Format
         /// Subsequent changes to this builder do not affect the returned parser.
         /// </para>
         /// </remarks>
-        public IPeriodParser ToParser()
+        internal IPeriodParser ToParser()
         {
             if (notParser)
             {

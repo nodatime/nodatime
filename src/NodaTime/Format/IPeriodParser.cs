@@ -26,7 +26,7 @@ namespace NodaTime.Format
     /// Application users will rarely use this class directly. Instead, you
     /// will use one of the factory classes to create a <see cref="PeriodFormatter"/>.
     /// </remarks>
-    public interface IPeriodParser
+    internal interface IPeriodParser
     {
         /// <summary>
         /// Parses a period from the given text, at the given position, appending the
