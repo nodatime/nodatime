@@ -23,7 +23,7 @@ using NUnit.Framework;
 namespace NodaTime.Test.Fields
 {
     [TestFixture]
-    public class DurationFieldBaseTest
+    public class DurationFieldTest
     {
         [Test]
         public void Constructor_WithInvalidType_ThrowsArgumentOutOfRangeException()
