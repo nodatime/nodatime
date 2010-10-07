@@ -197,7 +197,6 @@
     <Compile Include="IPartial.cs" />
     <Compile Include="Partials\LocalDate.cs" />
     <Compile Include="NodaTimePermission.cs" />
-    <Compile Include="DateTimeComparer.cs" />
     <Compile Include="NodaConstants.cs" />
     <Compile Include="IPeriod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
