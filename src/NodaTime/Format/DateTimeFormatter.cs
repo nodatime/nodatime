@@ -42,7 +42,7 @@ namespace NodaTime.Format
         // Whether the offset is parsed.
         private readonly bool offsetParsed;
         // The calendar system to use as an override.
-        private readonly ICalendarSystem calendarSystem;
+        private readonly CalendarSystem calendarSystem;
         // The zone to use as an override.
         private readonly IDateTimeZone zone;
         // The pivot year to use for two-digit year parsing.
@@ -59,7 +59,7 @@ namespace NodaTime.Format
             pivotYear = null;
         }
 
-        private DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser, IFormatProvider locale, bool offsetParsed, ICalendarSystem calendarSystem,
+        private DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser, IFormatProvider locale, bool offsetParsed, CalendarSystem calendarSystem,
                                   IDateTimeZone zone, int? pivotYear)
         {
             this.printer = printer;
@@ -151,7 +151,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the calendar system to use as an override.
         /// </summary>
-        public ICalendarSystem Calendar { get { return calendarSystem; } }
+        public CalendarSystem Calendar { get { return calendarSystem; } }
 
         /// <summary>
         /// Returns a new formatter that will use the specified calendar system in
@@ -171,7 +171,7 @@ namespace NodaTime.Format
         /// A null calendar system means no-override.
         /// </para>
         /// </remarks>
-        public DateTimeFormatter WithCalendar(ICalendarSystem newCalendarSystem)
+        public DateTimeFormatter WithCalendar(CalendarSystem newCalendarSystem)
         {
             if (Equals(calendarSystem, newCalendarSystem))
             {
@@ -286,7 +286,7 @@ namespace NodaTime.Format
         {
             VerifyPrinter();
 
-            ICalendarSystem calendarSystem = SelectCalendarSystem(dateTime);
+            CalendarSystem calendarSystem = SelectCalendarSystem(dateTime);
             IDateTimeZone zone = SelectZone(dateTime);
 
             var instant = dateTime.ToInstant();
@@ -378,12 +378,12 @@ namespace NodaTime.Format
             }
         }
 
-        private ICalendarSystem SelectCalendarSystem(ZonedDateTime dateTime)
+        private CalendarSystem SelectCalendarSystem(ZonedDateTime dateTime)
         {
             return calendarSystem ?? dateTime.Chronology.Calendar;
         }
 
-        private ICalendarSystem SelectCalendarSystem()
+        private CalendarSystem SelectCalendarSystem()
         {
             return calendarSystem ?? IsoCalendarSystem.Instance;
         }

@@ -62,7 +62,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        private IsoCalendarSystem(ICalendarSystem baseSystem) : base(IsoName, baseSystem)
+        private IsoCalendarSystem(CalendarSystem baseSystem) : base(IsoName, baseSystem)
         {
         }
 
@@ -80,8 +80,8 @@ namespace NodaTime.Calendars
             fields.Centuries = centuryOfEra.DurationField;
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
-                                                     int millisecondOfSecond, int tickOfMillisecond)
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+                                                       int millisecondOfSecond, int tickOfMillisecond)
         {
             int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
             if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
@@ -101,7 +101,7 @@ namespace NodaTime.Calendars
                         millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond));
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
             int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
             if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
@@ -119,7 +119,7 @@ namespace NodaTime.Calendars
                         minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond));
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
             int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
             if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||

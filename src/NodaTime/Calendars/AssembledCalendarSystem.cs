@@ -23,19 +23,19 @@ namespace NodaTime.Calendars
     /// Abstract calendar system that enables calendar systems to be assembled from
     /// a container of fields.
     /// </summary>
-    public abstract class AssembledCalendarSystem : CalendarSystemBase
+    public abstract class AssembledCalendarSystem : CalendarSystem
     {
         private readonly FieldSet fields;
 
-        protected delegate void FieldAssembler(FieldSet.Builder builder, ICalendarSystem baseCalendar);
+        protected delegate void FieldAssembler(FieldSet.Builder builder, CalendarSystem baseCalendar);
 
         private readonly bool useBaseTimeOfDayFields;
         private readonly bool useBaseTickOfDayFields;
         private readonly bool useBaseYearMonthDayFields;
 
-        private readonly ICalendarSystem baseCalendar;
+        private readonly CalendarSystem baseCalendar;
 
-        protected AssembledCalendarSystem(string name, ICalendarSystem baseCalendar) : base(name)
+        protected AssembledCalendarSystem(string name, CalendarSystem baseCalendar) : base(name)
         {
             this.baseCalendar = baseCalendar;
             fields = ConstructFields();
@@ -60,14 +60,14 @@ namespace NodaTime.Calendars
             }
         }
 
-        public override sealed FieldSet Fields { get { return fields; } }
+        internal override sealed FieldSet Fields { get { return fields; } }
 
-        internal ICalendarSystem BaseCalendar { get { return baseCalendar; } }
+        internal CalendarSystem Calendar { get { return baseCalendar; } }
 
         private FieldSet ConstructFields()
         {
             FieldSet.Builder builder = new FieldSet.Builder();
-            if (BaseCalendar != null)
+            if (Calendar != null)
             {
                 builder.WithSupportedFieldsFrom(baseCalendar.Fields);
             }
@@ -82,8 +82,8 @@ namespace NodaTime.Calendars
         /// </summary>
         protected abstract void AssembleFields(FieldSet.Builder builder);
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
-                                                     int millisecondOfSecond, int tickOfMillisecond)
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+                                                       int millisecondOfSecond, int tickOfMillisecond)
         {
             if (useBaseYearMonthDayFields && useBaseTimeOfDayFields)
             {
@@ -94,7 +94,7 @@ namespace NodaTime.Calendars
             return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
         }
 
-        public override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
             if (useBaseTickOfDayFields && useBaseYearMonthDayFields)
             {
@@ -104,8 +104,8 @@ namespace NodaTime.Calendars
             return base.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
         }
 
-        public override LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
-                                                     int tickOfMillisecond)
+        internal override LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
+                                                       int tickOfMillisecond)
         {
             if (useBaseTimeOfDayFields)
             {

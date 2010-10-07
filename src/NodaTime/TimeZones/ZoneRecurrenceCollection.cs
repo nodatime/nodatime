@@ -165,7 +165,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         internal class TransitionIterator
         {
-            private readonly ICalendarSystem calendar;
+            private readonly CalendarSystem calendar;
             private readonly ZoneRecurrenceCollection ruleSet;
             private readonly Instant startingInstant;
             private Instant instant;

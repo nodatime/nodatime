@@ -25,7 +25,7 @@ namespace NodaTime.Partials
     /// </summary>
     public abstract class PartialBase : AbstractPartial
     {
-        private readonly ICalendarSystem calendar;
+        private readonly CalendarSystem calendar;
         private readonly int[] values;
 
         protected PartialBase()
@@ -37,7 +37,7 @@ namespace NodaTime.Partials
         /// </summary>
         /// <param name="values"></param>
         /// <param name="calendar"></param>
-        protected PartialBase(int[] values, ICalendarSystem calendar)
+        protected PartialBase(int[] values, CalendarSystem calendar)
         {
             this.calendar = calendar;
             calendar.Validate(this, values);
@@ -47,11 +47,11 @@ namespace NodaTime.Partials
         /// <summary>
         /// Gets the calendar system of the partial which is never null.
         /// <para>
-        /// The <see cref="ICalendarSystem"/> is the calculation engine behind the partial and
+        /// The <see cref="CalendarSystem"/> is the calculation engine behind the partial and
         /// provides conversion and validation of the fields in a particular calendar system.
         /// </para>
         /// </summary>
-        public override ICalendarSystem Calendar { get { return calendar; } }
+        public override CalendarSystem Calendar { get { return calendar; } }
 
         /// <summary>
         /// Gets the value of the field at the specifed index.

@@ -99,7 +99,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="calendar">The calendar to use</param>
         /// <returns>A suitable field</returns>
-        public IDateTimeField GetField(ICalendarSystem calendar)
+        public IDateTimeField GetField(CalendarSystem calendar)
         {
             if (calendar == null)
             {
