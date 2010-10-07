@@ -38,7 +38,7 @@ namespace NodaTime.Fields
     /// However, presumably that's not required as Joda doesn't use it...
     /// </para>
     /// </remarks>
-    public abstract class DecoratedDateTimeField : DateTimeField
+    internal abstract class DecoratedDateTimeField : DateTimeField
     {
         private readonly DateTimeField wrappedField;
 
@@ -60,33 +60,33 @@ namespace NodaTime.Fields
         /// </summary>
         public DateTimeField WrappedField { get { return wrappedField; } }
 
-        public override DurationField DurationField { get { return wrappedField.DurationField; } }
+        internal override DurationField DurationField { get { return wrappedField.DurationField; } }
 
-        public override DurationField RangeDurationField { get { return wrappedField.RangeDurationField; } }
+        internal override DurationField RangeDurationField { get { return wrappedField.RangeDurationField; } }
 
-        public override bool IsLenient { get { return wrappedField.IsLenient; } }
+        internal override bool IsLenient { get { return wrappedField.IsLenient; } }
 
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             return wrappedField.GetInt64Value(localInstant);
         }
 
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             return wrappedField.SetValue(localInstant, value);
         }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return wrappedField.GetMaximumValue();
         }
 
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return wrappedField.GetMinimumValue();
         }
 
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             return wrappedField.RoundFloor(localInstant);
         }

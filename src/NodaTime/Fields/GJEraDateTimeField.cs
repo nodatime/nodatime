@@ -32,19 +32,19 @@ namespace NodaTime.Fields
             this.calendarSystem = calendarSystem;
         }
 
-        public override DurationField DurationField { get { return UnsupportedDurationField.Eras; } }
+        internal override DurationField DurationField { get { return UnsupportedDurationField.Eras; } }
 
-        public override DurationField RangeDurationField { get { return null; } }
+        internal override DurationField RangeDurationField { get { return null; } }
 
-        public override bool IsLenient { get { return false; } }
+        internal override bool IsLenient { get { return false; } }
 
         #region Values
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             return calendarSystem.GetYear(localInstant) <= 0 ? NodaConstants.BeforeCommonEra : NodaConstants.CommonEra;
         }
 
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, NodaConstants.BCE, NodaConstants.CE);
 
@@ -62,43 +62,43 @@ namespace NodaTime.Fields
         #endregion
 
         #region Ranges
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return NodaConstants.CommonEra;
         }
 
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return NodaConstants.BeforeCommonEra;
         }
         #endregion
 
         #region Rounding
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             return GetValue(localInstant) == NodaConstants.CommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1) : new LocalInstant(long.MinValue);
         }
 
-        public override LocalInstant RoundCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             return GetValue(localInstant) == NodaConstants.BeforeCommonEra
                        ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
                        : new LocalInstant(long.MaxValue);
         }
 
-        public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfFloor(LocalInstant localInstant)
         {
             // In reality, the era is infinite, so there is no halfway point.
             return RoundFloor(localInstant);
         }
 
-        public override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
         {
             // In reality, the era is infinite, so there is no halfway point.
             return RoundFloor(localInstant);
         }
 
-        public override LocalInstant RoundHalfEven(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfEven(LocalInstant localInstant)
         {
             // In reality, the era is infinite, so there is no halfway point.
             return RoundFloor(localInstant);

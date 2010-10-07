@@ -34,13 +34,13 @@ namespace NodaTime.Fields
         /// <summary>
         /// Always returns null(not supported)
         /// </summary>
-        public override DurationField RangeDurationField { get { return null; } }
+        internal override DurationField RangeDurationField { get { return null; } }
 
         /// <summary>
         /// Always returns false, that means that it does not accept values that
         /// are out of bounds.
         /// </summary>
-        public override bool IsLenient { get { return false; } }
+        internal override bool IsLenient { get { return false; } }
 
         #region Values
         /// <summary>
@@ -48,7 +48,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
         /// <returns>The year extracted from the input.</returns>
-        public override int GetValue(LocalInstant localInstant)
+        internal override int GetValue(LocalInstant localInstant)
         {
             return calendarSystem.GetYear(localInstant);
         }
@@ -58,22 +58,22 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
         /// <returns>The year extracted from the input.</returns>
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             return calendarSystem.GetYear(localInstant);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             return value == 0 ? localInstant : SetValue(localInstant, GetValue(localInstant) + value);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, long value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             return Add(localInstant, (int)value);
         }
 
-        public override LocalInstant AddWrapField(LocalInstant localInstant, int value)
+        internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             if (value == 0)
             {
@@ -86,13 +86,13 @@ namespace NodaTime.Fields
             return SetValue(localInstant, wrappedYear);
         }
 
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, calendarSystem.MinYear, calendarSystem.MaxYear);
             return calendarSystem.SetYear(localInstant, (int)value);
         }
 
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return minuendInstant < subtrahendInstant
                        ? -calendarSystem.GetYearDifference(subtrahendInstant, minuendInstant)
@@ -101,38 +101,38 @@ namespace NodaTime.Fields
         #endregion
 
         #region Leap
-        public override bool IsLeap(LocalInstant localInstant)
+        internal override bool IsLeap(LocalInstant localInstant)
         {
             return calendarSystem.IsLeapYear(GetValue(localInstant));
         }
 
-        public override int GetLeapAmount(LocalInstant localInstant)
+        internal override int GetLeapAmount(LocalInstant localInstant)
         {
             return IsLeap(localInstant) ? 1 : 0;
         }
 
-        public override DurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
+        internal override DurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
         #endregion
 
         #region Ranges
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return calendarSystem.MinYear;
         }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return calendarSystem.MaxYear;
         }
         #endregion
 
         #region Rounding
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             return new LocalInstant(calendarSystem.GetYearTicks(GetValue(localInstant)));
         }
 
-        public override LocalInstant RoundCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             int year = GetValue(localInstant);
             long yearStartTicks = calendarSystem.GetYearTicks(year);

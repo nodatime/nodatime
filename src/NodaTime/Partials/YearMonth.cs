@@ -21,6 +21,7 @@ using NodaTime.Fields;
 
 namespace NodaTime.Partials
 {
+    /*
     /// <summary>
     /// Original name: YearMonth
     /// </summary>
@@ -42,5 +43,5 @@ namespace NodaTime.Partials
         {
             throw new NotImplementedException();
         }
-    }
+    }*/
 }

@@ -48,20 +48,14 @@ namespace NodaTime.Fields
 
         public long UnitTicks { get { return unitTicks; } }
 
-        public override DurationField DurationField { get { return durationField; } }
+        internal override DurationField DurationField { get { return durationField; } }
 
-        public abstract override DurationField RangeDurationField { get; }
-        public abstract override int GetValue(LocalInstant localInstant);
-        public abstract override LocalInstant Add(LocalInstant localInstant, int value);
-        public abstract override LocalInstant Add(LocalInstant localInstant, long value);
-        public abstract override LocalInstant SetValue(LocalInstant localInstant, long value);
-
-        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return (int)GetInt64Difference(minuendInstant, subtrahendInstant);
         }
 
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             if (minuendInstant < subtrahendInstant)
             {
@@ -88,8 +82,6 @@ namespace NodaTime.Fields
             }
             return difference;
         }
-
-        public abstract override LocalInstant RoundFloor(LocalInstant localInstant);
 
         private class LinkedDurationField : DurationField
         {

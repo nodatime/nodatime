@@ -53,13 +53,13 @@ namespace NodaTime.Fields
 
         internal int Divisor { get { return divisor; } }
 
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             int value = WrappedField.GetValue(localInstant);
             return value >= 0 ? value % divisor : (divisor - 1) + ((value + 1) % divisor);
         }
 
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, 0, divisor - 1);
             int wrappedValue = WrappedField.GetValue(localInstant);
@@ -67,40 +67,40 @@ namespace NodaTime.Fields
             return WrappedField.SetValue(localInstant, divided * divisor + value);
         }
 
-        public override DurationField RangeDurationField { get { return remainderRangeField; } }
+        internal override DurationField RangeDurationField { get { return remainderRangeField; } }
 
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return 0;
         }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return divisor - 1;
         }
 
         // No need to override RoundFloor - it already delegates
-        public override LocalInstant RoundCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             return WrappedField.RoundCeiling(localInstant);
         }
 
-        public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfFloor(LocalInstant localInstant)
         {
             return WrappedField.RoundHalfFloor(localInstant);
         }
 
-        public override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
         {
             return WrappedField.RoundHalfCeiling(localInstant);
         }
 
-        public override LocalInstant RoundHalfEven(LocalInstant localInstant)
+        internal override LocalInstant RoundHalfEven(LocalInstant localInstant)
         {
             return WrappedField.RoundHalfEven(localInstant);
         }
 
-        public override Duration Remainder(LocalInstant localInstant)
+        internal override Duration Remainder(LocalInstant localInstant)
         {
             return WrappedField.Remainder(localInstant);
         }

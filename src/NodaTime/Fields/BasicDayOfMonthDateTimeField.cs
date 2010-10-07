@@ -31,29 +31,29 @@ namespace NodaTime.Fields
             this.calendarSystem = calendarSystem;
         }
 
-        public override int GetValue(LocalInstant localInstant)
+        internal override int GetValue(LocalInstant localInstant)
         {
             return calendarSystem.GetDayOfMonth(localInstant);
         }
 
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             return calendarSystem.GetDayOfMonth(localInstant);
         }
 
-        public override DurationField RangeDurationField { get { return calendarSystem.Fields.Months; } }
+        internal override DurationField RangeDurationField { get { return calendarSystem.Fields.Months; } }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return calendarSystem.GetDaysInMonthMax();
         }
 
-        public override long GetMaximumValue(LocalInstant localInstant)
+        internal override long GetMaximumValue(LocalInstant localInstant)
         {
             return calendarSystem.GetDaysInMonthMax(localInstant);
         }
 
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return 1;
         }

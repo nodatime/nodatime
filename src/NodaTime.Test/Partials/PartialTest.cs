@@ -24,6 +24,7 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Partials
 {
+    /*
     [TestFixture]
     public class PartialTest
     {
@@ -544,6 +545,5 @@ namespace NodaTime.Test.Partials
         check(base, 1, 2);
         assertEquals("1970-01-02T01:02:07.008+01:00", test.toString());
     }
-*/
-    }
+    }*/
 }

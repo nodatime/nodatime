@@ -19,6 +19,7 @@ using NodaTime.Calendars;
 
 namespace NodaTime.Partials
 {
+    /*
     /// <summary>
     /// BasePartial is an abstract implementation of ReadablePartial that stores
     /// data in array and <code>Chronology</code> fields.
@@ -62,5 +63,5 @@ namespace NodaTime.Partials
         {
             return values[index];
         }
-    }
+    }*/
 }
