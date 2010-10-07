@@ -27,8 +27,8 @@ namespace NodaTime.Test.Partials
     [TestFixture]
     public class PartialTest
     {
-        private static readonly ICalendarSystem isoCalendar = IsoCalendarSystem.Instance;
-        private static readonly ICalendarSystem gregorianCalendar = GregorianCalendarSystem.Default;
+        private static readonly CalendarSystem isoCalendar = IsoCalendarSystem.Instance;
+        private static readonly CalendarSystem gregorianCalendar = GregorianCalendarSystem.Default;
         private static readonly DateTimeFieldType[] hourMinuteFieldTypes = new[] { DateTimeFieldType.HourOfDay, DateTimeFieldType.MinuteOfHour };
         private static readonly DateTimeFieldType[] monthDayFieldTypes = new[] { DateTimeFieldType.MonthOfYear, DateTimeFieldType.DayOfMonth };
         private Partial twentyPastTen;
@@ -79,7 +79,7 @@ namespace NodaTime.Test.Partials
             AssertMonthDay(12, 31, december31);
         }
 
-        private static void AssertCalendar(ICalendarSystem calendar, Partial partial)
+        private static void AssertCalendar(CalendarSystem calendar, Partial partial)
         {
             Assert.AreEqual(calendar, @partial.Calendar);
         }
@@ -96,12 +96,12 @@ namespace NodaTime.Test.Partials
             CollectionAssert.AreEqual(new[] { hour, minute }, hourMinPartial.GetValues());
         }
 
-        private static Partial CreateHourMinPartial(int hour, int min, ICalendarSystem calendarSystem)
+        private static Partial CreateHourMinPartial(int hour, int min, CalendarSystem calendarSystem)
         {
             return new Partial(hourMinuteFieldTypes, new[] { hour, min }, calendarSystem);
         }
 
-        private static Partial CreateMonthDayPartial(int month, int day, ICalendarSystem calendarSystem)
+        private static Partial CreateMonthDayPartial(int month, int day, CalendarSystem calendarSystem)
         {
             return new Partial(monthDayFieldTypes, new[] { month, day }, calendarSystem);
         }
@@ -522,7 +522,7 @@ namespace NodaTime.Test.Partials
             Assert.Throws<ArgumentNullException>(() => twentyPastTen.Minus(null));
         }
 
-        /* TODO: Why does Partial take a ICalendarSystem instead of a Chronology?
+        /* TODO: Why does Partial take a CalendarSystem instead of a Chronology?
          * ToDateTime (probably should be renamed to ToZonedDateTime) depends on this
     //-----------------------------------------------------------------------
     public void testToDateTime_RI() {

@@ -42,7 +42,7 @@ namespace NodaTime.Calendars
         {
             // TODO: This pattern appears all over the place. It *may* not be necessary
             // now we've separated out all the time zone stuff.
-            if (BaseCalendar == null)
+            if (Calendar == null)
             {
                 base.AssembleFields(builder);
             }

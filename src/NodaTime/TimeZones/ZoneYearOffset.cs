@@ -195,7 +195,7 @@ namespace NodaTime.TimeZones
         /// <returns>The <see cref="Instant"/> of the point in the given year.</returns>
         internal Instant MakeInstant(int year, Offset standardOffset, Offset savings)
         {
-            ICalendarSystem calendar = IsoCalendarSystem.Instance;
+            CalendarSystem calendar = IsoCalendarSystem.Instance;
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.Fields.MonthOfYear.SetValue(instant, monthOfYear);
             instant = calendar.Fields.TickOfDay.SetValue(instant, tickOfDay.Ticks);
@@ -337,7 +337,7 @@ namespace NodaTime.TimeZones
         /// <param name="instant">The instant to adjust.</param>
         /// <param name="direction"></param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        private LocalInstant SetDayOfMonthWithLeap(ICalendarSystem calendar, LocalInstant instant, int direction)
+        private LocalInstant SetDayOfMonthWithLeap(CalendarSystem calendar, LocalInstant instant, int direction)
         {
             if (monthOfYear == 2 && dayOfMonth == 29)
             {
@@ -357,7 +357,7 @@ namespace NodaTime.TimeZones
         /// <param name="calendar">The calendar to use to set the values.</param>
         /// <param name="instant">The instant to adjust.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        private LocalInstant SetDayOfMonth(ICalendarSystem calendar, LocalInstant instant)
+        private LocalInstant SetDayOfMonth(CalendarSystem calendar, LocalInstant instant)
         {
             if (dayOfMonth > 0)
             {
@@ -382,7 +382,7 @@ namespace NodaTime.TimeZones
         /// <param name="calendar">The calendar to use to set the values.</param>
         /// <param name="instant">The instant to adjust.</param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        private LocalInstant SetDayOfWeek(ICalendarSystem calendar, LocalInstant instant)
+        private LocalInstant SetDayOfWeek(CalendarSystem calendar, LocalInstant instant)
         {
             if (dayOfWeek != 0)
             {

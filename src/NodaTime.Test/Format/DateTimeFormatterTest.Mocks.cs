@@ -32,11 +32,11 @@ namespace NodaTime.Test.Format
                 get { throw new NotImplementedException(); }
             }
 
-            public ICalendarSystem Calendar;
+            public CalendarSystem Calendar;
             public IDateTimeZone Zone;
             public TextWriter DtWriter;
             public IFormatProvider DtProvider;
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
             {
                 DtWriter = writer;
                 DtProvider = provider;

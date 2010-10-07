@@ -41,7 +41,7 @@ namespace NodaTime
     /// </remarks>
     public struct LocalDateTime : IEquatable<LocalDateTime>
     {
-        private readonly ICalendarSystem calendar;
+        private readonly CalendarSystem calendar;
         private readonly LocalInstant localInstant;
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace NodaTime
         /// <param name="localInstant">The local instant.</param>
         /// <param name="calendar">The calendar system.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        public LocalDateTime(LocalInstant localInstant, ICalendarSystem calendar)
+        public LocalDateTime(LocalInstant localInstant, CalendarSystem calendar)
         {
             if (calendar == null)
             {
@@ -92,7 +92,7 @@ namespace NodaTime
         /// <param name="minute">The minute.</param>
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, ICalendarSystem calendar)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, CalendarSystem calendar)
         {
             if (calendar == null)
             {
@@ -127,7 +127,7 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, ICalendarSystem calendar)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, CalendarSystem calendar)
         {
             if (calendar == null)
             {
@@ -164,7 +164,7 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, ICalendarSystem calendar)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, CalendarSystem calendar)
             : this(year, month, day, hour, minute, second, millisecond, 0, calendar)
         {
         }
@@ -199,7 +199,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond,
-                             ICalendarSystem calendar)
+                             CalendarSystem calendar)
         {
             if (calendar == null)
             {
@@ -219,7 +219,7 @@ namespace NodaTime
         /// Gets the calendar.
         /// </summary>
         /// <value>The calendar.</value>
-        public ICalendarSystem Calendar { get { return calendar; } }
+        public CalendarSystem Calendar { get { return calendar; } }
 
         public int Era { get { return calendar.Fields.Era.GetValue(localInstant); } }
 
@@ -309,7 +309,7 @@ namespace NodaTime
         /// <returns>The resulting local date and time</returns>
         public static LocalDateTime operator +(LocalDateTime localDateTime, IPeriod period)
         {
-            ICalendarSystem calendar = localDateTime.Calendar;
+            CalendarSystem calendar = localDateTime.Calendar;
             return new LocalDateTime(calendar.Add(period, localDateTime.LocalInstant, 1));
         }
 
@@ -321,7 +321,7 @@ namespace NodaTime
         /// <returns>The resulting local date and time</returns>
         public static LocalDateTime operator -(LocalDateTime localDateTime, IPeriod period)
         {
-            ICalendarSystem calendar = localDateTime.Calendar;
+            CalendarSystem calendar = localDateTime.Calendar;
             return new LocalDateTime(calendar.Add(period, localDateTime.LocalInstant, -1));
         }
         #endregion

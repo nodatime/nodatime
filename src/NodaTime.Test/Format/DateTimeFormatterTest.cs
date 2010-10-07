@@ -33,8 +33,8 @@ namespace NodaTime.Test.Format
         private IFormatProvider provider1;
         private IFormatProvider provider2;
 
-        private ICalendarSystem calendar1;
-        private ICalendarSystem calendar2;
+        private CalendarSystem calendar1;
+        private CalendarSystem calendar2;
 
         private IDateTimeZone zone1;
         private IDateTimeZone zone2;

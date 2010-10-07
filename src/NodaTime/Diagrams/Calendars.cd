@@ -43,11 +43,11 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="NodaTime.Calendars.ICalendarSystem" Collapsed="true">
+  <Interface Name="NodaTime.Calendars.CalendarSystemBase" Collapsed="true">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEgAA=</HashCode>
-      <FileName>Calendars\ICalendarSystem.cs</FileName>
+      <FileName>Calendars\CalendarSystemBase.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

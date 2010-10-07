@@ -41,11 +41,11 @@ namespace NodaTime
         /// <summary>
         /// Gets the calendar system of the partial which is never null.
         /// <para>
-        /// The <see cref="ICalendarSystem"/> is the calculation engine behind the partial and
+        /// The <see cref="CalendarSystem"/> is the calculation engine behind the partial and
         /// provides conversion and validation of the fields in a particular calendar system.
         /// </para>
         /// </summary>
-        ICalendarSystem Calendar { get; }
+        CalendarSystem Calendar { get; }
 
         /// <summary>
         /// Gets the number of fields that this partial supports.

@@ -120,7 +120,7 @@ namespace NodaTime.Format
             }
         }
 
-        private readonly ICalendarSystem calendarSystem;
+        private readonly CalendarSystem calendarSystem;
         private Offset offset;
         private IDateTimeZone zone;
         private readonly LocalInstant localInstant;
@@ -139,7 +139,7 @@ namespace NodaTime.Format
         /// <param name="calendarSystem">The calendar system to use</param>
         /// <param name="provider">The format provider to use</param>
         /// <param name="pivotYear">The pivot year to use when parsing two-digit years</param>
-        public DateTimeParserBucket(LocalInstant instant, ICalendarSystem calendarSystem, IFormatProvider provider, int? pivotYear)
+        public DateTimeParserBucket(LocalInstant instant, CalendarSystem calendarSystem, IFormatProvider provider, int? pivotYear)
         {
             if (calendarSystem == null)
             {
@@ -158,7 +158,7 @@ namespace NodaTime.Format
         /// <param name="instant">The initial local instant</param>
         /// <param name="calendarSystem">The calendar system to use</param>
         /// <param name="provider">The format provider to use</param>
-        public DateTimeParserBucket(LocalInstant instant, ICalendarSystem calendarSystem, IFormatProvider provider)
+        public DateTimeParserBucket(LocalInstant instant, CalendarSystem calendarSystem, IFormatProvider provider)
             : this(instant, calendarSystem, provider, null)
         {
         }
@@ -171,7 +171,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the calendar system of the bucket
         /// </summary>
-        public ICalendarSystem Calendar { get { return calendarSystem; } }
+        public CalendarSystem Calendar { get { return calendarSystem; } }
 
         /// <summary>
         /// Gets the format provider to be used during parsing.

@@ -27,7 +27,7 @@ namespace NodaTime.Partials
     /// </summary>
     public sealed class MonthDay : PartialBase
     {
-        protected override IDateTimeField GetField(int index, ICalendarSystem calendar)
+        protected override IDateTimeField GetField(int index, CalendarSystem calendar)
         {
             throw new NotImplementedException();
         }
