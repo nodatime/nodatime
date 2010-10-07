@@ -123,7 +123,7 @@
     <Compile Include="DurationTest.Construction.cs">
       <DependentUpon>DurationTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Fields\DateTimeFieldBaseTest.cs" />
+    <Compile Include="Fields\DateTimeFieldTest.cs" />
     <Compile Include="Fields\DecoratedDateTimeFieldTest.cs" />
     <Compile Include="Fields\DurationFieldTest.cs" />
     <Compile Include="Fields\FakeDurationField.cs" />

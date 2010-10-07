@@ -24,11 +24,11 @@ namespace NodaTime.Fields
     /// The interface defines a set of methods that manipulate a LocalInstant
     /// with regards to a single field, such as monthOfYear or secondOfMinute.
     /// </summary>
-    public abstract class DateTimeFieldBase
+    public abstract class DateTimeField
     {
         private readonly DateTimeFieldType fieldType;
 
-        protected DateTimeFieldBase(DateTimeFieldType fieldType)
+        protected DateTimeField(DateTimeFieldType fieldType)
         {
             if (fieldType == null)
             {
@@ -220,7 +220,7 @@ namespace NodaTime.Fields
             // there are more efficient algorithms than this (especially for time only fields)
             // trouble is when dealing with days and months, so we use this technique of
             // adding/removing one from the larger field at a time
-            DateTimeFieldBase nextField = null;
+            DateTimeField nextField = null;
             while (valueToAdd > 0)
             {
                 long max = GetMaximumValue(instant, values);
@@ -315,7 +315,7 @@ namespace NodaTime.Fields
             // there are more efficient algorithms than this (especially for time only fields)
             // trouble is when dealing with days and months, so we use this technique of
             // adding/removing one from the larger field at a time
-            DateTimeFieldBase nextField = null;
+            DateTimeField nextField = null;
             while (valueToAdd > 0)
             {
                 int max = (int)GetMaximumValue(instant, values);
@@ -495,7 +495,7 @@ namespace NodaTime.Fields
             // may need to adjust smaller fields
             for (int i = fieldIndex + 1; i < instant.Size; i++)
             {
-                DateTimeFieldBase field = instant.GetField(i);
+                DateTimeField field = instant.GetField(i);
                 if (values[i] > field.GetMaximumValue(instant, values))
                 {
                     values[i] = (int)field.GetMaximumValue(instant, values);

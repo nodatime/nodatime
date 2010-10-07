@@ -23,7 +23,7 @@ namespace NodaTime.Fields
     /// Porting status: needs text
     /// TODO: Rename to "GregulianEraDateTimeField" or something similar?
     /// </summary>
-    internal sealed class GJEraDateTimeField : DateTimeFieldBase
+    internal sealed class GJEraDateTimeField : DateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;
 

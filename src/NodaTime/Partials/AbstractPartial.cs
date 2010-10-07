@@ -138,7 +138,7 @@ namespace NodaTime.Partials
         /// </summary>
         /// <param name="index">The index</param>
         /// <returns>The field</returns>
-        public DateTimeFieldBase GetField(int index)
+        public DateTimeField GetField(int index)
         {
             return GetField(index, Calendar);
         }
@@ -148,9 +148,9 @@ namespace NodaTime.Partials
         /// The fields are returned largest to smallest, for example Hour, Minute, Second.
         /// </summary>
         /// <returns>The fields supported in an array that may be altered, largest to smallest</returns>
-        public DateTimeFieldBase[] GetFields()
+        public DateTimeField[] GetFields()
         {
-            DateTimeFieldBase[] result = new DateTimeFieldBase[Size];
+            DateTimeField[] result = new DateTimeField[Size];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = GetField(i);
@@ -192,7 +192,7 @@ namespace NodaTime.Partials
         /// <param name="index">The index to retrieve</param>
         /// <param name="calendar">The calendar system to use</param>
         /// <returns>The field</returns>
-        protected abstract DateTimeFieldBase GetField(int index, CalendarSystem calendar);
+        protected abstract DateTimeField GetField(int index, CalendarSystem calendar);
 
         /// <summary>
         /// Gets the index of the first fields to have the specified duration,
