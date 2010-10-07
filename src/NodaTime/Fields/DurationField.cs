@@ -25,9 +25,9 @@ namespace NodaTime.Fields
     /// with regards to a single field, such as months or seconds. This class is
     /// threadsafe, and all subclasses must be too.
     /// </summary>
-    public abstract class DurationField
+    internal abstract class DurationField
     {
-        public static bool IsTypeValid(DurationFieldType type)
+        internal static bool IsTypeValid(DurationFieldType type)
         {
             return type >= 0 && type <= DurationFieldType.Ticks;
         }

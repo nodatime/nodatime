@@ -132,7 +132,7 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="periodParser">PeriodParser to use</param>
         /// <returns>A new formatter which can parse, but not print</returns>
-        public static PeriodFormatter FromParser(IPeriodParser periodParser)
+        internal static PeriodFormatter FromParser(IPeriodParser periodParser)
         {
             if (periodParser == null)
             {
@@ -149,7 +149,7 @@ namespace NodaTime.Format
         /// <param name="periodPrinter">PeriodPrinter to use</param>
         /// <param name="periodParser">PeriodParser to use</param>
         /// <returns>A new formatter which can parse and print</returns>
-        public static PeriodFormatter FromPrinterAndParser(IPeriodPrinter periodPrinter, IPeriodParser periodParser)
+        internal static PeriodFormatter FromPrinterAndParser(IPeriodPrinter periodPrinter, IPeriodParser periodParser)
         {
             if (periodPrinter == null)
             {
@@ -191,7 +191,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the internal parser object that performs the real parsing work.
         /// </summary>
-        public IPeriodParser Parser { get { return periodParser; } }
+        internal IPeriodParser Parser { get { return periodParser; } }
 
         /// <summary>
         /// Gets the IFormatProvider that will be used for printing and parsing.

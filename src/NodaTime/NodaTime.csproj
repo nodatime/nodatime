@@ -120,7 +120,6 @@
     <Compile Include="Converters\ConverterManager.cs" />
     <Compile Include="Converters\IConverter.cs" />
     <Compile Include="Converters\IInstantConverter.cs" />
-    <Compile Include="Calendars\ICalendarSystem.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Format\IPeriodParser.cs" />
