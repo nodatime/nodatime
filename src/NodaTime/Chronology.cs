@@ -30,7 +30,7 @@ namespace NodaTime
     /// </summary>
     public sealed class Chronology : IEquatable<Chronology>
     {
-        private static readonly Chronology isoUtc = new Chronology(DateTimeZones.Utc, IsoCalendarSystem.Instance);
+        private static readonly Chronology isoUtc = new Chronology(DateTimeZones.Utc, CalendarSystem.Iso);
 
         public static Chronology IsoUtc { get { return isoUtc; } }
 
@@ -59,7 +59,7 @@ namespace NodaTime
         /// </summary>
         internal static Chronology IsoForZone(IDateTimeZone zone)
         {
-            return new Chronology(zone, IsoCalendarSystem.Instance);
+            return new Chronology(zone, CalendarSystem.Iso);
         }
 
         #region Equality

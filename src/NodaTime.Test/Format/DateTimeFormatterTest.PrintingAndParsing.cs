@@ -141,7 +141,7 @@ namespace NodaTime.Test.Format
             var text = "2009-01-01";
 
             sut.Parse(text);
-           Assert.That(parser.Bucket.Calendar, Is.SameAs(IsoCalendarSystem.Instance));
+           Assert.That(parser.Bucket.Calendar, Is.SameAs(CalendarSystem.Iso));
         }
 
         [Test]

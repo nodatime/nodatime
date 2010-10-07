@@ -36,10 +36,8 @@ namespace NodaTime.Calendars
     /// is the value of the last two year digits.
     /// </para>
     /// </remarks>
-    public sealed class IsoCalendarSystem : AssembledCalendarSystem
+    internal sealed class IsoCalendarSystem : AssembledCalendarSystem
     {
-        public static readonly IsoCalendarSystem Instance = new IsoCalendarSystem(GregorianCalendarSystem.Default);
-
         private const string IsoName = "ISO";
 
         // We precompute useful values for each month between these years, as we anticipate most
@@ -62,7 +60,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        private IsoCalendarSystem(CalendarSystem baseSystem) : base(IsoName, baseSystem)
+        internal IsoCalendarSystem(CalendarSystem baseSystem) : base(IsoName, baseSystem)
         {
         }
 

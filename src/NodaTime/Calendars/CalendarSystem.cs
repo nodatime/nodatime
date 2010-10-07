@@ -31,6 +31,24 @@ namespace NodaTime.Calendars
     /// </summary>
     public abstract class CalendarSystem
     {
+        /// <summary>
+        /// Returns a calendar system that follows the rules of the ISO8601 standard,
+        /// which is compatible with Gregorian for all modern dates.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// When ISO does not define a field, but it can be determined (such as AM/PM) it is included.
+        /// </para>
+        /// <para>
+        /// With the exception of century related fields, the ISO calendar is exactly the
+        /// same as the Gregorian calendar system. In this system, centuries and year
+        /// of century are zero based. For all years, the century is determined by
+        /// dropping the last two digits of the year, ignoring sign. The year of century
+        /// is the value of the last two year digits.
+        /// </para>
+        /// </remarks>
+        public static readonly CalendarSystem Iso = new IsoCalendarSystem(GregorianCalendarSystem.Default);
+
         private readonly string name;
 
         /// <summary>

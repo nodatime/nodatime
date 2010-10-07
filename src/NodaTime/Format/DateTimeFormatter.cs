@@ -385,7 +385,7 @@ namespace NodaTime.Format
 
         private CalendarSystem SelectCalendarSystem()
         {
-            return calendarSystem ?? IsoCalendarSystem.Instance;
+            return calendarSystem ?? CalendarSystem.Iso;
         }
 
         private IDateTimeZone SelectZone(ZonedDateTime dateTime)

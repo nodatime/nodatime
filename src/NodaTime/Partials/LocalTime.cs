@@ -44,7 +44,7 @@ namespace NodaTime.Partials
         public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
             localInstant = new LocalDateTime(1970, 1, 1, hour, minute, second, millisecond,
-                tickWithinMillisecond, IsoCalendarSystem.Instance).LocalInstant;
+                tickWithinMillisecond, CalendarSystem.Iso).LocalInstant;
         }
 
         private LocalTime(LocalInstant localInstant)

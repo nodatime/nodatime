@@ -21,7 +21,7 @@ using NodaTime.Fields;
 namespace NodaTime.Calendars
 {
     // TODO: Optimisations of GetLocalInstant etc.
-    public abstract class BasicCalendarSystem : AssembledCalendarSystem
+    internal abstract class BasicCalendarSystem : AssembledCalendarSystem
     {
         private static readonly FieldSet preciseFields = CreatePreciseFields();
 
@@ -37,13 +37,13 @@ namespace NodaTime.Calendars
         /// </summary>
         protected abstract long GetTotalTicksByYearMonth(int year, int month);
 
-        public abstract int MinYear { get; }
-        public abstract int MaxYear { get; }
-        public abstract long AverageTicksPerMonth { get; }
-        public abstract long AverageTicksPerYear { get; }
-        public abstract long AverageTicksPerYearDividedByTwo { get; }
-        public abstract long ApproxTicksAtEpochDividedByTwo { get; }
-        public abstract int GetDaysInYearMonth(int year, int month);
+        internal abstract int MinYear { get; }
+        internal abstract int MaxYear { get; }
+        internal abstract long AverageTicksPerMonth { get; }
+        internal abstract long AverageTicksPerYear { get; }
+        internal abstract long AverageTicksPerYearDividedByTwo { get; }
+        internal abstract long ApproxTicksAtEpochDividedByTwo { get; }
+        internal abstract int GetDaysInYearMonth(int year, int month);
         protected abstract LocalInstant CalculateStartOfYear(int year);
         protected internal abstract bool IsLeapYear(int year);
         protected internal abstract int GetMonthOfYear(LocalInstant localInstant, int year);

@@ -23,7 +23,7 @@ namespace NodaTime.Calendars
     /// Abstract calendar system that enables calendar systems to be assembled from
     /// a container of fields.
     /// </summary>
-    public abstract class AssembledCalendarSystem : CalendarSystem
+    internal abstract class AssembledCalendarSystem : CalendarSystem
     {
         private readonly FieldSet fields;
 
