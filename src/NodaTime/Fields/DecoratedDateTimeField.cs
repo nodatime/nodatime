@@ -40,9 +40,9 @@ namespace NodaTime.Fields
     /// </remarks>
     public abstract class DecoratedDateTimeField : DateTimeFieldBase
     {
-        private readonly IDateTimeField wrappedField;
+        private readonly DateTimeFieldBase wrappedField;
 
-        protected DecoratedDateTimeField(IDateTimeField wrappedField, DateTimeFieldType fieldType) : base(fieldType)
+        protected DecoratedDateTimeField(DateTimeFieldBase wrappedField, DateTimeFieldType fieldType) : base(fieldType)
         {
             if (wrappedField == null)
             {
@@ -58,7 +58,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Gets the wrapped date time field.
         /// </summary>
-        public IDateTimeField WrappedField { get { return wrappedField; } }
+        public DateTimeFieldBase WrappedField { get { return wrappedField; } }
 
         public override DurationField DurationField { get { return wrappedField.DurationField; } }
 

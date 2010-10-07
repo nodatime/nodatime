@@ -52,18 +52,18 @@ namespace NodaTime.Format
     {
         private class SavedField : IComparable<SavedField>
         {
-            private readonly IDateTimeField field;
+            private readonly DateTimeFieldBase field;
             private readonly int value;
             private readonly string text;
             private readonly IFormatProvider provider;
 
-            public SavedField(IDateTimeField field, int value)
+            public SavedField(DateTimeFieldBase field, int value)
             {
                 this.field = field;
                 this.value = value;
             }
 
-            public SavedField(IDateTimeField field, string text, IFormatProvider provider)
+            public SavedField(DateTimeFieldBase field, string text, IFormatProvider provider)
             {
                 this.field = field;
                 this.text = text;
@@ -89,7 +89,7 @@ namespace NodaTime.Format
                     return 1;
                 }
 
-                IDateTimeField otherField = other.field;
+                DateTimeFieldBase otherField = other.field;
                 int result = CompareReverse(field.RangeDurationField, otherField.RangeDurationField);
 
                 if (result != 0)
@@ -199,7 +199,7 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="field">The field, whose chronology must match that of this bucket</param>
         /// <param name="value">The value</param>
-        public void SaveField(IDateTimeField field, int value)
+        public void SaveField(DateTimeFieldBase field, int value)
         {
             SaveField(new SavedField(field, value));
         }

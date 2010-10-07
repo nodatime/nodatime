@@ -25,12 +25,11 @@ namespace NodaTime.Fields
     /// just throw <see cref="NotSupportedException" />.
     /// TODO: See whether we really need the delegation, or whether DurationField could just throw.
     /// </summary>
-    internal class UnsupportedDateTimeField : IDateTimeField
+    internal class UnsupportedDateTimeField : DateTimeFieldBase
     {
         private static readonly object cacheLock = new object();
         private static readonly UnsupportedDateTimeField[] cache = new UnsupportedDateTimeField[DateTimeFieldType.MaxOrdinal + 1];
 
-        private readonly DateTimeFieldType fieldType;
         private readonly DurationField durationField;
 
         /// <summary>
@@ -60,232 +59,228 @@ namespace NodaTime.Fields
             }
         }
 
-        private UnsupportedDateTimeField(DateTimeFieldType fieldType, DurationField durationField)
+        private UnsupportedDateTimeField(DateTimeFieldType fieldType, DurationField durationField) : base(fieldType)
         {
-            this.fieldType = fieldType;
             this.durationField = durationField;
         }
 
-        public DateTimeFieldType FieldType { get { return fieldType; } }
 
-        public string Name { get { return FieldType.ToString(); } }
+        public override DurationField DurationField { get { return durationField; } }
 
-        public DurationField DurationField { get { return durationField; } }
+        public override DurationField RangeDurationField { get { return null; } }
 
-        public DurationField RangeDurationField { get { return null; } }
+        public override DurationField LeapDurationField { get { return null; } }
 
-        public DurationField LeapDurationField { get { return null; } }
+        public override bool IsSupported { get { return false; } }
 
-        public bool IsSupported { get { return false; } }
+        public override bool IsLenient { get { return false; } }
 
-        public bool IsLenient { get { return false; } }
-
-        public int GetValue(LocalInstant localInstant)
+        public override int GetValue(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public long GetInt64Value(LocalInstant localInstant)
+        public override long GetInt64Value(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public LocalInstant Add(LocalInstant localInstant, int value)
+        public override LocalInstant Add(LocalInstant localInstant, int value)
         {
             return durationField.Add(localInstant, value);
         }
 
-        public LocalInstant Add(LocalInstant localInstant, long value)
+        public override LocalInstant Add(LocalInstant localInstant, long value)
         {
             return durationField.Add(localInstant, value);
         }
 
-        public int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return durationField.GetDifference(minuendInstant, subtrahendInstant);
         }
 
-        public long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return durationField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }
 
-        public LocalInstant SetValue(LocalInstant localInstant, long value)
+        public override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             throw new NotSupportedException();
         }
 
-        public bool IsLeap(LocalInstant localInstant)
+        public override bool IsLeap(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public int GetLeapAmount(LocalInstant localInstant)
+        public override int GetLeapAmount(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public long GetMaximumValue()
+        public override long GetMaximumValue()
         {
             throw new NotSupportedException();
         }
 
-        public long GetMaximumValue(LocalInstant localInstant)
+        public override long GetMaximumValue(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public long GetMinimumValue()
+        public override long GetMinimumValue()
         {
             throw new NotSupportedException();
         }
 
-        public long GetMinimumValue(LocalInstant localInstant)
+        public override long GetMinimumValue(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public LocalInstant RoundFloor(LocalInstant localInstant)
+        public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public LocalInstant RoundCeiling(LocalInstant localInstant)
+        public override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public LocalInstant RoundHalfFloor(LocalInstant localInstant)
+        public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public LocalInstant RoundHalfCeiling(LocalInstant localInstant)
+        public override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public LocalInstant RoundHalfEven(LocalInstant localInstant)
+        public override LocalInstant RoundHalfEven(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public Duration Remainder(LocalInstant localInstant)
+        public override Duration Remainder(LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
 
-        public long GetMaximumValue(IPartial instant, int[] values)
+        public override long GetMaximumValue(IPartial instant, int[] values)
         {
             throw new NotImplementedException();
         }
 
-        public long GetMinimumValue(IPartial instant, int[] values)
+        public override long GetMinimumValue(IPartial instant, int[] values)
         {
             throw new NotImplementedException();
         }
 
-        public long GetMaximumValue(IPartial instant)
+        public override long GetMaximumValue(IPartial instant)
         {
             throw new NotImplementedException();
         }
 
-        public long GetMinimumValue(IPartial instant)
+        public override long GetMinimumValue(IPartial instant)
         {
             throw new NotImplementedException();
         }
 
-        public string GetAsText(LocalInstant localInstant, IFormatProvider provider)
+        public override string GetAsText(LocalInstant localInstant, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public string GetAsText(LocalInstant localInstant)
+        public override string GetAsText(LocalInstant localInstant)
         {
             throw new NotImplementedException();
         }
 
-        public string GetAsText(IPartial partial, int fieldValue, IFormatProvider provider)
+        public override string GetAsText(IPartial partial, int fieldValue, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public string GetAsText(IPartial partial, IFormatProvider provider)
+        public override string GetAsText(IPartial partial, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public string GetAsText(int fieldValue, IFormatProvider provider)
+        public override string GetAsText(int fieldValue, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public string GetAsShortText(LocalInstant localInstant, IFormatProvider provider)
+        public override string GetAsShortText(LocalInstant localInstant, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public string GetAsShortText(LocalInstant localInstant)
+        public override string GetAsShortText(LocalInstant localInstant)
         {
             throw new NotImplementedException();
         }
 
-        public string GetAsShortText(IPartial partial, int fieldValue, IFormatProvider provider)
+        public override string GetAsShortText(IPartial partial, int fieldValue, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public string GetAsShortText(IPartial partial, IFormatProvider provider)
+        public override string GetAsShortText(IPartial partial, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public string GetAsShortText(int fieldValue, IFormatProvider provider)
+        public override string GetAsShortText(int fieldValue, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
+        public override int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
         {
             throw new NotImplementedException();
         }
 
-        public int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
+        public override int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
         {
             throw new NotImplementedException();
         }
 
-        public int[] SetValue(IPartial instant, int fieldIndex, int[] values, int newValue)
+        public override int[] SetValue(IPartial instant, int fieldIndex, int[] values, int newValue)
         {
             throw new NotImplementedException();
         }
 
-        public LocalInstant AddWrapField(LocalInstant localInstant, int value)
+        public override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             throw new NotImplementedException();
         }
 
-        public LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
+        public override LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public LocalInstant SetValue(LocalInstant instant, string text)
+        public override LocalInstant SetValue(LocalInstant instant, string text)
         {
             throw new NotImplementedException();
         }
 
-        public int[] SetValue(IPartial instant, int fieldIndex, int[] values, string text, IFormatProvider provider)
+        public override int[] SetValue(IPartial instant, int fieldIndex, int[] values, string text, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public int GetMaximumTextLength(IFormatProvider provider)
+        public override int GetMaximumTextLength(IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
-        public int GetMaximumShortTextLength(IFormatProvider provider)
+        public override int GetMaximumShortTextLength(IFormatProvider provider)
         {
             throw new NotImplementedException();
         }

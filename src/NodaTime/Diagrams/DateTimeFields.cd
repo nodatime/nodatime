@@ -186,11 +186,11 @@
       <FileName>Fields\GJDayOfWeekDateTimeField.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="NodaTime.Fields.IDateTimeField" Collapsed="true">
+  <Interface Name="NodaTime.Fields.DateTimeFieldBase" Collapsed="true">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACJAAIBAoAAAAlAACYCAFAQACCAIAAAAAFBAYABAQAQ=</HashCode>
-      <FileName>Fields\IDateTimeField.cs</FileName>
+      <FileName>Fields\DateTimeFieldBase.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
