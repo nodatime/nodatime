@@ -17,6 +17,8 @@
 
 namespace NodaTime.Calendars
 {
+    // TODO: This is very similar to System.DayOfWeek, but with a different numbering system. We should investigate whether we could move to
+    // use the system type.
     /// <summary>
     /// Equates the days of the week with their numerical value.
     /// </summary>

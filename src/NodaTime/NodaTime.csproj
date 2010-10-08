@@ -117,9 +117,6 @@
     <Compile Include="Calendars\CalendarSystem.cs" />
     <Compile Include="Calendars\GregorianCalendarSystem.cs" />
     <Compile Include="Calendars\IsoCalendarSystem.cs" />
-    <Compile Include="Converters\ConverterManager.cs" />
-    <Compile Include="Converters\IConverter.cs" />
-    <Compile Include="Converters\IInstantConverter.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Format\IPeriodParser.cs" />
@@ -192,7 +189,6 @@
     <Compile Include="Interval.cs" />
     <Compile Include="IPartial.cs" />
     <Compile Include="Partials\LocalDate.cs" />
-    <Compile Include="NodaTimePermission.cs" />
     <Compile Include="NodaConstants.cs" />
     <Compile Include="IPeriod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -202,14 +198,10 @@
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Converters\readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="Diagrams\Calendars.cd" />
     <None Include="Diagrams\DurationFields.cd" />
     <None Include="Diagrams\DateTimeFields.cd" />
-    <None Include="Diagrams\Partial.cd" />
     <None Include="Diagrams\Period.cd" />
   </ItemGroup>
   <ItemGroup>

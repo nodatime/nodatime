@@ -21,6 +21,7 @@ using NodaTime.Periods;
 
 namespace NodaTime.Calendars
 {
+    // TODO: Move to NodaTime namespace now that users only need to know about CalendarSystem?
     /// <summary>
     /// CalendarSystem provides a skeleton implementation for CalendarSystem.
     /// Many utility methods are defined, but all fields are unsupported.

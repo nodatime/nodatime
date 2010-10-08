@@ -22,7 +22,7 @@ namespace NodaTime.Fields
     /// <summary>
     /// TODO: Potentially remove this. Can move VerifyValueBounds into DateTimeField, probably.
     /// </summary>
-    public static class FieldUtils
+    internal static class FieldUtils
     {
         internal static void VerifyValueBounds(DateTimeField field, long value, long lowerBound, long upperBound)
         {
@@ -114,7 +114,7 @@ namespace NodaTime.Fields
         /// <param name="maxValue">The wrap range maximum value. This must be greater than minValue (checked by the method).</param>
         /// <returns>The wrapped value</returns>
         /// <exception cref="ArgumentException">If minValue is greater than or equal to maxValue</exception>
-        public static int GetWrappedValue(int currentValue, int wrapValue, int minValue, int maxValue)
+        internal static int GetWrappedValue(int currentValue, int wrapValue, int minValue, int maxValue)
         {
             return GetWrappedValue(currentValue + wrapValue, minValue, maxValue);
         }
@@ -128,7 +128,7 @@ namespace NodaTime.Fields
         /// <param name="maxValue">The wrap range maximum value. This must be greater than minValue (checked by the method).</param>
         /// <returns>The wrapped value</returns>
         /// <exception cref="ArgumentException">If minValue is greater than or equal to maxValue</exception>        
-        public static int GetWrappedValue(int value, int minValue, int maxValue)
+        internal static int GetWrappedValue(int value, int minValue, int maxValue)
         {
             if (minValue >= maxValue)
             {
