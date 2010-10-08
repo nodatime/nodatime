@@ -1,0 +1,2915 @@
+<html>
+  <head>
+    <title>NodaTime.Periods.Seconds</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime.Periods Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.Periods.Seconds">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Periods.Seconds:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Periods.Seconds:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Periods.Seconds:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.Periods.Seconds">Seconds  Class</h1>
+    <p class="Summary" id="T:NodaTime.Periods.Seconds:Summary">
+            An immutable time period representing a number of seconds.
+            <p><table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Seconds</pre></td></tr></table> is an immutable period that can only store seconds.
+            It does not store years, months or hours for example. As such it is a
+            type-safe way of representing a number of seconds in an application.
+            </p><p>
+            The number of seconds is set in the constructor, and may be queried using
+            <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Value</pre></td></tr></table>. Basic mathematical operations are provided -
+            <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Add()</pre></td></tr></table>, <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Subtract()</pre></td></tr></table>, <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Multiply()</pre></td></tr></table> and
+            <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Divide()</pre></td></tr></table>.
+            </p><p><table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Seconds</pre></td></tr></table> is thread-safe and immutable.
+            </p></p>
+    <div id="T:NodaTime.Periods.Seconds:Signature">
+      <div class="Signature">public sealed class  <b>Seconds</b> : <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">SingleFieldPeriodBase</a>,	<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IComparable`1">IComparable&lt;Seconds&gt;</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IEquatable`1">IEquatable&lt;Seconds&gt;</a></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.Periods.Seconds:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Periods.Seconds:Docs:Remarks')">
+          <span id="T:NodaTime.Periods.Seconds:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Periods.Seconds:Docs:Remarks">
+        <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+      </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Periods.Seconds:Docs:Version Information')">
+          <span id="T:NodaTime.Periods.Seconds:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Periods.Seconds:Docs:Version Information">
+        <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="../NodaTime.Periods/SingleFieldPeriodBase.html">SingleFieldPeriodBase</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Public Properties')">
+            <span id="Public Properties:toggle">⊟</span> Public Properties</a>
+        </h3>
+        <blockquote id="Public Properties">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>[read-only]<div>override </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.Seconds.FieldType">FieldType</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a>
+                  </i>. 
+            Gets the duration field type, which is <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">DurationFieldType.Seconds</pre></td></tr></table>.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.Seconds.MaxValue">MaxValue</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/Seconds.html">Seconds</a>
+                  </i>. 
+            Gets a period representing the maximum number of seconds that can be stored in this object.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.Seconds.MinValue">MinValue</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/Seconds.html">Seconds</a>
+                  </i>. 
+            Gets a period representing the minimum number of seconds that can be stored in this object.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.Seconds.One">One</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/Seconds.html">Seconds</a>
+                  </i>. 
+            Gets a period representing one seconds
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>override </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.Seconds.PeriodType">PeriodType</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets the period type, which is <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">PeriodType.Seconds</pre></td></tr></table>.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.Seconds.Three">Three</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/Seconds.html">Seconds</a>
+                  </i>. 
+            Gets a period representing three seconds
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.Seconds.Two">Two</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/Seconds.html">Seconds</a>
+                  </i>. 
+            Gets a period representing two seconds
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.Seconds.Zero">Zero</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/Seconds.html">Seconds</a>
+                  </i>. 
+            Gets a period representing zero seconds
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Methods')">
+            <span id="Public Methods:toggle">⊟</span> Public Methods</a>
+        </h3>
+        <blockquote id="Public Methods">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Add(System.Int32)">Add</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Returns a new instance with the specified number of seconds added.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">Add</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Adds one <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance to another. Friendly alternative to <tt>operator+()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds)">CompareTo</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Compares the current period with another period.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds)">Decrement</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Decrements the given period by 1. Friendly alternative for <tt>Seconds.operator --(Seconds)</tt> operator.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Divide(System.Int32)">Divide</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Returns a new instance with the minutes divided by the specified divisor.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32)">Divide</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Divide one minutes period by an another. Friendly alternative to <tt>operator/()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds)">Equals</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Indicates whether the current period is equal to another period.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Equals(System.Object)">Equals</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote><span class="NotEntered">Documentation for this section has not yet been entered.</span></blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.From(System.Int32)">From</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Obtains an instance of <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Seconds</pre></td></tr></table> that may be cached.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.GetHashCode">GetHashCode</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote><span class="NotEntered">Documentation for this section has not yet been entered.</span></blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds)">Increment</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Increments the given period by 1. Friendly alternative for <tt>Seconds.operator ++(Seconds)</tt> operator.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Multiply(System.Int32)">Multiply</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Returns a new instance with the seconds multiplied by the specified scalar.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32)">Multiply</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Multiply one seconds period by a number. Friendly alternative to <tt>operator*()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds)">Negate</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Negate a given days period. Friendly alternative to unary <tt>operator-()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Negated">Negated</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Returns a new instance with the seconds value negated.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Parse(System.String)">Parse</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Creates a new <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Minutes</pre></td></tr></table> by parsing a string in the ISO8601 format 'PTnS'.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds)">Plus</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Returns the same instance. Friendly alternative for <tt>Seconds.operator +(Seconds)</tt> operator.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Subtract(System.Int32)">Subtract</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Returns a new instance with the specified number of seconds taken away.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">Subtract</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)<nobr> : <a href="../NodaTime.Periods/Seconds.html">Seconds</a></nobr><blockquote>
+            Subtracts one hours period from an another. Friendly alternative to <tt>operator-()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.ToStandardDays">ToStandardDays</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/Days.html">Days</a></nobr><blockquote>
+            This method allows you to convert between different types of period.
+            However to achieve this it makes the assumption that all days are 24 hours long, 
+            all hours are 60 minutes long and all minutes are 60 seconds long.
+            This is not true when daylight savings time is considered, and may also
+            not be true for some unusual chronologies. However, it is included as it
+            is a useful operation for many applications and business rules.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.ToStandardDuration">ToStandardDuration</a>
+                  </b>()<nobr> : <a href="../NodaTime/Duration.html">NodaTime.Duration</a></nobr><blockquote>
+            This method allows you to convert between different types of period.
+            However to achieve this it makes the assumption that all weeks are 7 days
+            long, all days are 24 hours long, all hours are 60 minutes long and
+            all minutes are 60 seconds long.
+            This is not true when daylight savings time is considered, and may also
+            not be true for some unusual chronologies. However, it is included as it
+            is a useful operation for many applications and business rules.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.ToStandardHours">ToStandardHours</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/Hours.html">Hours</a></nobr><blockquote>
+            This method allows you to convert between different types of period.
+            However to achieve this it makes the assumption that all hours are 60 minutes long 
+            and all minutes are 60 seconds long.
+            This is not true when daylight savings time is considered, and may also
+            not be true for some unusual chronologies. However, it is included as it
+            is a useful operation for many applications and business rules.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.ToStandardMinutes">ToStandardMinutes</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/Minutes.html">Minutes</a></nobr><blockquote>
+            This method allows you to convert between different types of period.
+            However to achieve this it makes the assumption that all minutes are 60 seconds long.
+            This is not true when daylight savings time is considered, and may also
+            not be true for some unusual chronologies. However, it is included as it
+            is a useful operation for many applications and business rules.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.ToStandardWeeks">ToStandardWeeks</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/Weeks.html">Weeks</a></nobr><blockquote>
+            This method allows you to convert between different types of period.
+            However to achieve this it makes the assumption that all weeks are 7 days
+            long, all days are 24 hours long, all hours are 60 minutes long and
+            all minutes are 60 seconds long.
+            This is not true when daylight savings time is considered, and may also
+            not be true for some unusual chronologies. However, it is included as it
+            is a useful operation for many applications and business rules.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.ToString">ToString</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a></nobr><blockquote><span class="NotEntered">Documentation for this section has not yet been entered.</span></blockquote></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Operators')">
+            <span id="Public Operators:toggle">⊟</span> Public Operators</a>
+        </h3>
+        <blockquote id="Public Operators">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">Addition</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)</td>
+                <td>
+            Implements the operator + (addition).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds)">Decrement</a>
+                  </b>
+                </td>
+                <td>
+            Implements the unary operator ++ (decrement).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32)">Division</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)</td>
+                <td>
+            Implements the operator / (division).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">Equality</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)</td>
+                <td>
+            Implements the operator == (equality).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">GreaterThan</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)</td>
+                <td>
+            Implements the operator &gt; (greater than).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">GreaterThanOrEqual</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)</td>
+                <td>
+            Implements the operator &gt;= (greater than or equal).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds)">Increment</a>
+                  </b>
+                </td>
+                <td>
+            Implements the unary operator ++ (increment).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">Inequality</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)</td>
+                <td>
+            Implements the operator != (inequality).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">LessThan</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)</td>
+                <td>
+            Implements the operator &lt; (less than).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">LessThanOrEqual</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)</td>
+                <td>
+            Implements the operator &lt;= (less than or equal).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32)">Multiply</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)</td>
+                <td>
+            Implements the operator * (multiplication).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds)">Multiply</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)</td>
+                <td>
+            Implements the operator * (multiplication).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">Subtraction</a>
+                  </b>(<a href="../NodaTime.Periods/Seconds.html">Seconds</a>, <a href="../NodaTime.Periods/Seconds.html">Seconds</a>)</td>
+                <td>
+            Implements the operator - (subtraction).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds)">UnaryNegation</a>
+                  </b>
+                </td>
+                <td>
+            Implements the unary operator - (negation).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds)">UnaryPlus</a>
+                  </b>
+                </td>
+                <td>
+            Implements the unary operator + .
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds">Conversion to NodaTime.Periods.Seconds</a>
+                  </b>(Explicit)</td>
+                <td>
+            Creates a new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance from the specified integer value
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32">Conversion to System.Int32</a>
+                  </b>(Implicit)</td>
+                <td>
+            Creates a new int from the specified <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.Periods.Seconds:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="M:NodaTime.Periods.Seconds.Add(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Add(System.Int32):member')">
+            <span id="M:NodaTime.Periods.Seconds.Add(System.Int32):member:toggle">⊟</span> Add Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Add(System.Int32):member">
+          <p class="Summary">
+            Returns a new instance with the specified number of seconds added.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Add</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> seconds)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Add(System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Add(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Add(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>seconds</i>
+              </dt>
+              <dd>The amount of seconds to add, may be negative</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Add(System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Add(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Add(System.Int32):Returns">The new period plus the specified number of seconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Add(System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Add(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Add(System.Int32):Remarks">
+            This instance is immutable and unaffected by this method call.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Add(System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Add(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Add(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member:toggle">⊟</span> Add Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Adds one <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance to another. Friendly alternative to <tt>operator+()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Add</b> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> representing the sum of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Add(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):member:toggle">⊟</span> CompareTo Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Compares the current period with another period.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>CompareTo</b> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>Another period to compare with this object.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Returns">
+            A 32-bit signed integer that indicates the relative order of the objects being compared.
+            The return value has the following meanings:
+            <table class="Documentation"><tr><th>Value</th><th>Meaning</th></tr><tr valign="top"><td>&lt; 0</td><td>This period is less than the <i>other</i> period.</td></tr><tr valign="top"><td>0</td><td>This object is equal to <i>other</i>.</td></tr><tr valign="top"><td>&gt; 0</td><td>This object is greater than <i>other</i>.</td></tr></table></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.CompareTo(NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):member:toggle">⊟</span> Decrement Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Decrements the given period by 1. Friendly alternative for <tt>Seconds.operator --(Seconds)</tt> operator.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Decrement</b> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The period to decrement.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance with decremented value.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Decrement(NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Divide(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Divide(System.Int32):member')">
+            <span id="M:NodaTime.Periods.Seconds.Divide(System.Int32):member:toggle">⊟</span> Divide Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Divide(System.Int32):member">
+          <p class="Summary">
+            Returns a new instance with the minutes divided by the specified divisor.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Divide</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> divisor)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Divide(System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Divide(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Divide(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>divisor</i>
+              </dt>
+              <dd>The amount to divide by, may be negative</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Divide(System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Divide(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Divide(System.Int32):Returns">The new seconds period divided by the specified divisor</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Divide(System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Divide(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Divide(System.Int32):Remarks">
+            The calculation uses integer division, thus 3 divided by 2 is 1.
+            This instance is immutable and unaffected by this method call.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Divide(System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Divide(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Divide(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):member')">
+            <span id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):member:toggle">⊟</span> Divide Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):member">
+          <p class="Summary">
+            Divide one minutes period by an another. Friendly alternative to <tt>operator/()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Divide</b> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance representing the minutes period divided by the scale.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Divide(NodaTime.Periods.Seconds,System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Indicates whether the current period is equal to another period.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>Another period to compare with this period.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Returns">
+            True if the current period is equal to the <i>other</i> parameter;
+            otherwise, false.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Equals(NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Equals(System.Object)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Equals(System.Object):member')">
+            <span id="M:NodaTime.Periods.Seconds.Equals(System.Object):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Equals(System.Object):member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> obj)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Equals(System.Object):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Equals(System.Object):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Equals(System.Object):Parameters">
+            <dl>
+              <dt>
+                <i>obj</i>
+              </dt>
+              <dd>
+                <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+              </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Equals(System.Object):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Equals(System.Object):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Equals(System.Object):Returns">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Equals(System.Object):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Equals(System.Object):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Equals(System.Object):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Equals(System.Object):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Equals(System.Object):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Equals(System.Object):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.Seconds.FieldType">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.FieldType:member')">
+            <span id="P:NodaTime.Periods.Seconds.FieldType:member:toggle">⊟</span> FieldType Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.Seconds.FieldType:member">
+          <p class="Summary">
+            Gets the duration field type, which is <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">DurationFieldType.Seconds</pre></td></tr></table>.
+            </p>
+          <div class="Signature">public override <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> <b>FieldType</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.FieldType:Value')">
+              <span id="P:NodaTime.Periods.Seconds.FieldType:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.FieldType:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.FieldType:Remarks')">
+              <span id="P:NodaTime.Periods.Seconds.FieldType:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.FieldType:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.FieldType:Version Information')">
+              <span id="P:NodaTime.Periods.Seconds.FieldType:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.FieldType:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.From(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.From(System.Int32):member')">
+            <span id="M:NodaTime.Periods.Seconds.From(System.Int32):member:toggle">⊟</span> From Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.From(System.Int32):member">
+          <p class="Summary">
+            Obtains an instance of <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Seconds</pre></td></tr></table> that may be cached.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>From</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> seconds)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.From(System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.From(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.From(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>seconds</i>
+              </dt>
+              <dd>The number of seconds to obtain an instance for</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.From(System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.From(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.From(System.Int32):Returns">The instance of Seconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.From(System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.From(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.From(System.Int32):Remarks">
+            <table class="CodeExampleTable">
+              <tr>
+                <td>
+                  <b>
+                    <font size="-1"> Example</font>
+                  </b>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <pre class="">Seconds</pre>
+                </td>
+              </tr>
+            </table> is immutable, so instances can be cached and shared.
+            This factory method provides access to shared instances.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.From(System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.From(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.From(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.GetHashCode">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.GetHashCode:member')">
+            <span id="M:NodaTime.Periods.Seconds.GetHashCode:member:toggle">⊟</span> GetHashCode Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.GetHashCode:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>GetHashCode</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.GetHashCode:Returns')">
+              <span id="M:NodaTime.Periods.Seconds.GetHashCode:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.GetHashCode:Returns">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.GetHashCode:Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.GetHashCode:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.GetHashCode:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.GetHashCode:Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.GetHashCode:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.GetHashCode:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):member:toggle">⊟</span> Increment Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Increments the given period by 1. Friendly alternative for <tt>Seconds.operator ++(Seconds)</tt> operator.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Increment</b> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The period to increment.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance with incremented value.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Increment(NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.Seconds.MaxValue">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.MaxValue:member')">
+            <span id="P:NodaTime.Periods.Seconds.MaxValue:member:toggle">⊟</span> MaxValue Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.Seconds.MaxValue:member">
+          <p class="Summary">
+            Gets a period representing the maximum number of seconds that can be stored in this object.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>MaxValue</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.MaxValue:Value')">
+              <span id="P:NodaTime.Periods.Seconds.MaxValue:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.MaxValue:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.MaxValue:Remarks')">
+              <span id="P:NodaTime.Periods.Seconds.MaxValue:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.MaxValue:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.MaxValue:Version Information')">
+              <span id="P:NodaTime.Periods.Seconds.MaxValue:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.MaxValue:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.Seconds.MinValue">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.MinValue:member')">
+            <span id="P:NodaTime.Periods.Seconds.MinValue:member:toggle">⊟</span> MinValue Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.Seconds.MinValue:member">
+          <p class="Summary">
+            Gets a period representing the minimum number of seconds that can be stored in this object.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>MinValue</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.MinValue:Value')">
+              <span id="P:NodaTime.Periods.Seconds.MinValue:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.MinValue:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.MinValue:Remarks')">
+              <span id="P:NodaTime.Periods.Seconds.MinValue:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.MinValue:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.MinValue:Version Information')">
+              <span id="P:NodaTime.Periods.Seconds.MinValue:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.MinValue:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Multiply(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Multiply(System.Int32):member')">
+            <span id="M:NodaTime.Periods.Seconds.Multiply(System.Int32):member:toggle">⊟</span> Multiply Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Multiply(System.Int32):member">
+          <p class="Summary">
+            Returns a new instance with the seconds multiplied by the specified scalar.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Multiply</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> scalar)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Multiply(System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Multiply(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Multiply(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>scalar</i>
+              </dt>
+              <dd>The amount to multiply by, may be negative</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Multiply(System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Multiply(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Multiply(System.Int32):Returns">The new seconds period multiplied by the specified scalar</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Multiply(System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Multiply(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Multiply(System.Int32):Remarks">
+            This instance is immutable and unaffected by this method call.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Multiply(System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Multiply(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Multiply(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):member')">
+            <span id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):member:toggle">⊟</span> Multiply Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):member">
+          <p class="Summary">
+            Multiply one seconds period by a number. Friendly alternative to <tt>operator*()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Multiply</b> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance representing the seconds period multiplied by the scale.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Multiply(NodaTime.Periods.Seconds,System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):member:toggle">⊟</span> Negate Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Negate a given days period. Friendly alternative to unary <tt>operator-()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Negate</b> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The period to negate.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance with a negated value.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Negate(NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Negated">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Negated:member')">
+            <span id="M:NodaTime.Periods.Seconds.Negated:member:toggle">⊟</span> Negated Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Negated:member">
+          <p class="Summary">
+            Returns a new instance with the seconds value negated.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Negated</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Negated:Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Negated:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Negated:Returns">The new seconds period with a negated value</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Negated:Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Negated:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Negated:Remarks">
+            This instance is immutable and unaffected by this method call.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Negated:Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Negated:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Negated:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.Seconds.One">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.One:member')">
+            <span id="P:NodaTime.Periods.Seconds.One:member:toggle">⊟</span> One Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.Seconds.One:member">
+          <p class="Summary">
+            Gets a period representing one seconds
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>One</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.One:Value')">
+              <span id="P:NodaTime.Periods.Seconds.One:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.One:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.One:Remarks')">
+              <span id="P:NodaTime.Periods.Seconds.One:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.One:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.One:Version Information')">
+              <span id="P:NodaTime.Periods.Seconds.One:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.One:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member:toggle">⊟</span> op_Addition Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the operator + (addition).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> operator+ (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> representing the sum of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Addition(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):member:toggle">⊟</span> op_Decrement Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the unary operator ++ (decrement).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> operator-- (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The period to decrement.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance with decremented value.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Decrement(NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):member:toggle">⊟</span> op_Division Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):member">
+          <p class="Summary">
+            Implements the operator / (division).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> operator/ (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> representing the minutes period divided by the scale.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Division(NodaTime.Periods.Seconds,System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member:toggle">⊟</span> op_Equality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the operator == (equality).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator== (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns">
+            <tt>true</tt> if values are equal to each other, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Equality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:member:toggle">⊟</span> Conversion Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:member">
+          <p class="Summary">
+            Creates a new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance from the specified integer value
+            </p>
+          <div class="Signature">public static explicit operator <a href="../NodaTime.Periods/Seconds.html">Seconds</a> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> value)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Parameters">
+            <dl>
+              <dt>
+                <i>value</i>
+              </dt>
+              <dd>A value to use for initialization of new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> period instance</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Returns">New <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance whose Value property is initialized to the given value</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Explicit(System.Int32)~NodaTime.Periods.Seconds:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member:toggle">⊟</span> op_GreaterThan Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the operator &gt; (greater than).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&gt; (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns">
+            <tt>true</tt> if the left value is greater than the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_GreaterThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member:toggle">⊟</span> op_GreaterThanOrEqual Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the operator &gt;= (greater than or equal).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&gt;= (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns">
+            <tt>true</tt> if the left value is greater than or equal to the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_GreaterThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:member:toggle">⊟</span> Conversion Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:member">
+          <p class="Summary">
+            Creates a new int from the specified <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance
+            </p>
+          <div class="Signature">public static implicit operator <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Parameters">
+            <dl>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>An instance of <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> period to get value from</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Returns">A new int which represents a value of given period</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Implicit(NodaTime.Periods.Seconds)~System.Int32:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):member:toggle">⊟</span> op_Increment Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the unary operator ++ (increment).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> operator++ (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The period to increment.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance with incremented value.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Increment(NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member:toggle">⊟</span> op_Inequality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the operator != (inequality).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator!= (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns">
+            <tt>true</tt> if values are not equal to each other, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Inequality(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member:toggle">⊟</span> op_LessThan Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the operator &lt; (less than).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&lt; (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns">
+            <tt>true</tt> if the left value is less than the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_LessThan(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member:toggle">⊟</span> op_LessThanOrEqual Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the operator &lt;= (less than or equal).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&lt;= (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns">
+            <tt>true</tt> if the left value is less than or equal to the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_LessThanOrEqual(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):member:toggle">⊟</span> op_Multiply Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):member">
+          <p class="Summary">
+            Implements the operator * (multiplication).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> operator* (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> representing the seconds period multiplied by the scale.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Multiply(NodaTime.Periods.Seconds,System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):member:toggle">⊟</span> op_Multiply Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the operator * (multiplication).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> operator* (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> representing the seconds period multiplied by the scale.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Multiply(System.Int32,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member:toggle">⊟</span> op_Subtraction Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the operator - (subtraction).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> operator- (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> representing the difference of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_Subtraction(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):member:toggle">⊟</span> op_UnaryNegation Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the unary operator - (negation).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> operator- (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The period to negate.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance with a negated value.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_UnaryNegation(NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):member:toggle">⊟</span> op_UnaryPlus Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Implements the unary operator + .
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> operator+ (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The operand.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Returns">The same <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.op_UnaryPlus(NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Parse(System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Parse(System.String):member')">
+            <span id="M:NodaTime.Periods.Seconds.Parse(System.String):member:toggle">⊟</span> Parse Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Parse(System.String):member">
+          <p class="Summary">
+            Creates a new <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Minutes</pre></td></tr></table> by parsing a string in the ISO8601 format 'PTnS'.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Parse</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> seconds)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Parse(System.String):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Parse(System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Parse(System.String):Parameters">
+            <dl>
+              <dt>
+                <i>seconds</i>
+              </dt>
+              <dd>The period string, null returns zero</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Parse(System.String):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Parse(System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Parse(System.String):Returns">The period in seconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Parse(System.String):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Parse(System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Parse(System.String):Remarks">
+            The parse will accept the full ISO syntax of PnYnMnWnDTnHnMnS however only the
+            seconds component may be non-zero. If any other component is non-zero, an exception
+            will be thrown
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Parse(System.String):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Parse(System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Parse(System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.Seconds.PeriodType">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.PeriodType:member')">
+            <span id="P:NodaTime.Periods.Seconds.PeriodType:member:toggle">⊟</span> PeriodType Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.Seconds.PeriodType:member">
+          <p class="Summary">
+            Gets the period type, which is <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">PeriodType.Seconds</pre></td></tr></table>.
+            </p>
+          <div class="Signature">public override <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>PeriodType</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.PeriodType:Value')">
+              <span id="P:NodaTime.Periods.Seconds.PeriodType:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.PeriodType:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.PeriodType:Remarks')">
+              <span id="P:NodaTime.Periods.Seconds.PeriodType:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.PeriodType:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.PeriodType:Version Information')">
+              <span id="P:NodaTime.Periods.Seconds.PeriodType:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.PeriodType:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):member:toggle">⊟</span> Plus Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Returns the same instance. Friendly alternative for <tt>Seconds.operator +(Seconds)</tt> operator.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Plus</b> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The operand.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Returns">The same <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> instance</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Plus(NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Subtract(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Subtract(System.Int32):member')">
+            <span id="M:NodaTime.Periods.Seconds.Subtract(System.Int32):member:toggle">⊟</span> Subtract Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Subtract(System.Int32):member">
+          <p class="Summary">
+            Returns a new instance with the specified number of seconds taken away.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Subtract</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> seconds)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Subtract(System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Subtract(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Subtract(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>seconds</i>
+              </dt>
+              <dd>The amount of seconds to take away, may be negative</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Subtract(System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Subtract(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Subtract(System.Int32):Returns">The new period minus the specified number of seconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Subtract(System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Subtract(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Subtract(System.Int32):Remarks">
+            This instance is immutable and unaffected by this method call.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Subtract(System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Subtract(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Subtract(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member')">
+            <span id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member:toggle">⊟</span> Subtract Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):member">
+          <p class="Summary">
+            Subtracts one hours period from an another. Friendly alternative to <tt>operator-()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Subtract</b> (<a href="../NodaTime.Periods/Seconds.html">Seconds</a> left, <a href="../NodaTime.Periods/Seconds.html">Seconds</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters')">
+              <span id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns')">
+              <span id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Returns">A new <a href="../NodaTime.Periods/Seconds.html">NodaTime.Periods.Seconds</a> representing the difference of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.Subtract(NodaTime.Periods.Seconds,NodaTime.Periods.Seconds):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.Seconds.Three">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Three:member')">
+            <span id="P:NodaTime.Periods.Seconds.Three:member:toggle">⊟</span> Three Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.Seconds.Three:member">
+          <p class="Summary">
+            Gets a period representing three seconds
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Three</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Three:Value')">
+              <span id="P:NodaTime.Periods.Seconds.Three:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.Three:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Three:Remarks')">
+              <span id="P:NodaTime.Periods.Seconds.Three:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.Three:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Three:Version Information')">
+              <span id="P:NodaTime.Periods.Seconds.Three:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.Three:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.ToStandardDays">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardDays:member')">
+            <span id="M:NodaTime.Periods.Seconds.ToStandardDays:member:toggle">⊟</span> ToStandardDays Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.ToStandardDays:member">
+          <p class="Summary">
+            This method allows you to convert between different types of period.
+            However to achieve this it makes the assumption that all days are 24 hours long, 
+            all hours are 60 minutes long and all minutes are 60 seconds long.
+            This is not true when daylight savings time is considered, and may also
+            not be true for some unusual chronologies. However, it is included as it
+            is a useful operation for many applications and business rules.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Days.html">Days</a> <b>ToStandardDays</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardDays:Returns')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardDays:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardDays:Returns">A period representing the number of whole days for this number of seconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardDays:Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardDays:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardDays:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardDays:Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardDays:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardDays:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.ToStandardDuration">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardDuration:member')">
+            <span id="M:NodaTime.Periods.Seconds.ToStandardDuration:member:toggle">⊟</span> ToStandardDuration Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.ToStandardDuration:member">
+          <p class="Summary">
+            This method allows you to convert between different types of period.
+            However to achieve this it makes the assumption that all weeks are 7 days
+            long, all days are 24 hours long, all hours are 60 minutes long and
+            all minutes are 60 seconds long.
+            This is not true when daylight savings time is considered, and may also
+            not be true for some unusual chronologies. However, it is included as it
+            is a useful operation for many applications and business rules.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Duration.html">NodaTime.Duration</a> <b>ToStandardDuration</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardDuration:Returns')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardDuration:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardDuration:Returns">A duration equivalent to this number of seconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardDuration:Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardDuration:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardDuration:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardDuration:Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardDuration:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardDuration:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.ToStandardHours">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardHours:member')">
+            <span id="M:NodaTime.Periods.Seconds.ToStandardHours:member:toggle">⊟</span> ToStandardHours Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.ToStandardHours:member">
+          <p class="Summary">
+            This method allows you to convert between different types of period.
+            However to achieve this it makes the assumption that all hours are 60 minutes long 
+            and all minutes are 60 seconds long.
+            This is not true when daylight savings time is considered, and may also
+            not be true for some unusual chronologies. However, it is included as it
+            is a useful operation for many applications and business rules.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Hours.html">Hours</a> <b>ToStandardHours</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardHours:Returns')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardHours:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardHours:Returns">A period representing the number of whole hours for this number of seconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardHours:Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardHours:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardHours:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardHours:Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardHours:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardHours:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.ToStandardMinutes">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardMinutes:member')">
+            <span id="M:NodaTime.Periods.Seconds.ToStandardMinutes:member:toggle">⊟</span> ToStandardMinutes Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.ToStandardMinutes:member">
+          <p class="Summary">
+            This method allows you to convert between different types of period.
+            However to achieve this it makes the assumption that all minutes are 60 seconds long.
+            This is not true when daylight savings time is considered, and may also
+            not be true for some unusual chronologies. However, it is included as it
+            is a useful operation for many applications and business rules.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Minutes.html">Minutes</a> <b>ToStandardMinutes</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardMinutes:Returns')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardMinutes:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardMinutes:Returns">A period representing the number of whole minutes for this number of seconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardMinutes:Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardMinutes:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardMinutes:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardMinutes:Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardMinutes:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardMinutes:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.ToStandardWeeks">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardWeeks:member')">
+            <span id="M:NodaTime.Periods.Seconds.ToStandardWeeks:member:toggle">⊟</span> ToStandardWeeks Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.ToStandardWeeks:member">
+          <p class="Summary">
+            This method allows you to convert between different types of period.
+            However to achieve this it makes the assumption that all weeks are 7 days
+            long, all days are 24 hours long, all hours are 60 minutes long and
+            all minutes are 60 seconds long.
+            This is not true when daylight savings time is considered, and may also
+            not be true for some unusual chronologies. However, it is included as it
+            is a useful operation for many applications and business rules.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Weeks.html">Weeks</a> <b>ToStandardWeeks</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardWeeks:Returns')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardWeeks:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardWeeks:Returns">A period representing the number of whole weeks for this number of seconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardWeeks:Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardWeeks:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardWeeks:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToStandardWeeks:Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.ToStandardWeeks:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToStandardWeeks:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.Seconds.ToString">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToString:member')">
+            <span id="M:NodaTime.Periods.Seconds.ToString:member:toggle">⊟</span> ToString Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.Seconds.ToString:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> <b>ToString</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToString:Returns')">
+              <span id="M:NodaTime.Periods.Seconds.ToString:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToString:Returns">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToString:Remarks')">
+              <span id="M:NodaTime.Periods.Seconds.ToString:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToString:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.Seconds.ToString:Version Information')">
+              <span id="M:NodaTime.Periods.Seconds.ToString:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.Seconds.ToString:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.Seconds.Two">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Two:member')">
+            <span id="P:NodaTime.Periods.Seconds.Two:member:toggle">⊟</span> Two Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.Seconds.Two:member">
+          <p class="Summary">
+            Gets a period representing two seconds
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Two</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Two:Value')">
+              <span id="P:NodaTime.Periods.Seconds.Two:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.Two:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Two:Remarks')">
+              <span id="P:NodaTime.Periods.Seconds.Two:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.Two:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Two:Version Information')">
+              <span id="P:NodaTime.Periods.Seconds.Two:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.Two:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.Seconds.Zero">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Zero:member')">
+            <span id="P:NodaTime.Periods.Seconds.Zero:member:toggle">⊟</span> Zero Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.Seconds.Zero:member">
+          <p class="Summary">
+            Gets a period representing zero seconds
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/Seconds.html">Seconds</a> <b>Zero</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Zero:Value')">
+              <span id="P:NodaTime.Periods.Seconds.Zero:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.Zero:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Zero:Remarks')">
+              <span id="P:NodaTime.Periods.Seconds.Zero:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.Zero:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.Seconds.Zero:Version Information')">
+              <span id="P:NodaTime.Periods.Seconds.Zero:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.Seconds.Zero:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>

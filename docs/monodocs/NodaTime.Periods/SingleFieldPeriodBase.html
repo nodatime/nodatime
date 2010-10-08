@@ -1,0 +1,1143 @@
+<html>
+  <head>
+    <title>NodaTime.Periods.SingleFieldPeriodBase</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime.Periods Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.Periods.SingleFieldPeriodBase">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Periods.SingleFieldPeriodBase:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Periods.SingleFieldPeriodBase:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Periods.SingleFieldPeriodBase:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.Periods.SingleFieldPeriodBase">SingleFieldPeriodBase  Class</h1>
+    <p class="Summary" id="T:NodaTime.Periods.SingleFieldPeriodBase:Summary">
+            SingleFieldPeriodBase is an abstract implementation of IPeriod that
+            manages a single duration field, such as days or minutes.
+            </p>
+    <div id="T:NodaTime.Periods.SingleFieldPeriodBase:Signature">
+      <div class="Signature">public abstract class  <b>SingleFieldPeriodBase</b> : <a href="../NodaTime/IPeriod.html">NodaTime.IPeriod</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IComparable">IComparable</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IComparable`1">IComparable&lt;SingleFieldPeriodBase&gt;</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IEquatable`1">IEquatable&lt;SingleFieldPeriodBase&gt;</a></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.Periods.SingleFieldPeriodBase:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Periods.SingleFieldPeriodBase:Docs:Remarks')">
+          <span id="T:NodaTime.Periods.SingleFieldPeriodBase:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Periods.SingleFieldPeriodBase:Docs:Remarks">
+        <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+      </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Periods.SingleFieldPeriodBase:Docs:Version Information')">
+          <span id="T:NodaTime.Periods.SingleFieldPeriodBase:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Periods.SingleFieldPeriodBase:Docs:Version Information">
+        <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Protected Constructors')">
+            <span id="Protected Constructors:toggle">⊟</span> Protected Constructors</a>
+        </h3>
+        <blockquote id="Protected Constructors">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32)">SingleFieldPeriodBase</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance representing the specified value.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Properties')">
+            <span id="Public Properties:toggle">⊟</span> Public Properties</a>
+        </h3>
+        <blockquote id="Public Properties">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>[read-only]<div>abstract </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.SingleFieldPeriodBase.FieldType">FieldType</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a>
+                  </i>. 
+            Gets the single duartion field type.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div><i>default property</i></div><div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType)">Item</a>
+                  </b>(<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a>)</td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. 
+            Gets the value of one of the fields.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div><i>default property</i></div><div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32)">Item</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)</td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. 
+            Gets the value at the specified index.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>abstract </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType">PeriodType</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets the period type which matches the duration field type.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.SingleFieldPeriodBase.Size">Size</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. 
+            Gets the number of fields this period supports, which is one.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.SingleFieldPeriodBase.Value">Value</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. 
+            Gets the amount of this period.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Methods')">
+            <span id="Public Methods:toggle">⊟</span> Public Methods</a>
+        </h3>
+        <blockquote id="Public Methods">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase)">Compare</a>
+                  </b>(<a href="../NodaTime.Periods/SingleFieldPeriodBase.html">SingleFieldPeriodBase</a>, <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">SingleFieldPeriodBase</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Compares two specified <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived objects.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase)">CompareTo</a>
+                  </b>(<a href="../NodaTime.Periods/SingleFieldPeriodBase.html">SingleFieldPeriodBase</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Compares the current object with another object of the same type.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase)">Equals</a>
+                  </b>(<a href="../NodaTime.Periods/SingleFieldPeriodBase.html">SingleFieldPeriodBase</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Determines whether this instance and another specified instance of <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived class 
+            have the same value.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object)">Equals</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Determines whether this instance of <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived class 
+            and a specified object, which must be of the same type, have the same value.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32)">GetFieldType</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a></nobr><blockquote>
+            Gets the field type at the specified index.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode">GetHashCode</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Returns the hash code for this instance of <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived class.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType)">IsSupported</a>
+                  </b>(<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Checks whether the field type specified is supported by this period.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod">ToPeriod</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/Period.html">Period</a></nobr><blockquote>
+            Get this period as an immutable <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> object.
+            </blockquote></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Explicitly Implemented Interface Members')">
+            <span id="Explicitly Implemented Interface Members:toggle">⊟</span> Explicitly Implemented Interface Members</a>
+        </h3>
+        <blockquote id="Explicitly Implemented Interface Members">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <a href="#M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object)">
+                    <b>IComparable.CompareTo</b>
+                  </a>
+                </td>
+                <td>
+            Compares the current object to a specified object and returns an indication of their relative values.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.Periods.SingleFieldPeriodBase:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32)">
+          <a href="javascript:toggle_display('C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):member')">
+            <span id="C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):member:toggle">⊟</span> SingleFieldPeriodBase Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):member">
+          <p class="Summary">
+            Initializes a new instance representing the specified value.
+            </p>
+          <div class="Signature">protected  <b>SingleFieldPeriodBase</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> value)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):Parameters')">
+              <span id="C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>value</i>
+              </dt>
+              <dd>The value to represent</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):Remarks')">
+              <span id="C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):Version Information')">
+              <span id="C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Periods.SingleFieldPeriodBase(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):member')">
+            <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):member:toggle">⊟</span> Compare Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):member">
+          <p class="Summary">
+            Compares two specified <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived objects.
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>Compare</b> (<a href="../NodaTime.Periods/SingleFieldPeriodBase.html">SingleFieldPeriodBase</a> left, <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">SingleFieldPeriodBase</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Parameters')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The first <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived object.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The second <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived object.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Returns')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Returns">
+            A 32-bit signed integer that indicates the relative order of the objects being compared.
+            The return value has the following meanings:
+            <table class="Documentation"><tr><th>Value</th><th>Meaning</th></tr><tr valign="top"><td>&lt; 0</td><td><i>left</i> is less than <i>right</i>.</td></tr><tr valign="top"><td>0</td><td><i>left</i> is equal to<i>right</i>.</td></tr><tr valign="top"><td>&gt; 0</td><td><i>left</i> is greater than <i>right</i>.</td></tr></table></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Remarks')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Version Information')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Compare(NodaTime.Periods.SingleFieldPeriodBase,NodaTime.Periods.SingleFieldPeriodBase):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):member')">
+            <span id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):member:toggle">⊟</span> CompareTo Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):member">
+          <p class="Summary">
+            Compares the current object with another object of the same type.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>CompareTo</b> (<a href="../NodaTime.Periods/SingleFieldPeriodBase.html">SingleFieldPeriodBase</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Parameters')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>An object to compare with this object.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Returns')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Returns">
+            A 32-bit signed integer that indicates the relative order of the objects being compared.
+            The return value has the following meanings:
+            <table class="Documentation"><tr><th>Value</th><th>Meaning</th></tr><tr valign="top"><td>&lt; 0</td><td>This object is less than the <i>other</i> parameter.</td></tr><tr valign="top"><td>0</td><td>This object is equal to <i>other</i>.</td></tr><tr valign="top"><td>&gt; 0</td><td>This object is greater than <i>other</i>.</td></tr></table></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Remarks')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Version Information')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.CompareTo(NodaTime.Periods.SingleFieldPeriodBase):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):member')">
+            <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):member">
+          <p class="Summary">
+            Determines whether this instance and another specified instance of <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived class 
+            have the same value.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="../NodaTime.Periods/SingleFieldPeriodBase.html">SingleFieldPeriodBase</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Parameters')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>An instance of <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived class</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Returns')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Returns">True if the value of the parameter is the same as this instance; otherwise, false.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Remarks')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Version Information')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(NodaTime.Periods.SingleFieldPeriodBase):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):member')">
+            <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):member">
+          <p class="Summary">
+            Determines whether this instance of <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived class 
+            and a specified object, which must be of the same type, have the same value.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> obj)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Parameters')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Parameters">
+            <dl>
+              <dt>
+                <i>obj</i>
+              </dt>
+              <dd>An object</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Returns')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Returns">True if obj is of the same type and its value is the same as this instance;
+            otherwise, false.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Remarks')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Version Information')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.Equals(System.Object):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.SingleFieldPeriodBase.FieldType">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:member')">
+            <span id="P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:member:toggle">⊟</span> FieldType Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:member">
+          <p class="Summary">
+            Gets the single duartion field type.
+            </p>
+          <div class="Signature">public abstract <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> <b>FieldType</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:Value')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:Remarks')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:Version Information')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.FieldType:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):member')">
+            <span id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):member:toggle">⊟</span> GetFieldType Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):member">
+          <p class="Summary">
+            Gets the field type at the specified index.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> <b>GetFieldType</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> index)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>index</i>
+              </dt>
+              <dd>The zero-based index of the value to get</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Returns">The field at the specified index</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Exceptions')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentOutOfRangeException">ArgumentOutOfRangeException</a>
+                </td>
+                <td>if index != 0</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Remarks">
+            The only index supported by this period is zero which returns the field type of this class.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.GetFieldType(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:member')">
+            <span id="M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:member:toggle">⊟</span> GetHashCode Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:member">
+          <p class="Summary">
+            Returns the hash code for this instance of <a href="../NodaTime.Periods/SingleFieldPeriodBase.html">NodaTime.Periods.SingleFieldPeriodBase</a> derived class.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>GetHashCode</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:Returns')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:Returns">A 32-bit signed integer hash code.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:Remarks')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:Version Information')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.GetHashCode:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):member')">
+            <span id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):member:toggle">⊟</span> IsSupported Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):member">
+          <p class="Summary">
+            Checks whether the field type specified is supported by this period.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>IsSupported</b> (<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> field)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Parameters')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Parameters">
+            <dl>
+              <dt>
+                <i>field</i>
+              </dt>
+              <dd>The field to check, may be null which returns false</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Returns')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Returns">True if the field is supported</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Remarks')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Version Information')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.IsSupported(NodaTime.Fields.DurationFieldType):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType)">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):member')">
+            <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):member:toggle">⊟</span> Item Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):member">
+          <p class="Summary">
+            Gets the value of one of the fields.
+            </p>
+          <div class="Signature">
+            <p>
+              <i>This is the default property for this class.</i>
+            </p>public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> this [<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> field] { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Parameters')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Parameters">
+            <dl>
+              <dt>
+                <i>field</i>
+              </dt>
+              <dd>The field type to query, null return zero</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Value')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Value">The value of that field, zero if field not supported</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Remarks')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Remarks">
+            If the field type specified is not supported by the period then zero is returned.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Version Information')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(NodaTime.Fields.DurationFieldType):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32)">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):member')">
+            <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):member:toggle">⊟</span> Item Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):member">
+          <p class="Summary">
+            Gets the value at the specified index.
+            </p>
+          <div class="Signature">
+            <p>
+              <i>This is the default property for this class.</i>
+            </p>public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> this [<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> index] { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Parameters')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>index</i>
+              </dt>
+              <dd>The zero-based index of the value to get</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Value')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Value">The value of the field at the specified index</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Exceptions')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentOutOfRangeException">ArgumentOutOfRangeException</a>
+                </td>
+                <td>if the index is not equal to zero</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Remarks')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Remarks">The only index supported by this period is zero.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Version Information')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Item(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:member')">
+            <span id="P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:member:toggle">⊟</span> PeriodType Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:member">
+          <p class="Summary">
+            Gets the period type which matches the duration field type.
+            </p>
+          <div class="Signature">public abstract <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>PeriodType</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:Value')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:Remarks')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:Version Information')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.PeriodType:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.SingleFieldPeriodBase.Size">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Size:member')">
+            <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Size:member:toggle">⊟</span> Size Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.SingleFieldPeriodBase.Size:member">
+          <p class="Summary">
+            Gets the number of fields this period supports, which is one.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>Size</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Size:Value')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Size:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Size:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Size:Remarks')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Size:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Size:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Size:Version Information')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Size:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Size:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):member')">
+            <span id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):member:toggle">⊟</span> System.IComparable.CompareTo Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):member">
+          <p class="Summary">
+            Compares the current object to a specified object and returns an indication of their relative values.
+            </p>
+          <div class="Signature">
+            <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>System.IComparable.CompareTo</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> obj)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Parameters')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Parameters">
+            <dl>
+              <dt>
+                <i>obj</i>
+              </dt>
+              <dd>An object to compare, or null. </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Returns')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Returns">
+            A 32-bit signed integer that indicates the relative order of the objects being compared.
+            The return value has the following meanings:
+            <table class="Documentation"><tr><th>Value</th><th>Meaning</th></tr><tr valign="top"><td>&lt; 0</td><td>This object is less than the <i>obj</i> parameter.</td></tr><tr valign="top"><td>0</td><td>This object is equal to <i>obj</i>.</td></tr><tr valign="top"><td>&gt; 0</td><td>This object is greater than <i>obj</i>.</td></tr></table></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Remarks')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Version Information')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.System#IComparable#CompareTo(System.Object):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:member')">
+            <span id="M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:member:toggle">⊟</span> ToPeriod Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:member">
+          <p class="Summary">
+            Get this period as an immutable <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> object.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Period.html">Period</a> <b>ToPeriod</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:Returns')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:Returns">A <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> representing the same field value</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:Remarks')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:Remarks">
+            The period will use <a href="../NodaTime.Periods/PeriodType.html#P:NodaTime.Periods.PeriodType.Standard">PeriodType.Standard</a>.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:Version Information')">
+              <span id="M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.SingleFieldPeriodBase.ToPeriod:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.SingleFieldPeriodBase.Value">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Value:member')">
+            <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Value:member:toggle">⊟</span> Value Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.SingleFieldPeriodBase.Value:member">
+          <p class="Summary">
+            Gets the amount of this period.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>Value</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Value:Value')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Value:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Value:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Value:Remarks')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Value:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Value:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.SingleFieldPeriodBase.Value:Version Information')">
+              <span id="P:NodaTime.Periods.SingleFieldPeriodBase.Value:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.SingleFieldPeriodBase.Value:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>

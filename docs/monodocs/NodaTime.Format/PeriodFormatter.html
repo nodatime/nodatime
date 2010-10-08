@@ -1,0 +1,989 @@
+<html>
+  <head>
+    <title>NodaTime.Format.PeriodFormatter</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime.Format Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.Format.PeriodFormatter">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Format.PeriodFormatter:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Format.PeriodFormatter:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Format.PeriodFormatter:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.Format.PeriodFormatter">PeriodFormatter  Class</h1>
+    <p class="Summary" id="T:NodaTime.Format.PeriodFormatter:Summary">
+            Controls the printing and parsing of a time period to and from a string.
+            </p>
+    <div id="T:NodaTime.Format.PeriodFormatter:Signature">
+      <div class="Signature">public sealed class  <b>PeriodFormatter</b></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.Format.PeriodFormatter:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Format.PeriodFormatter:Docs:Remarks')">
+          <span id="T:NodaTime.Format.PeriodFormatter:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Format.PeriodFormatter:Docs:Remarks">
+        <p>
+            This class is the main API for printing and parsing used by most applications.
+            Instances of this class are created via one of three factory classes:
+            <ul><li><a href="../NodaTime.Format/PeriodFormats.html">NodaTime.Format.PeriodFormats</a><a href="../NodaTime.Format/IsoPeriodFormats.html">NodaTime.Format.IsoPeriodFormats</a><a href="../NodaTime.Format/PeriodFormatterBuilder.html">NodaTime.Format.PeriodFormatterBuilder</a></li></ul></p>
+        <p>
+            An instance of this class holds a reference internally to one printer and
+            one parser. It is possible that one of these may be null, in which case the
+            formatter cannot print/parse. This can be checked via the <a href="../NodaTime.Format/PeriodFormatter.html#P:NodaTime.Format.PeriodFormatter.IsPrinter">PeriodFormatter.IsPrinter</a>
+            and <a href="../NodaTime.Format/PeriodFormatter.html#P:NodaTime.Format.PeriodFormatter.IsParser">PeriodFormatter.IsParser</a> methods.
+            </p>
+        <p>
+            The underlying printer/parser can be altered to behave exactly as required
+            by using a decorator modifier:
+            <ul><li><a href="../NodaTime.Format/PeriodFormatter.html#M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider)">PeriodFormatter.WithProvider(IFormatProvider)</a></li></ul></p>
+        <p>
+            The main methods of the class are the <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">PrintXxx</pre></td></tr></table> and <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">Parsexxx</pre></td></tr></table> methods.
+            These are used as follows:
+            <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">
+                // print using the default locale
+                String periodStr = formatter.Print(period);
+                // print using the French locale
+                String periodStr = formatter.WithProvider(CultureInfo.CreateSpecificCulture("fr-FR")).Print(period);
+            
+                //parse using the French locale
+                Period date = formatter.WithProvider(CultureInfo.CreateSpecificCulture("fr-FR")).Parse(str);
+            </pre></td></tr></table></p>
+      </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Format.PeriodFormatter:Docs:Version Information')">
+          <span id="T:NodaTime.Format.PeriodFormatter:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Format.PeriodFormatter:Docs:Version Information">
+        <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Public Properties')">
+            <span id="Public Properties:toggle">⊟</span> Public Properties</a>
+        </h3>
+        <blockquote id="Public Properties">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.PeriodFormatter.IsParser">IsParser</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a>
+                  </i>. 
+            Indicates whether this formatter is capable of parsing.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.PeriodFormatter.IsPrinter">IsPrinter</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a>
+                  </i>. 
+            Indicates whether this formatter is capable of printing.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.PeriodFormatter.ParsePeriodType">ParsePeriodType</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">NodaTime.Periods.PeriodType</a>
+                  </i>. 
+            Gets the PeriodType that will be used for parsing.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.PeriodFormatter.Printer">Printer</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/IPeriodPrinter.html">IPeriodPrinter</a>
+                  </i>. 
+            Gets the internal printer object that performs the real printing work.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.PeriodFormatter.Provider">Provider</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IFormatProvider">IFormatProvider</a>
+                  </i>. 
+            Gets the IFormatProvider that will be used for printing and parsing.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Methods')">
+            <span id="Public Methods:toggle">⊟</span> Public Methods</a>
+        </h3>
+        <blockquote id="Public Methods">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter)">FromPrinter</a>
+                  </b>(<a href="../NodaTime.Format/IPeriodPrinter.html">IPeriodPrinter</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatter.html">PeriodFormatter</a></nobr><blockquote>
+            Creates a new instance of the <a href="../NodaTime.Format/PeriodFormatter.html">NodaTime.Format.PeriodFormatter</a> class with the supplied <a href="../NodaTime.Format/IPeriodPrinter.html">NodaTime.Format.IPeriodPrinter</a></blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatter.Parse(System.String)">Parse</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a></nobr><blockquote>
+            Parses a period from the given text
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod)">Print</a>
+                  </b>(<a href="../NodaTime/IPeriod.html">NodaTime.IPeriod</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a></nobr><blockquote>
+            Prints an IPeriod to a new <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod)">PrintTo</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IO.TextWriter">System.IO.TextWriter</a>, <a href="../NodaTime/IPeriod.html">NodaTime.IPeriod</a>)<blockquote>
+            Prints an IPeriod to a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IO.TextWriter">System.IO.TextWriter</a>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod)">PrintTo</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Text.StringBuilder">System.Text.StringBuilder</a>, <a href="../NodaTime/IPeriod.html">NodaTime.IPeriod</a>)<blockquote>
+            Prints an IPeriod to a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Text.StringBuilder">System.Text.StringBuilder</a>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType)">WithParseType</a>
+                  </b>(<a href="../NodaTime.Periods/PeriodType.html">NodaTime.Periods.PeriodType</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatter.html">PeriodFormatter</a></nobr><blockquote>
+            Returns a new formatter with a different PeriodType for parsing.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider)">WithProvider</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IFormatProvider">IFormatProvider</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatter.html">PeriodFormatter</a></nobr><blockquote>
+            A PeriodFormatter is immutable, so a new instance is returned,
+            and the original is unaltered and still usable.
+            </blockquote></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.Format.PeriodFormatter:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):member')">
+            <span id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):member:toggle">⊟</span> FromPrinter Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):member">
+          <p class="Summary">
+            Creates a new instance of the <a href="../NodaTime.Format/PeriodFormatter.html">NodaTime.Format.PeriodFormatter</a> class with the supplied <a href="../NodaTime.Format/IPeriodPrinter.html">NodaTime.Format.IPeriodPrinter</a></p>
+          <div class="Signature">public static <a href="../NodaTime.Format/PeriodFormatter.html">PeriodFormatter</a> <b>FromPrinter</b> (<a href="../NodaTime.Format/IPeriodPrinter.html">IPeriodPrinter</a> periodPrinter)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Parameters">
+            <dl>
+              <dt>
+                <i>periodPrinter</i>
+              </dt>
+              <dd>PeriodPrinter to use</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Returns">A new formatter which can print, but not parse</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.FromPrinter(NodaTime.Format.IPeriodPrinter):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.PeriodFormatter.IsParser">
+          <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.IsParser:member')">
+            <span id="P:NodaTime.Format.PeriodFormatter.IsParser:member:toggle">⊟</span> IsParser Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.PeriodFormatter.IsParser:member">
+          <p class="Summary">
+            Indicates whether this formatter is capable of parsing.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>IsParser</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.IsParser:Value')">
+              <span id="P:NodaTime.Format.PeriodFormatter.IsParser:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.IsParser:Value">True if this formatter is capable of parsing, false otherwise</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.IsParser:Remarks')">
+              <span id="P:NodaTime.Format.PeriodFormatter.IsParser:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.IsParser:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.IsParser:Version Information')">
+              <span id="P:NodaTime.Format.PeriodFormatter.IsParser:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.IsParser:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.PeriodFormatter.IsPrinter">
+          <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.IsPrinter:member')">
+            <span id="P:NodaTime.Format.PeriodFormatter.IsPrinter:member:toggle">⊟</span> IsPrinter Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.PeriodFormatter.IsPrinter:member">
+          <p class="Summary">
+            Indicates whether this formatter is capable of printing.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>IsPrinter</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.IsPrinter:Value')">
+              <span id="P:NodaTime.Format.PeriodFormatter.IsPrinter:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.IsPrinter:Value">True if this formatter is capable of printing, false otherwise</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.IsPrinter:Remarks')">
+              <span id="P:NodaTime.Format.PeriodFormatter.IsPrinter:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.IsPrinter:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.IsPrinter:Version Information')">
+              <span id="P:NodaTime.Format.PeriodFormatter.IsPrinter:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.IsPrinter:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatter.Parse(System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Parse(System.String):member')">
+            <span id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):member:toggle">⊟</span> Parse Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):member">
+          <p class="Summary">
+            Parses a period from the given text
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> <b>Parse</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> periodText)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Parse(System.String):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):Parameters">
+            <dl>
+              <dt>
+                <i>periodText</i>
+              </dt>
+              <dd>Text to parse</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Parse(System.String):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):Returns">Parsed pariod</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Parse(System.String):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>if text argument is null</td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.FormatException">FormatException</a>
+                </td>
+                <td>periodText does not contain a valid string representation of a period.</td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.NotSupportedException">NotSupportedException</a>
+                </td>
+                <td>if this formatter can't be used for parsing of periodText contains a value of the unsupported field</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Parse(System.String):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Parse(System.String):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.Parse(System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.PeriodFormatter.ParsePeriodType">
+          <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.ParsePeriodType:member')">
+            <span id="P:NodaTime.Format.PeriodFormatter.ParsePeriodType:member:toggle">⊟</span> ParsePeriodType Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.PeriodFormatter.ParsePeriodType:member">
+          <p class="Summary">
+            Gets the PeriodType that will be used for parsing.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/PeriodType.html">NodaTime.Periods.PeriodType</a> <b>ParsePeriodType</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.ParsePeriodType:Value')">
+              <span id="P:NodaTime.Format.PeriodFormatter.ParsePeriodType:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.ParsePeriodType:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.ParsePeriodType:Remarks')">
+              <span id="P:NodaTime.Format.PeriodFormatter.ParsePeriodType:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.ParsePeriodType:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.ParsePeriodType:Version Information')">
+              <span id="P:NodaTime.Format.PeriodFormatter.ParsePeriodType:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.ParsePeriodType:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):member')">
+            <span id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):member:toggle">⊟</span> Print Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):member">
+          <p class="Summary">
+            Prints an IPeriod to a new <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> <b>Print</b> (<a href="../NodaTime/IPeriod.html">NodaTime.IPeriod</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Parameters">
+            <dl>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The period to format, not null</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Returns">The printed result</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>if period argument is null</td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.NotSupportedException">NotSupportedException</a>
+                </td>
+                <td>if this formatter can't be used for printing</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.Print(NodaTime.IPeriod):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.PeriodFormatter.Printer">
+          <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.Printer:member')">
+            <span id="P:NodaTime.Format.PeriodFormatter.Printer:member:toggle">⊟</span> Printer Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.PeriodFormatter.Printer:member">
+          <p class="Summary">
+            Gets the internal printer object that performs the real printing work.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/IPeriodPrinter.html">IPeriodPrinter</a> <b>Printer</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.Printer:Value')">
+              <span id="P:NodaTime.Format.PeriodFormatter.Printer:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.Printer:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.Printer:Remarks')">
+              <span id="P:NodaTime.Format.PeriodFormatter.Printer:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.Printer:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.Printer:Version Information')">
+              <span id="P:NodaTime.Format.PeriodFormatter.Printer:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.Printer:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):member')">
+            <span id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):member:toggle">⊟</span> PrintTo Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):member">
+          <p class="Summary">
+            Prints an IPeriod to a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IO.TextWriter">System.IO.TextWriter</a>.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Void">void</a> <b>PrintTo</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IO.TextWriter">System.IO.TextWriter</a> writer, <a href="../NodaTime/IPeriod.html">NodaTime.IPeriod</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Parameters">
+            <dl>
+              <dt>
+                <i>writer</i>
+              </dt>
+              <dd>the formatted period is written out</dd>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The period to format, not null</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>if either period or writer is null</td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.NotSupportedException">NotSupportedException</a>
+                </td>
+                <td>if this formatter can't be used for printing</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.IO.TextWriter,NodaTime.IPeriod):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):member')">
+            <span id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):member:toggle">⊟</span> PrintTo Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):member">
+          <p class="Summary">
+            Prints an IPeriod to a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Text.StringBuilder">System.Text.StringBuilder</a>.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Void">void</a> <b>PrintTo</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Text.StringBuilder">System.Text.StringBuilder</a> builder, <a href="../NodaTime/IPeriod.html">NodaTime.IPeriod</a> period)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Parameters">
+            <dl>
+              <dt>
+                <i>builder</i>
+              </dt>
+              <dd>The formatted period is appended to this builder</dd>
+              <dt>
+                <i>period</i>
+              </dt>
+              <dd>The period to format, not null</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>if either period or builder is null</td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.NotSupportedException">NotSupportedException</a>
+                </td>
+                <td>if this formatter can't be used for printing</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.PrintTo(System.Text.StringBuilder,NodaTime.IPeriod):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.PeriodFormatter.Provider">
+          <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.Provider:member')">
+            <span id="P:NodaTime.Format.PeriodFormatter.Provider:member:toggle">⊟</span> Provider Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.PeriodFormatter.Provider:member">
+          <p class="Summary">
+            Gets the IFormatProvider that will be used for printing and parsing.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IFormatProvider">IFormatProvider</a> <b>Provider</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.Provider:Value')">
+              <span id="P:NodaTime.Format.PeriodFormatter.Provider:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.Provider:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.Provider:Remarks')">
+              <span id="P:NodaTime.Format.PeriodFormatter.Provider:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.Provider:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.PeriodFormatter.Provider:Version Information')">
+              <span id="P:NodaTime.Format.PeriodFormatter.Provider:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.PeriodFormatter.Provider:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):member')">
+            <span id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):member:toggle">⊟</span> WithParseType Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):member">
+          <p class="Summary">
+            Returns a new formatter with a different PeriodType for parsing.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatter.html">PeriodFormatter</a> <b>WithParseType</b> (<a href="../NodaTime.Periods/PeriodType.html">NodaTime.Periods.PeriodType</a> newParsePeriodType)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Parameters">
+            <dl>
+              <dt>
+                <i>newParsePeriodType</i>
+              </dt>
+              <dd>The type to use in parsing</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Returns">The new formatter</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Remarks">
+            A PeriodFormatter is immutable, so a new instance is returned,
+            and the original is unaltered and still usable.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.WithParseType(NodaTime.Periods.PeriodType):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):member')">
+            <span id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):member:toggle">⊟</span> WithProvider Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):member">
+          <p class="Summary">
+            A PeriodFormatter is immutable, so a new instance is returned,
+            and the original is unaltered and still usable.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatter.html">PeriodFormatter</a> <b>WithProvider</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IFormatProvider">IFormatProvider</a> newProvider)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Parameters">
+            <dl>
+              <dt>
+                <i>newProvider</i>
+              </dt>
+              <dd>The IFormatProvider to use.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Returns">The new formatter</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatter.WithProvider(System.IFormatProvider):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>

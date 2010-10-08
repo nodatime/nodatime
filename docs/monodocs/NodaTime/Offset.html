@@ -1,0 +1,1856 @@
+<html>
+  <head>
+    <title>NodaTime.Offset</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.Offset">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Offset:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Offset:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Offset:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.Offset">Offset  Struct</h1>
+    <p class="Summary" id="T:NodaTime.Offset:Summary">
+            An offset from UTC in milliseconds. A positive value means that the local time is
+            ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
+            UTC (e.g. for America).
+            </p>
+    <div id="T:NodaTime.Offset:Signature">
+      <div class="Signature">public struct  <b>Offset</b> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IComparable`1">IComparable&lt;Offset&gt;</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IEquatable`1">IEquatable&lt;Offset&gt;</a></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.Offset:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Offset:Docs:Remarks')">
+          <span id="T:NodaTime.Offset:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Offset:Docs:Remarks">
+        <p>
+            Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
+            is outside this range then the value is forced into the range by considering that time wraps
+            as it goes around the world multiple times.
+            </p>
+        <p>
+            Internally, offsets are stored as an <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> number of milliseconds instead of
+            as ticks. This is because as a description of the offset of a time zone from UTC, there is
+            no offset of less than one second. Using milliseconds gives more than enough resolution and
+            allows us to save 4 bytes per Offset.
+            </p>
+        <p>
+            This type is immutable and thread-safe.
+            </p>
+      </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Offset:Docs:Version Information')">
+          <span id="T:NodaTime.Offset:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Offset:Docs:Version Information">
+        <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ValueType">ValueType</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Public Constructors')">
+            <span id="Public Constructors:toggle">⊟</span> Public Constructors</a>
+        </h3>
+        <blockquote id="Public Constructors">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.Offset(System.Int32)">Offset</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/Offset.html">NodaTime.Offset</a> struct.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Fields')">
+            <span id="Public Fields:toggle">⊟</span> Public Fields</a>
+        </h3>
+        <blockquote id="Public Fields">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Offset.MaxValue">MaxValue</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Offset.html">Offset</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Offset.MinValue">MinValue</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Offset.html">Offset</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Offset.Zero">Zero</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Offset.html">Offset</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Properties')">
+            <span id="Public Properties:toggle">⊟</span> Public Properties</a>
+        </h3>
+        <blockquote id="Public Properties">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Offset.Milliseconds">Milliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. 
+            Gets the number of milliseconds in the offset.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Offset.Ticks">Ticks</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>
+                  </i>. 
+            Returns the number of ticks represented by this offset.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Methods')">
+            <span id="Public Methods:toggle">⊟</span> Public Methods</a>
+        </h3>
+        <blockquote id="Public Methods">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset)">Add</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>, <a href="../NodaTime/Offset.html">Offset</a>)<nobr> : <a href="../NodaTime/Offset.html">Offset</a></nobr><blockquote>
+            Adds one Offset to another. Friendly alternative to <tt>operator+()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.CompareTo(NodaTime.Offset)">CompareTo</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Compares the current object with another object of the same type.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.Create(System.Int32,System.Int32)">Create</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime/Offset.html">Offset</a></nobr><blockquote>
+            Creates an offset with the specified number of hours and minutes.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32)">Create</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime/Offset.html">Offset</a></nobr><blockquote>
+            Creates an offset with the specified number of hours, minutes, and seconds.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32)">Create</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime/Offset.html">Offset</a></nobr><blockquote>
+            Creates an offset with the specified number of hours, minutes, seconds, and
+            milliseconds.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.Equals(NodaTime.Offset)">Equals</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Indicates whether the current object is equal to another object of the same type.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.Equals(System.Object)">Equals</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Determines whether the specified <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> is equal to this instance.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.ForHours(System.Int32)">ForHours</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime/Offset.html">Offset</a></nobr><blockquote>
+            Creates an offset with the specified number of hours.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.FromTicks(System.Int64)">FromTicks</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)<nobr> : <a href="../NodaTime/Offset.html">Offset</a></nobr><blockquote>
+            Froms the ticks.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.GetHashCode">GetHashCode</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Returns a hash code for this instance.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset)">Subtract</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>, <a href="../NodaTime/Offset.html">Offset</a>)<nobr> : <a href="../NodaTime/Offset.html">Offset</a></nobr><blockquote>
+            Subtracts one Offset from another. Friendly alternative to <tt>operator-()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.ToString">ToString</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a></nobr><blockquote>
+            Returns a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> that represents this instance.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Offset.ToString(System.String)">ToString</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a></nobr><blockquote>
+            Returns a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> that represents this instance.
+            </blockquote></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Operators')">
+            <span id="Public Operators:toggle">⊟</span> Public Operators</a>
+        </h3>
+        <blockquote id="Public Operators">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset)">Addition</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>, <a href="../NodaTime/Offset.html">Offset</a>)</td>
+                <td>
+            Implements the operator + (addition).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset)">Equality</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>, <a href="../NodaTime/Offset.html">Offset</a>)</td>
+                <td>
+            Implements the operator == (equality).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset)">GreaterThan</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>, <a href="../NodaTime/Offset.html">Offset</a>)</td>
+                <td>
+            Implements the operator &gt; (greater than).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset)">GreaterThanOrEqual</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>, <a href="../NodaTime/Offset.html">Offset</a>)</td>
+                <td>
+            Implements the operator &gt;= (greater than or equal).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset)">Inequality</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>, <a href="../NodaTime/Offset.html">Offset</a>)</td>
+                <td>
+            Implements the operator != (inequality).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset)">LessThan</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>, <a href="../NodaTime/Offset.html">Offset</a>)</td>
+                <td>
+            Implements the operator &lt; (less than).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset)">LessThanOrEqual</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>, <a href="../NodaTime/Offset.html">Offset</a>)</td>
+                <td>
+            Implements the operator &lt;= (less than or equal).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset)">Subtraction</a>
+                  </b>(<a href="../NodaTime/Offset.html">Offset</a>, <a href="../NodaTime/Offset.html">Offset</a>)</td>
+                <td>
+            Implements the operator - (subtraction).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset)">UnaryNegation</a>
+                  </b>
+                </td>
+                <td>
+            Implements the unary operator - (negation).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset)">UnaryPlus</a>
+                  </b>
+                </td>
+                <td>
+            Implements the unary operator + .
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.Offset:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="C:NodaTime.Offset(System.Int32)">
+          <a href="javascript:toggle_display('C:NodaTime.Offset(System.Int32):member')">
+            <span id="C:NodaTime.Offset(System.Int32):member:toggle">⊟</span> Offset Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.Offset(System.Int32):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/Offset.html">NodaTime.Offset</a> struct.
+            </p>
+          <div class="Signature">public  <b>Offset</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> milliseconds)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Offset(System.Int32):Parameters')">
+              <span id="C:NodaTime.Offset(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Offset(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>milliseconds</i>
+              </dt>
+              <dd>The number of milliseconds.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Offset(System.Int32):Remarks')">
+              <span id="C:NodaTime.Offset(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Offset(System.Int32):Remarks">
+            Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value
+            given is outside this range then the value is forced into the range by considering that
+            time wraps as it goes around the world multiple times
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Offset(System.Int32):Version Information')">
+              <span id="C:NodaTime.Offset(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Offset(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> Add Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Adds one Offset to another. Friendly alternative to <tt>operator+()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> <b>Add</b> (<a href="../NodaTime/Offset.html">Offset</a> left, <a href="../NodaTime/Offset.html">Offset</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Returns">A new <a href="../NodaTime/Offset.html">NodaTime.Offset</a> representing the sum of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Add(NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.CompareTo(NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.CompareTo(NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.CompareTo(NodaTime.Offset):member:toggle">⊟</span> CompareTo Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.CompareTo(NodaTime.Offset):member">
+          <p class="Summary">
+            Compares the current object with another object of the same type.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>CompareTo</b> (<a href="../NodaTime/Offset.html">Offset</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.CompareTo(NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.CompareTo(NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.CompareTo(NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>An object to compare with this object.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.CompareTo(NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.CompareTo(NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.CompareTo(NodaTime.Offset):Returns">
+            A 32-bit signed integer that indicates the relative order of the objects being compared.
+            The return value has the following meanings:
+            <table class="Documentation"><tr><th>Value</th><th>Meaning</th></tr><tr valign="top"><td>&lt; 0</td><td>This object is less than the <i>other</i> parameter.</td></tr><tr valign="top"><td>0</td><td>This object is equal to <i>other</i>.</td></tr><tr valign="top"><td>&gt; 0</td><td>This object is greater than <i>other</i>.</td></tr></table></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.CompareTo(NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.CompareTo(NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.CompareTo(NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.CompareTo(NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.CompareTo(NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.CompareTo(NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.Create(System.Int32,System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32):member')">
+            <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32):member:toggle">⊟</span> Create Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.Create(System.Int32,System.Int32):member">
+          <p class="Summary">
+            Creates an offset with the specified number of hours and minutes.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> <b>Create</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> hours, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> minutes)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32):Parameters')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>hours</i>
+              </dt>
+              <dd>The number of hours.</dd>
+              <dt>
+                <i>minutes</i>
+              </dt>
+              <dd>The number of minutes.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32):Returns')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32):Returns">
+            A new <a href="../NodaTime/Offset.html">NodaTime.Offset</a> representing the given values.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32):Remarks')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32):Remarks">
+            TODO: not sure about the name. Anyone got a better one?
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32):Version Information')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):member')">
+            <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):member:toggle">⊟</span> Create Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):member">
+          <p class="Summary">
+            Creates an offset with the specified number of hours, minutes, and seconds.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> <b>Create</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> hours, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> minutes, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> seconds)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Parameters')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>hours</i>
+              </dt>
+              <dd>The number of hours.</dd>
+              <dt>
+                <i>minutes</i>
+              </dt>
+              <dd>The number of minutes.</dd>
+              <dt>
+                <i>seconds</i>
+              </dt>
+              <dd>The number of seconds.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Returns')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Returns">
+            A new <a href="../NodaTime/Offset.html">NodaTime.Offset</a> representing the given values.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Remarks')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Remarks">
+            TODO: not sure about the name. Anyone got a better one?
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Version Information')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):member')">
+            <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):member:toggle">⊟</span> Create Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):member">
+          <p class="Summary">
+            Creates an offset with the specified number of hours, minutes, seconds, and
+            milliseconds.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> <b>Create</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> hours, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> minutes, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> seconds, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> milliseconds)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Parameters')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>hours</i>
+              </dt>
+              <dd>The number of hours.</dd>
+              <dt>
+                <i>minutes</i>
+              </dt>
+              <dd>The number of minutes.</dd>
+              <dt>
+                <i>seconds</i>
+              </dt>
+              <dd>The number of seconds.</dd>
+              <dt>
+                <i>milliseconds</i>
+              </dt>
+              <dd>The number of milliseconds.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Returns')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Returns">
+            A new <a href="../NodaTime/Offset.html">NodaTime.Offset</a> representing the given values.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Remarks')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Remarks">
+            TODO: not sure about the name. Anyone got a better one?
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Version Information')">
+              <span id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Create(System.Int32,System.Int32,System.Int32,System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.Equals(NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.Equals(NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.Equals(NodaTime.Offset):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.Equals(NodaTime.Offset):member">
+          <p class="Summary">
+            Indicates whether the current object is equal to another object of the same type.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="../NodaTime/Offset.html">Offset</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Equals(NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.Equals(NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Equals(NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>An object to compare with this object.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Equals(NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.Equals(NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Equals(NodaTime.Offset):Returns">
+            true if the current object is equal to the <i>other</i> parameter;
+            otherwise, false.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Equals(NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.Equals(NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Equals(NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Equals(NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.Equals(NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Equals(NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.Equals(System.Object)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.Equals(System.Object):member')">
+            <span id="M:NodaTime.Offset.Equals(System.Object):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.Equals(System.Object):member">
+          <p class="Summary">
+            Determines whether the specified <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> is equal to this instance.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> obj)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Equals(System.Object):Parameters')">
+              <span id="M:NodaTime.Offset.Equals(System.Object):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Equals(System.Object):Parameters">
+            <dl>
+              <dt>
+                <i>obj</i>
+              </dt>
+              <dd>The <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> to compare with this instance.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Equals(System.Object):Returns')">
+              <span id="M:NodaTime.Offset.Equals(System.Object):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Equals(System.Object):Returns">
+            <tt>true</tt> if the specified <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> is equal to this instance;
+            otherwise, <tt>false</tt>.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Equals(System.Object):Remarks')">
+              <span id="M:NodaTime.Offset.Equals(System.Object):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Equals(System.Object):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Equals(System.Object):Version Information')">
+              <span id="M:NodaTime.Offset.Equals(System.Object):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Equals(System.Object):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.ForHours(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.ForHours(System.Int32):member')">
+            <span id="M:NodaTime.Offset.ForHours(System.Int32):member:toggle">⊟</span> ForHours Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.ForHours(System.Int32):member">
+          <p class="Summary">
+            Creates an offset with the specified number of hours.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> <b>ForHours</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> hours)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ForHours(System.Int32):Parameters')">
+              <span id="M:NodaTime.Offset.ForHours(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ForHours(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>hours</i>
+              </dt>
+              <dd>The number of hours.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ForHours(System.Int32):Returns')">
+              <span id="M:NodaTime.Offset.ForHours(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ForHours(System.Int32):Returns">
+            A new <a href="../NodaTime/Offset.html">NodaTime.Offset</a> representing the given value.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ForHours(System.Int32):Remarks')">
+              <span id="M:NodaTime.Offset.ForHours(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ForHours(System.Int32):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ForHours(System.Int32):Version Information')">
+              <span id="M:NodaTime.Offset.ForHours(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ForHours(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.FromTicks(System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.FromTicks(System.Int64):member')">
+            <span id="M:NodaTime.Offset.FromTicks(System.Int64):member:toggle">⊟</span> FromTicks Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.FromTicks(System.Int64):member">
+          <p class="Summary">
+            Froms the ticks.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> <b>FromTicks</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> ticks)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.FromTicks(System.Int64):Parameters')">
+              <span id="M:NodaTime.Offset.FromTicks(System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.FromTicks(System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>ticks</i>
+              </dt>
+              <dd>The ticks.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.FromTicks(System.Int64):Returns')">
+              <span id="M:NodaTime.Offset.FromTicks(System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.FromTicks(System.Int64):Returns">
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.FromTicks(System.Int64):Remarks')">
+              <span id="M:NodaTime.Offset.FromTicks(System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.FromTicks(System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.FromTicks(System.Int64):Version Information')">
+              <span id="M:NodaTime.Offset.FromTicks(System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.FromTicks(System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.GetHashCode">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.GetHashCode:member')">
+            <span id="M:NodaTime.Offset.GetHashCode:member:toggle">⊟</span> GetHashCode Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.GetHashCode:member">
+          <p class="Summary">
+            Returns a hash code for this instance.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>GetHashCode</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.GetHashCode:Returns')">
+              <span id="M:NodaTime.Offset.GetHashCode:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.GetHashCode:Returns">
+            A hash code for this instance, suitable for use in hashing algorithms and data
+            structures like a hash table. 
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.GetHashCode:Remarks')">
+              <span id="M:NodaTime.Offset.GetHashCode:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.GetHashCode:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.GetHashCode:Version Information')">
+              <span id="M:NodaTime.Offset.GetHashCode:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.GetHashCode:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Offset.MaxValue">
+          <a href="javascript:toggle_display('F:NodaTime.Offset.MaxValue:member')">
+            <span id="F:NodaTime.Offset.MaxValue:member:toggle">⊟</span> MaxValue Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Offset.MaxValue:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Offset.html">Offset</a> <b>MaxValue</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Offset.MaxValue:Remarks')">
+              <span id="F:NodaTime.Offset.MaxValue:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Offset.MaxValue:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Offset.MaxValue:Version Information')">
+              <span id="F:NodaTime.Offset.MaxValue:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Offset.MaxValue:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Offset.Milliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Offset.Milliseconds:member')">
+            <span id="P:NodaTime.Offset.Milliseconds:member:toggle">⊟</span> Milliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Offset.Milliseconds:member">
+          <p class="Summary">
+            Gets the number of milliseconds in the offset.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>Milliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Offset.Milliseconds:Value')">
+              <span id="P:NodaTime.Offset.Milliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Offset.Milliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Offset.Milliseconds:Remarks')">
+              <span id="P:NodaTime.Offset.Milliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Offset.Milliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Offset.Milliseconds:Version Information')">
+              <span id="P:NodaTime.Offset.Milliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Offset.Milliseconds:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Offset.MinValue">
+          <a href="javascript:toggle_display('F:NodaTime.Offset.MinValue:member')">
+            <span id="F:NodaTime.Offset.MinValue:member:toggle">⊟</span> MinValue Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Offset.MinValue:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Offset.html">Offset</a> <b>MinValue</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Offset.MinValue:Remarks')">
+              <span id="F:NodaTime.Offset.MinValue:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Offset.MinValue:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Offset.MinValue:Version Information')">
+              <span id="F:NodaTime.Offset.MinValue:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Offset.MinValue:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> op_Addition Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Implements the operator + (addition).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> operator+ (<a href="../NodaTime/Offset.html">Offset</a> left, <a href="../NodaTime/Offset.html">Offset</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Returns">A new <a href="../NodaTime/Offset.html">NodaTime.Offset</a> representing the sum of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Addition(NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> op_Equality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Implements the operator == (equality).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator== (<a href="../NodaTime/Offset.html">Offset</a> left, <a href="../NodaTime/Offset.html">Offset</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Returns">
+            <tt>true</tt> if values are equal to each other, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Equality(NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> op_GreaterThan Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Implements the operator &gt; (greater than).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&gt; (<a href="../NodaTime/Offset.html">Offset</a> left, <a href="../NodaTime/Offset.html">Offset</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Returns">
+            <tt>true</tt> if the left value is greater than the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_GreaterThan(NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> op_GreaterThanOrEqual Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Implements the operator &gt;= (greater than or equal).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&gt;= (<a href="../NodaTime/Offset.html">Offset</a> left, <a href="../NodaTime/Offset.html">Offset</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Returns">
+            <tt>true</tt> if the left value is greater than or equal to the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_GreaterThanOrEqual(NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> op_Inequality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Implements the operator != (inequality).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator!= (<a href="../NodaTime/Offset.html">Offset</a> left, <a href="../NodaTime/Offset.html">Offset</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Returns">
+            <tt>true</tt> if values are not equal to each other, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Inequality(NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> op_LessThan Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Implements the operator &lt; (less than).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&lt; (<a href="../NodaTime/Offset.html">Offset</a> left, <a href="../NodaTime/Offset.html">Offset</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Returns">
+            <tt>true</tt> if the left value is less than the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_LessThan(NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> op_LessThanOrEqual Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Implements the operator &lt;= (less than or equal).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&lt;= (<a href="../NodaTime/Offset.html">Offset</a> left, <a href="../NodaTime/Offset.html">Offset</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Returns">
+            <tt>true</tt> if the left value is less than or equal to the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_LessThanOrEqual(NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> op_Subtraction Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Implements the operator - (subtraction).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> operator- (<a href="../NodaTime/Offset.html">Offset</a> left, <a href="../NodaTime/Offset.html">Offset</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Returns">A new <a href="../NodaTime/Offset.html">NodaTime.Offset</a> representing the difference of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_Subtraction(NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):member:toggle">⊟</span> op_UnaryNegation Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):member">
+          <p class="Summary">
+            Implements the unary operator - (negation).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> operator- (<a href="../NodaTime/Offset.html">Offset</a> offset)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>offset</i>
+              </dt>
+              <dd>The offset to negate.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Returns">A new <a href="../NodaTime/Offset.html">NodaTime.Offset</a> instance with a negated value.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_UnaryNegation(NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):member:toggle">⊟</span> op_UnaryPlus Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):member">
+          <p class="Summary">
+            Implements the unary operator + .
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> operator+ (<a href="../NodaTime/Offset.html">Offset</a> offset)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>offset</i>
+              </dt>
+              <dd>The operand.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Returns">The same <a href="../NodaTime/Offset.html">NodaTime.Offset</a> instance</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.op_UnaryPlus(NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> Subtract Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Subtracts one Offset from another. Friendly alternative to <tt>operator-()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Offset.html">Offset</a> <b>Subtract</b> (<a href="../NodaTime/Offset.html">Offset</a> left, <a href="../NodaTime/Offset.html">Offset</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Returns')">
+              <span id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Returns">A new <a href="../NodaTime/Offset.html">NodaTime.Offset</a> representing the difference of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.Subtract(NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Offset.Ticks">
+          <a href="javascript:toggle_display('P:NodaTime.Offset.Ticks:member')">
+            <span id="P:NodaTime.Offset.Ticks:member:toggle">⊟</span> Ticks Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Offset.Ticks:member">
+          <p class="Summary">
+            Returns the number of ticks represented by this offset.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> <b>Ticks</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Offset.Ticks:Value')">
+              <span id="P:NodaTime.Offset.Ticks:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Offset.Ticks:Value">The number of ticks.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Offset.Ticks:Remarks')">
+              <span id="P:NodaTime.Offset.Ticks:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Offset.Ticks:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Offset.Ticks:Version Information')">
+              <span id="P:NodaTime.Offset.Ticks:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Offset.Ticks:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.ToString">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.ToString:member')">
+            <span id="M:NodaTime.Offset.ToString:member:toggle">⊟</span> ToString Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.ToString:member">
+          <p class="Summary">
+            Returns a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> that represents this instance.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> <b>ToString</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ToString:Returns')">
+              <span id="M:NodaTime.Offset.ToString:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ToString:Returns">
+            A <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> that represents this instance.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ToString:Remarks')">
+              <span id="M:NodaTime.Offset.ToString:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ToString:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ToString:Version Information')">
+              <span id="M:NodaTime.Offset.ToString:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ToString:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Offset.ToString(System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Offset.ToString(System.String):member')">
+            <span id="M:NodaTime.Offset.ToString(System.String):member:toggle">⊟</span> ToString Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Offset.ToString(System.String):member">
+          <p class="Summary">
+            Returns a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> that represents this instance.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> <b>ToString</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> format)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ToString(System.String):Parameters')">
+              <span id="M:NodaTime.Offset.ToString(System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ToString(System.String):Parameters">
+            <dl>
+              <dt>
+                <i>format</i>
+              </dt>
+              <dd>The format to use.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ToString(System.String):Returns')">
+              <span id="M:NodaTime.Offset.ToString(System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ToString(System.String):Returns">
+            A <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> that represents this instance.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ToString(System.String):Remarks')">
+              <span id="M:NodaTime.Offset.ToString(System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ToString(System.String):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Offset.ToString(System.String):Version Information')">
+              <span id="M:NodaTime.Offset.ToString(System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Offset.ToString(System.String):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Offset.Zero">
+          <a href="javascript:toggle_display('F:NodaTime.Offset.Zero:member')">
+            <span id="F:NodaTime.Offset.Zero:member:toggle">⊟</span> Zero Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Offset.Zero:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Offset.html">Offset</a> <b>Zero</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Offset.Zero:Remarks')">
+              <span id="F:NodaTime.Offset.Zero:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Offset.Zero:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Offset.Zero:Version Information')">
+              <span id="F:NodaTime.Offset.Zero:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Offset.Zero:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>
