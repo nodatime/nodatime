@@ -26,17 +26,17 @@ namespace NodaTime
     /// Time zones primarily encapsulate two facts: and offset from UTC and a set of rules on how
     /// the values are adjusted.
     /// </remarks>
-    public interface IDateTimeZone
+    public abstract class IDateTimeZone
     {
         /// <summary>
         /// The database ID for the time zone.
         /// </summary>
-        string Id { get; }
+        public abstract string Id { get; }
 
         /// <summary>
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
-        bool IsFixed { get; }
+        public abstract bool IsFixed { get; }
 
         /// <summary>
         /// Returns the offset from UTC, where a positive duration indicates that local time is
@@ -44,7 +44,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="instant">The instant for which to calculate the offset.</param>
         /// <returns>The offset from UTC at the specified instant.</returns>
-        Offset GetOffsetFromUtc(Instant instant);
+        public abstract Offset GetOffsetFromUtc(Instant instant);
 
         /// <summary>
         /// Gets the offset to subtract from a local time to get the UTC time.
@@ -59,7 +59,7 @@ namespace NodaTime
         /// </remarks>
         /// <exception cref="SkippedTimeException">The local instant doesn't occur in this time zone
         /// due to zone transitions.</exception>
-        Offset GetOffsetFromLocal(LocalInstant localInstant);
+        internal abstract Offset GetOffsetFromLocal(LocalInstant localInstant);
 
         /// <summary>
         /// Gets the zone interval for the given instant. Null is returned if no interval is
@@ -67,7 +67,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="instant">The Instant to query.</param>
         /// <returns>The defined <see cref="ZoneInterval"/> or <c>null</c>.</returns>
-        ZoneInterval GetZoneInterval(Instant instant);
+        public abstract ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
         /// Gets the zone interval for the given local instant. Null is returned if no interval is
@@ -75,7 +75,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="localInstant">The <see cref="LocalInstant"/> to query.</param>
         /// <returns>The defined <see cref="ZoneInterval"/> or <c>null</c>.</returns>
-        ZoneInterval GetZoneInterval(LocalInstant localInstant);
+        internal abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
 
         /// <summary>
         /// Returns the name associated with the given instant.
@@ -88,12 +88,12 @@ namespace NodaTime
         /// </remarks>
         /// <param name="instant">The instant to get the name for.</param>
         /// <returns>The name of this time. Never returns <c>null</c>.</returns>
-        string GetName(Instant instant);
+        public abstract string GetName(Instant instant);
 
         /// <summary>
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        void Write(DateTimeZoneWriter writer);
+        internal abstract void Write(DateTimeZoneWriter writer);
     }
 }
