@@ -30,7 +30,7 @@ namespace NodaTime.TimeZones
     /// Not immutable, not thread safe. 
     /// </para>
     /// </remarks>
-    public class ZoneRecurrenceCollection : IEnumerable<ZoneRecurrence>
+    internal class ZoneRecurrenceCollection : IEnumerable<ZoneRecurrence>
     {
         // Don't pre-calculate more than 100 years into the future. Almost all zones will stop
         // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last

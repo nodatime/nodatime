@@ -292,7 +292,7 @@ namespace NodaTime.TimeZones
         /// Writes the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        public void Write(DateTimeZoneWriter writer)
+        internal void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)
             {
@@ -310,7 +310,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns></returns>
-        public static ZoneInterval Read(DateTimeZoneReader reader)
+        internal static ZoneInterval Read(DateTimeZoneReader reader)
         {
             if (reader == null)
             {

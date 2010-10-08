@@ -25,7 +25,7 @@ namespace NodaTime.TimeZones
     /// <summary>
     /// Very specific compressing binary writer for time zones.
     /// </summary>
-    public class DateTimeZoneWriter
+    internal class DateTimeZoneWriter
     {
         internal const long MaxHalfHours = 0x3f;
         private const long MinHalfHours = -MaxHalfHours;

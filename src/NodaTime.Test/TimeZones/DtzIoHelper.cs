@@ -43,13 +43,13 @@ namespace NodaTime.Test.TimeZones
         /// Gets the writer.
         /// </summary>
         /// <value>The writer.</value>
-        public DateTimeZoneWriter Writer { get { return writer; } }
+        internal DateTimeZoneWriter Writer { get { return writer; } }
 
         /// <summary>
         /// Gets the reader.
         /// </summary>
         /// <value>The reader.</value>
-        public DateTimeZoneReader Reader
+        internal DateTimeZoneReader Reader
         {
             get
             {
@@ -72,13 +72,13 @@ namespace NodaTime.Test.TimeZones
             return Reader.ReadTimeZone(timeZone.Id);
         }
 
-        public ZoneRecurrence WriteRead(ZoneRecurrence value)
+        internal ZoneRecurrence WriteRead(ZoneRecurrence value)
         {
             value.Write(Writer);
             return ZoneRecurrence.Read(Reader);
         }
 
-        public ZoneYearOffset WriteRead(ZoneYearOffset value)
+        internal ZoneYearOffset WriteRead(ZoneYearOffset value)
         {
             value.Write(Writer);
             return ZoneYearOffset.Read(Reader);
