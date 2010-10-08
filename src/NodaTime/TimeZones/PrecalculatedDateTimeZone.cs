@@ -26,7 +26,7 @@ namespace NodaTime.TimeZones
     /// container for the initial zone intervals and a pointer to the time zone that handles all of
     /// the rest until the end of time.
     /// </summary>
-    internal class PrecalculatedDateTimeZone : DateTimeZoneBase
+    internal class PrecalculatedDateTimeZone : DateTimeZone
     {
         private readonly ZoneInterval[] periods;
         private readonly DateTimeZone tailZone;
