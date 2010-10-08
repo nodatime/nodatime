@@ -43,20 +43,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void IsoForZone()
-        {
-            Chronology subject = Chronology.IsoForZone(testZone);
-            Assert.AreSame(testZone, subject.Zone);
-            Assert.AreSame(CalendarSystem.Iso, subject.Calendar);
-        }
-
-        [Test]
-        public void IsoForZone_WithNullZone_ThrowsArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => Chronology.IsoForZone(null));
-        }
-
-        [Test]
         public void IsoUtc()
         {
             Assert.AreSame(DateTimeZones.Utc, Chronology.IsoUtc.Zone);
