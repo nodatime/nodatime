@@ -27,7 +27,7 @@ namespace NodaTime.Utility
     /// <summary>
     /// Provides helper methods for using resources.
     /// </summary>
-    public static class ResourceHelper
+    internal static class ResourceHelper
     {
         private static readonly Regex InvalidResourceNameCharacters = new Regex("[^A-Za-z0-9_/]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
@@ -37,7 +37,7 @@ namespace NodaTime.Utility
         /// </summary>
         /// <param name="name">The name to normalize.</param>
         /// <returns>The normalized name.</returns>
-        public static string NormalizeAsResourceName(string name)
+        internal static string NormalizeAsResourceName(string name)
         {
             if (name == null)
             {
@@ -57,7 +57,7 @@ namespace NodaTime.Utility
         /// <param name="manager">The <see cref="ResourceManager"/> to load from.</param>
         /// <param name="name">The resource name.</param>
         /// <returns>The <see cref="IDictionary{TKey,TValue}"/> or <c>null</c> if there is no such resource.</returns>
-        public static IDictionary<string, string> LoadDictionary(ResourceManager manager, string name)
+        internal static IDictionary<string, string> LoadDictionary(ResourceManager manager, string name)
         {
             if (manager == null)
             {
@@ -83,7 +83,7 @@ namespace NodaTime.Utility
         /// <param name="name">The resource name.</param>
         /// <param name="id">The time zone id for the loaded time zone.</param>
         /// <returns>The <see cref="DateTimeZone"/> or <c>null</c> if there is no such resource.</returns>
-        public static DateTimeZone LoadTimeZone(ResourceManager manager, string name, string id)
+        internal static DateTimeZone LoadTimeZone(ResourceManager manager, string name, string id)
         {
             if (manager == null)
             {
