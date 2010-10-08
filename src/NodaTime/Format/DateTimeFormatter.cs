@@ -291,7 +291,7 @@ namespace NodaTime.Format
 
             var instant = dateTime.ToInstant();
             var timezoneOffset = zone.GetOffsetFromUtc(instant);
-            var adjustedLocalInstant = instant + timezoneOffset;
+            var adjustedLocalInstant = Instant.Add(instant, timezoneOffset);
 
             printer.PrintTo(writer, adjustedLocalInstant, calendarSystem, timezoneOffset, zone, provider);
         }

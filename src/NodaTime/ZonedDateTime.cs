@@ -73,7 +73,7 @@ namespace NodaTime
                 throw new ArgumentNullException("chronology");
             }
             offset = chronology.Zone.GetOffsetFromUtc(instant);
-            localInstant = instant + offset;
+            localInstant = Instant.Add(instant, offset);
             this.chronology = chronology;
         }
 
@@ -201,7 +201,7 @@ namespace NodaTime
         /// Gets the local instant.
         /// </summary>
         /// <value>The local instant.</value>
-        public LocalInstant LocalInstant { get { return localInstant; } }
+        internal LocalInstant LocalInstant { get { return localInstant; } }
 
         public LocalDateTime LocalDateTime { get { return new LocalDateTime(LocalInstant, chronology.Calendar); } }
 

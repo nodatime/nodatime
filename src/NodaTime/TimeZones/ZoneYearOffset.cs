@@ -286,7 +286,7 @@ namespace NodaTime.TimeZones
                 Offset offset = GetOffset(standardOffset, savings);
 
                 // Convert from UTC to local time.
-                LocalInstant localInstant = instant + offset;
+                LocalInstant localInstant = Instant.Add(instant, offset);
 
                 CalendarSystem calendar = CalendarSystem.Iso;
                 LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, monthOfYear);

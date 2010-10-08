@@ -36,7 +36,7 @@ namespace NodaTime.Test.Format
             public DateTimeZone Zone;
             public TextWriter DtWriter;
             public IFormatProvider DtProvider;
-            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, DateTimeZone dateTimeZone, IFormatProvider provider)
+            void IDateTimePrinter.PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, DateTimeZone dateTimeZone, IFormatProvider provider)
             {
                 DtWriter = writer;
                 DtProvider = provider;

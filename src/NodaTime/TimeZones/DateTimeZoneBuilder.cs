@@ -356,8 +356,8 @@ namespace NodaTime.TimeZones
 
             // If local time of new transition is same as last local time, just replace last
             // transition with new one.
-            LocalInstant lastLocal = lastTransition.Instant + lastTransition.WallOffset;
-            LocalInstant newLocal = transition.Instant + transition.WallOffset;
+            LocalInstant lastLocal = Instant.Add(lastTransition.Instant, lastTransition.WallOffset);
+            LocalInstant newLocal = Instant.Add(transition.Instant, transition.WallOffset);
 
             if (newLocal != lastLocal)
             {
