@@ -27,7 +27,7 @@ namespace NodaTime
     /// of the same date in UTC. This needs a better description, and possibly a better name
     /// at some point...
     /// </summary>
-    public struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>
+    internal struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>
     {
         public static readonly LocalInstant LocalUnixEpoch = new LocalInstant(0);
         public static readonly LocalInstant MinValue = new LocalInstant(Int64.MinValue);
@@ -59,7 +59,7 @@ namespace NodaTime
             {
                 var rightNow = Clock.Now;
                 var offsetToLocal = DateTimeZones.Current.GetOffsetFromUtc(rightNow);
-                return rightNow + offsetToLocal;
+                return Instant.Add(rightNow, offsetToLocal);
             }
         }
 

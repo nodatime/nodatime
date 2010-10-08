@@ -334,7 +334,7 @@ namespace NodaTime.TimeZones
 
                 // Stop precalculating if year reaches some arbitrary limit. We can cheat in the
                 // conversion because it is an approximation anyway.
-                if (calendar.Fields.Year.GetValue(nextTicks + Offset.Zero) >= YearLimit)
+                if (calendar.Fields.Year.GetValue(Instant.Add(nextTicks, Offset.Zero)) >= YearLimit)
                 {
                     return null;
                 }

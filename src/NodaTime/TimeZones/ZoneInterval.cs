@@ -17,6 +17,7 @@
 
 using System;
 using System.Text;
+using NodaTime.Calendars;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
@@ -61,7 +62,7 @@ namespace NodaTime.TimeZones
             this.savings = savings;
             try
             {
-                localStart = this.start + this.offset;
+                localStart = Instant.Add(start, offset);
             }
             catch (OverflowException)
             {
@@ -69,7 +70,7 @@ namespace NodaTime.TimeZones
             }
             try
             {
-                localEnd = this.end + (this.offset - this.savings);
+                localEnd = Instant.Add(end, offset - savings);;
             }
             catch (OverflowException)
             {
@@ -134,7 +135,7 @@ namespace NodaTime.TimeZones
         /// This is effectively <c>Start + Offset</c>.
         /// </remarks>
         /// <value>The starting LocalInstant.</value>
-        public LocalInstant LocalStart { get { return localStart; } }
+        internal LocalInstant LocalStart { get { return localStart; } }
 
         /// <summary>
         /// Gets the end time as a LocalInstant.
@@ -143,8 +144,30 @@ namespace NodaTime.TimeZones
         /// This is effectively <c>End + Offset</c>.
         /// </remarks>
         /// <value>The ending LocalInstant.</value>
-        public LocalInstant LocalEnd { get { return localEnd; } }
+        internal LocalInstant LocalEnd { get { return localEnd; } }
         #endregion // Properties
+
+        // TODO: IsoLocalStart and IsoLocalEnd as convenience properties?
+
+        /// <summary>
+        /// Returns the start time of the interval in the given calendar.
+        /// </summary>
+        /// <param name="calendar">The calendar system to represent the start in</param>
+        /// <returns>The local date and time of the start point of the interval</returns>
+        public LocalDateTime GetLocalStart(CalendarSystem calendar)
+        {
+            return new LocalDateTime(LocalStart, calendar);
+        }
+
+        /// <summary>
+        /// Returns the end time of the interval in the given calendar.
+        /// </summary>
+        /// <param name="calendar">The calendar system to represent the end in</param>
+        /// <returns>The local date and time of the end point of the interval</returns>
+        public LocalDateTime GetLocalEnd(CalendarSystem calendar)
+        {
+            return new LocalDateTime(LocalEnd, calendar);
+        }
 
         #region Contains
         /// <summary>
@@ -166,7 +189,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// <c>true</c> if this period contains the given LocalInstant in its range; otherwise, <c>false</c>.
         /// </returns>
-        public bool Contains(LocalInstant localInstant)
+        internal bool Contains(LocalInstant localInstant)
         {
             return LocalStart <= localInstant && localInstant < LocalEnd;
         }

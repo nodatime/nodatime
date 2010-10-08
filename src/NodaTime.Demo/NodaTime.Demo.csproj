@@ -45,7 +45,6 @@
     <Compile Include="InstantDemo.cs" />
     <Compile Include="LocalDateDemo.cs" />
     <Compile Include="LocalDateTimeDemo.cs" />
-    <Compile Include="LocalInstantDemo.cs" />
     <Compile Include="LocalTimeDemo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimeZoneDemo.cs" />

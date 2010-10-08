@@ -591,7 +591,7 @@ namespace NodaTime
         /// the period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodFrom(LocalInstant start, PeriodType type, CalendarSystem calendar)
+        internal Period ToPeriodFrom(LocalInstant start, PeriodType type, CalendarSystem calendar)
         {
             return Period.From(start, this, calendar, type);
         }
@@ -610,7 +610,7 @@ namespace NodaTime
         /// the period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodFrom(LocalInstant start, PeriodType type)
+        internal Period ToPeriodFrom(LocalInstant start, PeriodType type)
         {
             return Period.From(start, this, type);
         }
@@ -629,7 +629,7 @@ namespace NodaTime
         /// the period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodFrom(LocalInstant start, CalendarSystem calendar)
+        internal Period ToPeriodFrom(LocalInstant start, CalendarSystem calendar)
         {
             return Period.From(start, this, calendar);
         }
@@ -647,7 +647,7 @@ namespace NodaTime
         /// the standard period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodFrom(LocalInstant start)
+        internal Period ToPeriodFrom(LocalInstant start)
         {
             return Period.From(start, this);
         }
@@ -667,7 +667,7 @@ namespace NodaTime
         /// the period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodTo(LocalInstant end, PeriodType type, CalendarSystem calendar)
+        internal Period ToPeriodTo(LocalInstant end, PeriodType type, CalendarSystem calendar)
         {
             return Period.From(this, end, calendar, type);
         }
@@ -686,7 +686,7 @@ namespace NodaTime
         /// the period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodTo(LocalInstant end, PeriodType type)
+        internal Period ToPeriodTo(LocalInstant end, PeriodType type)
         {
             return Period.From(this, end, type);
         }
@@ -705,7 +705,7 @@ namespace NodaTime
         /// the standard period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodTo(LocalInstant end, CalendarSystem calendar)
+        internal Period ToPeriodTo(LocalInstant end, CalendarSystem calendar)
         {
             return Period.From(this, end, calendar);
         }
@@ -723,7 +723,7 @@ namespace NodaTime
         /// the standard period type and the length of this duration.
         /// </para>
         /// </remarks>
-        public Period ToPeriodTo(LocalInstant end)
+        internal Period ToPeriodTo(LocalInstant end)
         {
             return Period.From(this, end);
         }

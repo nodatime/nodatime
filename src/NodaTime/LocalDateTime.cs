@@ -48,7 +48,7 @@ namespace NodaTime
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
         /// </summary>
         /// <param name="localInstant">The local instant.</param>
-        public LocalDateTime(LocalInstant localInstant)
+        internal LocalDateTime(LocalInstant localInstant)
         {
             this.localInstant = localInstant;
             this.calendar = CalendarSystem.Iso;
@@ -60,7 +60,7 @@ namespace NodaTime
         /// <param name="localInstant">The local instant.</param>
         /// <param name="calendar">The calendar system.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        public LocalDateTime(LocalInstant localInstant, CalendarSystem calendar)
+        internal LocalDateTime(LocalInstant localInstant, CalendarSystem calendar)
         {
             if (calendar == null)
             {
@@ -213,7 +213,7 @@ namespace NodaTime
         /// Gets the local instant.
         /// </summary>
         /// <value>The local instant.</value>
-        public LocalInstant LocalInstant { get { return localInstant; } }
+        internal LocalInstant LocalInstant { get { return localInstant; } }
 
         /// <summary>
         /// Gets the calendar.
