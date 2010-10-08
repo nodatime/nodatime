@@ -27,7 +27,6 @@ namespace NodaTime
     public class FieldValueException : Exception
     {
         private readonly DateTimeFieldType dateTimefieldType;
-        private readonly DurationFieldType? durationFieldType;
         private readonly string fieldName;
         private readonly int numberValue;
         private readonly string stringValue;
@@ -37,7 +36,6 @@ namespace NodaTime
         internal FieldValueException(DateTimeFieldType fieldType, String value) : base(CreateMessage(fieldType.ToString(), value))
         {
             dateTimefieldType = fieldType;
-            durationFieldType = null;
             fieldName = fieldType.ToString();
             stringValue = value;
             numberValue = 0;
@@ -49,7 +47,6 @@ namespace NodaTime
             : base(CreateMessage(fieldType.ToString(), value, lowerBound, upperBound, null))
         {
             dateTimefieldType = fieldType;
-            durationFieldType = null;
             fieldName = fieldType.ToString();
             numberValue = value;
             stringValue = null;
@@ -107,18 +104,6 @@ namespace NodaTime
             }
 
             return sb.ToString();
-        }
-
-        public void PrependMessage(String message)
-        {
-            //if (this.Message == null)
-            //{
-            //    this.Message = message;
-            //}
-            //else if (this.Message != null)
-            //{
-            //    this.Message = this.Message + ": " + message;
-            //}
         }
     }
 }
