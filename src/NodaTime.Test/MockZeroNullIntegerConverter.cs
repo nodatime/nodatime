@@ -35,7 +35,7 @@ namespace NodaTime.Test
             return 0;
         }
 
-        public Chronology GetChronology(object obj, IDateTimeZone zone)
+        public Chronology GetChronology(object obj, DateTimeZone zone)
         {
             return null;
         }

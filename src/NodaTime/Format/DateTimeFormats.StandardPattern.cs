@@ -41,7 +41,7 @@ namespace NodaTime.Format
                 }
             }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, DateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 var formatter = GetFormatter(provider);

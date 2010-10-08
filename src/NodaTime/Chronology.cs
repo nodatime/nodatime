@@ -34,13 +34,13 @@ namespace NodaTime
 
         public static Chronology IsoUtc { get { return isoUtc; } }
 
-        private readonly IDateTimeZone zone;
+        private readonly DateTimeZone zone;
         private readonly CalendarSystem calendarSystem;
 
-        public IDateTimeZone Zone { get { return zone; } }
+        public DateTimeZone Zone { get { return zone; } }
         public CalendarSystem Calendar { get { return calendarSystem; } }
 
-        public Chronology(IDateTimeZone zone, CalendarSystem calendarSystem)
+        public Chronology(DateTimeZone zone, CalendarSystem calendarSystem)
         {
             if (zone == null)
             {
@@ -57,7 +57,7 @@ namespace NodaTime
         /// <summary>
         /// Returns a chronology which uses the ISO chronology in the given time zone.
         /// </summary>
-        internal static Chronology IsoForZone(IDateTimeZone zone)
+        internal static Chronology IsoForZone(DateTimeZone zone)
         {
             return new Chronology(zone, CalendarSystem.Iso);
         }

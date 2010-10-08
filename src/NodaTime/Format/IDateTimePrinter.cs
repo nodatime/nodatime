@@ -42,7 +42,7 @@ namespace NodaTime.Format
         /// <param name="dateTimeZone">The time zone to use, null means local time</param>
         /// <param name="provider">Provider to use</param>
         void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem,
-                     Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider);
+                     Offset timezoneOffset, DateTimeZone dateTimeZone, IFormatProvider provider);
 
         /// <summary>
         /// Prints a partial.

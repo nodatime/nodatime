@@ -302,7 +302,7 @@ namespace NodaTime.TimeZones
             EndRecurrence.Write(writer);
         }
 
-        internal static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        internal static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             if (reader == null)
             {

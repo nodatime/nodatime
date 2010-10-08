@@ -50,7 +50,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         public const string UtcId = "UTC";
 
-        private static readonly IDateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
+        private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
 
         private static readonly Impl Implementation = new Impl();
 
@@ -64,8 +64,8 @@ namespace NodaTime.TimeZones
         /// used otherwise UTC will be used.
         /// </para>
         /// </remarks>
-        /// <value>The system default <see cref="IDateTimeZone"/>. this will never be <c>null</c>.</value>
-        public static IDateTimeZone SystemDefault
+        /// <value>The system default <see cref="DateTimeZone"/>. this will never be <c>null</c>.</value>
+        public static DateTimeZone SystemDefault
         {
             get
             {
@@ -82,8 +82,8 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Gets the UTC (Coordinated Univeral Time) time zone.
         /// </summary>
-        /// <value>The UTC <see cref="IDateTimeZone"/>.</value>
-        public static IDateTimeZone Utc { get { return UtcZone; } }
+        /// <value>The UTC <see cref="DateTimeZone"/>.</value>
+        public static DateTimeZone Utc { get { return UtcZone; } }
 
         /// <summary>
         /// Gets or sets the current time zone.
@@ -93,8 +93,8 @@ namespace NodaTime.TimeZones
         /// be set to any valid time zone. Setting it to <c>null</c> causes the <see
         /// cref="SystemDefault"/> time zone to be used.
         /// </remarks>
-        /// <value>The current <see cref="IDateTimeZone"/>. This will never be <c>null</c>.</value>
-        public static IDateTimeZone Current { get { return Implementation.DoCurrent; } set { Implementation.DoCurrent = value; } }
+        /// <value>The current <see cref="DateTimeZone"/>. This will never be <c>null</c>.</value>
+        public static DateTimeZone Current { get { return Implementation.DoCurrent; } set { Implementation.DoCurrent = value; } }
 
         /// <summary>
         /// Gets the complete list of valid time zone ids provided by all of the registered
@@ -135,8 +135,8 @@ namespace NodaTime.TimeZones
         /// Returns the time zone with the given id.
         /// </summary>
         /// <param name="id">The time zone id to find.</param>
-        /// <returns>The <see cref="IDateTimeZone"/> with the given id or <c>null</c> if there isn't one defined.</returns>
-        public static IDateTimeZone ForId(string id)
+        /// <returns>The <see cref="DateTimeZone"/> with the given id or <c>null</c> if there isn't one defined.</returns>
+        public static DateTimeZone ForId(string id)
         {
             return Implementation.DoForId(id);
         }
@@ -151,8 +151,8 @@ namespace NodaTime.TimeZones
         {
             private readonly SortedDictionary<string, string> idList = new SortedDictionary<string, string>();
             private readonly LinkedList<IDateTimeZoneProvider> providers = new LinkedList<IDateTimeZoneProvider>();
-            private readonly IDictionary<string, IDateTimeZone> timeZoneMap = new Dictionary<string, IDateTimeZone>();
-            private IDateTimeZone current;
+            private readonly IDictionary<string, DateTimeZone> timeZoneMap = new Dictionary<string, DateTimeZone>();
+            private DateTimeZone current;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Impl"/> class.
@@ -170,8 +170,8 @@ namespace NodaTime.TimeZones
             /// be set to any valid time zone. Setting it to <c>null</c> causes the <see
             /// cref="SystemDefault"/> time zone to be used.
             /// </remarks>
-            /// <value>The current <see cref="IDateTimeZone"/>. This will never be <c>null</c>.</value>
-            internal IDateTimeZone DoCurrent { get { return current ?? SystemDefault; } set { current = value; } }
+            /// <value>The current <see cref="DateTimeZone"/>. This will never be <c>null</c>.</value>
+            internal DateTimeZone DoCurrent { get { return current ?? SystemDefault; } set { current = value; } }
 
             /// <summary>
             /// Gets the complete list of valid time zone ids provided by all of the registered
@@ -249,10 +249,10 @@ namespace NodaTime.TimeZones
             /// Returns the time zone with the given id.
             /// </summary>
             /// <param name="id">The time zone id to find.</param>
-            /// <returns>The <see cref="IDateTimeZone"/> with the given id or <c>null</c> if there isn't one defined.</returns>
-            internal IDateTimeZone DoForId(string id)
+            /// <returns>The <see cref="DateTimeZone"/> with the given id or <c>null</c> if there isn't one defined.</returns>
+            internal DateTimeZone DoForId(string id)
             {
-                IDateTimeZone result = Utc;
+                DateTimeZone result = Utc;
                 if (id != UtcId)
                 {
                     if (!timeZoneMap.TryGetValue(id, out result))

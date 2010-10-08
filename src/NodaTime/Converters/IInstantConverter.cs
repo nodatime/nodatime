@@ -25,7 +25,7 @@ namespace NodaTime.Converters
         /// <summary>
         /// Original name: getChronology
         /// </summary>
-        Chronology GetChronology(object obj, IDateTimeZone zone);
+        Chronology GetChronology(object obj, DateTimeZone zone);
 
         /// <summary>
         /// Original name: getChronology

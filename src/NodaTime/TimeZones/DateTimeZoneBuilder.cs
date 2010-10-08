@@ -257,7 +257,7 @@ namespace NodaTime.TimeZones
          * @param outputID  true if the zone id should be output
          */
 
-        public IDateTimeZone ToDateTimeZone(String zoneId)
+        public DateTimeZone ToDateTimeZone(String zoneId)
         {
             if (zoneId == null)
             {
@@ -265,7 +265,7 @@ namespace NodaTime.TimeZones
             }
 
             var transitions = new List<ZoneTransition>();
-            IDateTimeZone tailZone = null;
+            DateTimeZone tailZone = null;
             Instant instant = Instant.MinValue;
 
             ZoneTransition nextTransition = null;

@@ -214,12 +214,12 @@ namespace NodaTime.TimeZones
 
             /// <summary>
             /// If there are only two rules left and they are both infinite rules then a <see
-            /// cref="IDateTimeZone"/> implementation is returned that encapsulates those rules,
+            /// cref="DateTimeZone"/> implementation is returned that encapsulates those rules,
             /// otherwise null is returned.
             /// </summary>
-            /// <param name="id">The id of the new <see cref="IDateTimeZone"/>.</param>
-            /// <returns>The new <see cref="IDateTimeZone"/> or <c>null</c>.</returns>
-            internal IDateTimeZone BuildTailZone(String id)
+            /// <param name="id">The id of the new <see cref="DateTimeZone"/>.</param>
+            /// <returns>The new <see cref="DateTimeZone"/> or <c>null</c>.</returns>
+            internal DateTimeZone BuildTailZone(String id)
             {
                 if (rules.Count == 2)
                 {

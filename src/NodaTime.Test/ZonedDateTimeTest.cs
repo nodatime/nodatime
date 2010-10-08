@@ -29,7 +29,7 @@ namespace NodaTime.Test
     [TestFixture]
     public class ZonedDateTimeTest
     {
-        private static readonly IDateTimeZone Pacific = DateTimeZones.ForId("America/Los_Angeles");
+        private static readonly DateTimeZone Pacific = DateTimeZones.ForId("America/Los_Angeles");
 
         [Test]
         public void Constructor_SpecifyingDateAndTimeToMinutesInWinter()

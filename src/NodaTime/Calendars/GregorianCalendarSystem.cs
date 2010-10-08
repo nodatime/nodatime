@@ -56,7 +56,7 @@ namespace NodaTime.Calendars
         internal override int MinYear { get { return -27258; } }
         internal override int MaxYear { get { return 31196; } }
 
-        internal static Chronology GetInstance(IDateTimeZone dateTimeZone)
+        internal static Chronology GetInstance(DateTimeZone dateTimeZone)
         {
             throw new NotImplementedException();
         }

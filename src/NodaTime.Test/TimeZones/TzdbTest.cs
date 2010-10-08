@@ -25,7 +25,7 @@ namespace NodaTime.Test.TimeZones
         ////[Test]
         ////public void CurrentTimeZone_LocalTimeZone_AlwaysFails()
         ////{
-        ////    IDateTimeZone actual = DateTimeZones.Current;
+        ////    DateTimeZone actual = DateTimeZones.Current;
         ////    Assert.AreEqual(null, actual);
         ////}
     }

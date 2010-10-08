@@ -18,12 +18,12 @@
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides a base class for <see cref="IDateTimeZone"/> implementations.
+    /// Provides a base class for <see cref="DateTimeZone"/> implementations.
     /// </summary>
     /// <remarks>
     /// This base is immutable and thread safe. All sub-classes should be as well.
     /// </remarks>
-    public abstract class DateTimeZoneBase : IDateTimeZone
+    public abstract class DateTimeZoneBase : DateTimeZone
     {
         private readonly string id;
         private readonly bool isFixed;
@@ -39,7 +39,7 @@ namespace NodaTime.TimeZones
             this.isFixed = isFixed;
         }
 
-        #region IDateTimeZone Members
+        #region DateTimeZone Members
         /// <summary>
         /// Gets the zone offset period for the given instant. Null is returned if no period is
         /// defined by the time zone for the given instant.

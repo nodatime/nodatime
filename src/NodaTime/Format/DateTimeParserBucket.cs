@@ -122,7 +122,7 @@ namespace NodaTime.Format
 
         private readonly CalendarSystem calendarSystem;
         private Offset offset;
-        private IDateTimeZone zone;
+        private DateTimeZone zone;
         private readonly LocalInstant localInstant;
         private readonly IFormatProvider provider;
 
