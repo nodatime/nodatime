@@ -45,7 +45,7 @@ namespace NodaTime.Test.Format
                 this.Zone = dateTimeZone;
             }
 
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
+            void IDateTimePrinter.PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
             {
                 throw new NotImplementedException();
             }
@@ -59,10 +59,10 @@ namespace NodaTime.Test.Format
                 get { throw new NotImplementedException(); }
             }
 
-            public DateTimeParserBucket Bucket;
+            internal DateTimeParserBucket Bucket;
             public string Text;
             public int Position;
-            public int ParseInto(DateTimeParserBucket bucket, string text, int position)
+            int IDateTimeParser.ParseInto(DateTimeParserBucket bucket, string text, int position)
             {
                 Bucket = bucket;
                 Text = text;

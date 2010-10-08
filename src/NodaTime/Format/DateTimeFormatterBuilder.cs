@@ -1693,7 +1693,7 @@ namespace NodaTime.Format
         /// <param name="fieldType">Type of field to append</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If field type is null</exception>
-        public DateTimeFormatterBuilder AppendText(DateTimeFieldType fieldType)
+        internal DateTimeFormatterBuilder AppendText(DateTimeFieldType fieldType)
         {
             Guard(fieldType);
 
@@ -1737,7 +1737,7 @@ namespace NodaTime.Format
         /// parser tp expect it. The parser is case-insensitive.
         /// </summary>
         /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendHalfDayOfDayText()
+        internal DateTimeFormatterBuilder AppendHalfDayOfDayText()
         {
             return AppendText(DateTimeFieldType.HalfDayOfDay);
         }
@@ -1749,7 +1749,7 @@ namespace NodaTime.Format
         /// <param name="fieldType">Type of field to append</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If field type is null</exception>
-        public DateTimeFormatterBuilder AppendShortText(DateTimeFieldType fieldType)
+        internal DateTimeFormatterBuilder AppendShortText(DateTimeFieldType fieldType)
         {
             Guard(fieldType);
 
@@ -1762,7 +1762,7 @@ namespace NodaTime.Format
         /// The parser is case-insensitive.
         /// </summary>
         /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendMonthOfYearShortText()
+        internal DateTimeFormatterBuilder AppendMonthOfYearShortText()
         {
             return AppendShortText(DateTimeFieldType.MonthOfYear);
         }
@@ -1773,7 +1773,7 @@ namespace NodaTime.Format
         /// The parser is case-insensitive.
         /// </summary>
         /// <returns>This DateTimeFormatterBuilder</returns>
-        public DateTimeFormatterBuilder AppendDayOfWeekShortText()
+        internal DateTimeFormatterBuilder AppendDayOfWeekShortText()
         {
             return AppendText(DateTimeFieldType.DayOfWeek);
         }
@@ -1791,7 +1791,7 @@ namespace NodaTime.Format
         /// <returns>this DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If field type is null</exception>
         /// <exception cref="ArgumentException">If minDigits less than zero or maxDigits not greater than zero</exception>
-        public DateTimeFormatterBuilder AppendDecimal(DateTimeFieldType fieldType, int minDigits, int maxDigits)
+        internal DateTimeFormatterBuilder AppendDecimal(DateTimeFieldType fieldType, int minDigits, int maxDigits)
         {
             Guard(fieldType);
 
@@ -1820,7 +1820,7 @@ namespace NodaTime.Format
         /// maximum number of digits to print</param>
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If field type is null</exception>
-        public DateTimeFormatterBuilder AppendSignedDecimal(DateTimeFieldType fieldType, int minDigits, int maxDigits)
+        internal DateTimeFormatterBuilder AppendSignedDecimal(DateTimeFieldType fieldType, int minDigits, int maxDigits)
         {
             Guard(fieldType);
 
@@ -1853,7 +1853,7 @@ namespace NodaTime.Format
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If field type is null</exception>
         /// <exception cref="ArgumentException">if <code>numDigits &lt;= 0</code></exception>
-        public DateTimeFormatterBuilder AppendFixedDecimal(DateTimeFieldType fieldType, int numDigits)
+        internal DateTimeFormatterBuilder AppendFixedDecimal(DateTimeFieldType fieldType, int numDigits)
         {
             Guard(fieldType);
 
@@ -1875,7 +1875,7 @@ namespace NodaTime.Format
         /// <returns>This DateTimeFormatterBuilder</returns>
         /// <exception cref="ArgumentNullException">If field type is null</exception>
         /// <exception cref="ArgumentException">if <code>numDigits &lt;= 0</code></exception>
-        public DateTimeFormatterBuilder AppendFixedSignedDecimal(DateTimeFieldType fieldType, int numDigits)
+        internal DateTimeFormatterBuilder AppendFixedSignedDecimal(DateTimeFieldType fieldType, int numDigits)
         {
             Guard(fieldType);
 
@@ -2206,7 +2206,7 @@ namespace NodaTime.Format
         /// the value printed is 75. A decimal point is implied, so the fraction is 0.75,
         /// or three-quarters of a minute.
         /// </example>
-        public DateTimeFormatterBuilder AppendFraction(DateTimeFieldType fieldType, int minDigits, int maxDigits)
+        internal DateTimeFormatterBuilder AppendFraction(DateTimeFieldType fieldType, int minDigits, int maxDigits)
         {
             Guard(fieldType);
 

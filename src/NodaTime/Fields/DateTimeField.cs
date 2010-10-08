@@ -24,7 +24,7 @@ namespace NodaTime.Fields
     /// The interface defines a set of methods that manipulate a LocalInstant
     /// with regards to a single field, such as monthOfYear or secondOfMinute.
     /// </summary>
-    public abstract class DateTimeField
+    internal abstract class DateTimeField
     {
         private readonly DateTimeFieldType fieldType;
 

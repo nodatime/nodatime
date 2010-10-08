@@ -34,7 +34,7 @@ namespace NodaTime
         private readonly long? lowerBound;
         private readonly long? upperBound;
 
-        public FieldValueException(DateTimeFieldType fieldType, String value) : base(CreateMessage(fieldType.ToString(), value))
+        internal FieldValueException(DateTimeFieldType fieldType, String value) : base(CreateMessage(fieldType.ToString(), value))
         {
             dateTimefieldType = fieldType;
             durationFieldType = null;
@@ -45,7 +45,7 @@ namespace NodaTime
             upperBound = null;
         }
 
-        public FieldValueException(DateTimeFieldType fieldType, int value, long? lowerBound, long? upperBound)
+        internal FieldValueException(DateTimeFieldType fieldType, int value, long? lowerBound, long? upperBound)
             : base(CreateMessage(fieldType.ToString(), value, lowerBound, upperBound, null))
         {
             dateTimefieldType = fieldType;

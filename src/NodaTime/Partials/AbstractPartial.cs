@@ -28,7 +28,7 @@ namespace NodaTime.Partials
     /// Calculations on are performed using a <see cref="CalendarSystem"/>.
     /// </para>
     /// </summary>
-    public abstract class AbstractPartial
+    internal abstract class AbstractPartial
     {
         /// <summary>
         /// Gets the calendar system of the partial which is never null.
@@ -138,7 +138,7 @@ namespace NodaTime.Partials
         /// </summary>
         /// <param name="index">The index</param>
         /// <returns>The field</returns>
-        public DateTimeField GetField(int index)
+        internal DateTimeField GetField(int index)
         {
             return GetField(index, Calendar);
         }
@@ -148,7 +148,7 @@ namespace NodaTime.Partials
         /// The fields are returned largest to smallest, for example Hour, Minute, Second.
         /// </summary>
         /// <returns>The fields supported in an array that may be altered, largest to smallest</returns>
-        public DateTimeField[] GetFields()
+        internal DateTimeField[] GetFields()
         {
             DateTimeField[] result = new DateTimeField[Size];
             for (int i = 0; i < result.Length; i++)
@@ -254,7 +254,7 @@ namespace NodaTime.Partials
         /// </returns>
         /// <param name="other">An object to compare with this object.
         ///                 </param>
-        public abstract bool Equals(IPartial other);
+        internal abstract bool Equals(IPartial other);
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -282,6 +282,6 @@ namespace NodaTime.Partials
         /// </item>
         /// </list>
         /// </returns>
-        public abstract int CompareTo(IPartial other);
+        internal abstract int CompareTo(IPartial other);
     }
 }

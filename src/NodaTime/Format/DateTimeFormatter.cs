@@ -296,7 +296,7 @@ namespace NodaTime.Format
             printer.PrintTo(writer, adjustedLocalInstant, calendarSystem, timezoneOffset, zone, provider);
         }
 
-        public void PrintTo(StringBuilder builder, IPartial partial)
+        internal void PrintTo(StringBuilder builder, IPartial partial)
         {
             if (partial == null)
             {
