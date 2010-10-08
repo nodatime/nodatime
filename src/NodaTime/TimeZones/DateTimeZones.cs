@@ -107,6 +107,7 @@ namespace NodaTime.TimeZones
         /// Provides a standard object that implements the functionality of the static class <see
         /// cref="DateTimeZones"/>. This makes testing simpler because all of the logic is
         /// here--only this class needs to be tested and it can use the standard testing methods.
+        /// TODO: Move this into its own class, and make it thread-safe.
         /// </summary>
         private class Impl
         {
@@ -150,7 +151,10 @@ namespace NodaTime.TimeZones
                         {
                             foreach (var id in provider.Ids)
                             {
-                                idList.Add(id, null);
+                                if (id != DateTimeZone.UtcId)
+                                {
+                                    idList.Add(id, null);
+                                }
                             }
                         }
                     }
