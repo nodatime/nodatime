@@ -23,7 +23,7 @@ namespace NodaTime.Fields
     /// <summary>
     /// Type of a date time field. This is a "smart enum" type.
     /// </summary>
-    public sealed class DateTimeFieldType
+    internal sealed class DateTimeFieldType
     {
         public static readonly DateTimeFieldType Era = new DateTimeFieldType("Era", DurationFieldType.Eras, null, 0);
         public static readonly DateTimeFieldType YearOfEra = new DateTimeFieldType("YearOfEra", DurationFieldType.Years, DurationFieldType.Eras, 1);
@@ -99,7 +99,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="calendar">The calendar to use</param>
         /// <returns>A suitable field</returns>
-        public DateTimeField GetField(CalendarSystem calendar)
+        internal DateTimeField GetField(CalendarSystem calendar)
         {
             if (calendar == null)
             {

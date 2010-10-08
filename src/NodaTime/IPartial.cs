@@ -36,7 +36,7 @@ namespace NodaTime
     /// instant that can be used to 'fill in the gaps' and specify a time zone.
     /// </para>
     /// </summary>
-    public interface IPartial : IEquatable<IPartial>, IComparable<IPartial>
+    internal interface IPartial : IEquatable<IPartial>, IComparable<IPartial>
     {
         /// <summary>
         /// Gets the calendar system of the partial which is never null.

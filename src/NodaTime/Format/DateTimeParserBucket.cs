@@ -48,7 +48,7 @@ namespace NodaTime.Format
     /// DateTimeParserBucket is mutable and not thread-safe.
     /// </para>
     /// </remarks>
-    public class DateTimeParserBucket
+    internal class DateTimeParserBucket
     {
         private class SavedField : IComparable<SavedField>
         {
@@ -199,7 +199,7 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="field">The field, whose chronology must match that of this bucket</param>
         /// <param name="value">The value</param>
-        public void SaveField(DateTimeField field, int value)
+        internal void SaveField(DateTimeField field, int value)
         {
             SaveField(new SavedField(field, value));
         }
@@ -209,7 +209,7 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="fieldType">The field type</param>
         /// <param name="value">The value</param>
-        public void SaveField(DateTimeFieldType fieldType, int value)
+        internal void SaveField(DateTimeFieldType fieldType, int value)
         {
             SaveField(new SavedField(fieldType.GetField(calendarSystem), value));
         }
