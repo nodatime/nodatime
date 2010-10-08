@@ -31,14 +31,12 @@ namespace NodaTime.Partials
     {
         private readonly LocalDateTime localTime;
 
-        public LocalDate(int year, int month, int day)
-            : this(year, month, day, CalendarSystem.Iso)
+        public LocalDate(int year, int month, int day) : this(year, month, day, CalendarSystem.Iso)
         {
         }
 
-        public LocalDate(int year, int month, int day, CalendarSystem calendar)
-            : this(new LocalDateTime(year, month, day, 0, 0, calendar))
-        {            
+        public LocalDate(int year, int month, int day, CalendarSystem calendar) : this(new LocalDateTime(year, month, day, 0, 0, calendar))
+        {
         }
 
         private LocalDate(LocalDateTime localTime)
