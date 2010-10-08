@@ -111,6 +111,5 @@ namespace NodaTime.Test.Calendars
             Assert.That(sut.ToString(), Is.EqualTo("MillisecondOfSecond"));
             Assert.That(sut.IsSupported, Is.True);
         }
-
     }
 }

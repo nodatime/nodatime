@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NodaTime.Periods;
 using NUnit.Framework;
@@ -22,15 +23,9 @@ namespace NodaTime.Test.Periods
 {
     public partial class MonthsTest
     {
-        object[] ParseCorrectTestData =
-        {
-            new TestCaseData(null, 0),
-            new TestCaseData(String.Empty, 0),
-            new TestCaseData("P0M", 0),
-            new TestCaseData("P1M", 1),
-            new TestCaseData("P-3M", -3),
-            new TestCaseData("P0Y2M", 2),
-            new TestCaseData("P2MT0H0M", 2),
+        private object[] ParseCorrectTestData = {
+            new TestCaseData(null, 0), new TestCaseData(String.Empty, 0), new TestCaseData("P0M", 0),
+            new TestCaseData("P1M", 1), new TestCaseData("P-3M", -3), new TestCaseData("P0Y2M", 2), new TestCaseData("P2MT0H0M", 2),
         };
 
         [Test]
@@ -41,11 +36,7 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(expectedMonthsValue, sut.Value);
         }
 
-        object[] ParseWrongTestData =
-        {
-            new TestCaseData("P1MT1H"),
-            new TestCaseData("P1Y1D"),
-        };
+        private object[] ParseWrongTestData = { new TestCaseData("P1MT1H"), new TestCaseData("P1Y1D"), };
 
         [Test]
         [TestCaseSource("ParseWrongTestData")]

@@ -19,7 +19,7 @@ using System;
 using NodaTime.Fields;
 
 namespace NodaTime.Partials
-{    
+{
     internal static class PartialUtils
     {
         /// <summary>

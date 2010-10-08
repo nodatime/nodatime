@@ -22,41 +22,26 @@ namespace NodaTime.Test.Periods
 {
     public partial class SingleFieldPeriodBaseTest
     {
-
         public class Single : SingleFieldPeriodBase
         {
-            public Single(int value)
-                : base(value)
+            public Single(int value) : base(value)
             {
-
-            }
-            public override DurationFieldType FieldType
-            {
-                get { return DurationFieldType.Days; }
             }
 
-            public override PeriodType PeriodType
-            {
-                get { return PeriodType.Days; }
-            }
+            public override DurationFieldType FieldType { get { return DurationFieldType.Days; } }
+
+            public override PeriodType PeriodType { get { return PeriodType.Days; } }
         }
 
         public class Single2 : SingleFieldPeriodBase
         {
-            public Single2(int value)
-                : base(value)
+            public Single2(int value) : base(value)
             {
-
-            }
-            public override DurationFieldType FieldType
-            {
-                get { return DurationFieldType.Hours; }
             }
 
-            public override PeriodType PeriodType
-            {
-                get { return PeriodType.Hours; }
-            }
+            public override DurationFieldType FieldType { get { return DurationFieldType.Hours; } }
+
+            public override PeriodType PeriodType { get { return PeriodType.Hours; } }
         }
     }
 }

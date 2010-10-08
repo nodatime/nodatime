@@ -111,8 +111,7 @@ namespace NodaTime
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
         /// <param name="second">The second.</param>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second)
-            : this(year, month, day, hour, minute, second, CalendarSystem.Iso)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second) : this(year, month, day, hour, minute, second, CalendarSystem.Iso)
         {
         }
 
@@ -198,8 +197,7 @@ namespace NodaTime
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond,
-                             CalendarSystem calendar)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond, CalendarSystem calendar)
         {
             if (calendar == null)
             {
@@ -263,7 +261,7 @@ namespace NodaTime
 
         public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth); } }
 
-            #region Implementation of IEquatable<LocalDateTime>
+        #region Implementation of IEquatable<LocalDateTime>
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>

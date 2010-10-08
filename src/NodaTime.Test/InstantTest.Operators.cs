@@ -1,5 +1,4 @@
 #region Copyright and license information
-
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using NUnit.Framework;
@@ -24,7 +22,6 @@ namespace NodaTime.Test
     partial class InstantTest
     {
         #region IEquatable.Equals
-
         [Test]
         public void IEquatableEquals_ToSelf_IsTrue()
         {
@@ -47,11 +44,9 @@ namespace NodaTime.Test
             Assert.False(one.Equals(negativeFiftyMillion), "1 == -50,000,000");
             Assert.False(Instant.MinValue.Equals(Instant.MaxValue), "MinValue == MaxValue");
         }
-
         #endregion
 
         #region object.Equals
-
         [Test]
         public void ObjectEquals_ToNull_IsFalse()
         {
@@ -92,11 +87,9 @@ namespace NodaTime.Test
             Assert.False(oOne.Equals(oNegativeFiftyMillion), "1 == -50,000,000");
             Assert.False(oMinimum.Equals(oMaximum), "MinValue == MaxValue");
         }
-
         #endregion
 
         #region object.GetHashCode
-
         [Test]
         public void GetHashCode_Twice_IsEqual()
         {
@@ -124,11 +117,9 @@ namespace NodaTime.Test
             Assert.AreNotEqual(test1.GetHashCode(), test3.GetHashCode());
             Assert.AreNotEqual(test2.GetHashCode(), test3.GetHashCode());
         }
-
         #endregion
 
         #region CompareTo
-
         [Test]
         public void CompareTo_Self_IsEqual()
         {
@@ -158,11 +149,9 @@ namespace NodaTime.Test
             Assert.Less(negativeFiftyMillion.CompareTo(negativeOne), 0, "-50,000,000 > -1");
             Assert.Less(Instant.MinValue.CompareTo(Instant.MaxValue), 0, "MinValue < MaxValue");
         }
-
         #endregion
 
         #region operator ==
-
         [Test]
         public void OperatorEquals_ToSelf_IsTrue()
         {
@@ -187,11 +176,9 @@ namespace NodaTime.Test
             Assert.False(one == negativeFiftyMillion, "1 == -50,000,000");
             Assert.False(Instant.MinValue == Instant.MaxValue, "MinValue == MaxValue");
         }
-
         #endregion
 
         #region operator !=
-
         [Test]
         public void OperatorNotEquals_ToSelf_IsFalse()
         {
@@ -216,11 +203,9 @@ namespace NodaTime.Test
             Assert.True(one != negativeFiftyMillion, "1 != -50,000,000");
             Assert.True(Instant.MinValue != Instant.MaxValue, "MinValue != MaxValue");
         }
-
         #endregion
 
         #region operator <
-
         [Test]
         public void OperatorLessThan_Self_IsFalse()
         {
@@ -252,11 +237,9 @@ namespace NodaTime.Test
             Assert.False(negativeOne < negativeFiftyMillion, "-1 < -50,000,000");
             Assert.False(Instant.MaxValue < Instant.MinValue, "MaxValue < MinValue");
         }
-
         #endregion
 
         #region operator <=
-
         [Test]
         public void OperatorLessThanOrEqual_Self_IsTrue()
         {
@@ -288,11 +271,9 @@ namespace NodaTime.Test
             Assert.False(negativeOne <= negativeFiftyMillion, "-1 <= -50,000,000");
             Assert.False(Instant.MaxValue <= Instant.MinValue, "MaxValue <= MinValue");
         }
-
         #endregion
 
         #region operator >
-
         [Test]
         public void OperatorGreaterThan_Self_IsFalse()
         {
@@ -324,11 +305,9 @@ namespace NodaTime.Test
             Assert.True(negativeOne > negativeFiftyMillion, "-1 > -50,000,000");
             Assert.True(Instant.MaxValue > Instant.MinValue, "MaxValue > MinValue");
         }
-
         #endregion
 
         #region operator >=
-
         [Test]
         public void OperatorGreaterThanOrEqual_Self_IsTrue()
         {
@@ -360,11 +339,9 @@ namespace NodaTime.Test
             Assert.True(negativeOne >= negativeFiftyMillion, "-1 >= -50,000,000");
             Assert.True(Instant.MaxValue >= Instant.MinValue, "MaxValue >= MinValue");
         }
-
         #endregion
 
         #region operator +
-
         [Test]
         public void OperatorPlusDuration_Zero_IsNeutralElement()
         {
@@ -388,11 +365,9 @@ namespace NodaTime.Test
             Assert.AreEqual(new LocalInstant(1L), Instant.Add(one, Offset.Zero), "Instant(1) + Offset.Zero");
             Assert.AreEqual(new LocalInstant(NodaConstants.TicksPerHour), Instant.Add(Instant.UnixEpoch, offsetOneHour), "UnixEpoch + offsetOneHour");
         }
-
         #endregion
 
         #region operator -
-
         [Test]
         public void OperatorMinusDuration_Zero_IsNeutralElement()
         {
@@ -408,7 +383,6 @@ namespace NodaTime.Test
             Assert.AreEqual(2L, (one - negativeOne).Ticks, "1 - (-1)");
             Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).Ticks, "-50,000,000 - 1");
         }
-
         #endregion
     }
 }

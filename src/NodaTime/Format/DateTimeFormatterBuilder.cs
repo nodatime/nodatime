@@ -863,7 +863,7 @@ namespace NodaTime.Format
                 }
 
                 DateTimeField parseField = new PreciseDateTimeField(DateTimeFieldType.MillisecondOfSecond, PreciseDurationField.Milliseconds,
-                                                                     field.DurationField);
+                                                                    field.DurationField);
 
                 bucket.SaveField(parseField, (int)value);
 

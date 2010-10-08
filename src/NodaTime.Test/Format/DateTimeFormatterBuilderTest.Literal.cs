@@ -25,7 +25,6 @@ namespace NodaTime.Test.Format
     public partial class DateTimeFormatterBuilderTest
     {
         #region CharacterLiteral
-
         [Test]
         public void CharacterLiteral_EstimatesPrintedLengthAs1Always()
         {
@@ -72,15 +71,14 @@ namespace NodaTime.Test.Format
             Assert.That(actualLength, Is.EqualTo(1));
         }
 
-        object[] CharacterLiteralParseGoodTestData =
-        {
+        private object[] CharacterLiteralParseGoodTestData = {
             new TestCaseData("a", 0, 'a').SetName("a -> a : commom"),
-            new TestCaseData("B", 0, 'b').SetName("B -> b : case insensitive"),
-            new TestCaseData("c", 0, 'C').SetName("c -> C : case insensitive"),
+            new TestCaseData("B", 0, 'b').SetName("B -> b : case insensitive"), new TestCaseData("c", 0, 'C').SetName("c -> C : case insensitive"),
             new TestCaseData("bar", 0, 'b').SetName("bar -> b: zero position in large string"),
             new TestCaseData("hello", 2, 'l').SetName("hello[2] -> l: non-zero average position"),
             new TestCaseData("foo", 2, 'o').SetName("foo[2] -> o: non-zero last position"),
         };
+
         [Test]
         [TestCaseSource("CharacterLiteralParseGoodTestData")]
         public void CharacterLiteral_ParsesCharacter(string text, int position, char value)
@@ -92,11 +90,11 @@ namespace NodaTime.Test.Format
             Assert.That(newPosition, Is.EqualTo(position + 1));
         }
 
-        object[] CharacterLiteralParseBadTestData =
-        {
+        private object[] CharacterLiteralParseBadTestData = {
             new TestCaseData("a", 0, 'b').SetName("a -> b : non equal characters"),
             new TestCaseData("oops", 4, 's').SetName("oops[4] -> s : position outside of length"),
         };
+
         [Test]
         [TestCaseSource("CharacterLiteralParseBadTestData")]
         public void CharacterLiteral_Fails_ForWrongArguments(string text, int position, char value)
@@ -107,11 +105,9 @@ namespace NodaTime.Test.Format
 
             Assert.That(newPosition, Is.EqualTo(~position));
         }
-
         #endregion
 
         #region StringLiteral
-
         [Test]
         public void StringLiteral_EstimatesPrintedLengthAsStringLength()
         {
@@ -158,9 +154,7 @@ namespace NodaTime.Test.Format
             Assert.That(actualLength, Is.EqualTo(value.Length));
         }
 
-
-        object[] StringLiteralParseGoodTestData =
-        {
+        private object[] StringLiteralParseGoodTestData = {
             new TestCaseData("abc", 0, "abc").SetName("abc -> abc : commom"),
             new TestCaseData("aBc", 0, "abc").SetName("aBc -> abc : case insensitive"),
             new TestCaseData("abc", 0, "ABC").SetName("abc -> ABC : case insensitive"),
@@ -168,6 +162,7 @@ namespace NodaTime.Test.Format
             new TestCaseData("hello", 2, "ll").SetName("hello[2] -> ll: non-zero average position"),
             new TestCaseData("foo", 1, "oo").SetName("foo[2] -> oo: non-zero last position"),
         };
+
         [Test]
         [TestCaseSource("StringLiteralParseGoodTestData")]
         public void StringLiteral_ParsesString(string text, int position, string value)
@@ -179,13 +174,13 @@ namespace NodaTime.Test.Format
             Assert.That(newPosition, Is.EqualTo(position + value.Length));
         }
 
-        object[] StringLiteralParseBadTestData =
-        {
+        private object[] StringLiteralParseBadTestData = {
             new TestCaseData("abc", 0, "def").SetName("abc -> def : non equal string"),
             new TestCaseData("abc", 0, "abd").SetName("abc -> abd : non equal string"),
             new TestCaseData("abc", 0, "zbc").SetName("abc -> zbc : non equal string"),
             new TestCaseData("oops", 4, "s").SetName("oops[4] -> s : position outside of length"),
         };
+
         [Test]
         [TestCaseSource("StringLiteralParseBadTestData")]
         public void StringLiteral_Fails_ForWrongArguments(string text, int position, string value)
@@ -196,8 +191,6 @@ namespace NodaTime.Test.Format
 
             Assert.That(newPosition, Is.EqualTo(~position));
         }
-
-
         #endregion
 
         [Test]

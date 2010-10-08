@@ -46,8 +46,12 @@ namespace NodaTime.Test.Format
             public PeriodFormatterBuilder.Separator Build()
             {
                 PeriodFormatterBuilder.FieldFormatter[] fieldFormatters = new PeriodFormatterBuilder.FieldFormatter[2];
-                var beforeFormatter = new PeriodFormatterBuilder.FieldFormatter(-1, PeriodFormatterBuilder.PrintZeroSetting.RarelyLast, 10, false, PeriodFormatterBuilder.FormatterDurationFieldType.Years, fieldFormatters, null, null);
-                var afterFormatter = new PeriodFormatterBuilder.FieldFormatter(-1, PeriodFormatterBuilder.PrintZeroSetting.RarelyLast, 10, false, PeriodFormatterBuilder.FormatterDurationFieldType.Months, fieldFormatters, null, null);
+                var beforeFormatter = new PeriodFormatterBuilder.FieldFormatter(-1, PeriodFormatterBuilder.PrintZeroSetting.RarelyLast, 10, false,
+                                                                                PeriodFormatterBuilder.FormatterDurationFieldType.Years, fieldFormatters, null,
+                                                                                null);
+                var afterFormatter = new PeriodFormatterBuilder.FieldFormatter(-1, PeriodFormatterBuilder.PrintZeroSetting.RarelyLast, 10, false,
+                                                                               PeriodFormatterBuilder.FormatterDurationFieldType.Months, fieldFormatters, null,
+                                                                               null);
                 fieldFormatters[0] = beforeFormatter;
                 fieldFormatters[1] = afterFormatter;
 
@@ -57,32 +61,35 @@ namespace NodaTime.Test.Format
             }
         }
 
-        object[] SeparatorPrintTestData =
-        {
+        private object[] SeparatorPrintTestData = {
             new TestCaseData(true, true, new Period(1, 2, 0, 0, 0, 0, 0, 0), "1AA2").SetName("before:true; after:true; bothFieldsArePrinted"),
             new TestCaseData(true, true, new Period(0, 0, 0, 3, 0, 0, 0, 0, PeriodType.Days), "").SetName("before:true; after:true; bothFieldAreNotPrinted"),
-            new TestCaseData(true, true, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "4").SetName("before:true; after:true; afterFieldIsOnlyPrinted"),
-            new TestCaseData(true, true, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5").SetName("before:true; after:true; beforeFieldIsOnlyPrinted"),
-
-            new TestCaseData(true, false, new Period(1, 2, 0, 0, 0, 0, 0, 0), "1A2").SetName("before:true; after:false; bothFieldsArePrinted"),
+            new TestCaseData(true, true, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "4").SetName("before:true; after:true; afterFieldIsOnlyPrinted")
+            ,
+            new TestCaseData(true, true, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5").SetName("before:true; after:true; beforeFieldIsOnlyPrinted")
+            , new TestCaseData(true, false, new Period(1, 2, 0, 0, 0, 0, 0, 0), "1A2").SetName("before:true; after:false; bothFieldsArePrinted"),
             new TestCaseData(true, false, new Period(0, 0, 0, 3, 0, 0, 0, 0, PeriodType.Days), "").SetName("before:true; after:false; bothFieldAreNotPrinted"),
-            new TestCaseData(true, false, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "4").SetName("before:true; after:false; afterFieldIsOnlyPrinted"),
-            new TestCaseData(true, false, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5A").SetName("before:true; after:false; beforeFieldIsOnlyPrinted"),
-
+            new TestCaseData(true, false, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "4").SetName(
+                "before:true; after:false; afterFieldIsOnlyPrinted"),
+            new TestCaseData(true, false, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5A").SetName(
+                "before:true; after:false; beforeFieldIsOnlyPrinted"),
             new TestCaseData(false, true, new Period(1, 2, 0, 0, 0, 0, 0, 0), "1AA2").SetName("before:false; after:true; bothFieldsArePrinted"),
             new TestCaseData(false, true, new Period(0, 0, 0, 3, 0, 0, 0, 0, PeriodType.Days), "").SetName("before:false; after:true; bothFieldAreNotPrinted"),
-            new TestCaseData(false, true, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "AA4").SetName("before:false; after:true; afterFieldIsOnlyPrinted"),
-            new TestCaseData(false, true, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5").SetName("before:false; after:true; beforeFieldIsOnlyPrinted"),
-
+            new TestCaseData(false, true, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "AA4").SetName(
+                "before:false; after:true; afterFieldIsOnlyPrinted"),
+            new TestCaseData(false, true, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5").SetName(
+                "before:false; after:true; beforeFieldIsOnlyPrinted"),
             new TestCaseData(false, false, new Period(1, 2, 0, 0, 0, 0, 0, 0), "12").SetName("before:false; after:false; bothFieldsArePrinted"),
-            new TestCaseData(false, false, new Period(0, 0, 0, 3, 0, 0, 0, 0, PeriodType.Days), "").SetName("before:false; after:false; bothFieldAreNotPrinted"),
-            new TestCaseData(false, false, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "4").SetName("before:false; after:false; afterFieldIsOnlyPrinted"),
-            new TestCaseData(false, false, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5").SetName("before:false; after:false; beforeFieldIsOnlyPrinted"),
-
+            new TestCaseData(false, false, new Period(0, 0, 0, 3, 0, 0, 0, 0, PeriodType.Days), "").SetName("before:false; after:false; bothFieldAreNotPrinted")
+            ,
+            new TestCaseData(false, false, new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.Months), "4").SetName(
+                "before:false; after:false; afterFieldIsOnlyPrinted"),
+            new TestCaseData(false, false, new Period(5, 0, 0, 0, 0, 0, 0, 0, PeriodType.Years), "5").SetName(
+                "before:false; after:false; beforeFieldIsOnlyPrinted"),
         };
 
         [Test]
-        [TestCaseSource("SeparatorPrintTestData")]        
+        [TestCaseSource("SeparatorPrintTestData")]
         public void Separator_Prints(bool useBefore, bool useAfter, IPeriod period, string periodText)
         {
             var separator = new SeparatorBuilder() { UseBefore = useBefore, UseAfter = useAfter }.Build();

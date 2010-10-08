@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Periods;
 using NUnit.Framework;
 
@@ -22,7 +23,6 @@ namespace NodaTime.Test.Periods
     public partial class YearsTest
     {
         #region Negation
-
         [Test]
         public void Negated()
         {
@@ -45,11 +45,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(-3, (Years.Negate(Years.Three)).Value, "-3");
             Assert.AreEqual(8, (Years.Negate(Years.From(-8))).Value, "- (-8)");
         }
-
         #endregion
 
         #region Unary Operators
-
         [Test]
         public void UnaryPlusOperator()
         {
@@ -101,11 +99,9 @@ namespace NodaTime.Test.Periods
 
             Assert.AreEqual(1, (oneYear).Value, "--2 = 1");
         }
-
         #endregion
 
         #region Add
-
         [Test]
         public void Add()
         {
@@ -129,17 +125,15 @@ namespace NodaTime.Test.Periods
         [Test]
         public void AddStatic()
         {
-            Assert.AreEqual(0, (Years.Add(Years.Zero,Years.Zero)).Value, "0 + 0");
+            Assert.AreEqual(0, (Years.Add(Years.Zero, Years.Zero)).Value, "0 + 0");
             Assert.AreEqual(1, (Years.Add(Years.One, Years.Zero)).Value, "1 + 0");
             Assert.AreEqual(1, (Years.Add(Years.Zero, Years.One)).Value, "0 + 1");
             Assert.AreEqual(5, (Years.Add(Years.Two, Years.Three)).Value, "2 + 3");
             Assert.AreEqual(1, (Years.Add(Years.From(9), Years.From(-8))).Value, "9 + (-8)");
         }
-
         #endregion
 
         #region Subtract
-
         [Test]
         public void Subtract()
         {
@@ -169,17 +163,15 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(1, (Years.Subtract(Years.Three, Years.Two)).Value, "3 - 2");
             Assert.AreEqual(10, (Years.Subtract(Years.From(9), Years.From(-1))).Value, "9 - (-1)");
         }
-
         #endregion
 
         #region Multiplication
-
         [Test]
         public void Multiply()
         {
             Assert.AreEqual(6, Years.Three.Multiply(2).Value, "3 * 2");
             Assert.AreEqual(2, Years.Two.Multiply(1).Value, "2 * 1");
-            
+
             var twentyFiveYears = Years.From(25);
             Assert.AreSame(twentyFiveYears, twentyFiveYears.Multiply(1), "25 * 1");
         }
@@ -208,7 +200,6 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(-9, (Years.Multiply(Years.From(9), -1)).Value, "9 * (-1)");
         }
 
-
         [Test]
         public void MultiplyStaticRight()
         {
@@ -216,17 +207,15 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(0, (Years.Multiply(0, Years.One)).Value, "0 * 1");
             Assert.AreEqual(-9, (Years.Multiply(-1, Years.From(9))).Value, "(-1) * 9");
         }
-
         #endregion
 
         #region Division
-
         [Test]
         public void Divide()
         {
             Assert.AreEqual(3, Years.From(6).Divide(2).Value, "6 / 2");
             Assert.AreEqual(2, Years.Two.Divide(1).Value, "2 / 1");
-            
+
             var twentySixYears = Years.From(26);
             Assert.AreSame(twentySixYears, twentySixYears.Divide(1), "26 / 1");
         }
@@ -246,11 +235,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(1, (Years.Divide(Years.Three, 2)).Value, "3 / 2");
             Assert.AreEqual(-3, (Years.Divide(Years.From(9), -3)).Value, "9 / (-3)");
         }
-
         #endregion
 
         #region Conversions
-
         [Test]
         public void ImplicitConversionToInt32_FromNotNullInstance()
         {
@@ -276,7 +263,6 @@ namespace NodaTime.Test.Periods
 
             Assert.AreEqual(3, threeYears.Value);
         }
-
         #endregion
     }
 }

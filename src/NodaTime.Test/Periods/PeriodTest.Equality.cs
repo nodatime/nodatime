@@ -25,11 +25,9 @@ namespace NodaTime.Test.Periods
         [Test]
         public void Equals()
         {
-            TestHelper.TestEqualsClass(Period.FromDays(2).AddDays(1),
-                Period.FromDays(3), Period.FromWeeks(3));
+            TestHelper.TestEqualsClass(Period.FromDays(2).AddDays(1), Period.FromDays(3), Period.FromWeeks(3));
 
-            TestHelper.TestOperatorEquality(Period.FromDays(2).AddDays(1),
-                Period.FromDays(3), Period.FromWeeks(3));
+            TestHelper.TestOperatorEquality(Period.FromDays(2).AddDays(1), Period.FromDays(3), Period.FromWeeks(3));
         }
     }
 }

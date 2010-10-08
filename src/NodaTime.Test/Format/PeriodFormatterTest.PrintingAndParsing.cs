@@ -27,7 +27,6 @@ namespace NodaTime.Test.Format
     public partial class PeriodFormatterTest
     {
         #region PrintToStringBuilder
-
         [Test]
         public void PrintToStringBuilder_ThrowsUnsupported_IfNonPrinter()
         {
@@ -69,11 +68,9 @@ namespace NodaTime.Test.Format
             Assert.That(printer.PrintToWriterPeriodArgument, Is.SameAs(period));
             Assert.That(printer.PrintToWriterProviderArgument, Is.SameAs(provider1));
         }
-
         #endregion
 
         #region PrintToTextWriter
-
         [Test]
         public void PrintToTextWriter_ThrowsUnsupported_IfNonPrinter()
         {
@@ -116,11 +113,9 @@ namespace NodaTime.Test.Format
             Assert.That(printer.PrintToWriterPeriodArgument, Is.SameAs(period));
             Assert.That(printer.PrintToWriterProviderArgument, Is.SameAs(provider1));
         }
-
         #endregion
 
         #region Print
-
         [Test]
         public void Printr_ThrowsUnsupported_IfNonPrinter()
         {
@@ -156,11 +151,9 @@ namespace NodaTime.Test.Format
 
             Assert.That(text, Is.Not.Null);
         }
-
         #endregion
 
         #region Parse
-
         [Test]
         public void Parse_ThrowsUnsupported_IfNonParser()
         {
@@ -211,7 +204,6 @@ namespace NodaTime.Test.Format
 
             Assert.Throws<FormatException>(() => sutDefault.Parse(text));
         }
-
         #endregion
     }
 }

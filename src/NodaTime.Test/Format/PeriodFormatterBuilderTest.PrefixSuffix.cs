@@ -23,9 +23,7 @@ namespace NodaTime.Test.Format
 {
     public partial class PeriodFormatterBuilderTest
     {
-
         #region Singular Suffix
-
         [Test]
         public void AppendSuffix_ThrowsArgumentNull_ForNullSuffixString()
         {
@@ -113,11 +111,9 @@ namespace NodaTime.Test.Format
             var formatter = builder.AppendYears().AppendSuffix(" year").ToFormatter();
             Assert.Throws<FormatException>(() => formatter.Parse("year"));
         }
-
         #endregion
 
         #region Plural Suffix
-
         [Test]
         public void AppendSuffixPlural_ThrowsArgumentNull_ForAnyNullOfSuffixStrings()
         {
@@ -210,7 +206,6 @@ namespace NodaTime.Test.Format
         #endregion
 
         #region Prefix And Suffix Together
-
         [Test]
         public void AppendPrefixAndSuffixOnYears_BuildsCorrectPrinter_For1YearsStandardPeriod()
         {
@@ -246,8 +241,6 @@ namespace NodaTime.Test.Format
 
             Assert.AreEqual(Period.FromYears(1), period);
         }
-
         #endregion
-
     }
 }

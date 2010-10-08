@@ -22,16 +22,11 @@ namespace NodaTime.Test.Format
     public partial class PeriodFormatterBuilderTest
     {
         #region ZeroDefault
-
         [Test]
         public void ZeroDefault_BuildsCorrectPrinter_ForStandardPeriod()
         {
-            var formatter = builder
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodFull);
@@ -44,12 +39,8 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroDefault_BuildsCorrectPrinter_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -62,10 +53,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroDefault_BuildsCorrectPrinter_ForEmptyStandardPeriod2YearsField()
         {
-            var formatter = builder
-                .AppendYears().AppendLiteral("-")
-                .AppendYears()
-                .ToFormatter();
+            var formatter = builder.AppendYears().AppendLiteral("-").AppendYears().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -78,12 +66,8 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroDefault_BuildsCorrectPrinter_ForFullYearDayTimePeriod()
         {
-            var formatter = builder
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodFull);
@@ -96,12 +80,8 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroDefault_BuildsCorrectPrinter_ForEmptyYearDayTimePeriod()
         {
-            var formatter = builder
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodEmpty);
@@ -110,21 +90,15 @@ namespace NodaTime.Test.Format
             Assert.AreEqual(4, printer.CalculatePrintedLength(yearDayTimePeriodEmpty, null));
             Assert.AreEqual(1, printer.CountFieldsToPrint(yearDayTimePeriodEmpty, int.MaxValue, null));
         }
-
         #endregion
 
         #region ZeroRarelyLast
-
         [Test]
         public void ZeroRarelyLast_PrintsYearsMonthsWeeksDays_ForFullStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyLast()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroRarelyLast().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodFull);
@@ -137,13 +111,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyLast_PrintsYearsMonthsWeeksDays_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyLast()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroRarelyLast().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -156,13 +126,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyLast_PrintsYearsMonthsWeeksDays_ForEmptyYearDayTimePeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyLast()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroRarelyLast().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodEmpty);
@@ -175,13 +141,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyLast_PrintsYearsMonthsWeeksDays_ForFullYearDayTimePeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyLast()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroRarelyLast().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodFull);
@@ -190,23 +152,15 @@ namespace NodaTime.Test.Format
             Assert.AreEqual(5, printer.CalculatePrintedLength(yearDayTimePeriodFull, null));
             Assert.AreEqual(2, printer.CountFieldsToPrint(yearDayTimePeriodFull, int.MaxValue, null));
         }
-
-
-
         #endregion
 
         #region ZeroRarelyFirst
-
         [Test]
         public void ZeroRarelyFirst_PrintsYearsMonthsWeeksDays_ForFullStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyFirst()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroRarelyFirst().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodFull);
@@ -219,13 +173,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyFirst_PrintsYearsMonthsWeeksDays_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyFirst()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroRarelyFirst().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -238,13 +188,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyFirst_PrintsYearsMonthsWeeksDays_ForFullYearDayTimePeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyFirst()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroRarelyFirst().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodFull);
@@ -257,13 +203,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyFirst_PrintsYearsMonthsWeeksDays_ForEmptyYearDayTimePeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyFirst()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroRarelyFirst().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodEmpty);
@@ -276,10 +218,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyFirst_PrintsYears_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyFirst()
-                .AppendYears()
-                .ToFormatter();
+            var formatter = builder.PrintZeroRarelyFirst().AppendYears().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -292,10 +231,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyFirst_PrintsMonths_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyFirst()
-                .AppendMonths()
-                .ToFormatter();
+            var formatter = builder.PrintZeroRarelyFirst().AppendMonths().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -308,10 +244,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyFirst_PrintsWeeks_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyFirst()
-                .AppendWeeks()
-                .ToFormatter();
+            var formatter = builder.PrintZeroRarelyFirst().AppendWeeks().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -324,10 +257,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyFirst_PrintsHours_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyFirst()
-                .AppendHours()
-                .ToFormatter();
+            var formatter = builder.PrintZeroRarelyFirst().AppendHours().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -340,10 +270,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyFirst_PrintsMinutes_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyFirst()
-                .AppendMinutes()
-                .ToFormatter();
+            var formatter = builder.PrintZeroRarelyFirst().AppendMinutes().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -356,10 +283,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroRarelyFirst_PrintsSeconds_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroRarelyFirst()
-                .AppendSeconds()
-                .ToFormatter();
+            var formatter = builder.PrintZeroRarelyFirst().AppendSeconds().ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -368,21 +292,15 @@ namespace NodaTime.Test.Format
             Assert.AreEqual(1, printer.CalculatePrintedLength(standardPeriodEmpty, null));
             Assert.AreEqual(1, printer.CountFieldsToPrint(standardPeriodEmpty, int.MaxValue, null));
         }
-
         #endregion
 
         #region ZeroIfSupported
-
         [Test]
         public void ZeroIfSupported_PrintsYearsMonthsWeeksDays_ForFullStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroIfSupported()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroIfSupported().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodFull);
@@ -395,13 +313,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroIfSupported_PrintsYearsMonthsWeeksDays_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroIfSupported()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroIfSupported().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -414,13 +328,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroIfSupported_PrintsYearsMonthsWeeksDays_ForFullYearDayTimePeriod()
         {
-            var formatter = builder
-                .PrintZeroIfSupported()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroIfSupported().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodFull);
@@ -433,13 +343,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroIfSupported_PrintsYearsMonthsWeeksDays_ForEmptyYearDayTimePeriod()
         {
-            var formatter = builder
-                .PrintZeroIfSupported()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroIfSupported().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodEmpty);
@@ -448,21 +354,15 @@ namespace NodaTime.Test.Format
             Assert.AreEqual(5, printer.CalculatePrintedLength(yearDayTimePeriodEmpty, null));
             Assert.AreEqual(2, printer.CountFieldsToPrint(yearDayTimePeriodEmpty, int.MaxValue, null));
         }
-
         #endregion
 
         #region ZeroAlways
-
         [Test]
         public void ZeroAlways_PrintsYearsMonthsWeeksDays_ForFullStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroAlways()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroAlways().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodFull);
@@ -475,13 +375,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroAlways_PrintsYearsMonthsWeeksDays_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroAlways()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroAlways().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -494,13 +390,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroAlways_PrintsYearsMonthsWeeksDays_ForFullYearDayTimePeriod()
         {
-            var formatter = builder
-                .PrintZeroAlways()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroAlways().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodFull);
@@ -510,17 +402,12 @@ namespace NodaTime.Test.Format
             Assert.AreEqual(4, printer.CountFieldsToPrint(yearDayTimePeriodFull, int.MaxValue, null));
         }
 
-
         [Test]
         public void ZeroAlways_PrintsYearsMonthsWeeksDays_ForEmptyYearDayTimePeriod()
         {
-            var formatter = builder
-                .PrintZeroAlways()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroAlways().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodEmpty);
@@ -529,21 +416,15 @@ namespace NodaTime.Test.Format
             Assert.AreEqual(7, printer.CalculatePrintedLength(yearDayTimePeriodEmpty, null));
             Assert.AreEqual(4, printer.CountFieldsToPrint(yearDayTimePeriodEmpty, int.MaxValue, null));
         }
-
         #endregion
 
         #region ZeroNever
-
         [Test]
         public void ZeroNever_PrintsYearsMonthsWeeksDays_ForFullStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroNever()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroNever().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodFull);
@@ -556,13 +437,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroNever_PrintsYearsMonthsWeeksDays_ForEmptyStandardPeriod()
         {
-            var formatter = builder
-                .PrintZeroNever()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroNever().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(standardPeriodEmpty);
@@ -575,13 +452,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroNever_PrintsYearsMonthsWeeksDays_ForFullYearDayTimePeriod()
         {
-            var formatter = builder
-                .PrintZeroNever()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroNever().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodFull);
@@ -594,13 +467,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void ZeroNever_PrintsYearsMonthsWeeksDays_ForEmptyYearDayTimePeriod()
         {
-            var formatter = builder
-                .PrintZeroNever()
-                .AppendYears().AppendLiteral("-")
-                .AppendMonths().AppendLiteral("-")
-                .AppendWeeks().AppendLiteral("-")
-                .AppendDays()
-                .ToFormatter();
+            var formatter =
+                builder.PrintZeroNever().AppendYears().AppendLiteral("-").AppendMonths().AppendLiteral("-").AppendWeeks().AppendLiteral("-").AppendDays().
+                    ToFormatter();
 
             var printer = formatter.Printer;
             var printedValue = formatter.Print(yearDayTimePeriodEmpty);
@@ -609,7 +478,6 @@ namespace NodaTime.Test.Format
             Assert.AreEqual(3, printer.CalculatePrintedLength(yearDayTimePeriodEmpty, null));
             Assert.AreEqual(0, printer.CountFieldsToPrint(yearDayTimePeriodEmpty, int.MaxValue, null));
         }
-
         #endregion
     }
 }

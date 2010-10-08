@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Periods;
 using NUnit.Framework;
 
@@ -22,7 +23,6 @@ namespace NodaTime.Test.Periods
     public partial class HoursTest
     {
         #region Negation
-
         [Test]
         public void Negated()
         {
@@ -45,11 +45,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(-3, (Hours.Negate(Hours.Three)).Value, "-3");
             Assert.AreEqual(8, (Hours.Negate(Hours.From(-8))).Value, "- (-8)");
         }
-
         #endregion
 
         #region Unary Operators
-
         [Test]
         public void UnaryPlusOperator()
         {
@@ -101,11 +99,9 @@ namespace NodaTime.Test.Periods
 
             Assert.AreEqual(1, (oneHour).Value, "--2 = 1");
         }
-
         #endregion
 
         #region Add
-
         [Test]
         public void Add()
         {
@@ -135,11 +131,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(5, (Hours.Add(Hours.Two, Hours.Three)).Value, "2 + 3");
             Assert.AreEqual(1, (Hours.Add(Hours.From(9), Hours.From(-8))).Value, "9 + (-8)");
         }
-
         #endregion
 
         #region Subtract
-
         [Test]
         public void Subtract()
         {
@@ -169,11 +163,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(1, (Hours.Subtract(Hours.Three, Hours.Two)).Value, "3 - 2");
             Assert.AreEqual(10, (Hours.Subtract(Hours.From(9), Hours.From(-1))).Value, "9 - (-1)");
         }
-
         #endregion
 
         #region Multiplication
-
         [Test]
         public void Multiply()
         {
@@ -219,7 +211,6 @@ namespace NodaTime.Test.Periods
         #endregion
 
         #region Division
-
         [Test]
         public void Divide()
         {
@@ -246,11 +237,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(1, (Hours.Divide(Hours.Three, Hours.Two)).Value, "3 / 2");
             Assert.AreEqual(-3, (Hours.Divide(Hours.From(9), Hours.From(-3))).Value, "9 / (-3)");
         }
-
         #endregion
 
         #region Conversions
-
         [Test]
         public void ImplicitConversionToInt32_FromNotNullInstance()
         {
@@ -276,7 +265,6 @@ namespace NodaTime.Test.Periods
 
             Assert.AreEqual(3, threeHours.Value);
         }
-
         #endregion
     }
 }

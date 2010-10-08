@@ -26,7 +26,6 @@ namespace NodaTime.Test.Format
     public partial class PeriodFormatterBuilderTest
     {
         #region SimpleAffix
-
         [Test]
         public void SimpleAffix_CalculatesLength()
         {
@@ -145,11 +144,9 @@ namespace NodaTime.Test.Format
 
             Assert.That(position, Is.EqualTo(~0));
         }
-
         #endregion
 
         #region PluralAffix
-
         [Test]
         public void PluralAffix_CalculatesLength_GivenSingularValue()
         {
@@ -251,11 +248,9 @@ namespace NodaTime.Test.Format
 
             Assert.That(position, Is.EqualTo(pluralText.Length));
         }
-
         #endregion
 
         #region AppendPrefixSimple
-
         [Test]
         public void AppendPrefixSimple_ThrowsArgumentNull_ForNullPrefixText()
         {
@@ -311,18 +306,15 @@ namespace NodaTime.Test.Format
             Assert.That(period, Is.EqualTo(Period.FromYears(1)));
         }
 
-
         [Test]
         public void AppendPrefixSimple_ParseThrowsArgument_ForTextWithoutPrefixString()
         {
             var formatter = builder.AppendPrefix("Years:").AppendYears().ToFormatter();
             Assert.Throws<FormatException>(() => formatter.Parse("1"));
         }
-
         #endregion
 
         #region AppendPrefixPlural
-
         [Test]
         public void AppendPrefixPlural_ThrowsArgumentNull_ForNullSingularText()
         {
@@ -376,8 +368,6 @@ namespace NodaTime.Test.Format
 
             Assert.That(printedValue, Is.EqualTo("Year:1"));
         }
-
-
         #endregion
     }
 }

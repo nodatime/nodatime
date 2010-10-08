@@ -24,7 +24,6 @@ namespace NodaTime.Test.Format
     public partial class PeriodFormatterTest
     {
         #region WithProvider
-
         [Test]
         public void WithProvider_CreatesNewInstanceWithGivenProvider_ForNotNullProvider()
         {
@@ -80,11 +79,9 @@ namespace NodaTime.Test.Format
 
             Assert.That(sutWithProvider, Is.SameAs(sutDefault));
         }
-
         #endregion
 
         #region WithParseType
-
         [Test]
         public void WithParsePeriodType_CreatesNewInstanceWithGivenParseType_ForNotNullParseType()
         {
@@ -140,7 +137,6 @@ namespace NodaTime.Test.Format
 
             Assert.That(sutWithParseType, Is.SameAs(sutDefault));
         }
-
         #endregion
     }
 }

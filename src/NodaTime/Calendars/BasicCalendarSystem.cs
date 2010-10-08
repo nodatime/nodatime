@@ -415,12 +415,11 @@ namespace NodaTime.Calendars
         }
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
-                                                     int millisecondOfSecond, int tickOfMillisecond)
+                                                       int millisecondOfSecond, int tickOfMillisecond)
         {
             if (Calendar != null)
             {
-                return Calendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond,
-                                                    tickOfMillisecond);
+                return Calendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
             }
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);

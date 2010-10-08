@@ -3,13 +3,13 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
 {
-	public partial class IsoCalendarSystemTest
-	{
+    public partial class IsoCalendarSystemTest
+    {
         // These tests assume that if the method doesn't throw, it's doing the right thing - this
         // is all tested elsewhere.
         [Test]
         public void GetLocalInstant_AllValues_ValidValuesDoesntThrow()
-        {            
+        {
             Iso.GetLocalInstant(2010, 2, 20, 21, 57, 30, 250, 1234);
         }
 

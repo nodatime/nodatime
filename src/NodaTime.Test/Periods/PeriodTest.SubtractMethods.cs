@@ -202,6 +202,5 @@ namespace NodaTime.Test.Periods
 
             Assert.Throws<NotSupportedException>(() => first.Subtract(second));
         }
-
     }
 }

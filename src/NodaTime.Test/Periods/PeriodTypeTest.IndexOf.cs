@@ -42,6 +42,5 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(4, sut.IndexOf(DurationFieldType.Milliseconds));
             Assert.AreEqual(-1, sut.IndexOf(DurationFieldType.Ticks));
         }
-
     }
 }

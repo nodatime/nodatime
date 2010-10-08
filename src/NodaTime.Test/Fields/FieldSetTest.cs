@@ -30,7 +30,7 @@ namespace NodaTime.Test.Fields
     public class FieldSetTest
     {
         private readonly DateTimeField sampleField = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, PreciseDurationField.Seconds,
-                                                                               PreciseDurationField.Minutes);
+                                                                              PreciseDurationField.Minutes);
 
         [Test]
         public void FieldsAreCopiedFromBuilderToSet()
