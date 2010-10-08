@@ -1,0 +1,2227 @@
+<html>
+  <head>
+    <title>NodaTime.ZonedDateTime</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.ZonedDateTime">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.ZonedDateTime:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.ZonedDateTime:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.ZonedDateTime:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.ZonedDateTime">ZonedDateTime  Struct</h1>
+    <p class="Summary" id="T:NodaTime.ZonedDateTime:Summary">
+            A date and time with an associated chronology - or to look at it a different way, a
+            LocalDateTime plus a time zone.
+            </p>
+    <div id="T:NodaTime.ZonedDateTime:Signature">
+      <div class="Signature">public struct  <b>ZonedDateTime</b> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IEquatable`1">IEquatable&lt;ZonedDateTime&gt;</a></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.ZonedDateTime:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.ZonedDateTime:Docs:Remarks')">
+          <span id="T:NodaTime.ZonedDateTime:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.ZonedDateTime:Docs:Remarks">
+        <p>
+            Some seemingly valid values do not represent a valid instant due to the local time moving
+            forward during a daylight saving transition, thus "skipping" the given value. Other values
+            occur twice (due to local time moving backward), in which case a ZonedDateTime will always
+            represent the later of the two possible times, when converting it to an instant.
+            </p>
+        <p>
+            A value constructed with "new ZonedDateTime()" will represent the Unix epoch in the ISO
+            calendar system in the UTC time zone. That is the only situation in which the chronology is
+            assumed rather than specified.
+            </p>
+      </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.ZonedDateTime:Docs:Version Information')">
+          <span id="T:NodaTime.ZonedDateTime:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.ZonedDateTime:Docs:Version Information">
+        <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ValueType">ValueType</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Public Constructors')">
+            <span id="Public Constructors:toggle">⊟</span> Public Constructors</a>
+        </h3>
+        <blockquote id="Public Constructors">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology)">ZonedDateTime</a>
+                    </b>(<a href="../NodaTime/Instant.html">Instant</a>, <a href="../NodaTime/Chronology.html">Chronology</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone)">ZonedDateTime</a>
+                    </b>(<a href="../NodaTime/LocalDateTime.html">LocalDateTime</a>, <a href="../NodaTime/DateTimeZone.html">DateTimeZone</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology)">ZonedDateTime</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="../NodaTime/Chronology.html">Chronology</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone)">ZonedDateTime</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="../NodaTime/DateTimeZone.html">DateTimeZone</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology)">ZonedDateTime</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="../NodaTime/Chronology.html">Chronology</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone)">ZonedDateTime</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="../NodaTime/DateTimeZone.html">DateTimeZone</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology)">ZonedDateTime</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="../NodaTime/Chronology.html">Chronology</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone)">ZonedDateTime</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>, <a href="../NodaTime/DateTimeZone.html">DateTimeZone</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Properties')">
+            <span id="Public Properties:toggle">⊟</span> Public Properties</a>
+        </h3>
+        <blockquote id="Public Properties">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.CenturyOfEra">CenturyOfEra</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.Chronology">Chronology</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Chronology.html">Chronology</a>
+                  </i>. 
+            Gets the chronology.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.DayOfMonth">DayOfMonth</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.DayOfWeek">DayOfWeek</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.DayOfYear">DayOfYear</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.Era">Era</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.HourOfDay">HourOfDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.LocalDateTime">LocalDateTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/LocalDateTime.html">LocalDateTime</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.MillisecondOfDay">MillisecondOfDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.MillisecondOfSecond">MillisecondOfSecond</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.MinuteOfHour">MinuteOfHour</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.MonthOfYear">MonthOfYear</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.Offset">Offset</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Offset.html">Offset</a>
+                  </i>. 
+            Gets the offset.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.SecondOfDay">SecondOfDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.SecondOfMinute">SecondOfMinute</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.TickOfDay">TickOfDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.TickOfMillisecond">TickOfMillisecond</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.WeekOfWeekYear">WeekOfWeekYear</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.WeekYear">WeekYear</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.Year">Year</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.YearOfCentury">YearOfCentury</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.YearOfEra">YearOfEra</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.ZonedDateTime.Zone">Zone</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/DateTimeZone.html">DateTimeZone</a>
+                  </i>. 
+            Gets the zone.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Methods')">
+            <span id="Public Methods:toggle">⊟</span> Public Methods</a>
+        </h3>
+        <blockquote id="Public Methods">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime)">Equals</a>
+                  </b>(<a href="../NodaTime/ZonedDateTime.html">ZonedDateTime</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Indicates whether the current object is equal to another object of the same type.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.ZonedDateTime.Equals(System.Object)">Equals</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Indicates whether this instance and a specified object are equal.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.ZonedDateTime.GetHashCode">GetHashCode</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Returns the hash code for this instance.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.ZonedDateTime.ToInstant">ToInstant</a>
+                  </b>()<nobr> : <a href="../NodaTime/Instant.html">Instant</a></nobr><blockquote>
+            Converts this value to the instant it represents on the time line.
+            If two instants are represented by the same set of values, the later
+            instant is returned.
+            </blockquote></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Operators')">
+            <span id="Public Operators:toggle">⊟</span> Public Operators</a>
+        </h3>
+        <blockquote id="Public Operators">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime)">Equality</a>
+                  </b>(<a href="../NodaTime/ZonedDateTime.html">ZonedDateTime</a>, <a href="../NodaTime/ZonedDateTime.html">ZonedDateTime</a>)</td>
+                <td>
+            Implements the operator ==.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime)">Inequality</a>
+                  </b>(<a href="../NodaTime/ZonedDateTime.html">ZonedDateTime</a>, <a href="../NodaTime/ZonedDateTime.html">ZonedDateTime</a>)</td>
+                <td>
+            Implements the operator !=.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.ZonedDateTime:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology)">
+          <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):member')">
+            <span id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):member:toggle">⊟</span> ZonedDateTime Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </p>
+          <div class="Signature">public  <b>ZonedDateTime</b> (<a href="../NodaTime/Instant.html">Instant</a> instant, <a href="../NodaTime/Chronology.html">Chronology</a> chronology)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Parameters')">
+              <span id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Parameters">
+            <dl>
+              <dt>
+                <i>instant</i>
+              </dt>
+              <dd>The instant.</dd>
+              <dt>
+                <i>chronology</i>
+              </dt>
+              <dd>The chronology.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Exceptions')">
+              <span id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>Thrown if the <i>chronology</i> is <tt>null</tt>.</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Remarks')">
+              <span id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Version Information')">
+              <span id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(NodaTime.Instant,NodaTime.Chronology):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone)">
+          <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):member')">
+            <span id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):member:toggle">⊟</span> ZonedDateTime Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </p>
+          <div class="Signature">public  <b>ZonedDateTime</b> (<a href="../NodaTime/LocalDateTime.html">LocalDateTime</a> localDateTime, <a href="../NodaTime/DateTimeZone.html">DateTimeZone</a> zone)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Parameters')">
+              <span id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Parameters">
+            <dl>
+              <dt>
+                <i>localDateTime</i>
+              </dt>
+              <dd>The local date time.</dd>
+              <dt>
+                <i>zone</i>
+              </dt>
+              <dd>The zone.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Exceptions')">
+              <span id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>Thrown if the <i>zone</i> is <tt>null</tt>.</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Remarks')">
+              <span id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Version Information')">
+              <span id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(NodaTime.LocalDateTime,NodaTime.DateTimeZone):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology)">
+          <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):member')">
+            <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):member:toggle">⊟</span> ZonedDateTime Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </p>
+          <div class="Signature">public  <b>ZonedDateTime</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> year, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> month, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> day, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> hour, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> minute, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> second, <a href="../NodaTime/Chronology.html">Chronology</a> chronology)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Parameters')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Parameters">
+            <dl>
+              <dt>
+                <i>year</i>
+              </dt>
+              <dd>The year.</dd>
+              <dt>
+                <i>month</i>
+              </dt>
+              <dd>The month.</dd>
+              <dt>
+                <i>day</i>
+              </dt>
+              <dd>The day.</dd>
+              <dt>
+                <i>hour</i>
+              </dt>
+              <dd>The hour.</dd>
+              <dt>
+                <i>minute</i>
+              </dt>
+              <dd>The minute.</dd>
+              <dt>
+                <i>second</i>
+              </dt>
+              <dd>The second.</dd>
+              <dt>
+                <i>chronology</i>
+              </dt>
+              <dd>The chronology.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Remarks')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Version Information')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone)">
+          <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):member')">
+            <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):member:toggle">⊟</span> ZonedDateTime Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </p>
+          <div class="Signature">public  <b>ZonedDateTime</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> year, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> month, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> day, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> hour, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> minute, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> second, <a href="../NodaTime/DateTimeZone.html">DateTimeZone</a> zone)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Parameters')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Parameters">
+            <dl>
+              <dt>
+                <i>year</i>
+              </dt>
+              <dd>The year.</dd>
+              <dt>
+                <i>month</i>
+              </dt>
+              <dd>The month.</dd>
+              <dt>
+                <i>day</i>
+              </dt>
+              <dd>The day.</dd>
+              <dt>
+                <i>hour</i>
+              </dt>
+              <dd>The hour.</dd>
+              <dt>
+                <i>minute</i>
+              </dt>
+              <dd>The minute.</dd>
+              <dt>
+                <i>second</i>
+              </dt>
+              <dd>The second.</dd>
+              <dt>
+                <i>zone</i>
+              </dt>
+              <dd>The zone.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Remarks')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Version Information')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology)">
+          <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):member')">
+            <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):member:toggle">⊟</span> ZonedDateTime Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </p>
+          <div class="Signature">public  <b>ZonedDateTime</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> year, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> month, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> day, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> hour, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> minute, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> second, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> millisecond, <a href="../NodaTime/Chronology.html">Chronology</a> chronology)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Parameters')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Parameters">
+            <dl>
+              <dt>
+                <i>year</i>
+              </dt>
+              <dd>The year.</dd>
+              <dt>
+                <i>month</i>
+              </dt>
+              <dd>The month.</dd>
+              <dt>
+                <i>day</i>
+              </dt>
+              <dd>The day.</dd>
+              <dt>
+                <i>hour</i>
+              </dt>
+              <dd>The hour.</dd>
+              <dt>
+                <i>minute</i>
+              </dt>
+              <dd>The minute.</dd>
+              <dt>
+                <i>second</i>
+              </dt>
+              <dd>The second.</dd>
+              <dt>
+                <i>millisecond</i>
+              </dt>
+              <dd>The millisecond.</dd>
+              <dt>
+                <i>chronology</i>
+              </dt>
+              <dd>The chronology.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Remarks')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Version Information')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone)">
+          <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):member')">
+            <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):member:toggle">⊟</span> ZonedDateTime Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </p>
+          <div class="Signature">public  <b>ZonedDateTime</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> year, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> month, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> day, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> hour, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> minute, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> second, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> millisecond, <a href="../NodaTime/DateTimeZone.html">DateTimeZone</a> zone)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Parameters')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Parameters">
+            <dl>
+              <dt>
+                <i>year</i>
+              </dt>
+              <dd>The year.</dd>
+              <dt>
+                <i>month</i>
+              </dt>
+              <dd>The month.</dd>
+              <dt>
+                <i>day</i>
+              </dt>
+              <dd>The day.</dd>
+              <dt>
+                <i>hour</i>
+              </dt>
+              <dd>The hour.</dd>
+              <dt>
+                <i>minute</i>
+              </dt>
+              <dd>The minute.</dd>
+              <dt>
+                <i>second</i>
+              </dt>
+              <dd>The second.</dd>
+              <dt>
+                <i>millisecond</i>
+              </dt>
+              <dd>The millisecond.</dd>
+              <dt>
+                <i>zone</i>
+              </dt>
+              <dd>The zone.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Remarks')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Version Information')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology)">
+          <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):member')">
+            <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):member:toggle">⊟</span> ZonedDateTime Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </p>
+          <div class="Signature">public  <b>ZonedDateTime</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> year, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> month, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> day, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> hour, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> minute, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> second, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> millisecond, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> tick, <a href="../NodaTime/Chronology.html">Chronology</a> chronology)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Parameters')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Parameters">
+            <dl>
+              <dt>
+                <i>year</i>
+              </dt>
+              <dd>The year.</dd>
+              <dt>
+                <i>month</i>
+              </dt>
+              <dd>The month.</dd>
+              <dt>
+                <i>day</i>
+              </dt>
+              <dd>The day.</dd>
+              <dt>
+                <i>hour</i>
+              </dt>
+              <dd>The hour.</dd>
+              <dt>
+                <i>minute</i>
+              </dt>
+              <dd>The minute.</dd>
+              <dt>
+                <i>second</i>
+              </dt>
+              <dd>The second.</dd>
+              <dt>
+                <i>millisecond</i>
+              </dt>
+              <dd>The millisecond.</dd>
+              <dt>
+                <i>tick</i>
+              </dt>
+              <dd>The tick.</dd>
+              <dt>
+                <i>chronology</i>
+              </dt>
+              <dd>The chronology.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Remarks')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Version Information')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.Chronology):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone)">
+          <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):member')">
+            <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):member:toggle">⊟</span> ZonedDateTime Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/ZonedDateTime.html">NodaTime.ZonedDateTime</a> struct.
+            </p>
+          <div class="Signature">public  <b>ZonedDateTime</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> year, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> month, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> day, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> hour, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> minute, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> second, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> millisecond, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> tick, <a href="../NodaTime/DateTimeZone.html">DateTimeZone</a> zone)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Parameters')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Parameters">
+            <dl>
+              <dt>
+                <i>year</i>
+              </dt>
+              <dd>The year.</dd>
+              <dt>
+                <i>month</i>
+              </dt>
+              <dd>The month.</dd>
+              <dt>
+                <i>day</i>
+              </dt>
+              <dd>The day.</dd>
+              <dt>
+                <i>hour</i>
+              </dt>
+              <dd>The hour.</dd>
+              <dt>
+                <i>minute</i>
+              </dt>
+              <dd>The minute.</dd>
+              <dt>
+                <i>second</i>
+              </dt>
+              <dd>The second.</dd>
+              <dt>
+                <i>millisecond</i>
+              </dt>
+              <dd>The millisecond.</dd>
+              <dt>
+                <i>tick</i>
+              </dt>
+              <dd>The tick.</dd>
+              <dt>
+                <i>zone</i>
+              </dt>
+              <dd>The zone.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Remarks')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Version Information')">
+              <span id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.ZonedDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,NodaTime.DateTimeZone):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.CenturyOfEra">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.CenturyOfEra:member')">
+            <span id="P:NodaTime.ZonedDateTime.CenturyOfEra:member:toggle">⊟</span> CenturyOfEra Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.CenturyOfEra:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>CenturyOfEra</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.CenturyOfEra:Value')">
+              <span id="P:NodaTime.ZonedDateTime.CenturyOfEra:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.CenturyOfEra:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.CenturyOfEra:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.CenturyOfEra:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.CenturyOfEra:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.CenturyOfEra:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.CenturyOfEra:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.CenturyOfEra:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.Chronology">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Chronology:member')">
+            <span id="P:NodaTime.ZonedDateTime.Chronology:member:toggle">⊟</span> Chronology Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.Chronology:member">
+          <p class="Summary">
+            Gets the chronology.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Chronology.html">Chronology</a> <b>Chronology</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Chronology:Value')">
+              <span id="P:NodaTime.ZonedDateTime.Chronology:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Chronology:Value">The chronology.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Chronology:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.Chronology:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Chronology:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Chronology:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.Chronology:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Chronology:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.DayOfMonth">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfMonth:member')">
+            <span id="P:NodaTime.ZonedDateTime.DayOfMonth:member:toggle">⊟</span> DayOfMonth Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.DayOfMonth:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>DayOfMonth</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfMonth:Value')">
+              <span id="P:NodaTime.ZonedDateTime.DayOfMonth:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.DayOfMonth:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfMonth:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.DayOfMonth:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.DayOfMonth:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfMonth:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.DayOfMonth:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.DayOfMonth:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.DayOfWeek">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfWeek:member')">
+            <span id="P:NodaTime.ZonedDateTime.DayOfWeek:member:toggle">⊟</span> DayOfWeek Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.DayOfWeek:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>DayOfWeek</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfWeek:Value')">
+              <span id="P:NodaTime.ZonedDateTime.DayOfWeek:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.DayOfWeek:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfWeek:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.DayOfWeek:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.DayOfWeek:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfWeek:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.DayOfWeek:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.DayOfWeek:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.DayOfYear">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfYear:member')">
+            <span id="P:NodaTime.ZonedDateTime.DayOfYear:member:toggle">⊟</span> DayOfYear Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.DayOfYear:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>DayOfYear</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfYear:Value')">
+              <span id="P:NodaTime.ZonedDateTime.DayOfYear:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.DayOfYear:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfYear:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.DayOfYear:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.DayOfYear:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.DayOfYear:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.DayOfYear:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.DayOfYear:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime)">
+          <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):member')">
+            <span id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):member">
+          <p class="Summary">
+            Indicates whether the current object is equal to another object of the same type.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="../NodaTime/ZonedDateTime.html">ZonedDateTime</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Parameters')">
+              <span id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>An object to compare with this object.
+                            </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Returns')">
+              <span id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Returns">
+            true if the current object is equal to the <i>other</i> parameter; otherwise, false.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Remarks')">
+              <span id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Version Information')">
+              <span id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.Equals(NodaTime.ZonedDateTime):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.ZonedDateTime.Equals(System.Object)">
+          <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.Equals(System.Object):member')">
+            <span id="M:NodaTime.ZonedDateTime.Equals(System.Object):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.ZonedDateTime.Equals(System.Object):member">
+          <p class="Summary">
+            Indicates whether this instance and a specified object are equal.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> obj)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.Equals(System.Object):Parameters')">
+              <span id="M:NodaTime.ZonedDateTime.Equals(System.Object):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.Equals(System.Object):Parameters">
+            <dl>
+              <dt>
+                <i>obj</i>
+              </dt>
+              <dd>Another object to compare to. 
+                            </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.Equals(System.Object):Returns')">
+              <span id="M:NodaTime.ZonedDateTime.Equals(System.Object):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.Equals(System.Object):Returns">
+            true if <i>obj</i> and this instance are the same type and represent the same value; otherwise, false.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.Equals(System.Object):Remarks')">
+              <span id="M:NodaTime.ZonedDateTime.Equals(System.Object):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.Equals(System.Object):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.Equals(System.Object):Version Information')">
+              <span id="M:NodaTime.ZonedDateTime.Equals(System.Object):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.Equals(System.Object):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.Era">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Era:member')">
+            <span id="P:NodaTime.ZonedDateTime.Era:member:toggle">⊟</span> Era Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.Era:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>Era</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Era:Value')">
+              <span id="P:NodaTime.ZonedDateTime.Era:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Era:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Era:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.Era:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Era:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Era:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.Era:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Era:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.ZonedDateTime.GetHashCode">
+          <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.GetHashCode:member')">
+            <span id="M:NodaTime.ZonedDateTime.GetHashCode:member:toggle">⊟</span> GetHashCode Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.ZonedDateTime.GetHashCode:member">
+          <p class="Summary">
+            Returns the hash code for this instance.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>GetHashCode</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.GetHashCode:Returns')">
+              <span id="M:NodaTime.ZonedDateTime.GetHashCode:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.GetHashCode:Returns">
+            A 32-bit signed integer that is the hash code for this instance.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.GetHashCode:Remarks')">
+              <span id="M:NodaTime.ZonedDateTime.GetHashCode:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.GetHashCode:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.GetHashCode:Version Information')">
+              <span id="M:NodaTime.ZonedDateTime.GetHashCode:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.GetHashCode:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.HourOfDay">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.HourOfDay:member')">
+            <span id="P:NodaTime.ZonedDateTime.HourOfDay:member:toggle">⊟</span> HourOfDay Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.HourOfDay:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>HourOfDay</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.HourOfDay:Value')">
+              <span id="P:NodaTime.ZonedDateTime.HourOfDay:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.HourOfDay:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.HourOfDay:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.HourOfDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.HourOfDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.HourOfDay:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.HourOfDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.HourOfDay:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.LocalDateTime">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.LocalDateTime:member')">
+            <span id="P:NodaTime.ZonedDateTime.LocalDateTime:member:toggle">⊟</span> LocalDateTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.LocalDateTime:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="../NodaTime/LocalDateTime.html">LocalDateTime</a> <b>LocalDateTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.LocalDateTime:Value')">
+              <span id="P:NodaTime.ZonedDateTime.LocalDateTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.LocalDateTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.LocalDateTime:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.LocalDateTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.LocalDateTime:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.LocalDateTime:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.LocalDateTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.LocalDateTime:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.MillisecondOfDay">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MillisecondOfDay:member')">
+            <span id="P:NodaTime.ZonedDateTime.MillisecondOfDay:member:toggle">⊟</span> MillisecondOfDay Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.MillisecondOfDay:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MillisecondOfDay</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MillisecondOfDay:Value')">
+              <span id="P:NodaTime.ZonedDateTime.MillisecondOfDay:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MillisecondOfDay:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MillisecondOfDay:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.MillisecondOfDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MillisecondOfDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MillisecondOfDay:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.MillisecondOfDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MillisecondOfDay:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.MillisecondOfSecond">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MillisecondOfSecond:member')">
+            <span id="P:NodaTime.ZonedDateTime.MillisecondOfSecond:member:toggle">⊟</span> MillisecondOfSecond Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.MillisecondOfSecond:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MillisecondOfSecond</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MillisecondOfSecond:Value')">
+              <span id="P:NodaTime.ZonedDateTime.MillisecondOfSecond:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MillisecondOfSecond:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MillisecondOfSecond:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.MillisecondOfSecond:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MillisecondOfSecond:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MillisecondOfSecond:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.MillisecondOfSecond:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MillisecondOfSecond:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.MinuteOfHour">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MinuteOfHour:member')">
+            <span id="P:NodaTime.ZonedDateTime.MinuteOfHour:member:toggle">⊟</span> MinuteOfHour Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.MinuteOfHour:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MinuteOfHour</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MinuteOfHour:Value')">
+              <span id="P:NodaTime.ZonedDateTime.MinuteOfHour:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MinuteOfHour:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MinuteOfHour:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.MinuteOfHour:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MinuteOfHour:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MinuteOfHour:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.MinuteOfHour:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MinuteOfHour:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.MonthOfYear">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MonthOfYear:member')">
+            <span id="P:NodaTime.ZonedDateTime.MonthOfYear:member:toggle">⊟</span> MonthOfYear Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.MonthOfYear:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MonthOfYear</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MonthOfYear:Value')">
+              <span id="P:NodaTime.ZonedDateTime.MonthOfYear:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MonthOfYear:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MonthOfYear:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.MonthOfYear:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MonthOfYear:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.MonthOfYear:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.MonthOfYear:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.MonthOfYear:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.Offset">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Offset:member')">
+            <span id="P:NodaTime.ZonedDateTime.Offset:member:toggle">⊟</span> Offset Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.Offset:member">
+          <p class="Summary">
+            Gets the offset.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Offset.html">Offset</a> <b>Offset</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Offset:Value')">
+              <span id="P:NodaTime.ZonedDateTime.Offset:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Offset:Value">The offset.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Offset:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.Offset:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Offset:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Offset:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.Offset:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Offset:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime)">
+          <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):member')">
+            <span id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):member:toggle">⊟</span> op_Equality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):member">
+          <p class="Summary">
+            Implements the operator ==.
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator== (<a href="../NodaTime/ZonedDateTime.html">ZonedDateTime</a> left, <a href="../NodaTime/ZonedDateTime.html">ZonedDateTime</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Parameters')">
+              <span id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Returns')">
+              <span id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Returns">The result of the operator.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Remarks')">
+              <span id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Version Information')">
+              <span id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.op_Equality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime)">
+          <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):member')">
+            <span id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):member:toggle">⊟</span> op_Inequality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):member">
+          <p class="Summary">
+            Implements the operator !=.
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator!= (<a href="../NodaTime/ZonedDateTime.html">ZonedDateTime</a> left, <a href="../NodaTime/ZonedDateTime.html">ZonedDateTime</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Parameters')">
+              <span id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Returns')">
+              <span id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Returns">The result of the operator.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Remarks')">
+              <span id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Version Information')">
+              <span id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.op_Inequality(NodaTime.ZonedDateTime,NodaTime.ZonedDateTime):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.SecondOfDay">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.SecondOfDay:member')">
+            <span id="P:NodaTime.ZonedDateTime.SecondOfDay:member:toggle">⊟</span> SecondOfDay Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.SecondOfDay:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>SecondOfDay</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.SecondOfDay:Value')">
+              <span id="P:NodaTime.ZonedDateTime.SecondOfDay:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.SecondOfDay:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.SecondOfDay:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.SecondOfDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.SecondOfDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.SecondOfDay:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.SecondOfDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.SecondOfDay:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.SecondOfMinute">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.SecondOfMinute:member')">
+            <span id="P:NodaTime.ZonedDateTime.SecondOfMinute:member:toggle">⊟</span> SecondOfMinute Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.SecondOfMinute:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>SecondOfMinute</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.SecondOfMinute:Value')">
+              <span id="P:NodaTime.ZonedDateTime.SecondOfMinute:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.SecondOfMinute:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.SecondOfMinute:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.SecondOfMinute:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.SecondOfMinute:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.SecondOfMinute:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.SecondOfMinute:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.SecondOfMinute:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.TickOfDay">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.TickOfDay:member')">
+            <span id="P:NodaTime.ZonedDateTime.TickOfDay:member:toggle">⊟</span> TickOfDay Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.TickOfDay:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> <b>TickOfDay</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.TickOfDay:Value')">
+              <span id="P:NodaTime.ZonedDateTime.TickOfDay:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.TickOfDay:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.TickOfDay:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.TickOfDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.TickOfDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.TickOfDay:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.TickOfDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.TickOfDay:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.TickOfMillisecond">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.TickOfMillisecond:member')">
+            <span id="P:NodaTime.ZonedDateTime.TickOfMillisecond:member:toggle">⊟</span> TickOfMillisecond Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.TickOfMillisecond:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>TickOfMillisecond</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.TickOfMillisecond:Value')">
+              <span id="P:NodaTime.ZonedDateTime.TickOfMillisecond:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.TickOfMillisecond:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.TickOfMillisecond:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.TickOfMillisecond:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.TickOfMillisecond:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.TickOfMillisecond:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.TickOfMillisecond:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.TickOfMillisecond:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.ZonedDateTime.ToInstant">
+          <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.ToInstant:member')">
+            <span id="M:NodaTime.ZonedDateTime.ToInstant:member:toggle">⊟</span> ToInstant Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.ZonedDateTime.ToInstant:member">
+          <p class="Summary">
+            Converts this value to the instant it represents on the time line.
+            If two instants are represented by the same set of values, the later
+            instant is returned.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Instant.html">Instant</a> <b>ToInstant</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.ToInstant:Returns')">
+              <span id="M:NodaTime.ZonedDateTime.ToInstant:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.ToInstant:Returns">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.ToInstant:Remarks')">
+              <span id="M:NodaTime.ZonedDateTime.ToInstant:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.ToInstant:Remarks">
+            Conceptually this is a conversion (which is why it's not a property) but
+            in reality the conversion is done at the point of construction.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.ZonedDateTime.ToInstant:Version Information')">
+              <span id="M:NodaTime.ZonedDateTime.ToInstant:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.ZonedDateTime.ToInstant:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.WeekOfWeekYear">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.WeekOfWeekYear:member')">
+            <span id="P:NodaTime.ZonedDateTime.WeekOfWeekYear:member:toggle">⊟</span> WeekOfWeekYear Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.WeekOfWeekYear:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>WeekOfWeekYear</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.WeekOfWeekYear:Value')">
+              <span id="P:NodaTime.ZonedDateTime.WeekOfWeekYear:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.WeekOfWeekYear:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.WeekOfWeekYear:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.WeekOfWeekYear:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.WeekOfWeekYear:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.WeekOfWeekYear:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.WeekOfWeekYear:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.WeekOfWeekYear:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.WeekYear">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.WeekYear:member')">
+            <span id="P:NodaTime.ZonedDateTime.WeekYear:member:toggle">⊟</span> WeekYear Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.WeekYear:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>WeekYear</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.WeekYear:Value')">
+              <span id="P:NodaTime.ZonedDateTime.WeekYear:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.WeekYear:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.WeekYear:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.WeekYear:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.WeekYear:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.WeekYear:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.WeekYear:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.WeekYear:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.Year">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Year:member')">
+            <span id="P:NodaTime.ZonedDateTime.Year:member:toggle">⊟</span> Year Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.Year:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>Year</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Year:Value')">
+              <span id="P:NodaTime.ZonedDateTime.Year:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Year:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Year:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.Year:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Year:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Year:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.Year:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Year:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.YearOfCentury">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.YearOfCentury:member')">
+            <span id="P:NodaTime.ZonedDateTime.YearOfCentury:member:toggle">⊟</span> YearOfCentury Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.YearOfCentury:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>YearOfCentury</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.YearOfCentury:Value')">
+              <span id="P:NodaTime.ZonedDateTime.YearOfCentury:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.YearOfCentury:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.YearOfCentury:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.YearOfCentury:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.YearOfCentury:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.YearOfCentury:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.YearOfCentury:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.YearOfCentury:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.YearOfEra">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.YearOfEra:member')">
+            <span id="P:NodaTime.ZonedDateTime.YearOfEra:member:toggle">⊟</span> YearOfEra Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.YearOfEra:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>YearOfEra</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.YearOfEra:Value')">
+              <span id="P:NodaTime.ZonedDateTime.YearOfEra:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.YearOfEra:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.YearOfEra:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.YearOfEra:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.YearOfEra:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.YearOfEra:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.YearOfEra:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.YearOfEra:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.ZonedDateTime.Zone">
+          <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Zone:member')">
+            <span id="P:NodaTime.ZonedDateTime.Zone:member:toggle">⊟</span> Zone Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.ZonedDateTime.Zone:member">
+          <p class="Summary">
+            Gets the zone.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/DateTimeZone.html">DateTimeZone</a> <b>Zone</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Zone:Value')">
+              <span id="P:NodaTime.ZonedDateTime.Zone:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Zone:Value">The zone.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Zone:Remarks')">
+              <span id="P:NodaTime.ZonedDateTime.Zone:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Zone:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.ZonedDateTime.Zone:Version Information')">
+              <span id="P:NodaTime.ZonedDateTime.Zone:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.ZonedDateTime.Zone:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>

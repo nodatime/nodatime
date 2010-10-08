@@ -1,0 +1,1827 @@
+<html>
+  <head>
+    <title>NodaTime.NodaConstants</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.NodaConstants">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.NodaConstants:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.NodaConstants:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.NodaConstants:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.NodaConstants">NodaConstants  Class</h1>
+    <p class="Summary" id="T:NodaTime.NodaConstants:Summary">
+            Original name: NodaConstants.
+            
+            I'm not sure that everything in NodaConstants
+            really belongs in one file, and it should perhaps be named to reflect its ISO background
+            as well. We should consider an Iso8601Month enum etc. Possibly start
+            with everything in here, then refactor it out when it's all working.
+            </p>
+    <div id="T:NodaTime.NodaConstants:Signature">
+      <div class="Signature">public static class  <b>NodaConstants</b></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.NodaConstants:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.NodaConstants:Docs:Remarks')">
+          <span id="T:NodaTime.NodaConstants:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.NodaConstants:Docs:Remarks">
+        <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+      </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.NodaConstants:Docs:Version Information')">
+          <span id="T:NodaTime.NodaConstants:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.NodaConstants:Docs:Version Information">
+        <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Public Fields')">
+            <span id="Public Fields:toggle">⊟</span> Public Fields</a>
+        </h3>
+        <blockquote id="Public Fields">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.AD">AD</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (1). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.April">April</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (4). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.August">August</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (8). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.BC">BC</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (0). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.BCE">BCE</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (0). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.BeforeCommonEra">BeforeCommonEra</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (0). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.CE">CE</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (1). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.CommonEra">CommonEra</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (1). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.DaysPerWeek">DaysPerWeek</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (7). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.December">December</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (12). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.February">February</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (2). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.HoursPerDay">HoursPerDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (24). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.HoursPerWeek">HoursPerWeek</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (168). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.January">January</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (1). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.July">July</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (7). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.June">June</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (6). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.March">March</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (3). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.May">May</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (5). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.MillisecondsPerDay">MillisecondsPerDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (86400000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.MillisecondsPerHour">MillisecondsPerHour</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (3600000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.MillisecondsPerMinute">MillisecondsPerMinute</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (60000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.MillisecondsPerSecond">MillisecondsPerSecond</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (1000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.MillisecondsPerWeek">MillisecondsPerWeek</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (604800000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.MinutesPerDay">MinutesPerDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (1440). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.MinutesPerHour">MinutesPerHour</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (60). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.MinutesPerWeek">MinutesPerWeek</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (10080). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.November">November</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (11). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.October">October</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (10). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.SecondsPerDay">SecondsPerDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (86400). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.SecondsPerHour">SecondsPerHour</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (3600). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.SecondsPerMinute">SecondsPerMinute</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (60). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.SecondsPerWeek">SecondsPerWeek</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (604800). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.September">September</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i> (9). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.TicksPerDay">TicksPerDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>
+                  </i> (864000000000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.TicksPerHour">TicksPerHour</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>
+                  </i> (36000000000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.TicksPerMillisecond">TicksPerMillisecond</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>
+                  </i> (10000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.TicksPerMinute">TicksPerMinute</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>
+                  </i> (600000000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.TicksPerSecond">TicksPerSecond</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>
+                  </i> (10000000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>const </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.NodaConstants.TicksPerWeek">TicksPerWeek</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>
+                  </i> (6048000000000). <span class="NotEntered">Documentation for this section has not yet been entered.</span></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.NodaConstants:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="F:NodaTime.NodaConstants.AD">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.AD:member')">
+            <span id="F:NodaTime.NodaConstants.AD:member:toggle">⊟</span> AD Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.AD:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>1</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>AD</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.AD:Remarks')">
+              <span id="F:NodaTime.NodaConstants.AD:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.AD:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.AD:Version Information')">
+              <span id="F:NodaTime.NodaConstants.AD:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.AD:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.April">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.April:member')">
+            <span id="F:NodaTime.NodaConstants.April:member:toggle">⊟</span> April Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.April:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>4</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>April</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.April:Remarks')">
+              <span id="F:NodaTime.NodaConstants.April:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.April:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.April:Version Information')">
+              <span id="F:NodaTime.NodaConstants.April:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.April:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.August">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.August:member')">
+            <span id="F:NodaTime.NodaConstants.August:member:toggle">⊟</span> August Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.August:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>8</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>August</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.August:Remarks')">
+              <span id="F:NodaTime.NodaConstants.August:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.August:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.August:Version Information')">
+              <span id="F:NodaTime.NodaConstants.August:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.August:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.BC">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.BC:member')">
+            <span id="F:NodaTime.NodaConstants.BC:member:toggle">⊟</span> BC Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.BC:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>0</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>BC</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.BC:Remarks')">
+              <span id="F:NodaTime.NodaConstants.BC:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.BC:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.BC:Version Information')">
+              <span id="F:NodaTime.NodaConstants.BC:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.BC:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.BCE">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.BCE:member')">
+            <span id="F:NodaTime.NodaConstants.BCE:member:toggle">⊟</span> BCE Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.BCE:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>0</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>BCE</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.BCE:Remarks')">
+              <span id="F:NodaTime.NodaConstants.BCE:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.BCE:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.BCE:Version Information')">
+              <span id="F:NodaTime.NodaConstants.BCE:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.BCE:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.BeforeCommonEra">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.BeforeCommonEra:member')">
+            <span id="F:NodaTime.NodaConstants.BeforeCommonEra:member:toggle">⊟</span> BeforeCommonEra Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.BeforeCommonEra:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>0</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>BeforeCommonEra</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.BeforeCommonEra:Remarks')">
+              <span id="F:NodaTime.NodaConstants.BeforeCommonEra:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.BeforeCommonEra:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.BeforeCommonEra:Version Information')">
+              <span id="F:NodaTime.NodaConstants.BeforeCommonEra:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.BeforeCommonEra:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.CE">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.CE:member')">
+            <span id="F:NodaTime.NodaConstants.CE:member:toggle">⊟</span> CE Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.CE:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>1</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>CE</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.CE:Remarks')">
+              <span id="F:NodaTime.NodaConstants.CE:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.CE:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.CE:Version Information')">
+              <span id="F:NodaTime.NodaConstants.CE:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.CE:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.CommonEra">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.CommonEra:member')">
+            <span id="F:NodaTime.NodaConstants.CommonEra:member:toggle">⊟</span> CommonEra Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.CommonEra:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>1</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>CommonEra</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.CommonEra:Remarks')">
+              <span id="F:NodaTime.NodaConstants.CommonEra:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.CommonEra:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.CommonEra:Version Information')">
+              <span id="F:NodaTime.NodaConstants.CommonEra:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.CommonEra:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.DaysPerWeek">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.DaysPerWeek:member')">
+            <span id="F:NodaTime.NodaConstants.DaysPerWeek:member:toggle">⊟</span> DaysPerWeek Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.DaysPerWeek:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>7</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>DaysPerWeek</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.DaysPerWeek:Remarks')">
+              <span id="F:NodaTime.NodaConstants.DaysPerWeek:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.DaysPerWeek:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.DaysPerWeek:Version Information')">
+              <span id="F:NodaTime.NodaConstants.DaysPerWeek:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.DaysPerWeek:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.December">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.December:member')">
+            <span id="F:NodaTime.NodaConstants.December:member:toggle">⊟</span> December Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.December:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>12</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>December</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.December:Remarks')">
+              <span id="F:NodaTime.NodaConstants.December:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.December:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.December:Version Information')">
+              <span id="F:NodaTime.NodaConstants.December:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.December:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.February">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.February:member')">
+            <span id="F:NodaTime.NodaConstants.February:member:toggle">⊟</span> February Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.February:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>2</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>February</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.February:Remarks')">
+              <span id="F:NodaTime.NodaConstants.February:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.February:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.February:Version Information')">
+              <span id="F:NodaTime.NodaConstants.February:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.February:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.HoursPerDay">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.HoursPerDay:member')">
+            <span id="F:NodaTime.NodaConstants.HoursPerDay:member:toggle">⊟</span> HoursPerDay Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.HoursPerDay:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>24</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>HoursPerDay</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.HoursPerDay:Remarks')">
+              <span id="F:NodaTime.NodaConstants.HoursPerDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.HoursPerDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.HoursPerDay:Version Information')">
+              <span id="F:NodaTime.NodaConstants.HoursPerDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.HoursPerDay:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.HoursPerWeek">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.HoursPerWeek:member')">
+            <span id="F:NodaTime.NodaConstants.HoursPerWeek:member:toggle">⊟</span> HoursPerWeek Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.HoursPerWeek:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>168</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>HoursPerWeek</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.HoursPerWeek:Remarks')">
+              <span id="F:NodaTime.NodaConstants.HoursPerWeek:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.HoursPerWeek:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.HoursPerWeek:Version Information')">
+              <span id="F:NodaTime.NodaConstants.HoursPerWeek:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.HoursPerWeek:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.January">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.January:member')">
+            <span id="F:NodaTime.NodaConstants.January:member:toggle">⊟</span> January Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.January:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>1</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>January</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.January:Remarks')">
+              <span id="F:NodaTime.NodaConstants.January:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.January:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.January:Version Information')">
+              <span id="F:NodaTime.NodaConstants.January:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.January:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.July">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.July:member')">
+            <span id="F:NodaTime.NodaConstants.July:member:toggle">⊟</span> July Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.July:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>7</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>July</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.July:Remarks')">
+              <span id="F:NodaTime.NodaConstants.July:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.July:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.July:Version Information')">
+              <span id="F:NodaTime.NodaConstants.July:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.July:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.June">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.June:member')">
+            <span id="F:NodaTime.NodaConstants.June:member:toggle">⊟</span> June Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.June:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>6</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>June</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.June:Remarks')">
+              <span id="F:NodaTime.NodaConstants.June:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.June:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.June:Version Information')">
+              <span id="F:NodaTime.NodaConstants.June:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.June:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.March">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.March:member')">
+            <span id="F:NodaTime.NodaConstants.March:member:toggle">⊟</span> March Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.March:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>3</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>March</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.March:Remarks')">
+              <span id="F:NodaTime.NodaConstants.March:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.March:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.March:Version Information')">
+              <span id="F:NodaTime.NodaConstants.March:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.March:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.May">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.May:member')">
+            <span id="F:NodaTime.NodaConstants.May:member:toggle">⊟</span> May Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.May:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>5</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>May</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.May:Remarks')">
+              <span id="F:NodaTime.NodaConstants.May:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.May:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.May:Version Information')">
+              <span id="F:NodaTime.NodaConstants.May:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.May:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.MillisecondsPerDay">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerDay:member')">
+            <span id="F:NodaTime.NodaConstants.MillisecondsPerDay:member:toggle">⊟</span> MillisecondsPerDay Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.MillisecondsPerDay:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>86400000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MillisecondsPerDay</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerDay:Remarks')">
+              <span id="F:NodaTime.NodaConstants.MillisecondsPerDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MillisecondsPerDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerDay:Version Information')">
+              <span id="F:NodaTime.NodaConstants.MillisecondsPerDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MillisecondsPerDay:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.MillisecondsPerHour">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerHour:member')">
+            <span id="F:NodaTime.NodaConstants.MillisecondsPerHour:member:toggle">⊟</span> MillisecondsPerHour Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.MillisecondsPerHour:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>3600000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MillisecondsPerHour</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerHour:Remarks')">
+              <span id="F:NodaTime.NodaConstants.MillisecondsPerHour:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MillisecondsPerHour:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerHour:Version Information')">
+              <span id="F:NodaTime.NodaConstants.MillisecondsPerHour:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MillisecondsPerHour:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.MillisecondsPerMinute">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerMinute:member')">
+            <span id="F:NodaTime.NodaConstants.MillisecondsPerMinute:member:toggle">⊟</span> MillisecondsPerMinute Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.MillisecondsPerMinute:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>60000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MillisecondsPerMinute</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerMinute:Remarks')">
+              <span id="F:NodaTime.NodaConstants.MillisecondsPerMinute:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MillisecondsPerMinute:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerMinute:Version Information')">
+              <span id="F:NodaTime.NodaConstants.MillisecondsPerMinute:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MillisecondsPerMinute:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.MillisecondsPerSecond">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerSecond:member')">
+            <span id="F:NodaTime.NodaConstants.MillisecondsPerSecond:member:toggle">⊟</span> MillisecondsPerSecond Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.MillisecondsPerSecond:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>1000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MillisecondsPerSecond</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerSecond:Remarks')">
+              <span id="F:NodaTime.NodaConstants.MillisecondsPerSecond:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MillisecondsPerSecond:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerSecond:Version Information')">
+              <span id="F:NodaTime.NodaConstants.MillisecondsPerSecond:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MillisecondsPerSecond:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.MillisecondsPerWeek">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerWeek:member')">
+            <span id="F:NodaTime.NodaConstants.MillisecondsPerWeek:member:toggle">⊟</span> MillisecondsPerWeek Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.MillisecondsPerWeek:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>604800000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MillisecondsPerWeek</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerWeek:Remarks')">
+              <span id="F:NodaTime.NodaConstants.MillisecondsPerWeek:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MillisecondsPerWeek:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MillisecondsPerWeek:Version Information')">
+              <span id="F:NodaTime.NodaConstants.MillisecondsPerWeek:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MillisecondsPerWeek:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.MinutesPerDay">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MinutesPerDay:member')">
+            <span id="F:NodaTime.NodaConstants.MinutesPerDay:member:toggle">⊟</span> MinutesPerDay Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.MinutesPerDay:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>1440</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MinutesPerDay</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MinutesPerDay:Remarks')">
+              <span id="F:NodaTime.NodaConstants.MinutesPerDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MinutesPerDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MinutesPerDay:Version Information')">
+              <span id="F:NodaTime.NodaConstants.MinutesPerDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MinutesPerDay:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.MinutesPerHour">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MinutesPerHour:member')">
+            <span id="F:NodaTime.NodaConstants.MinutesPerHour:member:toggle">⊟</span> MinutesPerHour Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.MinutesPerHour:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>60</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MinutesPerHour</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MinutesPerHour:Remarks')">
+              <span id="F:NodaTime.NodaConstants.MinutesPerHour:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MinutesPerHour:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MinutesPerHour:Version Information')">
+              <span id="F:NodaTime.NodaConstants.MinutesPerHour:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MinutesPerHour:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.MinutesPerWeek">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MinutesPerWeek:member')">
+            <span id="F:NodaTime.NodaConstants.MinutesPerWeek:member:toggle">⊟</span> MinutesPerWeek Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.MinutesPerWeek:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>10080</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>MinutesPerWeek</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MinutesPerWeek:Remarks')">
+              <span id="F:NodaTime.NodaConstants.MinutesPerWeek:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MinutesPerWeek:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.MinutesPerWeek:Version Information')">
+              <span id="F:NodaTime.NodaConstants.MinutesPerWeek:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.MinutesPerWeek:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.November">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.November:member')">
+            <span id="F:NodaTime.NodaConstants.November:member:toggle">⊟</span> November Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.November:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>11</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>November</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.November:Remarks')">
+              <span id="F:NodaTime.NodaConstants.November:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.November:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.November:Version Information')">
+              <span id="F:NodaTime.NodaConstants.November:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.November:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.October">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.October:member')">
+            <span id="F:NodaTime.NodaConstants.October:member:toggle">⊟</span> October Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.October:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>10</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>October</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.October:Remarks')">
+              <span id="F:NodaTime.NodaConstants.October:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.October:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.October:Version Information')">
+              <span id="F:NodaTime.NodaConstants.October:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.October:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.SecondsPerDay">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerDay:member')">
+            <span id="F:NodaTime.NodaConstants.SecondsPerDay:member:toggle">⊟</span> SecondsPerDay Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.SecondsPerDay:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>86400</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>SecondsPerDay</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerDay:Remarks')">
+              <span id="F:NodaTime.NodaConstants.SecondsPerDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.SecondsPerDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerDay:Version Information')">
+              <span id="F:NodaTime.NodaConstants.SecondsPerDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.SecondsPerDay:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.SecondsPerHour">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerHour:member')">
+            <span id="F:NodaTime.NodaConstants.SecondsPerHour:member:toggle">⊟</span> SecondsPerHour Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.SecondsPerHour:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>3600</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>SecondsPerHour</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerHour:Remarks')">
+              <span id="F:NodaTime.NodaConstants.SecondsPerHour:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.SecondsPerHour:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerHour:Version Information')">
+              <span id="F:NodaTime.NodaConstants.SecondsPerHour:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.SecondsPerHour:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.SecondsPerMinute">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerMinute:member')">
+            <span id="F:NodaTime.NodaConstants.SecondsPerMinute:member:toggle">⊟</span> SecondsPerMinute Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.SecondsPerMinute:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>60</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>SecondsPerMinute</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerMinute:Remarks')">
+              <span id="F:NodaTime.NodaConstants.SecondsPerMinute:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.SecondsPerMinute:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerMinute:Version Information')">
+              <span id="F:NodaTime.NodaConstants.SecondsPerMinute:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.SecondsPerMinute:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.SecondsPerWeek">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerWeek:member')">
+            <span id="F:NodaTime.NodaConstants.SecondsPerWeek:member:toggle">⊟</span> SecondsPerWeek Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.SecondsPerWeek:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>604800</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>SecondsPerWeek</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerWeek:Remarks')">
+              <span id="F:NodaTime.NodaConstants.SecondsPerWeek:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.SecondsPerWeek:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.SecondsPerWeek:Version Information')">
+              <span id="F:NodaTime.NodaConstants.SecondsPerWeek:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.SecondsPerWeek:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.September">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.September:member')">
+            <span id="F:NodaTime.NodaConstants.September:member:toggle">⊟</span> September Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.September:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>9</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>September</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.September:Remarks')">
+              <span id="F:NodaTime.NodaConstants.September:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.September:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.September:Version Information')">
+              <span id="F:NodaTime.NodaConstants.September:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.September:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.TicksPerDay">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerDay:member')">
+            <span id="F:NodaTime.NodaConstants.TicksPerDay:member:toggle">⊟</span> TicksPerDay Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.TicksPerDay:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>864000000000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> <b>TicksPerDay</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerDay:Remarks')">
+              <span id="F:NodaTime.NodaConstants.TicksPerDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerDay:Version Information')">
+              <span id="F:NodaTime.NodaConstants.TicksPerDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerDay:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.TicksPerHour">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerHour:member')">
+            <span id="F:NodaTime.NodaConstants.TicksPerHour:member:toggle">⊟</span> TicksPerHour Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.TicksPerHour:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>36000000000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> <b>TicksPerHour</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerHour:Remarks')">
+              <span id="F:NodaTime.NodaConstants.TicksPerHour:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerHour:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerHour:Version Information')">
+              <span id="F:NodaTime.NodaConstants.TicksPerHour:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerHour:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.TicksPerMillisecond">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerMillisecond:member')">
+            <span id="F:NodaTime.NodaConstants.TicksPerMillisecond:member:toggle">⊟</span> TicksPerMillisecond Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.TicksPerMillisecond:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>10000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> <b>TicksPerMillisecond</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerMillisecond:Remarks')">
+              <span id="F:NodaTime.NodaConstants.TicksPerMillisecond:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerMillisecond:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerMillisecond:Version Information')">
+              <span id="F:NodaTime.NodaConstants.TicksPerMillisecond:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerMillisecond:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.TicksPerMinute">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerMinute:member')">
+            <span id="F:NodaTime.NodaConstants.TicksPerMinute:member:toggle">⊟</span> TicksPerMinute Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.TicksPerMinute:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>600000000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> <b>TicksPerMinute</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerMinute:Remarks')">
+              <span id="F:NodaTime.NodaConstants.TicksPerMinute:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerMinute:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerMinute:Version Information')">
+              <span id="F:NodaTime.NodaConstants.TicksPerMinute:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerMinute:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.TicksPerSecond">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerSecond:member')">
+            <span id="F:NodaTime.NodaConstants.TicksPerSecond:member:toggle">⊟</span> TicksPerSecond Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.TicksPerSecond:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>10000000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> <b>TicksPerSecond</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerSecond:Remarks')">
+              <span id="F:NodaTime.NodaConstants.TicksPerSecond:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerSecond:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerSecond:Version Information')">
+              <span id="F:NodaTime.NodaConstants.TicksPerSecond:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerSecond:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.NodaConstants.TicksPerWeek">
+          <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerWeek:member')">
+            <span id="F:NodaTime.NodaConstants.TicksPerWeek:member:toggle">⊟</span> TicksPerWeek Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.NodaConstants.TicksPerWeek:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <p>
+            <b>Value: </b>6048000000000</p>
+          <div class="Signature">public const <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> <b>TicksPerWeek</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerWeek:Remarks')">
+              <span id="F:NodaTime.NodaConstants.TicksPerWeek:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerWeek:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.NodaConstants.TicksPerWeek:Version Information')">
+              <span id="F:NodaTime.NodaConstants.TicksPerWeek:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.NodaConstants.TicksPerWeek:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>

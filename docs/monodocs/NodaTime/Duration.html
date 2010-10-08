@@ -1,0 +1,3009 @@
+<html>
+  <head>
+    <title>NodaTime.Duration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.Duration">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Duration:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Duration:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Duration:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.Duration">Duration  Struct</h1>
+    <p class="Summary" id="T:NodaTime.Duration:Summary">
+            A length of time in ticks. (There are 10,000 ticks in a millisecond.)
+            </p>
+    <div id="T:NodaTime.Duration:Signature">
+      <div class="Signature">public struct  <b>Duration</b> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IComparable`1">IComparable&lt;Duration&gt;</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IEquatable`1">IEquatable&lt;Duration&gt;</a></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.Duration:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Duration:Docs:Remarks')">
+          <span id="T:NodaTime.Duration:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Duration:Docs:Remarks">
+        <p>
+            There is no concept of fields, such as days or seconds, as these fields can vary in length.
+            A duration may be converted to an <a href="../NodaTime/IPeriod.html">NodaTime.IPeriod</a> to obtain field values. This
+            conversion will typically cause a loss of precision.
+            </p>
+        <p>
+            This type is immutable and thread-safe.
+            </p>
+      </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Duration:Docs:Version Information')">
+          <span id="T:NodaTime.Duration:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Duration:Docs:Version Information">
+        <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ValueType">ValueType</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Public Constructors')">
+            <span id="Public Constructors:toggle">⊟</span> Public Constructors</a>
+        </h3>
+        <blockquote id="Public Constructors">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.Duration(NodaTime.Interval)">Duration</a>
+                    </b>(<a href="../NodaTime/Interval.html">Interval</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> struct as the duration of the
+            given <a href="../NodaTime/Interval.html">NodaTime.Interval</a> object.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.Duration(System.Int64)">Duration</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> struct.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant)">Duration</a>
+                    </b>(<a href="../NodaTime/Instant.html">Instant</a>, <a href="../NodaTime/Instant.html">Instant</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> struct as the difference
+            betweeen the given <a href="../NodaTime/Instant.html">NodaTime.Instant</a> values. This is effectively <tt>new
+            Duration(end.Ticks - start.Ticks)</tt>.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.Duration(System.Int64,System.Int64)">Duration</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> struct as the difference
+            betweeen the given ticks. This is effectively <tt>new Duration(end - start)</tt>.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Fields')">
+            <span id="Public Fields:toggle">⊟</span> Public Fields</a>
+        </h3>
+        <blockquote id="Public Fields">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.MaxValue">MaxValue</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents the maximum <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value. 
+            This field is read-only.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.MinValue">MinValue</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents the mimimum <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value. 
+            This field is read-only.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.NegativeOne">NegativeOne</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equal to negative 1 tick. 
+            This field is read-only.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.One">One</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to 1 tick. 
+            This field is read-only.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.OneDay">OneDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 day.
+            This field is constant.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.OneHour">OneHour</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 hour.
+            This field is constant.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.OneMillisecond">OneMillisecond</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 millisecond.
+            This field is constant.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.OneMinute">OneMinute</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 minute.
+            This field is constant.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.OneSecond">OneSecond</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 second.
+            This field is constant.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.OneWeek">OneWeek</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 week.
+            This field is constant.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static readonly </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#F:NodaTime.Duration.Zero">Zero</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">Duration</a>
+                  </i>. 
+            Represents the zero <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value. 
+            This field is read-only.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Properties')">
+            <span id="Public Properties:toggle">⊟</span> Public Properties</a>
+        </h3>
+        <blockquote id="Public Properties">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Duration.Ticks">Ticks</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>
+                  </i>. 
+            The number of ticks in the duration.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Methods')">
+            <span id="Public Methods:toggle">⊟</span> Public Methods</a>
+        </h3>
+        <blockquote id="Public Methods">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration)">Add</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="../NodaTime/Duration.html">Duration</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Adds one duration to another. Friendly alternative to <tt>operator+()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.CompareTo(NodaTime.Duration)">CompareTo</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Compares the current object with another object of the same type.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64)">Divide</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Divides a duration by a number. Friendly alternative to <tt>operator/()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.Equals(NodaTime.Duration)">Equals</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Indicates whether the current object is equal to another object of the same type.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.Equals(System.Object)">Equals</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Determines whether the specified <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> is equal to this instance.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.FromHours(System.Int64)">FromHours</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of hours.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.FromMilliseconds(System.Int64)">FromMilliseconds</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of milliseconds.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.FromMinutes(System.Int64)">FromMinutes</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of minutes.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.FromSeconds(System.Int64)">FromSeconds</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of seconds.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.FromStandardDays(System.Int64)">FromStandardDays</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of standard days made
+            up from 24 hours.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.FromStandardWeeks(System.Int64)">FromStandardWeeks</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of standard weeks made
+            up from 7 24-hour days.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.GetHashCode">GetHashCode</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Returns a hash code for this instance.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64)">Multiply</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Multiplies a duration by a number. Friendly alternative to <tt>operator*()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration)">Multiply</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>, <a href="../NodaTime/Duration.html">Duration</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Multiplies a duration by a number. Friendly alternative to <tt>operator*()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.Parse(System.String)">Parse</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Parses the specified value into a <a href="../NodaTime/Duration.html">NodaTime.Duration</a>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration)">Subtract</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="../NodaTime/Duration.html">Duration</a>)<nobr> : <a href="../NodaTime/Duration.html">Duration</a></nobr><blockquote>
+            Subtracts one duration from another. Friendly alternative to <tt>operator-()</tt>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant)">ToIntervalFrom</a>
+                  </b>(<a href="../NodaTime/Instant.html">Instant</a>)<nobr> : <a href="../NodaTime/Interval.html">Interval</a></nobr><blockquote>
+            Converts this duration to an <a href="../NodaTime/Interval.html">NodaTime.Interval</a> starting at the specified instant.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant)">ToIntervalTo</a>
+                  </b>(<a href="../NodaTime/Instant.html">Instant</a>)<nobr> : <a href="../NodaTime/Interval.html">Interval</a></nobr><blockquote>
+            Converts this duration to an <a href="../NodaTime/Interval.html">NodaTime.Interval</a> ending at the specified instant.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.ToPeriod">ToPeriod</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a></nobr><blockquote>
+            Converts this duration to a <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> instance using the standard period type and the ISO calendar.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem)">ToPeriod</a>
+                  </b>(<a href="../NodaTime.Calendars/CalendarSystem.html">NodaTime.Calendars.CalendarSystem</a>)<nobr> : <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a></nobr><blockquote>
+            Converts this duration to a <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> instance using the standard period type and calendar.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType)">ToPeriod</a>
+                  </b>(<a href="../NodaTime.Periods/PeriodType.html">NodaTime.Periods.PeriodType</a>)<nobr> : <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a></nobr><blockquote>
+            Converts this duration to a <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> instance using the specified period type and the ISO calendar.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem)">ToPeriod</a>
+                  </b>(<a href="../NodaTime.Periods/PeriodType.html">NodaTime.Periods.PeriodType</a>, <a href="../NodaTime.Calendars/CalendarSystem.html">NodaTime.Calendars.CalendarSystem</a>)<nobr> : <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a></nobr><blockquote>
+            Converts this duration to a <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> instance using the specified period type and calendar.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.ToString">ToString</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a></nobr><blockquote>
+            Gets the value as a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> in the ISO8601 duration format including
+            only seconds and ticks.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@)">TryParse</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>, <i>out</i> <a href="../NodaTime/Duration.html">Duration</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Converts the string representation of a duration to its <a href="../NodaTime/Duration.html">NodaTime.Duration</a> equivalent 
+            and returns a value that indicates whether the conversion succeeded.
+            </blockquote></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Operators')">
+            <span id="Public Operators:toggle">⊟</span> Public Operators</a>
+        </h3>
+        <blockquote id="Public Operators">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration)">Addition</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="../NodaTime/Duration.html">Duration</a>)</td>
+                <td>
+            Implements the operator + (addition).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64)">Division</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)</td>
+                <td>
+            Implements the operator / (division).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration)">Equality</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="../NodaTime/Duration.html">Duration</a>)</td>
+                <td>
+            Implements the operator == (equality).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration)">GreaterThan</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="../NodaTime/Duration.html">Duration</a>)</td>
+                <td>
+            Implements the operator &gt; (greater than).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration)">GreaterThanOrEqual</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="../NodaTime/Duration.html">Duration</a>)</td>
+                <td>
+            Implements the operator &gt;= (greater than or equal).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration)">Inequality</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="../NodaTime/Duration.html">Duration</a>)</td>
+                <td>
+            Implements the operator != (inequality).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration)">LessThan</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="../NodaTime/Duration.html">Duration</a>)</td>
+                <td>
+            Implements the operator &lt; (less than).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration)">LessThanOrEqual</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="../NodaTime/Duration.html">Duration</a>)</td>
+                <td>
+            Implements the operator &lt;= (less than or equal).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64)">Multiply</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>)</td>
+                <td>
+            Implements the operator * (multiplication).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration)">Multiply</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a>, <a href="../NodaTime/Duration.html">Duration</a>)</td>
+                <td>
+            Implements the operator * (multiplication).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration)">Subtraction</a>
+                  </b>(<a href="../NodaTime/Duration.html">Duration</a>, <a href="../NodaTime/Duration.html">Duration</a>)</td>
+                <td>
+            Implements the operator - (subtraction).
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.Duration:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="C:NodaTime.Duration(NodaTime.Interval)">
+          <a href="javascript:toggle_display('C:NodaTime.Duration(NodaTime.Interval):member')">
+            <span id="C:NodaTime.Duration(NodaTime.Interval):member:toggle">⊟</span> Duration Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.Duration(NodaTime.Interval):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> struct as the duration of the
+            given <a href="../NodaTime/Interval.html">NodaTime.Interval</a> object.
+            </p>
+          <div class="Signature">public  <b>Duration</b> (<a href="../NodaTime/Interval.html">Interval</a> interval)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(NodaTime.Interval):Parameters')">
+              <span id="C:NodaTime.Duration(NodaTime.Interval):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(NodaTime.Interval):Parameters">
+            <dl>
+              <dt>
+                <i>interval</i>
+              </dt>
+              <dd>The interval.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(NodaTime.Interval):Remarks')">
+              <span id="C:NodaTime.Duration(NodaTime.Interval):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(NodaTime.Interval):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(NodaTime.Interval):Version Information')">
+              <span id="C:NodaTime.Duration(NodaTime.Interval):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(NodaTime.Interval):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="C:NodaTime.Duration(System.Int64)">
+          <a href="javascript:toggle_display('C:NodaTime.Duration(System.Int64):member')">
+            <span id="C:NodaTime.Duration(System.Int64):member:toggle">⊟</span> Duration Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.Duration(System.Int64):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> struct.
+            </p>
+          <div class="Signature">public  <b>Duration</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> ticks)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(System.Int64):Parameters')">
+              <span id="C:NodaTime.Duration(System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>ticks</i>
+              </dt>
+              <dd>The number of ticks.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(System.Int64):Remarks')">
+              <span id="C:NodaTime.Duration(System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(System.Int64):Version Information')">
+              <span id="C:NodaTime.Duration(System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant)">
+          <a href="javascript:toggle_display('C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):member')">
+            <span id="C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):member:toggle">⊟</span> Duration Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> struct as the difference
+            betweeen the given <a href="../NodaTime/Instant.html">NodaTime.Instant</a> values. This is effectively <tt>new
+            Duration(end.Ticks - start.Ticks)</tt>.
+            </p>
+          <div class="Signature">public  <b>Duration</b> (<a href="../NodaTime/Instant.html">Instant</a> start, <a href="../NodaTime/Instant.html">Instant</a> end)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):Parameters')">
+              <span id="C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):Parameters">
+            <dl>
+              <dt>
+                <i>start</i>
+              </dt>
+              <dd>The start <a href="../NodaTime/Instant.html">NodaTime.Instant</a> value.</dd>
+              <dt>
+                <i>end</i>
+              </dt>
+              <dd>The end <a href="../NodaTime/Instant.html">NodaTime.Instant</a> value.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):Remarks')">
+              <span id="C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):Version Information')">
+              <span id="C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(NodaTime.Instant,NodaTime.Instant):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="C:NodaTime.Duration(System.Int64,System.Int64)">
+          <a href="javascript:toggle_display('C:NodaTime.Duration(System.Int64,System.Int64):member')">
+            <span id="C:NodaTime.Duration(System.Int64,System.Int64):member:toggle">⊟</span> Duration Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.Duration(System.Int64,System.Int64):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> struct as the difference
+            betweeen the given ticks. This is effectively <tt>new Duration(end - start)</tt>.
+            </p>
+          <div class="Signature">public  <b>Duration</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> startTicks, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> endTicks)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(System.Int64,System.Int64):Parameters')">
+              <span id="C:NodaTime.Duration(System.Int64,System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(System.Int64,System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>startTicks</i>
+              </dt>
+              <dd>The start ticks.</dd>
+              <dt>
+                <i>endTicks</i>
+              </dt>
+              <dd>The end ticks.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(System.Int64,System.Int64):Remarks')">
+              <span id="C:NodaTime.Duration(System.Int64,System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(System.Int64,System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Duration(System.Int64,System.Int64):Version Information')">
+              <span id="C:NodaTime.Duration(System.Int64,System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Duration(System.Int64,System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):member:toggle">⊟</span> Add Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):member">
+          <p class="Summary">
+            Adds one duration to another. Friendly alternative to <tt>operator+()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>Add</b> (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Returns">A new <a href="../NodaTime/Duration.html">NodaTime.Duration</a> representing the sum of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Add(NodaTime.Duration,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.CompareTo(NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.CompareTo(NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.CompareTo(NodaTime.Duration):member:toggle">⊟</span> CompareTo Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.CompareTo(NodaTime.Duration):member">
+          <p class="Summary">
+            Compares the current object with another object of the same type.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>CompareTo</b> (<a href="../NodaTime/Duration.html">Duration</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.CompareTo(NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.CompareTo(NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.CompareTo(NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>An object to compare with this object.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.CompareTo(NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.CompareTo(NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.CompareTo(NodaTime.Duration):Returns">
+            A 32-bit signed integer that indicates the relative order of the objects being compared.
+            The return value has the following meanings:
+            <table class="Documentation"><tr><th>Value</th><th>Meaning</th></tr><tr valign="top"><td>&lt; 0</td><td>This object is less than the <i>other</i> parameter.</td></tr><tr valign="top"><td>0</td><td>This object is equal to <i>other</i>.</td></tr><tr valign="top"><td>&gt; 0</td><td>This object is greater than <i>other</i>.</td></tr></table></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.CompareTo(NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.CompareTo(NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.CompareTo(NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.CompareTo(NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.CompareTo(NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.CompareTo(NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):member')">
+            <span id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):member:toggle">⊟</span> Divide Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):member">
+          <p class="Summary">
+            Divides a duration by a number. Friendly alternative to <tt>operator/()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>Divide</b> (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Parameters')">
+              <span id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Returns')">
+              <span id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Returns">A new <a href="../NodaTime/Duration.html">NodaTime.Duration</a> representing the quotient of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Remarks')">
+              <span id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Version Information')">
+              <span id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Divide(NodaTime.Duration,System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.Equals(NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.Equals(NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.Equals(NodaTime.Duration):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.Equals(NodaTime.Duration):member">
+          <p class="Summary">
+            Indicates whether the current object is equal to another object of the same type.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="../NodaTime/Duration.html">Duration</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Equals(NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.Equals(NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Equals(NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>An object to compare with this object.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Equals(NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.Equals(NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Equals(NodaTime.Duration):Returns">
+            true if the current object is equal to the <i>other</i> parameter;
+            otherwise, false.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Equals(NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.Equals(NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Equals(NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Equals(NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.Equals(NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Equals(NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.Equals(System.Object)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.Equals(System.Object):member')">
+            <span id="M:NodaTime.Duration.Equals(System.Object):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.Equals(System.Object):member">
+          <p class="Summary">
+            Determines whether the specified <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> is equal to this instance.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> obj)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Equals(System.Object):Parameters')">
+              <span id="M:NodaTime.Duration.Equals(System.Object):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Equals(System.Object):Parameters">
+            <dl>
+              <dt>
+                <i>obj</i>
+              </dt>
+              <dd>The <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> to compare with this instance.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Equals(System.Object):Returns')">
+              <span id="M:NodaTime.Duration.Equals(System.Object):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Equals(System.Object):Returns">
+            <tt>true</tt> if the specified <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> is equal to this instance;
+            otherwise, <tt>false</tt>.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Equals(System.Object):Remarks')">
+              <span id="M:NodaTime.Duration.Equals(System.Object):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Equals(System.Object):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Equals(System.Object):Version Information')">
+              <span id="M:NodaTime.Duration.Equals(System.Object):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Equals(System.Object):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.FromHours(System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.FromHours(System.Int64):member')">
+            <span id="M:NodaTime.Duration.FromHours(System.Int64):member:toggle">⊟</span> FromHours Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.FromHours(System.Int64):member">
+          <p class="Summary">
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of hours.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>FromHours</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> hours)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromHours(System.Int64):Parameters')">
+              <span id="M:NodaTime.Duration.FromHours(System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromHours(System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>hours</i>
+              </dt>
+              <dd>The number of hours.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromHours(System.Int64):Returns')">
+              <span id="M:NodaTime.Duration.FromHours(System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromHours(System.Int64):Returns">A <a href="../NodaTime/Duration.html">NodaTime.Duration</a> number of hours.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromHours(System.Int64):Remarks')">
+              <span id="M:NodaTime.Duration.FromHours(System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromHours(System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromHours(System.Int64):Version Information')">
+              <span id="M:NodaTime.Duration.FromHours(System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromHours(System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.FromMilliseconds(System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.FromMilliseconds(System.Int64):member')">
+            <span id="M:NodaTime.Duration.FromMilliseconds(System.Int64):member:toggle">⊟</span> FromMilliseconds Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.FromMilliseconds(System.Int64):member">
+          <p class="Summary">
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of milliseconds.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>FromMilliseconds</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> milliseconds)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromMilliseconds(System.Int64):Parameters')">
+              <span id="M:NodaTime.Duration.FromMilliseconds(System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromMilliseconds(System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>milliseconds</i>
+              </dt>
+              <dd>The number of milliseconds.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromMilliseconds(System.Int64):Returns')">
+              <span id="M:NodaTime.Duration.FromMilliseconds(System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromMilliseconds(System.Int64):Returns">A <a href="../NodaTime/Duration.html">NodaTime.Duration</a> number of milliseconds.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromMilliseconds(System.Int64):Remarks')">
+              <span id="M:NodaTime.Duration.FromMilliseconds(System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromMilliseconds(System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromMilliseconds(System.Int64):Version Information')">
+              <span id="M:NodaTime.Duration.FromMilliseconds(System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromMilliseconds(System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.FromMinutes(System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.FromMinutes(System.Int64):member')">
+            <span id="M:NodaTime.Duration.FromMinutes(System.Int64):member:toggle">⊟</span> FromMinutes Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.FromMinutes(System.Int64):member">
+          <p class="Summary">
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of minutes.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>FromMinutes</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> minutes)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromMinutes(System.Int64):Parameters')">
+              <span id="M:NodaTime.Duration.FromMinutes(System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromMinutes(System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>minutes</i>
+              </dt>
+              <dd>The number of minutes.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromMinutes(System.Int64):Returns')">
+              <span id="M:NodaTime.Duration.FromMinutes(System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromMinutes(System.Int64):Returns">A <a href="../NodaTime/Duration.html">NodaTime.Duration</a> number of minutes.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromMinutes(System.Int64):Remarks')">
+              <span id="M:NodaTime.Duration.FromMinutes(System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromMinutes(System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromMinutes(System.Int64):Version Information')">
+              <span id="M:NodaTime.Duration.FromMinutes(System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromMinutes(System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.FromSeconds(System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.FromSeconds(System.Int64):member')">
+            <span id="M:NodaTime.Duration.FromSeconds(System.Int64):member:toggle">⊟</span> FromSeconds Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.FromSeconds(System.Int64):member">
+          <p class="Summary">
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of seconds.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>FromSeconds</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> seconds)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromSeconds(System.Int64):Parameters')">
+              <span id="M:NodaTime.Duration.FromSeconds(System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromSeconds(System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>seconds</i>
+              </dt>
+              <dd>The number of seconds.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromSeconds(System.Int64):Returns')">
+              <span id="M:NodaTime.Duration.FromSeconds(System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromSeconds(System.Int64):Returns">A <a href="../NodaTime/Duration.html">NodaTime.Duration</a> number of seconds.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromSeconds(System.Int64):Remarks')">
+              <span id="M:NodaTime.Duration.FromSeconds(System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromSeconds(System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromSeconds(System.Int64):Version Information')">
+              <span id="M:NodaTime.Duration.FromSeconds(System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromSeconds(System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.FromStandardDays(System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.FromStandardDays(System.Int64):member')">
+            <span id="M:NodaTime.Duration.FromStandardDays(System.Int64):member:toggle">⊟</span> FromStandardDays Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.FromStandardDays(System.Int64):member">
+          <p class="Summary">
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of standard days made
+            up from 24 hours.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>FromStandardDays</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> days)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromStandardDays(System.Int64):Parameters')">
+              <span id="M:NodaTime.Duration.FromStandardDays(System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromStandardDays(System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>days</i>
+              </dt>
+              <dd>The number of days.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromStandardDays(System.Int64):Returns')">
+              <span id="M:NodaTime.Duration.FromStandardDays(System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromStandardDays(System.Int64):Returns">A <a href="../NodaTime/Duration.html">NodaTime.Duration</a> number of days.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromStandardDays(System.Int64):Remarks')">
+              <span id="M:NodaTime.Duration.FromStandardDays(System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromStandardDays(System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromStandardDays(System.Int64):Version Information')">
+              <span id="M:NodaTime.Duration.FromStandardDays(System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromStandardDays(System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.FromStandardWeeks(System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.FromStandardWeeks(System.Int64):member')">
+            <span id="M:NodaTime.Duration.FromStandardWeeks(System.Int64):member:toggle">⊟</span> FromStandardWeeks Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.FromStandardWeeks(System.Int64):member">
+          <p class="Summary">
+            Returns a <a href="../NodaTime/Duration.html">NodaTime.Duration</a> that represents the given number of standard weeks made
+            up from 7 24-hour days.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>FromStandardWeeks</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> weeks)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromStandardWeeks(System.Int64):Parameters')">
+              <span id="M:NodaTime.Duration.FromStandardWeeks(System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromStandardWeeks(System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>weeks</i>
+              </dt>
+              <dd>The number of weeks.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromStandardWeeks(System.Int64):Returns')">
+              <span id="M:NodaTime.Duration.FromStandardWeeks(System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromStandardWeeks(System.Int64):Returns">A <a href="../NodaTime/Duration.html">NodaTime.Duration</a> number of weeks.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromStandardWeeks(System.Int64):Remarks')">
+              <span id="M:NodaTime.Duration.FromStandardWeeks(System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromStandardWeeks(System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.FromStandardWeeks(System.Int64):Version Information')">
+              <span id="M:NodaTime.Duration.FromStandardWeeks(System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.FromStandardWeeks(System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.GetHashCode">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.GetHashCode:member')">
+            <span id="M:NodaTime.Duration.GetHashCode:member:toggle">⊟</span> GetHashCode Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.GetHashCode:member">
+          <p class="Summary">
+            Returns a hash code for this instance.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>GetHashCode</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.GetHashCode:Returns')">
+              <span id="M:NodaTime.Duration.GetHashCode:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.GetHashCode:Returns">
+            A hash code for this instance, suitable for use in hashing algorithms and data
+            structures like a hash table. 
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.GetHashCode:Remarks')">
+              <span id="M:NodaTime.Duration.GetHashCode:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.GetHashCode:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.GetHashCode:Version Information')">
+              <span id="M:NodaTime.Duration.GetHashCode:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.GetHashCode:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.MaxValue">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.MaxValue:member')">
+            <span id="F:NodaTime.Duration.MaxValue:member:toggle">⊟</span> MaxValue Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.MaxValue:member">
+          <p class="Summary">
+            Represents the maximum <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value. 
+            This field is read-only.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>MaxValue</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.MaxValue:Remarks')">
+              <span id="F:NodaTime.Duration.MaxValue:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.MaxValue:Remarks">
+            The value of this field is equivalent to <a href="http://www.go-mono.com/docs/monodoc.ashx?link=F:System.Int64.MaxValue">long.MaxValue</a> ticks. 
+            The string representation of this value is PT922337203685.4775807S.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.MaxValue:Version Information')">
+              <span id="F:NodaTime.Duration.MaxValue:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.MaxValue:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.MinValue">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.MinValue:member')">
+            <span id="F:NodaTime.Duration.MinValue:member:toggle">⊟</span> MinValue Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.MinValue:member">
+          <p class="Summary">
+            Represents the mimimum <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value. 
+            This field is read-only.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>MinValue</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.MinValue:Remarks')">
+              <span id="F:NodaTime.Duration.MinValue:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.MinValue:Remarks">
+            The value of this field is equivalent to <a href="http://www.go-mono.com/docs/monodoc.ashx?link=F:System.Int64.MinValue">long.MinValue</a> ticks. 
+            The string representation of this value is PT-922337203685.4775808S.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.MinValue:Version Information')">
+              <span id="F:NodaTime.Duration.MinValue:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.MinValue:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):member')">
+            <span id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):member:toggle">⊟</span> Multiply Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):member">
+          <p class="Summary">
+            Multiplies a duration by a number. Friendly alternative to <tt>operator*()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>Multiply</b> (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Parameters')">
+              <span id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Returns')">
+              <span id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Returns">A new <a href="../NodaTime/Duration.html">NodaTime.Duration</a> representing the product of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Remarks')">
+              <span id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Version Information')">
+              <span id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Multiply(NodaTime.Duration,System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):member:toggle">⊟</span> Multiply Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):member">
+          <p class="Summary">
+            Multiplies a duration by a number. Friendly alternative to <tt>operator*()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>Multiply</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Returns">A new <a href="../NodaTime/Duration.html">NodaTime.Duration</a> representing the product of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Multiply(System.Int64,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.NegativeOne">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.NegativeOne:member')">
+            <span id="F:NodaTime.Duration.NegativeOne:member:toggle">⊟</span> NegativeOne Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.NegativeOne:member">
+          <p class="Summary">
+            Represents <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equal to negative 1 tick. 
+            This field is read-only.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>NegativeOne</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.NegativeOne:Remarks')">
+              <span id="F:NodaTime.Duration.NegativeOne:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.NegativeOne:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.NegativeOne:Version Information')">
+              <span id="F:NodaTime.Duration.NegativeOne:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.NegativeOne:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.One">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.One:member')">
+            <span id="F:NodaTime.Duration.One:member:toggle">⊟</span> One Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.One:member">
+          <p class="Summary">
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to 1 tick. 
+            This field is read-only.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>One</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.One:Remarks')">
+              <span id="F:NodaTime.Duration.One:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.One:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.One:Version Information')">
+              <span id="F:NodaTime.Duration.One:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.One:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.OneDay">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.OneDay:member')">
+            <span id="F:NodaTime.Duration.OneDay:member:toggle">⊟</span> OneDay Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.OneDay:member">
+          <p class="Summary">
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 day.
+            This field is constant.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>OneDay</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneDay:Remarks')">
+              <span id="F:NodaTime.Duration.OneDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneDay:Remarks">
+            The value of this constant is 864 billion ticks; that is, 864,000,000,000 ticks.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneDay:Version Information')">
+              <span id="F:NodaTime.Duration.OneDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneDay:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.OneHour">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.OneHour:member')">
+            <span id="F:NodaTime.Duration.OneHour:member:toggle">⊟</span> OneHour Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.OneHour:member">
+          <p class="Summary">
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 hour.
+            This field is constant.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>OneHour</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneHour:Remarks')">
+              <span id="F:NodaTime.Duration.OneHour:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneHour:Remarks">
+            The value of this constant is 36 billion ticks; that is, 36,000,000,000 ticks.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneHour:Version Information')">
+              <span id="F:NodaTime.Duration.OneHour:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneHour:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.OneMillisecond">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.OneMillisecond:member')">
+            <span id="F:NodaTime.Duration.OneMillisecond:member:toggle">⊟</span> OneMillisecond Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.OneMillisecond:member">
+          <p class="Summary">
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 millisecond.
+            This field is constant.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>OneMillisecond</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneMillisecond:Remarks')">
+              <span id="F:NodaTime.Duration.OneMillisecond:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneMillisecond:Remarks">
+            TThe value of this constant is 10 thousand; that is, 10,000.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneMillisecond:Version Information')">
+              <span id="F:NodaTime.Duration.OneMillisecond:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneMillisecond:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.OneMinute">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.OneMinute:member')">
+            <span id="F:NodaTime.Duration.OneMinute:member:toggle">⊟</span> OneMinute Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.OneMinute:member">
+          <p class="Summary">
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 minute.
+            This field is constant.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>OneMinute</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneMinute:Remarks')">
+              <span id="F:NodaTime.Duration.OneMinute:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneMinute:Remarks">
+            The value of this constant is 600 million ticks; that is, 600,000,000 ticks.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneMinute:Version Information')">
+              <span id="F:NodaTime.Duration.OneMinute:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneMinute:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.OneSecond">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.OneSecond:member')">
+            <span id="F:NodaTime.Duration.OneSecond:member:toggle">⊟</span> OneSecond Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.OneSecond:member">
+          <p class="Summary">
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 second.
+            This field is constant.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>OneSecond</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneSecond:Remarks')">
+              <span id="F:NodaTime.Duration.OneSecond:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneSecond:Remarks">
+            The value of this constant is 10 million ticks; that is, 10,000,000 ticks.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneSecond:Version Information')">
+              <span id="F:NodaTime.Duration.OneSecond:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneSecond:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.OneWeek">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.OneWeek:member')">
+            <span id="F:NodaTime.Duration.OneWeek:member:toggle">⊟</span> OneWeek Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.OneWeek:member">
+          <p class="Summary">
+            Represents the <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value equals to number of ticks in 1 week.
+            This field is constant.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>OneWeek</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneWeek:Remarks')">
+              <span id="F:NodaTime.Duration.OneWeek:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneWeek:Remarks">
+            The value of this constant is 6,048.000,000,000 ticks.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.OneWeek:Version Information')">
+              <span id="F:NodaTime.Duration.OneWeek:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.OneWeek:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):member:toggle">⊟</span> op_Addition Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):member">
+          <p class="Summary">
+            Implements the operator + (addition).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> operator+ (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Returns">A new <a href="../NodaTime/Duration.html">NodaTime.Duration</a> representing the sum of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Addition(NodaTime.Duration,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):member')">
+            <span id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):member:toggle">⊟</span> op_Division Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):member">
+          <p class="Summary">
+            Implements the operator / (division).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> operator/ (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Parameters')">
+              <span id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Returns')">
+              <span id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Returns">A new <a href="../NodaTime/Duration.html">NodaTime.Duration</a> representing the duration divided by the scale.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Remarks')">
+              <span id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Version Information')">
+              <span id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Division(NodaTime.Duration,System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):member:toggle">⊟</span> op_Equality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):member">
+          <p class="Summary">
+            Implements the operator == (equality).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator== (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Returns">
+            <tt>true</tt> if values are equal to each other, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Equality(NodaTime.Duration,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):member:toggle">⊟</span> op_GreaterThan Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):member">
+          <p class="Summary">
+            Implements the operator &gt; (greater than).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&gt; (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Returns">
+            <tt>true</tt> if the left value is greater than the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_GreaterThan(NodaTime.Duration,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):member:toggle">⊟</span> op_GreaterThanOrEqual Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):member">
+          <p class="Summary">
+            Implements the operator &gt;= (greater than or equal).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&gt;= (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Returns">
+            <tt>true</tt> if the left value is greater than or equal to the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_GreaterThanOrEqual(NodaTime.Duration,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):member:toggle">⊟</span> op_Inequality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):member">
+          <p class="Summary">
+            Implements the operator != (inequality).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator!= (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Returns">
+            <tt>true</tt> if values are not equal to each other, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Inequality(NodaTime.Duration,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):member:toggle">⊟</span> op_LessThan Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):member">
+          <p class="Summary">
+            Implements the operator &lt; (less than).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&lt; (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Returns">
+            <tt>true</tt> if the left value is less than the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_LessThan(NodaTime.Duration,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):member:toggle">⊟</span> op_LessThanOrEqual Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):member">
+          <p class="Summary">
+            Implements the operator &lt;= (less than or equal).
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator&lt;= (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Returns">
+            <tt>true</tt> if the left value is less than or equal to the right value, otherwise <tt>false</tt>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_LessThanOrEqual(NodaTime.Duration,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):member')">
+            <span id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):member:toggle">⊟</span> op_Multiply Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):member">
+          <p class="Summary">
+            Implements the operator * (multiplication).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> operator* (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Parameters')">
+              <span id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Returns')">
+              <span id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Returns">A new <a href="../NodaTime/Duration.html">NodaTime.Duration</a> representing the duration multiplied by the scale.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Remarks')">
+              <span id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Version Information')">
+              <span id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Multiply(NodaTime.Duration,System.Int64):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):member:toggle">⊟</span> op_Multiply Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):member">
+          <p class="Summary">
+            Implements the operator * (multiplication).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> operator* (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Returns">A new <a href="../NodaTime/Duration.html">NodaTime.Duration</a> representing the duration multiplied by the scale.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Multiply(System.Int64,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):member:toggle">⊟</span> op_Subtraction Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):member">
+          <p class="Summary">
+            Implements the operator - (subtraction).
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> operator- (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Returns">A new <a href="../NodaTime/Duration.html">NodaTime.Duration</a> representing the difference of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.op_Subtraction(NodaTime.Duration,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.Parse(System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.Parse(System.String):member')">
+            <span id="M:NodaTime.Duration.Parse(System.String):member:toggle">⊟</span> Parse Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.Parse(System.String):member">
+          <p class="Summary">
+            Parses the specified value into a <a href="../NodaTime/Duration.html">NodaTime.Duration</a>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>Parse</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> value)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Parse(System.String):Parameters')">
+              <span id="M:NodaTime.Duration.Parse(System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Parse(System.String):Parameters">
+            <dl>
+              <dt>
+                <i>value</i>
+              </dt>
+              <dd>The value to parse.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Parse(System.String):Returns')">
+              <span id="M:NodaTime.Duration.Parse(System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Parse(System.String):Returns">The <a href="../NodaTime/Duration.html">NodaTime.Duration</a>.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Parse(System.String):Exceptions')">
+              <span id="M:NodaTime.Duration.Parse(System.String):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Parse(System.String):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.FormatException">FormatException</a>
+                </td>
+                <td>If the <i>value</i> is badly formatted./**/</td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>If the <i>value</i> is <tt>null</tt>.</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Parse(System.String):Remarks')">
+              <span id="M:NodaTime.Duration.Parse(System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Parse(System.String):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Parse(System.String):Version Information')">
+              <span id="M:NodaTime.Duration.Parse(System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Parse(System.String):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):member')">
+            <span id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):member:toggle">⊟</span> Subtract Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):member">
+          <p class="Summary">
+            Subtracts one duration from another. Friendly alternative to <tt>operator-()</tt>.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime/Duration.html">Duration</a> <b>Subtract</b> (<a href="../NodaTime/Duration.html">Duration</a> left, <a href="../NodaTime/Duration.html">Duration</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Parameters')">
+              <span id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left hand side of the operator.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right hand side of the operator.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Returns')">
+              <span id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Returns">A new <a href="../NodaTime/Duration.html">NodaTime.Duration</a> representing the difference of the given values.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Remarks')">
+              <span id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Version Information')">
+              <span id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.Subtract(NodaTime.Duration,NodaTime.Duration):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Duration.Ticks">
+          <a href="javascript:toggle_display('P:NodaTime.Duration.Ticks:member')">
+            <span id="P:NodaTime.Duration.Ticks:member:toggle">⊟</span> Ticks Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Duration.Ticks:member">
+          <p class="Summary">
+            The number of ticks in the duration.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int64">long</a> <b>Ticks</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Duration.Ticks:Value')">
+              <span id="P:NodaTime.Duration.Ticks:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Duration.Ticks:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Duration.Ticks:Remarks')">
+              <span id="P:NodaTime.Duration.Ticks:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Duration.Ticks:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Duration.Ticks:Version Information')">
+              <span id="P:NodaTime.Duration.Ticks:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Duration.Ticks:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):member')">
+            <span id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):member:toggle">⊟</span> ToIntervalFrom Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):member">
+          <p class="Summary">
+            Converts this duration to an <a href="../NodaTime/Interval.html">NodaTime.Interval</a> starting at the specified instant.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Interval.html">Interval</a> <b>ToIntervalFrom</b> (<a href="../NodaTime/Instant.html">Instant</a> start)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Parameters')">
+              <span id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Parameters">
+            <dl>
+              <dt>
+                <i>start</i>
+              </dt>
+              <dd>The instant to start the interval at</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Returns')">
+              <span id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Returns">An <a href="../NodaTime/Interval.html">NodaTime.Interval</a> starting at the specified instant</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Remarks')">
+              <span id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Version Information')">
+              <span id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToIntervalFrom(NodaTime.Instant):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):member')">
+            <span id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):member:toggle">⊟</span> ToIntervalTo Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):member">
+          <p class="Summary">
+            Converts this duration to an <a href="../NodaTime/Interval.html">NodaTime.Interval</a> ending at the specified instant.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Interval.html">Interval</a> <b>ToIntervalTo</b> (<a href="../NodaTime/Instant.html">Instant</a> end)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Parameters')">
+              <span id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Parameters">
+            <dl>
+              <dt>
+                <i>end</i>
+              </dt>
+              <dd>The instant to end the interval at</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Returns')">
+              <span id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Returns">An <a href="../NodaTime/Interval.html">NodaTime.Interval</a> ending at the specified instant</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Remarks')">
+              <span id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Version Information')">
+              <span id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToIntervalTo(NodaTime.Instant):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.ToPeriod">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod:member')">
+            <span id="M:NodaTime.Duration.ToPeriod:member:toggle">⊟</span> ToPeriod Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.ToPeriod:member">
+          <p class="Summary">
+            Converts this duration to a <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> instance using the standard period type and the ISO calendar.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> <b>ToPeriod</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod:Returns')">
+              <span id="M:NodaTime.Duration.ToPeriod:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod:Returns">A Period created using the ticks duration from this instance</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod:Remarks')">
+              <span id="M:NodaTime.Duration.ToPeriod:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod:Remarks">
+            <p>
+            Only precise fields in the period type will be used. Thus, only the hour,
+            minute, second and millisecond fields on the period will be used.
+            The year, month, week and day fields will not be populated.
+            </p>
+            <p>
+            If the duration is small, less than one day, then this method will perform
+            as you might expect and split the fields evenly.
+            If the duration is larger than one day then all the remaining duration will
+            be stored in the largest available field, hours in this case.
+            For example, a duration effectively equal to (365 + 60 + 5) days will be
+            converted to ((365 + 60 + 5) * 24) hours by this constructor.
+            </p>
+            <p>
+            For more control over the conversion process, you must pair the duration with an instant
+            </p>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod:Version Information')">
+              <span id="M:NodaTime.Duration.ToPeriod:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):member')">
+            <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):member:toggle">⊟</span> ToPeriod Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):member">
+          <p class="Summary">
+            Converts this duration to a <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> instance using the standard period type and calendar.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> <b>ToPeriod</b> (<a href="../NodaTime.Calendars/CalendarSystem.html">NodaTime.Calendars.CalendarSystem</a> calendar)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Parameters')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Parameters">
+            <dl>
+              <dt>
+                <i>calendar</i>
+              </dt>
+              <dd>The calendar system to use</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Returns')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Returns">A Period created using the ticks duration from this instance</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Remarks')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Remarks">
+            <p>
+            Only precise fields in the period type will be used.
+            Exactly which fields are precise depends on the calendar system.
+            Only the time fields are precise for ISO calendar.
+            </p>
+            <p>
+            For more control over the conversion process, you must pair the duration with an instant
+            </p>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Version Information')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Calendars.CalendarSystem):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):member')">
+            <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):member:toggle">⊟</span> ToPeriod Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):member">
+          <p class="Summary">
+            Converts this duration to a <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> instance using the specified period type and the ISO calendar.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> <b>ToPeriod</b> (<a href="../NodaTime.Periods/PeriodType.html">NodaTime.Periods.PeriodType</a> type)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Parameters')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Parameters">
+            <dl>
+              <dt>
+                <i>type</i>
+              </dt>
+              <dd>The period type to use</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Returns')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Returns">A Period created using the ticks duration from this instance</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Remarks')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Remarks">
+            <p>
+            Only precise fields in the period type will be used.
+            At most these are hours, minutes, seconds and millis - the period
+            type may restrict the selection further.
+            </p>
+            <p>
+            For more control over the conversion process, you must pair the duration with an instant
+            </p>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Version Information')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):member')">
+            <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):member:toggle">⊟</span> ToPeriod Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):member">
+          <p class="Summary">
+            Converts this duration to a <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> instance using the specified period type and calendar.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/Period.html">NodaTime.Periods.Period</a> <b>ToPeriod</b> (<a href="../NodaTime.Periods/PeriodType.html">NodaTime.Periods.PeriodType</a> type, <a href="../NodaTime.Calendars/CalendarSystem.html">NodaTime.Calendars.CalendarSystem</a> calendar)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Parameters')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Parameters">
+            <dl>
+              <dt>
+                <i>type</i>
+              </dt>
+              <dd>The period type to use</dd>
+              <dt>
+                <i>calendar</i>
+              </dt>
+              <dd>The calendar system to use</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Returns')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Returns">A Period created using the ticks duration from this instance</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Remarks')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Remarks">
+            <p>
+            Only precise fields in the period type will be used.
+            Exactly which fields are precise depends on the calendar system.
+            Only the time fields are precise for ISO calendar.
+            </p>
+            <p>
+            For more control over the conversion process, you must pair the duration with an instant
+            </p>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Version Information')">
+              <span id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToPeriod(NodaTime.Periods.PeriodType,NodaTime.Calendars.CalendarSystem):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.ToString">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.ToString:member')">
+            <span id="M:NodaTime.Duration.ToString:member:toggle">⊟</span> ToString Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.ToString:member">
+          <p class="Summary">
+            Gets the value as a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> in the ISO8601 duration format including
+            only seconds and ticks.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> <b>ToString</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToString:Returns')">
+              <span id="M:NodaTime.Duration.ToString:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToString:Returns">
+            A <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> that represents the instance as an ISO8601 string
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToString:Remarks')">
+              <span id="M:NodaTime.Duration.ToString:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToString:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToString:Example:1')">
+              <span id="M:NodaTime.Duration.ToString:Example:1:toggle">⊟</span> Example</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToString:Example:1">
+            For example, "PT72.3450000S" represents 1 minute, 12 seconds and 345 milliseconds.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.ToString:Version Information')">
+              <span id="M:NodaTime.Duration.ToString:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.ToString:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@)">
+          <a href="javascript:toggle_display('M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):member')">
+            <span id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):member:toggle">⊟</span> TryParse Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):member">
+          <p class="Summary">
+            Converts the string representation of a duration to its <a href="../NodaTime/Duration.html">NodaTime.Duration</a> equivalent 
+            and returns a value that indicates whether the conversion succeeded.
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>TryParse</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> value, <i>out</i> <a href="../NodaTime/Duration.html">Duration</a> result)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Parameters')">
+              <span id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Parameters">
+            <dl>
+              <dt>
+                <i>value</i>
+              </dt>
+              <dd>The value to parse.</dd>
+              <dt>
+                <i>result</i>
+              </dt>
+              <dd>When this method returns, contains an object that represents the duration specified by value,
+            or Duration.Zero if the conversion failed. This parameter is passed uninitialized.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Returns')">
+              <span id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Returns">True if value was converted successfully; otherwise, false.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Remarks')">
+              <span id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Version Information')">
+              <span id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Duration.TryParse(System.String,NodaTime.Duration@):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="F:NodaTime.Duration.Zero">
+          <a href="javascript:toggle_display('F:NodaTime.Duration.Zero:member')">
+            <span id="F:NodaTime.Duration.Zero:member:toggle">⊟</span> Zero Field</a>
+        </h3>
+        <blockquote id="F:NodaTime.Duration.Zero:member">
+          <p class="Summary">
+            Represents the zero <a href="../NodaTime/Duration.html">NodaTime.Duration</a> value. 
+            This field is read-only.
+            </p>
+          <div class="Signature">public static readonly <a href="../NodaTime/Duration.html">Duration</a> <b>Zero</b> </div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.Zero:Remarks')">
+              <span id="F:NodaTime.Duration.Zero:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.Zero:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('F:NodaTime.Duration.Zero:Version Information')">
+              <span id="F:NodaTime.Duration.Zero:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="F:NodaTime.Duration.Zero:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>
