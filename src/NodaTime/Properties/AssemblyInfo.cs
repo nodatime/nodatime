@@ -60,5 +60,6 @@ using System.Runtime.InteropServices;
 [assembly: CLSCompliant(true)]
 [assembly: InternalsVisibleTo("NodaTime.Test")]
 [assembly: InternalsVisibleTo("ZoneInfoCompiler")]
+[assembly: InternalsVisibleTo("ZoneInfoCompiler.Test")]
 [assembly: InternalsVisibleTo("NodaTime.Benchmarks")]
 [assembly: NeutralResourcesLanguage("en-US")]

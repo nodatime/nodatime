@@ -36,7 +36,7 @@ namespace NodaTime.TimeZones
     /// Immutable, thread safe.
     /// </para>
     /// </remarks>
-    public class ZoneRecurrence : IEquatable<ZoneRecurrence>
+    internal class ZoneRecurrence : IEquatable<ZoneRecurrence>
     {
         private readonly int fromYear;
         private readonly string name;

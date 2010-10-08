@@ -23,7 +23,8 @@ using NodaTime.Fields;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides a means of programatically creating complex time zones .
+    /// Provides a means of programatically creating complex time zones. Currently internal, but we
+    /// may want to make it public again eventually.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -71,7 +72,7 @@ namespace NodaTime.TimeZones
     /// Original name: DateTimeZoneBuilder.
     /// </para>
     /// </remarks>
-    public sealed class DateTimeZoneBuilder
+    internal sealed class DateTimeZoneBuilder
     {
         private readonly IList<ZoneRecurrenceCollection> ruleSets = new List<ZoneRecurrenceCollection>();
 

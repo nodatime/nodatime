@@ -28,7 +28,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// <remarks>
     /// Immutable, threadsafe.
     /// </remarks>
-    public class ZoneRule : IEquatable<ZoneRule>
+    internal class ZoneRule : IEquatable<ZoneRule>
     {
         public ZoneRecurrence Recurrence { get { return recurrence; } }
         public string Name { get { return Recurrence.Name; } }

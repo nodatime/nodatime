@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     /// <remarks>
     /// This type is thread-safe and immutable.
     /// </remarks>
-    public sealed class FixedDateTimeZone : DateTimeZone, IEquatable<FixedDateTimeZone>
+    internal sealed class FixedDateTimeZone : DateTimeZone, IEquatable<FixedDateTimeZone>
     {
         private readonly Offset offset;
         private readonly ZoneInterval period;
