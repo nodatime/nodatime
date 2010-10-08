@@ -88,7 +88,7 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="zone">The zone.</param>
         public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, DateTimeZone zone)
-            : this(year, month, day, hour, minute, second, Chronology.IsoForZone(zone))
+            : this(year, month, day, hour, minute, second, zone.ToIsoChronology())
         {
         }
 
@@ -119,7 +119,7 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="zone">The zone.</param>
         public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, DateTimeZone zone)
-            : this(year, month, day, hour, minute, second, millisecond, Chronology.IsoForZone(zone))
+            : this(year, month, day, hour, minute, second, millisecond, zone.ToIsoChronology())
         {
         }
 
@@ -152,7 +152,7 @@ namespace NodaTime
         /// <param name="tick">The tick.</param>
         /// <param name="zone">The zone.</param>
         public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tick, DateTimeZone zone)
-            : this(year, month, day, hour, minute, second, millisecond, tick, Chronology.IsoForZone(zone))
+            : this(year, month, day, hour, minute, second, millisecond, tick, zone.ToIsoChronology())
         {
         }
 
