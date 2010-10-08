@@ -23,12 +23,12 @@ namespace NodaTime.Benchmarks
 {
     internal class UtcZonedDateTimeBenchmarks
     {
-        private readonly ZonedDateTime sample = new ZonedDateTime(2009, 12, 26, 10, 8, 30, DateTimeZones.Utc);
+        private readonly ZonedDateTime sample = new ZonedDateTime(2009, 12, 26, 10, 8, 30, DateTimeZone.Utc);
 
         [Benchmark]
         public void Construction()
         {
-            new ZonedDateTime(2009, 12, 26, 10, 8, 30, DateTimeZones.Utc).Consume();
+            new ZonedDateTime(2009, 12, 26, 10, 8, 30, DateTimeZone.Utc).Consume();
         }
 
         [Benchmark]

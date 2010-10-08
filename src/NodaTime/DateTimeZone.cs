@@ -17,6 +17,7 @@
 
 using NodaTime.Calendars;
 using NodaTime.TimeZones;
+using System;
 
 namespace NodaTime
 {
@@ -31,6 +32,44 @@ namespace NodaTime
     {
         private readonly string id;
         private readonly bool isFixed;
+
+        /// <summary>
+        /// This is the ID of the UTC (Coordinated Univeral Time) time zone.
+        /// </summary>
+        public const string UtcId = "UTC";
+
+        private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
+
+        /// <summary>
+        /// Gets the UTC (Coordinated Univeral Time) time zone.
+        /// </summary>
+        /// <value>The UTC <see cref="DateTimeZone"/>.</value>
+        public static DateTimeZone Utc { get { return UtcZone; } }
+
+        /// <summary>
+        /// Gets the system default time zone which can only be changed by the system.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The time zones defined in the operating system are different than the ones defines in
+        /// this library so a mapping will occur. If an exact mapping can be made then that will be
+        /// used otherwise UTC will be used.
+        /// </para>
+        /// </remarks>
+        /// <value>The system default <see cref="DateTimeZone"/>. this will never be <c>null</c>.</value>
+        public static DateTimeZone SystemDefault
+        {
+            get
+            {
+                var systemName = TimeZone.CurrentTimeZone.StandardName;
+                var timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName);
+                if (timeZoneId == null)
+                {
+                    timeZoneId = UtcId;
+                }
+                return DateTimeZones.ForId(timeZoneId) ?? Utc;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZone"/> class.

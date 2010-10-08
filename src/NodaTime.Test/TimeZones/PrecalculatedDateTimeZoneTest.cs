@@ -33,7 +33,7 @@ namespace NodaTime.Test.TimeZones
             {
                 Assert.Fail(@"The Europe/Paris time zone does not contain a PrecalculatedDateTimeZone.");
             }
-            summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+            summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZone.Utc).ToInstant();
         }
         #endregion
 

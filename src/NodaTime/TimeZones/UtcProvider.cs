@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     /// </remarks>
     public sealed class UtcProvider : IDateTimeZoneProvider
     {
-        private static readonly string[] UtcIds = { DateTimeZones.UtcId };
+        private static readonly string[] UtcIds = { DateTimeZone.UtcId };
 
         #region IDateTimeZoneProvider Members
         /// <summary>
@@ -45,9 +45,9 @@ namespace NodaTime.TimeZones
         /// </remarks>
         public DateTimeZone ForId(string id)
         {
-            if (id == DateTimeZones.UtcId)
+            if (id == DateTimeZone.UtcId)
             {
-                return DateTimeZones.Utc;
+                return DateTimeZone.Utc;
             }
             return null;
         }
