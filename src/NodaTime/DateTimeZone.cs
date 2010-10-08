@@ -94,7 +94,7 @@ namespace NodaTime
         /// The database ID for the time zone.
         /// </summary>
         public string Id { get { return id; } }
-        
+
         /// <summary>
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
