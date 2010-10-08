@@ -25,7 +25,7 @@ namespace NodaTime.Test.Format
     public partial class IsoDateTimeFormatsTest
     {
         #region Zones
-        private static readonly DateTimeZone UTC = DateTimeZones.Utc;
+        private static readonly DateTimeZone UTC = DateTimeZone.Utc;
         private static readonly DateTimeZone London = DateTimeZones.ForId("Europe/London");
         private static readonly DateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
         #endregion

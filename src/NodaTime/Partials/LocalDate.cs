@@ -118,7 +118,7 @@ namespace NodaTime.Partials
         public override string ToString()
         {
             // TODO: Shouldn't need to build a ZonedDateTime!
-            return IsoDateTimeFormats.Date.Print(new ZonedDateTime(localTime, DateTimeZones.Utc));
+            return IsoDateTimeFormats.Date.Print(new ZonedDateTime(localTime, DateTimeZone.Utc));
         }
 
         public override int GetHashCode()

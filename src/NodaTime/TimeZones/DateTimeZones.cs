@@ -21,8 +21,7 @@ using System.Collections.Generic;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Static access to time zones by ID, UTC etc. These were originally in DateTimeZone, but as
-    /// that's now an interface it can't have methods etc.
+    /// Static access to time zones by ID, UTC etc. TODO: Move these into DateTimeZone gradually.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -45,45 +44,7 @@ namespace NodaTime.TimeZones
     /// </remarks>
     public static class DateTimeZones
     {
-        /// <summary>
-        /// This is the ID of the UTC (Coordinated Univeral Time) time zone.
-        /// </summary>
-        public const string UtcId = "UTC";
-
-        private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
-
         private static readonly Impl Implementation = new Impl();
-
-        /// <summary>
-        /// Gets the system default time zone which can only be changed by the system.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// The time zones defined in the operating system are different than the ones defines in
-        /// this library so a mapping will occur. If an exact mapping can be made then that will be
-        /// used otherwise UTC will be used.
-        /// </para>
-        /// </remarks>
-        /// <value>The system default <see cref="DateTimeZone"/>. this will never be <c>null</c>.</value>
-        public static DateTimeZone SystemDefault
-        {
-            get
-            {
-                var systemName = TimeZone.CurrentTimeZone.StandardName;
-                var timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName);
-                if (timeZoneId == null)
-                {
-                    timeZoneId = UtcId;
-                }
-                return ForId(timeZoneId) ?? Utc;
-            }
-        }
-
-        /// <summary>
-        /// Gets the UTC (Coordinated Univeral Time) time zone.
-        /// </summary>
-        /// <value>The UTC <see cref="DateTimeZone"/>.</value>
-        public static DateTimeZone Utc { get { return UtcZone; } }
 
         /// <summary>
         /// Gets or sets the current time zone.
@@ -91,7 +52,7 @@ namespace NodaTime.TimeZones
         /// <remarks>
         /// This is the time zone that is used whenever a time zone is not given to a method. It can
         /// be set to any valid time zone. Setting it to <c>null</c> causes the <see
-        /// cref="SystemDefault"/> time zone to be used.
+        /// cref="DateTimeZone.SystemDefault"/> time zone to be used.
         /// </remarks>
         /// <value>The current <see cref="DateTimeZone"/>. This will never be <c>null</c>.</value>
         public static DateTimeZone Current { get { return Implementation.DoCurrent; } set { Implementation.DoCurrent = value; } }
@@ -168,10 +129,10 @@ namespace NodaTime.TimeZones
             /// <remarks>
             /// This is the time zone that is used whenever a time zone is not given to a method. It can
             /// be set to any valid time zone. Setting it to <c>null</c> causes the <see
-            /// cref="SystemDefault"/> time zone to be used.
+            /// cref="DateTimeZone.SystemDefault"/> time zone to be used.
             /// </remarks>
             /// <value>The current <see cref="DateTimeZone"/>. This will never be <c>null</c>.</value>
-            internal DateTimeZone DoCurrent { get { return current ?? SystemDefault; } set { current = value; } }
+            internal DateTimeZone DoCurrent { get { return current ?? DateTimeZone.SystemDefault; } set { current = value; } }
 
             /// <summary>
             /// Gets the complete list of valid time zone ids provided by all of the registered
@@ -184,7 +145,7 @@ namespace NodaTime.TimeZones
                 {
                     if (idList.Count == 0)
                     {
-                        idList.Add(UtcId, null);
+                        idList.Add(DateTimeZone.UtcId, null);
                         foreach (var provider in providers)
                         {
                             foreach (var id in provider.Ids)
@@ -252,8 +213,8 @@ namespace NodaTime.TimeZones
             /// <returns>The <see cref="DateTimeZone"/> with the given id or <c>null</c> if there isn't one defined.</returns>
             internal DateTimeZone DoForId(string id)
             {
-                DateTimeZone result = Utc;
-                if (id != UtcId)
+                DateTimeZone result = DateTimeZone.Utc;
+                if (id != DateTimeZone.UtcId)
                 {
                     if (!timeZoneMap.TryGetValue(id, out result))
                     {

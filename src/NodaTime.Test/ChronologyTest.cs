@@ -31,7 +31,7 @@ namespace NodaTime.Test
         public void Construction_WithNullArguments_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() => new Chronology(null, CalendarSystem.Iso));
-            Assert.Throws<ArgumentNullException>(() => new Chronology(DateTimeZones.Utc, null));
+            Assert.Throws<ArgumentNullException>(() => new Chronology(DateTimeZone.Utc, null));
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace NodaTime.Test
         [Test]
         public void IsoUtc()
         {
-            Assert.AreSame(DateTimeZones.Utc, Chronology.IsoUtc.Zone);
+            Assert.AreSame(DateTimeZone.Utc, Chronology.IsoUtc.Zone);
             Assert.AreSame(CalendarSystem.Iso, Chronology.IsoUtc.Calendar);
         }
     }

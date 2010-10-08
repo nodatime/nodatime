@@ -61,9 +61,9 @@ namespace NodaTime.TimeZones
         {
             if (theOffset == Offset.Zero)
             {
-                return DateTimeZones.UtcId;
+                return DateTimeZone.UtcId;
             }
-            return string.Format(CultureInfo.InvariantCulture, @"{0}{1}", DateTimeZones.UtcId, theOffset.ToString("M"));
+            return string.Format(CultureInfo.InvariantCulture, @"{0}{1}", DateTimeZone.UtcId, theOffset.ToString("M"));
         }
 
         /// <summary>

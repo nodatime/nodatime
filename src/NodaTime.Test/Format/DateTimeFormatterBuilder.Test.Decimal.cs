@@ -34,75 +34,75 @@ namespace NodaTime.Test.Format
         object[] PrintTestData =
         {
             new TestCaseData( Build(b=>b.AppendCenturyOfEra(0,4)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "20").SetName("CenturyOfEra"),
 
             new TestCaseData( Build(b=>b.AppendYearOfCentury(0,4)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "4").SetName("YearOfCentury"),
 
             new TestCaseData( Build(b=>b.AppendYear(0,4)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "2004").SetName("Year"),
 
             new TestCaseData( Build(b=>b.AppendMonthOfYear(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "6").SetName("MonthOfYear"),
 
             new TestCaseData( Build(b=>b.AppendWeekOfWeekYear(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "24").SetName("WeekOfWeekYear"),
 
             new TestCaseData( Build(b=>b.AppendDayOfYear(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "161").SetName("DayOfYear"),
 
             new TestCaseData( Build(b=>b.AppendDayOfMonth(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "9").SetName("DayOfMonth"),
 
             new TestCaseData( Build(b=>b.AppendDayOfWeek(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "3").SetName("DayOfWeek"),
 
             new TestCaseData( Build(b=>b.AppendHourOfDay(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "10").SetName("HourOfDay"),
 
             new TestCaseData( Build(b=>b.AppendClockHourOfDay(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "10").SetName("ClockHourofDay"),
 
             new TestCaseData( Build(b=>b.AppendHourOfHalfDay(0)),
-                                new ZonedDateTime(2004, 6, 9, 18, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 18, 20, 30, 40, DateTimeZone.Utc),
                                 "6").SetName("HourOfHalfDay"),
 
             new TestCaseData( Build(b=>b.AppendClockHourOfHalfDay(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "10").SetName("ClockHourOfHalfDay"),
 
             new TestCaseData( Build(b=>b.AppendMinuteOfDay(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "620").SetName("MinuteOfDay"),
 
             new TestCaseData( Build(b=>b.AppendMinuteOfHour(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "20").SetName("MinuteOfHour"),
 
             new TestCaseData( Build(b=>b.AppendSecondOfDay(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "37230").SetName("SecondOfDay"),
 
             new TestCaseData( Build(b=>b.AppendSecondOfMinute(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "30").SetName("SecondOfMinute"),
 //TODO: Bug? (results are interchanged)
             new TestCaseData( Build(b=>b.AppendMillisecondsOfDay(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "37230040").SetName("MillisecondsOfDay").Ignore(),
 
             new TestCaseData( Build(b=>b.AppendMillisecondsOfSecond(0)),
-                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc),
+                                new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc),
                                 "40").SetName("MillisecondsOfSecond").Ignore(),
 
         };
@@ -218,7 +218,7 @@ namespace NodaTime.Test.Format
         {
             var minDigits = 8;
             var maxDigits = 10;
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZones.Utc);
+            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc);
 
             var formatter = builder
                 .AppendYearOfEra(minDigits, maxDigits)

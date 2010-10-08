@@ -395,7 +395,7 @@ namespace NodaTime.Format
 
         private DateTimeZone SelectZone()
         {
-            return zone ?? DateTimeZones.Utc;
+            return zone ?? DateTimeZone.Utc;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace NodaTime
     /// </summary>
     public sealed class Chronology : IEquatable<Chronology>
     {
-        private static readonly Chronology isoUtc = new Chronology(DateTimeZones.Utc, CalendarSystem.Iso);
+        private static readonly Chronology isoUtc = new Chronology(DateTimeZone.Utc, CalendarSystem.Iso);
 
         public static Chronology IsoUtc { get { return isoUtc; } }
 
