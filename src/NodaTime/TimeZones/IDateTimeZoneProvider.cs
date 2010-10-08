@@ -43,7 +43,7 @@ namespace NodaTime.TimeZones
         /// they will be cached in <see cref="DateTimeZones"/>.
         /// </remarks>
         /// <param name="id">The id of the time zone to return.</param>
-        /// <returns>The <see cref="IDateTimeZone"/> or <c>null</c> if there is no time zone with the given id.</returns>
-        IDateTimeZone ForId(string id);
+        /// <returns>The <see cref="DateTimeZone"/> or <c>null</c> if there is no time zone with the given id.</returns>
+        DateTimeZone ForId(string id);
     }
 }

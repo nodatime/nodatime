@@ -26,7 +26,7 @@ namespace NodaTime
     /// Time zones primarily encapsulate two facts: and offset from UTC and a set of rules on how
     /// the values are adjusted.
     /// </remarks>
-    public abstract class IDateTimeZone
+    public abstract class DateTimeZone
     {
         /// <summary>
         /// The database ID for the time zone.

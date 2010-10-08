@@ -25,7 +25,7 @@ namespace NodaTime.Test
     [TestFixture]
     public class ChronologyTest
     {
-        private static readonly IDateTimeZone testZone = new FixedDateTimeZone("tmp", Offset.Zero);
+        private static readonly DateTimeZone testZone = new FixedDateTimeZone("tmp", Offset.Zero);
 
         [Test]
         public void Construction_WithNullArguments_ThrowsArgumentNullException()

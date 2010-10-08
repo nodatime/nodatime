@@ -70,7 +70,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes the given <see cref="IDateTimeZone"/> object to the given stream.
+        /// Writes the given <see cref="DateTimeZone"/> object to the given stream.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -84,9 +84,9 @@ namespace NodaTime.TimeZones
         /// stream. Therefore, we make sure that the stream is always closed.
         /// </para>
         /// </remarks>
-        /// <param name="timeZone">The <see cref="IDateTimeZone"/> to write.</param>
+        /// <param name="timeZone">The <see cref="DateTimeZone"/> to write.</param>
         /// <returns><c>true</c> if the time zone was successfully written.</returns>
-        public void WriteTimeZone(IDateTimeZone timeZone)
+        public void WriteTimeZone(DateTimeZone timeZone)
         {
             if (timeZone == null)
             {

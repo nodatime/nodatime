@@ -66,7 +66,7 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
-        public IDateTimeZone WriteRead(IDateTimeZone timeZone)
+        public DateTimeZone WriteRead(DateTimeZone timeZone)
         {
             Writer.WriteTimeZone(timeZone);
             return Reader.ReadTimeZone(timeZone.Id);

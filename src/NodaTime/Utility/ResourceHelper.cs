@@ -82,8 +82,8 @@ namespace NodaTime.Utility
         /// <param name="manager">The <see cref="ResourceManager"/> to load from.</param>
         /// <param name="name">The resource name.</param>
         /// <param name="id">The time zone id for the loaded time zone.</param>
-        /// <returns>The <see cref="IDateTimeZone"/> or <c>null</c> if there is no such resource.</returns>
-        public static IDateTimeZone LoadTimeZone(ResourceManager manager, string name, string id)
+        /// <returns>The <see cref="DateTimeZone"/> or <c>null</c> if there is no such resource.</returns>
+        public static DateTimeZone LoadTimeZone(ResourceManager manager, string name, string id)
         {
             if (manager == null)
             {

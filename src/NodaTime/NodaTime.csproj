@@ -184,7 +184,7 @@
     <Compile Include="Partials\LocalTime.cs" />
     <Compile Include="LocalDateTime.cs" />
     <Compile Include="Fields\DateTimeFieldType.cs" />
-    <Compile Include="IDateTimeZone.cs" />
+    <Compile Include="DateTimeZone.cs" />
     <Compile Include="Periods\Days.cs" />
     <Compile Include="Duration.cs" />
     <Compile Include="Fields\DurationFieldType.cs" />

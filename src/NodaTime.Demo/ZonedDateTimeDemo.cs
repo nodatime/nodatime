@@ -25,7 +25,7 @@ namespace NodaTime.Demo
     [TestFixture]
     internal class ZonedDateTimeDemo
     {
-        private static readonly IDateTimeZone Dublin = DateTimeZones.ForId("Europe/Dublin");
+        private static readonly DateTimeZone Dublin = DateTimeZones.ForId("Europe/Dublin");
 
         [Test]
         public void Construction()

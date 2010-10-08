@@ -27,16 +27,16 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class DateTimeZoneBaseTest
     {
-        private static readonly IDateTimeZone LosAngeles = DateTimeZones.ForId("America/Los_Angeles");
-        private static readonly IDateTimeZone NewZealand = DateTimeZones.ForId("Pacific/Auckland");
-        private static readonly IDateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
+        private static readonly DateTimeZone LosAngeles = DateTimeZones.ForId("America/Los_Angeles");
+        private static readonly DateTimeZone NewZealand = DateTimeZones.ForId("Pacific/Auckland");
+        private static readonly DateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
 
-        private static void AssertImpossible(LocalDateTime localTime, IDateTimeZone zone)
+        private static void AssertImpossible(LocalDateTime localTime, DateTimeZone zone)
         {
             Assert.Throws<SkippedTimeException>(() => zone.GetOffsetFromLocal(localTime.LocalInstant));
         }
 
-        private static void AssertOffset(int expectedHours, LocalDateTime localTime, IDateTimeZone zone)
+        private static void AssertOffset(int expectedHours, LocalDateTime localTime, DateTimeZone zone)
         {
             var offset = zone.GetOffsetFromLocal(localTime.LocalInstant);
             int actualHours = offset.Milliseconds / NodaConstants.MillisecondsPerHour;

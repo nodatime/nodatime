@@ -29,7 +29,7 @@ namespace NodaTime.TimeZones
     internal class PrecalculatedDateTimeZone : DateTimeZoneBase
     {
         private readonly ZoneInterval[] periods;
-        private readonly IDateTimeZone tailZone;
+        private readonly DateTimeZone tailZone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class.
@@ -38,7 +38,7 @@ namespace NodaTime.TimeZones
         /// <param name="transitions">The transitions.</param>
         /// <param name="precalcedEnd">The precalced end.</param>
         /// <param name="tailZone">The tail zone.</param>
-        public PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, IDateTimeZone tailZone) : base(id, false)
+        public PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, DateTimeZone tailZone) : base(id, false)
         {
             if (transitions == null)
             {
@@ -66,7 +66,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The id.</param>
         /// <param name="periods">The periods.</param>
         /// <param name="tailZone">The tail zone.</param>
-        private PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, IDateTimeZone tailZone) : base(id, false)
+        private PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone) : base(id, false)
         {
             this.tailZone = tailZone;
             this.periods = periods;
@@ -170,7 +170,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        public static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             int size = reader.ReadCount();
             var periods = new ZoneInterval[size];

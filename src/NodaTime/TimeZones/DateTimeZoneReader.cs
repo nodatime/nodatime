@@ -39,7 +39,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes the given <see cref="IDateTimeZone"/> object to the given stream.
+        /// Writes the given <see cref="DateTimeZone"/> object to the given stream.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -53,9 +53,9 @@ namespace NodaTime.TimeZones
         /// stream. Therefore, we make sure that the stream is always closed.
         /// </para>
         /// </remarks>
-        /// <param name="id">The id of the <see cref="IDateTimeZone"/> object to read.</param>
+        /// <param name="id">The id of the <see cref="DateTimeZone"/> object to read.</param>
         /// <returns><c>true</c> if the time zone was successfully written.</returns>
-        public IDateTimeZone ReadTimeZone(string id)
+        public DateTimeZone ReadTimeZone(string id)
         {
             int flag = ReadByte();
             if (flag == DateTimeZoneWriter.FlagTimeZoneFixed)
@@ -82,12 +82,12 @@ namespace NodaTime.TimeZones
             var type = Type.GetType(className);
             if (type == null)
             {
-                throw new InvalidOperationException(@"Unknown IDateTimeZone type: " + className);
+                throw new InvalidOperationException(@"Unknown DateTimeZone type: " + className);
             }
             var method = type.GetMethod("Read", new[] { typeof(DateTimeZoneReader), typeof(string) });
             if (method != null)
             {
-                return method.Invoke(null, new object[] { this, id }) as IDateTimeZone;
+                return method.Invoke(null, new object[] { this, id }) as DateTimeZone;
             }
             return null;
         }

@@ -44,7 +44,7 @@ namespace NodaTime.Format
         // The calendar system to use as an override.
         private readonly CalendarSystem calendarSystem;
         // The zone to use as an override.
-        private readonly IDateTimeZone zone;
+        private readonly DateTimeZone zone;
         // The pivot year to use for two-digit year parsing.
         private readonly int? pivotYear;
 
@@ -60,7 +60,7 @@ namespace NodaTime.Format
         }
 
         private DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser, IFormatProvider locale, bool offsetParsed, CalendarSystem calendarSystem,
-                                  IDateTimeZone zone, int? pivotYear)
+                                  DateTimeZone zone, int? pivotYear)
         {
             this.printer = printer;
             this.parser = parser;
@@ -185,7 +185,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the zone to use as an override.
         /// </summary>
-        public IDateTimeZone Zone { get { return zone; } }
+        public DateTimeZone Zone { get { return zone; } }
 
         /// <summary>
         /// Returns a new formatter that will use the specified zone in preference
@@ -205,7 +205,7 @@ namespace NodaTime.Format
         /// A null zone means of no-override.
         /// </para>
         /// </remarks>
-        public DateTimeFormatter WithZone(IDateTimeZone newZone)
+        public DateTimeFormatter WithZone(DateTimeZone newZone)
         {
             if (zone == newZone)
             {
@@ -287,7 +287,7 @@ namespace NodaTime.Format
             VerifyPrinter();
 
             CalendarSystem calendarSystem = SelectCalendarSystem(dateTime);
-            IDateTimeZone zone = SelectZone(dateTime);
+            DateTimeZone zone = SelectZone(dateTime);
 
             var instant = dateTime.ToInstant();
             var timezoneOffset = zone.GetOffsetFromUtc(instant);
@@ -347,7 +347,7 @@ namespace NodaTime.Format
                     //if (offsetParsed && bucket.Chronology.Zone == null)
                     //{
                     //    Offset parsedOffset = bucket.Offset;
-                    //    IDateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+                    //    DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
                     //    chrono = chrono.withZone(parsedZone);
                     //}
                     return new ZonedDateTime(instant, chronology);
@@ -388,12 +388,12 @@ namespace NodaTime.Format
             return calendarSystem ?? CalendarSystem.Iso;
         }
 
-        private IDateTimeZone SelectZone(ZonedDateTime dateTime)
+        private DateTimeZone SelectZone(ZonedDateTime dateTime)
         {
             return zone ?? dateTime.Zone;
         }
 
-        private IDateTimeZone SelectZone()
+        private DateTimeZone SelectZone()
         {
             return zone ?? DateTimeZones.Utc;
         }

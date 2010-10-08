@@ -36,8 +36,8 @@ namespace NodaTime.Test.Format
         private CalendarSystem calendar1;
         private CalendarSystem calendar2;
 
-        private IDateTimeZone zone1;
-        private IDateTimeZone zone2;
+        private DateTimeZone zone1;
+        private DateTimeZone zone2;
 
         private int? pivotYear1;
         private int? pivotYear2;

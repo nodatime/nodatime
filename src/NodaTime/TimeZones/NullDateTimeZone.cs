@@ -22,7 +22,7 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Basic <see cref="IDateTimeZone" /> implementation that represents no time zone.
+    /// Basic <see cref="DateTimeZone" /> implementation that represents no time zone.
     /// </summary>
     /// <remarks>
     /// This type is thread-safe and immutable.
@@ -102,7 +102,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "reader",
             Justification = "For consistency all Read() methods take a reader")]
-        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        public static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             return new NullDateTimeZone(id);
         }

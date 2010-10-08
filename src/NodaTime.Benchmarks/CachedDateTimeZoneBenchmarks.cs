@@ -26,7 +26,7 @@ namespace NodaTime.Benchmarks
         private readonly LocalInstant[] cacheLocalInstants = new LocalInstant[100];
         private readonly Instant[] noCacheInstants = new Instant[500];
         private readonly LocalInstant[] noCacheLocalInstants = new LocalInstant[500];
-        private readonly IDateTimeZone paris = DateTimeZones.ForId("Europe/Paris");
+        private readonly DateTimeZone paris = DateTimeZones.ForId("Europe/Paris");
         private readonly Instant[] twoYearsCacheInstants = new Instant[365];
         private readonly LocalInstant[] twoYearsCacheLocalInstants = new LocalInstant[365];
         private int cacheIndex;
