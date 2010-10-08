@@ -24,7 +24,7 @@ namespace NodaTime.TimeZones
     ///    Provides a basic daylight savings time zone. A DST time zone has a simple recurrence
     ///    where an extra offset is applied between two dates of a year.
     /// </summary>
-    internal class DaylightSavingsTimeZone : DateTimeZoneBase, IEquatable<DaylightSavingsTimeZone>
+    internal class DaylightSavingsTimeZone : DateTimeZone, IEquatable<DaylightSavingsTimeZone>
     {
         private readonly ZoneRecurrence endRecurrence;
         private readonly Offset standardOffset;

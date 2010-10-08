@@ -28,23 +28,43 @@ namespace NodaTime
     /// </remarks>
     public abstract class DateTimeZone
     {
+        private readonly string id;
+        private readonly bool isFixed;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeZone"/> class.
+        /// </summary>
+        /// <param name="id">The unique id of this time zone.</param>
+        /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
+        protected DateTimeZone(string id, bool isFixed)
+        {
+            this.id = id;
+            this.isFixed = isFixed;
+        }
+
         /// <summary>
         /// The database ID for the time zone.
         /// </summary>
-        public abstract string Id { get; }
-
+        public string Id { get { return id; } }
+        
         /// <summary>
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
-        public abstract bool IsFixed { get; }
+        public bool IsFixed { get { return isFixed; } }
 
         /// <summary>
         /// Returns the offset from UTC, where a positive duration indicates that local time is
         /// later than UTC. In other words, local time = UTC + offset.
         /// </summary>
         /// <param name="instant">The instant for which to calculate the offset.</param>
-        /// <returns>The offset from UTC at the specified instant.</returns>
-        public abstract Offset GetOffsetFromUtc(Instant instant);
+        /// <returns>
+        /// The offset from UTC at the specified instant.
+        /// </returns>
+        public virtual Offset GetOffsetFromUtc(Instant instant)
+        {
+            var period = GetZoneInterval(instant);
+            return period.Offset;
+        }
 
         /// <summary>
         /// Gets the offset to subtract from a local time to get the UTC time.
@@ -59,7 +79,11 @@ namespace NodaTime
         /// </remarks>
         /// <exception cref="SkippedTimeException">The local instant doesn't occur in this time zone
         /// due to zone transitions.</exception>
-        internal abstract Offset GetOffsetFromLocal(LocalInstant localInstant);
+        internal virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
+        {
+            var period = GetZoneInterval(localInstant);
+            return period.Offset;
+        }
 
         /// <summary>
         /// Gets the zone interval for the given instant. Null is returned if no interval is
@@ -88,12 +112,29 @@ namespace NodaTime
         /// </remarks>
         /// <param name="instant">The instant to get the name for.</param>
         /// <returns>The name of this time. Never returns <c>null</c>.</returns>
-        public abstract string GetName(Instant instant);
+        public virtual string GetName(Instant instant)
+        {
+            var period = GetZoneInterval(instant);
+            return period.Name;
+        }
 
         /// <summary>
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
         internal abstract void Write(DateTimeZoneWriter writer);
+
+        #region Object overrides
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Id;
+        }
+        #endregion
     }
 }

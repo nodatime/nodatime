@@ -27,7 +27,7 @@ namespace NodaTime.TimeZones
     /// <remarks>
     /// This type is thread-safe and immutable.
     /// </remarks>
-    public sealed class NullDateTimeZone : DateTimeZoneBase, IEquatable<NullDateTimeZone>
+    public sealed class NullDateTimeZone : DateTimeZone, IEquatable<NullDateTimeZone>
     {
         [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")] public static readonly NullDateTimeZone Instance =
             new NullDateTimeZone("NullTimeZone");

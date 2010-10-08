@@ -31,7 +31,7 @@ namespace NodaTime.TimeZones
     /// user can tune the performance based on their knowledge of how they are using the system.
     /// </para>
     /// </remarks>
-    public abstract class CachedDateTimeZone : DateTimeZoneBase
+    public abstract class CachedDateTimeZone : DateTimeZone
     {
         #region CacheType enum
         public enum CacheType
