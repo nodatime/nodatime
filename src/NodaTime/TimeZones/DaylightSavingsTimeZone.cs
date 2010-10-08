@@ -168,7 +168,7 @@ namespace NodaTime.TimeZones
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <exception cref="SkippedTimeException"></exception>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
+        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             var normal = localInstant - StandardOffset;
             var daylight = localInstant - (StandardOffset + startRecurrence.Savings);
@@ -291,7 +291,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        public override void Write(DateTimeZoneWriter writer)
+        internal override void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)
             {
@@ -302,7 +302,7 @@ namespace NodaTime.TimeZones
             EndRecurrence.Write(writer);
         }
 
-        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        internal static IDateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             if (reader == null)
             {

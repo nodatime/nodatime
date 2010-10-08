@@ -57,7 +57,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
+        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             return null;
         }
@@ -81,7 +81,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
-        public override Offset GetOffsetFromLocal(LocalInstant localInstant)
+        internal override Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
             return Offset.Zero;
         }
@@ -90,7 +90,7 @@ namespace NodaTime.TimeZones
         /// Writes the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        public override void Write(DateTimeZoneWriter writer)
+        internal override void Write(DateTimeZoneWriter writer)
         {
         }
 

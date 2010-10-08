@@ -105,7 +105,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
+        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             int last = periods.Length - 1;
             if (periods[last].LocalEnd <= localInstant)
@@ -141,7 +141,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        public override void Write(DateTimeZoneWriter writer)
+        internal override void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)
             {

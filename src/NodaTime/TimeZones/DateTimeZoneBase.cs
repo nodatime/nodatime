@@ -46,7 +46,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="instant">The Instant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public abstract ZoneInterval GetZoneInterval(Instant instant);
+        public abstract override ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
         /// Gets the zone offset period for the given local instant. Null is returned if no period
@@ -54,9 +54,9 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
+        internal abstract override ZoneInterval GetZoneInterval(LocalInstant localInstant);
 
-        public abstract void Write(DateTimeZoneWriter writer);
+        internal abstract override void Write(DateTimeZoneWriter writer);
 
         /// <summary>
         /// Returns the offset from UTC, where a positive duration indicates that local time is
@@ -66,7 +66,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The offset from UTC at the specified instant.
         /// </returns>
-        public virtual Offset GetOffsetFromUtc(Instant instant)
+        public override Offset GetOffsetFromUtc(Instant instant)
         {
             var period = GetZoneInterval(instant);
             return period.Offset;
@@ -78,7 +78,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
-        public virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
+        internal override Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
             var period = GetZoneInterval(localInstant);
             return period.Offset;
@@ -97,7 +97,7 @@ namespace NodaTime.TimeZones
         /// it represents. For example in the Pacific Standard Time (UTC-8) it will return either
         /// PST or PDT depending on the time of year.
         /// </remarks>
-        public virtual string GetName(Instant instant)
+        public override string GetName(Instant instant)
         {
             var period = GetZoneInterval(instant);
             return period.Name;
@@ -106,12 +106,12 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// The database ID for the time zone.
         /// </summary>
-        public string Id { get { return id; } }
+        public override string Id { get { return id; } }
 
         /// <summary>
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
-        public bool IsFixed { get { return isFixed; } }
+        public override bool IsFixed { get { return isFixed; } }
         #endregion
 
         #region Object overrides
