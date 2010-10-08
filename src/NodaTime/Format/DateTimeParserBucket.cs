@@ -129,7 +129,6 @@ namespace NodaTime.Format
         private SavedField[] savedFields = new SavedField[8];
         private int savedFieldsCount;
         private bool savedFieldsShared;
-        private object savedFieldsState;
 
         /// <summary>
         /// Initializes a bucket, with the option of specifying the pivot year for
@@ -188,7 +187,6 @@ namespace NodaTime.Format
             get { return offset; }
             set
             {
-                savedFieldsState = null;
                 offset = value;
                 zone = null;
             }
@@ -240,7 +238,6 @@ namespace NodaTime.Format
                 savedFieldsShared = false;
             }
 
-            savedFieldsState = null;
             savedFields[savedFieldsCount] = field;
             savedFieldsCount = savedFieldsCountLocal + 1;
         }
@@ -278,11 +275,7 @@ namespace NodaTime.Format
             }
             catch (FieldValueException e)
             {
-                if (text != null)
-                {
-                    e.PrependMessage("Cannot parse \"" + text + '"');
-                }
-                throw;
+                throw new FormatException("Cannot parse \"" + text + "\"", e);
             }
 
             Instant result;
