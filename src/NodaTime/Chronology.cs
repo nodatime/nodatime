@@ -54,14 +54,6 @@ namespace NodaTime
             this.calendarSystem = calendarSystem;
         }
 
-        /// <summary>
-        /// Returns a chronology which uses the ISO chronology in the given time zone.
-        /// </summary>
-        internal static Chronology IsoForZone(DateTimeZone zone)
-        {
-            return new Chronology(zone, CalendarSystem.Iso);
-        }
-
         #region Equality
         public bool Equals(Chronology other)
         {

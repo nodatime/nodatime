@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.Calendars;
 using NodaTime.TimeZones;
 
 namespace NodaTime
@@ -40,6 +41,14 @@ namespace NodaTime
         {
             this.id = id;
             this.isFixed = isFixed;
+        }
+
+        /// <summary>
+        /// Returns a new chronology based on this time zone, in the ISO calendar system.
+        /// </summary>
+        internal Chronology ToIsoChronology()
+        {
+            return new Chronology(this, CalendarSystem.Iso);
         }
 
         /// <summary>
