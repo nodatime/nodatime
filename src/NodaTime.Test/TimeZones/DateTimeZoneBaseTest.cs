@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.Calendars;
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
@@ -124,6 +125,14 @@ namespace NodaTime.Test.TimeZones
             AssertImpossible(impossible, Paris);
             AssertOffset(2, atTransition, Paris);
             AssertOffset(2, after, Paris);
+        }
+
+        [Test]
+        public void ToIsoChronology()
+        {
+            Chronology subject = Paris.ToIsoChronology();
+            Assert.AreSame(Paris, subject.Zone);
+            Assert.AreSame(CalendarSystem.Iso, subject.Calendar);
         }
     }
 }
