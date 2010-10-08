@@ -1,5 +1,4 @@
 #region Copyright and license information
-
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using NUnit.Framework;
@@ -52,7 +50,6 @@ namespace NodaTime.Test
         }
 
         #region operator +
-
         [Test]
         public void OperatorPlus_Zero_IsNeutralElement()
         {
@@ -68,11 +65,9 @@ namespace NodaTime.Test
             Assert.AreEqual(Offset.Zero, threeHours + negativeThreeHours, "1 + (-1)");
             Assert.AreEqual(MakeOffset(-9, 0, 0, 0), negativeTwelveHours + threeHours, "-TwelveHours + threeHours");
         }
-
         #endregion
 
         #region operator -
-
         [Test]
         public void OperatorMinus_Zero_IsNeutralElement()
         {
@@ -88,7 +83,6 @@ namespace NodaTime.Test
             Assert.AreEqual(MakeOffset(6, 0, 0, 0), threeHours - negativeThreeHours, "1 - (-1)");
             Assert.AreEqual(MakeOffset(-15, 0, 0, 0), negativeTwelveHours - threeHours, "-TwelveHours - threeHours");
         }
-
         #endregion
     }
 }

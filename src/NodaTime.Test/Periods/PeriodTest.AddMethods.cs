@@ -184,7 +184,7 @@ namespace NodaTime.Test.Periods
         public void AddFieldYears_ReturnsTheSamePeriod_OnTimePeriodTypeIfZero()
         {
             var first = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.Time);
-            var second = first.AddField(DurationFieldType.Years, 0);            
+            var second = first.AddField(DurationFieldType.Years, 0);
             Assert.AreSame(first, second);
         }
 

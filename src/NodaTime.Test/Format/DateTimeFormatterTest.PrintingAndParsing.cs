@@ -18,7 +18,6 @@
 using System;
 using System.IO;
 using System.Text;
-
 using NodaTime.Calendars;
 using NodaTime.Format;
 using NUnit.Framework;
@@ -28,7 +27,6 @@ namespace NodaTime.Test.Format
     public partial class DateTimeFormatterTest
     {
         #region Printing
-
         [Test]
         public void PrintToTextWriter_TrowsNotSupported_IfNotPrinter()
         {
@@ -47,7 +45,7 @@ namespace NodaTime.Test.Format
             var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
 
             sut.PrintTo(sw, dt);
-            Assert.That(printer.Calendar,Is.SameAs(dt.Chronology.Calendar));
+            Assert.That(printer.Calendar, Is.SameAs(dt.Chronology.Calendar));
         }
 
         [Test]
@@ -72,7 +70,6 @@ namespace NodaTime.Test.Format
             Assert.That(printer.Calendar, Is.SameAs(sut.Calendar));
             //TODO:for now we have only one calendar system, uncomment once the any second will be mplemented
             //Assert.That(printer.Calendar, Is.SameAs(dt.Chronology.Calendar));
-
         }
 
         [Test]
@@ -120,11 +117,9 @@ namespace NodaTime.Test.Format
             var actualBuilder = ((StringWriter)printer.DtWriter).GetStringBuilder();
             Assert.That(actualBuilder, Is.SameAs(sb));
         }
-
         #endregion
 
         #region Parsing
-
         [Test]
         public void Parse_TrowsNotSupported_IfNotParser()
         {
@@ -141,7 +136,7 @@ namespace NodaTime.Test.Format
             var text = "2009-01-01";
 
             sut.Parse(text);
-           Assert.That(parser.Bucket.Calendar, Is.SameAs(CalendarSystem.Iso));
+            Assert.That(parser.Bucket.Calendar, Is.SameAs(CalendarSystem.Iso));
         }
 
         [Test]
@@ -195,8 +190,6 @@ namespace NodaTime.Test.Format
             sut.Parse(text);
             Assert.That(parser.Position, Is.EqualTo(0));
         }
-
         #endregion
-
     }
 }

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using NUnit.Framework;
 using NodaTime.Format;
@@ -48,7 +49,7 @@ namespace NodaTime.Test.Format
             public StringBuilder PrintToBuilderArgument;
             public IPeriod PrintToBuilderToPeriodArgument;
             public IFormatProvider PrintToBuilderProviderArgument;
-            
+
             public void PrintTo(StringBuilder stringBuilder, IPeriod period, IFormatProvider provider)
             {
                 PrintToBuilderCalled = true;
@@ -69,12 +70,10 @@ namespace NodaTime.Test.Format
                 PrintToWriterPeriodArgument = period;
                 PrintToWriterProviderArgument = provider;
             }
-
         }
 
         public class PeriodParserMock : IPeriodParser
         {
-
             public bool ParseCalled;
             public string ParseStringArgument;
             public int ParsePositionArgument;

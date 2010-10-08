@@ -22,7 +22,6 @@ namespace NodaTime.Test.Format
     public partial class DateTimeFormatterTest
     {
         #region WithProvider
-
         [Test]
         public void WithProvider_CreatesNewInstance_ForDifferentProvider()
         {
@@ -44,11 +43,9 @@ namespace NodaTime.Test.Format
 
             Assert.That(sutWithProvider, Is.SameAs(fullFormatterWithOffset));
         }
-
         #endregion
 
         #region WithOffsetParsed
-
         [Test]
         public void WithOffsetParsed_CreatesNewInstanceAndClearsZone_ForNotOffsetParsed()
         {
@@ -72,11 +69,9 @@ namespace NodaTime.Test.Format
 
             Assert.That(sutWithOffset, Is.SameAs(fullFormatterWithOffset));
         }
-
         #endregion
 
         #region WithCalendarSystem
-
         [Test]
         public void WithCalendarSystem_CreatesNewInstance_ForDifferentCalendarSystem()
         {
@@ -98,11 +93,9 @@ namespace NodaTime.Test.Format
 
             Assert.That(sutWithCalendar, Is.SameAs(fullFormatterWithOffset));
         }
-
         #endregion
 
         #region WithZone
-
         [Test]
         public void WithZone_CreatesNewInstanceAndClearsOffset_ForDifferentZone()
         {
@@ -126,11 +119,9 @@ namespace NodaTime.Test.Format
 
             Assert.That(sutWithZone, Is.SameAs(fullFormatterWithoutOffset));
         }
-
         #endregion
 
         #region WithPivotYear
-
         [Test]
         public void WithPivotYear_CreatesNewInstance_ForDifferentPivotYear()
         {
@@ -152,7 +143,6 @@ namespace NodaTime.Test.Format
 
             Assert.That(sutWithPivotYear, Is.SameAs(fullFormatterWithOffset));
         }
-
         #endregion
     }
 }

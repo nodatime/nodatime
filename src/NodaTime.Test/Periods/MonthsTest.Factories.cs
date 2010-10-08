@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Periods;
 using NUnit.Framework;
 
@@ -79,7 +80,7 @@ namespace NodaTime.Test.Periods
             Assert.AreSame(Months.Ten, Months.From(10));
             Assert.AreSame(Months.Eleven, Months.From(11));
             Assert.AreSame(Months.Twelve, Months.From(12));
-            
+
             Assert.AreSame(Months.MinValue, Months.From(int.MinValue));
             Assert.AreSame(Months.MaxValue, Months.From(int.MaxValue));
 

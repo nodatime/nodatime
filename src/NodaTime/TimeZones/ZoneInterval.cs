@@ -70,7 +70,8 @@ namespace NodaTime.TimeZones
             }
             try
             {
-                localEnd = Instant.Add(end, offset - savings);;
+                localEnd = Instant.Add(end, offset - savings);
+                ;
             }
             catch (OverflowException)
             {

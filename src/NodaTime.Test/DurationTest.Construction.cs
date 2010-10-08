@@ -1,5 +1,4 @@
 #region Copyright and license information
-
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using NUnit.Framework;
@@ -52,7 +50,7 @@ namespace NodaTime.Test
         public void Factory_StandardHours()
         {
             Duration test = Duration.FromHours(1);
-            Assert.AreEqual(1* NodaConstants.TicksPerHour, test.Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerHour, test.Ticks);
 
             test = Duration.FromHours(2);
             Assert.AreEqual(2 * NodaConstants.TicksPerHour, test.Ticks);
@@ -103,10 +101,7 @@ namespace NodaTime.Test
         [Test]
         public void ConstructFrom_Int64()
         {
-            long length = 4 * NodaConstants.TicksPerDay +
-                          5 * NodaConstants.TicksPerHour +
-                          6 * NodaConstants.TicksPerMinute +
-                          7 * NodaConstants.TicksPerSecond +
+            long length = 4 * NodaConstants.TicksPerDay + 5 * NodaConstants.TicksPerHour + 6 * NodaConstants.TicksPerMinute + 7 * NodaConstants.TicksPerSecond +
                           8 * NodaConstants.TicksPerMillisecond + 9;
             Duration test = new Duration(length);
             Assert.AreEqual(length, test.Ticks);

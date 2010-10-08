@@ -17,7 +17,6 @@
 
 using System;
 using System.IO;
-
 using NodaTime.Calendars;
 using NodaTime.Format;
 
@@ -27,16 +26,15 @@ namespace NodaTime.Test.Format
     {
         public class DateTimePrinterMock : IDateTimePrinter
         {
-            public int EstimatedPrintedLength
-            {
-                get { throw new NotImplementedException(); }
-            }
+            public int EstimatedPrintedLength { get { throw new NotImplementedException(); } }
 
             public CalendarSystem Calendar;
             public DateTimeZone Zone;
             public TextWriter DtWriter;
             public IFormatProvider DtProvider;
-            void IDateTimePrinter.PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, DateTimeZone dateTimeZone, IFormatProvider provider)
+
+            void IDateTimePrinter.PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset,
+                                          DateTimeZone dateTimeZone, IFormatProvider provider)
             {
                 DtWriter = writer;
                 DtProvider = provider;
@@ -53,15 +51,12 @@ namespace NodaTime.Test.Format
 
         public class DateTimeParserMock : IDateTimeParser
         {
-
-            public int EstimatedParsedLength
-            {
-                get { throw new NotImplementedException(); }
-            }
+            public int EstimatedParsedLength { get { throw new NotImplementedException(); } }
 
             internal DateTimeParserBucket Bucket;
             public string Text;
             public int Position;
+
             int IDateTimeParser.ParseInto(DateTimeParserBucket bucket, string text, int position)
             {
                 Bucket = bucket;
@@ -70,6 +65,5 @@ namespace NodaTime.Test.Format
                 return text.Length;
             }
         }
-
     }
 }

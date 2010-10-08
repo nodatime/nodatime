@@ -23,15 +23,12 @@ namespace NodaTime.Test.Periods
 {
     public partial class PeriodTest
     {
-
-
         [Test]
         public void ConstructorDuration_SplitIntoFields_Precize()
         {
-            var length = new Duration(5 * NodaConstants.TicksPerHour +
-                                        6 * NodaConstants.TicksPerMinute +
-                                        7 * NodaConstants.TicksPerSecond + 
-                                        8 *NodaConstants.TicksPerMillisecond);
+            var length =
+                new Duration(5 * NodaConstants.TicksPerHour + 6 * NodaConstants.TicksPerMinute + 7 * NodaConstants.TicksPerSecond +
+                             8 * NodaConstants.TicksPerMillisecond);
             var sut = Period.From(length);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(0, sut.Months);
@@ -46,11 +43,9 @@ namespace NodaTime.Test.Periods
         [Ignore("bug")]
         public void ConstructorDuration_SplitIntoFields_Unprecise()
         {
-            var length = new Duration(4 * NodaConstants.TicksPerDay + 
-                                        5 * NodaConstants.TicksPerHour +
-                                        6 * NodaConstants.TicksPerMinute +
-                                        7 * NodaConstants.TicksPerSecond +
-                                        8 * NodaConstants.TicksPerMillisecond);
+            var length =
+                new Duration(4 * NodaConstants.TicksPerDay + 5 * NodaConstants.TicksPerHour + 6 * NodaConstants.TicksPerMinute +
+                             7 * NodaConstants.TicksPerSecond + 8 * NodaConstants.TicksPerMillisecond);
             var sut = Period.From(length);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(0, sut.Months);
@@ -67,6 +62,5 @@ namespace NodaTime.Test.Periods
             var sut = Period.From(new Duration(0));
             Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
         }
-
     }
 }

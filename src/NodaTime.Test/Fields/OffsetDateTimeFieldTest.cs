@@ -78,8 +78,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithSpecificFieldTypeButZeroOffset_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => new OffsetDateTimeField(CalendarSystem.Iso.Fields.SecondOfMinute, DateTimeFieldType.SecondOfDay, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new OffsetDateTimeField(CalendarSystem.Iso.Fields.SecondOfMinute, DateTimeFieldType.SecondOfDay, 0));
         }
 
         [Test]
