@@ -49,18 +49,6 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
-        public void CharacterLiteral_PrintsCharacter_ForAnyPartial()
-        {
-            const char value = 'z';
-            var literal = new DateTimeFormatterBuilder.CharacterLiteral(value);
-            var writer = new StringWriter();
-
-            literal.PrintTo(writer, null, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo(value.ToString()));
-        }
-
-        [Test]
         public void CharacterLiteral_EstimatesParsedLengthAs1Always()
         {
             const char value = 'x';
@@ -127,18 +115,6 @@ namespace NodaTime.Test.Format
             var writer = new StringWriter();
 
             literal.PrintTo(writer, LocalInstant.Now, null, Offset.Zero, null, null);
-
-            Assert.That(writer.ToString(), Is.EqualTo(value));
-        }
-
-        [Test]
-        public void StringLiteral_PrintsString_ForAnyPartial()
-        {
-            const string value = "hi";
-            var literal = new DateTimeFormatterBuilder.StringLiteral(value);
-            var writer = new StringWriter();
-
-            literal.PrintTo(writer, null, null);
 
             Assert.That(writer.ToString(), Is.EqualTo(value));
         }

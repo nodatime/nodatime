@@ -181,201 +181,6 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Adds a value (which may be negative) to the partial instant,
-        /// throwing an exception if the maximum size of the instant is reached.
-        /// </summary>
-        /// <param name="instant">The partial instant</param>
-        /// <param name="fieldIndex">The index of this field in the instant</param>
-        /// <param name="values">The values of the partial instant which should be updated</param>
-        /// <param name="valueToAdd">The value to add, in the units of the field</param>
-        /// <returns>The passed in values</returns>
-        /// <remarks>
-        /// <para>
-        /// The value will be added to this field, overflowing into larger fields
-        /// if necessary. Smaller fields should be unaffected, except where the
-        /// result would be an invalid value for a smaller field. In this case the
-        /// smaller field is adjusted to be in range.
-        /// </para>
-        /// <para>
-        /// Partial instants only contain some fields. This may result in a maximum
-        /// possible value, such as TimeOfDay being limited to 23:59:59:999. If this
-        /// limit is reached by the add an exception is thrown. For example, in the
-        /// ISO chronology:
-        /// </para>
-        /// <list type="bullet">
-        /// <item>2000-08-20 add six months is 2000-02-20</item>
-        /// <item>2000-08-20 add twenty months is 2000-04-20</item>
-        /// <item>2000-08-20 add minus nine months is 2000-11-20</item>
-        /// <item>2001-01-31 add one month  is 2001-02-28</item>
-        /// <item>2001-01-31 add two months is 2001-03-31</item>
-        /// </list>
-        /// </remarks>
-        internal virtual int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
-        {
-            if (valueToAdd == 0)
-            {
-                return values;
-            }
-
-            // there are more efficient algorithms than this (especially for time only fields)
-            // trouble is when dealing with days and months, so we use this technique of
-            // adding/removing one from the larger field at a time
-            DateTimeField nextField = null;
-            while (valueToAdd > 0)
-            {
-                long max = GetMaximumValue(instant, values);
-                long proposed = values[fieldIndex] + valueToAdd;
-                if (proposed <= max)
-                {
-                    values[fieldIndex] = (int)proposed;
-                    break;
-                }
-                if (nextField == null)
-                {
-                    if (fieldIndex == 0)
-                    {
-                        throw new ArgumentException("Maximum value exceeded for add");
-                    }
-                    nextField = instant.GetField(fieldIndex - 1);
-                    // test only works if this field is UTC (ie. local)
-                    if (RangeDurationField.FieldType != nextField.DurationField.FieldType)
-                    {
-                        throw new ArgumentException("Fields invalid for add");
-                    }
-                }
-                valueToAdd -= ((int)max + 1) - values[fieldIndex]; // reduce the amount to add
-                values = nextField.Add(instant, fieldIndex - 1, values, 1); // add 1 to next bigger field
-                values[fieldIndex] = (int)GetMinimumValue(instant, values); // reset this field to zero
-            }
-            while (valueToAdd < 0)
-            {
-                long min = GetMinimumValue(instant, values);
-                long proposed = values[fieldIndex] + valueToAdd;
-                if (proposed >= min)
-                {
-                    values[fieldIndex] = (int)proposed;
-                    break;
-                }
-                if (nextField == null)
-                {
-                    if (fieldIndex == 0)
-                    {
-                        throw new ArgumentException("Maximum value exceeded for add");
-                    }
-                    nextField = instant.GetField(fieldIndex - 1);
-                    if (RangeDurationField.FieldType != nextField.DurationField.FieldType)
-                    {
-                        throw new ArgumentException("Fields invalid for add");
-                    }
-                }
-                valueToAdd -= ((int)min - 1) - values[fieldIndex]; // reduce the amount to add
-                values = nextField.Add(instant, fieldIndex - 1, values, -1); // subtract 1 from next bigger field
-                values[fieldIndex] = (int)GetMaximumValue(instant, values); // reset this field to max value
-            }
-
-            return SetValue(instant, fieldIndex, values, values[fieldIndex]); // adjusts smaller fields
-        }
-
-        /// <summary>
-        /// Adds a value (which may be negative) to the partial instant,
-        /// wrapping the whole partial if the maximum size of the partial is reached.
-        /// </summary>
-        /// <param name="instant">The partial instant</param>
-        /// <param name="fieldIndex">The index of this field in the partial</param>
-        /// <param name="values">The values of the partial instant which should be updated</param>
-        /// <param name="valueToAdd">The value to add, in the units of the field</param>
-        /// <returns>The passed in values</returns>
-        /// <remarks>
-        /// <para>
-        /// The value will be added to this field, overflowing into larger fields
-        /// if necessary. Smaller fields should be unaffected, except where the
-        /// result would be an invalid value for a smaller field. In this case the
-        /// smaller field is adjusted to be in range.
-        /// </para>
-        /// <para>
-        /// Partial instants only contain some fields. This may result in a maximum
-        /// possible value, such as TimeOfDay normally being limited to 23:59:59:999.
-        /// If ths limit is reached by the addition, this method will wrap back to
-        /// 00:00:00.000. In fact, you would generally only use this method for
-        /// classes that have a limitation such as this. For example, in the ISO chronology:
-        /// </para>
-        /// <list type="bullet">
-        /// <item>10:20:30 add 20 minutes is 10:40:30</item>
-        /// <item>10:20:30 add 45 minutes is 11:05:30</item>
-        /// <item>10:20:30 add 16 hours is 02:20:30</item>
-        /// </list>
-        /// </remarks>
-        internal virtual int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
-        {
-            if (valueToAdd == 0)
-            {
-                return values;
-            }
-
-            // there are more efficient algorithms than this (especially for time only fields)
-            // trouble is when dealing with days and months, so we use this technique of
-            // adding/removing one from the larger field at a time
-            DateTimeField nextField = null;
-            while (valueToAdd > 0)
-            {
-                int max = (int)GetMaximumValue(instant, values);
-                long proposed = values[fieldIndex] + valueToAdd;
-                if (proposed <= max)
-                {
-                    values[fieldIndex] = (int)proposed;
-                    break;
-                }
-                if (nextField == null)
-                {
-                    if (fieldIndex == 0)
-                    {
-                        valueToAdd -= (max + 1) - values[fieldIndex];
-                        values[fieldIndex] = (int)GetMinimumValue(instant, values);
-                        continue;
-                    }
-                    nextField = instant.GetField(fieldIndex - 1);
-                    // test only works if this field is UTC (ie. local)
-                    if (RangeDurationField.FieldType != nextField.DurationField.FieldType)
-                    {
-                        throw new ArgumentException("Fields invalid for add");
-                    }
-                }
-                valueToAdd -= (max + 1) - values[fieldIndex]; // reduce the amount to add
-                values = nextField.AddWrapPartial(instant, fieldIndex - 1, values, 1); // add 1 to next bigger field
-                values[fieldIndex] = (int)GetMinimumValue(instant, values); // reset this field to zero
-            }
-            while (valueToAdd < 0)
-            {
-                int min = (int)GetMinimumValue(instant, values);
-                long proposed = values[fieldIndex] + valueToAdd;
-                if (proposed >= min)
-                {
-                    values[fieldIndex] = (int)proposed;
-                    break;
-                }
-                if (nextField == null)
-                {
-                    if (fieldIndex == 0)
-                    {
-                        valueToAdd -= (min - 1) - values[fieldIndex];
-                        values[fieldIndex] = (int)GetMaximumValue(instant, values);
-                        continue;
-                    }
-                    nextField = instant.GetField(fieldIndex - 1);
-                    if (RangeDurationField.FieldType != nextField.DurationField.FieldType)
-                    {
-                        throw new ArgumentException("Fields invalid for add");
-                    }
-                }
-                valueToAdd -= (min - 1) - values[fieldIndex]; // reduce the amount to add
-                values = nextField.AddWrapPartial(instant, fieldIndex - 1, values, -1); // subtract 1 from next bigger field
-                values[fieldIndex] = (int)GetMaximumValue(instant, values); // reset this field to max value
-            }
-
-            return SetValue(instant, fieldIndex, values, values[fieldIndex]); // adjusts smaller fields
-        }
-
-        /// <summary>
         /// Computes the difference between two instants, as measured in the units
         /// of this field. Any fractional units are dropped from the result. Calling
         /// GetDifference reverses the effect of calling add. In the following code:
@@ -466,62 +271,6 @@ namespace NodaTime.Fields
         {
             return SetValue(instant, text, null);
         }
-
-        /// <summary>
-        /// Sets a value using the specified partial instant.
-        /// </summary>
-        /// <param name="instant">The partial instant</param>
-        /// <param name="fieldIndex">The index of this field in the instant</param>
-        /// <param name="values">The values of the partial instant which should be updated</param>
-        /// <param name="newValue">The value to set, in the units of the field</param>
-        /// <returns>The passed in values</returns>
-        /// <remarks>
-        /// <para>
-        /// The value of this field (specified by the index) will be set.
-        /// If the value is invalid, an exception if thrown.
-        /// </para>
-        /// <para>
-        /// If setting this field would make other fields invalid, then those fields
-        /// may be changed. For example if the current date is the 31st January, and
-        /// the month is set to February, the day would be invalid. Instead, the day
-        /// would be changed to the closest value - the 28th/29th February as appropriate.
-        /// </para>
-        /// </remarks>
-        internal virtual int[] SetValue(IPartial instant, int fieldIndex, int[] values, int newValue)
-        {
-            FieldUtils.VerifyValueBounds(this, newValue, GetMinimumValue(instant, values), GetMaximumValue(instant, values));
-            values[fieldIndex] = newValue;
-
-            // may need to adjust smaller fields
-            for (int i = fieldIndex + 1; i < instant.Size; i++)
-            {
-                DateTimeField field = instant.GetField(i);
-                if (values[i] > field.GetMaximumValue(instant, values))
-                {
-                    values[i] = (int)field.GetMaximumValue(instant, values);
-                }
-                if (values[i] < (int)field.GetMinimumValue(instant, values))
-                {
-                    values[i] = (int)field.GetMinimumValue(instant, values);
-                }
-            }
-            return values;
-        }
-
-        /// <summary>
-        /// Sets a value using the specified  partial instant supplied from a human-readable, text value.
-        /// </summary>
-        /// <param name="instant">The partial instant</param>
-        /// <param name="fieldIndex">The index of this field in the instant</param>
-        /// <param name="values">The values of the partial instant which should be updated</param>
-        /// <param name="text">The text value to set</param>
-        /// <param name="provider">The format provider to use</param>
-        /// <returns>The passed in values</returns>
-        internal virtual int[] SetValue(IPartial instant, int fieldIndex, int[] values, String text, IFormatProvider provider)
-        {
-            int value = ConvertText(text, provider);
-            return SetValue(instant, fieldIndex, values, value);
-        }
         #endregion
 
         #region Leap
@@ -557,27 +306,6 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Defaults to the absolute maximum for the field.
-        /// </summary>
-        /// <param name="instant"></param>
-        /// <returns></returns>
-        internal virtual long GetMaximumValue(IPartial instant)
-        {
-            return GetMaximumValue();
-        }
-
-        /// <summary>
-        /// Defaults to the absolute maximum for the field.
-        /// </summary>
-        /// <param name="instant"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        internal virtual long GetMaximumValue(IPartial instant, int[] values)
-        {
-            return GetMaximumValue();
-        }
-
-        /// <summary>
         /// Get the maximum allowable value for this field.
         /// </summary>
         /// <returns>The maximum valid value for this field, in the units of the field</returns>
@@ -587,27 +315,6 @@ namespace NodaTime.Fields
         /// Defaults to the absolute minimum for the field.
         /// </summary>
         internal virtual long GetMinimumValue(LocalInstant localInstant)
-        {
-            return GetMinimumValue();
-        }
-
-        /// <summary>
-        /// Defaults to the absolute minimum for the field.
-        /// </summary>
-        /// <param name="instant"></param>
-        /// <returns></returns>
-        internal virtual long GetMinimumValue(IPartial instant)
-        {
-            return GetMinimumValue();
-        }
-
-        /// <summary>
-        /// Defaults to the absolute minimum for the field.
-        /// </summary>
-        /// <param name="instant"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        internal virtual long GetMinimumValue(IPartial instant, int[] values)
         {
             return GetMinimumValue();
         }
@@ -717,7 +424,7 @@ namespace NodaTime.Fields
             {
                 return floor;
             }
-                // Closer to the ceiling - round ceiling
+            // Closer to the ceiling - round ceiling
             else if (diffToCeiling < diffFromFloor)
             {
                 return ceiling;
@@ -818,36 +525,6 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Get the human-readable, text value of this field from a partial instant.
-        /// <para>
-        /// The default implementation returns GetAsText(fieldValue, provider).
-        /// </para>
-        /// </summary>
-        /// <param name="partial">The partial instant to query</param>
-        /// <param name="fieldValue">The field value of this field, provided for performance</param>
-        /// <param name="provider">Format provider to use</param>
-        /// <returns>The text value of the field</returns>
-        internal virtual string GetAsText(IPartial partial, int fieldValue, IFormatProvider provider)
-        {
-            return GetAsText(fieldValue, provider);
-        }
-
-        /// <summary>
-        /// Get the human-readable, text value of this field from a partial instant.
-        /// <para>
-        /// The default implementation calls <see cref="IPartial.Get(DateTimeFieldType)"/>
-        /// and <see cref="GetAsText(IPartial, int, IFormatProvider)"/>
-        /// </para>
-        /// </summary>
-        /// <param name="partial">The partial instant to query</param>
-        /// <param name="provider">Format provider to use</param>
-        /// <returns>The text value of the field</returns>
-        internal virtual string GetAsText(IPartial partial, IFormatProvider provider)
-        {
-            return GetAsText(partial, partial.Get(FieldType), provider);
-        }
-
-        /// <summary>
         /// Get the human-readable, text value of this field from the field value.
         /// <para>
         /// The default implementation returns fieldValue.ToString(provider).
@@ -866,9 +543,9 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Get the human-readable, short text value of this field from the local instant.
+        /// Get the human-readable, text value of this field from the field value.
         /// <para>
-        /// The default implementation calls <see cref="GetAsShortText(int, IFormatProvider)"/>.
+        /// The default implementation returns fieldValue.ToString(provider).
         /// </para>
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
@@ -890,36 +567,6 @@ namespace NodaTime.Fields
         internal virtual string GetAsShortText(LocalInstant localInstant)
         {
             return GetAsShortText(localInstant, null);
-        }
-
-        /// <summary>
-        /// Get the human-readable, short text value of this field from a partial instant.
-        /// <para>
-        /// The default implementation returns GetAsShortText(fieldValue, provider).
-        /// </para>
-        /// </summary>
-        /// <param name="partial">The partial instant to query</param>
-        /// <param name="fieldValue">The field value of this field, provided for performance</param>
-        /// <param name="provider">Format provider to use</param>
-        /// <returns>The text value of the field</returns>
-        internal virtual string GetAsShortText(IPartial partial, int fieldValue, IFormatProvider provider)
-        {
-            return GetAsShortText(fieldValue, provider);
-        }
-
-        /// <summary>
-        /// Get the human-readable, short text value of this field from a partial instant.
-        /// <para>
-        /// The default implementation calls <see cref="IPartial.Get(DateTimeFieldType)"/>
-        /// and <see cref="GetAsShortText(IPartial, int, IFormatProvider)"/>
-        /// </para>
-        /// </summary>
-        /// <param name="partial">The partial instant to query</param>
-        /// <param name="provider">Format provider to use</param>
-        /// <returns>The text value of the field</returns>
-        internal virtual string GetAsShortText(IPartial partial, IFormatProvider provider)
-        {
-            return GetAsShortText(partial, partial.Get(FieldType), provider);
         }
 
         /// <summary>

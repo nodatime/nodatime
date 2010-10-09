@@ -42,13 +42,5 @@ namespace NodaTime.Format
         /// <param name="provider">Provider to use</param>
         void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, DateTimeZone dateTimeZone,
                      IFormatProvider provider);
-
-        /// <summary>
-        /// Prints a partial.
-        /// </summary>
-        /// <param name="writer">Formatted partial is written to this builder, not null</param>
-        /// <param name="partial">A partial instance to print</param>
-        /// <param name="provider">Provider to use</param>
-        void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider);
     }
 }

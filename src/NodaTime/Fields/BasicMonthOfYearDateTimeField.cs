@@ -211,31 +211,6 @@ namespace NodaTime.Fields
             return SetValue(localInstant, FieldUtils.GetWrappedValue(GetValue(localInstant), months, MinimumValue, max));
         }
 
-        internal override int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
-        {
-            // overridden as superclass algorithm can't handle
-            // 2004-02-29 + 48 months -> 2008-02-29 type dates
-            if (valueToAdd == 0)
-            {
-                return values;
-            }
-
-            if (PartialUtils.IsContiguous(instant))
-            {
-                LocalInstant currentValue = LocalInstant.LocalUnixEpoch;
-                for (int i = 0, isize = instant.Size; i < isize; i++)
-                {
-                    currentValue = instant.GetFieldType(i).GetField(calendarSystem).SetValue(currentValue, values[i]);
-                }
-                currentValue = Add(currentValue, valueToAdd);
-                return calendarSystem.GetPartialValues(instant, currentValue);
-            }
-            else
-            {
-                return base.Add(instant, fieldIndex, values, valueToAdd);
-            }
-        }
-
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             if (minuendInstant < subtrahendInstant)

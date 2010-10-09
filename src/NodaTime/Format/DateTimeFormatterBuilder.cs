@@ -45,11 +45,6 @@ namespace NodaTime.Format
                 writer.Write(value);
             }
 
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                writer.Write(value);
-            }
-
             public int EstimatedParsedLength { get { return 1; } }
 
             public int ParseInto(DateTimeParserBucket bucket, string text, int position)
@@ -71,11 +66,6 @@ namespace NodaTime.Format
 
             public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, DateTimeZone dateTimeZone,
                                 IFormatProvider provider)
-            {
-                writer.Write(value);
-            }
-
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
             {
                 writer.Write(value);
             }
@@ -114,37 +104,11 @@ namespace NodaTime.Format
                 }
             }
 
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                try
-                {
-                    writer.Write(Print(partial, provider));
-                }
-                catch (SystemException)
-                {
-                    FormatUtils.WriteUnknownString(writer);
-                }
-            }
-
             private String Print(LocalInstant instant, CalendarSystem calendar, IFormatProvider provider)
             {
                 DateTimeField field = fieldType.GetField(calendar);
 
                 return isShort ? field.GetAsShortText(instant, provider) : field.GetAsText(instant, provider);
-            }
-
-            private String Print(IPartial partial, IFormatProvider provider)
-            {
-                if (partial.IsSupported(fieldType))
-                {
-                    DateTimeField field = fieldType.GetField(partial.Calendar);
-
-                    return isShort ? field.GetAsShortText(partial, provider) : field.GetAsText(partial, provider);
-                }
-                else
-                {
-                    return "\ufffd";
-                }
             }
 
             public int EstimatedParsedLength { get { return EstimatedPrintedLength; } }
@@ -346,18 +310,6 @@ namespace NodaTime.Format
                     FormatUtils.WriteUnknownString(writer);
                 }
             }
-
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                try
-                {
-                    FormatUtils.WriteUnpaddedInteger(writer, partial.Get(FieldType));
-                }
-                catch (SystemException)
-                {
-                    FormatUtils.WriteUnknownString(writer);
-                }
-            }
         }
 
         private class PaddedNumber : NumberFormatter, IDateTimePrinter
@@ -378,18 +330,6 @@ namespace NodaTime.Format
                 {
                     int value = FieldType.GetField(calendarSystem).GetValue(instant);
                     FormatUtils.WritePaddedInteger(writer, value, minPrintedDigits);
-                }
-                catch (SystemException)
-                {
-                    FormatUtils.WriteUnknownString(writer);
-                }
-            }
-
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                try
-                {
-                    FormatUtils.WritePaddedInteger(writer, partial.Get(FieldType), minPrintedDigits);
                 }
                 catch (SystemException)
                 {
@@ -459,12 +399,6 @@ namespace NodaTime.Format
                 WriteYear(writer, year);
             }
 
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                int year = GetTwoDigitYear(partial);
-                WriteYear(writer, year);
-            }
-
             private int GetTwoDigitYear(LocalInstant instant, CalendarSystem calendarSystem)
             {
                 try
@@ -480,26 +414,6 @@ namespace NodaTime.Format
                 {
                     return -1;
                 }
-            }
-
-            private int GetTwoDigitYear(IPartial partial)
-            {
-                if (partial.IsSupported(fieldType))
-                {
-                    try
-                    {
-                        int year = partial.Get(fieldType);
-                        if (year < 0)
-                        {
-                            year = -year;
-                        }
-                        return year % 100;
-                    }
-                    catch (SystemException)
-                    {
-                    }
-                }
-                return -1;
             }
 
             private void WriteYear(TextWriter writer, int year)
@@ -669,14 +583,6 @@ namespace NodaTime.Format
                                 IFormatProvider provider)
             {
                 Print(writer, instant, calendarSystem);
-            }
-
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                // removed check whether field is supported, as input field is typically
-                // secondOfDay which is unsupported by TimeOfDay
-                LocalInstant instant = partial.Calendar.SetPartial(partial, LocalInstant.LocalUnixEpoch);
-                Print(writer, instant, partial.Calendar);
             }
 
             private void Print(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem)
@@ -989,11 +895,6 @@ namespace NodaTime.Format
                 writer.Write(Print(instant - timezoneOffset, dateTimeZone, provider));
             }
 
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                //no zone info
-            }
-
             private String Print(Instant instant, DateTimeZone displayZone, IFormatProvider provider)
             {
                 if (displayZone == null)
@@ -1127,11 +1028,6 @@ namespace NodaTime.Format
                     writer.Write('.');
                 }
                 FormatUtils.WritePaddedInteger(writer, timezoneOffset.Milliseconds, 3);
-            }
-
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                //no zone info
             }
 
             public int EstimatedParsedLength { get { return EstimatedPrintedLength; } }
@@ -1434,21 +1330,6 @@ namespace NodaTime.Format
                 for (int i = 0; i < len; i++)
                 {
                     elements[i].PrintTo(writer, instant, calendarSystem, timezoneOffset, dateTimeZone, provider);
-                }
-            }
-
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                IDateTimePrinter[] elements = printers;
-                if (elements == null)
-                {
-                    throw new NotSupportedException();
-                }
-
-                int len = elements.Length;
-                for (int i = 0; i < len; i++)
-                {
-                    elements[i].PrintTo(writer, partial, provider);
                 }
             }
 

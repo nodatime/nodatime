@@ -41,11 +41,6 @@ namespace NodaTime.Test.Format
                 this.Calendar = calendarSystem;
                 this.Zone = dateTimeZone;
             }
-
-            void IDateTimePrinter.PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public class DateTimeParserMock : IDateTimeParser
