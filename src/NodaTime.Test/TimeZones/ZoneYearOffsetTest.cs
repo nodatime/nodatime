@@ -314,7 +314,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Next_WednesdayForward()
         {
-            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
             Instant actual = offset.MakeInstant(2006, Offset.Zero, Offset.Zero); // Nov 1 2006
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero); // Oct 31 2007
@@ -325,7 +325,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void NextTwice_WednesdayForward()
         {
-            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
             Instant actual = offset.MakeInstant(2006, Offset.Zero, Offset.Zero); // Nov 1 2006
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero); // Oct 31 2007
@@ -338,12 +338,12 @@ namespace NodaTime.Test.TimeZones
         public void WriteRead()
         {
             var dio = new DtzIoHelper();
-            var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
             var actual = dio.WriteRead(expected);
             Assert.AreEqual(expected, actual);
 
             dio = new DtzIoHelper();
-            expected = new ZoneYearOffset(TransitionMode.Utc, 10, -31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            expected = new ZoneYearOffset(TransitionMode.Utc, 10, -31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
             actual = dio.WriteRead(expected);
             Assert.AreEqual(expected, actual);
         }
@@ -351,9 +351,9 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void IEquatable_Tests()
         {
-            var value = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
-            var equalValue = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
-            var unequalValue = new ZoneYearOffset(TransitionMode.Utc, 9, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var value = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
+            var equalValue = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
+            var unequalValue = new ZoneYearOffset(TransitionMode.Utc, 9, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
 
             TestHelper.TestEqualsClass(value, equalValue, unequalValue);
             TestHelper.TestOperatorEquality(value, equalValue, unequalValue);
