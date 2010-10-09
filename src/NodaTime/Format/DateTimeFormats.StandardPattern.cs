@@ -47,12 +47,6 @@ namespace NodaTime.Format
                 formatter.Printer.PrintTo(writer, instant, calendarSystem, timezoneOffset, dateTimeZone, provider);
             }
 
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                var formatter = GetFormatter(provider);
-                formatter.Printer.PrintTo(writer, partial, provider);
-            }
-
             public int EstimatedParsedLength
             {
                 get { return 40; //guess

@@ -169,42 +169,12 @@ namespace NodaTime.Fields
             throw new NotSupportedException();
         }
 
-        internal override long GetMaximumValue(IPartial instant, int[] values)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override long GetMinimumValue(IPartial instant, int[] values)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override long GetMaximumValue(IPartial instant)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override long GetMinimumValue(IPartial instant)
-        {
-            throw new NotImplementedException();
-        }
-
         internal override string GetAsText(LocalInstant localInstant, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
 
         internal override string GetAsText(LocalInstant localInstant)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override string GetAsText(IPartial partial, int fieldValue, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override string GetAsText(IPartial partial, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
@@ -224,32 +194,7 @@ namespace NodaTime.Fields
             throw new NotImplementedException();
         }
 
-        internal override string GetAsShortText(IPartial partial, int fieldValue, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override string GetAsShortText(IPartial partial, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
         internal override string GetAsShortText(int fieldValue, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override int[] AddWrapPartial(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override int[] SetValue(IPartial instant, int fieldIndex, int[] values, int newValue)
         {
             throw new NotImplementedException();
         }
@@ -265,11 +210,6 @@ namespace NodaTime.Fields
         }
 
         internal override LocalInstant SetValue(LocalInstant instant, string text)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override int[] SetValue(IPartial instant, int fieldIndex, int[] values, string text, IFormatProvider provider)
         {
             throw new NotImplementedException();
         }

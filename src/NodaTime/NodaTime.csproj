@@ -109,9 +109,6 @@
     <Compile Include="Fields\UnsupportedDurationField.cs" />
     <Compile Include="Fields\ZeroIsMaxDateTimeField.cs" />
     <Compile Include="LocalInstant.cs" />
-    <Compile Include="Partials\AbstractPartial.cs" />
-    <Compile Include="Partials\LocalBase.cs" />
-    <Compile Include="Partials\PartialBase.cs" />
     <Compile Include="Calendars\AssembledCalendarSystem.cs" />
     <Compile Include="Calendars\BasicCalendarSystem.cs" />
     <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
@@ -126,7 +123,6 @@
     <Compile Include="Format\PeriodFormatterBuilder.cs" />
     <Compile Include="Format\PeriodFormats.cs" />
     <Compile Include="Clocks\SystemClock.cs" />
-    <Compile Include="Partials\PartialUtils.cs" />
     <Compile Include="Periods\Period.Creation.cs" />
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
@@ -159,7 +155,6 @@
     <Compile Include="TimeZones\TransitionMode.cs" />
     <Compile Include="TimeZones\UtcProvider.cs" />
     <Compile Include="TimeZones\DateTimeZoneResourceProvider.cs" />
-    <Compile Include="Partials\MonthDay.cs" />
     <Compile Include="Format\DateTimeFormatter.cs" />
     <Compile Include="Format\DateTimeFormats.Pattern.cs" />
     <Compile Include="Format\DateTimeParserBucket.cs" />
@@ -168,12 +163,10 @@
     <Compile Include="Format\IDateTimePrinter.cs" />
     <Compile Include="Format\IsoDateTimeFormats.cs" />
     <Compile Include="Chronology.cs" />
-    <Compile Include="Partials\Partial.cs" />
     <Compile Include="Periods\Period.cs" />
     <Compile Include="Periods\PeriodType.cs" />
     <Compile Include="Periods\Weeks.cs" />
     <Compile Include="Periods\Seconds.cs" />
-    <Compile Include="Partials\YearMonth.cs" />
     <Compile Include="Periods\Years.cs" />
     <Compile Include="Periods\Months.cs" />
     <Compile Include="Periods\Minutes.cs" />
@@ -187,7 +180,6 @@
     <Compile Include="Periods\Hours.cs" />
     <Compile Include="Instant.cs" />
     <Compile Include="Interval.cs" />
-    <Compile Include="IPartial.cs" />
     <Compile Include="Partials\LocalDate.cs" />
     <Compile Include="NodaConstants.cs" />
     <Compile Include="IPeriod.cs" />

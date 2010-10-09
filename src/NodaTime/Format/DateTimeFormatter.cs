@@ -294,17 +294,6 @@ namespace NodaTime.Format
             printer.PrintTo(writer, adjustedLocalInstant, calendarSystem, timezoneOffset, zone, provider);
         }
 
-        internal void PrintTo(StringBuilder builder, IPartial partial)
-        {
-            if (partial == null)
-            {
-                throw new ArgumentNullException("partial");
-            }
-
-            VerifyPrinter();
-
-            printer.PrintTo(new StringWriter(builder), partial, provider);
-        }
         #endregion
 
         #region Parsing
