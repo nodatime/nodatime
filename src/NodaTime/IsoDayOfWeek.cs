@@ -17,12 +17,12 @@
 
 namespace NodaTime
 {
-    // TODO: This is very similar to System.DayOfWeek, but with a different numbering system. We should investigate whether we could move to
-    // use the system type.
     /// <summary>
-    /// Equates the days of the week with their numerical value.
+    /// Equates the days of the week with their numerical value according to
+    /// ISO-8601. This corresponds with System.DayOfWeek except for Sunday, which
+    /// is 7 in the ISO numbering and 0 in System.DayOfWeek.
     /// </summary>
-    public enum DaysOfWeek
+    public enum IsoDayOfWeek
     {
         None = 0,
         Monday = 1,
