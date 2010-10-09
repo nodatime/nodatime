@@ -15,10 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
-using NodaTime.Calendars;
-using NodaTime.Fields;
-using NodaTime.Utility;
 
 namespace NodaTime.Partials
 {

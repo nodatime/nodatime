@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NodaTime.Partials;
+﻿using NodaTime.Partials;
 using NodaTime.Periods;
 using NUnit.Framework;
 

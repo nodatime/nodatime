@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Fields;
 using NodaTime.Periods;
 using NUnit.Framework;
 

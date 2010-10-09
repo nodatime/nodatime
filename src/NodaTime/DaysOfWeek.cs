@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -15,7 +15,7 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime.Calendars
+namespace NodaTime
 {
     // TODO: This is very similar to System.DayOfWeek, but with a different numbering system. We should investigate whether we could move to
     // use the system type.

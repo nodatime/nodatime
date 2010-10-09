@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -16,10 +16,11 @@
 #endregion
 
 using System;
+using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Periods;
 
-namespace NodaTime.Calendars
+namespace NodaTime
 {
     // TODO: Move to NodaTime namespace now that users only need to know about CalendarSystem?
     /// <summary>

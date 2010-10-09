@@ -15,9 +15,8 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Calendars;
-using NodaTime.TimeZones;
 using System;
+using NodaTime.TimeZones;
 
 namespace NodaTime
 {

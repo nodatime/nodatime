@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using NodaTime.Fields;
 using NodaTime.Periods;
 using NUnit.Framework;
 

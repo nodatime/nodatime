@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using NodaTime.Calendars;
 
 namespace NodaTime.Format
 {

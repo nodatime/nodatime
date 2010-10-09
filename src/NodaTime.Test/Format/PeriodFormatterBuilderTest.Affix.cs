@@ -18,8 +18,8 @@
 using System;
 using System.IO;
 using NodaTime.Format;
-using NUnit.Framework;
 using NodaTime.Periods;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {

@@ -16,7 +16,6 @@
 #endregion
 
 using NodaTime;
-using NodaTime.Calendars;
 using NodaTime.TimeZones;
 using NodaTime.ZoneInfoCompiler.Tzdb;
 using NUnit.Framework;

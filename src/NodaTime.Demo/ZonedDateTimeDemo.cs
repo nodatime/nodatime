@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Calendars;
 using NodaTime.Format;
 using NodaTime.TimeZones;
 using NUnit.Framework;

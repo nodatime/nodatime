@@ -16,11 +16,9 @@
 #endregion
 
 using System;
-using NUnit.Framework;
-using NodaTime.Format;
-using System.Text;
 using System.IO;
-using NodaTime.Periods;
+using System.Text;
+using NodaTime.Format;
 
 namespace NodaTime.Test.Format
 {

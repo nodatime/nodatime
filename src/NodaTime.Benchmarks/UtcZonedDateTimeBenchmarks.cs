@@ -17,7 +17,6 @@
 
 using NodaTime.Benchmarks.Extensions;
 using NodaTime.Benchmarks.Timing;
-using NodaTime.TimeZones;
 
 namespace NodaTime.Benchmarks
 {

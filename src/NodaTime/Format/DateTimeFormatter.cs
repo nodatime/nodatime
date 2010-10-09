@@ -18,8 +18,6 @@
 using System;
 using System.IO;
 using System.Text;
-using NodaTime.Calendars;
-using NodaTime.TimeZones;
 
 namespace NodaTime.Format
 {

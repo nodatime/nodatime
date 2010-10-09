@@ -15,9 +15,9 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.Fields;
 using NodaTime.Periods;
 using NUnit.Framework;
-using NodaTime.Fields;
 
 namespace NodaTime.Test.Periods
 {

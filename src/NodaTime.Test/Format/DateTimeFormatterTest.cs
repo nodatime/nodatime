@@ -17,7 +17,6 @@
 
 using System;
 using System.Globalization;
-using NodaTime.Calendars;
 using NodaTime.Format;
 using NodaTime.TimeZones;
 using NUnit.Framework;

@@ -18,7 +18,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Utility;
 

@@ -16,7 +16,6 @@
 #endregion
 
 using NodaTime.Fields;
-using NodaTime.TimeZones;
 
 namespace NodaTime.Format
 {

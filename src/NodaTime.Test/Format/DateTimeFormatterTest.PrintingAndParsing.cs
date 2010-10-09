@@ -18,7 +18,6 @@
 using System;
 using System.IO;
 using System.Text;
-using NodaTime.Calendars;
 using NodaTime.Format;
 using NUnit.Framework;
 
