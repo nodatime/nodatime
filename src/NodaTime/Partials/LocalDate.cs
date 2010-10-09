@@ -43,7 +43,7 @@ namespace NodaTime.Partials
         public int Year { get { return localTime.Year; } }
         public int MonthOfYear { get { return localTime.MonthOfYear; } }
         public int DayOfMonth { get { return localTime.DayOfMonth; } }
-        public int DayOfWeek { get { return localTime.DayOfWeek; } }
+        public IsoDayOfWeek DayOfWeek { get { return localTime.DayOfWeek; } }
         public int WeekOfWeekYear { get { return localTime.WeekOfWeekYear; } }
         public int YearOfCentury { get { return localTime.YearOfCentury; } }
         public int YearOfEra { get { return localTime.YearOfEra; } }
