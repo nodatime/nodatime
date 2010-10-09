@@ -18,7 +18,6 @@
 using System;
 using System.Globalization;
 using System.IO;
-using NodaTime.Calendars;
 using NodaTime.Format;
 using NodaTime.Periods;
 

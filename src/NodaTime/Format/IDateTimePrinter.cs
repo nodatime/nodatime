@@ -17,7 +17,6 @@
 
 using System;
 using System.IO;
-using NodaTime.Calendars;
 
 namespace NodaTime.Format
 {

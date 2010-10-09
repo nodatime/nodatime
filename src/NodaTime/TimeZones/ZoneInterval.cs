@@ -17,7 +17,6 @@
 
 using System;
 using System.Text;
-using NodaTime.Calendars;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones

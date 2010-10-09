@@ -18,7 +18,6 @@
 using System;
 using System.Globalization;
 using System.Text;
-using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Utility;
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using NodaTime.Calendars;
 using NodaTime.Partials;
 using NodaTime.Periods;
 using NUnit.Framework;

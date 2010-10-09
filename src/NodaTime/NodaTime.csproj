@@ -70,9 +70,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calendars\DaysOfWeek.cs" />
+    <Compile Include="CalendarSystem.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="Clocks\FixedClock.cs" />
+    <Compile Include="DaysOfWeek.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
     <Compile Include="FieldValueException.cs" />
@@ -114,7 +115,6 @@
     <Compile Include="Calendars\AssembledCalendarSystem.cs" />
     <Compile Include="Calendars\BasicCalendarSystem.cs" />
     <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
-    <Compile Include="Calendars\CalendarSystem.cs" />
     <Compile Include="Calendars\GregorianCalendarSystem.cs" />
     <Compile Include="Calendars\IsoCalendarSystem.cs" />
     <Compile Include="IClock.cs" />

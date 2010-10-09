@@ -17,7 +17,6 @@
 
 using NodaTime.Periods;
 using NUnit.Framework;
-using NodaTime.Fields;
 
 namespace NodaTime.Test.Periods
 {

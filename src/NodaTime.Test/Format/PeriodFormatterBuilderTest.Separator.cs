@@ -15,10 +15,10 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using NodaTime.Periods;
-using NodaTime.Format;
 using System.IO;
+using NodaTime.Format;
+using NodaTime.Periods;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {
