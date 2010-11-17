@@ -52,9 +52,9 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void DayOfWeek()
+        public void IsoDayOfWeek()
         {
-            sample.DayOfWeek.Consume();
+            sample.IsoDayOfWeek.Consume();
         }
 
         [Benchmark]

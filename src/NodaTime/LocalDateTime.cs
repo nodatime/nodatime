@@ -238,7 +238,9 @@ namespace NodaTime
 
         public int DayOfMonth { get { return calendar.Fields.DayOfMonth.GetValue(localInstant); } }
 
-        public IsoDayOfWeek DayOfWeek { get { return (IsoDayOfWeek) calendar.Fields.DayOfWeek.GetValue(localInstant); } }
+        public IsoDayOfWeek IsoDayOfWeek { get { return calendar.GetIsoDayOfWeek(localInstant); } }
+
+        public int DayOfWeek { get { return calendar.Fields.DayOfWeek.GetValue(localInstant); } }
 
         public int HourOfDay { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
 

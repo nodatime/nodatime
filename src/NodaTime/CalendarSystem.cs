@@ -22,7 +22,6 @@ using NodaTime.Periods;
 
 namespace NodaTime
 {
-    // TODO: Move to NodaTime namespace now that users only need to know about CalendarSystem?
     /// <summary>
     /// CalendarSystem provides a skeleton implementation for CalendarSystem.
     /// Many utility methods are defined, but all fields are unsupported.
@@ -67,6 +66,13 @@ namespace NodaTime
         /// </summary>
         /// <value>The calendar system name.</value>
         public string Name { get { return name; } }
+
+        /// <summary>
+        /// Returns whether the day-of-week field refers to ISO days. If true, types such as LocalDateTime
+        /// can use the IsoDayOfWeek property to avoid using magic numbers. This defaults to true, but can be
+        /// overridden by specific calendars.
+        /// </summary>
+        public virtual bool UsesIsoDayOfWeek { get { return true; } }
 
         internal abstract FieldSet Fields { get; }
 
@@ -253,5 +259,20 @@ namespace NodaTime
             return Name;
         }
         #endregion
+
+        /// <summary>
+        /// Returns the IsoDayOfWeek corresponding to the day of week for the given local instant
+        /// if this calendar uses ISO days of the week, or throws an InvalidOperationException otherwise.
+        /// </summary>
+        /// <param name="localInstant">The local instant to use to find the day of the week</param>
+        /// <returns>The day of the week as an IsoDayOfWeek</returns>
+        internal IsoDayOfWeek GetIsoDayOfWeek(LocalInstant localInstant)
+        {
+            if (!UsesIsoDayOfWeek)
+            {
+                throw new InvalidOperationException("Calendar " + Name + " does not use ISO days of the week");
+            }
+            return (IsoDayOfWeek)Fields.DayOfWeek.GetValue(localInstant);
+        }
     }
 }

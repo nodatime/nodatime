@@ -49,7 +49,8 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(1, epoch.MonthOfYear);
             Assert.AreEqual(1, epoch.DayOfMonth);
             Assert.AreEqual(1, epoch.DayOfYear);
-            Assert.AreEqual(IsoDayOfWeek.Thursday, epoch.DayOfWeek);
+            Assert.AreEqual(IsoDayOfWeek.Thursday, epoch.IsoDayOfWeek);
+            Assert.AreEqual(4, epoch.DayOfWeek);
             Assert.AreEqual(NodaConstants.CommonEra, epoch.Era);
             Assert.AreEqual(0, epoch.HourOfDay);
             Assert.AreEqual(0, epoch.MinuteOfHour);
@@ -75,7 +76,8 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(11, now.MonthOfYear);
             Assert.AreEqual(27, now.DayOfMonth);
             Assert.AreEqual(TimeOfGreatAchievement.DayOfYear, now.DayOfYear);
-            Assert.AreEqual(IsoDayOfWeek.Friday, now.DayOfWeek);
+            Assert.AreEqual(IsoDayOfWeek.Friday, now.IsoDayOfWeek);
+            Assert.AreEqual(5, now.DayOfWeek);
             Assert.AreEqual(NodaConstants.CommonEra, now.Era);
             Assert.AreEqual(18, now.HourOfDay);
             Assert.AreEqual(38, now.MinuteOfHour);
@@ -92,6 +94,12 @@ namespace NodaTime.Test.Calendars
         {
             LocalInstant localAchievement = CalendarSystem.Iso.GetLocalInstant(2009, 11, 27, 18, 38, 25, 345, 8765);
             Assert.AreEqual((TimeOfGreatAchievement - UnixEpochDateTime).Ticks, localAchievement.Ticks);
+        }
+
+        [Test]
+        public void IsoCalendarUsesIsoDayOfWeek()
+        {
+            Assert.IsTrue(CalendarSystem.Iso.UsesIsoDayOfWeek);
         }
     }
 }
