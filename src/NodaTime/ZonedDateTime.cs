@@ -225,7 +225,9 @@ namespace NodaTime
 
         public int DayOfMonth { get { return LocalDateTime.DayOfMonth; } }
 
-        public IsoDayOfWeek DayOfWeek { get { return (IsoDayOfWeek) LocalDateTime.DayOfWeek; } }
+        public IsoDayOfWeek IsoDayOfWeek { get { return LocalDateTime.IsoDayOfWeek; } }
+
+        public int DayOfWeek { get { return LocalDateTime.DayOfWeek; } }
 
         public int HourOfDay { get { return LocalDateTime.HourOfDay; } }
 
