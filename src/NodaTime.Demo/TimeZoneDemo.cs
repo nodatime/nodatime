@@ -43,7 +43,7 @@ namespace NodaTime.Demo
         public void ZoneInterval()
         {
             DateTimeZone london = DateTimeZones.ForId("Europe/London");
-            ZoneInterval interval = london.GetZoneInterval(Clock.Now);
+            ZoneInterval interval = london.GetZoneInterval(Instant.FromUtc(2010, 6, 19, 0, 0));
             Assert.AreEqual("BST", interval.Name);
             Assert.AreEqual(Instant.FromUtc(2010, 3, 28, 1, 0), interval.Start);
             Assert.AreEqual(Instant.FromUtc(2010, 10, 31, 1, 0), interval.End);
