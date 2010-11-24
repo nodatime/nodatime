@@ -32,12 +32,14 @@ namespace NodaTime
     {
         // TODO: Enum for this instead? (With duplicate values where appropriate.)
 
+        // ReSharper disable InconsistentNaming
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BCE", Justification = "BCE is the expected initialism")] public const int BCE = 0;
         public const int BC = BCE;
         public const int BeforeCommonEra = BCE;
         public const int CE = 1;
         public const int CommonEra = CE;
         public const int AD = CE;
+        // ReSharper restore InconsistentNaming
 
         // TODO: Enum for this instead?
         public const int January = 1;

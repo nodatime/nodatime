@@ -46,12 +46,10 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void WriteRead()
+        public void Test()
         {
-            var dio = new DtzIoHelper();
-            var actual = dio.WriteRead(TimeZone);
-            // TODO: this should be AreSame when Serialization is setup
-            Assert.AreEqual(TimeZone, actual);
+            var dio = new DtzIoHelper("null date time zone");
+            dio.TestTimeZone(TimeZone);
         }
     }
 }

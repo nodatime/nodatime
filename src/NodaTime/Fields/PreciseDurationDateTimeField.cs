@@ -86,7 +86,7 @@ namespace NodaTime.Fields
         public override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, GetMinimumValue(), GetMaximumValueForSet(localInstant, value));
-            return new LocalInstant(localInstant.Ticks + (value - GetInt64Value(localInstant)) * unitTicks);
+            return LocalInstant.FromTicks(localInstant.Ticks + (value - GetInt64Value(localInstant)) * unitTicks);
         }
         #endregion
 
@@ -113,12 +113,12 @@ namespace NodaTime.Fields
             long ticks = localInstant.Ticks;
             if (ticks >= 0)
             {
-                return new LocalInstant(ticks - (ticks % unitTicks));
+                return LocalInstant.FromTicks(ticks - (ticks % unitTicks));
             }
             else
             {
                 ticks++;
-                return new LocalInstant(ticks - (ticks % unitTicks) - unitTicks);
+                return LocalInstant.FromTicks(ticks - (ticks % unitTicks) - unitTicks);
             }
         }
 
@@ -128,11 +128,11 @@ namespace NodaTime.Fields
             if (ticks > 0)
             {
                 ticks--;
-                return new LocalInstant(ticks - (ticks % unitTicks) + unitTicks);
+                return LocalInstant.FromTicks(ticks - (ticks % unitTicks) + unitTicks);
             }
             else
             {
-                return new LocalInstant(ticks - ticks % unitTicks);
+                return LocalInstant.FromTicks(ticks - ticks % unitTicks);
             }
         }
 

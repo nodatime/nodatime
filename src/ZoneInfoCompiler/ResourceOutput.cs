@@ -25,74 +25,58 @@ using NodaTime.Utility;
 namespace NodaTime.ZoneInfoCompiler
 {
     /// <summary>
-    /// Abstraction for handling the writing of objects to resources.
+    ///   Abstraction for handling the writing of objects to resources.
     /// </summary>
     public sealed class ResourceOutput : IDisposable
     {
         private readonly IResourceWriter resourceWriter;
-        private readonly MemoryStream memory;
-        private readonly DateTimeZoneWriter timeZoneWriter;
+        private MemoryStream memory;
+        private IDateTimeZoneWriter timeZoneWriter;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResourceOutput"/> class.
+        ///   Initializes a new instance of the <see cref = "ResourceOutput" /> class.
         /// </summary>
-        /// <param name="name">The output file name.</param>
-        /// <param name="type">The resource type.</param>
+        /// <param name = "name">The output file name.</param>
+        /// <param name = "type">The resource type.</param>
         public ResourceOutput(string name, ResourceOutputType type)
         {
-            string fileName = ChangeExtension(name, type);
-            resourceWriter = GetResourceWriter(fileName, type);
-            memory = new MemoryStream();
-            timeZoneWriter = new DateTimeZoneWriter(memory);
+            OutputFileName = ChangeExtension(name, type);
+            resourceWriter = GetResourceWriter(OutputFileName, type);
         }
 
+        public string OutputFileName { get; private set; }
+
+        #region IDisposable Members
         /// <summary>
-        /// Returns the givne file name with the extension set based on the given resource output type.
+        ///   Performs application-defined tasks associated with freeing, releasing, or resetting
+        ///   unmanaged resources.
         /// </summary>
-        /// <param name="fileName">The file name to change.</param>
-        /// <param name="type">The <see cref="ResourceOutputType"/>.</param>
+        public void Dispose()
+        {
+            resourceWriter.Close();
+            memory.Close();
+        }
+        #endregion
+
+        /// <summary>
+        ///   Returns the given file name with the extension set based on the given resource output type.
+        /// </summary>
+        /// <param name = "fileName">The file name to change.</param>
+        /// <param name = "type">The <see cref = "ResourceOutputType" />.</param>
         /// <returns>The file extension to use.</returns>
         public static string ChangeExtension(string fileName, ResourceOutputType type)
         {
-            if (type == ResourceOutputType.Resource)
-            {
-                return Path.ChangeExtension(fileName, ".resources");
-            }
-            else
-            {
-                return Path.ChangeExtension(fileName, ".resx");
-            }
+            var extension = type == ResourceOutputType.Resource ? ".resources" : ".resx";
+            return Path.ChangeExtension(fileName, extension);
         }
 
         /// <summary>
-        /// Writes a time zone to a resource with the given name.
+        ///   Returns the appropriate implementation of <see cref = "IResourceWriter" /> to use to
+        ///   generate the output file as directed by the command line arguments.
         /// </summary>
-        /// <param name="name">The resource name.</param>
-        /// <param name="timeZone">The <see cref="IDateTimeZone"/> to write.</param>
-        public void WriteTimeZone(string name, IDateTimeZone timeZone)
-        {
-            timeZoneWriter.WriteTimeZone(timeZone);
-            WriteResource(name);
-        }
-
-        /// <summary>
-        /// Writes dictionary of string to string to  a resource with the given name.
-        /// </summary>
-        /// <param name="name">The resource name.</param>
-        /// <param name="dictionary">The <see cref="IDictionary"/> to write.</param>
-        public void WriteDictionary(string name, IDictionary<string, string> dictionary)
-        {
-            timeZoneWriter.WriteDictionary(dictionary);
-            WriteResource(name);
-        }
-
-        /// <summary>
-        /// Returns the appropriate implementation of <see cref="IResourceWriter"/> to use to
-        /// generate the output file as directed by the command line arguments.
-        /// </summary>
-        /// <param name="name">The name of the output file.</param>
-        /// <param name="type">The output file type.</param>
-        /// <returns>The <see cref="IResourceWriter"/> to write to.</returns>
+        /// <param name = "name">The name of the output file.</param>
+        /// <param name = "type">The output file type.</param>
+        /// <returns>The <see cref = "IResourceWriter" /> to write to.</returns>
         private static IResourceWriter GetResourceWriter(string name, ResourceOutputType type)
         {
             IResourceWriter result;
@@ -107,43 +91,60 @@ namespace NodaTime.ZoneInfoCompiler
             return result;
         }
 
+        private void MakeOutput()
+        {
+            memory = new MemoryStream();
+            timeZoneWriter = new DateTimeZoneCompressionWriter(memory);
+        }
+
         /// <summary>
-        /// Writes contents of this object's memory stream to the resource writer.
+        ///   Writes dictionary of string to string to  a resource with the given name.
         /// </summary>
-        /// <param name="name">The name of the resource to write.</param>
+        /// <param name = "name">The resource name.</param>
+        /// <param name = "dictionary">The <see cref = "IDictionary{TKey,TValue}" /> to write.</param>
+        public void WriteDictionary(string name, IDictionary<string, string> dictionary)
+        {
+            MakeOutput();
+            timeZoneWriter.WriteDictionary(dictionary);
+            WriteResource(name);
+        }
+
+        /// <summary>
+        ///   Writes contents of this object's memory stream to the resource writer.
+        /// </summary>
+        /// <param name = "name">The name of the resource to write.</param>
         private void WriteResource(string name)
         {
             memory.Flush();
-            byte[] bytes = memory.ToArray();
-            string normalizedName = ResourceHelper.NormalizeAsResourceName(name);
+            var bytes = memory.ToArray();
+            var normalizedName = ResourceHelper.NormalizeAsResourceName(name);
             resourceWriter.AddResource(normalizedName, bytes);
-            memory.SetLength(0);
         }
 
-        #region IDisposable Members
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting
-        /// unmanaged resources.
+        ///   Writes a time zone to a resource with the given name.
         /// </summary>
-        public void Dispose()
+        /// <param name = "name">The resource name.</param>
+        /// <param name = "timeZone">The <see cref = "IDateTimeZone" /> to write.</param>
+        public void WriteTimeZone(string name, IDateTimeZone timeZone)
         {
-            resourceWriter.Close();
-            memory.Close();
+            MakeOutput();
+            timeZoneWriter.WriteTimeZone(timeZone);
+            WriteResource(name);
         }
-        #endregion
     }
 
     /// <summary>
-    /// Defines the types of resource files we can write to.
+    ///   Defines the types of resource files we can write to.
     /// </summary>
     public enum ResourceOutputType
     {
         /// <summary>
-        /// Generates the output file in ResX format.
+        ///   Generates the output file in ResX format.
         /// </summary>
         ResX,
         /// <summary>
-        /// generates the output file in Resource format.
+        ///   generates the output file in Resource format.
         /// </summary>
         Resource
     }

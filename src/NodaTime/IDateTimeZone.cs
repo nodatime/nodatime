@@ -94,6 +94,6 @@ namespace NodaTime
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        void Write(DateTimeZoneWriter writer);
+        void Write(IDateTimeZoneWriter writer);
     }
 }

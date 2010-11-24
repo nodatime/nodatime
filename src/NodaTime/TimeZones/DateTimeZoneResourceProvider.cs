@@ -16,6 +16,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Resources;
 using NodaTime.Utility;
@@ -23,7 +24,8 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Original name: ZoneInfoProvider
+    ///   Provides an implmentation of a <see cref = "IDateTimeZoneProvider" /> that looks
+    ///   for its time zone definitions from a named resource in an assembly.
     /// </summary>
     public sealed class DateTimeZoneResourceProvider : IDateTimeZoneProvider
     {
@@ -33,43 +35,51 @@ namespace NodaTime.TimeZones
         private readonly IDictionary<string, string> timeZoneIdMap;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider"/> class.
+        ///   Initializes a new instance of the <see cref = "DateTimeZoneResourceProvider" /> class.
         /// </summary>
-        /// <param name="baseName">GetName of the base.</param>
-        public DateTimeZoneResourceProvider(string baseName)
+        /// <param name = "baseName">GetName of the base.</param>
+        public DateTimeZoneResourceProvider(string baseName) : this(baseName, Assembly.GetExecutingAssembly())
         {
-            manager = new ResourceManager(baseName, Assembly.GetExecutingAssembly());
+        }
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "DateTimeZoneResourceProvider" /> class.
+        /// </summary>
+        /// <param name = "baseName">GetName of the base.</param>
+        /// <param name = "assembly">The assembly to search for the time zone resources.</param>
+        public DateTimeZoneResourceProvider(string baseName, Assembly assembly)
+        {
+            manager = new ResourceManager(baseName, assembly);
             timeZoneIdMap = ResourceHelper.LoadDictionary(manager, IdMapKey);
         }
 
         #region IDateTimeZoneProvider Members
         /// <summary>
-        /// Returns the time zone definition associated with the given id.
+        ///   Returns the time zone definition associated with the given id.
         /// </summary>
-        /// <param name="id">The id of the time zone to return.</param>
+        /// <param name = "id">The id of the time zone to return.</param>
         /// <returns>
-        /// The <see cref="IDateTimeZone"/> or <c>null</c> if there is no time zone with the given id.
+        ///   The <see cref = "IDateTimeZone" /> or <c>null</c> if there is no time zone with the given id.
         /// </returns>
         /// <remarks>
-        /// If the time zone does not yet exist, its definition is loaded from where ever this
-        /// provider gets time zone definitions. Time zones should not be cached in the provider as
-        /// they will be cached in <see cref="DateTimeZones"/>.
+        ///   If the time zone does not yet exist, its definition is loaded from where ever this
+        ///   provider gets time zone definitions. Time zones should not be cached in the provider as
+        ///   they will be cached in <see cref = "DateTimeZones" />.
         /// </remarks>
         public IDateTimeZone ForId(string id)
         {
-            string queryId = id;
-            if (timeZoneIdMap.ContainsKey(queryId))
-            {
-                queryId = timeZoneIdMap[queryId];
-            }
+            var queryId = timeZoneIdMap.ContainsKey(id) ? timeZoneIdMap[id] : id;
             return ResourceHelper.LoadTimeZone(manager, queryId, id);
         }
 
         /// <summary>
-        /// Returns an enumeration of the available ids from this provider.
+        ///   Returns an enumeration of the available ids from this provider.
         /// </summary>
-        /// <value>The <see cref="IEnumerable{T}"/> of ids.</value>
-        public IEnumerable<string> Ids { get { return timeZoneIdMap.Keys; } }
+        /// <value>The <see cref = "IEnumerable{T}" /> of ids.</value>
+        public IEnumerable<string> Ids
+        {
+            [DebuggerStepThrough] get { return timeZoneIdMap.Keys; }
+        }
         #endregion
     }
 }

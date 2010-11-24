@@ -21,34 +21,22 @@ using NodaTime.Utility;
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
-    /// Represents an alias link between a target (existing item) and a source (the alias) time
-    /// zone.
+    ///   Represents an alias link between a target (existing item) and a source (the alias) time
+    ///   zone.
     /// </summary>
     /// <remarks>
-    /// Immutable, thread-safe.
+    ///   Immutable, thread-safe.
     /// </remarks>
     internal class ZoneAlias : IEquatable<ZoneAlias>
     {
-        private readonly string existing;
         private readonly string alias;
+        private readonly string existing;
 
         /// <summary>
-        /// Gets or sets the existing time zone name.
+        ///   Initializes a new instance of the <see cref = "ZoneAlias" /> class.
         /// </summary>
-        /// <value>The existing name.</value>
-        internal string Existing { get { return existing; } }
-
-        /// <summary>
-        /// Gets or sets the time zone alias name.
-        /// </summary>
-        /// <value>The alias name.</value>
-        internal string Alias { get { return alias; } }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZoneAlias"/> class.
-        /// </summary>
-        /// <param name="existing">The existing zone name.</param>
-        /// <param name="alias">The alias zone name.</param>
+        /// <param name = "existing">The existing zone name.</param>
+        /// <param name = "alias">The alias zone name.</param>
         internal ZoneAlias(string existing, string alias)
         {
             this.existing = existing;
@@ -56,55 +44,31 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        ///   Gets or sets the time zone alias name.
         /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
+        /// <value>The alias name.</value>
+        internal string Alias
         {
-            return Alias + " --> " + Existing;
+            get { return alias; }
         }
 
         /// <summary>
-        /// Returns a hash code for this instance.
+        ///   Gets or sets the existing time zone name.
         /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
-        /// </returns>
-        public override int GetHashCode()
+        /// <value>The existing name.</value>
+        internal string Existing
         {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, Existing);
-            hash = HashCodeHelper.Hash(hash, Alias);
-            return hash;
+            get { return existing; }
         }
 
+        #region IEquatable<ZoneAlias> Members
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        ///   Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <param name = "other">An object to compare with this object.</param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        /// <exception cref="T:System.NullReferenceException">
-        /// The <paramref name="obj"/> parameter is null.
-        /// </exception>
-        public override bool Equals(object obj)
-        {
-            return Equals((ZoneAlias)obj);
-        }
-
-        #region IEquatable<Alias> Members
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter;
-        /// otherwise, false.
+        ///   true if the current object is equal to the <paramref name = "other" /> parameter;
+        ///   otherwise, false.
         /// </returns>
         public bool Equals(ZoneAlias other)
         {
@@ -115,5 +79,47 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             return Existing == other.Existing && Alias == other.Alias;
         }
         #endregion
+
+        /// <summary>
+        ///   Determines whether the specified <see cref = "System.Object" /> is equal to this instance.
+        /// </summary>
+        /// <param name = "obj">The <see cref = "System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance;
+        ///   otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref = "T:System.NullReferenceException">
+        ///   The <paramref name = "obj" /> parameter is null.
+        /// </exception>
+        public override bool Equals(object obj)
+        {
+            return Equals((ZoneAlias)obj);
+        }
+
+        /// <summary>
+        ///   Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        ///   A hash code for this instance, suitable for use in hashing algorithms and data
+        ///   structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            int hash = HashCodeHelper.Initialize();
+            hash = HashCodeHelper.Hash(hash, Existing);
+            hash = HashCodeHelper.Hash(hash, Alias);
+            return hash;
+        }
+
+        /// <summary>
+        ///   Returns a <see cref = "System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Alias + " --> " + Existing;
+        }
     }
 }

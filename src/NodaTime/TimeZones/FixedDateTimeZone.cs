@@ -116,7 +116,7 @@ namespace NodaTime.TimeZones
         /// Writes the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        public override void Write(DateTimeZoneWriter writer)
+        public override void Write(IDateTimeZoneWriter writer)
         {
             if (writer == null)
             {
@@ -131,7 +131,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        public static IDateTimeZone Read(IDateTimeZoneReader reader, string id)
         {
             if (reader == null)
             {

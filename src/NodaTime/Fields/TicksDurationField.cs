@@ -68,12 +68,12 @@ namespace NodaTime.Fields
 
         public override LocalInstant Add(LocalInstant localInstant, int value)
         {
-            return new LocalInstant(localInstant.Ticks + value);
+            return LocalInstant.FromTicks(localInstant.Ticks + value);
         }
 
         public override LocalInstant Add(LocalInstant localInstant, long value)
         {
-            return new LocalInstant(localInstant.Ticks + value);
+            return LocalInstant.FromTicks(localInstant.Ticks + value);
         }
 
         public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)

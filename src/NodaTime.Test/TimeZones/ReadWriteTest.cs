@@ -16,85 +16,192 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using NodaTime.TimeZones;
 using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
-    public class ReadWriteTest
+    public abstract class ReadWriteTest
     {
-        private static void TestCount(int expected)
+        /*
+        #region Setup/Teardown
+        [SetUp]
+        public void SetUp()
         {
-            var dio = new DtzIoHelper();
-            dio.Writer.WriteCount(expected);
-            var actual = dio.Reader.ReadCount();
-            Assert.AreEqual(expected, actual);
+            dioStandard = new DtzIoHelper("standard", (stream) => new DateTimeZoneWriter(stream), (stream) => new DateTimeZoneReader(stream));
+            dioCompress = new DtzIoHelper("compress", (stream) => new DateTimeZoneCompressionWriter(stream), (stream) => new DateTimeZoneCompressionReader(stream));
         }
+        #endregion
 
-        private static void TestMilliseconds(int expected)
-        {
-            var dio = new DtzIoHelper();
-            dio.Writer.WriteMilliseconds(expected);
-            var actual = dio.Reader.ReadMilliseconds();
-            Assert.AreEqual(expected, actual);
-        }
+        private DtzIoHelper dioStandard;
+        private DtzIoHelper dioCompress;
+        */
 
-        private static void TestTicks(long expected)
-        {
-            var dio = new DtzIoHelper();
-            dio.Writer.WriteTicks(expected);
-            var actual = dio.Reader.ReadTicks();
-            Assert.AreEqual(expected, actual);
-        }
+        /// <summary>
+        ///   Returns the <see cref = "DtzIoHelper" /> to use for testing against.
+        /// </summary>
+        protected DtzIoHelper Dio { get; set; }
 
-        [Test]
-        public void WriteRead_Milliseconds()
+        private static void RunTests_Integers(Action<int> tester)
         {
-            const int lowValue = -24 * NodaConstants.MillisecondsPerHour;
-            const int millisecondsPerHalfHour = 30 * NodaConstants.MillisecondsPerMinute;
-            for (int i = 0; i < 96; i++)
+            tester(0);
+            tester(Int32.MinValue);
+            tester(Int32.MaxValue);
+            int value = 2;
+            for (int i = 0; i < 32; i++)
             {
-                int value = lowValue + (i * millisecondsPerHalfHour);
-                TestMilliseconds(value);
+                tester(value);
+                value <<= 1;
             }
-            TestMilliseconds(NodaConstants.MillisecondsPerSecond * 23);
-            TestMilliseconds(NodaConstants.MillisecondsPerSecond * -23);
-            TestMilliseconds(Int32.MinValue);
-            TestMilliseconds(Int32.MaxValue);
-            TestMilliseconds(1);
-            TestMilliseconds(-1);
+            value = -1;
+            for (int i = 0; i < 32; i++)
+            {
+                tester(value);
+                value <<= 1;
+            }
+        }
+
+        private static void RunTests_Milliseconds(Action<int> tester)
+        {
+            tester(Int32.MinValue);
+            tester(Int32.MaxValue);
+            tester(0);
+            tester(1);
+            tester(-1);
+            for (int i = DateTimeZoneCompressionWriter.MinMillisHalfHours; i <= DateTimeZoneCompressionWriter.MaxMillisHalfHours; i++)
+            {
+                int value = i * 30 * NodaConstants.MillisecondsPerMinute;
+                tester(value);
+            }
+
+            const int secondDelta = (DateTimeZoneCompressionWriter.MaxMillisSeconds - DateTimeZoneCompressionWriter.MinMillisSeconds) / 1000;
+            for (int i = DateTimeZoneCompressionWriter.MinMillisSeconds; i <= DateTimeZoneCompressionWriter.MaxMillisSeconds; i += secondDelta)
+            {
+                int value = i * NodaConstants.MillisecondsPerSecond;
+                tester(i);
+            }
+        }
+
+        private static void RunTests_Ticks(Action<long> tester)
+        {
+            tester(Int64.MaxValue);
+            tester(Int64.MinValue);
+            tester(3575232000000000L);
+            tester(3575231999999999L);
+            tester(Instant.MinValue.Ticks);
+            tester(Instant.MaxValue.Ticks);
+            tester(Instant.UnixEpoch.Ticks);
+            for (long i = DateTimeZoneCompressionWriter.MinHalfHours; i <= DateTimeZoneCompressionWriter.MaxHalfHours; i++)
+            {
+                long value = i * 30 * NodaConstants.TicksPerMinute;
+                tester(value);
+            }
+            const long minuteDiff = (DateTimeZoneCompressionWriter.MaxMinutes - DateTimeZoneCompressionWriter.MinMinutes) / 1000;
+            for (long i = DateTimeZoneCompressionWriter.MinMinutes; i <= DateTimeZoneCompressionWriter.MaxMinutes; i += minuteDiff)
+            {
+                long value = i * NodaConstants.TicksPerMinute;
+                tester(value);
+            }
+            const long secondDiff = (DateTimeZoneCompressionWriter.MaxSeconds - DateTimeZoneCompressionWriter.MinSeconds) / 1000;
+            for (long i = DateTimeZoneCompressionWriter.MinSeconds; i <= DateTimeZoneCompressionWriter.MinSeconds; i += secondDiff)
+            {
+                tester(i * NodaConstants.TicksPerSecond);
+            }
         }
 
         [Test]
-        public void WriteRead_Count()
+        public void Test_Boolean()
+        {
+            Dio.TestBoolean(true);
+            Dio.TestBoolean(false);
+        }
+
+        [Test]
+        public void Test_Count()
         {
             for (int i = 0; i < 16; i++)
             {
-                TestCount(i);
+                Dio.TestCount(i);
             }
-            TestCount(0x0f);
-            TestCount(0x10);
-            TestCount(0x7f);
-            TestCount(0x80);
-            TestCount(0x81);
-            TestCount(0x3fff);
-            TestCount(0x4000);
-            TestCount(0x4001);
-            TestCount(0x1fffff);
-            TestCount(0x200000);
-            TestCount(0x200001);
-            TestCount(-1);
-            TestCount(Int32.MinValue);
-            TestCount(Int32.MaxValue);
+            Dio.TestCount(0x0f);
+            Dio.TestCount(0x10);
+            Dio.TestCount(0x7f);
+            Dio.TestCount(0x80);
+            Dio.TestCount(0x81);
+            Dio.TestCount(0x3fff);
+            Dio.TestCount(0x4000);
+            Dio.TestCount(0x4001);
+            Dio.TestCount(0x1fffff);
+            Dio.TestCount(0x200000);
+            Dio.TestCount(0x200001);
+            Dio.TestCount(-1);
+            Dio.TestCount(Int32.MinValue);
+            Dio.TestCount(Int32.MaxValue);
         }
 
         [Test]
-        public void WriteRead_Ticks()
+        public void Test_Dictionary()
         {
-            TestTicks(Int64.MaxValue);
-            TestTicks(Int64.MinValue);
-            TestTicks(3575232000000000L);
-            TestTicks(3575231999999999L);
+            var expected = new Dictionary<string, string>();
+            Dio.TestDictionary(expected);
+
+            expected.Add("Able", "able");
+            Dio.TestDictionary(expected);
+
+            expected.Add("Baker", "baker");
+            expected.Add("Charlie", "charlie");
+            expected.Add("Delta", "delta");
+            Dio.TestDictionary(expected);
+        }
+
+        [Test]
+        public void Test_Enum()
+        {
+            RunTests_Integers(Dio.TestEnum);
+        }
+
+        [Test]
+        public void Test_Instant()
+        {
+            RunTests_Ticks(value => Dio.TestInstant((Instant.FromTicks(value))));
+        }
+
+        [Test]
+        public void Test_Integer()
+        {
+            RunTests_Integers(Dio.TestInteger);
+        }
+
+        [Test]
+        public void Test_LocalInstant()
+        {
+            RunTests_Ticks(value => Dio.TestLocalInstant((LocalInstant.FromTicks(value))));
+        }
+
+        [Test]
+        public void Test_Milliseconds()
+        {
+            RunTests_Milliseconds(Dio.TestMilliseconds);
+        }
+
+        [Test]
+        public void Test_Offset()
+        {
+            RunTests_Milliseconds(value => Dio.TestOffset((new Offset(value))));
+        }
+
+        public void Test_String()
+        {
+            Dio.TestString(null);
+            Dio.TestString("");
+            Dio.TestString("This is a test string");
+        }
+
+        [Test]
+        public void Test_Ticks()
+        {
+            RunTests_Ticks(Dio.TestTicks);
         }
     }
 }

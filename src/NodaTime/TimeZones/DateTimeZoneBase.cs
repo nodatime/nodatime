@@ -56,7 +56,7 @@ namespace NodaTime.TimeZones
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         public abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
 
-        public abstract void Write(DateTimeZoneWriter writer);
+        public abstract void Write(IDateTimeZoneWriter writer);
 
         /// <summary>
         /// Returns the offset from UTC, where a positive duration indicates that local time is

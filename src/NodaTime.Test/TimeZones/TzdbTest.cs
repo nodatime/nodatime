@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.TimeZones;
 using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
@@ -22,11 +23,11 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class TzdbTest
     {
-        ////[Test]
-        ////public void CurrentTimeZone_LocalTimeZone_AlwaysFails()
-        ////{
-        ////    IDateTimeZone actual = DateTimeZones.Current;
-        ////    Assert.AreEqual(null, actual);
-        ////}
+        [Test]
+        public void CurrentTimeZone_LocalTimeZone_AlwaysFails()
+        {
+            var actual = DateTimeZones.Current;
+            Assert.IsNotNull(actual);
+        }
     }
 }

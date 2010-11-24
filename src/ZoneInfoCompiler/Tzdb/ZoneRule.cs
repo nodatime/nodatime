@@ -23,36 +23,89 @@ using NodaTime.Utility;
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
-    /// Defines one time zone rule with a validitity range.
+    ///   Defines one time zone rule with a validitity range.
     /// </summary>
     /// <remarks>
-    /// Immutable, threadsafe.
+    ///   Immutable, threadsafe.
     /// </remarks>
     public class ZoneRule : IEquatable<ZoneRule>
     {
-        public ZoneRecurrence Recurrence { get { return recurrence; } }
-        public string Name { get { return Recurrence.Name; } }
-        public string LetterS { get { return letterS; } }
-
-        private readonly ZoneRecurrence recurrence;
         private readonly string letterS;
+        private readonly ZoneRecurrence recurrence;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZoneRule"/> class.
+        ///   Initializes a new instance of the <see cref = "ZoneRule" /> class.
         /// </summary>
-        /// <param name="recurrence">The recurrence definition of this rule.</param>
-        /// <param name="fromYear">The inclusive starting year for this rule.</param>
-        /// <param name="toYear">The inclusive ending year for this rule.</param>
+        /// <param name = "recurrence">The recurrence definition of this rule.</param>
+        /// <param name = "letterS">The daylight savings indicator letter for time zone names.</param>
         public ZoneRule(ZoneRecurrence recurrence, string letterS)
         {
             this.recurrence = recurrence;
             this.letterS = letterS;
         }
 
+        public string LetterS
+        {
+            get { return letterS; }
+        }
+
+        public string Name
+        {
+            get { return Recurrence.Name; }
+        }
+
+        public ZoneRecurrence Recurrence
+        {
+            get { return recurrence; }
+        }
+
+        #region IEquatable<ZoneRule> Members
         /// <summary>
-        /// Formats the name.
+        ///   Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <param name="nameFormat">The name format.</param>
+        /// <param name = "other">An object to compare with this object.</param>
+        /// <returns>
+        ///   true if the current object is equal to the <paramref name = "other" /> parameter;
+        ///   otherwise, false.
+        /// </returns>
+        public bool Equals(ZoneRule other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            return recurrence == other.recurrence && Equals(LetterS, other.LetterS);
+        }
+        #endregion
+
+        #region Operator overloads
+        /// <summary>
+        ///   Implements the operator ==.
+        /// </summary>
+        /// <param name = "left">The left.</param>
+        /// <param name = "right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ZoneRule left, ZoneRule right)
+        {
+            return Object.ReferenceEquals(left, null) ? Object.ReferenceEquals(right, null) : left.Equals(right);
+        }
+
+        /// <summary>
+        ///   Implements the operator !=.
+        /// </summary>
+        /// <param name = "left">The left.</param>
+        /// <param name = "right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ZoneRule left, ZoneRule right)
+        {
+            return !(left == right);
+        }
+        #endregion
+
+        /// <summary>
+        ///   Formats the name.
+        /// </summary>
+        /// <param name = "nameFormat">The name format.</param>
         /// <returns></returns>
         public String FormatName(String nameFormat)
         {
@@ -63,63 +116,42 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             int index = nameFormat.IndexOf("/", StringComparison.Ordinal);
             if (index > 0)
             {
-                if (Recurrence.Savings == Offset.Zero)
-                {
-                    // Extract standard name.
-                    return nameFormat.Substring(0, index);
-                }
-                else
-                {
-                    return nameFormat.Substring(index + 1);
-                }
+                return Recurrence.Savings == Offset.Zero ? nameFormat.Substring(0, index) : nameFormat.Substring(index + 1);
             }
             index = nameFormat.IndexOf("%s", StringComparison.Ordinal);
             if (index < 0)
             {
                 return nameFormat;
             }
-            string left = nameFormat.Substring(0, index);
-            string right = nameFormat.Substring(index + 2);
-            string name;
-            if (LetterS == null)
-            {
-                name = left + right;
-            }
-            else
-            {
-                name = left + LetterS + right;
-            }
-            return name;
+            var left = nameFormat.Substring(0, index);
+            var right = nameFormat.Substring(index + 2);
+            return LetterS == null ? left + right : left + LetterS + right;
         }
 
         #region Object overrides
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        ///   Determines whether the specified <see cref = "System.Object" /> is equal to this instance.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <param name = "obj">The <see cref = "System.Object" /> to compare with this instance.</param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
-        /// otherwise, <c>false</c>.
+        ///   <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance;
+        ///   otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref="T:System.NullReferenceException">
-        /// The <paramref name="obj"/> parameter is null.
+        /// <exception cref = "T:System.NullReferenceException">
+        ///   The <paramref name = "obj" /> parameter is null.
         /// </exception>
         public override bool Equals(object obj)
         {
-            ZoneRule rule = obj as ZoneRule;
-            if (rule != null)
-            {
-                return Equals(rule);
-            }
-            return false;
+            var rule = obj as ZoneRule;
+            return rule != null && Equals(rule);
         }
 
         /// <summary>
-        /// Returns a hash code for this instance.
+        ///   Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
+        ///   A hash code for this instance, suitable for use in hashing algorithms and data
+        ///   structures like a hash table. 
         /// </returns>
         public override int GetHashCode()
         {
@@ -130,14 +162,14 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        ///   Returns a <see cref = "System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        ///   A <see cref = "System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append(Recurrence);
             if (LetterS != null)
             {
@@ -146,56 +178,5 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             return builder.ToString();
         }
         #endregion Object overrides
-
-        #region IEquatable<ZoneRule> Members
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter;
-        /// otherwise, false.
-        /// </returns>
-        public bool Equals(ZoneRule other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-            if (recurrence != other.recurrence)
-            {
-                return false;
-            }
-            return Equals(LetterS, other.LetterS);
-        }
-        #endregion
-
-        #region Operator overloads
-        /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ZoneRule left, ZoneRule right)
-        {
-            if ((object)left == null || (object)right == null)
-            {
-                return object.ReferenceEquals(left, right);
-            }
-            return left.Equals(right);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ZoneRule left, ZoneRule right)
-        {
-            return !(left == right);
-        }
-        #endregion
     }
 }
