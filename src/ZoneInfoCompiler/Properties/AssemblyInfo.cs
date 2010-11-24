@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ZoneInfoCompiler")]
-[assembly: AssemblyCopyright("Copyright © 2009 Jon Skeet")]
+[assembly: AssemblyCopyright("Copyright © 2009-2010 Jon Skeet")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

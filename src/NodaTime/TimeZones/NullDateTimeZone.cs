@@ -90,7 +90,7 @@ namespace NodaTime.TimeZones
         /// Writes the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        public override void Write(DateTimeZoneWriter writer)
+        public override void Write(IDateTimeZoneWriter writer)
         {
         }
 
@@ -102,7 +102,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "reader",
             Justification = "For consistency all Read() methods take a reader")]
-        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        public static IDateTimeZone Read(IDateTimeZoneReader reader, string id)
         {
             return new NullDateTimeZone(id);
         }

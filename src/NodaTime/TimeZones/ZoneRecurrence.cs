@@ -229,10 +229,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes this object to the given <see cref="DateTimeZoneWriter"/>.
+        /// Writes this object to the given <see cref="IDateTimeZoneWriter"/>.
         /// </summary>
         /// <param name="writer">Where to send the output.</param>
-        internal void Write(DateTimeZoneWriter writer)
+        internal void Write(IDateTimeZoneWriter writer)
         {
             writer.WriteString(Name);
             writer.WriteOffset(Savings);
@@ -246,7 +246,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns></returns>
-        public static ZoneRecurrence Read(DateTimeZoneReader reader)
+        public static ZoneRecurrence Read(IDateTimeZoneReader reader)
         {
             if (reader == null)
             {

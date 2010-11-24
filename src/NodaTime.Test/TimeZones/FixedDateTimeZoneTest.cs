@@ -58,11 +58,10 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void WriteRead()
+        public void Test()
         {
-            var dio = new DtzIoHelper();
-            var actual = dio.WriteRead(PstTimeZone);
-            Assert.AreEqual(PstTimeZone, actual);
+            var dio = new DtzIoHelper("FixedDateTimeZone");
+            dio.TestTimeZone(PstTimeZone);
         }
     }
 }

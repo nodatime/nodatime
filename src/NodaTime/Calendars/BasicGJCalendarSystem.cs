@@ -150,7 +150,7 @@ namespace NodaTime.Calendars
             }
 
             long ticks = GetYearMonthDayTicks(year, 1, dayOfYear);
-            return new LocalInstant(ticks + tickOfDay);
+            return LocalInstant.FromTicks(ticks + tickOfDay);
         }
     }
 }

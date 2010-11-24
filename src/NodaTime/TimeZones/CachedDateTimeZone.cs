@@ -112,7 +112,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        public override void Write(DateTimeZoneWriter writer)
+        public override void Write(IDateTimeZoneWriter writer)
         {
             if (writer == null)
             {
@@ -127,7 +127,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        public static IDateTimeZone Read(IDateTimeZoneReader reader, string id)
         {
             if (reader == null)
             {
@@ -247,10 +247,10 @@ namespace NodaTime.TimeZones
             /// <returns></returns>
             private HashCacheNode CreateInstantNode(int period)
             {
-                var periodStart = new Instant((long)period << PeriodShift);
+                var periodStart = Instant.FromTicks((long)period << PeriodShift);
                 var interval = TimeZone.GetZoneInterval(periodStart);
                 var node = new HashCacheNode(interval, period, null);
-                var periodEnd = new Instant(periodStart.Ticks | PeriodEndMask);
+                var periodEnd = Instant.FromTicks(periodStart.Ticks | PeriodEndMask);
                 while (true)
                 {
                     periodStart = node.Interval.End;
@@ -272,10 +272,10 @@ namespace NodaTime.TimeZones
             /// <returns></returns>
             private HashCacheNode CreateLocalInstantNode(int period)
             {
-                var periodStart = new LocalInstant((long)period << PeriodShift);
+                var periodStart = LocalInstant.FromTicks((long)period << PeriodShift);
                 var interval = TimeZone.GetZoneInterval(periodStart);
                 var node = new HashCacheNode(interval, period, null);
-                var periodEnd = new LocalInstant(periodStart.Ticks | PeriodEndMask);
+                var periodEnd = LocalInstant.FromTicks(periodStart.Ticks | PeriodEndMask);
                 while (true)
                 {
                     periodStart = node.Interval.LocalEnd;

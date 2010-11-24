@@ -63,13 +63,13 @@ namespace NodaTime.Utility
             {
                 throw new ArgumentNullException("manager");
             }
-            string normalizedName = NormalizeAsResourceName(name);
+            var normalizedName = NormalizeAsResourceName(name);
             var bytes = manager.GetObject(normalizedName) as byte[];
             if (bytes != null)
             {
                 using (var stream = new MemoryStream(bytes))
                 {
-                    var reader = new DateTimeZoneReader(stream);
+                    var reader = new DateTimeZoneCompressionReader(stream);
                     return reader.ReadDictionary();
                 }
             }
@@ -95,7 +95,7 @@ namespace NodaTime.Utility
             {
                 using (var stream = new MemoryStream(bytes))
                 {
-                    var reader = new DateTimeZoneReader(stream);
+                    var reader = new DateTimeZoneCompressionReader(stream);
                     return reader.ReadTimeZone(id);
                 }
             }

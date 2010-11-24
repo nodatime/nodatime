@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using NodaTime;
 using NodaTime.ZoneInfoCompiler;
 using NodaTime.ZoneInfoCompiler.Tzdb;
@@ -31,13 +32,13 @@ namespace ZoneInfoCompiler.Test
     {
         private static readonly string[] EmptyTokenList = new string[0];
 
-        private static string OneInput = "One";
+        private const string OneInput = "One";
         private static readonly string[] OneTokenList = { "One" };
 
-        private static string MultipleInput = "One Two  \tThree\n\nFour   ";
+        private const string MultipleInput = "One Two  \tThree\n\nFour   ";
         private static readonly string[] MultipleTokenList = { "One", "Two", "Three", "Four" };
 
-        private static string LeadingSpacesMultipleInput = "  One Two  \tThree\n\nFour   ";
+        private const string LeadingSpacesMultipleInput = "  One Two  \tThree\n\nFour   ";
         private static readonly string[] LeadingSpacesMultipleTokenList = { "", "One", "Two", "Three", "Four" };
 
         [Test]
@@ -50,32 +51,29 @@ namespace ZoneInfoCompiler.Test
         [Test]
         public void Tokenize_emptyString_noTokens()
         {
-            string line = string.Empty;
-            Tokens tokens = Tokens.Tokenize(line);
+            var line = string.Empty;
+            var tokens = Tokens.Tokenize(line);
             ValidateTokens(tokens, EmptyTokenList);
         }
 
         [Test]
         public void Tokenize_oneToken()
         {
-            string line = OneInput;
-            Tokens tokens = Tokens.Tokenize(line);
+            var tokens = Tokens.Tokenize(OneInput);
             ValidateTokens(tokens, OneTokenList);
         }
 
         [Test]
         public void Tokenize_multipleToken()
         {
-            string line = MultipleInput;
-            Tokens tokens = Tokens.Tokenize(line);
+            var tokens = Tokens.Tokenize(MultipleInput);
             ValidateTokens(tokens, MultipleTokenList);
         }
 
         [Test]
         public void Tokenize_leadingSpacesMultipleToken()
         {
-            string line = LeadingSpacesMultipleInput;
-            Tokens tokens = Tokens.Tokenize(line);
+            var tokens = Tokens.Tokenize(LeadingSpacesMultipleInput);
             ValidateTokens(tokens, LeadingSpacesMultipleTokenList);
         }
 
@@ -83,8 +81,8 @@ namespace ZoneInfoCompiler.Test
         public void ParseOffset_ZeroHoursWithMinutesAndSeconds()
         {
             // Initial offset for Paris
-            string text = "0:09:21";
-            Offset offset = ParserHelper.ParseOffset(text);
+            const string text = "0:09:21";
+            var offset = ParserHelper.ParseOffset(text);
             Assert.AreEqual(Offset.Create(0, 9, 21), offset);
         }
 
@@ -92,22 +90,22 @@ namespace ZoneInfoCompiler.Test
         public void ParseOffset_NegativeZeroHoursWithMinutesAndSeconds()
         {
             // Initial offset for Ouagadougou
-            string text = "-0:06:04";
-            Offset offset = ParserHelper.ParseOffset(text);
+            const string text = "-0:06:04";
+            var offset = ParserHelper.ParseOffset(text);
             Assert.AreEqual(Offset.Create(0, -6, -4), offset);
         }
 
         /// <summary>
-        /// Validates the enumerator results.
+        /// 
         /// </summary>
-        /// <param name="en">The enumerator to validate.</param>
-        /// <param name="expected">The expected values.</param>
-        private void ValidateTokens(Tokens tokens, string[] expected)
+        /// <param name="tokens"></param>
+        /// <param name="expected"></param>
+        private static void ValidateTokens(Tokens tokens, IList<string> expected)
         {
-            for (int i = 0; i < expected.Length; i++)
+            for (int i = 0; i < expected.Count; i++)
             {
                 Assert.True(tokens.HasNextToken, "Not enough items in enumertion");
-                string actual = tokens.NextToken(i.ToString());
+                var actual = tokens.NextToken(i.ToString());
                 if (actual == null)
                 {
                     Assert.Fail("The enumeration item at index [" + i + "] is null");

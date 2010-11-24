@@ -22,94 +22,115 @@ using System.Text;
 namespace NodaTime.ZoneInfoCompiler
 {
     /// <summary>
-    /// Proveides a base clase for logging instances.
+    ///   Proveides a base clase for logging instances.
     /// </summary>
-    internal abstract class LogBase : ILog
+    public abstract class LogBase : ILog
     {
-        private delegate void LogOutputMethod(string format, params object[] arguments);
-
+        #region LogType enum
         /// <summary>
-        /// Called to actually log the message to where ever the logger sends its output. The
-        /// destination can be different based on the message type and different loggers may not
-        /// send all messages to the destination.
+        ///   Defines the types of logging message that can be produced.
         /// </summary>
-        /// <param name="type">The type of log message.</param>
-        /// <param name="message">The message to log.</param>
-        protected abstract void LogMessage(LogType type, string message);
+        public enum LogType
+        {
+            /// <summary>
+            ///   This message is purely information and can be ignored.
+            /// </summary>
+            Informational,
+
+            /// <summary>
+            ///   This indicates a possible problem but not a definite error.
+            /// </summary>
+            Warning,
+
+            /// <summary>
+            ///   This defines an error. Processing will terminate without completing.
+            /// </summary>
+            Error
+        }
+        #endregion
 
         #region ILog Members
         /// <summary>
-        /// Gets or sets the name of the file where the logging ocurred. If null then the log message
-        /// is outside of file processing.
+        ///   Writes an error message to the log. The string is formatted using string.Format().
         /// </summary>
-        /// <value>The name of the file.</value>
-        public string FileName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the line number currently being processed.
-        /// </summary>
-        /// <value>The line number.</value>
-        public int LineNumber { get; set; }
-
-        /// <summary>
-        /// Writes an information message to the log. The string is formatted using string.Format().
-        /// </summary>
-        /// <param name="format">The format string to log.</param>
-        /// <param name="arguments">The arguments for the string format if any.</param>
-        public virtual void Info(string format, params object[] arguments)
-        {
-            LogMessage(LogType.Informational, Format(format, arguments));
-        }
-
-        /// <summary>
-        /// Writes a warning message to the log. The string is formatted using string.Format().
-        /// </summary>
-        /// <param name="format">The format string to log.</param>
-        /// <param name="arguments">The arguments for the string format if any.</param>
-        public virtual void Warn(string format, params object[] arguments)
-        {
-            LogMessage(LogType.Warning, Format(format, arguments));
-        }
-
-        /// <summary>
-        /// Writes an error message to the log. The string is formatted using string.Format().
-        /// </summary>
-        /// <param name="format">The format string to log.</param>
-        /// <param name="arguments">The arguments for the string format if any.</param>
+        /// <param name = "format">The format string to log.</param>
+        /// <param name = "arguments">The arguments for the string format if any.</param>
         public virtual void Error(string format, params object[] arguments)
         {
             LogMessage(LogType.Error, Format(format, arguments));
         }
 
         /// <summary>
-        /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Info"/>.
+        ///   Gets the <see cref = "TextWriter" /> that sends its output to <see cref = "Error" />.
         /// </summary>
-        /// <value>The <see cref="TextWriter"/>.</value>
-        public TextWriter InfoWriter { get { return new LogTextWriter(Info); } }
+        /// <value>The <see cref = "TextWriter" />.</value>
+        public TextWriter ErrorWriter
+        {
+            get { return new LogTextWriter(Error); }
+        }
 
         /// <summary>
-        /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Warn"/>.
+        ///   Gets or sets the name of the file where the logging ocurred. If null then the log message
+        ///   is outside of file processing.
         /// </summary>
-        /// <value>The <see cref="TextWriter"/>.</value>
-        public TextWriter WarnWriter { get { return new LogTextWriter(Warn); } }
+        /// <value>The name of the file.</value>
+        public string FileName { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TextWriter"/> that sends its output to <see cref="Error"/>.
+        ///   Writes an information message to the log. The string is formatted using string.Format().
         /// </summary>
-        /// <value>The <see cref="TextWriter"/>.</value>
-        public TextWriter ErrorWriter { get { return new LogTextWriter(Error); } }
+        /// <param name = "format">The format string to log.</param>
+        /// <param name = "arguments">The arguments for the string format if any.</param>
+        public virtual void Info(string format, params object[] arguments)
+        {
+            LogMessage(LogType.Informational, Format(format, arguments));
+        }
+
+        /// <summary>
+        ///   Gets the <see cref = "TextWriter" /> that sends its output to <see cref = "Info" />.
+        /// </summary>
+        /// <value>The <see cref = "TextWriter" />.</value>
+        public TextWriter InfoWriter
+        {
+            get { return new LogTextWriter(Info); }
+        }
+
+        /// <summary>
+        ///   Gets or sets the line number currently being processed.
+        /// </summary>
+        /// <value>The line number.</value>
+        public int LineNumber { get; set; }
+
+        /// <summary>
+        ///   Writes a warning message to the log. The string is formatted using string.Format().
+        /// </summary>
+        /// <param name = "format">The format string to log.</param>
+        /// <param name = "arguments">The arguments for the string format if any.</param>
+        public virtual void Warn(string format, params object[] arguments)
+        {
+            LogMessage(LogType.Warning, Format(format, arguments));
+        }
+
+        /// <summary>
+        ///   Gets the <see cref = "TextWriter" /> that sends its output to <see cref = "Warn" />.
+        /// </summary>
+        /// <value>The <see cref = "TextWriter" />.</value>
+        public TextWriter WarnWriter
+        {
+            get { return new LogTextWriter(Warn); }
+        }
         #endregion
 
         /// <summary>
-        /// Helper method to format the specified message string with optional file location information.
+        ///   Helper method to format the specified message string with optional file location information.
         /// </summary>
-        /// <param name="format">The format string.</param>
-        /// <param name="arguments">The optional arguments.</param>
+        /// <param name = "format">The format string.</param>
+        /// <param name = "arguments">The optional arguments.</param>
         /// <returns>The formatted message string.</returns>
         private string Format(string format, object[] arguments)
         {
-            StringBuilder builder = new StringBuilder();
-            string message = string.Format(CultureInfo.InvariantCulture, format, arguments);
+            var builder = new StringBuilder();
+            var message = string.Format(CultureInfo.InvariantCulture, format, arguments);
             builder.Append(message);
             if (LineNumber > 0)
             {
@@ -123,29 +144,22 @@ namespace NodaTime.ZoneInfoCompiler
         }
 
         /// <summary>
-        /// Defines the types of logging message that can be produced.
+        ///   Called to actually log the message to where ever the logger sends its output. The
+        ///   destination can be different based on the message type and different loggers may not
+        ///   send all messages to the destination.
         /// </summary>
-        protected enum LogType
-        {
-            /// <summary>
-            /// This message is purely information and can be ignored.
-            /// </summary>
-            Informational,
+        /// <param name = "type">The type of log message.</param>
+        /// <param name = "message">The message to log.</param>
+        protected abstract void LogMessage(LogType type, string message);
 
-            /// <summary>
-            /// This indicates a possible problem but not a definite error.
-            /// </summary>
-            Warning,
+        #region Nested type: LogOutputMethod
+        private delegate void LogOutputMethod(string format, params object[] arguments);
+        #endregion
 
-            /// <summary>
-            /// This defines an error. Processing will terminate without completing.
-            /// </summary>
-            Error
-        }
-
+        #region Nested type: LogTextWriter
         /// <summary>
-        /// Private class to implement a <see cref="Textwriter"/> that sends its output
-        /// to the given output method.
+        ///   Private class to implement a <see cref = "TextWriter" /> that sends its output
+        ///   to the given output method.
         /// </summary>
         private class LogTextWriter : TextWriter
         {
@@ -153,47 +167,61 @@ namespace NodaTime.ZoneInfoCompiler
             private readonly LogOutputMethod output;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="LogTextWriter"/> class.
+            ///   Initializes a new instance of the <see cref = "LogTextWriter" /> class.
             /// </summary>
-            /// <param name="output">The log.</param>
+            /// <param name = "output">The log.</param>
             public LogTextWriter(LogOutputMethod output) : base(CultureInfo.InvariantCulture)
             {
                 this.output = output;
             }
 
             /// <summary>
-            /// When overridden in a derived class, returns the <see cref="T:System.Text.Encoding"/> in which the output is written.
+            ///   When overridden in a derived class, returns the <see cref = "T:System.Text.Encoding" /> in which the output is written.
             /// </summary>
             /// <returns>The Encoding in which the output is written.</returns>
-            public override Encoding Encoding { get { return Encoding.UTF8; } }
+            public override Encoding Encoding
+            {
+                get { return Encoding.UTF8; }
+            }
 
             /// <summary>
-            /// Writes a character to the text stream.
+            ///   Closes the current writer and releases any system resources associated with the writer.
             /// </summary>
-            /// <param name="value">The character to write to the text stream.</param>
-            /// <exception cref="T:System.ObjectDisposedException">
-            /// The <see cref="T:System.IO.TextWriter"/> is closed.
+            /// <filterpriority>1</filterpriority>
+            public override void Close()
+            {
+                var message = builder.ToString();
+                output("{0}", message);
+                base.Close();
+            }
+
+            /// <summary>
+            ///   Writes a character to the text stream.
+            /// </summary>
+            /// <param name = "value">The character to write to the text stream.</param>
+            /// <exception cref = "T:System.ObjectDisposedException">
+            ///   The <see cref = "T:System.IO.TextWriter" /> is closed.
             /// </exception>
-            /// <exception cref="T:System.IO.IOException">
-            /// An I/O error occurs.
+            /// <exception cref = "T:System.IO.IOException">
+            ///   An I/O error occurs.
             /// </exception>
             public override void Write(char value)
             {
-                if (value == '\r')
+                switch (value)
                 {
-                    // Ignore
-                }
-                else if (value == '\n')
-                {
-                    string message = builder.ToString();
-                    output("{0}", message);
-                    builder.Remove(0, message.Length);
-                }
-                else
-                {
-                    builder.Append(value);
+                    case '\r':
+                        break;
+                    case '\n':
+                        var message = builder.ToString();
+                        output("{0}", message);
+                        builder.Remove(0, message.Length);
+                        break;
+                    default:
+                        builder.Append(value);
+                        break;
                 }
             }
         }
+        #endregion
     }
 }

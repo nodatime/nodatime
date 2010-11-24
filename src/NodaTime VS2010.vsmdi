@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestLists xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestList name="ZoneInfoCompiler" id="4f0b7474-b83f-4162-8028-bd5e15179b05" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6" />
+  <TestList name="Lists of Tests" id="8c43106b-9dc1-4907-a29f-aa66a61bf5b6" />
+</TestLists>

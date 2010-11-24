@@ -21,23 +21,25 @@ using CommandLine.Text;
 namespace NodaTime.ZoneInfoCompiler.winmap
 {
     /// <summary>
-    /// Defines the command line options for the CommandLine parsing package.
+    ///   Defines the command line options for the CommandLine parsing package.
     /// </summary>
-    internal class WindowsMapperCompilerOptions
+    public class WindowsMapperCompilerOptions
     {
-        private static readonly HeadingInfo headingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
+        private static readonly HeadingInfo HeadingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
 
         #region Standard Option Attribute
-        [Option("s", "source", Required = true, HelpText = "Source XML file defining the mappings.")] public string SourceFileName = string.Empty;
+        [Option("t", "type", HelpText = "The type of the output file { ResX, Resource }.")]
+        public ResourceOutputType OutputType = ResourceOutputType.ResX;
 
-        [Option("t", "type", HelpText = "The type of the output file { ResX, Resource }.")] public ResourceOutputType OutputType = ResourceOutputType.ResX;
+        [Option("s", "source", Required = true, HelpText = "Source XML file defining the mappings.")]
+        public string SourceFileName = string.Empty;
         #endregion
 
         #region Specialized Option Attribute
         [HelpOption(HelpText = "Display this help.")]
         public string GetUsage()
         {
-            var help = new HelpText(headingInfo);
+            var help = new HelpText(HeadingInfo);
             help.AdditionalNewLineAfterOption = true;
             help.Copyright = new CopyrightInfo("Jon Skeet", 2009);
             help.AddPreOptionsLine(" ");

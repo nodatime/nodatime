@@ -291,7 +291,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        public override void Write(DateTimeZoneWriter writer)
+        public override void Write(IDateTimeZoneWriter writer)
         {
             if (writer == null)
             {
@@ -302,7 +302,7 @@ namespace NodaTime.TimeZones
             EndRecurrence.Write(writer);
         }
 
-        public static IDateTimeZone Read(DateTimeZoneReader reader, string id)
+        public static IDateTimeZone Read(IDateTimeZoneReader reader, string id)
         {
             if (reader == null)
             {

@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="ZoneInfoCompilerW.FileSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="25" d:DesignWidth="300"
+             x:Name="FileSelectorControl">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Name="fileName" HorizontalAlignment="Stretch" Text="{Binding ElementName=FileSelectorControl, Path=FileSelectorName}" />
+        <Button
+            Name="selectFileButton"
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="5,0,0,0"
+            Height="{Binding ElementName=fileName,Path=ActualHeight}"
+            ToolTip="Open file selection dialog."
+            Click="SelectFileButtonClick">
+            <Image Source="/ZoneInfoCompilerW;component/Images/077_AddFile_48x48_72.png"/>
+        </Button>
+    </Grid>
+</UserControl>
