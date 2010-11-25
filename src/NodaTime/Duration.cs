@@ -232,11 +232,11 @@ namespace NodaTime
             long seconds = Ticks / NodaConstants.TicksPerSecond;
             writer.Write(seconds);
 
-            int ticks = (int)Math.Abs(Ticks % NodaConstants.TicksPerSecond);
-            if (ticks > 0)
+            int ticksValue = (int)Math.Abs(Ticks % NodaConstants.TicksPerSecond);
+            if (ticksValue > 0)
             {
                 writer.Write(".");
-                FormatUtils.WritePaddedInteger(writer, ticks, 7);
+                FormatUtils.WritePaddedInteger(writer, ticksValue, 7);
             }
 
             writer.Write("S");

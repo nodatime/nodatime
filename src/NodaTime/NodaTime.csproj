@@ -78,7 +78,6 @@
     <Compile Include="FieldValueException.cs" />
     <Compile Include="Format\DateTimeFormats.StandardPattern.cs" />
     <Compile Include="Format\PeriodBuilder.cs" />
-    <Compile Include="NodaDefaults.cs" />
     <Compile Include="Offset.cs" />
     <Compile Include="Fields\BasicMonthOfYearDateTimeField.cs" />
     <Compile Include="Fields\BasicWeekOfWeekYearDateTimeField.cs" />

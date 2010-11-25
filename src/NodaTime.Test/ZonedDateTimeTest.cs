@@ -34,7 +34,7 @@ namespace NodaTime.Test
         [Test]
         public void Constructor_SpecifyingDateAndTimeToMinutesInWinter()
         {
-            ZonedDateTime when = new ZonedDateTime(2009, 12, 22, 21, 39, 30, Pacific);
+            var when = new ZonedDateTime(2009, 12, 22, 21, 39, 30, Pacific);
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
             Assert.AreEqual(instant, localInstant - Offset.ForHours(-8));
@@ -50,7 +50,7 @@ namespace NodaTime.Test
         [Test]
         public void Constructor_SpecifyingDateAndTimeToMinutesInSummer()
         {
-            ZonedDateTime when = new ZonedDateTime(2009, 6, 22, 21, 39, 30, Pacific);
+            var when = new ZonedDateTime(2009, 6, 22, 21, 39, 30, Pacific);
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
             Assert.AreEqual(instant, localInstant - Offset.ForHours(-7));
@@ -72,7 +72,7 @@ namespace NodaTime.Test
         [Test]
         public void Constructor_WithAmbiguousTime_UsesLaterInstant()
         {
-            ZonedDateTime when = new ZonedDateTime(2009, 11, 2, 1, 30, 0, Pacific);
+            var when = new ZonedDateTime(2009, 11, 2, 1, 30, 0, Pacific);
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
             Assert.AreEqual(localInstant - Offset.ForHours(-8), instant);
@@ -84,7 +84,7 @@ namespace NodaTime.Test
             Assert.AreEqual(30, when.MinuteOfHour);
             Assert.AreEqual(0, when.SecondOfMinute);
 
-            LocalDateTime utc = new LocalDateTime(new LocalInstant(instant.Ticks));
+            var utc = new LocalDateTime(new LocalInstant(instant.Ticks));
             Assert.AreEqual(2009, utc.Year);
             Assert.AreEqual(11, utc.MonthOfYear);
             Assert.AreEqual(2, utc.DayOfMonth);

@@ -30,7 +30,7 @@ namespace NodaTime.Test.TimeZones
         /// </summary>
         internal static IDateTimeZone Uncached(this IDateTimeZone zone)
         {
-            CachedDateTimeZone cached = zone as CachedDateTimeZone;
+            var cached = zone as CachedDateTimeZone;
             return cached == null ? zone : cached.TimeZone;
         }
 

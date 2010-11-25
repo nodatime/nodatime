@@ -23,10 +23,10 @@ namespace NodaTime.Test
 {
     partial class DurationTest
     {
-        private const long startTicks = 123456789L;
-        private const long endTicks = 987654321L;
-        private static readonly Instant start = new Instant(startTicks);
-        private static readonly Instant end = new Instant(endTicks);
+        private const long StartTicks = 123456789L;
+        private const long EndTicks = 987654321L;
+        private static readonly Instant Start = new Instant(StartTicks);
+        private static readonly Instant End = new Instant(EndTicks);
 
         [Test]
         public void Zero()
@@ -103,35 +103,35 @@ namespace NodaTime.Test
         [Test]
         public void ConstructFrom_Int64()
         {
-            long length = 4 * NodaConstants.TicksPerDay +
-                          5 * NodaConstants.TicksPerHour +
-                          6 * NodaConstants.TicksPerMinute +
-                          7 * NodaConstants.TicksPerSecond +
-                          8 * NodaConstants.TicksPerMillisecond + 9;
-            Duration test = new Duration(length);
+            const long length = 4 * NodaConstants.TicksPerDay +
+                                5 * NodaConstants.TicksPerHour +
+                                6 * NodaConstants.TicksPerMinute +
+                                7 * NodaConstants.TicksPerSecond +
+                                8 * NodaConstants.TicksPerMillisecond + 9;
+            var test = new Duration(length);
             Assert.AreEqual(length, test.Ticks);
         }
 
         [Test]
         public void ConstructFrom_TickEndPoints()
         {
-            Duration test = new Duration(startTicks, endTicks);
-            Assert.AreEqual(endTicks - startTicks, test.Ticks);
+            var test = new Duration(StartTicks, EndTicks);
+            Assert.AreEqual(EndTicks - StartTicks, test.Ticks);
         }
 
         [Test]
         public void ConstructFrom_InstantEndPoints()
         {
-            Duration test = new Duration(start, end);
-            Assert.AreEqual(end.Ticks - start.Ticks, test.Ticks);
+            var test = new Duration(Start, End);
+            Assert.AreEqual(End.Ticks - Start.Ticks, test.Ticks);
         }
 
         [Test]
         public void ConstructFrom_Interval()
         {
-            Interval interval = new Interval(start, end);
-            Duration test = new Duration(interval);
-            Assert.AreEqual(end.Ticks - start.Ticks, test.Ticks);
+            var interval = new Interval(Start, End);
+            var test = new Duration(interval);
+            Assert.AreEqual(End.Ticks - Start.Ticks, test.Ticks);
         }
     }
 }

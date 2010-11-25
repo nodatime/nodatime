@@ -113,11 +113,7 @@ namespace NodaTime.TimeZones
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(ZoneRecurrence left, ZoneRecurrence right)
         {
-            if (ReferenceEquals(null, left))
-            {
-                return ReferenceEquals(null, right);
-            }
-            return left.Equals(right);
+            return ReferenceEquals(null, left) ? ReferenceEquals(null, right) : left.Equals(right);
         }
 
         /// <summary>

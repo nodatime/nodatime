@@ -44,7 +44,7 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                byte flag = (byte)ReadInt8();
+                byte flag = ReadInt8();
                 if (flag == 0xff)
                 {
                     return ReadInt32();
@@ -107,7 +107,7 @@ namespace NodaTime.TimeZones
              */
             unchecked
             {
-                byte flag = (byte)ReadInt8();
+                byte flag = ReadInt8();
                 if (flag == DateTimeZoneCompressionWriter.FlagMinValue)
                 {
                     return Int32.MinValue;
@@ -163,7 +163,7 @@ namespace NodaTime.TimeZones
              */
             unchecked
             {
-                byte flag = (byte)ReadInt8();
+                byte flag = ReadInt8();
                 if (flag == DateTimeZoneCompressionWriter.FlagMinValue)
                 {
                     return Int64.MinValue;

@@ -25,7 +25,7 @@ namespace NodaTime.Test
     [TestFixture]
     public class ChronologyTest
     {
-        private static readonly IDateTimeZone testZone = new FixedDateTimeZone("tmp", Offset.Zero);
+        private static readonly IDateTimeZone TestZone = new FixedDateTimeZone("tmp", Offset.Zero);
 
         [Test]
         public void Construction_WithNullArguments_ThrowsArgumentNullException()
@@ -37,16 +37,16 @@ namespace NodaTime.Test
         [Test]
         public void Properties_Return_ConstructorArguments()
         {
-            Chronology subject = new Chronology(testZone, GregorianCalendarSystem.Default);
-            Assert.AreSame(testZone, subject.Zone);
+            var subject = new Chronology(TestZone, GregorianCalendarSystem.Default);
+            Assert.AreSame(TestZone, subject.Zone);
             Assert.AreSame(GregorianCalendarSystem.Default, subject.Calendar);
         }
 
         [Test]
         public void IsoForZone()
         {
-            Chronology subject = Chronology.IsoForZone(testZone);
-            Assert.AreSame(testZone, subject.Zone);
+            Chronology subject = Chronology.IsoForZone(TestZone);
+            Assert.AreSame(TestZone, subject.Zone);
             Assert.AreSame(IsoCalendarSystem.Instance, subject.Calendar);
         }
 
