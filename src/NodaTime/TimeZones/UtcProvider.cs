@@ -45,11 +45,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         public IDateTimeZone ForId(string id)
         {
-            if (id == DateTimeZones.UtcId)
-            {
-                return DateTimeZones.Utc;
-            }
-            return null;
+            return id == DateTimeZones.UtcId ? DateTimeZones.Utc : null;
         }
 
         /// <summary>

@@ -79,7 +79,7 @@ namespace NodaTime.Test.TimeZones
             for (int i = DateTimeZoneCompressionWriter.MinMillisSeconds; i <= DateTimeZoneCompressionWriter.MaxMillisSeconds; i += secondDelta)
             {
                 int value = i * NodaConstants.MillisecondsPerSecond;
-                tester(i);
+                tester(value);
             }
         }
 

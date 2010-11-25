@@ -26,9 +26,9 @@ namespace NodaTime.Test
         [Test]
         public void IEquatableIComparable_Tests()
         {
-            Offset value = new Offset(12345);
-            Offset equalValue = new Offset(12345);
-            Offset greaterValue = new Offset(5432199);
+            var value = new Offset(12345);
+            var equalValue = new Offset(12345);
+            var greaterValue = new Offset(5432199);
 
             TestHelper.TestEqualsStruct(value, equalValue, greaterValue);
             TestHelper.TestCompareToStruct(value, equalValue, greaterValue);

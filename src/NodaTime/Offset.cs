@@ -87,11 +87,7 @@ namespace NodaTime
             {
                 return MinValue;
             }
-            if (milliseconds == MaxValue.Milliseconds)
-            {
-                return MaxValue;
-            }
-            return new Offset(milliseconds);
+            return milliseconds == MaxValue.Milliseconds ? MaxValue : new Offset(milliseconds);
         }
 
         /// <summary>

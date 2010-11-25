@@ -32,7 +32,7 @@ namespace NodaTime.Test.TimeZones
         private readonly IoStream ioStream;
         private readonly string name;
 
-        public DtzIoHelper(string name) : this(name, (stream) => new DateTimeZoneWriter(stream), (stream) => new DateTimeZoneReader(stream))
+        public DtzIoHelper(string name) : this(name, stream => new DateTimeZoneWriter(stream), stream => new DateTimeZoneReader(stream))
         {
         }
 

@@ -265,9 +265,9 @@ namespace NodaTime.TimeZones
         ///   Reads a signed 8 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 8 bit int value.</returns>
-        public int ReadInt8()
+        protected byte ReadInt8()
         {
-            return Input.ReadByte();
+            return (byte)Input.ReadByte();
         }
     }
 }

@@ -51,7 +51,7 @@ namespace NodaTime
         public LocalDateTime(LocalInstant localInstant)
         {
             this.localInstant = localInstant;
-            this.calendar = IsoCalendarSystem.Instance;
+            calendar = IsoCalendarSystem.Instance;
         }
 
         /// <summary>

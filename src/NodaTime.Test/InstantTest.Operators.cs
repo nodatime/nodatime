@@ -34,8 +34,8 @@ namespace NodaTime.Test
         [Test]
         public void IEquatableEquals_WithEqualTicks_IsTrue()
         {
-            Instant first = new Instant(100L);
-            Instant second = new Instant(100L);
+            var first = new Instant(100L);
+            var second = new Instant(100L);
             Assert.True(first.Equals(second), "100 == 100 (different objects)");
         }
 
@@ -100,8 +100,8 @@ namespace NodaTime.Test
         [Test]
         public void GetHashCode_Twice_IsEqual()
         {
-            Instant test1 = new Instant(123L);
-            Instant test2 = new Instant(123L);
+            var test1 = new Instant(123L);
+            var test2 = new Instant(123L);
             Assert.AreEqual(test1.GetHashCode(), test1.GetHashCode());
             Assert.AreEqual(test2.GetHashCode(), test2.GetHashCode());
         }
@@ -109,17 +109,17 @@ namespace NodaTime.Test
         [Test]
         public void GetHashCode_SameTicks_IsEqual()
         {
-            Instant test1 = new Instant(123L);
-            Instant test2 = new Instant(123L);
+            var test1 = new Instant(123L);
+            var test2 = new Instant(123L);
             Assert.AreEqual(test1.GetHashCode(), test2.GetHashCode());
         }
 
         [Test]
         public void GetHashCode_DifferentTicks_IsDifferent()
         {
-            Instant test1 = new Instant(123L);
-            Instant test2 = new Instant(123L);
-            Instant test3 = new Instant(321L);
+            var test1 = new Instant(123L);
+            var test2 = new Instant(123L);
+            var test3 = new Instant(321L);
 
             Assert.AreNotEqual(test1.GetHashCode(), test3.GetHashCode());
             Assert.AreNotEqual(test2.GetHashCode(), test3.GetHashCode());

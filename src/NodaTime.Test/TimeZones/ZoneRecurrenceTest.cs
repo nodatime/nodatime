@@ -26,7 +26,7 @@ namespace NodaTime.Test.TimeZones
     public class ZoneRecurrenceTest
     {
         private const long TicksPerStandardYear = NodaConstants.TicksPerDay * 365;
-        private const long TicksPerLeapYear = NodaConstants.TicksPerDay * 366;
+        // private const long TicksPerLeapYear = NodaConstants.TicksPerDay * 366;
 
         [Test]
         public void Constructor_nullName_exception()

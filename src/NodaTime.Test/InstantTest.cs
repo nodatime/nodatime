@@ -40,7 +40,7 @@ namespace NodaTime.Test
             365 + 366 + 365 + 365 + 365 + 366 + 365 + 365;
 
         // 2002-06-09
-        private const long TestTimeNow = (Y2002Days + 31L + 28L + 31L + 30L + 31L + 9L - 1L) * NodaConstants.MillisecondsPerDay;
+        // private const long TestTimeNow = (Y2002Days + 31L + 28L + 31L + 30L + 31L + 9L - 1L) * NodaConstants.MillisecondsPerDay;
 
         // 2002-04-05
         private const long TestTime1 =
@@ -63,10 +63,10 @@ namespace NodaTime.Test
         [Test]
         public void TestInstantOperators()
         {
-            long diff = TestTime2 - TestTime1;
+            const long diff = TestTime2 - TestTime1;
 
-            Instant time1 = new Instant(TestTime1);
-            Instant time2 = new Instant(TestTime2);
+            var time1 = new Instant(TestTime1);
+            var time2 = new Instant(TestTime2);
             Duration duration = time2 - time1;
 
             Assert.AreEqual(diff, duration.Ticks);

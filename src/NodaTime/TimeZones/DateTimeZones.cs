@@ -58,14 +58,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         private static IDateTimeZones Implementation
         {
-            get
-            {
-                if (implementaion == null)
-                {
-                    implementaion = new Impl();
-                }
-                return implementaion;
-            }
+            get { return implementaion ?? (implementaion = new Impl()); }
         }
 
         /// <summary>
@@ -289,11 +282,7 @@ namespace NodaTime.TimeZones
                 get
                 {
                     string systemName = TimeZone.CurrentTimeZone.StandardName;
-                    string timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName);
-                    if (timeZoneId == null)
-                    {
-                        timeZoneId = UtcId;
-                    }
+                    string timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName) ?? UtcId;
                     return ForId(timeZoneId) ?? Utc;
                 }
             }

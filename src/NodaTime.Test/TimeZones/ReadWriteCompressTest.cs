@@ -27,7 +27,7 @@ namespace NodaTime.Test.TimeZones
         [SetUp]
         public void SetUp()
         {
-            Dio = new DtzIoHelper("compress", (stream) => new DateTimeZoneCompressionWriter(stream), (stream) => new DateTimeZoneCompressionReader(stream));
+            Dio = new DtzIoHelper("compress", stream => new DateTimeZoneCompressionWriter(stream), stream => new DateTimeZoneCompressionReader(stream));
         }
         #endregion
     }

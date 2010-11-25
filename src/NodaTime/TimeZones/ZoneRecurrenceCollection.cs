@@ -112,11 +112,7 @@ namespace NodaTime.TimeZones
         /// <returns>The <see cref="LocalInstant"/> of the upper limit for this rule set.</returns>
         internal Instant GetUpperLimit(Offset savings)
         {
-            if (upperYear == Int32.MaxValue)
-            {
-                return Instant.MaxValue;
-            }
-            return upperYearOffset.MakeInstant(upperYear, StandardOffset, savings);
+            return upperYear == Int32.MaxValue ? Instant.MaxValue : upperYearOffset.MakeInstant(upperYear, StandardOffset, savings);
         }
 
         /// <summary>

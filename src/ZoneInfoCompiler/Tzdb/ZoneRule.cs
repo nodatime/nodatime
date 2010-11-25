@@ -87,7 +87,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(ZoneRule left, ZoneRule right)
         {
-            return Object.ReferenceEquals(left, null) ? Object.ReferenceEquals(right, null) : left.Equals(right);
+            return ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.Equals(right);
         }
 
         /// <summary>

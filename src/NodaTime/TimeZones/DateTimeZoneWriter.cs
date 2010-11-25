@@ -163,38 +163,38 @@ namespace NodaTime.TimeZones
         ///   Writes the <see cref = "IDateTimeZone" /> value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteTimeZone(IDateTimeZone timeZone)
+        public virtual void WriteTimeZone(IDateTimeZone value)
         {
-            if (timeZone == null)
+            if (value == null)
             {
                 throw new ArgumentNullException("timeZone");
             }
-            if (timeZone is FixedDateTimeZone)
+            if (value is FixedDateTimeZone)
             {
                 WriteInt8(FlagTimeZoneFixed);
             }
-            else if (timeZone is PrecalculatedDateTimeZone)
+            else if (value is PrecalculatedDateTimeZone)
             {
                 WriteInt8(FlagTimeZonePrecalculated);
             }
-            else if (timeZone is CachedDateTimeZone)
+            else if (value is CachedDateTimeZone)
             {
                 WriteInt8(FlagTimeZoneCached);
             }
-            else if (timeZone is DaylightSavingsTimeZone)
+            else if (value is DaylightSavingsTimeZone)
             {
                 WriteInt8(FlagTimeZoneDst);
             }
-            else if (timeZone is NullDateTimeZone)
+            else if (value is NullDateTimeZone)
             {
                 WriteInt8(FlagTimeZoneNull);
             }
             else
             {
                 WriteInt8(FlagTimeZoneUser);
-                WriteString(timeZone.GetType().AssemblyQualifiedName);
+                WriteString(value.GetType().AssemblyQualifiedName);
             }
-            timeZone.Write(this);
+            value.Write(this);
         }
         #endregion
 

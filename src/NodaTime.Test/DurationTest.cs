@@ -27,7 +27,7 @@ namespace NodaTime.Test
         private readonly Duration negativeFiftyMillion = new Duration(-50000000L);
 
         #region ToString
-        private object[] ToStringTestData = {
+        private object[] toStringTestData = {
             new TestCaseData(0, "PT0S").SetName("0 => PT0S"),
             new TestCaseData(12 * NodaConstants.TicksPerMillisecond, "PT0.0120000S").SetName("12ms => PT0.0120000S"),
             new TestCaseData(345 * NodaConstants.TicksPerMillisecond + 678L, "PT0.3450678S").SetName("345.0678ms => PT0.3450678S"),
@@ -37,7 +37,7 @@ namespace NodaTime.Test
         };
 
         [Test]
-        [TestCaseSource("ToStringTestData")]
+        [TestCaseSource("toStringTestData")]
         public void ToString_ReturnsISO8601Value(long ticks, string text)
         {
             var sut = new Duration(ticks);
@@ -45,14 +45,14 @@ namespace NodaTime.Test
         }
         #endregion
 
-        private object[] ParseBadTestData = {
+        private object[] parseBadTestData = {
             new TestCaseData("PT0").SetName("PT0"), new TestCaseData("12.345S").SetName("12.345S"),
             new TestCaseData("P2Y6M9DXYZ").SetName("P2Y6M9DXYZ"), new TestCaseData("PTS").SetName("PTS"), new TestCaseData("XT0S").SetName("XT0S"),
             new TestCaseData("PX0S").SetName("PX0S"), new TestCaseData("PT0X").SetName("PT0X"), new TestCaseData("PTXS").SetName("PTXS"),
             new TestCaseData("PT0.0.0S").SetName("PT0.0.0S"), new TestCaseData("PT0-00S").SetName("PT0-00S"), new TestCaseData("PT0-00S").SetName("PT0-00S"),
         };
 
-        private object[] ParseGoodTestData = {
+        private object[] parseGoodTestData = {
             new TestCaseData("PT0S", 0).SetName("PT0S => 0"),
             new TestCaseData("PT12.3450000S", 12345 * NodaConstants.TicksPerMillisecond).SetName("PT12.3450000S => 12.345 * 10 000"),
             new TestCaseData("PT12.3456789S", 12 * NodaConstants.TicksPerSecond + 3456789).SetName("PT12.3456789S => 12*10 000 000 + 3456789"),
@@ -71,14 +71,14 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCaseSource("ParseBadTestData")]
+        [TestCaseSource("parseBadTestData")]
         public void Parse_TrowsFormat_IfStringInBadFormat(string durationText)
         {
             Assert.That(() => Duration.Parse(durationText), Throws.InstanceOf<FormatException>());
         }
 
         [Test]
-        [TestCaseSource("ParseGoodTestData")]
+        [TestCaseSource("parseGoodTestData")]
         public void Parse_ReturnsDurationFromStringValue(string durationText, long ticks)
         {
             var sut = Duration.Parse(durationText);
@@ -95,7 +95,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCaseSource("ParseBadTestData")]
+        [TestCaseSource("parseBadTestData")]
         public void TryParse_ReturnsFalse_IfStringInBadFormat(string durationText)
         {
             Duration result;
@@ -105,7 +105,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCaseSource("ParseGoodTestData")]
+        [TestCaseSource("parseGoodTestData")]
         public void TryParse_ReturnsTrueAndSetDurationFromStringValue(string durationText, long ticks)
         {
             Duration result;
