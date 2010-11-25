@@ -44,7 +44,7 @@ namespace NodaTime
         /// Initializes a new instance of the <see cref="Instant"/> struct.
         /// </summary>
         /// <param name="ticks">The ticks from the unix epoch.</param>
-        private Instant(long ticks)
+        public Instant(long ticks)
         {
             this.ticks = ticks;
         }
@@ -53,33 +53,6 @@ namespace NodaTime
         /// Ticks since the Unix epoch.
         /// </summary>
         public long Ticks { get { return ticks; } }
-
-        /// <summary>
-        /// Returns the instant for the given ticks value.
-        /// </summary>
-        /// <remarks>
-        /// As instants are immutable, this method may return the same object for the
-        /// same input values i.e. there is no guarantee that this method will create a new
-        /// object on each call. The values may be cached.
-        /// </remarks>
-        /// <param name="ticks">The long ticks value.</param>
-        /// <returns>The <see cref="Instant"/> for the given ticks value</returns>
-        public static Instant FromTicks(long ticks)
-        {
-            if (ticks == UnixEpoch.Ticks)
-            {
-                return UnixEpoch;
-            }
-            if (ticks == MinValue.ticks)
-            {
-                return MinValue;
-            }
-            if (ticks == MaxValue.ticks)
-            {
-                return MaxValue;
-            }
-            return new Instant(ticks);
-        }
 
         #region IEquatable<Instant> Members
         /// <summary>
@@ -177,7 +150,7 @@ namespace NodaTime
             }
 
             // TODO: Use proper formatting!
-            var utc = new LocalDateTime(LocalInstant.FromTicks(Ticks));
+            var utc = new LocalDateTime(new LocalInstant(Ticks));
             return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.MonthOfYear, utc.DayOfMonth,
                                  utc.HourOfDay, utc.MinuteOfHour, utc.SecondOfMinute);
             //return Ticks.ToString("N0", CultureInfo.CurrentCulture);
@@ -204,7 +177,7 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
         public static LocalInstant operator +(Instant left, Offset right)
         {
-            return LocalInstant.FromTicks(left.Ticks + right.Ticks);
+            return new LocalInstant(left.Ticks + right.Ticks);
         }
 
         /// <summary>

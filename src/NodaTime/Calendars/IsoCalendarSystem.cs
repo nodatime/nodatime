@@ -94,7 +94,7 @@ namespace NodaTime.Calendars
             }
             // This is guaranteed not to overflow, as we've already validated the arguments
             return
-                LocalInstant.FromTicks(
+                new LocalInstant(
                     unchecked(
                         MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerDay + hourOfDay * NodaConstants.TicksPerHour +
                         minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond +
@@ -113,7 +113,7 @@ namespace NodaTime.Calendars
             }
             // This is guaranteed not to overflow, as we've already validated the arguments
             return
-                LocalInstant.FromTicks(
+                new LocalInstant(
                     unchecked(
                         MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerDay + hourOfDay * NodaConstants.TicksPerHour +
                         minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond));
@@ -130,7 +130,7 @@ namespace NodaTime.Calendars
             }
             // This is guaranteed not to overflow, as we've already validated the arguments
             return
-                LocalInstant.FromTicks(
+                new LocalInstant(
                     unchecked(
                         MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerDay + hourOfDay * NodaConstants.TicksPerHour +
                         minuteOfHour * NodaConstants.TicksPerMinute));

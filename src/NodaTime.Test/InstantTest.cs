@@ -52,11 +52,11 @@ namespace NodaTime.Test
             (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * NodaConstants.MillisecondsPerDay + 14L * NodaConstants.MillisecondsPerHour +
             28L * NodaConstants.MillisecondsPerMinute;
 
-        private Instant one = Instant.FromTicks(1L);
-        private readonly Instant onePrime = Instant.FromTicks(1L);
-        private Instant negativeOne = Instant.FromTicks(-1L);
-        private Instant threeMillion = Instant.FromTicks(3000000L);
-        private Instant negativeFiftyMillion = Instant.FromTicks(-50000000L);
+        private Instant one = new Instant(1L);
+        private readonly Instant onePrime = new Instant(1L);
+        private Instant negativeOne = new Instant(-1L);
+        private Instant threeMillion = new Instant(3000000L);
+        private Instant negativeFiftyMillion = new Instant(-50000000L);
 
         private readonly Offset offsetOneHour = Offset.ForHours(1);
 
@@ -65,8 +65,8 @@ namespace NodaTime.Test
         {
             long diff = TestTime2 - TestTime1;
 
-            Instant time1 = Instant.FromTicks(TestTime1);
-            Instant time2 = Instant.FromTicks(TestTime2);
+            Instant time1 = new Instant(TestTime1);
+            Instant time2 = new Instant(TestTime2);
             Duration duration = time2 - time1;
 
             Assert.AreEqual(diff, duration.Ticks);

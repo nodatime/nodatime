@@ -62,22 +62,22 @@ namespace NodaTime.Test.Fields
         public void SetValue()
         {
             DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(0, field.SetValue(LocalInstant.FromTicks(120L), 0).Ticks);
-            Assert.AreEqual(29 * 60, field.SetValue(LocalInstant.FromTicks(120L), 29).Ticks);
+            Assert.AreEqual(0, field.SetValue(new LocalInstant(120L), 0).Ticks);
+            Assert.AreEqual(29 * 60, field.SetValue(new LocalInstant(120L), 29).Ticks);
         }
 
         [Test]
         public void IsLeap_DefaultsToFalse()
         {
             DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.IsFalse(field.IsLeap(LocalInstant.FromTicks(0L)));
+            Assert.IsFalse(field.IsLeap(new LocalInstant(0L)));
         }
 
         [Test]
         public void GetLeapAmount_DefaultsTo0()
         {
             DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(0L, field.GetLeapAmount(LocalInstant.FromTicks(0L)));
+            Assert.AreEqual(0L, field.GetLeapAmount(new LocalInstant(0L)));
         }
 
         public void LeapDurationField_DefaultsToNull()
@@ -97,80 +97,80 @@ namespace NodaTime.Test.Fields
         public void RoundFloor()
         {
             DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(-120L, field.RoundFloor(LocalInstant.FromTicks(-61L)).Ticks);
-            Assert.AreEqual(-60L, field.RoundFloor(LocalInstant.FromTicks(-60L)).Ticks);
-            Assert.AreEqual(-60L, field.RoundFloor(LocalInstant.FromTicks(-59L)).Ticks);
-            Assert.AreEqual(-60L, field.RoundFloor(LocalInstant.FromTicks(-1L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(LocalInstant.FromTicks(0L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(LocalInstant.FromTicks(1L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(LocalInstant.FromTicks(29L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(LocalInstant.FromTicks(30L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(LocalInstant.FromTicks(31L)).Ticks);
-            Assert.AreEqual(60L, field.RoundFloor(LocalInstant.FromTicks(60L)).Ticks);
+            Assert.AreEqual(-120L, field.RoundFloor(new LocalInstant(-61L)).Ticks);
+            Assert.AreEqual(-60L, field.RoundFloor(new LocalInstant(-60L)).Ticks);
+            Assert.AreEqual(-60L, field.RoundFloor(new LocalInstant(-59L)).Ticks);
+            Assert.AreEqual(-60L, field.RoundFloor(new LocalInstant(-1L)).Ticks);
+            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(0L)).Ticks);
+            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(1L)).Ticks);
+            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(29L)).Ticks);
+            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(30L)).Ticks);
+            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(31L)).Ticks);
+            Assert.AreEqual(60L, field.RoundFloor(new LocalInstant(60L)).Ticks);
         }
 
         [Test]
         public void RoundCeiling()
         {
             DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(-60L, field.RoundCeiling(LocalInstant.FromTicks(-61L)).Ticks);
-            Assert.AreEqual(-60L, field.RoundCeiling(LocalInstant.FromTicks(-60L)).Ticks);
-            Assert.AreEqual(0L, field.RoundCeiling(LocalInstant.FromTicks(-59L)).Ticks);
-            Assert.AreEqual(0L, field.RoundCeiling(LocalInstant.FromTicks(-1L)).Ticks);
-            Assert.AreEqual(0L, field.RoundCeiling(LocalInstant.FromTicks(0L)).Ticks);
-            Assert.AreEqual(60L, field.RoundCeiling(LocalInstant.FromTicks(1L)).Ticks);
-            Assert.AreEqual(60L, field.RoundCeiling(LocalInstant.FromTicks(29L)).Ticks);
-            Assert.AreEqual(60L, field.RoundCeiling(LocalInstant.FromTicks(30L)).Ticks);
-            Assert.AreEqual(60L, field.RoundCeiling(LocalInstant.FromTicks(31L)).Ticks);
-            Assert.AreEqual(60L, field.RoundCeiling(LocalInstant.FromTicks(60L)).Ticks);
+            Assert.AreEqual(-60L, field.RoundCeiling(new LocalInstant(-61L)).Ticks);
+            Assert.AreEqual(-60L, field.RoundCeiling(new LocalInstant(-60L)).Ticks);
+            Assert.AreEqual(0L, field.RoundCeiling(new LocalInstant(-59L)).Ticks);
+            Assert.AreEqual(0L, field.RoundCeiling(new LocalInstant(-1L)).Ticks);
+            Assert.AreEqual(0L, field.RoundCeiling(new LocalInstant(0L)).Ticks);
+            Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(1L)).Ticks);
+            Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(29L)).Ticks);
+            Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(30L)).Ticks);
+            Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(31L)).Ticks);
+            Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(60L)).Ticks);
         }
 
         [Test]
         public void RoundHalfFloor()
         {
             DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(0L, field.RoundHalfFloor(LocalInstant.FromTicks(0L)).Ticks);
-            Assert.AreEqual(0L, field.RoundHalfFloor(LocalInstant.FromTicks(29L)).Ticks);
-            Assert.AreEqual(0L, field.RoundHalfFloor(LocalInstant.FromTicks(30L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfFloor(LocalInstant.FromTicks(31L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfFloor(LocalInstant.FromTicks(60L)).Ticks);
+            Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(0L)).Ticks);
+            Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(29L)).Ticks);
+            Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(30L)).Ticks);
+            Assert.AreEqual(60L, field.RoundHalfFloor(new LocalInstant(31L)).Ticks);
+            Assert.AreEqual(60L, field.RoundHalfFloor(new LocalInstant(60L)).Ticks);
         }
 
         [Test]
         public void RoundHalfCeiling()
         {
             DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(0L, field.RoundHalfCeiling(LocalInstant.FromTicks(0L)).Ticks);
-            Assert.AreEqual(0L, field.RoundHalfCeiling(LocalInstant.FromTicks(29L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfCeiling(LocalInstant.FromTicks(30L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfCeiling(LocalInstant.FromTicks(31L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfCeiling(LocalInstant.FromTicks(60L)).Ticks);
+            Assert.AreEqual(0L, field.RoundHalfCeiling(new LocalInstant(0L)).Ticks);
+            Assert.AreEqual(0L, field.RoundHalfCeiling(new LocalInstant(29L)).Ticks);
+            Assert.AreEqual(60L, field.RoundHalfCeiling(new LocalInstant(30L)).Ticks);
+            Assert.AreEqual(60L, field.RoundHalfCeiling(new LocalInstant(31L)).Ticks);
+            Assert.AreEqual(60L, field.RoundHalfCeiling(new LocalInstant(60L)).Ticks);
         }
 
         [Test]
         public void RoundHalfEven()
         {
             DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(0L, field.RoundHalfEven(LocalInstant.FromTicks(0L)).Ticks);
-            Assert.AreEqual(0L, field.RoundHalfEven(LocalInstant.FromTicks(29L)).Ticks);
-            Assert.AreEqual(0L, field.RoundHalfEven(LocalInstant.FromTicks(30L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfEven(LocalInstant.FromTicks(31L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfEven(LocalInstant.FromTicks(60L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfEven(LocalInstant.FromTicks(89L)).Ticks);
-            Assert.AreEqual(120L, field.RoundHalfEven(LocalInstant.FromTicks(90L)).Ticks);
-            Assert.AreEqual(120L, field.RoundHalfEven(LocalInstant.FromTicks(91L)).Ticks);
+            Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(0L)).Ticks);
+            Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(29L)).Ticks);
+            Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(30L)).Ticks);
+            Assert.AreEqual(60L, field.RoundHalfEven(new LocalInstant(31L)).Ticks);
+            Assert.AreEqual(60L, field.RoundHalfEven(new LocalInstant(60L)).Ticks);
+            Assert.AreEqual(60L, field.RoundHalfEven(new LocalInstant(89L)).Ticks);
+            Assert.AreEqual(120L, field.RoundHalfEven(new LocalInstant(90L)).Ticks);
+            Assert.AreEqual(120L, field.RoundHalfEven(new LocalInstant(91L)).Ticks);
         }
 
         [Test]
         public void Remainder()
         {
             DateTimeFieldBase field = new StubPreciseDurationDateTimeField();
-            Assert.AreEqual(0L, field.Remainder(LocalInstant.FromTicks(0L)).Ticks);
-            Assert.AreEqual(29L, field.Remainder(LocalInstant.FromTicks(29L)).Ticks);
-            Assert.AreEqual(30L, field.Remainder(LocalInstant.FromTicks(30L)).Ticks);
-            Assert.AreEqual(31L, field.Remainder(LocalInstant.FromTicks(31L)).Ticks);
-            Assert.AreEqual(0L, field.Remainder(LocalInstant.FromTicks(60L)).Ticks);
-            Assert.AreEqual(57L, field.Remainder(LocalInstant.FromTicks(-63L)).Ticks);
+            Assert.AreEqual(0L, field.Remainder(new LocalInstant(0L)).Ticks);
+            Assert.AreEqual(29L, field.Remainder(new LocalInstant(29L)).Ticks);
+            Assert.AreEqual(30L, field.Remainder(new LocalInstant(30L)).Ticks);
+            Assert.AreEqual(31L, field.Remainder(new LocalInstant(31L)).Ticks);
+            Assert.AreEqual(0L, field.Remainder(new LocalInstant(60L)).Ticks);
+            Assert.AreEqual(57L, field.Remainder(new LocalInstant(-63L)).Ticks);
         }
 
         private class StubPreciseDurationDateTimeField : PreciseDurationDateTimeField

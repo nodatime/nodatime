@@ -65,7 +65,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void FieldsOf_GreatAchievement()
         {
-            LocalDateTime now = new LocalDateTime(LocalInstant.FromTicks((TimeOfGreatAchievement - UnixEpochDateTime).Ticks), IsoCalendarSystem.Instance);
+            LocalDateTime now = new LocalDateTime(new LocalInstant((TimeOfGreatAchievement - UnixEpochDateTime).Ticks), IsoCalendarSystem.Instance);
 
             Assert.AreEqual(2009, now.Year);
             Assert.AreEqual(2009, now.YearOfEra);

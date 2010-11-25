@@ -91,7 +91,7 @@ namespace NodaTime.Partials
         public static LocalDateTime operator +(LocalDate date, LocalTime time)
         {
             LocalInstant localDateInstant = date.localTime.LocalInstant;
-            LocalInstant localInstant = LocalInstant.FromTicks(localDateInstant.Ticks + time.TickOfDay);
+            LocalInstant localInstant = new LocalInstant(localDateInstant.Ticks + time.TickOfDay);
             return new LocalDateTime(localInstant, date.localTime.Calendar);
         }
 

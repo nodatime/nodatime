@@ -125,7 +125,7 @@ namespace NodaTime.Fields
         {
             // TODO: Check this - it looks very odd to me.
             Duration wrappedRemainder = WrappedField.Remainder(localInstant);
-            return new Duration(SetValue(localInstant, GetValue(LocalInstant.FromTicks(wrappedRemainder.Ticks))).Ticks);
+            return new Duration(SetValue(localInstant, GetValue(new LocalInstant(wrappedRemainder.Ticks))).Ticks);
         }
     }
 }

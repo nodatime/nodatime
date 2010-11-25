@@ -19,7 +19,7 @@ namespace NodaTime.Demo
             // Not specific to a time zone.
             // Confusing - but fortunately internal, for the most part.
             // Better descriptions welcome.
-            LocalInstant x = LocalInstant.FromTicks(1000000);
+            LocalInstant x = new LocalInstant(1000000);
         }
 
         [Test]

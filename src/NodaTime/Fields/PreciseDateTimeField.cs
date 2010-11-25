@@ -62,7 +62,7 @@ namespace NodaTime.Fields
         {
             FieldUtils.VerifyValueBounds(this, value, GetMinimumValue(), GetMaximumValue());
             long ticks = localInstant.Ticks;
-            return LocalInstant.FromTicks(ticks + (value - GetInt64Value(localInstant)) * UnitTicks);
+            return new LocalInstant(ticks + (value - GetInt64Value(localInstant)) * UnitTicks);
         }
 
         public override IDurationField RangeDurationField { get { return rangeField; } }

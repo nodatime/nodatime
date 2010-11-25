@@ -32,8 +32,8 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(DateTimeFieldType.SecondOfMinute, field.FieldType);
             Assert.IsTrue(field.IsSupported);
             Assert.IsFalse(field.IsLenient);
-            Assert.IsFalse(field.IsLeap(LocalInstant.FromTicks(0)));
-            Assert.AreEqual(0, field.GetLeapAmount(LocalInstant.FromTicks(0)));
+            Assert.IsFalse(field.IsLeap(new LocalInstant(0)));
+            Assert.AreEqual(0, field.GetLeapAmount(new LocalInstant(0)));
             Assert.IsNull(field.LeapDurationField);
         }
 
@@ -86,30 +86,30 @@ namespace NodaTime.Test.Fields
         public void GetValue_AddsOffset()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(0 + 3, field.GetValue(LocalInstant.FromTicks(0)));
-            Assert.AreEqual(6 + 3, field.GetValue(LocalInstant.FromTicks(6 * NodaConstants.TicksPerSecond)));
+            Assert.AreEqual(0 + 3, field.GetValue(new LocalInstant(0)));
+            Assert.AreEqual(6 + 3, field.GetValue(new LocalInstant(6 * NodaConstants.TicksPerSecond)));
         }
 
         [Test]
         public void GetInt64Value_AddsOffset()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(0 + 3, field.GetInt64Value(LocalInstant.FromTicks(0)));
-            Assert.AreEqual(6 + 3, field.GetInt64Value(LocalInstant.FromTicks(6 * NodaConstants.TicksPerSecond)));
+            Assert.AreEqual(0 + 3, field.GetInt64Value(new LocalInstant(0)));
+            Assert.AreEqual(6 + 3, field.GetInt64Value(new LocalInstant(6 * NodaConstants.TicksPerSecond)));
         }
 
         [Test]
         public void Add_Int32_DelegatesToWrappedField()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(NodaConstants.TicksPerSecond, field.Add(LocalInstant.FromTicks(0), 1).Ticks);
+            Assert.AreEqual(NodaConstants.TicksPerSecond, field.Add(new LocalInstant(0), 1).Ticks);
         }
 
         [Test]
         public void Add_Int64_DelegatesToWrappedField()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(NodaConstants.TicksPerSecond, field.Add(LocalInstant.FromTicks(0), 1L).Ticks);
+            Assert.AreEqual(NodaConstants.TicksPerSecond, field.Add(new LocalInstant(0), 1L).Ticks);
         }
 
         [Test]
@@ -117,24 +117,24 @@ namespace NodaTime.Test.Fields
         {
             OffsetDateTimeField field = GetSampleField();
             Assert.AreEqual(-21L,
-                            field.GetInt64Difference(LocalInstant.FromTicks(20 * NodaConstants.TicksPerSecond), LocalInstant.FromTicks(41 * NodaConstants.TicksPerSecond)));
+                            field.GetInt64Difference(new LocalInstant(20 * NodaConstants.TicksPerSecond), new LocalInstant(41 * NodaConstants.TicksPerSecond)));
         }
 
         [Test]
         public void GetDifference_DelegatesToWrappedField()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(-21L, field.GetDifference(LocalInstant.FromTicks(20 * NodaConstants.TicksPerSecond), LocalInstant.FromTicks(41 * NodaConstants.TicksPerSecond)));
+            Assert.AreEqual(-21L, field.GetDifference(new LocalInstant(20 * NodaConstants.TicksPerSecond), new LocalInstant(41 * NodaConstants.TicksPerSecond)));
         }
 
         [Test]
         public void SetValue_AdjustsByOffset()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(31200000L, field.SetValue(LocalInstant.FromTicks(21200000L), 6).Ticks);
-            Assert.AreEqual(261200000L, field.SetValue(LocalInstant.FromTicks(21200000L), 29).Ticks);
+            Assert.AreEqual(31200000L, field.SetValue(new LocalInstant(21200000L), 6).Ticks);
+            Assert.AreEqual(261200000L, field.SetValue(new LocalInstant(21200000L), 29).Ticks);
             // Note the wrapping here
-            Assert.AreEqual(571200000L, field.SetValue(LocalInstant.FromTicks(21200000L), 60).Ticks);
+            Assert.AreEqual(571200000L, field.SetValue(new LocalInstant(21200000L), 60).Ticks);
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace NodaTime.Test.Fields
         public void GetMinimumValue_WithLocalInstant_UsesOffset()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(3, field.GetMinimumValue(LocalInstant.FromTicks(0)));
+            Assert.AreEqual(3, field.GetMinimumValue(new LocalInstant(0)));
         }
 
         [Test]
@@ -162,86 +162,86 @@ namespace NodaTime.Test.Fields
         public void GetMaximumValue_WithLocalInstant_UsesOffset()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(62, field.GetMaximumValue(LocalInstant.FromTicks(0)));
+            Assert.AreEqual(62, field.GetMaximumValue(new LocalInstant(0)));
         }
 
         [Test]
         public void RoundFloor()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(-2 * NodaConstants.TicksPerSecond, field.RoundFloor(LocalInstant.FromTicks(-1001 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundFloor(LocalInstant.FromTicks(-1000 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundFloor(LocalInstant.FromTicks(-999 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundFloor(LocalInstant.FromTicks(-1 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundFloor(LocalInstant.FromTicks(0)).Ticks);
-            Assert.AreEqual(0, field.RoundFloor(LocalInstant.FromTicks(1 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundFloor(LocalInstant.FromTicks(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundFloor(LocalInstant.FromTicks(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundFloor(LocalInstant.FromTicks(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundFloor(LocalInstant.FromTicks(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(-2 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(-1001 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(-1000 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(-999 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(-1 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundFloor(new LocalInstant(0)).Ticks);
+            Assert.AreEqual(0, field.RoundFloor(new LocalInstant(1 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundFloor(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundFloor(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundFloor(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
         }
 
         [Test]
         public void RoundCeiling_DelegatesToWrappedField()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundCeiling(LocalInstant.FromTicks(-1001 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundCeiling(LocalInstant.FromTicks(-1000 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundCeiling(LocalInstant.FromTicks(-999 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundCeiling(LocalInstant.FromTicks(-1 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundCeiling(LocalInstant.FromTicks(0)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(LocalInstant.FromTicks(1 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(LocalInstant.FromTicks(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(LocalInstant.FromTicks(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(LocalInstant.FromTicks(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(LocalInstant.FromTicks(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(-1001 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(-1000 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundCeiling(new LocalInstant(-999 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundCeiling(new LocalInstant(-1 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundCeiling(new LocalInstant(0)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(1 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
         }
 
         [Test]
         public void RoundHalfFloor_DelegatesToWrappedField()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(0, field.RoundHalfFloor(LocalInstant.FromTicks(0)).Ticks);
-            Assert.AreEqual(0, field.RoundHalfFloor(LocalInstant.FromTicks(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundHalfFloor(LocalInstant.FromTicks(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfFloor(LocalInstant.FromTicks(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfFloor(LocalInstant.FromTicks(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundHalfFloor(new LocalInstant(0)).Ticks);
+            Assert.AreEqual(0, field.RoundHalfFloor(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundHalfFloor(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfFloor(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfFloor(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
         }
 
         [Test]
         public void RoundHalfCeiling_DelegatesToWrappedField()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(0, field.RoundHalfCeiling(LocalInstant.FromTicks(0)).Ticks);
-            Assert.AreEqual(0, field.RoundHalfCeiling(LocalInstant.FromTicks(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfCeiling(LocalInstant.FromTicks(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfCeiling(LocalInstant.FromTicks(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfCeiling(LocalInstant.FromTicks(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundHalfCeiling(new LocalInstant(0)).Ticks);
+            Assert.AreEqual(0, field.RoundHalfCeiling(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfCeiling(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfCeiling(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfCeiling(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
         }
 
         [Test]
         public void RoundHalfEven_DelegatesToWrappedField()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(0, field.RoundHalfEven(LocalInstant.FromTicks(0)).Ticks);
-            Assert.AreEqual(0, field.RoundHalfEven(LocalInstant.FromTicks(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundHalfEven(LocalInstant.FromTicks(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfEven(LocalInstant.FromTicks(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfEven(LocalInstant.FromTicks(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfEven(LocalInstant.FromTicks(1499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(2 * NodaConstants.TicksPerSecond, field.RoundHalfEven(LocalInstant.FromTicks(1500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(2 * NodaConstants.TicksPerSecond, field.RoundHalfEven(LocalInstant.FromTicks(1501 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundHalfEven(new LocalInstant(0)).Ticks);
+            Assert.AreEqual(0, field.RoundHalfEven(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.RoundHalfEven(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfEven(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfEven(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfEven(new LocalInstant(1499 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(2 * NodaConstants.TicksPerSecond, field.RoundHalfEven(new LocalInstant(1500 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(2 * NodaConstants.TicksPerSecond, field.RoundHalfEven(new LocalInstant(1501 * NodaConstants.TicksPerMillisecond)).Ticks);
         }
 
         [Test]
         public void Remainder_DelegatesToWrappedField()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(0, field.Remainder(LocalInstant.FromTicks(0)).Ticks);
-            Assert.AreEqual(499 * NodaConstants.TicksPerMillisecond, field.Remainder(LocalInstant.FromTicks(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(500 * NodaConstants.TicksPerMillisecond, field.Remainder(LocalInstant.FromTicks(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(501 * NodaConstants.TicksPerMillisecond, field.Remainder(LocalInstant.FromTicks(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.Remainder(LocalInstant.FromTicks(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.Remainder(new LocalInstant(0)).Ticks);
+            Assert.AreEqual(499 * NodaConstants.TicksPerMillisecond, field.Remainder(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(500 * NodaConstants.TicksPerMillisecond, field.Remainder(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(501 * NodaConstants.TicksPerMillisecond, field.Remainder(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.Remainder(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
         }
 
         /// <summary>

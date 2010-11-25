@@ -84,7 +84,7 @@ namespace NodaTime.Test
             Assert.AreEqual(30, when.MinuteOfHour);
             Assert.AreEqual(0, when.SecondOfMinute);
 
-            LocalDateTime utc = new LocalDateTime(LocalInstant.FromTicks(instant.Ticks));
+            LocalDateTime utc = new LocalDateTime(new LocalInstant(instant.Ticks));
             Assert.AreEqual(2009, utc.Year);
             Assert.AreEqual(11, utc.MonthOfYear);
             Assert.AreEqual(2, utc.DayOfMonth);

@@ -34,8 +34,8 @@ namespace NodaTime.Test
         [Test]
         public void IEquatableEquals_WithEqualTicks_IsTrue()
         {
-            LocalInstant first = LocalInstant.FromTicks(100L);
-            LocalInstant second = LocalInstant.FromTicks(100L);
+            LocalInstant first = new LocalInstant(100L);
+            LocalInstant second = new LocalInstant(100L);
             Assert.True(first.Equals(second), "100 == 100 (different objects)");
         }
 
@@ -100,8 +100,8 @@ namespace NodaTime.Test
         [Test]
         public void GetHashCode_Twice_IsEqual()
         {
-            LocalInstant test1 = LocalInstant.FromTicks(123L);
-            LocalInstant test2 = LocalInstant.FromTicks(123L);
+            LocalInstant test1 = new LocalInstant(123L);
+            LocalInstant test2 = new LocalInstant(123L);
             Assert.AreEqual(test1.GetHashCode(), test1.GetHashCode());
             Assert.AreEqual(test2.GetHashCode(), test2.GetHashCode());
         }
@@ -109,17 +109,17 @@ namespace NodaTime.Test
         [Test]
         public void GetHashCode_SameTicks_IsEqual()
         {
-            LocalInstant test1 = LocalInstant.FromTicks(123L);
-            LocalInstant test2 = LocalInstant.FromTicks(123L);
+            LocalInstant test1 = new LocalInstant(123L);
+            LocalInstant test2 = new LocalInstant(123L);
             Assert.AreEqual(test1.GetHashCode(), test2.GetHashCode());
         }
 
         [Test]
         public void GetHashCode_DifferentTicks_IsDifferent()
         {
-            LocalInstant test1 = LocalInstant.FromTicks(123L);
-            LocalInstant test2 = LocalInstant.FromTicks(123L);
-            LocalInstant test3 = LocalInstant.FromTicks(321L);
+            LocalInstant test1 = new LocalInstant(123L);
+            LocalInstant test2 = new LocalInstant(123L);
+            LocalInstant test3 = new LocalInstant(321L);
 
             Assert.AreNotEqual(test1.GetHashCode(), test3.GetHashCode());
             Assert.AreNotEqual(test2.GetHashCode(), test3.GetHashCode());
@@ -405,8 +405,8 @@ namespace NodaTime.Test
         public void OperatorMinusOffset_Zero_IsNeutralElement()
         {
             Assert.AreEqual(Instant.UnixEpoch, LocalInstant.LocalUnixEpoch - Offset.Zero, "LocalUnixEpoch - Offset.Zero");
-            Assert.AreEqual(Instant.FromTicks(1L), one - Offset.Zero, "LocalInstant(1) - Offset.Zero");
-            Assert.AreEqual(Instant.FromTicks(-NodaConstants.TicksPerHour), LocalInstant.LocalUnixEpoch - offsetOneHour, "LocalUnixEpoch - offsetOneHour");
+            Assert.AreEqual(new Instant(1L), one - Offset.Zero, "LocalInstant(1) - Offset.Zero");
+            Assert.AreEqual(new Instant(-NodaConstants.TicksPerHour), LocalInstant.LocalUnixEpoch - offsetOneHour, "LocalUnixEpoch - offsetOneHour");
         }
 
         #endregion

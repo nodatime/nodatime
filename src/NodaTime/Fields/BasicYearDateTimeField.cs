@@ -129,14 +129,14 @@ namespace NodaTime.Fields
         #region Rounding
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
-            return LocalInstant.FromTicks(calendarSystem.GetYearTicks(GetValue(localInstant)));
+            return new LocalInstant(calendarSystem.GetYearTicks(GetValue(localInstant)));
         }
 
         public override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             int year = GetValue(localInstant);
             long yearStartTicks = calendarSystem.GetYearTicks(year);
-            return localInstant.Ticks == yearStartTicks ? localInstant : LocalInstant.FromTicks(calendarSystem.GetYearTicks(year + 1));
+            return localInstant.Ticks == yearStartTicks ? localInstant : new LocalInstant(calendarSystem.GetYearTicks(year + 1));
         }
         #endregion
     }

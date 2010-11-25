@@ -25,7 +25,7 @@ namespace NodaTime.Test.Fields
     public class ScaledDurationTest
     {
         private readonly ScaledDurationField sample = new ScaledDurationField(TicksDurationField.Instance, DurationFieldType.Minutes, 90);
-        private readonly LocalInstant localInstant = LocalInstant.FromTicks(567L);
+        private readonly LocalInstant localInstant = new LocalInstant(567L);
 
         [Test]
         public void Constructor_WithNullField_ThrowsArgumentNullException()
@@ -159,7 +159,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Add_WithInt32CausingOverflow()
         {
-            Assert.Throws<OverflowException>(() => sample.Add(LocalInstant.FromTicks(long.MaxValue), 1));
+            Assert.Throws<OverflowException>(() => sample.Add(new LocalInstant(long.MaxValue), 1));
         }
 
         [Test]
@@ -173,37 +173,37 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Add_WithInt64CausingOverflow()
         {
-            Assert.Throws<OverflowException>(() => sample.Add(LocalInstant.FromTicks(long.MaxValue), 1L));
+            Assert.Throws<OverflowException>(() => sample.Add(new LocalInstant(long.MaxValue), 1L));
         }
 
         [Test]
         public void GetDifference()
         {
-            Assert.AreEqual(0, sample.GetDifference(LocalInstant.FromTicks(1L), LocalInstant.FromTicks(0L)));
-            Assert.AreEqual(567, sample.GetDifference(LocalInstant.FromTicks(567 * 90L), LocalInstant.FromTicks(0L)));
-            Assert.AreEqual(567 - 1234, sample.GetDifference(LocalInstant.FromTicks(567 * 90L), LocalInstant.FromTicks(1234 * 90L)));
-            Assert.AreEqual(567 + 1234, sample.GetDifference(LocalInstant.FromTicks(567 * 90L), LocalInstant.FromTicks(-1234 * 90L)));
+            Assert.AreEqual(0, sample.GetDifference(new LocalInstant(1L), new LocalInstant(0L)));
+            Assert.AreEqual(567, sample.GetDifference(new LocalInstant(567 * 90L), new LocalInstant(0L)));
+            Assert.AreEqual(567 - 1234, sample.GetDifference(new LocalInstant(567 * 90L), new LocalInstant(1234 * 90L)));
+            Assert.AreEqual(567 + 1234, sample.GetDifference(new LocalInstant(567 * 90L), new LocalInstant(-1234 * 90L)));
         }
 
         [Test]
         public void GetDifference_WithOverflow()
         {
-            Assert.Throws<OverflowException>(() => sample.GetDifference(LocalInstant.FromTicks(long.MaxValue), LocalInstant.FromTicks(-1L)));
+            Assert.Throws<OverflowException>(() => sample.GetDifference(new LocalInstant(long.MaxValue), new LocalInstant(-1L)));
         }
 
         [Test]
         public void GetInt64Difference()
         {
-            Assert.AreEqual(0L, sample.GetInt64Difference(LocalInstant.FromTicks(1L), LocalInstant.FromTicks(0L)));
-            Assert.AreEqual(567L, sample.GetInt64Difference(LocalInstant.FromTicks(567 * 90L), LocalInstant.FromTicks(0L)));
-            Assert.AreEqual(567L - 1234L, sample.GetInt64Difference(LocalInstant.FromTicks(567 * 90L), LocalInstant.FromTicks(1234 * 90L)));
-            Assert.AreEqual(567L + 1234L, sample.GetInt64Difference(LocalInstant.FromTicks(567 * 90L), LocalInstant.FromTicks(-1234 * 90L)));
+            Assert.AreEqual(0L, sample.GetInt64Difference(new LocalInstant(1L), new LocalInstant(0L)));
+            Assert.AreEqual(567L, sample.GetInt64Difference(new LocalInstant(567 * 90L), new LocalInstant(0L)));
+            Assert.AreEqual(567L - 1234L, sample.GetInt64Difference(new LocalInstant(567 * 90L), new LocalInstant(1234 * 90L)));
+            Assert.AreEqual(567L + 1234L, sample.GetInt64Difference(new LocalInstant(567 * 90L), new LocalInstant(-1234 * 90L)));
         }
 
         [Test]
         public void GetInt64Difference_WithOverflow()
         {
-            Assert.Throws<OverflowException>(() => sample.GetInt64Difference(LocalInstant.FromTicks(long.MaxValue), LocalInstant.FromTicks(-1L)));
+            Assert.Throws<OverflowException>(() => sample.GetInt64Difference(new LocalInstant(long.MaxValue), new LocalInstant(-1L)));
         }
     }
 }
