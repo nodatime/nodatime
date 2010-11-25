@@ -361,7 +361,7 @@ namespace NodaTime.Calendars
         private long GetFirstWeekOfYearTicks(int year)
         {
             long jan1Millis = GetYearTicks(year);
-            int jan1DayOfWeek = GetDayOfWeek(LocalInstant.FromTicks(jan1Millis));
+            int jan1DayOfWeek = GetDayOfWeek(new LocalInstant(jan1Millis));
 
             if (jan1DayOfWeek > (8 - minDaysInFirstWeek))
             {
@@ -395,7 +395,7 @@ namespace NodaTime.Calendars
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
 
             return
-                LocalInstant.FromTicks(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + hourOfDay * NodaConstants.TicksPerHour +
+                new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + hourOfDay * NodaConstants.TicksPerHour +
                                  minuteOfHour * NodaConstants.TicksPerMinute);
         }
 
@@ -410,7 +410,7 @@ namespace NodaTime.Calendars
             FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, secondOfMinute, 0, 59);
 
             return
-                LocalInstant.FromTicks(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + hourOfDay * NodaConstants.TicksPerHour +
+                new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + hourOfDay * NodaConstants.TicksPerHour +
                                  minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond);
         }
 
@@ -429,7 +429,7 @@ namespace NodaTime.Calendars
             FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfMillisecond, tickOfMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
 
             return
-                LocalInstant.FromTicks(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + hourOfDay * NodaConstants.TicksPerHour +
+                new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + hourOfDay * NodaConstants.TicksPerHour +
                                  minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond +
                                  millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond);
         }
@@ -442,7 +442,7 @@ namespace NodaTime.Calendars
             }
             // TODO: Report bug in Joda Time, which doesn't have the - 1 here.
             FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfDay, tickOfDay, 0, NodaConstants.TicksPerDay - 1);
-            return LocalInstant.FromTicks(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + tickOfDay);
+            return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + tickOfDay);
         }
     }
 }

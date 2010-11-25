@@ -247,10 +247,10 @@ namespace NodaTime.TimeZones
             /// <returns></returns>
             private HashCacheNode CreateInstantNode(int period)
             {
-                var periodStart = Instant.FromTicks((long)period << PeriodShift);
+                var periodStart = new Instant((long)period << PeriodShift);
                 var interval = TimeZone.GetZoneInterval(periodStart);
                 var node = new HashCacheNode(interval, period, null);
-                var periodEnd = Instant.FromTicks(periodStart.Ticks | PeriodEndMask);
+                var periodEnd = new Instant(periodStart.Ticks | PeriodEndMask);
                 while (true)
                 {
                     periodStart = node.Interval.End;
@@ -272,10 +272,10 @@ namespace NodaTime.TimeZones
             /// <returns></returns>
             private HashCacheNode CreateLocalInstantNode(int period)
             {
-                var periodStart = LocalInstant.FromTicks((long)period << PeriodShift);
+                var periodStart = new LocalInstant((long)period << PeriodShift);
                 var interval = TimeZone.GetZoneInterval(periodStart);
                 var node = new HashCacheNode(interval, period, null);
-                var periodEnd = LocalInstant.FromTicks(periodStart.Ticks | PeriodEndMask);
+                var periodEnd = new LocalInstant(periodStart.Ticks | PeriodEndMask);
                 while (true)
                 {
                     periodStart = node.Interval.LocalEnd;

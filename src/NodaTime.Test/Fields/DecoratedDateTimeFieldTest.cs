@@ -58,8 +58,8 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Delegation()
         {
-            LocalInstant when1 = LocalInstant.FromTicks(12345L);
-            LocalInstant when2 = LocalInstant.FromTicks(98765L);
+            LocalInstant when1 = new LocalInstant(12345L);
+            LocalInstant when2 = new LocalInstant(98765L);
             Duration duration = new Duration(10000L);
             // Just a smattering
             AssertDelegated(x => x.GetDifference(when1, when2));

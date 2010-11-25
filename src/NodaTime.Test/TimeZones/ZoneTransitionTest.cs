@@ -50,7 +50,7 @@ namespace NodaTime.Test.TimeZones
         public void Construct_BeginningOfTime_Truncated()
         {
             string name = "abc";
-            Instant instant = Instant.FromTicks(Instant.MinValue.Ticks + oneHour.Ticks);
+            Instant instant = new Instant(Instant.MinValue.Ticks + oneHour.Ticks);
             var actual = new ZoneTransition(instant, name, minusTwoHours, minusTwoHours);
             Assert.AreEqual(instant, actual.Instant, "Instant");
             Assert.AreEqual(minusOneHour, actual.StandardOffset, "StandardOffset");
@@ -61,7 +61,7 @@ namespace NodaTime.Test.TimeZones
         public void Construct_EndOfTime_Truncated()
         {
             string name = "abc";
-            Instant instant = Instant.FromTicks(Instant.MaxValue.Ticks + minusOneHour.Ticks);
+            Instant instant = new Instant(Instant.MaxValue.Ticks + minusOneHour.Ticks);
             var actual = new ZoneTransition(instant, name, threeHours, threeHours);
             Assert.AreEqual(instant, actual.Instant, "Instant");
             Assert.AreEqual(oneHour, actual.StandardOffset, "StandardOffset");

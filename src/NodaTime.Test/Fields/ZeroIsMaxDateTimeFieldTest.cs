@@ -31,38 +31,38 @@ namespace NodaTime.Test.Fields
         public void GetMinimum_AlwaysReturns1()
         {
             Assert.AreEqual(1, field.GetMinimumValue());
-            Assert.AreEqual(1, field.GetMinimumValue(LocalInstant.FromTicks(0)));
+            Assert.AreEqual(1, field.GetMinimumValue(new LocalInstant(0)));
         }
 
         [Test]
         public void GetMaximum_AlwaysReturnsWrappedMaximumPlus1()
         {
             Assert.AreEqual(24, field.GetMaximumValue());
-            Assert.AreEqual(24, field.GetMaximumValue(LocalInstant.FromTicks(0)));
+            Assert.AreEqual(24, field.GetMaximumValue(new LocalInstant(0)));
         }
 
         [Test]
         public void GetValue_ForZero_ReturnsMaximum()
         {
-            Assert.AreEqual(24, field.GetValue(LocalInstant.FromTicks(0)));
+            Assert.AreEqual(24, field.GetValue(new LocalInstant(0)));
         }
 
         [Test]
         public void GetValue_ForNonZero_ReturnsOriginalValue()
         {
-            Assert.AreEqual(1, field.GetValue(LocalInstant.FromTicks(NodaConstants.TicksPerHour)));
+            Assert.AreEqual(1, field.GetValue(new LocalInstant(NodaConstants.TicksPerHour)));
         }
 
         [Test]
         public void TestSetValue_WithMaximumUsesZero()
         {
-            Assert.AreEqual(0, field.SetValue(LocalInstant.FromTicks(NodaConstants.TicksPerHour), 24).Ticks);
+            Assert.AreEqual(0, field.SetValue(new LocalInstant(NodaConstants.TicksPerHour), 24).Ticks);
         }
 
         [Test]
         public void TestSetValue_WithNonMaximumPassesValueThrough()
         {
-            Assert.AreEqual(NodaConstants.TicksPerHour * 2, field.SetValue(LocalInstant.FromTicks(0), 2).Ticks);
+            Assert.AreEqual(NodaConstants.TicksPerHour * 2, field.SetValue(new LocalInstant(0), 2).Ticks);
         }
     }
 }

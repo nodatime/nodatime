@@ -130,7 +130,7 @@ namespace NodaTime.Fields
             dayToUse = Math.Min(dayToUse, maxDay);
             // Get proper date part, and return result
             long datePart = calendarSystem.GetYearMonthDayTicks(yearToUse, monthToUse, dayToUse);
-            return LocalInstant.FromTicks(datePart + timePart);
+            return new LocalInstant(datePart + timePart);
         }
 
         public override LocalInstant Add(LocalInstant localInstant, long value)
@@ -195,7 +195,7 @@ namespace NodaTime.Fields
             dayToUse = Math.Min(dayToUse, maxDay);
             // Get proper date part, and return result
             long datePart = calendarSystem.GetYearMonthDayTicks(intYearToUse, intMonthToUse, dayToUse);
-            return LocalInstant.FromTicks(datePart + timePart);
+            return new LocalInstant(datePart + timePart);
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace NodaTime.Fields
                 // Quietly force DOM to nearest sane value.
                 thisDom = maxDom;
             }
-            return LocalInstant.FromTicks(calendarSystem.GetYearMonthDayTicks(thisYear, month, thisDom) + calendarSystem.GetTickOfDay(localInstant));
+            return new LocalInstant(calendarSystem.GetYearMonthDayTicks(thisYear, month, thisDom) + calendarSystem.GetTickOfDay(localInstant));
         }
         #endregion
 
@@ -326,7 +326,7 @@ namespace NodaTime.Fields
         {
             int year = calendarSystem.GetYear(localInstant);
             int month = calendarSystem.GetMonthOfYear(localInstant, year);
-            return LocalInstant.FromTicks(calendarSystem.GetYearMonthTicks(year, month));
+            return new LocalInstant(calendarSystem.GetYearMonthTicks(year, month));
         }
 
         public override Duration Remainder(LocalInstant localInstant)

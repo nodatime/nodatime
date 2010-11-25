@@ -39,7 +39,7 @@ namespace NodaTime
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
         /// </summary>
         /// <param name="ticks">The number of ticks from the Unix Epoch.</param>
-        private LocalInstant(long ticks)
+        public LocalInstant(long ticks)
         {
             this.ticks = ticks;
         }
@@ -61,33 +61,6 @@ namespace NodaTime
                 var offsetToLocal = DateTimeZones.Current.GetOffsetFromUtc(rightNow);
                 return rightNow + offsetToLocal;
             }
-        }
-
-        /// <summary>
-        /// Returns the local instant for the given ticks value.
-        /// </summary>
-        /// <remarks>
-        /// As local instants are immutable, this method may return the same object for the
-        /// same input values i.e. there is no guarantee that this method will create a new
-        /// object on each call. The values may be cached.
-        /// </remarks>
-        /// <param name="ticks">The long ticks value.</param>
-        /// <returns>The <see cref="LocalInstant"/> for the given ticks value</returns>
-        public static LocalInstant FromTicks(long ticks)
-        {
-            if (ticks == LocalUnixEpoch.Ticks)
-            {
-                return LocalUnixEpoch;
-            }
-            if (ticks == MinValue.ticks)
-            {
-                return MinValue;
-            }
-            if (ticks == MaxValue.ticks)
-            {
-                return MaxValue;
-            }
-            return new LocalInstant(ticks);
         }
 
         #region Operators
@@ -127,7 +100,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public static Instant operator -(LocalInstant left, Offset right)
         {
-            return Instant.FromTicks(left.Ticks - right.Ticks);
+            return new Instant(left.Ticks - right.Ticks);
         }
 
         /// <summary>

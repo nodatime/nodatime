@@ -327,8 +327,8 @@ namespace NodaTime.TimeZones
                 throw new ArgumentNullException("reader");
             }
             var name = reader.ReadString();
-            var start = Instant.FromTicks(reader.ReadTicks());
-            var end = Instant.FromTicks(reader.ReadTicks());
+            var start = new Instant(reader.ReadTicks());
+            var end = new Instant(reader.ReadTicks());
             var offset = reader.ReadOffset();
             var savings = reader.ReadOffset();
             return new ZoneInterval(name, start, end, offset, savings);

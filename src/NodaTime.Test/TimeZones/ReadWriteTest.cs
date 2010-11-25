@@ -164,7 +164,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Test_Instant()
         {
-            RunTests_Ticks(value => Dio.TestInstant((Instant.FromTicks(value))));
+            RunTests_Ticks(value => Dio.TestInstant((new Instant(value))));
         }
 
         [Test]
@@ -176,7 +176,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Test_LocalInstant()
         {
-            RunTests_Ticks(value => Dio.TestLocalInstant((LocalInstant.FromTicks(value))));
+            RunTests_Ticks(value => Dio.TestLocalInstant((new LocalInstant(value))));
         }
 
         [Test]

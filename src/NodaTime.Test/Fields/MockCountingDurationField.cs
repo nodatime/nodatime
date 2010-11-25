@@ -58,7 +58,7 @@ namespace NodaTime.Test.Fields
             int32Additions++;
             AddInstantArg = localInstant;
             AddValueArg = value;
-            return LocalInstant.FromTicks(localInstant.Ticks + value * unitTicks);
+            return new LocalInstant(localInstant.Ticks + value * unitTicks);
         }
 
         internal static int int64Additions;
@@ -71,7 +71,7 @@ namespace NodaTime.Test.Fields
             Add64InstantArg = localInstant;
             Add64ValueArg = value;
 
-            return LocalInstant.FromTicks(localInstant.Ticks + value * unitTicks);
+            return new LocalInstant(localInstant.Ticks + value * unitTicks);
         }
 
         internal static int differences;

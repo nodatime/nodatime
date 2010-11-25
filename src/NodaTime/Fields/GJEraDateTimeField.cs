@@ -76,14 +76,14 @@ namespace NodaTime.Fields
         #region Rounding
         public override LocalInstant RoundFloor(LocalInstant localInstant)
         {
-            return GetValue(localInstant) == NodaConstants.CommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1) : LocalInstant.FromTicks(long.MinValue);
+            return GetValue(localInstant) == NodaConstants.CommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1) : new LocalInstant(long.MinValue);
         }
 
         public override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             return GetValue(localInstant) == NodaConstants.BeforeCommonEra
                        ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
-                       : LocalInstant.FromTicks(long.MaxValue);
+                       : new LocalInstant(long.MaxValue);
         }
 
         public override LocalInstant RoundHalfFloor(LocalInstant localInstant)
