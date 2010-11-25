@@ -33,7 +33,7 @@ namespace NodaTime.Format
 
         public PeriodBuilder(PeriodType periodType)
         {
-            this.periodType = NodaDefaults.CheckPeriodType(periodType);
+            this.periodType = periodType ?? PeriodType.Standard;
             values = new int[this.periodType.Size];
         }
 

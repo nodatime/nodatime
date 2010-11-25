@@ -78,7 +78,7 @@ namespace NodaTime.Periods
         /// <exception cref="NotSupportedException">If an unsupported field's value is non-zero</exception>
         public Period(int years, int months, int weeks, int days, int hours, int minutes, int seconds, int milliseconds, PeriodType periodType)
         {
-            this.periodType = NodaDefaults.CheckPeriodType(periodType);
+            this.periodType = periodType ?? PeriodType.Standard;
 
             int[] newValues = new int[Size];
             PeriodType.UpdateIndexedField(newValues, PeriodType.Index.Year, years, false);
