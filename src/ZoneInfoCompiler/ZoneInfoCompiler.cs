@@ -23,24 +23,24 @@ using NodaTime.ZoneInfoCompiler.winmap;
 namespace NodaTime.ZoneInfoCompiler
 {
     /// <summary>
-    /// Main entry point for the time zone information compiler. In theory we could support
-    /// multiple sources and formats but currently we only support one:
-    /// http://www.twinsun.com/tz/tz-link.htm. This system refers to it as TZDB.
+    ///   Main entry point for the time zone information compiler. In theory we could support
+    ///   multiple sources and formats but currently we only support one:
+    ///   http://www.twinsun.com/tz/tz-link.htm. This system refers to it as TZDB.
     /// </summary>
     /// <remarks>
-    /// Original name: ZoneInfoCompiler (in org.joda.time.tz)
+    ///   Original name: ZoneInfoCompiler (in org.joda.time.tz)
     /// </remarks>
     internal sealed class ZoneInfoCompiler
     {
         /// <summary>
-        /// Runs the compiler from the command line.
+        ///   Runs the compiler from the command line.
         /// </summary>
-        /// <param name="arguments">The command line arguments. Each compiler defines its own.</param>
+        /// <param name = "arguments">The command line arguments. Each compiler defines its own.</param>
         /// <returns>0 for success, non-0 for error.</returns>
         private static int Main(string[] arguments)
         {
             DateTimeZones.Current = DateTimeZone.Utc;
-            int result = 0;
+            int result;
             var log = new ConsoleLog();
             if (arguments.Length < 1)
             {
@@ -48,8 +48,8 @@ namespace NodaTime.ZoneInfoCompiler
             }
             else
             {
-                string command = arguments[0];
-                string[] remainingArguments = new string[arguments.Length - 1];
+                var command = arguments[0];
+                var remainingArguments = new string[arguments.Length - 1];
                 Array.ConstrainedCopy(arguments, 1, remainingArguments, 0, remainingArguments.Length);
                 if (command.Equals("tzdb", StringComparison.OrdinalIgnoreCase))
                 {
@@ -71,9 +71,9 @@ namespace NodaTime.ZoneInfoCompiler
         }
 
         /// <summary>
-        /// Usages the specified log.
+        ///   Usages the specified log.
         /// </summary>
-        /// <param name="log">The log.</param>
+        /// <param name = "log">The log.</param>
         /// <returns></returns>
         private static int Usage(ILog log)
         {

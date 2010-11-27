@@ -34,7 +34,7 @@ namespace NodaTime.Test
             int length = 4 * NodaConstants.MillisecondsPerDay + 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute +
                          7 * NodaConstants.MillisecondsPerSecond + 8;
             int expected = 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute + 7 * NodaConstants.MillisecondsPerSecond + 8;
-            Offset test = new Offset(length);
+            var test = new Offset(length);
             Assert.AreEqual(expected, test.Milliseconds);
         }
     }

@@ -79,7 +79,6 @@
     <Compile Include="FieldValueException.cs" />
     <Compile Include="Format\DateTimeFormats.StandardPattern.cs" />
     <Compile Include="Format\PeriodBuilder.cs" />
-    <Compile Include="NodaDefaults.cs" />
     <Compile Include="Offset.cs" />
     <Compile Include="Fields\BasicMonthOfYearDateTimeField.cs" />
     <Compile Include="Fields\BasicWeekOfWeekYearDateTimeField.cs" />
@@ -126,11 +125,13 @@
     <Compile Include="Periods\Period.Creation.cs" />
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
+    <Compile Include="TimeZones\DateTimeZoneReader.cs" />
+    <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\NullDateTimeZone.cs" />
     <Compile Include="TimeZones\Transition.cs" />
     <Compile Include="TimeZones\WindowsToPosixResource.cs" />
-    <Compile Include="TimeZones\DateTimeZoneReader.cs" />
-    <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
+    <Compile Include="TimeZones\DateTimeZoneCompressionReader.cs" />
+    <Compile Include="TimeZones\DateTimeZoneCompressionWriter.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DateTimeZones.cs" />
     <Compile Include="TimeZones\DaylightSavingsTimeZone.cs" />
@@ -220,9 +221,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TimeZones\Tzdb.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Tzdb.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
+      <SubType>
+      </SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="TimeZones\winmap.resx">
       <Generator>ResXFileCodeGenerator</Generator>

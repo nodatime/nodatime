@@ -180,11 +180,7 @@ namespace NodaTime.TimeZones
             {
                 return false;
             }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            return Equals(obj as FixedDateTimeZone);
+            return ReferenceEquals(this, obj) || Equals(obj as FixedDateTimeZone);
         }
 
         /// <summary>

@@ -15,73 +15,165 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.IO;
 using NodaTime.TimeZones;
+using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
     /// <summary>
-    /// Wrapper around a DateTimeZoneWriter/DateTimeZoneReader pair that reads whatever is
-    /// written to it.
+    ///   Wrapper around a DateTimeZoneWriter/DateTimeZoneReader pair that reads whatever is
+    ///   written to it.
     /// </summary>
-    public class DtzIoHelper
+    internal class DtzIoHelper
     {
-        private DateTimeZoneReader reader;
-        private readonly MemoryStream stream;
-        private DateTimeZoneWriter writer;
+        private readonly IoStream ioStream;
+        private readonly string name;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DtzIoHelper"/> class.
-        /// </summary>
-        public DtzIoHelper()
+        internal DtzIoHelper(string name) : this(name, stream => new DateTimeZoneWriter(stream), stream => new DateTimeZoneReader(stream))
         {
-            stream = new MemoryStream();
-            writer = new DateTimeZoneWriter(stream);
         }
 
         /// <summary>
-        /// Gets the writer.
+        ///   Initializes a new instance of the <see cref = "DtzIoHelper" /> class.
         /// </summary>
-        /// <value>The writer.</value>
-        internal DateTimeZoneWriter Writer { get { return writer; } }
+        internal DtzIoHelper(string name, Func<Stream, DateTimeZoneWriter> createWriter, Func<Stream, DateTimeZoneReader> createReader)
+        {
+            this.name = name;
+            ioStream = new IoStream();
+            Reader = createReader(ioStream.GetReadStream());
+            Writer = createWriter(ioStream.GetWriteStream());
+        }
 
         /// <summary>
-        /// Gets the reader.
+        ///   Gets the reader.
         /// </summary>
         /// <value>The reader.</value>
-        internal DateTimeZoneReader Reader
+        private DateTimeZoneReader Reader { get; set; }
+
+        /// <summary>
+        ///   Gets the writer.
+        /// </summary>
+        /// <value>The writer.</value>
+        private DateTimeZoneWriter Writer { get; set; }
+
+        public void Reset()
         {
-            get
-            {
-                if (writer != null)
-                {
-                    writer = null;
-                }
-                if (reader == null)
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    reader = new DateTimeZoneReader(stream);
-                }
-                return reader;
-            }
+            ioStream.Reset();
         }
 
-        public DateTimeZone WriteRead(DateTimeZone timeZone)
+        public void TestBoolean(bool expected)
         {
-            Writer.WriteTimeZone(timeZone);
-            return Reader.ReadTimeZone(timeZone.Id);
+            Reset();
+            Writer.WriteBoolean(expected);
+            var actual = Reader.ReadBoolean();
+            Assert.AreEqual(expected, actual, name + " bool ");
         }
 
-        internal ZoneRecurrence WriteRead(ZoneRecurrence value)
+        public void TestCount(int expected)
         {
-            value.Write(Writer);
-            return ZoneRecurrence.Read(Reader);
+            Reset();
+            Writer.WriteCount(expected);
+            var actual = Reader.ReadCount();
+            Assert.AreEqual(expected, actual, name + " Count ");
         }
 
-        internal ZoneYearOffset WriteRead(ZoneYearOffset value)
+        public void TestDictionary(IDictionary<string, string> expected)
         {
-            value.Write(Writer);
-            return ZoneYearOffset.Read(Reader);
+            Reset();
+            Writer.WriteDictionary(expected);
+            var actual = Reader.ReadDictionary();
+            Assert.AreEqual(expected, actual, name + " Dictionary ");
+        }
+
+        public void TestEnum(int expected)
+        {
+            Reset();
+            Writer.WriteEnum(expected);
+            var actual = Reader.ReadEnum();
+            Assert.AreEqual(expected, actual, name + " Enum ");
+        }
+
+        public void TestInstant(Instant expected)
+        {
+            Reset();
+            Writer.WriteInstant(expected);
+            var actual = Reader.ReadInstant();
+            Assert.AreEqual(expected, actual, name + " Instant ");
+        }
+
+        public void TestInteger(int expected)
+        {
+            Reset();
+            Writer.WriteInteger(expected);
+            var actual = Reader.ReadInteger();
+            Assert.AreEqual(expected, actual, name + " Integer ");
+        }
+
+        public void TestLocalInstant(LocalInstant expected)
+        {
+            Reset();
+            Writer.WriteLocalInstant(expected);
+            var actual = Reader.ReadLocalInstant();
+            Assert.AreEqual(expected, actual, name + " LocalInstant ");
+        }
+
+        public void TestMilliseconds(int expected)
+        {
+            Reset();
+            Writer.WriteMilliseconds(expected);
+            var actual = Reader.ReadMilliseconds();
+            Assert.AreEqual(expected, actual, name + " Milliseconds ");
+        }
+
+        public void TestOffset(Offset expected)
+        {
+            Reset();
+            Writer.WriteOffset(expected);
+            var actual = Reader.ReadOffset();
+            Assert.AreEqual(expected, actual, name + " Offset ");
+        }
+
+        public void TestString(string expected)
+        {
+            Reset();
+            Writer.WriteString(expected);
+            var actual = Reader.ReadString();
+            Assert.AreEqual(expected, actual, name + " string ");
+        }
+
+        public void TestTicks(long expected)
+        {
+            Reset();
+            Writer.WriteTicks(expected);
+            var actual = Reader.ReadTicks();
+            Assert.AreEqual(expected, actual, name + " long ");
+        }
+
+        public void TestTimeZone(DateTimeZone expected)
+        {
+            Reset();
+            Writer.WriteTimeZone(expected);
+            var actual = Reader.ReadTimeZone(expected.Id);
+            Assert.AreEqual(expected, actual, name + " IDateTimeZone ");
+        }
+
+        public void TestZoneRecurrence(ZoneRecurrence expected)
+        {
+            Reset();
+            expected.Write(Writer);
+            var actual = ZoneRecurrence.Read(Reader);
+            Assert.AreEqual(expected, actual, name + " ZoneRecurrence ");
+        }
+
+        public void TestZoneYearOffset(ZoneYearOffset expected)
+        {
+            Reset();
+            expected.Write(Writer);
+            var actual = ZoneYearOffset.Read(Reader);
+            Assert.AreEqual(expected, actual, name + " ZoneYearOffset ");
         }
     }
 }

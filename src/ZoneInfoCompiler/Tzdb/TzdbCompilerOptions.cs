@@ -22,22 +22,26 @@ using CommandLine.Text;
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
-    /// Defines the command line options that are valid.
+    ///   Defines the command line options that are valid.
     /// </summary>
-    internal class TzdbCompilerOptions
+    public class TzdbCompilerOptions
     {
         private static readonly HeadingInfo HeadingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
 
         #region Standard Option Attribute
-        [Option("s", "source", Required = true, HelpText = "Source directory containing the input files.")] public string SourceDirectoryName = string.Empty;
+        [Option("o", "output", Required = true, HelpText = "The name of the output file.")]
+        public string OutputFileName = string.Empty;
 
-        [Option("o", "output", Required = true, HelpText = "The name of the output file.")] public string OutputFileName = string.Empty;
+        [Option("t", "type", HelpText = "The type of the output file { ResX, Resource }.")]
+        public ResourceOutputType OutputType = ResourceOutputType.ResX;
 
-        [Option("t", "type", HelpText = "The type of the output file { ResX, Resource }.")] public ResourceOutputType OutputType = ResourceOutputType.ResX;
+        [Option("s", "source", Required = true, HelpText = "Source directory containing the input files.")]
+        public string SourceDirectoryName = string.Empty;
         #endregion
 
         #region Specialized Option Attribute
-        [ValueList(typeof(List<string>))] public IList<string> InputFiles;
+        [ValueList(typeof(List<string>))]
+        public IList<string> InputFiles;
 
         [HelpOption(HelpText = "Display this help.")]
         public string GetUsage()

@@ -25,7 +25,7 @@ namespace NodaTime.Test.TimeZones
     public class ZoneRecurrenceTest
     {
         private const long TicksPerStandardYear = NodaConstants.TicksPerDay * 365;
-        private const long TicksPerLeapYear = NodaConstants.TicksPerDay * 366;
+        // private const long TicksPerLeapYear = NodaConstants.TicksPerDay * 366;
 
         [Test]
         public void Constructor_nullName_exception()
@@ -152,13 +152,12 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void WriteRead()
+        public void Test()
         {
-            var dio = new DtzIoHelper();
+            var dio = new DtzIoHelper("ZoneRecurrence");
             var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
-            var actual = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
-            var expected = dio.WriteRead(actual);
-            Assert.AreEqual(expected, actual);
+            var expected = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
+            dio.TestZoneRecurrence(expected);
         }
 
         [Test]

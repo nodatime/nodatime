@@ -121,11 +121,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public int CompareTo(ZoneTransition other)
         {
-            if (other == null)
-            {
-                return 1;
-            }
-            return Instant.CompareTo(other.Instant);
+            return other == null ? 1 : Instant.CompareTo(other.Instant);
         }
         #endregion
 
@@ -138,11 +134,7 @@ namespace NodaTime.TimeZones
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(ZoneTransition left, ZoneTransition right)
         {
-            if (ReferenceEquals(null, left))
-            {
-                return ReferenceEquals(null, right);
-            }
-            return left.Equals(right);
+            return ReferenceEquals(null, left) ? ReferenceEquals(null, right) : left.Equals(right);
         }
 
         /// <summary>

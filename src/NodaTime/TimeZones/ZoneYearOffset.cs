@@ -233,17 +233,17 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes this object to the given <see cref="DateTimeZoneWriter"/>.
+        /// Writes this object to the given <see cref="DateTimeZoneCompressionWriter"/>.
         /// </summary>
         /// <param name="writer">Where to send the output.</param>
         internal void Write(DateTimeZoneWriter writer)
         {
-            writer.WriteInt8((byte)Mode);
-            writer.WriteInt8((byte)MonthOfYear);
+            writer.WriteEnum((int)Mode);
+            writer.WriteInteger(MonthOfYear);
             // Day or month can range from -(max value) to max value so if we add max value it will
             // force it into the positive range
-            writer.WriteInt8((byte)(DayOfMonth + CalendarSystem.Iso.Fields.DayOfMonth.GetMaximumValue()));
-            writer.WriteInt8((byte)DayOfWeek);
+            writer.WriteInteger(DayOfMonth);
+            writer.WriteInteger(DayOfWeek);
             writer.WriteBoolean(AdvanceDayOfWeek);
             writer.WriteOffset(TickOfDay);
         }
@@ -254,12 +254,12 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("reader");
             }
-            var mode = (TransitionMode)reader.ReadByte();
-            int monthOfYear = reader.ReadByte();
+            var mode = (TransitionMode)reader.ReadEnum();
+            int monthOfYear = reader.ReadInteger();
             // Day or month can range from -(max value) to max value so we added max value so it will
             // force it into the positive range
-            int dayOfMonth = (int)(reader.ReadByte() - CalendarSystem.Iso.Fields.DayOfMonth.GetMaximumValue());
-            int dayOfWeek = reader.ReadByte();
+            int dayOfMonth = reader.ReadInteger();
+            int dayOfWeek = reader.ReadInteger();
             bool advance = reader.ReadBoolean();
             var ticksOfDay = reader.ReadOffset();
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay);

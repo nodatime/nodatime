@@ -16,18 +16,19 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Text;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Represents a range of time for which a particular Offset applies.
+    ///   Represents a range of time for which a particular Offset applies.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// This type is immutable and thread-safe.
-    /// </para>
+    ///   <para>
+    ///     This type is immutable and thread-safe.
+    ///   </para>
     /// </remarks>
     public class ZoneInterval : IEquatable<ZoneInterval>
     {
@@ -40,19 +41,24 @@ namespace NodaTime.TimeZones
         private readonly Instant start;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZoneInterval"/> class.
+        ///   Initializes a new instance of the <see cref = "ZoneInterval" /> class.
         /// </summary>
-        /// <param name="name">The name of this offset period (e.g. PST or PDT).</param>
-        /// <param name="start">The first Instant that the Offset applies.</param>
-        /// <param name="end">The last Instant (exclusive) that the Offset applies.</param>
-        /// <param name="offset">The offset from UTC for this period.</param>
-        /// <param name="savings">The daylight savings contribution to the offset.</param>
-        /// <exception cref="ArgumentNullException">If the name parameter is null.</exception>
+        /// <param name = "name">The name of this offset period (e.g. PST or PDT).</param>
+        /// <param name = "start">The first <see cref = "Instant" /> that the <paramref name = "offset" /> applies.</param>
+        /// <param name = "end">The last <see cref = "Instant" /> (exclusive) that the <paramref name = "offset" /> applies.</param>
+        /// <param name = "offset">The <see cref = "Offset" /> from UTC for this period including any daylight savings.</param>
+        /// <param name = "savings">The <see cref = "Offset" /> daylight savings contribution to the offset.</param>
+        /// <exception cref = "ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
+        /// <exception cref = "ArgumentNullException">If the <paramref name = "name" /> parameter is null.</exception>
         public ZoneInterval(string name, Instant start, Instant end, Offset offset, Offset savings)
         {
-            if (ReferenceEquals(null, name))
+            if (name == null)
             {
                 throw new ArgumentNullException("name");
+            }
+            if (start >= end)
+            {
+                throw new ArgumentException(@"The start Instant must be less than the end Instant", "start");
             }
             this.name = name;
             this.start = start;
@@ -61,7 +67,7 @@ namespace NodaTime.TimeZones
             this.savings = savings;
             try
             {
-                localStart = Instant.Add(start, offset);
+                localStart = Instant.Add(this.start, this.offset);
             }
             catch (OverflowException)
             {
@@ -69,8 +75,7 @@ namespace NodaTime.TimeZones
             }
             try
             {
-                localEnd = Instant.Add(end, offset - savings);
-                ;
+                localEnd = Instant.Add(this.end, (this.offset - this.savings));
             }
             catch (OverflowException)
             {
@@ -80,115 +85,122 @@ namespace NodaTime.TimeZones
 
         #region Properties
         /// <summary>
-        /// Gets the first Instant that the Offset applies.
-        /// </summary>
-        /// <value>The first Instant that the Offset applies.</value>
-        public Instant Start { get { return start; } }
-
-        /// <summary>
-        /// Gets the last Instant (exclusive) that the Offset applies.
-        /// </summary>
-        /// <value>The last Instant (exclusive) that the Offset applies.</value>
-        public Instant End { get { return end; } }
-
-        /// <summary>
-        /// Gets the name of this offset period (e.g. PST or PDT).
-        /// </summary>
-        /// <value>The name of this offset period (e.g. PST or PDT).</value>
-        public string Name { get { return name; } }
-
-        /// <summary>
-        /// Gets the offset from UTC for this period. This includes any daylight savings value.
-        /// </summary>
-        /// <value>The offset from UTC for this period.</value>
-        public Offset Offset { get { return offset; } }
-
-        /// <summary>
-        /// Gets the daylight savings value for this period.
-        /// </summary>
-        /// <value>The savings value.</value>
-        public Offset Savings { get { return savings; } }
-
-        /// <summary>
-        /// Gets the base offset for this period. This is the offset without any daylight savings
-        /// contributions.
+        ///   Gets the base offset for this period. This is the offset without any daylight savings
+        ///   contributions.
         /// </summary>
         /// <remarks>
-        /// This is effectively <c>Offset - Savings</c>.
+        ///   This is effectively <c>Offset - Savings</c>.
         /// </remarks>
         /// <value>The base Offset.</value>
-        public Offset BaseOffset { get { return Offset - Savings; } }
+        public Offset BaseOffset
+        {
+            [DebuggerStepThrough] get { return Offset - Savings; }
+        }
 
         /// <summary>
-        /// Gets the duration of this period.
+        ///   Gets the duration of this period.
         /// </summary>
         /// <remarks>
-        /// This is effectively <c>Start - End</c>.
+        ///   This is effectively <c>End - Start</c>.
         /// </remarks>
         /// <value>The Duration of this period.</value>
-        public Duration Duration { get { return End - Start; } }
+        public Duration Duration
+        {
+            [DebuggerStepThrough] get { return End - Start; }
+        }
 
         /// <summary>
-        /// Gets the start time as a LocalInstant.
+        ///   Gets the last Instant (exclusive) that the Offset applies.
         /// </summary>
-        /// <remarks>
-        /// This is effectively <c>Start + Offset</c>.
-        /// </remarks>
-        /// <value>The starting LocalInstant.</value>
-        internal LocalInstant LocalStart { get { return localStart; } }
+        /// <value>The last Instant (exclusive) that the Offset applies.</value>
+        public Instant End
+        {
+            [DebuggerStepThrough] get { return end; }
+        }
 
         /// <summary>
-        /// Gets the end time as a LocalInstant.
+        ///   Gets the end time as a LocalInstant.
         /// </summary>
         /// <remarks>
-        /// This is effectively <c>End + Offset</c>.
+        ///   This is effectively <c>End + Offset</c>.
         /// </remarks>
         /// <value>The ending LocalInstant.</value>
-        internal LocalInstant LocalEnd { get { return localEnd; } }
+        internal LocalInstant LocalEnd
+        {
+            [DebuggerStepThrough] get { return localEnd; }
+        }
+
+        /// <summary>
+        ///   Gets the start time as a LocalInstant.
+        /// </summary>
+        /// <remarks>
+        ///   This is effectively <c>Start + Offset</c>.
+        /// </remarks>
+        /// <value>The starting LocalInstant.</value>
+        internal LocalInstant LocalStart
+        {
+            [DebuggerStepThrough] get { return localStart; }
+        }
+
+        /// <summary>
+        ///   Gets the name of this offset period (e.g. PST or PDT).
+        /// </summary>
+        /// <value>The name of this offset period (e.g. PST or PDT).</value>
+        public string Name
+        {
+            [DebuggerStepThrough] get { return name; }
+        }
+
+        /// <summary>
+        ///   Gets the offset from UTC for this period. This includes any daylight savings value.
+        /// </summary>
+        /// <value>The offset from UTC for this period.</value>
+        public Offset Offset
+        {
+            [DebuggerStepThrough] get { return offset; }
+        }
+
+        /// <summary>
+        ///   Gets the daylight savings value for this period.
+        /// </summary>
+        /// <value>The savings value.</value>
+        public Offset Savings
+        {
+            [DebuggerStepThrough] get { return savings; }
+        }
+
+        /// <summary>
+        ///   Gets the first Instant that the Offset applies.
+        /// </summary>
+        /// <value>The first Instant that the Offset applies.</value>
+        public Instant Start
+        {
+            [DebuggerStepThrough] get { return start; }
+        }
         #endregion // Properties
-
-        // TODO: IsoLocalStart and IsoLocalEnd as convenience properties?
-
-        /// <summary>
-        /// Returns the start time of the interval in the given calendar.
-        /// </summary>
-        /// <param name="calendar">The calendar system to represent the start in</param>
-        /// <returns>The local date and time of the start point of the interval</returns>
-        public LocalDateTime GetLocalStart(CalendarSystem calendar)
-        {
-            return new LocalDateTime(LocalStart, calendar);
-        }
-
-        /// <summary>
-        /// Returns the end time of the interval in the given calendar.
-        /// </summary>
-        /// <param name="calendar">The calendar system to represent the end in</param>
-        /// <returns>The local date and time of the end point of the interval</returns>
-        public LocalDateTime GetLocalEnd(CalendarSystem calendar)
-        {
-            return new LocalDateTime(LocalEnd, calendar);
-        }
 
         #region Contains
         /// <summary>
-        /// Determines whether this period contains the given Instant in its range.
+        ///   Determines whether this period contains the given Instant in its range.
         /// </summary>
-        /// <param name="instant">The instant to test.</param>
+        /// <param name = "instant">The instant to test.</param>
         /// <returns>
-        /// <c>true</c> if this period contains the given Instant in its range; otherwise, <c>false</c>.
+        ///   <c>true</c> if this period contains the given Instant in its range; otherwise, <c>false</c>.
         /// </returns>
+        [DebuggerStepThrough]
         public bool Contains(Instant instant)
         {
             return Start <= instant && instant < End;
         }
 
         /// <summary>
-        /// Determines whether this period contains the given LocalInstant in its range.
+        ///   Determines whether this period contains the given LocalInstant in its range.
         /// </summary>
-        /// <param name="localInstant">The local instant to test.</param>
+        /// <param name = "localInstant">The local instant to test.</param>
         /// <returns>
-        /// <c>true</c> if this period contains the given LocalInstant in its range; otherwise, <c>false</c>.
+        ///   <c>true</c> if this period contains the given LocalInstant in its range; otherwise, <c>false</c>.
         /// </returns>
+        [DebuggerStepThrough]
         internal bool Contains(LocalInstant localInstant)
         {
             return LocalStart <= localInstant && localInstant < LocalEnd;
@@ -197,13 +209,14 @@ namespace NodaTime.TimeZones
 
         #region IEquatable<ZoneInterval> Members
         /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
+        ///   Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        ///   true if the current object is equal to the <paramref name = "other" /> parameter; otherwise, false.
         /// </returns>
-        /// <param name="other">An object to compare with this object.
-        ///                 </param>
+        /// <param name = "other">An object to compare with this object.
+        /// </param>
+        [DebuggerStepThrough]
         public bool Equals(ZoneInterval other)
         {
             if (ReferenceEquals(null, other))
@@ -220,36 +233,25 @@ namespace NodaTime.TimeZones
 
         #region object Overrides
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        ///   Determines whether the specified <see cref = "T:System.Object" /> is equal to the current <see cref = "T:System.Object" />.
         /// </summary>
         /// <returns>
-        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+        ///   <c>true</c> if the specified <see cref = "T:System.Object" /> is equal to the current <see cref = "T:System.Object" />; otherwise, <c>false</c>.
         /// </returns>
-        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. 
-        ///                 </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.
-        ///                 </exception><filterpriority>2</filterpriority>
+        /// <param name = "obj">The <see cref = "T:System.Object" /> to compare with the current <see cref = "T:System.Object" />.</param>
+        /// <exception cref = "T:System.NullReferenceException">The <paramref name = "obj" /> parameter is null.</exception>
+        /// <filterpriority>2</filterpriority>
+        [DebuggerStepThrough]
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if (obj.GetType() != typeof(ZoneInterval))
-            {
-                return false;
-            }
-            return Equals((ZoneInterval)obj);
+            return Equals(obj as ZoneInterval);
         }
 
         /// <summary>
-        /// Serves as a hash function for a particular type. 
+        ///   Serves as a hash function for a particular type.
         /// </summary>
         /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
+        ///   A hash code for the current <see cref = "T:System.Object" />.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
@@ -264,10 +266,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        ///   Returns a <see cref = "System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        ///   A <see cref = "System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -288,22 +290,24 @@ namespace NodaTime.TimeZones
 
         #region operators
         /// <summary>
-        /// Implements the operator ==.
+        ///   Implements the operator ==.
         /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
+        /// <param name = "left">The left.</param>
+        /// <param name = "right">The right.</param>
         /// <returns>The result of the operator.</returns>
+        [DebuggerStepThrough]
         public static bool operator ==(ZoneInterval left, ZoneInterval right)
         {
             return Equals(left, right);
         }
 
         /// <summary>
-        /// Implements the operator !=.
+        ///   Implements the operator !=.
         /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
+        /// <param name = "left">The left.</param>
+        /// <param name = "right">The right.</param>
         /// <returns>The result of the operator.</returns>
+        [DebuggerStepThrough]
         public static bool operator !=(ZoneInterval left, ZoneInterval right)
         {
             return !Equals(left, right);
@@ -312,26 +316,9 @@ namespace NodaTime.TimeZones
 
         #region I/O
         /// <summary>
-        /// Writes the specified writer.
+        ///   Reads the specified reader.
         /// </summary>
-        /// <param name="writer">The writer.</param>
-        internal void Write(DateTimeZoneWriter writer)
-        {
-            if (writer == null)
-            {
-                throw new ArgumentNullException("writer");
-            }
-            writer.WriteString(Name);
-            writer.WriteInstant(Start);
-            writer.WriteInstant(End);
-            writer.WriteOffset(Offset);
-            writer.WriteOffset(Savings);
-        }
-
-        /// <summary>
-        /// Reads the specified reader.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
+        /// <param name = "reader">The reader.</param>
         /// <returns></returns>
         internal static ZoneInterval Read(DateTimeZoneReader reader)
         {
@@ -345,6 +332,23 @@ namespace NodaTime.TimeZones
             var offset = reader.ReadOffset();
             var savings = reader.ReadOffset();
             return new ZoneInterval(name, start, end, offset, savings);
+        }
+
+        /// <summary>
+        ///   Writes the specified writer.
+        /// </summary>
+        /// <param name = "writer">The writer.</param>
+        internal void Write(DateTimeZoneWriter writer)
+        {
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
+            writer.WriteString(Name);
+            writer.WriteInstant(Start);
+            writer.WriteInstant(End);
+            writer.WriteOffset(Offset);
+            writer.WriteOffset(Savings);
         }
         #endregion // I/O
     }

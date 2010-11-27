@@ -148,7 +148,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="startTicks">The start ticks.</param>
         /// <param name="endTicks">The end ticks.</param>
-        public Duration(long startTicks, long endTicks) : this(endTicks - startTicks)
+        public Duration(long startTicks, long endTicks)
+            : this(endTicks - startTicks)
         {
         }
 
@@ -159,7 +160,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="start">The start <see cref="Instant"/> value.</param>
         /// <param name="end">The end <see cref="Instant"/> value.</param>
-        public Duration(Instant start, Instant end) : this(end.Ticks - start.Ticks)
+        public Duration(Instant start, Instant end)
+            : this(end.Ticks - start.Ticks)
         {
         }
 
@@ -168,7 +170,8 @@ namespace NodaTime
         /// given <see cref="Interval"/> object.
         /// </summary>
         /// <param name="interval">The interval.</param>
-        public Duration(Interval interval) : this(interval.Duration.Ticks)
+        public Duration(Interval interval)
+            : this(interval.Duration.Ticks)
         {
         }
         #endregion
@@ -228,11 +231,11 @@ namespace NodaTime
             long seconds = Ticks / NodaConstants.TicksPerSecond;
             writer.Write(seconds);
 
-            int ticks = (int)Math.Abs(Ticks % NodaConstants.TicksPerSecond);
-            if (ticks > 0)
+            int ticksValue = (int)Math.Abs(Ticks % NodaConstants.TicksPerSecond);
+            if (ticksValue > 0)
             {
                 writer.Write(".");
-                FormatUtils.WritePaddedInteger(writer, ticks, 7);
+                FormatUtils.WritePaddedInteger(writer, ticksValue, 7);
             }
 
             writer.Write("S");
@@ -836,7 +839,7 @@ namespace NodaTime
                 }
             }
 
-            long seconds = 0;
+            long seconds;
             int ticks = 0;
             if (dot > 0)
             {
@@ -872,10 +875,7 @@ namespace NodaTime
             {
                 return result;
             }
-            else
-            {
-                throw new FormatException("Invalid format: \"" + value + '"');
-            }
+            throw new FormatException("Invalid format: \"" + value + '"');
         }
     }
 }

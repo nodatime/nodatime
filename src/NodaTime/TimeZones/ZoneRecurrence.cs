@@ -112,11 +112,7 @@ namespace NodaTime.TimeZones
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(ZoneRecurrence left, ZoneRecurrence right)
         {
-            if (ReferenceEquals(null, left))
-            {
-                return ReferenceEquals(null, right);
-            }
-            return left.Equals(right);
+            return ReferenceEquals(null, left) ? ReferenceEquals(null, right) : left.Equals(right);
         }
 
         /// <summary>
@@ -228,7 +224,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes this object to the given <see cref="DateTimeZoneWriter"/>.
+        /// Writes this object to the given <see cref="IDateTimeZoneWriter"/>.
         /// </summary>
         /// <param name="writer">Where to send the output.</param>
         internal void Write(DateTimeZoneWriter writer)

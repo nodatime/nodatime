@@ -307,12 +307,7 @@ namespace NodaTime.TimeZones
             // Check if a simpler zone implementation can be returned.
             if (transitions.Count == 0)
             {
-                if (tailZone != null)
-                {
-                    // This shouldn't happen, but handle just in case.
-                    return tailZone;
-                }
-                return new FixedDateTimeZone(zoneId, Offset.Zero);
+                return tailZone ?? new FixedDateTimeZone(zoneId, Offset.Zero);
             }
             if (transitions.Count == 1 && tailZone == null)
             {
@@ -325,11 +320,7 @@ namespace NodaTime.TimeZones
             }
             var precalcedEnd = nextTransition != null ? nextTransition.Instant : Instant.MaxValue;
             var zone = new PrecalculatedDateTimeZone(zoneId, transitions, precalcedEnd, tailZone);
-            if (zone.IsCachable())
-            {
-                return CachedDateTimeZone.ForZone(zone);
-            }
-            return zone;
+            return zone.IsCachable() ? CachedDateTimeZone.ForZone(zone) : zone;
         }
 
         /// <summary>

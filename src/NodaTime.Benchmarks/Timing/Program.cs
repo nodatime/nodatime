@@ -34,7 +34,7 @@ namespace NodaTime.Benchmarks.Timing
             BenchmarkOptions options = BenchmarkOptions.FromCommandLine(args);
 
             var types =
-                typeof(Program).Assembly.GetTypes().OrderBy(type => GetTypeDisplayName(type)).Where(type => type.GetMethods(AllInstance).Any(IsBenchmark));
+                typeof(Program).Assembly.GetTypes().OrderBy(GetTypeDisplayName).Where(type => type.GetMethods(AllInstance).Any(IsBenchmark));
 
             var results = new List<BenchmarkResult>();
             foreach (Type type in types)
@@ -47,10 +47,10 @@ namespace NodaTime.Benchmarks.Timing
                 var ctor = type.GetConstructor(Type.EmptyTypes);
                 if (ctor == null)
                 {
-                    Console.WriteLine("Ignoring {0}: no public parameterless constructor", type.Name);
+                    Console.WriteLine(@"Ignoring {0}: no public parameterless constructor", type.Name);
                     continue;
                 }
-                Console.WriteLine("Running benchmarks in {0}", GetTypeDisplayName(type));
+                Console.WriteLine(@"Running benchmarks in {0}", GetTypeDisplayName(type));
                 object instance = ctor.Invoke(null);
                 foreach (var method in type.GetMethods(AllInstance).Where(IsBenchmark))
                 {
@@ -61,11 +61,11 @@ namespace NodaTime.Benchmarks.Timing
 
                     if (method.GetParameters().Length != 0)
                     {
-                        Console.WriteLine("Ignoring {0}: method has parameters", method.Name);
+                        Console.WriteLine(@"Ignoring {0}: method has parameters", method.Name);
                         continue;
                     }
                     BenchmarkResult result = RunBenchmark(method, instance, options);
-                    Console.WriteLine("  " + result.ToString(options));
+                    Console.WriteLine(@"  " + result.ToString(options));
                     results.Add(result);
                 }
             }
@@ -78,7 +78,7 @@ namespace NodaTime.Benchmarks.Timing
 
         private static BenchmarkResult RunBenchmark(MethodInfo method, object instance, BenchmarkOptions options)
         {
-            Action action = (Action)Delegate.CreateDelegate(typeof(Action), instance, method);
+            var action = (Action)Delegate.CreateDelegate(typeof(Action), instance, method);
             // Start small, double until we've hit our warm-up time
             int iterations = 100;
             while (true)

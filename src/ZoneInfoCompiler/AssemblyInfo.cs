@@ -21,24 +21,104 @@ using System.Reflection;
 namespace NodaTime.ZoneInfoCompiler
 {
     /// <summary>
-    /// Helper methods to get various Assembly information.
+    ///   Helper methods to get various Assembly information.
     /// </summary>
     public static class AssemblyInfo
     {
         /// <summary>
-        /// Gets the main assembly's title.
+        ///   Gets the main assembly's company name.
+        /// </summary>
+        public static string Company
+        {
+            get
+            {
+                var program = Assembly.GetEntryAssembly();
+                if (program != null)
+                {
+                    var attributes = program.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+                    if (attributes.Length > 0)
+                    {
+                        return ((AssemblyCompanyAttribute)attributes[0]).Company;
+                    }
+                }
+                return "Company";
+            }
+        }
+
+        /// <summary>
+        ///   Gets the main assembly's copyright.
+        /// </summary>
+        public static string Copyright
+        {
+            get
+            {
+                var program = Assembly.GetEntryAssembly();
+                if (program != null)
+                {
+                    var attributes = program.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+                    if (attributes.Length > 0)
+                    {
+                        return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
+                    }
+                }
+                return "Copyright";
+            }
+        }
+
+        /// <summary>
+        ///   Gets the main assembly's description.
+        /// </summary>
+        public static string Description
+        {
+            get
+            {
+                var program = Assembly.GetEntryAssembly();
+                if (program != null)
+                {
+                    var attributes = program.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+                    if (attributes.Length > 0)
+                    {
+                        return ((AssemblyDescriptionAttribute)attributes[0]).Description;
+                    }
+                }
+                return "Description";
+            }
+        }
+
+        /// <summary>
+        ///   Gets the main assembly's product name.
+        /// </summary>
+        public static string Product
+        {
+            get
+            {
+                var program = Assembly.GetEntryAssembly();
+                if (program != null)
+                {
+                    var attributes = program.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+                    if (attributes.Length > 0)
+                    {
+                        return ((AssemblyProductAttribute)attributes[0]).Product;
+                    }
+                }
+                return "Product";
+            }
+        }
+
+        /// <summary>
+        ///   Gets the main assembly's title.
         /// </summary>
         public static string Title
         {
             get
             {
-                Assembly program = Assembly.GetEntryAssembly();
+                var program = Assembly.GetEntryAssembly();
                 if (program != null)
                 {
-                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+                    var attributes = program.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
                     if (attributes.Length > 0)
                     {
-                        AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
+                        var titleAttribute = (AssemblyTitleAttribute)attributes[0];
                         if (!string.IsNullOrEmpty(titleAttribute.Title))
                         {
                             return titleAttribute.Title;
@@ -51,98 +131,14 @@ namespace NodaTime.ZoneInfoCompiler
         }
 
         /// <summary>
-        /// Gets the main assembly's version.
+        ///   Gets the main assembly's version.
         /// </summary>
         public static string Version
         {
             get
             {
-                Assembly program = Assembly.GetEntryAssembly();
-                if (program != null)
-                {
-                    return program.GetName().Version.ToString();
-                }
-                return "0.0.0.1";
-            }
-        }
-
-        /// <summary>
-        /// Gets the main assembly's description.
-        /// </summary>
-        public static string Description
-        {
-            get
-            {
-                Assembly program = Assembly.GetEntryAssembly();
-                if (program != null)
-                {
-                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
-                    if (attributes.Length > 0)
-                    {
-                        return ((AssemblyDescriptionAttribute)attributes[0]).Description;
-                    }
-                }
-                return "Description";
-            }
-        }
-
-        /// <summary>
-        /// Gets the main assembly's product name.
-        /// </summary>
-        public static string Product
-        {
-            get
-            {
-                Assembly program = Assembly.GetEntryAssembly();
-                if (program != null)
-                {
-                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-                    if (attributes.Length > 0)
-                    {
-                        return ((AssemblyProductAttribute)attributes[0]).Product;
-                    }
-                }
-                return "Product";
-            }
-        }
-
-        /// <summary>
-        /// Gets the main assembly's copyright.
-        /// </summary>
-        public static string Copyright
-        {
-            get
-            {
-                Assembly program = Assembly.GetEntryAssembly();
-                if (program != null)
-                {
-                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-                    if (attributes.Length > 0)
-                    {
-                        return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
-                    }
-                }
-                return "Copyright";
-            }
-        }
-
-        /// <summary>
-        /// Gets the main assembly's company name.
-        /// </summary>
-        public static string Company
-        {
-            get
-            {
-                Assembly program = Assembly.GetEntryAssembly();
-                if (program != null)
-                {
-                    object[] attributes = program.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
-                    if (attributes.Length > 0)
-                    {
-                        return ((AssemblyCompanyAttribute)attributes[0]).Company;
-                    }
-                }
-                return "Company";
+                var program = Assembly.GetEntryAssembly();
+                return program != null ? program.GetName().Version.ToString() : "0.0.0.1";
             }
         }
     }

@@ -21,30 +21,31 @@ using NodaTime.ZoneInfoCompiler;
 namespace ZoneInfoCompiler.Test
 {
     /// <summary>
-    /// 
+    ///   Provides an implementation of <see cref = "ILog" /> that adds the messages to a
+    ///   buffer.
     /// </summary>
     internal class BufferLog : LogBase
     {
-        internal IList<string> Lines { get; private set; }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="BufferLog"/> class.
+        ///   Initializes a new instance of the <see cref = "BufferLog" /> class.
         /// </summary>
         internal BufferLog()
         {
             Lines = new List<string>();
         }
 
+        internal IList<string> Lines { get; private set; }
+
         /// <summary>
-        /// Called to actually log the message to where ever the logger sends its
-        /// output. The destination can be different based on the type and different
-        /// loggers may not send all messages to the destination.
+        ///   Called to actually log the message to where ever the logger sends its
+        ///   output. The destination can be different based on the type and different
+        ///   loggers may not send all messages to the destination.
         /// </summary>
-        /// <param name="type">The type of log message.</param>
-        /// <param name="message">The message to log.</param>
+        /// <param name = "type">The type of log message.</param>
+        /// <param name = "message">The message to log.</param>
         protected override void LogMessage(LogType type, string message)
         {
-            Lines.Add(message);
+            Lines.Add(type + " " + message);
         }
     }
 }

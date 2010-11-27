@@ -29,29 +29,31 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         private readonly ILog log;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WindowsMapperCompiler"/> class.
+        ///   Initializes a new instance of the <see cref = "WindowsMapperCompiler" /> class.
         /// </summary>
-        /// <param name="log">The log to write message to.</param>
+        /// <param name = "log">The log to write message to.</param>
         public WindowsMapperCompiler(ILog log)
         {
             this.log = log;
         }
 
         /// <summary>
-        /// Executes the specified arguments.
+        ///   Executes the specified arguments.
         /// </summary>
-        /// <param name="arguments">The arguments.</param>
+        /// <param name = "arguments">The arguments.</param>
         /// <returns></returns>
         internal int Execute(string[] arguments)
         {
             var options = new WindowsMapperCompilerOptions();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(log.InfoWriter));
-            if (!parser.ParseArguments(arguments, options))
-            {
-                return 1;
-            }
+            return parser.ParseArguments(arguments, options) ? Execute(options) : 1;
+        }
 
-            FileInfo inputFile = new FileInfo(options.SourceFileName);
+        public int Execute(WindowsMapperCompilerOptions options)
+        {
+            log.Info("Starting compilation of {0}", options.SourceFileName);
+            DateTimeZones.SetUtcOnly();
+            var inputFile = new FileInfo(options.SourceFileName);
             if (!inputFile.Exists)
             {
                 log.Error("Source file {0} does not exist", inputFile.FullName);
@@ -60,16 +62,18 @@ namespace NodaTime.ZoneInfoCompiler.winmap
             var mappings = ReadInput(inputFile);
             using (var output = new ResourceOutput(WindowsToPosixResource.WindowToPosixMapBase, options.OutputType))
             {
+                log.Info("Compiling to {0}", output.OutputFileName);
                 output.WriteDictionary(WindowsToPosixResource.WindowToPosixMapKey, mappings);
             }
+            log.Info("Finished compiling.", options.SourceFileName);
             return 0;
         }
 
         /// <summary>
-        /// Reads the input XML file for the windows mappings.
+        ///   Reads the input XML file for the windows mappings.
         /// </summary>
-        /// <param name="inputFile">The input file.</param>
-        /// <returns>An <see cref="IDictionary"/> of Windows time zone names to POSIX names.</returns>
+        /// <param name = "inputFile">The input file.</param>
+        /// <returns>An <see cref = "IDictionary{TKey,TValue}" /> of Windows time zone names to POSIX names.</returns>
         private static IDictionary<string, string> ReadInput(FileInfo inputFile)
         {
             var mappings = new Dictionary<string, string>();
@@ -87,8 +91,8 @@ namespace NodaTime.ZoneInfoCompiler.winmap
                     while (nodes.MoveNext())
                     {
                         var node = nodes.Current;
-                        string windowsName = node.GetAttribute("other", "");
-                        string posixName = node.GetAttribute("type", "");
+                        var windowsName = node.GetAttribute("other", "");
+                        var posixName = node.GetAttribute("type", "");
                         mappings.Add(windowsName, posixName);
                     }
                 }
