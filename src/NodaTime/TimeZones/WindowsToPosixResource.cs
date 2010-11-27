@@ -27,7 +27,7 @@ namespace NodaTime.TimeZones
     /// Provides a mapping between the time zone ids used by Noda Time (which are the POSIX names)
     /// and the names used by Microsoft Windows.
     /// </summary>
-    public static class WindowsToPosixResource
+    internal static class WindowsToPosixResource
     {
         public const string WindowToPosixMapBase = "winmap";
         public const string WindowToPosixMapKey = "WindowsToPosix";

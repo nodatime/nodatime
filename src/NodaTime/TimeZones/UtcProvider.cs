@@ -26,7 +26,7 @@ namespace NodaTime.TimeZones
     /// <remarks>
     /// Original name: UTCProvider
     /// </remarks>
-    public sealed class UtcProvider : IDateTimeZoneProvider
+    internal sealed class UtcProvider : IDateTimeZoneProvider
     {
         private static readonly string[] UtcIds = { DateTimeZone.UtcId };
 
