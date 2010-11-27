@@ -15,10 +15,10 @@ namespace NodaTime.Test
         public void IterateOverIds()
         {
             // According to bug, this would go bang
-            int count = DateTimeZones.Ids.Count();
+            int count = DateTimeZone.Ids.Count();
 
             Assert.IsTrue(count > 1);
-            int utcCount = DateTimeZones.Ids.Count(id => id == DateTimeZone.UtcId);
+            int utcCount = DateTimeZone.Ids.Count(id => id == DateTimeZone.UtcId);
             Assert.AreEqual(1, utcCount);
         }
     }

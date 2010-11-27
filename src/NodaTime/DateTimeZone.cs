@@ -16,65 +16,144 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using NodaTime.TimeZones;
 
 namespace NodaTime
 {
     /// <summary>
-    /// Interface describing a time zone.
+    ///   Represents a time zone.
     /// </summary>
     /// <remarks>
-    /// Time zones primarily encapsulate two facts: and offset from UTC and a set of rules on how
-    /// the values are adjusted.
+    ///   Time zones primarily encapsulate two facts: and offset from UTC and a set of rules on how
+    ///   the values are adjusted.
     /// </remarks>
     public abstract class DateTimeZone
     {
+        /// <summary>
+        ///   This is the ID of the UTC (Coordinated Universal Time) time zone.
+        /// </summary>
+        public const string UtcId = "UTC";
+
+        public static readonly DateTimeZoneResourceProvider DefaultDateTimeZoneProvider = new DateTimeZoneResourceProvider("NodaTime.TimeZones.Tzdb");
+
+        private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
+
+        private static TimeZoneCache cache = new TimeZoneCache(false);
+
         private readonly string id;
         private readonly bool isFixed;
 
         /// <summary>
-        /// This is the ID of the UTC (Coordinated Univeral Time) time zone.
+        ///   Gets the UTC (Coordinated Universal Time) time zone.
         /// </summary>
-        public const string UtcId = "UTC";
-
-        private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
-
-        /// <summary>
-        /// Gets the UTC (Coordinated Univeral Time) time zone.
-        /// </summary>
-        /// <value>The UTC <see cref="DateTimeZone"/>.</value>
+        /// <value>The UTC <see cref = "T:NodaTime.DateTimeZone" />.</value>
         public static DateTimeZone Utc { get { return UtcZone; } }
 
         /// <summary>
-        /// Gets the system default time zone which can only be changed by the system.
+        ///   Gets the system default time zone which can only be changed by the system.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// The time zones defined in the operating system are different than the ones defines in
-        /// this library so a mapping will occur. If an exact mapping can be made then that will be
-        /// used otherwise UTC will be used.
-        /// </para>
+        ///   <para>
+        ///     The time zones defined in the operating system are different than the ones defines in
+        ///     this library so a mapping will occur. If an exact mapping can be made then that will be
+        ///     used otherwise UTC will be used.
+        ///   </para>
         /// </remarks>
-        /// <value>The system default <see cref="DateTimeZone"/>. this will never be <c>null</c>.</value>
+        /// <value>The system default <see cref = "T:NodaTime.DateTimeZone" /> this will never be <c>null</c>.</value>
         public static DateTimeZone SystemDefault
         {
             get
             {
-                var systemName = TimeZone.CurrentTimeZone.StandardName;
-                var timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName);
-                if (timeZoneId == null)
-                {
-                    timeZoneId = UtcId;
-                }
-                return DateTimeZones.ForId(timeZoneId) ?? Utc;
+                string systemName = TimeZone.CurrentTimeZone.StandardName;
+                string timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName) ?? UtcId;
+                return ForId(timeZoneId);
             }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeZone"/> class.
+        ///   Gets or sets the current time zone.
         /// </summary>
-        /// <param name="id">The unique id of this time zone.</param>
-        /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
+        /// <remarks>
+        ///   This is the time zone that is used whenever a time zone is not given to a method. It can
+        ///   be set to any valid time zone. Setting it to <c>null</c> causes the
+        ///   <see cref = "P:NodaTime.DateTimeZone.SystemDefault" /> time zone to be used.
+        /// </remarks>
+        /// <value>The current <see cref = "T:NodaTime.DateTimeZone" />. This will never be <c>null</c>.</value>
+        public static DateTimeZone Current { get { return cache.Current; } set { cache.Current = value; } }
+
+        /// <summary>
+        ///   Returns the time zone with the given id.
+        /// </summary>
+        /// <param name = "id">The time zone id to find.</param>
+        /// <returns>The <see cref = "DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
+        public static DateTimeZone ForId(string id)
+        {
+            return cache.ForId(id);
+        }
+
+        /// <summary>
+        ///   Gets the complete list of valid time zone ids provided by all of the registered
+        ///   providers. This list will be sorted in lexigraphical order by the id name.
+        /// </summary>
+        /// <value>The <see cref = "IEnumerable{T}" /> of string ids.</value>
+        public static IEnumerable<string> Ids { get { return cache.Ids; } }
+
+        /// <summary>
+        ///   Adds the given time zone provider to the front of the provider list.
+        /// </summary>
+        /// <remarks>
+        ///   Because this adds the new provider to the from of the list, it will be checked first for
+        ///   time zone definitions and therefore can override the default system definitions. This
+        ///   allows for adding new or replacing existing time zones without updating the system. If
+        ///   the provider is already on the list nothing changes.
+        /// </remarks>
+        /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to add.</param>
+        public static void AddProvider(IDateTimeZoneProvider provider)
+        {
+            cache.AddProvider(provider);
+        }
+
+        /// <summary>
+        ///   Removes the given time zone provider from the provider list.
+        /// </summary>
+        /// <remarks>
+        ///   If the provider is not on the list nothing changes.
+        /// </remarks>
+        /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to remove.</param>
+        /// <returns><c>true</c> if the provider was removed.</returns>
+        public static void RemoveProvider(IDateTimeZoneProvider provider)
+        {
+            cache.RemoveProvider(provider);
+        }
+
+        /// <summary>
+        ///   Sets the UTC time zone only mode.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     If the mode is set to <c>true</c> then only the UTC time zone provider will be available
+        ///     and only the UTC time zone will be accessible. This is mainly for use during the
+        ///     building of the system when there is no existing time zone database.
+        ///   </para>
+        ///   <para>
+        ///     When this method is called all existing providers are removed from the list. Then the UTC
+        ///     provideer will be added and if the <paramref name = "utcOnlyFlag" /> is <c>false</c> then default
+        ///     provider. This means that any providers added by user code will be removed. The
+        ///     <see cref = "P:NodaTime.DateTimeZone.Current" /> setting will also be lost.
+        ///   </para>
+        /// </remarks>
+        /// <param name = "utcOnlyFlag">if set to <c>true</c> then only the UTC provider will be available.</param>
+        internal static void SetUtcOnly(bool utcOnlyFlag)
+        {
+            cache = new TimeZoneCache(utcOnlyFlag);
+        }
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "T:NodaTime.DateTimeZone" /> class.
+        /// </summary>
+        /// <param name = "id">The unique id of this time zone.</param>
+        /// <param name = "isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
         protected DateTimeZone(string id, bool isFixed)
         {
             this.id = id;
@@ -82,7 +161,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a new chronology based on this time zone, in the ISO calendar system.
+        ///   Returns a new chronology based on this time zone, in the ISO calendar system.
         /// </summary>
         internal Chronology ToIsoChronology()
         {
@@ -90,98 +169,251 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// The database ID for the time zone.
+        ///   The database ID for the time zone.
         /// </summary>
+        /// <remarks>
+        ///   This must be unique across all time zone providers.
+        /// </remarks>
         public string Id { get { return id; } }
 
         /// <summary>
-        /// Indicates whether the time zone is fixed, i.e. contains no transitions.
+        ///   Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
+        /// <remarks>
+        ///   This is used as an optimization. If the time zone has not transitions but returns <c>true</c>
+        ///   for this then the behavior will be correct but the system will have to do extra work. However
+        ///   if the time zone has transitions and this returns <c>false</c> then the transitions will never
+        ///   be examined.
+        /// </remarks>
         public bool IsFixed { get { return isFixed; } }
 
         /// <summary>
-        /// Returns the offset from UTC, where a positive duration indicates that local time is
-        /// later than UTC. In other words, local time = UTC + offset.
+        ///   Returns the offset from UTC, where a positive duration indicates that local time is
+        ///   later than UTC. In other words, local time = UTC + offset.
         /// </summary>
-        /// <param name="instant">The instant for which to calculate the offset.</param>
+        /// <param name = "instant">The instant for which to calculate the offset.</param>
         /// <returns>
-        /// The offset from UTC at the specified instant.
+        ///   The offset from UTC at the specified instant.
         /// </returns>
         public virtual Offset GetOffsetFromUtc(Instant instant)
         {
-            var period = GetZoneInterval(instant);
-            return period.Offset;
+            ZoneInterval interval = GetZoneInterval(instant);
+            return interval.Offset;
         }
 
         /// <summary>
-        /// Gets the offset to subtract from a local time to get the UTC time.
+        ///   Gets the zone interval for the given instant. Null is returned if no interval is
+        ///   defined by the time zone for the given instant.
         /// </summary>
-        /// <param name="localInstant">The local instant to get the offset of.</param>
-        /// <returns>The offset to subtract from the specified local time to obtain a UTC instant.</returns>
-        /// <remarks>
-        /// Around a DST transition, local times behave peculiarly. When the time springs forward,
-        /// (e.g. 12:59 to 02:00) some times never occur; when the time falls back (e.g. 1:59 to
-        /// 01:00) some times occur twice. This method always returns a smaller offset when there is
-        /// ambiguity, i.e. it treats the local time as the later of the possibilities.
-        /// </remarks>
-        /// <exception cref="SkippedTimeException">The local instant doesn't occur in this time zone
-        /// due to zone transitions.</exception>
-        internal virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
-        {
-            var period = GetZoneInterval(localInstant);
-            return period.Offset;
-        }
-
-        /// <summary>
-        /// Gets the zone interval for the given instant. Null is returned if no interval is
-        /// defined by the time zone for the given instant.
-        /// </summary>
-        /// <param name="instant">The Instant to query.</param>
-        /// <returns>The defined <see cref="ZoneInterval"/> or <c>null</c>.</returns>
+        /// <param name = "instant">The <see cref = "T:NodaTime.Instant" /> to query.</param>
+        /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" /> or <c>null</c>.</returns>
         public abstract ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
-        /// Gets the zone interval for the given local instant. Null is returned if no interval is
-        /// defined by the time zone for the given local instant.
-        /// </summary>
-        /// <param name="localInstant">The <see cref="LocalInstant"/> to query.</param>
-        /// <returns>The defined <see cref="ZoneInterval"/> or <c>null</c>.</returns>
-        internal abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
-
-        /// <summary>
-        /// Returns the name associated with the given instant.
+        ///   Returns the name associated with the given instant.
         /// </summary>
         /// <remarks>
-        /// For a fixed time zone this will always return the same value but for a time zone that
-        /// honors daylight savings this will return a different name depending on the time of year
-        /// it represents. For example in the Pacific Standard Time (UTC-8) it will return either
-        /// PST or PDT depending on the time of year.
+        ///   For a fixed time zone this will always return the same value but for a time zone that
+        ///   honors daylight savings this will return a different name depending on the time of year
+        ///   it represents. For example in the Pacific Standard Time (UTC-8) it will return either
+        ///   PST or PDT depending on the time of year.
         /// </remarks>
-        /// <param name="instant">The instant to get the name for.</param>
+        /// <param name = "instant">The <see cref = "T:NodaTime.Instant" /> to get the name for.</param>
         /// <returns>The name of this time. Never returns <c>null</c>.</returns>
         public virtual string GetName(Instant instant)
         {
-            var period = GetZoneInterval(instant);
-            return period.Name;
+            ZoneInterval interval = GetZoneInterval(instant);
+            return interval.Name;
+        }
+
+        #region LocalInstant methods
+        /// <summary>
+        ///   Gets the offset to subtract from a local time to get the UTC time.
+        /// </summary>
+        /// <param name = "localInstant">The <see cref = "T:NodaTime.LocalInstant" /> to get the offset of.</param>
+        /// <returns>The offset to subtract from the specified local time to obtain a UTC instant.</returns>
+        /// <remarks>
+        ///   Around a DST transition, local times behave peculiarly. When the time springs forward,
+        ///   (e.g. 12:59 to 02:00) some times never occur; when the time falls back (e.g. 1:59 to
+        ///   01:00) some times occur twice. This method always returns a smaller offset when there is
+        ///   ambiguity, i.e. it treats the local time as the later of the possibilities.
+        /// </remarks>
+        /// <exception cref = "T:NodaTime.SkippedTimeException">The local instant doesn't occur in this time zone
+        ///   due to zone transitions.</exception>
+        internal virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
+        {
+            ZoneInterval interval = GetZoneInterval(localInstant);
+            return interval.Offset;
         }
 
         /// <summary>
-        /// Writes the time zone to the specified writer.
+        ///   Gets the zone interval for the given local instant. Null is returned if no interval is
+        ///   defined by the time zone for the given local instant.
         /// </summary>
-        /// <param name="writer">The writer to write to.</param>
+        /// <param name = "localInstant">The <see cref = "T:NodaTime.LocalInstant" /> to query.</param>
+        /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" /> or <c>null</c>.</returns>
+        internal abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
+        #endregion LocalInstant methods
+
+        #region I/O
+        /// <summary>
+        ///   Writes the time zone to the specified writer.
+        /// </summary>
+        /// <param name = "writer">The writer to write to.</param>
         internal abstract void Write(DateTimeZoneWriter writer);
+        #endregion I/O
 
         #region Object overrides
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        ///   Returns a <see cref = "T:System.String" /> that represents the current <see cref = "T:System.Object" />.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        ///   A <see cref = "T:System.String" /> that represents the current <see cref = "T:System.Object" />.
         /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             return Id;
         }
         #endregion
+
+        #region Nested type: TimeZoneCache
+        /// <summary>
+        /// Provides a cache for time zone providers and previously looked up time zones. The process of
+        /// loading and crating time zones is potentially long (it could conceivably include network
+        /// requests) so caching them is necessary.
+        /// </summary>
+        private class TimeZoneCache
+        {
+            private readonly SortedDictionary<string, string> idList = new SortedDictionary<string, string>();
+            private readonly LinkedList<IDateTimeZoneProvider> providers = new LinkedList<IDateTimeZoneProvider>();
+            private readonly IDictionary<string, DateTimeZone> timeZoneMap = new Dictionary<string, DateTimeZone>();
+            private DateTimeZone current;
+
+            /// <summary>
+            ///   Initializes a new instance of the <see cref = "T:NodaTime.DateTimeZone.TimeZoneCache" /> class.
+            /// </summary>
+            /// <param name = "isUtcOnly">if set to <c>true</c> only the UTC provider will be available.</param>
+            public TimeZoneCache(bool isUtcOnly)
+            {
+                AddProvider(new UtcProvider());
+                if (!isUtcOnly)
+                {
+                    AddProvider(DefaultDateTimeZoneProvider);
+                }
+            }
+
+            /// <summary>
+            ///   Gets or sets the current time zone.
+            /// </summary>
+            /// <remarks>
+            ///   This is the time zone that is used whenever a time zone is not given to a method. It can
+            ///   be set to any valid time zone. Setting it to <c>null</c> causes the
+            ///   <see cref = "P:NodaTime.DateTimeZone.SystemDefault" /> time zone to be used.
+            /// </remarks>
+            /// <value>The current <see cref = "T:NodaTime.DateTimeZone" />. This will never be <c>null</c>.</value>
+            public DateTimeZone Current { get { return current ?? SystemDefault; } set { current = value; } }
+
+            /// <summary>
+            ///   Gets the complete list of valid time zone ids provided by all of the registered
+            ///   providers. This list will be sorted in lexigraphical order by the id name.
+            /// </summary>
+            /// <value>The <see cref = "IEnumerable{T}" /> of string ids.</value>
+            public IEnumerable<string> Ids
+            {
+                get
+                {
+                    if (idList.Count == 0)
+                    {
+                        idList.Add(UtcId, null);
+                        foreach (var provider in providers)
+                        {
+                            foreach (string id in provider.Ids)
+                            {
+                                if (!idList.ContainsKey(id))
+                                {
+                                    idList.Add(id, null);
+                                }
+                            }
+                        }
+                    }
+                    return idList.Keys;
+                }
+            }
+
+            /// <summary>
+            ///   Adds the given time zone provider to the front of the provider list.
+            /// </summary>
+            /// <remarks>
+            ///   Because this adds the new provider to the from of the list, it will be checked first for
+            ///   time zone definitions and therefore can override the default system definitions. This
+            ///   allows for adding new or replacing existing time zones without updating the system. If
+            ///   the provider is already on the list nothing changes.
+            /// </remarks>
+            /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to add.</param>
+            public void AddProvider(IDateTimeZoneProvider provider)
+            {
+                if (!providers.Contains(provider))
+                {
+                    providers.AddFirst(provider);
+                    ClearCaches();
+                }
+            }
+
+            /// <summary>
+            ///   Removes the given time zone provider from the provider list.
+            /// </summary>
+            /// <remarks>
+            ///   If the provider is not on the list nothing changes.
+            /// </remarks>
+            /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to remove.</param>
+            /// <returns><c>true</c> if the provider was removed.</returns>
+            public bool RemoveProvider(IDateTimeZoneProvider provider)
+            {
+                if (providers.Contains(provider))
+                {
+                    providers.Remove(provider);
+                    ClearCaches();
+                    return true;
+                }
+                return false;
+            }
+
+            /// <summary>
+            ///   Returns the time zone with the given id.
+            /// </summary>
+            /// <param name = "id">The time zone id to find.</param>
+            /// <returns>The <see cref = "DateTimeZone" /> with the given id or UTC if there isn't one defined.</returns>
+            public DateTimeZone ForId(string id)
+            {
+                DateTimeZone result = Utc;
+                if (id != UtcId)
+                {
+                    if (!timeZoneMap.TryGetValue(id, out result))
+                    {
+                        foreach (var provider in providers)
+                        {
+                            result = provider.ForId(id);
+                            if (result != null)
+                            {
+                                break;
+                            }
+                        }
+                        timeZoneMap.Add(id, result);
+                    }
+                }
+                return result ?? Utc;
+            }
+
+            /// <summary>
+            /// Clears the caches.
+            /// </summary>
+            private void ClearCaches()
+            {
+                timeZoneMap.Clear();
+                idList.Clear();
+            }
+        }
+        #endregion Nested type: TimeZoneCache
     }
 }

@@ -58,7 +58,7 @@ namespace NodaTime
             get
             {
                 var rightNow = Clock.Now;
-                var offsetToLocal = DateTimeZones.Current.GetOffsetFromUtc(rightNow);
+                var offsetToLocal = DateTimeZone.Current.GetOffsetFromUtc(rightNow);
                 return Instant.Add(rightNow, offsetToLocal);
             }
         }

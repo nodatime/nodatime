@@ -39,7 +39,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <returns>0 for success, non-0 for error.</returns>
         private static int Main(string[] arguments)
         {
-            DateTimeZones.Current = DateTimeZone.Utc;
+            DateTimeZone.Current = DateTimeZone.Utc;
             int result;
             var log = new ConsoleLog();
             if (arguments.Length < 1)

@@ -29,7 +29,7 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class AlgiersTest
     {
-        private static readonly DateTimeZone Algiers = DateTimeZones.ForId("Africa/Algiers");
+        private static readonly DateTimeZone Algiers = DateTimeZone.ForId("Africa/Algiers");
 
         [Test]
         public void GetPeriod_BeforeLast()

@@ -27,9 +27,9 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class DateTimeZoneBaseTest
     {
-        private static readonly DateTimeZone LosAngeles = DateTimeZones.ForId("America/Los_Angeles");
-        private static readonly DateTimeZone NewZealand = DateTimeZones.ForId("Pacific/Auckland");
-        private static readonly DateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
+        private static readonly DateTimeZone LosAngeles = DateTimeZone.ForId("America/Los_Angeles");
+        private static readonly DateTimeZone NewZealand = DateTimeZone.ForId("Pacific/Auckland");
+        private static readonly DateTimeZone Paris = DateTimeZone.ForId("Europe/Paris");
 
         private static void AssertImpossible(LocalDateTime localTime, DateTimeZone zone)
         {
