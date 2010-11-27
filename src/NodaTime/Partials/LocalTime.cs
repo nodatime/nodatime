@@ -15,10 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
-using NodaTime.Calendars;
-using NodaTime.Fields;
-using NodaTime.TimeZones;
 using NodaTime.Format;
 
 namespace NodaTime.Partials
@@ -31,20 +27,17 @@ namespace NodaTime.Partials
     {
         private readonly LocalInstant localInstant;
 
-        public LocalTime(int hour, int minute, int second)
-            : this(hour, minute, second, 0, 0)
+        public LocalTime(int hour, int minute, int second) : this(hour, minute, second, 0, 0)
         {
         }
 
-        public LocalTime(int hour, int minute, int second, int millisecond)
-            : this(hour, minute, second, millisecond, 0)
+        public LocalTime(int hour, int minute, int second, int millisecond) : this(hour, minute, second, millisecond, 0)
         {
         }
 
         public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
-            localInstant = new LocalDateTime(1970, 1, 1, hour, minute, second, millisecond,
-                tickWithinMillisecond, IsoCalendarSystem.Instance).LocalInstant;
+            localInstant = new LocalDateTime(1970, 1, 1, hour, minute, second, millisecond, tickWithinMillisecond, CalendarSystem.Iso).LocalInstant;
         }
 
         private LocalTime(LocalInstant localInstant)
@@ -59,7 +52,7 @@ namespace NodaTime.Partials
         public int MillisecondOfSecond { get { return LocalDateTime.MillisecondOfSecond; } }
         public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
         public int TickOfMillisecond { get { return LocalDateTime.TickOfMillisecond; } }
-        public long TickOfDay { get { return LocalDateTime.TickOfDay; } } 
+        public long TickOfDay { get { return LocalDateTime.TickOfDay; } }
 
         public LocalDateTime LocalDateTime { get { return new LocalDateTime(localInstant); } }
 
@@ -94,7 +87,7 @@ namespace NodaTime.Partials
         public override string ToString()
         {
             // TODO: Shouldn't need to build a ZonedDateTime!
-            return IsoDateTimeFormats.TimeNoZone.Print(new ZonedDateTime(this.LocalDateTime, DateTimeZones.Utc));
+            return IsoDateTimeFormats.TimeNoZone.Print(new ZonedDateTime(this.LocalDateTime, DateTimeZone.Utc));
         }
 
         public override int GetHashCode()
@@ -110,6 +103,5 @@ namespace NodaTime.Partials
             }
             return this == (LocalTime)obj;
         }
-
     }
 }

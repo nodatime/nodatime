@@ -58,8 +58,7 @@ namespace NodaTime.Test.Format
             Assert.That(writer.ToString(), Is.EqualTo(literalText));
         }
 
-        object[] LiteralParseGoodTestData =
-        {
+        private object[] LiteralParseGoodTestData = {
             new TestCaseData("abc", 0, "abc").SetName("abc -> abc : commom"),
             new TestCaseData("aBc", 0, "abc").SetName("aBc -> abc : case insensitive"),
             new TestCaseData("abc", 0, "ABC").SetName("abc -> ABC : case insensitive"),
@@ -67,6 +66,7 @@ namespace NodaTime.Test.Format
             new TestCaseData("hello", 2, "ll").SetName("hello[2] -> ll: non-zero average position"),
             new TestCaseData("foo", 1, "oo").SetName("foo[2] -> oo: non-zero last position"),
         };
+
         [Test]
         [TestCaseSource("LiteralParseGoodTestData")]
         public void Literal_ParsesString(string text, int position, string value)
@@ -78,13 +78,13 @@ namespace NodaTime.Test.Format
             Assert.That(newPosition, Is.EqualTo(position + value.Length));
         }
 
-        object[] LiteralParseBadTestData =
-        {
+        private object[] LiteralParseBadTestData = {
             new TestCaseData("abc", 0, "def").SetName("abc -> def : non equal string"),
             new TestCaseData("abc", 0, "abd").SetName("abc -> abd : non equal string"),
             new TestCaseData("abc", 0, "zbc").SetName("abc -> zbc : non equal string"),
             new TestCaseData("oops", 4, "s").SetName("oops[4] -> s : position outside of length"),
         };
+
         [Test]
         [TestCaseSource("LiteralParseBadTestData")]
         public void Literal_Fails_ForWrongArguments(string text, int position, string value)

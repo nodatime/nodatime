@@ -27,7 +27,7 @@ namespace NodaTime.TimeZones
     ///   without any compression. Can be used as a base for implementing specific 
     ///   compression writers by overriding the methods for the types to be compressed.
     /// </summary>
-    public class DateTimeZoneWriter : IDateTimeZoneWriter
+    internal class DateTimeZoneWriter
     {
         public const byte FlagTimeZoneCached = 0;
         public const byte FlagTimeZoneDst = 1;
@@ -163,7 +163,7 @@ namespace NodaTime.TimeZones
         ///   Writes the <see cref = "IDateTimeZone" /> value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteTimeZone(IDateTimeZone value)
+        public virtual void WriteTimeZone(DateTimeZone value)
         {
             if (value == null)
             {

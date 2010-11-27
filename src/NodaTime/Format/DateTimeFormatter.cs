@@ -18,8 +18,6 @@
 using System;
 using System.IO;
 using System.Text;
-using NodaTime.Calendars;
-using NodaTime.TimeZones;
 
 namespace NodaTime.Format
 {
@@ -42,13 +40,13 @@ namespace NodaTime.Format
         // Whether the offset is parsed.
         private readonly bool offsetParsed;
         // The calendar system to use as an override.
-        private readonly ICalendarSystem calendarSystem;
+        private readonly CalendarSystem calendarSystem;
         // The zone to use as an override.
-        private readonly IDateTimeZone zone;
+        private readonly DateTimeZone zone;
         // The pivot year to use for two-digit year parsing.
         private readonly int? pivotYear;
 
-        public DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser)
+        internal DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser)
         {
             this.printer = printer;
             this.parser = parser;
@@ -59,8 +57,8 @@ namespace NodaTime.Format
             pivotYear = null;
         }
 
-        private DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser, IFormatProvider locale, bool offsetParsed, ICalendarSystem calendarSystem,
-                                  IDateTimeZone zone, int? pivotYear)
+        private DateTimeFormatter(IDateTimePrinter printer, IDateTimeParser parser, IFormatProvider locale, bool offsetParsed, CalendarSystem calendarSystem,
+                                  DateTimeZone zone, int? pivotYear)
         {
             this.printer = printer;
             this.parser = parser;
@@ -80,7 +78,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the internal printer object that performs the real printing work.
         /// </summary>
-        public IDateTimePrinter Printer { get { return printer; } }
+        internal IDateTimePrinter Printer { get { return printer; } }
 
         /// <summary>
         /// Indicates whether this formatter capable of printing.
@@ -90,7 +88,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the internal parser object that performs the real parsing work.
         /// </summary>
-        public IDateTimeParser Parser { get { return parser; } }
+        internal IDateTimeParser Parser { get { return parser; } }
 
         /// <summary>
         /// Gets the format provider that will be used for printing and parsing.
@@ -151,7 +149,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the calendar system to use as an override.
         /// </summary>
-        public ICalendarSystem Calendar { get { return calendarSystem; } }
+        public CalendarSystem Calendar { get { return calendarSystem; } }
 
         /// <summary>
         /// Returns a new formatter that will use the specified calendar system in
@@ -171,7 +169,7 @@ namespace NodaTime.Format
         /// A null calendar system means no-override.
         /// </para>
         /// </remarks>
-        public DateTimeFormatter WithCalendar(ICalendarSystem newCalendarSystem)
+        public DateTimeFormatter WithCalendar(CalendarSystem newCalendarSystem)
         {
             if (Equals(calendarSystem, newCalendarSystem))
             {
@@ -185,7 +183,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the zone to use as an override.
         /// </summary>
-        public IDateTimeZone Zone { get { return zone; } }
+        public DateTimeZone Zone { get { return zone; } }
 
         /// <summary>
         /// Returns a new formatter that will use the specified zone in preference
@@ -205,7 +203,7 @@ namespace NodaTime.Format
         /// A null zone means of no-override.
         /// </para>
         /// </remarks>
-        public DateTimeFormatter WithZone(IDateTimeZone newZone)
+        public DateTimeFormatter WithZone(DateTimeZone newZone)
         {
             if (zone == newZone)
             {
@@ -286,27 +284,16 @@ namespace NodaTime.Format
         {
             VerifyPrinter();
 
-            ICalendarSystem calendarSystem = SelectCalendarSystem(dateTime);
-            IDateTimeZone zone = SelectZone(dateTime);
+            CalendarSystem calendarSystem = SelectCalendarSystem(dateTime);
+            DateTimeZone zone = SelectZone(dateTime);
 
             var instant = dateTime.ToInstant();
             var timezoneOffset = zone.GetOffsetFromUtc(instant);
-            var adjustedLocalInstant = instant + timezoneOffset;
+            var adjustedLocalInstant = Instant.Add(instant, timezoneOffset);
 
             printer.PrintTo(writer, adjustedLocalInstant, calendarSystem, timezoneOffset, zone, provider);
         }
 
-        public void PrintTo(StringBuilder builder, IPartial partial)
-        {
-            if (partial == null)
-            {
-                throw new ArgumentNullException("partial");
-            }
-
-            VerifyPrinter();
-
-            printer.PrintTo(new StringWriter(builder), partial, provider);
-        }
         #endregion
 
         #region Parsing
@@ -347,7 +334,7 @@ namespace NodaTime.Format
                     //if (offsetParsed && bucket.Chronology.Zone == null)
                     //{
                     //    Offset parsedOffset = bucket.Offset;
-                    //    IDateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+                    //    DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
                     //    chrono = chrono.withZone(parsedZone);
                     //}
                     return new ZonedDateTime(instant, chronology);
@@ -378,24 +365,24 @@ namespace NodaTime.Format
             }
         }
 
-        private ICalendarSystem SelectCalendarSystem(ZonedDateTime dateTime)
+        private CalendarSystem SelectCalendarSystem(ZonedDateTime dateTime)
         {
             return calendarSystem ?? dateTime.Chronology.Calendar;
         }
 
-        private ICalendarSystem SelectCalendarSystem()
+        private CalendarSystem SelectCalendarSystem()
         {
-            return calendarSystem ?? IsoCalendarSystem.Instance;
+            return calendarSystem ?? CalendarSystem.Iso;
         }
 
-        private IDateTimeZone SelectZone(ZonedDateTime dateTime)
+        private DateTimeZone SelectZone(ZonedDateTime dateTime)
         {
             return zone ?? dateTime.Zone;
         }
 
-        private IDateTimeZone SelectZone()
+        private DateTimeZone SelectZone()
         {
-            return zone ?? DateTimeZones.Utc;
+            return zone ?? DateTimeZone.Utc;
         }
     }
 }

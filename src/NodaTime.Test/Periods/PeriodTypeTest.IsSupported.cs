@@ -15,9 +15,9 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.Fields;
 using NodaTime.Periods;
 using NUnit.Framework;
-using NodaTime.Fields;
 
 namespace NodaTime.Test.Periods
 {
@@ -42,6 +42,5 @@ namespace NodaTime.Test.Periods
             Assert.IsTrue(sut.IsSupported(DurationFieldType.Milliseconds));
             Assert.IsFalse(sut.IsSupported(DurationFieldType.Ticks));
         }
-
     }
 }

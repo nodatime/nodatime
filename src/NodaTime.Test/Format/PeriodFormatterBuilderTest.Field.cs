@@ -48,7 +48,8 @@ namespace NodaTime.Test.Format
 
             public PeriodFormatterBuilder.FieldFormatter Build()
             {
-                var fieldFormatter = new PeriodFormatterBuilder.FieldFormatter(MinimumPrintedDigits, PrintZero, MaximumParsedDigits, rejectSignedValues, FieldType, fieldFormatters, Prefix, Suffix);
+                var fieldFormatter = new PeriodFormatterBuilder.FieldFormatter(MinimumPrintedDigits, PrintZero, MaximumParsedDigits, rejectSignedValues,
+                                                                               FieldType, fieldFormatters, Prefix, Suffix);
                 fieldFormatters[(int)FieldType] = fieldFormatter;
                 return fieldFormatter;
             }
@@ -57,7 +58,6 @@ namespace NodaTime.Test.Format
         #region FieldFormatter
 
         #region Print
-
         [Test]
         public void FieldFormatter_PrintsFieldValue()
         {
@@ -69,40 +69,31 @@ namespace NodaTime.Test.Format
 
             Assert.That(writer.ToString(), Is.EqualTo("42"));
         }
-
         #endregion
 
         #region Print:MinimumPrintedDigits
-
-        object[] PrintMinimumDigitsTestData =
-        {
+        private object[] PrintMinimumDigitsTestData = {
             new TestCaseData(5, Period.FromDays(42), "00042").SetName("5;42 => 00042"),
             new TestCaseData(3, Period.FromDays(4256), "4256").SetName("3;4256 => 4256"),
             new TestCaseData(0, Period.FromDays(42), "42").SetName("0;42 => 42(neutral)"),
             new TestCaseData(-2, Period.FromDays(42), "42").SetName("-2;42 => 42(neutral)"),
             new TestCaseData(5, Period.FromDays(-42), "-00042").SetName("5;-42 => -00042"),
-
         };
 
         [Test]
         [TestCaseSource("PrintMinimumDigitsTestData")]
         public void FieldFormatter_PrintsPaddedFieldValue_WithMinimumDigitsSet(int mimimumDigits, Period periodValue, string periodText)
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-                {
-                    MinimumPrintedDigits = mimimumDigits
-                }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { MinimumPrintedDigits = mimimumDigits }.Build();
             var writer = new StringWriter();
 
             fieldFormatter.PrintTo(writer, periodValue, null);
 
             Assert.That(writer.ToString(), Is.EqualTo(periodText));
         }
-
         #endregion
 
         #region Print:Supported/Unsupported field type
-
         [Test]
         public void FieldFormatter_PrintsNothing_IfFieldTypeIsNotSupported()
         {
@@ -119,11 +110,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsValue_IfFieldTypeIsNotSupportedButPrintAlwaysSet()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always,
-            }
-            .Build();
+            var fieldFormatter = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always, }.Build();
             var writer = new StringWriter();
             var period = Years.One;
 
@@ -148,10 +135,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndValueIsZeroAndPrintsNeverSet()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Never
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Never }.Build();
 
             var writer = new StringWriter();
             var period = Days.Zero;
@@ -160,19 +144,13 @@ namespace NodaTime.Test.Format
 
             Assert.That(writer.ToString(), Is.EqualTo(""));
         }
-
         #endregion
 
         #region Print:Prefix/Suffix
-
         [Test]
         public void FieldFormatter_PrintsFieldValueWithPrefix_IfPrefixIsSpecified()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:")
-            }
-            .Build();
+            var fieldFormatter = new FieldFormatterBuilder() { Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:") }.Build();
             var writer = new StringWriter();
             var period = Period.FromDays(42);
 
@@ -184,11 +162,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsFieldValueWithSuffix_IfSuffixIsSpecified()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Suffix = new PeriodFormatterBuilder.SimpleAffix("days")
-            }
-            .Build();
+            var fieldFormatter = new FieldFormatterBuilder() { Suffix = new PeriodFormatterBuilder.SimpleAffix("days") }.Build();
             var writer = new StringWriter();
             var period = Period.FromDays(42);
 
@@ -200,12 +174,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsNothing_IfFieldTypeIsNotSupportedButPrefixAndSuffixExist()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
-                Suffix = new PeriodFormatterBuilder.SimpleAffix("days")
-            }
-            .Build();
+            var fieldFormatter =
+                new FieldFormatterBuilder() { Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"), Suffix = new PeriodFormatterBuilder.SimpleAffix("days") }
+                    .Build();
 
             var writer = new StringWriter();
             var period = Years.One;
@@ -214,18 +185,13 @@ namespace NodaTime.Test.Format
 
             Assert.That(writer.ToString(), Is.EqualTo(""));
         }
-
         #endregion
 
         #region Print:SecondsMilliseconds
-
         [Test]
         public void FieldFormatter_PrintsPaddedCombinedValue_ForSecondsMillisecondsFieldTypeAndMillisecondsIsZero()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = Period.FromSeconds(1).WithMilliseconds(0);
 
@@ -237,10 +203,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsPaddedCombinedValue_ForSecondsMillisecondsFieldTypeAndMillisecondsLessThan1000()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-                {
-                    FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-                }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = Period.FromSeconds(1).WithMilliseconds(2);
 
@@ -252,10 +215,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndMillisecondsGreaterThan1000()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = Period.FromSeconds(1).WithMilliseconds(2345);
 
@@ -267,10 +227,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndNegativeSecondsAndMilliseconds()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = Period.FromSeconds(-1).WithMilliseconds(-2);
 
@@ -282,10 +239,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndNegativeSecondsButPositiveMillisecondsZeroSeconds()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = Period.FromSeconds(-1).WithMilliseconds(2);
 
@@ -297,10 +251,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndNegativeSecondsButPositiveMillisecondsNonZeroSeconds()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = Period.FromSeconds(-7).WithMilliseconds(5);
 
@@ -312,10 +263,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndPositiveSecondsButNegativeMilliseconds()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = Period.FromSeconds(1).WithMilliseconds(-2);
 
@@ -327,10 +275,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndZeroSecondsAndNotZeroMilliseconds()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = Period.FromMilliseconds(12);
 
@@ -342,10 +287,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndUnsupportedSeconds()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = new Period(0, 0, 0, 0, 0, 0, 0, 2345, PeriodType.Milliseconds);
 
@@ -357,10 +299,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndUnsupportedMilliSeconds()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = new Period(0, 0, 0, 0, 0, 0, 6, 0, PeriodType.Seconds);
 
@@ -372,10 +311,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsNothing_ForSecondsMillisecondsFieldTypeAndBothUnsupported()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = Years.Three;
 
@@ -384,14 +320,10 @@ namespace NodaTime.Test.Format
             Assert.That(writer.ToString(), Is.EqualTo(""));
         }
 
-
         [Test]
         public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsFieldTypeAndZeroPeriod()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var writer = new StringWriter();
             var period = Period.Zero;
 
@@ -403,10 +335,8 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsOnlySeconds_ForSecondsMillisecondsOptionalFieldTypeAndMillisecondsIsZero()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMillisecondsOptional
-            }.Build();
+            var fieldFormatter =
+                new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMillisecondsOptional }.Build();
             var writer = new StringWriter();
             var period = Period.FromSeconds(1).WithMilliseconds(0);
 
@@ -418,10 +348,8 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsCombinedValue_ForSecondsMillisecondsOptionalFieldTypeAndMillisecondsIsNotZero()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMillisecondsOptional
-            }.Build();
+            var fieldFormatter =
+                new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMillisecondsOptional }.Build();
             var writer = new StringWriter();
             var period = Period.FromSeconds(1).WithMilliseconds(234);
 
@@ -429,18 +357,13 @@ namespace NodaTime.Test.Format
 
             Assert.That(writer.ToString(), Is.EqualTo("1.234"));
         }
-
         #endregion
 
         #region Print:RarelyLast
-
         [Test]
         public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyLastAndNoOtherFormattersExists()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast }.Build();
 
             var writer = new StringWriter();
             var period = Days.Zero;
@@ -453,10 +376,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyLastAndOtherFormattersExistsButNotSupported()
         {
-            var builder = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast
-            };
+            var builder = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast };
 
             var fieldFormatter = builder.Build();
             builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Hours;
@@ -473,10 +393,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyLastAndOtherFormattersExistsAndIsSupportedAndGreaterByType()
         {
-            var builder = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast
-            };
+            var builder = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast };
 
             var fieldFormatter = builder.Build();
             builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Years;
@@ -493,10 +410,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyLastAndOtherFormattersExistsAndIsSupportedButLessByType()
         {
-            var builder = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast
-            };
+            var builder = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast };
 
             var fieldFormatter = builder.Build();
             builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Hours;
@@ -513,10 +427,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsNothing_IfValueIsZeroAndPrintRarelyLastButPeriodIsNotZero()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyLast }.Build();
 
             var writer = new StringWriter();
             var period = Period.FromDays(0).WithHours(1);
@@ -525,17 +436,12 @@ namespace NodaTime.Test.Format
 
             Assert.That(writer.ToString(), Is.EqualTo(""));
         }
-
         #endregion
 
         #region Print:RarelyFirst
-
         public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyFirstAndNoOtherFormattersExists()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst }.Build();
 
             var writer = new StringWriter();
             var period = Days.Zero;
@@ -548,10 +454,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyFirstAndOtherFormattersExistsButNotSupported()
         {
-            var builder = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst
-            };
+            var builder = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst };
 
             var fieldFormatter = builder.Build();
             builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Years;
@@ -568,10 +471,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PrintsValue_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyFirstAndOtherFormattersExistsAndIsSupportedAndLessByType()
         {
-            var builder = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst
-            };
+            var builder = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst };
 
             var fieldFormatter = builder.Build();
             builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Hours;
@@ -586,12 +486,10 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
-        public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyFirstAndOtherFormattersExistsAndIsSupportedButGreaterByType()
+        public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndPeriodIsZeroAndPrintsRarelyFirstAndOtherFormattersExistsAndIsSupportedButGreaterByType
+            ()
         {
-            var builder = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst
-            };
+            var builder = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst };
 
             var fieldFormatter = builder.Build();
             builder.FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.Years;
@@ -606,12 +504,10 @@ namespace NodaTime.Test.Format
         }
 
         [Test]
-        public void FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndPeriodIsNotZeroAndPrintsRarelyFirstAndOtherFormattersExistsAndIsSupportedButGreaterByType()
+        public void
+            FieldFormatter_PrintsNothing_IfFieldTypeIsSupportedAndPeriodIsNotZeroAndPrintsRarelyFirstAndOtherFormattersExistsAndIsSupportedButGreaterByType()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.RarelyFirst }.Build();
 
             var writer = new StringWriter();
             var period = Period.FromDays(0).WithYears(1);
@@ -620,11 +516,9 @@ namespace NodaTime.Test.Format
 
             Assert.That(writer.ToString(), Is.EqualTo(""));
         }
-
         #endregion
 
         #region Parse
-
         [Test]
         public void FieldFormatter_ParsesText()
         {
@@ -693,28 +587,19 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_Fail_IfFieldTypeIsUnsupportedAndPrintZeroAlways()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always }.Build();
             var periodText = "25";
             var builder = new PeriodBuilder(PeriodType.Minutes);
 
             Assert.That(() => fieldFormatter.Parse(periodText, 0, builder, null), Throws.InstanceOf<NotSupportedException>());
         }
-
-
         #endregion
 
         #region Parse:Position/MaximumParsedDigits
-
         [Test]
         public void FieldFormatter_ParsesText_LimitedByPositionAndMaximumParsedDigits()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                MaximumParsedDigits = 3
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { MaximumParsedDigits = 3 }.Build();
             var periodText = "123456789";
             int startPosition = 4;
             var builder = new PeriodBuilder(PeriodType.Standard);
@@ -742,10 +627,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_Fails_IfPositionNotLessThanTextLengthAndPrintZeroAlwaysSet()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-                {
-                    PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always
-                }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always }.Build();
             var periodText = "123";
             int startPosition = 4;
 
@@ -755,19 +637,13 @@ namespace NodaTime.Test.Format
 
             Assert.That(newPosition, Is.LessThan(0));
         }
-
         #endregion
 
         #region Parse:Prefix/Suffix
-
         [Test]
         public void FieldFormatter_ParsesPrefixAndValue_IfPrefixIsSpecified()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:")
-            }
-            .Build();
+            var fieldFormatter = new FieldFormatterBuilder() { Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:") }.Build();
             var periodText = "Day:25";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -780,11 +656,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_ParsesValueAndSuffix_IfSuffixIsSpecified()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Suffix = new PeriodFormatterBuilder.SimpleAffix(" days")
-            }
-            .Build();
+            var fieldFormatter = new FieldFormatterBuilder() { Suffix = new PeriodFormatterBuilder.SimpleAffix(" days") }.Build();
             var periodText = "25 days";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -797,12 +669,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_ParsesPrefixAndValueAndSuffix_IfPrefixAndSuffixAreSpecified()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
-                Suffix = new PeriodFormatterBuilder.SimpleAffix(" days")
-            }
-            .Build();
+            var fieldFormatter =
+                new FieldFormatterBuilder()
+                { Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"), Suffix = new PeriodFormatterBuilder.SimpleAffix(" days") }.Build();
             var periodText = "Day:47 days";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -815,11 +684,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_PassThrough_IfPrefixIsSpecifiedButNotInText()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:")
-            }
-            .Build();
+            var fieldFormatter = new FieldFormatterBuilder() { Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:") }.Build();
             var periodText = "47 days";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -828,15 +693,11 @@ namespace NodaTime.Test.Format
             Assert.That(newPosition, Is.EqualTo(0));
             Assert.That(builder.ToPeriod(), Is.EqualTo(Period.Zero));
         }
-        
+
         [Test]
         public void FieldFormatter_PassThrough_IfSuffixIsSpecifiedButNotInText()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Suffix = new PeriodFormatterBuilder.SimpleAffix(" days")
-            }
-            .Build();
+            var fieldFormatter = new FieldFormatterBuilder() { Suffix = new PeriodFormatterBuilder.SimpleAffix(" days") }.Build();
             var periodText = "47blah-blah";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -849,12 +710,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_Fails_IfPrefixIsSpecifiedButNotInTextAndPrintZeroAlwaysSet()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always
-            }
-            .Build();
+            var fieldFormatter =
+                new FieldFormatterBuilder()
+                { Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"), PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always }.Build();
             var periodText = "47 days";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -867,11 +725,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_Fails_IfTextContainsPrefixButNotValue()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
-            }
-            .Build();
+            var fieldFormatter = new FieldFormatterBuilder() { Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"), }.Build();
             var periodText = "Day:";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -881,16 +735,12 @@ namespace NodaTime.Test.Format
             Assert.That(builder.ToPeriod(), Is.EqualTo(Period.Zero));
         }
 
-
         [Test]
         public void FieldFormatter_Fails_IfSuffixIsSpecifiedButNotInTextAndPrintZeroAlwaysSet()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Suffix = new PeriodFormatterBuilder.SimpleAffix(" days"),
-                PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always
-            }
-            .Build();
+            var fieldFormatter =
+                new FieldFormatterBuilder()
+                { Suffix = new PeriodFormatterBuilder.SimpleAffix(" days"), PrintZero = PeriodFormatterBuilder.PrintZeroSetting.Always }.Build();
             var periodText = "47blah-blah";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -903,12 +753,9 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_Fails_IfPrefixAndSuffixAreSpecifiedAndPrefixIsParsedButSuffixIsNot()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"),
-                Suffix = new PeriodFormatterBuilder.SimpleAffix(" days")
-            }
-            .Build();
+            var fieldFormatter =
+                new FieldFormatterBuilder()
+                { Prefix = new PeriodFormatterBuilder.SimpleAffix("Day:"), Suffix = new PeriodFormatterBuilder.SimpleAffix(" days") }.Build();
             var periodText = "Day:47 oops";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -917,11 +764,9 @@ namespace NodaTime.Test.Format
             Assert.That(newPosition, Is.LessThan(0));
             Assert.That(builder.ToPeriod(), Is.EqualTo(Period.Zero));
         }
-
         #endregion
 
         #region Parse:Signs
-
         [Test]
         public void FieldFormatter_ParsesText_WithLeadingPlusSign()
         {
@@ -949,10 +794,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_Fail_WithLeadingPlusSignAndMaximumParsedDigitsExceed()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-                {
-                    MaximumParsedDigits = 1
-                }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { MaximumParsedDigits = 1 }.Build();
             var periodText = "+100";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -976,10 +818,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_ParsesText_WithLeadingMinusSignAndMaximumParsedDigitsIsUnaffected()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-                {
-                    MaximumParsedDigits = 2
-                }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { MaximumParsedDigits = 2 }.Build();
             var periodText = "-12345678";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -1003,10 +842,7 @@ namespace NodaTime.Test.Format
         [Test]
         public void FieldFormatter_Fail_WithLeadingMinusSignAndMaximumParsedDigitsExceed()
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-            {
-                MaximumParsedDigits = 1
-            }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { MaximumParsedDigits = 1 }.Build();
             var periodText = "-200";
             var builder = new PeriodBuilder(PeriodType.Standard);
 
@@ -1014,16 +850,12 @@ namespace NodaTime.Test.Format
 
             Assert.That(newPosition, Is.LessThan(0));
         }
-
         #endregion
 
         #region Parse: Seconds/Milliseconds
-
-        object[] ParseSecondsMillisecondsTestData =
-        {
+        private object[] ParseSecondsMillisecondsTestData = {
             new TestCaseData("1", Period.FromSeconds(1)).SetName("1"),
-            new TestCaseData("2.", Period.FromSeconds(2)).SetName("2."),
-            new TestCaseData("3.4", Period.FromSeconds(3).WithMilliseconds(400)).SetName("3.4"),
+            new TestCaseData("2.", Period.FromSeconds(2)).SetName("2."), new TestCaseData("3.4", Period.FromSeconds(3).WithMilliseconds(400)).SetName("3.4"),
             new TestCaseData("5.67", Period.FromSeconds(5).WithMilliseconds(670)).SetName("5.67"),
             new TestCaseData("8.901", Period.FromSeconds(8).WithMilliseconds(901)).SetName("8.901"),
             new TestCaseData("1.234567", Period.FromSeconds(1).WithMilliseconds(234)).SetName("1.234567")
@@ -1033,10 +865,7 @@ namespace NodaTime.Test.Format
         [TestCaseSource("ParseSecondsMillisecondsTestData")]
         public void FieldFormatter_ParsesText_ForSecondsMillisecondsFieldType(string periodText, Period result)
         {
-            var fieldFormatter = new FieldFormatterBuilder()
-                {
-                    FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds
-                }.Build();
+            var fieldFormatter = new FieldFormatterBuilder() { FieldType = PeriodFormatterBuilder.FormatterDurationFieldType.SecondsMilliseconds }.Build();
             var builder = new PeriodBuilder(PeriodType.Standard);
 
             int newPosition = fieldFormatter.Parse(periodText, 0, builder, null);
@@ -1044,7 +873,6 @@ namespace NodaTime.Test.Format
             Assert.That(newPosition, Is.EqualTo(periodText.Length));
             Assert.That(builder.ToPeriod(), Is.EqualTo(result));
         }
-
         #endregion
 
         #endregion

@@ -31,7 +31,7 @@ namespace NodaTime.ZoneInfoCompiler
     {
         private readonly IResourceWriter resourceWriter;
         private MemoryStream memory;
-        private IDateTimeZoneWriter timeZoneWriter;
+        private DateTimeZoneWriter timeZoneWriter;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ResourceOutput" /> class.
@@ -126,7 +126,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// </summary>
         /// <param name = "name">The resource name.</param>
         /// <param name = "timeZone">The <see cref = "IDateTimeZone" /> to write.</param>
-        public void WriteTimeZone(string name, IDateTimeZone timeZone)
+        public void WriteTimeZone(string name, DateTimeZone timeZone)
         {
             MakeOutput();
             timeZoneWriter.WriteTimeZone(timeZone);

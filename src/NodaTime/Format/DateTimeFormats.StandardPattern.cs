@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using NodaTime.Calendars;
 
 namespace NodaTime.Format
 {
@@ -41,17 +40,11 @@ namespace NodaTime.Format
                 }
             }
 
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+            public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, DateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
                 var formatter = GetFormatter(provider);
                 formatter.Printer.PrintTo(writer, instant, calendarSystem, timezoneOffset, dateTimeZone, provider);
-            }
-
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                var formatter = GetFormatter(provider);
-                formatter.Printer.PrintTo(writer, partial, provider);
             }
 
             public int EstimatedParsedLength

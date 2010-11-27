@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Periods;
 using NUnit.Framework;
 
@@ -22,7 +23,6 @@ namespace NodaTime.Test.Periods
     public partial class MinutesTest
     {
         #region Negation
-
         [Test]
         public void Negated()
         {
@@ -45,11 +45,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(-3, (Minutes.Negate(Minutes.Three)).Value, "-3");
             Assert.AreEqual(8, (Minutes.Negate(Minutes.From(-8))).Value, "- (-8)");
         }
-
         #endregion
 
         #region Unary Operators
-
         [Test]
         public void UnaryPlusOperator()
         {
@@ -101,11 +99,9 @@ namespace NodaTime.Test.Periods
 
             Assert.AreEqual(1, (oneMinute).Value, "--2 = 1");
         }
-
         #endregion
 
         #region Add
-
         [Test]
         public void Add()
         {
@@ -135,11 +131,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(5, (Minutes.Add(Minutes.Two, Minutes.Three)).Value, "2 + 3");
             Assert.AreEqual(1, (Minutes.Add(Minutes.From(9), Minutes.From(-8))).Value, "9 + (-8)");
         }
-
         #endregion
 
         #region Subtract
-
         [Test]
         public void Subtract()
         {
@@ -169,11 +163,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(1, (Minutes.Subtract(Minutes.Three, Minutes.Two)).Value, "3 - 2");
             Assert.AreEqual(10, (Minutes.Subtract(Minutes.From(9), Minutes.From(-1))).Value, "9 - (-1)");
         }
-
         #endregion
 
         #region Multiplication
-
         [Test]
         public void Multiply()
         {
@@ -198,9 +190,8 @@ namespace NodaTime.Test.Periods
         {
             Assert.AreEqual(1, (1 * Minutes.One).Value, "1 * 1");
             Assert.AreEqual(0, (0 * Minutes.Two).Value, "0 * 2");
-            Assert.AreEqual(-3, (-1 *Minutes.Three).Value, "(-1) * 3");
+            Assert.AreEqual(-3, (-1 * Minutes.Three).Value, "(-1) * 3");
         }
-
 
         [Test]
         public void MultiplyStatic()
@@ -209,11 +200,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(0, (Minutes.Multiply(Minutes.One, 0)).Value, "1 * 0");
             Assert.AreEqual(-9, (Minutes.Multiply(Minutes.From(9), -1)).Value, "9 * (-1)");
         }
-
         #endregion
 
         #region Division
-
         [Test]
         public void Divide()
         {
@@ -240,11 +229,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(1, (Minutes.Divide(Minutes.Three, 2)).Value, "3 / 2");
             Assert.AreEqual(-3, (Minutes.Divide(Minutes.From(9), -3)).Value, "9 / (-3)");
         }
-
         #endregion
 
         #region Conversions
-
         [Test]
         public void ImplicitConversionToInt32_FromNotNullInstance()
         {
@@ -270,7 +257,6 @@ namespace NodaTime.Test.Periods
 
             Assert.AreEqual(3, three.Value);
         }
-
         #endregion
     }
 }

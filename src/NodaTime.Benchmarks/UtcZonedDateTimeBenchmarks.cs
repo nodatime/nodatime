@@ -17,18 +17,17 @@
 
 using NodaTime.Benchmarks.Extensions;
 using NodaTime.Benchmarks.Timing;
-using NodaTime.TimeZones;
 
 namespace NodaTime.Benchmarks
 {
     internal class UtcZonedDateTimeBenchmarks
     {
-        private readonly ZonedDateTime sample = new ZonedDateTime(2009, 12, 26, 10, 8, 30, DateTimeZones.Utc);
+        private readonly ZonedDateTime sample = new ZonedDateTime(2009, 12, 26, 10, 8, 30, DateTimeZone.Utc);
 
         [Benchmark]
         public void Construction()
         {
-            new ZonedDateTime(2009, 12, 26, 10, 8, 30, DateTimeZones.Utc).Consume();
+            new ZonedDateTime(2009, 12, 26, 10, 8, 30, DateTimeZone.Utc).Consume();
         }
 
         [Benchmark]
@@ -50,9 +49,9 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void DayOfWeek()
+        public void IsoDayOfWeek()
         {
-            sample.DayOfWeek.Consume();
+            sample.IsoDayOfWeek.Consume();
         }
 
         [Benchmark]

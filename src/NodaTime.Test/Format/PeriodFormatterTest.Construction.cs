@@ -88,6 +88,5 @@ namespace NodaTime.Test.Format
         {
             Assert.That(() => PeriodFormatter.FromPrinterAndParser(printer, null), Throws.InstanceOf<ArgumentNullException>());
         }
-
     }
 }

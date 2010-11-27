@@ -15,11 +15,7 @@
 // limitations under the License.
 #endregion
 
-using System;
-using NodaTime.Calendars;
-using NodaTime.Fields;
 using NodaTime.Format;
-using NodaTime.TimeZones;
 
 namespace NodaTime.Partials
 {
@@ -31,14 +27,12 @@ namespace NodaTime.Partials
     {
         private readonly LocalDateTime localTime;
 
-        public LocalDate(int year, int month, int day)
-            : this(year, month, day, IsoCalendarSystem.Instance)
+        public LocalDate(int year, int month, int day) : this(year, month, day, CalendarSystem.Iso)
         {
         }
 
-        public LocalDate(int year, int month, int day, IsoCalendarSystem calendar)
-            : this(new LocalDateTime(year, month, day, 0, 0, calendar))
-        {            
+        public LocalDate(int year, int month, int day, CalendarSystem calendar) : this(new LocalDateTime(year, month, day, 0, 0, calendar))
+        {
         }
 
         private LocalDate(LocalDateTime localTime)
@@ -49,6 +43,7 @@ namespace NodaTime.Partials
         public int Year { get { return localTime.Year; } }
         public int MonthOfYear { get { return localTime.MonthOfYear; } }
         public int DayOfMonth { get { return localTime.DayOfMonth; } }
+        public IsoDayOfWeek IsoDayOfWeek { get { return localTime.IsoDayOfWeek; } }
         public int DayOfWeek { get { return localTime.DayOfWeek; } }
         public int WeekOfWeekYear { get { return localTime.WeekOfWeekYear; } }
         public int YearOfCentury { get { return localTime.YearOfCentury; } }
@@ -118,7 +113,7 @@ namespace NodaTime.Partials
         public override string ToString()
         {
             // TODO: Shouldn't need to build a ZonedDateTime!
-            return IsoDateTimeFormats.Date.Print(new ZonedDateTime(localTime, DateTimeZones.Utc));
+            return IsoDateTimeFormats.Date.Print(new ZonedDateTime(localTime, DateTimeZone.Utc));
         }
 
         public override int GetHashCode()

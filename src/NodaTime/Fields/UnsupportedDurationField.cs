@@ -25,7 +25,7 @@ namespace NodaTime.Fields
     /// UnsupportedDurationField is thread-safe and immutable.
     /// </para>
     /// </summary>
-    internal sealed class UnsupportedDurationField : DurationFieldBase
+    internal sealed class UnsupportedDurationField : DurationField
     {
         private static readonly UnsupportedDurationField[] cache = Array.ConvertAll((DurationFieldType[])Enum.GetValues(typeof(DurationFieldType)),
                                                                                     type => new UnsupportedDurationField(type));
@@ -67,24 +67,24 @@ namespace NodaTime.Fields
         /// <summary>
         /// This field is not supported, always returns false
         /// </summary>
-        public override bool IsSupported { get { return false; } }
+        internal override bool IsSupported { get { return false; } }
 
         /// <summary>
         /// This field is precise, always returns true
         /// </summary>
-        public override bool IsPrecise { get { return true; } }
+        internal override bool IsPrecise { get { return true; } }
 
         /// <summary>
         /// Always returns zero.
         /// </summary>
-        public override long UnitTicks { get { return 0; } }
+        internal override long UnitTicks { get { return 0; } }
 
         /// <summary>
         /// Always throws NotSupportedException
         /// </summary>
         /// <param name="duration">The duration to query, which may be negative</param>
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
-        public override int GetValue(Duration duration)
+        internal override int GetValue(Duration duration)
         {
             throw new NotSupportedException();
         }
@@ -94,18 +94,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="duration">The duration to query, which may be negative</param>
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
-        public override long GetInt64Value(Duration duration)
-        {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Always throws NotSupportedException
-        /// </summary>
-        /// <param name="duration">The duration to query, which may be negative</param>
-        /// <param name="localInstant">The start instant to calculate relative to</param>
-        /// <returns>The value of the field, in the units of the field, which may be negative</returns>
-        public override int GetValue(Duration duration, LocalInstant localInstant)
+        internal override long GetInt64Value(Duration duration)
         {
             throw new NotSupportedException();
         }
@@ -116,7 +105,18 @@ namespace NodaTime.Fields
         /// <param name="duration">The duration to query, which may be negative</param>
         /// <param name="localInstant">The start instant to calculate relative to</param>
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
-        public override long GetInt64Value(Duration duration, LocalInstant localInstant)
+        internal override int GetValue(Duration duration, LocalInstant localInstant)
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Always throws NotSupportedException
+        /// </summary>
+        /// <param name="duration">The duration to query, which may be negative</param>
+        /// <param name="localInstant">The start instant to calculate relative to</param>
+        /// <returns>The value of the field, in the units of the field, which may be negative</returns>
+        internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
@@ -126,7 +126,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="value">The value of the field, which may be negative</param>
         /// <returns>The duration that the field represents, which may be negative</returns>
-        public override Duration GetDuration(long value)
+        internal override Duration GetDuration(long value)
         {
             throw new NotSupportedException();
         }
@@ -137,7 +137,7 @@ namespace NodaTime.Fields
         /// <param name="value">The value of the field, which may be negative</param>
         /// <param name="localInstant">The instant to calculate relative to</param>
         /// <returns>The duration that the field represents, which may be negative</returns>
-        public override Duration GetDuration(long value, LocalInstant localInstant)
+        internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
             throw new NotSupportedException();
         }
@@ -148,7 +148,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        public override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             throw new NotSupportedException();
         }
@@ -159,7 +159,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        public override LocalInstant Add(LocalInstant localInstant, long value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             throw new NotSupportedException();
         }
@@ -170,7 +170,7 @@ namespace NodaTime.Fields
         /// <param name="minuendInstant">The local instant to subtract from</param>
         /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
         /// <returns>The difference in the units of this field</returns>
-        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             throw new NotSupportedException();
         }
@@ -181,7 +181,7 @@ namespace NodaTime.Fields
         /// <param name="minuendInstant">The local instant to subtract from</param>
         /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
         /// <returns>The difference in the units of this field</returns>
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             throw new NotSupportedException();
         }

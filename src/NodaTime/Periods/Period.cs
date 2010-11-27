@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Format;
 using NodaTime.Utility;
@@ -999,7 +998,7 @@ namespace NodaTime.Periods
 
             var duration = ToStandardDurationUnchecked();
 
-            var period = Period.From(duration, IsoCalendarSystem.Instance, periodType);
+            var period = Period.From(duration, CalendarSystem.Iso, periodType);
 
             int years = Years;
             int months = Months;

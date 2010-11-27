@@ -23,7 +23,7 @@ namespace NodaTime.Benchmarks
 {
     internal class PacificZonedDateTimeBenchmarks
     {
-        private static readonly IDateTimeZone Pacific = DateTimeZones.ForId("America/Los_Angeles");
+        private static readonly DateTimeZone Pacific = DateTimeZones.ForId("America/Los_Angeles");
 
         private readonly ZonedDateTime sample = new ZonedDateTime(2009, 12, 26, 10, 8, 30, Pacific);
 
@@ -52,9 +52,9 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void DayOfWeek()
+        public void IsoDayOfWeek()
         {
-            sample.DayOfWeek.Consume();
+            sample.IsoDayOfWeek.Consume();
         }
 
         [Benchmark]

@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-
 namespace NodaTime.Test
 {
     // Test is commented out as little of it makes sense at the moment. We may or may not want some of it :)

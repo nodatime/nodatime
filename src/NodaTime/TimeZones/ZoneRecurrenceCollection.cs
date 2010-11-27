@@ -18,7 +18,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using NodaTime.Calendars;
 
 namespace NodaTime.TimeZones
 {
@@ -30,13 +29,13 @@ namespace NodaTime.TimeZones
     /// Not immutable, not thread safe. 
     /// </para>
     /// </remarks>
-    public class ZoneRecurrenceCollection : IEnumerable<ZoneRecurrence>
+    internal class ZoneRecurrenceCollection : IEnumerable<ZoneRecurrence>
     {
         // Don't pre-calculate more than 100 years into the future. Almost all zones will stop
         // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
         // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the
         // future, then it won't be observed.
-        private static readonly int YearLimit = IsoCalendarSystem.Instance.Fields.Year.GetValue(LocalInstant.Now) + 100;
+        private static readonly int YearLimit = CalendarSystem.Iso.Fields.Year.GetValue(LocalInstant.Now) + 100;
 
         private readonly List<ZoneRecurrence> rules = new List<ZoneRecurrence>();
         private string initialNameKey;
@@ -161,7 +160,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         internal class TransitionIterator
         {
-            private readonly ICalendarSystem calendar;
+            private readonly CalendarSystem calendar;
             private readonly ZoneRecurrenceCollection ruleSet;
             private readonly Instant startingInstant;
             private Instant instant;
@@ -176,7 +175,7 @@ namespace NodaTime.TimeZones
             /// <param name="startingInstant">The starting instant.</param>
             internal TransitionIterator(ZoneRecurrenceCollection ruleSet, Instant startingInstant)
             {
-                calendar = IsoCalendarSystem.Instance;
+                calendar = CalendarSystem.Iso;
                 this.ruleSet = ruleSet;
                 this.startingInstant = startingInstant;
             }
@@ -210,12 +209,12 @@ namespace NodaTime.TimeZones
 
             /// <summary>
             /// If there are only two rules left and they are both infinite rules then a <see
-            /// cref="IDateTimeZone"/> implementation is returned that encapsulates those rules,
+            /// cref="DateTimeZone"/> implementation is returned that encapsulates those rules,
             /// otherwise null is returned.
             /// </summary>
-            /// <param name="id">The id of the new <see cref="IDateTimeZone"/>.</param>
-            /// <returns>The new <see cref="IDateTimeZone"/> or <c>null</c>.</returns>
-            internal IDateTimeZone BuildTailZone(String id)
+            /// <param name="id">The id of the new <see cref="DateTimeZone"/>.</param>
+            /// <returns>The new <see cref="DateTimeZone"/> or <c>null</c>.</returns>
+            internal DateTimeZone BuildTailZone(String id)
             {
                 if (rules.Count == 2)
                 {
@@ -330,7 +329,7 @@ namespace NodaTime.TimeZones
 
                 // Stop precalculating if year reaches some arbitrary limit. We can cheat in the
                 // conversion because it is an approximation anyway.
-                if (calendar.Fields.Year.GetValue(nextTicks + Offset.Zero) >= YearLimit)
+                if (calendar.Fields.Year.GetValue(Instant.Add(nextTicks, Offset.Zero)) >= YearLimit)
                 {
                     return null;
                 }

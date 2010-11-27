@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Calendars;
 using NodaTime.Format;
 using NodaTime.TimeZones;
 using NUnit.Framework;
@@ -25,7 +24,7 @@ namespace NodaTime.Demo
     [TestFixture]
     internal class ZonedDateTimeDemo
     {
-        private static readonly IDateTimeZone Dublin = DateTimeZones.ForId("Europe/Dublin");
+        private static readonly DateTimeZone Dublin = DateTimeZones.ForId("Europe/Dublin");
 
         [Test]
         public void Construction()
@@ -46,7 +45,7 @@ namespace NodaTime.Demo
         {
             ZonedDateTime late = new ZonedDateTime(2010, 10, 31, 1, 15, 0, Dublin);
             Assert.AreEqual("20101031T011500.000Z", IsoDateTimeFormats.BasicDateTime.Print(late));
-            ZonedDateTime early = new ZonedDateTime(late.ToInstant() - Duration.OneHour, new Chronology(Dublin, IsoCalendarSystem.Instance));
+            ZonedDateTime early = new ZonedDateTime(late.ToInstant() - Duration.OneHour, new Chronology(Dublin, CalendarSystem.Iso));
             Assert.AreEqual("20101031T011500.000+0100", IsoDateTimeFormats.BasicDateTime.Print(early));
         }
 

@@ -17,7 +17,6 @@
 
 using System;
 using System.Globalization;
-using NodaTime.Calendars;
 using NodaTime.Format;
 using NodaTime.TimeZones;
 using NUnit.Framework;
@@ -33,11 +32,11 @@ namespace NodaTime.Test.Format
         private IFormatProvider provider1;
         private IFormatProvider provider2;
 
-        private ICalendarSystem calendar1;
-        private ICalendarSystem calendar2;
+        private CalendarSystem calendar1;
+        private CalendarSystem calendar2;
 
-        private IDateTimeZone zone1;
-        private IDateTimeZone zone2;
+        private DateTimeZone zone1;
+        private DateTimeZone zone2;
 
         private int? pivotYear1;
         private int? pivotYear2;
@@ -54,10 +53,10 @@ namespace NodaTime.Test.Format
             provider1 = CultureInfo.InvariantCulture;
             provider2 = CultureInfo.CreateSpecificCulture("ar");
 
-            calendar1 = IsoCalendarSystem.Instance;
+            calendar1 = CalendarSystem.Iso;
             calendar2 = null;
 
-            zone1 = DateTimeZones.Utc;
+            zone1 = DateTimeZone.Utc;
             zone2 = DateTimeZones.ForId("Europe/London");
 
             pivotYear1 = 55;

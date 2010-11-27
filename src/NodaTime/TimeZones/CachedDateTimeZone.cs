@@ -20,7 +20,7 @@ using System;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///  Provides a <see cref="IDateTimeZone"/> wrapper class that implements a simple cache to
+    ///  Provides a <see cref="DateTimeZone"/> wrapper class that implements a simple cache to
     ///  speed up the lookup of transitions.
     /// </summary>
     /// <remarks>
@@ -31,7 +31,7 @@ namespace NodaTime.TimeZones
     /// user can tune the performance based on their knowledge of how they are using the system.
     /// </para>
     /// </remarks>
-    public abstract class CachedDateTimeZone : DateTimeZoneBase
+    internal abstract class CachedDateTimeZone : DateTimeZone
     {
         #region CacheType enum
         public enum CacheType
@@ -41,13 +41,13 @@ namespace NodaTime.TimeZones
         }
         #endregion
 
-        private readonly IDateTimeZone timeZone;
+        private readonly DateTimeZone timeZone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
         /// </summary>
         /// <param name="timeZone">The time zone to cache.</param>
-        private CachedDateTimeZone(IDateTimeZone timeZone) : base(timeZone.Id, false)
+        private CachedDateTimeZone(DateTimeZone timeZone) : base(timeZone.Id, false)
         {
             this.timeZone = timeZone;
         }
@@ -56,7 +56,7 @@ namespace NodaTime.TimeZones
         /// Gets the cached time zone.
         /// </summary>
         /// <value>The time zone.</value>
-        internal IDateTimeZone TimeZone { get { return timeZone; } }
+        internal DateTimeZone TimeZone { get { return timeZone; } }
 
         /// <summary>
         /// Gets the size of the cache used by this time zone cache.
@@ -72,7 +72,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="timeZone">The time zone to cache.</param>
         /// <returns>The cached time zone.</returns>
-        public static IDateTimeZone ForZone(IDateTimeZone timeZone)
+        public static DateTimeZone ForZone(DateTimeZone timeZone)
         {
             return ForZone(timeZone, CacheType.Hashtable);
         }
@@ -86,7 +86,7 @@ namespace NodaTime.TimeZones
         /// <param name="timeZone">The time zone to cache.</param>
         /// <param name="type">The type of cache to store the zone in.</param>
         /// <returns>The cached time zone.</returns>
-        public static IDateTimeZone ForZone(IDateTimeZone timeZone, CacheType type)
+        public static DateTimeZone ForZone(DateTimeZone timeZone, CacheType type)
         {
             if (timeZone == null)
             {
@@ -112,7 +112,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        public override void Write(IDateTimeZoneWriter writer)
+        internal override void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)
             {
@@ -127,7 +127,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        public static IDateTimeZone Read(IDateTimeZoneReader reader, string id)
+        public static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             if (reader == null)
             {
@@ -163,7 +163,7 @@ namespace NodaTime.TimeZones
             /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
             /// </summary>
             /// <param name="timeZone">The time zone to cache.</param>
-            public HashArrayCache(IDateTimeZone timeZone) : base(timeZone)
+            public HashArrayCache(DateTimeZone timeZone) : base(timeZone)
             {
                 if (timeZone == null)
                 {
@@ -204,7 +204,7 @@ namespace NodaTime.TimeZones
             /// </summary>
             /// <param name="localInstant">The LocalInstant to test.</param>
             /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-            public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
+            internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
             {
                 int period = (int)(localInstant.Ticks >> PeriodShift);
                 int index = period & CachePeriodMask;
@@ -392,7 +392,7 @@ namespace NodaTime.TimeZones
             /// Initializes a new instance of the <see cref="CachedDateTimeZone.MruListCache"/> class.
             /// </summary>
             /// <param name="timeZone">The time zone to cache.</param>
-            internal MruListCache(IDateTimeZone timeZone) : base(timeZone)
+            internal MruListCache(DateTimeZone timeZone) : base(timeZone)
             {
             }
 
@@ -427,7 +427,7 @@ namespace NodaTime.TimeZones
             /// </summary>
             /// <param name="localInstant">The LocalInstant to test.</param>
             /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-            public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
+            internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
             {
                 MruCacheNode previous = null;
                 int count = 0;

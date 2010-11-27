@@ -28,20 +28,20 @@ namespace NodaTime.Test.TimeZones
         /// Returns the uncached version of the given zone. If the zone isn't
         /// an instance of CachedDateTimeZone, the same reference is returned back.
         /// </summary>
-        internal static IDateTimeZone Uncached(this IDateTimeZone zone)
+        internal static DateTimeZone Uncached(this DateTimeZone zone)
         {
             var cached = zone as CachedDateTimeZone;
             return cached == null ? zone : cached.TimeZone;
         }
 
         /*
-        internal static Transition ValidateNextTransition(this IDateTimeZone zone, Instant instant)
+        internal static Transition ValidateNextTransition(this DateTimeZone zone, Instant instant)
         {
             Transition? transition = zone.NextTransition(instant);
             return transition.Validate(zone);
         }
 
-        internal static Transition ValidatePreviousTransition(this IDateTimeZone zone, Instant instant)
+        internal static Transition ValidatePreviousTransition(this DateTimeZone zone, Instant instant)
         {
             Transition? transition = zone.PreviousTransition(instant);
             return transition.Validate(zone);
@@ -51,7 +51,7 @@ namespace NodaTime.Test.TimeZones
         /// Convenience method which puts a transition through its paces. Apply liberally
         /// to any transition you don't expect to be null.
         /// </summary>
-        internal static Transition Validate(this Transition? nullableTransition, IDateTimeZone zone)
+        internal static Transition Validate(this Transition? nullableTransition, DateTimeZone zone)
         {
             Assert.IsNotNull(nullableTransition);
             Transition transition = nullableTransition.Value;

@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Calendars;
 using NodaTime.Periods;
 using NUnit.Framework;
 
@@ -25,19 +24,9 @@ namespace NodaTime.Demo
     public class LocalDateTimeDemo
     {
         [Test]
-        public void SimpleComposition()
+        public void SimpleConstruction()
         {
-            ICalendarSystem calendar = IsoCalendarSystem.Instance;
-            LocalInstant local = calendar.GetLocalInstant(2010, 6, 16, 16, 20);
-            LocalDateTime dt = new LocalDateTime(local, calendar);
-
-            Assert.AreEqual(20, dt.MinuteOfHour);
-        }
-
-        [Test]
-        public void SimplerConstruction()
-        {
-            ICalendarSystem calendar = IsoCalendarSystem.Instance;
+            CalendarSystem calendar = CalendarSystem.Iso;
             LocalDateTime dt = new LocalDateTime(2010, 6, 16, 16, 20, calendar);
             Assert.AreEqual(20, dt.MinuteOfHour);
         }

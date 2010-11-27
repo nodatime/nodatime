@@ -26,7 +26,7 @@ namespace NodaTime.Demo
         [Test]
         public void EarlyParis()
         {
-            IDateTimeZone paris = DateTimeZones.ForId("Europe/Paris");
+            DateTimeZone paris = DateTimeZones.ForId("Europe/Paris");
             Offset offset = paris.GetOffsetFromUtc(Instant.FromUtc(1900, 1, 1, 0, 0));
             Assert.AreEqual("+0:09:21", offset.ToString());
         }
@@ -34,7 +34,7 @@ namespace NodaTime.Demo
         [Test]
         public void BritishDoubleSummerTime()
         {
-            IDateTimeZone london = DateTimeZones.ForId("Europe/London");
+            DateTimeZone london = DateTimeZones.ForId("Europe/London");
             Offset offset = london.GetOffsetFromUtc(Instant.FromUtc(1942, 7, 1, 0, 0));
             Assert.AreEqual("+2", offset.ToString());
         }
@@ -42,8 +42,8 @@ namespace NodaTime.Demo
         [Test]
         public void ZoneInterval()
         {
-            IDateTimeZone london = DateTimeZones.ForId("Europe/London");
-            ZoneInterval interval = london.GetZoneInterval(Clock.Now);
+            DateTimeZone london = DateTimeZones.ForId("Europe/London");
+            ZoneInterval interval = london.GetZoneInterval(Instant.FromUtc(2010, 6, 19, 0, 0));
             Assert.AreEqual("BST", interval.Name);
             Assert.AreEqual(Instant.FromUtc(2010, 3, 28, 1, 0), interval.Start);
             Assert.AreEqual(Instant.FromUtc(2010, 10, 31, 1, 0), interval.End);

@@ -1,0 +1,1169 @@
+<html>
+  <head>
+    <title>NodaTime.TimeZones.ZoneInterval</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime.TimeZones Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.TimeZones.ZoneInterval">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.TimeZones.ZoneInterval:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.TimeZones.ZoneInterval:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.TimeZones.ZoneInterval:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.TimeZones.ZoneInterval">ZoneInterval  Class</h1>
+    <p class="Summary" id="T:NodaTime.TimeZones.ZoneInterval:Summary">
+            Represents a range of time for which a particular Offset applies.
+            </p>
+    <div id="T:NodaTime.TimeZones.ZoneInterval:Signature">
+      <div class="Signature">public class  <b>ZoneInterval</b> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IEquatable`1">IEquatable&lt;ZoneInterval&gt;</a></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.TimeZones.ZoneInterval:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.TimeZones.ZoneInterval:Docs:Remarks')">
+          <span id="T:NodaTime.TimeZones.ZoneInterval:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.TimeZones.ZoneInterval:Docs:Remarks">
+            This type is immutable and thread-safe.
+            </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.TimeZones.ZoneInterval:Docs:Version Information')">
+          <span id="T:NodaTime.TimeZones.ZoneInterval:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.TimeZones.ZoneInterval:Docs:Version Information">
+        <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Public Constructors')">
+            <span id="Public Constructors:toggle">⊟</span> Public Constructors</a>
+        </h3>
+        <blockquote id="Public Constructors">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset)">ZoneInterval</a>
+                    </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>, <a href="../NodaTime/Instant.html">NodaTime.Instant</a>, <a href="../NodaTime/Instant.html">NodaTime.Instant</a>, <a href="../NodaTime/Offset.html">NodaTime.Offset</a>, <a href="../NodaTime/Offset.html">NodaTime.Offset</a>)</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime.TimeZones/ZoneInterval.html">NodaTime.TimeZones.ZoneInterval</a> class.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Properties')">
+            <span id="Public Properties:toggle">⊟</span> Public Properties</a>
+        </h3>
+        <blockquote id="Public Properties">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.TimeZones.ZoneInterval.BaseOffset">BaseOffset</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Offset.html">NodaTime.Offset</a>
+                  </i>. 
+            Gets the base offset for this period. This is the offset without any daylight savings
+            contributions.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.TimeZones.ZoneInterval.Duration">Duration</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Duration.html">NodaTime.Duration</a>
+                  </i>. 
+            Gets the duration of this period.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.TimeZones.ZoneInterval.End">End</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Instant.html">NodaTime.Instant</a>
+                  </i>. 
+            Gets the last Instant (exclusive) that the Offset applies.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.TimeZones.ZoneInterval.Name">Name</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>
+                  </i>. 
+            Gets the name of this offset period (e.g. PST or PDT).
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.TimeZones.ZoneInterval.Offset">Offset</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Offset.html">NodaTime.Offset</a>
+                  </i>. 
+            Gets the offset from UTC for this period. This includes any daylight savings value.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.TimeZones.ZoneInterval.Savings">Savings</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Offset.html">NodaTime.Offset</a>
+                  </i>. 
+            Gets the daylight savings value for this period.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.TimeZones.ZoneInterval.Start">Start</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime/Instant.html">NodaTime.Instant</a>
+                  </i>. 
+            Gets the first Instant that the Offset applies.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Methods')">
+            <span id="Public Methods:toggle">⊟</span> Public Methods</a>
+        </h3>
+        <blockquote id="Public Methods">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant)">Contains</a>
+                  </b>(<a href="../NodaTime/Instant.html">NodaTime.Instant</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Determines whether this period contains the given Instant in its range.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval)">Equals</a>
+                  </b>(<a href="../NodaTime.TimeZones/ZoneInterval.html">ZoneInterval</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Indicates whether the current object is equal to another object of the same type.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object)">Equals</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Determines whether the specified <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> is equal to the current <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.TimeZones.ZoneInterval.GetHashCode">GetHashCode</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Serves as a hash function for a particular type. 
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem)">GetLocalEnd</a>
+                  </b>(<a href="../NodaTime.Calendars/CalendarSystem.html">NodaTime.Calendars.CalendarSystem</a>)<nobr> : <a href="../NodaTime/LocalDateTime.html">NodaTime.LocalDateTime</a></nobr><blockquote>
+            Returns the end time of the interval in the given calendar.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem)">GetLocalStart</a>
+                  </b>(<a href="../NodaTime.Calendars/CalendarSystem.html">NodaTime.Calendars.CalendarSystem</a>)<nobr> : <a href="../NodaTime/LocalDateTime.html">NodaTime.LocalDateTime</a></nobr><blockquote>
+            Returns the start time of the interval in the given calendar.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.TimeZones.ZoneInterval.ToString">ToString</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a></nobr><blockquote>
+            Returns a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> that represents this instance.
+            </blockquote></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Operators')">
+            <span id="Public Operators:toggle">⊟</span> Public Operators</a>
+        </h3>
+        <blockquote id="Public Operators">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval)">Equality</a>
+                  </b>(<a href="../NodaTime.TimeZones/ZoneInterval.html">ZoneInterval</a>, <a href="../NodaTime.TimeZones/ZoneInterval.html">ZoneInterval</a>)</td>
+                <td>
+            Implements the operator ==.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval)">Inequality</a>
+                  </b>(<a href="../NodaTime.TimeZones/ZoneInterval.html">ZoneInterval</a>, <a href="../NodaTime.TimeZones/ZoneInterval.html">ZoneInterval</a>)</td>
+                <td>
+            Implements the operator !=.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.TimeZones.ZoneInterval:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset)">
+          <a href="javascript:toggle_display('C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):member')">
+            <span id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):member:toggle">⊟</span> ZoneInterval Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime.TimeZones/ZoneInterval.html">NodaTime.TimeZones.ZoneInterval</a> class.
+            </p>
+          <div class="Signature">public  <b>ZoneInterval</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> name, <a href="../NodaTime/Instant.html">NodaTime.Instant</a> start, <a href="../NodaTime/Instant.html">NodaTime.Instant</a> end, <a href="../NodaTime/Offset.html">NodaTime.Offset</a> offset, <a href="../NodaTime/Offset.html">NodaTime.Offset</a> savings)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Parameters')">
+              <span id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Parameters">
+            <dl>
+              <dt>
+                <i>name</i>
+              </dt>
+              <dd>The name of this offset period (e.g. PST or PDT).</dd>
+              <dt>
+                <i>start</i>
+              </dt>
+              <dd>The first Instant that the Offset applies.</dd>
+              <dt>
+                <i>end</i>
+              </dt>
+              <dd>The last Instant (exclusive) that the Offset applies.</dd>
+              <dt>
+                <i>offset</i>
+              </dt>
+              <dd>The offset from UTC for this period.</dd>
+              <dt>
+                <i>savings</i>
+              </dt>
+              <dd>The daylight savings contribution to the offset.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Exceptions')">
+              <span id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>If the name parameter is null.</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Remarks')">
+              <span id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Version Information')">
+              <span id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.TimeZones.ZoneInterval(System.String,NodaTime.Instant,NodaTime.Instant,NodaTime.Offset,NodaTime.Offset):Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.TimeZones.ZoneInterval.BaseOffset">
+          <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.BaseOffset:member')">
+            <span id="P:NodaTime.TimeZones.ZoneInterval.BaseOffset:member:toggle">⊟</span> BaseOffset Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.TimeZones.ZoneInterval.BaseOffset:member">
+          <p class="Summary">
+            Gets the base offset for this period. This is the offset without any daylight savings
+            contributions.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Offset.html">NodaTime.Offset</a> <b>BaseOffset</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.BaseOffset:Value')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.BaseOffset:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.BaseOffset:Value">The base Offset.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.BaseOffset:Remarks')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.BaseOffset:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.BaseOffset:Remarks">
+            This is effectively <tt>Offset - Savings</tt>.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.BaseOffset:Version Information')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.BaseOffset:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.BaseOffset:Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant)">
+          <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):member')">
+            <span id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):member:toggle">⊟</span> Contains Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):member">
+          <p class="Summary">
+            Determines whether this period contains the given Instant in its range.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Contains</b> (<a href="../NodaTime/Instant.html">NodaTime.Instant</a> instant)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Parameters')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Parameters">
+            <dl>
+              <dt>
+                <i>instant</i>
+              </dt>
+              <dd>The instant to test.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Returns')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Returns">
+            <tt>true</tt> if this period contains the given Instant in its range; otherwise, <tt>false</tt>.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Remarks')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Version Information')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Contains(NodaTime.Instant):Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.TimeZones.ZoneInterval.Duration">
+          <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Duration:member')">
+            <span id="P:NodaTime.TimeZones.ZoneInterval.Duration:member:toggle">⊟</span> Duration Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.TimeZones.ZoneInterval.Duration:member">
+          <p class="Summary">
+            Gets the duration of this period.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Duration.html">NodaTime.Duration</a> <b>Duration</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Duration:Value')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Duration:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Duration:Value">The Duration of this period.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Duration:Remarks')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Duration:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Duration:Remarks">
+            This is effectively <tt>Start - End</tt>.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Duration:Version Information')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Duration:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Duration:Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.TimeZones.ZoneInterval.End">
+          <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.End:member')">
+            <span id="P:NodaTime.TimeZones.ZoneInterval.End:member:toggle">⊟</span> End Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.TimeZones.ZoneInterval.End:member">
+          <p class="Summary">
+            Gets the last Instant (exclusive) that the Offset applies.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Instant.html">NodaTime.Instant</a> <b>End</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.End:Value')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.End:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.End:Value">The last Instant (exclusive) that the Offset applies.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.End:Remarks')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.End:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.End:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.End:Version Information')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.End:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.End:Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval)">
+          <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):member')">
+            <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):member">
+          <p class="Summary">
+            Indicates whether the current object is equal to another object of the same type.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="../NodaTime.TimeZones/ZoneInterval.html">ZoneInterval</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Parameters')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>An object to compare with this object.
+                            </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Returns')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Returns">
+            true if the current object is equal to the <i>other</i> parameter; otherwise, false.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Remarks')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Version Information')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Equals(NodaTime.TimeZones.ZoneInterval):Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object)">
+          <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):member')">
+            <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):member">
+          <p class="Summary">
+            Determines whether the specified <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> is equal to the current <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> obj)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Parameters')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Parameters">
+            <dl>
+              <dt>
+                <i>obj</i>
+              </dt>
+              <dd>The <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> to compare with the current <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>. 
+                            </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Returns')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Returns">
+            true if the specified <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> is equal to the current <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>; otherwise, false.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Exceptions')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.NullReferenceException">NullReferenceException</a>
+                </td>
+                <td>The <i>obj</i> parameter is null.
+                            </td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Remarks')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Version Information')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.Equals(System.Object):Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.TimeZones.ZoneInterval.GetHashCode">
+          <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetHashCode:member')">
+            <span id="M:NodaTime.TimeZones.ZoneInterval.GetHashCode:member:toggle">⊟</span> GetHashCode Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.TimeZones.ZoneInterval.GetHashCode:member">
+          <p class="Summary">
+            Serves as a hash function for a particular type. 
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>GetHashCode</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetHashCode:Returns')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetHashCode:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetHashCode:Returns">
+            A hash code for the current <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetHashCode:Remarks')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetHashCode:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetHashCode:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetHashCode:Version Information')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetHashCode:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetHashCode:Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem)">
+          <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):member')">
+            <span id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):member:toggle">⊟</span> GetLocalEnd Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):member">
+          <p class="Summary">
+            Returns the end time of the interval in the given calendar.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/LocalDateTime.html">NodaTime.LocalDateTime</a> <b>GetLocalEnd</b> (<a href="../NodaTime.Calendars/CalendarSystem.html">NodaTime.Calendars.CalendarSystem</a> calendar)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Parameters')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Parameters">
+            <dl>
+              <dt>
+                <i>calendar</i>
+              </dt>
+              <dd>The calendar system to represent the end in</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Returns')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Returns">The local date and time of the end point of the interval</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Remarks')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Version Information')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetLocalEnd(NodaTime.Calendars.CalendarSystem):Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem)">
+          <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):member')">
+            <span id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):member:toggle">⊟</span> GetLocalStart Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):member">
+          <p class="Summary">
+            Returns the start time of the interval in the given calendar.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/LocalDateTime.html">NodaTime.LocalDateTime</a> <b>GetLocalStart</b> (<a href="../NodaTime.Calendars/CalendarSystem.html">NodaTime.Calendars.CalendarSystem</a> calendar)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Parameters')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Parameters">
+            <dl>
+              <dt>
+                <i>calendar</i>
+              </dt>
+              <dd>The calendar system to represent the start in</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Returns')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Returns">The local date and time of the start point of the interval</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Remarks')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Version Information')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.GetLocalStart(NodaTime.Calendars.CalendarSystem):Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.TimeZones.ZoneInterval.Name">
+          <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Name:member')">
+            <span id="P:NodaTime.TimeZones.ZoneInterval.Name:member:toggle">⊟</span> Name Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.TimeZones.ZoneInterval.Name:member">
+          <p class="Summary">
+            Gets the name of this offset period (e.g. PST or PDT).
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> <b>Name</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Name:Value')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Name:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Name:Value">The name of this offset period (e.g. PST or PDT).</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Name:Remarks')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Name:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Name:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Name:Version Information')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Name:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Name:Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.TimeZones.ZoneInterval.Offset">
+          <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Offset:member')">
+            <span id="P:NodaTime.TimeZones.ZoneInterval.Offset:member:toggle">⊟</span> Offset Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.TimeZones.ZoneInterval.Offset:member">
+          <p class="Summary">
+            Gets the offset from UTC for this period. This includes any daylight savings value.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Offset.html">NodaTime.Offset</a> <b>Offset</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Offset:Value')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Offset:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Offset:Value">The offset from UTC for this period.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Offset:Remarks')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Offset:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Offset:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Offset:Version Information')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Offset:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Offset:Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval)">
+          <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):member')">
+            <span id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):member:toggle">⊟</span> op_Equality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):member">
+          <p class="Summary">
+            Implements the operator ==.
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator== (<a href="../NodaTime.TimeZones/ZoneInterval.html">ZoneInterval</a> left, <a href="../NodaTime.TimeZones/ZoneInterval.html">ZoneInterval</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Parameters')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Returns')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Returns">The result of the operator.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Remarks')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Version Information')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.op_Equality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval)">
+          <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):member')">
+            <span id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):member:toggle">⊟</span> op_Inequality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):member">
+          <p class="Summary">
+            Implements the operator !=.
+            </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator!= (<a href="../NodaTime.TimeZones/ZoneInterval.html">ZoneInterval</a> left, <a href="../NodaTime.TimeZones/ZoneInterval.html">ZoneInterval</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Parameters')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>The left.</dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>The right.</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Returns')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Returns">The result of the operator.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Remarks')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Version Information')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.op_Inequality(NodaTime.TimeZones.ZoneInterval,NodaTime.TimeZones.ZoneInterval):Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.TimeZones.ZoneInterval.Savings">
+          <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Savings:member')">
+            <span id="P:NodaTime.TimeZones.ZoneInterval.Savings:member:toggle">⊟</span> Savings Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.TimeZones.ZoneInterval.Savings:member">
+          <p class="Summary">
+            Gets the daylight savings value for this period.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Offset.html">NodaTime.Offset</a> <b>Savings</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Savings:Value')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Savings:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Savings:Value">The savings value.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Savings:Remarks')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Savings:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Savings:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Savings:Version Information')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Savings:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Savings:Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.TimeZones.ZoneInterval.Start">
+          <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Start:member')">
+            <span id="P:NodaTime.TimeZones.ZoneInterval.Start:member:toggle">⊟</span> Start Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.TimeZones.ZoneInterval.Start:member">
+          <p class="Summary">
+            Gets the first Instant that the Offset applies.
+            </p>
+          <div class="Signature">public <a href="../NodaTime/Instant.html">NodaTime.Instant</a> <b>Start</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Start:Value')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Start:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Start:Value">The first Instant that the Offset applies.</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Start:Remarks')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Start:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Start:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.TimeZones.ZoneInterval.Start:Version Information')">
+              <span id="P:NodaTime.TimeZones.ZoneInterval.Start:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.TimeZones.ZoneInterval.Start:Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.TimeZones.ZoneInterval.ToString">
+          <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.ToString:member')">
+            <span id="M:NodaTime.TimeZones.ZoneInterval.ToString:member:toggle">⊟</span> ToString Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.TimeZones.ZoneInterval.ToString:member">
+          <p class="Summary">
+            Returns a <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> that represents this instance.
+            </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> <b>ToString</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.ToString:Returns')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.ToString:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.ToString:Returns">
+            A <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> that represents this instance.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.ToString:Remarks')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.ToString:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.ToString:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.TimeZones.ZoneInterval.ToString:Version Information')">
+              <span id="M:NodaTime.TimeZones.ZoneInterval.ToString:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.TimeZones.ZoneInterval.ToString:Version Information">
+            <b>Namespace: </b>NodaTime.TimeZones<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>

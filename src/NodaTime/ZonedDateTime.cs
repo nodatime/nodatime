@@ -49,7 +49,7 @@ namespace NodaTime
         /// <param name="localDateTime">The local date time.</param>
         /// <param name="zone">The zone.</param>
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="zone"/> is <c>null</c>.</exception>
-        public ZonedDateTime(LocalDateTime localDateTime, IDateTimeZone zone)
+        public ZonedDateTime(LocalDateTime localDateTime, DateTimeZone zone)
         {
             if (zone == null)
             {
@@ -73,7 +73,7 @@ namespace NodaTime
                 throw new ArgumentNullException("chronology");
             }
             offset = chronology.Zone.GetOffsetFromUtc(instant);
-            localInstant = instant + offset;
+            localInstant = Instant.Add(instant, offset);
             this.chronology = chronology;
         }
 
@@ -87,8 +87,8 @@ namespace NodaTime
         /// <param name="minute">The minute.</param>
         /// <param name="second">The second.</param>
         /// <param name="zone">The zone.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, IDateTimeZone zone)
-            : this(year, month, day, hour, minute, second, Chronology.IsoForZone(zone))
+        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, DateTimeZone zone)
+            : this(year, month, day, hour, minute, second, zone.ToIsoChronology())
         {
         }
 
@@ -118,8 +118,8 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="zone">The zone.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, IDateTimeZone zone)
-            : this(year, month, day, hour, minute, second, millisecond, Chronology.IsoForZone(zone))
+        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, DateTimeZone zone)
+            : this(year, month, day, hour, minute, second, millisecond, zone.ToIsoChronology())
         {
         }
 
@@ -151,8 +151,8 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="tick">The tick.</param>
         /// <param name="zone">The zone.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tick, IDateTimeZone zone)
-            : this(year, month, day, hour, minute, second, millisecond, tick, Chronology.IsoForZone(zone))
+        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tick, DateTimeZone zone)
+            : this(year, month, day, hour, minute, second, millisecond, tick, zone.ToIsoChronology())
         {
         }
 
@@ -195,13 +195,13 @@ namespace NodaTime
         /// Gets the zone.
         /// </summary>
         /// <value>The zone.</value>
-        public IDateTimeZone Zone { get { return Chronology.Zone; } }
+        public DateTimeZone Zone { get { return Chronology.Zone; } }
 
         /// <summary>
         /// Gets the local instant.
         /// </summary>
         /// <value>The local instant.</value>
-        public LocalInstant LocalInstant { get { return localInstant; } }
+        internal LocalInstant LocalInstant { get { return localInstant; } }
 
         public LocalDateTime LocalDateTime { get { return new LocalDateTime(LocalInstant, chronology.Calendar); } }
 
@@ -224,6 +224,8 @@ namespace NodaTime
         public int DayOfYear { get { return LocalDateTime.DayOfYear; } }
 
         public int DayOfMonth { get { return LocalDateTime.DayOfMonth; } }
+
+        public IsoDayOfWeek IsoDayOfWeek { get { return LocalDateTime.IsoDayOfWeek; } }
 
         public int DayOfWeek { get { return LocalDateTime.DayOfWeek; } }
 

@@ -70,9 +70,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calendars\DaysOfWeek.cs" />
+    <Compile Include="CalendarSystem.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="Clocks\FixedClock.cs" />
+    <Compile Include="IsoDayOfWeek.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
     <Compile Include="FieldValueException.cs" />
@@ -83,12 +84,12 @@
     <Compile Include="Fields\BasicWeekOfWeekYearDateTimeField.cs" />
     <Compile Include="Fields\BasicWeekYearDateTimeField.cs" />
     <Compile Include="Fields\BasicYearDateTimeField.cs" />
-    <Compile Include="Fields\DateTimeFieldBase.cs" />
+    <Compile Include="Fields\DateTimeField.cs" />
     <Compile Include="Fields\DecoratedDateTimeField.cs" />
     <Compile Include="Fields\DecoratedDurationField.cs" />
     <Compile Include="Fields\DividedDateTimeField.cs" />
     <Compile Include="Fields\FieldSet.cs" />
-    <Compile Include="Fields\DurationFieldBase.cs" />
+    <Compile Include="Fields\DurationField.cs" />
     <Compile Include="Fields\FieldUtils.cs" />
     <Compile Include="Fields\GJDayOfWeekDateTimeField.cs" />
     <Compile Include="Fields\GJEraDateTimeField.cs" />
@@ -107,19 +108,11 @@
     <Compile Include="Fields\UnsupportedDurationField.cs" />
     <Compile Include="Fields\ZeroIsMaxDateTimeField.cs" />
     <Compile Include="LocalInstant.cs" />
-    <Compile Include="Partials\AbstractPartial.cs" />
-    <Compile Include="Partials\LocalBase.cs" />
-    <Compile Include="Partials\PartialBase.cs" />
     <Compile Include="Calendars\AssembledCalendarSystem.cs" />
     <Compile Include="Calendars\BasicCalendarSystem.cs" />
     <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
-    <Compile Include="Calendars\CalendarSystemBase.cs" />
     <Compile Include="Calendars\GregorianCalendarSystem.cs" />
     <Compile Include="Calendars\IsoCalendarSystem.cs" />
-    <Compile Include="Converters\ConverterManager.cs" />
-    <Compile Include="Converters\IConverter.cs" />
-    <Compile Include="Converters\IInstantConverter.cs" />
-    <Compile Include="Calendars\ICalendarSystem.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Format\IPeriodParser.cs" />
@@ -129,20 +122,16 @@
     <Compile Include="Format\PeriodFormatterBuilder.cs" />
     <Compile Include="Format\PeriodFormats.cs" />
     <Compile Include="Clocks\SystemClock.cs" />
-    <Compile Include="Partials\PartialUtils.cs" />
     <Compile Include="Periods\Period.Creation.cs" />
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
-    <Compile Include="TimeZones\IDateTimeZoneReader.cs" />
-    <Compile Include="TimeZones\IDateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\NullDateTimeZone.cs" />
     <Compile Include="TimeZones\Transition.cs" />
     <Compile Include="TimeZones\WindowsToPosixResource.cs" />
     <Compile Include="TimeZones\DateTimeZoneCompressionReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneCompressionWriter.cs" />
-    <Compile Include="TimeZones\DateTimeZoneBase.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DateTimeZones.cs" />
     <Compile Include="TimeZones\DaylightSavingsTimeZone.cs" />
@@ -167,7 +156,6 @@
     <Compile Include="TimeZones\TransitionMode.cs" />
     <Compile Include="TimeZones\UtcProvider.cs" />
     <Compile Include="TimeZones\DateTimeZoneResourceProvider.cs" />
-    <Compile Include="Partials\MonthDay.cs" />
     <Compile Include="Format\DateTimeFormatter.cs" />
     <Compile Include="Format\DateTimeFormats.Pattern.cs" />
     <Compile Include="Format\DateTimeParserBucket.cs" />
@@ -176,31 +164,24 @@
     <Compile Include="Format\IDateTimePrinter.cs" />
     <Compile Include="Format\IsoDateTimeFormats.cs" />
     <Compile Include="Chronology.cs" />
-    <Compile Include="Partials\Partial.cs" />
     <Compile Include="Periods\Period.cs" />
     <Compile Include="Periods\PeriodType.cs" />
     <Compile Include="Periods\Weeks.cs" />
     <Compile Include="Periods\Seconds.cs" />
-    <Compile Include="Partials\YearMonth.cs" />
     <Compile Include="Periods\Years.cs" />
     <Compile Include="Periods\Months.cs" />
     <Compile Include="Periods\Minutes.cs" />
     <Compile Include="Partials\LocalTime.cs" />
     <Compile Include="LocalDateTime.cs" />
-    <Compile Include="Fields\IDateTimeField.cs" />
     <Compile Include="Fields\DateTimeFieldType.cs" />
-    <Compile Include="IDateTimeZone.cs" />
+    <Compile Include="DateTimeZone.cs" />
     <Compile Include="Periods\Days.cs" />
     <Compile Include="Duration.cs" />
-    <Compile Include="Fields\IDurationField.cs" />
     <Compile Include="Fields\DurationFieldType.cs" />
     <Compile Include="Periods\Hours.cs" />
     <Compile Include="Instant.cs" />
     <Compile Include="Interval.cs" />
-    <Compile Include="IPartial.cs" />
     <Compile Include="Partials\LocalDate.cs" />
-    <Compile Include="NodaTimePermission.cs" />
-    <Compile Include="DateTimeComparer.cs" />
     <Compile Include="NodaConstants.cs" />
     <Compile Include="IPeriod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -210,14 +191,10 @@
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Converters\readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="Diagrams\Calendars.cd" />
     <None Include="Diagrams\DurationFields.cd" />
     <None Include="Diagrams\DateTimeFields.cd" />
-    <None Include="Diagrams\Partial.cd" />
     <None Include="Diagrams\Period.cd" />
   </ItemGroup>
   <ItemGroup>

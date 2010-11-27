@@ -42,7 +42,7 @@ namespace NodaTime.Test.Periods
         [Test]
         public void OperatorPlus_NonZero()
         {
-            Assert.AreEqual(new Period(2,10,0,0), Period.FromMinutes(10) + Period.FromHours(2), "10 minutes + 1 hour");
+            Assert.AreEqual(new Period(2, 10, 0, 0), Period.FromMinutes(10) + Period.FromHours(2), "10 minutes + 1 hour");
         }
     }
 }

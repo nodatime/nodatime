@@ -3,52 +3,44 @@
   <Class Name="NodaTime.Calendars.AssembledCalendarSystem" Collapsed="true">
     <Position X="3.5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAHAAAAAAAAAAAAAwAAAAAAAAAAAAAAEAAAACAAEgAA=</HashCode>
       <FileName>Calendars\AssembledCalendarSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Calendars.BasicCalendarSystem" Collapsed="true">
     <Position X="2.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>JAECwUEQAQAgAgAJABAQAAAQABABBIAAFABAoBIEQAA=</HashCode>
       <FileName>Calendars\BasicCalendarSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Calendars.BasicGJCalendarSystem" Collapsed="true">
     <Position X="2.25" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AACAQAAAIAAAAAABAAAAAAAQAAAJAAAAAgBAgAAAAAA=</HashCode>
       <FileName>Calendars\BasicGJCalendarSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Calendars.GregorianCalendarSystem" Collapsed="true">
     <Position X="2.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAYQAAAQAAAgAJAAAQIAIABBAAAAAAEAAAAAAAAAA=</HashCode>
       <FileName>Calendars\GregorianCalendarSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Calendars.IsoCalendarSystem" Collapsed="true">
     <Position X="4.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEABAgAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAAAIAAAAQACAAACAABAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Calendars\IsoCalendarSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NodaTime.Calendars.CalendarSystemBase" Collapsed="true">
+  <Class Name="NodaTime.Calendars.CalendarSystem" Collapsed="true">
     <Position X="3.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEgAA=</HashCode>
-      <FileName>Calendars\CalendarSystemBase.cs</FileName>
+      <HashCode>AAIAAAAAgACAAAAEAAAAAAQQAABEAAAAQAAAAAAEgEA=</HashCode>
+      <FileName>Calendars\CalendarSystem.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="NodaTime.Calendars.ICalendarSystem" Collapsed="true">
-    <Position X="0.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEgAA=</HashCode>
-      <FileName>Calendars\ICalendarSystem.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

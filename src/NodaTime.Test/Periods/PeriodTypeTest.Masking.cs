@@ -162,10 +162,7 @@ namespace NodaTime.Test.Periods
         [Test]
         public void WithHoursMinutesSeconsRemoved_MasksHoursMinutesSeconds_InStandardPeriodType()
         {
-            var sut = PeriodType.Standard
-                                    .WithHoursRemoved()
-                                    .WithMinutesRemoved()
-                                    .WithSecondsRemoved();
+            var sut = PeriodType.Standard.WithHoursRemoved().WithMinutesRemoved().WithSecondsRemoved();
 
             Assert.AreEqual(5, sut.Size);
             Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));

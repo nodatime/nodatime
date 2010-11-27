@@ -139,6 +139,5 @@ namespace NodaTime.Test.Calendars
             Assert.That(sut.IsSupported, Is.True);
             Assert.That(sut.IsPrecise, Is.True);
         }
-
     }
 }

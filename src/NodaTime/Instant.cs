@@ -17,7 +17,6 @@
 
 using System;
 using System.Globalization;
-using NodaTime.Calendars;
 
 namespace NodaTime
 {
@@ -169,6 +168,8 @@ namespace NodaTime
             return new Instant(left.Ticks + right.Ticks);
         }
 
+        /*
+         * We can't declare operators using internal types.
         /// <summary>
         /// Implements the operator + (addition) for <see cref="Instant"/> + <see cref="Offset"/>.
         /// </summary>
@@ -179,6 +180,7 @@ namespace NodaTime
         {
             return new LocalInstant(left.Ticks + right.Ticks);
         }
+         */
 
         /// <summary>
         /// Adds a duration to an instant. Friendly alternative to <c>operator-()</c>.
@@ -192,14 +194,14 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Adds an offset to an instant. Friendly alternative to <c>operator-()</c>.
+        /// Adds an offset to an instant. Friendly alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
-        public static LocalInstant Add(Instant left, Offset right)
+        internal static LocalInstant Add(Instant left, Offset right)
         {
-            return left + right;
+            return new LocalInstant(left.Ticks + right.Ticks);
         }
 
         /// <summary>
@@ -322,7 +324,7 @@ namespace NodaTime
         /// </summary>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
-            var local = IsoCalendarSystem.Instance.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
+            var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
             return new Instant(local.Ticks);
         }
 
@@ -335,7 +337,7 @@ namespace NodaTime
         /// </summary>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
-            var local = IsoCalendarSystem.Instance.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
+            var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
             return new Instant(local.Ticks);
         }
         #endregion

@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using NodaTime.Calendars;
 
 namespace NodaTime.Periods
 {
@@ -214,7 +213,7 @@ namespace NodaTime.Periods
         /// be stored in the largest available precise field.
         /// </para>
         /// </remarks>
-        public static Period From(Duration duration, ICalendarSystem calendar, PeriodType periodType)
+        public static Period From(Duration duration, CalendarSystem calendar, PeriodType periodType)
         {
             return From(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, calendar, periodType);
         }
@@ -239,7 +238,7 @@ namespace NodaTime.Periods
         /// be stored in the largest available precise field.
         /// </para>
         /// </remarks>
-        public static Period From(Duration duration, ICalendarSystem calendar)
+        public static Period From(Duration duration, CalendarSystem calendar)
         {
             return From(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, calendar, PeriodType.Standard);
         }
@@ -266,7 +265,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period From(Duration duration, PeriodType periodType)
         {
-            return From(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, IsoCalendarSystem.Instance, periodType);
+            return From(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, CalendarSystem.Iso, periodType);
         }
 
         /// <summary>
@@ -290,7 +289,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period From(Duration duration)
         {
-            return From(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, IsoCalendarSystem.Instance, PeriodType.Standard);
+            return From(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, CalendarSystem.Iso, PeriodType.Standard);
         }
 
         /// <summary>
@@ -301,7 +300,7 @@ namespace NodaTime.Periods
         /// <param name="calendar">The calendar system to use</param>
         /// <param name="periodType">Which set of fields this period supports</param>
         /// <returns>The period</returns>
-        public static Period From(LocalInstant start, LocalInstant end, ICalendarSystem calendar, PeriodType periodType)
+        internal static Period From(LocalInstant start, LocalInstant end, CalendarSystem calendar, PeriodType periodType)
         {
             if (calendar == null)
             {
@@ -322,7 +321,7 @@ namespace NodaTime.Periods
         /// <param name="end">Interval end</param>
         /// <param name="calendar">The calendar system to use</param>
         /// <returns>The period</returns>
-        public static Period From(LocalInstant start, LocalInstant end, ICalendarSystem calendar)
+        internal static Period From(LocalInstant start, LocalInstant end, CalendarSystem calendar)
         {
             return From(start, end, calendar, PeriodType.Standard);
         }
@@ -334,9 +333,9 @@ namespace NodaTime.Periods
         /// <param name="end">Interval end</param>
         /// <param name="periodType">Which set of fields this period supports</param>
         /// <returns>The period</returns>
-        public static Period From(LocalInstant start, LocalInstant end, PeriodType periodType)
+        internal static Period From(LocalInstant start, LocalInstant end, PeriodType periodType)
         {
-            return From(start, end, IsoCalendarSystem.Instance, periodType);
+            return From(start, end, CalendarSystem.Iso, periodType);
         }
 
         /// <summary>
@@ -345,9 +344,9 @@ namespace NodaTime.Periods
         /// <param name="start">Interval start</param>
         /// <param name="end">Interval end</param>
         /// <returns>The period</returns>
-        public static Period From(LocalInstant start, LocalInstant end)
+        internal static Period From(LocalInstant start, LocalInstant end)
         {
-            return From(start, end, IsoCalendarSystem.Instance, PeriodType.Standard);
+            return From(start, end, CalendarSystem.Iso, PeriodType.Standard);
         }
 
         /// <summary>
@@ -358,7 +357,7 @@ namespace NodaTime.Periods
         /// <param name="calendar">The calendar system to use</param>
         /// <param name="periodType">Which set of fields this period supports</param>
         /// <returns>The period</returns>
-        public static Period From(LocalInstant start, Duration duration, ICalendarSystem calendar, PeriodType periodType)
+        internal static Period From(LocalInstant start, Duration duration, CalendarSystem calendar, PeriodType periodType)
         {
             return From(start, start + duration, calendar, periodType);
         }
@@ -370,7 +369,7 @@ namespace NodaTime.Periods
         /// <param name="duration">The duration of the interval</param>
         /// <param name="calendar">The calendar system to use</param>
         /// <returns>The period</returns>
-        public static Period From(LocalInstant start, Duration duration, ICalendarSystem calendar)
+        internal static Period From(LocalInstant start, Duration duration, CalendarSystem calendar)
         {
             return From(start, start + duration, calendar, PeriodType.Standard);
         }
@@ -382,9 +381,9 @@ namespace NodaTime.Periods
         /// <param name="duration">The duration of the interval</param>
         /// <param name="periodType">Which set of fields this period supports</param>
         /// <returns>The period</returns>
-        public static Period From(LocalInstant start, Duration duration, PeriodType periodType)
+        internal static Period From(LocalInstant start, Duration duration, PeriodType periodType)
         {
-            return From(start, start + duration, IsoCalendarSystem.Instance, periodType);
+            return From(start, start + duration, CalendarSystem.Iso, periodType);
         }
 
         /// <summary>
@@ -393,9 +392,9 @@ namespace NodaTime.Periods
         /// <param name="start">The interval start</param>
         /// <param name="duration">The duration of the interval</param>
         /// <returns>The period</returns>
-        public static Period From(LocalInstant start, Duration duration)
+        internal static Period From(LocalInstant start, Duration duration)
         {
-            return From(start, start + duration, IsoCalendarSystem.Instance, PeriodType.Standard);
+            return From(start, start + duration, CalendarSystem.Iso, PeriodType.Standard);
         }
 
         /// <summary>
@@ -406,7 +405,7 @@ namespace NodaTime.Periods
         /// <param name="calendar">The calendar system to use</param>
         /// <param name="periodType">Which set of fields this period supports</param>
         /// <returns>The period</returns>
-        public static Period From(Duration duration, LocalInstant end, ICalendarSystem calendar, PeriodType periodType)
+        internal static Period From(Duration duration, LocalInstant end, CalendarSystem calendar, PeriodType periodType)
         {
             return From(end - duration, end, calendar, periodType);
         }
@@ -418,7 +417,7 @@ namespace NodaTime.Periods
         /// <param name="end">The interval end</param>
         /// <param name="calendar">The calendar system to use</param>
         /// <returns>The period</returns>
-        public static Period From(Duration duration, LocalInstant end, ICalendarSystem calendar)
+        internal static Period From(Duration duration, LocalInstant end, CalendarSystem calendar)
         {
             return From(end - duration, end, calendar, PeriodType.Standard);
         }
@@ -430,9 +429,9 @@ namespace NodaTime.Periods
         /// <param name="end">The interval end</param>
         /// <param name="periodType">Which set of fields this period supports</param>
         /// <returns>The period</returns>
-        public static Period From(Duration duration, LocalInstant end, PeriodType periodType)
+        internal static Period From(Duration duration, LocalInstant end, PeriodType periodType)
         {
-            return From(end - duration, end, IsoCalendarSystem.Instance, periodType);
+            return From(end - duration, end, CalendarSystem.Iso, periodType);
         }
 
         /// <summary>
@@ -441,9 +440,9 @@ namespace NodaTime.Periods
         /// <param name="duration">The duration of the interval</param>
         /// <param name="end">The interval end</param>
         /// <returns>The period</returns>
-        public static Period From(Duration duration, LocalInstant end)
+        internal static Period From(Duration duration, LocalInstant end)
         {
-            return From(end - duration, end, IsoCalendarSystem.Instance, PeriodType.Standard);
+            return From(end - duration, end, CalendarSystem.Iso, PeriodType.Standard);
         }
     }
 }

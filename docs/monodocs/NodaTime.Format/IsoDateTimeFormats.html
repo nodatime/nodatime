@@ -1,0 +1,2804 @@
+<html>
+  <head>
+    <title>NodaTime.Format.IsoDateTimeFormats</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime.Format Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.Format.IsoDateTimeFormats">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Format.IsoDateTimeFormats:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Format.IsoDateTimeFormats:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Format.IsoDateTimeFormats:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.Format.IsoDateTimeFormats">IsoDateTimeFormats  Class</h1>
+    <p class="Summary" id="T:NodaTime.Format.IsoDateTimeFormats:Summary">
+            Original name: ISODateTimeFormat.
+            This has a non-private constructor in Joda Time, but it's not clear
+            to me why, given that it only has static methods...
+            </p>
+    <div id="T:NodaTime.Format.IsoDateTimeFormats:Signature">
+      <div class="Signature">public static class  <b>IsoDateTimeFormats</b></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.Format.IsoDateTimeFormats:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Format.IsoDateTimeFormats:Docs:Remarks')">
+          <span id="T:NodaTime.Format.IsoDateTimeFormats:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Format.IsoDateTimeFormats:Docs:Remarks">
+        <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+      </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Format.IsoDateTimeFormats:Docs:Version Information')">
+          <span id="T:NodaTime.Format.IsoDateTimeFormats:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Format.IsoDateTimeFormats:Docs:Version Information">
+        <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Public Properties')">
+            <span id="Public Properties:toggle">⊟</span> Public Properties</a>
+        </h3>
+        <blockquote id="Public Properties">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicDate">BasicDate</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a full date as four digit year, two digit
+            month of year, and two digit day of month.
+            (yyyyMMdd)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime">BasicDateTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a basic date and time, separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (yyyyMMdd'T'HHmmss.SSSZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds">BasicDateTimeNoMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a basic date and time without millis,
+            separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (yyyyMMdd'T'HHmmssZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate">BasicOrdinalDate</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a full ordinal date, using a four
+            digit year and three digit dayOfYear.
+            (yyyyDDD)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime">BasicOrdinalDateTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a full ordinal date and time, using a four
+            digit year and three digit dayOfYear
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (yyyyDDD'T'HHmmss.SSSZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds">BasicOrdinalDateTimeNoMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a full ordinal date and time without millis,
+            using a four digit year and three digit dayOfYear.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (yyyyDDD'T'HHmmssZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicTime">BasicTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute
+            of hour, two digit second of minute, three digit millis, and time zone offset.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (HHmmss.SSSZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds">BasicTimeNoMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute
+            of hour, two digit second of minute, and time zone offset.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (HHmmssZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone">BasicTimeNoZone</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute
+            of hour, two digit second of minute, and three digit millis.
+            (HHmmss.SSS)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicTTime">BasicTTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute
+            of hour, two digit second of minute, three digit millis, and time zone
+            offset prefixed by 'T'.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            ('T'HHmmss.SSSZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds">BasicTTimeNoMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute
+            of hour, two digit second of minute, three digit millis, and time zone
+            offset prefixed by 'T'.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            ('T'HHmmss.SSSZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate">BasicWeekDate</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a full date as four digit weekyear, two
+            igit week of weekyear, and one digit day of week
+            (xxxx'W'wwe)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime">BasicWeekDateTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a basic weekyear date and time, separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (xxxx'W'wwe'T'HHmmss.SSSZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds">BasicWeekDateTimeNoMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a basic weekyear date and time
+            without millis, separated by a 'T'.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (xxxx'W'wwe'T'HHmmssZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.Date">Date</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a full date as four digit year, two digit month
+            of year, and two digit day of month.
+            (yyyy-MM-dd)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.DateElementParser">DateElementParser</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a generic ISO date parser for parsing dates.
+            It accepts formats described by the following syntax:
+            date-element      = std-date-element | ord-date-element | week-date-element
+            std-date-element  = yyyy ['-' MM ['-' dd]]
+            ord-date-element  = yyyy ['-' DDD]
+            week-date-element = xxxx '-W' ww ['-' e]
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.DateHour">DateHour</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a full date and two digit hour of day.
+            (yyyy-MM-dd'T'HH)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute">DateHourMinute</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a full date, two digit hour of day,
+            and two digit minute of hour.
+            (yyyy-MM-dd'T'HH:mm)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond">DateHourMinuteSecond</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a full date, two digit hour of day,
+            two digit minute of hour, and two digit second of minute.
+            (yyyy-MM-dd'T'HH:mm:ss)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction">DateHourMinuteSecondFraction</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a full date, two digit hour of day,
+            two digit minute of hour, two digit second of minute, and three digit
+            fraction of second (yyyy-MM-dd'T'HH:mm:ss.SSS). Parsing will parse up
+            to 9 fractional second digits, throwing away all except the first three.
+            (yyyy-MM-dd'T'HH:mm:ss.SSS)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds">DateHourMinuteSecondMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a full date, two digit hour of day,
+            two digit minute of hour, two digit second of minute, and three digit
+            fraction of second (yyyy-MM-dd'T'HH:mm:ss.SSS). Parsing will parse up
+            to 3 fractional second digits.
+            (yyyy-MM-dd'T'HH:mm:ss.SSS)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.DateParser">DateParser</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a generic ISO date parser for parsing dates with a possible zone.
+            It accepts formats described by the following syntax:
+            date              = date-element ['T' offset]
+            date-element      = std-date-element | ord-date-element | week-date-element
+            std-date-element  = yyyy ['-' MM ['-' dd]]
+            ord-date-element  = yyyy ['-' DDD]
+            week-date-element = xxxx '-W' ww ['-' e]
+            offset            = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.DateTime">DateTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a full date and time, separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (yyyy-MM-dd'T'HH:mm:ss.SSSZZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds">DateTimeNoMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a full date and time without milliseconds,
+            separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (yyyy-MM-dd'T'HH:mm:ssZZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.Hour">Hour</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day.
+            (HH)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.HourMinute">HourMinute</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day and two digit minute of hour.
+            (HH:mm)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond">HourMinuteSecond</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, and two digit second of minute.
+            (HH:mm:ss)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction">HourMinuteSecondFraction</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, and three digit fraction of
+            second (HH:mm:ss.SSS). Parsing will parse up to 9 fractional second
+            digits, throwing away all except the first three.
+            (HH:mm:ss.SSS)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds">HourMinuteSecondMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, and three digit fraction of
+            second (HH:mm:ss.SSS). Parsing will parse up to 3 fractional second digits.
+            (HH:mm:ss.SSS)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser">LocalDateParser</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a generic ISO date parser for parsing local dates.
+            This parser is initialised with the local (UTC) time zone.
+            It accepts formats described by the following syntax:
+            date-element      = std-date-element | ord-date-element | week-date-element
+            std-date-element  = yyyy ['-' MM ['-' dd]]
+            ord-date-element  = yyyy ['-' DDD]
+            week-date-element = xxxx '-W' ww ['-' e]
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser">LocalTimeParser</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a generic ISO time parser for parsing local times.
+            This parser is initialised with the local (UTC) time zone.
+            It accepts formats described by the following syntax:
+            time           = ['T'] time-element
+            time-element   = HH [minute-element] | [fraction]
+            minute-element = ':' mm [second-element] | [fraction]
+            second-element = ':' ss [fraction]
+            fraction       = ('.' | ',') digit+
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate">OrdinalDate</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a full ordinal date, using a four
+            digit year and three digit dayOfYear.
+            (yyyy-DDD)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime">OrdinalDateTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a full ordinal date and time, using a four
+            digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ss.SSSZZ).
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (yyyy-DDD'T'HH:mm:ss.SSSZZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds">OrdinalDateTimeNoMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a full ordinal date and time without millis,
+            using a four digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ss.SSSZZ).
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (yyyy-DDD'T'HH:mm:ssZZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.Time">Time</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, three digit fraction of second, and
+            time zone offset.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (HH:mm:ss.SSSZZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser">TimeElementParser</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a generic ISO time parser. It accepts formats described by
+            the following syntax:
+            time-element   = HH [minute-element] | [fraction]
+            minute-element = ':' mm [second-element] | [fraction]
+            second-element = ':' ss [fraction]
+            fraction       = ('.' | ',') digit+
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds">TimeNoMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, and time zone offset (HH:mm:ssZZ).
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (HH:mm:ssZZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone">TimeNoZone</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, and three digit fraction of second.
+            (HH:mm:ss.SSS)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.TimeParser">TimeParser</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a generic ISO time parser for parsing times with a possible zone.
+            It accepts formats described by the following syntax:
+            time           = ['T'] time-element [offset]
+            time-element   = HH [minute-element] | [fraction]
+            minute-element = ':' mm [second-element] | [fraction]
+            second-element = ':' ss [fraction]
+            fraction       = ('.' | ',') digit+
+            offset         = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.TTime">TTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, three digit fraction of second, and
+            time zone offset prefixed by 'T'.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            ('T'HH:mm:ss.SSSZZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds">TTimeNoMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, and time zone offset prefixed by 'T'.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            ('T'HH:mm:ssZZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.WeekDate">WeekDate</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a full date as four digit weekyear, two digit
+            week of weekyear, and one digit day of week
+            (xxxx-'W'ww-e)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime">WeekDateTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a full weekyear date and time,
+            separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (xxxx-'W'ww-e'T'HH:mm:ss.SSSZZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds">WeekDateTimeNoMilliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter that combines a full weekyear date and time without millis,
+            separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (xxxx-'W'ww-e'T'HH:mm:ssZZ)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.WeekYear">WeekYear</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a four digit weekyear. 
+            (xxxx)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek">WeekYearWeek</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a for a four digit weekyear and two digit week of weekyear. 
+            (xxxx-'W'ww)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay">WeekYearWeekDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a for a four digit weekyear, two digit week of
+            weekyear, and one digit day of week.
+            (xxxx-'W'ww-e)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.Year">Year</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a four digit year. (yyyy)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.YearMonth">YearMonth</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a four digit year and two digit month of year. 
+            (yyyy-MM)
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay">YearMonthDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a>
+                  </i>. 
+            Gets a formatter for a four digit year, two digit month of year, and
+            two digit day of month. 
+            (yyyy-MM-dd)
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.Format.IsoDateTimeFormats:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicDate">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDate:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDate:member:toggle">⊟</span> BasicDate Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicDate:member">
+          <p class="Summary">
+            Gets a formatter for a full date as four digit year, two digit
+            month of year, and two digit day of month.
+            (yyyyMMdd)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicDate</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDate:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDate:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicDate:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDate:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDate:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicDate:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDate:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDate:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicDate:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:member:toggle">⊟</span> BasicDateTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:member">
+          <p class="Summary">
+            Gets a formatter that combines a basic date and time, separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (yyyyMMdd'T'HHmmss.SSSZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicDateTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTime:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:member:toggle">⊟</span> BasicDateTimeNoMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter that combines a basic date and time without millis,
+            separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (yyyyMMdd'T'HHmmssZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicDateTimeNoMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicDateTimeNoMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:member:toggle">⊟</span> BasicOrdinalDate Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:member">
+          <p class="Summary">
+            Gets a formatter for a full ordinal date, using a four
+            digit year and three digit dayOfYear.
+            (yyyyDDD)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicOrdinalDate</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDate:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:member:toggle">⊟</span> BasicOrdinalDateTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:member">
+          <p class="Summary">
+            Gets a formatter for a full ordinal date and time, using a four
+            digit year and three digit dayOfYear
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (yyyyDDD'T'HHmmss.SSSZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicOrdinalDateTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTime:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:member:toggle">⊟</span> BasicOrdinalDateTimeNoMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter for a full ordinal date and time without millis,
+            using a four digit year and three digit dayOfYear.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (yyyyDDD'T'HHmmssZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicOrdinalDateTimeNoMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicOrdinalDateTimeNoMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicTime">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTime:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTime:member:toggle">⊟</span> BasicTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicTime:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute
+            of hour, two digit second of minute, three digit millis, and time zone offset.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (HHmmss.SSSZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTime:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTime:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTime:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTime:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTime:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:member:toggle">⊟</span> BasicTimeNoMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute
+            of hour, two digit second of minute, and time zone offset.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (HHmmssZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicTimeNoMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:member:toggle">⊟</span> BasicTimeNoZone Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute
+            of hour, two digit second of minute, and three digit millis.
+            (HHmmss.SSS)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicTimeNoZone</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTimeNoZone:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTime">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:member:toggle">⊟</span> BasicTTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute
+            of hour, two digit second of minute, three digit millis, and time zone
+            offset prefixed by 'T'.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            ('T'HHmmss.SSSZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicTTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTime:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:member:toggle">⊟</span> BasicTTimeNoMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute
+            of hour, two digit second of minute, three digit millis, and time zone
+            offset prefixed by 'T'.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            ('T'HHmmss.SSSZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicTTimeNoMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicTTimeNoMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:member:toggle">⊟</span> BasicWeekDate Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:member">
+          <p class="Summary">
+            Gets a formatter for a full date as four digit weekyear, two
+            igit week of weekyear, and one digit day of week
+            (xxxx'W'wwe)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicWeekDate</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDate:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:member:toggle">⊟</span> BasicWeekDateTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:member">
+          <p class="Summary">
+            Gets a formatter that combines a basic weekyear date and time, separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (xxxx'W'wwe'T'HHmmss.SSSZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicWeekDateTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTime:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:member:toggle">⊟</span> BasicWeekDateTimeNoMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter that combines a basic weekyear date and time
+            without millis, separated by a 'T'.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+            (xxxx'W'wwe'T'HHmmssZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>BasicWeekDateTimeNoMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.BasicWeekDateTimeNoMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.Date">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Date:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.Date:member:toggle">⊟</span> Date Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.Date:member">
+          <p class="Summary">
+            Gets a formatter for a full date as four digit year, two digit month
+            of year, and two digit day of month.
+            (yyyy-MM-dd)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>Date</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Date:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Date:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Date:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Date:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Date:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Date:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Date:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Date:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Date:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.DateElementParser">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:member:toggle">⊟</span> DateElementParser Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:member">
+          <p class="Summary">
+            Gets a generic ISO date parser for parsing dates.
+            It accepts formats described by the following syntax:
+            date-element      = std-date-element | ord-date-element | week-date-element
+            std-date-element  = yyyy ['-' MM ['-' dd]]
+            ord-date-element  = yyyy ['-' DDD]
+            week-date-element = xxxx '-W' ww ['-' e]
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>DateElementParser</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateElementParser:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.DateHour">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHour:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHour:member:toggle">⊟</span> DateHour Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.DateHour:member">
+          <p class="Summary">
+            Gets a formatter that combines a full date and two digit hour of day.
+            (yyyy-MM-dd'T'HH)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>DateHour</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHour:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHour:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHour:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHour:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHour:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHour:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHour:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHour:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHour:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:member:toggle">⊟</span> DateHourMinute Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:member">
+          <p class="Summary">
+            Gets a formatter that combines a full date, two digit hour of day,
+            and two digit minute of hour.
+            (yyyy-MM-dd'T'HH:mm)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>DateHourMinute</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinute:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:member:toggle">⊟</span> DateHourMinuteSecond Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:member">
+          <p class="Summary">
+            Gets a formatter that combines a full date, two digit hour of day,
+            two digit minute of hour, and two digit second of minute.
+            (yyyy-MM-dd'T'HH:mm:ss)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>DateHourMinuteSecond</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecond:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:member:toggle">⊟</span> DateHourMinuteSecondFraction Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:member">
+          <p class="Summary">
+            Gets a formatter that combines a full date, two digit hour of day,
+            two digit minute of hour, two digit second of minute, and three digit
+            fraction of second (yyyy-MM-dd'T'HH:mm:ss.SSS). Parsing will parse up
+            to 9 fractional second digits, throwing away all except the first three.
+            (yyyy-MM-dd'T'HH:mm:ss.SSS)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>DateHourMinuteSecondFraction</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondFraction:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:member:toggle">⊟</span> DateHourMinuteSecondMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter that combines a full date, two digit hour of day,
+            two digit minute of hour, two digit second of minute, and three digit
+            fraction of second (yyyy-MM-dd'T'HH:mm:ss.SSS). Parsing will parse up
+            to 3 fractional second digits.
+            (yyyy-MM-dd'T'HH:mm:ss.SSS)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>DateHourMinuteSecondMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateHourMinuteSecondMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.DateParser">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateParser:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.DateParser:member:toggle">⊟</span> DateParser Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.DateParser:member">
+          <p class="Summary">
+            Gets a generic ISO date parser for parsing dates with a possible zone.
+            It accepts formats described by the following syntax:
+            date              = date-element ['T' offset]
+            date-element      = std-date-element | ord-date-element | week-date-element
+            std-date-element  = yyyy ['-' MM ['-' dd]]
+            ord-date-element  = yyyy ['-' DDD]
+            week-date-element = xxxx '-W' ww ['-' e]
+            offset            = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>DateParser</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateParser:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateParser:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateParser:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateParser:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateParser:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateParser:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateParser:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateParser:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateParser:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.DateTime">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateTime:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.DateTime:member:toggle">⊟</span> DateTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.DateTime:member">
+          <p class="Summary">
+            Gets a formatter that combines a full date and time, separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (yyyy-MM-dd'T'HH:mm:ss.SSSZZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>DateTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateTime:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateTime:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateTime:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateTime:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateTime:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:member:toggle">⊟</span> DateTimeNoMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter that combines a full date and time without milliseconds,
+            separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (yyyy-MM-dd'T'HH:mm:ssZZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>DateTimeNoMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.DateTimeNoMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.Hour">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Hour:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.Hour:member:toggle">⊟</span> Hour Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.Hour:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day.
+            (HH)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>Hour</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Hour:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Hour:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Hour:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Hour:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Hour:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Hour:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Hour:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Hour:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Hour:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.HourMinute">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinute:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinute:member:toggle">⊟</span> HourMinute Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.HourMinute:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day and two digit minute of hour.
+            (HH:mm)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>HourMinute</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinute:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinute:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinute:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinute:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinute:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinute:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinute:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinute:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinute:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:member:toggle">⊟</span> HourMinuteSecond Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, and two digit second of minute.
+            (HH:mm:ss)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>HourMinuteSecond</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecond:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:member:toggle">⊟</span> HourMinuteSecondFraction Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, and three digit fraction of
+            second (HH:mm:ss.SSS). Parsing will parse up to 9 fractional second
+            digits, throwing away all except the first three.
+            (HH:mm:ss.SSS)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>HourMinuteSecondFraction</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondFraction:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:member:toggle">⊟</span> HourMinuteSecondMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, and three digit fraction of
+            second (HH:mm:ss.SSS). Parsing will parse up to 3 fractional second digits.
+            (HH:mm:ss.SSS)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>HourMinuteSecondMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.HourMinuteSecondMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:member:toggle">⊟</span> LocalDateParser Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:member">
+          <p class="Summary">
+            Gets a generic ISO date parser for parsing local dates.
+            This parser is initialised with the local (UTC) time zone.
+            It accepts formats described by the following syntax:
+            date-element      = std-date-element | ord-date-element | week-date-element
+            std-date-element  = yyyy ['-' MM ['-' dd]]
+            ord-date-element  = yyyy ['-' DDD]
+            week-date-element = xxxx '-W' ww ['-' e]
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>LocalDateParser</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.LocalDateParser:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:member:toggle">⊟</span> LocalTimeParser Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:member">
+          <p class="Summary">
+            Gets a generic ISO time parser for parsing local times.
+            This parser is initialised with the local (UTC) time zone.
+            It accepts formats described by the following syntax:
+            time           = ['T'] time-element
+            time-element   = HH [minute-element] | [fraction]
+            minute-element = ':' mm [second-element] | [fraction]
+            second-element = ':' ss [fraction]
+            fraction       = ('.' | ',') digit+
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>LocalTimeParser</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.LocalTimeParser:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:member:toggle">⊟</span> OrdinalDate Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:member">
+          <p class="Summary">
+            Gets a formatter for a full ordinal date, using a four
+            digit year and three digit dayOfYear.
+            (yyyy-DDD)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>OrdinalDate</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDate:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:member:toggle">⊟</span> OrdinalDateTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:member">
+          <p class="Summary">
+            Gets a formatter for a full ordinal date and time, using a four
+            digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ss.SSSZZ).
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (yyyy-DDD'T'HH:mm:ss.SSSZZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>OrdinalDateTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTime:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:member:toggle">⊟</span> OrdinalDateTimeNoMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter for a full ordinal date and time without millis,
+            using a four digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ss.SSSZZ).
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (yyyy-DDD'T'HH:mm:ssZZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>OrdinalDateTimeNoMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.OrdinalDateTimeNoMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.Time">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Time:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.Time:member:toggle">⊟</span> Time Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.Time:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, three digit fraction of second, and
+            time zone offset.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (HH:mm:ss.SSSZZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>Time</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Time:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Time:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Time:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Time:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Time:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Time:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Time:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Time:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Time:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:member:toggle">⊟</span> TimeElementParser Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:member">
+          <p class="Summary">
+            Gets a generic ISO time parser. It accepts formats described by
+            the following syntax:
+            time-element   = HH [minute-element] | [fraction]
+            minute-element = ':' mm [second-element] | [fraction]
+            second-element = ':' ss [fraction]
+            fraction       = ('.' | ',') digit+
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>TimeElementParser</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeElementParser:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:member:toggle">⊟</span> TimeNoMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, and time zone offset (HH:mm:ssZZ).
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (HH:mm:ssZZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>TimeNoMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:member:toggle">⊟</span> TimeNoZone Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, and three digit fraction of second.
+            (HH:mm:ss.SSS)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>TimeNoZone</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeNoZone:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.TimeParser">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeParser:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeParser:member:toggle">⊟</span> TimeParser Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.TimeParser:member">
+          <p class="Summary">
+            Gets a generic ISO time parser for parsing times with a possible zone.
+            It accepts formats described by the following syntax:
+            time           = ['T'] time-element [offset]
+            time-element   = HH [minute-element] | [fraction]
+            minute-element = ':' mm [second-element] | [fraction]
+            second-element = ':' ss [fraction]
+            fraction       = ('.' | ',') digit+
+            offset         = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>TimeParser</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeParser:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeParser:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeParser:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeParser:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeParser:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeParser:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TimeParser:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TimeParser:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TimeParser:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.TTime">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TTime:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.TTime:member:toggle">⊟</span> TTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.TTime:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, three digit fraction of second, and
+            time zone offset prefixed by 'T'.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            ('T'HH:mm:ss.SSSZZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>TTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TTime:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TTime:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TTime:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TTime:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TTime:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:member:toggle">⊟</span> TTimeNoMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter for a two digit hour of day, two digit minute of
+            hour, two digit second of minute, and time zone offset prefixed by 'T'.
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            ('T'HH:mm:ssZZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>TTimeNoMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.TTimeNoMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.WeekDate">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDate:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDate:member:toggle">⊟</span> WeekDate Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.WeekDate:member">
+          <p class="Summary">
+            Gets a formatter for a full date as four digit weekyear, two digit
+            week of weekyear, and one digit day of week
+            (xxxx-'W'ww-e)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>WeekDate</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDate:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDate:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekDate:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDate:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDate:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekDate:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDate:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDate:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekDate:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:member:toggle">⊟</span> WeekDateTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:member">
+          <p class="Summary">
+            Gets a formatter that combines a full weekyear date and time,
+            separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (xxxx-'W'ww-e'T'HH:mm:ss.SSSZZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>WeekDateTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTime:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:member:toggle">⊟</span> WeekDateTimeNoMilliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:member">
+          <p class="Summary">
+            Gets a formatter that combines a full weekyear date and time without millis,
+            separated by a 'T'
+            The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+            (xxxx-'W'ww-e'T'HH:mm:ssZZ)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>WeekDateTimeNoMilliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekDateTimeNoMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.WeekYear">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYear:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYear:member:toggle">⊟</span> WeekYear Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.WeekYear:member">
+          <p class="Summary">
+            Gets a formatter for a four digit weekyear. 
+            (xxxx)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>WeekYear</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYear:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYear:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekYear:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYear:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYear:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekYear:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYear:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYear:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekYear:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:member:toggle">⊟</span> WeekYearWeek Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:member">
+          <p class="Summary">
+            Gets a formatter for a for a four digit weekyear and two digit week of weekyear. 
+            (xxxx-'W'ww)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>WeekYearWeek</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeek:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:member:toggle">⊟</span> WeekYearWeekDay Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:member">
+          <p class="Summary">
+            Gets a formatter for a for a four digit weekyear, two digit week of
+            weekyear, and one digit day of week.
+            (xxxx-'W'ww-e)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>WeekYearWeekDay</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.WeekYearWeekDay:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.Year">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Year:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.Year:member:toggle">⊟</span> Year Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.Year:member">
+          <p class="Summary">
+            Gets a formatter for a four digit year. (yyyy)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>Year</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Year:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Year:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Year:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Year:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Year:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Year:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.Year:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.Year:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.Year:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.YearMonth">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.YearMonth:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.YearMonth:member:toggle">⊟</span> YearMonth Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.YearMonth:member">
+          <p class="Summary">
+            Gets a formatter for a four digit year and two digit month of year. 
+            (yyyy-MM)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>YearMonth</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.YearMonth:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.YearMonth:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.YearMonth:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.YearMonth:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.YearMonth:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.YearMonth:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.YearMonth:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.YearMonth:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.YearMonth:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay">
+          <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:member')">
+            <span id="P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:member:toggle">⊟</span> YearMonthDay Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:member">
+          <p class="Summary">
+            Gets a formatter for a four digit year, two digit month of year, and
+            two digit day of month. 
+            (yyyy-MM-dd)
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Format/DateTimeFormatter.html">DateTimeFormatter</a> <b>YearMonthDay</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:Value')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:Remarks')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:Version Information')">
+              <span id="P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Format.IsoDateTimeFormats.YearMonthDay:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>

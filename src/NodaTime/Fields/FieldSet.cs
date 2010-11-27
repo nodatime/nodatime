@@ -22,87 +22,87 @@ namespace NodaTime.Fields
     /// <summary>
     /// An immutable collection of date/time and duration fields.
     /// </summary>
-    public sealed class FieldSet
+    internal sealed class FieldSet
     {
-        private readonly IDurationField ticks;
-        private readonly IDurationField milliseconds;
-        private readonly IDurationField seconds;
-        private readonly IDurationField minutes;
-        private readonly IDurationField hours;
-        private readonly IDurationField halfDays;
-        private readonly IDurationField days;
-        private readonly IDurationField weeks;
-        private readonly IDurationField weekYears;
-        private readonly IDurationField months;
-        private readonly IDurationField years;
-        private readonly IDurationField centuries;
-        private readonly IDurationField eras;
+        private readonly DurationField ticks;
+        private readonly DurationField milliseconds;
+        private readonly DurationField seconds;
+        private readonly DurationField minutes;
+        private readonly DurationField hours;
+        private readonly DurationField halfDays;
+        private readonly DurationField days;
+        private readonly DurationField weeks;
+        private readonly DurationField weekYears;
+        private readonly DurationField months;
+        private readonly DurationField years;
+        private readonly DurationField centuries;
+        private readonly DurationField eras;
 
-        private readonly IDateTimeField tickOfMillisecond;
-        private readonly IDateTimeField tickOfDay;
-        private readonly IDateTimeField millisecondOfSecond;
-        private readonly IDateTimeField millisecondOfDay;
-        private readonly IDateTimeField secondOfMinute;
-        private readonly IDateTimeField secondOfDay;
-        private readonly IDateTimeField minuteOfHour;
-        private readonly IDateTimeField minuteOfDay;
-        private readonly IDateTimeField hourOfDay;
-        private readonly IDateTimeField clockHourOfDay;
-        private readonly IDateTimeField hourOfHalfDay;
-        private readonly IDateTimeField clockHourOfHalfDay;
-        private readonly IDateTimeField halfDayOfDay;
-        private readonly IDateTimeField dayOfWeek;
-        private readonly IDateTimeField dayOfMonth;
-        private readonly IDateTimeField dayOfYear;
-        private readonly IDateTimeField weekOfWeekYear;
-        private readonly IDateTimeField weekYear;
-        private readonly IDateTimeField weekYearOfCentury;
-        private readonly IDateTimeField monthOfYear;
-        private readonly IDateTimeField year;
-        private readonly IDateTimeField yearOfCentury;
-        private readonly IDateTimeField yearOfEra;
-        private readonly IDateTimeField centruryOfEra;
-        private readonly IDateTimeField era;
+        private readonly DateTimeField tickOfMillisecond;
+        private readonly DateTimeField tickOfDay;
+        private readonly DateTimeField millisecondOfSecond;
+        private readonly DateTimeField millisecondOfDay;
+        private readonly DateTimeField secondOfMinute;
+        private readonly DateTimeField secondOfDay;
+        private readonly DateTimeField minuteOfHour;
+        private readonly DateTimeField minuteOfDay;
+        private readonly DateTimeField hourOfDay;
+        private readonly DateTimeField clockHourOfDay;
+        private readonly DateTimeField hourOfHalfDay;
+        private readonly DateTimeField clockHourOfHalfDay;
+        private readonly DateTimeField halfDayOfDay;
+        private readonly DateTimeField dayOfWeek;
+        private readonly DateTimeField dayOfMonth;
+        private readonly DateTimeField dayOfYear;
+        private readonly DateTimeField weekOfWeekYear;
+        private readonly DateTimeField weekYear;
+        private readonly DateTimeField weekYearOfCentury;
+        private readonly DateTimeField monthOfYear;
+        private readonly DateTimeField year;
+        private readonly DateTimeField yearOfCentury;
+        private readonly DateTimeField yearOfEra;
+        private readonly DateTimeField centruryOfEra;
+        private readonly DateTimeField era;
 
-        public IDurationField Ticks { get { return ticks; } }
-        public IDurationField Milliseconds { get { return milliseconds; } }
-        public IDurationField Seconds { get { return seconds; } }
-        public IDurationField Minutes { get { return minutes; } }
-        public IDurationField Hours { get { return hours; } }
-        public IDurationField HalfDays { get { return halfDays; } }
-        public IDurationField Days { get { return days; } }
-        public IDurationField Weeks { get { return weeks; } }
-        public IDurationField WeekYears { get { return weekYears; } }
-        public IDurationField Months { get { return months; } }
-        public IDurationField Years { get { return years; } }
-        public IDurationField Centuries { get { return centuries; } }
-        public IDurationField Eras { get { return eras; } }
+        internal DurationField Ticks { get { return ticks; } }
+        internal DurationField Milliseconds { get { return milliseconds; } }
+        internal DurationField Seconds { get { return seconds; } }
+        internal DurationField Minutes { get { return minutes; } }
+        internal DurationField Hours { get { return hours; } }
+        internal DurationField HalfDays { get { return halfDays; } }
+        internal DurationField Days { get { return days; } }
+        internal DurationField Weeks { get { return weeks; } }
+        internal DurationField WeekYears { get { return weekYears; } }
+        internal DurationField Months { get { return months; } }
+        internal DurationField Years { get { return years; } }
+        internal DurationField Centuries { get { return centuries; } }
+        internal DurationField Eras { get { return eras; } }
 
-        public IDateTimeField TickOfMillisecond { get { return tickOfMillisecond; } }
-        public IDateTimeField TickOfDay { get { return tickOfDay; } }
-        public IDateTimeField MillisecondOfSecond { get { return millisecondOfSecond; } }
-        public IDateTimeField MillisecondOfDay { get { return millisecondOfDay; } }
-        public IDateTimeField SecondOfMinute { get { return secondOfMinute; } }
-        public IDateTimeField SecondOfDay { get { return secondOfDay; } }
-        public IDateTimeField MinuteOfHour { get { return minuteOfHour; } }
-        public IDateTimeField MinuteOfDay { get { return minuteOfDay; } }
-        public IDateTimeField HourOfDay { get { return hourOfDay; } }
-        public IDateTimeField ClockHourOfDay { get { return clockHourOfDay; } }
-        public IDateTimeField HourOfHalfDay { get { return hourOfHalfDay; } }
-        public IDateTimeField ClockHourOfHalfDay { get { return clockHourOfHalfDay; } }
-        public IDateTimeField HalfDayOfDay { get { return halfDayOfDay; } }
-        public IDateTimeField DayOfWeek { get { return dayOfWeek; } }
-        public IDateTimeField DayOfMonth { get { return dayOfMonth; } }
-        public IDateTimeField DayOfYear { get { return dayOfYear; } }
-        public IDateTimeField WeekOfWeekYear { get { return weekOfWeekYear; } }
-        public IDateTimeField WeekYear { get { return weekYear; } }
-        public IDateTimeField WeekYearOfCentury { get { return weekYearOfCentury; } }
-        public IDateTimeField MonthOfYear { get { return monthOfYear; } }
-        public IDateTimeField Year { get { return year; } }
-        public IDateTimeField YearOfCentury { get { return yearOfCentury; } }
-        public IDateTimeField YearOfEra { get { return yearOfEra; } }
-        public IDateTimeField CenturyOfEra { get { return centruryOfEra; } }
-        public IDateTimeField Era { get { return era; } }
+        internal DateTimeField TickOfMillisecond { get { return tickOfMillisecond; } }
+        internal DateTimeField TickOfDay { get { return tickOfDay; } }
+        internal DateTimeField MillisecondOfSecond { get { return millisecondOfSecond; } }
+        internal DateTimeField MillisecondOfDay { get { return millisecondOfDay; } }
+        internal DateTimeField SecondOfMinute { get { return secondOfMinute; } }
+        internal DateTimeField SecondOfDay { get { return secondOfDay; } }
+        internal DateTimeField MinuteOfHour { get { return minuteOfHour; } }
+        internal DateTimeField MinuteOfDay { get { return minuteOfDay; } }
+        internal DateTimeField HourOfDay { get { return hourOfDay; } }
+        internal DateTimeField ClockHourOfDay { get { return clockHourOfDay; } }
+        internal DateTimeField HourOfHalfDay { get { return hourOfHalfDay; } }
+        internal DateTimeField ClockHourOfHalfDay { get { return clockHourOfHalfDay; } }
+        internal DateTimeField HalfDayOfDay { get { return halfDayOfDay; } }
+        internal DateTimeField DayOfWeek { get { return dayOfWeek; } }
+        internal DateTimeField DayOfMonth { get { return dayOfMonth; } }
+        internal DateTimeField DayOfYear { get { return dayOfYear; } }
+        internal DateTimeField WeekOfWeekYear { get { return weekOfWeekYear; } }
+        internal DateTimeField WeekYear { get { return weekYear; } }
+        internal DateTimeField WeekYearOfCentury { get { return weekYearOfCentury; } }
+        internal DateTimeField MonthOfYear { get { return monthOfYear; } }
+        internal DateTimeField Year { get { return year; } }
+        internal DateTimeField YearOfCentury { get { return yearOfCentury; } }
+        internal DateTimeField YearOfEra { get { return yearOfEra; } }
+        internal DateTimeField CenturyOfEra { get { return centruryOfEra; } }
+        internal DateTimeField Era { get { return era; } }
 
         private FieldSet(Builder builder)
         {
@@ -160,53 +160,53 @@ namespace NodaTime.Fields
         // TODO: Consider making FieldSet privately mutable and mutate it directly in the builder.
         // Pros: Less copying
         // Cons: Builders aren't reusable, and FieldSet isn't as obviously thread-safe.
-        public class Builder
+        internal class Builder
         {
-            public IDurationField Ticks { get; set; }
-            public IDurationField Milliseconds { get; set; }
-            public IDurationField Seconds { get; set; }
-            public IDurationField Minutes { get; set; }
-            public IDurationField Hours { get; set; }
-            public IDurationField HalfDays { get; set; }
-            public IDurationField Days { get; set; }
-            public IDurationField Weeks { get; set; }
-            public IDurationField WeekYears { get; set; }
-            public IDurationField Months { get; set; }
-            public IDurationField Years { get; set; }
-            public IDurationField Centuries { get; set; }
-            public IDurationField Eras { get; set; }
+            internal DurationField Ticks { get; set; }
+            internal DurationField Milliseconds { get; set; }
+            internal DurationField Seconds { get; set; }
+            internal DurationField Minutes { get; set; }
+            internal DurationField Hours { get; set; }
+            internal DurationField HalfDays { get; set; }
+            internal DurationField Days { get; set; }
+            internal DurationField Weeks { get; set; }
+            internal DurationField WeekYears { get; set; }
+            internal DurationField Months { get; set; }
+            internal DurationField Years { get; set; }
+            internal DurationField Centuries { get; set; }
+            internal DurationField Eras { get; set; }
 
-            public IDateTimeField TickOfMillisecond { get; set; }
-            public IDateTimeField TickOfDay { get; set; }
-            public IDateTimeField MillisecondOfSecond { get; set; }
-            public IDateTimeField MillisecondOfDay { get; set; }
-            public IDateTimeField SecondOfMinute { get; set; }
-            public IDateTimeField SecondOfDay { get; set; }
-            public IDateTimeField MinuteOfHour { get; set; }
-            public IDateTimeField MinuteOfDay { get; set; }
-            public IDateTimeField HourOfDay { get; set; }
-            public IDateTimeField ClockHourOfDay { get; set; }
-            public IDateTimeField HourOfHalfDay { get; set; }
-            public IDateTimeField ClockHourOfHalfDay { get; set; }
-            public IDateTimeField HalfDayOfDay { get; set; }
-            public IDateTimeField DayOfWeek { get; set; }
-            public IDateTimeField DayOfMonth { get; set; }
-            public IDateTimeField DayOfYear { get; set; }
-            public IDateTimeField WeekOfWeekYear { get; set; }
-            public IDateTimeField WeekYear { get; set; }
-            public IDateTimeField WeekYearOfCentury { get; set; }
-            public IDateTimeField MonthOfYear { get; set; }
-            public IDateTimeField Year { get; set; }
-            public IDateTimeField YearOfCentury { get; set; }
-            public IDateTimeField YearOfEra { get; set; }
-            public IDateTimeField CenturyOfEra { get; set; }
-            public IDateTimeField Era { get; set; }
+            internal DateTimeField TickOfMillisecond { get; set; }
+            internal DateTimeField TickOfDay { get; set; }
+            internal DateTimeField MillisecondOfSecond { get; set; }
+            internal DateTimeField MillisecondOfDay { get; set; }
+            internal DateTimeField SecondOfMinute { get; set; }
+            internal DateTimeField SecondOfDay { get; set; }
+            internal DateTimeField MinuteOfHour { get; set; }
+            internal DateTimeField MinuteOfDay { get; set; }
+            internal DateTimeField HourOfDay { get; set; }
+            internal DateTimeField ClockHourOfDay { get; set; }
+            internal DateTimeField HourOfHalfDay { get; set; }
+            internal DateTimeField ClockHourOfHalfDay { get; set; }
+            internal DateTimeField HalfDayOfDay { get; set; }
+            internal DateTimeField DayOfWeek { get; set; }
+            internal DateTimeField DayOfMonth { get; set; }
+            internal DateTimeField DayOfYear { get; set; }
+            internal DateTimeField WeekOfWeekYear { get; set; }
+            internal DateTimeField WeekYear { get; set; }
+            internal DateTimeField WeekYearOfCentury { get; set; }
+            internal DateTimeField MonthOfYear { get; set; }
+            internal DateTimeField Year { get; set; }
+            internal DateTimeField YearOfCentury { get; set; }
+            internal DateTimeField YearOfEra { get; set; }
+            internal DateTimeField CenturyOfEra { get; set; }
+            internal DateTimeField Era { get; set; }
 
-            public Builder()
+            internal Builder()
             {
             }
 
-            public Builder(FieldSet baseSet)
+            internal Builder(FieldSet baseSet)
             {
                 if (baseSet == null)
                 {
@@ -258,7 +258,7 @@ namespace NodaTime.Fields
             /// and returns this builder again (for fluent building).
             /// </summary>
             /// <param name="other">The set of fields to copy.</param>
-            public Builder WithSupportedFieldsFrom(FieldSet other)
+            internal Builder WithSupportedFieldsFrom(FieldSet other)
             {
                 if (other == null)
                 {
@@ -306,7 +306,7 @@ namespace NodaTime.Fields
                 return this;
             }
 
-            public FieldSet Build()
+            internal FieldSet Build()
             {
                 return new FieldSet(this);
             }

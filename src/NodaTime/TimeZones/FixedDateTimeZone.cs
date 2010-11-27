@@ -22,13 +22,13 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Basic <see cref="IDateTimeZone" /> implementation that has a fixed name key and offset i.e.
+    /// Basic <see cref="DateTimeZone" /> implementation that has a fixed name key and offset i.e.
     /// no daylight savings.
     /// </summary>
     /// <remarks>
     /// This type is thread-safe and immutable.
     /// </remarks>
-    public sealed class FixedDateTimeZone : DateTimeZoneBase, IEquatable<FixedDateTimeZone>
+    internal sealed class FixedDateTimeZone : DateTimeZone, IEquatable<FixedDateTimeZone>
     {
         private readonly Offset offset;
         private readonly ZoneInterval period;
@@ -61,9 +61,9 @@ namespace NodaTime.TimeZones
         {
             if (theOffset == Offset.Zero)
             {
-                return DateTimeZones.UtcId;
+                return DateTimeZone.UtcId;
             }
-            return string.Format(CultureInfo.InvariantCulture, @"{0}{1}", DateTimeZones.UtcId, theOffset.ToString("M"));
+            return string.Format(CultureInfo.InvariantCulture, @"{0}{1}", DateTimeZone.UtcId, theOffset.ToString("M"));
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
+        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             return period;
         }
@@ -107,7 +107,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
-        public override Offset GetOffsetFromLocal(LocalInstant localInstant)
+        internal override Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
             return offset;
         }
@@ -116,7 +116,7 @@ namespace NodaTime.TimeZones
         /// Writes the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        public override void Write(IDateTimeZoneWriter writer)
+        internal override void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)
             {
@@ -131,7 +131,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        public static IDateTimeZone Read(IDateTimeZoneReader reader, string id)
+        public static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             if (reader == null)
             {

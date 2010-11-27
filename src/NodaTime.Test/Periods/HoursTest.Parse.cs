@@ -23,15 +23,9 @@ namespace NodaTime.Test.Periods
 {
     public partial class HoursTest
     {
-        object[] ParseCorrectTestData =
-        {
-            new TestCaseData(null, 0),
-            new TestCaseData(String.Empty, 0),
-            new TestCaseData("PT0H", 0),
-            new TestCaseData("PT1H", 1),
-            new TestCaseData("PT-3H", -3),
-            new TestCaseData("P0Y0M0W0DT2H", 2),
-            new TestCaseData("PT2H0M", 2),
+        private object[] ParseCorrectTestData = {
+            new TestCaseData(null, 0), new TestCaseData(String.Empty, 0), new TestCaseData("PT0H", 0),
+            new TestCaseData("PT1H", 1), new TestCaseData("PT-3H", -3), new TestCaseData("P0Y0M0W0DT2H", 2), new TestCaseData("PT2H0M", 2),
         };
 
         [Test]
@@ -42,11 +36,7 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(expectedHoursValue, sut.Value);
         }
 
-        object[] ParseWrongTestData =
-        {
-            new TestCaseData("P1Y1D"),
-            new TestCaseData("P1DT1H"),
-        };
+        private object[] ParseWrongTestData = { new TestCaseData("P1Y1D"), new TestCaseData("P1DT1H"), };
 
         [Test]
         [TestCaseSource("ParseWrongTestData")]

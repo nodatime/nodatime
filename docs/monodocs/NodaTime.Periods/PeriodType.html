@@ -1,0 +1,2004 @@
+<html>
+  <head>
+    <title>NodaTime.Periods.PeriodType</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime.Periods Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.Periods.PeriodType">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Periods.PeriodType:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Periods.PeriodType:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Periods.PeriodType:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.Periods.PeriodType">PeriodType  Class</h1>
+    <p class="Summary" id="T:NodaTime.Periods.PeriodType:Summary">
+            Controls a period implementation by specifying which duration fields are to be used.
+            </p>
+    <div id="T:NodaTime.Periods.PeriodType:Signature">
+      <div class="Signature">public sealed class  <b>PeriodType</b> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.IEquatable`1">IEquatable&lt;PeriodType&gt;</a></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.Periods.PeriodType:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Periods.PeriodType:Docs:Remarks')">
+          <span id="T:NodaTime.Periods.PeriodType:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Periods.PeriodType:Docs:Remarks">
+        <p>
+            The properties are effectively singletons - accessing the same property
+            twice will return the same reference both times. New instances are created with the 
+            </p>
+        <p>
+            Standard - years, months, weeks, days, hours, minutes, seconds, millis
+            YearMonthDayTime - years, months, days, hours, minutes, seconds, millis
+            YearMonthDay - years, months, days
+            YearWeekDayTime - years, weeks, days, hours, minutes, seconds, millis
+            YearWeekDay - years, weeks, days
+            YearDayTime - years, days, hours, minutes, seconds, millis
+            YearDay - years, days, hours
+            DayTime - days, hours, minutes, seconds, millis
+            Time - hours, minutes, seconds, millis
+            plus one for each single type
+            </p>
+        <p>
+            TODO: Consider ticks as well.
+            </p>
+      </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Periods.PeriodType:Docs:Version Information')">
+          <span id="T:NodaTime.Periods.PeriodType:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Periods.PeriodType:Docs:Version Information">
+        <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Public Properties')">
+            <span id="Public Properties:toggle">⊟</span> Public Properties</a>
+        </h3>
+        <blockquote id="Public Properties">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Days">Days</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. Gets a type that defines just the days field.</td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.DayTime">DayTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets a type that defines all standard fields from days downwards.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Hours">Hours</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. Gets a type that defines just the hours field.</td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Milliseconds">Milliseconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. Gets a type that defines just the milliseconds field.</td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Minutes">Minutes</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. Gets a type that defines just the minutes field.</td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Months">Months</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. Gets a type that defines just the months field.</td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Name">Name</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>
+                  </i>. 
+            Gets the name of the period type.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Seconds">Seconds</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. Gets a type that defines just the seconds field.</td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Size">Size</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. 
+            Gets the number of fields in the period type.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Standard">Standard</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets a type that defines all standard fields.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Time">Time</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets a type that defines all standard time fields.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Weeks">Weeks</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. Gets a type that defines just the weeks field.</td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.YearDay">YearDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets a type that defines the year and day fields.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.YearDayTime">YearDayTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets a type that defines all standard fields except months and weeks.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.YearMonthDay">YearMonthDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets a type that defines the year, month and day fields.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.YearMonthDayTime">YearMonthDayTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets a type that defines all standard fields except weeks.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.Years">Years</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. Gets a type that defines just the years field.</td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.YearWeekDay">YearWeekDay</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets a type that defines year, week and day fields.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div>static </div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.Periods.PeriodType.YearWeekDayTime">YearWeekDayTime</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>
+                  </i>. 
+            Gets a type that defines all standard fields except months.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Methods')">
+            <span id="Public Methods:toggle">⊟</span> Public Methods</a>
+        </h3>
+        <blockquote id="Public Methods">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType)">Equals</a>
+                  </b>(<a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote><span class="NotEntered">Documentation for this section has not yet been entered.</span></blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.Equals(System.Object)">Equals</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote><span class="NotEntered">Documentation for this section has not yet been entered.</span></blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32)">GetFieldType</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a></nobr><blockquote>
+            Gets the field type by index.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.GetFieldTypes">GetFieldTypes</a>
+                  </b>()<nobr> : <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a>[]</nobr><blockquote>
+            Creates an array of the field types that this period type supports.
+            This array is a copy; changes to it will not affect this period type.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.GetHashCode">GetHashCode</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote><span class="NotEntered">Documentation for this section has not yet been entered.</span></blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType)">IndexOf</a>
+                  </b>(<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a></nobr><blockquote>
+            Gets the index of the field in this period.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType)">IsSupported</a>
+                  </b>(<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Checks whether the field specified is supported by this period.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>override </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.ToString">ToString</a>
+                  </b>()<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a></nobr><blockquote><span class="NotEntered">Documentation for this section has not yet been entered.</span></blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.WithDaysRemoved">WithDaysRemoved</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a></nobr><blockquote>
+            Returns a version of this PeriodType instance that does not support days.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.WithHoursRemoved">WithHoursRemoved</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a></nobr><blockquote>
+            Returns a version of this PeriodType instance that does not support hours.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved">WithMillisecondsRemoved</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a></nobr><blockquote>
+            Returns a version of this PeriodType instance that does not support milliseconds.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.WithMinutesRemoved">WithMinutesRemoved</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a></nobr><blockquote>
+            Returns a version of this PeriodType instance that does not support minutes.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.WithMonthsRemoved">WithMonthsRemoved</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a></nobr><blockquote>
+            Returns a version of this PeriodType instance that does not support months.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.WithSecondsRemoved">WithSecondsRemoved</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a></nobr><blockquote>
+            Returns a version of this PeriodType instance that does not support seconds.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.WithWeeksRemoved">WithWeeksRemoved</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a></nobr><blockquote>
+            Returns a version of this PeriodType instance that does not support weeks.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.WithYearsRemoved">WithYearsRemoved</a>
+                  </b>()<nobr> : <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a></nobr><blockquote>
+            Returns a version of this PeriodType instance that does not support years.
+            </blockquote></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Operators')">
+            <span id="Public Operators:toggle">⊟</span> Public Operators</a>
+        </h3>
+        <blockquote id="Public Operators">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType)">Equality</a>
+                  </b>(<a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>, <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>)</td>
+                <td>
+                  <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+                </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>static </div>
+                </td>
+                <td>
+                  <b>
+                    <a href="#M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType)">Inequality</a>
+                  </b>(<a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>, <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a>)</td>
+                <td>
+                  <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.Periods.PeriodType:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="P:NodaTime.Periods.PeriodType.Days">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Days:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Days:member:toggle">⊟</span> Days Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Days:member">
+          <p class="Summary">Gets a type that defines just the days field.</p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>Days</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Days:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Days:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Days:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Days:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Days:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Days:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Days:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Days:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Days:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.DayTime">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.DayTime:member')">
+            <span id="P:NodaTime.Periods.PeriodType.DayTime:member:toggle">⊟</span> DayTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.DayTime:member">
+          <p class="Summary">
+            Gets a type that defines all standard fields from days downwards.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>DayTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.DayTime:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.DayTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.DayTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.DayTime:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.DayTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.DayTime:Remarks">
+            <ul>
+              <li>DaysHoursMinutesSecondsMilliseconds</li>
+            </ul>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.DayTime:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.DayTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.DayTime:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):member')">
+            <span id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> other)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Parameters')">
+              <span id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Parameters">
+            <dl>
+              <dt>
+                <i>other</i>
+              </dt>
+              <dd>
+                <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+              </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Returns">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.Equals(NodaTime.Periods.PeriodType):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.Equals(System.Object)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.Equals(System.Object):member')">
+            <span id="M:NodaTime.Periods.PeriodType.Equals(System.Object):member:toggle">⊟</span> Equals Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.Equals(System.Object):member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>Equals</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a> obj)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.Equals(System.Object):Parameters')">
+              <span id="M:NodaTime.Periods.PeriodType.Equals(System.Object):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.Equals(System.Object):Parameters">
+            <dl>
+              <dt>
+                <i>obj</i>
+              </dt>
+              <dd>
+                <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+              </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.Equals(System.Object):Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.Equals(System.Object):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.Equals(System.Object):Returns">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.Equals(System.Object):Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.Equals(System.Object):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.Equals(System.Object):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.Equals(System.Object):Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.Equals(System.Object):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.Equals(System.Object):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):member')">
+            <span id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):member:toggle">⊟</span> GetFieldType Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):member">
+          <p class="Summary">
+            Gets the field type by index.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> <b>GetFieldType</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> index)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Parameters')">
+              <span id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>index</i>
+              </dt>
+              <dd>the index to retrieve</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Returns">the field type</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Exceptions')">
+              <span id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentOutOfRangeException">ArgumentOutOfRangeException</a>
+                </td>
+                <td>If the index is invalid</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetFieldType(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.GetFieldTypes">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetFieldTypes:member')">
+            <span id="M:NodaTime.Periods.PeriodType.GetFieldTypes:member:toggle">⊟</span> GetFieldTypes Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.GetFieldTypes:member">
+          <p class="Summary">
+            Creates an array of the field types that this period type supports.
+            This array is a copy; changes to it will not affect this period type.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a>[] <b>GetFieldTypes</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetFieldTypes:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.GetFieldTypes:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetFieldTypes:Returns">The fields supported in an array that may be altered, largest to smallest</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetFieldTypes:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.GetFieldTypes:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetFieldTypes:Remarks">
+            The fields are returned largest to smallest, for example Hours, Minutes, Seconds.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetFieldTypes:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.GetFieldTypes:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetFieldTypes:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.GetHashCode">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetHashCode:member')">
+            <span id="M:NodaTime.Periods.PeriodType.GetHashCode:member:toggle">⊟</span> GetHashCode Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.GetHashCode:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>GetHashCode</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetHashCode:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.GetHashCode:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetHashCode:Returns">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetHashCode:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.GetHashCode:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetHashCode:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.GetHashCode:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.GetHashCode:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.GetHashCode:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Hours">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Hours:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Hours:member:toggle">⊟</span> Hours Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Hours:member">
+          <p class="Summary">Gets a type that defines just the hours field.</p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>Hours</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Hours:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Hours:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Hours:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Hours:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Hours:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Hours:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Hours:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Hours:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Hours:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):member')">
+            <span id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):member:toggle">⊟</span> IndexOf Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):member">
+          <p class="Summary">
+            Gets the index of the field in this period.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>IndexOf</b> (<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> fieldType)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Parameters')">
+              <span id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Parameters">
+            <dl>
+              <dt>
+                <i>fieldType</i>
+              </dt>
+              <dd>The type to check; may be null which returns -1</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Returns">The index or -1 if not supported</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.IndexOf(NodaTime.Fields.DurationFieldType):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):member')">
+            <span id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):member:toggle">⊟</span> IsSupported Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):member">
+          <p class="Summary">
+            Checks whether the field specified is supported by this period.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>IsSupported</b> (<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> fieldType)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Parameters')">
+              <span id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Parameters">
+            <dl>
+              <dt>
+                <i>fieldType</i>
+              </dt>
+              <dd>The type to check, may be null which returns false</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Returns">True if the field is supported, false otherwise</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.IsSupported(NodaTime.Fields.DurationFieldType):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Milliseconds">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Milliseconds:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Milliseconds:member:toggle">⊟</span> Milliseconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Milliseconds:member">
+          <p class="Summary">Gets a type that defines just the milliseconds field.</p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>Milliseconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Milliseconds:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Milliseconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Milliseconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Milliseconds:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Milliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Milliseconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Milliseconds:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Milliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Milliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Minutes">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Minutes:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Minutes:member:toggle">⊟</span> Minutes Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Minutes:member">
+          <p class="Summary">Gets a type that defines just the minutes field.</p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>Minutes</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Minutes:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Minutes:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Minutes:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Minutes:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Minutes:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Minutes:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Minutes:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Minutes:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Minutes:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Months">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Months:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Months:member:toggle">⊟</span> Months Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Months:member">
+          <p class="Summary">Gets a type that defines just the months field.</p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>Months</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Months:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Months:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Months:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Months:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Months:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Months:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Months:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Months:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Months:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Name">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Name:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Name:member:toggle">⊟</span> Name Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Name:member">
+          <p class="Summary">
+            Gets the name of the period type.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> <b>Name</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Name:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Name:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Name:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Name:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Name:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Name:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Name:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Name:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Name:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):member')">
+            <span id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):member:toggle">⊟</span> op_Equality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator== (<a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> left, <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Parameters')">
+              <span id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>
+                <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+              </dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>
+                <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+              </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Returns">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.op_Equality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType)">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):member')">
+            <span id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):member:toggle">⊟</span> op_Inequality Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> operator!= (<a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> left, <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> right)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Parameters')">
+              <span id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Parameters">
+            <dl>
+              <dt>
+                <i>left</i>
+              </dt>
+              <dd>
+                <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+              </dd>
+              <dt>
+                <i>right</i>
+              </dt>
+              <dd>
+                <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+              </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Returns">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.op_Inequality(NodaTime.Periods.PeriodType,NodaTime.Periods.PeriodType):Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Seconds">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Seconds:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Seconds:member:toggle">⊟</span> Seconds Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Seconds:member">
+          <p class="Summary">Gets a type that defines just the seconds field.</p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>Seconds</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Seconds:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Seconds:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Seconds:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Seconds:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Seconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Seconds:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Seconds:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Seconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Seconds:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Size">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Size:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Size:member:toggle">⊟</span> Size Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Size:member">
+          <p class="Summary">
+            Gets the number of fields in the period type.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>Size</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Size:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Size:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Size:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Size:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Size:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Size:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Size:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Size:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Size:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Standard">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Standard:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Standard:member:toggle">⊟</span> Standard Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Standard:member">
+          <p class="Summary">
+            Gets a type that defines all standard fields.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>Standard</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Standard:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Standard:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Standard:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Standard:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Standard:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Standard:Remarks">
+            <ul>
+              <li>YearsMonthsWeeksDaysHoursMinutesSecondsMilliseconds</li>
+            </ul>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Standard:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Standard:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Standard:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Time">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Time:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Time:member:toggle">⊟</span> Time Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Time:member">
+          <p class="Summary">
+            Gets a type that defines all standard time fields.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>Time</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Time:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Time:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Time:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Time:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Time:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Time:Remarks">
+            <ul>
+              <li>HoursMinutesSecondsMilliseconds</li>
+            </ul>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Time:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Time:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Time:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.ToString">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.ToString:member')">
+            <span id="M:NodaTime.Periods.PeriodType.ToString:member:toggle">⊟</span> ToString Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.ToString:member">
+          <p class="Summary">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </p>
+          <div class="Signature">public override <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> <b>ToString</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.ToString:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.ToString:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.ToString:Returns">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.ToString:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.ToString:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.ToString:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.ToString:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.ToString:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.ToString:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Weeks">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Weeks:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Weeks:member:toggle">⊟</span> Weeks Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Weeks:member">
+          <p class="Summary">Gets a type that defines just the weeks field.</p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>Weeks</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Weeks:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Weeks:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Weeks:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Weeks:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Weeks:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Weeks:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Weeks:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Weeks:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Weeks:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.WithDaysRemoved">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithDaysRemoved:member')">
+            <span id="M:NodaTime.Periods.PeriodType.WithDaysRemoved:member:toggle">⊟</span> WithDaysRemoved Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.WithDaysRemoved:member">
+          <p class="Summary">
+            Returns a version of this PeriodType instance that does not support days.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>WithDaysRemoved</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithDaysRemoved:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.WithDaysRemoved:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithDaysRemoved:Returns">A new period type that supports the original set of fields except days</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithDaysRemoved:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.WithDaysRemoved:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithDaysRemoved:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithDaysRemoved:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.WithDaysRemoved:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithDaysRemoved:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.WithHoursRemoved">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithHoursRemoved:member')">
+            <span id="M:NodaTime.Periods.PeriodType.WithHoursRemoved:member:toggle">⊟</span> WithHoursRemoved Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.WithHoursRemoved:member">
+          <p class="Summary">
+            Returns a version of this PeriodType instance that does not support hours.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>WithHoursRemoved</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithHoursRemoved:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.WithHoursRemoved:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithHoursRemoved:Returns">A new period type that supports the original set of fields except hours</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithHoursRemoved:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.WithHoursRemoved:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithHoursRemoved:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithHoursRemoved:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.WithHoursRemoved:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithHoursRemoved:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:member')">
+            <span id="M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:member:toggle">⊟</span> WithMillisecondsRemoved Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:member">
+          <p class="Summary">
+            Returns a version of this PeriodType instance that does not support milliseconds.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>WithMillisecondsRemoved</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:Returns">A new period type that supports the original set of fields except milliseconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithMillisecondsRemoved:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.WithMinutesRemoved">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMinutesRemoved:member')">
+            <span id="M:NodaTime.Periods.PeriodType.WithMinutesRemoved:member:toggle">⊟</span> WithMinutesRemoved Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.WithMinutesRemoved:member">
+          <p class="Summary">
+            Returns a version of this PeriodType instance that does not support minutes.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>WithMinutesRemoved</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMinutesRemoved:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.WithMinutesRemoved:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithMinutesRemoved:Returns">A new period type that supports the original set of fields except minutes</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMinutesRemoved:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.WithMinutesRemoved:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithMinutesRemoved:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMinutesRemoved:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.WithMinutesRemoved:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithMinutesRemoved:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.WithMonthsRemoved">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMonthsRemoved:member')">
+            <span id="M:NodaTime.Periods.PeriodType.WithMonthsRemoved:member:toggle">⊟</span> WithMonthsRemoved Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.WithMonthsRemoved:member">
+          <p class="Summary">
+            Returns a version of this PeriodType instance that does not support months.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>WithMonthsRemoved</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMonthsRemoved:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.WithMonthsRemoved:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithMonthsRemoved:Returns">A new period type that supports the original set of fields except months</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMonthsRemoved:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.WithMonthsRemoved:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithMonthsRemoved:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithMonthsRemoved:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.WithMonthsRemoved:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithMonthsRemoved:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.WithSecondsRemoved">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithSecondsRemoved:member')">
+            <span id="M:NodaTime.Periods.PeriodType.WithSecondsRemoved:member:toggle">⊟</span> WithSecondsRemoved Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.WithSecondsRemoved:member">
+          <p class="Summary">
+            Returns a version of this PeriodType instance that does not support seconds.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>WithSecondsRemoved</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithSecondsRemoved:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.WithSecondsRemoved:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithSecondsRemoved:Returns">A new period type that supports the original set of fields except seconds</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithSecondsRemoved:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.WithSecondsRemoved:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithSecondsRemoved:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithSecondsRemoved:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.WithSecondsRemoved:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithSecondsRemoved:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.WithWeeksRemoved">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithWeeksRemoved:member')">
+            <span id="M:NodaTime.Periods.PeriodType.WithWeeksRemoved:member:toggle">⊟</span> WithWeeksRemoved Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.WithWeeksRemoved:member">
+          <p class="Summary">
+            Returns a version of this PeriodType instance that does not support weeks.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>WithWeeksRemoved</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithWeeksRemoved:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.WithWeeksRemoved:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithWeeksRemoved:Returns">A new period type that supports the original set of fields except weeks</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithWeeksRemoved:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.WithWeeksRemoved:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithWeeksRemoved:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithWeeksRemoved:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.WithWeeksRemoved:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithWeeksRemoved:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Periods.PeriodType.WithYearsRemoved">
+          <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithYearsRemoved:member')">
+            <span id="M:NodaTime.Periods.PeriodType.WithYearsRemoved:member:toggle">⊟</span> WithYearsRemoved Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Periods.PeriodType.WithYearsRemoved:member">
+          <p class="Summary">
+            Returns a version of this PeriodType instance that does not support years.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>WithYearsRemoved</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithYearsRemoved:Returns')">
+              <span id="M:NodaTime.Periods.PeriodType.WithYearsRemoved:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithYearsRemoved:Returns">A new period type that supports the original set of fields except years</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithYearsRemoved:Remarks')">
+              <span id="M:NodaTime.Periods.PeriodType.WithYearsRemoved:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithYearsRemoved:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Periods.PeriodType.WithYearsRemoved:Version Information')">
+              <span id="M:NodaTime.Periods.PeriodType.WithYearsRemoved:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Periods.PeriodType.WithYearsRemoved:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.YearDay">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearDay:member')">
+            <span id="P:NodaTime.Periods.PeriodType.YearDay:member:toggle">⊟</span> YearDay Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.YearDay:member">
+          <p class="Summary">
+            Gets a type that defines the year and day fields.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>YearDay</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearDay:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.YearDay:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearDay:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearDay:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.YearDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearDay:Remarks">
+            <ul>
+              <li>YearsDays</li>
+            </ul>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearDay:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.YearDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearDay:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.YearDayTime">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearDayTime:member')">
+            <span id="P:NodaTime.Periods.PeriodType.YearDayTime:member:toggle">⊟</span> YearDayTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.YearDayTime:member">
+          <p class="Summary">
+            Gets a type that defines all standard fields except months and weeks.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>YearDayTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearDayTime:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.YearDayTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearDayTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearDayTime:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.YearDayTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearDayTime:Remarks">
+            <ul>
+              <li>YearsDaysHoursMinutesSecondsMilliseconds</li>
+            </ul>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearDayTime:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.YearDayTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearDayTime:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.YearMonthDay">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearMonthDay:member')">
+            <span id="P:NodaTime.Periods.PeriodType.YearMonthDay:member:toggle">⊟</span> YearMonthDay Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.YearMonthDay:member">
+          <p class="Summary">
+            Gets a type that defines the year, month and day fields.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>YearMonthDay</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearMonthDay:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.YearMonthDay:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearMonthDay:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearMonthDay:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.YearMonthDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearMonthDay:Remarks">
+            <ul>
+              <li>YearsMonthsDays</li>
+            </ul>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearMonthDay:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.YearMonthDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearMonthDay:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.YearMonthDayTime">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearMonthDayTime:member')">
+            <span id="P:NodaTime.Periods.PeriodType.YearMonthDayTime:member:toggle">⊟</span> YearMonthDayTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.YearMonthDayTime:member">
+          <p class="Summary">
+            Gets a type that defines all standard fields except weeks.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>YearMonthDayTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearMonthDayTime:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.YearMonthDayTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearMonthDayTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearMonthDayTime:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.YearMonthDayTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearMonthDayTime:Remarks">
+            <ul>
+              <li>YearsMonthsDaysHoursMinutesSecondsMilliseconds</li>
+            </ul>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearMonthDayTime:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.YearMonthDayTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearMonthDayTime:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.Years">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Years:member')">
+            <span id="P:NodaTime.Periods.PeriodType.Years:member:toggle">⊟</span> Years Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.Years:member">
+          <p class="Summary">Gets a type that defines just the years field.</p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>Years</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Years:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.Years:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Years:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Years:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.Years:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Years:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.Years:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.Years:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.Years:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.YearWeekDay">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearWeekDay:member')">
+            <span id="P:NodaTime.Periods.PeriodType.YearWeekDay:member:toggle">⊟</span> YearWeekDay Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.YearWeekDay:member">
+          <p class="Summary">
+            Gets a type that defines year, week and day fields.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>YearWeekDay</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearWeekDay:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.YearWeekDay:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearWeekDay:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearWeekDay:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.YearWeekDay:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearWeekDay:Remarks">
+            <ul>
+              <li>YearsWeeksDays</li>
+            </ul>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearWeekDay:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.YearWeekDay:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearWeekDay:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.Periods.PeriodType.YearWeekDayTime">
+          <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearWeekDayTime:member')">
+            <span id="P:NodaTime.Periods.PeriodType.YearWeekDayTime:member:toggle">⊟</span> YearWeekDayTime Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.Periods.PeriodType.YearWeekDayTime:member">
+          <p class="Summary">
+            Gets a type that defines all standard fields except months.
+            </p>
+          <div class="Signature">public static <a href="../NodaTime.Periods/PeriodType.html">PeriodType</a> <b>YearWeekDayTime</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearWeekDayTime:Value')">
+              <span id="P:NodaTime.Periods.PeriodType.YearWeekDayTime:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearWeekDayTime:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearWeekDayTime:Remarks')">
+              <span id="P:NodaTime.Periods.PeriodType.YearWeekDayTime:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearWeekDayTime:Remarks">
+            <ul>
+              <li>YearsWeeksDaysHoursMinutesSecondsMilliseconds</li>
+            </ul>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.Periods.PeriodType.YearWeekDayTime:Version Information')">
+              <span id="P:NodaTime.Periods.PeriodType.YearWeekDayTime:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.Periods.PeriodType.YearWeekDayTime:Version Information">
+            <b>Namespace: </b>NodaTime.Periods<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>

@@ -44,7 +44,6 @@ namespace NodaTime.Test.Format
 
             Assert.That(sut.Parser, Is.Null);
             Assert.That(sut.IsParser, Is.False);
-
         }
 
         [Test]

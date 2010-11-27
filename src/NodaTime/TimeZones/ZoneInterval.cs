@@ -67,7 +67,7 @@ namespace NodaTime.TimeZones
             this.savings = savings;
             try
             {
-                localStart = this.start + this.offset;
+                localStart = Instant.Add(this.start, this.offset);
             }
             catch (OverflowException)
             {
@@ -75,7 +75,7 @@ namespace NodaTime.TimeZones
             }
             try
             {
-                localEnd = this.end + (this.offset - this.savings);
+                localEnd = Instant.Add(this.end, (this.offset - this.savings));
             }
             catch (OverflowException)
             {
@@ -125,7 +125,7 @@ namespace NodaTime.TimeZones
         ///   This is effectively <c>End + Offset</c>.
         /// </remarks>
         /// <value>The ending LocalInstant.</value>
-        public LocalInstant LocalEnd
+        internal LocalInstant LocalEnd
         {
             [DebuggerStepThrough] get { return localEnd; }
         }
@@ -137,7 +137,7 @@ namespace NodaTime.TimeZones
         ///   This is effectively <c>Start + Offset</c>.
         /// </remarks>
         /// <value>The starting LocalInstant.</value>
-        public LocalInstant LocalStart
+        internal LocalInstant LocalStart
         {
             [DebuggerStepThrough] get { return localStart; }
         }
@@ -201,7 +201,7 @@ namespace NodaTime.TimeZones
         ///   <c>true</c> if this period contains the given LocalInstant in its range; otherwise, <c>false</c>.
         /// </returns>
         [DebuggerStepThrough]
-        public bool Contains(LocalInstant localInstant)
+        internal bool Contains(LocalInstant localInstant)
         {
             return LocalStart <= localInstant && localInstant < LocalEnd;
         }
@@ -320,7 +320,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name = "reader">The reader.</param>
         /// <returns></returns>
-        public static ZoneInterval Read(DateTimeZoneCompressionReader reader)
+        internal static ZoneInterval Read(DateTimeZoneReader reader)
         {
             if (reader == null)
             {
@@ -338,7 +338,7 @@ namespace NodaTime.TimeZones
         ///   Writes the specified writer.
         /// </summary>
         /// <param name = "writer">The writer.</param>
-        public void Write(IDateTimeZoneWriter writer)
+        internal void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)
             {

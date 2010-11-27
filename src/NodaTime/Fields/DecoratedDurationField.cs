@@ -22,11 +22,11 @@ namespace NodaTime.Fields
     /// <summary>
     /// Porting status: Done.
     /// </summary>
-    internal abstract class DecoratedDurationField : DurationFieldBase
+    internal abstract class DecoratedDurationField : DurationField
     {
-        private readonly IDurationField wrappedField;
+        private readonly DurationField wrappedField;
 
-        internal DecoratedDurationField(IDurationField wrappedField, DurationFieldType fieldType) : base(fieldType)
+        internal DecoratedDurationField(DurationField wrappedField, DurationFieldType fieldType) : base(fieldType)
         {
             if (wrappedField == null)
             {
@@ -39,33 +39,33 @@ namespace NodaTime.Fields
             this.wrappedField = wrappedField;
         }
 
-        protected IDurationField WrappedField { get { return wrappedField; } }
+        protected DurationField WrappedField { get { return wrappedField; } }
 
-        public override bool IsPrecise { get { return wrappedField.IsPrecise; } }
+        internal override bool IsPrecise { get { return wrappedField.IsPrecise; } }
 
-        public override long UnitTicks { get { return wrappedField.UnitTicks; } }
+        internal override long UnitTicks { get { return wrappedField.UnitTicks; } }
 
-        public override long GetInt64Value(Duration duration, LocalInstant localInstant)
+        internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
             return wrappedField.GetInt64Value(duration, localInstant);
         }
 
-        public override Duration GetDuration(long value, LocalInstant localInstant)
+        internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
             return wrappedField.GetDuration(value, localInstant);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             return wrappedField.Add(localInstant, value);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, long value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             return wrappedField.Add(localInstant, value);
         }
 
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return wrappedField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }

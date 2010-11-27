@@ -27,7 +27,7 @@ namespace NodaTime.Utility
     /// The basic usage pattern is:
     /// <example>
     /// <code>
-    ///    public override int GetHashCode()
+    ///    internal override int GetHashCode()
     ///    {
     ///        int hash = HashCodeHelper.Initialize();
     ///        hash = HashCodeHelper.Hash(hash, Field1);
@@ -39,7 +39,7 @@ namespace NodaTime.Utility
     /// </code>
     /// </example>
     /// </remarks>
-    public static class HashCodeHelper
+    internal static class HashCodeHelper
     {
         /// <summary>
         /// The multiplier for each value.
@@ -55,7 +55,7 @@ namespace NodaTime.Utility
         /// Returns the initial value for a hash code.
         /// </summary>
         /// <returns>The initial interger value.</returns>
-        public static int Initialize()
+        internal static int Initialize()
         {
             return HashcodeInitializer;
         }
@@ -67,7 +67,7 @@ namespace NodaTime.Utility
         /// <param name="code">The previous hash code.</param>
         /// <param name="value">The value to hash.</param>
         /// <returns>The new hash code.</returns>
-        public static int Hash<T>(int code, T value)
+        internal static int Hash<T>(int code, T value)
         {
             int hash = 0;
             if (value != null)

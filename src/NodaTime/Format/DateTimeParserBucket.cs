@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using NodaTime.Calendars;
 using NodaTime.Fields;
 
 namespace NodaTime.Format
@@ -48,22 +47,22 @@ namespace NodaTime.Format
     /// DateTimeParserBucket is mutable and not thread-safe.
     /// </para>
     /// </remarks>
-    public class DateTimeParserBucket
+    internal class DateTimeParserBucket
     {
         private class SavedField : IComparable<SavedField>
         {
-            private readonly IDateTimeField field;
+            private readonly DateTimeField field;
             private readonly int value;
             private readonly string text;
             private readonly IFormatProvider provider;
 
-            public SavedField(IDateTimeField field, int value)
+            public SavedField(DateTimeField field, int value)
             {
                 this.field = field;
                 this.value = value;
             }
 
-            public SavedField(IDateTimeField field, string text, IFormatProvider provider)
+            public SavedField(DateTimeField field, string text, IFormatProvider provider)
             {
                 this.field = field;
                 this.text = text;
@@ -89,7 +88,7 @@ namespace NodaTime.Format
                     return 1;
                 }
 
-                IDateTimeField otherField = other.field;
+                DateTimeField otherField = other.field;
                 int result = CompareReverse(field.RangeDurationField, otherField.RangeDurationField);
 
                 if (result != 0)
@@ -102,7 +101,7 @@ namespace NodaTime.Format
                 }
             }
 
-            private int CompareReverse(IDurationField a, IDurationField b)
+            private int CompareReverse(DurationField a, DurationField b)
             {
                 if (a == null || !a.IsSupported)
                 {
@@ -120,16 +119,15 @@ namespace NodaTime.Format
             }
         }
 
-        private readonly ICalendarSystem calendarSystem;
+        private readonly CalendarSystem calendarSystem;
         private Offset offset;
-        private IDateTimeZone zone;
+        private DateTimeZone zone;
         private readonly LocalInstant localInstant;
         private readonly IFormatProvider provider;
 
         private SavedField[] savedFields = new SavedField[8];
         private int savedFieldsCount;
         private bool savedFieldsShared;
-        private object savedFieldsState;
 
         /// <summary>
         /// Initializes a bucket, with the option of specifying the pivot year for
@@ -139,7 +137,7 @@ namespace NodaTime.Format
         /// <param name="calendarSystem">The calendar system to use</param>
         /// <param name="provider">The format provider to use</param>
         /// <param name="pivotYear">The pivot year to use when parsing two-digit years</param>
-        public DateTimeParserBucket(LocalInstant instant, ICalendarSystem calendarSystem, IFormatProvider provider, int? pivotYear)
+        public DateTimeParserBucket(LocalInstant instant, CalendarSystem calendarSystem, IFormatProvider provider, int? pivotYear)
         {
             if (calendarSystem == null)
             {
@@ -158,7 +156,7 @@ namespace NodaTime.Format
         /// <param name="instant">The initial local instant</param>
         /// <param name="calendarSystem">The calendar system to use</param>
         /// <param name="provider">The format provider to use</param>
-        public DateTimeParserBucket(LocalInstant instant, ICalendarSystem calendarSystem, IFormatProvider provider)
+        public DateTimeParserBucket(LocalInstant instant, CalendarSystem calendarSystem, IFormatProvider provider)
             : this(instant, calendarSystem, provider, null)
         {
         }
@@ -171,7 +169,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets the calendar system of the bucket
         /// </summary>
-        public ICalendarSystem Calendar { get { return calendarSystem; } }
+        public CalendarSystem Calendar { get { return calendarSystem; } }
 
         /// <summary>
         /// Gets the format provider to be used during parsing.
@@ -188,7 +186,6 @@ namespace NodaTime.Format
             get { return offset; }
             set
             {
-                savedFieldsState = null;
                 offset = value;
                 zone = null;
             }
@@ -199,7 +196,7 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="field">The field, whose chronology must match that of this bucket</param>
         /// <param name="value">The value</param>
-        public void SaveField(IDateTimeField field, int value)
+        internal void SaveField(DateTimeField field, int value)
         {
             SaveField(new SavedField(field, value));
         }
@@ -209,7 +206,7 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name="fieldType">The field type</param>
         /// <param name="value">The value</param>
-        public void SaveField(DateTimeFieldType fieldType, int value)
+        internal void SaveField(DateTimeFieldType fieldType, int value)
         {
             SaveField(new SavedField(fieldType.GetField(calendarSystem), value));
         }
@@ -240,7 +237,6 @@ namespace NodaTime.Format
                 savedFieldsShared = false;
             }
 
-            savedFieldsState = null;
             savedFields[savedFieldsCount] = field;
             savedFieldsCount = savedFieldsCountLocal + 1;
         }
@@ -278,11 +274,7 @@ namespace NodaTime.Format
             }
             catch (FieldValueException e)
             {
-                if (text != null)
-                {
-                    e.PrependMessage("Cannot parse \"" + text + '"');
-                }
-                throw;
+                throw new FormatException("Cannot parse \"" + text + "\"", e);
             }
 
             Instant result;

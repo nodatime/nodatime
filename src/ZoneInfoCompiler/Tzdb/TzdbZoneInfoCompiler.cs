@@ -81,7 +81,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name = "zoneList">The time zone definition parts to add.</param>
         /// <param name = "ruleSets">The rule sets map to use in looking up rules for the time zones..</param>
-        private static IDateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, IList<ZoneRule>> ruleSets)
+        private static DateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, IList<ZoneRule>> ruleSets)
         {
             var builder = new DateTimeZoneBuilder();
             foreach (var zone in zoneList)

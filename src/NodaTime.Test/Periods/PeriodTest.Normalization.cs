@@ -24,7 +24,6 @@ namespace NodaTime.Test.Periods
     public partial class PeriodTest
     {
         #region ToStandardDuration
-
         [Test]
         public void ToStandardDuration_ThrowsNotSupprted_IfPeriodContainsYears()
         {
@@ -43,20 +42,14 @@ namespace NodaTime.Test.Periods
         public void ToStandardDuration_CalculatesDuration()
         {
             var sut = new Period(0, 0, 3, 4, 5, 6, 7, 8);
-            var expectedDuration = Duration.FromStandardWeeks(3) 
-                + Duration.FromStandardDays(4)
-                + Duration.FromHours(5)
-                + Duration.FromMinutes(6)
-                + Duration.FromSeconds(7)
-                + Duration.FromMilliseconds(8);
+            var expectedDuration = Duration.FromStandardWeeks(3) + Duration.FromStandardDays(4) + Duration.FromHours(5) + Duration.FromMinutes(6) +
+                                   Duration.FromSeconds(7) + Duration.FromMilliseconds(8);
 
             Assert.That(sut.ToStandardDuration(), Is.EqualTo(expectedDuration));
         }
-
         #endregion
 
         #region ToStandardSeconds
-
         [Test]
         public void ToStandardSeconds_ThrowsNotSupprted_IfPeriodContainsYears()
         {
@@ -75,22 +68,16 @@ namespace NodaTime.Test.Periods
         public void ToStandardSeconds_CalculatesSeconds()
         {
             var sut = new Period(0, 0, 3, 4, 5, 6, 7, 8);
-            var secondsAmount = 3 * NodaConstants.SecondsPerWeek 
-                                + 4 * NodaConstants.SecondsPerDay 
-                                + 5 * NodaConstants.SecondsPerHour
-                                + 6 * NodaConstants.SecondsPerMinute
-                                + 7 
-                                + 8 / NodaConstants.MillisecondsPerSecond;
+            var secondsAmount = 3 * NodaConstants.SecondsPerWeek + 4 * NodaConstants.SecondsPerDay + 5 * NodaConstants.SecondsPerHour +
+                                6 * NodaConstants.SecondsPerMinute + 7 + 8 / NodaConstants.MillisecondsPerSecond;
 
             var seconds = Seconds.From(secondsAmount);
 
             Assert.That(sut.ToStandardSeconds(), Is.EqualTo(seconds));
         }
-
         #endregion
 
         #region ToStandardMinutes
-
         [Test]
         public void ToStandardMinutes_ThrowsNotSupprted_IfPeriodContainsYears()
         {
@@ -109,22 +96,16 @@ namespace NodaTime.Test.Periods
         public void ToStandardMinutes_CalculatesMinutes()
         {
             var sut = new Period(0, 0, 3, 4, 5, 6, 7, 8);
-            var minutesAmount = 3 * NodaConstants.MinutesPerWeek
-                                + 4 * NodaConstants.MinutesPerDay
-                                + 5 * NodaConstants.MinutesPerHour
-                                + 6 
-                                + 7 / NodaConstants.SecondsPerMinute
-                                + 8 / NodaConstants.MillisecondsPerMinute;
+            var minutesAmount = 3 * NodaConstants.MinutesPerWeek + 4 * NodaConstants.MinutesPerDay + 5 * NodaConstants.MinutesPerHour + 6 +
+                                7 / NodaConstants.SecondsPerMinute + 8 / NodaConstants.MillisecondsPerMinute;
 
             var minutes = Minutes.From(minutesAmount);
 
             Assert.That(sut.ToStandardMinutes(), Is.EqualTo(minutes));
         }
-
         #endregion
 
         #region ToStandardHours
-
         [Test]
         public void ToStandardHours_ThrowsNotSupprted_IfPeriodContainsYears()
         {
@@ -143,18 +124,13 @@ namespace NodaTime.Test.Periods
         public void ToStandardHours_CalculatesHours()
         {
             var sut = new Period(0, 0, 3, 4, 5, 6, 7, 8);
-            var hoursAmount = 3 * NodaConstants.HoursPerWeek
-                                + 4 * NodaConstants.HoursPerDay
-                                + 5 
-                                + 6 / NodaConstants.MinutesPerHour
-                                + 7 / NodaConstants.SecondsPerHour
-                                + 8 / NodaConstants.MillisecondsPerHour;
+            var hoursAmount = 3 * NodaConstants.HoursPerWeek + 4 * NodaConstants.HoursPerDay + 5 + 6 / NodaConstants.MinutesPerHour +
+                              7 / NodaConstants.SecondsPerHour + 8 / NodaConstants.MillisecondsPerHour;
 
             var hours = Hours.From(hoursAmount);
 
             Assert.That(sut.ToStandardHours(), Is.EqualTo(hours));
         }
-
         #endregion
     }
 }

@@ -128,6 +128,5 @@ namespace NodaTime.Test.Calendars
             Assert.That(sut.ToString(), Is.EqualTo("DayOfWeek"));
             Assert.That(sut.IsSupported, Is.True);
         }
-
     }
 }

@@ -40,9 +40,9 @@ namespace NodaTime.Fields
             this.leapMonth = leapMonth;
         }
 
-        public override IDurationField RangeDurationField { get { return calendarSystem.Fields.Years; } }
+        internal override DurationField RangeDurationField { get { return calendarSystem.Fields.Years; } }
 
-        public override bool IsLenient { get { return false; } }
+        internal override bool IsLenient { get { return false; } }
 
         #region Values
         /// <summary>
@@ -50,7 +50,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
         /// <returns>The month extracted from the input.</returns>
-        public override int GetValue(LocalInstant localInstant)
+        internal override int GetValue(LocalInstant localInstant)
         {
             return calendarSystem.GetMonthOfYear(localInstant);
         }
@@ -60,7 +60,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to query</param>
         /// <returns>The month extracted from the input.</returns>
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             return calendarSystem.GetMonthOfYear(localInstant);
         }
@@ -79,7 +79,7 @@ namespace NodaTime.Fields
         /// 07-31 - (1 month) = 06-30
         /// 03-31 - (1 month) = 02-28 or 02-29 depending
         /// </remarks>
-        public override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             // Keep the parameter name the same as the original declaration, but
             // use a more meaningful name in the method
@@ -133,7 +133,7 @@ namespace NodaTime.Fields
             return new LocalInstant(datePart + timePart);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, long value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             // Keep the parameter name the same as the original declaration, but
             // use a more meaningful name in the method
@@ -205,38 +205,13 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to update</param>
         /// <param name="value">The months to add (can be negative)</param>
         /// <returns>The updated local instant</returns>
-        public override LocalInstant AddWrapField(LocalInstant localInstant, int value)
+        internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             int months = value;
             return SetValue(localInstant, FieldUtils.GetWrappedValue(GetValue(localInstant), months, MinimumValue, max));
         }
 
-        public override int[] Add(IPartial instant, int fieldIndex, int[] values, int valueToAdd)
-        {
-            // overridden as superclass algorithm can't handle
-            // 2004-02-29 + 48 months -> 2008-02-29 type dates
-            if (valueToAdd == 0)
-            {
-                return values;
-            }
-
-            if (PartialUtils.IsContiguous(instant))
-            {
-                LocalInstant currentValue = LocalInstant.LocalUnixEpoch;
-                for (int i = 0, isize = instant.Size; i < isize; i++)
-                {
-                    currentValue = instant.GetFieldType(i).GetField(calendarSystem).SetValue(currentValue, values[i]);
-                }
-                currentValue = Add(currentValue, valueToAdd);
-                return calendarSystem.GetPartialValues(instant, currentValue);
-            }
-            else
-            {
-                return base.Add(instant, fieldIndex, values, valueToAdd);
-            }
-        }
-
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             if (minuendInstant < subtrahendInstant)
             {
@@ -277,7 +252,7 @@ namespace NodaTime.Fields
             return difference;
         }
 
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, MinimumValue, max);
 
@@ -295,41 +270,41 @@ namespace NodaTime.Fields
         #endregion
 
         #region Leap
-        public override bool IsLeap(LocalInstant localInstant)
+        internal override bool IsLeap(LocalInstant localInstant)
         {
             int thisYear = calendarSystem.GetYear(localInstant);
             return calendarSystem.IsLeapYear(thisYear) && calendarSystem.GetMonthOfYear(localInstant, thisYear) == leapMonth;
         }
 
-        public override int GetLeapAmount(LocalInstant localInstant)
+        internal override int GetLeapAmount(LocalInstant localInstant)
         {
             return IsLeap(localInstant) ? 1 : 0;
         }
 
-        public override IDurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
+        internal override DurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
         #endregion
 
         #region Ranges
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return MinimumValue;
         }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return max;
         }
         #endregion
 
         #region Rounding
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             int year = calendarSystem.GetYear(localInstant);
             int month = calendarSystem.GetMonthOfYear(localInstant, year);
             return new LocalInstant(calendarSystem.GetYearMonthTicks(year, month));
         }
 
-        public override Duration Remainder(LocalInstant localInstant)
+        internal override Duration Remainder(LocalInstant localInstant)
         {
             return localInstant - RoundFloor(localInstant);
         }

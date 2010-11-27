@@ -42,7 +42,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void WrappedField()
         {
-            IDateTimeField field = CreateSampleField();
+            DateTimeField field = CreateSampleField();
             var decorated = new SimpleDecoratedDateTimeField(field, field.FieldType);
             Assert.AreSame(field, decorated.WrappedField);
         }
@@ -50,7 +50,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void FieldType_IsNotDelegated()
         {
-            IDateTimeField field = CreateSampleField();
+            DateTimeField field = CreateSampleField();
             var decorated = new SimpleDecoratedDateTimeField(field, DateTimeFieldType.YearOfEra);
             Assert.AreEqual(DateTimeFieldType.YearOfEra, decorated.FieldType);
         }
@@ -71,21 +71,21 @@ namespace NodaTime.Test.Fields
             AssertDelegated(x => x.RoundFloor(when1));
         }
 
-        private static void AssertDelegated<T>(Func<IDateTimeField, T> func)
+        private static void AssertDelegated<T>(Func<DateTimeField, T> func)
         {
-            IDateTimeField field = CreateSampleField();
+            DateTimeField field = CreateSampleField();
             var decorated = new SimpleDecoratedDateTimeField(field, DateTimeFieldType.YearOfEra);
             Assert.AreEqual(func(field), func(decorated));
         }
 
-        private static IDateTimeField CreateSampleField()
+        private static DateTimeField CreateSampleField()
         {
             return new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, TicksDurationField.Instance, PreciseDurationField.Milliseconds);
         }
 
         private class SimpleDecoratedDateTimeField : DecoratedDateTimeField
         {
-            internal SimpleDecoratedDateTimeField(IDateTimeField wrappedField, DateTimeFieldType fieldType) : base(wrappedField, fieldType)
+            internal SimpleDecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType) : base(wrappedField, fieldType)
             {
             }
         }

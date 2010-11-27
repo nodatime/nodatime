@@ -23,15 +23,9 @@ namespace NodaTime.Test.Periods
 {
     public partial class SecondsTest
     {
-        object[] ParseCorrectTestData =
-        {
-            new TestCaseData(null, 0),
-            new TestCaseData(String.Empty, 0),
-            new TestCaseData("PT0S", 0),
-            new TestCaseData("PT1S", 1),
-            new TestCaseData("PT-3S", -3),
-            new TestCaseData("P0Y0M0W0DT2S", 2),
-            new TestCaseData("PT0H0M2S", 2),
+        private object[] ParseCorrectTestData = {
+            new TestCaseData(null, 0), new TestCaseData(String.Empty, 0), new TestCaseData("PT0S", 0),
+            new TestCaseData("PT1S", 1), new TestCaseData("PT-3S", -3), new TestCaseData("P0Y0M0W0DT2S", 2), new TestCaseData("PT0H0M2S", 2),
         };
 
         [Test]
@@ -42,11 +36,7 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(expectedSecondsValue, sut.Value);
         }
 
-        object[] ParseWrongTestData =
-        {
-            new TestCaseData("P1Y1D"),
-            new TestCaseData("P1DT1S"),
-        };
+        private object[] ParseWrongTestData = { new TestCaseData("P1Y1D"), new TestCaseData("P1DT1S"), };
 
         [Test]
         [TestCaseSource("ParseWrongTestData")]

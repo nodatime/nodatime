@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NodaTime.Periods;
 using NUnit.Framework;
 
@@ -22,7 +23,6 @@ namespace NodaTime.Test.Periods
     public partial class DaysTest
     {
         #region Negation
-
         [Test]
         public void Negated()
         {
@@ -45,11 +45,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(-3, (Days.Negate(Days.Three)).Value, "-3");
             Assert.AreEqual(8, (Days.Negate(Days.From(-8))).Value, "- (-8)");
         }
-
         #endregion
 
         #region Unary Operators
-
         [Test]
         public void UnaryPlusOperator()
         {
@@ -101,11 +99,9 @@ namespace NodaTime.Test.Periods
 
             Assert.AreEqual(1, (oneDay).Value, "--2 = 1");
         }
-
         #endregion
 
         #region Add
-
         [Test]
         public void Add()
         {
@@ -135,11 +131,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(5, (Days.Add(Days.Two, Days.Three)).Value, "2 + 3");
             Assert.AreEqual(1, (Days.Add(Days.From(9), Days.From(-8))).Value, "9 + (-8)");
         }
-
         #endregion
 
         #region Subtract
-
         [Test]
         public void Subtract()
         {
@@ -169,11 +163,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(1, (Days.Subtract(Days.Three, Days.Two)).Value, "3 - 2");
             Assert.AreEqual(10, (Days.Subtract(Days.From(9), Days.From(-1))).Value, "9 - (-1)");
         }
-
         #endregion
 
         #region Multiplication
-
         [Test]
         public void Multiply()
         {
@@ -216,11 +208,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(0, (Days.Multiply(0, Days.One)).Value, "0 * 1");
             Assert.AreEqual(-9, (Days.Multiply(-1, Days.From(9))).Value, "(-1) * 9");
         }
-
         #endregion
 
         #region Division
-
         [Test]
         public void Divide()
         {
@@ -247,11 +237,9 @@ namespace NodaTime.Test.Periods
             Assert.AreEqual(1, (Days.Divide(Days.Three, Days.Two)).Value, "3 / 2");
             Assert.AreEqual(-3, (Days.Divide(Days.From(9), Days.From(-3))).Value, "9 / (-3)");
         }
-
         #endregion
 
         #region Conversions
-
         [Test]
         public void ImplicitConversionToInt32_FromNotNullInstance()
         {
@@ -277,7 +265,6 @@ namespace NodaTime.Test.Periods
 
             Assert.AreEqual(3, threeDays.Value);
         }
-
         #endregion
     }
 }

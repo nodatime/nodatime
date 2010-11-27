@@ -29,7 +29,7 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class AlgiersTest
     {
-        private static readonly IDateTimeZone Algiers = DateTimeZones.ForId("Africa/Algiers");
+        private static readonly DateTimeZone Algiers = DateTimeZones.ForId("Africa/Algiers");
 
         [Test]
         public void GetPeriod_BeforeLast()
@@ -43,7 +43,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetPeriod_AfterLastTransition()
         {
-            var may1981 = new ZonedDateTime(1981, 5, 1, 0, 0, 1, DateTimeZones.Utc).ToInstant();
+            var may1981 = new ZonedDateTime(1981, 5, 1, 0, 0, 1, DateTimeZone.Utc).ToInstant();
             var actual = Algiers.GetZoneInterval(may1981);
             var expected = new ZoneInterval("CET", new Instant(3575232000000000L), Instant.MaxValue, new Offset(NodaConstants.MillisecondsPerHour), Offset.Zero);
             Assert.AreEqual(expected, actual);

@@ -23,7 +23,7 @@ namespace NodaTime.TimeZones
     /// <summary>
     ///   A very specifc compressing binary stream reader for time zones.
     /// </summary>
-    public class DateTimeZoneCompressionReader : DateTimeZoneReader
+    internal class DateTimeZoneCompressionReader : DateTimeZoneReader
     {
         /// <summary>
         ///   Initializes a new instance of the <see cref = "DateTimeZoneCompressionReader" /> class.

@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     ///   without any compression. Can be used as a base for implementing specific 
     ///   compression readers by overriding the methods for the types to be compressed.
     /// </summary>
-    public class DateTimeZoneReader : IDateTimeZoneReader
+    internal class DateTimeZoneReader
     {
         public DateTimeZoneReader(Stream input)
         {
@@ -181,7 +181,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteTimeZone" />.
         /// </remarks>
         /// <returns>The <see cref = "IDateTimeZone" /> value from the stream.</returns>
-        public virtual IDateTimeZone ReadTimeZone(string id)
+        public virtual DateTimeZone ReadTimeZone(string id)
         {
             int flag = ReadInt8();
             if (flag == DateTimeZoneWriter.FlagTimeZoneFixed)
@@ -208,12 +208,12 @@ namespace NodaTime.TimeZones
             Type type = Type.GetType(className);
             if (type == null)
             {
-                throw new InvalidOperationException(@"Unknown IDateTimeZone type: " + className);
+                throw new InvalidOperationException(@"Unknown DateTimeZone type: " + className);
             }
-            MethodInfo method = type.GetMethod("Read", new[] { typeof(IDateTimeZoneReader), typeof(string) });
+            MethodInfo method = type.GetMethod("Read", new[] { typeof(DateTimeZoneReader), typeof(string) });
             if (method != null)
             {
-                return method.Invoke(null, new object[] { this, id }) as IDateTimeZone;
+                return method.Invoke(null, new object[] { this, id }) as DateTimeZone;
             }
             return null;
         }

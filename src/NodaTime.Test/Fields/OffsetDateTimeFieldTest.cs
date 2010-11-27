@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using NodaTime.Calendars;
 using NodaTime.Fields;
 using NUnit.Framework;
 
@@ -28,7 +27,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithoutFieldType_HardCodedProperties()
         {
-            OffsetDateTimeField field = new OffsetDateTimeField(IsoCalendarSystem.Instance.Fields.SecondOfMinute, 3);
+            OffsetDateTimeField field = new OffsetDateTimeField(CalendarSystem.Iso.Fields.SecondOfMinute, 3);
             Assert.AreEqual(DateTimeFieldType.SecondOfMinute, field.FieldType);
             Assert.IsTrue(field.IsSupported);
             Assert.IsFalse(field.IsLenient);
@@ -46,7 +45,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithZeroOffset_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new OffsetDateTimeField(IsoCalendarSystem.Instance.Fields.SecondOfMinute, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new OffsetDateTimeField(CalendarSystem.Iso.Fields.SecondOfMinute, 0));
         }
 
         [Test]
@@ -59,7 +58,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithSpecificFieldType()
         {
-            OffsetDateTimeField field = new OffsetDateTimeField(IsoCalendarSystem.Instance.Fields.SecondOfMinute, DateTimeFieldType.SecondOfDay, 3);
+            OffsetDateTimeField field = new OffsetDateTimeField(CalendarSystem.Iso.Fields.SecondOfMinute, DateTimeFieldType.SecondOfDay, 3);
             Assert.AreEqual(DateTimeFieldType.SecondOfDay, field.FieldType);
         }
 
@@ -72,14 +71,13 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithSpecificNullFieldType_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new OffsetDateTimeField(IsoCalendarSystem.Instance.Fields.SecondOfMinute, null, 3));
+            Assert.Throws<ArgumentNullException>(() => new OffsetDateTimeField(CalendarSystem.Iso.Fields.SecondOfMinute, null, 3));
         }
 
         [Test]
         public void Constructor_WithSpecificFieldTypeButZeroOffset_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => new OffsetDateTimeField(IsoCalendarSystem.Instance.Fields.SecondOfMinute, DateTimeFieldType.SecondOfDay, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new OffsetDateTimeField(CalendarSystem.Iso.Fields.SecondOfMinute, DateTimeFieldType.SecondOfDay, 0));
         }
 
         [Test]
@@ -249,7 +247,7 @@ namespace NodaTime.Test.Fields
         /// </summary>
         private static OffsetDateTimeField GetSampleField()
         {
-            return new OffsetDateTimeField(IsoCalendarSystem.Instance.Fields.SecondOfMinute, 3);
+            return new OffsetDateTimeField(CalendarSystem.Iso.Fields.SecondOfMinute, 3);
         }
     }
 }

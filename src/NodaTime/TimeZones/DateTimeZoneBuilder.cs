@@ -17,13 +17,13 @@
 
 using System;
 using System.Collections.Generic;
-using NodaTime.Calendars;
 using NodaTime.Fields;
 
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides a means of programatically creating complex time zones .
+    /// Provides a means of programatically creating complex time zones. Currently internal, but we
+    /// may want to make it public again eventually.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -71,7 +71,7 @@ namespace NodaTime.TimeZones
     /// Original name: DateTimeZoneBuilder.
     /// </para>
     /// </remarks>
-    public sealed class DateTimeZoneBuilder
+    internal sealed class DateTimeZoneBuilder
     {
         private readonly IList<ZoneRecurrenceCollection> ruleSets = new List<ZoneRecurrenceCollection>();
 
@@ -112,13 +112,13 @@ namespace NodaTime.TimeZones
         public DateTimeZoneBuilder AddCutover(int year, TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advanceDayOfWeek,
                                               Offset tickOfDay)
         {
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
             if (dayOfWeek != 0)
             {
-                FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
+                FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
             }
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
 
             return AddCutover(year, new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay));
         }
@@ -200,13 +200,13 @@ namespace NodaTime.TimeZones
         public DateTimeZoneBuilder AddRecurringSavings(String nameKey, Offset savings, int fromYear, int toYear, TransitionMode mode, int monthOfYear,
                                                        int dayOfMonth, int dayOfWeek, bool advanceDayOfWeek, Offset tickOfDay)
         {
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.MonthOfYear, "monthOfYear", monthOfYear);
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
             if (dayOfWeek != 0)
             {
-                FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
+                FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
             }
-            FieldUtils.VerifyFieldValue(IsoCalendarSystem.Instance.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
             var yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
             return AddRecurringSavings(new ZoneRecurrence(nameKey, savings, yearOffset, fromYear, toYear));
         }
@@ -257,7 +257,7 @@ namespace NodaTime.TimeZones
          * @param outputID  true if the zone id should be output
          */
 
-        public IDateTimeZone ToDateTimeZone(String zoneId)
+        public DateTimeZone ToDateTimeZone(String zoneId)
         {
             if (zoneId == null)
             {
@@ -265,7 +265,7 @@ namespace NodaTime.TimeZones
             }
 
             var transitions = new List<ZoneTransition>();
-            IDateTimeZone tailZone = null;
+            DateTimeZone tailZone = null;
             Instant instant = Instant.MinValue;
 
             ZoneTransition nextTransition = null;
@@ -346,8 +346,8 @@ namespace NodaTime.TimeZones
 
             // If local time of new transition is same as last local time, just replace last
             // transition with new one.
-            LocalInstant lastLocal = lastTransition.Instant + lastTransition.WallOffset;
-            LocalInstant newLocal = transition.Instant + transition.WallOffset;
+            LocalInstant lastLocal = Instant.Add(lastTransition.Instant, lastTransition.WallOffset);
+            LocalInstant newLocal = Instant.Add(transition.Instant, transition.WallOffset);
 
             if (newLocal != lastLocal)
             {

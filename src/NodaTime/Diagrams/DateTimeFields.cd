@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="NodaTime.Fields.DateTimeFieldBase" Collapsed="true">
+  <Class Name="NodaTime.Fields.DateTimeField" Collapsed="true">
     <Position X="5.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AGJAAIBAoACAAlAECYCAFAQACCAIAAAAAFBAYABAQAQ=</HashCode>
-      <FileName>Fields\DateTimeFieldBase.cs</FileName>
+      <FileName>Fields\DateTimeField.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Fields.FieldSet" Collapsed="true">
     <Position X="4.25" Y="6.5" Width="1.5" />
@@ -63,10 +62,9 @@
   <Class Name="NodaTime.Fields.UnsupportedDateTimeField" Collapsed="true">
     <Position X="3.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AGJAAIBAoAAAAlAACYCAFAQADCAIAAgAAFBgYABAQAQ=</HashCode>
+      <HashCode>ACJAAIAAoAAAAlAACYCAFAAADCAIAAgAAFBgYABAQAQ=</HashCode>
       <FileName>Fields\UnsupportedDateTimeField.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Fields.DividedDateTimeField" Collapsed="true">
     <Position X="2.25" Y="5.5" Width="2.25" />
@@ -92,7 +90,7 @@
   <Class Name="NodaTime.Fields.OffsetDateTimeField" Collapsed="true">
     <Position X="0.75" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AALAEIAAoAAQAgAACAAAEAAAAAAAAAAAAEAAQABAQAQ=</HashCode>
+      <HashCode>AALAEIAAoAAQAgAACAAAEAAAAAAIAAAAAEAAQABAQAQ=</HashCode>
       <FileName>Fields\OffsetDateTimeField.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -119,40 +117,20 @@
   </Class>
   <Class Name="NodaTime.Fields.BasicWeekYearDateTimeField" Collapsed="true">
     <Position X="7.5" Y="3.75" Width="1.5" />
-    <InheritanceLine Type="NodaTime.Fields.ImpreciseDateTimeField" ManuallyRouted="true" FixedToPoint="true">
-      <Path>
-        <Point X="6.5" Y="2.441" />
-        <Point X="6.5" Y="4.063" />
-        <Point X="7.5" Y="4.063" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAIAAIAAIAAAAgAAAQAAFAAAAhAAAAAAAFBAAABAQAQ=</HashCode>
+      <HashCode>AAIAAIAAIAAAAgAAAQAAFAAAAhAIAAAAAFBAAAAAQAQ=</HashCode>
       <FileName>Fields\BasicWeekYearDateTimeField.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Fields.BasicYearDateTimeField" Collapsed="true">
     <Position X="7.5" Y="2.75" Width="1.5" />
-    <InheritanceLine Type="NodaTime.Fields.ImpreciseDateTimeField" FixedToPoint="true">
-      <Path>
-        <Point X="6.5" Y="2.441" />
-        <Point X="6.5" Y="3.125" />
-        <Point X="7.5" Y="3.125" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAIAAIAAIAAAAgAAAQAAFAAAABAAAAAAAFBAQAAAQAQ=</HashCode>
+      <HashCode>AAIAAIAAIAAAAgAAAQAAFAAAABAIAAAAAFBAQAAAQAQ=</HashCode>
       <FileName>Fields\BasicYearDateTimeField.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Fields.GJMonthOfYearDateTimeField" Collapsed="true">
     <Position X="5.25" Y="5.5" Width="2.5" />
-    <InheritanceLine Type="NodaTime.Fields.BasicMonthOfYearDateTimeField" ManuallyRouted="true" FixedToPoint="true">
-      <Path>
-        <Point X="6.5" Y="5.441" />
-        <Point X="6.5" Y="5.5" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Fields\GJMonthOfYearDateTimeField.cs</FileName>
@@ -186,12 +164,5 @@
       <FileName>Fields\GJDayOfWeekDateTimeField.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="NodaTime.Fields.IDateTimeField" Collapsed="true">
-    <Position X="0.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ACJAAIBAoAAAAlAACYCAFAQACCAIAAAAAFBAYABAQAQ=</HashCode>
-      <FileName>Fields\IDateTimeField.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

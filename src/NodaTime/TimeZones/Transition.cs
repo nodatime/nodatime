@@ -24,7 +24,7 @@ namespace NodaTime.TimeZones
     /// TODO(jon): Potentially rename this to ZoneTransition after doing something
     /// else with the current ZoneTransition class :)
     /// </summary>
-    public struct Transition : IEquatable<Transition>
+    internal struct Transition : IEquatable<Transition>
     {
         private readonly Instant instant;
         public Instant Instant { get { return instant; } }
