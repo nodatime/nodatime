@@ -26,8 +26,8 @@ namespace NodaTime.Test.Format
     {
         #region Zones
         private static readonly DateTimeZone UTC = DateTimeZone.Utc;
-        private static readonly DateTimeZone London = DateTimeZones.ForId("Europe/London");
-        private static readonly DateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
+        private static readonly DateTimeZone London = DateTimeZone.ForId("Europe/London");
+        private static readonly DateTimeZone Paris = DateTimeZone.ForId("Europe/Paris");
         #endregion
 
         private object[] DateFormatterTestData = { new TestCaseData(new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), "2004-06-09"), };

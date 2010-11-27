@@ -28,8 +28,8 @@ namespace NodaTime.Test.Format
     {
         #region Zones
         private static readonly DateTimeZone UTC = DateTimeZone.Utc;
-        private static DateTimeZone London = DateTimeZones.ForId("Europe/London");
-        private static DateTimeZone Paris = DateTimeZones.ForId("Europe/Paris");
+        private static DateTimeZone London = DateTimeZone.ForId("Europe/London");
+        private static DateTimeZone Paris = DateTimeZone.ForId("Europe/Paris");
         #endregion
 
         #region Cultures

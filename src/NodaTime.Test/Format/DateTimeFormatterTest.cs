@@ -57,7 +57,7 @@ namespace NodaTime.Test.Format
             calendar2 = null;
 
             zone1 = DateTimeZone.Utc;
-            zone2 = DateTimeZones.ForId("Europe/London");
+            zone2 = DateTimeZone.ForId("Europe/London");
 
             pivotYear1 = 55;
             pivotYear2 = 45;
