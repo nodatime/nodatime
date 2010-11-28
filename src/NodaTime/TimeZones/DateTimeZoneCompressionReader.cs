@@ -92,7 +92,7 @@ namespace NodaTime.TimeZones
         /// <returns>The integer millisecond value from the stream.</returns>
         public override int ReadMilliseconds()
         {
-            /**
+            /*
              * Milliseconds encoding formats:
              *
              * upper bits      units       field length  approximate range
@@ -145,7 +145,7 @@ namespace NodaTime.TimeZones
         /// <returns>The long ticks value from the stream.</returns>
         public override long ReadTicks()
         {
-            /**
+            /*
              * Ticks encoding formats:
              *
              * upper two bits  units       field length  approximate range
