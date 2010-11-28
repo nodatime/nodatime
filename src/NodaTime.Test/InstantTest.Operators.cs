@@ -358,12 +358,14 @@ namespace NodaTime.Test
             Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.One).Ticks, "-50,000,000 + 1");
         }
 
+        // The Plus(Offset) method *would* be an operator, but can't be as LocalInstant is internal.
+        // TODO: Instant tests need a certain amount of work :)
         [Test]
         public void OperatorPlusOffset_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(LocalInstant.LocalUnixEpoch, Instant.Add(Instant.UnixEpoch, Offset.Zero), "UnixEpoch + Offset.Zero");
-            Assert.AreEqual(new LocalInstant(1L), Instant.Add(one, Offset.Zero), "Instant(1) + Offset.Zero");
-            Assert.AreEqual(new LocalInstant(NodaConstants.TicksPerHour), Instant.Add(Instant.UnixEpoch, offsetOneHour), "UnixEpoch + offsetOneHour");
+            Assert.AreEqual(LocalInstant.LocalUnixEpoch, Instant.UnixEpoch.Plus(Offset.Zero), "UnixEpoch + Offset.Zero");
+            Assert.AreEqual(new LocalInstant(1L), one.Plus(Offset.Zero), "Instant(1) + Offset.Zero");
+            Assert.AreEqual(new LocalInstant(NodaConstants.TicksPerHour), Instant.UnixEpoch.Plus(offsetOneHour), "UnixEpoch + offsetOneHour");
         }
         #endregion
 

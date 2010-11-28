@@ -17,7 +17,6 @@
 
 using System;
 using System.Globalization;
-using NodaTime.TimeZones;
 
 namespace NodaTime
 {
@@ -59,7 +58,7 @@ namespace NodaTime
             {
                 var rightNow = Clock.Now;
                 var offsetToLocal = DateTimeZone.Current.GetOffsetFromUtc(rightNow);
-                return Instant.Add(rightNow, offsetToLocal);
+                return rightNow.Plus(offsetToLocal);
             }
         }
 
