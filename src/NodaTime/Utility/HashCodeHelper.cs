@@ -27,7 +27,7 @@ namespace NodaTime.Utility
     /// The basic usage pattern is:
     /// <example>
     /// <code>
-    ///    internal override int GetHashCode()
+    ///    public override int GetHashCode()
     ///    {
     ///        int hash = HashCodeHelper.Initialize();
     ///        hash = HashCodeHelper.Hash(hash, Field1);
