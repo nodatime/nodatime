@@ -45,6 +45,7 @@ namespace NodaTime.Demo
             Assert.AreEqual("ISO: 2010-06-16T16:20:00 LOC", dt.ToString());
         }
 
+        /*
         [Test]
         public void SimpleArithmetic()
         {
@@ -72,5 +73,6 @@ namespace NodaTime.Demo
             Assert.AreEqual(new LocalDateTime(2010, 3, 28, 0, 0), addOneMonthTwice);
             Assert.AreEqual(new LocalDateTime(2010, 3, 30, 0, 0), addTwoMonthsOnce);
         }
+         */
     }
 }

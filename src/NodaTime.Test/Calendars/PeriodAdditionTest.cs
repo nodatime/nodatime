@@ -27,6 +27,7 @@ namespace NodaTime.Test.Calendars
     [TestFixture]
     public class PeriodAdditionTest
     {
+        /*
         [Test]
         public void DayCrossingMonthBoundary()
         {
@@ -66,6 +67,6 @@ namespace NodaTime.Test.Calendars
             // If we added the days first, we'd end up with March 1st instead.
             LocalDateTime result = start + period;
             Assert.AreEqual(new LocalDateTime(2008, 3, 2, 0, 0), result);
-        }
+        }*/
     }
 }

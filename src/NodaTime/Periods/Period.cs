@@ -835,6 +835,7 @@ namespace NodaTime.Periods
             return ToStandardDurationUnchecked();
         }
 
+        /*
         /// <summary>
         /// Converts this period to a period in seconds assuming a
         /// 7 day week, 24 hour day, 60 minute hour and 60 second minute.
@@ -953,7 +954,7 @@ namespace NodaTime.Periods
             var weeks = ToStandardDuration().Ticks / NodaConstants.TicksPerWeek;
 
             return Periods.Weeks.From((int)weeks);
-        }
+        }*/
 
         /// <summary>
         /// Normalizes this period using standard rules, assuming a 12 month year,
@@ -1276,6 +1277,7 @@ namespace NodaTime.Periods
         }
         #endregion
 
+        /*
         /// <summary>
         /// Gets the value as a String in the ISO8601 duration format.
         /// </summary>
@@ -1294,6 +1296,6 @@ namespace NodaTime.Periods
         public string ToString(PeriodFormatter formatter)
         {
             return formatter == null ? ToString() : formatter.Print(this);
-        }
+        }*/
     }
 }

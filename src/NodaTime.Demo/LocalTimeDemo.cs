@@ -14,6 +14,7 @@ namespace NodaTime.Demo
             Assert.AreEqual("16:20:00.000", time.ToString());
         }
 
+        /*
         [Test]
         public void Arithmetic()
         {
@@ -29,5 +30,6 @@ namespace NodaTime.Demo
             LocalTime end = new LocalTime(15, 20, 0);
             Assert.AreEqual(end, start + Hours.From(23));
         }
+         */
     }
 }
