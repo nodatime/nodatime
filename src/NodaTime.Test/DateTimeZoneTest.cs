@@ -63,9 +63,9 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void TestForId_null()
+        public void TestForId_nullId()
         {
-            Assert.AreEqual(DateTimeZone.Utc, DateTimeZone.ForId(null));
+            Assert.IsNull(DateTimeZone.ForId(null));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace NodaTime.Test
         [Test]
         public void TestForId_InvalidId()
         {
-            Assert.AreEqual(DateTimeZone.Utc, DateTimeZone.ForId("not a known id"));
+            Assert.IsNull(DateTimeZone.ForId("not a known id"));
         }
 
         [Test]
@@ -150,8 +150,8 @@ namespace NodaTime.Test
             var idsCount = ids.Count();
             Assert.IsTrue(idsCount == 1, "idsCount == 1");
             Assert.AreEqual("Ids\r\n", provider.ToString());
-            var utc = DateTimeZone.ForId("an unknown id");
-            Assert.AreEqual(DateTimeZone.Utc, utc);
+            var unknown = DateTimeZone.ForId("an unknown id");
+            Assert.IsNull(unknown);
             Assert.AreEqual("Ids\r\nForId(an unknown id)\r\n", provider.ToString());
         }
 
