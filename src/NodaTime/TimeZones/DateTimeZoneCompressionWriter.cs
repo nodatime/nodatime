@@ -120,7 +120,7 @@ namespace NodaTime.TimeZones
         /// <param name = "value">The value to write.</param>
         public override void WriteMilliseconds(int value)
         {
-            /**
+            /*
              * Milliseconds encoding formats:
              *
              * upper bits      units       field length  approximate range
@@ -185,7 +185,7 @@ namespace NodaTime.TimeZones
         /// <param name = "value">The value to write.</param>
         public override void WriteTicks(long value)
         {
-            /**
+            /*
              * Ticks encoding formats:
              *
              * upper two bits  units       field length  approximate range
