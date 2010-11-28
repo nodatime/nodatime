@@ -65,7 +65,7 @@ namespace NodaTime.Test
         [Test]
         public void TestForId_null()
         {
-            Assert.AreNotEqual(DateTimeZone.Utc, DateTimeZone.ForId(null));
+            Assert.AreEqual(DateTimeZone.Utc, DateTimeZone.ForId(null));
         }
 
         [Test]
