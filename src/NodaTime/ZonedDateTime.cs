@@ -256,7 +256,7 @@ namespace NodaTime
         /// </remarks>
         public Instant ToInstant()
         {
-            return localInstant - offset;
+            return localInstant.Minus(offset);
         }
 
         #region Equality

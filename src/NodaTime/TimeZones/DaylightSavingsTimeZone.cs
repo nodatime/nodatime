@@ -170,8 +170,8 @@ namespace NodaTime.TimeZones
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
-            var normal = localInstant - StandardOffset;
-            var daylight = localInstant - (StandardOffset + startRecurrence.Savings);
+            var normal = localInstant.Minus(StandardOffset);
+            var daylight = localInstant.Minus(StandardOffset + startRecurrence.Savings);
             var normalRecurrence = FindMatchingRecurrence(normal);
             var daylightRecurrence = FindMatchingRecurrence(daylight);
 

@@ -203,7 +203,7 @@ namespace NodaTime.TimeZones
 
             Offset offset = GetOffset(standardOffset, savings);
             // Convert from local time to UTC.
-            return instant - offset;
+            return instant.Minus(offset);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace NodaTime.TimeZones
                     }
                 }
                 // Convert from local time to UTC.
-                return newInstant - offset;
+                return newInstant.Minus(offset);
             }
             catch (OverflowException)
             {

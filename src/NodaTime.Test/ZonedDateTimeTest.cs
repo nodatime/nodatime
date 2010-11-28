@@ -37,7 +37,7 @@ namespace NodaTime.Test
             var when = new ZonedDateTime(2009, 12, 22, 21, 39, 30, Pacific);
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
-            Assert.AreEqual(instant, localInstant - Offset.ForHours(-8));
+            Assert.AreEqual(instant, localInstant.Minus(Offset.ForHours(-8)));
 
             Assert.AreEqual(2009, when.Year);
             Assert.AreEqual(12, when.MonthOfYear);
@@ -54,7 +54,7 @@ namespace NodaTime.Test
             var when = new ZonedDateTime(2009, 6, 22, 21, 39, 30, Pacific);
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
-            Assert.AreEqual(instant, localInstant - Offset.ForHours(-7));
+            Assert.AreEqual(instant, localInstant.Minus(Offset.ForHours(-7)));
 
             Assert.AreEqual(2009, when.Year);
             Assert.AreEqual(6, when.MonthOfYear);
@@ -76,7 +76,7 @@ namespace NodaTime.Test
             var when = new ZonedDateTime(2009, 11, 2, 1, 30, 0, Pacific);
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
-            Assert.AreEqual(localInstant - Offset.ForHours(-8), instant);
+            Assert.AreEqual(localInstant.Minus(Offset.ForHours(-8)), instant);
 
             Assert.AreEqual(2009, when.Year);
             Assert.AreEqual(11, when.MonthOfYear);
