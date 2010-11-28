@@ -15,9 +15,7 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Threading;
 using NodaTime.TimeZones;
 
 namespace NodaTime
@@ -62,15 +60,7 @@ namespace NodaTime
         ///   </para>
         /// </remarks>
         /// <value>The system default <see cref = "T:NodaTime.DateTimeZone" /> this will never be <c>null</c>.</value>
-        public static DateTimeZone SystemDefault
-        {
-            get
-            {
-                string systemName = TimeZone.CurrentTimeZone.StandardName;
-                string timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName) ?? UtcId;
-                return ForId(timeZoneId);
-            }
-        }
+        public static DateTimeZone SystemDefault { get { return cache.SystemDefault; } }
 
         /// <summary>
         ///   Gets or sets the current time zone.
@@ -81,7 +71,7 @@ namespace NodaTime
         ///   <see cref = "P:NodaTime.DateTimeZone.SystemDefault" /> time zone to be used.
         /// </remarks>
         /// <value>The current <see cref = "T:NodaTime.DateTimeZone" />. This will never be <c>null</c>.</value>
-        public static DateTimeZone Current { get { return cache.DoCurrent; } set { cache.DoCurrent = value; } }
+        public static DateTimeZone Current { get { return cache.Current; } set { cache.Current = value; } }
 
         /// <summary>
         ///   Returns the time zone with the given id.
@@ -90,7 +80,7 @@ namespace NodaTime
         /// <returns>The <see cref = "DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
         public static DateTimeZone ForId(string id)
         {
-            return cache.DoForId(id);
+            return cache.ForId(id);
         }
 
         /// <summary>
@@ -98,7 +88,7 @@ namespace NodaTime
         ///   providers. This list will be sorted in lexigraphical order by the id name.
         /// </summary>
         /// <value>The <see cref = "IEnumerable{T}" /> of string ids.</value>
-        public static IEnumerable<string> Ids { get { return cache.DoIds; } }
+        public static IEnumerable<string> Ids { get { return cache.Ids; } }
 
         /// <summary>
         ///   Adds the given time zone provider to the front of the provider list.
@@ -112,7 +102,7 @@ namespace NodaTime
         /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to add.</param>
         public static void AddProvider(IDateTimeZoneProvider provider)
         {
-            cache.DoAddProvider(provider);
+            cache.AddProvider(provider);
         }
 
         /// <summary>
@@ -125,7 +115,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the provider was removed.</returns>
         public static bool RemoveProvider(IDateTimeZoneProvider provider)
         {
-            return cache.DoRemoveProvider(provider);
+            return cache.RemoveProvider(provider);
         }
 
         /// <summary>
@@ -277,244 +267,5 @@ namespace NodaTime
             return Id;
         }
         #endregion
-
-        #region Nested type: TimeZoneCache
-        /// <summary>
-        ///   Provides a cache for time zone providers and previously looked up time zones. The process of
-        ///   loading and crating time zones is potentially long (it could conceivably include network
-        ///   requests) so caching them is necessary.
-        /// </summary>
-        private class TimeZoneCache
-        {
-            private readonly SortedDictionary<string, string> idList = new SortedDictionary<string, string>();
-            private readonly LinkedList<IDateTimeZoneProvider> providers = new LinkedList<IDateTimeZoneProvider>();
-            private readonly IDictionary<string, DateTimeZone> timeZoneMap = new Dictionary<string, DateTimeZone>();
-            private DateTimeZone current;
-            private readonly ReaderWriterLock accessLock = new ReaderWriterLock();
-
-            /// <summary>
-            ///   Initializes a new instance of the <see cref = "T:NodaTime.DateTimeZone.TimeZoneCache" /> class.
-            /// </summary>
-            /// <param name = "isUtcOnly">if set to <c>true</c> only the UTC provider will be available.</param>
-            public TimeZoneCache(bool isUtcOnly)
-            {
-                DoAddProvider(new UtcProvider());
-                if (!isUtcOnly)
-                {
-                    DoAddProvider(DefaultDateTimeZoneProvider);
-                }
-            }
-
-            /// <summary>
-            ///   Gets or sets the current time zone.
-            /// </summary>
-            /// <remarks>
-            ///   This is the time zone that is used whenever a time zone is not given to a method. It can
-            ///   be set to any valid time zone. Setting it to <c>null</c> causes the
-            ///   <see cref = "P:NodaTime.DateTimeZone.SystemDefault" /> time zone to be used.
-            /// </remarks>
-            /// <value>The current <see cref = "T:NodaTime.DateTimeZone" />. This will never be <c>null</c>.</value>
-            public DateTimeZone DoCurrent
-            {
-                get
-                {
-                    accessLock.AcquireReaderLock(Timeout.Infinite);
-                    try
-                    {
-                        return current ?? SystemDefault;
-                    }
-                    finally
-                    {
-                        accessLock.ReleaseReaderLock();
-                    }
-                }
-                set
-                {
-                    accessLock.AcquireWriterLock(Timeout.Infinite);
-                    try
-                    {
-                        current = value;
-                    }
-                    finally
-                    {
-                        accessLock.ReleaseWriterLock();
-                    }
-                }
-            }
-
-            /// <summary>
-            ///   Gets the complete list of valid time zone ids provided by all of the registered
-            ///   providers. This list will be sorted in lexigraphical order by the id name.
-            /// </summary>
-            /// <value>The <see cref = "IEnumerable{T}" /> of string ids.</value>
-            public IEnumerable<string> DoIds
-            {
-                get
-                {
-                    accessLock.AcquireReaderLock(Timeout.Infinite);
-                    try
-                    {
-                        if (idList.Count == 0)
-                        {
-                            LockCookie lockCookie = accessLock.UpgradeToWriterLock(Timeout.Infinite);
-                            try
-                            {
-                                idList.Add(UtcId, null);
-                                foreach (var provider in providers)
-                                {
-                                    foreach (string id in provider.Ids)
-                                    {
-                                        if (!idList.ContainsKey(id))
-                                        {
-                                            idList.Add(id, null);
-                                        }
-                                    }
-                                }
-                            }
-                            finally
-                            {
-                                accessLock.DowngradeFromWriterLock(ref lockCookie);
-                            }
-                        }
-                        return idList.Keys;
-                    }
-                    finally
-                    {
-                        accessLock.ReleaseReaderLock();
-                    }
-                }
-            }
-
-            /// <summary>
-            ///   Adds the given time zone provider to the front of the provider list.
-            /// </summary>
-            /// <remarks>
-            ///   Because this adds the new provider to the from of the list, it will be checked first for
-            ///   time zone definitions and therefore can override the default system definitions. This
-            ///   allows for adding new or replacing existing time zones without updating the system. If
-            ///   the provider is already on the list nothing changes.
-            /// </remarks>
-            /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to add.</param>
-            public void DoAddProvider(IDateTimeZoneProvider provider)
-            {
-                accessLock.AcquireReaderLock(Timeout.Infinite);
-                try
-                {
-                    if (!providers.Contains(provider))
-                    {
-                        LockCookie lockCookie = accessLock.UpgradeToWriterLock(Timeout.Infinite);
-                        try
-                        {
-                            providers.AddFirst(provider);
-                            timeZoneMap.Clear();
-                            idList.Clear();
-                        }
-                        finally
-                        {
-                            accessLock.DowngradeFromWriterLock(ref lockCookie);
-                        }
-                    }
-                }
-                finally
-                {
-                    accessLock.ReleaseReaderLock();
-                }
-            }
-
-            /// <summary>
-            ///   Removes the given time zone provider from the provider list.
-            /// </summary>
-            /// <remarks>
-            ///   If the provider is not on the list nothing changes.
-            /// </remarks>
-            /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to remove.</param>
-            /// <returns><c>true</c> if the provider was removed.</returns>
-            public bool DoRemoveProvider(IDateTimeZoneProvider provider)
-            {
-                accessLock.AcquireReaderLock(Timeout.Infinite);
-                try
-                {
-                    if (providers.Contains(provider))
-                    {
-                        LockCookie lockCookie = accessLock.UpgradeToWriterLock(Timeout.Infinite);
-                        try
-                        {
-                            providers.Remove(provider);
-                            timeZoneMap.Clear();
-                            idList.Clear();
-                            return true;
-                        }
-                        finally
-                        {
-                            accessLock.DowngradeFromWriterLock(ref lockCookie);
-                        }
-                    }
-                }
-                finally
-                {
-                    accessLock.ReleaseReaderLock();
-                }
-                return false;
-            }
-
-            /// <summary>
-            ///   Returns the time zone with the given id.
-            /// </summary>
-            /// <param name = "id">The time zone id to find.</param>
-            /// <returns>The <see cref = "DateTimeZone" /> with the given id or UTC if there isn't one defined.</returns>
-            public DateTimeZone DoForId(string id)
-            {
-                DateTimeZone result = Utc;
-                if (!string.IsNullOrEmpty(id) && id != UtcId)
-                {
-                    accessLock.AcquireReaderLock(Timeout.Infinite);
-                    try
-                    {
-                        if (!timeZoneMap.TryGetValue(id, out result))
-                        {
-                            var providerList = new List<IDateTimeZoneProvider>(providers);
-                            var releaseCookie = accessLock.ReleaseLock();
-                            try
-                            {
-                                foreach (var provider in providerList)
-                                {
-                                    result = provider.ForId(id);
-                                    if (result != null)
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            finally
-                            {
-                                accessLock.RestoreLock(ref releaseCookie);
-                            }
-                            LockCookie lockCookie = accessLock.UpgradeToWriterLock(Timeout.Infinite);
-                            try
-                            {
-                                if (timeZoneMap.ContainsKey(id))
-                                {
-                                    result = timeZoneMap[id];
-                                }
-                                else
-                                {
-                                    timeZoneMap.Add(id, result);
-                                }
-                            }
-                            finally
-                            {
-                                accessLock.DowngradeFromWriterLock(ref lockCookie);
-                            }
-                        }
-                    }
-                    finally
-                    {
-                        accessLock.ReleaseReaderLock();
-                    }
-                }
-                return result ?? Utc;
-            }
-        }
-        #endregion Nested type: TimeZoneCache
     }
 }
