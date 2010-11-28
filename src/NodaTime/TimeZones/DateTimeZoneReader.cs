@@ -24,7 +24,7 @@ using System.Text;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///   Provides an <see cref = "IDateTimeZone" /> reader that simply reads the values
+    ///   Provides an <see cref = "DateTimeZone" /> reader that simply reads the values
     ///   without any compression. Can be used as a base for implementing specific 
     ///   compression readers by overriding the methods for the types to be compressed.
     /// </summary>
@@ -42,7 +42,7 @@ namespace NodaTime.TimeZones
         ///   Reads a boolean value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteBoolean" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteBoolean" />.
         /// </remarks>
         /// <returns>The boolean value.</returns>
         public virtual bool ReadBoolean()
@@ -54,7 +54,7 @@ namespace NodaTime.TimeZones
         ///   Reads a non-negative integer value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteCount" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteCount" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
         public virtual int ReadCount()
@@ -66,7 +66,7 @@ namespace NodaTime.TimeZones
         ///   Reads a string to string dictionary value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteDictionary" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteDictionary" />.
         /// </remarks>
         /// <returns>The <see cref = "IDictionary{TKey,TValue}" /> value from the stream.</returns>
         public virtual IDictionary<string, string> ReadDictionary()
@@ -86,7 +86,7 @@ namespace NodaTime.TimeZones
         ///   Reads an enumeration integer value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteEnum" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteEnum" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
         public virtual int ReadEnum()
@@ -98,7 +98,7 @@ namespace NodaTime.TimeZones
         ///   Reads an <see cref = "Instant" /> value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteInstant" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteInstant" />.
         /// </remarks>
         /// <returns>The <see cref = "Instant" /> value from the stream.</returns>
         public virtual Instant ReadInstant()
@@ -110,7 +110,7 @@ namespace NodaTime.TimeZones
         ///   Reads an integer value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteInteger" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteInteger" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
         public virtual int ReadInteger()
@@ -122,7 +122,7 @@ namespace NodaTime.TimeZones
         ///   Reads an <see cref = "LocalInstant" /> value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteLocalInstant" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteLocalInstant" />.
         /// </remarks>
         /// <returns>The <see cref = "LocalInstant" /> value from the stream.</returns>
         public virtual LocalInstant ReadLocalInstant()
@@ -134,7 +134,7 @@ namespace NodaTime.TimeZones
         ///   Reads an integer millisecond value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteMilliseconds" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteMilliseconds" />.
         /// </remarks>
         /// <returns>The integer millisecond value from the stream.</returns>
         public virtual int ReadMilliseconds()
@@ -151,7 +151,7 @@ namespace NodaTime.TimeZones
         ///   Reads a string value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteString" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteString" />.
         /// </remarks>
         /// <returns>The string value from the stream.</returns>
         public virtual string ReadString()
@@ -166,7 +166,7 @@ namespace NodaTime.TimeZones
         ///   Reads a long ticks value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteTicks" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteTicks" />.
         /// </remarks>
         /// <returns>The long ticks value from the stream.</returns>
         public virtual long ReadTicks()
@@ -175,12 +175,12 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads an <see cref = "IDateTimeZone" /> value from the stream.
+        ///   Reads an <see cref = "DateTimeZone" /> value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteTimeZone" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteTimeZone" />.
         /// </remarks>
-        /// <returns>The <see cref = "IDateTimeZone" /> value from the stream.</returns>
+        /// <returns>The <see cref = "DateTimeZone" /> value from the stream.</returns>
         public virtual DateTimeZone ReadTimeZone(string id)
         {
             int flag = ReadInt8();

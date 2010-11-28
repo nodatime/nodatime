@@ -224,7 +224,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes this object to the given <see cref="IDateTimeZoneWriter"/>.
+        /// Writes this object to the given <see cref="DateTimeZoneWriter"/>.
         /// </summary>
         /// <param name="writer">Where to send the output.</param>
         internal void Write(DateTimeZoneWriter writer)
