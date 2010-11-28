@@ -167,22 +167,20 @@ namespace NodaTime
             return new Instant(left.Ticks + right.Ticks);
         }
 
-        /*
-         * We can't declare operators using internal types.
         /// <summary>
-        /// Implements the operator + (addition) for <see cref="Instant"/> + <see cref="Offset"/>.
+        /// Adds the given offset to this instant, to return a <see cref="LocalInstant"/>.
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <remarks>This was previously an operator+ implementation, but operators can't be internal.
+        /// </remarks>
+        /// <param name="offset">The right hand side of the operator.</param>
         /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
-        public static LocalInstant operator +(Instant left, Offset right)
+        internal LocalInstant Plus(Offset offset)
         {
-            return new LocalInstant(left.Ticks + right.Ticks);
-        }
-         */
+            return new LocalInstant(Ticks + offset.Ticks);
+        }        
 
         /// <summary>
-        /// Adds a duration to an instant. Friendly alternative to <c>operator-()</c>.
+        /// Adds a duration to an instant. Friendly alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -190,17 +188,6 @@ namespace NodaTime
         public static Instant Add(Instant left, Duration right)
         {
             return left + right;
-        }
-
-        /// <summary>
-        /// Adds an offset to an instant. Friendly alternative to <c>operator+()</c>.
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
-        internal static LocalInstant Add(Instant left, Offset right)
-        {
-            return new LocalInstant(left.Ticks + right.Ticks);
         }
 
         /// <summary>
