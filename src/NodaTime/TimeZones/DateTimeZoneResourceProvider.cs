@@ -24,7 +24,7 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///   Provides an implmentation of a <see cref = "IDateTimeZoneProvider" /> that looks
+    ///   Provides an implementation of a <see cref = "IDateTimeZoneProvider" /> that looks
     ///   for its time zone definitions from a named resource in an assembly.
     /// </summary>
     public sealed class DateTimeZoneResourceProvider : IDateTimeZoneProvider
