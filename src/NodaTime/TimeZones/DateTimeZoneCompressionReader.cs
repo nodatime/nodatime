@@ -37,7 +37,7 @@ namespace NodaTime.TimeZones
         ///   Reads a non-negative integer value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteCount" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteCount" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
         public override int ReadCount()
@@ -87,7 +87,7 @@ namespace NodaTime.TimeZones
         ///   Reads an integer millisecond value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteMilliseconds" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteMilliseconds" />.
         /// </remarks>
         /// <returns>The integer millisecond value from the stream.</returns>
         public override int ReadMilliseconds()
@@ -140,7 +140,7 @@ namespace NodaTime.TimeZones
         ///   Reads a long ticks value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "IDateTimeZoneWriter.WriteTicks" />.
+        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteTicks" />.
         /// </remarks>
         /// <returns>The long ticks value from the stream.</returns>
         public override long ReadTicks()

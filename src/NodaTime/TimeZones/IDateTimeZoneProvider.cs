@@ -40,7 +40,7 @@ namespace NodaTime.TimeZones
         /// <remarks>
         /// If the time zone does not yet exist, its definition is loaded from where ever this
         /// provider gets time zone definitions. Time zones should not be cached in the provider as
-        /// they will be cached in <see cref="DateTimeZones"/>.
+        /// they will be cached in <see cref="DateTimeZone"/>.
         /// </remarks>
         /// <param name="id">The id of the time zone to return.</param>
         /// <returns>The <see cref="DateTimeZone"/> or <c>null</c> if there is no time zone with the given id.</returns>

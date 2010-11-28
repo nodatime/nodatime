@@ -23,7 +23,7 @@ using System.Text;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///   Provides an <see cref = "IDateTimeZone" /> writer that simply writes the values
+    ///   Provides an <see cref = "DateTimeZone" /> writer that simply writes the values
     ///   without any compression. Can be used as a base for implementing specific 
     ///   compression writers by overriding the methods for the types to be compressed.
     /// </summary>
@@ -47,7 +47,7 @@ namespace NodaTime.TimeZones
             Output = output;
         }
 
-        #region IDateTimeZoneWriter Members
+        #region DateTimeZoneWriter Members
         /// <summary>
         ///   Writes a boolean value to the stream.
         /// </summary>
@@ -160,7 +160,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Writes the <see cref = "IDateTimeZone" /> value to the stream.
+        ///   Writes the <see cref = "DateTimeZone" /> value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
         public virtual void WriteTimeZone(DateTimeZone value)

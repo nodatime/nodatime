@@ -125,7 +125,7 @@ namespace NodaTime.ZoneInfoCompiler
         ///   Writes a time zone to a resource with the given name.
         /// </summary>
         /// <param name = "name">The resource name.</param>
-        /// <param name = "timeZone">The <see cref = "IDateTimeZone" /> to write.</param>
+        /// <param name = "timeZone">The <see cref = "DateTimeZone" /> to write.</param>
         public void WriteTimeZone(string name, DateTimeZone timeZone)
         {
             MakeOutput();

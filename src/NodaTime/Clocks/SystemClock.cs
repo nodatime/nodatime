@@ -20,7 +20,7 @@ using System;
 namespace NodaTime.Clocks
 {
     /// <summary>
-    /// Singleton implementation of <see cref="IClock"/> which reads the current system time.
+    /// Singleton implementation of <see cref="ClockBase"/> which reads the current system time.
     /// </summary>
     internal sealed class SystemClock : ClockBase
     {
