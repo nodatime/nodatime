@@ -67,7 +67,7 @@ namespace NodaTime.TimeZones
             this.savings = savings;
             try
             {
-                localStart = Instant.Add(this.start, this.offset);
+                localStart = this.start.Plus(this.offset);
             }
             catch (OverflowException)
             {
@@ -75,7 +75,7 @@ namespace NodaTime.TimeZones
             }
             try
             {
-                localEnd = Instant.Add(this.end, (this.offset - this.savings));
+                localEnd = this.end.Plus(this.offset - this.savings);
             }
             catch (OverflowException)
             {

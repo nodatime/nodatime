@@ -147,7 +147,7 @@ namespace NodaTime.TimeZones
 
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MinValue ? Int32.MinValue : calendar.Fields.Year.GetValue(Instant.Add(instant, wallOffset));
+            int year = instant == Instant.MinValue ? Int32.MinValue : calendar.Fields.Year.GetValue(instant.Plus(wallOffset));
 
             if (year < fromYear)
             {
@@ -162,7 +162,7 @@ namespace NodaTime.TimeZones
 
             if (next >= instant)
             {
-                year = calendar.Fields.Year.GetValue(Instant.Add(next, wallOffset));
+                year = calendar.Fields.Year.GetValue(next.Plus(wallOffset));
                 if (year > toYear)
                 {
                     return null;
@@ -186,7 +186,7 @@ namespace NodaTime.TimeZones
 
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MaxValue ? Int32.MaxValue : calendar.Fields.Year.GetValue(Instant.Add(instant, wallOffset));
+            int year = instant == Instant.MaxValue ? Int32.MaxValue : calendar.Fields.Year.GetValue(instant.Plus(wallOffset));
 
             if (year > toYear)
             {
@@ -198,7 +198,7 @@ namespace NodaTime.TimeZones
 
             if (previous <= instant)
             {
-                year = calendar.Fields.Year.GetValue(Instant.Add(previous, wallOffset));
+                year = calendar.Fields.Year.GetValue(previous.Plus(wallOffset));
                 if (year < fromYear)
                 {
                     return null;

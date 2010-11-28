@@ -73,7 +73,7 @@ namespace NodaTime
                 throw new ArgumentNullException("chronology");
             }
             offset = chronology.Zone.GetOffsetFromUtc(instant);
-            localInstant = Instant.Add(instant, offset);
+            localInstant = instant.Plus(offset);
             this.chronology = chronology;
         }
 
