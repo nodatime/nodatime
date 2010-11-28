@@ -22,26 +22,22 @@ namespace NodaTime.Clocks
     /// <summary>
     /// Singleton implementation of <see cref="IClock"/> which reads the current system time.
     /// </summary>
-    public class SystemClock : IClock
+    internal sealed class SystemClock : ClockBase
     {
-        private static readonly SystemClock instance = new SystemClock();
-
         /// <summary>
-        /// Gets the singleton instance of <see cref="SystemClock"/>.
+        /// The singleton instance of <see cref="SystemClock"/>.
         /// </summary>
         /// <value>The singleton instance of <see cref="SystemClock"/>.</value>
-        public static SystemClock Instance { get { return instance; } }
+        internal static readonly SystemClock Instance = new SystemClock();
 
         // TODO: We'll want to do better than this, but it'll do for now.
         // private static readonly System.DateTime UnixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         private static readonly long UnixEpochTicks = (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks;
 
-        #region IClock Members
         /// <summary>
         /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
         /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
-        public Instant Now { get { return new Instant(DateTime.UtcNow.Ticks - UnixEpochTicks); } }
-        #endregion
+        public override Instant Now { get { return new Instant(DateTime.UtcNow.Ticks - UnixEpochTicks); } }
     }
 }

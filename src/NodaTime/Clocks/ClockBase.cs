@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -15,17 +15,10 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime
+namespace NodaTime.Clocks
 {
-    /// <summary>
-    /// Defines the interface of a clock object that can tell the time as an <see cref="Instant"/>.
-    /// </summary>
-    public interface IClock
+    internal abstract class ClockBase
     {
-        /// <summary>
-        /// Gets the current time as an <see cref="Instant"/>.
-        /// </summary>
-        /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
-        Instant Now { get; }
+        public abstract Instant Now { get; }
     }
 }
