@@ -44,13 +44,12 @@ namespace NodaTime
         private readonly LocalInstant localInstant;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO
+        /// calendar system.
         /// </summary>
         /// <param name="localInstant">The local instant.</param>
-        internal LocalDateTime(LocalInstant localInstant)
+        internal LocalDateTime(LocalInstant localInstant) : this(localInstant, CalendarSystem.Iso)
         {
-            this.localInstant = localInstant;
-            this.calendar = CalendarSystem.Iso;
         }
 
         /// <summary>
@@ -70,7 +69,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO calendar system.
         /// </summary>
         /// <param name="year">The year.</param>
         /// <param name="month">The month.</param>
@@ -102,7 +101,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO calendar system.
         /// </summary>
         /// <param name="year">The year.</param>
         /// <param name="month">The month.</param>
@@ -136,7 +135,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
+        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO calendar system.
         /// </summary>
         /// <param name="year">The year.</param>
         /// <param name="month">The month.</param>
@@ -309,7 +308,7 @@ namespace NodaTime
         public static LocalDateTime operator +(LocalDateTime localDateTime, IPeriod period)
         {
             CalendarSystem calendar = localDateTime.Calendar;
-            return new LocalDateTime(calendar.Add(period, localDateTime.LocalInstant, 1));
+            return new LocalDateTime(calendar.Add(period, localDateTime.LocalInstant, 1), calendar);
         }
 
         /// <summary>
@@ -321,7 +320,7 @@ namespace NodaTime
         public static LocalDateTime operator -(LocalDateTime localDateTime, IPeriod period)
         {
             CalendarSystem calendar = localDateTime.Calendar;
-            return new LocalDateTime(calendar.Add(period, localDateTime.LocalInstant, -1));
+            return new LocalDateTime(calendar.Add(period, localDateTime.LocalInstant, -1), calendar);
         }
         #endregion
 
