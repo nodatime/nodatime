@@ -434,7 +434,7 @@ namespace NodaTime
                 accessLock.AcquireReaderLock(Timeout.Infinite);
                 try
                 {
-                    if (!providers.Contains(provider))
+                    if (providers.Contains(provider))
                     {
                         LockCookie lockCookie = accessLock.UpgradeToWriterLock(Timeout.Infinite);
                         try
@@ -465,7 +465,7 @@ namespace NodaTime
             public DateTimeZone DoForId(string id)
             {
                 DateTimeZone result = Utc;
-                if (id != UtcId)
+                if (!string.IsNullOrEmpty(id) && id != UtcId)
                 {
                     accessLock.AcquireReaderLock(Timeout.Infinite);
                     try
