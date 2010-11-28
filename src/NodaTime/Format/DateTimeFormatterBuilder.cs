@@ -892,7 +892,7 @@ namespace NodaTime.Format
             public void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, DateTimeZone dateTimeZone,
                                 IFormatProvider provider)
             {
-                writer.Write(Print(instant - timezoneOffset, dateTimeZone, provider));
+                writer.Write(Print(instant.Minus(timezoneOffset), dateTimeZone, provider));
             }
 
             private String Print(Instant instant, DateTimeZone displayZone, IFormatProvider provider)

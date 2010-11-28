@@ -152,7 +152,7 @@ namespace NodaTime.TimeZones
             if (year < fromYear)
             {
                 // First advance instant to start of from year.
-                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, fromYear) - wallOffset;
+                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, fromYear).Minus(wallOffset);
                 // Back off one tick to account for next recurrence being exactly at the beginning
                 // of the year.
                 instant = instant - Duration.One;
@@ -191,7 +191,7 @@ namespace NodaTime.TimeZones
             if (year > toYear)
             {
                 // First advance instant to start of year after toYear
-                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, toYear + 1) - wallOffset;
+                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, toYear + 1).Minus(wallOffset);
             }
 
             Instant previous = yearOffset.Previous(instant, standardOffset, previousSavings);

@@ -280,12 +280,12 @@ namespace NodaTime.Format
             Instant result;
             if (zone == null)
             {
-                result = instant - offset;
+                result = instant.Minus(offset);
             }
             else
             {
                 Offset offset = zone.GetOffsetFromLocal(instant);
-                result = instant - offset;
+                result = instant.Minus(offset);
                 if (offset != zone.GetOffsetFromUtc(result))
                 {
                     String message = "Illegal instant due to time zone offset transition (" + zone + ')';
