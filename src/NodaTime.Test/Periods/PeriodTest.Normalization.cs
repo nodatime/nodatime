@@ -48,7 +48,7 @@ namespace NodaTime.Test.Periods
             Assert.That(sut.ToStandardDuration(), Is.EqualTo(expectedDuration));
         }
         #endregion
-
+        /*
         #region ToStandardSeconds
         [Test]
         public void ToStandardSeconds_ThrowsNotSupprted_IfPeriodContainsYears()
@@ -132,5 +132,6 @@ namespace NodaTime.Test.Periods
             Assert.That(sut.ToStandardHours(), Is.EqualTo(hours));
         }
         #endregion
+         */
     }
 }
