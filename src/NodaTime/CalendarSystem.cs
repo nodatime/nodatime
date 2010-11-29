@@ -219,6 +219,28 @@ namespace NodaTime
             return result;
         }
 
+        internal LocalInstant Add(Period2 period, LocalInstant localInstant, int scalar)
+        {
+            if (period == null)
+            {
+                throw new ArgumentNullException("period");
+            }
+            if (scalar == 0)
+            {
+                return localInstant;
+            }
+
+            LocalInstant result = localInstant;
+            foreach (DurationFieldValue fieldValue in period)
+            {
+                if (fieldValue.Value != 0)
+                {
+                    result = GetField(fieldValue.FieldType).Add(result, fieldValue.Value * scalar);
+                }
+            }
+            return result;
+        }
+
         private DurationField GetField(DurationFieldType fieldType)
         {
             switch (fieldType)

@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Periods;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
@@ -27,12 +26,11 @@ namespace NodaTime.Test.Calendars
     [TestFixture]
     public class PeriodAdditionTest
     {
-        /*
         [Test]
         public void DayCrossingMonthBoundary()
         {
             LocalDateTime start = new LocalDateTime(2010, 2, 20, 10, 0);
-            LocalDateTime result = start + Days.From(10);
+            LocalDateTime result = start + Period2.Days(10);
             Assert.AreEqual(new LocalDateTime(2010, 3, 2, 10, 0), result);
         }
 
@@ -40,7 +38,7 @@ namespace NodaTime.Test.Calendars
         public void AddOneYearOnLeapDay()
         {
             LocalDateTime start = new LocalDateTime(2012, 2, 29, 10, 0);
-            LocalDateTime result = start + Years.One;
+            LocalDateTime result = start + Period2.Years(1);
             // Feb 29th becomes Feb 28th
             Assert.AreEqual(new LocalDateTime(2013, 2, 28, 10, 0), result);
         }
@@ -49,7 +47,7 @@ namespace NodaTime.Test.Calendars
         public void AddFourYearsOnLeapDay()
         {
             LocalDateTime start = new LocalDateTime(2012, 2, 29, 10, 0);
-            LocalDateTime result = start + Years.From(4);
+            LocalDateTime result = start + Period2.Years(4);
             // Feb 29th is still valid in 2016
             Assert.AreEqual(new LocalDateTime(2016, 2, 29, 10, 0), result);
         }
@@ -58,7 +56,7 @@ namespace NodaTime.Test.Calendars
         public void AddYearMonthDay()
         {
             // One year, one month, two days
-            IPeriod period = new Period(1, 1, 0, 2, 0, 0, 0, 0);
+            Period2 period = Period2.Years(1) + Period2.Months(1) + Period2.Days(2);
             LocalDateTime start = new LocalDateTime(2007, 1, 30, 0, 0);
             // Periods are added in order, so this becomes...
             // Add one year: Jan 30th 2008
@@ -67,6 +65,6 @@ namespace NodaTime.Test.Calendars
             // If we added the days first, we'd end up with March 1st instead.
             LocalDateTime result = start + period;
             Assert.AreEqual(new LocalDateTime(2008, 3, 2, 0, 0), result);
-        }*/
+        }
     }
 }

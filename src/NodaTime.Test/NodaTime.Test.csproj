@@ -105,6 +105,7 @@
     </Compile>
     <Compile Include="Format\IsoDateTimeFormatsTest.Parse.cs" />
     <Compile Include="Format\IsoDateTimeFormatsTest.cs" />
+    <Compile Include="Fields\DurationFieldValueTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\ReadWriteCompressTest.cs" />
