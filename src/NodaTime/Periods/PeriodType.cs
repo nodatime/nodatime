@@ -271,7 +271,7 @@ namespace NodaTime.Periods
                 return this;
             }
 
-            //construct new field types
+            // Construct new field types
             DurationFieldType[] newFieldTypes = new DurationFieldType[Size - 1];
             for (int i = 0; i < fieldTypes.Length; i++)
             {
@@ -285,15 +285,15 @@ namespace NodaTime.Periods
                 }
             }
 
-            //construct new indices
-            int[] newIndices = new int[8];
+            // Construct new indices
+            int[] newIndices = new int[9];
             int indicesIndex = (int)index;
             for (int i = 0; i < indicesIndex; i++)
             {
                 newIndices[i] = indices[i];
             }
             newIndices[indicesIndex] = -1;
-            for (int i = indicesIndex + 1; i < 8; i++)
+            for (int i = indicesIndex + 1; i < newIndices.Length; i++)
             {
                 newIndices[i] = Math.Max(indices[i] - 1, -1);
             }
