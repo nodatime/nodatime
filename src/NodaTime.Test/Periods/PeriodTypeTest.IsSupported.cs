@@ -40,7 +40,7 @@ namespace NodaTime.Test.Periods
             Assert.IsTrue(sut.IsSupported(DurationFieldType.Minutes));
             Assert.IsTrue(sut.IsSupported(DurationFieldType.Seconds));
             Assert.IsTrue(sut.IsSupported(DurationFieldType.Milliseconds));
-            Assert.IsFalse(sut.IsSupported(DurationFieldType.Ticks));
+            Assert.IsTrue(sut.IsSupported(DurationFieldType.Ticks));
         }
     }
 }

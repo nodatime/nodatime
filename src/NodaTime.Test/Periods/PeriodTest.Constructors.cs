@@ -59,7 +59,7 @@ namespace NodaTime.Test.Periods
         public void ConstructorDuration_InitPeriodTypeToStandard()
         {
             var sut = Period.From(new Duration(0));
-            Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
+            Assert.AreEqual(PeriodType.AllFields, sut.PeriodType);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace NodaTime.Test.Periods
         public void Properties_YieldSingletons()
         {
             Assert.AreSame(PeriodType.Days, PeriodType.Days);
-            Assert.AreSame(PeriodType.Standard, PeriodType.Standard);
+            Assert.AreSame(PeriodType.AllFields, PeriodType.AllFields);
             Assert.AreSame(PeriodType.Time, PeriodType.Time);
             Assert.AreSame(PeriodType.YearMonthDay, PeriodType.YearMonthDay);
         }
@@ -34,8 +34,8 @@ namespace NodaTime.Test.Periods
         [Test]
         public void Equals()
         {
-            Assert.AreEqual(PeriodType.Standard, PeriodType.Standard);
-            Assert.AreNotEqual(PeriodType.Standard, PeriodType.Time);
+            Assert.AreEqual(PeriodType.AllFields, PeriodType.AllFields);
+            Assert.AreNotEqual(PeriodType.AllFields, PeriodType.Time);
             TestHelper.TestEqualsClass(PeriodType.YearMonthDay.WithMonthsRemoved(), PeriodType.YearDay, PeriodType.YearMonthDay);
         }
     }

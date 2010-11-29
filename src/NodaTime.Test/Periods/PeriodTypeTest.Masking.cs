@@ -24,154 +24,163 @@ namespace NodaTime.Test.Periods
     public partial class PeriodTypeTest
     {
         [Test]
-        public void WithYearsRemoves_MasksYears_InStandardPeriodType()
+        public void WithYearsRemoves_MasksYears_InAllFieldsPeriodType()
         {
-            var sut = PeriodType.Standard.WithYearsRemoved();
+            var sut = PeriodType.AllFields.WithYearsRemoved();
 
-            Assert.AreEqual(7, sut.Size);
-            Assert.AreEqual(DurationFieldType.Months, sut.GetFieldType(0));
-            Assert.AreEqual(DurationFieldType.Weeks, sut.GetFieldType(1));
-            Assert.AreEqual(DurationFieldType.Days, sut.GetFieldType(2));
-            Assert.AreEqual(DurationFieldType.Hours, sut.GetFieldType(3));
-            Assert.AreEqual(DurationFieldType.Minutes, sut.GetFieldType(4));
-            Assert.AreEqual(DurationFieldType.Seconds, sut.GetFieldType(5));
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut.GetFieldType(6));
-            Assert.AreEqual("StandardNoYears", sut.Name);
-            Assert.AreEqual("PeriodType[StandardNoYears]", sut.ToString());
+            Assert.AreEqual(8, sut.Size);
+            Assert.AreEqual(DurationFieldType.Months, sut[0]);
+            Assert.AreEqual(DurationFieldType.Weeks, sut[1]);
+            Assert.AreEqual(DurationFieldType.Days, sut[2]);
+            Assert.AreEqual(DurationFieldType.Hours, sut[3]);
+            Assert.AreEqual(DurationFieldType.Minutes, sut[4]);
+            Assert.AreEqual(DurationFieldType.Seconds, sut[5]);
+            Assert.AreEqual(DurationFieldType.Milliseconds, sut[6]);
+            Assert.AreEqual(DurationFieldType.Ticks, sut[7]);
+            Assert.AreEqual("AllNoYears", sut.Name);
+            Assert.AreEqual("PeriodType[AllNoYears]", sut.ToString());
         }
 
         [Test]
-        public void WithMonthsRemoved_MasksMonths_InStandardPeriodType()
+        public void WithMonthsRemoved_MasksMonths_InAllFieldsPeriodType()
         {
-            var sut = PeriodType.Standard.WithMonthsRemoved();
+            var sut = PeriodType.AllFields.WithMonthsRemoved();
 
-            Assert.AreEqual(7, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
-            Assert.AreEqual(DurationFieldType.Weeks, sut.GetFieldType(1));
-            Assert.AreEqual(DurationFieldType.Days, sut.GetFieldType(2));
-            Assert.AreEqual(DurationFieldType.Hours, sut.GetFieldType(3));
-            Assert.AreEqual(DurationFieldType.Minutes, sut.GetFieldType(4));
-            Assert.AreEqual(DurationFieldType.Seconds, sut.GetFieldType(5));
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut.GetFieldType(6));
-            Assert.AreEqual("StandardNoMonths", sut.Name);
-            Assert.AreEqual("PeriodType[StandardNoMonths]", sut.ToString());
+            Assert.AreEqual(8, sut.Size);
+            Assert.AreEqual(DurationFieldType.Years, sut[0]);
+            Assert.AreEqual(DurationFieldType.Weeks, sut[1]);
+            Assert.AreEqual(DurationFieldType.Days, sut[2]);
+            Assert.AreEqual(DurationFieldType.Hours, sut[3]);
+            Assert.AreEqual(DurationFieldType.Minutes, sut[4]);
+            Assert.AreEqual(DurationFieldType.Seconds, sut[5]);
+            Assert.AreEqual(DurationFieldType.Milliseconds, sut[6]);
+            Assert.AreEqual(DurationFieldType.Ticks, sut[7]);
+            Assert.AreEqual("AllNoMonths", sut.Name);
+            Assert.AreEqual("PeriodType[AllNoMonths]", sut.ToString());
         }
 
         [Test]
-        public void WithWeeksRemoved_MasksWeeks_InStandardPeriodType()
+        public void WithWeeksRemoved_MasksWeeks_InAllFieldsPeriodType()
         {
-            var sut = PeriodType.Standard.WithWeeksRemoved();
+            var sut = PeriodType.AllFields.WithWeeksRemoved();
 
-            Assert.AreEqual(7, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
-            Assert.AreEqual(DurationFieldType.Months, sut.GetFieldType(1));
-            Assert.AreEqual(DurationFieldType.Days, sut.GetFieldType(2));
-            Assert.AreEqual(DurationFieldType.Hours, sut.GetFieldType(3));
-            Assert.AreEqual(DurationFieldType.Minutes, sut.GetFieldType(4));
-            Assert.AreEqual(DurationFieldType.Seconds, sut.GetFieldType(5));
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut.GetFieldType(6));
-            Assert.AreEqual("StandardNoWeeks", sut.Name);
-            Assert.AreEqual("PeriodType[StandardNoWeeks]", sut.ToString());
+            Assert.AreEqual(8, sut.Size);
+            Assert.AreEqual(DurationFieldType.Years, sut[0]);
+            Assert.AreEqual(DurationFieldType.Months, sut[1]);
+            Assert.AreEqual(DurationFieldType.Days, sut[2]);
+            Assert.AreEqual(DurationFieldType.Hours, sut[3]);
+            Assert.AreEqual(DurationFieldType.Minutes, sut[4]);
+            Assert.AreEqual(DurationFieldType.Seconds, sut[5]);
+            Assert.AreEqual(DurationFieldType.Milliseconds, sut[6]);
+            Assert.AreEqual(DurationFieldType.Ticks, sut[7]);
+            Assert.AreEqual("AllNoWeeks", sut.Name);
+            Assert.AreEqual("PeriodType[AllNoWeeks]", sut.ToString());
         }
 
         [Test]
-        public void WithDaysRemoved_MasksDays_InStandardPeriodType()
+        public void WithDaysRemoved_MasksDays_InAllFieldsPeriodType()
         {
-            var sut = PeriodType.Standard.WithDaysRemoved();
+            var sut = PeriodType.AllFields.WithDaysRemoved();
 
-            Assert.AreEqual(7, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
-            Assert.AreEqual(DurationFieldType.Months, sut.GetFieldType(1));
-            Assert.AreEqual(DurationFieldType.Weeks, sut.GetFieldType(2));
-            Assert.AreEqual(DurationFieldType.Hours, sut.GetFieldType(3));
-            Assert.AreEqual(DurationFieldType.Minutes, sut.GetFieldType(4));
-            Assert.AreEqual(DurationFieldType.Seconds, sut.GetFieldType(5));
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut.GetFieldType(6));
-            Assert.AreEqual("StandardNoDays", sut.Name);
-            Assert.AreEqual("PeriodType[StandardNoDays]", sut.ToString());
+            Assert.AreEqual(8, sut.Size);
+            Assert.AreEqual(DurationFieldType.Years, sut[0]);
+            Assert.AreEqual(DurationFieldType.Months, sut[1]);
+            Assert.AreEqual(DurationFieldType.Weeks, sut[2]);
+            Assert.AreEqual(DurationFieldType.Hours, sut[3]);
+            Assert.AreEqual(DurationFieldType.Minutes, sut[4]);
+            Assert.AreEqual(DurationFieldType.Seconds, sut[5]);
+            Assert.AreEqual(DurationFieldType.Milliseconds, sut[6]);
+            Assert.AreEqual(DurationFieldType.Ticks, sut[7]);
+            Assert.AreEqual("AllNoDays", sut.Name);
+            Assert.AreEqual("PeriodType[AllNoDays]", sut.ToString());
         }
 
         [Test]
-        public void WithHoursRemoved_MasksHours_InStandardPeriodType()
+        public void WithHoursRemoved_MasksHours_InAllFieldsPeriodType()
         {
-            var sut = PeriodType.Standard.WithHoursRemoved();
+            var sut = PeriodType.AllFields.WithHoursRemoved();
 
-            Assert.AreEqual(7, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
-            Assert.AreEqual(DurationFieldType.Months, sut.GetFieldType(1));
-            Assert.AreEqual(DurationFieldType.Weeks, sut.GetFieldType(2));
-            Assert.AreEqual(DurationFieldType.Days, sut.GetFieldType(3));
-            Assert.AreEqual(DurationFieldType.Minutes, sut.GetFieldType(4));
-            Assert.AreEqual(DurationFieldType.Seconds, sut.GetFieldType(5));
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut.GetFieldType(6));
-            Assert.AreEqual("StandardNoHours", sut.Name);
-            Assert.AreEqual("PeriodType[StandardNoHours]", sut.ToString());
+            Assert.AreEqual(8, sut.Size);
+            Assert.AreEqual(DurationFieldType.Years, sut[0]);
+            Assert.AreEqual(DurationFieldType.Months, sut[1]);
+            Assert.AreEqual(DurationFieldType.Weeks, sut[2]);
+            Assert.AreEqual(DurationFieldType.Days, sut[3]);
+            Assert.AreEqual(DurationFieldType.Minutes, sut[4]);
+            Assert.AreEqual(DurationFieldType.Seconds, sut[5]);
+            Assert.AreEqual(DurationFieldType.Milliseconds, sut[6]);
+            Assert.AreEqual(DurationFieldType.Ticks, sut[7]);
+            Assert.AreEqual("AllNoHours", sut.Name);
+            Assert.AreEqual("PeriodType[AllNoHours]", sut.ToString());
         }
 
         [Test]
-        public void WithMinutesRemoved_MasksMinutes_InStandardPeriodType()
+        public void WithMinutesRemoved_MasksMinutes_InAllFieldsPeriodType()
         {
-            var sut = PeriodType.Standard.WithMinutesRemoved();
+            var sut = PeriodType.AllFields.WithMinutesRemoved();
 
-            Assert.AreEqual(7, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
-            Assert.AreEqual(DurationFieldType.Months, sut.GetFieldType(1));
-            Assert.AreEqual(DurationFieldType.Weeks, sut.GetFieldType(2));
-            Assert.AreEqual(DurationFieldType.Days, sut.GetFieldType(3));
-            Assert.AreEqual(DurationFieldType.Hours, sut.GetFieldType(4));
-            Assert.AreEqual(DurationFieldType.Seconds, sut.GetFieldType(5));
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut.GetFieldType(6));
-            Assert.AreEqual("StandardNoMinutes", sut.Name);
-            Assert.AreEqual("PeriodType[StandardNoMinutes]", sut.ToString());
+            Assert.AreEqual(8, sut.Size);
+            Assert.AreEqual(DurationFieldType.Years, sut[0]);
+            Assert.AreEqual(DurationFieldType.Months, sut[1]);
+            Assert.AreEqual(DurationFieldType.Weeks, sut[2]);
+            Assert.AreEqual(DurationFieldType.Days, sut[3]);
+            Assert.AreEqual(DurationFieldType.Hours, sut[4]);
+            Assert.AreEqual(DurationFieldType.Seconds, sut[5]);
+            Assert.AreEqual(DurationFieldType.Milliseconds, sut[6]);
+            Assert.AreEqual(DurationFieldType.Ticks, sut[7]);
+            Assert.AreEqual("AllNoMinutes", sut.Name);
+            Assert.AreEqual("PeriodType[AllNoMinutes]", sut.ToString());
         }
 
         [Test]
-        public void WithSecondsRemoved_MasksSeconds_InStandardPeriodType()
+        public void WithSecondsRemoved_MasksSeconds_InAllFieldsPeriodType()
         {
-            var sut = PeriodType.Standard.WithSecondsRemoved();
+            var sut = PeriodType.AllFields.WithSecondsRemoved();
 
-            Assert.AreEqual(7, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
-            Assert.AreEqual(DurationFieldType.Months, sut.GetFieldType(1));
-            Assert.AreEqual(DurationFieldType.Weeks, sut.GetFieldType(2));
-            Assert.AreEqual(DurationFieldType.Days, sut.GetFieldType(3));
-            Assert.AreEqual(DurationFieldType.Hours, sut.GetFieldType(4));
-            Assert.AreEqual(DurationFieldType.Minutes, sut.GetFieldType(5));
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut.GetFieldType(6));
-            Assert.AreEqual("StandardNoSeconds", sut.Name);
-            Assert.AreEqual("PeriodType[StandardNoSeconds]", sut.ToString());
+            Assert.AreEqual(8, sut.Size);
+            Assert.AreEqual(DurationFieldType.Years, sut[0]);
+            Assert.AreEqual(DurationFieldType.Months, sut[1]);
+            Assert.AreEqual(DurationFieldType.Weeks, sut[2]);
+            Assert.AreEqual(DurationFieldType.Days, sut[3]);
+            Assert.AreEqual(DurationFieldType.Hours, sut[4]);
+            Assert.AreEqual(DurationFieldType.Minutes, sut[5]);
+            Assert.AreEqual(DurationFieldType.Milliseconds, sut[6]);
+            Assert.AreEqual(DurationFieldType.Ticks, sut[7]);
+            Assert.AreEqual("AllNoSeconds", sut.Name);
+            Assert.AreEqual("PeriodType[AllNoSeconds]", sut.ToString());
         }
 
         [Test]
-        public void WithMillisecondsRemoved_MasksMilliseconds_InStandardPeriodType()
+        public void WithMillisecondsRemoved_MasksMilliseconds_InAllFieldsPeriodType()
         {
-            var sut = PeriodType.Standard.WithMillisecondsRemoved();
+            var sut = PeriodType.AllFields.WithMillisecondsRemoved();
 
-            Assert.AreEqual(7, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
-            Assert.AreEqual(DurationFieldType.Months, sut.GetFieldType(1));
-            Assert.AreEqual(DurationFieldType.Weeks, sut.GetFieldType(2));
-            Assert.AreEqual(DurationFieldType.Days, sut.GetFieldType(3));
-            Assert.AreEqual(DurationFieldType.Hours, sut.GetFieldType(4));
-            Assert.AreEqual(DurationFieldType.Minutes, sut.GetFieldType(5));
-            Assert.AreEqual(DurationFieldType.Seconds, sut.GetFieldType(6));
-            Assert.AreEqual("StandardNoMilliseconds", sut.Name);
-            Assert.AreEqual("PeriodType[StandardNoMilliseconds]", sut.ToString());
+            Assert.AreEqual(8, sut.Size);
+            Assert.AreEqual(DurationFieldType.Years, sut[0]);
+            Assert.AreEqual(DurationFieldType.Months, sut[1]);
+            Assert.AreEqual(DurationFieldType.Weeks, sut[2]);
+            Assert.AreEqual(DurationFieldType.Days, sut[3]);
+            Assert.AreEqual(DurationFieldType.Hours, sut[4]);
+            Assert.AreEqual(DurationFieldType.Minutes, sut[5]);
+            Assert.AreEqual(DurationFieldType.Seconds, sut[6]);
+            Assert.AreEqual(DurationFieldType.Ticks, sut[7]);
+            Assert.AreEqual("AllNoMilliseconds", sut.Name);
+            Assert.AreEqual("PeriodType[AllNoMilliseconds]", sut.ToString());
         }
 
         [Test]
-        public void WithHoursMinutesSeconsRemoved_MasksHoursMinutesSeconds_InStandardPeriodType()
+        public void WithHoursMinutesSeconsRemoved_MasksHoursMinutesSeconds_InAllFieldsPeriodType()
         {
-            var sut = PeriodType.Standard.WithHoursRemoved().WithMinutesRemoved().WithSecondsRemoved();
+            var sut = PeriodType.AllFields.WithHoursRemoved().WithMinutesRemoved().WithSecondsRemoved();
 
-            Assert.AreEqual(5, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut.GetFieldType(0));
-            Assert.AreEqual(DurationFieldType.Months, sut.GetFieldType(1));
-            Assert.AreEqual(DurationFieldType.Weeks, sut.GetFieldType(2));
-            Assert.AreEqual(DurationFieldType.Days, sut.GetFieldType(3));
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut.GetFieldType(4));
-            Assert.AreEqual("StandardNoHoursNoMinutesNoSeconds", sut.Name);
-            Assert.AreEqual("PeriodType[StandardNoHoursNoMinutesNoSeconds]", sut.ToString());
+            Assert.AreEqual(6, sut.Size);
+            Assert.AreEqual(DurationFieldType.Years, sut[0]);
+            Assert.AreEqual(DurationFieldType.Months, sut[1]);
+            Assert.AreEqual(DurationFieldType.Weeks, sut[2]);
+            Assert.AreEqual(DurationFieldType.Days, sut[3]);
+            Assert.AreEqual(DurationFieldType.Milliseconds, sut[4]);
+            Assert.AreEqual(DurationFieldType.Ticks, sut[5]);
+            Assert.AreEqual("AllNoHoursNoMinutesNoSeconds", sut.Name);
+            Assert.AreEqual("PeriodType[AllNoHoursNoMinutesNoSeconds]", sut.ToString());
         }
     }
 }
