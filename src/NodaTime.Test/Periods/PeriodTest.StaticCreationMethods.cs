@@ -39,7 +39,7 @@ namespace NodaTime.Test.Periods
         public void Years_ConstructsCorrectFields()
         {
             var sut = Period.FromYears(6);
-            Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
+            Assert.AreEqual(PeriodType.AllFields, sut.PeriodType);
             Assert.AreEqual(6, sut.Years);
             Assert.AreEqual(0, sut.Months);
             Assert.AreEqual(0, sut.Weeks);
@@ -54,7 +54,7 @@ namespace NodaTime.Test.Periods
         public void Months_ConstructsCorrectFields()
         {
             var sut = Period.FromMonths(6);
-            Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
+            Assert.AreEqual(PeriodType.AllFields, sut.PeriodType);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(6, sut.Months);
             Assert.AreEqual(0, sut.Weeks);
@@ -69,7 +69,7 @@ namespace NodaTime.Test.Periods
         public void Weeks_ConstructsCorrectFields()
         {
             var sut = Period.FromWeeks(6);
-            Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
+            Assert.AreEqual(PeriodType.AllFields, sut.PeriodType);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(0, sut.Months);
             Assert.AreEqual(6, sut.Weeks);
@@ -84,7 +84,7 @@ namespace NodaTime.Test.Periods
         public void Days_ConstructsCorrectFields()
         {
             var sut = Period.FromDays(6);
-            Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
+            Assert.AreEqual(PeriodType.AllFields, sut.PeriodType);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(0, sut.Months);
             Assert.AreEqual(0, sut.Weeks);
@@ -99,7 +99,7 @@ namespace NodaTime.Test.Periods
         public void Hours_ConstructsCorrectFields()
         {
             var sut = Period.FromHours(6);
-            Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
+            Assert.AreEqual(PeriodType.AllFields, sut.PeriodType);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(0, sut.Months);
             Assert.AreEqual(0, sut.Weeks);
@@ -114,7 +114,7 @@ namespace NodaTime.Test.Periods
         public void Minutes_ConstructsCorrectFields()
         {
             var sut = Period.FromMinutes(6);
-            Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
+            Assert.AreEqual(PeriodType.AllFields, sut.PeriodType);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(0, sut.Months);
             Assert.AreEqual(0, sut.Weeks);
@@ -129,7 +129,7 @@ namespace NodaTime.Test.Periods
         public void Seconds_ConstructsCorrectFields()
         {
             var sut = Period.FromSeconds(6);
-            Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
+            Assert.AreEqual(PeriodType.AllFields, sut.PeriodType);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(0, sut.Months);
             Assert.AreEqual(0, sut.Weeks);
@@ -144,7 +144,7 @@ namespace NodaTime.Test.Periods
         public void Milliseconds_ConstructsCorrectFields()
         {
             var sut = Period.FromMilliseconds(6);
-            Assert.AreEqual(PeriodType.Standard, sut.PeriodType);
+            Assert.AreEqual(PeriodType.AllFields, sut.PeriodType);
             Assert.AreEqual(0, sut.Years);
             Assert.AreEqual(0, sut.Months);
             Assert.AreEqual(0, sut.Weeks);

@@ -46,7 +46,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromYears(int years)
         {
-            return new Period(new[] { years, 0, 0, 0, 0, 0, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { years, 0, 0, 0, 0, 0, 0, 0, 0 }, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromMonths(int months)
         {
-            return new Period(new[] { 0, months, 0, 0, 0, 0, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, months, 0, 0, 0, 0, 0, 0, 0 }, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromWeeks(int weeks)
         {
-            return new Period(new[] { 0, 0, weeks, 0, 0, 0, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, weeks, 0, 0, 0, 0, 0, 0 }, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromDays(int days)
         {
-            return new Period(new[] { 0, 0, 0, days, 0, 0, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, 0, days, 0, 0, 0, 0, 0 }, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromHours(int hours)
         {
-            return new Period(new[] { 0, 0, 0, 0, hours, 0, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, 0, 0, hours, 0, 0, 0, 0 }, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromMinutes(int minutes)
         {
-            return new Period(new[] { 0, 0, 0, 0, 0, minutes, 0, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, 0, 0, 0, minutes, 0, 0, 0 }, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromSeconds(int seconds)
         {
-            return new Period(new[] { 0, 0, 0, 0, 0, 0, seconds, 0 }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, 0, 0, 0, 0, seconds, 0, 0 }, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period FromMilliseconds(int milliseconds)
         {
-            return new Period(new[] { 0, 0, 0, 0, 0, 0, 0, milliseconds }, PeriodType.Standard);
+            return new Period(new[] { 0, 0, 0, 0, 0, 0, 0, milliseconds, 0 }, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period From(Duration duration, CalendarSystem calendar)
         {
-            return From(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, calendar, PeriodType.Standard);
+            return From(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, calendar, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace NodaTime.Periods
         /// </remarks>
         public static Period From(Duration duration)
         {
-            return From(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, CalendarSystem.Iso, PeriodType.Standard);
+            return From(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + duration, CalendarSystem.Iso, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace NodaTime.Periods
         /// <returns>The period</returns>
         internal static Period From(LocalInstant start, LocalInstant end, CalendarSystem calendar)
         {
-            return From(start, end, calendar, PeriodType.Standard);
+            return From(start, end, calendar, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace NodaTime.Periods
         /// <returns>The period</returns>
         internal static Period From(LocalInstant start, LocalInstant end)
         {
-            return From(start, end, CalendarSystem.Iso, PeriodType.Standard);
+            return From(start, end, CalendarSystem.Iso, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -371,7 +371,7 @@ namespace NodaTime.Periods
         /// <returns>The period</returns>
         internal static Period From(LocalInstant start, Duration duration, CalendarSystem calendar)
         {
-            return From(start, start + duration, calendar, PeriodType.Standard);
+            return From(start, start + duration, calendar, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -394,7 +394,7 @@ namespace NodaTime.Periods
         /// <returns>The period</returns>
         internal static Period From(LocalInstant start, Duration duration)
         {
-            return From(start, start + duration, CalendarSystem.Iso, PeriodType.Standard);
+            return From(start, start + duration, CalendarSystem.Iso, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace NodaTime.Periods
         /// <returns>The period</returns>
         internal static Period From(Duration duration, LocalInstant end, CalendarSystem calendar)
         {
-            return From(end - duration, end, calendar, PeriodType.Standard);
+            return From(end - duration, end, calendar, PeriodType.AllFields);
         }
 
         /// <summary>
@@ -442,7 +442,7 @@ namespace NodaTime.Periods
         /// <returns>The period</returns>
         internal static Period From(Duration duration, LocalInstant end)
         {
-            return From(end - duration, end, CalendarSystem.Iso, PeriodType.Standard);
+            return From(end - duration, end, CalendarSystem.Iso, PeriodType.AllFields);
         }
     }
 }

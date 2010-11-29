@@ -74,7 +74,6 @@
     <Compile Include="Clock.cs" />
     <Compile Include="Clocks\ClockBase.cs" />
     <Compile Include="Clocks\FixedClock.cs" />
-    <Compile Include="IPeriod2.cs" />
     <Compile Include="IsoDayOfWeek.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
@@ -117,6 +116,7 @@
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Clocks\SystemClock.cs" />
     <Compile Include="Fields\DurationFieldValue.cs" />
+    <Compile Include="Period2.cs" />
     <Compile Include="Periods\Period.Creation.cs" />
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />

@@ -41,7 +41,7 @@ namespace NodaTime.Test.Periods
         public void GetValue_ForYearDayTimePeriod()
         {
             Period sut = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime);
-            Assert.AreEqual(6, sut.Size);
+            Assert.AreEqual(7, sut.Size);
             Assert.AreEqual(1, sut[0]);
             Assert.AreEqual(4, sut[1]);
             Assert.AreEqual(5, sut[2]);
@@ -56,13 +56,14 @@ namespace NodaTime.Test.Periods
             Period sut = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.YearDayTime);
             var values = sut.ToArray();
 
-            Assert.AreEqual(6, values.Length);
+            Assert.AreEqual(7, values.Length);
             Assert.AreEqual(1, values[0]);
             Assert.AreEqual(4, values[1]);
             Assert.AreEqual(5, values[2]);
             Assert.AreEqual(6, values[3]);
             Assert.AreEqual(7, values[4]);
             Assert.AreEqual(8, values[5]);
+            Assert.AreEqual(0, values[6]);
 
             values[0] = 42;
             Assert.AreEqual(1, sut[0]);

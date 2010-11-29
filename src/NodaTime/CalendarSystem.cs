@@ -185,7 +185,7 @@ namespace NodaTime
             LocalInstant result = start;
             for (int i = 0; i < size; i++)
             {
-                DurationField field = GetField(periodType.GetFieldType(i));
+                DurationField field = GetField(periodType[i]);
                 int value = field.GetDifference(end, result);
                 values[i] = value;
 
@@ -269,6 +269,8 @@ namespace NodaTime
                     return Fields.Seconds;
                 case DurationFieldType.Milliseconds:
                     return Fields.Milliseconds;
+                case DurationFieldType.Ticks:
+                    return Fields.Ticks;
                 default:
                     throw new InvalidOperationException();
             }

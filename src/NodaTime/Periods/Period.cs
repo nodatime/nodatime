@@ -53,7 +53,7 @@ namespace NodaTime.Periods
         /// <summary>
         /// Initializes a new empty period with the standard set of fields.
         /// </summary>
-        private Period() : this(new[] { 0, 0, 0, 0, 0, 0, 0, 0 }, PeriodType.Standard)
+        private Period() : this(new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 }, PeriodType.AllFields)
         {
         }
 
@@ -77,7 +77,7 @@ namespace NodaTime.Periods
         /// <exception cref="NotSupportedException">If an unsupported field's value is non-zero</exception>
         public Period(int years, int months, int weeks, int days, int hours, int minutes, int seconds, int milliseconds, PeriodType periodType)
         {
-            this.periodType = periodType ?? PeriodType.Standard;
+            this.periodType = periodType ?? PeriodType.AllFields;
 
             int[] newValues = new int[Size];
             PeriodType.UpdateIndexedField(newValues, PeriodType.Index.Year, years, false);
@@ -103,7 +103,7 @@ namespace NodaTime.Periods
         /// <param name="seconds">Amount of seconds in this period</param>
         /// <param name="millis">Amount of milliseconds in this period</param>
         public Period(int years, int months, int weeks, int days, int hours, int minutes, int seconds, int millis)
-            : this(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.Standard)
+            : this(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.AllFields)
         {
         }
 
@@ -118,7 +118,7 @@ namespace NodaTime.Periods
         /// Note that the parameters specify the time fields hours, minutes,
         /// seconds and millis, not the date fields.
         /// </remarks>
-        public Period(int hours, int minutes, int seconds, int millis) : this(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.Standard)
+        public Period(int hours, int minutes, int seconds, int millis) : this(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.AllFields)
         {
         }
         #endregion
@@ -142,7 +142,7 @@ namespace NodaTime.Periods
         /// <exception cref="System.ArgumentOutOfRangeException">if the index is invalid</exception>
         public DurationFieldType GetFieldType(int index)
         {
-            return periodType.GetFieldType(index);
+            return periodType[index];
         }
 
         /// <summary>
@@ -1044,7 +1044,7 @@ namespace NodaTime.Periods
         /// years or months but the specified period type does not support them</exception>
         public Period NormalizeStandard()
         {
-            return Normalize(PeriodType.Standard);
+            return Normalize(PeriodType.AllFields);
         }
         #endregion
 
