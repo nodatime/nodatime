@@ -115,7 +115,7 @@ namespace NodaTime.Format
                 {
                     return 1;
                 }
-                return -a.CompareTo(b);
+                return b.CompareTo(a);
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿using NodaTime.Fields;
 
-namespace NodaTime.Periods
+namespace NodaTime.Fields
 {
     // TODO: Implement IEquatable[T] etc? I'm not currently sure there's much point.
 

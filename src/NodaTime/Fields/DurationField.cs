@@ -221,8 +221,8 @@ namespace NodaTime.Fields
         /// GetDifference reverses the effect of calling add. In the following code:
         /// <code>
         /// LocalInstant instant = ...
-        /// int v = ...
-        /// int age = GetDifference(Add(instant, v), instant);
+        /// long v = ...
+        /// long age = GetInt64Difference(Add(instant, v), instant);
         /// </code>
         /// The value 'age' is the same as the value 'v'.
         /// </summary>
@@ -235,12 +235,7 @@ namespace NodaTime.Fields
         // TODO(jon): Do we *really* need this?
         public int CompareTo(DurationField other)
         {
-            // cannot do (thisMillis - otherMillis) as can overflow
-
-            long otherMillis = other.UnitTicks;
-            long thisMillis = UnitTicks;
-
-            return thisMillis == otherMillis ? 0 : thisMillis < otherMillis ? -1 : 1;
+            return UnitTicks.CompareTo(other.UnitTicks);
         }
 
         public override string ToString()

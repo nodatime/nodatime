@@ -352,9 +352,9 @@ namespace NodaTime.Periods
         private readonly string name;
         private readonly DurationFieldType[] fieldTypes;
 
-        //the only one purpose of this member is to improve perfomance
-        //of searching the index of the field for particular period type
-        //otherwise, it would be looping through fieldTypes array
+        // The sole purpose of this member is to improve perfomance
+        // of searching the index of the field for particular period type.
+        // Otherwise, it would be looping through fieldTypes array
         private readonly int[] indices;
 
         private PeriodType(string name, params DurationFieldType[] fieldTypes) : this(name, fieldTypes, BuildIndices(fieldTypes))

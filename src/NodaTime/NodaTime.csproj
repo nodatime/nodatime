@@ -116,7 +116,7 @@
     <Compile Include="Calendars\IsoCalendarSystem.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Clocks\SystemClock.cs" />
-    <Compile Include="Periods\DurationFieldValue.cs" />
+    <Compile Include="Fields\DurationFieldValue.cs" />
     <Compile Include="Periods\Period.Creation.cs" />
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
