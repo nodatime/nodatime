@@ -30,7 +30,7 @@ namespace NodaTime.Test.Calendars
         public void DayCrossingMonthBoundary()
         {
             LocalDateTime start = new LocalDateTime(2010, 2, 20, 10, 0);
-            LocalDateTime result = start + Period2.FromDays(10);
+            LocalDateTime result = start + Period.FromDays(10);
             Assert.AreEqual(new LocalDateTime(2010, 3, 2, 10, 0), result);
         }
 
@@ -38,7 +38,7 @@ namespace NodaTime.Test.Calendars
         public void AddOneYearOnLeapDay()
         {
             LocalDateTime start = new LocalDateTime(2012, 2, 29, 10, 0);
-            LocalDateTime result = start + Period2.FromYears(1);
+            LocalDateTime result = start + Period.FromYears(1);
             // Feb 29th becomes Feb 28th
             Assert.AreEqual(new LocalDateTime(2013, 2, 28, 10, 0), result);
         }
@@ -47,7 +47,7 @@ namespace NodaTime.Test.Calendars
         public void AddFourYearsOnLeapDay()
         {
             LocalDateTime start = new LocalDateTime(2012, 2, 29, 10, 0);
-            LocalDateTime result = start + Period2.FromYears(4);
+            LocalDateTime result = start + Period.FromYears(4);
             // Feb 29th is still valid in 2016
             Assert.AreEqual(new LocalDateTime(2016, 2, 29, 10, 0), result);
         }
@@ -56,7 +56,7 @@ namespace NodaTime.Test.Calendars
         public void AddYearMonthDay()
         {
             // One year, one month, two days
-            Period2 period = Period2.FromYears(1) + Period2.FromMonths(1) + Period2.FromDays(2);
+            Period period = Period.FromYears(1) + Period.FromMonths(1) + Period.FromDays(2);
             LocalDateTime start = new LocalDateTime(2007, 1, 30, 0, 0);
             // Periods are added in order, so this becomes...
             // Add one year: Jan 30th 2008

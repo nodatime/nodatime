@@ -28,7 +28,7 @@ namespace NodaTime.Test.Partials
         public void Addition_WithPeriod()
         {
             LocalTime start = new LocalTime(3, 30, 0);
-            Period2 period = Period2.FromHours(2) + Period2.FromSeconds(1);
+            Period period = Period.FromHours(2) + Period.FromSeconds(1);
             LocalTime expected = new LocalTime(5, 30, 1);
             Assert.AreEqual(expected, start + period);
         }
@@ -37,7 +37,7 @@ namespace NodaTime.Test.Partials
         public void Addition_WrapsAtMidnight()
         {
             LocalTime start = new LocalTime(22, 0, 0);
-            Period2 period = Period2.FromHours(3);
+            Period period = Period.FromHours(3);
             LocalTime expected = new LocalTime(1, 0, 0);
             Assert.AreEqual(expected, start + period);
         }
@@ -47,14 +47,14 @@ namespace NodaTime.Test.Partials
         {
             LocalTime date = new LocalTime(12, 0, 0);
             // Call to ToString just to make it a valid statement
-            Assert.Throws<ArgumentNullException>(() => (date + (Period2)null).ToString());
+            Assert.Throws<ArgumentNullException>(() => (date + (Period)null).ToString());
         }
 
         [Test]
         public void Subtraction_WithPeriod()
         {
             LocalTime start = new LocalTime(5, 30, 1);
-            Period2 period = Period2.FromHours(2) + Period2.FromSeconds(1);
+            Period period = Period.FromHours(2) + Period.FromSeconds(1);
             LocalTime expected = new LocalTime(3, 30, 0);
             Assert.AreEqual(expected, start - period);
         }
@@ -63,7 +63,7 @@ namespace NodaTime.Test.Partials
         public void Subtraction_WrapsAtMidnight()
         {
             LocalTime start = new LocalTime(1, 0, 0);
-            Period2 period = Period2.FromHours(3);
+            Period period = Period.FromHours(3);
             LocalTime expected = new LocalTime(22, 0, 0);
             Assert.AreEqual(expected, start - period);
         }
@@ -73,7 +73,7 @@ namespace NodaTime.Test.Partials
         {
             LocalTime date = new LocalTime(12, 0, 0);
             // Call to ToString just to make it a valid statement
-            Assert.Throws<ArgumentNullException>(() => (date - (Period2)null).ToString());
+            Assert.Throws<ArgumentNullException>(() => (date - (Period)null).ToString());
         }
     }
 }

@@ -116,7 +116,7 @@
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Clocks\SystemClock.cs" />
     <Compile Include="Fields\DurationFieldValue.cs" />
-    <Compile Include="Period2.cs" />
+    <Compile Include="Period.cs" />
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
