@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NodaTime.Format;
 
 namespace NodaTime.Partials
@@ -88,6 +89,10 @@ namespace NodaTime.Partials
         /// </summary>
         public static LocalDate operator +(LocalDate date, Period2 period)
         {
+            if (period == null)
+            {
+                throw new ArgumentNullException("period");
+            }
             return new LocalDate(date.LocalDateTime + period);
         }
 
@@ -111,6 +116,10 @@ namespace NodaTime.Partials
         /// </summary>
         public static LocalDate operator -(LocalDate date, Period2 period)
         {
+            if (period == null)
+            {
+                throw new ArgumentNullException("period");
+            }
             return new LocalDate(date.LocalDateTime - period);
         }
 
