@@ -166,6 +166,8 @@ namespace NodaTime.Periods
 
         private readonly string name;
         private readonly DurationFieldType[] fieldTypes;
+        private readonly bool hasTimeFields;
+        private readonly bool hasDateFields;
 
         // The sole purpose of this member is to improve perfomance
         // of searching the index of the field for particular period type.
@@ -227,6 +229,11 @@ namespace NodaTime.Periods
             this.name = name;
             this.fieldTypes = fieldTypes;
             this.indices = indices;
+            hasTimeFields = IsSupported(DurationFieldType.Hours) || IsSupported(DurationFieldType.Minutes) ||
+                            IsSupported(DurationFieldType.Seconds) || IsSupported(DurationFieldType.Milliseconds) ||
+                            IsSupported(DurationFieldType.Ticks);
+            hasDateFields = IsSupported(DurationFieldType.Years) || IsSupported(DurationFieldType.Months) ||
+                            IsSupported(DurationFieldType.Weeks) || IsSupported(DurationFieldType.Days);
         }
 
         /// <summary>
@@ -239,6 +246,16 @@ namespace NodaTime.Periods
         /// </summary>
         public int Size { get { return fieldTypes.Length; } }
 
+        /// <summary>
+        /// Returns whether or not this period type supports any duration fields smaller than a day.
+        /// </summary>
+        public bool HasTimeFields { get { return hasTimeFields; } }
+
+        /// <summary>
+        /// Returns whether or not this period type supports any duration fields larger than an hour.
+        /// </summary>
+        public bool HasDateFields { get { return hasDateFields; } }
+        
         /// <summary>
         /// Gets the index of the field in this period.
         /// </summary>
