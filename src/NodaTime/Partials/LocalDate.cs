@@ -79,14 +79,6 @@ namespace NodaTime.Partials
         /// <summary>
         /// TODO: Assert no units smaller than a day
         /// </summary>
-        public static LocalDate operator +(LocalDate date, IPeriod period)
-        {
-            return new LocalDate(date.LocalDateTime + period);
-        }
-
-        /// <summary>
-        /// TODO: Assert no units smaller than a day
-        /// </summary>
         public static LocalDate operator +(LocalDate date, Period2 period)
         {
             if (period == null)
@@ -101,14 +93,6 @@ namespace NodaTime.Partials
             LocalInstant localDateInstant = date.localTime.LocalInstant;
             LocalInstant localInstant = new LocalInstant(localDateInstant.Ticks + time.TickOfDay);
             return new LocalDateTime(localInstant, date.localTime.Calendar);
-        }
-
-        /// <summary>
-        /// TODO: Assert no units smaller than a day
-        /// </summary>
-        public static LocalDate operator -(LocalDate date, IPeriod period)
-        {
-            return new LocalDate(date.LocalDateTime - period);
         }
 
         /// <summary>

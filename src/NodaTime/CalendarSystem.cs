@@ -168,35 +168,6 @@ namespace NodaTime
         /// <summary>
         /// Gets the values of a period type from an interval.
         /// </summary>
-        /// <param name="periodType">The period type to use</param>
-        /// <param name="start">The start instant of an interval to query</param>
-        /// <param name="end">The end instant of an interval to query</param>
-        /// <returns>The values of the period extracted from the interval</returns>
-        internal int[] GetPeriodValues(PeriodType periodType, LocalInstant start, LocalInstant end)
-        {
-            int size = periodType.Size;
-            int[] values = new int[size];
-
-            if (start == end)
-            {
-                return values;
-            }
-
-            LocalInstant result = start;
-            for (int i = 0; i < size; i++)
-            {
-                DurationField field = GetField(periodType[i]);
-                int value = field.GetDifference(end, result);
-                values[i] = value;
-
-                result = field.Add(result, value);
-            }
-            return values;
-        }
-
-        /// <summary>
-        /// Gets the values of a period type from an interval.
-        /// </summary>
         /// <param name="start">The start instant of an interval to query</param>
         /// <param name="end">The end instant of an interval to query</param>
         /// <param name="periodType">The period type to use</param>
@@ -221,31 +192,6 @@ namespace NodaTime
                 result = field.Add(result, value);
             }
             return values;
-        }
-
-        /// <summary>
-        /// Adds the period to the instant, specifying the number of times to add.
-        /// </summary>
-        /// <param name="period">The period to add, null means add nothing</param>
-        /// <param name="instant">The instant to add to</param>
-        /// <param name="scalar">The number of times to add</param>
-        /// <returns>The updated instant</returns>
-        internal LocalInstant Add(IPeriod period, LocalInstant instant, int scalar)
-        {
-            LocalInstant result = instant;
-
-            if (scalar != 0 && period != null)
-            {
-                for (int i = 0, isize = period.Size; i < isize; i++)
-                {
-                    long value = period[i]; // use long to allow for multiplication (fits OK)
-                    if (value != 0)
-                    {
-                        result = GetField(period.GetFieldType(i)).Add(result, value * scalar);
-                    }
-                }
-            }
-            return result;
         }
 
         internal LocalInstant Add(Period2 period, LocalInstant localInstant, int scalar)

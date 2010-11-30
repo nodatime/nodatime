@@ -59,22 +59,6 @@ namespace NodaTime.Partials
         /// <summary>
         /// TODO: Assert no units as large a day
         /// </summary>
-        public static LocalTime operator +(LocalTime time, IPeriod period)
-        {
-            return (time.LocalDateTime + period).TimeOfDay;
-        }
-
-        /// <summary>
-        /// TODO: Assert no units as large as a day
-        /// </summary>
-        public static LocalTime operator -(LocalTime time, IPeriod period)
-        {
-            return (time.LocalDateTime - period).TimeOfDay;
-        }
-
-        /// <summary>
-        /// TODO: Assert no units as large a day
-        /// </summary>
         public static LocalTime operator +(LocalTime time, Period2 period)
         {
             return (time.LocalDateTime + period).TimeOfDay;
