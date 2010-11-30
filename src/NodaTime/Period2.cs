@@ -270,7 +270,7 @@ namespace NodaTime
             // TODO: Make this a lot faster :)
             foreach (DurationFieldType fieldType in PeriodType.AllFields)
             {
-                hash = HashCodeHelper.Hash<long>(hash, this[fieldType]);
+                hash = HashCodeHelper.Hash(hash, this[fieldType]);
             }
             return hash;
         }
