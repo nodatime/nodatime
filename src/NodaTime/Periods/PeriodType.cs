@@ -47,6 +47,8 @@ namespace NodaTime.Periods
             Tick
         }
 
+        private const int IndexCount = 9;
+
         #region Static fields backing properties
         private static readonly PeriodType years = new PeriodType("Years", DurationFieldType.Years);
         private static readonly PeriodType months = new PeriodType("Months", DurationFieldType.Months);
@@ -286,7 +288,7 @@ namespace NodaTime.Periods
             }
 
             // Construct new indices
-            int[] newIndices = new int[9];
+            int[] newIndices = new int[IndexCount];
             int indicesIndex = (int)index;
             for (int i = 0; i < indicesIndex; i++)
             {
