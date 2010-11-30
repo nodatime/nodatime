@@ -179,7 +179,6 @@
     <None Include="Diagrams\Calendars.cd" />
     <None Include="Diagrams\DurationFields.cd" />
     <None Include="Diagrams\DateTimeFields.cd" />
-    <None Include="Diagrams\Period.cd" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
