@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.Periods;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Periods
@@ -22,5 +23,34 @@ namespace NodaTime.Test.Periods
     [TestFixture]
     public partial class PeriodTypeTest
     {
+        [Test]
+        public void HasDateFields_Various()
+        {
+            Assert.IsTrue(PeriodType.AllFields.HasDateFields);
+            Assert.IsTrue(PeriodType.YearDay.HasDateFields);
+            Assert.IsTrue(PeriodType.YearDay.WithDaysRemoved().HasDateFields);
+            Assert.IsTrue(PeriodType.YearDayTime.HasDateFields);
+            Assert.IsTrue(PeriodType.Years.HasDateFields);
+
+            Assert.IsFalse(PeriodType.Hours.HasDateFields);
+            Assert.IsFalse(PeriodType.Time.HasDateFields);
+            Assert.IsFalse(PeriodType.Time.WithMinutesRemoved().HasDateFields);
+            Assert.IsFalse(PeriodType.YearDayTime.WithYearsRemoved().WithDaysRemoved().HasDateFields);
+        }
+
+        [Test]
+        public void HasTimeFields_Various()
+        {
+            Assert.IsTrue(PeriodType.AllFields.HasTimeFields);
+            Assert.IsTrue(PeriodType.YearDayTime.HasTimeFields);
+            Assert.IsTrue(PeriodType.Hours.HasTimeFields);
+            Assert.IsTrue(PeriodType.Time.HasTimeFields);
+            Assert.IsTrue(PeriodType.Time.WithMinutesRemoved().HasTimeFields);
+            Assert.IsTrue(PeriodType.YearDayTime.WithYearsRemoved().WithDaysRemoved().HasTimeFields);
+
+            Assert.IsFalse(PeriodType.Years.HasTimeFields);
+            Assert.IsFalse(PeriodType.YearDay.HasTimeFields);
+            Assert.IsFalse(PeriodType.YearDay.WithDaysRemoved().HasTimeFields);
+        }
     }
 }
