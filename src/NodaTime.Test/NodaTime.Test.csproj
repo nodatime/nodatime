@@ -158,31 +158,6 @@
     <Compile Include="OffsetTest.Construction.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Periods\PeriodTest.Constructors.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.Equality.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.Operators.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.Normalization.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.SubtractMethods.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.AddMethods.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.WithMethods.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.StaticCreationMethods.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.cs" />
     <Compile Include="Periods\PeriodTypeTest.cs" />
     <Compile Include="Periods\PeriodTypeTest.Equality.cs">
       <DependentUpon>PeriodTypeTest.cs</DependentUpon>
