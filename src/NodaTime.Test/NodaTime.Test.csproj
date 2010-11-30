@@ -106,6 +106,7 @@
     <Compile Include="Format\IsoDateTimeFormatsTest.Parse.cs" />
     <Compile Include="Format\IsoDateTimeFormatsTest.cs" />
     <Compile Include="Fields\DurationFieldValueTest.cs" />
+    <Compile Include="Partials\LocalDateTest.cs" />
     <Compile Include="Period2Test.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
@@ -255,9 +256,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Partials\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
