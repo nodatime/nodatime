@@ -28,7 +28,7 @@ namespace NodaTime.Test.Partials
         public void Addition_WithPeriod()
         {
             LocalDate start = new LocalDate(2010, 6, 19);
-            Period2 period = Period2.FromMonths(3) + Period2.FromDays(10);
+            Period period = Period.FromMonths(3) + Period.FromDays(10);
             LocalDate expected = new LocalDate(2010, 9, 29);
             Assert.AreEqual(expected, start + period);
         }
@@ -37,7 +37,7 @@ namespace NodaTime.Test.Partials
         public void Addition_TruncatesOnShortMonth()
         {
             LocalDate start = new LocalDate(2010, 1, 30);
-            Period2 period = Period2.FromMonths(1);
+            Period period = Period.FromMonths(1);
             LocalDate expected = new LocalDate(2010, 2, 28);
             Assert.AreEqual(expected, start + period);
         }
@@ -47,14 +47,14 @@ namespace NodaTime.Test.Partials
         {
             LocalDate date = new LocalDate(2010, 1, 1);
             // Call to ToString just to make it a valid statement
-            Assert.Throws<ArgumentNullException>(() => (date + (Period2)null).ToString());
+            Assert.Throws<ArgumentNullException>(() => (date + (Period)null).ToString());
         }
 
         [Test]
         public void Subtraction_WithPeriod()
         {
             LocalDate start = new LocalDate(2010, 9, 29);
-            Period2 period = Period2.FromMonths(3) + Period2.FromDays(10);
+            Period period = Period.FromMonths(3) + Period.FromDays(10);
             LocalDate expected = new LocalDate(2010, 6, 19);
             Assert.AreEqual(expected, start - period);
         }
@@ -63,7 +63,7 @@ namespace NodaTime.Test.Partials
         public void Subtraction_TruncatesOnShortMonth()
         {
             LocalDate start = new LocalDate(2010, 3, 30);
-            Period2 period = Period2.FromMonths(1);
+            Period period = Period.FromMonths(1);
             LocalDate expected = new LocalDate(2010, 2, 28);
             Assert.AreEqual(expected, start - period);
         }
@@ -73,7 +73,7 @@ namespace NodaTime.Test.Partials
         {
             LocalDate date = new LocalDate(2010, 1, 1);
             // Call to ToString just to make it a valid statement
-            Assert.Throws<ArgumentNullException>(() => (date - (Period2)null).ToString());
+            Assert.Throws<ArgumentNullException>(() => (date - (Period)null).ToString());
         }
     }
 }

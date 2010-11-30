@@ -79,7 +79,7 @@ namespace NodaTime.Partials
         /// <summary>
         /// TODO: Assert no units smaller than a day
         /// </summary>
-        public static LocalDate operator +(LocalDate date, Period2 period)
+        public static LocalDate operator +(LocalDate date, Period period)
         {
             if (period == null)
             {
@@ -98,7 +98,7 @@ namespace NodaTime.Partials
         /// <summary>
         /// TODO: Assert no units smaller than a day
         /// </summary>
-        public static LocalDate operator -(LocalDate date, Period2 period)
+        public static LocalDate operator -(LocalDate date, Period period)
         {
             if (period == null)
             {

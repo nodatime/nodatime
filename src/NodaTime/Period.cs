@@ -23,7 +23,7 @@ namespace NodaTime
     /// means that three hours would have to actually pass in experienced time to arrive at
     /// that local date-time, due to changes in the UTC offset (e.g. for daylight savings).
     /// </remarks>
-    public sealed class Period2 : IEnumerable<DurationFieldValue>, IEquatable<Period2>
+    public sealed class Period : IEnumerable<DurationFieldValue>, IEquatable<Period>
     {
         private readonly PeriodType periodType;
         private readonly long[] values;
@@ -34,7 +34,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="periodType">Type of this period, describing which fields are present</param>
         /// <param name="values">Values for each field in the period type</param>
-        private Period2(PeriodType periodType, long[] values)
+        private Period(PeriodType periodType, long[] values)
         {
             this.values = values;
             this.periodType = periodType;
@@ -42,48 +42,48 @@ namespace NodaTime
 
         public PeriodType PeriodType { get { return periodType; } }
 
-        private static Period2 CreateSingleFieldPeriod(PeriodType periodType, long value)
+        private static Period CreateSingleFieldPeriod(PeriodType periodType, long value)
         {
             long[] values = { value };
-            return new Period2(periodType, values);
+            return new Period(periodType, values);
         }
 
-        public static Period2 FromYears(long years)
+        public static Period FromYears(long years)
         {
             return CreateSingleFieldPeriod(PeriodType.Years, years);
         }
 
-        public static Period2 FromMonths(long months)
+        public static Period FromMonths(long months)
         {
             return CreateSingleFieldPeriod(PeriodType.Months, months);
         }
 
-        public static Period2 FromDays(long days)
+        public static Period FromDays(long days)
         {
             return CreateSingleFieldPeriod(PeriodType.Days, days);
         }
 
-        public static Period2 FromHours(long hours)
+        public static Period FromHours(long hours)
         {
             return CreateSingleFieldPeriod(PeriodType.Hours, hours);
         }
 
-        public static Period2 FromMinutes(long minutes)
+        public static Period FromMinutes(long minutes)
         {
             return CreateSingleFieldPeriod(PeriodType.Minutes, minutes);
         }
 
-        public static Period2 FromSeconds(long seconds)
+        public static Period FromSeconds(long seconds)
         {
             return CreateSingleFieldPeriod(PeriodType.Seconds, seconds);
         }
 
-        public static Period2 FromMillseconds(long milliseconds)
+        public static Period FromMillseconds(long milliseconds)
         {
             return CreateSingleFieldPeriod(PeriodType.Milliseconds, milliseconds);
         }
 
-        public static Period2 FromTicks(long ticks)
+        public static Period FromTicks(long ticks)
         {
             return CreateSingleFieldPeriod(PeriodType.Ticks, ticks);
         }
@@ -92,7 +92,7 @@ namespace NodaTime
         /// Adds two periods together, by simply adding the values for each field. Currently this
         /// returns a period with a period type of "all fields".
         /// </summary>
-        public static Period2 operator +(Period2 left, Period2 right)
+        public static Period operator +(Period left, Period right)
         {
             if (left == null)
             {
@@ -110,14 +110,14 @@ namespace NodaTime
                 DurationFieldType fieldType = all[i];
                 newValues[i] = left[fieldType] + right[fieldType];
             }
-            return new Period2(PeriodType.AllFields, newValues);
+            return new Period(PeriodType.AllFields, newValues);
         }
 
         /// <summary>
         /// Subtracts one periods from another, by simply subtracting each field value. Currently this
         /// returns a period with a period type of "all fields".
         /// </summary>
-        public static Period2 operator -(Period2 left, Period2 right)
+        public static Period operator -(Period left, Period right)
         {
             if (left == null)
             {
@@ -135,7 +135,7 @@ namespace NodaTime
                 DurationFieldType fieldType = all[i];
                 newValues[i] = left[fieldType] - right[fieldType];
             }
-            return new Period2(PeriodType.AllFields, newValues);
+            return new Period(PeriodType.AllFields, newValues);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
         /// <exception cref="ArgumentNullException"><paramref name="periodType"/> is null</exception>
         /// <returns>The period between the given date/times</returns>
-        public static Period2 Between(LocalDateTime start, LocalDateTime end, PeriodType periodType)
+        public static Period Between(LocalDateTime start, LocalDateTime end, PeriodType periodType)
         {
             if (periodType == null)
             {
@@ -166,13 +166,13 @@ namespace NodaTime
                 throw new ArgumentException("start and end must use the same calendar system");
             }
             long[] values = start.Calendar.GetPeriodValues(start.LocalInstant, end.LocalInstant, periodType);
-            return new Period2(periodType, values);
+            return new Period(periodType, values);
         }
 
         /// <summary>
         /// Returns the difference between two date/times using the "all fields" period type.
         /// </summary>
-        public static Period2 Between(LocalDateTime start, LocalDateTime end)
+        public static Period Between(LocalDateTime start, LocalDateTime end)
         {
             return Between(start, end, PeriodType.AllFields);
         }
@@ -195,7 +195,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
         /// <exception cref="ArgumentNullException"><paramref name="periodType"/> is null</exception>
         /// <returns>The period between the given dates</returns>
-        public static Period2 Between(LocalDate start, LocalDate end, PeriodType periodType)
+        public static Period Between(LocalDate start, LocalDate end, PeriodType periodType)
         {
             return Between(start.LocalDateTime, end.LocalDateTime, periodType);
         }
@@ -203,7 +203,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the difference between two dates using the "year month day" period type.
         /// </summary>
-        public static Period2 Between(LocalDate start, LocalDate end)
+        public static Period Between(LocalDate start, LocalDate end)
         {
             return Between(start.LocalDateTime, end.LocalDateTime, PeriodType.YearMonthDay);
         }
@@ -226,7 +226,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
         /// <exception cref="ArgumentNullException"><paramref name="periodType"/> is null</exception>
         /// <returns>The period between the given times</returns>
-        public static Period2 Between(LocalTime start, LocalTime end, PeriodType periodType)
+        public static Period Between(LocalTime start, LocalTime end, PeriodType periodType)
         {
             return Between(start.LocalDateTime, end.LocalDateTime, periodType);
         }
@@ -234,7 +234,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the difference between two dates using the "time" period type.
         /// </summary>
-        public static Period2 Between(LocalTime start, LocalTime end)
+        public static Period Between(LocalTime start, LocalTime end)
         {
             return Between(start.LocalDateTime, end.LocalDateTime, PeriodType.Time);
         }
@@ -285,15 +285,15 @@ namespace NodaTime
 
         #region Object overrides
         /// <summary>
-        /// Compares the given object for equality with this one, as per <see cref="Equals(Period2)"/>.
+        /// Compares the given object for equality with this one, as per <see cref="Equals(Period)"/>.
         /// </summary>
         public override bool Equals(object other)
         {
-            return Equals(other as Period2);
+            return Equals(other as Period);
         }
 
         /// <summary>
-        /// Returns the hash code for this period, consistent with <see cref="Equals(Period2)"/>.
+        /// Returns the hash code for this period, consistent with <see cref="Equals(Period)"/>.
         /// </summary>
         public override int GetHashCode()
         {
@@ -314,7 +314,7 @@ namespace NodaTime
         /// - so a period of "one hour" is the same whether or not it's potentially got other fields with
         /// a zero value. However, no normalization takes place, so "one hour" is not equal to "sixty minutes".
         /// </remarks>
-        public bool Equals(Period2 other)
+        public bool Equals(Period other)
         {
             if (other == null)
             {

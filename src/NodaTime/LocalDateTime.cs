@@ -305,7 +305,7 @@ namespace NodaTime
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to add</param>
         /// <returns>The resulting local date and time</returns>
-        public static LocalDateTime operator +(LocalDateTime localDateTime, Period2 period)
+        public static LocalDateTime operator +(LocalDateTime localDateTime, Period period)
         {
             CalendarSystem calendar = localDateTime.Calendar;
             return new LocalDateTime(calendar.Add(period, localDateTime.LocalInstant, 1), calendar);
@@ -317,7 +317,7 @@ namespace NodaTime
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to subtract</param>
         /// <returns>The resulting local date and time</returns>
-        public static LocalDateTime operator -(LocalDateTime localDateTime, Period2 period)
+        public static LocalDateTime operator -(LocalDateTime localDateTime, Period period)
         {
             CalendarSystem calendar = localDateTime.Calendar;
             return new LocalDateTime(calendar.Add(period, localDateTime.LocalInstant, -1), calendar);

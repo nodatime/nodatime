@@ -194,7 +194,7 @@ namespace NodaTime
             return values;
         }
 
-        internal LocalInstant Add(Period2 period, LocalInstant localInstant, int scalar)
+        internal LocalInstant Add(Period period, LocalInstant localInstant, int scalar)
         {
             if (period == null)
             {
