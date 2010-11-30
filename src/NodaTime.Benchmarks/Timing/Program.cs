@@ -34,7 +34,7 @@ namespace NodaTime.Benchmarks.Timing
             BenchmarkOptions options = BenchmarkOptions.FromCommandLine(args);
 
             var types =
-                typeof(Program).Assembly.GetTypes().OrderBy(GetTypeDisplayName).Where(type => type.GetMethods(AllInstance).Any(IsBenchmark));
+                typeof(Program).Assembly.GetTypes().OrderBy<Type,string>(GetTypeDisplayName).Where(type => type.GetMethods(AllInstance).Any(IsBenchmark));
 
             var results = new List<BenchmarkResult>();
             foreach (Type type in types)
