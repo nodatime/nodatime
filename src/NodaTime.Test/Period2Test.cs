@@ -121,6 +121,42 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BetweenLocalTimes_MovingForwards()
+        {
+            LocalTime t1 = new LocalTime(10, 0, 0);
+            LocalTime t2 = new LocalTime(15, 30, 45, 20, 5);
+            SpecialAssertEqual(Period2.FromHours(5) + Period2.FromMinutes(30) + Period2.FromSeconds(45) +
+                               Period2.FromMillseconds(20) + Period2.FromTicks(5),
+                               Period2.Between(t1, t2));
+        }
+
+        [Test]
+        public void BetweenLocalTimes_MovingBackwards()
+        {
+            LocalTime t1 = new LocalTime(15, 30, 45, 20, 5);
+            LocalTime t2 = new LocalTime(10, 0, 0);
+            SpecialAssertEqual(Period2.FromHours(-5) + Period2.FromMinutes(-30) + Period2.FromSeconds(-45) +
+                               Period2.FromMillseconds(-20) + Period2.FromTicks(-5),
+                               Period2.Between(t1, t2));
+        }
+
+        [Test]
+        public void BetweenLocalTimes_MovingForwards_WithJustHours()
+        {
+            LocalTime t1 = new LocalTime(11, 30, 0);
+            LocalTime t2 = new LocalTime(17, 15, 0);
+            SpecialAssertEqual(Period2.FromHours(5), Period2.Between(t1, t2, PeriodType.Hours));
+        }
+
+        [Test]
+        public void BetweenLocalTimes_MovingBackwards_WithJustHours()
+        {
+            LocalTime t1 = new LocalTime(17, 15, 0);
+            LocalTime t2 = new LocalTime(11, 30, 0);
+            SpecialAssertEqual(Period2.FromHours(-5), Period2.Between(t1, t2, PeriodType.Hours));
+        }
+
+        [Test]
         public void Addition_WithDifferent_PeriodTypes()
         {
             Period2 p1 = Period2.FromHours(3);

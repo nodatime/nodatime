@@ -154,7 +154,7 @@ namespace NodaTime
         /// <param name="periodType">Period type to use for calculations</param>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
         /// <exception cref="ArgumentNullException"><paramref name="periodType"/> is null</exception>
-        /// <returns>The period between </returns>
+        /// <returns>The period between the given date/times</returns>
         public static Period2 Between(LocalDateTime start, LocalDateTime end, PeriodType periodType)
         {
             if (periodType == null)
@@ -194,7 +194,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="periodType"/> contains time fields</exception>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
         /// <exception cref="ArgumentNullException"><paramref name="periodType"/> is null</exception>
-        /// <returns>The period between </returns>
+        /// <returns>The period between the given dates</returns>
         public static Period2 Between(LocalDate start, LocalDate end, PeriodType periodType)
         {
             return Between(start.LocalDateTime, end.LocalDateTime, periodType);
@@ -206,6 +206,37 @@ namespace NodaTime
         public static Period2 Between(LocalDate start, LocalDate end)
         {
             return Between(start.LocalDateTime, end.LocalDateTime, PeriodType.YearMonthDay);
+        }
+
+        /// <summary>
+        /// Returns the period between a start and an end time, using the set of fields in the given
+        /// period type.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="end"/> is before <paramref name="start" />, each field in the returned period
+        /// will be negative. If the given period type cannot exactly reach the end point (e.g. finding
+        /// the difference between 3am and 4.30am in hours) the result will be such that adding it to <paramref name="start"/>
+        /// will give a value between <paramref name="start"/> and <paramref name="end"/>. In other words,
+        /// any rounding is "towards start"; this is true whether the resulting period is negative or positive.
+        /// </remarks>
+        /// <param name="start">Start date/time</param>
+        /// <param name="end">End date/time</param>
+        /// <param name="periodType">Period type to use for calculations</param>
+        /// <exception cref="ArgumentException"><paramref name="periodType"/> contains time fields</exception>
+        /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="periodType"/> is null</exception>
+        /// <returns>The period between the given times</returns>
+        public static Period2 Between(LocalTime start, LocalTime end, PeriodType periodType)
+        {
+            return Between(start.LocalDateTime, end.LocalDateTime, periodType);
+        }
+
+        /// <summary>
+        /// Returns the difference between two dates using the "time" period type.
+        /// </summary>
+        public static Period2 Between(LocalTime start, LocalTime end)
+        {
+            return Between(start.LocalDateTime, end.LocalDateTime, PeriodType.Time);
         }
 
         /// <summary>

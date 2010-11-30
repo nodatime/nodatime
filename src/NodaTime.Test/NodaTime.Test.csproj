@@ -107,6 +107,7 @@
     <Compile Include="Format\IsoDateTimeFormatsTest.cs" />
     <Compile Include="Fields\DurationFieldValueTest.cs" />
     <Compile Include="Partials\LocalDateTest.cs" />
+    <Compile Include="Partials\LocalTimeTest.cs" />
     <Compile Include="Period2Test.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
