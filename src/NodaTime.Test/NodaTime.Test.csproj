@@ -106,9 +106,15 @@
     <Compile Include="Format\IsoDateTimeFormatsTest.Parse.cs" />
     <Compile Include="Format\IsoDateTimeFormatsTest.cs" />
     <Compile Include="Fields\DurationFieldValueTest.cs" />
-    <Compile Include="Partials\LocalDateTest.cs" />
-    <Compile Include="Partials\LocalTimeTest.cs" />
+    <Compile Include="LocalDateTest.cs" />
+    <Compile Include="LocalTimeTest.cs" />
     <Compile Include="PeriodTest.cs" />
+    <Compile Include="PeriodTypeTest.cs" />
+    <Compile Include="PeriodTypeTest.Equality.cs" />
+    <Compile Include="PeriodTypeTest.IndexOf.cs" />
+    <Compile Include="PeriodTypeTest.IsSupported.cs" />
+    <Compile Include="PeriodTypeTest.Masking.cs" />
+    <Compile Include="PeriodTypeTest.Types.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\ReadWriteCompressTest.cs" />
@@ -157,22 +163,6 @@
     </Compile>
     <Compile Include="OffsetTest.Construction.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTypeTest.cs" />
-    <Compile Include="Periods\PeriodTypeTest.Equality.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTypeTest.Masking.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTypeTest.Types.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTypeTest.IndexOf.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTypeTest.IsSupported.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstantTest.cs" />

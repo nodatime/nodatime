@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -15,10 +15,9 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Periods;
 using NUnit.Framework;
 
-namespace NodaTime.Test.Periods
+namespace NodaTime.Test
 {
     [TestFixture]
     public partial class PeriodTypeTest

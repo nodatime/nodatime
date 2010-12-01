@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using NodaTime.Partials;
 using NodaTime.Utility;
 
 namespace NodaTime

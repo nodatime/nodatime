@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Periods;
 using NUnit.Framework;
 
 namespace NodaTime.Demo
