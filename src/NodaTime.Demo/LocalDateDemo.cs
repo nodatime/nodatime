@@ -1,6 +1,4 @@
 ﻿using System;
-using NodaTime.Partials;
-using NodaTime.Periods;
 using NUnit.Framework;
 
 namespace NodaTime.Demo

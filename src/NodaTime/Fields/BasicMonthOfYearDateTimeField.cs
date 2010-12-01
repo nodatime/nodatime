@@ -17,7 +17,6 @@
 
 using System;
 using NodaTime.Calendars;
-using NodaTime.Partials;
 
 namespace NodaTime.Fields
 {

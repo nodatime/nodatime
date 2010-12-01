@@ -19,7 +19,6 @@ using System;
 using System.Globalization;
 using System.IO;
 using NodaTime.Format;
-using NodaTime.Periods;
 
 namespace NodaTime
 {

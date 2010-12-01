@@ -18,7 +18,6 @@
 using System;
 using NodaTime.Calendars;
 using NodaTime.Fields;
-using NodaTime.Periods;
 
 namespace NodaTime
 {

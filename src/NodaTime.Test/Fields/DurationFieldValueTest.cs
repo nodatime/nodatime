@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NodaTime.Fields;
-using NodaTime.Periods;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Fields

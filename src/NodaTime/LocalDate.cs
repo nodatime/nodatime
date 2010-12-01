@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -18,7 +18,7 @@
 using System;
 using NodaTime.Format;
 
-namespace NodaTime.Partials
+namespace NodaTime
 {
     /// <summary>
     /// LocalDate is an immutable struct representing a date within the calendar,

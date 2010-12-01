@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using NodaTime.Fields;
 using System.Collections;
-using NodaTime.Partials;
-using NodaTime.Periods;
 using NodaTime.Utility;
 
 namespace NodaTime

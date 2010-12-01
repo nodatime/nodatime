@@ -15,10 +15,9 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Periods;
 using NUnit.Framework;
 
-namespace NodaTime.Test.Periods
+namespace NodaTime.Test
 {
     public partial class PeriodTypeTest
     {

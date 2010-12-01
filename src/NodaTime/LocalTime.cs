@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -17,7 +17,7 @@
 
 using NodaTime.Format;
 
-namespace NodaTime.Partials
+namespace NodaTime
 {
     /// <summary>
     /// LocalTime is an immutable struct representing a time of day, with no reference

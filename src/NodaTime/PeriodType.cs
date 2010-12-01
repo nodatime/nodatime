@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2010 Jon Skeet
 // 
@@ -16,12 +16,12 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using NodaTime.Fields;
 using NodaTime.Utility;
-using System.Collections;
 
-namespace NodaTime.Periods
+namespace NodaTime
 {
     /// <summary>
     /// Controls a period implementation by specifying which duration fields are to be used.
