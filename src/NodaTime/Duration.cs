@@ -35,7 +35,7 @@ namespace NodaTime
     /// This type is immutable and thread-safe.
     /// </para>
     /// </remarks>
-    public struct Duration : IEquatable<Duration>, IComparable<Duration>
+    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IFormattable
     {
         #region Public readonly fields
         /// <summary>
@@ -224,23 +224,63 @@ namespace NodaTime
         /// </example>
         public override string ToString()
         {
-            var writer = new StringWriter(CultureInfo.InvariantCulture);
-            writer.Write("PT");
-
-            long seconds = Ticks / NodaConstants.TicksPerSecond;
-            writer.Write(seconds);
-
-            int ticksValue = (int)Math.Abs(Ticks % NodaConstants.TicksPerSecond);
-            if (ticksValue > 0)
-            {
-                writer.Write(".");
-                FormatUtils.WritePaddedInteger(writer, ticksValue, 7);
-            }
-
-            writer.Write("S");
-            return writer.ToString();
+            return DurationFormatter.GeneralFormatter.Format(this, null);
         }
         #endregion  // Object overrides
+
+        #region Formatting
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        ///   -or- 
+        ///   null to use the default format defined for the type of the <see cref = "T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string format)
+        {
+            return DurationFormatter.GetFormatter(format).Format(this, null);
+        }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return DurationFormatter.GeneralFormatter.Format(this, formatProvider);
+        }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        ///   -or- 
+        ///   null to use the default format defined for the type of the <see cref = "T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return DurationFormatter.GetFormatter(format).Format(this, formatProvider);
+        }
+        #endregion Formatting
 
         #region Operators
         /// <summary>

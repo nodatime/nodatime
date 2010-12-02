@@ -5,7 +5,7 @@ namespace NodaTime.Format
     /// <summary>
     /// Formatter for ZonedDateTime.
     /// </summary>
-    public class ZonedDateTimeFormatter : FormatterBase<ZonedDateTime>
+    internal class ZonedDateTimeFormatter : FormatterBase<ZonedDateTime>
     {
         public ZonedDateTimeFormatter(FormatPattern pattern)
         {
@@ -19,7 +19,7 @@ namespace NodaTime.Format
             throw new NotImplementedException();
         }
 
-        public override string Format(ZonedDateTime value, IFormatProvider formatProvider)
+        protected override string FormatValue(ZonedDateTime value, IFormatProvider formatProvider)
         {
             throw new NotImplementedException();
         }
