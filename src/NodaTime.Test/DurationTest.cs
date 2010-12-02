@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -26,24 +27,54 @@ namespace NodaTime.Test
         private readonly Duration threeMillion = new Duration(3000000L);
         private readonly Duration negativeFiftyMillion = new Duration(-50000000L);
 
-        #region ToString
-        private object[] toStringTestData = {
-            new TestCaseData(0, "PT0S").SetName("0 => PT0S"),
-            new TestCaseData(12 * NodaConstants.TicksPerMillisecond, "PT0.0120000S").SetName("12ms => PT0.0120000S"),
-            new TestCaseData(345 * NodaConstants.TicksPerMillisecond + 678L, "PT0.3450678S").SetName("345.0678ms => PT0.3450678S"),
-            new TestCaseData(1234 * NodaConstants.TicksPerMillisecond, "PT1.2340000S").SetName("1234ms => PT1.2340000S"),
-            new TestCaseData(Duration.MinValue.Ticks, "PT-922337203685.4775808S").SetName("MinValue => PT-922337203685.4775808S"),
-            new TestCaseData(Duration.MaxValue.Ticks, "PT922337203685.4775807S").SetName("MaxValue => PT922337203685.4775807S"),
-        };
+        [Test]
+        public void TestToString_InvalidFormat()
+        {
+            Assert.Throws<FormatException>(() => Duration.Zero.ToString("A"));
+        }
 
         [Test]
-        [TestCaseSource("toStringTestData")]
-        public void ToString_ReturnsISO8601Value(long ticks, string text)
+        public void TestToString_MinValue()
         {
-            var sut = new Duration(ticks);
-            Assert.That(sut.ToString(), Is.EqualTo(text));
+            TestToStringBase(Duration.MinValue, "-PT2562047788015H12M55.807S", "-PT2562047788015H12M55.807S", "-PT2562047788015H12M");
         }
-        #endregion
+
+        [Test]
+        public void TestToString_MaxValue()
+        {
+            TestToStringBase(Duration.MaxValue, "+PT2562047788015H12M55.807S", "+PT2562047788015H12M55.807S", "+PT2562047788015H12M");
+        }
+
+        [Test]
+        public void TestToString_Zero()
+        {
+            TestToStringBase(Duration.Zero, "+PT0H", "+PT0H00M00.000S", "+PT0H00M");
+        }
+
+        private static void TestToStringBase(Duration value, string gvalue, string lvalue, string svalue)
+        {
+            var actual = value.ToString();
+            Assert.AreEqual(gvalue, actual);
+            actual = value.ToString("G");
+            Assert.AreEqual(gvalue, actual);
+            actual = value.ToString("L");
+            Assert.AreEqual(lvalue, actual);
+            actual = value.ToString("S");
+            Assert.AreEqual(svalue, actual);
+            actual = value.ToString("S", CultureInfo.InvariantCulture);
+            Assert.AreEqual(svalue, actual);
+            actual = value.ToString(CultureInfo.InvariantCulture);
+            Assert.AreEqual(gvalue, actual);
+
+            actual = string.Format("{0}", value);
+            Assert.AreEqual(gvalue, actual);
+            actual = string.Format("{0:G}", value);
+            Assert.AreEqual(gvalue, actual);
+            actual = string.Format("{0:L}", value);
+            Assert.AreEqual(lvalue, actual);
+            actual = string.Format("{0:S}", value);
+            Assert.AreEqual(svalue, actual);
+        }
 
         private object[] parseBadTestData = {
             new TestCaseData("PT0").SetName("PT0"), new TestCaseData("12.345S").SetName("12.345S"),

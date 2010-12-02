@@ -66,6 +66,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.5\System.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -74,9 +77,21 @@
     <Compile Include="Clock.cs" />
     <Compile Include="Clocks\ClockBase.cs" />
     <Compile Include="Clocks\FixedClock.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Format\DurationFormatter.cs" />
+    <Compile Include="Format\FormatPattern.cs" />
+    <Compile Include="Format\FormatterBase.cs" />
+    <Compile Include="Format\InstantFormatter.cs" />
+    <Compile Include="Format\NodaDateTimeFormatInfo.cs" />
+    <Compile Include="Format\NodaFormatProvider.cs" />
     <Compile Include="Format\IFormatter.cs" />
     <Compile Include="Format\IParser.cs" />
+    <Compile Include="Format\OffsetFormatter.cs" />
     <Compile Include="Format\ParseException.cs" />
+    <Compile Include="Format\ParserBase.cs" />
+    <Compile Include="Format\ParseResult.cs" />
+    <Compile Include="Format\ZonedDateTimeFormatter.cs" />
+    <Compile Include="Format\ZonedDateTimeParser.cs" />
     <Compile Include="IsoDayOfWeek.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
