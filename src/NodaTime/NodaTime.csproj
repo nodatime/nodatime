@@ -77,13 +77,10 @@
     <Compile Include="Clock.cs" />
     <Compile Include="Clocks\ClockBase.cs" />
     <Compile Include="Clocks\FixedClock.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="Format\DurationFormatter.cs" />
     <Compile Include="Format\FormatPattern.cs" />
     <Compile Include="Format\FormatterBase.cs" />
     <Compile Include="Format\InstantFormatter.cs" />
-    <Compile Include="Format\NodaDateTimeFormatInfo.cs" />
-    <Compile Include="Format\NodaFormatProvider.cs" />
     <Compile Include="Format\IFormatter.cs" />
     <Compile Include="Format\IParser.cs" />
     <Compile Include="Format\OffsetFormatter.cs" />
