@@ -123,7 +123,7 @@ namespace NodaTime.Test
             actual = value.ToString("N");
             Assert.AreEqual(value.Ticks.ToString("N0"), actual);
             actual = value.ToString("N", CultureInfo.InvariantCulture);
-            Assert.AreEqual(value.Ticks.ToString("N0"), actual);
+            Assert.AreEqual(value.Ticks.ToString("N0", CultureInfo.InvariantCulture), actual);
             actual = value.ToString(CultureInfo.InvariantCulture);
             Assert.AreEqual(gvalue, actual);
             actual = value.ToString("D");
