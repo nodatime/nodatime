@@ -21,8 +21,8 @@
 
 Joda Time is the industry standard date and time handling library for Java. Noda Time is an idiomatic port to the .NET platform.</ProjectSummary>
     <DocumentationSources>
-      <DocumentationSource sourceFile="src\NodaTime\NodaTime.csproj" xmlns="" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="src\NodaTime\bin\Release\NodaTime.dll" />
+<DocumentationSource sourceFile="src\NodaTime\bin\Release\NodaTime.xml" /></DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
     <CopyrightText>Copyright 2001-2009 Stephen Colebourne, 2009-2010 Jon Skeet, All rights reserved.</CopyrightText>
