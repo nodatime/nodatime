@@ -1,5 +1,4 @@
 #region Copyright and license information
-
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using NUnit.Framework;
@@ -33,15 +31,9 @@ namespace NodaTime.Test
         [Test]
         public void ConstructFrom_Int64()
         {
-            const int length = 4 * NodaConstants.MillisecondsPerDay +
-                               5 * NodaConstants.MillisecondsPerHour +
-                               6 * NodaConstants.MillisecondsPerMinute +
-                               7 * NodaConstants.MillisecondsPerSecond +
-                               8;
-            const int expected = 5 * NodaConstants.MillisecondsPerHour +
-                                 6 * NodaConstants.MillisecondsPerMinute +
-                                 7 * NodaConstants.MillisecondsPerSecond +
-                                 8;
+            int length = 4 * NodaConstants.MillisecondsPerDay + 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute +
+                         7 * NodaConstants.MillisecondsPerSecond + 8;
+            int expected = 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute + 7 * NodaConstants.MillisecondsPerSecond + 8;
             var test = new Offset(length);
             Assert.AreEqual(expected, test.Milliseconds);
         }

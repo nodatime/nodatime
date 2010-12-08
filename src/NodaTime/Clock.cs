@@ -20,36 +20,22 @@ using NodaTime.Clocks;
 namespace NodaTime
 {
     /// <summary>
-    /// Represents a clock which can tell the current time as an <see cref="Instant"/>.
+    ///   Represents a clock which can tell the current time as an <see cref = "Instant" />.
     /// </summary>
     public static class Clock
     {
-        private static IClock current = SystemClock.Instance;
+        private static ClockBase current = SystemClock.Instance;
 
         /// <summary>
-        /// Gets or sets the object that reports the current time. Replaceable for easier testing.
+        ///   Gets or sets the object that reports the current time. Replaceable for easier testing.
         /// </summary>
         /// <value>The clock object.</value>
-        public static IClock Current
-        {
-            get { return current; }
-            set
-            {
-                if (value == null)
-                {
-                    current = SystemClock.Instance;
-                }
-                else
-                {
-                    Current = value;
-                }
-            }
-        }
+        internal static ClockBase Current { get { return current; } set { current = value ?? SystemClock.Instance; } }
 
         /// <summary>
-        /// Gets the current time as an <see cref="Instant"/>.
+        ///   Gets the current time as an <see cref = "Instant" />.
         /// </summary>
-        /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
+        /// <value>The current time in ticks as an <see cref = "Instant" />.</value>
         public static Instant Now { get { return Current.Now; } }
     }
 }

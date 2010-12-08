@@ -17,7 +17,6 @@
 
 using System;
 using System.Globalization;
-using NodaTime.TimeZones;
 
 namespace NodaTime
 {
@@ -27,7 +26,7 @@ namespace NodaTime
     /// of the same date in UTC. This needs a better description, and possibly a better name
     /// at some point...
     /// </summary>
-    public struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>
+    internal struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>
     {
         public static readonly LocalInstant LocalUnixEpoch = new LocalInstant(0);
         public static readonly LocalInstant MinValue = new LocalInstant(Int64.MinValue);
@@ -58,8 +57,8 @@ namespace NodaTime
             get
             {
                 var rightNow = Clock.Now;
-                var offsetToLocal = DateTimeZones.Current.GetOffsetFromUtc(rightNow);
-                return rightNow + offsetToLocal;
+                var offsetToLocal = DateTimeZone.Current.GetOffsetFromUtc(rightNow);
+                return rightNow.Plus(offsetToLocal);
             }
         }
 
@@ -92,15 +91,18 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Implements the operator - (subtraction) for <see cref="LocalInstant"/> - <see
-        /// cref="Offset"/>.
+        /// Subtracts the given time zone offset from this local instant, to give an <see cref="Instant" />.
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <remarks>
+        /// This would normally be implemented as an operator, but as the corresponding "plus" operation
+        /// on Instant cannot be written (as Instant is a public class and LocalInstant is an internal class)
+        /// it makes sense to keep them both as methods for consistency.
+        /// </remarks>
+        /// <param name="offset">The offset between UTC and a time zone for this local instant</param>
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
-        public static Instant operator -(LocalInstant left, Offset right)
+        public Instant Minus(Offset offset)
         {
-            return new Instant(left.Ticks - right.Ticks);
+            return new Instant(Ticks - offset.Ticks);
         }
 
         /// <summary>
@@ -118,17 +120,6 @@ namespace NodaTime
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Duration"/> representing the difference of the given values.</returns>
         public static Duration Subtract(LocalInstant left, LocalInstant right)
-        {
-            return left - right;
-        }
-
-        /// <summary>
-        /// Subtracts an offset from a local instant. Friendly alternative to <c>operator-()</c>.
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
-        public static Instant Subtract(LocalInstant left, Offset right)
         {
             return left - right;
         }

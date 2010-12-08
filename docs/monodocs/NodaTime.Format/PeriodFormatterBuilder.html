@@ -1,0 +1,2229 @@
+<html>
+  <head>
+    <title>NodaTime.Format.PeriodFormatterBuilder</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime.Format Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.Format.PeriodFormatterBuilder">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Format.PeriodFormatterBuilder:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Format.PeriodFormatterBuilder:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.Format.PeriodFormatterBuilder:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.Format.PeriodFormatterBuilder">PeriodFormatterBuilder  Class</h1>
+    <p class="Summary" id="T:NodaTime.Format.PeriodFormatterBuilder:Summary">
+            Factory that creates complex instances of PeriodFormatter via method calls.
+            </p>
+    <div id="T:NodaTime.Format.PeriodFormatterBuilder:Signature">
+      <div class="Signature">public class  <b>PeriodFormatterBuilder</b></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.Format.PeriodFormatterBuilder:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Format.PeriodFormatterBuilder:Docs:Remarks')">
+          <span id="T:NodaTime.Format.PeriodFormatterBuilder:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Format.PeriodFormatterBuilder:Docs:Remarks">
+        <p>
+            Period formatting is performed by the <a href="../NodaTime.Format/PeriodFormatter.html">NodaTime.Format.PeriodFormatter</a> class.
+            Three classes provide factory methods to create formatters, and this is one.
+            The others are <a href="../NodaTime.Format/PeriodFormats.html">NodaTime.Format.PeriodFormats</a> and <a href="../NodaTime.Format/IsoPeriodFormats.html">NodaTime.Format.IsoPeriodFormats</a>.
+            </p>
+        <p>
+            PeriodFormatterBuilder is used for constructing formatters which are then
+            used to print or parse. The formatters are built by appending specific fields
+            or other formatters to an instance of this builder.
+            </p>
+        <p>
+            For example, a formatter that prints years and months, like "15 years and 8 months",
+            can be constructed as follows:
+            <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">
+            * PeriodFormatter yearsAndMonths = new PeriodFormatterBuilder()
+                .PrintZeroAlways()
+                .AppendYears()
+                .AppendSuffix(" year", " years")
+                .AppendSeparator(" and ")
+                .PrintZeroRarely()
+                .AppendMonths()
+                .AppendSuffix(" month", " months")
+                .ToFormatter();
+            </pre></td></tr></table></p>
+        <p>
+            PeriodFormatterBuilder itself is mutable and not thread-safe, but the
+            formatters that it builds are thread-safe and immutable.
+            </p>
+      </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.Format.PeriodFormatterBuilder:Docs:Version Information')">
+          <span id="T:NodaTime.Format.PeriodFormatterBuilder:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.Format.PeriodFormatterBuilder:Docs:Version Information">
+        <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <p>
+								See Also: Inherited members from
+								<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Object">object</a>.
+							</p>
+        <h3>
+          <a href="javascript:toggle_display('Public Constructors')">
+            <span id="Public Constructors:toggle">⊟</span> Public Constructors</a>
+        </h3>
+        <blockquote id="Public Constructors">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <b>
+                      <a href="#C:NodaTime.Format.PeriodFormatterBuilder">PeriodFormatterBuilder</a>
+                    </b>()</div>
+                </td>
+                <td>
+            Initializes a new instance of the <a href="../NodaTime.Format/PeriodFormatterBuilder.html">NodaTime.Format.PeriodFormatterBuilder</a> class 
+            with default values.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Methods')">
+            <span id="Public Methods:toggle">⊟</span> Public Methods</a>
+        </h3>
+        <blockquote id="Public Methods">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter)">Append</a>
+                  </b>(<a href="../NodaTime.Format/PeriodFormatter.html">PeriodFormatter</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Appends another formatter.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendDays">AppendDays</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit an integer days field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendHours">AppendHours</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit an integer hours field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String)">AppendLiteral</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instructs the printer to emit specific text, and the parser to expect it.
+            The parser is case-insensitive.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds">AppendMilliseconds</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit an integer millis field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit">AppendMilliseconds3Digit</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit an integer millis field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes">AppendMinutes</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit an integer minutes field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths">AppendMonths</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit an integer months field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String)">AppendPrefix</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Appends a field prefix which applies only to the next appended field. If
+            the field is not printed, neither is the prefix.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String)">AppendPrefix</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Appends a field prefix which applies only to the next appended field. If
+            the field is not printed, neither is the prefix.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds">AppendSeconds</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit an integer seconds field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds">AppendSecondsWithMilliseconds</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit a combined seconds and millis field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds">AppendSecondsWithOptionalMilliseconds</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit a combined seconds and millis field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String)">AppendSeparator</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Append a separator, which is output if fields are printed both before
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String)">AppendSeparator</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Append a separator, which is output if fields are printed both before
+            and after the separator.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[])">AppendSeparator</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>[])<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Append a separator, which is output if fields are printed both before
+            and after the separator.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String)">AppendSeparatorIfFieldsAfter</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Append a separator, which is output only if fields are printed after the separator.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String)">AppendSeparatorIfFieldsBefore</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Append a separator, which is output only if fields are printed before the separator.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String)">AppendSuffix</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Append a field suffix which applies only to the last appended field. If
+            the field is not printed, neither is the suffix.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String)">AppendSuffix</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Append a field suffix which applies only to the last appended field. If
+            the field is not printed, neither is the suffix.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks">AppendWeeks</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit an integer weeks field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.AppendYears">AppendYears</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Instruct the printer to emit an integer years field, if supported.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.Clear">Clear</a>
+                  </b>()<blockquote>
+            Clears out all the appended elements, allowing this builder to be reused.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">MaximumParsedDigits</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Set the maximum digits parsed for the next and following appended
+            fields. By default, the maximum digits parsed is ten.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">MinimumPrintedDigits</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Set the minimum digits printed for the next and following appended
+            fields. By default, the minimum digits printed is one. 
+            Any values that are not greater than 1 are neutral and do not change default output.
+            If the field value is zero, it is not printed unless a PrintZero rule is applied.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways">PrintZeroAlways</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Always print zero values for the next and following appended fields,
+            even if the period doesn't support it. The parser requires values for
+            fields that always print zero.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported">PrintZeroIfSupported</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Print zero values for the next and following appened fields only if the
+            period supports it.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever">PrintZeroNever</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Never print zero values for the next and following appended fields,
+            unless no fields would be printed. If no fields are printed, the printer
+            forces the last "printZeroRarely" field to print a zero.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst">PrintZeroRarelyFirst</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Never print zero values for the next and following appended fields,
+            unless no fields would be printed. If no fields are printed, the printer
+            forces the first "printZeroRarely" field to print a zero.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast">PrintZeroRarelyLast</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Never print zero values for the next and following appended fields,
+            unless no fields would be printed. If no fields are printed, the printer
+            forces the last "printZeroRarely" field to print a zero.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean)">RejectSignedValues</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a>)<nobr> : <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a></nobr><blockquote>
+            Reject signed values when parsing the next and following appended fields.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter">ToFormatter</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/PeriodFormatter.html">PeriodFormatter</a></nobr><blockquote>
+            Constructs a PeriodFormatter using all the appended elements.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter">ToPrinter</a>
+                  </b>()<nobr> : <a href="../NodaTime.Format/IPeriodPrinter.html">IPeriodPrinter</a></nobr><blockquote>
+            Internal method to create a IPeriodPrinter instance using all the
+            appended elements.
+            </blockquote></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.Format.PeriodFormatterBuilder:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="C:NodaTime.Format.PeriodFormatterBuilder">
+          <a href="javascript:toggle_display('C:NodaTime.Format.PeriodFormatterBuilder:member')">
+            <span id="C:NodaTime.Format.PeriodFormatterBuilder:member:toggle">⊟</span> PeriodFormatterBuilder Constructor</a>
+        </h3>
+        <blockquote id="C:NodaTime.Format.PeriodFormatterBuilder:member">
+          <p class="Summary">
+            Initializes a new instance of the <a href="../NodaTime.Format/PeriodFormatterBuilder.html">NodaTime.Format.PeriodFormatterBuilder</a> class 
+            with default values.
+            </p>
+          <div class="Signature">public  <b>PeriodFormatterBuilder</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Format.PeriodFormatterBuilder:Remarks')">
+              <span id="C:NodaTime.Format.PeriodFormatterBuilder:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Format.PeriodFormatterBuilder:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('C:NodaTime.Format.PeriodFormatterBuilder:Version Information')">
+              <span id="C:NodaTime.Format.PeriodFormatterBuilder:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="C:NodaTime.Format.PeriodFormatterBuilder:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):member:toggle">⊟</span> Append Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):member">
+          <p class="Summary">
+            Appends another formatter.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>Append</b> (<a href="../NodaTime.Format/PeriodFormatter.html">PeriodFormatter</a> formatter)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Parameters">
+            <dl>
+              <dt>
+                <i>formatter</i>
+              </dt>
+              <dd>Another formatter to append</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>If formatter is null</td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.InvalidOperationException">InvalidOperationException</a>
+                </td>
+                <td>If this formatter follows a prefix</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.Append(NodaTime.Format.PeriodFormatter):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendDays">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:member:toggle">⊟</span> AppendDays Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:member">
+          <p class="Summary">
+            Instruct the printer to emit an integer days field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendDays</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:Remarks">
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">PeriodFormatterBuilder.MinimumPrintedDigits(int)</a>
+            and <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendDays:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendHours">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:member:toggle">⊟</span> AppendHours Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:member">
+          <p class="Summary">
+            Instruct the printer to emit an integer hours field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendHours</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:Remarks">
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">PeriodFormatterBuilder.MinimumPrintedDigits(int)</a>
+            and <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendHours:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):member:toggle">⊟</span> AppendLiteral Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):member">
+          <p class="Summary">
+            Instructs the printer to emit specific text, and the parser to expect it.
+            The parser is case-insensitive.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendLiteral</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> text)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Parameters">
+            <dl>
+              <dt>
+                <i>text</i>
+              </dt>
+              <dd>The text of the literal to append</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>If text argument is null or empty string</td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.InvalidOperationException">InvalidOperationException</a>
+                </td>
+                <td>If this literal follows a prefix</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendLiteral(System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:member:toggle">⊟</span> AppendMilliseconds Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:member">
+          <p class="Summary">
+            Instruct the printer to emit an integer millis field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendMilliseconds</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:Remarks">
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">PeriodFormatterBuilder.MinimumPrintedDigits(int)</a>
+            and <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:member:toggle">⊟</span> AppendMilliseconds3Digit Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:member">
+          <p class="Summary">
+            Instruct the printer to emit an integer millis field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendMilliseconds3Digit</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:Remarks">
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMilliseconds3Digit:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:member:toggle">⊟</span> AppendMinutes Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:member">
+          <p class="Summary">
+            Instruct the printer to emit an integer minutes field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendMinutes</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:Remarks">
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">PeriodFormatterBuilder.MinimumPrintedDigits(int)</a>
+            and <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMinutes:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:member:toggle">⊟</span> AppendMonths Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:member">
+          <p class="Summary">
+            Instruct the printer to emit an integer months field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendMonths</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:Remarks">
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">PeriodFormatterBuilder.MinimumPrintedDigits(int)</a>
+            and <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendMonths:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):member:toggle">⊟</span> AppendPrefix Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):member">
+          <p class="Summary">
+            Appends a field prefix which applies only to the next appended field. If
+            the field is not printed, neither is the prefix.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendPrefix</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> text)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Parameters">
+            <dl>
+              <dt>
+                <i>text</i>
+              </dt>
+              <dd>Text to print before field only if field is printed</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentNullException">ArgumentNullException</a>
+                </td>
+                <td>If text is null or empty string</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):member:toggle">⊟</span> AppendPrefix Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):member">
+          <p class="Summary">
+            Appends a field prefix which applies only to the next appended field. If
+            the field is not printed, neither is the prefix.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendPrefix</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> singularText, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> pluralText)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Parameters">
+            <dl>
+              <dt>
+                <i>singularText</i>
+              </dt>
+              <dd>Text to print before field only if field is printed, for singular values</dd>
+              <dt>
+                <i>pluralText</i>
+              </dt>
+              <dd>Text to print before field only if field is printed, for plural values</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendPrefix(System.String,System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:member:toggle">⊟</span> AppendSeconds Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:member">
+          <p class="Summary">
+            Instruct the printer to emit an integer seconds field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendSeconds</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:Remarks">
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">PeriodFormatterBuilder.MinimumPrintedDigits(int)</a>
+            and <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:member:toggle">⊟</span> AppendSecondsWithMilliseconds Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:member">
+          <p class="Summary">
+            Instruct the printer to emit a combined seconds and millis field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendSecondsWithMilliseconds</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:Remarks">
+            The millis will overflow into the seconds if necessary.
+            The millis are always output.
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">PeriodFormatterBuilder.MinimumPrintedDigits(int)</a>
+            and <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:member:toggle">⊟</span> AppendSecondsWithOptionalMilliseconds Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:member">
+          <p class="Summary">
+            Instruct the printer to emit a combined seconds and millis field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendSecondsWithOptionalMilliseconds</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:Remarks">
+            The millis will overflow into the seconds if necessary.
+            The millis are only output if non-zero.
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">PeriodFormatterBuilder.MinimumPrintedDigits(int)</a>
+            and <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSecondsWithOptionalMilliseconds:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):member:toggle">⊟</span> AppendSeparator Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):member">
+          <p class="Summary">
+            Append a separator, which is output if fields are printed both before
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendSeparator</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> text)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Parameters">
+            <dl>
+              <dt>
+                <i>text</i>
+              </dt>
+              <dd>The text to use as a separator</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.InvalidOperationException">InvalidOperationException</a>
+                </td>
+                <td>If this separator follows a previous one</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Remarks">
+            <p>
+            For example,
+            <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">
+            builder.appendDays().appendSeparator(",").appendHours()
+            </pre></td></tr></table>
+            will only output the comma if both the days and hours fields are output.
+            </p>
+            <p>
+            The text will be parsed case-insensitively.
+            </p>
+            <p>
+            Note: appending a separator discontinues any further work on the latest
+            appended field.
+            </p>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):member:toggle">⊟</span> AppendSeparator Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):member">
+          <p class="Summary">
+            Append a separator, which is output if fields are printed both before
+            and after the separator.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendSeparator</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> text, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> finalText)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Parameters">
+            <dl>
+              <dt>
+                <i>text</i>
+              </dt>
+              <dd>The text to use as a separator</dd>
+              <dt>
+                <i>finalText</i>
+              </dt>
+              <dd>The text used if this is the final separator to be printed</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.InvalidOperationException">InvalidOperationException</a>
+                </td>
+                <td>If this separator follows a previous one</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Remarks">
+            This method changes the separator depending on whether it is the last separator
+            to be output.
+            <p>
+            For example,
+            <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">
+            builder.AppendDays().AppendSeparator(",", "&amp;").AppendHours().AppendSeparator(",", "&amp;").AppendMinutes()
+            </pre></td></tr></table>
+            will output '1,2&amp;3' if all three fields are output, '1&amp;2' if two fields are output
+            and '1' if just one field is output.
+            </p><p>
+            The text will be parsed case-insensitively.
+            </p><p>
+            Note: appending a separator discontinues any further work on the latest
+            appended field.
+            </p></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[])">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):member:toggle">⊟</span> AppendSeparator Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):member">
+          <p class="Summary">
+            Append a separator, which is output if fields are printed both before
+            and after the separator.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendSeparator</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> text, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> finalText, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a>[] variants)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Parameters">
+            <dl>
+              <dt>
+                <i>text</i>
+              </dt>
+              <dd>The text to use as a separator</dd>
+              <dt>
+                <i>finalText</i>
+              </dt>
+              <dd>The text used if this is the final separator to be printed</dd>
+              <dt>
+                <i>variants</i>
+              </dt>
+              <dd>Set of text values which are also acceptable when parsed</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.InvalidOperationException">InvalidOperationException</a>
+                </td>
+                <td>If this separator follows a previous one</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Remarks">
+            This method changes the separator depending on whether it is the last separator
+            to be output.
+            <p>
+            For example,
+            <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">
+            builder.AppendDays().AppendSeparator(",", "&amp;").AppendHours().AppendSeparator(",", "&amp;").AppendMinutes()
+            </pre></td></tr></table>
+            will output '1,2&amp;3' if all three fields are output, '1&amp;2' if two fields are output
+            and '1' if just one field is output.
+            </p><p>
+            The text will be parsed case-insensitively.
+            </p><p>
+            Note: appending a separator discontinues any further work on the latest
+            appended field.
+            </p></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparator(System.String,System.String,System.String[]):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):member:toggle">⊟</span> AppendSeparatorIfFieldsAfter Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):member">
+          <p class="Summary">
+            Append a separator, which is output only if fields are printed after the separator.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendSeparatorIfFieldsAfter</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> text)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Parameters">
+            <dl>
+              <dt>
+                <i>text</i>
+              </dt>
+              <dd>The text to use as a separator</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.InvalidOperationException">InvalidOperationException</a>
+                </td>
+                <td>If this separator follows a previous one</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Remarks">
+            <p>
+            For example,
+            <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">
+            builder.appendDays().appendSeparatorIfFieldsAfter(",").appendHours()
+            </pre></td></tr></table>
+            will only output the comma if the hours fields is output.
+            </p>
+            <p>
+            The text will be parsed case-insensitively.
+            </p>
+            <p>
+            Note: appending a separator discontinues any further work on the latest
+            appended field.
+            </p>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsAfter(System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):member:toggle">⊟</span> AppendSeparatorIfFieldsBefore Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):member">
+          <p class="Summary">
+            Append a separator, which is output only if fields are printed before the separator.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendSeparatorIfFieldsBefore</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> text)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Parameters">
+            <dl>
+              <dt>
+                <i>text</i>
+              </dt>
+              <dd>The text to use as a separator</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.InvalidOperationException">InvalidOperationException</a>
+                </td>
+                <td>If this separator follows a previous one</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Remarks">
+            <p>
+            For example,
+            <table class="CodeExampleTable"><tr><td><b><font size="-1"> Example</font></b></td></tr><tr><td><pre class="">
+            builder.AppendDays().AppendSeparatorIfFieldsBefore(",").appendHours()
+            </pre></td></tr></table>
+            will only output the comma if the days fields is output.
+            </p>
+            <p>
+            The text will be parsed case-insensitively.
+            </p>
+            <p>
+            Note: appending a separator discontinues any further work on the latest
+            appended field.
+            </p>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSeparatorIfFieldsBefore(System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):member:toggle">⊟</span> AppendSuffix Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):member">
+          <p class="Summary">
+            Append a field suffix which applies only to the last appended field. If
+            the field is not printed, neither is the suffix.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendSuffix</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> text)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Parameters">
+            <dl>
+              <dt>
+                <i>text</i>
+              </dt>
+              <dd>Text to print after field only if field is printed</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.InvalidOperationException">InvalidOperationException</a>
+                </td>
+                <td>If no field exists to append to</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):member:toggle">⊟</span> AppendSuffix Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):member">
+          <p class="Summary">
+            Append a field suffix which applies only to the last appended field. If
+            the field is not printed, neither is the suffix.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendSuffix</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> singularText, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.String">string</a> pluralText)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Parameters">
+            <dl>
+              <dt>
+                <i>singularText</i>
+              </dt>
+              <dd>Text to print if field value is one</dd>
+              <dt>
+                <i>pluralText</i>
+              </dt>
+              <dd>Text to print if field value is not one</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.InvalidOperationException">InvalidOperationException</a>
+                </td>
+                <td>If no field exists to append to</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Remarks">
+            During parsing, the singular and plural versions are accepted whether or
+            not the actual value matches plurality.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendSuffix(System.String,System.String):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:member:toggle">⊟</span> AppendWeeks Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:member">
+          <p class="Summary">
+            Instruct the printer to emit an integer weeks field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendWeeks</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:Remarks">
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">PeriodFormatterBuilder.MinimumPrintedDigits(int)</a>
+            and <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendWeeks:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.AppendYears">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:member:toggle">⊟</span> AppendYears Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:member">
+          <p class="Summary">
+            Instruct the printer to emit an integer years field, if supported.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>AppendYears</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:Remarks">
+            The number of printed and parsed digits can be controlled using
+            <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">PeriodFormatterBuilder.MinimumPrintedDigits(int)</a>
+            and <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">PeriodFormatterBuilder.MaximumParsedDigits(int)</a></blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.AppendYears:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.Clear">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.Clear:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.Clear:member:toggle">⊟</span> Clear Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.Clear:member">
+          <p class="Summary">
+            Clears out all the appended elements, allowing this builder to be reused.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Void">void</a> <b>Clear</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.Clear:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.Clear:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.Clear:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.Clear:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.Clear:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.Clear:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):member:toggle">⊟</span> MaximumParsedDigits Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):member">
+          <p class="Summary">
+            Set the maximum digits parsed for the next and following appended
+            fields. By default, the maximum digits parsed is ten.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>MaximumParsedDigits</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> maxDigits)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>maxDigits</i>
+              </dt>
+              <dd>The maximum digits value</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.MaximumParsedDigits(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):member:toggle">⊟</span> MinimumPrintedDigits Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):member">
+          <p class="Summary">
+            Set the minimum digits printed for the next and following appended
+            fields. By default, the minimum digits printed is one. 
+            Any values that are not greater than 1 are neutral and do not change default output.
+            If the field value is zero, it is not printed unless a PrintZero rule is applied.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>MinimumPrintedDigits</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> minDigits)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>minDigits</i>
+              </dt>
+              <dd>The minimum digits value</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Remarks">
+            This setting affects only significiant digits, that is negative sign doesn't take part in counting.
+            For composed fields, such as SecondsWithMilliseconds and SecondsWithOptionalMilliseconds,
+            this setting have an influence on just seconds value, milliseconds are always printed with additional 3 digits.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.MinimumPrintedDigits(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:member:toggle">⊟</span> PrintZeroAlways Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:member">
+          <p class="Summary">
+            Always print zero values for the next and following appended fields,
+            even if the period doesn't support it. The parser requires values for
+            fields that always print zero.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>PrintZeroAlways</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroAlways:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:member:toggle">⊟</span> PrintZeroIfSupported Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:member">
+          <p class="Summary">
+            Print zero values for the next and following appened fields only if the
+            period supports it.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>PrintZeroIfSupported</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroIfSupported:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:member:toggle">⊟</span> PrintZeroNever Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:member">
+          <p class="Summary">
+            Never print zero values for the next and following appended fields,
+            unless no fields would be printed. If no fields are printed, the printer
+            forces the last "printZeroRarely" field to print a zero.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>PrintZeroNever</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroNever:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:member:toggle">⊟</span> PrintZeroRarelyFirst Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:member">
+          <p class="Summary">
+            Never print zero values for the next and following appended fields,
+            unless no fields would be printed. If no fields are printed, the printer
+            forces the first "printZeroRarely" field to print a zero.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>PrintZeroRarelyFirst</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyFirst:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:member:toggle">⊟</span> PrintZeroRarelyLast Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:member">
+          <p class="Summary">
+            Never print zero values for the next and following appended fields,
+            unless no fields would be printed. If no fields are printed, the printer
+            forces the last "printZeroRarely" field to print a zero.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>PrintZeroRarelyLast</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.PrintZeroRarelyLast:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean)">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):member:toggle">⊟</span> RejectSignedValues Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):member">
+          <p class="Summary">
+            Reject signed values when parsing the next and following appended fields.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatterBuilder.html">PeriodFormatterBuilder</a> <b>RejectSignedValues</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> reject)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Parameters')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Parameters">
+            <dl>
+              <dt>
+                <i>reject</i>
+              </dt>
+              <dd>Set true to reject, false otherwise</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Returns">This PeriodFormatterBuilder</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.RejectSignedValues(System.Boolean):Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:member:toggle">⊟</span> ToFormatter Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:member">
+          <p class="Summary">
+            Constructs a PeriodFormatter using all the appended elements.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/PeriodFormatter.html">PeriodFormatter</a> <b>ToFormatter</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Returns">The newly created formatter</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Exceptions')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.InvalidOperationException">InvalidOperationException</a>
+                </td>
+                <td>If the builder can produce neither a printer nor a parser</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Remarks">
+            <p>
+            This is the main method used by applications at the end of the build
+            process to create a usable formatter.
+            </p>
+            <p>
+            Subsequent changes to this builder do not affect the returned formatter.
+            </p>
+            <p>
+            The returned formatter may not support both printing and parsing.
+            The methods <a href="../NodaTime.Format/PeriodFormatter.html#P:NodaTime.Format.PeriodFormatter.IsPrinter">PeriodFormatter.IsPrinter</a> and
+            <a href="../NodaTime.Format/PeriodFormatter.html#P:NodaTime.Format.PeriodFormatter.IsParser">PeriodFormatter.IsParser</a> will help you determine the state
+            of the formatter.
+            </p>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter">
+          <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:member')">
+            <span id="M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:member:toggle">⊟</span> ToPrinter Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:member">
+          <p class="Summary">
+            Internal method to create a IPeriodPrinter instance using all the
+            appended elements.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Format/IPeriodPrinter.html">IPeriodPrinter</a> <b>ToPrinter</b> ()</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:Returns')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:Returns">The newly created printer, null if builder cannot create a printer</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:Remarks')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:Remarks">
+            <p>
+            Most applications will not use this method.
+            If you want a printer in an application, call <a href="../NodaTime.Format/PeriodFormatterBuilder.html#M:NodaTime.Format.PeriodFormatterBuilder.ToFormatter">PeriodFormatterBuilder.ToFormatter</a>
+            and just use the printing API.
+            </p>
+            <p>
+            Subsequent changes to this builder do not affect the returned printer.
+            </p>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:Version Information')">
+              <span id="M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.Format.PeriodFormatterBuilder.ToPrinter:Version Information">
+            <b>Namespace: </b>NodaTime.Format<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>

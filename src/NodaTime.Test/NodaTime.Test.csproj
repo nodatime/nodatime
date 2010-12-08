@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="ChronologyTest.cs" />
+    <Compile Include="DateTimeZoneTest.cs" />
     <Compile Include="Format\DateTimeFormats.cs" />
     <Compile Include="Format\DateTimeFormatterBuilderTest.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.Test.Decimal.cs">
@@ -104,13 +105,16 @@
     </Compile>
     <Compile Include="Format\IsoDateTimeFormatsTest.Parse.cs" />
     <Compile Include="Format\IsoDateTimeFormatsTest.cs" />
-    <Compile Include="Format\PeriodFormatterBuilderTest.Affix.cs">
-      <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Format\PeriodFormatterBuilderTest.Literal.cs">
-      <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Partials\PartialTest.cs" />
+    <Compile Include="Fields\DurationFieldValueTest.cs" />
+    <Compile Include="LocalDateTest.cs" />
+    <Compile Include="LocalTimeTest.cs" />
+    <Compile Include="PeriodTest.cs" />
+    <Compile Include="PeriodTypeTest.cs" />
+    <Compile Include="PeriodTypeTest.Equality.cs" />
+    <Compile Include="PeriodTypeTest.IndexOf.cs" />
+    <Compile Include="PeriodTypeTest.IsSupported.cs" />
+    <Compile Include="PeriodTypeTest.Masking.cs" />
+    <Compile Include="PeriodTypeTest.Types.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\ReadWriteCompressTest.cs" />
@@ -125,9 +129,9 @@
     <Compile Include="DurationTest.Construction.cs">
       <DependentUpon>DurationTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Fields\DateTimeFieldBaseTest.cs" />
+    <Compile Include="Fields\DateTimeFieldTest.cs" />
     <Compile Include="Fields\DecoratedDateTimeFieldTest.cs" />
-    <Compile Include="Fields\DurationFieldBaseTest.cs" />
+    <Compile Include="Fields\DurationFieldTest.cs" />
     <Compile Include="Fields\FakeDurationField.cs" />
     <Compile Include="Fields\FieldSetTest.cs" />
     <Compile Include="Fields\MockCountingDurationField.cs" />
@@ -153,47 +157,6 @@
     <Compile Include="Calendars\IsoCalendarSystemTest.FieldValidation.cs">
       <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Format\IsoPeriodFormatsTest.cs" />
-    <Compile Include="Format\PeriodFormatterBuilderTest.Options.cs">
-      <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Format\PeriodFormatterBuilderTest.Separator.cs">
-      <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Format\PeriodFormatterBuilderTest.PrefixSuffix.cs">
-      <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Format\PeriodFormatterBuilderTest.Field.cs">
-      <DependentUpon>PeriodFormatterBuilderTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Format\PeriodFormatterBuilderTest.cs" />
-    <Compile Include="Format\PeriodFormatsTest.cs" />
-    <Compile Include="Format\PeriodFormatterTest.cs" />
-    <Compile Include="Format\PeriodFormatterTest.PrintingAndParsing.cs">
-      <DependentUpon>PeriodFormatterTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Format\PeriodFormatterTest.CreationMethods.cs">
-      <DependentUpon>PeriodFormatterTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Format\PeriodFormatterTest.Mocks.cs">
-      <DependentUpon>PeriodFormatterTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Format\PeriodFormatterTest.Construction.cs">
-      <DependentUpon>PeriodFormatterTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\MinutesTest.cs" />
-    <Compile Include="Periods\MinutesTes.Factories.cs">
-      <DependentUpon>MinutesTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\MinutesTest.Math.cs">
-      <DependentUpon>MinutesTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\MinutesTest.Parse.cs">
-      <DependentUpon>MinutesTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\MinutesTest.ToStandard.cs">
-      <DependentUpon>MinutesTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="OffsetTest.cs" />
     <Compile Include="OffsetTest.Operators.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
@@ -201,124 +164,6 @@
     <Compile Include="OffsetTest.Construction.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Periods\HoursTest.cs" />
-    <Compile Include="Periods\HoursTest.Factories.cs">
-      <DependentUpon>HoursTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\HoursTest.Math.cs">
-      <DependentUpon>HoursTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\HoursTest.Parse.cs">
-      <DependentUpon>HoursTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\HoursTest.ToStandard.cs">
-      <DependentUpon>HoursTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\MonthsTest.cs" />
-    <Compile Include="Periods\MonthsTest.Factories.cs">
-      <DependentUpon>MonthsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\MonthsTest.Math.cs">
-      <DependentUpon>MonthsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\MonthsTest.Parse.cs">
-      <DependentUpon>MonthsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.Constructors.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\SecondsTest.cs" />
-    <Compile Include="Periods\SecondsTest.Factories.cs">
-      <DependentUpon>SecondsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\SecondsTest.Math.cs">
-      <DependentUpon>SecondsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\SecondsTest.Parse.cs">
-      <DependentUpon>SecondsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\SecondsTest.ToStandard.cs">
-      <DependentUpon>SecondsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\WeeksTest.cs" />
-    <Compile Include="Periods\WeeksTest.Factories.cs">
-      <DependentUpon>WeeksTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\WeeksTest.Math.cs">
-      <DependentUpon>WeeksTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\WeeksTest.Parse.cs">
-      <DependentUpon>WeeksTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\WeeksTest.ToStandard.cs">
-      <DependentUpon>WeeksTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\YearsTest.Math.cs">
-      <DependentUpon>YearsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\YearsTest.Factories.cs">
-      <DependentUpon>YearsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.Equality.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.Operators.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.Normalization.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\YearsTest.Parse.cs">
-      <DependentUpon>YearsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.SubtractMethods.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.AddMethods.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.WithMethods.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTest.StaticCreationMethods.cs">
-      <DependentUpon>PeriodTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\DaysTest.cs" />
-    <Compile Include="Periods\DaysTest.Factories.cs">
-      <DependentUpon>DaysTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\DaysTest.Math.cs">
-      <DependentUpon>DaysTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\DaysTest.Parse.cs">
-      <DependentUpon>DaysTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\DaysTest.ToStandard.cs">
-      <DependentUpon>DaysTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MockZeroNullIntegerConverter.cs" />
-    <Compile Include="Periods\PeriodTest.cs" />
-    <Compile Include="Periods\PeriodTypeTest.cs" />
-    <Compile Include="Periods\PeriodTypeTest.Equality.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTypeTest.Masking.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTypeTest.Types.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTypeTest.IndexOf.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\PeriodTypeTest.IsSupported.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\SingleFieldPeriodBaseTest.cs" />
-    <Compile Include="Periods\SingleFieldPeriodBaseTest.Mocks.cs">
-      <DependentUpon>SingleFieldPeriodBaseTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Periods\YearsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstantTest.cs" />
     <Compile Include="InstantTest.Basics.cs">
@@ -377,6 +222,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

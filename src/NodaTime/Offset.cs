@@ -16,32 +16,32 @@
 #endregion
 
 using System;
-using System.Globalization;
+using NodaTime.Format;
 
 namespace NodaTime
 {
     /// <summary>
-    /// An offset from UTC in milliseconds. A positive value means that the local time is
-    /// ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
-    /// UTC (e.g. for America).
+    ///   An offset from UTC in milliseconds. A positive value means that the local time is
+    ///   ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
+    ///   UTC (e.g. for America).
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
-    /// is outside this range then the value is forced into the range by considering that time wraps
-    /// as it goes around the world multiple times.
-    /// </para>
-    /// <para>
-    /// Internally, offsets are stored as an <see cref="int"/> number of milliseconds instead of
-    /// as ticks. This is because as a description of the offset of a time zone from UTC, there is
-    /// no offset of less than one second. Using milliseconds gives more than enough resolution and
-    /// allows us to save 4 bytes per Offset.
-    /// </para>
-    /// <para>
-    /// This type is immutable and thread-safe.
-    /// </para>
+    ///   <para>
+    ///     Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
+    ///     is outside this range then the value is forced into the range by considering that time wraps
+    ///     as it goes around the world multiple times.
+    ///   </para>
+    ///   <para>
+    ///     Internally, offsets are stored as an <see cref = "int" /> number of milliseconds instead of
+    ///     as ticks. This is because as a description of the offset of a time zone from UTC, there is
+    ///     no offset of less than one second. Using milliseconds gives more than enough resolution and
+    ///     allows us to save 4 bytes per Offset.
+    ///   </para>
+    ///   <para>
+    ///     This type is immutable and thread-safe.
+    ///   </para>
     /// </remarks>
-    public struct Offset : IEquatable<Offset>, IComparable<Offset>
+    public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable
     {
         private const string MinimalFormat = "M";
         private const string ShortFormat = "S";
@@ -54,29 +54,29 @@ namespace NodaTime
         private readonly int milliseconds;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Offset"/> struct.
+        ///   Initializes a new instance of the <see cref = "Offset" /> struct.
         /// </summary>
         /// <remarks>
-        /// Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value
-        /// given is outside this range then the value is forced into the range by considering that
-        /// time wraps as it goes around the world multiple times
+        ///   Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value
+        ///   given is outside this range then the value is forced into the range by considering that
+        ///   time wraps as it goes around the world multiple times
         /// </remarks>
-        /// <param name="milliseconds">The number of milliseconds.</param>
+        /// <param name = "milliseconds">The number of milliseconds.</param>
         public Offset(int milliseconds)
         {
             this.milliseconds = milliseconds % NodaConstants.MillisecondsPerDay;
         }
 
         /// <summary>
-        /// Returns the offset for the given milliseconds value.
+        ///   Returns the offset for the given milliseconds value.
         /// </summary>
         /// <remarks>
-        /// As offsets are immutable, this method may return the same object for the
-        /// same input values i.e. there is no guarantee that this method will create a new
-        /// object on each call. The values may be cached.
+        ///   As offsets are immutable, this method may return the same object for the
+        ///   same input values i.e. there is no guarantee that this method will create a new
+        ///   object on each call. The values may be cached.
         /// </remarks>
-        /// <param name="milliseconds">The int milliseconds value.</param>
-        /// <returns>The <see cref="Offset"/> for the given milliseconds value</returns>
+        /// <param name = "milliseconds">The int milliseconds value.</param>
+        /// <returns>The <see cref = "Offset" /> for the given milliseconds value</returns>
         public static Offset FromTicks(int milliseconds)
         {
             if (milliseconds == Zero.Milliseconds)
@@ -91,86 +91,86 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the number of milliseconds in the offset.
+        ///   Gets the number of milliseconds in the offset.
         /// </summary>
         public int Milliseconds { get { return milliseconds; } }
 
         /// <summary>
-        /// Returns the number of ticks represented by this offset.
+        ///   Returns the number of ticks represented by this offset.
         /// </summary>
         /// <value>The number of ticks.</value>
         public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
 
         #region Operators
         /// <summary>
-        /// Implements the unary operator - (negation).
+        ///   Implements the unary operator - (negation).
         /// </summary>
-        /// <param name="offset">The offset to negate.</param>
-        /// <returns>A new <see cref="Offset"/> instance with a negated value.</returns>
+        /// <param name = "offset">The offset to negate.</param>
+        /// <returns>A new <see cref = "Offset" /> instance with a negated value.</returns>
         public static Offset operator -(Offset offset)
         {
             return new Offset(-offset.Milliseconds);
         }
 
         /// <summary>
-        /// Implements the unary operator + .
+        ///   Implements the unary operator + .
         /// </summary>
-        /// <param name="offset">The operand.</param>
-        /// <returns>The same <see cref="Offset"/> instance</returns>
+        /// <param name = "offset">The operand.</param>
+        /// <returns>The same <see cref = "Offset" /> instance</returns>
         public static Offset operator +(Offset offset)
         {
             return offset;
         }
 
         /// <summary>
-        /// Implements the operator + (addition).
+        ///   Implements the operator + (addition).
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Offset"/> representing the sum of the given values.</returns>
+        /// <param name = "left">The left hand side of the operator.</param>
+        /// <param name = "right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref = "Offset" /> representing the sum of the given values.</returns>
         public static Offset operator +(Offset left, Offset right)
         {
             return new Offset(left.Milliseconds + right.Milliseconds);
         }
 
         /// <summary>
-        /// Adds one Offset to another. Friendly alternative to <c>operator+()</c>.
+        ///   Adds one Offset to another. Friendly alternative to <c>operator+()</c>.
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Offset"/> representing the sum of the given values.</returns>
+        /// <param name = "left">The left hand side of the operator.</param>
+        /// <param name = "right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref = "Offset" /> representing the sum of the given values.</returns>
         public static Offset Add(Offset left, Offset right)
         {
             return left + right;
         }
 
         /// <summary>
-        /// Implements the operator - (subtraction).
+        ///   Implements the operator - (subtraction).
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Offset"/> representing the difference of the given values.</returns>
+        /// <param name = "left">The left hand side of the operator.</param>
+        /// <param name = "right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref = "Offset" /> representing the difference of the given values.</returns>
         public static Offset operator -(Offset left, Offset right)
         {
             return new Offset(left.Milliseconds - right.Milliseconds);
         }
 
         /// <summary>
-        /// Subtracts one Offset from another. Friendly alternative to <c>operator-()</c>.
+        ///   Subtracts one Offset from another. Friendly alternative to <c>operator-()</c>.
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Offset"/> representing the difference of the given values.</returns>
+        /// <param name = "left">The left hand side of the operator.</param>
+        /// <param name = "right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref = "Offset" /> representing the difference of the given values.</returns>
         public static Offset Subtract(Offset left, Offset right)
         {
             return left - right;
         }
 
         /// <summary>
-        /// Implements the operator == (equality).
+        ///   Implements the operator == (equality).
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <param name = "left">The left hand side of the operator.</param>
+        /// <param name = "right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Offset left, Offset right)
         {
@@ -178,10 +178,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Implements the operator != (inequality).
+        ///   Implements the operator != (inequality).
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <param name = "left">The left hand side of the operator.</param>
+        /// <param name = "right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator !=(Offset left, Offset right)
         {
@@ -189,10 +189,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Implements the operator &lt; (less than).
+        ///   Implements the operator &lt; (less than).
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <param name = "left">The left hand side of the operator.</param>
+        /// <param name = "right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Offset left, Offset right)
         {
@@ -200,10 +200,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Implements the operator &lt;= (less than or equal).
+        ///   Implements the operator &lt;= (less than or equal).
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <param name = "left">The left hand side of the operator.</param>
+        /// <param name = "right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Offset left, Offset right)
         {
@@ -211,10 +211,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Implements the operator &gt; (greater than).
+        ///   Implements the operator &gt; (greater than).
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <param name = "left">The left hand side of the operator.</param>
+        /// <param name = "right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Offset left, Offset right)
         {
@@ -222,10 +222,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Implements the operator &gt;= (greater than or equal).
+        ///   Implements the operator &gt;= (greater than or equal).
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <param name = "left">The left hand side of the operator.</param>
+        /// <param name = "right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Offset left, Offset right)
         {
@@ -235,30 +235,30 @@ namespace NodaTime
 
         #region IComparable<Offset> Members
         /// <summary>
-        /// Compares the current object with another object of the same type.
+        ///   Compares the current object with another object of the same type.
         /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
+        /// <param name = "other">An object to compare with this object.</param>
         /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
-        /// The return value has the following meanings:
-        /// <list type="table">
-        /// <listheader>
-        /// <term>Value</term>
-        /// <description>Meaning</description>
-        /// </listheader>
-        /// <item>
-        /// <term>&lt; 0</term>
-        /// <description>This object is less than the <paramref name="other"/> parameter.</description>
-        /// </item>
-        /// <item>
-        /// <term>0</term>
-        /// <description>This object is equal to <paramref name="other"/>.</description>
-        /// </item>
-        /// <item>
-        /// <term>&gt; 0</term>
-        /// <description>This object is greater than <paramref name="other"/>.</description>
-        /// </item>
-        /// </list>
+        ///   A 32-bit signed integer that indicates the relative order of the objects being compared.
+        ///   The return value has the following meanings:
+        ///   <list type = "table">
+        ///     <listheader>
+        ///       <term>Value</term>
+        ///       <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///       <term>&lt; 0</term>
+        ///       <description>This object is less than the <paramref name = "other" /> parameter.</description>
+        ///     </item>
+        ///     <item>
+        ///       <term>0</term>
+        ///       <description>This object is equal to <paramref name = "other" />.</description>
+        ///     </item>
+        ///     <item>
+        ///       <term>&gt; 0</term>
+        ///       <description>This object is greater than <paramref name = "other" />.</description>
+        ///     </item>
+        ///   </list>
         /// </returns>
         public int CompareTo(Offset other)
         {
@@ -268,12 +268,12 @@ namespace NodaTime
 
         #region Object overrides
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        ///   Determines whether the specified <see cref = "System.Object" /> is equal to this instance.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <param name = "obj">The <see cref = "System.Object" /> to compare with this instance.</param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
-        /// otherwise, <c>false</c>.
+        ///   <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance;
+        ///   otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -285,11 +285,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a hash code for this instance.
+        ///   Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
+        ///   A hash code for this instance, suitable for use in hashing algorithms and data
+        ///   structures like a hash table. 
         /// </returns>
         public override int GetHashCode()
         {
@@ -297,92 +297,79 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        ///   Returns a <see cref = "System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        ///   A <see cref = "System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
-            return ToString(MinimalFormat);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <param name="format">The format to use.</param>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public string ToString(string format)
-        {
-            if (format == ShortFormat)
-            {
-                return Format(FormatType.FormatLong);
-            }
-            if (format == LongFormat)
-            {
-                return Format(FormatType.FormatShort);
-            }
-            if (format == MinimalFormat)
-            {
-                return Format(FormatType.FormatMinimal);
-            }
-            throw new ArgumentOutOfRangeException("format", format, @"The format parameter is not valid: " + format);
+            return OffsetFormatter.GeneralFormatter.Format(this, null);
         }
         #endregion  // Object overrides
 
-        #region Format utilities
+        #region Formatting
         /// <summary>
-        /// Returns a string formatted version of this offset.
+        ///   Formats the value of the current instance using the specified format.
         /// </summary>
-        /// <param name="formatType">Determines how much of the offset is forced to display.</param>
-        /// <returns></returns>
-        private string Format(FormatType formatType)
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        ///   -or- 
+        ///   null to use the default format defined for the type of the <see cref = "T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string format)
         {
-            bool negative = Milliseconds < 0;
-            int millisecondsValue = negative ? -Milliseconds : Milliseconds;
-            int hours = millisecondsValue / NodaConstants.MillisecondsPerHour;
-            int minutes = (millisecondsValue % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
-            int seconds = (millisecondsValue % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
-            millisecondsValue = millisecondsValue % NodaConstants.MillisecondsPerSecond;
-            string sign = negative ? "-" : "+";
-            string pattern;
-            if (formatType == FormatType.FormatLong || millisecondsValue != 0)
-            {
-                pattern = @"{0}{1:D}:{2:D2}:{3:D2}.{4:D3}";
-            }
-            else if (seconds != 0)
-            {
-                pattern = @"{0}{1:D}:{2:D2}:{3:D2}";
-            }
-            else if (formatType == FormatType.FormatShort || minutes != 0)
-            {
-                pattern = @"{0}{1:D}:{2:D2}";
-            }
-            else
-            {
-                pattern = @"{0}{1:D}";
-            }
-            return string.Format(CultureInfo.InvariantCulture, pattern, sign, hours, minutes, seconds, millisecondsValue);
+            return OffsetFormatter.GetFormatter(format).Format(this, null);
         }
 
-        private enum FormatType
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(IFormatProvider formatProvider)
         {
-            FormatLong,
-            FormatShort,
-            FormatMinimal
+            return OffsetFormatter.GeneralFormatter.Format(this, formatProvider);
         }
-        #endregion // Format utilities
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        ///   -or- 
+        ///   null to use the default format defined for the type of the <see cref = "T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return OffsetFormatter.GetFormatter(format).Format(this, formatProvider);
+        }
+        #endregion Formatting
 
         #region IEquatable<Offset> Members
         /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
+        ///   Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
+        /// <param name = "other">An object to compare with this object.</param>
         /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter;
-        /// otherwise, false.
+        ///   true if the current object is equal to the <paramref name = "other" /> parameter;
+        ///   otherwise, false.
         /// </returns>
         public bool Equals(Offset other)
         {
@@ -391,9 +378,9 @@ namespace NodaTime
         #endregion
 
         /// <summary>
-        /// Froms the ticks.
+        ///   Froms the ticks.
         /// </summary>
-        /// <param name="ticks">The ticks.</param>
+        /// <param name = "ticks">The ticks.</param>
         /// <returns></returns>
         public static Offset FromTicks(long ticks)
         {
@@ -401,11 +388,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates an offset with the specified number of hours.
+        ///   Creates an offset with the specified number of hours.
         /// </summary>
-        /// <param name="hours">The number of hours.</param>
+        /// <param name = "hours">The number of hours.</param>
         /// <returns>
-        /// A new <see cref="Offset"/> representing the given value.
+        ///   A new <see cref = "Offset" /> representing the given value.
         /// </returns>
         public static Offset ForHours(int hours)
         {
@@ -413,15 +400,15 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates an offset with the specified number of hours and minutes.
+        ///   Creates an offset with the specified number of hours and minutes.
         /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
+        /// <param name = "hours">The number of hours.</param>
+        /// <param name = "minutes">The number of minutes.</param>
         /// <returns>
-        /// A new <see cref="Offset"/> representing the given values.
+        ///   A new <see cref = "Offset" /> representing the given values.
         /// </returns>
         /// <remarks>
-        /// TODO: not sure about the name. Anyone got a better one?
+        ///   TODO: not sure about the name. Anyone got a better one?
         /// </remarks>
         public static Offset Create(int hours, int minutes)
         {
@@ -429,16 +416,16 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates an offset with the specified number of hours, minutes, and seconds.
+        ///   Creates an offset with the specified number of hours, minutes, and seconds.
         /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <param name="seconds">The number of seconds.</param>
+        /// <param name = "hours">The number of hours.</param>
+        /// <param name = "minutes">The number of minutes.</param>
+        /// <param name = "seconds">The number of seconds.</param>
         /// <returns>
-        /// A new <see cref="Offset"/> representing the given values.
+        ///   A new <see cref = "Offset" /> representing the given values.
         /// </returns>
         /// <remarks>
-        /// TODO: not sure about the name. Anyone got a better one?
+        ///   TODO: not sure about the name. Anyone got a better one?
         /// </remarks>
         public static Offset Create(int hours, int minutes, int seconds)
         {
@@ -446,18 +433,18 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates an offset with the specified number of hours, minutes, seconds, and
-        /// milliseconds.
+        ///   Creates an offset with the specified number of hours, minutes, seconds, and
+        ///   milliseconds.
         /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <param name="seconds">The number of seconds.</param>
-        /// <param name="milliseconds">The number of milliseconds.</param>
+        /// <param name = "hours">The number of hours.</param>
+        /// <param name = "minutes">The number of minutes.</param>
+        /// <param name = "seconds">The number of seconds.</param>
+        /// <param name = "milliseconds">The number of milliseconds.</param>
         /// <returns>
-        /// A new <see cref="Offset"/> representing the given values.
+        ///   A new <see cref = "Offset" /> representing the given values.
         /// </returns>
         /// <remarks>
-        /// TODO: not sure about the name. Anyone got a better one?
+        ///   TODO: not sure about the name. Anyone got a better one?
         /// </remarks>
         public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
         {

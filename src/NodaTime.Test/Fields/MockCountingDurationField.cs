@@ -19,7 +19,7 @@ using NodaTime.Fields;
 
 namespace NodaTime.Test.Fields
 {
-    internal class MockCountingDurationField : DurationFieldBase
+    internal class MockCountingDurationField : DurationField
     {
         // FIXME: Use a proper mock?
         private readonly long unitTicks;
@@ -33,18 +33,18 @@ namespace NodaTime.Test.Fields
             this.unitTicks = unitTicks;
         }
 
-        public override bool IsSupported { get { return true; } }
+        internal override bool IsSupported { get { return true; } }
 
-        public override bool IsPrecise { get { return true; } }
+        internal override bool IsPrecise { get { return true; } }
 
-        public override long UnitTicks { get { return unitTicks; } }
+        internal override long UnitTicks { get { return unitTicks; } }
 
-        public override long GetInt64Value(Duration duration, LocalInstant localInstant)
+        internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
             return 0;
         }
 
-        public override Duration GetDuration(long value, LocalInstant localInstant)
+        internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
             return new Duration(0);
         }
@@ -53,7 +53,7 @@ namespace NodaTime.Test.Fields
         internal static LocalInstant AddInstantArg;
         internal static int AddValueArg;
 
-        public override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             int32Additions++;
             AddInstantArg = localInstant;
@@ -65,7 +65,7 @@ namespace NodaTime.Test.Fields
         internal static LocalInstant Add64InstantArg;
         internal static long Add64ValueArg;
 
-        public override LocalInstant Add(LocalInstant localInstant, long value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             int64Additions++;
             Add64InstantArg = localInstant;
@@ -78,7 +78,7 @@ namespace NodaTime.Test.Fields
         internal static LocalInstant DiffFirstArg;
         internal static LocalInstant DiffSecondArg;
 
-        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             differences++;
             DiffFirstArg = minuendInstant;
@@ -90,7 +90,7 @@ namespace NodaTime.Test.Fields
         internal static LocalInstant Diff64FirstArg;
         internal static LocalInstant Diff64SecondArg;
 
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             differences64++;
             Diff64FirstArg = minuendInstant;

@@ -15,7 +15,11 @@
 // limitations under the License.
 #endregion
 
+#if DEBUG
 using System.Diagnostics;
+#else
+using System;
+#endif
 
 namespace NodaTime.ZoneInfoCompiler
 {

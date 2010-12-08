@@ -73,7 +73,7 @@ namespace NodaTime.Test.Fields
         public void Add_WithInt32Value()
         {
             MockCountingDurationField.int32Additions = 0;
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(61L, field.Add(new LocalInstant(1L), 1).Ticks);
             Assert.AreEqual(1, MockCountingDurationField.int32Additions);
         }
@@ -82,7 +82,7 @@ namespace NodaTime.Test.Fields
         public void Add_WithInt64Value()
         {
             MockCountingDurationField.int64Additions = 0;
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(61L, field.Add(new LocalInstant(1L), 1L).Ticks);
             Assert.AreEqual(1, MockCountingDurationField.int64Additions);
         }
@@ -91,7 +91,7 @@ namespace NodaTime.Test.Fields
         public void GetDifference_DelegatesToDurationField()
         {
             MockCountingDurationField.differences = 0;
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(30, field.GetDifference(new LocalInstant(0), new LocalInstant(0)));
             Assert.AreEqual(1, MockCountingDurationField.differences);
         }
@@ -100,7 +100,7 @@ namespace NodaTime.Test.Fields
         public void GetInt64Difference_DelegatesToDurationField()
         {
             MockCountingDurationField.differences64 = 0;
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(30L, field.GetInt64Difference(new LocalInstant(0), new LocalInstant(0)));
             Assert.AreEqual(1, MockCountingDurationField.differences64);
         }
@@ -108,7 +108,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void SetValue()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(0, field.SetValue(new LocalInstant(120L), 0).Ticks);
             Assert.AreEqual(29 * 60, field.SetValue(new LocalInstant(120L), 29).Ticks);
         }
@@ -116,34 +116,34 @@ namespace NodaTime.Test.Fields
         [Test]
         public void IsLeap_DefaultsToFalse()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.IsFalse(field.IsLeap(new LocalInstant(0L)));
         }
 
         [Test]
         public void GetLeapAmount_DefaultsTo0()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.GetLeapAmount(new LocalInstant(0L)));
         }
 
         public void LeapDurationField_DefaultsToNull()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.IsNull(field.LeapDurationField);
         }
 
         [Test]
         public void GetMinimumValue_DefaultsTo0()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.GetMinimumValue());
         }
 
         [Test]
         public void RoundFloor()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(-120L, field.RoundFloor(new LocalInstant(-61L)).Ticks);
             Assert.AreEqual(-60L, field.RoundFloor(new LocalInstant(-60L)).Ticks);
             Assert.AreEqual(-60L, field.RoundFloor(new LocalInstant(-59L)).Ticks);
@@ -159,7 +159,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundCeiling()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(-60L, field.RoundCeiling(new LocalInstant(-61L)).Ticks);
             Assert.AreEqual(-60L, field.RoundCeiling(new LocalInstant(-60L)).Ticks);
             Assert.AreEqual(0L, field.RoundCeiling(new LocalInstant(-59L)).Ticks);
@@ -175,7 +175,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundHalfFloor()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfFloor(new LocalInstant(30L)).Ticks);
@@ -186,7 +186,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundHalfCeiling()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.RoundHalfCeiling(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfCeiling(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(60L, field.RoundHalfCeiling(new LocalInstant(30L)).Ticks);
@@ -197,7 +197,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void RoundHalfEven()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(0L, field.RoundHalfEven(new LocalInstant(30L)).Ticks);
@@ -211,7 +211,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Remainder()
         {
-            DateTimeFieldBase field = CreateSecondOfMinuteField();
+            DateTimeField field = CreateSecondOfMinuteField();
             Assert.AreEqual(0L, field.Remainder(new LocalInstant(0L)).Ticks);
             Assert.AreEqual(29L, field.Remainder(new LocalInstant(29L)).Ticks);
             Assert.AreEqual(30L, field.Remainder(new LocalInstant(30L)).Ticks);

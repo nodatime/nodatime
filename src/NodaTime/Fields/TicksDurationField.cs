@@ -20,7 +20,7 @@ namespace NodaTime.Fields
     /// <summary>
     /// Singleton duration field for a fixed duration of 1 tick.
     /// </summary>
-    internal sealed class TicksDurationField : DurationFieldBase
+    internal sealed class TicksDurationField : DurationField
     {
         private static readonly TicksDurationField instance = new TicksDurationField();
 
@@ -30,58 +30,58 @@ namespace NodaTime.Fields
         {
         }
 
-        public override bool IsSupported { get { return true; } }
+        internal override bool IsSupported { get { return true; } }
 
-        public override bool IsPrecise { get { return true; } }
+        internal override bool IsPrecise { get { return true; } }
 
-        public override long UnitTicks { get { return 1; } }
+        internal override long UnitTicks { get { return 1; } }
 
-        public override int GetValue(Duration duration)
+        internal override int GetValue(Duration duration)
         {
             return (int)duration.Ticks;
         }
 
-        public override long GetInt64Value(Duration duration)
+        internal override long GetInt64Value(Duration duration)
         {
             return duration.Ticks;
         }
 
-        public override int GetValue(Duration duration, LocalInstant localInstant)
+        internal override int GetValue(Duration duration, LocalInstant localInstant)
         {
             return (int)duration.Ticks;
         }
 
-        public override long GetInt64Value(Duration duration, LocalInstant localInstant)
+        internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
             return duration.Ticks;
         }
 
-        public override Duration GetDuration(long value)
+        internal override Duration GetDuration(long value)
         {
             return new Duration(value);
         }
 
-        public override Duration GetDuration(long value, LocalInstant localInstant)
+        internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
             return new Duration(value);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             return new LocalInstant(localInstant.Ticks + value);
         }
 
-        public override LocalInstant Add(LocalInstant localInstant, long value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             return new LocalInstant(localInstant.Ticks + value);
         }
 
-        public override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return (int)(minuendInstant.Ticks - subtrahendInstant.Ticks);
         }
 
-        public override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return minuendInstant.Ticks - subtrahendInstant.Ticks;
         }

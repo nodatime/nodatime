@@ -18,9 +18,7 @@
 using System;
 using System.Globalization;
 using System.IO;
-using NodaTime.Calendars;
 using NodaTime.Format;
-using NodaTime.Periods;
 
 namespace NodaTime
 {
@@ -30,14 +28,14 @@ namespace NodaTime
     /// <remarks>
     /// <para>
     /// There is no concept of fields, such as days or seconds, as these fields can vary in length.
-    /// A duration may be converted to an <see cref="IPeriod" /> to obtain field values. This
+    /// A duration may be converted to a <see cref="Period" /> to obtain field values. This
     /// conversion will typically cause a loss of precision.
     /// </para>
     /// <para>
     /// This type is immutable and thread-safe.
     /// </para>
     /// </remarks>
-    public struct Duration : IEquatable<Duration>, IComparable<Duration>
+    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IFormattable
     {
         #region Public readonly fields
         /// <summary>
@@ -226,23 +224,63 @@ namespace NodaTime
         /// </example>
         public override string ToString()
         {
-            var writer = new StringWriter(CultureInfo.InvariantCulture);
-            writer.Write("PT");
-
-            long seconds = Ticks / NodaConstants.TicksPerSecond;
-            writer.Write(seconds);
-
-            int ticksValue = (int)Math.Abs(Ticks % NodaConstants.TicksPerSecond);
-            if (ticksValue > 0)
-            {
-                writer.Write(".");
-                FormatUtils.WritePaddedInteger(writer, ticksValue, 7);
-            }
-
-            writer.Write("S");
-            return writer.ToString();
+            return DurationFormatter.GeneralFormatter.Format(this, null);
         }
         #endregion  // Object overrides
+
+        #region Formatting
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        ///   -or- 
+        ///   null to use the default format defined for the type of the <see cref = "T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string format)
+        {
+            return DurationFormatter.GetFormatter(format).Format(this, null);
+        }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return DurationFormatter.GeneralFormatter.Format(this, formatProvider);
+        }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        ///   -or- 
+        ///   null to use the default format defined for the type of the <see cref = "T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return DurationFormatter.GetFormatter(format).Format(this, formatProvider);
+        }
+        #endregion Formatting
 
         #region Operators
         /// <summary>
@@ -470,7 +508,6 @@ namespace NodaTime
         }
         #endregion
 
-        #region Conversions
         /// <summary>
         /// Converts this duration to an <see cref="Interval"/> starting at the specified instant.
         /// </summary>
@@ -490,247 +527,6 @@ namespace NodaTime
         {
             return new Interval(end - this, end);
         }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance using the specified period type and calendar.
-        /// </summary>
-        /// <param name="type">The period type to use</param>
-        /// <param name="calendar">The calendar system to use</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// Only precise fields in the period type will be used.
-        /// Exactly which fields are precise depends on the calendar system.
-        /// Only the time fields are precise for ISO calendar.
-        /// </para>
-        /// <para>
-        /// For more control over the conversion process, you must pair the duration with an instant
-        /// </para>
-        /// </remarks>
-        public Period ToPeriod(PeriodType type, ICalendarSystem calendar)
-        {
-            return Period.From(this, calendar, type);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance using the specified period type and the ISO calendar.
-        /// </summary>
-        /// <param name="type">The period type to use</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// Only precise fields in the period type will be used.
-        /// At most these are hours, minutes, seconds and millis - the period
-        /// type may restrict the selection further.
-        /// </para>
-        /// <para>
-        /// For more control over the conversion process, you must pair the duration with an instant
-        /// </para>
-        /// </remarks>
-        public Period ToPeriod(PeriodType type)
-        {
-            return Period.From(this, type);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance using the standard period type and calendar.
-        /// </summary>
-        /// <param name="calendar">The calendar system to use</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// Only precise fields in the period type will be used.
-        /// Exactly which fields are precise depends on the calendar system.
-        /// Only the time fields are precise for ISO calendar.
-        /// </para>
-        /// <para>
-        /// For more control over the conversion process, you must pair the duration with an instant
-        /// </para>
-        /// </remarks>
-        public Period ToPeriod(ICalendarSystem calendar)
-        {
-            return Period.From(this, calendar);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance using the standard period type and the ISO calendar.
-        /// </summary>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// Only precise fields in the period type will be used. Thus, only the hour,
-        /// minute, second and millisecond fields on the period will be used.
-        /// The year, month, week and day fields will not be populated.
-        /// </para>
-        /// <para>
-        /// If the duration is small, less than one day, then this method will perform
-        /// as you might expect and split the fields evenly.
-        /// If the duration is larger than one day then all the remaining duration will
-        /// be stored in the largest available field, hours in this case.
-        /// For example, a duration effectively equal to (365 + 60 + 5) days will be
-        /// converted to ((365 + 60 + 5) * 24) hours by this constructor.
-        /// </para>
-        /// <para>
-        /// For more control over the conversion process, you must pair the duration with an instant
-        /// </para>
-        /// </remarks>
-        public Period ToPeriod()
-        {
-            return Period.From(this);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance by adding the duration to a start
-        /// instant to obtain an interval.
-        /// </summary>
-        /// <param name="start">The instant to calculate the period from</param>
-        /// <param name="type">The period type determining how to split the duration into fields</param>
-        /// <param name="calendar"> The calendar system to use</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// This conversion will determine the fields of a period accurately.
-        /// The results are based on the instant ticks, the calendar system,
-        /// the period type and the length of this duration.
-        /// </para>
-        /// </remarks>
-        public Period ToPeriodFrom(LocalInstant start, PeriodType type, ICalendarSystem calendar)
-        {
-            return Period.From(start, this, calendar, type);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance by adding the duration to a start
-        /// instant to obtain an interval using the standard period type.
-        /// </summary>
-        /// <param name="start">The instant to calculate the period from</param>
-        /// <param name="type">The period type determining how to split the duration into fields</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// This conversion will determine the fields of a period accurately.
-        /// The results are based on the instant ticks, the ISO calendar system,
-        /// the period type and the length of this duration.
-        /// </para>
-        /// </remarks>
-        public Period ToPeriodFrom(LocalInstant start, PeriodType type)
-        {
-            return Period.From(start, this, type);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance by adding the duration to a start
-        /// instant to obtain an interval using the standard period type.
-        /// </summary>
-        /// <param name="start">The instant to calculate the period from</param>
-        /// <param name="calendar"> The calendar system to use</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// This conversion will determine the fields of a period accurately.
-        /// The results are based on the instant ticks, the calendar system,
-        /// the period type and the length of this duration.
-        /// </para>
-        /// </remarks>
-        public Period ToPeriodFrom(LocalInstant start, ICalendarSystem calendar)
-        {
-            return Period.From(start, this, calendar);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance by adding the duration to a start
-        /// instant to obtain an interval using the standard period type.
-        /// </summary>
-        /// <param name="start">The instant to calculate the period from</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// This conversion will determine the fields of a period accurately.
-        /// The results are based on the instant ticks, the ISO calendar system,
-        /// the standard period type and the length of this duration.
-        /// </para>
-        /// </remarks>
-        public Period ToPeriodFrom(LocalInstant start)
-        {
-            return Period.From(start, this);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance by subtracting the duration
-        /// from an end instant to obtain an interval.
-        /// </summary>
-        /// <param name="end">The instant to calculate the period to</param>
-        /// <param name="type">The period type determining how to split the duration into fields</param>
-        /// <param name="calendar">The calendar system to use</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// This conversion will determine the fields of a period accurately.
-        /// The results are based on the instant ticks, the calendar system,
-        /// the period type and the length of this duration.
-        /// </para>
-        /// </remarks>
-        public Period ToPeriodTo(LocalInstant end, PeriodType type, ICalendarSystem calendar)
-        {
-            return Period.From(this, end, calendar, type);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance by subtracting the duration
-        /// from an end instant to obtain an interval.
-        /// </summary>
-        /// <param name="end">The instant to calculate the period to</param>
-        /// <param name="type">The period type determining how to split the duration into fields</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// This conversion will determine the fields of a period accurately.
-        /// The results are based on the instant ticks, the ISO calendar system,
-        /// the period type and the length of this duration.
-        /// </para>
-        /// </remarks>
-        public Period ToPeriodTo(LocalInstant end, PeriodType type)
-        {
-            return Period.From(this, end, type);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance by subtracting the duration
-        /// from an end instant to obtain an interval using the standard period type.
-        /// </summary>
-        /// <param name="end">The instant to calculate the period to</param>
-        /// <param name="calendar">The calendar system to use</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// This conversion will determine the fields of a period accurately.
-        /// The results are based on the instant ticks, the calendar system,
-        /// the standard period type and the length of this duration.
-        /// </para>
-        /// </remarks>
-        public Period ToPeriodTo(LocalInstant end, ICalendarSystem calendar)
-        {
-            return Period.From(this, end, calendar);
-        }
-
-        /// <summary>
-        /// Converts this duration to a <see cref="Period"/> instance by subtracting the duration
-        /// from an end instant to obtain an interval using the standard period type.
-        /// </summary>
-        /// <param name="end">The instant to calculate the period to</param>
-        /// <returns>A Period created using the ticks duration from this instance</returns>
-        /// <remarks>
-        /// <para>
-        /// This conversion will determine the fields of a period accurately.
-        /// The results are based on the instant ticks, the ISO calendar system,
-        /// the standard period type and the length of this duration.
-        /// </para>
-        /// </remarks>
-        public Period ToPeriodTo(LocalInstant end)
-        {
-            return Period.From(this, end);
-        }
-        #endregion
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of standard weeks made

@@ -24,16 +24,16 @@ namespace NodaTime.Fields
     /// </summary>
     /// <remarks>
     /// </remarks>
-    internal abstract class PreciseDurationDateTimeField : DateTimeFieldBase
+    internal abstract class PreciseDurationDateTimeField : DateTimeField
     {
         /// <summary>
         /// The fractional unit in ticks
         /// </summary>
         private readonly long unitTicks;
 
-        private readonly IDurationField unitField;
+        private readonly DurationField unitField;
 
-        protected PreciseDurationDateTimeField(DateTimeFieldType fieldType, IDurationField unit) : base(fieldType)
+        protected PreciseDurationDateTimeField(DateTimeFieldType fieldType, DurationField unit) : base(fieldType)
         {
             if (unit == null)
             {
@@ -59,12 +59,12 @@ namespace NodaTime.Fields
         /// For example, if this
         /// field represents "hour of day", then the duration is an hour.
         /// </summary>
-        public override IDurationField DurationField { get { return unitField; } }
+        internal override DurationField DurationField { get { return unitField; } }
 
         /// <summary>
         /// Returns false by default.
         /// </summary>
-        public override bool IsLenient { get { return false; } }
+        internal override bool IsLenient { get { return false; } }
 
         #region Values
         /// <summary>
@@ -83,7 +83,7 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to set in</param>
         /// <param name="value">The value to set, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, GetMinimumValue(), GetMaximumValueForSet(localInstant, value));
             return new LocalInstant(localInstant.Ticks + (value - GetInt64Value(localInstant)) * unitTicks);
@@ -91,13 +91,13 @@ namespace NodaTime.Fields
         #endregion
 
         #region Ranges
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return 0;
         }
 
         /// <summary>
-        /// Called by <see cref="DateTimeFieldBase.SetValue(NodaTime.LocalInstant,long)" /> (and related overloads)
+        /// Called by <see cref="DateTimeField.SetValue(NodaTime.LocalInstant,long)" /> (and related overloads)
         /// to get the maximum allowed value. By default, returns GetMaximumValue(localInstant). Override to provide
         /// a faster implementation.
         /// </summary>
@@ -108,7 +108,7 @@ namespace NodaTime.Fields
         #endregion
 
         #region Rounding
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             long ticks = localInstant.Ticks;
             if (ticks >= 0)
@@ -122,7 +122,7 @@ namespace NodaTime.Fields
             }
         }
 
-        public override LocalInstant RoundCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             long ticks = localInstant.Ticks;
             if (ticks > 0)
@@ -136,7 +136,7 @@ namespace NodaTime.Fields
             }
         }
 
-        public override Duration Remainder(LocalInstant localInstant)
+        internal override Duration Remainder(LocalInstant localInstant)
         {
             long ticks = localInstant.Ticks;
             return new Duration(ticks >= 0 ? ticks % unitTicks : ((ticks + 1) % unitTicks) + unitTicks - 1);

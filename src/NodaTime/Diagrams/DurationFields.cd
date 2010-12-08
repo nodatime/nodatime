@@ -2,37 +2,22 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="NodaTime.Fields.UnsupportedDurationField" Collapsed="true">
     <Position X="5.75" Y="4.25" Width="2.25" />
-    <InheritanceLine Type="NodaTime.Fields.DurationFieldBase" FixedToPoint="true">
-      <Path>
-        <Point X="4" Y="3.556" />
-        <Point X="4" Y="4.625" />
-        <Point X="5.75" Y="4.625" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>CGIgAIAgIACQAMAAQYAAAAAAICAAKAAEQAADAAAAAAE=</HashCode>
+      <HashCode>CCIgAIAgIACQAMAAQYAAAAAAICAAKAAEQAADAAAAAAE=</HashCode>
       <FileName>Fields\UnsupportedDurationField.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NodaTime.Fields.DurationFieldBase" Collapsed="true">
+  <Class Name="NodaTime.Fields.DurationField" Collapsed="true">
     <Position X="3" Y="3" Width="2" />
     <TypeIdentifier>
       <HashCode>AEIgAIBgIAAAAMQEAQACAAAAACAAAAAAAAAAAIAAAAA=</HashCode>
-      <FileName>Fields\DurationFieldBase.cs</FileName>
+      <FileName>Fields\DurationField.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="NodaTime.Fields.PreciseDurationField" Collapsed="true">
     <Position X="5.75" Y="1.75" Width="2.25" />
-    <InheritanceLine Type="NodaTime.Fields.DurationFieldBase" FixedToPoint="true">
-      <Path>
-        <Point X="4" Y="3" />
-        <Point X="4" Y="2.062" />
-        <Point X="5.75" Y="2.062" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAIgAIAgIACQAIAAQYAAAAAAAAAAAAAAQAABAAAAAAE=</HashCode>
+      <HashCode>AAIgAIAgIACQAIAAQYAAAAAAACAAAAAAQAABAAAAAAE=</HashCode>
       <FileName>Fields\PreciseDurationField.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -46,30 +31,17 @@
   <Class Name="NodaTime.Fields.ScaledDurationField" Collapsed="true">
     <Position X="0.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIgAIAgIAAAAEAAAQAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAIgAIAgIAAAAEAAAQAAAAACACAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Fields\ScaledDurationField.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NodaTime.Fields.TicksDurationField" Collapsed="true">
     <Position X="5.75" Y="3" Width="2.25" />
-    <InheritanceLine Type="NodaTime.Fields.DurationFieldBase" FixedToPoint="true">
-      <Path>
-        <Point X="5" Y="3.375" />
-        <Point X="5.75" Y="3.375" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAIgAIAgIAAAAMAAAQAAAAAAACBAAAAAQAAAAAAAAAA=</HashCode>
       <FileName>Fields\TicksDurationField.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="NodaTime.Fields.IDurationField" Collapsed="true">
-    <Position X="3" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAIgAIBgIAAAAMAAAQACAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Fields\IDurationField.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="System.IComparable&lt;T&gt;" Collapsed="true">
     <Position X="5" Y="0.5" Width="1.5" />
     <TypeIdentifier />

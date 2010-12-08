@@ -26,10 +26,10 @@ namespace NodaTime.TimeZones
     /// container for the initial zone intervals and a pointer to the time zone that handles all of
     /// the rest until the end of time.
     /// </summary>
-    internal class PrecalculatedDateTimeZone : DateTimeZoneBase
+    internal class PrecalculatedDateTimeZone : DateTimeZone
     {
         private readonly ZoneInterval[] periods;
-        private readonly IDateTimeZone tailZone;
+        private readonly DateTimeZone tailZone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class.
@@ -38,7 +38,7 @@ namespace NodaTime.TimeZones
         /// <param name="transitions">The transitions.</param>
         /// <param name="precalcedEnd">The precalced end.</param>
         /// <param name="tailZone">The tail zone.</param>
-        public PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, IDateTimeZone tailZone) : base(id, false)
+        public PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, DateTimeZone tailZone) : base(id, false)
         {
             if (transitions == null)
             {
@@ -66,7 +66,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The id.</param>
         /// <param name="periods">The periods.</param>
         /// <param name="tailZone">The tail zone.</param>
-        private PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, IDateTimeZone tailZone) : base(id, false)
+        private PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone) : base(id, false)
         {
             this.tailZone = tailZone;
             this.periods = periods;
@@ -105,7 +105,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
+        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             int last = periods.Length - 1;
             if (periods[last].LocalEnd <= localInstant)
@@ -141,7 +141,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        public override void Write(IDateTimeZoneWriter writer)
+        internal override void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)
             {
@@ -170,7 +170,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        public static IDateTimeZone Read(IDateTimeZoneReader reader, string id)
+        public static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             int size = reader.ReadCount();
             var periods = new ZoneInterval[size];

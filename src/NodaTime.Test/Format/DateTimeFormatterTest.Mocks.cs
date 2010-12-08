@@ -17,8 +17,6 @@
 
 using System;
 using System.IO;
-
-using NodaTime.Calendars;
 using NodaTime.Format;
 
 namespace NodaTime.Test.Format
@@ -27,16 +25,15 @@ namespace NodaTime.Test.Format
     {
         public class DateTimePrinterMock : IDateTimePrinter
         {
-            public int EstimatedPrintedLength
-            {
-                get { throw new NotImplementedException(); }
-            }
+            public int EstimatedPrintedLength { get { throw new NotImplementedException(); } }
 
-            public ICalendarSystem Calendar;
-            public IDateTimeZone Zone;
+            public CalendarSystem Calendar;
+            public DateTimeZone Zone;
             public TextWriter DtWriter;
             public IFormatProvider DtProvider;
-            public void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone, IFormatProvider provider)
+
+            void IDateTimePrinter.PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset,
+                                          DateTimeZone dateTimeZone, IFormatProvider provider)
             {
                 DtWriter = writer;
                 DtProvider = provider;
@@ -44,25 +41,17 @@ namespace NodaTime.Test.Format
                 this.Calendar = calendarSystem;
                 this.Zone = dateTimeZone;
             }
-
-            public void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider)
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public class DateTimeParserMock : IDateTimeParser
         {
+            public int EstimatedParsedLength { get { throw new NotImplementedException(); } }
 
-            public int EstimatedParsedLength
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public DateTimeParserBucket Bucket;
+            internal DateTimeParserBucket Bucket;
             public string Text;
             public int Position;
-            public int ParseInto(DateTimeParserBucket bucket, string text, int position)
+
+            int IDateTimeParser.ParseInto(DateTimeParserBucket bucket, string text, int position)
             {
                 Bucket = bucket;
                 Text = text;
@@ -70,6 +59,5 @@ namespace NodaTime.Test.Format
                 return text.Length;
             }
         }
-
     }
 }

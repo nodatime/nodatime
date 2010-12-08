@@ -17,7 +17,6 @@
 
 using System;
 using System.Text;
-using NodaTime.Calendars;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
@@ -36,7 +35,7 @@ namespace NodaTime.TimeZones
     /// Immutable, thread safe.
     /// </para>
     /// </remarks>
-    public class ZoneRecurrence : IEquatable<ZoneRecurrence>
+    internal class ZoneRecurrence : IEquatable<ZoneRecurrence>
     {
         private readonly int fromYear;
         private readonly string name;
@@ -144,16 +143,16 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         internal Transition? Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            ICalendarSystem calendar = IsoCalendarSystem.Instance;
+            CalendarSystem calendar = CalendarSystem.Iso;
 
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MinValue ? Int32.MinValue : calendar.Fields.Year.GetValue(instant + wallOffset);
+            int year = instant == Instant.MinValue ? Int32.MinValue : calendar.Fields.Year.GetValue(instant.Plus(wallOffset));
 
             if (year < fromYear)
             {
                 // First advance instant to start of from year.
-                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, fromYear) - wallOffset;
+                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, fromYear).Minus(wallOffset);
                 // Back off one tick to account for next recurrence being exactly at the beginning
                 // of the year.
                 instant = instant - Duration.One;
@@ -163,7 +162,7 @@ namespace NodaTime.TimeZones
 
             if (next >= instant)
             {
-                year = calendar.Fields.Year.GetValue(next + wallOffset);
+                year = calendar.Fields.Year.GetValue(next.Plus(wallOffset));
                 if (year > toYear)
                 {
                     return null;
@@ -183,23 +182,23 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         internal Transition? Previous(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            ICalendarSystem calendar = IsoCalendarSystem.Instance;
+            CalendarSystem calendar = CalendarSystem.Iso;
 
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MaxValue ? Int32.MaxValue : calendar.Fields.Year.GetValue(instant + wallOffset);
+            int year = instant == Instant.MaxValue ? Int32.MaxValue : calendar.Fields.Year.GetValue(instant.Plus(wallOffset));
 
             if (year > toYear)
             {
                 // First advance instant to start of year after toYear
-                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, toYear + 1) - wallOffset;
+                instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, toYear + 1).Minus(wallOffset);
             }
 
             Instant previous = yearOffset.Previous(instant, standardOffset, previousSavings);
 
             if (previous <= instant)
             {
-                year = calendar.Fields.Year.GetValue(previous + wallOffset);
+                year = calendar.Fields.Year.GetValue(previous.Plus(wallOffset));
                 if (year < fromYear)
                 {
                     return null;
@@ -225,10 +224,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes this object to the given <see cref="IDateTimeZoneWriter"/>.
+        /// Writes this object to the given <see cref="DateTimeZoneWriter"/>.
         /// </summary>
         /// <param name="writer">Where to send the output.</param>
-        internal void Write(IDateTimeZoneWriter writer)
+        internal void Write(DateTimeZoneWriter writer)
         {
             writer.WriteString(Name);
             writer.WriteOffset(Savings);
@@ -242,7 +241,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns></returns>
-        public static ZoneRecurrence Read(IDateTimeZoneReader reader)
+        public static ZoneRecurrence Read(DateTimeZoneReader reader)
         {
             if (reader == null)
             {

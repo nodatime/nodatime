@@ -27,19 +27,19 @@ namespace NodaTime.Test.TimeZones
     ///   Wrapper around a DateTimeZoneWriter/DateTimeZoneReader pair that reads whatever is
     ///   written to it.
     /// </summary>
-    public class DtzIoHelper
+    internal class DtzIoHelper
     {
         private readonly IoStream ioStream;
         private readonly string name;
 
-        public DtzIoHelper(string name) : this(name, stream => new DateTimeZoneWriter(stream), stream => new DateTimeZoneReader(stream))
+        internal DtzIoHelper(string name) : this(name, stream => new DateTimeZoneWriter(stream), stream => new DateTimeZoneReader(stream))
         {
         }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "DtzIoHelper" /> class.
         /// </summary>
-        public DtzIoHelper(string name, Func<Stream, IDateTimeZoneWriter> createWriter, Func<Stream, IDateTimeZoneReader> createReader)
+        internal DtzIoHelper(string name, Func<Stream, DateTimeZoneWriter> createWriter, Func<Stream, DateTimeZoneReader> createReader)
         {
             this.name = name;
             ioStream = new IoStream();
@@ -51,13 +51,13 @@ namespace NodaTime.Test.TimeZones
         ///   Gets the reader.
         /// </summary>
         /// <value>The reader.</value>
-        private IDateTimeZoneReader Reader { get; set; }
+        private DateTimeZoneReader Reader { get; set; }
 
         /// <summary>
         ///   Gets the writer.
         /// </summary>
         /// <value>The writer.</value>
-        private IDateTimeZoneWriter Writer { get; set; }
+        private DateTimeZoneWriter Writer { get; set; }
 
         public void Reset()
         {
@@ -152,7 +152,7 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(expected, actual, name + " long ");
         }
 
-        public void TestTimeZone(IDateTimeZone expected)
+        public void TestTimeZone(DateTimeZone expected)
         {
             Reset();
             Writer.WriteTimeZone(expected);

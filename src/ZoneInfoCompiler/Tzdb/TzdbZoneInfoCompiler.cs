@@ -26,7 +26,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
     ///   Provides a compiler for Olson (TZDB) zone info files into the internal format used by Noda
-    ///   Time for its <see cref = "IDateTimeZone" /> definitions. This read a set of files and generates
+    ///   Time for its <see cref = "DateTimeZone" /> definitions. This read a set of files and generates
     ///   a resource file with the compiled contents suitable for reading with <see cref = "NodaTime.TimeZones.DateTimeZoneResourceProvider" /> or one of its variants.
     /// </summary>
     public class TzdbZoneInfoCompiler
@@ -77,11 +77,11 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Returns a newly created <see cref = "IDateTimeZone" /> built from the given time zone data.
+        ///   Returns a newly created <see cref = "DateTimeZone" /> built from the given time zone data.
         /// </summary>
         /// <param name = "zoneList">The time zone definition parts to add.</param>
         /// <param name = "ruleSets">The rule sets map to use in looking up rules for the time zones..</param>
-        private static IDateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, IList<ZoneRule>> ruleSets)
+        private static DateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, IList<ZoneRule>> ruleSets)
         {
             var builder = new DateTimeZoneBuilder();
             foreach (var zone in zoneList)
@@ -134,7 +134,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public int Execute(TzdbCompilerOptions options)
         {
             log.Info("Starting compilation of directory {0}", options.SourceDirectoryName);
-            DateTimeZones.SetUtcOnly();
+            DateTimeZone.SetUtcOnly(true);
             var sourceDirectory = new DirectoryInfo(options.SourceDirectoryName);
             var outputFile = new FileInfo(options.OutputFileName);
             var files = options.InputFiles;
@@ -167,7 +167,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <remarks>
         ///   <para>
-        ///     First we go through the list of time zones and generate an <see cref = "IDateTimeZone" />
+        ///     First we go through the list of time zones and generate an <see cref = "DateTimeZone" />
         ///     object for each one. We create a mapping between the time zone name and itself (for
         ///     writing out later). Then we write out the time zone as a resource to the current writer.
         ///   </para>

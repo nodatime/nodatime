@@ -25,13 +25,13 @@ namespace NodaTime.Test
     [TestFixture]
     public class ChronologyTest
     {
-        private static readonly IDateTimeZone TestZone = new FixedDateTimeZone("tmp", Offset.Zero);
+        private static readonly DateTimeZone TestZone = new FixedDateTimeZone("tmp", Offset.Zero);
 
         [Test]
         public void Construction_WithNullArguments_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new Chronology(null, IsoCalendarSystem.Instance));
-            Assert.Throws<ArgumentNullException>(() => new Chronology(DateTimeZones.Utc, null));
+            Assert.Throws<ArgumentNullException>(() => new Chronology(null, CalendarSystem.Iso));
+            Assert.Throws<ArgumentNullException>(() => new Chronology(DateTimeZone.Utc, null));
         }
 
         [Test]
@@ -43,24 +43,10 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void IsoForZone()
-        {
-            Chronology subject = Chronology.IsoForZone(TestZone);
-            Assert.AreSame(TestZone, subject.Zone);
-            Assert.AreSame(IsoCalendarSystem.Instance, subject.Calendar);
-        }
-
-        [Test]
-        public void IsoForZone_WithNullZone_ThrowsArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => Chronology.IsoForZone(null));
-        }
-
-        [Test]
         public void IsoUtc()
         {
-            Assert.AreSame(DateTimeZones.Utc, Chronology.IsoUtc.Zone);
-            Assert.AreSame(IsoCalendarSystem.Instance, Chronology.IsoUtc.Calendar);
+            Assert.AreSame(DateTimeZone.Utc, Chronology.IsoUtc.Zone);
+            Assert.AreSame(CalendarSystem.Iso, Chronology.IsoUtc.Calendar);
         }
     }
 }

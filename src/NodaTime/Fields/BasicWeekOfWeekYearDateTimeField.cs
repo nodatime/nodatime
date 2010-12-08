@@ -27,49 +27,49 @@ namespace NodaTime.Fields
         private static readonly Duration ThreeDays = Duration.FromStandardDays(3);
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal BasicWeekOfWeekYearDateTimeField(BasicCalendarSystem calendarSystem, IDurationField weeks) : base(DateTimeFieldType.WeekOfWeekYear, weeks)
+        internal BasicWeekOfWeekYearDateTimeField(BasicCalendarSystem calendarSystem, DurationField weeks) : base(DateTimeFieldType.WeekOfWeekYear, weeks)
         {
             this.calendarSystem = calendarSystem;
         }
 
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             return calendarSystem.GetWeekOfWeekYear(localInstant);
         }
 
-        public override int GetValue(LocalInstant localInstant)
+        internal override int GetValue(LocalInstant localInstant)
         {
             return calendarSystem.GetWeekOfWeekYear(localInstant);
         }
 
-        public override IDurationField RangeDurationField { get { return calendarSystem.Fields.WeekYears; } }
+        internal override DurationField RangeDurationField { get { return calendarSystem.Fields.WeekYears; } }
 
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             return base.RoundFloor(localInstant + ThreeDays) - ThreeDays;
         }
 
-        public override LocalInstant RoundCeiling(LocalInstant localInstant)
+        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
             return base.RoundCeiling(localInstant + ThreeDays) - ThreeDays;
         }
 
-        public override Duration Remainder(LocalInstant localInstant)
+        internal override Duration Remainder(LocalInstant localInstant)
         {
             return base.Remainder(localInstant + ThreeDays);
         }
 
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return 1;
         }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return 53;
         }
 
-        public override long GetMaximumValue(LocalInstant localInstant)
+        internal override long GetMaximumValue(LocalInstant localInstant)
         {
             int weekyear = calendarSystem.GetWeekYear(localInstant);
             return calendarSystem.GetWeeksInYear(weekyear);

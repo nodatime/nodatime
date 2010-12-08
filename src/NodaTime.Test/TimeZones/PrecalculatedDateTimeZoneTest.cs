@@ -27,13 +27,13 @@ namespace NodaTime.Test.TimeZones
         [SetUp]
         public void Setup()
         {
-            var cached = DateTimeZones.ForId("Europe/Paris");
+            var cached = DateTimeZone.ForId("Europe/Paris");
             timeZone = cached.Uncached() as PrecalculatedDateTimeZone;
             if (timeZone == null)
             {
                 Assert.Fail(@"The Europe/Paris time zone does not contain a PrecalculatedDateTimeZone.");
             }
-            summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZones.Utc).ToInstant();
+            summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZone.Utc).ToInstant();
         }
         #endregion
 
