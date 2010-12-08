@@ -44,19 +44,26 @@ namespace NodaTime
         /// <summary>
         /// The local instant which is invalid in the time zone
         /// </summary>
-        public LocalInstant LocalInstant { get { return localInstant; } }
+        internal LocalInstant LocalInstant { get { return localInstant; } }
 
-        private readonly IDateTimeZone zone;
+        private readonly DateTimeZone zone;
 
         /// <summary>
         /// The time zone in which the local instant is invalid
         /// </summary>
-        public IDateTimeZone Zone { get { return zone; } }
+        public DateTimeZone Zone { get { return zone; } }
 
-        public SkippedTimeException(LocalInstant localInstant, IDateTimeZone zone) : base("Local time " + localInstant + " is invalid in time zone " + zone.Id)
+        internal SkippedTimeException(LocalInstant localInstant, DateTimeZone zone) : base("Local time " + localInstant + " is invalid in time zone " + zone.Id)
         {
             this.localInstant = localInstant;
             this.zone = zone;
         }
+
+        public LocalDateTime GetInvalidLocalDateTime(CalendarSystem calendar)
+        {
+            return new LocalDateTime(LocalInstant, calendar);
+        }
+
+        // TODO: IsoLocalDateTime as a convenience property?
     }
 }

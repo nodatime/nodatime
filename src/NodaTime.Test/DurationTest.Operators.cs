@@ -1,5 +1,4 @@
 #region Copyright and license information
-
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009 Jon Skeet
 // 
@@ -14,11 +13,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using System;
-
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -38,9 +35,8 @@ namespace NodaTime.Test
             TestHelper.TestCompareToStruct(negativeFiftyMillion, new Duration(-50000000), threeMillion);
             TestHelper.TestOperatorComparisonEquality(negativeFiftyMillion, new Duration(-50000000), threeMillion);
         }
-       
-        #region operator +
 
+        #region operator +
         [Test]
         public void OperatorPlus_Zero_IsNeutralElement()
         {
@@ -56,11 +52,9 @@ namespace NodaTime.Test
             Assert.AreEqual(0L, (Duration.One + Duration.NegativeOne).Ticks, "1 + (-1)");
             Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.One).Ticks, "-50,000,000 + 1");
         }
-
         #endregion
 
         #region operator -
-
         [Test]
         public void OperatorMinus_Zero_IsNeutralElement()
         {
@@ -76,7 +70,6 @@ namespace NodaTime.Test
             Assert.AreEqual(2L, (Duration.One - Duration.NegativeOne).Ticks, "1 - (-1)");
             Assert.AreEqual(-50000001L, (negativeFiftyMillion - Duration.One).Ticks, "-50,000,000 - 1");
         }
-
         #endregion
 
         #region operator /
@@ -109,6 +102,7 @@ namespace NodaTime.Test
             Assert.AreEqual(negativeFiftyMillion, new Duration(-50000) * 1000, "-50000 * 1000");
             Assert.AreEqual(threeMillion, new Duration(-3000) * -1000, "-3000 * -1000");
         }
+
         [Test]
         public void OperatorMultiplication_Zero_IsAbsorbingElement()
         {
@@ -117,6 +111,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Duration.Zero, threeMillion * 0, "3000000 * 0");
             Assert.AreEqual(Duration.Zero, negativeFiftyMillion * 0, "-50000000 * 0");
         }
+
         [Test]
         public void OperatorMultiplication_One_IsNeutralElement()
         {

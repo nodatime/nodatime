@@ -17,14 +17,13 @@
 
 using System;
 using System.IO;
-using NodaTime.Calendars;
 
 namespace NodaTime.Format
 {
     /// <summary>
     /// Internal interface for creating textual representations of datetimes.
     /// </summary>
-    public interface IDateTimePrinter
+    internal interface IDateTimePrinter
     {
         /// <summary>
         /// Returns the expected maximum number of characters produced.
@@ -41,15 +40,7 @@ namespace NodaTime.Format
         /// <param name="timezoneOffset"></param>
         /// <param name="dateTimeZone">The time zone to use, null means local time</param>
         /// <param name="provider">Provider to use</param>
-        void PrintTo(TextWriter writer, LocalInstant instant, ICalendarSystem calendarSystem, Offset timezoneOffset, IDateTimeZone dateTimeZone,
+        void PrintTo(TextWriter writer, LocalInstant instant, CalendarSystem calendarSystem, Offset timezoneOffset, DateTimeZone dateTimeZone,
                      IFormatProvider provider);
-
-        /// <summary>
-        /// Prints a partial.
-        /// </summary>
-        /// <param name="writer">Formatted partial is written to this builder, not null</param>
-        /// <param name="partial">A partial instance to print</param>
-        /// <param name="provider">Provider to use</param>
-        void PrintTo(TextWriter writer, IPartial partial, IFormatProvider provider);
     }
 }

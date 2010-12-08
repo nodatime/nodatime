@@ -20,7 +20,7 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Derives from <see cref="DateTimeFieldBase" />, implementing
+    /// Derives from <see cref="DateTimeField" />, implementing
     /// only the minimum required set of methods. These implemented methods
     /// delegate to a wrapped field.
     /// Porting status: Done.
@@ -29,7 +29,7 @@ namespace NodaTime.Fields
     /// <para>
     /// This design allows new DateTimeField types to be defined that piggyback
     /// on top of another, inheriting all the safe method implementations from
-    /// DateTimeFieldBase. Should any method require pure delegation to the wrapped
+    /// DateTimeField. Should any method require pure delegation to the wrapped
     /// field, simply override and use the provided WrappedField property.
     /// </para>
     /// <para>
@@ -38,11 +38,11 @@ namespace NodaTime.Fields
     /// However, presumably that's not required as Joda doesn't use it...
     /// </para>
     /// </remarks>
-    public abstract class DecoratedDateTimeField : DateTimeFieldBase
+    internal abstract class DecoratedDateTimeField : DateTimeField
     {
-        private readonly IDateTimeField wrappedField;
+        private readonly DateTimeField wrappedField;
 
-        protected DecoratedDateTimeField(IDateTimeField wrappedField, DateTimeFieldType fieldType) : base(fieldType)
+        protected DecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType) : base(fieldType)
         {
             if (wrappedField == null)
             {
@@ -58,35 +58,35 @@ namespace NodaTime.Fields
         /// <summary>
         /// Gets the wrapped date time field.
         /// </summary>
-        public IDateTimeField WrappedField { get { return wrappedField; } }
+        public DateTimeField WrappedField { get { return wrappedField; } }
 
-        public override IDurationField DurationField { get { return wrappedField.DurationField; } }
+        internal override DurationField DurationField { get { return wrappedField.DurationField; } }
 
-        public override IDurationField RangeDurationField { get { return wrappedField.RangeDurationField; } }
+        internal override DurationField RangeDurationField { get { return wrappedField.RangeDurationField; } }
 
-        public override bool IsLenient { get { return wrappedField.IsLenient; } }
+        internal override bool IsLenient { get { return wrappedField.IsLenient; } }
 
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             return wrappedField.GetInt64Value(localInstant);
         }
 
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             return wrappedField.SetValue(localInstant, value);
         }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return wrappedField.GetMaximumValue();
         }
 
-        public override long GetMinimumValue()
+        internal override long GetMinimumValue()
         {
             return wrappedField.GetMinimumValue();
         }
 
-        public override LocalInstant RoundFloor(LocalInstant localInstant)
+        internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             return wrappedField.RoundFloor(localInstant);
         }

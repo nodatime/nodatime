@@ -29,10 +29,10 @@ namespace NodaTime.Fields
     /// </remarks>
     internal sealed class PreciseDateTimeField : PreciseDurationDateTimeField
     {
-        private readonly IDurationField rangeField;
+        private readonly DurationField rangeField;
         private readonly long effectiveRange;
 
-        internal PreciseDateTimeField(DateTimeFieldType type, IDurationField unit, IDurationField rangeField) : base(type, unit)
+        internal PreciseDateTimeField(DateTimeFieldType type, DurationField unit, DurationField rangeField) : base(type, unit)
         {
             if (rangeField == null)
             {
@@ -50,7 +50,7 @@ namespace NodaTime.Fields
             this.rangeField = rangeField;
         }
 
-        public override long GetInt64Value(LocalInstant localInstant)
+        internal override long GetInt64Value(LocalInstant localInstant)
         {
             long ticks = localInstant.Ticks;
             return ticks >= 0 ? (ticks / UnitTicks) % effectiveRange : effectiveRange - 1 + (((ticks + 1) / UnitTicks) % effectiveRange);
@@ -58,16 +58,16 @@ namespace NodaTime.Fields
 
         // TODO: addWrapField
 
-        public override LocalInstant SetValue(LocalInstant localInstant, long value)
+        internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, GetMinimumValue(), GetMaximumValue());
             long ticks = localInstant.Ticks;
             return new LocalInstant(ticks + (value - GetInt64Value(localInstant)) * UnitTicks);
         }
 
-        public override IDurationField RangeDurationField { get { return rangeField; } }
+        internal override DurationField RangeDurationField { get { return rangeField; } }
 
-        public override long GetMaximumValue()
+        internal override long GetMaximumValue()
         {
             return effectiveRange - 1;
         }

@@ -36,115 +36,6 @@ namespace NodaTime.Format
 
         private const char UnicodeReplacementCharacter = '\ufffd';
 
-        /// <summary>
-        /// Converts an integer to a string, prepended with a variable amount of '0'
-        /// pad characters, and appends it to the given buffer.
-        /// </summary>
-        /// <remarks>
-        /// This method is optimized for converting small values to strings.
-        /// </remarks>
-        /// <param name="builder">Receives integer converted to a string</param>
-        /// <param name="value">Value to convert to a string</param>
-        /// <param name="size">Minumum amount of digits to append</param>
-        internal static void AppendPaddedInteger(StringBuilder builder, int value, int size)
-        {
-            if (value < 0)
-            {
-                builder.Append('-');
-                if (value != int.MinValue)
-                {
-                    value = -value;
-                }
-                else
-                {
-                    for (; size > 10; size--)
-                    {
-                        builder.Append('0');
-                    }
-                    builder.Append(-(long)int.MinValue);
-                    return;
-                }
-            }
-
-            if (value < 10)
-            {
-                for (; size > 1; size--)
-                {
-                    builder.Append('0');
-                }
-                builder.Append((char)(value + '0'));
-            }
-            else if (value < 100)
-            {
-                // Calculate value div/mod by 10 without using two expensive
-                // division operations. (2 ^ 27) / 10 = 13421772. Add one to
-                // value to correct rounding error.
-                int d = ((value + 1) * 13421772) >> 27;
-                for (; size > 2; size--)
-                {
-                    builder.Append('0');
-                }
-                builder.Append((char)(d + '0'));
-                // Append remainder by calculating (value - d * 10).
-                builder.Append((char)(value - (d << 3) - (d << 1) + '0'));
-            }
-            else
-            {
-                int digits = value < 1000 ? 3 : value < 10000 ? 4 : (int)(Math.Log(value) / Log10) + 1;
-
-                for (; size > digits; size--)
-                {
-                    builder.Append('0');
-                }
-
-                builder.Append(value);
-            }
-        }
-
-        /// <summary>
-        /// Converts an integer to a string, and appends it to the given buffer.
-        /// </summary>
-        /// <remarks>
-        /// This method is optimized for converting small values to strings.
-        /// </remarks>
-        /// <param name="builder">Receives integer converted to a string</param>
-        /// <param name="value">Value to convert to a string</param>
-        internal static void AppendUnpaddedInteger(StringBuilder builder, int value)
-        {
-            if (value < 0)
-            {
-                builder.Append('-');
-                if (value != int.MinValue)
-                {
-                    value = -value;
-                }
-                else
-                {
-                    builder.Append(-(long)int.MinValue);
-                    return;
-                }
-            }
-
-            if (value < 10)
-            {
-                builder.Append((char)(value + '0'));
-            }
-            else if (value < 100)
-            {
-                // Calculate value div/mod by 10 without using two expensive
-                // division operations. (2 ^ 27) / 10 = 13421772. Add one to
-                // value to correct rounding error.
-                int d = ((value + 1) * 13421772) >> 27;
-                builder.Append((char)(d + '0'));
-                // Append remainder by calculating (value - d * 10).
-                builder.Append((char)(value - (d << 3) - (d << 1) + '0'));
-            }
-            else
-            {
-                builder.Append(value);
-            }
-        }
-
         //TODO: measure how much this optimized method is faster then .NET intrinsic formatting
         // value.ToString("D");
 
@@ -266,16 +157,6 @@ namespace NodaTime.Format
             }
         }
 
-        internal static int CalculateDigitsCount(int value)
-        {
-            if (value < 0)
-            {
-                return value == int.MinValue ? 10 : CalculateDigitsCount(-value);
-            }
-
-            return value < 10 ? 1 : value < 100 ? 2 : value < 1000 ? 3 : value < 10000 ? 4 : (int)(Math.Log(value) / Log10 + 1);
-        }
-
         internal static int ParseTwoDigits(String text, int position)
         {
             int value = text[position] - '0';
@@ -317,30 +198,6 @@ namespace NodaTime.Format
                 value = ((value << 3) + (value << 1)) + text[position++] - '0';
             }
             return negative ? -value : value;
-        }
-
-        internal static bool IsDecimalChar(char c)
-        {
-            switch (c)
-            {
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                case '.':
-                case ',':
-                case '+':
-                case '-':
-                    return true;
-                default:
-                    return false;
-            }
         }
 
         internal static string CreateErrorMessage(string text, int errorPosition)
@@ -398,7 +255,7 @@ namespace NodaTime.Format
         {
             for (int i = len; --i >= 0;)
             {
-                writer.Write(UnicodeReplacementCharacter);
+                WriteUnknownString(writer);
             }
         }
     }

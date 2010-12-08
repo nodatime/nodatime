@@ -16,7 +16,6 @@
 #endregion
 
 using NodaTime.Fields;
-using NodaTime.TimeZones;
 
 namespace NodaTime.Format
 {
@@ -245,7 +244,7 @@ namespace NodaTime.Format
         private static readonly DateTimeFormatter dp = new DateTimeFormatterBuilder().Append(dpe).AppendOptional(offset).ToFormatter();
 
         // local date parser
-        private static readonly DateTimeFormatter ldp = dpe.WithZone(DateTimeZones.Utc);
+        private static readonly DateTimeFormatter ldp = dpe.WithZone(DateTimeZone.Utc);
 
         // time parser
         private static readonly DateTimeFormatter tp =
@@ -253,7 +252,7 @@ namespace NodaTime.Format
 
         // local time parser
         private static readonly DateTimeFormatter ltp =
-            new DateTimeFormatterBuilder().AppendOptional(lte.Parser).Append(tpe).ToFormatter().WithZone(DateTimeZones.Utc);
+            new DateTimeFormatterBuilder().AppendOptional(lte.Parser).Append(tpe).ToFormatter().WithZone(DateTimeZone.Utc);
 
         /// <summary>
         /// Gets a formatter for a four digit year. (yyyy)

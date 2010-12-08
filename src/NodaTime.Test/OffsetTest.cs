@@ -15,7 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System.Globalization;
 using NUnit.Framework;
+using System;
 
 namespace NodaTime.Test
 {
@@ -34,6 +36,55 @@ namespace NodaTime.Test
             millis += (seconds * NodaConstants.MillisecondsPerSecond);
             millis += milliseconds;
             return new Offset(millis);
+        }
+
+        [Test]
+        public void TestToString_InvalidFormat()
+        {
+            Assert.Throws<FormatException>(() => Offset.Zero.ToString("A"));
+        }
+
+        [Test]
+        public void TestToString_MinValue()
+        {
+            TestToStringBase(Offset.MinValue, "-PT23H59M59.999S", "-PT23H59M59.999S", "-PT23H59M");
+        }
+
+        [Test]
+        public void TestToString_MaxValue()
+        {
+            TestToStringBase(Offset.MaxValue, "+PT23H59M59.999S", "+PT23H59M59.999S", "+PT23H59M");
+        }
+
+        [Test]
+        public void TestToString_Zero()
+        {
+            TestToStringBase(Offset.Zero, "+PT0H", "+PT0H00M00.000S", "+PT0H00M");
+        }
+
+        private static void TestToStringBase(Offset value, string gvalue, string lvalue, string svalue)
+        {
+            var actual = value.ToString();
+            Assert.AreEqual(gvalue, actual);
+            actual = value.ToString("G");
+            Assert.AreEqual(gvalue, actual);
+            actual = value.ToString("L");
+            Assert.AreEqual(lvalue, actual);
+            actual = value.ToString("S");
+            Assert.AreEqual(svalue, actual);
+            actual = value.ToString("S", CultureInfo.InvariantCulture);
+            Assert.AreEqual(svalue, actual);
+            actual = value.ToString(CultureInfo.InvariantCulture);
+            Assert.AreEqual(gvalue, actual);
+
+            actual = string.Format("{0}", value);
+            Assert.AreEqual(gvalue, actual);
+            actual = string.Format("{0:G}", value);
+            Assert.AreEqual(gvalue, actual);
+            actual = string.Format("{0:L}", value);
+            Assert.AreEqual(lvalue, actual);
+            actual = string.Format("{0:S}", value);
+            Assert.AreEqual(svalue, actual);
         }
     }
 }

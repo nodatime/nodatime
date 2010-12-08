@@ -1,0 +1,617 @@
+<html>
+  <head>
+    <title>NodaTime.IPeriod</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      a { text-decoration: none }
+
+      div.SideBar {
+        padding-left: 1em;
+        padding-right: 1em;
+        right: 0;
+        float: right;
+        border: thin solid black;
+        background-color: #f2f2f2;
+      }
+    
+      .CollectionTitle { font-weight: bold }
+      .PageTitle { font-size: 150%; font-weight: bold }
+
+      .Summary { }
+      .Signature { }          
+      .Remarks { }
+      .Members { }
+      .Copyright { }
+      
+      .Section { font-size: 125%; font-weight: bold }
+      p.Summary {
+        margin-left: 1em;
+      }
+      .SectionBox { margin-left: 2em }
+      .NamespaceName { font-size: 105%; font-weight: bold }
+      .NamespaceSumary { }
+      .MemberName { font-size: 115%; font-weight: bold; margin-top: 1em }
+      .Subsection { font-size: 105%; font-weight: bold }
+      .SubsectionBox { margin-left: 2em; margin-bottom: 1em }
+
+      .CodeExampleTable { background-color: #f5f5dd; border: thin solid black; padding: .25em; }
+      
+      .TypesListing {
+        border-collapse: collapse;
+      }
+
+      td {
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+      }
+
+      .TypesListing td { 
+        margin: 0px;  
+        padding: .25em;
+        border: solid gray 1px;
+      }
+
+      .TypesListing th { 
+        margin: 0px;  
+        padding: .25em;
+        background-color: #f2f2f2;
+        border: solid gray 1px;
+      }
+
+      div.Footer {
+        border-top: 1px solid gray;
+        margin-top: 1.5em;
+        padding-top: 0.6em;
+        text-align: center;
+        color: gray;
+      }
+
+      span.NotEntered /* Documentation for this section has not yet been entered */ {
+        font-style: italic;
+        color: red;	
+      }
+
+      div.Header {
+        background: #B0C4DE;
+        border: double;
+        border-color: white;
+        border-width: 7px;
+        padding: 0.5em;
+      }
+
+      div.Header * {
+        font-size: smaller;
+      }
+
+      div.Note {
+      }
+
+      i.ParamRef {
+      }
+
+      i.subtitle {
+      }
+
+      ul.TypeMembersIndex {
+        text-align: left;
+        background: #F8F8F8;
+      }
+
+      ul.TypeMembersIndex li {
+        display: inline;
+        margin:  0.5em;
+      }
+
+      table.HeaderTable {
+      }
+
+      table.SignatureTable {
+      }
+
+      table.Documentation, table.Enumeration, table.TypeDocumentation {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table.Documentation tr th, table.TypeMembers tr th, table.Enumeration tr th, table.TypeDocumentation tr th {
+        background: whitesmoke;
+        padding: 0.8em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      table.Documentation tr td, table.TypeMembers tr td, table.Enumeration tr td, table.TypeDocumentation tr td {
+        padding: 0.5em;
+        border: 1px solid gray;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.TypeMembers {
+        border: 1px solid #C0C0C0;
+        width: 100%;
+      }
+
+      table.TypeMembers tr td {
+        background: #F8F8F8;
+        border: white;
+      }
+
+      table.Documentation {
+      }
+
+      table.TypeMembers {
+      }
+
+      div.CodeExample {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        background-color: #F8F8F8;
+      }
+
+      div.CodeExample p {
+        margin: 0.5em;
+        border-bottom: 1px solid #DDDDDD;
+      }
+
+      div.CodeExample div {
+        margin: 0.5em;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      div.Signature {
+        border: 1px solid #C0C0C0;
+        background: #F2F2F2;
+        padding: 1em;
+      }
+    </style>
+    <script type="text/JavaScript">
+      function toggle_display (block) {
+        var w = document.getElementById (block);
+        var t = document.getElementById (block + ":toggle");
+        if (w.style.display == "none") {
+          w.style.display = "block";
+          t.innerHTML = "⊟";
+        } else {
+          w.style.display = "none";
+          t.innerHTML = "⊞";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="CollectionTitle">
+      <a href="../index.html">NodaTime</a> : <a href="index.html">NodaTime Namespace</a></div>
+    <div class="SideBar">
+      <p>
+        <a href="#T:NodaTime.IPeriod">Overview</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.IPeriod:Signature">Signature</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.IPeriod:Docs">Remarks</a>
+      </p>
+      <p>
+        <a href="#Members">Members</a>
+      </p>
+      <p>
+        <a href="#T:NodaTime.IPeriod:Members">Member Details</a>
+      </p>
+    </div>
+    <h1 class="PageTitle" id="T:NodaTime.IPeriod">IPeriod  Interface</h1>
+    <p class="Summary" id="T:NodaTime.IPeriod:Summary">
+            Defines a time period specified in terms of individual duration fields
+            such as years and days.
+            </p>
+    <div id="T:NodaTime.IPeriod:Signature">
+      <div class="Signature">public interface  <b>IPeriod</b></div>
+    </div>
+    <div class="Remarks" id="T:NodaTime.IPeriod:Docs">
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.IPeriod:Docs:Remarks')">
+          <span id="T:NodaTime.IPeriod:Docs:Remarks:toggle">⊟</span> Remarks</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.IPeriod:Docs:Remarks">
+            Periods are split up into multiple fields, for example days and seconds.
+            Implementations are not required to evenly distribute the values across the fields.
+            The value for each field may be positive or negative.
+            </blockquote>
+      <h4 class="Subsection">
+        <a href="javascript:toggle_display('T:NodaTime.IPeriod:Docs:Version Information')">
+          <span id="T:NodaTime.IPeriod:Docs:Version Information:toggle">⊟</span> Requirements</a>
+      </h4>
+      <blockquote class="SubsectionBox" id="T:NodaTime.IPeriod:Docs:Version Information">
+        <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+      <h2 class="Section" id="Members">
+        <a href="javascript:toggle_display('_Members')">
+          <span id="_Members:toggle">⊟</span> Members</a>
+      </h2>
+      <blockquote class="SectionBox" id="_Members">
+        <h3>
+          <a href="javascript:toggle_display('Public Properties')">
+            <span id="Public Properties:toggle">⊟</span> Public Properties</a>
+        </h3>
+        <blockquote id="Public Properties">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>[read-only]<div><i>default property</i></div><div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType)">Item</a>
+                  </b>(<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a>)</td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. 
+            Gets the value of one of the fields.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div><i>default property</i></div><div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.IPeriod.Item(System.Int32)">Item</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)</td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. 
+            Gets the value at the specified index.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.IPeriod.PeriodType">PeriodType</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="../NodaTime.Periods/PeriodType.html">NodaTime.Periods.PeriodType</a>
+                  </i>. 
+            Gets the period type that defines which fields are included in the period.
+            </td>
+              </tr>
+              <tr valign="top">
+                <td>[read-only]<div></div></td>
+                <td>
+                  <b>
+                    <a href="#P:NodaTime.IPeriod.Size">Size</a>
+                  </b>
+                </td>
+                <td>
+                  <i>
+                    <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>
+                  </i>. 
+            Gets the number of fields this period supports.
+            </td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+        <h3>
+          <a href="javascript:toggle_display('Public Methods')">
+            <span id="Public Methods:toggle">⊟</span> Public Methods</a>
+        </h3>
+        <blockquote id="Public Methods">
+          <div class="SubsectionBox">
+            <table class="TypeMembers">
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.IPeriod.GetFieldType(System.Int32)">GetFieldType</a>
+                  </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a>)<nobr> : <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a></nobr><blockquote>
+            Gets the field type at the specified index.
+            </blockquote></td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div>
+                  </div>
+                </td>
+                <td colspan="2">
+                  <b>
+                    <a href="#M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType)">IsSupported</a>
+                  </b>(<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a></nobr><blockquote>
+            Checks whether the field type specified is supported by this period.
+            </blockquote></td>
+              </tr>
+            </table>
+          </div>
+        </blockquote>
+      </blockquote>
+    </div>
+    <div class="Members" id="T:NodaTime.IPeriod:Members">
+      <h2 class="Section" id="MemberDetails">
+        <a href="javascript:toggle_display('_MemberDetails')">
+          <span id="_MemberDetails:toggle">⊟</span> Member Details</a>
+      </h2>
+      <blockquote class="SectionBox" id="_MemberDetails">
+        <h3 id="M:NodaTime.IPeriod.GetFieldType(System.Int32)">
+          <a href="javascript:toggle_display('M:NodaTime.IPeriod.GetFieldType(System.Int32):member')">
+            <span id="M:NodaTime.IPeriod.GetFieldType(System.Int32):member:toggle">⊟</span> GetFieldType Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.IPeriod.GetFieldType(System.Int32):member">
+          <p class="Summary">
+            Gets the field type at the specified index.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> <b>GetFieldType</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> index)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.IPeriod.GetFieldType(System.Int32):Parameters')">
+              <span id="M:NodaTime.IPeriod.GetFieldType(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.IPeriod.GetFieldType(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>index</i>
+              </dt>
+              <dd>The zero-based index of the value to get</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.IPeriod.GetFieldType(System.Int32):Returns')">
+              <span id="M:NodaTime.IPeriod.GetFieldType(System.Int32):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.IPeriod.GetFieldType(System.Int32):Returns">The field at the specified index</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.IPeriod.GetFieldType(System.Int32):Exceptions')">
+              <span id="M:NodaTime.IPeriod.GetFieldType(System.Int32):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.IPeriod.GetFieldType(System.Int32):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentOutOfRangeException">ArgumentOutOfRangeException</a>
+                </td>
+                <td>if the index is invalid</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.IPeriod.GetFieldType(System.Int32):Remarks')">
+              <span id="M:NodaTime.IPeriod.GetFieldType(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.IPeriod.GetFieldType(System.Int32):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.IPeriod.GetFieldType(System.Int32):Version Information')">
+              <span id="M:NodaTime.IPeriod.GetFieldType(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.IPeriod.GetFieldType(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType)">
+          <a href="javascript:toggle_display('M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):member')">
+            <span id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):member:toggle">⊟</span> IsSupported Method</a>
+        </h3>
+        <blockquote id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):member">
+          <p class="Summary">
+            Checks whether the field type specified is supported by this period.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Boolean">bool</a> <b>IsSupported</b> (<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> field)</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Parameters')">
+              <span id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Parameters">
+            <dl>
+              <dt>
+                <i>field</i>
+              </dt>
+              <dd>The field to check, may be null which returns false</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Returns')">
+              <span id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Returns:toggle">⊟</span> Returns</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Returns">True if the field is supported</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Remarks')">
+              <span id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Version Information')">
+              <span id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="M:NodaTime.IPeriod.IsSupported(NodaTime.Fields.DurationFieldType):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType)">
+          <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):member')">
+            <span id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):member:toggle">⊟</span> Item Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):member">
+          <p class="Summary">
+            Gets the value of one of the fields.
+            </p>
+          <div class="Signature">
+            <p>
+              <i>This is the default property for this class.</i>
+            </p>public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> this [<a href="../NodaTime.Fields/DurationFieldType.html">NodaTime.Fields.DurationFieldType</a> field] { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Parameters')">
+              <span id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Parameters">
+            <dl>
+              <dt>
+                <i>field</i>
+              </dt>
+              <dd>The field type to query, null return zero</dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Value')">
+              <span id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Value">The value of that field, zero if field not supported</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Remarks')">
+              <span id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Remarks">
+            If the field type specified is not supported by the period then zero is returned.
+            </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Version Information')">
+              <span id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Item(NodaTime.Fields.DurationFieldType):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.IPeriod.Item(System.Int32)">
+          <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(System.Int32):member')">
+            <span id="P:NodaTime.IPeriod.Item(System.Int32):member:toggle">⊟</span> Item Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.IPeriod.Item(System.Int32):member">
+          <p class="Summary">
+            Gets the value at the specified index.
+            </p>
+          <div class="Signature">
+            <p>
+              <i>This is the default property for this class.</i>
+            </p>public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> this [<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> index] { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(System.Int32):Parameters')">
+              <span id="P:NodaTime.IPeriod.Item(System.Int32):Parameters:toggle">⊟</span> Parameters</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Item(System.Int32):Parameters">
+            <dl>
+              <dt>
+                <i>index</i>
+              </dt>
+              <dd>The zero-based index of the value to get </dd>
+            </dl>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(System.Int32):Value')">
+              <span id="P:NodaTime.IPeriod.Item(System.Int32):Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Item(System.Int32):Value">The value of the field at the specified index</blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(System.Int32):Exceptions')">
+              <span id="P:NodaTime.IPeriod.Item(System.Int32):Exceptions:toggle">⊟</span> Exceptions</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Item(System.Int32):Exceptions">
+            <table class="TypeDocumentation">
+              <tr>
+                <th>Type</th>
+                <th>Reason</th>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.ArgumentOutOfRangeException">ArgumentOutOfRangeException</a>
+                </td>
+                <td>if the index is less than 0 or equal to or greater than Size</td>
+              </tr>
+            </table>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(System.Int32):Remarks')">
+              <span id="P:NodaTime.IPeriod.Item(System.Int32):Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Item(System.Int32):Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Item(System.Int32):Version Information')">
+              <span id="P:NodaTime.IPeriod.Item(System.Int32):Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Item(System.Int32):Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.IPeriod.PeriodType">
+          <a href="javascript:toggle_display('P:NodaTime.IPeriod.PeriodType:member')">
+            <span id="P:NodaTime.IPeriod.PeriodType:member:toggle">⊟</span> PeriodType Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.IPeriod.PeriodType:member">
+          <p class="Summary">
+            Gets the period type that defines which fields are included in the period.
+            </p>
+          <div class="Signature">public <a href="../NodaTime.Periods/PeriodType.html">NodaTime.Periods.PeriodType</a> <b>PeriodType</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.PeriodType:Value')">
+              <span id="P:NodaTime.IPeriod.PeriodType:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.PeriodType:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.PeriodType:Remarks')">
+              <span id="P:NodaTime.IPeriod.PeriodType:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.PeriodType:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.PeriodType:Version Information')">
+              <span id="P:NodaTime.IPeriod.PeriodType:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.PeriodType:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+        <h3 id="P:NodaTime.IPeriod.Size">
+          <a href="javascript:toggle_display('P:NodaTime.IPeriod.Size:member')">
+            <span id="P:NodaTime.IPeriod.Size:member:toggle">⊟</span> Size Property</a>
+        </h3>
+        <blockquote id="P:NodaTime.IPeriod.Size:member">
+          <p class="Summary">
+            Gets the number of fields this period supports.
+            </p>
+          <div class="Signature">public <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Int32">int</a> <b>Size</b>  { get; }</div>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Size:Value')">
+              <span id="P:NodaTime.IPeriod.Size:Value:toggle">⊟</span> Value</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Size:Value">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Size:Remarks')">
+              <span id="P:NodaTime.IPeriod.Size:Remarks:toggle">⊟</span> Remarks</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Size:Remarks">
+            <span class="NotEntered">Documentation for this section has not yet been entered.</span>
+          </blockquote>
+          <h4 class="Subsection">
+            <a href="javascript:toggle_display('P:NodaTime.IPeriod.Size:Version Information')">
+              <span id="P:NodaTime.IPeriod.Size:Version Information:toggle">⊟</span> Requirements</a>
+          </h4>
+          <blockquote class="SubsectionBox" id="P:NodaTime.IPeriod.Size:Version Information">
+            <b>Namespace: </b>NodaTime<br /><b>Assembly: </b>NodaTime (in NodaTime.dll)<br /><b>Assembly Versions: </b>1.0.0.0</blockquote>
+          <hr size="1" />
+        </blockquote>
+      </blockquote>
+    </div>
+    <hr size="1" />
+    <div class="Copyright">
+    </div>
+  </body>
+</html>

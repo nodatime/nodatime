@@ -20,18 +20,18 @@ using System;
 namespace NodaTime.Clocks
 {
     /// <summary>
-    /// Provides an implementation of <see cref="IClock"/> that always returns a known, fixed
+    /// Provides an implementation of <see cref="ClockBase"/> that always returns a known, fixed
     /// value.
     /// </summary>
     /// <remarks>
     /// This is used for testing where having a known value simplfies the tests.
     /// </remarks>
-    public sealed class FixedClock : IClock, IDisposable
+    internal sealed class FixedClock : ClockBase, IDisposable
     {
         /// <summary>
-        /// The original <see cref="IClock"/>.
+        /// The original <see cref="ClockBase"/>.
         /// </summary>
-        private readonly IClock original;
+        private readonly ClockBase original;
 
         /// <summary>
         /// The <see cref="Instant"/> this clock is fixed to.
@@ -41,9 +41,9 @@ namespace NodaTime.Clocks
         /// <summary>
         /// Initializes a new instance of the <see cref="FixedClock"/> class.
         /// </summary>
-        /// <param name="original">The original <see cref="IClock"/>.</param>
+        /// <param name="original">The original <see cref="ClockBase"/>.</param>
         /// <param name="instant">The known, fixed <see cref="Instant"/>.</param>
-        private FixedClock(IClock original, Instant instant)
+        private FixedClock(ClockBase original, Instant instant)
         {
             this.original = original;
             this.instant = instant;
@@ -66,13 +66,11 @@ namespace NodaTime.Clocks
             return new FixedClock(Clock.Current, instant);
         }
 
-        #region IClock Members
         /// <summary>
         /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
         /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
-        public Instant Now { get { return instant; } }
-        #endregion
+        public override Instant Now { get { return instant; } }
 
         #region IDisposable Members
         /// <summary>

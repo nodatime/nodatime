@@ -20,11 +20,11 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// TODO: Potentially remove this. Can move VerifyValueBounds into DateTimeFieldBase, probably.
+    /// TODO: Potentially remove this. Can move VerifyValueBounds into DateTimeField, probably.
     /// </summary>
-    public static class FieldUtils
+    internal static class FieldUtils
     {
-        internal static void VerifyValueBounds(IDateTimeField field, long value, long lowerBound, long upperBound)
+        internal static void VerifyValueBounds(DateTimeField field, long value, long lowerBound, long upperBound)
         {
             // TODO: i18n or decide whether we want our own custom type with lower and upper bounds
             if ((value < lowerBound) || (value > upperBound))
@@ -57,7 +57,7 @@ namespace NodaTime.Fields
         /// <param name="name">The name of the field for the error message.</param>
         /// <param name="value">The value to check.</param>
         /// <exception cref="ArgumentOutOfRangeException">If the given value is not in the valid range of the given calendar field.</exception>
-        public static void VerifyFieldValue(IDateTimeField field, string name, long value)
+        internal static void VerifyFieldValue(DateTimeField field, string name, long value)
         {
             VerifyFieldValue(field, name, value, false);
         }
@@ -70,7 +70,7 @@ namespace NodaTime.Fields
         /// <param name="value">The value to check.</param>
         /// <param name="allowNegated">if set to <c>true</c> all the range of value to be the negative as well.</param>
         /// <exception cref="ArgumentOutOfRangeException">If the given value is not in the valid range of the given calendar field.</exception>
-        public static void VerifyFieldValue(IDateTimeField field, string name, long value, Boolean allowNegated)
+        internal static void VerifyFieldValue(DateTimeField field, string name, long value, Boolean allowNegated)
         {
             bool failed = false;
             string range = "";
@@ -114,7 +114,7 @@ namespace NodaTime.Fields
         /// <param name="maxValue">The wrap range maximum value. This must be greater than minValue (checked by the method).</param>
         /// <returns>The wrapped value</returns>
         /// <exception cref="ArgumentException">If minValue is greater than or equal to maxValue</exception>
-        public static int GetWrappedValue(int currentValue, int wrapValue, int minValue, int maxValue)
+        internal static int GetWrappedValue(int currentValue, int wrapValue, int minValue, int maxValue)
         {
             return GetWrappedValue(currentValue + wrapValue, minValue, maxValue);
         }
@@ -128,7 +128,7 @@ namespace NodaTime.Fields
         /// <param name="maxValue">The wrap range maximum value. This must be greater than minValue (checked by the method).</param>
         /// <returns>The wrapped value</returns>
         /// <exception cref="ArgumentException">If minValue is greater than or equal to maxValue</exception>        
-        public static int GetWrappedValue(int value, int minValue, int maxValue)
+        internal static int GetWrappedValue(int value, int minValue, int maxValue)
         {
             if (minValue >= maxValue)
             {

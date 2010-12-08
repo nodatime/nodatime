@@ -41,7 +41,7 @@ namespace NodaTime.Test.TimeZones
         /// <summary>
         ///   Returns the <see cref = "DtzIoHelper" /> to use for testing against.
         /// </summary>
-        protected DtzIoHelper Dio { get; set; }
+        internal DtzIoHelper Dio { get; set; }
 
         private static void RunTests_Integers(Action<int> tester)
         {

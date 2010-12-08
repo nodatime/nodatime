@@ -22,12 +22,12 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Basic <see cref="IDateTimeZone" /> implementation that represents no time zone.
+    /// Basic <see cref="DateTimeZone" /> implementation that represents no time zone.
     /// </summary>
     /// <remarks>
     /// This type is thread-safe and immutable.
     /// </remarks>
-    public sealed class NullDateTimeZone : DateTimeZoneBase, IEquatable<NullDateTimeZone>
+    internal sealed class NullDateTimeZone : DateTimeZone, IEquatable<NullDateTimeZone>
     {
         [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")] public static readonly NullDateTimeZone Instance =
             new NullDateTimeZone("NullTimeZone");
@@ -57,7 +57,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        public override ZoneInterval GetZoneInterval(LocalInstant localInstant)
+        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             return null;
         }
@@ -81,7 +81,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="localInstant">The instant for which to calculate the offset.</param>
         /// <returns>The offset at the specified local time.</returns>
-        public override Offset GetOffsetFromLocal(LocalInstant localInstant)
+        internal override Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
             return Offset.Zero;
         }
@@ -90,7 +90,7 @@ namespace NodaTime.TimeZones
         /// Writes the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        public override void Write(IDateTimeZoneWriter writer)
+        internal override void Write(DateTimeZoneWriter writer)
         {
         }
 
@@ -102,7 +102,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "reader",
             Justification = "For consistency all Read() methods take a reader")]
-        public static IDateTimeZone Read(IDateTimeZoneReader reader, string id)
+        public static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             return new NullDateTimeZone(id);
         }

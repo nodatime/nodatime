@@ -23,7 +23,7 @@ namespace NodaTime.TimeZones
     /// <summary>
     ///   Very specific compressing binary writer for time zones.
     /// </summary>
-    public class DateTimeZoneCompressionWriter : DateTimeZoneWriter
+    internal class DateTimeZoneCompressionWriter : DateTimeZoneWriter
     {
         internal const long HalfHoursMask = 0x3fL;
         internal const long MaxHalfHours = 0x1fL;
@@ -120,7 +120,7 @@ namespace NodaTime.TimeZones
         /// <param name = "value">The value to write.</param>
         public override void WriteMilliseconds(int value)
         {
-            /**
+            /*
              * Milliseconds encoding formats:
              *
              * upper bits      units       field length  approximate range
@@ -185,7 +185,7 @@ namespace NodaTime.TimeZones
         /// <param name = "value">The value to write.</param>
         public override void WriteTicks(long value)
         {
-            /**
+            /*
              * Ticks encoding formats:
              *
              * upper two bits  units       field length  approximate range

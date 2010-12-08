@@ -23,45 +23,46 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class FixedDateTimeZoneTest
     {
-        private static readonly Offset OneHour = Offset.ForHours(-8);
-        private static readonly FixedDateTimeZone PstTimeZone = new FixedDateTimeZone(OneHour);
+        private static readonly Offset ZoneOffset = Offset.ForHours(-8);
+        private static readonly FixedDateTimeZone TestZone = new FixedDateTimeZone(ZoneOffset);
         // private static readonly FixedDateTimeZone PstTimeZone = new FixedDateTimeZone("test", OneHour);
-        private static readonly ZoneInterval FixPeriod = new ZoneInterval(PstTimeZone.Id, Instant.MinValue, Instant.MaxValue, OneHour, Offset.Zero);
+        private static readonly ZoneInterval FixedPeriod = new ZoneInterval(TestZone.Id, Instant.MinValue, Instant.MaxValue, ZoneOffset, Offset.Zero);
 
         [Test]
         public void IsFixed_ReturnsTrue()
         {
-            Assert.IsTrue(PstTimeZone.IsFixed);
+            Assert.IsTrue(TestZone.IsFixed);
         }
 
         [Test]
         public void GetZoneIntervalInstant_ZoneInterval()
         {
-            var actual = PstTimeZone.GetZoneInterval(Instant.UnixEpoch);
-            Assert.AreEqual(FixPeriod, actual);
+            var actual = TestZone.GetZoneInterval(Instant.UnixEpoch);
+            Assert.AreEqual(FixedPeriod, actual);
         }
 
         [Test]
         public void GetZoneIntervalLocalInstant_ZoneInterval()
         {
-            var actual = PstTimeZone.GetZoneInterval(LocalInstant.LocalUnixEpoch);
-            Assert.AreEqual(FixPeriod, actual);
+            var actual = TestZone.GetZoneInterval(LocalInstant.LocalUnixEpoch);
+            Assert.AreEqual(FixedPeriod, actual);
         }
 
         [Test]
         public void SimpleProperties_ReturnValuesFromConstructor()
         {
-            Assert.AreEqual("UTC-8", PstTimeZone.Id);
+            Assert.AreEqual("UTC-8", TestZone.Id);
+            Assert.AreEqual("UTC-8", TestZone.GetName(Instant.UnixEpoch));
             // TODO: Use a real LocalDateTime when we've implemented it!
-            Assert.AreEqual(OneHour, PstTimeZone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch));
-            Assert.AreEqual(OneHour, PstTimeZone.GetOffsetFromUtc(Instant.UnixEpoch));
+            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch));
+            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromUtc(Instant.UnixEpoch));
         }
 
         [Test]
-        public void Test()
+        public void TestReadWrite()
         {
             var dio = new DtzIoHelper("FixedDateTimeZone");
-            dio.TestTimeZone(PstTimeZone);
+            dio.TestTimeZone(TestZone);
         }
     }
 }

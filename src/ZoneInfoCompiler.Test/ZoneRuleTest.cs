@@ -16,7 +16,6 @@
 #endregion
 
 using NodaTime;
-using NodaTime.Calendars;
 using NodaTime.TimeZones;
 using NodaTime.ZoneInfoCompiler.Tzdb;
 using NUnit.Framework;
@@ -29,7 +28,7 @@ namespace ZoneInfoCompiler.Test
         [Test]
         public void WriteRead()
         {
-            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)DaysOfWeek.Wednesday, true, Offset.Zero);
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
             var actual = new ZoneRule(recurrence, "D");
             var expected = new ZoneRule(recurrence, "D");
