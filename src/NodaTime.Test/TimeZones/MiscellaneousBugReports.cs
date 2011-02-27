@@ -52,5 +52,22 @@ namespace NodaTime.Test.TimeZones
             var offset = pyongyang.GetOffsetFromUtc(new ZonedDateTime(2010, 1, 1, 0, 0, 0, pyongyang).ToInstant());
             Assert.AreEqual(Offset.ForHours(9), offset);
         }
+
+        [Test]
+        public void Khartoum()
+        {
+            DateTimeZone khartoum = DateTimeZone.ForId("Africa/Khartoum");
+            Assert.IsNotNull(khartoum);
+            Instant utc = Instant.FromUtc(2000, 1, 1, 0, 0, 0);
+            ZonedDateTime inKhartoum = new ZonedDateTime(utc, khartoum);
+            LocalDateTime expectedLocal = new LocalDateTime(2000, 1, 1, 2, 0);
+            Assert.AreEqual(expectedLocal, inKhartoum.LocalDateTime);
+
+            // Khartoum changed from +2 to +3 on January 15th 2000
+            utc = Instant.FromUtc(2000, 1, 16, 0, 0, 0);
+            inKhartoum = new ZonedDateTime(utc, khartoum);
+            expectedLocal = new LocalDateTime(2000, 1, 16, 3, 0);
+            Assert.AreEqual(expectedLocal, inKhartoum.LocalDateTime);
+        }
     }
 }
