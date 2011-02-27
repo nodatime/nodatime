@@ -152,7 +152,8 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Returns a new chronology based on this time zone, in the ISO calendar system.
+        /// Returns a chronology based on this time zone, in the ISO calendar system.
+        /// TODO(jonskeet): Cache this value?
         /// </summary>
         internal Chronology ToIsoChronology()
         {
