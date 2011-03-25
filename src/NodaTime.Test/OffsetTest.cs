@@ -24,10 +24,21 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class OffsetTest
     {
-        private readonly Offset threeHours = MakeOffset(3, 0, 0, 0);
+        private static readonly Offset ThreeHours = MakeOffset(3, 0, 0, 0);
         // private Offset threeHoursPrime = MakeOffset(3, 0, 0, 0);
-        private readonly Offset negativeThreeHours = MakeOffset(-3, 0, 0, 0);
-        private readonly Offset negativeTwelveHours = MakeOffset(-12, 0, 0, 0);
+        private static readonly Offset NegativeThreeHours = MakeOffset(-3, 0, 0, 0);
+        private static readonly Offset NegativeTwelveHours = MakeOffset(-12, 0, 0, 0);
+        private static readonly Offset HmsfOffset = MakeOffset(5, 12, 34, 567);
+        private static readonly Offset HmsOffset = MakeOffset(5, 12, 34, 0);
+        private static readonly Offset HmOffset = MakeOffset(5, 12, 0, 0);
+        private static readonly Offset HOffset = MakeOffset(5, 0, 0, 0);
+        private static readonly Offset Full = MakeOffset(5, 6, 7, 8);
+        private static readonly Offset OneFractional = MakeOffset(1, 1, 1, 400);
+        private static readonly Offset TwoFractional = MakeOffset(1, 1, 1, 450);
+        private static readonly Offset ThreeFractional = MakeOffset(1, 1, 1, 456);
+        private static readonly CultureInfo EnUs = new CultureInfo("en-US");
+        private static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
+        private static readonly CultureInfo ItIt = new CultureInfo("it-IT");
 
         private static Offset MakeOffset(int hours, int minutes, int seconds, int milliseconds)
         {
@@ -36,55 +47,6 @@ namespace NodaTime.Test
             millis += (seconds * NodaConstants.MillisecondsPerSecond);
             millis += milliseconds;
             return new Offset(millis);
-        }
-
-        [Test]
-        public void TestToString_InvalidFormat()
-        {
-            Assert.Throws<FormatException>(() => Offset.Zero.ToString("A"));
-        }
-
-        [Test]
-        public void TestToString_MinValue()
-        {
-            TestToStringBase(Offset.MinValue, "-PT23H59M59.999S", "-PT23H59M59.999S", "-PT23H59M");
-        }
-
-        [Test]
-        public void TestToString_MaxValue()
-        {
-            TestToStringBase(Offset.MaxValue, "+PT23H59M59.999S", "+PT23H59M59.999S", "+PT23H59M");
-        }
-
-        [Test]
-        public void TestToString_Zero()
-        {
-            TestToStringBase(Offset.Zero, "+PT0H", "+PT0H00M00.000S", "+PT0H00M");
-        }
-
-        private static void TestToStringBase(Offset value, string gvalue, string lvalue, string svalue)
-        {
-            var actual = value.ToString();
-            Assert.AreEqual(gvalue, actual);
-            actual = value.ToString("G");
-            Assert.AreEqual(gvalue, actual);
-            actual = value.ToString("L");
-            Assert.AreEqual(lvalue, actual);
-            actual = value.ToString("S");
-            Assert.AreEqual(svalue, actual);
-            actual = value.ToString("S", CultureInfo.InvariantCulture);
-            Assert.AreEqual(svalue, actual);
-            actual = value.ToString(CultureInfo.InvariantCulture);
-            Assert.AreEqual(gvalue, actual);
-
-            actual = string.Format("{0}", value);
-            Assert.AreEqual(gvalue, actual);
-            actual = string.Format("{0:G}", value);
-            Assert.AreEqual(gvalue, actual);
-            actual = string.Format("{0:L}", value);
-            Assert.AreEqual(lvalue, actual);
-            actual = string.Format("{0:S}", value);
-            Assert.AreEqual(svalue, actual);
         }
     }
 }

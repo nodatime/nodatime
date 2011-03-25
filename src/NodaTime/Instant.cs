@@ -1,6 +1,6 @@
 #region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+// Copyright 2009-2011 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Format;
+using NodaTime.Globalization;
 
 namespace NodaTime
 {
@@ -129,17 +130,6 @@ namespace NodaTime
         public override int GetHashCode()
         {
             return Ticks.GetHashCode();
-        }
-
-        /// <summary>
-        ///   Returns a <see cref = "System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        ///   A <see cref = "System.String" /> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return InstantFormatter.GeneralFormatter.Format(this, null);
         }
         #endregion  // Object overrides
 
@@ -319,19 +309,15 @@ namespace NodaTime
 
         #region Formatting
         /// <summary>
-        ///   Formats the value of the current instance using the specified format.
+        ///   Returns a <see cref = "System.String" /> that represents this instance. Equivilent to
+        ///   calling <c>ToString(null)</c>.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        ///   A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
-        ///   -or- 
-        ///   null to use the default format defined for the type of the <see cref = "T:System.IFormattable" /> implementation. 
-        /// </param>
-        /// <filterpriority>2</filterpriority>
-        public string ToString(string format)
+        public override string ToString()
         {
-            return InstantFormatter.GetFormatter(format).Format(this, null);
+            return InstantFormat.Format(this, null, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -340,14 +326,30 @@ namespace NodaTime
         /// <returns>
         ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
+        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        ///   -or- 
+        ///   null to use the default format defined for the type. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string format)
+        {
+            return InstantFormat.Format(this, format, NodaFormatInfo.CurrentInfo);
+        }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified <see cref="IFormatProvider"/>.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance.
+        /// </returns>
         /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
         ///   -or- 
-        ///   null to obtain the format information from the current locale setting of the operating system. 
+        ///   null to obtain the format information from the current locale setting of the current thread. 
         /// </param>
         /// <filterpriority>2</filterpriority>
         public string ToString(IFormatProvider formatProvider)
         {
-            return InstantFormatter.GeneralFormatter.Format(this, formatProvider);
+            return InstantFormat.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -367,8 +369,60 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return InstantFormatter.GetFormatter(format).Format(this, formatProvider);
+            return InstantFormat.Format(this, format, NodaFormatInfo.GetInstance(formatProvider));
         }
         #endregion Formatting
+
+        #region Parsing
+        public static Instant Parse(string s)
+        {
+            return InstantParse.Parse(s, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
+        }
+
+        public static Instant Parse(string s, IFormatProvider formatProvider)
+        {
+            return InstantParse.Parse(s, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+        }
+
+        public static Instant Parse(string s, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        {
+            return InstantParse.Parse(s, NodaFormatInfo.GetInstance(formatProvider), styles);
+        }
+
+        public static Instant ParseExact(string s, string format, IFormatProvider formatProvider)
+        {
+            return InstantParse.ParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+        }
+
+        public static Instant ParseExact(string s, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        {
+            return InstantParse.ParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), styles);
+        }
+
+        public static Instant ParseExact(string s, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        {
+            return InstantParse.ParseExact(s, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
+        }
+
+        public static bool TryParse(string s, out Instant result)
+        {
+            return InstantParse.TryParse(s, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
+        }
+
+        public static bool TryParse(string s, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        {
+            return InstantParse.TryParse(s, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+        }
+
+        public static bool TryParseExact(string s, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        {
+            return InstantParse.TryParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+        }
+
+        public static bool TryParseExact(string s, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        {
+            return InstantParse.TryParseExactMultiple(s, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+        }
+        #endregion Parsing
     }
 }
