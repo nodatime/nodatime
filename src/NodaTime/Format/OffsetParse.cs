@@ -154,7 +154,7 @@ namespace NodaTime.Format
             bool allowLeadingWhite = (styles & DateTimeParseStyles.AllowLeadingWhite) != DateTimeParseStyles.None;
             bool allowTrailingWhite = (styles & DateTimeParseStyles.AllowTrailingWhite) != DateTimeParseStyles.None;
 
-            var pattern = new PatternString(format);
+            var pattern = new Pattern(format);
             var str = new ParseString(value);
             if (allowTrailingWhite)
             {
@@ -162,6 +162,13 @@ namespace NodaTime.Format
                 pattern.RemoveTrailingInQuoteSpaces();
                 str.TrimTail();
             }
+            if (allowLeadingWhite)
+            {
+                pattern.SkipWhiteSpaces();
+                pattern.RemoveLeadingInQuoteSpaces();
+                str.SkipWhiteSpaces();
+            }
+
 
             if (format.Length > 1)
             {

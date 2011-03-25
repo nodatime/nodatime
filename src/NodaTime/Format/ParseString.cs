@@ -19,24 +19,13 @@ using System;
 
 namespace NodaTime.Format
 {
-    internal class ParseString
+    internal class ParseString : Parsable
     {
-        private readonly string value;
-        private int length;
-        private int index;
-
-        internal ParseString(string s)
+        internal ParseString(string value)
+            : base(value)
         {
-            if (s == null)
-            {
-                throw new ArgumentNullException("s");
-            }
-            value = s;
-            length = s.Length;
-            Move(-1);
         }
 
-        public char Current { get; private set; }
 
         internal bool Match(char character)
         {
@@ -50,23 +39,18 @@ namespace NodaTime.Format
 
         internal bool Match(string match)
         {
-            if (string.CompareOrdinal(value, index, match, 0, match.Length) == 0)
+            if (string.CompareOrdinal(Value, Index, match, 0, match.Length) == 0)
             {
-                Move(index + match.Length);
+                Move(Index + match.Length);
                 return true;
             }
             return false;
         }
 
-        internal bool MoveNext()
-        {
-            return Move(index + 1);
-        }
-
         internal bool ParseDigits(int minimumDigits, int maximumDigits, out int result)
         {
             result = 0;
-            int startIndex = index;
+            int startIndex = Index;
             int count = 0;
             while (count < maximumDigits)
             {
@@ -92,33 +76,12 @@ namespace NodaTime.Format
 
         private int GetDigit()
         {
-            return (int)Char.GetNumericValue(Current);
+            return (int)char.GetNumericValue(Current);
         }
 
         private bool IsDigit()
         {
-            return Char.IsNumber(Current);
-        }
-
-        private bool Move(int targetIndex)
-        {
-            var outOfRange = targetIndex < 0 || targetIndex >= length;
-            index = targetIndex;
-            Current = outOfRange ? '\u0000' : value[index];
-            return !outOfRange;
-        }
-
-        private bool MovePrevious()
-        {
-            return Move(index - 1);
-        }
-
-        internal void TrimTail()
-        {
-            while (length > 0 && Char.IsWhiteSpace(value[length - 1]))
-            {
-                length--;
-            }
+            return char.IsNumber(Current);
         }
     }
 }
