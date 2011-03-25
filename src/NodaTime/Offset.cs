@@ -1,6 +1,6 @@
 #region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+// Copyright 2009-2011 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Format;
+using NodaTime.Globalization;
 
 namespace NodaTime
 {
@@ -43,10 +44,6 @@ namespace NodaTime
     /// </remarks>
     public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable
     {
-        private const string MinimalFormat = "M";
-        private const string ShortFormat = "S";
-        private const string LongFormat = "L";
-
         public static readonly Offset Zero = new Offset(0);
         public static readonly Offset MinValue = new Offset(-NodaConstants.MillisecondsPerDay + 1);
         public static readonly Offset MaxValue = new Offset(NodaConstants.MillisecondsPerDay - 1);
@@ -68,27 +65,32 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Returns the offset for the given milliseconds value.
+        ///   Gets a value indicating whether this instance is negative.
         /// </summary>
-        /// <remarks>
-        ///   As offsets are immutable, this method may return the same object for the
-        ///   same input values i.e. there is no guarantee that this method will create a new
-        ///   object on each call. The values may be cached.
-        /// </remarks>
-        /// <param name = "milliseconds">The int milliseconds value.</param>
-        /// <returns>The <see cref = "Offset" /> for the given milliseconds value</returns>
-        public static Offset FromTicks(int milliseconds)
-        {
-            if (milliseconds == Zero.Milliseconds)
-            {
-                return Zero;
-            }
-            if (milliseconds == MinValue.Milliseconds)
-            {
-                return MinValue;
-            }
-            return milliseconds == MaxValue.Milliseconds ? MaxValue : new Offset(milliseconds);
-        }
+        /// <value>
+        ///   <c>true</c> if this instance is negative; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsNegative { get { return milliseconds < 0; } }
+
+        /// <summary>
+        ///   Gets the hours of the offset. This is always a positive value.
+        /// </summary>
+        public int Hours { get { return Math.Abs(milliseconds) / NodaConstants.MillisecondsPerHour; } }
+
+        /// <summary>
+        ///   Gets the minutes of the offset. This is always a positive value.
+        /// </summary>
+        public int Minutes { get { return (Math.Abs(milliseconds) % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute; } }
+
+        /// <summary>
+        ///   Gets the seconds of the offset. This is always a positive value.
+        /// </summary>
+        public int Seconds { get { return (Math.Abs(milliseconds) % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond; } }
+
+        /// <summary>
+        ///   Gets the fractional seconds of the offset i.e. the milliseconds of the second. This is always a positive value.
+        /// </summary>
+        public int FractionalSeconds { get { return Math.Abs(milliseconds) % NodaConstants.MillisecondsPerSecond; } }
 
         /// <summary>
         ///   Gets the number of milliseconds in the offset.
@@ -266,6 +268,21 @@ namespace NodaTime
         }
         #endregion
 
+        #region IEquatable<Offset> Members
+        /// <summary>
+        ///   Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name = "other">An object to compare with this object.</param>
+        /// <returns>
+        ///   true if the current object is equal to the <paramref name = "other" /> parameter;
+        ///   otherwise, false.
+        /// </returns>
+        public bool Equals(Offset other)
+        {
+            return Milliseconds == other.Milliseconds;
+        }
+        #endregion
+
         #region Object overrides
         /// <summary>
         ///   Determines whether the specified <see cref = "System.Object" /> is equal to this instance.
@@ -295,7 +312,9 @@ namespace NodaTime
         {
             return Milliseconds.GetHashCode();
         }
+        #endregion  // Object overrides
 
+        #region Formatting
         /// <summary>
         ///   Returns a <see cref = "System.String" /> that represents this instance.
         /// </summary>
@@ -304,11 +323,9 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return OffsetFormatter.GeneralFormatter.Format(this, null);
+            return OffsetFormat.Format(this, null, NodaFormatInfo.CurrentInfo);
         }
-        #endregion  // Object overrides
 
-        #region Formatting
         /// <summary>
         ///   Formats the value of the current instance using the specified format.
         /// </summary>
@@ -322,7 +339,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string format)
         {
-            return OffsetFormatter.GetFormatter(format).Format(this, null);
+            return OffsetFormat.Format(this, format, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -338,7 +355,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(IFormatProvider formatProvider)
         {
-            return OffsetFormatter.GeneralFormatter.Format(this, formatProvider);
+            return OffsetFormat.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -358,24 +375,85 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return OffsetFormatter.GetFormatter(format).Format(this, formatProvider);
+            return OffsetFormat.Format(this, format, NodaFormatInfo.GetInstance(formatProvider));
         }
         #endregion Formatting
 
-        #region IEquatable<Offset> Members
-        /// <summary>
-        ///   Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name = "other">An object to compare with this object.</param>
-        /// <returns>
-        ///   true if the current object is equal to the <paramref name = "other" /> parameter;
-        ///   otherwise, false.
-        /// </returns>
-        public bool Equals(Offset other)
+        #region Parsing
+        public static Offset Parse(string s)
         {
-            return Milliseconds == other.Milliseconds;
+            return OffsetParse.Parse(s, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
         }
-        #endregion
+
+        public static Offset Parse(string s, IFormatProvider formatProvider)
+        {
+            return OffsetParse.Parse(s, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+        }
+
+        public static Offset Parse(string s, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        {
+            return OffsetParse.Parse(s, NodaFormatInfo.GetInstance(formatProvider), styles);
+        }
+
+        public static Offset ParseExact(string s, string format, IFormatProvider formatProvider)
+        {
+            return OffsetParse.ParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+        }
+
+        public static Offset ParseExact(string s, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        {
+            return OffsetParse.ParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), styles);
+        }
+
+        public static Offset ParseExact(string s, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        {
+            return OffsetParse.ParseExact(s, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
+        }
+
+        public static bool TryParse(string s, out Offset result)
+        {
+            return OffsetParse.TryParse(s, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
+        }
+
+        public static bool TryParse(string s, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
+        {
+            return OffsetParse.TryParse(s, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+        }
+
+        public static bool TryParseExact(string s, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
+        {
+            return OffsetParse.TryParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+        }
+
+        public static bool TryParseExact(string s, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
+        {
+            return OffsetParse.TryParseExactMultiple(s, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+        }
+        #endregion Parsing
+
+        #region Conversion
+        /// <summary>
+        ///   Returns the offset for the given milliseconds value.
+        /// </summary>
+        /// <remarks>
+        ///   As offsets are immutable, this method may return the same object for the
+        ///   same input values i.e. there is no guarantee that this method will create a new
+        ///   object on each call. The values may be cached.
+        /// </remarks>
+        /// <param name = "milliseconds">The int milliseconds value.</param>
+        /// <returns>The <see cref = "Offset" /> for the given milliseconds value</returns>
+        public static Offset FromMilliseconds(int milliseconds)
+        {
+            if (milliseconds == Zero.Milliseconds)
+            {
+                return Zero;
+            }
+            if (milliseconds == MinValue.Milliseconds)
+            {
+                return MinValue;
+            }
+            return milliseconds == MaxValue.Milliseconds ? MaxValue : new Offset(milliseconds);
+        }
 
         /// <summary>
         ///   Froms the ticks.
@@ -452,5 +530,6 @@ namespace NodaTime
                 new Offset((hours * NodaConstants.MillisecondsPerHour) + (minutes * NodaConstants.MillisecondsPerMinute) +
                            (seconds * NodaConstants.MillisecondsPerSecond) + milliseconds);
         }
+        #endregion Conversion
     }
 }
