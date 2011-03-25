@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Calendars;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -75,6 +76,23 @@ namespace NodaTime
             offset = chronology.Zone.GetOffsetFromUtc(instant);
             localInstant = instant.Plus(offset);
             this.chronology = chronology;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZonedDateTime" /> struct in the specified time zone
+        /// and the ISO calendar.
+        /// </summary>
+        /// <param name="instant">The instant of time to represent.</param>
+        /// <param name="zone">The time zone to represent the instant within.</param>
+        public ZonedDateTime(Instant instant, DateTimeZone zone)
+        {
+            if (zone == null)
+            {
+                throw new ArgumentNullException("zone");
+            }
+            chronology = zone.ToIsoChronology();
+            offset = chronology.Zone.GetOffsetFromUtc(instant);
+            localInstant = instant.Plus(offset);
         }
 
         /// <summary>
