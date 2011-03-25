@@ -54,19 +54,17 @@ namespace NodaTime.Format
         ///   Formats the given value based on the custom format pattern given.
         /// </summary>
         /// <param name = "offsetInfo">The offset info to format.</param>
-        /// <param name = "pattern">The custom foramt pattern.</param>
+        /// <param name = "patternString">The custom foramt pattern.</param>
         /// <exception cref = "FormatException">if the value cannot be formatted.</exception>
         /// <returns>The formatted string.</returns>
-        private static string FormatPattern(OffsetInfo offsetInfo, string pattern)
+        private static string FormatPattern(OffsetInfo offsetInfo, string patternString)
         {
-            var patternString = new PatternString(pattern);
+            var pattern = new Pattern(patternString);
             var outputBuffer = new StringBuilder();
-            char patternChar;
-            while (patternString.TryGetNextCharacter(out patternChar))
+            while (pattern.MoveNext())
             {
-                char nextCharacter;
                 int repeatLength;
-                switch (patternChar)
+                switch (pattern.Current)
                 {
                     case '+':
                         FormatHelper.FormatSign(offsetInfo, true, outputBuffer);
@@ -81,39 +79,38 @@ namespace NodaTime.Format
                         outputBuffer.Append(offsetInfo.Nfi.NumberDecimalSeparator);
                         break;
                     case '%':
-                        nextCharacter = patternString.GetNextCharacter();
-                        outputBuffer.Append(FormatPattern(offsetInfo, nextCharacter.ToString()));
+                        outputBuffer.Append(FormatPattern(offsetInfo, pattern.GetNextCharacter().ToString()));
                         break;
                     case '\'':
                     case '"':
-                        outputBuffer.Append(patternString.GetQuotedString(patternChar));
+                        outputBuffer.Append(pattern.GetQuotedString());
                         break;
                     case '\\':
-                        outputBuffer.Append(patternString.GetNextCharacter());
+                        outputBuffer.Append(pattern.GetNextCharacter());
                         break;
                     case 'h':
                     case 'H':
-                        repeatLength = patternString.GetRepeatCount(patternChar, 2);
+                        repeatLength = pattern.GetRepeatCount(2);
                         FormatHelper.LeftPad(offsetInfo.Hours, repeatLength, outputBuffer);
                         break;
                     case 's':
-                        repeatLength = patternString.GetRepeatCount(patternChar, 2);
+                        repeatLength = pattern.GetRepeatCount(2);
                         FormatHelper.LeftPad(offsetInfo.Seconds, repeatLength, outputBuffer);
                         break;
                     case 'm':
-                        repeatLength = patternString.GetRepeatCount(patternChar, 2);
+                        repeatLength = pattern.GetRepeatCount(2);
                         FormatHelper.LeftPad(offsetInfo.Minutes, repeatLength, outputBuffer);
                         break;
                     case 'F':
-                        repeatLength = patternString.GetRepeatCount(patternChar, 3);
+                        repeatLength = pattern.GetRepeatCount(3);
                         FormatHelper.RightPadTruncate(offsetInfo.FractionalSecond, repeatLength, 3, offsetInfo.Nfi.NumberDecimalSeparator, outputBuffer);
                         break;
                     case 'f':
-                        repeatLength = patternString.GetRepeatCount(patternChar, 3);
+                        repeatLength = pattern.GetRepeatCount(3);
                         FormatHelper.RightPad(offsetInfo.FractionalSecond, repeatLength, 3, outputBuffer);
                         break;
                     default:
-                        outputBuffer.Append(patternChar);
+                        outputBuffer.Append(pattern.Current);
                         break;
                 }
             }
