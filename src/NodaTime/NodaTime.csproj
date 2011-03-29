@@ -88,6 +88,7 @@
     <Compile Include="Format\Parsable.cs" />
     <Compile Include="Format\ParseException.cs" />
     <Compile Include="Format\ParseResult.cs" />
+    <Compile Include="Format\ParseResultImmediate.cs" />
     <Compile Include="Format\ParseString.cs" />
     <Compile Include="Format\Pattern.cs" />
     <Compile Include="Globalization\NodaCultureInfo.cs" />

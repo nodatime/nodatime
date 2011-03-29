@@ -15,34 +15,17 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NodaTime.Format;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {
     [TestFixture]
-    public class ParseStringTest
+    public class ParseStringTest : ParsableTest
     {
-        [Test]
-        public void TestConstructor()
+        internal override Parsable MakeParsable(string value)
         {
-            Assert.Throws<ArgumentNullException>(() => new ParseString(null));
-            var value = new ParseString("abcd");
-            Assert.AreEqual('\u0000', value.Current);
-        }
-
-        [Test]
-        public void TestGetNext()
-        {
-            var value = new ParseString("abc");
-            Assert.True(value.MoveNext(), "GetNext() 1");
-            Assert.AreEqual('a', value.Current, "First character");
-            Assert.True(value.MoveNext(), "GetNext() 2");
-            Assert.AreEqual('b', value.Current, "Second character");
-            Assert.True(value.MoveNext(), "GetNext() 3");
-            Assert.AreEqual('c', value.Current, "Third character");
-            Assert.False(value.MoveNext(), "GetNext() end");
+            return new ParseString(value);
         }
 
         [Test]
@@ -71,7 +54,7 @@ namespace NodaTime.Test.Format
             var value = new ParseString("xabcdef");
             Assert.True(value.MoveNext(), "GetNext() 1");
             Assert.False(value.Match("abc"));
-            Assert.AreEqual('x', value.Current);
+            ValidateCharacter(value, 0, 'x');
         }
 
         [Test]
@@ -80,27 +63,29 @@ namespace NodaTime.Test.Format
             var value = new ParseString("abcdef");
             Assert.True(value.MoveNext(), "GetNext() 1");
             Assert.True(value.Match("abc"));
-            Assert.AreEqual('d', value.Current);
+            ValidateCharacter(value, 3, 'd');
         }
 
         [Test]
         public void TestParseDigit_failureTooFewDigits()
         {
-            var value = new ParseString("a1b");
+            var value = new ParseString("a12b");
             Assert.True(value.MoveNext());
-            Assert.AreEqual('a', value.Current);
+            ValidateCharacter(value, 0, 'a');
             Assert.True(value.MoveNext());
             int actual;
-            Assert.False(value.ParseDigits(2, 2, out actual));
-            Assert.AreEqual('1', value.Current);
+            Assert.False(value.ParseDigits(3, 3, out actual));
+            ValidateCharacter(value, 1, '1');
         }
 
         [Test]
         public void TestParseDigit_noNumber()
         {
             var value = new ParseString("abc");
+            Assert.True(value.MoveNext());
             int actual;
             Assert.False(value.ParseDigits(1, 2, out actual));
+            ValidateCharacter(value, 0, 'a');
         }
 
         [Test]
@@ -121,7 +106,7 @@ namespace NodaTime.Test.Format
             int actual;
             Assert.True(value.ParseDigits(1, 2, out actual));
             Assert.AreEqual(12, actual);
-            Assert.AreEqual('3', value.Current);
+            ValidateCharacter(value, 2, '3');
         }
 
         [Test]
@@ -132,6 +117,7 @@ namespace NodaTime.Test.Format
             int actual;
             Assert.True(value.ParseDigits(1, 2, out actual));
             Assert.AreEqual(1, actual);
+            ValidateEndOfString(value);
         }
 
         [Test]
@@ -142,7 +128,7 @@ namespace NodaTime.Test.Format
             int actual;
             Assert.True(value.ParseDigits(1, 2, out actual));
             Assert.AreEqual(1, actual);
-            Assert.AreEqual('1', value.Current);
+            ValidateCharacter(value, 1, 'a');
         }
     }
 }

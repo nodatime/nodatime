@@ -20,20 +20,32 @@ using NodaTime.Utility;
 
 namespace NodaTime.Format
 {
-    /// <summary>
-    ///   Generic result of parsing.
-    /// </summary>
-    internal class ParseResult<T>
+    internal abstract class ParseResult
     {
-        /// <summary>
-        ///   Parsed value
-        /// </summary>
-        public T Value { get; set; }
+        internal ParseResult()
+        {
+            Failure = ParseFailureKind.None;
+        }
 
         private ParseFailureKind Failure { get; set; }
-        private string FailureMessageId { get; set; }
-        private object FailureMessageFormatArgument { get; set; }
         private string FailureArgumentName { get; set; }
+        private object FailureMessageFormatArgument { get; set; }
+        private string FailureMessageId { get; set; }
+        internal bool Failed { get { return Failure != ParseFailureKind.None; } }
+
+        internal Exception GetParseException()
+        {
+            switch (Failure)
+            {
+                case ParseFailureKind.ArgumentNull:
+                    return new ArgumentNullException(FailureArgumentName, ResourceHelper.GetMessage(FailureMessageId));
+                case ParseFailureKind.Format:
+                    return new FormatException(ResourceHelper.GetMessage(FailureMessageId));
+                case ParseFailureKind.FormatWithParameter:
+                    return new FormatException(ResourceHelper.GetMessage(FailureMessageId, FailureMessageFormatArgument));
+            }
+            return null;
+        }
 
         internal bool SetFailure(ParseFailureKind failure, string failureMessageId)
         {
@@ -51,24 +63,21 @@ namespace NodaTime.Format
             FailureMessageId = failureMessageId;
             FailureMessageFormatArgument = failureMessageFormatArgument;
             FailureArgumentName = failureArgumentName;
+            ProcessFailure();
             return false;
         }
 
-        internal Exception GetParseException()
+        /// <summary>
+        /// Called after the failure has been set into this object to allow for sub-classes to
+        /// do any post-processing.
+        /// </summary>
+        protected virtual void ProcessFailure()
         {
-            switch (Failure)
-            {
-                case ParseFailureKind.ArgumentNull:
-                    return new ArgumentNullException(FailureArgumentName, ResourceHelper.GetMessage(FailureMessageId));
-                case ParseFailureKind.Format:
-                    return new FormatException(ResourceHelper.GetMessage(FailureMessageId));
-                case ParseFailureKind.FormatWithParameter:
-                    return new FormatException(ResourceHelper.GetMessage(FailureMessageId, FailureMessageFormatArgument));
-            }
-            return null;
+            // Do nothing
         }
     }
 
+    #region Nested type: ParseFailureKind
     internal enum ParseFailureKind
     {
         None,
@@ -76,4 +85,5 @@ namespace NodaTime.Format
         Format,
         FormatWithParameter
     }
+    #endregion
 }

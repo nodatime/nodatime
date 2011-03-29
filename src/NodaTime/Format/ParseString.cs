@@ -16,16 +16,13 @@
 #endregion
 
 using System;
-
 namespace NodaTime.Format
 {
     internal class ParseString : Parsable
     {
-        internal ParseString(string value)
-            : base(value)
+        internal ParseString(string value) : base(value)
         {
         }
-
 
         internal bool Match(char character)
         {
@@ -56,7 +53,6 @@ namespace NodaTime.Format
             {
                 if (!IsDigit())
                 {
-                    MovePrevious();
                     break;
                 }
                 result = (result * 10) + GetDigit();
@@ -72,6 +68,24 @@ namespace NodaTime.Format
                 return false;
             }
             return true;
+        }
+
+        internal bool ParseFractionExact(int maximumDigits, out double result)
+        {
+            result = double.NaN;
+            if (!IsDigit())
+            {
+                return false;
+            }
+            result = GetDigit();
+            int count = 1;
+            while (count < maximumDigits && MoveNext() && IsDigit())
+            {
+                result = (result * 10.0) + GetDigit();
+                count++;
+            }
+            result = result / Math.Pow(10.0, count);
+            return (count == maximumDigits);
         }
 
         private int GetDigit()
