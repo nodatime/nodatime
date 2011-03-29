@@ -16,9 +16,8 @@
 #endregion
 
 using System;
-using NodaTime.Properties;
-using NodaTime.Utility;
 using System.Text;
+using NodaTime.Properties;
 
 namespace NodaTime.Format
 {
@@ -27,13 +26,11 @@ namespace NodaTime.Format
     /// </summary>
     internal class Pattern : Parsable
     {
-
         /// <summary>
         ///   Initializes a new instance of the <see cref = "Pattern" /> class.
         /// </summary>
         /// <param name = "pattern">The format pattern string.</param>
-        internal Pattern(string pattern)
-            : base(pattern)
+        internal Pattern(string pattern) : base(pattern)
         {
         }
 
@@ -44,16 +41,39 @@ namespace NodaTime.Format
         /// <exception cref = "FormatException">If the end quote is missing.</exception>
         internal string GetQuotedString()
         {
-            return GetQuotedString(Current);
+            return GetQuotedString(Current, ParseResultImmediate.Instance);
+        }
+
+        /// <summary>
+        ///   Gets the quoted string using the current character as the close quote character.
+        /// </summary>
+        /// <param name = "parseResult"></param>
+        /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be <c>null</c>.</returns>
+        /// <exception cref = "FormatException">If the end quote is missing.</exception>
+        internal string GetQuotedString(ParseResult parseResult)
+        {
+            return GetQuotedString(Current, parseResult);
+        }
+
+        /// <summary>
+        ///   Gets the quoted string using the current character as the close quote character.
+        /// </summary>
+        /// <param name = "closeQuote">The close quote character to match for the end of the quoted string.</param>
+        /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be <c>null</c>.</returns>
+        /// <exception cref = "FormatException">If the end quote is missing.</exception>
+        internal string GetQuotedString(char closeQuote)
+        {
+            return GetQuotedString(closeQuote, ParseResultImmediate.Instance);
         }
 
         /// <summary>
         ///   Gets the quoted string.
         /// </summary>
         /// <param name = "closeQuote">The close quote character to match for the end of the quoted string.</param>
+        /// <param name = "parseResult"></param>
         /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be <c>null</c>.</returns>
         /// <exception cref = "FormatException">If the end quote is missing.</exception>
-        internal string GetQuotedString(char closeQuote)
+        internal string GetQuotedString(char closeQuote, ParseResult parseResult)
         {
             var builder = new StringBuilder(Length - Index);
             bool endQuoteFound = false;
@@ -61,6 +81,7 @@ namespace NodaTime.Format
             {
                 if (Current == closeQuote)
                 {
+                    MoveNext();
                     endQuoteFound = true;
                     break;
                 }
@@ -68,14 +89,16 @@ namespace NodaTime.Format
                 {
                     if (!MoveNext())
                     {
-                        throw new FormatException(Resources.Format_InvalidString);
+                        parseResult.SetFailure(ParseFailureKind.Format, "Format_BadOffset"); // TODO: Use correct message key
+                        return null;
                     }
                 }
                 builder.Append(Current);
             }
             if (!endQuoteFound)
             {
-                throw new FormatException(ResourceHelper.GetMessage("Format_BadQuote", closeQuote));
+                parseResult.SetFailure(ParseFailureKind.Format, "Format_BadQuote", closeQuote); // TODO: Use correct message key
+                return null;
             }
             return builder.ToString();
         }
@@ -88,7 +111,19 @@ namespace NodaTime.Format
         /// <exception cref = "FormatException">if the count exceeds <paramref name = "maximumCount" />.</exception>
         internal int GetRepeatCount(int maximumCount)
         {
-            return GetRepeatCount(maximumCount, Current);
+            return GetRepeatCount(maximumCount, Current, ParseResultImmediate.Instance);
+        }
+
+        /// <summary>
+        ///   Gets the pattern repeat count.
+        /// </summary>
+        /// <param name = "maximumCount">The maximum number of repetitions allowed.</param>
+        /// <param name="parseResult"></param>
+        /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
+        /// <exception cref = "FormatException">if the count exceeds <paramref name = "maximumCount" />.</exception>
+        internal int GetRepeatCount(int maximumCount, ParseResult parseResult)
+        {
+            return GetRepeatCount(maximumCount, Current, parseResult);
         }
 
         /// <summary>
@@ -100,14 +135,28 @@ namespace NodaTime.Format
         /// <exception cref = "FormatException">if the count exceeds <paramref name = "maximumCount" />.</exception>
         internal int GetRepeatCount(int maximumCount, char patternCharacter)
         {
+            return GetRepeatCount(maximumCount, patternCharacter, ParseResultImmediate.Instance);
+        }
+
+        /// <summary>
+        ///   Gets the pattern repeat count.
+        /// </summary>
+        /// <param name = "maximumCount">The maximum number of repetitions allowed.</param>
+        /// <param name = "patternCharacter">The pattern character to count.</param>
+        /// <param name="parseResult"></param>
+        /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
+        /// <exception cref = "FormatException">if the count exceeds <paramref name = "maximumCount" />.</exception>
+        internal int GetRepeatCount(int maximumCount, char patternCharacter, ParseResult parseResult)
+        {
             int startPos = Index;
             while (MoveNext() && Current == patternCharacter)
             {
             }
-            int repeatLength = Index - startPos + 1;
+            int repeatLength = Index - startPos;
             if (repeatLength > maximumCount)
             {
-                throw new FormatException(Resources.Format_InvalidString);
+                parseResult.SetFailure(ParseFailureKind.Format, "Format_InvalidString");
+                return -1;
             }
             return repeatLength;
         }

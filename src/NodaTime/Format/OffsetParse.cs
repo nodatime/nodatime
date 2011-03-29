@@ -17,8 +17,8 @@
 
 using System;
 using System.Globalization;
+using System.Threading;
 using NodaTime.Globalization;
-
 
 namespace NodaTime.Format
 {
@@ -35,7 +35,7 @@ namespace NodaTime.Format
 
         internal static Offset Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
-            var parseResult = new ParseResult<Offset>();
+            var parseResult = new OffsetParseResult();
             if (!TryParse(value, formatInfo, styles, parseResult))
             {
                 throw parseResult.GetParseException();
@@ -45,7 +45,7 @@ namespace NodaTime.Format
 
         internal static Offset ParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
-            var parseResult = new ParseResult<Offset>();
+            var parseResult = new OffsetParseResult();
             if (!TryParseExact(value, format, formatInfo, styles, parseResult))
             {
                 throw parseResult.GetParseException();
@@ -55,7 +55,7 @@ namespace NodaTime.Format
 
         internal static Offset ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
-            var parseResult = new ParseResult<Offset>();
+            var parseResult = new OffsetParseResult();
             if (!TryParseExactMultiple(value, formats, formatInfo, styles, parseResult))
             {
                 throw parseResult.GetParseException();
@@ -68,7 +68,7 @@ namespace NodaTime.Format
             return TryParseExactMultiple(value, AllFormats, formatInfo, styles, out result);
         }
 
-        private static bool TryParse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles, ParseResult<Offset> parseResult)
+        private static bool TryParse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles, OffsetParseResult parseResult)
         {
             return TryParseExactMultiple(value, AllFormats, formatInfo, styles, parseResult);
         }
@@ -76,7 +76,7 @@ namespace NodaTime.Format
         internal static bool TryParseExactMultiple(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out Offset result)
         {
             result = Offset.MinValue;
-            var parseResult = new ParseResult<Offset>();
+            var parseResult = new OffsetParseResult();
             if (TryParseExactMultiple(value, formats, formatInfo, styles, parseResult))
             {
                 result = parseResult.Value;
@@ -88,7 +88,7 @@ namespace NodaTime.Format
         internal static bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out Offset result)
         {
             result = Offset.MinValue;
-            var parseResult = new ParseResult<Offset>();
+            var parseResult = new OffsetParseResult();
             if (TryParseExact(value, format, formatInfo, styles, parseResult))
             {
                 result = parseResult.Value;
@@ -98,15 +98,15 @@ namespace NodaTime.Format
         }
 
         private static bool TryParseExactMultiple(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles,
-                                                  ParseResult<Offset> parseResult)
+                                                  OffsetParseResult parseResult)
         {
             if (formats == null)
             {
-                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format");
+                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format"); // TODO: Use correct message key
             }
             if (formats.Length == 0)
             {
-                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_List_Empty");
+                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_List_Empty"); // TODO: Use correct message key
             }
             foreach (string format in formats)
             {
@@ -118,24 +118,23 @@ namespace NodaTime.Format
             return false;
         }
 
-        private static bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles,
-                                          ParseResult<Offset> parseResult)
+        private static bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles, OffsetParseResult parseResult)
         {
             if (value == null)
             {
-                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "value");
+                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "value"); // TODO: Use correct message key
             }
             if (format == null)
             {
-                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format");
+                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format"); // TODO: Use correct message key
             }
             if (value.Length == 0)
             {
-                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Value_Empty");
+                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Value_Empty"); // TODO: Use correct message key
             }
             if (format.Length == 0)
             {
-                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_Empty");
+                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_Empty"); // TODO: Use correct message key
             }
             if (format.Length == 1)
             {
@@ -158,87 +157,234 @@ namespace NodaTime.Format
             var str = new ParseString(value);
             if (allowTrailingWhite)
             {
-                pattern.TrimTail();
-                pattern.RemoveTrailingInQuoteSpaces();
-                str.TrimTail();
+                pattern.TrimTrailingWhiteSpaces();
+                pattern.TrimTrailingInQuoteSpaces();
+                str.TrimTrailingWhiteSpaces();
             }
             if (allowLeadingWhite)
             {
-                pattern.SkipWhiteSpaces();
-                pattern.RemoveLeadingInQuoteSpaces();
-                str.SkipWhiteSpaces();
+                pattern.TrimLeadingWhiteSpaces();
+                pattern.TrimLeadingInQuoteSpaces();
+                str.TrimLeadingWhiteSpaces();
+            }
+            while (pattern.MoveNext())
+            {
+                if (allowInnerWhite)
+                {
+                    str.SkipWhiteSpaces();
+                }
+                if (!ParseByFormat(str, pattern, formatInfo, allowInnerWhite, parseResult))
+                {
+                    return false;
+                }
+            }
+            if (str.HasMoreCharacters)
+            {
+                return parseResult.SetFailure(ParseFailureKind.Format, "Format_BadOffset"); // TODO: Use correct message key
             }
 
-
-            if (format.Length > 1)
-            {
-                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_Invalid", format);
-            }
-            char formatChar = format[0];
-            string value1 = value;
-            if ((styles & DateTimeParseStyles.AllowLeadingWhite) != DateTimeParseStyles.None)
-            {
-                value1 = value1.TrimStart();
-            }
-            if ((styles & DateTimeParseStyles.AllowTrailingWhite) != DateTimeParseStyles.None)
-            {
-                value1 = value1.TrimEnd();
-            }
-            switch (formatChar)
-            {
-                case 'g':
-                    return DoStrictParseGeneral(value1, formatInfo, parseResult);
-                case 'n':
-                case 'd':
-                    return DoStrictParseNumber(value1, formatInfo, parseResult);
-            }
-            return false;
+            return true;
+            /*
+                        if (format.Length > 1)
+                        {
+                            return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_Invalid", format);
+                        }
+                        char formatChar = format[0];
+                        string value1 = value;
+                        if ((styles & DateTimeParseStyles.AllowLeadingWhite) != DateTimeParseStyles.None)
+                        {
+                            value1 = value1.TrimStart();
+                        }
+                        if ((styles & DateTimeParseStyles.AllowTrailingWhite) != DateTimeParseStyles.None)
+                        {
+                            value1 = value1.TrimEnd();
+                        }
+                        switch (formatChar)
+                        {
+                            case 'g':
+                                return DoStrictParseGeneral(value1, formatInfo, parseResult);
+                            case 'n':
+                            case 'd':
+                                return DoStrictParseNumber(value1, formatInfo, parseResult);
+                        }
+                        return false;
+             */
         }
 
-        private static string[] ExpandStandardFormatPattern(char formatCharacter, NodaFormatInfo formatInfo, ParseResult<Offset> parseResult)
+        private static bool ParseByFormat(ParseString str, Pattern pattern, NodaFormatInfo formatInfo, bool allowInnerWhite, OffsetParseResult parseResult)
+        {
+            char patternCharacter = pattern.GetNextCharacter();
+            int count;
+            int value;
+            switch (patternCharacter)
+            {
+                case '\'':
+                case '"':
+                    string quoted = pattern.GetQuotedString(patternCharacter, parseResult);
+                    if (parseResult.Failed)
+                    {
+                        return false;
+                    }
+                    for (int i = 0; i < quoted.Length; i++)
+                    {
+                        if (quoted[i] == ' ' && allowInnerWhite)
+                        {
+                            str.SkipWhiteSpaces();
+                        }
+                        else if (!str.Match(quoted[i]))
+                        {
+                            return parseResult.SetFailure(ParseFailureKind.Format, "Format_BadOffset"); // TODO: Use correct message key
+                        }
+                    }
+                    return true;
+                case '\\':
+                    if (!pattern.HasMoreCharacters)
+                    {
+                        return parseResult.SetFailure(ParseFailureKind.Format, "Format_BadFormatSpecifier", null); // TODO: Use correct message key
+                    }
+                    if (str.Match(pattern.Current))
+                    {
+                        pattern.MoveNext();
+                        return true;
+                    }
+                    return parseResult.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                case '.':
+                    NumberFormatInfo numberFormatInfo = GetNumberFormatInfo(formatInfo);
+                    if (!str.Match(numberFormatInfo.NumberDecimalSeparator))
+                    {
+                        if (!pattern.HasMoreCharacters || pattern.Current != 'F')
+                        {
+                            return parseResult.SetFailure(ParseFailureKind.Format, "Format_BadOffset"); // TODO: Use correct message key
+                        }
+                        pattern.GetRepeatCount(2, parseResult); // Skip the F pattern characters
+                    }
+                    return true;
+                case ':':
+                    DateTimeFormatInfo dateTimeFormatInfo = GetDateTimeFormatInfo(formatInfo);
+                    if (str.Match(dateTimeFormatInfo.TimeSeparator))
+                    {
+                        return true;
+                    }
+                    return parseResult.SetFailure(ParseFailureKind.Format, "Format_BadOffset"); // TODO: Use correct message key
+                case 'H':
+                case 'h':
+                    count = pattern.GetRepeatCount(2, parseResult);
+                    if (!parseResult.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
+                    {
+                        return CheckNewValue(ref parseResult.Hours, value, patternCharacter, parseResult);
+                    }
+                    return parseResult.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                case 'm':
+                    count = pattern.GetRepeatCount(2, parseResult);
+                    if (!parseResult.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
+                    {
+                        return CheckNewValue(ref parseResult.Minutes, value, patternCharacter, parseResult);
+                    }
+                    return parseResult.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                case 's':
+                    count = pattern.GetRepeatCount(2, parseResult);
+                    if (!parseResult.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
+                    {
+                        return CheckNewValue(ref parseResult.Seconds, value, patternCharacter, parseResult);
+                    }
+                    return parseResult.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                case 'F':
+                case 'f':
+                    count = pattern.GetRepeatCount(3, parseResult);
+                    if (parseResult.Failed)
+                    {
+                        return false;
+                    }
+                    double fraction;
+                    if (!str.ParseFractionExact(count, out fraction) && patternCharacter == 'f')
+                    {
+                        return parseResult.SetFailure(ParseFailureKind.Format, "Format_BadDateTime"); // TODO: Use correct message key
+                    }
+                    return CheckNewValue(ref parseResult.Fraction, fraction, patternCharacter, parseResult);
+                default:
+                    if (patternCharacter == ' ')
+                    {
+                        if (!allowInnerWhite && !str.Match(patternCharacter))
+                        {
+                            /*
+                            if ((parseInfo.fAllowTrailingWhite && pattern.HasMoreCharacters) && ParseByFormat(str, pattern, formatInfo, false, parseResult))
+                            {
+                                return true;
+                            }
+                            */
+                            parseResult.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                            return false;
+                        }
+                    }
+                    else if (!str.Match(patternCharacter))
+                    {
+                        parseResult.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                        return false;
+                    }
+                    return true;
+            }
+        }
+
+        internal class OffsetParseResult : ParseResult
+        {
+            internal Offset Value { get; set; }
+            internal int? Hours;
+            public int? Minutes;
+            public int? Seconds;
+            public double? Fraction;
+        }
+
+        private static bool CheckNewValue(ref int? currentValue, int newValue, char patternCharacter, ParseResult result)
+        {
+            if (currentValue == null)
+            {
+                currentValue = newValue;
+                return true;
+            }
+            if (newValue != currentValue)
+            {
+                result.SetFailure(ParseFailureKind.FormatWithParameter, "Format_RepeatDateTimePattern", patternCharacter); // TODO: Use correct message key
+                return false;
+            }
+            return true;
+        }
+
+        private static bool CheckNewValue(ref double? currentValue, double newValue, char patternCharacter, ParseResult result)
+        {
+            if (currentValue == null)
+            {
+                currentValue = newValue;
+                return true;
+            }
+            if (newValue != currentValue)
+            {
+                result.SetFailure(ParseFailureKind.FormatWithParameter, "Format_RepeatDateTimePattern", patternCharacter); // TODO: Use correct message key
+                return false;
+            }
+            return true;
+        }
+
+        private static NumberFormatInfo GetNumberFormatInfo(IFormatProvider provider)
+        {
+            var numberFormatInfo = provider.GetFormat(typeof(NumberFormatInfo)) as NumberFormatInfo;
+            return numberFormatInfo ?? Thread.CurrentThread.CurrentUICulture.NumberFormat;
+        }
+
+        private static DateTimeFormatInfo GetDateTimeFormatInfo(IFormatProvider provider)
+        {
+            var dateTimeFormatInfo = provider.GetFormat(typeof(DateTimeFormatInfo)) as DateTimeFormatInfo;
+            return dateTimeFormatInfo ?? Thread.CurrentThread.CurrentUICulture.DateTimeFormat;
+        }
+
+        private static string[] ExpandStandardFormatPattern(char formatCharacter, NodaFormatInfo formatInfo, ParseResult parseResult)
         {
             switch (formatCharacter)
             {
                 case 'g':
                     break;
             }
-            parseResult.SetFailure(ParseFailureKind.Format, "Format_InvalidString");
+            parseResult.SetFailure(ParseFailureKind.Format, "Format_InvalidString"); // TODO: Use correct message key
             return null;
-        }
-
-        private static bool DoStrictParseGeneral(string value, NodaFormatInfo formatInfo, ParseResult<Offset> parseResult)
-        {
-            string label = value.ToUpperInvariant();
-            if (label.Equals(Instant.BeginningOfTimeLabel))
-            {
-                parseResult.Value = Offset.MinValue;
-                return true;
-            }
-            if (label.Equals(Instant.EndOfTimeLabel))
-            {
-                parseResult.Value = Offset.MaxValue;
-                return true;
-            }
-            DateTime result;
-            if (DateTime.TryParseExact(value, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", formatInfo, DateTimeStyles.None, out result))
-            {
-                parseResult.Value = new Offset(1234);
-                return true;
-            }
-            return false;
-        }
-
-        private static bool DoStrictParseNumber(string value, IFormatProvider formatProvider, ParseResult<Offset> parseResult)
-        {
-            const NumberStyles parseStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowThousands;
-            int number;
-            if (Int32.TryParse(value, parseStyles, formatProvider, out number))
-            {
-                parseResult.Value = new Offset(number);
-                return true;
-            }
-            parseResult.SetFailure(ParseFailureKind.Format, "Parse_BadValue");
-            return false;
         }
     }
 }
