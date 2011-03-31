@@ -15,13 +15,15 @@
 // limitations under the License.
 #endregion
 
+#region usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
-using System.Resources;
 using System.Threading;
 using NodaTime.Properties;
-using System.Diagnostics;
+
+#endregion
 
 namespace NodaTime.Globalization
 {
@@ -32,12 +34,18 @@ namespace NodaTime.Globalization
     public class NodaFormatInfo : IFormatProvider
     {
         private static readonly IDictionary<String, NodaFormatInfo> Infos = new Dictionary<string, NodaFormatInfo>();
-        private readonly CultureInfo cultureInfo;
+        private readonly string name;
+        private string negativeSign;
+        private string dateSeparator;
+        private string decimalSeparator;
         private bool isReadOnly;
         private string offsetPatternFull;
         private string offsetPatternLong;
         private string offsetPatternMedium;
         private string offsetPatternShort;
+        private string positiveSign;
+        private string timeSeparator;
+        public CultureInfo CultureInfo { get; private set; }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "NodaFormatInfo" /> class.
@@ -45,12 +53,33 @@ namespace NodaTime.Globalization
         /// <param name = "cultureInfo">The culture info to base this on.</param>
         public NodaFormatInfo(CultureInfo cultureInfo)
         {
-            this.cultureInfo = cultureInfo;
-            ResourceManager manager = Resources.ResourceManager;
+            if (cultureInfo == null)
+            {
+                throw new ArgumentNullException("cultureInfo");
+            }
+            CultureInfo = cultureInfo;
+            name = "NodaFormatInfo[" + cultureInfo.Name + "]";
+            var manager = Resources.ResourceManager;
             offsetPatternFull = manager.GetString("OffsetPatternFull", cultureInfo);
             OffsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
             offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
             offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
+            var nfi = cultureInfo.GetFormat(typeof(NumberFormatInfo)) as NumberFormatInfo;
+            if (nfi == null)
+            {
+                throw new ArgumentException("The culture info must support getFormat(typeof(NumberFormatInfo))", "cultureInfo");
+            }
+            decimalSeparator = nfi.NumberDecimalSeparator;
+            positiveSign = nfi.PositiveSign;
+            negativeSign = nfi.NegativeSign;
+
+            var dtfi = cultureInfo.GetFormat(typeof(DateTimeFormatInfo)) as DateTimeFormatInfo;
+            if (dtfi == null)
+            {
+                throw new ArgumentException("The culture info must support getFormat(typeof(DateTimeFormatInfo))", "cultureInfo");
+            }
+            timeSeparator = dtfi.TimeSeparator;
+            dateSeparator = dtfi.DateSeparator;
         }
 
         /// <summary>
@@ -58,8 +87,7 @@ namespace NodaTime.Globalization
         /// </summary>
         public static NodaFormatInfo CurrentInfo
         {
-            [DebuggerStepThrough]
-            get { return GetInstance(Thread.CurrentThread.CurrentUICulture); }
+            [DebuggerStepThrough] get { return GetInstance(Thread.CurrentThread.CurrentUICulture); }
         }
 
         /// <summary>
@@ -91,21 +119,38 @@ namespace NodaTime.Globalization
         /// </value>
         public string OffsetPatternFull
         {
-            [DebuggerStepThrough]
-            get { return offsetPatternFull; }
-            [DebuggerStepThrough]
-            set
-            {
-                if (IsReadOnly)
-                {
-                    throw new InvalidOperationException("Cannot change a read only object.");
-                }
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value", Resources.ValueNotNull);
-                }
-                offsetPatternFull = value;
-            }
+            [DebuggerStepThrough] get { return offsetPatternFull; }
+            [DebuggerStepThrough] set { SetValue(value, ref offsetPatternFull); }
+        }
+
+        public string DecimalSeparator
+        {
+            [DebuggerStepThrough] get { return decimalSeparator; }
+            [DebuggerStepThrough] set { SetValue(value, ref decimalSeparator); }
+        }
+
+        public string PositiveSign
+        {
+            [DebuggerStepThrough] get { return positiveSign; }
+            [DebuggerStepThrough] set { SetValue(value, ref positiveSign); }
+        }
+
+        public string NegativeSign
+        {
+            [DebuggerStepThrough] get { return negativeSign; }
+            [DebuggerStepThrough] set { SetValue(value, ref negativeSign); }
+        }
+
+        public string TimeSeparator
+        {
+            [DebuggerStepThrough] get { return timeSeparator; }
+            [DebuggerStepThrough] set { SetValue(value, ref timeSeparator); }
+        }
+
+        public string DateSeparator
+        {
+            [DebuggerStepThrough] get { return dateSeparator; }
+            [DebuggerStepThrough] set { SetValue(value, ref dateSeparator); }
         }
 
         /// <summary>
@@ -116,21 +161,8 @@ namespace NodaTime.Globalization
         /// </value>
         public string OffsetPatternLong
         {
-            [DebuggerStepThrough]
-            get { return offsetPatternLong; }
-            [DebuggerStepThrough]
-            set
-            {
-                if (IsReadOnly)
-                {
-                    throw new InvalidOperationException("Cannot change a read only object.");
-                }
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value", Resources.ValueNotNull);
-                }
-                offsetPatternLong = value;
-            }
+            [DebuggerStepThrough] get { return offsetPatternLong; }
+            [DebuggerStepThrough] set { SetValue(value, ref offsetPatternLong); }
         }
 
         /// <summary>
@@ -141,21 +173,8 @@ namespace NodaTime.Globalization
         /// </value>
         public string OffsetPatternMedium
         {
-            [DebuggerStepThrough]
-            get { return offsetPatternMedium; }
-            [DebuggerStepThrough]
-            set
-            {
-                if (IsReadOnly)
-                {
-                    throw new InvalidOperationException("Cannot change a read only object.");
-                }
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value", Resources.ValueNotNull);
-                }
-                offsetPatternMedium = value;
-            }
+            [DebuggerStepThrough] get { return offsetPatternMedium; }
+            [DebuggerStepThrough] set { SetValue(value, ref offsetPatternMedium); }
         }
 
         /// <summary>
@@ -166,21 +185,8 @@ namespace NodaTime.Globalization
         /// </value>
         public string OffsetPatternShort
         {
-            [DebuggerStepThrough]
-            get { return offsetPatternShort; }
-            [DebuggerStepThrough]
-            set
-            {
-                if (IsReadOnly)
-                {
-                    throw new InvalidOperationException("Cannot change a read only object.");
-                }
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value", Resources.ValueNotNull);
-                }
-                offsetPatternShort = value;
-            }
+            [DebuggerStepThrough] get { return offsetPatternShort; }
+            [DebuggerStepThrough] set { SetValue(value, ref offsetPatternShort); }
         }
 
         #region IFormatProvider Members
@@ -195,9 +201,22 @@ namespace NodaTime.Globalization
         [DebuggerStepThrough]
         public object GetFormat(Type formatType)
         {
-            return formatType == typeof(NodaFormatInfo) ? this : cultureInfo.GetFormat(formatType);
+            return formatType == typeof(NodaFormatInfo) ? this : null;
         }
         #endregion
+
+        private void SetValue(string value, ref string property)
+        {
+            if (IsReadOnly)
+            {
+                throw new InvalidOperationException("Cannot change a read only object.");
+            }
+            if (value == null)
+            {
+                throw new ArgumentNullException("value", Resources.ValueNotNull);
+            }
+            property = value;
+        }
 
         /// <summary>
         ///   Gets the <see cref = "NodaFormatInfo" /> for the given <see cref = "CultureInfo" />.
@@ -288,7 +307,7 @@ namespace NodaTime.Globalization
         [DebuggerStepThrough]
         public override string ToString()
         {
-            return "NodaFormatInfo[" + cultureInfo.Name + "]";
+            return name;
         }
     }
 }
