@@ -14,13 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
 using System;
 using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Utility;
-
 #endregion
 
 namespace NodaTime.Format
@@ -170,7 +168,7 @@ namespace NodaTime.Format
                 return true;
             }
             DateTime result;
-            if (DateTime.TryParseExact(value, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", parseInfo.FormatInfo,
+            if (DateTime.TryParseExact(value, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", parseInfo.FormatInfo.DateTimeFormat,
                                        DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out result))
             {
                 parseInfo.Value = SystemConversions.DateTimeToInstant(result);
@@ -183,7 +181,7 @@ namespace NodaTime.Format
         {
             const NumberStyles parseStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowThousands;
             long number;
-            if (Int64.TryParse(value, parseStyles, parseInfo.FormatInfo, out number)) // TODO: fix
+            if (Int64.TryParse(value, parseStyles, parseInfo.FormatInfo.NumberFormat, out number))
             {
                 parseInfo.Value = new Instant(number);
                 return true;
