@@ -86,6 +86,8 @@
     <Compile Include="Format\ParsableTest.cs" />
     <Compile Include="Format\ParseStringTest.cs" />
     <Compile Include="Format\PatternTest.cs" />
+    <Compile Include="Globalization\NodaCultureInfoTest.cs" />
+    <Compile Include="Globalization\NodaFormatInfoTest.cs" />
     <Compile Include="InstantTest.Format.cs">
       <DependentUpon>InstantTest.cs</DependentUpon>
     </Compile>

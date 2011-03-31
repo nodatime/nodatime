@@ -59,7 +59,7 @@ namespace NodaTime.Format
             switch (Failure)
             {
                 case ParseFailureKind.None:
-                    break;
+                    return null;
                 case ParseFailureKind.ArgumentNull:
                     return new ArgumentNullException(FailureArgumentName, ResourceHelper.GetMessage(FailureMessageId));
                 case ParseFailureKind.Format:
@@ -69,7 +69,6 @@ namespace NodaTime.Format
                 default:
                     return new InvalidOperationException(ResourceHelper.GetMessage("Unknown_failure", Failure)); // TODO: Use correct message key
             }
-            return null;
         }
 
         internal bool SetFailure(ParseFailureKind failure, string failureMessageId)

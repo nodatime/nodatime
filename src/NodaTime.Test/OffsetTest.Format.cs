@@ -27,7 +27,7 @@ namespace NodaTime.Test
         private const string Nbsp = "\u00a0";
 
         private object[] toStringNoFormatData = {
-            new TestCaseData(EnUs, Offset.MaxValue, "+23:59:59.999").SetName("Offset.MaxValue, eu-US"),
+            new TestCaseData(EnUs, Offset.MaxValue, "+23:59:59.999").SetName("Offset.MaxValue, en-US"),
             new TestCaseData(EnUs, Offset.MinValue, "-23:59:59.999").SetName("Offset.MinValue, en-US"),
             new TestCaseData(EnUs, HmsfOffset, "+05:12:34.567").SetName("Hours, minutes, seconds, fractions, en-US"),
             new TestCaseData(EnUs, HmsOffset, "+05:12:34").SetName("Hours, minutes, seconds, en-US"),
@@ -48,9 +48,9 @@ namespace NodaTime.Test
         };
 
         private object[] toStringFormatData = {
-            new TestCaseData(EnUs, Offset.MaxValue, null, "+23:59:59.999").SetName("Offset.MaxValue, null, eu-US"),
-            new TestCaseData(EnUs, Offset.MaxValue, "", "+23:59:59.999").SetName("Offset.MaxValue, '', eu-US"),
-            new TestCaseData(EnUs, Offset.MaxValue, "G", "+23:59:59.999").SetName("Offset.MaxValue, 'G', eu-US"),
+            new TestCaseData(EnUs, Offset.MaxValue, null, "+23:59:59.999").SetName("Offset.MaxValue, null, en-US"),
+            new TestCaseData(EnUs, Offset.MaxValue, "", "+23:59:59.999").SetName("Offset.MaxValue, '', en-US"),
+            new TestCaseData(EnUs, Offset.MaxValue, "G", "+23:59:59.999").SetName("Offset.MaxValue, 'G', en-US"),
             new TestCaseData(EnUs, Offset.MinValue, "G", "-23:59:59.999").SetName("Offset.MinValue, 'G', en-US"),
             new TestCaseData(EnUs, HmsfOffset, "G", "+05:12:34.567").SetName("Hours, minutes, seconds, fractions, 'G', en-US"),
             new TestCaseData(EnUs, HmsOffset, "G", "+05:12:34").SetName("Hours, minutes, seconds, 'G', en-US"),
