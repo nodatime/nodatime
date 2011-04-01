@@ -124,16 +124,16 @@
     <value>Invalid format string.</value>
   </data>
   <data name="OffsetPatternFull" xml:space="preserve">
-    <value>+hh:mm:ss.fff</value>
+    <value>+h:mm:ss.fff</value>
   </data>
   <data name="OffsetPatternLong" xml:space="preserve">
-    <value>+hh:mm:ss</value>
+    <value>+h:mm:ss</value>
   </data>
   <data name="OffsetPatternMedium" xml:space="preserve">
-    <value>+hh:mm</value>
+    <value>+h:mm</value>
   </data>
   <data name="OffsetPatternShort" xml:space="preserve">
-    <value>+hh</value>
+    <value>+h</value>
   </data>
   <data name="ValueNotNull" xml:space="preserve">
     <value>value cannot be null</value>

@@ -51,11 +51,11 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void SimpleProperties_ReturnValuesFromConstructor()
         {
-            Assert.AreEqual("UTC-8", TestZone.Id);
-            Assert.AreEqual("UTC-8", TestZone.GetName(Instant.UnixEpoch));
+            Assert.AreEqual("UTC-8", TestZone.Id, "TestZone.Id");
+            Assert.AreEqual("UTC-8", TestZone.GetName(Instant.UnixEpoch), "TestZone.GetName()");
             // TODO: Use a real LocalDateTime when we've implemented it!
-            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch));
-            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromUtc(Instant.UnixEpoch));
+            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch), "TestZone.GetOffsetFromLocal()");
+            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromUtc(Instant.UnixEpoch), "TestZone.GetOffsetFromUtc()");
         }
 
         [Test]

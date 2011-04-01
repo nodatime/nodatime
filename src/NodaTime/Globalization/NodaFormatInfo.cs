@@ -262,6 +262,14 @@ namespace NodaTime.Globalization
         }
         #endregion
 
+        /// <summary>
+        ///   Clears the cache.
+        /// </summary>
+        internal static void ClearCache()
+        {
+            lock (Infos) Infos.Clear();
+        }
+
         private void SetValue<T>(T value, ref T property)
         {
             if (IsReadOnly)
