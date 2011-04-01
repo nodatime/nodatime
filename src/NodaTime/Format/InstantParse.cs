@@ -124,7 +124,7 @@ namespace NodaTime.Format
                 throw new ArgumentNullException("formatInfo");
             }
             result = Instant.MinValue;
-            var parseResult = new InstantParseInfo(formatInfo, true, styles);
+            var parseResult = new InstantParseInfo(formatInfo, false, styles);
             if (TryParseExactMultiple(value, formats, parseResult))
             {
                 result = parseResult.Value;

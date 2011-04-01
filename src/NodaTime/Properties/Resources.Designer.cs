@@ -79,7 +79,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to +hh:mm:ss.fff.
+        ///   Looks up a localized string similar to +h:mm:ss.fff.
         /// </summary>
         internal static string OffsetPatternFull {
             get {
@@ -88,7 +88,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to +hh:mm:ss.
+        ///   Looks up a localized string similar to +h:mm:ss.
         /// </summary>
         internal static string OffsetPatternLong {
             get {
@@ -97,7 +97,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to +hh:mm.
+        ///   Looks up a localized string similar to +h:mm.
         /// </summary>
         internal static string OffsetPatternMedium {
             get {
@@ -106,7 +106,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to +hh.
+        ///   Looks up a localized string similar to +h.
         /// </summary>
         internal static string OffsetPatternShort {
             get {

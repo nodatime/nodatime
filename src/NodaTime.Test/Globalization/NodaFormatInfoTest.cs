@@ -14,7 +14,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
 using System;
 using System.Globalization;
@@ -39,6 +38,19 @@ namespace NodaTime.Test.Globalization
                 return null;
             }
             #endregion
+        }
+
+        [Test]
+        public void TestClone()
+        {
+            var info1 = NodaFormatInfo.GetFormatInfo(enUs);
+            Assert.NotNull(info1);
+            Assert.IsTrue(info1.IsReadOnly);
+
+            var info2 = (NodaFormatInfo)info1.Clone();
+            Assert.IsFalse(info2.IsReadOnly);
+            Assert.AreNotSame(info1, info2);
+            Assert.AreEqual(info1.Name, info2.Name);
         }
 
         [Test]
@@ -92,6 +104,7 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestGetFormatInfo()
         {
+            NodaFormatInfo.ClearCache();
             var info1 = NodaFormatInfo.GetFormatInfo(enUs);
             Assert.NotNull(info1);
             Assert.IsTrue(info1.IsReadOnly);
@@ -104,27 +117,16 @@ namespace NodaTime.Test.Globalization
         }
 
         [Test]
-        public void TestClone()
-        {
-            var info1 = NodaFormatInfo.GetFormatInfo(enUs);
-            Assert.NotNull(info1);
-            Assert.IsTrue(info1.IsReadOnly);
-
-            var info2 = (NodaFormatInfo)info1.Clone();
-            Assert.IsFalse(info2.IsReadOnly);
-            Assert.AreNotSame(info1, info2);
-            Assert.AreEqual(info1.Name, info2.Name);
-        }
-
-        [Test]
         public void TestGetFormatInfo_null()
         {
+            NodaFormatInfo.ClearCache();
             Assert.Throws<ArgumentNullException>(() => NodaFormatInfo.GetFormatInfo(null));
         }
 
         [Test]
         public void TestGetInstance_CultureInfo()
         {
+            NodaFormatInfo.ClearCache();
             using (CultureSaver.SetUiCulture(enUs))
             {
                 var actual = NodaFormatInfo.GetInstance(enGb);
@@ -135,6 +137,7 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestGetInstance_IFormatProvider()
         {
+            NodaFormatInfo.ClearCache();
             using (CultureSaver.SetUiCulture(enUs))
             {
                 var provider = new EmptyFormatProvider();
@@ -146,6 +149,7 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestGetInstance_NodaCultureInfo()
         {
+            NodaFormatInfo.ClearCache();
             using (CultureSaver.SetUiCulture(enUs))
             {
                 var info = new NodaCultureInfo("en-GB");
@@ -157,6 +161,7 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestGetInstance_NodaFormatInfo()
         {
+            NodaFormatInfo.ClearCache();
             using (CultureSaver.SetUiCulture(enUs))
             {
                 var info = new NodaFormatInfo(enGb);
@@ -168,6 +173,7 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestGetInstance_null()
         {
+            NodaFormatInfo.ClearCache();
             using (CultureSaver.SetUiCulture(enUs))
             {
                 var info = NodaFormatInfo.GetInstance(null);
@@ -264,6 +270,8 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestSetFormatInfo()
         {
+            NodaFormatInfo.ClearCache();
+
             var info1 = NodaFormatInfo.GetFormatInfo(enUs);
             Assert.NotNull(info1);
             Assert.IsTrue(info1.IsReadOnly);
@@ -290,6 +298,7 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestSetFormatInfo_failure()
         {
+            NodaFormatInfo.ClearCache();
             Assert.Throws<ArgumentNullException>(() => NodaFormatInfo.SetFormatInfo(null, null));
         }
     }

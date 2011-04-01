@@ -109,6 +109,10 @@ namespace NodaTime.Format
             {
             }
             int repeatLength = Index - startPos;
+            if (Index < Length)
+            {
+                MovePrevious();
+            }
             if (repeatLength > maximumCount)
             {
                 parseInfo.SetFailure(ParseFailureKind.Format, "Format_InvalidString");
