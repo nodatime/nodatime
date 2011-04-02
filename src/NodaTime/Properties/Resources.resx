@@ -123,6 +123,12 @@
   <data name="Format_InvalidString" xml:space="preserve">
     <value>Invalid format string.</value>
   </data>
+  <data name="Noda_ArgumentNull" xml:space="preserve">
+    <value>Argument cannot be null.</value>
+  </data>
+  <data name="Noda_CannotChangeReadOnly" xml:space="preserve">
+    <value>Cannot change a read only object.</value>
+  </data>
   <data name="OffsetPatternFull" xml:space="preserve">
     <value>+h:mm:ss.fff</value>
   </data>
@@ -135,7 +141,70 @@
   <data name="OffsetPatternShort" xml:space="preserve">
     <value>+h</value>
   </data>
-  <data name="ValueNotNull" xml:space="preserve">
-    <value>value cannot be null</value>
+  <data name="Parse_CannotParseValue" xml:space="preserve">
+    <value>The value "{0}" cannot be parsed into an instance of {1} using pattern "{2}"</value>
+  </data>
+  <data name="Parse_DefaultDoubleAssignment" xml:space="preserve">
+    <value>The pattern flag '{0}' cannot appear twice and parse different values.</value>
+  </data>
+  <data name="Parse_EmptyFormatsArray" xml:space="preserve">
+    <value>The list of formats cannot be empty.</value>
+  </data>
+  <data name="Parse_EscapeAtEndOfString" xml:space="preserve">
+    <value>The format string has an escape character (backslash '\') at the end of the string.</value>
+  </data>
+  <data name="Parse_EscapedCharacterMismatch" xml:space="preserve">
+    <value>The value string does not match an escaped character in the format string: "\{0}"</value>
+  </data>
+  <data name="Parse_ExtraValueCharacters" xml:space="preserve">
+    <value>The format matches a prefix of the value string but not the entire string. Part not matching: "{0}"</value>
+  </data>
+  <data name="Parse_FormatElementInvalid" xml:space="preserve">
+    <value>The items of the format string array cannot be null or empty.</value>
+  </data>
+  <data name="Parse_FormatInvalid" xml:space="preserve">
+    <value>The format string is invalid: "{0}"</value>
+  </data>
+  <data name="Parse_FormatStringEmpty" xml:space="preserve">
+    <value>The format string is empty.</value>
+  </data>
+  <data name="Parse_MismatchedCharacter" xml:space="preserve">
+    <value>The value string does not match a simple character in the format string "{0}".</value>
+  </data>
+  <data name="Parse_MismatchedNumber" xml:space="preserve">
+    <value>The value string does not match the required number from the format string "{0}".</value>
+  </data>
+  <data name="Parse_MismatchedSpace" xml:space="preserve">
+    <value>The value string does not match a space in the format string.</value>
+  </data>
+  <data name="Parse_MissingDecimalSeparator" xml:space="preserve">
+    <value>The format string contains a decimal separator that does not match the value and the decimal separator is not followed by an "F" pattern character.</value>
+  </data>
+  <data name="Parse_MissingEndQuote" xml:space="preserve">
+    <value>The format string is missing the end quote character "{0}".</value>
+  </data>
+  <data name="Parse_PercentAtEndOfString" xml:space="preserve">
+    <value>A percent sign (%) appears at the end of the format string.</value>
+  </data>
+  <data name="Parse_PercentDoubled" xml:space="preserve">
+    <value>A percent sign (%) is followed by another percent sign in the format string.</value>
+  </data>
+  <data name="Parse_QuotedStringMismatch" xml:space="preserve">
+    <value>The value string does not match a quoted string in the pattern.</value>
+  </data>
+  <data name="Parse_RepeatCountExceeded" xml:space="preserve">
+    <value>There were more consecutive copies of the pattern character "{0}" than the maximum allowed ({1}) in the format string.</value>
+  </data>
+  <data name="Parse_TimeSeparatorMismatch" xml:space="preserve">
+    <value>The value string does not match a time separator in the format string.</value>
+  </data>
+  <data name="Parse_UnknownFailure" xml:space="preserve">
+    <value>Internal Error: The specified ParseFailureKind is unknown [{0}].</value>
+  </data>
+  <data name="Parse_UnknownStandardFormat" xml:space="preserve">
+    <value>The standard format "{0}" is not valid for the {1} type.</value>
+  </data>
+  <data name="Parse_ValueStringEmpty" xml:space="preserve">
+    <value>The value string is empty.</value>
   </data>
 </root>

@@ -172,7 +172,7 @@ namespace NodaTime.Test.Format
             char ch = pattern.GetNextCharacter();
             int actual = pattern.GetRepeatCount(10, ch, parseInfo);
             Assert.AreEqual(3, actual);
-            ValidateCharacter(pattern, 3, 'd');
+            ValidateCharacter(pattern, 2, 'a');
         }
 
         [Test]

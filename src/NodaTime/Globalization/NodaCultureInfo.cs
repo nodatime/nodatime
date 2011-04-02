@@ -18,6 +18,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
+using NodaTime.Properties;
 #endregion
 
 namespace NodaTime.Globalization
@@ -115,7 +116,7 @@ namespace NodaTime.Globalization
             {
                 if (IsReadOnly)
                 {
-                    throw new InvalidOperationException("Cannot change a read only object.");
+                    throw new InvalidOperationException(Resources.Noda_CannotChangeReadOnly);
                 }
                 formatInfo = value;
             }

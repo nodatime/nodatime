@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("NodaTime")]
-[assembly: AssemblyCopyright("Copyright ©  2009")]
+[assembly: AssemblyCopyright("Copyright ©  2009-2011 by Jon Skeet. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -62,4 +62,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("ZoneInfoCompiler")]
 [assembly: InternalsVisibleTo("ZoneInfoCompiler.Test")]
 [assembly: InternalsVisibleTo("NodaTime.Benchmarks")]
-[assembly: NeutralResourcesLanguage("en-US")]
+[assembly: NeutralResourcesLanguage("en")]

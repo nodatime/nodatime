@@ -18,6 +18,7 @@
 #region usings
 using System;
 using NodaTime.Globalization;
+using NodaTime.Properties;
 
 #endregion
 
@@ -88,14 +89,18 @@ namespace NodaTime.Format
         {
             if (formats == null)
             {
-                return parseInfo.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format"); // TODO: Use correct message key
+                return parseInfo.SetArgumentNull("formats");
             }
             if (formats.Length == 0)
             {
-                return parseInfo.SetFailure(ParseFailureKind.Format, "TryParse_Format_List_Empty"); // TODO: Use correct message key
+                return parseInfo.SetFormatError(Resources.Parse_EmptyFormatsArray);
             }
             foreach (string format in formats)
             {
+                if (string.IsNullOrEmpty(format))
+                {
+                    return parseInfo.SetFormatError(Resources.Parse_FormatElementInvalid);
+                }
                 if (TryParseExact(value, format, parseInfo))
                 {
                     return true;
@@ -104,23 +109,23 @@ namespace NodaTime.Format
             return false;
         }
 
-        private static bool TryParseExact(string value, string format, OffsetParseInfo parseInfo)
+        internal static bool TryParseExact(string value, string format, OffsetParseInfo parseInfo)
         {
             if (value == null)
             {
-                return parseInfo.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "value"); // TODO: Use correct message key
+                return parseInfo.SetArgumentNull("value");
             }
             if (format == null)
             {
-                return parseInfo.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format"); // TODO: Use correct message key
+                return parseInfo.SetArgumentNull("format");
             }
             if (value.Length == 0)
             {
-                return parseInfo.SetFailure(ParseFailureKind.Format, "TryParse_Value_Empty"); // TODO: Use correct message key
+                return parseInfo.SetFormatError(Resources.Parse_ValueStringEmpty);
             }
             if (format.Length == 0)
             {
-                return parseInfo.SetFailure(ParseFailureKind.Format, "TryParse_Format_Empty"); // TODO: Use correct message key
+                return parseInfo.SetFormatError(Resources.Parse_FormatStringEmpty);
             }
             if (format.Length == 1)
             {
@@ -138,6 +143,7 @@ namespace NodaTime.Format
 
             var pattern = new Pattern(format);
             var str = new ParseString(value);
+            str.MoveNext(); // Prime the pump
             if (parseInfo.AllowTrailingWhite)
             {
                 pattern.TrimTrailingWhiteSpaces();
@@ -150,7 +156,7 @@ namespace NodaTime.Format
                 pattern.TrimLeadingInQuoteSpaces();
                 str.TrimLeadingWhiteSpaces();
             }
-            while (pattern.MoveNext())
+            while (pattern.HasMoreCharacters)
             {
                 if (parseInfo.AllowInnerWhite)
                 {
@@ -163,7 +169,7 @@ namespace NodaTime.Format
             }
             if (str.HasMoreCharacters)
             {
-                return parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadOffset"); // TODO: Use correct message key
+                return parseInfo.SetFormatError(Resources.Parse_ExtraValueCharacters, str.Remainder);
             }
 
             parseInfo.CalculateValue();
@@ -178,6 +184,16 @@ namespace NodaTime.Format
             int value;
             switch (patternCharacter)
             {
+                case '%':
+                    if (pattern.HasMoreCharacters)
+                    {
+                        if (pattern.PeekNext() != '%')
+                        {
+                            return true;
+                        }
+                        return parseInfo.SetFormatError(Resources.Parse_PercentDoubled);
+                    }
+                    return parseInfo.SetFormatError(Resources.Parse_PercentAtEndOfString);
                 case '\'':
                 case '"':
                     string quoted = pattern.GetQuotedString(patternCharacter, parseInfo);
@@ -193,27 +209,27 @@ namespace NodaTime.Format
                         }
                         else if (!str.Match(quoted[i]))
                         {
-                            return parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadOffset"); // TODO: Use correct message key
+                            return parseInfo.SetFormatError(Resources.Parse_QuotedStringMismatch);
                         }
                     }
                     return true;
                 case '\\':
                     if (!pattern.HasMoreCharacters)
                     {
-                        return parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadFormatSpecifier", null); // TODO: Use correct message key
+                        return parseInfo.SetFormatError(Resources.Parse_EscapeAtEndOfString);
                     }
                     if (str.Match(pattern.Current))
                     {
                         pattern.MoveNext();
                         return true;
                     }
-                    return parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                    return parseInfo.SetFormatError(Resources.Parse_EscapedCharacterMismatch, pattern.Current);
                 case '.':
                     if (!str.Match(parseInfo.FormatInfo.DecimalSeparator))
                     {
                         if (!pattern.HasMoreCharacters || pattern.Current != 'F')
                         {
-                            return parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadOffset"); // TODO: Use correct message key
+                            return parseInfo.SetFormatError(Resources.Parse_MissingDecimalSeparator);
                         }
                         pattern.GetRepeatCount(2, parseInfo); // Skip the F pattern characters
                     }
@@ -223,7 +239,7 @@ namespace NodaTime.Format
                     {
                         return true;
                     }
-                    return parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadOffset"); // TODO: Use correct message key
+                    return parseInfo.SetFormatError(Resources.Parse_TimeSeparatorMismatch);
                 case 'H':
                 case 'h':
                     count = pattern.GetRepeatCount(2, parseInfo);
@@ -231,21 +247,21 @@ namespace NodaTime.Format
                     {
                         return parseInfo.AssignNewValue(ref parseInfo.Hours, value, patternCharacter);
                     }
-                    return parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                    return parseInfo.SetFormatError(Resources.Parse_MismatchedNumber, new string(patternCharacter, count));
                 case 'm':
                     count = pattern.GetRepeatCount(2, parseInfo);
                     if (!parseInfo.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
                         return parseInfo.AssignNewValue(ref parseInfo.Minutes, value, patternCharacter);
                     }
-                    return parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                    return parseInfo.SetFormatError(Resources.Parse_MismatchedNumber, new string(patternCharacter, count));
                 case 's':
                     count = pattern.GetRepeatCount(2, parseInfo);
                     if (!parseInfo.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
                         return parseInfo.AssignNewValue(ref parseInfo.Seconds, value, patternCharacter);
                     }
-                    return parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                    return parseInfo.SetFormatError(Resources.Parse_MismatchedNumber, new string(patternCharacter, count));
                 case 'F':
                 case 'f':
                     // TDOD: fix the scaling of the value
@@ -257,7 +273,7 @@ namespace NodaTime.Format
                     double fraction;
                     if (!str.ParseFractionExact(count, out fraction) && patternCharacter == 'f')
                     {
-                        return parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadDateTime"); // TODO: Use correct message key
+                        return parseInfo.SetFormatError(Resources.Parse_MismatchedNumber, new string(patternCharacter, count));
                     }
                     int fractionalSeconds = (int)(fraction * 1000.0);
                     return parseInfo.AssignNewValue(ref parseInfo.FractionalSeconds, fractionalSeconds, patternCharacter);
@@ -272,13 +288,13 @@ namespace NodaTime.Format
                                 return true;
                             }
                             */
-                            parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                            parseInfo.SetFormatError(Resources.Parse_MismatchedSpace);
                             return false;
                         }
                     }
                     else if (!str.Match(patternCharacter))
                     {
-                        parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadDateTime", null); // TODO: Use correct message key
+                        parseInfo.SetFormatError(Resources.Parse_MismatchedCharacter, patternCharacter);
                         return false;
                     }
                     return true;
@@ -292,7 +308,7 @@ namespace NodaTime.Format
                 case 'g':
                     break;
             }
-            parseInfo.SetFailure(ParseFailureKind.Format, "Format_InvalidString"); // TODO: Use correct message key
+            parseInfo.SetFormatError(Resources.Parse_UnknownStandardFormat, formatCharacter, typeof(Instant).FullName);
             return null;
         }
 

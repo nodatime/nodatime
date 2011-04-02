@@ -14,36 +14,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
+using System.Diagnostics;
 using NodaTime.Globalization;
-using System;
 #endregion
 
 namespace NodaTime.Format
 {
+    [DebuggerStepThrough]
     internal class OffsetParseInfo : ParseInfo, ISignedValue
     {
         /// <summary>
         ///   The fractions of a seconds in milliseconds.
         /// </summary>
         internal int? FractionalSeconds;
+
         /// <summary>
         ///   The hours in the range [0, 23].
         /// </summary>
         internal int? Hours;
-        /// <summary>
-        ///   The minutes in the range [0, 59].
-        /// </summary>
-        internal int? Minutes;
-        /// <summary>
-        ///   The seconds in the range [0, 59].
-        /// </summary>
-        internal int? Seconds;
+
         /// <summary>
         ///   The total millisconds. This is the only value that can be negative.
         /// </summary>
         internal int? Milliseconds;
+
+        /// <summary>
+        ///   The minutes in the range [0, 59].
+        /// </summary>
+        internal int? Minutes;
+
+        /// <summary>
+        ///   The seconds in the range [0, 59].
+        /// </summary>
+        internal int? Seconds;
 
         internal OffsetParseInfo(NodaFormatInfo formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
             : base(formatInfo, throwImmediate, parseStyles)
@@ -64,19 +68,6 @@ namespace NodaTime.Format
 
         internal Offset Value { get; set; }
 
-        internal void CalculateValue()
-        {
-            int hours = Hours ?? 0;
-            if (IsNegative)
-            {
-                hours = -hours;
-            }
-            int minutes = Minutes ?? 0;
-            int seconds = Seconds ?? 0;
-            int fractionalSeconds = FractionalSeconds ?? 0;
-            Value = Offset.Create(hours, minutes, seconds, fractionalSeconds);
-        }
-
         #region ISignedValue Members
         /// <summary>
         ///   Gets a value indicating whether this instance is negative.
@@ -91,5 +82,18 @@ namespace NodaTime.Format
         /// </summary>
         public string Sign { get; private set; }
         #endregion
+
+        internal void CalculateValue()
+        {
+            int hours = Hours ?? 0;
+            if (IsNegative)
+            {
+                hours = -hours;
+            }
+            int minutes = Minutes ?? 0;
+            int seconds = Seconds ?? 0;
+            int fractionalSeconds = FractionalSeconds ?? 0;
+            Value = Offset.Create(hours, minutes, seconds, fractionalSeconds);
+        }
     }
 }

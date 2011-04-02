@@ -96,9 +96,21 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestGetFormat()
         {
-            var info = new NodaFormatInfo(enUs);
-            Assert.AreSame(info, info.GetFormat(typeof(NodaFormatInfo)));
-            Assert.IsNull(info.GetFormat(typeof(NumberFormatInfo)));
+            using (CultureSaver.SetCultures(enGb))
+            {
+                var info = new NodaFormatInfo(enUs);
+                Assert.AreSame(info, info.GetFormat(typeof(NodaFormatInfo)));
+
+                var actualNfi = info.GetFormat(typeof(NumberFormatInfo));
+                Assert.AreSame(enUs.NumberFormat, actualNfi);
+                Assert.AreNotSame(Thread.CurrentThread.CurrentCulture.NumberFormat, actualNfi);
+                Assert.AreNotSame(Thread.CurrentThread.CurrentUICulture.NumberFormat, actualNfi);
+
+                var actualDtfi = info.GetFormat(typeof(DateTimeFormatInfo));
+                Assert.AreSame(enUs.DateTimeFormat, actualDtfi);
+                Assert.AreNotSame(Thread.CurrentThread.CurrentCulture.DateTimeFormat, actualDtfi);
+                Assert.AreNotSame(Thread.CurrentThread.CurrentUICulture.DateTimeFormat, actualDtfi);
+            }
         }
 
         [Test]

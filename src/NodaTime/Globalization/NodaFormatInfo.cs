@@ -32,6 +32,7 @@ namespace NodaTime.Globalization
     public class NodaFormatInfo : IFormatProvider, ICloneable
     {
         private static readonly IDictionary<String, NodaFormatInfo> Infos = new Dictionary<string, NodaFormatInfo>();
+        internal static bool DisableCaching; // Used in testing and debugging
 
         private readonly string description;
         private DateTimeFormatInfo dateTimeFormat;
@@ -67,7 +68,7 @@ namespace NodaTime.Globalization
         /// <summary>
         ///   Gets the culture info.
         /// </summary>
-        public CultureInfo CultureInfo { [DebuggerStepThrough] get; [DebuggerStepThrough] private set; }
+        public CultureInfo CultureInfo {  get;  private set; }
 
         /// <summary>
         ///   Gets or sets the number format.
@@ -77,9 +78,9 @@ namespace NodaTime.Globalization
         /// </value>
         public NumberFormatInfo NumberFormat
         {
-            [DebuggerStepThrough]
+            
             get { return numberFormat; }
-            [DebuggerStepThrough]
+            
             set { SetValue(value, ref numberFormat); }
         }
 
@@ -91,9 +92,9 @@ namespace NodaTime.Globalization
         /// </value>
         public DateTimeFormatInfo DateTimeFormat
         {
-            [DebuggerStepThrough]
+            
             get { return dateTimeFormat; }
-            [DebuggerStepThrough]
+            
             set { SetValue(value, ref dateTimeFormat); }
         }
 
@@ -102,18 +103,18 @@ namespace NodaTime.Globalization
         /// </summary>
         public string DecimalSeparator
         {
-            [DebuggerStepThrough]
+            
             get { return NumberFormat.NumberDecimalSeparator; }
         }
 
-        public string Name { [DebuggerStepThrough] get; [DebuggerStepThrough]  private set; }
+        public string Name {  get;   private set; }
 
         /// <summary>
         ///   Gets the positive sign.
         /// </summary>
         public string PositiveSign
         {
-            [DebuggerStepThrough]
+            
             get { return NumberFormat.PositiveSign; }
         }
 
@@ -122,7 +123,7 @@ namespace NodaTime.Globalization
         /// </summary>
         public string NegativeSign
         {
-            [DebuggerStepThrough]
+            
             get { return NumberFormat.NegativeSign; }
         }
 
@@ -131,7 +132,7 @@ namespace NodaTime.Globalization
         /// </summary>
         public string TimeSeparator
         {
-            [DebuggerStepThrough]
+            
             get { return DateTimeFormat.TimeSeparator; }
         }
 
@@ -140,7 +141,7 @@ namespace NodaTime.Globalization
         /// </summary>
         public string DateSeparator
         {
-            [DebuggerStepThrough]
+            
             get { return DateTimeFormat.DateSeparator; }
         }
 
@@ -149,7 +150,6 @@ namespace NodaTime.Globalization
         /// </summary>
         public static NodaFormatInfo CurrentInfo
         {
-            [DebuggerStepThrough]
             get { return GetInstance(Thread.CurrentThread.CurrentUICulture); }
         }
 
@@ -161,9 +161,9 @@ namespace NodaTime.Globalization
         /// </value>
         public bool IsReadOnly
         {
-            [DebuggerStepThrough]
+            
             get { return isReadOnly; }
-            [DebuggerStepThrough]
+            
             set
             {
                 if (isReadOnly && value != true)
@@ -182,9 +182,9 @@ namespace NodaTime.Globalization
         /// </value>
         public string OffsetPatternFull
         {
-            [DebuggerStepThrough]
+            
             get { return offsetPatternFull; }
-            [DebuggerStepThrough]
+            
             set { SetValue(value, ref offsetPatternFull); }
         }
 
@@ -196,9 +196,9 @@ namespace NodaTime.Globalization
         /// </value>
         public string OffsetPatternLong
         {
-            [DebuggerStepThrough]
+            
             get { return offsetPatternLong; }
-            [DebuggerStepThrough]
+            
             set { SetValue(value, ref offsetPatternLong); }
         }
 
@@ -210,9 +210,9 @@ namespace NodaTime.Globalization
         /// </value>
         public string OffsetPatternMedium
         {
-            [DebuggerStepThrough]
+            
             get { return offsetPatternMedium; }
-            [DebuggerStepThrough]
+            
             set { SetValue(value, ref offsetPatternMedium); }
         }
 
@@ -224,9 +224,9 @@ namespace NodaTime.Globalization
         /// </value>
         public string OffsetPatternShort
         {
-            [DebuggerStepThrough]
+            
             get { return offsetPatternShort; }
-            [DebuggerStepThrough]
+            
             set { SetValue(value, ref offsetPatternShort); }
         }
 
@@ -237,7 +237,7 @@ namespace NodaTime.Globalization
         /// <returns>
         ///   A new object that is a copy of this instance.
         /// </returns>
-        [DebuggerStepThrough]
+        
         public object Clone()
         {
             var info = (NodaFormatInfo)MemberwiseClone();
@@ -255,10 +255,22 @@ namespace NodaTime.Globalization
         ///   An instance of the object specified by <paramref name = "formatType" />, if the <see cref = "T:System.IFormatProvider" />
         ///   implementation can supply that type of object; otherwise, null.
         /// </returns>
-        [DebuggerStepThrough]
+        
         public object GetFormat(Type formatType)
         {
-            return formatType == typeof(NodaFormatInfo) ? this : null;
+            if (formatType == typeof(NodaFormatInfo))
+            {
+                return this;
+            }
+            if (formatType == typeof(NumberFormatInfo))
+            {
+                return NumberFormat;
+            }
+            if (formatType == typeof(DateTimeFormatInfo))
+            {
+                return DateTimeFormat;
+            }
+            return null;
         }
         #endregion
 
@@ -274,11 +286,11 @@ namespace NodaTime.Globalization
         {
             if (IsReadOnly)
             {
-                throw new InvalidOperationException("Cannot change a read only object.");
+                throw new InvalidOperationException(Resources.Noda_CannotChangeReadOnly);
             }
             if (value == null)
             {
-                throw new ArgumentNullException("value", Resources.ValueNotNull);
+                throw new ArgumentNullException("value", Resources.Noda_ArgumentNull);
             }
             property = value;
         }
@@ -288,7 +300,6 @@ namespace NodaTime.Globalization
         /// </summary>
         /// <param name = "cultureInfo">The culture info.</param>
         /// <returns>The <see cref = "NodaFormatInfo" />. Will next be <c>null</c>.</returns>
-        [DebuggerStepThrough]
         internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
         {
             if (cultureInfo == null)
@@ -299,11 +310,14 @@ namespace NodaTime.Globalization
             NodaFormatInfo result;
             lock (Infos)
             {
-                if (!Infos.TryGetValue(name, out result))
+                if (DisableCaching || !Infos.TryGetValue(name, out result))
                 {
                     result = new NodaFormatInfo(cultureInfo);
                     result.IsReadOnly = true;
-                    Infos.Add(name, result);
+                    if (!DisableCaching)
+                    {
+                        Infos.Add(name, result);
+                    }
                 }
             }
             return result;
@@ -316,7 +330,6 @@ namespace NodaTime.Globalization
         /// </summary>
         /// <param name = "provider">The <see cref = "IFormatProvider" />.</param>
         /// <returns>The <see cref = "NodaFormatInfo" />. Will next be <c>null.</c></returns>
-        [DebuggerStepThrough]
         public static NodaFormatInfo GetInstance(IFormatProvider provider)
         {
             if (provider != null)
@@ -345,7 +358,6 @@ namespace NodaTime.Globalization
         /// </summary>
         /// <param name = "cultureInfo">The culture info.</param>
         /// <param name = "formatInfo">The format info.</param>
-        [DebuggerStepThrough]
         internal static void SetFormatInfo(CultureInfo cultureInfo, NodaFormatInfo formatInfo)
         {
             if (cultureInfo == null)
@@ -370,7 +382,7 @@ namespace NodaTime.Globalization
         /// <returns>
         ///   A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        [DebuggerStepThrough]
+        
         public override string ToString()
         {
             return description;

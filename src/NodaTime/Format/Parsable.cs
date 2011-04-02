@@ -15,14 +15,18 @@
 // limitations under the License.
 #endregion
 
+#region usings
 using System;
+using System.Diagnostics;
 using NodaTime.Properties;
+#endregion
 
 namespace NodaTime.Format
 {
+    [DebuggerStepThrough]
     internal abstract class Parsable
     {
-        internal const char NUL = '\u0000';
+        internal const char Nul = '\u0000';
 
         protected Parsable(string value)
         {
@@ -44,6 +48,7 @@ namespace NodaTime.Format
         internal int Index { get; private set; }
         internal int Length { get; private set; }
         internal string Value { get; private set; }
+        internal string Remainder { get { return Value.Substring(Index); } }
 
         /// <summary>
         ///   Gets the next character.
@@ -59,11 +64,16 @@ namespace NodaTime.Format
             throw new FormatException(Resources.Format_InvalidString);
         }
 
+        internal char PeekNext()
+        {
+            return HasMoreCharacters ? Value[Index + 1] : Nul;
+        }
+
         internal bool Move(int targetIndex)
         {
             var inRange = 0 <= targetIndex && targetIndex < Length;
             Index = inRange ? targetIndex : Math.Max(-1, Math.Min(Length, targetIndex));
-            Current = inRange ? Value[Index] : NUL;
+            Current = inRange ? Value[Index] : Nul;
             return inRange;
         }
 
@@ -84,11 +94,11 @@ namespace NodaTime.Format
 
         internal bool SkipWhiteSpaces()
         {
-            while (Current != NUL && char.IsWhiteSpace(Current))
+            while (Current != Nul && char.IsWhiteSpace(Current))
             {
                 MoveNext();
             }
-            return Current != NUL;
+            return Current != Nul;
         }
 
         internal void TrimLeadingInQuoteSpaces()
@@ -114,7 +124,7 @@ namespace NodaTime.Format
         internal void TrimLeadingWhiteSpaces()
         {
             Move(0);
-            while (Current != NUL && char.IsWhiteSpace(Current))
+            while (Current != Nul && char.IsWhiteSpace(Current))
             {
                 MoveNext();
             }
