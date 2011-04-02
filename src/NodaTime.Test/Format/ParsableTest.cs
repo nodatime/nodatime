@@ -219,7 +219,7 @@ namespace NodaTime.Test.Format
 
         internal static void ValidateBeginningOfString(Parsable parsable)
         {
-            ValidateCharacter(parsable, -1, Parsable.NUL);
+            ValidateCharacter(parsable, -1, Parsable.Nul);
         }
 
         internal static void ValidateCharacter(Parsable parsable, int index, char current)
@@ -230,7 +230,7 @@ namespace NodaTime.Test.Format
 
         internal static void ValidateEndOfString(Parsable parsable)
         {
-            ValidateCharacter(parsable, parsable.Length, Parsable.NUL);
+            ValidateCharacter(parsable, parsable.Length, Parsable.Nul);
         }
 
         internal static void ValidateParsable(Parsable parsable, string value, int length = -1)

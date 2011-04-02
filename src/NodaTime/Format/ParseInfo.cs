@@ -14,12 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
 using System;
-using NodaTime.Utility;
 using NodaTime.Globalization;
-
+using NodaTime.Properties;
 #endregion
 
 namespace NodaTime.Format
@@ -41,18 +39,17 @@ namespace NodaTime.Format
             AllowTrailingWhite = (parseStyles & DateTimeParseStyles.AllowTrailingWhite) != DateTimeParseStyles.None;
         }
 
-        private bool ThrowImmediate { get; set; }
-        private ParseFailureKind Failure { get; set; }
-        private string FailureArgumentName { get; set; }
-        private object FailureMessageFormatArgument { get; set; }
-        private string FailureMessageId { get; set; }
+        internal bool ThrowImmediate { get; private set; }
+        internal ParseFailureKind Failure { get; private set; }
+        internal string FailureArgumentName { get; private set; }
+        internal string FailureMessage { get; private set; }
         internal bool Failed { get { return Failure != ParseFailureKind.None; } }
         internal bool AllowInnerWhite { get; private set; }
         internal bool AllowLeadingWhite { get; private set; }
         internal bool AllowTrailingWhite { get; private set; }
         internal NodaFormatInfo FormatInfo { get; private set; }
 
-        protected virtual string DoubleAssignmentKey { get { return "Format_DefaultDoubleAsignment"; } } // TODO: Use correct message key
+        protected virtual string DoubleAssignmentMessage { get { return Resources.Parse_DefaultDoubleAssignment; } }
 
         internal Exception GetFailureException()
         {
@@ -61,32 +58,32 @@ namespace NodaTime.Format
                 case ParseFailureKind.None:
                     return null;
                 case ParseFailureKind.ArgumentNull:
-                    return new ArgumentNullException(FailureArgumentName, ResourceHelper.GetMessage(FailureMessageId));
+                    return new ArgumentNullException(FailureArgumentName, FailureMessage);
                 case ParseFailureKind.Format:
-                    return new FormatException(ResourceHelper.GetMessage(FailureMessageId));
-                case ParseFailureKind.FormatWithParameter:
-                    return new FormatException(ResourceHelper.GetMessage(FailureMessageId, FailureMessageFormatArgument));
+                    return new FormatException(FailureMessage);
                 default:
-                    return new InvalidOperationException(ResourceHelper.GetMessage("Unknown_failure", Failure)); // TODO: Use correct message key
+                    string message = string.Format(Resources.Parse_UnknownFailure, Failure) + Environment.NewLine + FailureMessage;
+                    return new InvalidOperationException(message); // TODO: figure out what exception to throw here.
             }
         }
 
-        internal bool SetFailure(ParseFailureKind failure, string failureMessageId)
+        internal bool SetFormatError(string message, params object[] parameters)
         {
-            return SetFailure(failure, failureMessageId, null, null);
+            Failure = ParseFailureKind.ArgumentNull;
+            FailureMessage = string.Format(message, parameters);
+            return CheckImmediate();
         }
 
-        internal bool SetFailure(ParseFailureKind failure, string failureMessageId, object failureMessageFormatArgument)
+        internal bool SetArgumentNull(string argumentName)
         {
-            return SetFailure(failure, failureMessageId, failureMessageFormatArgument, null);
+            Failure = ParseFailureKind.ArgumentNull;
+            FailureMessage = Resources.Noda_ArgumentNull;
+            FailureArgumentName = argumentName;
+            return CheckImmediate();
         }
 
-        internal bool SetFailure(ParseFailureKind failure, string failureMessageId, object failureMessageFormatArgument, string failureArgumentName)
+        private bool CheckImmediate()
         {
-            Failure = failure;
-            FailureMessageId = failureMessageId;
-            FailureMessageFormatArgument = failureMessageFormatArgument;
-            FailureArgumentName = failureArgumentName;
             if (ThrowImmediate)
             {
                 var exception = GetFailureException();
@@ -119,7 +116,7 @@ namespace NodaTime.Format
                 currentValue = newValue;
                 return true;
             }
-            return SetFailure(ParseFailureKind.FormatWithParameter, DoubleAssignmentKey, patternCharacter);
+            return SetFormatError(DoubleAssignmentMessage, patternCharacter);
         }
     }
 
@@ -129,7 +126,6 @@ namespace NodaTime.Format
         None,
         ArgumentNull,
         Format,
-        FormatWithParameter
     }
     #endregion
 }

@@ -79,6 +79,24 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Argument cannot be null..
+        /// </summary>
+        internal static string Noda_ArgumentNull {
+            get {
+                return ResourceManager.GetString("Noda_ArgumentNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot change a read only object..
+        /// </summary>
+        internal static string Noda_CannotChangeReadOnly {
+            get {
+                return ResourceManager.GetString("Noda_CannotChangeReadOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to +h:mm:ss.fff.
         /// </summary>
         internal static string OffsetPatternFull {
@@ -115,11 +133,200 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to value cannot be null.
+        ///   Looks up a localized string similar to The value &quot;{0}&quot; cannot be parsed into an instance of {1} using pattern &quot;{2}&quot;.
         /// </summary>
-        internal static string ValueNotNull {
+        internal static string Parse_CannotParseValue {
             get {
-                return ResourceManager.GetString("ValueNotNull", resourceCulture);
+                return ResourceManager.GetString("Parse_CannotParseValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The pattern flag &apos;{0}&apos; cannot appear twice and parse different values..
+        /// </summary>
+        internal static string Parse_DefaultDoubleAssignment {
+            get {
+                return ResourceManager.GetString("Parse_DefaultDoubleAssignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The list of formats cannot be empty..
+        /// </summary>
+        internal static string Parse_EmptyFormatsArray {
+            get {
+                return ResourceManager.GetString("Parse_EmptyFormatsArray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The format string has an escape character (backslash &apos;\&apos;) at the end of the string..
+        /// </summary>
+        internal static string Parse_EscapeAtEndOfString {
+            get {
+                return ResourceManager.GetString("Parse_EscapeAtEndOfString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value string does not match an escaped character in the format string: &quot;\{0}&quot;.
+        /// </summary>
+        internal static string Parse_EscapedCharacterMismatch {
+            get {
+                return ResourceManager.GetString("Parse_EscapedCharacterMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The format matches a prefix of the value string but not the entire string. Part not matching: &quot;{0}&quot;.
+        /// </summary>
+        internal static string Parse_ExtraValueCharacters {
+            get {
+                return ResourceManager.GetString("Parse_ExtraValueCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The items of the format string array cannot be null or empty..
+        /// </summary>
+        internal static string Parse_FormatElementInvalid {
+            get {
+                return ResourceManager.GetString("Parse_FormatElementInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The format string is invalid: &quot;{0}&quot;.
+        /// </summary>
+        internal static string Parse_FormatInvalid {
+            get {
+                return ResourceManager.GetString("Parse_FormatInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The format string is empty..
+        /// </summary>
+        internal static string Parse_FormatStringEmpty {
+            get {
+                return ResourceManager.GetString("Parse_FormatStringEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value string does not match a simple character in the format string &quot;{0}&quot;..
+        /// </summary>
+        internal static string Parse_MismatchedCharacter {
+            get {
+                return ResourceManager.GetString("Parse_MismatchedCharacter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value string does not match the required number from the format string &quot;{0}&quot;..
+        /// </summary>
+        internal static string Parse_MismatchedNumber {
+            get {
+                return ResourceManager.GetString("Parse_MismatchedNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value string does not match a space in the format string..
+        /// </summary>
+        internal static string Parse_MismatchedSpace {
+            get {
+                return ResourceManager.GetString("Parse_MismatchedSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The format string contains a decimal separator that does not match the value and the decimal separator is not followed by an &quot;F&quot; pattern character..
+        /// </summary>
+        internal static string Parse_MissingDecimalSeparator {
+            get {
+                return ResourceManager.GetString("Parse_MissingDecimalSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The format string is missing the end quote character &quot;{0}&quot;..
+        /// </summary>
+        internal static string Parse_MissingEndQuote {
+            get {
+                return ResourceManager.GetString("Parse_MissingEndQuote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A percent sign (%) appears at the end of the format string..
+        /// </summary>
+        internal static string Parse_PercentAtEndOfString {
+            get {
+                return ResourceManager.GetString("Parse_PercentAtEndOfString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A percent sign (%) is followed by another percent sign in the format string..
+        /// </summary>
+        internal static string Parse_PercentDoubled {
+            get {
+                return ResourceManager.GetString("Parse_PercentDoubled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value string does not match a quoted string in the pattern..
+        /// </summary>
+        internal static string Parse_QuotedStringMismatch {
+            get {
+                return ResourceManager.GetString("Parse_QuotedStringMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There were more consecutive copies of the pattern character &quot;{0}&quot; than the maximum allowed ({1}) in the format string..
+        /// </summary>
+        internal static string Parse_RepeatCountExceeded {
+            get {
+                return ResourceManager.GetString("Parse_RepeatCountExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value string does not match a time separator in the format string..
+        /// </summary>
+        internal static string Parse_TimeSeparatorMismatch {
+            get {
+                return ResourceManager.GetString("Parse_TimeSeparatorMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Internal Error: The specified ParseFailureKind is unknown [{0}]..
+        /// </summary>
+        internal static string Parse_UnknownFailure {
+            get {
+                return ResourceManager.GetString("Parse_UnknownFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The standard format &quot;{0}&quot; is not valid for the {1} type..
+        /// </summary>
+        internal static string Parse_UnknownStandardFormat {
+            get {
+                return ResourceManager.GetString("Parse_UnknownStandardFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value string is empty..
+        /// </summary>
+        internal static string Parse_ValueStringEmpty {
+            get {
+                return ResourceManager.GetString("Parse_ValueStringEmpty", resourceCulture);
             }
         }
     }

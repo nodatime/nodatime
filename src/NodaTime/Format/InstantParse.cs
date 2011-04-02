@@ -19,6 +19,7 @@ using System;
 using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Utility;
+using NodaTime.Properties;
 #endregion
 
 namespace NodaTime.Format
@@ -49,10 +50,7 @@ namespace NodaTime.Format
         internal static Instant Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new InstantParseInfo(formatInfo, true, styles);
-            if (!TryParse(value, parseResult))
-            {
-                throw parseResult.GetFailureException();
-            }
+            TryParse(value, parseResult);
             return parseResult.Value;
         }
 
@@ -72,10 +70,7 @@ namespace NodaTime.Format
         internal static Instant ParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new InstantParseInfo(formatInfo, true, styles);
-            if (!TryParseExact(value, format, parseResult))
-            {
-                throw parseResult.GetFailureException();
-            }
+            TryParseExact(value, format, parseResult);
             return parseResult.Value;
         }
 
@@ -93,10 +88,7 @@ namespace NodaTime.Format
         internal static Instant ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new InstantParseInfo(formatInfo, true, styles);
-            if (!TryParseExactMultiple(value, formats, parseResult))
-            {
-                throw parseResult.GetFailureException();
-            }
+            TryParseExactMultiple(value, formats, parseResult);
             return parseResult.Value;
         }
 
@@ -119,10 +111,6 @@ namespace NodaTime.Format
 
         internal static bool TryParseExactMultiple(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out Instant result)
         {
-            if (formatInfo == null)
-            {
-                throw new ArgumentNullException("formatInfo");
-            }
             result = Instant.MinValue;
             var parseResult = new InstantParseInfo(formatInfo, false, styles);
             if (TryParseExactMultiple(value, formats, parseResult))
@@ -149,7 +137,7 @@ namespace NodaTime.Format
                     return DoStrictParseGeneral(value, parseInfo);
                 case 'n':
                 case 'd':
-                    return DoStrictParseNumber(value, parseInfo);
+                    return DoStrictParseNumber(value, parseInfo, format);
             }
             return false;
         }
@@ -177,7 +165,7 @@ namespace NodaTime.Format
             return false;
         }
 
-        private static bool DoStrictParseNumber(string value, InstantParseInfo parseInfo)
+        private static bool DoStrictParseNumber(string value, InstantParseInfo parseInfo, char format)
         {
             const NumberStyles parseStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowThousands;
             long number;
@@ -186,8 +174,7 @@ namespace NodaTime.Format
                 parseInfo.Value = new Instant(number);
                 return true;
             }
-            parseInfo.SetFailure(ParseFailureKind.Format, "Parse_BadValue"); // TODO: Use correct message key
-            return false;
+            return parseInfo.SetFormatError(Resources.Parse_CannotParseValue, value, typeof(Instant).FullName, format);
         }
 
         private static bool TryParse(string value, InstantParseInfo parseInfo)
@@ -199,24 +186,24 @@ namespace NodaTime.Format
         {
             if (value == null)
             {
-                return parseInfo.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "value"); // TODO: Use correct message key
+                return parseInfo.SetArgumentNull("value");
             }
             if (format == null)
             {
-                return parseInfo.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format"); // TODO: Use correct message key
+                return parseInfo.SetArgumentNull("format");
             }
             if (value.Length == 0)
             {
-                return parseInfo.SetFailure(ParseFailureKind.Format, "TryParse_Value_Empty"); // TODO: Use correct message key
+                return parseInfo.SetFormatError(Resources.Parse_ValueStringEmpty);
             }
             if (format.Length == 0)
             {
-                return parseInfo.SetFailure(ParseFailureKind.Format, "TryParse_Format_Empty"); // TODO: Use correct message key
+                return parseInfo.SetFormatError(Resources.Parse_FormatStringEmpty);
             }
             format = format.Trim();
             if (format.Length > 1)
             {
-                return parseInfo.SetFailure(ParseFailureKind.Format, "TryParse_Format_Invalid", format); // TODO: Use correct message key
+                return parseInfo.SetFormatError(Resources.Parse_FormatInvalid, format);
             }
             char formatChar = format[0];
             return DoStrictParse(value, formatChar, parseInfo);
@@ -226,18 +213,17 @@ namespace NodaTime.Format
         {
             if (formats == null)
             {
-                return parseInfo.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format"); // TODO: Use correct message key
+                return parseInfo.SetArgumentNull("formats");
             }
             if (formats.Length == 0)
             {
-                return parseInfo.SetFailure(ParseFailureKind.Format, "TryParse_Format_List_Empty"); // TODO: Use correct message key
+                return parseInfo.SetFormatError(Resources.Parse_EmptyFormatsArray);
             }
             foreach (string format in formats)
             {
                 if (string.IsNullOrEmpty(format))
                 {
-                    parseInfo.SetFailure(ParseFailureKind.Format, "TryParse_Format_BadFormatSpecifier", null); // TODO: Use correct message key
-                    return false;
+                    return parseInfo.SetFormatError(Resources.Parse_FormatElementInvalid);
                 }
                 if (TryParseExact(value, format, parseInfo))
                 {

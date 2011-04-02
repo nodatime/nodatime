@@ -68,7 +68,7 @@ namespace NodaTime.Format
                 {
                     if (!MoveNext())
                     {
-                        parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadOffset"); // TODO: Use correct message key
+                        parseInfo.SetFormatError(Resources.Parse_EscapeAtEndOfString);
                         return null;
                     }
                 }
@@ -76,7 +76,7 @@ namespace NodaTime.Format
             }
             if (!endQuoteFound)
             {
-                parseInfo.SetFailure(ParseFailureKind.Format, "Format_BadQuote", closeQuote); // TODO: Use correct message key
+                parseInfo.SetFormatError(Resources.Parse_MissingEndQuote, closeQuote);
                 return null;
             }
             return builder.ToString();
@@ -115,7 +115,7 @@ namespace NodaTime.Format
             }
             if (repeatLength > maximumCount)
             {
-                parseInfo.SetFailure(ParseFailureKind.Format, "Format_InvalidString");
+                parseInfo.SetFormatError(Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
                 return -1;
             }
             return repeatLength;

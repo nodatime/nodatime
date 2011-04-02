@@ -18,6 +18,7 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
+using NodaTime.Globalization;
 
 namespace NodaTime.Test
 {
@@ -25,17 +26,6 @@ namespace NodaTime.Test
     public partial class OffsetTest
     {
         private const string Nbsp = "\u00a0";
-
-        [Test]
-        public void TestToString_CultureX()
-        {
-            // new TestCaseData(EnUs, Offset.Zero, "F", "+0:00:00.000").SetName("Zero, 'F', en-US"),
-            using (CultureSaver.SetUiCulture(FrFr))
-            {
-                string actual = HmsfOffset.ToString("N");
-                Assert.AreEqual("18" + Nbsp + "754" + Nbsp + "567", actual);
-            }
-        }
 
         private object[] toStringNoFormatData = {
             new TestCaseData(EnUs, Offset.MaxValue, "+23:59:59.999").SetName("Offset.MaxValue, en-US"),
