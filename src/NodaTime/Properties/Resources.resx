@@ -129,17 +129,26 @@
   <data name="Noda_CannotChangeReadOnly" xml:space="preserve">
     <value>Cannot change a read only object.</value>
   </data>
+  <data name="Noda_StringEmpty" xml:space="preserve">
+    <value>The string cannot be empty.</value>
+  </data>
+  <data name="Noda_StringEmptyOrWhitespace" xml:space="preserve">
+    <value>The string cannot be empty or only contain white space.</value>
+  </data>
   <data name="OffsetPatternFull" xml:space="preserve">
-    <value>+h:mm:ss.fff</value>
+    <value>+H:mm:ss.fff</value>
   </data>
   <data name="OffsetPatternLong" xml:space="preserve">
-    <value>+h:mm:ss</value>
+    <value>+H:mm:ss</value>
   </data>
   <data name="OffsetPatternMedium" xml:space="preserve">
-    <value>+h:mm</value>
+    <value>+H:mm</value>
   </data>
   <data name="OffsetPatternShort" xml:space="preserve">
-    <value>+h</value>
+    <value>+H</value>
+  </data>
+  <data name="Offset_CustomPatternNotSupported" xml:space="preserve">
+    <value>The 'h' pattern flag (12 hour format)is not supported by the NodaTime.Offset type.</value>
   </data>
   <data name="Parse_CannotParseValue" xml:space="preserve">
     <value>The value "{0}" cannot be parsed into an instance of {1} using pattern "{2}"</value>
@@ -157,7 +166,7 @@
     <value>The value string does not match an escaped character in the format string: "\{0}"</value>
   </data>
   <data name="Parse_ExtraValueCharacters" xml:space="preserve">
-    <value>The format matches a prefix of the value string but not the entire string. Part not matching: "{0}"</value>
+    <value>The format matches a prefix of the value string but not the entire string. Part not matching: "{0}".</value>
   </data>
   <data name="Parse_FormatElementInvalid" xml:space="preserve">
     <value>The items of the format string array cannot be null or empty.</value>

@@ -19,6 +19,7 @@
 using System;
 using System.Diagnostics;
 using NodaTime.Properties;
+using System.Text;
 #endregion
 
 namespace NodaTime.Format
@@ -36,7 +37,7 @@ namespace NodaTime.Format
             }
             if (value == string.Empty)
             {
-                throw new ArgumentException(@"string is empty", "value");
+                throw new ArgumentException(Resources.Noda_StringEmpty, "value");
             }
             Value = value;
             Length = value.Length;
@@ -44,11 +45,38 @@ namespace NodaTime.Format
         }
 
         internal char Current { get; private set; }
-        internal bool HasMoreCharacters { get { return Index < Length; } }
+        internal bool HasMoreCharacters { get { return Index + 1 < Length; } }
         internal int Index { get; private set; }
         internal int Length { get; private set; }
         internal string Value { get; private set; }
         internal string Remainder { get { return Value.Substring(Index); } }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            if (Index < 0)
+            {
+                builder.Append("<<>>");
+                builder.Append(Value);
+            }
+            else if (Index >= Length)
+            {
+                builder.Append(Value);
+                builder.Append("<<>>");
+            }
+            else
+            {
+                builder.Append(Value.Substring(0, Index));
+                builder.Append("<<");
+                builder.Append(Current);
+                builder.Append(">>");
+                if (Index < Length - 1)
+                {
+                    builder.Append(Value.Substring(Index + 1, Length - Index - 1));
+                }
+            }
+            return builder.ToString();
+        }
 
         /// <summary>
         ///   Gets the next character.

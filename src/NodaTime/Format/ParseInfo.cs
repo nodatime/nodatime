@@ -69,7 +69,7 @@ namespace NodaTime.Format
 
         internal bool SetFormatError(string message, params object[] parameters)
         {
-            Failure = ParseFailureKind.ArgumentNull;
+            Failure = ParseFailureKind.Format;
             FailureMessage = string.Format(message, parameters);
             return CheckImmediate();
         }

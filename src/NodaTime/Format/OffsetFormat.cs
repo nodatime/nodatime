@@ -19,6 +19,8 @@
 using System;
 using System.Text;
 using NodaTime.Globalization;
+using NodaTime.Utility;
+using NodaTime.Properties;
 
 #endregion
 
@@ -91,6 +93,7 @@ namespace NodaTime.Format
                         outputBuffer.Append(pattern.GetNextCharacter());
                         break;
                     case 'h':
+                        throw new FormatException(Resources.Offset_CustomPatternNotSupported);
                     case 'H':
                         repeatLength = pattern.GetRepeatCount(2, parseInfo);
                         FormatHelper.LeftPad(parseInfo.Hours.GetValueOrDefault(), repeatLength, outputBuffer);
@@ -151,7 +154,8 @@ namespace NodaTime.Format
                     pattern = formatInfo.OffsetPatternFull;
                     break;
                 default:
-                    throw new FormatException("Invalid format string: unknown flag");
+                    string message = string.Format(Resources.Parse_UnknownStandardFormat, formatCharacter);
+                    throw new FormatException(message);
             }
             return FormatPattern(parseInfo, pattern);
         }

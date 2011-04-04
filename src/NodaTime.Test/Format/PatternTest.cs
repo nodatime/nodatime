@@ -24,6 +24,7 @@ using NUnit.Framework;
 namespace NodaTime.Test.Format
 {
     [TestFixture]
+    [Category("Format")]
     public class PatternTest : ParsableTest
     {
         private readonly TestParseInfo parseInfo = new TestParseInfo();
