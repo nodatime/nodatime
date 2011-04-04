@@ -143,7 +143,6 @@ namespace NodaTime.Format
 
             var pattern = new Pattern(format);
             var str = new ParseString(value);
-            str.MoveNext(); // Prime the pump
             if (parseInfo.AllowTrailingWhite)
             {
                 pattern.TrimTrailingWhiteSpaces();
@@ -156,6 +155,7 @@ namespace NodaTime.Format
                 pattern.TrimLeadingInQuoteSpaces();
                 str.TrimLeadingWhiteSpaces();
             }
+            str.MoveNext(); // Prime the pump
             while (pattern.HasMoreCharacters)
             {
                 if (parseInfo.AllowInnerWhite)
@@ -167,7 +167,7 @@ namespace NodaTime.Format
                     return false;
                 }
             }
-            if (str.HasMoreCharacters)
+            if (str.Current != Parsable.Nul)
             {
                 return parseInfo.SetFormatError(Resources.Parse_ExtraValueCharacters, str.Remainder);
             }
@@ -218,20 +218,21 @@ namespace NodaTime.Format
                     {
                         return parseInfo.SetFormatError(Resources.Parse_EscapeAtEndOfString);
                     }
-                    if (str.Match(pattern.Current))
+                    if (str.Match(pattern.PeekNext()))
                     {
                         pattern.MoveNext();
                         return true;
                     }
-                    return parseInfo.SetFormatError(Resources.Parse_EscapedCharacterMismatch, pattern.Current);
+                    return parseInfo.SetFormatError(Resources.Parse_EscapedCharacterMismatch, pattern.PeekNext());
                 case '.':
                     if (!str.Match(parseInfo.FormatInfo.DecimalSeparator))
                     {
-                        if (!pattern.HasMoreCharacters || pattern.Current != 'F')
+                        if (!pattern.HasMoreCharacters || pattern.PeekNext() != 'F')
                         {
                             return parseInfo.SetFormatError(Resources.Parse_MissingDecimalSeparator);
                         }
-                        pattern.GetRepeatCount(2, parseInfo); // Skip the F pattern characters
+                        pattern.MoveNext();
+                        pattern.GetRepeatCount(3, parseInfo); // Skip the F pattern characters
                     }
                     return true;
                 case ':':
@@ -240,8 +241,9 @@ namespace NodaTime.Format
                         return true;
                     }
                     return parseInfo.SetFormatError(Resources.Parse_TimeSeparatorMismatch);
-                case 'H':
                 case 'h':
+                    throw new FormatException(Resources.Offset_CustomPatternNotSupported);
+                case 'H':
                     count = pattern.GetRepeatCount(2, parseInfo);
                     if (!parseInfo.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
@@ -270,12 +272,11 @@ namespace NodaTime.Format
                     {
                         return false;
                     }
-                    double fraction;
-                    if (!str.ParseFractionExact(count, out fraction) && patternCharacter == 'f')
+                    int fractionalSeconds;
+                    if (!str.ParseFractionExact(count, 3, out fractionalSeconds) && patternCharacter == 'f')
                     {
                         return parseInfo.SetFormatError(Resources.Parse_MismatchedNumber, new string(patternCharacter, count));
                     }
-                    int fractionalSeconds = (int)(fraction * 1000.0);
                     return parseInfo.AssignNewValue(ref parseInfo.FractionalSeconds, fractionalSeconds, patternCharacter);
                 default:
                     if (patternCharacter == ' ')

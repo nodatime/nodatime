@@ -97,7 +97,34 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to +h:mm:ss.fff.
+        ///   Looks up a localized string similar to The string cannot be empty..
+        /// </summary>
+        internal static string Noda_StringEmpty {
+            get {
+                return ResourceManager.GetString("Noda_StringEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The string cannot be empty or only contain white space..
+        /// </summary>
+        internal static string Noda_StringEmptyOrWhitespace {
+            get {
+                return ResourceManager.GetString("Noda_StringEmptyOrWhitespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;h&apos; pattern flag (12 hour format)is not supported by the NodaTime.Offset type..
+        /// </summary>
+        internal static string Offset_CustomPatternNotSupported {
+            get {
+                return ResourceManager.GetString("Offset_CustomPatternNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to +H:mm:ss.fff.
         /// </summary>
         internal static string OffsetPatternFull {
             get {
@@ -106,7 +133,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to +h:mm:ss.
+        ///   Looks up a localized string similar to +H:mm:ss.
         /// </summary>
         internal static string OffsetPatternLong {
             get {
@@ -115,7 +142,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to +h:mm.
+        ///   Looks up a localized string similar to +H:mm.
         /// </summary>
         internal static string OffsetPatternMedium {
             get {
@@ -124,7 +151,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to +h.
+        ///   Looks up a localized string similar to +H.
         /// </summary>
         internal static string OffsetPatternShort {
             get {
@@ -178,7 +205,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The format matches a prefix of the value string but not the entire string. Part not matching: &quot;{0}&quot;.
+        ///   Looks up a localized string similar to The format matches a prefix of the value string but not the entire string. Part not matching: &quot;{0}&quot;..
         /// </summary>
         internal static string Parse_ExtraValueCharacters {
             get {
