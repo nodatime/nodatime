@@ -15,9 +15,10 @@
 // limitations under the License.
 #endregion
 
+#region usings
 using System;
 using System.Text;
-using NodaTime.Properties;
+#endregion
 
 namespace NodaTime.Format
 {
@@ -30,7 +31,8 @@ namespace NodaTime.Format
         ///   Initializes a new instance of the <see cref = "Pattern" /> class.
         /// </summary>
         /// <param name = "pattern">The format pattern string.</param>
-        internal Pattern(string pattern) : base(pattern)
+        internal Pattern(string pattern)
+            : base(pattern)
         {
         }
 
@@ -68,7 +70,7 @@ namespace NodaTime.Format
                 {
                     if (!MoveNext())
                     {
-                        parseInfo.SetFormatError(Resources.Parse_EscapeAtEndOfString);
+                        parseInfo.FailParseEscapeAtEndOfString();
                         return null;
                     }
                 }
@@ -76,7 +78,7 @@ namespace NodaTime.Format
             }
             if (!endQuoteFound)
             {
-                parseInfo.SetFormatError(Resources.Parse_MissingEndQuote, closeQuote);
+                parseInfo.FailParseMissingEndQuote(closeQuote);
                 return null;
             }
             return builder.ToString();
@@ -86,7 +88,7 @@ namespace NodaTime.Format
         ///   Gets the pattern repeat count.
         /// </summary>
         /// <param name = "maximumCount">The maximum number of repetitions allowed.</param>
-        /// <param name="parseInfo"></param>
+        /// <param name = "parseInfo"></param>
         /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
         /// <exception cref = "FormatException">if the count exceeds <paramref name = "maximumCount" />.</exception>
         internal int GetRepeatCount(int maximumCount, ParseInfo parseInfo)
@@ -99,7 +101,7 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name = "maximumCount">The maximum number of repetitions allowed.</param>
         /// <param name = "patternCharacter">The pattern character to count.</param>
-        /// <param name="parseInfo"></param>
+        /// <param name = "parseInfo"></param>
         /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
         /// <exception cref = "FormatException">if the count exceeds <paramref name = "maximumCount" />.</exception>
         internal int GetRepeatCount(int maximumCount, char patternCharacter, ParseInfo parseInfo)
@@ -115,7 +117,7 @@ namespace NodaTime.Format
             }
             if (repeatLength > maximumCount)
             {
-                parseInfo.SetFormatError(Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
+                parseInfo.FailParseRepeatCountExceeded(patternCharacter, maximumCount);
                 return -1;
             }
             return repeatLength;

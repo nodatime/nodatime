@@ -19,6 +19,7 @@ using System;
 using System.Globalization;
 using NUnit.Framework;
 using NodaTime.Globalization;
+using NodaTime.Format;
 
 namespace NodaTime.Test
 {
@@ -140,7 +141,18 @@ namespace NodaTime.Test
         };
 
         [Test]
+        [Category("Formating")]
+        [Category("Format")]
+        public void TestToString_Jlk()
+        {
+            Offset.Zero.ToString("%%");
+            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseUnknownStandardFormat), () => Offset.Zero.ToString("%%"));
+        }
+
+        [Test]
         [TestCaseSource("toStringNoFormatData")]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_Culture(CultureInfo cultureInfo, Offset value, string expected)
         {
             using (CultureSaver.SetUiCulture(EnUs))
@@ -152,6 +164,8 @@ namespace NodaTime.Test
 
         [Test]
         [TestCaseSource("toStringFormatData")]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_Format(CultureInfo cultureInfo, Offset value, string format, string expected)
         {
             using (CultureSaver.SetUiCulture(cultureInfo))
@@ -163,6 +177,8 @@ namespace NodaTime.Test
 
         [Test]
         [TestCaseSource("toStringFormatData")]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_FormatCulture(CultureInfo cultureInfo, Offset value, string format, string expected)
         {
             using (CultureSaver.SetUiCulture(EnUs))
@@ -174,13 +190,18 @@ namespace NodaTime.Test
 
         [Test]
         [TestCaseSource("toStringFormatBadData")]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_FormatFailure(string format)
         {
-            Assert.Throws<FormatException>(() => Offset.Zero.ToString(format));
+            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseUnknownStandardFormat),
+                          () => Offset.Zero.ToString(format));
         }
 
         [Test]
         [TestCaseSource("toStringNoFormatData")]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_NoArg(CultureInfo cultureInfo, Offset value, string expected)
         {
             using (CultureSaver.SetUiCulture(cultureInfo))
@@ -191,6 +212,8 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_NullCulture()
         {
             using (CultureSaver.SetUiCulture(EnUs))

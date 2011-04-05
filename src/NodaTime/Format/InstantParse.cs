@@ -19,7 +19,6 @@ using System;
 using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Utility;
-using NodaTime.Properties;
 #endregion
 
 namespace NodaTime.Format
@@ -50,7 +49,7 @@ namespace NodaTime.Format
         internal static Instant Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new InstantParseInfo(formatInfo, true, styles);
-            TryParse(value, parseResult);
+            TryParseExactMultiple(value, AllFormats, parseResult);
             return parseResult.Value;
         }
 
@@ -174,36 +173,31 @@ namespace NodaTime.Format
                 parseInfo.Value = new Instant(number);
                 return true;
             }
-            return parseInfo.SetFormatError(Resources.Parse_CannotParseValue, value, typeof(Instant).FullName, format);
-        }
-
-        private static bool TryParse(string value, InstantParseInfo parseInfo)
-        {
-            return TryParseExactMultiple(value, AllFormats, parseInfo);
+            return parseInfo.FailParseCannotParseValue(value, typeof(Instant).FullName, format.ToString());
         }
 
         private static bool TryParseExact(string value, string format, InstantParseInfo parseInfo)
         {
             if (value == null)
             {
-                return parseInfo.SetArgumentNull("value");
+                return parseInfo.FailArgumentNull("value");
             }
             if (format == null)
             {
-                return parseInfo.SetArgumentNull("format");
+                return parseInfo.FailArgumentNull("format");
             }
             if (value.Length == 0)
             {
-                return parseInfo.SetFormatError(Resources.Parse_ValueStringEmpty);
+                return parseInfo.FailParseValueStringEmpty();
             }
             if (format.Length == 0)
             {
-                return parseInfo.SetFormatError(Resources.Parse_FormatStringEmpty);
+                return parseInfo.FailParseFormatStringEmpty();
             }
             format = format.Trim();
             if (format.Length > 1)
             {
-                return parseInfo.SetFormatError(Resources.Parse_FormatInvalid, format);
+                return parseInfo.FailParseFormatInvalid(format);
             }
             char formatChar = format[0];
             return DoStrictParse(value, formatChar, parseInfo);
@@ -213,17 +207,17 @@ namespace NodaTime.Format
         {
             if (formats == null)
             {
-                return parseInfo.SetArgumentNull("formats");
+                return parseInfo.FailArgumentNull("formats");
             }
             if (formats.Length == 0)
             {
-                return parseInfo.SetFormatError(Resources.Parse_EmptyFormatsArray);
+                return parseInfo.FailParseEmptyFormatsArray();
             }
             foreach (string format in formats)
             {
                 if (string.IsNullOrEmpty(format))
                 {
-                    return parseInfo.SetFormatError(Resources.Parse_FormatElementInvalid);
+                    return parseInfo.FailParseFormatElementInvalid();
                 }
                 if (TryParseExact(value, format, parseInfo))
                 {

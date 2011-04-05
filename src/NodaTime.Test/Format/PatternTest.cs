@@ -24,7 +24,9 @@ using NUnit.Framework;
 namespace NodaTime.Test.Format
 {
     [TestFixture]
+    [Category("Formating")]
     [Category("Format")]
+    [Category("Parse")]
     public class PatternTest : ParsableTest
     {
         private readonly TestParseInfo parseInfo = new TestParseInfo();
@@ -47,7 +49,8 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("'abc\\");
             char openQuote = pattern.GetNextCharacter();
-            Assert.Throws<FormatException>(() => pattern.GetQuotedString(openQuote, parseInfo));
+            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseEscapeAtEndOfString),
+                          () => pattern.GetQuotedString(openQuote, parseInfo));
         }
 
         [Test]
@@ -115,7 +118,8 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("'abc");
             char openQuote = pattern.GetNextCharacter();
-            Assert.Throws<FormatException>(() => pattern.GetQuotedString(openQuote, parseInfo));
+            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseMissingEndQuote),
+                          () => pattern.GetQuotedString(openQuote, parseInfo));
         }
 
         [Test]
@@ -153,7 +157,8 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("aaa");
             char ch = pattern.GetNextCharacter();
-            Assert.Throws<FormatException>(() => pattern.GetRepeatCount(2, ch, parseInfo));
+            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseRepeatCountExceeded),
+                          () => pattern.GetRepeatCount(2, ch, parseInfo));
         }
 
         [Test]

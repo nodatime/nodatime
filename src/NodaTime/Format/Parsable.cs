@@ -89,7 +89,7 @@ namespace NodaTime.Format
             {
                 return Current;
             }
-            throw new FormatException(Resources.Format_InvalidString);
+            throw new FormatException(Resources.Parse_UnexpectedEndOfString);
         }
 
         internal char PeekNext()
