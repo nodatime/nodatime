@@ -89,6 +89,7 @@
     <Compile Include="Format\OffsetParseInfo.cs" />
     <Compile Include="Format\Parsable.cs" />
     <Compile Include="Format\ParseException.cs" />
+    <Compile Include="Format\ParseFailureKind.cs" />
     <Compile Include="Format\ParseInfo.cs" />
     <Compile Include="Format\ParseString.cs" />
     <Compile Include="Format\Pattern.cs" />

@@ -70,11 +70,11 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid format string..
+        ///   Looks up a localized string similar to Format error..
         /// </summary>
-        internal static string Format_InvalidString {
+        internal static string FormatDefaultExceptionMessage {
             get {
-                return ResourceManager.GetString("Format_InvalidString", resourceCulture);
+                return ResourceManager.GetString("FormatDefaultExceptionMessage", resourceCulture);
             }
         }
         
@@ -115,15 +115,6 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The &apos;h&apos; pattern flag (12 hour format)is not supported by the NodaTime.Offset type..
-        /// </summary>
-        internal static string Offset_CustomPatternNotSupported {
-            get {
-                return ResourceManager.GetString("Offset_CustomPatternNotSupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to +H:mm:ss.fff.
         /// </summary>
         internal static string OffsetPatternFull {
@@ -156,6 +147,15 @@ namespace NodaTime.Properties {
         internal static string OffsetPatternShort {
             get {
                 return ResourceManager.GetString("OffsetPatternShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;h&apos; pattern flag (12 hour format) is not supported by the {0} type..
+        /// </summary>
+        internal static string Parse_12HourPatternNotSupported {
+            get {
+                return ResourceManager.GetString("Parse_12HourPatternNotSupported", resourceCulture);
             }
         }
         
@@ -327,6 +327,15 @@ namespace NodaTime.Properties {
         internal static string Parse_TimeSeparatorMismatch {
             get {
                 return ResourceManager.GetString("Parse_TimeSeparatorMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More characters were expected in the parsable string..
+        /// </summary>
+        internal static string Parse_UnexpectedEndOfString {
+            get {
+                return ResourceManager.GetString("Parse_UnexpectedEndOfString", resourceCulture);
             }
         }
         

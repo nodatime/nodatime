@@ -21,7 +21,8 @@ using NUnit.Framework;
 namespace NodaTime.Test.Format
 {
     [TestFixture]
-    [Category("Format")]
+    [Category("Formating")]
+    [Category("Parse")]
     public class ParseStringTest : ParsableTest
     {
         internal override Parsable MakeParsable(string value)

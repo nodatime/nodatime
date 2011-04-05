@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FormatDefaultExceptionMessage" xml:space="preserve">
+    <value>Format error.</value>
+  </data>
   <data name="Format_BadQuote" xml:space="preserve">
     <value>Format string is missing a close quote: {0}</value>
-  </data>
-  <data name="Format_InvalidString" xml:space="preserve">
-    <value>Invalid format string.</value>
   </data>
   <data name="Noda_ArgumentNull" xml:space="preserve">
     <value>Argument cannot be null.</value>
@@ -147,8 +147,8 @@
   <data name="OffsetPatternShort" xml:space="preserve">
     <value>+H</value>
   </data>
-  <data name="Offset_CustomPatternNotSupported" xml:space="preserve">
-    <value>The 'h' pattern flag (12 hour format)is not supported by the NodaTime.Offset type.</value>
+  <data name="Parse_12HourPatternNotSupported" xml:space="preserve">
+    <value>The 'h' pattern flag (12 hour format) is not supported by the {0} type.</value>
   </data>
   <data name="Parse_CannotParseValue" xml:space="preserve">
     <value>The value "{0}" cannot be parsed into an instance of {1} using pattern "{2}"</value>
@@ -206,6 +206,9 @@
   </data>
   <data name="Parse_TimeSeparatorMismatch" xml:space="preserve">
     <value>The value string does not match a time separator in the format string.</value>
+  </data>
+  <data name="Parse_UnexpectedEndOfString" xml:space="preserve">
+    <value>More characters were expected in the parsable string.</value>
   </data>
   <data name="Parse_UnknownFailure" xml:space="preserve">
     <value>Internal Error: The specified ParseFailureKind is unknown [{0}].</value>

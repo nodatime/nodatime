@@ -17,29 +17,24 @@
 
 #region usings
 using System;
+using NodaTime.Format;
+using NUnit.Framework;
 #endregion
 
-namespace NodaTime.Format
+namespace NodaTime.Test.Format
 {
-    public class ParseException : FormatException
+    public class ParseData<T> : TestCaseData
     {
-        public ParseException()
+        public ParseData(string value, string format, T result, string what)
+            : this(value, format, result, DateTimeParseStyles.None, what)
         {
-            Kind = ParseFailureKind.Format;
         }
 
-        public ParseException(ParseFailureKind kind, string message)
-            : base(message)
+        public ParseData(string value, string format, T result, DateTimeParseStyles styles, string what)
+            : base(value, format, result, styles)
         {
-            Kind = kind;
+            string name = String.Format("value: [{0}], format: [{1}], {2}", value ?? "null", format ?? "null", what);
+            SetName(name);
         }
-
-        public ParseException(ParseFailureKind kind, string message, Exception innerException)
-            : base(message, innerException)
-        {
-            Kind = kind;
-        }
-
-        public ParseFailureKind Kind { get; private set; }
     }
 }

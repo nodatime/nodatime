@@ -37,12 +37,14 @@ namespace NodaTime.Format
             AllowInnerWhite = (parseStyles & DateTimeParseStyles.AllowInnerWhite) != DateTimeParseStyles.None;
             AllowLeadingWhite = (parseStyles & DateTimeParseStyles.AllowLeadingWhite) != DateTimeParseStyles.None;
             AllowTrailingWhite = (parseStyles & DateTimeParseStyles.AllowTrailingWhite) != DateTimeParseStyles.None;
+            FailureMessageParameters = new object[0];
         }
 
         internal bool ThrowImmediate { get; private set; }
         internal ParseFailureKind Failure { get; private set; }
         internal string FailureArgumentName { get; private set; }
         internal string FailureMessage { get; private set; }
+        internal object[] FailureMessageParameters { get; private set; }
         internal bool Failed { get { return Failure != ParseFailureKind.None; } }
         internal bool AllowInnerWhite { get; private set; }
         internal bool AllowLeadingWhite { get; private set; }
@@ -60,21 +62,51 @@ namespace NodaTime.Format
                 case ParseFailureKind.ArgumentNull:
                     return new ArgumentNullException(FailureArgumentName, FailureMessage);
                 case ParseFailureKind.Format:
-                    return new FormatException(FailureMessage);
+                case ParseFailureKind.ParseEscapeAtEndOfString:
+                case ParseFailureKind.ParseDoubleAssigment:
+                case ParseFailureKind.ParseMissingEndQuote:
+                case ParseFailureKind.ParseRepeatCountExceeded:
+                case ParseFailureKind.ParseCannotParseValue:
+                case ParseFailureKind.ParseValueStringEmpty:
+                case ParseFailureKind.ParseFormatStringEmpty:
+                case ParseFailureKind.ParseFormatInvalid:
+                case ParseFailureKind.ParseFormatElementInvalid:
+                case ParseFailureKind.ParseEmptyFormatsArray:
+                case ParseFailureKind.ParseExtraValueCharacters:
+                case ParseFailureKind.ParsePercentDoubled:
+                case ParseFailureKind.ParsePercentAtEndOfString:
+                case ParseFailureKind.ParseQuotedStringMismatch:
+                case ParseFailureKind.ParseEscapedCharacterMismatch:
+                case ParseFailureKind.ParseMissingDecimalSeparator:
+                case ParseFailureKind.ParseTimeSeparatorMismatch:
+                case ParseFailureKind.ParseMismatchedNumber:
+                case ParseFailureKind.ParseMismatchedSpace:
+                case ParseFailureKind.ParseMismatchedCharacter:
+                case ParseFailureKind.ParseUnknownStandardFormat:
+                    return new ParseException(Failure, FailureMessage);
                 default:
                     string message = string.Format(Resources.Parse_UnknownFailure, Failure) + Environment.NewLine + FailureMessage;
                     return new InvalidOperationException(message); // TODO: figure out what exception to throw here.
             }
         }
 
-        internal bool SetFormatError(string message, params object[] parameters)
+        private bool FailBasic(ParseFailureKind kind, string message, params object[] parameters)
         {
-            Failure = ParseFailureKind.Format;
+            Failure = kind;
+            FailureMessageParameters = parameters;
             FailureMessage = string.Format(message, parameters);
             return CheckImmediate();
         }
 
-        internal bool SetArgumentNull(string argumentName)
+        internal bool SetFormatError(string message, params object[] parameters)
+        {
+            Failure = ParseFailureKind.Format;
+            FailureMessageParameters = parameters;
+            FailureMessage = string.Format(message, parameters);
+            return CheckImmediate();
+        }
+
+        internal bool FailArgumentNull(string argumentName)
         {
             Failure = ParseFailureKind.ArgumentNull;
             FailureMessage = Resources.Noda_ArgumentNull;
@@ -116,16 +148,117 @@ namespace NodaTime.Format
                 currentValue = newValue;
                 return true;
             }
-            return SetFormatError(DoubleAssignmentMessage, patternCharacter);
+            return FailDoubleAssigment(patternCharacter);
         }
-    }
+        internal bool FailParseEscapeAtEndOfString()
+        {
+            return FailBasic(ParseFailureKind.ParseEscapeAtEndOfString, Resources.Parse_EscapeAtEndOfString);
+        }
 
-    #region Nested type: ParseFailureKind
-    internal enum ParseFailureKind
-    {
-        None,
-        ArgumentNull,
-        Format,
+        internal bool FailParseMissingEndQuote(char closeQuote)
+        {
+            return FailBasic(ParseFailureKind.ParseMissingEndQuote, Resources.Parse_MissingEndQuote, closeQuote);
+        }
+
+        internal bool FailParseRepeatCountExceeded(char patternCharacter, int maximumCount)
+        {
+            return FailBasic(ParseFailureKind.ParseRepeatCountExceeded, Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
+        }
+
+        internal bool FailParseCannotParseValue(string value, string typeName, string format)
+        {
+            return FailBasic(ParseFailureKind.ParseCannotParseValue, Resources.Parse_CannotParseValue, value, typeName, format);
+        }
+
+        internal bool FailDoubleAssigment(char patternCharacter)
+        {
+            return FailBasic(ParseFailureKind.ParseDoubleAssigment, DoubleAssignmentMessage, patternCharacter);
+        }
+
+        internal bool FailParseValueStringEmpty()
+        {
+            return FailBasic(ParseFailureKind.ParseValueStringEmpty, Resources.Parse_ValueStringEmpty);
+        }
+
+        internal bool FailParseFormatStringEmpty()
+        {
+            return FailBasic(ParseFailureKind.ParseFormatStringEmpty, Resources.Parse_FormatStringEmpty);
+        }
+
+        internal bool FailParseFormatInvalid(string format)
+        {
+            return FailBasic(ParseFailureKind.ParseFormatInvalid, Resources.Parse_FormatInvalid, format);
+        }
+
+        internal bool FailParseEmptyFormatsArray()
+        {
+            return FailBasic(ParseFailureKind.ParseEmptyFormatsArray, Resources.Parse_EmptyFormatsArray);
+        }
+
+        internal bool FailParseFormatElementInvalid()
+        {
+            return FailBasic(ParseFailureKind.ParseFormatElementInvalid, Resources.Parse_FormatElementInvalid);
+        }
+
+        internal bool FailParseExtraValueCharacters(string remainder)
+        {
+            return FailBasic(ParseFailureKind.ParseExtraValueCharacters, Resources.Parse_ExtraValueCharacters, remainder);
+        }
+
+        internal bool FailParsePercentDoubled()
+        {
+            return FailBasic(ParseFailureKind.ParsePercentDoubled, Resources.Parse_PercentDoubled);
+        }
+
+        internal bool FailParsePercentAtEndOfString()
+        {
+            return FailBasic(ParseFailureKind.ParsePercentAtEndOfString, Resources.Parse_PercentAtEndOfString);
+        }
+
+        internal bool FailParseQuotedStringMismatch()
+        {
+            return FailBasic(ParseFailureKind.ParseQuotedStringMismatch, Resources.Parse_QuotedStringMismatch);
+        }
+
+        internal bool FailParseEscapedCharacterMismatch(char patternCharacter)
+        {
+            return FailBasic(ParseFailureKind.ParseEscapedCharacterMismatch, Resources.Parse_EscapedCharacterMismatch, patternCharacter);
+        }
+
+        internal bool FailParseMissingDecimalSeparator()
+        {
+            return FailBasic(ParseFailureKind.ParseMissingDecimalSeparator, Resources.Parse_MissingDecimalSeparator);
+        }
+
+        internal bool FailParseTimeSeparatorMismatch()
+        {
+            return FailBasic(ParseFailureKind.ParseTimeSeparatorMismatch, Resources.Parse_TimeSeparatorMismatch);
+        }
+
+        internal bool FailParseMismatchedNumber(string pattern)
+        {
+            return FailBasic(ParseFailureKind.ParseMismatchedNumber, Resources.Parse_MismatchedNumber, pattern);
+        }
+
+        internal bool FailParseMismatchedSpace()
+        {
+            return FailBasic(ParseFailureKind.ParseMismatchedSpace, Resources.Parse_MismatchedSpace);
+        }
+
+        internal bool FailParseMismatchedCharacter(char patternCharacter)
+        {
+            return FailBasic(ParseFailureKind.ParseMismatchedCharacter, Resources.Parse_MismatchedCharacter, patternCharacter);
+        }
+
+        internal bool FailParseUnknownStandardFormat(char patternCharacter, string typeName)
+        {
+            return FailBasic(ParseFailureKind.ParseUnknownStandardFormat, Resources.Parse_UnknownStandardFormat, patternCharacter, typeName);
+        }
+
+        internal bool FailParse12HourPatternNotSupported(string typeName)
+        {
+            return FailBasic(ParseFailureKind.Parse12HourPatternNotSupported, Resources.Parse_12HourPatternNotSupported, typeName);
+        }
+        
     }
-    #endregion
 }

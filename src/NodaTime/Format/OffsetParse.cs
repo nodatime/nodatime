@@ -14,12 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
 using System;
 using NodaTime.Globalization;
 using NodaTime.Properties;
-
 #endregion
 
 namespace NodaTime.Format
@@ -89,17 +87,17 @@ namespace NodaTime.Format
         {
             if (formats == null)
             {
-                return parseInfo.SetArgumentNull("formats");
+                return parseInfo.FailArgumentNull("formats");
             }
             if (formats.Length == 0)
             {
-                return parseInfo.SetFormatError(Resources.Parse_EmptyFormatsArray);
+                return parseInfo.FailParseEmptyFormatsArray();
             }
             foreach (string format in formats)
             {
                 if (string.IsNullOrEmpty(format))
                 {
-                    return parseInfo.SetFormatError(Resources.Parse_FormatElementInvalid);
+                    return parseInfo.FailParseFormatElementInvalid();
                 }
                 if (TryParseExact(value, format, parseInfo))
                 {
@@ -113,19 +111,19 @@ namespace NodaTime.Format
         {
             if (value == null)
             {
-                return parseInfo.SetArgumentNull("value");
+                return parseInfo.FailArgumentNull("value");
             }
             if (format == null)
             {
-                return parseInfo.SetArgumentNull("format");
+                return parseInfo.FailArgumentNull("format");
             }
             if (value.Length == 0)
             {
-                return parseInfo.SetFormatError(Resources.Parse_ValueStringEmpty);
+                return parseInfo.FailParseValueStringEmpty();
             }
             if (format.Length == 0)
             {
-                return parseInfo.SetFormatError(Resources.Parse_FormatStringEmpty);
+                return parseInfo.FailParseValueStringEmpty();
             }
             if (format.Length == 1)
             {
@@ -169,7 +167,7 @@ namespace NodaTime.Format
             }
             if (str.Current != Parsable.Nul)
             {
-                return parseInfo.SetFormatError(Resources.Parse_ExtraValueCharacters, str.Remainder);
+                return parseInfo.FailParseExtraValueCharacters(str.Remainder);
             }
 
             parseInfo.CalculateValue();
@@ -191,9 +189,9 @@ namespace NodaTime.Format
                         {
                             return true;
                         }
-                        return parseInfo.SetFormatError(Resources.Parse_PercentDoubled);
+                        return parseInfo.FailParsePercentDoubled();
                     }
-                    return parseInfo.SetFormatError(Resources.Parse_PercentAtEndOfString);
+                    return parseInfo.FailParsePercentAtEndOfString();
                 case '\'':
                 case '"':
                     string quoted = pattern.GetQuotedString(patternCharacter, parseInfo);
@@ -209,27 +207,27 @@ namespace NodaTime.Format
                         }
                         else if (!str.Match(quoted[i]))
                         {
-                            return parseInfo.SetFormatError(Resources.Parse_QuotedStringMismatch);
+                            return parseInfo.FailParseQuotedStringMismatch();
                         }
                     }
                     return true;
                 case '\\':
                     if (!pattern.HasMoreCharacters)
                     {
-                        return parseInfo.SetFormatError(Resources.Parse_EscapeAtEndOfString);
+                        return parseInfo.FailParseEscapeAtEndOfString();
                     }
                     if (str.Match(pattern.PeekNext()))
                     {
                         pattern.MoveNext();
                         return true;
                     }
-                    return parseInfo.SetFormatError(Resources.Parse_EscapedCharacterMismatch, pattern.PeekNext());
+                    return parseInfo.FailParseEscapedCharacterMismatch(pattern.PeekNext());
                 case '.':
                     if (!str.Match(parseInfo.FormatInfo.DecimalSeparator))
                     {
                         if (!pattern.HasMoreCharacters || pattern.PeekNext() != 'F')
                         {
-                            return parseInfo.SetFormatError(Resources.Parse_MissingDecimalSeparator);
+                            return parseInfo.FailParseMissingDecimalSeparator();
                         }
                         pattern.MoveNext();
                         pattern.GetRepeatCount(3, parseInfo); // Skip the F pattern characters
@@ -240,30 +238,30 @@ namespace NodaTime.Format
                     {
                         return true;
                     }
-                    return parseInfo.SetFormatError(Resources.Parse_TimeSeparatorMismatch);
+                    return parseInfo.FailParseTimeSeparatorMismatch();
                 case 'h':
-                    throw new FormatException(Resources.Offset_CustomPatternNotSupported);
+                    throw new FormatException(Resources.Parse_12HourPatternNotSupported);
                 case 'H':
                     count = pattern.GetRepeatCount(2, parseInfo);
                     if (!parseInfo.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
                         return parseInfo.AssignNewValue(ref parseInfo.Hours, value, patternCharacter);
                     }
-                    return parseInfo.SetFormatError(Resources.Parse_MismatchedNumber, new string(patternCharacter, count));
+                    return parseInfo.FailParseMismatchedNumber(new string(patternCharacter, count));
                 case 'm':
                     count = pattern.GetRepeatCount(2, parseInfo);
                     if (!parseInfo.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
                         return parseInfo.AssignNewValue(ref parseInfo.Minutes, value, patternCharacter);
                     }
-                    return parseInfo.SetFormatError(Resources.Parse_MismatchedNumber, new string(patternCharacter, count));
+                    return parseInfo.FailParseMismatchedNumber(new string(patternCharacter, count));
                 case 's':
                     count = pattern.GetRepeatCount(2, parseInfo);
                     if (!parseInfo.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
                         return parseInfo.AssignNewValue(ref parseInfo.Seconds, value, patternCharacter);
                     }
-                    return parseInfo.SetFormatError(Resources.Parse_MismatchedNumber, new string(patternCharacter, count));
+                    return parseInfo.FailParseMismatchedNumber(new string(patternCharacter, count));
                 case 'F':
                 case 'f':
                     // TDOD: fix the scaling of the value
@@ -275,7 +273,7 @@ namespace NodaTime.Format
                     int fractionalSeconds;
                     if (!str.ParseFractionExact(count, 3, out fractionalSeconds) && patternCharacter == 'f')
                     {
-                        return parseInfo.SetFormatError(Resources.Parse_MismatchedNumber, new string(patternCharacter, count));
+                        return parseInfo.FailParseMismatchedNumber(new string(patternCharacter, count));
                     }
                     return parseInfo.AssignNewValue(ref parseInfo.FractionalSeconds, fractionalSeconds, patternCharacter);
                 default:
@@ -289,13 +287,13 @@ namespace NodaTime.Format
                                 return true;
                             }
                             */
-                            parseInfo.SetFormatError(Resources.Parse_MismatchedSpace);
+                            parseInfo.FailParseMismatchedSpace();
                             return false;
                         }
                     }
                     else if (!str.Match(patternCharacter))
                     {
-                        parseInfo.SetFormatError(Resources.Parse_MismatchedCharacter, patternCharacter);
+                        parseInfo.FailParseMismatchedCharacter(patternCharacter);
                         return false;
                     }
                     return true;
@@ -309,11 +307,8 @@ namespace NodaTime.Format
                 case 'g':
                     break;
             }
-            parseInfo.SetFormatError(Resources.Parse_UnknownStandardFormat, formatCharacter, typeof(Instant).FullName);
+            parseInfo.FailParseUnknownStandardFormat(formatCharacter, typeof(Offset).FullName);
             return null;
         }
-
-        #region Nested type: OffsetParseInfo
-        #endregion
     }
 }

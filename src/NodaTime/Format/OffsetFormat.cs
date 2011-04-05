@@ -83,7 +83,15 @@ namespace NodaTime.Format
                         outputBuffer.Append(parseInfo.FormatInfo.DecimalSeparator);
                         break;
                     case '%':
-                        outputBuffer.Append(FormatPattern(parseInfo, pattern.GetNextCharacter().ToString()));
+                        if (pattern.HasMoreCharacters)
+                        {
+                            if (pattern.PeekNext() != '%')
+                            {
+                                outputBuffer.Append(FormatPattern(parseInfo, pattern.GetNextCharacter().ToString()));
+                            }
+                            parseInfo.FailParsePercentDoubled();
+                        }
+                        parseInfo.FailParsePercentAtEndOfString();
                         break;
                     case '\'':
                     case '"':
@@ -93,7 +101,8 @@ namespace NodaTime.Format
                         outputBuffer.Append(pattern.GetNextCharacter());
                         break;
                     case 'h':
-                        throw new FormatException(Resources.Offset_CustomPatternNotSupported);
+                        string message = string.Format(Resources.Parse_12HourPatternNotSupported, typeof(Offset).FullName);
+                        throw new FormatException(message);
                     case 'H':
                         repeatLength = pattern.GetRepeatCount(2, parseInfo);
                         FormatHelper.LeftPad(parseInfo.Hours.GetValueOrDefault(), repeatLength, outputBuffer);
@@ -154,8 +163,8 @@ namespace NodaTime.Format
                     pattern = formatInfo.OffsetPatternFull;
                     break;
                 default:
-                    string message = string.Format(Resources.Parse_UnknownStandardFormat, formatCharacter);
-                    throw new FormatException(message);
+                    string message = string.Format(Resources.Parse_UnknownStandardFormat, formatCharacter, typeof(Offset).FullName);
+                    throw new ParseException(ParseFailureKind.ParseUnknownStandardFormat, message);
             }
             return FormatPattern(parseInfo, pattern);
         }
