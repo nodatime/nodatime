@@ -83,6 +83,7 @@ namespace NodaTime.Format
                 case ParseFailureKind.ParseMismatchedSpace:
                 case ParseFailureKind.ParseMismatchedCharacter:
                 case ParseFailureKind.ParseUnknownStandardFormat:
+                case ParseFailureKind.Parse12HourPatternNotSupported:
                     return new ParseException(Failure, FailureMessage);
                 default:
                     string message = string.Format(Resources.Parse_UnknownFailure, Failure) + Environment.NewLine + FailureMessage;
@@ -259,6 +260,6 @@ namespace NodaTime.Format
         {
             return FailBasic(ParseFailureKind.Parse12HourPatternNotSupported, Resources.Parse_12HourPatternNotSupported, typeName);
         }
-        
+
     }
 }

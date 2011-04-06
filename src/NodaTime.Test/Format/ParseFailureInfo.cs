@@ -42,9 +42,9 @@ namespace NodaTime.Test.Format
             FailureMessageParameters = new object[0];
         }
 
-        private ParseFailureKind Failure { get; set; }
-        private string FailureArgumentName { get; set; }
-        private object[] FailureMessageParameters { get; set; }
+        public ParseFailureKind Failure { get; private set; }
+        public string FailureArgumentName { get; private set; }
+        public object[] FailureMessageParameters { get; private set; }
 
         internal void Validate(ParseInfo parseInfo)
         {

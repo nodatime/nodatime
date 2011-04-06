@@ -82,6 +82,7 @@
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="ChronologyTest.cs" />
     <Compile Include="CultureSaver.cs" />
+    <Compile Include="Format\FormatFailureData.cs" />
     <Compile Include="Format\ParseData.cs" />
     <Compile Include="Format\FormatHelperTest.cs" />
     <Compile Include="Format\OffsetParseTest.cs" />

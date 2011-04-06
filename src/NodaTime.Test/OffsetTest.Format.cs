@@ -20,6 +20,7 @@ using System.Globalization;
 using NUnit.Framework;
 using NodaTime.Globalization;
 using NodaTime.Format;
+using NodaTime.Test.Format;
 
 namespace NodaTime.Test
 {
@@ -125,29 +126,21 @@ namespace NodaTime.Test
         };
 
         private object[] toStringFormatBadData = {
-            new TestCaseData("z").SetName("invalid standard format"),
-            new TestCaseData("\\").SetName("Escape without character"),
-            new TestCaseData("%").SetName("Expansion character without character"),
-            new TestCaseData("%%").SetName("Double expansion character"),
-            new TestCaseData("'").SetName("Missing end quote"),
-            new TestCaseData("'qwe").SetName("Missing end quote 2"),
-            new TestCaseData("'qwe\\'").SetName("Escaped end quote"),
-            new TestCaseData("'qwe\\").SetName("Escaped in quote missing character"),
-            new TestCaseData("ffff").SetName("Too many 'f'"),
-            new TestCaseData("hhh").SetName("Too many 'h'"),
-            new TestCaseData("mmm").SetName("Too many 'm'"),
-            new TestCaseData("sss").SetName("Too many 's'"),
-            new TestCaseData("mmmmmmmmmmmmmmmmmmm").SetName("Too many 'm'"),
+            new FormatFailureData<Offset>(Offset.Zero, "z", ParseFailureKind.ParseUnknownStandardFormat, "invalid standard format"),
+            new FormatFailureData<Offset>(Offset.Zero, "\\", ParseFailureKind.ParseUnknownStandardFormat, "Escape without character"),
+            new FormatFailureData<Offset>(Offset.Zero, "%", ParseFailureKind.ParseUnknownStandardFormat, "Expansion character without character"),
+            new FormatFailureData<Offset>(Offset.Zero, "%%", ParseFailureKind.ParsePercentDoubled, "Double expansion character"),
+            new FormatFailureData<Offset>(Offset.Zero, "'", ParseFailureKind.ParseUnknownStandardFormat, "Missing end quote"),
+            new FormatFailureData<Offset>(Offset.Zero, "'qwe", ParseFailureKind.ParseMissingEndQuote, "Missing end quote 2"),
+            new FormatFailureData<Offset>(Offset.Zero, "'qwe\\'", ParseFailureKind.ParseMissingEndQuote, "Escaped end quote"),
+            new FormatFailureData<Offset>(Offset.Zero, "'qwe\\", ParseFailureKind.ParseEscapeAtEndOfString, "Escaped in quote missing character"),
+            new FormatFailureData<Offset>(Offset.Zero, "ffff", ParseFailureKind.ParseRepeatCountExceeded, "Too many 'f'"),
+            new FormatFailureData<Offset>(Offset.Zero, "HHH", ParseFailureKind.ParseRepeatCountExceeded, "Too many 'H'"),
+            new FormatFailureData<Offset>(Offset.Zero, "mmm", ParseFailureKind.ParseRepeatCountExceeded, "Too many 'm'"),
+            new FormatFailureData<Offset>(Offset.Zero, "sss", ParseFailureKind.ParseRepeatCountExceeded, "Too many 's'"),
+            new FormatFailureData<Offset>(Offset.Zero, "mmmmmmmmmmmmmmmmmmm", ParseFailureKind.ParseRepeatCountExceeded, "Too many 'm'"),
+            new FormatFailureData<Offset>(Offset.Zero, "hh", ParseFailureKind.Parse12HourPatternNotSupported, "12 hours pattern not supported"),
         };
-
-        [Test]
-        [Category("Formating")]
-        [Category("Format")]
-        public void TestToString_Jlk()
-        {
-            Offset.Zero.ToString("%%");
-            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseUnknownStandardFormat), () => Offset.Zero.ToString("%%"));
-        }
 
         [Test]
         [TestCaseSource("toStringNoFormatData")]
@@ -192,9 +185,9 @@ namespace NodaTime.Test
         [TestCaseSource("toStringFormatBadData")]
         [Category("Formating")]
         [Category("Format")]
-        public void TestToString_FormatFailure(string format)
+        public void TestToString_FormatFailure(Offset value, string format, DateTimeParseStyles styles, ParseFailureInfo failureInfo)
         {
-            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseUnknownStandardFormat),
+            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(failureInfo.Failure),
                           () => Offset.Zero.ToString(format));
         }
 
