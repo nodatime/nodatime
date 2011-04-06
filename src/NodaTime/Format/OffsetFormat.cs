@@ -88,6 +88,8 @@ namespace NodaTime.Format
                             if (pattern.PeekNext() != '%')
                             {
                                 outputBuffer.Append(FormatPattern(parseInfo, pattern.GetNextCharacter().ToString()));
+                                pattern.MoveNext(); // Eat next character
+                                break;
                             }
                             parseInfo.FailParsePercentDoubled();
                         }
@@ -101,8 +103,8 @@ namespace NodaTime.Format
                         outputBuffer.Append(pattern.GetNextCharacter());
                         break;
                     case 'h':
-                        string message = string.Format(Resources.Parse_12HourPatternNotSupported, typeof(Offset).FullName);
-                        throw new FormatException(message);
+                        parseInfo.FailParse12HourPatternNotSupported(typeof(Offset).FullName);
+                        break; // Never gets here
                     case 'H':
                         repeatLength = pattern.GetRepeatCount(2, parseInfo);
                         FormatHelper.LeftPad(parseInfo.Hours.GetValueOrDefault(), repeatLength, outputBuffer);
