@@ -49,8 +49,16 @@ namespace NodaTime.Format
 
         internal static Offset ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
-            var parseResult = new OffsetParseInfo(formatInfo, true, styles);
-            TryParseExactMultiple(value, formats, parseResult);
+            var parseResult = new OffsetParseInfo(formatInfo, false, styles);
+            if (!TryParseExactMultiple(value, formats, parseResult))
+            {
+                if (parseResult.Failure == ParseFailureKind.None)
+                {
+                    parseResult.FailParseNoMatchingFormat();
+                }
+                parseResult.ThrowImmediate = true;
+                parseResult.CheckImmediate();
+            }
             return parseResult.Value;
         }
 
@@ -83,11 +91,19 @@ namespace NodaTime.Format
             return false;
         }
 
-        private static bool TryParseExactMultiple(string value, string[] formats, OffsetParseInfo parseInfo)
+        internal static bool TryParseExactMultiple(string value, string[] formats, OffsetParseInfo parseInfo)
         {
+            if (value == null)
+            {
+                return parseInfo.FailArgumentNull("value");
+            }
             if (formats == null)
             {
                 return parseInfo.FailArgumentNull("formats");
+            }
+            if (value.Length == 0)
+            {
+                return parseInfo.FailParseValueStringEmpty();
             }
             if (formats.Length == 0)
             {
@@ -103,6 +119,7 @@ namespace NodaTime.Format
                 {
                     return true;
                 }
+                parseInfo.ClearFail();
             }
             return false;
         }
@@ -123,7 +140,7 @@ namespace NodaTime.Format
             }
             if (format.Length == 0)
             {
-                return parseInfo.FailParseValueStringEmpty();
+                return parseInfo.FailParseFormatStringEmpty();
             }
             if (format.Length == 1)
             {

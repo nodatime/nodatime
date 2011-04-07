@@ -192,6 +192,9 @@
   <data name="Parse_MissingEndQuote" xml:space="preserve">
     <value>The format string is missing the end quote character "{0}".</value>
   </data>
+  <data name="Parse_NoMatchingFormat" xml:space="preserve">
+    <value>None of the specified formats matches the given value string.</value>
+  </data>
   <data name="Parse_PercentAtEndOfString" xml:space="preserve">
     <value>A percent sign (%) appears at the end of the format string.</value>
   </data>

@@ -32,15 +32,14 @@ namespace NodaTime.Format
         internal ParseInfo(NodaFormatInfo formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
         {
             FormatInfo = formatInfo;
-            Failure = ParseFailureKind.None;
             ThrowImmediate = throwImmediate;
             AllowInnerWhite = (parseStyles & DateTimeParseStyles.AllowInnerWhite) != DateTimeParseStyles.None;
             AllowLeadingWhite = (parseStyles & DateTimeParseStyles.AllowLeadingWhite) != DateTimeParseStyles.None;
             AllowTrailingWhite = (parseStyles & DateTimeParseStyles.AllowTrailingWhite) != DateTimeParseStyles.None;
-            FailureMessageParameters = new object[0];
+            ClearFail();
         }
 
-        internal bool ThrowImmediate { get; private set; }
+        internal bool ThrowImmediate { get; set; }
         internal ParseFailureKind Failure { get; private set; }
         internal string FailureArgumentName { get; private set; }
         internal string FailureMessage { get; private set; }
@@ -52,6 +51,14 @@ namespace NodaTime.Format
         internal NodaFormatInfo FormatInfo { get; private set; }
 
         protected virtual string DoubleAssignmentMessage { get { return Resources.Parse_DefaultDoubleAssignment; } }
+
+        internal void ClearFail()
+        {
+            Failure = ParseFailureKind.None;
+            FailureMessage = null;
+            FailureMessageParameters = new object[0];
+            FailureArgumentName = null;
+        }
 
         internal Exception GetFailureException()
         {
@@ -84,9 +91,10 @@ namespace NodaTime.Format
                 case ParseFailureKind.ParseMismatchedCharacter:
                 case ParseFailureKind.ParseUnknownStandardFormat:
                 case ParseFailureKind.Parse12HourPatternNotSupported:
+                case ParseFailureKind.ParseNoMatchingFormat:
                     return new ParseException(Failure, FailureMessage);
                 default:
-                    string message = string.Format(Resources.Parse_UnknownFailure, Failure) + Environment.NewLine + FailureMessage;
+                    string message = string.Format(FormatInfo, Resources.Parse_UnknownFailure, Failure) + Environment.NewLine + FailureMessage;
                     return new InvalidOperationException(message); // TODO: figure out what exception to throw here.
             }
         }
@@ -95,7 +103,7 @@ namespace NodaTime.Format
         {
             Failure = kind;
             FailureMessageParameters = parameters;
-            FailureMessage = string.Format(message, parameters);
+            FailureMessage = string.Format(FormatInfo, message, parameters);
             return CheckImmediate();
         }
 
@@ -103,7 +111,7 @@ namespace NodaTime.Format
         {
             Failure = ParseFailureKind.Format;
             FailureMessageParameters = parameters;
-            FailureMessage = string.Format(message, parameters);
+            FailureMessage = string.Format(FormatInfo, message, parameters);
             return CheckImmediate();
         }
 
@@ -115,7 +123,7 @@ namespace NodaTime.Format
             return CheckImmediate();
         }
 
-        private bool CheckImmediate()
+        internal bool CheckImmediate()
         {
             if (ThrowImmediate)
             {
@@ -151,6 +159,7 @@ namespace NodaTime.Format
             }
             return FailDoubleAssigment(patternCharacter);
         }
+
         internal bool FailParseEscapeAtEndOfString()
         {
             return FailBasic(ParseFailureKind.ParseEscapeAtEndOfString, Resources.Parse_EscapeAtEndOfString);
@@ -261,5 +270,9 @@ namespace NodaTime.Format
             return FailBasic(ParseFailureKind.Parse12HourPatternNotSupported, Resources.Parse_12HourPatternNotSupported, typeName);
         }
 
+        internal bool FailParseNoMatchingFormat()
+        {
+            return FailBasic(ParseFailureKind.ParseNoMatchingFormat, Resources.Parse_NoMatchingFormat);
+        }
     }
 }

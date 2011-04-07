@@ -46,5 +46,6 @@ namespace NodaTime.Format
         ParseMismatchedCharacter,
         ParseUnknownStandardFormat,
         Parse12HourPatternNotSupported,
+        ParseNoMatchingFormat,
     }
 }

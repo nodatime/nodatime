@@ -286,6 +286,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None of the specified formats matches the given value string..
+        /// </summary>
+        internal static string Parse_NoMatchingFormat {
+            get {
+                return ResourceManager.GetString("Parse_NoMatchingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A percent sign (%) appears at the end of the format string..
         /// </summary>
         internal static string Parse_PercentAtEndOfString {
