@@ -51,7 +51,7 @@ namespace NodaTime.Globalization
         {
             if (cultureInfo == null)
             {
-                throw new ArgumentNullException("cultureInfo");
+                cultureInfo = Thread.CurrentThread.CurrentCulture;
             }
             CultureInfo = cultureInfo;
             NumberFormat = cultureInfo.NumberFormat;
@@ -150,7 +150,7 @@ namespace NodaTime.Globalization
         /// </summary>
         public static NodaFormatInfo CurrentInfo
         {
-            get { return GetInstance(Thread.CurrentThread.CurrentUICulture); }
+            get { return GetInstance(Thread.CurrentThread.CurrentCulture); }
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace NodaTime.Globalization
                     return GetFormatInfo(cultureInfo);
                 }
             }
-            return GetInstance(Thread.CurrentThread.CurrentUICulture);
+            return GetInstance(Thread.CurrentThread.CurrentCulture);
         }
 
         /// <summary>

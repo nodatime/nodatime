@@ -25,7 +25,6 @@ namespace NodaTime.Test
     public partial class OffsetTest
     {
         private static readonly Offset ThreeHours = MakeOffset(3, 0, 0, 0);
-        // private Offset threeHoursPrime = MakeOffset(3, 0, 0, 0);
         private static readonly Offset NegativeThreeHours = MakeOffset(-3, 0, 0, 0);
         private static readonly Offset NegativeTwelveHours = MakeOffset(-12, 0, 0, 0);
         private static readonly Offset HmsfOffset = MakeOffset(5, 12, 34, 567);
@@ -42,11 +41,7 @@ namespace NodaTime.Test
 
         private static Offset MakeOffset(int hours, int minutes, int seconds, int milliseconds)
         {
-            int millis = (hours * NodaConstants.MillisecondsPerHour);
-            millis += (minutes * NodaConstants.MillisecondsPerMinute);
-            millis += (seconds * NodaConstants.MillisecondsPerSecond);
-            millis += milliseconds;
-            return new Offset(millis);
+            return Offset.Create(hours, minutes, seconds, milliseconds);
         }
     }
 }

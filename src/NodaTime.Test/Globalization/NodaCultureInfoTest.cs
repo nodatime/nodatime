@@ -73,7 +73,7 @@ namespace NodaTime.Test.Globalization
             var info = new NodaCultureInfo("en-US");
             var original = info.NodaFormatInfo;
             Assert.NotNull(original);
-            var newFormat = new NodaFormatInfo(Thread.CurrentThread.CurrentUICulture);
+            var newFormat = new NodaFormatInfo(Thread.CurrentThread.CurrentCulture);
             Assert.AreNotSame(original, newFormat);
             info.NodaFormatInfo = newFormat;
             Assert.AreSame(newFormat, info.NodaFormatInfo);

@@ -26,12 +26,9 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {
-    public abstract class AbstractFormattingData<T> : ITestCaseData,
-                                                      IFormattingData
+    public abstract class AbstractFormattingData<T> : ITestCaseData
     {
         public static readonly CultureInfo Failing = new FailingCultureInfo();
-
-        private CultureInfo culture;
 
         protected AbstractFormattingData()
         {
@@ -45,6 +42,7 @@ namespace NodaTime.Test.Format
         public T V { get; set; }
         public string S { get; set; }
         public string F { get; set; }
+        public CultureInfo C { get; set; }
         public DateTimeParseStyles Styles { get; set; }
         public string Name { get; set; }
         public ParseFailureKind Kind { get; set; }
@@ -52,15 +50,6 @@ namespace NodaTime.Test.Format
         public List<object> Parameters { get; set; }
         public CultureInfo ThreadCulture { get; set; }
         public CultureInfo ThreadUiCulture { get; set; }
-
-        public CultureInfo C
-        {
-            get
-            {
-                return culture ?? Thread.CurrentThread.CurrentUICulture;
-            }
-            set { culture = value; }
-        }
 
         #region ITestCaseData Members
         public object[] Arguments
@@ -96,7 +85,8 @@ namespace NodaTime.Test.Format
                 }
 
                 var builder = new StringBuilder();
-                builder.Append(C.Name);
+                var culture = C ?? Thread.CurrentThread.CurrentCulture;
+                builder.Append(culture.Name);
                 builder.Append(", ");
                 builder.Append(String.Format("value: [{0}], formatted: [{1}], format: {2}", label, formatted, format));
 
