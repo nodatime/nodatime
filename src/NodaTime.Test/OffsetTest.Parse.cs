@@ -15,16 +15,71 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Globalization;
-using NodaTime.Format;
+#region usings
+using NodaTime.Globalization;
+using NodaTime.Test.Format;
 using NUnit.Framework;
+#endregion
 
 namespace NodaTime.Test
 {
     [TestFixture]
     public partial class OffsetTest
     {
+        [Test]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactCommon")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactMultiple")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactStyle")]
+        public void TestParseExact_multiple(OffsetFormattingTestSupport.OffsetData data)
+        {
+            string[] formats = null;
+            if (data.F != null)
+            {
+                formats = data.F.Split('\0');
+            }
+            FormattingTestSupport.RunParseTest(data, () => Offset.ParseExact(data.S, formats, new NodaFormatInfo(data.C), data.Styles));
+        }
+
+        [Test]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactCommon")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactSingle")]
+        public void TestParseExact_noStyle(OffsetFormattingTestSupport.OffsetData data)
+        {
+            FormattingTestSupport.RunParseTest(data, () => Offset.ParseExact(data.S, data.F, new NodaFormatInfo(data.C)));
+        }
+
+        [Test]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactCommon")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactSingle")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactStyle")]
+        public void TestParseExact_withStyle(OffsetFormattingTestSupport.OffsetData data)
+        {
+            FormattingTestSupport.RunParseTest(data, () => Offset.ParseExact(data.S, data.F, new NodaFormatInfo(data.C), data.Styles));
+        }
+
+        [Test]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactCommon")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactMultiple")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactStyle")]
+        public void TestTryParseExact_multiple(OffsetFormattingTestSupport.OffsetData data)
+        {
+            string[] formats = null;
+            if (data.F != null)
+            {
+                formats = data.F.Split('\0');
+            }
+            FormattingTestSupport.RunTryParse(data, (out Offset result) => Offset.TryParseExact(data.S, formats, new NodaFormatInfo(data.C), data.Styles, out result));
+        }
+
+        [Test]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactCommon")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactSingle")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactStyle")]
+        public void TestTryParseExact_single(OffsetFormattingTestSupport.OffsetData data)
+        {
+            FormattingTestSupport.RunTryParse(data, (out Offset result) => Offset.TryParseExact(data.S, data.F, new NodaFormatInfo(data.C), data.Styles, out result));
+        }
+
         /*
             [Test]
             [Category("Formating")]

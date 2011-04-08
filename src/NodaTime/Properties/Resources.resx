@@ -219,6 +219,9 @@
   <data name="Parse_UnknownStandardFormat" xml:space="preserve">
     <value>The standard format "{0}" is not valid for the {1} type.</value>
   </data>
+  <data name="Parse_ValueOutOfRange" xml:space="preserve">
+    <value>The value {0} is out of the legal range for the {1} type.</value>
+  </data>
   <data name="Parse_ValueStringEmpty" xml:space="preserve">
     <value>The value string is empty.</value>
   </data>

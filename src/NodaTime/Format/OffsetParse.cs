@@ -16,6 +16,7 @@
 #endregion
 #region usings
 using System;
+using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 #endregion
@@ -144,6 +145,11 @@ namespace NodaTime.Format
             }
             if (format.Length == 1)
             {
+                char patternCharacter = format[0];
+                if (patternCharacter == 'n')
+                {
+                    return ParseNumber(value, parseInfo);
+                }
                 var formats = ExpandStandardFormatPattern(format[0], parseInfo);
                 if (formats == null)
                 {
@@ -190,6 +196,21 @@ namespace NodaTime.Format
             parseInfo.CalculateValue();
 
             return true;
+        }
+
+        private static bool ParseNumber(string value, OffsetParseInfo parseInfo)
+        {
+            int milliseconds;
+            if (Int32.TryParse(value, NumberStyles.Integer, parseInfo.FormatInfo.NumberFormat, out milliseconds))
+            {
+                if (milliseconds < -NodaConstants.MillisecondsPerDay || NodaConstants.MillisecondsPerDay < milliseconds)
+                {
+                    return parseInfo.FailParseValueOutOfRange(milliseconds, typeof(Offset));
+                }
+                parseInfo.Value = new Offset(milliseconds);
+                return true;
+            }
+            return false;
         }
 
         private static bool ParseByFormat(ParseString str, Pattern pattern, OffsetParseInfo parseInfo)
@@ -322,9 +343,35 @@ namespace NodaTime.Format
             switch (formatCharacter)
             {
                 case 'g':
-                    break;
+                    return new[]
+                           {
+                               Resources.ResourceManager.GetString("OffsetPatternFull", parseInfo.FormatInfo.CultureInfo),
+                               Resources.ResourceManager.GetString("OffsetPatternLong", parseInfo.FormatInfo.CultureInfo),
+                               Resources.ResourceManager.GetString("OffsetPatternMedium", parseInfo.FormatInfo.CultureInfo),
+                               Resources.ResourceManager.GetString("OffsetPatternShort", parseInfo.FormatInfo.CultureInfo),
+                           };
+                case 'f':
+                    return new[]
+                           {
+                               Resources.ResourceManager.GetString("OffsetPatternFull", parseInfo.FormatInfo.CultureInfo),
+                           };
+                case 'l':
+                    return new[]
+                           {
+                               Resources.ResourceManager.GetString("OffsetPatternLong", parseInfo.FormatInfo.CultureInfo),
+                           };
+                case 'm':
+                    return new[]
+                           {
+                               Resources.ResourceManager.GetString("OffsetPatternMedium", parseInfo.FormatInfo.CultureInfo),
+                           };
+                case 's':
+                    return new[]
+                           {
+                               Resources.ResourceManager.GetString("OffsetPatternShort", parseInfo.FormatInfo.CultureInfo),
+                           };
             }
-            parseInfo.FailParseUnknownStandardFormat(formatCharacter, typeof(Offset).FullName);
+            parseInfo.FailParseUnknownStandardFormat(formatCharacter, typeof(Offset));
             return null;
         }
     }

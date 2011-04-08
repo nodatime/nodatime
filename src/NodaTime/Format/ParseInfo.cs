@@ -68,34 +68,8 @@ namespace NodaTime.Format
                     return null;
                 case ParseFailureKind.ArgumentNull:
                     return new ArgumentNullException(FailureArgumentName, FailureMessage);
-                case ParseFailureKind.Format:
-                case ParseFailureKind.ParseEscapeAtEndOfString:
-                case ParseFailureKind.ParseDoubleAssigment:
-                case ParseFailureKind.ParseMissingEndQuote:
-                case ParseFailureKind.ParseRepeatCountExceeded:
-                case ParseFailureKind.ParseCannotParseValue:
-                case ParseFailureKind.ParseValueStringEmpty:
-                case ParseFailureKind.ParseFormatStringEmpty:
-                case ParseFailureKind.ParseFormatInvalid:
-                case ParseFailureKind.ParseFormatElementInvalid:
-                case ParseFailureKind.ParseEmptyFormatsArray:
-                case ParseFailureKind.ParseExtraValueCharacters:
-                case ParseFailureKind.ParsePercentDoubled:
-                case ParseFailureKind.ParsePercentAtEndOfString:
-                case ParseFailureKind.ParseQuotedStringMismatch:
-                case ParseFailureKind.ParseEscapedCharacterMismatch:
-                case ParseFailureKind.ParseMissingDecimalSeparator:
-                case ParseFailureKind.ParseTimeSeparatorMismatch:
-                case ParseFailureKind.ParseMismatchedNumber:
-                case ParseFailureKind.ParseMismatchedSpace:
-                case ParseFailureKind.ParseMismatchedCharacter:
-                case ParseFailureKind.ParseUnknownStandardFormat:
-                case ParseFailureKind.Parse12HourPatternNotSupported:
-                case ParseFailureKind.ParseNoMatchingFormat:
-                    return new ParseException(Failure, FailureMessage);
                 default:
-                    string message = string.Format(FormatInfo, Resources.Parse_UnknownFailure, Failure) + Environment.NewLine + FailureMessage;
-                    return new InvalidOperationException(message); // TODO: figure out what exception to throw here.
+                    return new ParseException(Failure, FailureMessage);
             }
         }
 
@@ -175,9 +149,9 @@ namespace NodaTime.Format
             return FailBasic(ParseFailureKind.ParseRepeatCountExceeded, Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
         }
 
-        internal bool FailParseCannotParseValue(string value, string typeName, string format)
+        internal bool FailParseCannotParseValue(string value, Type type, string format)
         {
-            return FailBasic(ParseFailureKind.ParseCannotParseValue, Resources.Parse_CannotParseValue, value, typeName, format);
+            return FailBasic(ParseFailureKind.ParseCannotParseValue, Resources.Parse_CannotParseValue, value, type.FullName, format);
         }
 
         internal bool FailDoubleAssigment(char patternCharacter)
@@ -260,19 +234,24 @@ namespace NodaTime.Format
             return FailBasic(ParseFailureKind.ParseMismatchedCharacter, Resources.Parse_MismatchedCharacter, patternCharacter);
         }
 
-        internal bool FailParseUnknownStandardFormat(char patternCharacter, string typeName)
+        internal bool FailParseUnknownStandardFormat(char patternCharacter, Type type)
         {
-            return FailBasic(ParseFailureKind.ParseUnknownStandardFormat, Resources.Parse_UnknownStandardFormat, patternCharacter, typeName);
+            return FailBasic(ParseFailureKind.ParseUnknownStandardFormat, Resources.Parse_UnknownStandardFormat, patternCharacter, type.FullName);
         }
 
-        internal bool FailParse12HourPatternNotSupported(string typeName)
+        internal bool FailParse12HourPatternNotSupported(Type type)
         {
-            return FailBasic(ParseFailureKind.Parse12HourPatternNotSupported, Resources.Parse_12HourPatternNotSupported, typeName);
+            return FailBasic(ParseFailureKind.Parse12HourPatternNotSupported, Resources.Parse_12HourPatternNotSupported, type.FullName);
         }
 
         internal bool FailParseNoMatchingFormat()
         {
             return FailBasic(ParseFailureKind.ParseNoMatchingFormat, Resources.Parse_NoMatchingFormat);
+        }
+
+        internal bool FailParseValueOutOfRange(object value, Type type)
+        {
+            return FailBasic(ParseFailureKind.ParseValueOutOfRange, Resources.Parse_ValueOutOfRange, value, type.FullName);
         }
     }
 }

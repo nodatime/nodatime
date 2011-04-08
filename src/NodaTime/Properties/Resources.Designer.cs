@@ -367,6 +367,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value {0} is out of the legal range for the {1} type..
+        /// </summary>
+        internal static string Parse_ValueOutOfRange {
+            get {
+                return ResourceManager.GetString("Parse_ValueOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value string is empty..
         /// </summary>
         internal static string Parse_ValueStringEmpty {

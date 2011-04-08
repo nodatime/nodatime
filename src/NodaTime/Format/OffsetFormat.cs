@@ -46,7 +46,7 @@ namespace NodaTime.Format
             }
             if (format.Length == 1)
             {
-                return FormatStandard(parseInfo, Char.ToLowerInvariant(format[0]));
+                return FormatStandard(parseInfo, format[0]);
             }
             return FormatPattern(parseInfo, format);
         }
@@ -100,7 +100,7 @@ namespace NodaTime.Format
                         outputBuffer.Append(pattern.GetNextCharacter());
                         break;
                     case 'h':
-                        parseInfo.FailParse12HourPatternNotSupported(typeof(Offset).FullName);
+                        parseInfo.FailParse12HourPatternNotSupported(typeof(Offset));
                         break; // Never gets here
                     case 'H':
                         repeatLength = pattern.GetRepeatCount(2, parseInfo);
@@ -144,7 +144,6 @@ namespace NodaTime.Format
             string pattern;
             switch (formatCharacter)
             {
-                case 'i':
                 case 'g':
                     return FormatStandardGeneral(parseInfo, formatInfo);
                 case 'n':
