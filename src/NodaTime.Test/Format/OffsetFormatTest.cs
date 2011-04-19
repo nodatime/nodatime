@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 #region usings
-using System;
-using System.Globalization;
 using NodaTime.Format;
 using NodaTime.Globalization;
 using NUnit.Framework;
@@ -30,10 +28,18 @@ namespace NodaTime.Test.Format
     public class OffsetFormatTest
     {
         [Test]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatDataNoFormat")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatDataWithFormat")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
         public void TestFormat(OffsetFormattingTestSupport.OffsetData data)
         {
+            if (data.F != null)
+            {
+                var formats = data.F.Split('\0');
+                if (formats.Length != 1)
+                {
+                    return; // Skip multiple format pattern tests
+                }
+            }
             FormattingTestSupport.RunFormatTest(data, () => OffsetFormat.Format(data.V, data.F, new NodaFormatInfo(data.C)));
         }
     }

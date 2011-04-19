@@ -32,14 +32,9 @@ namespace NodaTime.Test
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactStyle")]
         public void TestParseExact_multiple(OffsetFormattingTestSupport.OffsetData data)
         {
-            string[] formats = null;
-            if (data.F != null)
-            {
-                formats = data.F.Split('\0');
-            }
-            FormattingTestSupport.RunParseTest(data, () => Offset.ParseExact(data.S, formats, new NodaFormatInfo(data.C), data.Styles));
+            FormattingTestSupport.RunParseMultipleTest(data, (string[] formats) => Offset.ParseExact(data.S, formats, new NodaFormatInfo(data.C), data.Styles));
         }
-
+        /*
         [Test]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactCommon")]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactSingle")]
@@ -79,7 +74,7 @@ namespace NodaTime.Test
         {
             FormattingTestSupport.RunTryParse(data, (out Offset result) => Offset.TryParseExact(data.S, data.F, new NodaFormatInfo(data.C), data.Styles, out result));
         }
-
+        */
         /*
             [Test]
             [Category("Formating")]

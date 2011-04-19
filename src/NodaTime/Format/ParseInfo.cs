@@ -253,5 +253,15 @@ namespace NodaTime.Format
         {
             return FailBasic(ParseFailureKind.ParseValueOutOfRange, Resources.Parse_ValueOutOfRange, value, type.FullName);
         }
+
+        internal bool FailParseMissingSign()
+        {
+            return FailBasic(ParseFailureKind.ParseMissingSign, Resources.Parse_MissingSign);
+        }
+
+        internal bool FailParsePositiveSignInvalid()
+        {
+            return FailBasic(ParseFailureKind.ParsePositiveSignInvalid, Resources.Parse_PositiveSignInvalid);
+        }
     }
 }

@@ -40,17 +40,19 @@ namespace NodaTime.Test.Format
         }
 
         public T V { get; set; }
+        public T PV { get; set; }
         public string S { get; set; }
         public string F { get; set; }
         public CultureInfo C { get; set; }
         public DateTimeParseStyles Styles { get; set; }
         public string Name { get; set; }
         public ParseFailureKind Kind { get; set; }
+        public ParseFailureKind MultiKind { get; set; }
         public string ArgumentName { get; set; }
         public List<object> Parameters { get; set; }
         public CultureInfo ThreadCulture { get; set; }
         public CultureInfo ThreadUiCulture { get; set; }
-
+        
         #region ITestCaseData Members
         public object[] Arguments
         {
@@ -64,7 +66,6 @@ namespace NodaTime.Test.Format
         {
             get
             {
-                string label = V != null ? ValueLabel(V) : "null";
                 string formatted = S ?? "null";
                 string format;
                 if (F == null)
@@ -88,7 +89,12 @@ namespace NodaTime.Test.Format
                 var culture = C ?? Thread.CurrentThread.CurrentCulture;
                 builder.Append(culture.Name);
                 builder.Append(", ");
-                builder.Append(String.Format("value: [{0}], formatted: [{1}], format: {2}", label, formatted, format));
+                builder.Append(String.Format("value: [{0}]", ValueLabel(V)));
+                if (!Equals(PV, V))
+                {
+                    builder.Append(String.Format(", parsed value: [{0}]", ValueLabel(PV)));
+                }
+                builder.Append(String.Format(", formatted: [{0}], format: {1}", formatted, format));
 
                 if (Styles != DateTimeParseStyles.None)
                 {
@@ -105,6 +111,11 @@ namespace NodaTime.Test.Format
                         builder.Append(ArgumentName);
                         builder.Append("\"");
                     }
+                }
+                if (MultiKind != ParseFailureKind.None)
+                {
+                    builder.Append(", MultiKind = ");
+                    builder.Append(MultiKind);
                 }
                 if (Name != null)
                 {
@@ -152,6 +163,14 @@ namespace NodaTime.Test.Format
             }
         }
 
+        /// <summary>
+        /// Returns a string representation of the given value. This will usually not call the ToString()
+        /// method as that is problably being tested. The returned string is only used in test code and
+        /// labels so it doesn't have to be beautiful. Must handle <c>null</c> if the type is a reference
+        /// type. This should not throw an exception.
+        /// </summary>
+        /// <param name="value">The value to format.</param>
+        /// <returns>The string representation.</returns>
         protected abstract string ValueLabel(T value);
     }
 }
