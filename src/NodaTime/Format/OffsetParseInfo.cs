@@ -59,7 +59,6 @@ namespace NodaTime.Format
         {
             Milliseconds = value.Milliseconds;
             IsNegative = value.IsNegative;
-            Sign = IsNegative ? formatInfo.NegativeSign : formatInfo.PositiveSign;
             Hours = value.Hours;
             Minutes = value.Minutes;
             Seconds = value.Seconds;
@@ -75,12 +74,12 @@ namespace NodaTime.Format
         /// <value>
         ///   <c>true</c> if this instance is negative; otherwise, <c>false</c>.
         /// </value>
-        public bool IsNegative { get; private set; }
+        public bool IsNegative { get; set; }
 
         /// <summary>
         ///   Gets the sign.
         /// </summary>
-        public string Sign { get; private set; }
+        public string Sign { get { return IsNegative ? FormatInfo.NegativeSign : FormatInfo.PositiveSign; } }
         #endregion
 
         internal void CalculateValue()

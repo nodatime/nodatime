@@ -37,7 +37,7 @@ namespace NodaTime.Test.Format
         public static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
         public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
 
-        public delegate TResult OutFunc<T, TResult>(out T obj);
+        public delegate TResult OutFunc<TInput, T, out TResult>(TInput format, out T obj);
 
         /// <summary>
         ///   Runs the format test.
@@ -46,20 +46,24 @@ namespace NodaTime.Test.Format
         /// <param name = "test">The test.</param>
         public static void RunFormatTest<T>(AbstractFormattingData<T> data, Func<string> test)
         {
-            using (CultureSaver.SetCultures(data.ThreadCulture, data.ThreadUiCulture))
+            Func<string> doit = () =>
+                                {
+                                    using (CultureSaver.SetCultures(data.ThreadCulture, data.ThreadUiCulture))
+                                    {
+                                        return test();
+                                    }
+                                };
+            switch (data.Kind)
             {
-                switch (data.Kind)
-                {
-                    case ParseFailureKind.None:
-                        Assert.AreEqual(data.S, test());
-                        break;
-                    case ParseFailureKind.ArgumentNull:
-                        Assert.Throws<ArgumentNullException>(() => test());
-                        break;
-                    default:
-                        Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(data.Kind), () => test());
-                        break;
-                }
+                case ParseFailureKind.None:
+                    Assert.AreEqual(data.S, doit());
+                    break;
+                case ParseFailureKind.ArgumentNull:
+                    Assert.Throws<ArgumentNullException>(() => doit());
+                    break;
+                default:
+                    Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(data.Kind), () => doit());
+                    break;
             }
         }
 
@@ -68,36 +72,89 @@ namespace NodaTime.Test.Format
         /// </summary>
         /// <param name = "data">The data.</param>
         /// <param name = "test"></param>
-        public static void RunParseTest<T>(AbstractFormattingData<T> data, Func<T> test)
+        public static void RunParseMultipleTest<T>(AbstractFormattingData<T> data, Func<string[], T> test)
         {
-            using (CultureSaver.SetCultures(data.ThreadCulture, data.ThreadUiCulture))
+            string[] formats = null;
+            if (data.F != null)
             {
-                switch (data.Kind)
+                formats = data.F.Split('\0');
+            }
+            DoRunParseTest(data, test, formats);
+        }
+
+        public static void RunParseSingleTest<T>(AbstractFormattingData<T> data, Func<string, T> test)
+        {
+            if (data.F != null)
+            {
+                if (data.F.Split('\0').Length != 1)
                 {
-                    case ParseFailureKind.None:
-                        Assert.AreEqual(data.V, test());
-                        break;
-                    case ParseFailureKind.ArgumentNull:
-                        Assert.Throws<ArgumentNullException>(() => test());
-                        break;
-                    default:
-                        Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(data.Kind), () => test());
-                        break;
+                    return;
                 }
+            }
+            DoRunParseTest(data, test, data.F);
+        }
+
+        private static void DoRunParseTest<TInput, T>(AbstractFormattingData<T> data, Func<TInput, T> test, TInput format)
+        {
+            Func<TInput, T> doit = s =>
+            {
+                using (CultureSaver.SetCultures(data.ThreadCulture, data.ThreadUiCulture))
+                {
+                    return test(s);
+                }
+            };
+            switch (data.Kind)
+            {
+                case ParseFailureKind.None:
+                    Assert.AreEqual(data.PV, doit(format));
+                    break;
+                case ParseFailureKind.ArgumentNull:
+                    Assert.Throws<ArgumentNullException>(() => doit(format));
+                    break;
+                default:
+                    ParseFailureKind kind = data.MultiKind == ParseFailureKind.None ? data.Kind : data.MultiKind;
+                    Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(kind), () => doit(format));
+                    break;
             }
         }
 
-        public static void RunTryParse<T>(AbstractFormattingData<T> data, OutFunc<T, bool> test)
+        public static void RunTryParseSingleTest<T>(AbstractFormattingData<T> data, OutFunc<string, T, bool> test)
         {
-            using (CultureSaver.SetCultures(data.ThreadCulture, data.ThreadUiCulture))
+            if (data.F != null)
             {
-                bool isSuccess = data.Kind == ParseFailureKind.None;
-                T result;
-                Assert.IsTrue(isSuccess == test(out result));
-                if (isSuccess)
+                if (data.F.Split('\0').Length != 1)
                 {
-                    Assert.AreEqual(data.V, result);
+                    return;
                 }
+            }
+            DoRunTryParseTest(data, test, data.F);
+        }
+
+        public static void RunTryParseMultipleTest<T>(AbstractFormattingData<T> data, OutFunc<string[], T, bool> test)
+        {
+            string[] formats = null;
+            if (data.F != null)
+            {
+                formats = data.F.Split('\0');
+            }
+            DoRunTryParseTest(data, test, formats);
+        }
+
+        private static void DoRunTryParseTest<TInput, T>(AbstractFormattingData<T> data, OutFunc<TInput, T, bool> test, TInput format)
+        {
+            OutFunc<TInput, T, bool> doit = (TInput s, out T value) =>
+            {
+                using (CultureSaver.SetCultures(data.ThreadCulture, data.ThreadUiCulture))
+                {
+                    return test(s, out value);
+                }
+            };
+            bool isSuccess = data.Kind == ParseFailureKind.None;
+            T result;
+            Assert.IsTrue(isSuccess == doit(format, out result));
+            if (isSuccess)
+            {
+                Assert.AreEqual(data.V, result);
             }
         }
     }

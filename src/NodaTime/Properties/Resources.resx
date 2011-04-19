@@ -136,16 +136,16 @@
     <value>The string cannot be empty or only contain white space.</value>
   </data>
   <data name="OffsetPatternFull" xml:space="preserve">
-    <value>+H:mm:ss.fff</value>
+    <value>-H:mm:ss.fff</value>
   </data>
   <data name="OffsetPatternLong" xml:space="preserve">
-    <value>+H:mm:ss</value>
+    <value>-H:mm:ss</value>
   </data>
   <data name="OffsetPatternMedium" xml:space="preserve">
-    <value>+H:mm</value>
+    <value>-H:mm</value>
   </data>
   <data name="OffsetPatternShort" xml:space="preserve">
-    <value>+H</value>
+    <value>-H</value>
   </data>
   <data name="Parse_12HourPatternNotSupported" xml:space="preserve">
     <value>The 'h' pattern flag (12 hour format) is not supported by the {0} type.</value>
@@ -192,6 +192,9 @@
   <data name="Parse_MissingEndQuote" xml:space="preserve">
     <value>The format string is missing the end quote character "{0}".</value>
   </data>
+  <data name="Parse_MissingSign" xml:space="preserve">
+    <value>The required value sign is missing.</value>
+  </data>
   <data name="Parse_NoMatchingFormat" xml:space="preserve">
     <value>None of the specified formats matches the given value string.</value>
   </data>
@@ -200,6 +203,9 @@
   </data>
   <data name="Parse_PercentDoubled" xml:space="preserve">
     <value>A percent sign (%) is followed by another percent sign in the format string.</value>
+  </data>
+  <data name="Parse_PositiveSignInvalid" xml:space="preserve">
+    <value>A positive value sign is not valid at this point.</value>
   </data>
   <data name="Parse_QuotedStringMismatch" xml:space="preserve">
     <value>The value string does not match a quoted string in the pattern.</value>

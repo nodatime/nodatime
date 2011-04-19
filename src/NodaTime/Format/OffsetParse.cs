@@ -110,6 +110,7 @@ namespace NodaTime.Format
             {
                 return parseInfo.FailParseEmptyFormatsArray();
             }
+            parseInfo.ThrowImmediate = false;
             foreach (string format in formats)
             {
                 if (string.IsNullOrEmpty(format))
@@ -277,6 +278,29 @@ namespace NodaTime.Format
                         return true;
                     }
                     return parseInfo.FailParseTimeSeparatorMismatch();
+                case '-':
+                    if (str.Match(parseInfo.FormatInfo.NegativeSign))
+                    {
+                        parseInfo.IsNegative = true;
+                        return true;
+                    }
+                    if (str.Match(parseInfo.FormatInfo.PositiveSign))
+                    {
+                        parseInfo.IsNegative = false;
+                        return true;
+                    }
+                    return parseInfo.FailParseMissingSign();
+                case '+':
+                    if (str.Match(parseInfo.FormatInfo.NegativeSign))
+                    {
+                        parseInfo.IsNegative = true;
+                        return true;
+                    }
+                    if (str.Match(parseInfo.FormatInfo.PositiveSign))
+                    {
+                        return parseInfo.FailParsePositiveSignInvalid();
+                    }
+                    return parseInfo.FailParseMissingSign();
                 case 'h':
                     throw new FormatException(Resources.Parse_12HourPatternNotSupported);
                 case 'H':

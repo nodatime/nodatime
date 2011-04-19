@@ -97,6 +97,10 @@ namespace NodaTime.Format
                         outputBuffer.Append(pattern.GetQuotedString(parseInfo));
                         break;
                     case '\\':
+                        if (!pattern.HasMoreCharacters)
+                        {
+                            parseInfo.FailParseEscapeAtEndOfString();
+                        }
                         outputBuffer.Append(pattern.GetNextCharacter());
                         break;
                     case 'h':
