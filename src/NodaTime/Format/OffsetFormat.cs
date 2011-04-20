@@ -24,8 +24,7 @@ using NodaTime.Properties;
 namespace NodaTime.Format
 {
     /// <summary>
-    ///   Provides a <see cref = "FormatterBase{T}" /> factory for generating <see cref = "Offset" />
-    ///   formatters base on the format string.
+    ///   Supports the formatting of <see cref="Offset"/> objects.
     /// </summary>
     internal static class OffsetFormat
     {

@@ -171,9 +171,9 @@ namespace NodaTime.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The pattern flag &apos;{0}&apos; cannot appear twice and parse different values..
         /// </summary>
-        internal static string Parse_DefaultDoubleAssignment {
+        internal static string Parse_DoubleAssignment {
             get {
-                return ResourceManager.GetString("Parse_DefaultDoubleAssignment", resourceCulture);
+                return ResourceManager.GetString("Parse_DoubleAssignment", resourceCulture);
             }
         }
         

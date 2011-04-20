@@ -34,6 +34,13 @@ namespace NodaTime.Format
     {
         private static readonly string[] AllFormats = { "g", "n", "d" };
 
+        /// <summary>
+        /// Parses the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="formatInfo">The format info.</param>
+        /// <param name="styles">The styles.</param>
+        /// <returns></returns>
         internal static Offset Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new OffsetParseInfo(formatInfo, true, styles);
@@ -274,11 +281,7 @@ namespace NodaTime.Format
                     }
                     return true;
                 case ':':
-                    if (str.Match(parseInfo.FormatInfo.TimeSeparator))
-                    {
-                        return true;
-                    }
-                    return parseInfo.FailParseTimeSeparatorMismatch();
+                    return str.Match(parseInfo.FormatInfo.TimeSeparator) || parseInfo.FailParseTimeSeparatorMismatch();
                 case '+':
                     if (str.Match(parseInfo.FormatInfo.NegativeSign))
                     {
@@ -344,12 +347,6 @@ namespace NodaTime.Format
                     {
                         if (!parseInfo.AllowInnerWhite && !str.Match(patternCharacter))
                         {
-                            /*
-                            if ((parseInfo.fAllowTrailingWhite && pattern.HasMoreCharacters) && ParseByFormat(str, pattern, formatInfo, false, parseResult))
-                            {
-                                return true;
-                            }
-                            */
                             parseInfo.FailParseMismatchedSpace();
                             return false;
                         }

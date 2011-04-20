@@ -23,12 +23,27 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Format
 {
-    public class FormattingTestSupport
+    /// <summary>
+    ///   Provides various formatting and parsing test helper values and methods.
+    /// </summary>
+    public abstract class FormattingTestSupport
     {
         #region Delegates
-        public delegate TResult OutFunc<in TInput, T, out TResult>(TInput format, out T obj);
+        /// <summary>
+        ///   Provides a delegate that takes an input value and converts if to an output
+        ///   type and store it in an out variable.
+        /// </summary>
+        /// <typeparam name = "TInput">The type of the input.</typeparam>
+        /// <typeparam name = "T">The type of the converted value.</typeparam>
+        /// <param name = "format">The format string or string array.</param>
+        /// <param name = "obj">The converted value.</param>
+        /// <returns><c>true</c> if the conversion succeeded, <c>false</c> otherwise.</returns>
+        public delegate bool OutFunc<in TInput, T>(TInput format, out T obj);
         #endregion
 
+        /// <summary>
+        ///   A non-breaking space.
+        /// </summary>
         public const string Nbsp = "\u00a0";
 
         public const DateTimeParseStyles LeadingSpace = DateTimeParseStyles.AllowLeadingWhite;
@@ -42,10 +57,13 @@ namespace NodaTime.Test.Format
         public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
 
         /// <summary>
-        ///   Runs the format test.
+        ///   Runs the format test. If the format string contains a '\0' character (which indicates that
+        ///   this is a multiple format string test) then it is ignored as formatting does not support
+        ///   multiple format strings. The thread culture is set (and restored) during the test.
         /// </summary>
-        /// <param name = "data">The data.</param>
-        /// <param name = "test">The test.</param>
+        /// <typeparam name = "T">The type being tested.</typeparam>
+        /// <param name = "data">The test data.</param>
+        /// <param name = "test">The method under test.</param>
         public static void RunFormatTest<T>(AbstractFormattingData<T> data, Func<string> test)
         {
             if (data.F != null)
@@ -77,20 +95,11 @@ namespace NodaTime.Test.Format
         }
 
         /// <summary>
-        ///   Tests the parse exact_single.
+        ///   Runs a parse test that accepts a single format string.
         /// </summary>
-        /// <param name = "data">The data.</param>
-        /// <param name = "test"></param>
-        public static void RunParseMultipleTest<T>(AbstractFormattingData<T> data, Func<string[], T> test)
-        {
-            string[] formats = null;
-            if (data.F != null)
-            {
-                formats = data.F.Split('\0');
-            }
-            DoRunParseTest(data, test, formats, true);
-        }
-
+        /// <typeparam name = "T">The type being tested.</typeparam>
+        /// <param name = "data">The test data.</param>
+        /// <param name = "test">The method under test.</param>
         public static void RunParseSingleTest<T>(AbstractFormattingData<T> data, Func<string, T> test)
         {
             if (data.F != null)
@@ -103,6 +112,31 @@ namespace NodaTime.Test.Format
             DoRunParseTest(data, test, data.F, false);
         }
 
+        /// <summary>
+        ///   Runs a parse test that accepts multiple format strings (which includes a lsit of one string).
+        /// </summary>
+        /// <typeparam name = "T">The type being tested.</typeparam>
+        /// <param name = "data">The test data.</param>
+        /// <param name = "test">The method under test.</param>
+        public static void RunParseMultipleTest<T>(AbstractFormattingData<T> data, Func<string[], T> test)
+        {
+            string[] formats = null;
+            if (data.F != null)
+            {
+                formats = data.F.Split('\0');
+            }
+            DoRunParseTest(data, test, formats, true);
+        }
+
+        /// <summary>
+        ///   Performs the actual parse test after setting the correct environment.
+        /// </summary>
+        /// <typeparam name = "TInput">The type of the format string.</typeparam>
+        /// <typeparam name = "T">The type being tested.</typeparam>
+        /// <param name = "data">The test data.</param>
+        /// <param name = "test">The method under test.</param>
+        /// <param name = "format">The format string or string list.</param>
+        /// <param name = "isMulti"><c>true</c> if this is a multiple format string method.</param>
         private static void DoRunParseTest<TInput, T>(AbstractFormattingData<T> data, Func<TInput, T> test, TInput format, bool isMulti)
         {
             Func<TInput, T> doit = s =>
@@ -134,7 +168,13 @@ namespace NodaTime.Test.Format
             }
         }
 
-        public static void RunTryParseSingleTest<T>(AbstractFormattingData<T> data, OutFunc<string, T, bool> test)
+        /// <summary>
+        ///   Runs a try parse test that accepts a single format string.
+        /// </summary>
+        /// <typeparam name = "T">The type being tested.</typeparam>
+        /// <param name = "data">The test data.</param>
+        /// <param name = "test">The method under test.</param>
+        public static void RunTryParseSingleTest<T>(AbstractFormattingData<T> data, OutFunc<string, T> test)
         {
             if (data.F != null)
             {
@@ -146,7 +186,13 @@ namespace NodaTime.Test.Format
             DoRunTryParseTest(data, test, data.F);
         }
 
-        public static void RunTryParseMultipleTest<T>(AbstractFormattingData<T> data, OutFunc<string[], T, bool> test)
+        /// <summary>
+        ///   Runs a try parse test that accepts multiple format strings.
+        /// </summary>
+        /// <typeparam name = "T">The type being tested.</typeparam>
+        /// <param name = "data">The test data.</param>
+        /// <param name = "test">The method under test.</param>
+        public static void RunTryParseMultipleTest<T>(AbstractFormattingData<T> data, OutFunc<string[], T> test)
         {
             string[] formats = null;
             if (data.F != null)
@@ -156,9 +202,17 @@ namespace NodaTime.Test.Format
             DoRunTryParseTest(data, test, formats);
         }
 
-        private static void DoRunTryParseTest<TInput, T>(AbstractFormattingData<T> data, OutFunc<TInput, T, bool> test, TInput format)
+        /// <summary>
+        ///   Performs the actual try parse test after setting the correct environment.
+        /// </summary>
+        /// <typeparam name = "TInput">The type of the format string.</typeparam>
+        /// <typeparam name = "T">The type being tested.</typeparam>
+        /// <param name = "data">The test data.</param>
+        /// <param name = "test">The method under test.</param>
+        /// <param name = "format">The format string or string list.</param>
+        private static void DoRunTryParseTest<TInput, T>(AbstractFormattingData<T> data, OutFunc<TInput, T> test, TInput format)
         {
-            OutFunc<TInput, T, bool> doit = (TInput s, out T value) =>
+            OutFunc<TInput, T> doit = (TInput s, out T value) =>
             {
                 using (CultureSaver.SetCultures(data.ThreadCulture, data.ThreadUiCulture))
                 {
