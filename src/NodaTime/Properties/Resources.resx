@@ -136,16 +136,16 @@
     <value>The string cannot be empty or only contain white space.</value>
   </data>
   <data name="OffsetPatternFull" xml:space="preserve">
-    <value>-H:mm:ss.fff</value>
+    <value>+H:mm:ss.fff</value>
   </data>
   <data name="OffsetPatternLong" xml:space="preserve">
-    <value>-H:mm:ss</value>
+    <value>+H:mm:ss</value>
   </data>
   <data name="OffsetPatternMedium" xml:space="preserve">
-    <value>-H:mm</value>
+    <value>+H:mm</value>
   </data>
   <data name="OffsetPatternShort" xml:space="preserve">
-    <value>-H</value>
+    <value>+H</value>
   </data>
   <data name="Parse_12HourPatternNotSupported" xml:space="preserve">
     <value>The 'h' pattern flag (12 hour format) is not supported by the {0} type.</value>

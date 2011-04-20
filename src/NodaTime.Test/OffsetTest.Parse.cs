@@ -19,6 +19,8 @@
 using NodaTime.Globalization;
 using NodaTime.Test.Format;
 using NUnit.Framework;
+using System.Collections.Generic;
+using NodaTime.Format;
 #endregion
 
 namespace NodaTime.Test
@@ -27,12 +29,36 @@ namespace NodaTime.Test
     public partial class OffsetTest
     {
         [Test]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactCommon")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactMultiple")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseExactStyle")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetParseData")]
         public void TestParseExact_multiple(OffsetFormattingTestSupport.OffsetData data)
         {
-            FormattingTestSupport.RunParseMultipleTest(data, (string[] formats) => Offset.ParseExact(data.S, formats, new NodaFormatInfo(data.C), data.Styles));
+            FormattingTestSupport.RunParseMultipleTest(data, formats => Offset.ParseExact(data.S, formats, new NodaFormatInfo(data.C), data.Styles));
+        }
+
+        internal static IEnumerable<OffsetFormattingTestSupport.OffsetData> WithoutStyles()
+        {
+            foreach (var data in OffsetFormattingTestSupport.OffsetParseData)
+            {
+                if (data.Styles == DateTimeParseStyles.None)
+                {
+                    yield return data;
+                }
+            }
+            foreach (var data in OffsetFormattingTestSupport.OffsetFormattingCommonData)
+            {
+                if (data.Styles == DateTimeParseStyles.None)
+                {
+                    yield return data;
+                }
+            }
+        }
+
+        [Test]
+        [TestCaseSource("WithoutStyles")]
+        public void TestParseExact_noStyle(OffsetFormattingTestSupport.OffsetData data)
+        {
+            FormattingTestSupport.RunParseSingleTest(data, format => Offset.ParseExact(data.S, format, new NodaFormatInfo(data.C)));
         }
         /*
         [Test]

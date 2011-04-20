@@ -14,7 +14,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
 using System.Threading;
 using NodaTime.Test.Format;
@@ -29,7 +28,7 @@ namespace NodaTime.Test
         [Test]
         [Category("Formating")]
         [Category("Format")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatDataNoFormat")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "WithoutFormat")]
         public void TestToString_Culture(OffsetFormattingTestSupport.OffsetData data)
         {
             FormattingTestSupport.RunFormatTest(data, () => data.V.ToString(data.C));
@@ -38,8 +37,8 @@ namespace NodaTime.Test
         [Test]
         [Category("Formating")]
         [Category("Format")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatDataNoFormat")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatDataWithFormat")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
         public void TestToString_Format(OffsetFormattingTestSupport.OffsetData data)
         {
             data.ThreadCulture = data.C ?? Thread.CurrentThread.CurrentCulture;
@@ -49,8 +48,8 @@ namespace NodaTime.Test
         [Test]
         [Category("Formating")]
         [Category("Format")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatDataNoFormat")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatDataWithFormat")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
         public void TestToString_FormatCulture(OffsetFormattingTestSupport.OffsetData data)
         {
             FormattingTestSupport.RunFormatTest(data, () => data.V.ToString(data.F, data.C));
@@ -59,7 +58,7 @@ namespace NodaTime.Test
         [Test]
         [Category("Formating")]
         [Category("Format")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatDataNoFormat")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "WithoutFormat")]
         public void TestToString_NoArg(OffsetFormattingTestSupport.OffsetData data)
         {
             data.ThreadCulture = data.C ?? Thread.CurrentThread.CurrentCulture;

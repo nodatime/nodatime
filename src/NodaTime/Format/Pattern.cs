@@ -118,7 +118,6 @@ namespace NodaTime.Format
             if (repeatLength > maximumCount)
             {
                 parseInfo.FailParseRepeatCountExceeded(patternCharacter, maximumCount);
-                return -1;
             }
             return repeatLength;
         }
