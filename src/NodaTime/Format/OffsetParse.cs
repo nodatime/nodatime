@@ -53,10 +53,6 @@ namespace NodaTime.Format
             var parseResult = new OffsetParseInfo(formatInfo, false, styles);
             if (!TryParseExactMultiple(value, formats, parseResult))
             {
-                if (parseResult.Failure == ParseFailureKind.None)
-                {
-                    parseResult.FailParseNoMatchingFormat();
-                }
                 parseResult.ThrowImmediate = true;
                 parseResult.CheckImmediate();
             }
@@ -92,7 +88,7 @@ namespace NodaTime.Format
             return false;
         }
 
-        internal static bool TryParseExactMultiple(string value, string[] formats, OffsetParseInfo parseInfo)
+        private static bool TryParseExactMultiple(string value, string[] formats, OffsetParseInfo parseInfo)
         {
             if (value == null)
             {
@@ -115,18 +111,23 @@ namespace NodaTime.Format
             {
                 if (string.IsNullOrEmpty(format))
                 {
-                    return parseInfo.FailParseFormatElementInvalid();
+                    return parseInfo.FailParseFormatStringEmpty();
                 }
                 if (TryParseExact(value, format, parseInfo))
                 {
                     return true;
                 }
+                if ((parseInfo.Failure & ParseFailureKind.TypeFormatError) == ParseFailureKind.TypeFormatError)
+                {
+                    return false;
+                }
                 parseInfo.ClearFail();
             }
+            parseInfo.FailParseNoMatchingFormat();
             return false;
         }
 
-        internal static bool TryParseExact(string value, string format, OffsetParseInfo parseInfo)
+        private static bool TryParseExact(string value, string format, OffsetParseInfo parseInfo)
         {
             if (value == null)
             {
@@ -202,7 +203,7 @@ namespace NodaTime.Format
         private static bool ParseNumber(string value, OffsetParseInfo parseInfo)
         {
             int milliseconds;
-            if (Int32.TryParse(value, NumberStyles.Integer, parseInfo.FormatInfo.NumberFormat, out milliseconds))
+            if (Int32.TryParse(value, NumberStyles.Integer | NumberStyles.AllowThousands, parseInfo.FormatInfo.NumberFormat, out milliseconds))
             {
                 if (milliseconds < -NodaConstants.MillisecondsPerDay || NodaConstants.MillisecondsPerDay < milliseconds)
                 {
@@ -278,7 +279,7 @@ namespace NodaTime.Format
                         return true;
                     }
                     return parseInfo.FailParseTimeSeparatorMismatch();
-                case '-':
+                case '+':
                     if (str.Match(parseInfo.FormatInfo.NegativeSign))
                     {
                         parseInfo.IsNegative = true;
@@ -290,7 +291,7 @@ namespace NodaTime.Format
                         return true;
                     }
                     return parseInfo.FailParseMissingSign();
-                case '+':
+                case '-':
                     if (str.Match(parseInfo.FormatInfo.NegativeSign))
                     {
                         parseInfo.IsNegative = true;
@@ -302,7 +303,7 @@ namespace NodaTime.Format
                     }
                     return parseInfo.FailParseMissingSign();
                 case 'h':
-                    throw new FormatException(Resources.Parse_12HourPatternNotSupported);
+                    return parseInfo.FailParse12HourPatternNotSupported(typeof(Offset));
                 case 'H':
                     count = pattern.GetRepeatCount(2, parseInfo);
                     if (!parseInfo.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))

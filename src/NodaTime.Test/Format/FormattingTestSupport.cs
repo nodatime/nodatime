@@ -25,6 +25,10 @@ namespace NodaTime.Test.Format
 {
     public class FormattingTestSupport
     {
+        #region Delegates
+        public delegate TResult OutFunc<in TInput, T, out TResult>(TInput format, out T obj);
+        #endregion
+
         public const string Nbsp = "\u00a0";
 
         public const DateTimeParseStyles LeadingSpace = DateTimeParseStyles.AllowLeadingWhite;
@@ -37,8 +41,6 @@ namespace NodaTime.Test.Format
         public static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
         public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
 
-        public delegate TResult OutFunc<TInput, T, out TResult>(TInput format, out T obj);
-
         /// <summary>
         ///   Runs the format test.
         /// </summary>
@@ -46,6 +48,13 @@ namespace NodaTime.Test.Format
         /// <param name = "test">The test.</param>
         public static void RunFormatTest<T>(AbstractFormattingData<T> data, Func<string> test)
         {
+            if (data.F != null)
+            {
+                if (data.F.Split('\0').Length != 1)
+                {
+                    return;
+                }
+            }
             Func<string> doit = () =>
                                 {
                                     using (CultureSaver.SetCultures(data.ThreadCulture, data.ThreadUiCulture))
@@ -79,7 +88,7 @@ namespace NodaTime.Test.Format
             {
                 formats = data.F.Split('\0');
             }
-            DoRunParseTest(data, test, formats);
+            DoRunParseTest(data, test, formats, true);
         }
 
         public static void RunParseSingleTest<T>(AbstractFormattingData<T> data, Func<string, T> test)
@@ -91,10 +100,10 @@ namespace NodaTime.Test.Format
                     return;
                 }
             }
-            DoRunParseTest(data, test, data.F);
+            DoRunParseTest(data, test, data.F, false);
         }
 
-        private static void DoRunParseTest<TInput, T>(AbstractFormattingData<T> data, Func<TInput, T> test, TInput format)
+        private static void DoRunParseTest<TInput, T>(AbstractFormattingData<T> data, Func<TInput, T> test, TInput format, bool isMulti)
         {
             Func<TInput, T> doit = s =>
             {
@@ -112,7 +121,14 @@ namespace NodaTime.Test.Format
                     Assert.Throws<ArgumentNullException>(() => doit(format));
                     break;
                 default:
-                    ParseFailureKind kind = data.MultiKind == ParseFailureKind.None ? data.Kind : data.MultiKind;
+                    var kind = data.Kind;
+                    if (isMulti)
+                    {
+                        if ((data.Kind & ParseFailureKind.TypeFormatError) == 0)
+                        {
+                            kind = ParseFailureKind.ParseNoMatchingFormat;
+                        }
+                    }
                     Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(kind), () => doit(format));
                     break;
             }
@@ -154,7 +170,7 @@ namespace NodaTime.Test.Format
             Assert.IsTrue(isSuccess == doit(format, out result));
             if (isSuccess)
             {
-                Assert.AreEqual(data.V, result);
+                Assert.AreEqual(data.PV, result);
             }
         }
     }

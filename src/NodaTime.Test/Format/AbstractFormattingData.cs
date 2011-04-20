@@ -47,7 +47,6 @@ namespace NodaTime.Test.Format
         public DateTimeParseStyles Styles { get; set; }
         public string Name { get; set; }
         public ParseFailureKind Kind { get; set; }
-        public ParseFailureKind MultiKind { get; set; }
         public string ArgumentName { get; set; }
         public List<object> Parameters { get; set; }
         public CultureInfo ThreadCulture { get; set; }
@@ -94,7 +93,7 @@ namespace NodaTime.Test.Format
                 {
                     builder.Append(String.Format(", parsed value: [{0}]", ValueLabel(PV)));
                 }
-                builder.Append(String.Format(", formatted: [{0}], format: {1}", formatted, format));
+                builder.Append(String.Format(", string: [{0}], format: {1}", formatted, format));
 
                 if (Styles != DateTimeParseStyles.None)
                 {
@@ -111,11 +110,6 @@ namespace NodaTime.Test.Format
                         builder.Append(ArgumentName);
                         builder.Append("\"");
                     }
-                }
-                if (MultiKind != ParseFailureKind.None)
-                {
-                    builder.Append(", MultiKind = ");
-                    builder.Append(MultiKind);
                 }
                 if (Name != null)
                 {

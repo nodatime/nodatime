@@ -14,41 +14,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+using System;
 namespace NodaTime.Format
 {
     /// <summary>
     /// Provides an enumeration of failure type that can occur when parsing values.
     /// </summary>
+    [Flags]
     public enum ParseFailureKind
     {
+        TypeFormatError = 0x1000,
         None,
-        ArgumentNull,
-        Format,
-        ParseEscapeAtEndOfString,
-        ParseDoubleAssigment,
-        ParseMissingEndQuote,
-        ParseRepeatCountExceeded,
-        ParseCannotParseValue,
-        ParseValueStringEmpty,
-        ParseFormatStringEmpty,
-        ParseFormatInvalid,
-        ParseFormatElementInvalid,
-        ParseEmptyFormatsArray,
-        ParseExtraValueCharacters,
-        ParsePercentDoubled,
-        ParsePercentAtEndOfString,
-        ParseQuotedStringMismatch,
-        ParseEscapedCharacterMismatch,
-        ParseMissingDecimalSeparator,
-        ParseTimeSeparatorMismatch,
-        ParseMismatchedNumber,
-        ParseMismatchedSpace,
-        ParseMismatchedCharacter,
-        ParseUnknownStandardFormat,
-        Parse12HourPatternNotSupported,
-        ParseNoMatchingFormat,
-        ParseValueOutOfRange,
-        ParseMissingSign,
-        ParsePositiveSignInvalid,
+        ArgumentNull = 1,
+        Format = 2,
+        ParseEscapeAtEndOfString = 3 | TypeFormatError,
+        ParseDoubleAssigment = 4 | TypeFormatError,
+        ParseMissingEndQuote = 5 | TypeFormatError,
+        ParseRepeatCountExceeded = 6,
+        ParseCannotParseValue = 7,
+        ParseValueStringEmpty = 8 | TypeFormatError,
+        ParseFormatStringEmpty = 9 | TypeFormatError,
+        ParseFormatInvalid = 10 | TypeFormatError,
+        ParseFormatElementInvalid = 12 | TypeFormatError,
+        ParseEmptyFormatsArray = 13 | TypeFormatError,
+        ParseExtraValueCharacters = 14,
+        ParsePercentDoubled = 15 | TypeFormatError,
+        ParsePercentAtEndOfString = 16 | TypeFormatError,
+        ParseQuotedStringMismatch = 17,
+        ParseEscapedCharacterMismatch = 18,
+        ParseMissingDecimalSeparator = 19,
+        ParseTimeSeparatorMismatch = 20,
+        ParseMismatchedNumber = 21,
+        ParseMismatchedSpace = 22,
+        ParseMismatchedCharacter = 23,
+        ParseUnknownStandardFormat = 24 | TypeFormatError,
+        Parse12HourPatternNotSupported = 25 | TypeFormatError,
+        ParseNoMatchingFormat = 26,
+        ParseValueOutOfRange = 27,
+        ParseMissingSign = 28 | TypeFormatError,
+        ParsePositiveSignInvalid = 29 | TypeFormatError,
     }
 }

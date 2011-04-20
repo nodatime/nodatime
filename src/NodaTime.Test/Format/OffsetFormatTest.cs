@@ -32,14 +32,6 @@ namespace NodaTime.Test.Format
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
         public void TestFormat(OffsetFormattingTestSupport.OffsetData data)
         {
-            if (data.F != null)
-            {
-                var formats = data.F.Split('\0');
-                if (formats.Length != 1)
-                {
-                    return; // Skip multiple format pattern tests
-                }
-            }
             FormattingTestSupport.RunFormatTest(data, () => OffsetFormat.Format(data.V, data.F, new NodaFormatInfo(data.C)));
         }
     }
