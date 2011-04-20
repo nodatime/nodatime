@@ -22,13 +22,27 @@ using NodaTime.Properties;
 
 namespace NodaTime.Format
 {
+    /// <summary>
+    ///   Provides a container for the interim parsed pieces of values.
+    /// </summary>
     internal abstract class ParseInfo
     {
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "ParseInfo" /> class.
+        /// </summary>
+        /// <param name = "formatInfo">The format info.</param>
+        /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
         internal ParseInfo(NodaFormatInfo formatInfo, bool throwImmediate)
             : this(formatInfo, throwImmediate, DateTimeParseStyles.None)
         {
         }
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "ParseInfo" /> class.
+        /// </summary>
+        /// <param name = "formatInfo">The format info.</param>
+        /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
+        /// <param name = "parseStyles">The parse styles.</param>
         internal ParseInfo(NodaFormatInfo formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
         {
             FormatInfo = formatInfo;
@@ -39,19 +53,77 @@ namespace NodaTime.Format
             ClearFail();
         }
 
+        /// <summary>
+        ///   Gets or sets a value indicating whether we throw immediately upon a failure.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if we throw immediate; otherwise, <c>false</c>.
+        /// </value>
         internal bool ThrowImmediate { get; set; }
+
+        /// <summary>
+        ///   Gets the failure type.
+        /// </summary>
         internal ParseFailureKind Failure { get; private set; }
+
+        /// <summary>
+        ///   Gets the name of the failure argument name if the failure is <see cref = "ParseFailureKind.ArgumentNull" />.
+        /// </summary>
+        /// <value>
+        ///   The name of the failure argument.
+        /// </value>
         internal string FailureArgumentName { get; private set; }
+
+        /// <summary>
+        ///   Gets the failure message.
+        /// </summary>
         internal string FailureMessage { get; private set; }
+
+        /// <summary>
+        ///   Gets the failure message parameters which are replaced in the failure message.
+        /// </summary>
         internal object[] FailureMessageParameters { get; private set; }
+
+        /// <summary>
+        ///   Gets a value indicating whether a failure has occurred.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if failed; otherwise, <c>false</c>.
+        /// </value>
         internal bool Failed { get { return Failure != ParseFailureKind.None; } }
+
+        /// <summary>
+        ///   Gets a value indicating whether inner white space is allowed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if inner white is allowed; otherwise, <c>false</c>.
+        /// </value>
         internal bool AllowInnerWhite { get; private set; }
+
+        /// <summary>
+        ///   Gets a value indicating whether leading white space is allowed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if leading white space is allowed; otherwise, <c>false</c>.
+        /// </value>
         internal bool AllowLeadingWhite { get; private set; }
+
+        /// <summary>
+        ///   Gets a value indicating whether trailing white space is allowed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if trailing white space is allowed; otherwise, <c>false</c>.
+        /// </value>
         internal bool AllowTrailingWhite { get; private set; }
+
+        /// <summary>
+        ///   Gets the format info object that controls the parsing of the object.
+        /// </summary>
         internal NodaFormatInfo FormatInfo { get; private set; }
 
-        protected virtual string DoubleAssignmentMessage { get { return Resources.Parse_DefaultDoubleAssignment; } }
-
+        /// <summary>
+        ///   Clears the failure information.
+        /// </summary>
         internal void ClearFail()
         {
             Failure = ParseFailureKind.None;
@@ -60,6 +132,10 @@ namespace NodaTime.Format
             FailureArgumentName = null;
         }
 
+        /// <summary>
+        ///   Gets the failure exception object if a failure has occurred.
+        /// </summary>
+        /// <returns>An <see cref = "Exception" /> subclass or null.</returns>
         internal Exception GetFailureException()
         {
             switch (Failure)
@@ -73,6 +149,13 @@ namespace NodaTime.Format
             }
         }
 
+        /// <summary>
+        ///   Sets the failure information.
+        /// </summary>
+        /// <param name = "kind">The failure kind.</param>
+        /// <param name = "message">The failure message.</param>
+        /// <param name = "parameters">The optional failure parameters.</param>
+        /// <returns><c>false</c> indicating an error.</returns>
         private bool FailBasic(ParseFailureKind kind, string message, params object[] parameters)
         {
             Failure = kind;
@@ -81,14 +164,11 @@ namespace NodaTime.Format
             return CheckImmediate();
         }
 
-        internal bool SetFormatError(string message, params object[] parameters)
-        {
-            Failure = ParseFailureKind.Format;
-            FailureMessageParameters = parameters;
-            FailureMessage = string.Format(FormatInfo, message, parameters);
-            return CheckImmediate();
-        }
-
+        /// <summary>
+        ///   Reports an arugment null failure.
+        /// </summary>
+        /// <param name = "argumentName">Name of the argument.</param>
+        /// <returns><c>false</c> indicating an error.</returns>
         internal bool FailArgumentNull(string argumentName)
         {
             Failure = ParseFailureKind.ArgumentNull;
@@ -97,6 +177,11 @@ namespace NodaTime.Format
             return CheckImmediate();
         }
 
+        /// <summary>
+        ///   If the <see cref = "ThrowImmediate" /> flag is true and a failure has been registered an
+        ///   exception is thrown, otherwise returns a value indicating whether a failure has occurred.
+        /// </summary>
+        /// <returns></returns>
         internal bool CheckImmediate()
         {
             if (ThrowImmediate)
@@ -107,7 +192,7 @@ namespace NodaTime.Format
                     throw exception;
                 }
             }
-            return false;
+            return !Failed;
         }
 
         /// <summary>
@@ -156,7 +241,7 @@ namespace NodaTime.Format
 
         internal bool FailDoubleAssigment(char patternCharacter)
         {
-            return FailBasic(ParseFailureKind.ParseDoubleAssigment, DoubleAssignmentMessage, patternCharacter);
+            return FailBasic(ParseFailureKind.ParseDoubleAssigment, Resources.Parse_DoubleAssignment, patternCharacter);
         }
 
         internal bool FailParseValueStringEmpty()

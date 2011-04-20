@@ -153,7 +153,7 @@
   <data name="Parse_CannotParseValue" xml:space="preserve">
     <value>The value "{0}" cannot be parsed into an instance of {1} using pattern "{2}"</value>
   </data>
-  <data name="Parse_DefaultDoubleAssignment" xml:space="preserve">
+  <data name="Parse_DoubleAssignment" xml:space="preserve">
     <value>The pattern flag '{0}' cannot appear twice and parse different values.</value>
   </data>
   <data name="Parse_EmptyFormatsArray" xml:space="preserve">

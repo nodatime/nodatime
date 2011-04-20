@@ -15,14 +15,21 @@
 // limitations under the License.
 #endregion
 #region usings
-using NodaTime.Format;
+using System;
 using System.Collections.Generic;
+using NodaTime.Format;
 #endregion
 
 namespace NodaTime.Test.Format
 {
+    /// <summary>
+    ///   Defines the test data for the <see cref = "Offset" /> type formatting and parsing tests.
+    /// </summary>
     public class OffsetFormattingTestSupport : FormattingTestSupport
     {
+        /// <summary>
+        ///   Test data that can only be used to test formatting.
+        /// </summary>
         internal static OffsetData[] OffsetFormatData = {
             new OffsetData(3, 0, 0, 0) { C = EnUs, S = "", F = "%-", PV = Offset.Zero },
             new OffsetData(5, 6, 7, 8) { C = EnUs, S = "", F = "%F"  },
@@ -42,6 +49,9 @@ namespace NodaTime.Test.Format
             new OffsetData(Offset.MinValue) { C = null, S = "-23:59:59.999", ThreadCulture = EnUs },
         };
 
+        /// <summary>
+        ///   Test data that can only be used to test parsing.
+        /// </summary>
         internal static OffsetData[] OffsetParseData = {
             new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34  ", F = "  '  'HH:mm'  '  ", Styles = AllSpace },
             new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34  ", F = "  '  'HH:mm'  '  ", Styles = SurroundingSpace },
@@ -119,6 +129,10 @@ namespace NodaTime.Test.Format
             new OffsetData(Offset.Zero) { C = EnUs, S = null, F = "g", Kind = ParseFailureKind.ArgumentNull, ArgumentName = "value" },
         };
 
+        /// <summary>
+        ///   Common test data for both formatting and parsing. A test should be placed here unless is truely
+        ///   cannot be run both ways. This ensures that as many roud-trip type tests are performed as possible.
+        /// </summary>
         internal static OffsetData[] OffsetFormattingCommonData = {
             new OffsetData(Offset.Zero) { C = EnUs, S = ".", F = "%.", Name = "decimal separator" },
             new OffsetData(Offset.Zero) { C = EnUs, S = ":", F = "%:", Name = "date separator" },
@@ -241,38 +255,92 @@ namespace NodaTime.Test.Format
             new OffsetData(Offset.MinValue) { C = EnUs, S = "-23:59:59.999", F = "g", ThreadCulture = ItIt },
         };
 
-        internal static IEnumerable<OffsetData> WithoutFormat()
+        /// <summary>
+        ///   Base for building filtered lists of test data. This is here because we do not have access
+        ///   to LINQ.
+        /// </summary>
+        /// <param name = "test">The test predicate.</param>
+        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        internal static IEnumerable<OffsetData> FilteredParseTests(Predicate<OffsetData> test)
         {
-            foreach (var data in OffsetFormatData)
+            foreach (var data in OffsetParseData)
             {
-                if (data.F == null)
+                if (test(data))
                 {
                     yield return data;
                 }
             }
             foreach (var data in OffsetFormattingCommonData)
             {
-                if (data.F == null)
+                if (test(data))
                 {
                     yield return data;
                 }
             }
         }
 
+        /// <summary>
+        ///   Returns an iterator of test data with the parse style specified.
+        /// </summary>
+        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        internal static IEnumerable<OffsetData> WithStyles()
+        {
+            return FilteredParseTests(data => data.Styles != DateTimeParseStyles.None);
+        }
+
+        /// <summary>
+        ///   Returns an iterator of test data with no parse style specified.
+        /// </summary>
+        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        internal static IEnumerable<OffsetData> WithoutStyles()
+        {
+            return FilteredParseTests(data => data.Styles == DateTimeParseStyles.None);
+        }
+
+        /// <summary>
+        ///   Returns an iterator of test data with no format string specified.
+        /// </summary>
+        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        internal static IEnumerable<OffsetData> WithoutFormat()
+        {
+            return FilteredParseTests(data => data.F == null);
+        }
+
         #region Nested type: OffsetData
+        /// <summary>
+        ///   A container for test data for formatting and parsing <see cref = "Offset" /> objects.
+        /// </summary>
         public sealed class OffsetData : AbstractFormattingData<Offset>
         {
+            /// <summary>
+            ///   Initializes a new instance of the <see cref = "OffsetData" /> class.
+            /// </summary>
+            /// <param name = "value">The value.</param>
             public OffsetData(Offset value)
+                : base(value)
             {
-                V = value;
-                PV = value;
             }
 
+            /// <summary>
+            ///   Initializes a new instance of the <see cref = "OffsetData" /> class.
+            /// </summary>
+            /// <param name = "hours">The hours.</param>
+            /// <param name = "minutes">The minutes.</param>
+            /// <param name = "seconds">The seconds.</param>
+            /// <param name = "fractions">The fractions.</param>
             public OffsetData(int hours, int minutes, int seconds, int fractions)
                 : this(Offset.Create(hours, minutes, seconds, fractions))
             {
             }
 
+            /// <summary>
+            ///   Returns a string representation of the given value. This will usually not call the ToString()
+            ///   method as that is problably being tested. The returned string is only used in test code and
+            ///   labels so it doesn't have to be beautiful. Must handle <c>null</c> if the type is a reference
+            ///   type. This should not throw an exception.
+            /// </summary>
+            /// <param name = "value">The value to format.</param>
+            /// <returns>The string representation.</returns>
             protected override string ValueLabel(Offset value)
             {
                 if (value == Offset.MaxValue)

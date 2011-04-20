@@ -15,15 +15,32 @@
 // limitations under the License.
 #endregion
 
+#region usings
 using System;
+#endregion
+
 namespace NodaTime.Format
 {
+    /// <summary>
+    ///   Provides a simple parser for value strings.
+    /// </summary>
     internal class ParseString : Parsable
     {
-        internal ParseString(string value) : base(value)
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "ParseString" /> class.
+        /// </summary>
+        /// <param name = "value">The string to parse.</param>
+        internal ParseString(string value)
+            : base(value)
         {
         }
 
+        /// <summary>
+        ///   Attempts to match the specified character with the current character of the string. If the
+        ///   character matches then the index is moved passed the character.
+        /// </summary>
+        /// <param name = "character">The character to match.</param>
+        /// <returns><c>true</c> if the character matches.</returns>
         internal bool Match(char character)
         {
             if (Current == character)
@@ -34,6 +51,12 @@ namespace NodaTime.Format
             return false;
         }
 
+        /// <summary>
+        ///   Attempts to match the specified string with the current point in the string. If the
+        ///   character matches then the index is moved passed the string.
+        /// </summary>
+        /// <param name = "match">The string to match.</param>
+        /// <returns><c>true</c> if the string matches.</returns>
         internal bool Match(string match)
         {
             if (string.CompareOrdinal(Value, Index, match, 0, match.Length) == 0)
@@ -44,6 +67,15 @@ namespace NodaTime.Format
             return false;
         }
 
+        /// <summary>
+        ///   Parses digits at the current point in the string. If the minimum required
+        ///   digits are not present then the index is unchanged. If there are more digits than
+        ///   the maximum allowed they are ignored.
+        /// </summary>
+        /// <param name = "minimumDigits">The minimum allowed digits.</param>
+        /// <param name = "maximumDigits">The maximum allowed digits.</param>
+        /// <param name = "result">The result integer value.</param>
+        /// <returns><c>true</c> if the digits were parsed.</returns>
         internal bool ParseDigits(int minimumDigits, int maximumDigits, out int result)
         {
             result = 0;
@@ -70,6 +102,13 @@ namespace NodaTime.Format
             return true;
         }
 
+        /// <summary>
+        ///   Parses digits at the current point in the string as a fractional value.
+        /// </summary>
+        /// <param name = "maximumDigits">The maximum allowed digits.</param>
+        /// <param name = "scale">The scale of the fractional value.</param>
+        /// <param name = "result">The result value scaled by scale.</param>
+        /// <returns><c>true</c> if the digits were parsed.</returns>
         internal bool ParseFractionExact(int maximumDigits, int scale, out int result)
         {
             if (scale < maximumDigits)
@@ -92,11 +131,21 @@ namespace NodaTime.Format
             return (count == maximumDigits);
         }
 
+        /// <summary>
+        ///   Gets the integer value of the current digit character. Allows for non-roman digits.
+        /// </summary>
+        /// <returns></returns>
         private int GetDigit()
         {
             return (int)char.GetNumericValue(Current);
         }
 
+        /// <summary>
+        ///   Determines whether the current character is a digit character.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if the current character is a digit; otherwise, <c>false</c>.
+        /// </returns>
         private bool IsDigit()
         {
             return char.IsNumber(Current);
