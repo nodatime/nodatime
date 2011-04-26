@@ -42,7 +42,7 @@ namespace NodaTime.Format
         /// <param name = "parseInfo"></param>
         /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be <c>null</c>.</returns>
         /// <exception cref = "FormatException">If the end quote is missing.</exception>
-        internal string GetQuotedString(ParseInfo parseInfo)
+        internal string GetQuotedString(ParseErrorInfo parseInfo)
         {
             return GetQuotedString(Current, parseInfo);
         }
@@ -54,7 +54,7 @@ namespace NodaTime.Format
         /// <param name = "parseInfo"></param>
         /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be <c>null</c>.</returns>
         /// <exception cref = "FormatException">If the end quote is missing.</exception>
-        internal string GetQuotedString(char closeQuote, ParseInfo parseInfo)
+        internal string GetQuotedString(char closeQuote, ParseErrorInfo parseInfo)
         {
             var builder = new StringBuilder(Length - Index);
             bool endQuoteFound = false;
@@ -91,7 +91,7 @@ namespace NodaTime.Format
         /// <param name = "parseInfo"></param>
         /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
         /// <exception cref = "FormatException">if the count exceeds <paramref name = "maximumCount" />.</exception>
-        internal int GetRepeatCount(int maximumCount, ParseInfo parseInfo)
+        internal int GetRepeatCount(int maximumCount, ParseErrorInfo parseInfo)
         {
             return GetRepeatCount(maximumCount, Current, parseInfo);
         }
@@ -104,7 +104,7 @@ namespace NodaTime.Format
         /// <param name = "parseInfo"></param>
         /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
         /// <exception cref = "FormatException">if the count exceeds <paramref name = "maximumCount" />.</exception>
-        internal int GetRepeatCount(int maximumCount, char patternCharacter, ParseInfo parseInfo)
+        internal int GetRepeatCount(int maximumCount, char patternCharacter, ParseErrorInfo parseInfo)
         {
             int startPos = Index;
             while (MoveNext() && Current == patternCharacter)

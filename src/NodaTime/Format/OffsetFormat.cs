@@ -19,6 +19,7 @@ using System;
 using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Properties;
+using NodaTime.Format.Builder;
 #endregion
 
 namespace NodaTime.Format
@@ -38,6 +39,12 @@ namespace NodaTime.Format
         /// <returns>The value formatted as a string.</returns>
         internal static string Format(Offset value, string format, NodaFormatInfo formatProvider)
         {
+            var formatter = MakeFormatter(format, formatProvider);
+            return formatter.Format(value);
+        }
+
+        internal static string FormatX(Offset value, string format, NodaFormatInfo formatProvider)
+        {
             var parseInfo = new OffsetParseInfo(value, formatProvider, true, DateTimeParseStyles.None);
             if (string.IsNullOrEmpty(format))
             {
@@ -48,6 +55,101 @@ namespace NodaTime.Format
                 return FormatStandard(parseInfo, format[0]);
             }
             return FormatPattern(parseInfo, format);
+        }
+
+        internal static INodaFormatter<Offset> MakeFormatter(string format, IFormatProvider formatProvider)
+        {
+            if (string.IsNullOrEmpty(format))
+            {
+                format = "g";
+            }
+            if (format.Length == 1)
+            {
+                return MakeFormatStandard(format[0], formatProvider);
+            }
+            return MakeFormatPattern(format, formatProvider);
+        }
+
+        internal static INodaFormatter<Offset> MakeFormatPattern(string format, IFormatProvider formatProvider)
+        {
+            var builder = new FormatterBuilder<Offset, OffsetParseInfo>();
+            var errorInfo = new ParseErrorInfo(formatProvider, true);
+            DoMakeFormatPattern(format, errorInfo, builder);
+            return builder.Build();
+        }
+
+        internal static void DoMakeFormatPattern(string format, ParseErrorInfo errorInfo, FormatterBuilder<Offset, OffsetParseInfo> builder)
+        {
+            var pattern = new Pattern(format);
+            while (pattern.MoveNext())
+            {
+                int repeatLength;
+                switch (pattern.Current)
+                {
+                    case '+':
+                        builder.AddSign(true, info => info);
+                        break;
+                    case '-':
+                        builder.AddSign(false, info => info);
+                        break;
+                    case ':':
+                        builder.AddTimeSeparator();
+                        break;
+                    case '.':
+                        builder.AddDecimalSeparator();
+                        break;
+                    case '%':
+                        if (pattern.HasMoreCharacters)
+                        {
+                            if (pattern.PeekNext() != '%')
+                            {
+                                DoMakeFormatPattern(pattern.GetNextCharacter().ToString(), errorInfo, builder);
+                                pattern.MoveNext(); // Eat next character
+                                break;
+                            }
+                            errorInfo.FailParsePercentDoubled();
+                        }
+                        errorInfo.FailParsePercentAtEndOfString();
+                        break;
+                    case '\'':
+                    case '"':
+                        builder.AddString(pattern.GetQuotedString(errorInfo));
+                        break;
+                    case '\\':
+                        if (!pattern.HasMoreCharacters)
+                        {
+                            errorInfo.FailParseEscapeAtEndOfString();
+                        }
+                        builder.AddString(pattern.GetNextCharacter().ToString());
+                        break;
+                    case 'h':
+                        errorInfo.FailParse12HourPatternNotSupported(typeof(Offset));
+                        break; // Never gets here
+                    case 'H':
+                        repeatLength = pattern.GetRepeatCount(2, errorInfo);
+                        builder.AddLeftPad(repeatLength, info => info.Hours.GetValueOrDefault());
+                        break;
+                    case 's':
+                        repeatLength = pattern.GetRepeatCount(2, errorInfo);
+                        builder.AddLeftPad(repeatLength, info => info.Seconds.GetValueOrDefault());
+                        break;
+                    case 'm':
+                        repeatLength = pattern.GetRepeatCount(2, errorInfo);
+                        builder.AddLeftPad(repeatLength, info => info.Minutes.GetValueOrDefault());
+                        break;
+                    case 'F':
+                        repeatLength = pattern.GetRepeatCount(3, errorInfo);
+                        builder.AddRightPadTruncate(repeatLength, 3, info => info.FractionalSeconds.GetValueOrDefault());
+                        break;
+                    case 'f':
+                        repeatLength = pattern.GetRepeatCount(3, errorInfo);
+                        builder.AddRightPad(repeatLength, 3, info => info.FractionalSeconds.GetValueOrDefault());
+                        break;
+                    default:
+                        builder.AddString(pattern.Current.ToString());
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -168,6 +270,90 @@ namespace NodaTime.Format
                     throw new ParseException(ParseFailureKind.ParseUnknownStandardFormat, message);
             }
             return FormatPattern(parseInfo, pattern);
+        }
+
+        private static INodaFormatter<Offset> MakeFormatStandard(char formatCharacter, IFormatProvider formatProvider)
+        {
+            var formatInfo = NodaFormatInfo.GetInstance(formatProvider);
+            string pattern;
+            switch (formatCharacter)
+            {
+                case 'g':
+                    return new FormatterG(formatProvider);
+                case 'n':
+                    return new FormatterN(formatProvider);
+                case 's':
+                    pattern = formatInfo.OffsetPatternShort;
+                    break;
+                case 'm':
+                    pattern = formatInfo.OffsetPatternMedium;
+                    break;
+                case 'l':
+                    pattern = formatInfo.OffsetPatternLong;
+                    break;
+                case 'f':
+                    pattern = formatInfo.OffsetPatternFull;
+                    break;
+                default:
+                    string message = string.Format(Resources.Parse_UnknownStandardFormat, formatCharacter, typeof(Offset).FullName);
+                    throw new ParseException(ParseFailureKind.ParseUnknownStandardFormat, message);
+            }
+            return MakeFormatPattern(pattern, formatProvider);
+        }
+
+        private sealed class FormatterN : AbstractNodaFormatter<Offset>
+        {
+            public FormatterN(IFormatProvider formatProvider)
+                : base(formatProvider)
+            {
+            }
+
+            public override string Format(Offset value, IFormatProvider formatProvider)
+            {
+                return value.Milliseconds.ToString("N0", formatProvider);
+            }
+
+            public override INodaFormatter<Offset> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new FormatterN(formatProvider);
+            }
+        }
+
+        private sealed class FormatterG : AbstractNodaFormatter<Offset>
+        {
+            public FormatterG(IFormatProvider formatProvider)
+                : base(formatProvider)
+            {
+            }
+
+            public override string Format(Offset value, IFormatProvider formatProvider)
+            {
+                var formatInfo = NodaFormatInfo.GetInstance(formatProvider);
+                string pattern;
+                if (value.FractionalSeconds != 0)
+                {
+                    pattern = formatInfo.OffsetPatternFull;
+                }
+                else if (value.Seconds != 0)
+                {
+                    pattern = formatInfo.OffsetPatternLong;
+                }
+                else if (value.Minutes != 0)
+                {
+                    pattern = formatInfo.OffsetPatternMedium;
+                }
+                else
+                {
+                    pattern = formatInfo.OffsetPatternShort;
+                }
+                var formatter = MakeFormatter(pattern, formatProvider);
+                return formatter.Format(value);
+            }
+
+            public override INodaFormatter<Offset> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new FormatterG(formatProvider);
+            }
         }
 
         /// <summary>
