@@ -34,14 +34,14 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "WithoutStyles")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseWithoutStyles")]
         public void TestParseExact_noStyle(OffsetFormattingTestSupport.OffsetData data)
         {
             FormattingTestSupport.RunParseSingleTest(data, format => Offset.ParseExact(data.S, format, new NodaFormatInfo(data.C)));
         }
 
         [Test]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "WithStyles")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "ParseWithStyles")]
         public void TestParseExact_withStyle(OffsetFormattingTestSupport.OffsetData data)
         {
             FormattingTestSupport.RunParseSingleTest(data, format => Offset.ParseExact(data.S, format, new NodaFormatInfo(data.C), data.Styles));

@@ -256,7 +256,7 @@ namespace NodaTime.Test.Format
         };
 
         /// <summary>
-        ///   Base for building filtered lists of test data. This is here because we do not have access
+        ///   Base for building filtered lists of parsing test data. This is here because we do not have access
         ///   to LINQ.
         /// </summary>
         /// <param name = "test">The test predicate.</param>
@@ -280,10 +280,34 @@ namespace NodaTime.Test.Format
         }
 
         /// <summary>
+        ///   Base for building filtered lists of formatting test data. This is here because we do not have access
+        ///   to LINQ.
+        /// </summary>
+        /// <param name = "test">The test predicate.</param>
+        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        internal static IEnumerable<OffsetData> FilteredFormatTests(Predicate<OffsetData> test)
+        {
+            foreach (var data in OffsetFormatData)
+            {
+                if (test(data))
+                {
+                    yield return data;
+                }
+            }
+            foreach (var data in OffsetFormattingCommonData)
+            {
+                if (test(data))
+                {
+                    yield return data;
+                }
+            }
+        }
+
+        /// <summary>
         ///   Returns an iterator of test data with the parse style specified.
         /// </summary>
         /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> WithStyles()
+        internal static IEnumerable<OffsetData> ParseWithStyles()
         {
             return FilteredParseTests(data => data.Styles != DateTimeParseStyles.None);
         }
@@ -292,7 +316,7 @@ namespace NodaTime.Test.Format
         ///   Returns an iterator of test data with no parse style specified.
         /// </summary>
         /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> WithoutStyles()
+        internal static IEnumerable<OffsetData> ParseWithoutStyles()
         {
             return FilteredParseTests(data => data.Styles == DateTimeParseStyles.None);
         }
@@ -301,9 +325,9 @@ namespace NodaTime.Test.Format
         ///   Returns an iterator of test data with no format string specified.
         /// </summary>
         /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> WithoutFormat()
+        internal static IEnumerable<OffsetData> FormatWithoutFormat()
         {
-            return FilteredParseTests(data => data.F == null);
+            return FilteredFormatTests(data => data.F == null);
         }
 
         #region Nested type: OffsetData

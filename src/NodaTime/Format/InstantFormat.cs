@@ -15,11 +15,12 @@
 // limitations under the License.
 #endregion
 
+#region usings
 using System;
 using System.Globalization;
-using System.Threading;
-using NodaTime.Utility;
 using NodaTime.Globalization;
+using NodaTime.Utility;
+#endregion
 
 namespace NodaTime.Format
 {
@@ -30,10 +31,16 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name = "value">The value to format.</param>
         /// <param name = "format">The format string. If <c>null</c> or empty defaults to "g".</param>
-        /// <param name = "formatInfo">The <see cref = "IFormatProvider" /> to use. If <c>null</c> the thread's current culture is used.</param>
+        /// <param name = "formatProvider">The <see cref = "IFormatProvider" /> to use. If <c>null</c> the thread's current culture is used.</param>
         /// <exception cref = "FormatException"></exception>
         /// <returns>The value formatted as a string.</returns>
-        internal static string Format(Instant value, string format, NodaFormatInfo formatInfo)
+        internal static string Format(Instant value, string format, IFormatProvider formatProvider)
+        {
+            var formatter = MakeFormatter(format, formatProvider);
+            return formatter.Format(value);
+        }
+
+        internal static INodaFormatter<Instant> MakeFormatter(string format, IFormatProvider formatProvider)
         {
             if (string.IsNullOrEmpty(format))
             {
@@ -51,29 +58,86 @@ namespace NodaTime.Format
             switch (formatChar)
             {
                 case 'g':
-                    return FormatG(value);
+                    return new FormatterG(formatProvider);
                 case 'd':
-                    return value.Ticks.ToString("D", formatInfo);
+                    return new FormatterD(formatProvider);
                 case 'n':
-                    return value.Ticks.ToString("N0", formatInfo);
+                    return new FormatterN(formatProvider);
                 default:
                     throw new FormatException("Invalid format string: unknown flag");
             }
         }
 
-        private static string FormatG(Instant value)
+        #region Nested type: FormatterD
+        private sealed class FormatterD : AbstractNodaFormatter<Instant>
         {
-            if (value.Ticks == Instant.MinValue.Ticks)
+            public FormatterD(IFormatProvider formatProvider)
+                : base(formatProvider)
             {
-                return Instant.BeginningOfTimeLabel;
             }
-            if (value.Ticks == Instant.MaxValue.Ticks)
+
+            public override string Format(Instant value, IFormatProvider formatProvider)
             {
-                return Instant.EndOfTimeLabel;
+                var formatInfo = NodaFormatInfo.GetInstance(formatProvider);
+                return value.Ticks.ToString("D", formatInfo);
             }
-            var utc = SystemConversions.InstantToDateTime(value);
-            return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.Month, utc.Day,
-                                 utc.Hour, utc.Minute, utc.Second);
+
+            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new FormatterD(formatProvider);
+            }
         }
+        #endregion
+
+        #region Nested type: FormatterG
+        private sealed class FormatterG : AbstractNodaFormatter<Instant>
+        {
+            public FormatterG(IFormatProvider formatProvider)
+                : base(formatProvider)
+            {
+            }
+
+            public override string Format(Instant value, IFormatProvider formatProvider)
+            {
+                if (value.Ticks == Instant.MinValue.Ticks)
+                {
+                    return Instant.BeginningOfTimeLabel;
+                }
+                if (value.Ticks == Instant.MaxValue.Ticks)
+                {
+                    return Instant.EndOfTimeLabel;
+                }
+                var utc = SystemConversions.InstantToDateTime(value);
+                return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.Month, utc.Day,
+                                     utc.Hour, utc.Minute, utc.Second);
+            }
+
+            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new FormatterG(formatProvider);
+            }
+        }
+        #endregion
+
+        #region Nested type: FormatterN
+        private sealed class FormatterN : AbstractNodaFormatter<Instant>
+        {
+            public FormatterN(IFormatProvider formatProvider)
+                : base(formatProvider)
+            {
+            }
+
+            public override string Format(Instant value, IFormatProvider formatProvider)
+            {
+                var formatInfo = NodaFormatInfo.GetInstance(formatProvider);
+                return value.Ticks.ToString("N0", formatInfo);
+            }
+
+            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new FormatterN(formatProvider);
+            }
+        }
+        #endregion
     }
 }
