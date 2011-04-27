@@ -56,10 +56,9 @@ namespace NodaTime.Format
         ///   Initializes a new instance of the <see cref = "OffsetParseInfo" /> class.
         /// </summary>
         /// <param name = "formatInfo">The format info.</param>
-        /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
         /// <param name = "parseStyles">The parse styles.</param>
-        internal OffsetParseInfo(IFormatProvider formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
-            : base(formatInfo, throwImmediate, parseStyles)
+        internal OffsetParseInfo(IFormatProvider formatInfo, DateTimeParseStyles parseStyles)
+            : base(formatInfo, parseStyles)
         {
         }
 
@@ -69,7 +68,7 @@ namespace NodaTime.Format
         /// <param name = "value">The value.</param>
         /// <param name = "formatInfo">The format info.</param>
         internal OffsetParseInfo(Offset value, IFormatProvider formatInfo)
-            : base(formatInfo, true, DateTimeParseStyles.None)
+            : base(formatInfo, DateTimeParseStyles.None)
         {
             Milliseconds = value.Milliseconds;
             IsNegative = value.IsNegative;

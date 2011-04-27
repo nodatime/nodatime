@@ -17,9 +17,8 @@
 #region usings
 using System;
 using System.Text;
-using NodaTime.Globalization;
-using NodaTime.Properties;
 using NodaTime.Format.Builder;
+using NodaTime.Globalization;
 #endregion
 
 namespace NodaTime.Format
@@ -67,18 +66,17 @@ namespace NodaTime.Format
             {
                 return MakeFormatStandard(format[0], formatProvider);
             }
-            return MakeFormatPattern(format, formatProvider);
+            return MakeFormatPattern(format);
         }
 
-        internal static INodaFormatter<Offset> MakeFormatPattern(string format, IFormatProvider formatProvider)
+        internal static INodaFormatter<Offset> MakeFormatPattern(string format)
         {
             var builder = new FormatterBuilder<Offset, OffsetParseInfo>();
-            var errorInfo = new ParseErrorInfo(formatProvider, true);
-            DoMakeFormatPattern(format, errorInfo, builder);
+            DoMakeFormatPattern(format, builder);
             return builder.Build((value, provider) => new OffsetParseInfo(value, provider));
         }
 
-        internal static void DoMakeFormatPattern(string format, ParseErrorInfo errorInfo, FormatterBuilder<Offset, OffsetParseInfo> builder)
+        internal static void DoMakeFormatPattern(string format, FormatterBuilder<Offset, OffsetParseInfo> builder)
         {
             var pattern = new Pattern(format);
             while (pattern.MoveNext())
@@ -103,14 +101,13 @@ namespace NodaTime.Format
                         {
                             if (pattern.PeekNext() != '%')
                             {
-                                DoMakeFormatPattern(pattern.GetNextCharacter().ToString(), errorInfo, builder);
+                                DoMakeFormatPattern(pattern.GetNextCharacter().ToString(), builder);
                                 pattern.MoveNext(); // Eat next character
                                 break;
                             }
-                            errorInfo.FailParsePercentDoubled();
+                            throw FormatError.PercentDoubled();
                         }
-                        errorInfo.FailParsePercentAtEndOfString();
-                        break;
+                        throw FormatError.PercentAtEndOfString();
                     case '\'':
                     case '"':
                         builder.AddString(pattern.GetQuotedString());
@@ -118,13 +115,12 @@ namespace NodaTime.Format
                     case '\\':
                         if (!pattern.HasMoreCharacters)
                         {
-                            errorInfo.FailParseEscapeAtEndOfString();
+                            throw FormatError.EscapeAtEndOfString();
                         }
                         builder.AddString(pattern.GetNextCharacter().ToString());
                         break;
                     case 'h':
-                        errorInfo.FailParse12HourPatternNotSupported(typeof(Offset));
-                        break; // Never gets here
+                        throw FormatError.Hour12PatternNotSupported(typeof(Offset));
                     case 'H':
                         repeatLength = pattern.GetRepeatCount(2);
                         builder.AddLeftPad(repeatLength, info => info.Hours.GetValueOrDefault());
@@ -264,8 +260,7 @@ namespace NodaTime.Format
                     pattern = formatInfo.OffsetPatternFull;
                     break;
                 default:
-                    string message = string.Format(Resources.Parse_UnknownStandardFormat, formatCharacter, typeof(Offset).FullName);
-                    throw new ParseException(ParseFailureKind.UnknownStandardFormat, message);
+                    throw FormatError.UnknownStandardFormat(formatCharacter, typeof(Offset));
             }
             return FormatPattern(parseInfo, pattern);
         }
@@ -293,10 +288,9 @@ namespace NodaTime.Format
                     pattern = formatInfo.OffsetPatternFull;
                     break;
                 default:
-                    string message = string.Format(Resources.Parse_UnknownStandardFormat, formatCharacter, typeof(Offset).FullName);
-                    throw new ParseException(ParseFailureKind.UnknownStandardFormat, message);
+                    throw FormatError.UnknownStandardFormat(formatCharacter, typeof(Offset));
             }
-            return MakeFormatPattern(pattern, formatProvider);
+            return MakeFormatPattern(pattern);
         }
 
         private sealed class FormatterN : AbstractNodaFormatter<Offset>
@@ -330,7 +324,7 @@ namespace NodaTime.Format
                     pattern = formatInfo.OffsetPatternShort;
                 }
                 var formatter = MakeFormatter(pattern, formatProvider);
-                return formatter.Format(value);
+                return formatter.Format(value, formatProvider);
             }
         }
 

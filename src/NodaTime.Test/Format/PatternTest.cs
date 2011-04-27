@@ -144,7 +144,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("aaa");
             char ch = pattern.GetNextCharacter();
-            Assert.AreEqual(-3, pattern.GetRepeatCount(2, ch));
+            Assert.Throws<FormatError.FormatValueException>(() => pattern.GetRepeatCount(2, ch));
         }
 
         [Test]

@@ -111,7 +111,7 @@ namespace NodaTime.Format
             }
             if (repeatLength > maximumCount)
             {
-                repeatLength = -repeatLength;
+                throw FormatError.RepeatCountExceeded(patternCharacter, maximumCount);
             }
             return repeatLength;
         }

@@ -303,19 +303,7 @@ namespace NodaTime
         /// <returns>An <see cref="INodaFormatter{T}"/> formatter object.</returns>
         public static INodaFormatter<Instant> GetFormatter(string format)
         {
-            return InstantFormat.MakeFormatter(format, null);
-        }
-
-        /// <summary>
-        /// Compiles the given format pattern string and returns a formatter object that formats
-        /// <see cref="Instant"/> objects using the given format and the given <see cref="IFormatProvider"/>.
-        /// </summary>
-        /// <param name="format">The format pattern string.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        /// <returns>An <see cref="INodaFormatter{T}"/> formatter object.</returns>
-        public static INodaFormatter<Instant> GetFormatter(string format, IFormatProvider formatProvider)
-        {
-            return InstantFormat.MakeFormatter(format, formatProvider);
+            return InstantFormat.MakeFormatter(format);
         }
 
         /// <summary>
@@ -384,54 +372,54 @@ namespace NodaTime
         #endregion Formatting
 
         #region Parsing
-        public static Instant Parse(string s)
+        public static Instant Parse(string value)
         {
-            return InstantParse.Parse(s, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
+            return InstantParse.Parse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
         }
 
-        public static Instant Parse(string s, IFormatProvider formatProvider)
+        public static Instant Parse(string value, IFormatProvider formatProvider)
         {
-            return InstantParse.Parse(s, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+            return InstantParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
-        public static Instant Parse(string s, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        public static Instant Parse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return InstantParse.Parse(s, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
-        public static Instant ParseExact(string s, string format, IFormatProvider formatProvider)
+        public static Instant ParseExact(string value, string format, IFormatProvider formatProvider)
         {
-            return InstantParse.ParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+            return InstantParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
-        public static Instant ParseExact(string s, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        public static Instant ParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return InstantParse.ParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
-        public static Instant ParseExact(string s, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        public static Instant ParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return InstantParse.ParseExact(s, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantParse.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
-        public static bool TryParse(string s, out Instant result)
+        public static bool TryParse(string value, out Instant result)
         {
-            return InstantParse.TryParse(s, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
+            return InstantParse.TryParse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
         }
 
-        public static bool TryParse(string s, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        public static bool TryParse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
-            return InstantParse.TryParse(s, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantParse.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
-        public static bool TryParseExact(string s, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
-            return InstantParse.TryParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantParse.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
-        public static bool TryParseExact(string s, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
-            return InstantParse.TryParseExactMultiple(s, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantParse.TryParseExactMultiple(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
         #endregion Parsing
 

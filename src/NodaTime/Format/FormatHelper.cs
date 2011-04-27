@@ -141,7 +141,7 @@ namespace NodaTime.Format
             {
                 outputBuffer.Append(((int)relevantDigits).ToString(FixedNumberFormats[relevantLength - 1], CultureInfo.InvariantCulture));
             }
-            else if (outputBuffer.Length > 0 && outputBuffer.ToString().EndsWith(decimalSeparator))
+            else if (outputBuffer.Length > 0 && outputBuffer.ToString().EndsWith(decimalSeparator, StringComparison.CurrentCulture))
             {
                 var decimalSeparatorLength = decimalSeparator.Length;
                 outputBuffer.Remove(outputBuffer.Length - decimalSeparatorLength, decimalSeparatorLength);

@@ -36,11 +36,7 @@ namespace NodaTime.Utility
 
         internal static CultureInfo GetCulture(IFormatProvider formatProvider)
         {
-            if (formatProvider is CultureInfo)
-            {
-                return formatProvider as CultureInfo;
-            }
-            return Thread.CurrentThread.CurrentUICulture;
+            return formatProvider as CultureInfo ?? Thread.CurrentThread.CurrentUICulture;
         }
 
         /// <summary>
@@ -57,7 +53,7 @@ namespace NodaTime.Utility
         internal static string GetMessage(string id, params object[] replacements)
         {
             var message = Resources.ResourceManager.GetString(id) ?? id;
-            return String.Format(message, replacements);
+            return String.Format(CultureInfo.CurrentCulture, message, replacements);
         }
 
         /// <summary>
@@ -77,7 +73,7 @@ namespace NodaTime.Utility
         {
             var culture = GetCulture(formatProvider);
             string message = culture.Equals(CultureInfo.InvariantCulture) ? invariant : (Resources.ResourceManager.GetString(id) ?? id);
-            return replacements.Length == 0 ? message : String.Format(message, replacements);
+            return replacements.Length == 0 ? message : String.Format(CultureInfo.CurrentCulture, message, replacements);
         }
 
         /// <summary>

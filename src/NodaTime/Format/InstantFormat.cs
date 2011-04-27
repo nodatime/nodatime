@@ -37,11 +37,11 @@ namespace NodaTime.Format
         /// <returns>The value formatted as a string.</returns>
         internal static string Format(Instant value, string format, IFormatProvider formatProvider)
         {
-            var formatter = MakeFormatter(format, formatProvider);
+            var formatter = MakeFormatter(format);
             return formatter.Format(value, formatProvider);
         }
 
-        internal static INodaFormatter<Instant> MakeFormatter(string format, IFormatProvider formatProvider)
+        internal static INodaFormatter<Instant> MakeFormatter(string format)
         {
             if (string.IsNullOrEmpty(format))
             {

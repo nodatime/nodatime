@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MyFirstResource" xml:space="preserve">
-    <value>"qwer"</value>
+  <data name="OffsetPatternFull" xml:space="preserve">
+    <value>+H:mm:ss.fff</value>
+  </data>
+  <data name="OffsetPatternLong" xml:space="preserve">
+    <value>+H:mm:ss</value>
+  </data>
+  <data name="OffsetPatternMedium" xml:space="preserve">
+    <value>+H:mm</value>
+  </data>
+  <data name="OffsetPatternShort" xml:space="preserve">
+    <value>+H</value>
   </data>
 </root>
