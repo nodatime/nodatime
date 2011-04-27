@@ -50,8 +50,8 @@ namespace NodaTime.Test.Format
             Styles = DateTimeParseStyles.None;
             Kind = ParseFailureKind.None;
             Parameters = new List<object>();
-            ThreadCulture = Failing;
-            ThreadUiCulture = Failing;
+            ThreadCulture = CultureInfo.InvariantCulture;
+            ThreadUiCulture = CultureInfo.InvariantCulture;
         }
 
         /// <summary>
@@ -278,27 +278,6 @@ namespace NodaTime.Test.Format
         /// </summary>
         public object Result { get; set; }
         #endregion
-
-        /// <summary>
-        ///   Validates the specified parse info.
-        /// </summary>
-        /// <param name = "parseInfo">The parse info.</param>
-        internal void Validate(ParseInfo parseInfo)
-        {
-            Assert.AreEqual(Kind, parseInfo.Failure, "Failure kind mismatch");
-            if (Kind != ParseFailureKind.None)
-            {
-                Assert.AreEqual(Parameters.ToArray(), parseInfo.FailureMessageParameters, "Failure message parameters mismatch");
-                if (ArgumentName == null)
-                {
-                    Assert.IsNull(parseInfo.FailureArgumentName, "failure argument name should be null");
-                }
-                else
-                {
-                    Assert.AreEqual(ArgumentName, parseInfo.FailureArgumentName, "Failure argument name mismatch");
-                }
-            }
-        }
 
         /// <summary>
         ///   Returns a string representation of the given value. This will usually not call the ToString()

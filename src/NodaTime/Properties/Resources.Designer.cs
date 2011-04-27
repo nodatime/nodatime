@@ -151,15 +151,6 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The &apos;h&apos; pattern flag (12 hour format) is not supported by the {0} type..
-        /// </summary>
-        internal static string Parse_12HourPatternNotSupported {
-            get {
-                return ResourceManager.GetString("Parse_12HourPatternNotSupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The value &quot;{0}&quot; cannot be parsed into an instance of {1} using pattern &quot;{2}&quot;.
         /// </summary>
         internal static string Parse_CannotParseValue {
@@ -237,6 +228,15 @@ namespace NodaTime.Properties {
         internal static string Parse_FormatStringEmpty {
             get {
                 return ResourceManager.GetString("Parse_FormatStringEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;h&apos; pattern flag (12 hour format) is not supported by the {0} type..
+        /// </summary>
+        internal static string Parse_Hour12PatternNotSupported {
+            get {
+                return ResourceManager.GetString("Parse_Hour12PatternNotSupported", resourceCulture);
             }
         }
         
@@ -331,6 +331,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The standard format &quot;{0}&quot; for type {1} does not support a precision..
+        /// </summary>
+        internal static string Parse_PrecisionNotSupported {
+            get {
+                return ResourceManager.GetString("Parse_PrecisionNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value string does not match a quoted string in the pattern..
         /// </summary>
         internal static string Parse_QuotedStringMismatch {
@@ -349,6 +358,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The standard format &quot;{0}&quot; for type {1} cannot contain whitespace..
+        /// </summary>
+        internal static string Parse_StandardFormatWhitespace {
+            get {
+                return ResourceManager.GetString("Parse_StandardFormatWhitespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value string does not match a time separator in the format string..
         /// </summary>
         internal static string Parse_TimeSeparatorMismatch {
@@ -358,7 +376,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to More characters were expected in the parsable string..
+        ///   Looks up a localized string similar to More characters were expected in the parsable string [{0}]..
         /// </summary>
         internal static string Parse_UnexpectedEndOfString {
             get {

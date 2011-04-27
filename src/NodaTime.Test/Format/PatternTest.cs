@@ -15,10 +15,9 @@
 // limitations under the License.
 #endregion
 #region usings
-using System;
 using NodaTime.Format;
-using NodaTime.Globalization;
 using NUnit.Framework;
+using System;
 #endregion
 
 namespace NodaTime.Test.Format
@@ -29,19 +28,9 @@ namespace NodaTime.Test.Format
     [Category("Parse")]
     public class PatternTest : ParsableTest
     {
-        private readonly TestParseInfo parseInfo = new TestParseInfo();
-
         internal override Parsable MakeParsable(string value)
         {
             return new Pattern(value);
-        }
-
-        private sealed class TestParseInfo : ParseInfo
-        {
-            public TestParseInfo()
-                : base(NodaFormatInfo.CurrentInfo, true)
-            {
-            }
         }
 
         [Test]
@@ -49,8 +38,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("'abc\\");
             char openQuote = pattern.GetNextCharacter();
-            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseEscapeAtEndOfString),
-                          () => pattern.GetQuotedString(openQuote, parseInfo));
+            Assert.Throws<FormatException>(() => pattern.GetQuotedString(openQuote));
         }
 
         [Test]
@@ -58,7 +46,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("'abc'");
             pattern.GetNextCharacter();
-            string actual = pattern.GetQuotedString(parseInfo);
+            string actual = pattern.GetQuotedString();
             Assert.AreEqual("abc", actual);
             ValidateEndOfString(pattern);
         }
@@ -68,7 +56,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("''");
             char openQuote = pattern.GetNextCharacter();
-            string actual = pattern.GetQuotedString(openQuote, parseInfo);
+            string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual(string.Empty, actual);
             ValidateEndOfString(pattern);
         }
@@ -78,7 +66,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("\"abc\"");
             char openQuote = pattern.GetNextCharacter();
-            string actual = pattern.GetQuotedString(openQuote, parseInfo);
+            string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
             ValidateEndOfString(pattern);
         }
@@ -88,7 +76,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("'ab\\c'");
             char openQuote = pattern.GetNextCharacter();
-            string actual = pattern.GetQuotedString(openQuote, parseInfo);
+            string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
             ValidateEndOfString(pattern);
         }
@@ -98,7 +86,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("'ab\\'c'");
             char openQuote = pattern.GetNextCharacter();
-            string actual = pattern.GetQuotedString(openQuote, parseInfo);
+            string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual("ab'c", actual);
             ValidateEndOfString(pattern);
         }
@@ -108,7 +96,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("[abc]");
             pattern.GetNextCharacter();
-            string actual = pattern.GetQuotedString(']', parseInfo);
+            string actual = pattern.GetQuotedString(']');
             Assert.AreEqual("abc", actual);
             ValidateEndOfString(pattern);
         }
@@ -118,8 +106,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("'abc");
             char openQuote = pattern.GetNextCharacter();
-            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseMissingEndQuote),
-                          () => pattern.GetQuotedString(openQuote, parseInfo));
+            Assert.Throws<FormatException>(() => pattern.GetQuotedString(openQuote));
         }
 
         [Test]
@@ -127,7 +114,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("'abc'more");
             char openQuote = pattern.GetNextCharacter();
-            string actual = pattern.GetQuotedString(openQuote, parseInfo);
+            string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
             ValidateCharacter(pattern, 5, 'm');
         }
@@ -137,7 +124,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("'abc'");
             char openQuote = pattern.GetNextCharacter();
-            string actual = pattern.GetQuotedString(openQuote, parseInfo);
+            string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
             ValidateEndOfString(pattern);
         }
@@ -147,7 +134,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("aaa");
             pattern.GetNextCharacter();
-            int actual = pattern.GetRepeatCount(10, parseInfo);
+            int actual = pattern.GetRepeatCount(10);
             Assert.AreEqual(3, actual);
             ValidateEndOfString(pattern);
         }
@@ -157,8 +144,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("aaa");
             char ch = pattern.GetNextCharacter();
-            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseRepeatCountExceeded),
-                          () => pattern.GetRepeatCount(2, ch, parseInfo));
+            Assert.AreEqual(-3, pattern.GetRepeatCount(2, ch));
         }
 
         [Test]
@@ -166,7 +152,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("a");
             char ch = pattern.GetNextCharacter();
-            int actual = pattern.GetRepeatCount(10, ch, parseInfo);
+            int actual = pattern.GetRepeatCount(10, ch);
             Assert.AreEqual(1, actual);
             ValidateEndOfString(pattern);
         }
@@ -176,7 +162,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("aaadaa");
             char ch = pattern.GetNextCharacter();
-            int actual = pattern.GetRepeatCount(10, ch, parseInfo);
+            int actual = pattern.GetRepeatCount(10, ch);
             Assert.AreEqual(3, actual);
             ValidateCharacter(pattern, 2, 'a');
         }
@@ -186,7 +172,7 @@ namespace NodaTime.Test.Format
         {
             var pattern = new Pattern("aaa");
             char ch = pattern.GetNextCharacter();
-            int actual = pattern.GetRepeatCount(10, ch, parseInfo);
+            int actual = pattern.GetRepeatCount(10, ch);
             Assert.AreEqual(3, actual);
             ValidateEndOfString(pattern);
         }

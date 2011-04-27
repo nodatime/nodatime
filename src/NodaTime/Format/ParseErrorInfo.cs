@@ -5,6 +5,11 @@ namespace NodaTime.Format
 {
     internal class ParseErrorInfo
     {
+        internal ParseErrorInfo(IFormatProvider formatProvider)
+            : this(formatProvider, true)
+        {
+        }
+
         internal ParseErrorInfo(IFormatProvider formatProvider, bool throwImmediate)
         {
             FormatProvider = formatProvider;
@@ -128,132 +133,142 @@ namespace NodaTime.Format
 
         internal bool FailParseEscapeAtEndOfString()
         {
-            return FailBasic(ParseFailureKind.ParseEscapeAtEndOfString, Resources.Parse_EscapeAtEndOfString);
+            return FailBasic(ParseFailureKind.EscapeAtEndOfString, Resources.Parse_EscapeAtEndOfString);
         }
 
         internal bool FailParseMissingEndQuote(char closeQuote)
         {
-            return FailBasic(ParseFailureKind.ParseMissingEndQuote, Resources.Parse_MissingEndQuote, closeQuote);
+            return FailBasic(ParseFailureKind.MissingEndQuote, Resources.Parse_MissingEndQuote, closeQuote);
         }
 
         internal bool FailParseRepeatCountExceeded(char patternCharacter, int maximumCount)
         {
-            return FailBasic(ParseFailureKind.ParseRepeatCountExceeded, Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
+            return FailBasic(ParseFailureKind.RepeatCountExceeded, Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
         }
 
         internal bool FailParseCannotParseValue(string value, Type type, string format)
         {
-            return FailBasic(ParseFailureKind.ParseCannotParseValue, Resources.Parse_CannotParseValue, value, type.FullName, format);
+            return FailBasic(ParseFailureKind.CannotParseValue, Resources.Parse_CannotParseValue, value, type.FullName, format);
         }
 
         internal bool FailDoubleAssigment(char patternCharacter)
         {
-            return FailBasic(ParseFailureKind.ParseDoubleAssigment, Resources.Parse_DoubleAssignment, patternCharacter);
+            return FailBasic(ParseFailureKind.DoubleAssigment, Resources.Parse_DoubleAssignment, patternCharacter);
         }
 
         internal bool FailParseValueStringEmpty()
         {
-            return FailBasic(ParseFailureKind.ParseValueStringEmpty, Resources.Parse_ValueStringEmpty);
+            return FailBasic(ParseFailureKind.ValueStringEmpty, Resources.Parse_ValueStringEmpty);
         }
 
         internal bool FailParseFormatStringEmpty()
         {
-            return FailBasic(ParseFailureKind.ParseFormatStringEmpty, Resources.Parse_FormatStringEmpty);
+            return FailBasic(ParseFailureKind.FormatStringEmpty, Resources.Parse_FormatStringEmpty);
         }
 
         internal bool FailParseFormatInvalid(string format)
         {
-            return FailBasic(ParseFailureKind.ParseFormatInvalid, Resources.Parse_FormatInvalid, format);
+            return FailBasic(ParseFailureKind.FormatInvalid, Resources.Parse_FormatInvalid, format);
         }
 
         internal bool FailParseEmptyFormatsArray()
         {
-            return FailBasic(ParseFailureKind.ParseEmptyFormatsArray, Resources.Parse_EmptyFormatsArray);
+            return FailBasic(ParseFailureKind.EmptyFormatsArray, Resources.Parse_EmptyFormatsArray);
         }
 
         internal bool FailParseFormatElementInvalid()
         {
-            return FailBasic(ParseFailureKind.ParseFormatElementInvalid, Resources.Parse_FormatElementInvalid);
+            return FailBasic(ParseFailureKind.FormatElementInvalid, Resources.Parse_FormatElementInvalid);
         }
 
         internal bool FailParseExtraValueCharacters(string remainder)
         {
-            return FailBasic(ParseFailureKind.ParseExtraValueCharacters, Resources.Parse_ExtraValueCharacters, remainder);
+            return FailBasic(ParseFailureKind.ExtraValueCharacters, Resources.Parse_ExtraValueCharacters, remainder);
         }
 
         internal bool FailParsePercentDoubled()
         {
-            return FailBasic(ParseFailureKind.ParsePercentDoubled, Resources.Parse_PercentDoubled);
+            return FailBasic(ParseFailureKind.PercentDoubled, Resources.Parse_PercentDoubled);
         }
 
         internal bool FailParsePercentAtEndOfString()
         {
-            return FailBasic(ParseFailureKind.ParsePercentAtEndOfString, Resources.Parse_PercentAtEndOfString);
+            return FailBasic(ParseFailureKind.PercentAtEndOfString, Resources.Parse_PercentAtEndOfString);
         }
 
         internal bool FailParseQuotedStringMismatch()
         {
-            return FailBasic(ParseFailureKind.ParseQuotedStringMismatch, Resources.Parse_QuotedStringMismatch);
+            return FailBasic(ParseFailureKind.QuotedStringMismatch, Resources.Parse_QuotedStringMismatch);
         }
 
         internal bool FailParseEscapedCharacterMismatch(char patternCharacter)
         {
-            return FailBasic(ParseFailureKind.ParseEscapedCharacterMismatch, Resources.Parse_EscapedCharacterMismatch, patternCharacter);
+            return FailBasic(ParseFailureKind.EscapedCharacterMismatch, Resources.Parse_EscapedCharacterMismatch, patternCharacter);
         }
 
         internal bool FailParseMissingDecimalSeparator()
         {
-            return FailBasic(ParseFailureKind.ParseMissingDecimalSeparator, Resources.Parse_MissingDecimalSeparator);
+            return FailBasic(ParseFailureKind.MissingDecimalSeparator, Resources.Parse_MissingDecimalSeparator);
         }
 
         internal bool FailParseTimeSeparatorMismatch()
         {
-            return FailBasic(ParseFailureKind.ParseTimeSeparatorMismatch, Resources.Parse_TimeSeparatorMismatch);
+            return FailBasic(ParseFailureKind.TimeSeparatorMismatch, Resources.Parse_TimeSeparatorMismatch);
         }
 
         internal bool FailParseMismatchedNumber(string pattern)
         {
-            return FailBasic(ParseFailureKind.ParseMismatchedNumber, Resources.Parse_MismatchedNumber, pattern);
+            return FailBasic(ParseFailureKind.MismatchedNumber, Resources.Parse_MismatchedNumber, pattern);
         }
 
         internal bool FailParseMismatchedSpace()
         {
-            return FailBasic(ParseFailureKind.ParseMismatchedSpace, Resources.Parse_MismatchedSpace);
+            return FailBasic(ParseFailureKind.MismatchedSpace, Resources.Parse_MismatchedSpace);
         }
 
         internal bool FailParseMismatchedCharacter(char patternCharacter)
         {
-            return FailBasic(ParseFailureKind.ParseMismatchedCharacter, Resources.Parse_MismatchedCharacter, patternCharacter);
+            return FailBasic(ParseFailureKind.MismatchedCharacter, Resources.Parse_MismatchedCharacter, patternCharacter);
         }
 
         internal bool FailParseUnknownStandardFormat(char patternCharacter, Type type)
         {
-            return FailBasic(ParseFailureKind.ParseUnknownStandardFormat, Resources.Parse_UnknownStandardFormat, patternCharacter, type.FullName);
+            return FailBasic(ParseFailureKind.UnknownStandardFormat, Resources.Parse_UnknownStandardFormat, patternCharacter, type.FullName);
+        }
+
+        internal bool FailParsePrecisionNotSupported(string pattern, Type type)
+        {
+            return FailBasic(ParseFailureKind.PrecisionNotSupported, Resources.Parse_PrecisionNotSupported, pattern, type.FullName);
+        }
+
+        internal bool FailParseStandardFormatWhitespace(string pattern, Type type)
+        {
+            return FailBasic(ParseFailureKind.StandardFormatWhitespace, Resources.Parse_StandardFormatWhitespace, pattern, type.FullName);
         }
 
         internal bool FailParse12HourPatternNotSupported(Type type)
         {
-            return FailBasic(ParseFailureKind.Parse12HourPatternNotSupported, Resources.Parse_12HourPatternNotSupported, type.FullName);
+            return FailBasic(ParseFailureKind.Hour12PatternNotSupported, Resources.Parse_Hour12PatternNotSupported, type.FullName);
         }
 
         internal bool FailParseNoMatchingFormat()
         {
-            return FailBasic(ParseFailureKind.ParseNoMatchingFormat, Resources.Parse_NoMatchingFormat);
+            return FailBasic(ParseFailureKind.NoMatchingFormat, Resources.Parse_NoMatchingFormat);
         }
 
         internal bool FailParseValueOutOfRange(object value, Type type)
         {
-            return FailBasic(ParseFailureKind.ParseValueOutOfRange, Resources.Parse_ValueOutOfRange, value, type.FullName);
+            return FailBasic(ParseFailureKind.ValueOutOfRange, Resources.Parse_ValueOutOfRange, value, type.FullName);
         }
 
         internal bool FailParseMissingSign()
         {
-            return FailBasic(ParseFailureKind.ParseMissingSign, Resources.Parse_MissingSign);
+            return FailBasic(ParseFailureKind.MissingSign, Resources.Parse_MissingSign);
         }
 
         internal bool FailParsePositiveSignInvalid()
         {
-            return FailBasic(ParseFailureKind.ParsePositiveSignInvalid, Resources.Parse_PositiveSignInvalid);
+            return FailBasic(ParseFailureKind.PositiveSignInvalid, Resources.Parse_PositiveSignInvalid);
         }
     }
 }

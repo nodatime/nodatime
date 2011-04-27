@@ -35,34 +35,30 @@ namespace NodaTime.Format
         private static readonly string[] AllFormats = { "g", "n", "d" };
 
         /// <summary>
-        /// Parses the specified value.
+        ///   Parses the specified value.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="formatInfo">The format info.</param>
-        /// <param name="styles">The styles.</param>
+        /// <param name = "value">The value.</param>
+        /// <param name = "formatInfo">The format info.</param>
+        /// <param name = "styles">The styles.</param>
         /// <returns></returns>
         internal static Offset Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new OffsetParseInfo(formatInfo, true, styles);
-            TryParseExactMultiple(value, AllFormats, parseResult);
+            DoParseMultiple(value, AllFormats, parseResult);
             return parseResult.Value;
         }
 
         internal static Offset ParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new OffsetParseInfo(formatInfo, true, styles);
-            TryParseExact(value, format, parseResult);
+            DoParse(value, format, parseResult);
             return parseResult.Value;
         }
 
         internal static Offset ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new OffsetParseInfo(formatInfo, false, styles);
-            if (!TryParseExactMultiple(value, formats, parseResult))
-            {
-                parseResult.ThrowImmediate = true;
-                parseResult.CheckImmediate();
-            }
+            DoParseMultiple(value, formats, parseResult);
             return parseResult.Value;
         }
 
@@ -75,98 +71,106 @@ namespace NodaTime.Format
         {
             result = Offset.MinValue;
             var parseResult = new OffsetParseInfo(formatInfo, false, styles);
-            if (TryParseExactMultiple(value, formats, parseResult))
+            try
             {
+                DoParseMultiple(value, formats, parseResult);
                 result = parseResult.Value;
                 return true;
             }
-            return false;
+            catch (FormatException)
+            {
+                return false;
+            }
         }
 
         internal static bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out Offset result)
         {
             result = Offset.MinValue;
             var parseResult = new OffsetParseInfo(formatInfo, false, styles);
-            if (TryParseExact(value, format, parseResult))
+            try
             {
+                DoParse(value, format, parseResult);
                 result = parseResult.Value;
                 return true;
             }
-            return false;
+            catch (FormatException)
+            {
+                return false;
+            }
         }
 
-        private static bool TryParseExactMultiple(string value, string[] formats, OffsetParseInfo parseInfo)
+        private static void DoParseMultiple(string value, string[] formats, OffsetParseInfo parseInfo)
         {
             if (value == null)
             {
-                return parseInfo.FailArgumentNull("value");
+                throw new ArgumentNullException("value");
             }
             if (formats == null)
             {
-                return parseInfo.FailArgumentNull("formats");
+                throw new ArgumentNullException("formats");
             }
             if (value.Length == 0)
             {
-                return parseInfo.FailParseValueStringEmpty();
+                throw FormatError.ValueStringEmpty();
             }
             if (formats.Length == 0)
             {
-                return parseInfo.FailParseEmptyFormatsArray();
+                throw FormatError.EmptyFormatsArray();
             }
-            parseInfo.ThrowImmediate = false;
             foreach (string format in formats)
             {
                 if (string.IsNullOrEmpty(format))
                 {
-                    return parseInfo.FailParseFormatStringEmpty();
+                    throw FormatError.FormatStringEmpty();
                 }
-                if (TryParseExact(value, format, parseInfo))
+                try
                 {
-                    return true;
+                    DoParse(value, format, parseInfo);
+                    return;
                 }
-                if ((parseInfo.Failure & ParseFailureKind.TypeFormatError) == ParseFailureKind.TypeFormatError)
+                catch (FormatError.FormatValueException)
                 {
-                    return false;
+                    // Do nothing
                 }
-                parseInfo.ClearFail();
             }
-            parseInfo.FailParseNoMatchingFormat();
-            return false;
+            throw FormatError.NoMatchingFormat();
         }
 
-        private static bool TryParseExact(string value, string format, OffsetParseInfo parseInfo)
+        private static void DoParse(string value, string format, OffsetParseInfo parseInfo)
         {
             if (value == null)
             {
-                return parseInfo.FailArgumentNull("value");
+                throw new ArgumentNullException("value");
             }
             if (format == null)
             {
-                return parseInfo.FailArgumentNull("format");
+                throw new ArgumentNullException("format");
             }
             if (value.Length == 0)
             {
-                return parseInfo.FailParseValueStringEmpty();
+                throw FormatError.ValueStringEmpty();
             }
             if (format.Length == 0)
             {
-                return parseInfo.FailParseFormatStringEmpty();
+                throw FormatError.FormatStringEmpty();
             }
             if (format.Length == 1)
             {
                 char patternCharacter = format[0];
                 if (patternCharacter == 'n')
                 {
-                    return ParseNumber(value, parseInfo);
+                    ParseNumber(value, parseInfo);
+                    return;
                 }
                 var formats = ExpandStandardFormatPattern(format[0], parseInfo);
                 if (formats == null)
                 {
-                    return false;
+                    return;
                 }
                 if (formats.Length > 1)
                 {
-                    return TryParseExactMultiple(value, formats, parseInfo);
+                    DoParseMultiple(value, formats, parseInfo);
+                    return;
                 }
                 format = formats[0];
             }
@@ -192,37 +196,30 @@ namespace NodaTime.Format
                 {
                     str.SkipWhiteSpaces();
                 }
-                if (!ParseByFormat(str, pattern, parseInfo))
-                {
-                    return false;
-                }
+                ParseByFormat(str, pattern, parseInfo);
             }
             if (str.Current != Parsable.Nul)
             {
-                return parseInfo.FailParseExtraValueCharacters(str.Remainder);
+                throw FormatError.ExtraValueCharacters(str.Remainder);
             }
 
             parseInfo.CalculateValue();
-
-            return true;
         }
 
-        private static bool ParseNumber(string value, OffsetParseInfo parseInfo)
+        private static void ParseNumber(string value, OffsetParseInfo parseInfo)
         {
             int milliseconds;
             if (Int32.TryParse(value, NumberStyles.Integer | NumberStyles.AllowThousands, parseInfo.FormatInfo.NumberFormat, out milliseconds))
             {
                 if (milliseconds < -NodaConstants.MillisecondsPerDay || NodaConstants.MillisecondsPerDay < milliseconds)
                 {
-                    return parseInfo.FailParseValueOutOfRange(milliseconds, typeof(Offset));
+                    throw FormatError.ValueOutOfRange(milliseconds, typeof(Offset));
                 }
                 parseInfo.Value = new Offset(milliseconds);
-                return true;
             }
-            return false;
         }
 
-        private static bool ParseByFormat(ParseString str, Pattern pattern, OffsetParseInfo parseInfo)
+        private static void ParseByFormat(ParseString str, Pattern pattern, OffsetParseInfo parseInfo)
         {
             char patternCharacter = pattern.GetNextCharacter();
             int count;
@@ -234,129 +231,136 @@ namespace NodaTime.Format
                     {
                         if (pattern.PeekNext() != '%')
                         {
-                            return true;
+                            break;
                         }
-                        return parseInfo.FailParsePercentDoubled();
+                        throw FormatError.PercentDoubled();
                     }
-                    return parseInfo.FailParsePercentAtEndOfString();
+                    throw FormatError.PercentAtEndOfString();
                 case '\'':
                 case '"':
-                    string quoted = pattern.GetQuotedString(patternCharacter, parseInfo);
-                    if (parseInfo.Failed)
+                    string quoted = pattern.GetQuotedString(patternCharacter);
+                    foreach (char character in quoted)
                     {
-                        return false;
-                    }
-                    for (int i = 0; i < quoted.Length; i++)
-                    {
-                        if (quoted[i] == ' ' && parseInfo.AllowInnerWhite)
+                        if (character == ' ' && parseInfo.AllowInnerWhite)
                         {
                             str.SkipWhiteSpaces();
                         }
-                        else if (!str.Match(quoted[i]))
+                        else if (!str.Match(character))
                         {
-                            return parseInfo.FailParseQuotedStringMismatch();
+                            throw FormatError.QuotedStringMismatch();
                         }
                     }
-                    return true;
+                    break;
                 case '\\':
                     if (!pattern.HasMoreCharacters)
                     {
-                        return parseInfo.FailParseEscapeAtEndOfString();
+                        throw FormatError.EscapeAtEndOfString();
                     }
                     if (str.Match(pattern.PeekNext()))
                     {
                         pattern.MoveNext();
-                        return true;
+                        break;
                     }
-                    return parseInfo.FailParseEscapedCharacterMismatch(pattern.PeekNext());
+                    throw FormatError.EscapedCharacterMismatch(pattern.PeekNext());
                 case '.':
                     if (!str.Match(parseInfo.FormatInfo.DecimalSeparator))
                     {
                         if (!pattern.HasMoreCharacters || pattern.PeekNext() != 'F')
                         {
-                            return parseInfo.FailParseMissingDecimalSeparator();
+                            throw FormatError.MissingDecimalSeparator();
                         }
                         pattern.MoveNext();
-                        pattern.GetRepeatCount(3, parseInfo); // Skip the F pattern characters
+                        pattern.GetRepeatCount(3); // Skip the F pattern characters
                     }
-                    return true;
+                    break;
                 case ':':
-                    return str.Match(parseInfo.FormatInfo.TimeSeparator) || parseInfo.FailParseTimeSeparatorMismatch();
+                    if (!str.Match(parseInfo.FormatInfo.TimeSeparator))
+                    {
+                        throw FormatError.TimeSeparatorMismatch();
+                    }
+                    break;
                 case '+':
                     if (str.Match(parseInfo.FormatInfo.NegativeSign))
                     {
                         parseInfo.IsNegative = true;
-                        return true;
                     }
-                    if (str.Match(parseInfo.FormatInfo.PositiveSign))
+                    else if (str.Match(parseInfo.FormatInfo.PositiveSign))
                     {
                         parseInfo.IsNegative = false;
-                        return true;
                     }
-                    return parseInfo.FailParseMissingSign();
+                    else
+                    {
+                        throw FormatError.MissingSign();
+                    }
+                    break;
                 case '-':
                     if (str.Match(parseInfo.FormatInfo.NegativeSign))
                     {
                         parseInfo.IsNegative = true;
-                        return true;
                     }
-                    if (str.Match(parseInfo.FormatInfo.PositiveSign))
+                    else if (str.Match(parseInfo.FormatInfo.PositiveSign))
                     {
-                        return parseInfo.FailParsePositiveSignInvalid();
+                        throw FormatError.PositiveSignInvalid();
                     }
-                    return parseInfo.FailParseMissingSign();
+                    else
+                    {
+                        throw FormatError.MissingSign();
+                    }
+                    break;
                 case 'h':
-                    return parseInfo.FailParse12HourPatternNotSupported(typeof(Offset));
+                    throw FormatError.Hour12PatternNotSupported(typeof(Offset));
                 case 'H':
-                    count = pattern.GetRepeatCount(2, parseInfo);
-                    if (!parseInfo.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
+                    count = pattern.GetRepeatCount(2);
+                    if (count > 0 && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
-                        return parseInfo.AssignNewValue(ref parseInfo.Hours, value, patternCharacter);
+                        parseInfo.AssignNewValue(ref parseInfo.Hours, value, patternCharacter);
+                        break;
                     }
-                    return parseInfo.FailParseMismatchedNumber(new string(patternCharacter, count));
+                    throw FormatError.MismatchedNumber(new string(patternCharacter, Math.Abs(count)));
                 case 'm':
-                    count = pattern.GetRepeatCount(2, parseInfo);
-                    if (!parseInfo.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
+                    count = pattern.GetRepeatCount(2);
+                    if (count > 0 && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
-                        return parseInfo.AssignNewValue(ref parseInfo.Minutes, value, patternCharacter);
+                        parseInfo.AssignNewValue(ref parseInfo.Minutes, value, patternCharacter);
+                        break;
                     }
-                    return parseInfo.FailParseMismatchedNumber(new string(patternCharacter, count));
+                    throw FormatError.MismatchedNumber(new string(patternCharacter, Math.Abs(count)));
                 case 's':
-                    count = pattern.GetRepeatCount(2, parseInfo);
-                    if (!parseInfo.Failed && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
+                    count = pattern.GetRepeatCount(2);
+                    if (count > 0 && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
-                        return parseInfo.AssignNewValue(ref parseInfo.Seconds, value, patternCharacter);
+                        parseInfo.AssignNewValue(ref parseInfo.Seconds, value, patternCharacter);
+                        break;
                     }
-                    return parseInfo.FailParseMismatchedNumber(new string(patternCharacter, count));
+                    throw FormatError.MismatchedNumber(new string(patternCharacter, Math.Abs(count)));
                 case 'F':
                 case 'f':
                     // TDOD: fix the scaling of the value
-                    count = pattern.GetRepeatCount(3, parseInfo);
-                    if (parseInfo.Failed)
+                    count = pattern.GetRepeatCount(3);
+                    if (count <= 0)
                     {
-                        return false;
+                        throw FormatError.MismatchedNumber(new string(patternCharacter, Math.Abs(count)));
                     }
                     int fractionalSeconds;
                     if (!str.ParseFractionExact(count, 3, out fractionalSeconds) && patternCharacter == 'f')
                     {
-                        return parseInfo.FailParseMismatchedNumber(new string(patternCharacter, count));
+                        throw FormatError.MismatchedNumber(new string(patternCharacter, count));
                     }
-                    return parseInfo.AssignNewValue(ref parseInfo.FractionalSeconds, fractionalSeconds, patternCharacter);
+                    parseInfo.AssignNewValue(ref parseInfo.FractionalSeconds, fractionalSeconds, patternCharacter);
+                    break;
                 default:
                     if (patternCharacter == ' ')
                     {
                         if (!parseInfo.AllowInnerWhite && !str.Match(patternCharacter))
                         {
-                            parseInfo.FailParseMismatchedSpace();
-                            return false;
+                            throw FormatError.MismatchedSpace();
                         }
                     }
                     else if (!str.Match(patternCharacter))
                     {
-                        parseInfo.FailParseMismatchedCharacter(patternCharacter);
-                        return false;
+                        throw FormatError.MismatchedCharacter(patternCharacter);
                     }
-                    return true;
+                    break;
             }
         }
 
@@ -393,8 +397,7 @@ namespace NodaTime.Format
                                Resources.ResourceManager.GetString("OffsetPatternShort", parseInfo.FormatInfo.CultureInfo),
                            };
             }
-            parseInfo.FailParseUnknownStandardFormat(formatCharacter, typeof(Offset));
-            return null;
+            throw FormatError.UnknownStandardFormat(formatCharacter, typeof(Offset));
         }
     }
 }

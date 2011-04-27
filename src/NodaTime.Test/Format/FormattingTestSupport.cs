@@ -160,7 +160,7 @@ namespace NodaTime.Test.Format
                     {
                         if ((data.Kind & ParseFailureKind.TypeFormatError) == 0)
                         {
-                            kind = ParseFailureKind.ParseNoMatchingFormat;
+                            kind = ParseFailureKind.NoMatchingFormat;
                         }
                     }
                     Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(kind), () => doit(format));

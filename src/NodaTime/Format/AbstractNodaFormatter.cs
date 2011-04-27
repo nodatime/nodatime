@@ -24,22 +24,42 @@ namespace NodaTime.Format
 {
     internal abstract class AbstractNodaFormatter<T> : INodaFormatter<T>
     {
-        private readonly IFormatProvider provider;
-
-        protected AbstractNodaFormatter(IFormatProvider formatProvider)
-        {
-            provider = formatProvider;
-        }
-
         #region INodaFormatter<T> Members
-        public string Format(T value)
+        public virtual string Format(T value)
         {
-            return Format(value, provider ?? Thread.CurrentThread.CurrentCulture);
+            return Format(value, Thread.CurrentThread.CurrentCulture);
         }
 
         public abstract string Format(T value, IFormatProvider formatProvider);
+
+        public INodaFormatter<T> WithFormatProvider(IFormatProvider formatProvider)
+        {
+            return new ProviderFormatter(this, formatProvider);
+        }
         #endregion
 
-        public abstract INodaFormatter<T> WithFormatProvider(IFormatProvider formatProvider);
+        private sealed class ProviderFormatter : AbstractNodaFormatter<T>
+        {
+            private readonly INodaFormatter<T> formatter;
+            private readonly IFormatProvider provider;
+
+            public ProviderFormatter(INodaFormatter<T> formatter, IFormatProvider provider)
+            {
+                var providerFormatter = formatter as ProviderFormatter;
+                this.formatter = providerFormatter == null ? formatter : providerFormatter.formatter;
+                this.formatter = formatter;
+                this.provider = provider;
+            }
+
+            public override string Format(T value)
+            {
+                return Format(value, provider);
+            }
+
+            public override string Format(T value, IFormatProvider formatProvider)
+            {
+                return formatter.Format(value, formatProvider);
+            }
+        }
     }
 }

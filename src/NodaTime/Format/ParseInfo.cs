@@ -16,6 +16,7 @@
 #endregion
 #region usings
 using NodaTime.Globalization;
+using System;
 #endregion
 
 namespace NodaTime.Format
@@ -23,34 +24,35 @@ namespace NodaTime.Format
     /// <summary>
     ///   Provides a container for the interim parsed pieces of values.
     /// </summary>
-    internal class ParseInfo : ParseErrorInfo
+    internal class ParseInfo // : ParseErrorInfo
     {
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ParseInfo" /> class.
         /// </summary>
-        /// <param name = "formatInfo">The format info.</param>
-        /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
-        internal ParseInfo(NodaFormatInfo formatInfo, bool throwImmediate)
-            : this(formatInfo, throwImmediate, DateTimeParseStyles.None)
+        /// <param name = "formatProvider">The format info.</param>
+        internal ParseInfo(IFormatProvider formatProvider)
+            : this(formatProvider, true, DateTimeParseStyles.None)
         {
         }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ParseInfo" /> class.
         /// </summary>
-        /// <param name = "formatInfo">The format info.</param>
+        /// <param name = "formatProvider">The format info.</param>
         /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
         /// <param name = "parseStyles">The parse styles.</param>
-        internal ParseInfo(NodaFormatInfo formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
-            : base(formatInfo, throwImmediate)
+        internal ParseInfo(IFormatProvider formatProvider, bool throwImmediate, DateTimeParseStyles parseStyles)
+            // : base(formatProvider, throwImmediate)
         {
-            FormatInfo = formatInfo;
-            ThrowImmediate = throwImmediate;
+            FormatProvider = formatProvider;
+            FormatInfo = NodaFormatInfo.GetInstance(formatProvider);
             AllowInnerWhite = (parseStyles & DateTimeParseStyles.AllowInnerWhite) != DateTimeParseStyles.None;
             AllowLeadingWhite = (parseStyles & DateTimeParseStyles.AllowLeadingWhite) != DateTimeParseStyles.None;
             AllowTrailingWhite = (parseStyles & DateTimeParseStyles.AllowTrailingWhite) != DateTimeParseStyles.None;
-            ClearFail();
+           // ClearFail();
         }
+
+        internal IFormatProvider FormatProvider { get; set; }
 
         /// <summary>
         ///   Gets a value indicating whether inner white space is allowed.
@@ -102,7 +104,7 @@ namespace NodaTime.Format
                 currentValue = newValue;
                 return true;
             }
-            return FailDoubleAssigment(patternCharacter);
+            throw FormatError.DoubleAssigment(patternCharacter);
         }
     }
 }
