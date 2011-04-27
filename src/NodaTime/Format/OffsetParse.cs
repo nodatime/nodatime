@@ -43,21 +43,21 @@ namespace NodaTime.Format
         /// <returns></returns>
         internal static Offset Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
-            var parseResult = new OffsetParseInfo(formatInfo, true, styles);
+            var parseResult = new OffsetParseInfo(formatInfo, styles);
             DoParseMultiple(value, AllFormats, parseResult);
             return parseResult.Value;
         }
 
         internal static Offset ParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
-            var parseResult = new OffsetParseInfo(formatInfo, true, styles);
+            var parseResult = new OffsetParseInfo(formatInfo, styles);
             DoParse(value, format, parseResult);
             return parseResult.Value;
         }
 
         internal static Offset ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
-            var parseResult = new OffsetParseInfo(formatInfo, false, styles);
+            var parseResult = new OffsetParseInfo(formatInfo, styles);
             DoParseMultiple(value, formats, parseResult);
             return parseResult.Value;
         }
@@ -70,7 +70,7 @@ namespace NodaTime.Format
         internal static bool TryParseExactMultiple(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out Offset result)
         {
             result = Offset.MinValue;
-            var parseResult = new OffsetParseInfo(formatInfo, false, styles);
+            var parseResult = new OffsetParseInfo(formatInfo, styles);
             try
             {
                 DoParseMultiple(value, formats, parseResult);
@@ -86,7 +86,7 @@ namespace NodaTime.Format
         internal static bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out Offset result)
         {
             result = Offset.MinValue;
-            var parseResult = new OffsetParseInfo(formatInfo, false, styles);
+            var parseResult = new OffsetParseInfo(formatInfo, styles);
             try
             {
                 DoParse(value, format, parseResult);
@@ -311,42 +311,38 @@ namespace NodaTime.Format
                     throw FormatError.Hour12PatternNotSupported(typeof(Offset));
                 case 'H':
                     count = pattern.GetRepeatCount(2);
-                    if (count > 0 && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
+                    if (str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
-                        parseInfo.AssignNewValue(ref parseInfo.Hours, value, patternCharacter);
+                        ParseInfo.AssignNewValue(ref parseInfo.Hours, value, patternCharacter);
                         break;
                     }
-                    throw FormatError.MismatchedNumber(new string(patternCharacter, Math.Abs(count)));
+                    throw FormatError.MismatchedNumber(new string(patternCharacter, count));
                 case 'm':
                     count = pattern.GetRepeatCount(2);
-                    if (count > 0 && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
+                    if (str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
-                        parseInfo.AssignNewValue(ref parseInfo.Minutes, value, patternCharacter);
+                        ParseInfo.AssignNewValue(ref parseInfo.Minutes, value, patternCharacter);
                         break;
                     }
-                    throw FormatError.MismatchedNumber(new string(patternCharacter, Math.Abs(count)));
+                    throw FormatError.MismatchedNumber(new string(patternCharacter, count));
                 case 's':
                     count = pattern.GetRepeatCount(2);
-                    if (count > 0 && str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
+                    if (str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
-                        parseInfo.AssignNewValue(ref parseInfo.Seconds, value, patternCharacter);
+                        ParseInfo.AssignNewValue(ref parseInfo.Seconds, value, patternCharacter);
                         break;
                     }
-                    throw FormatError.MismatchedNumber(new string(patternCharacter, Math.Abs(count)));
+                    throw FormatError.MismatchedNumber(new string(patternCharacter, count));
                 case 'F':
                 case 'f':
                     // TDOD: fix the scaling of the value
                     count = pattern.GetRepeatCount(3);
-                    if (count <= 0)
-                    {
-                        throw FormatError.MismatchedNumber(new string(patternCharacter, Math.Abs(count)));
-                    }
                     int fractionalSeconds;
                     if (!str.ParseFractionExact(count, 3, out fractionalSeconds) && patternCharacter == 'f')
                     {
                         throw FormatError.MismatchedNumber(new string(patternCharacter, count));
                     }
-                    parseInfo.AssignNewValue(ref parseInfo.FractionalSeconds, fractionalSeconds, patternCharacter);
+                    ParseInfo.AssignNewValue(ref parseInfo.FractionalSeconds, fractionalSeconds, patternCharacter);
                     break;
                 default:
                     if (patternCharacter == ' ')

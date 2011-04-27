@@ -48,7 +48,7 @@ namespace NodaTime.Format
         /// <exception cref = "FormatException">value is not a valid <see cref = "Instant" /> string.</exception>
         internal static Instant Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
-            var parseResult = new InstantParseInfo(formatInfo, true, styles);
+            var parseResult = new InstantParseInfo(formatInfo, styles);
             DoParseMultiple(value, AllFormats, parseResult);
             return parseResult.Value;
         }
@@ -68,7 +68,7 @@ namespace NodaTime.Format
         /// <exception cref = "FormatException">value is not a valid <see cref = "Instant" /> string.</exception>
         internal static Instant ParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
-            var parseResult = new InstantParseInfo(formatInfo, true, styles);
+            var parseResult = new InstantParseInfo(formatInfo, styles);
             DoParse(value, format, parseResult);
             return parseResult.Value;
         }
@@ -86,7 +86,7 @@ namespace NodaTime.Format
         /// <returns></returns>
         internal static Instant ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
-            var parseResult = new InstantParseInfo(formatInfo, true, styles);
+            var parseResult = new InstantParseInfo(formatInfo, styles);
             DoParseMultiple(value, formats, parseResult);
             return parseResult.Value;
         }
@@ -99,7 +99,7 @@ namespace NodaTime.Format
         internal static bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out Instant result)
         {
             result = Instant.MinValue;
-            var parseResult = new InstantParseInfo(formatInfo, false, styles);
+            var parseResult = new InstantParseInfo(formatInfo, styles);
             try
             {
                 DoParse(value, format, parseResult);
@@ -116,7 +116,7 @@ namespace NodaTime.Format
         internal static bool TryParseExactMultiple(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out Instant result)
         {
             result = Instant.MinValue;
-            var parseResult = new InstantParseInfo(formatInfo, false, styles);
+            var parseResult = new InstantParseInfo(formatInfo, styles);
             try
             {
                 DoParseMultiple(value, formats, parseResult);
@@ -247,8 +247,8 @@ namespace NodaTime.Format
         #region Nested type: InstantParseInfo
         internal class InstantParseInfo : ParseInfo
         {
-            internal InstantParseInfo(NodaFormatInfo formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
-                : base(formatInfo, throwImmediate, parseStyles)
+            internal InstantParseInfo(IFormatProvider formatInfo, DateTimeParseStyles parseStyles)
+                : base(formatInfo, parseStyles)
             {
             }
 

@@ -217,7 +217,7 @@
     <value>There were more consecutive copies of the pattern character "{0}" than the maximum allowed ({1}) in the format string.</value>
   </data>
   <data name="Parse_StandardFormatWhitespace" xml:space="preserve">
-    <value>The standard format "{0}" for type {1} cannot contain whitespace.</value>
+    <value>The standard format "{0}" for type {1} cannot contain white space.</value>
   </data>
   <data name="Parse_TimeSeparatorMismatch" xml:space="preserve">
     <value>The value string does not match a time separator in the format string.</value>

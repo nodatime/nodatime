@@ -167,7 +167,7 @@ namespace NodaTime.TimeZones
         {
             if (value == null)
             {
-                throw new ArgumentNullException("timeZone");
+                throw new ArgumentNullException("value");
             }
             if (value is FixedDateTimeZone)
             {

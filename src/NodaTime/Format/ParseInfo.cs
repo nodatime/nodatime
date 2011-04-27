@@ -24,14 +24,14 @@ namespace NodaTime.Format
     /// <summary>
     ///   Provides a container for the interim parsed pieces of values.
     /// </summary>
-    internal class ParseInfo // : ParseErrorInfo
+    internal class ParseInfo
     {
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ParseInfo" /> class.
         /// </summary>
         /// <param name = "formatProvider">The format info.</param>
         internal ParseInfo(IFormatProvider formatProvider)
-            : this(formatProvider, true, DateTimeParseStyles.None)
+            : this(formatProvider, DateTimeParseStyles.None)
         {
         }
 
@@ -39,17 +39,14 @@ namespace NodaTime.Format
         ///   Initializes a new instance of the <see cref = "ParseInfo" /> class.
         /// </summary>
         /// <param name = "formatProvider">The format info.</param>
-        /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
         /// <param name = "parseStyles">The parse styles.</param>
-        internal ParseInfo(IFormatProvider formatProvider, bool throwImmediate, DateTimeParseStyles parseStyles)
-            // : base(formatProvider, throwImmediate)
+        internal ParseInfo(IFormatProvider formatProvider, DateTimeParseStyles parseStyles)
         {
             FormatProvider = formatProvider;
             FormatInfo = NodaFormatInfo.GetInstance(formatProvider);
             AllowInnerWhite = (parseStyles & DateTimeParseStyles.AllowInnerWhite) != DateTimeParseStyles.None;
             AllowLeadingWhite = (parseStyles & DateTimeParseStyles.AllowLeadingWhite) != DateTimeParseStyles.None;
             AllowTrailingWhite = (parseStyles & DateTimeParseStyles.AllowTrailingWhite) != DateTimeParseStyles.None;
-           // ClearFail();
         }
 
         internal IFormatProvider FormatProvider { get; set; }
@@ -97,7 +94,7 @@ namespace NodaTime.Format
         /// <param name = "newValue">The new value.</param>
         /// <param name = "patternCharacter">The pattern character for the error message if any.</param>
         /// <returns><c>true</c> if the current value is not set or if the current value equals the new value, <c>false</c> otherwise.</returns>
-        internal bool AssignNewValue<T>(ref T? currentValue, T newValue, char patternCharacter) where T : struct
+        internal static bool AssignNewValue<T>(ref T? currentValue, T newValue, char patternCharacter) where T : struct
         {
             if (currentValue == null || currentValue.Value.Equals(newValue))
             {

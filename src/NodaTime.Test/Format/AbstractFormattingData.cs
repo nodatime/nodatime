@@ -48,7 +48,6 @@ namespace NodaTime.Test.Format
             V = value;
             PV = value;
             Styles = DateTimeParseStyles.None;
-            Kind = ParseFailureKind.None;
             Parameters = new List<object>();
             ThreadCulture = CultureInfo.InvariantCulture;
             ThreadUiCulture = CultureInfo.InvariantCulture;
@@ -115,13 +114,8 @@ namespace NodaTime.Test.Format
         /// </value>
         public string Name { get; set; }
 
-        /// <summary>
-        ///   Gets or sets the failure kind. Only set if the test is expected to fail.
-        /// </summary>
-        /// <value>
-        ///   The failure kind.
-        /// </value>
-        public ParseFailureKind Kind { get; set; }
+        public Type Exception { get; set; }
+        public string Message { get; set; }
 
         /// <summary>
         ///   Gets or sets the name of the argument. If the expected failure is <see cref = "ParseFailureKind.ArgumentNull" />
@@ -215,16 +209,10 @@ namespace NodaTime.Test.Format
                     builder.Append(", Styles = ");
                     builder.Append(Styles);
                 }
-                if (Kind != ParseFailureKind.None)
+                if (Exception != null)
                 {
-                    builder.Append(", Kind = ");
-                    builder.Append(Kind);
-                    if (Kind == ParseFailureKind.ArgumentNull)
-                    {
-                        builder.Append(", Argument = \"");
-                        builder.Append(ArgumentName);
-                        builder.Append("\"");
-                    }
+                    builder.Append(", Exception = ");
+                    builder.Append(Exception.Name);
                 }
                 if (Name != null)
                 {

@@ -46,7 +46,7 @@ namespace NodaTime.Format
             {
                 throw new ArgumentNullException("value");
             }
-            if (value == string.Empty)
+            if (string.IsNullOrEmpty(value))
             {
                 throw new ArgumentException(Resources.Noda_StringEmpty, "value");
             }

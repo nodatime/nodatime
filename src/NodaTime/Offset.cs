@@ -116,12 +116,22 @@ namespace NodaTime
             return new Offset(-offset.Milliseconds);
         }
 
+        public static Offset Negate(Offset offset)
+        {
+            return -offset;
+        }
+
         /// <summary>
         ///   Implements the unary operator + .
         /// </summary>
         /// <param name = "offset">The operand.</param>
         /// <returns>The same <see cref = "Offset" /> instance</returns>
         public static Offset operator +(Offset offset)
+        {
+            return offset;
+        }
+
+        public static Offset Plus(Offset offset)
         {
             return offset;
         }
@@ -382,54 +392,54 @@ namespace NodaTime
         #endregion Formatting
 
         #region Parsing
-        public static Offset Parse(string s)
+        public static Offset Parse(string value)
         {
-            return OffsetParse.Parse(s, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
+            return OffsetParse.Parse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
         }
 
-        public static Offset Parse(string s, IFormatProvider formatProvider)
+        public static Offset Parse(string value, IFormatProvider formatProvider)
         {
-            return OffsetParse.Parse(s, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+            return OffsetParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
-        public static Offset Parse(string s, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        public static Offset Parse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return OffsetParse.Parse(s, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return OffsetParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
-        public static Offset ParseExact(string s, string format, IFormatProvider formatProvider)
+        public static Offset ParseExact(string value, string format, IFormatProvider formatProvider)
         {
-            return OffsetParse.ParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+            return OffsetParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
-        public static Offset ParseExact(string s, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        public static Offset ParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return OffsetParse.ParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return OffsetParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
-        public static Offset ParseExact(string s, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        public static Offset ParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return OffsetParse.ParseExact(s, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return OffsetParse.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
-        public static bool TryParse(string s, out Offset result)
+        public static bool TryParse(string value, out Offset result)
         {
-            return OffsetParse.TryParse(s, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
+            return OffsetParse.TryParse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
         }
 
-        public static bool TryParse(string s, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
+        public static bool TryParse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
         {
-            return OffsetParse.TryParse(s, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return OffsetParse.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
-        public static bool TryParseExact(string s, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
+        public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
         {
-            return OffsetParse.TryParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return OffsetParse.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
-        public static bool TryParseExact(string s, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
+        public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
         {
-            return OffsetParse.TryParseExactMultiple(s, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return OffsetParse.TryParseExactMultiple(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
         #endregion Parsing
 

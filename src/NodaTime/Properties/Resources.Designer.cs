@@ -358,7 +358,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The standard format &quot;{0}&quot; for type {1} cannot contain whitespace..
+        ///   Looks up a localized string similar to The standard format &quot;{0}&quot; for type {1} cannot contain white space..
         /// </summary>
         internal static string Parse_StandardFormatWhitespace {
             get {
