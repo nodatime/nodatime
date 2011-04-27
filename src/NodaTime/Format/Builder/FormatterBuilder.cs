@@ -73,29 +73,35 @@ namespace NodaTime.Format.Builder
             Add(new RightPadTruncateNode(width, scale, getValue));
         }
 
-        public INodaFormatter<T> Build()
+        public INodaFormatter<T> Build(MakeFormattingParseInfo makeInfo)
         {
-            return null;
+            return new PatternFormatter(nodes, makeInfo);
         }
 
-        private class PatternFormatter : AbstractNodaFormatter<T>
+        public delegate TInfo MakeFormattingParseInfo(T value, IFormatProvider formatProvider);
+        public delegate TInfo MakeParsingParseInfo(IFormatProvider formatProvider, bool throwImmediate, DateTimeParseStyles styles);
+
+        private sealed class PatternFormatter : AbstractNodaFormatter<T>
         {
             private readonly IFormatNode<TInfo>[] nodes;
+            private readonly MakeFormattingParseInfo makeInfo;
 
-            public PatternFormatter(ICollection<IFormatNode<TInfo>> patternList, IFormatProvider formatProvider) : base(formatProvider)
+            public PatternFormatter(ICollection<IFormatNode<TInfo>> patternList, MakeFormattingParseInfo makeInfo)
             {
                 nodes = new IFormatNode<TInfo>[patternList.Count];
+                this.makeInfo = makeInfo;
                 patternList.CopyTo(nodes, 0);
             }
 
             public override string Format(T value, IFormatProvider formatProvider)
             {
-
-            }
-
-            public override INodaFormatter<T> WithFormatProvider(IFormatProvider formatProvider)
-            {
-                throw new NotImplementedException();
+                var info = makeInfo(value, formatProvider);
+                var builder = new StringBuilder();
+                foreach (var formatNode in nodes)
+                {
+                    formatNode.Append(info, builder);
+                }
+                return builder.ToString();
             }
         }
 
@@ -103,7 +109,7 @@ namespace NodaTime.Format.Builder
         private sealed class DateSeparaterNode : IFormatNode<TInfo>
         {
             #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder, IFormatProvider formatProvider)
+            public void Append(TInfo info, StringBuilder builder)
             {
                 builder.Append(info.FormatInfo.DateSeparator);
             }
@@ -115,7 +121,7 @@ namespace NodaTime.Format.Builder
         private sealed class DecimalSeparaterNode : IFormatNode<TInfo>
         {
             #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder, IFormatProvider formatProvider)
+            public void Append(TInfo info, StringBuilder builder)
             {
                 builder.Append(info.FormatInfo.DecimalSeparator);
             }
@@ -136,7 +142,7 @@ namespace NodaTime.Format.Builder
             }
 
             #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder, IFormatProvider formatProvider)
+            public void Append(TInfo info, StringBuilder builder)
             {
                 int value = getValue(info);
                 FormatHelper.LeftPad(value, width, builder);
@@ -160,7 +166,7 @@ namespace NodaTime.Format.Builder
             }
 
             #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder, IFormatProvider formatProvider)
+            public void Append(TInfo info, StringBuilder builder)
             {
                 int value = getValue(info);
                 FormatHelper.RightPad(value, width, scale, builder);
@@ -184,10 +190,10 @@ namespace NodaTime.Format.Builder
             }
 
             #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder, IFormatProvider formatProvider)
+            public void Append(TInfo info, StringBuilder builder)
             {
                 int value = getValue(info);
-                var nfi = NumberFormatInfo.GetInstance(formatProvider);
+                var nfi = NumberFormatInfo.GetInstance(info.FormatProvider);
                 FormatHelper.RightPadTruncate(value, width, scale, nfi.NumberDecimalSeparator, builder);
             }
             #endregion
@@ -207,7 +213,7 @@ namespace NodaTime.Format.Builder
             }
 
             #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder, IFormatProvider formatProvider)
+            public void Append(TInfo info, StringBuilder builder)
             {
                 var value = getValue(info);
                 FormatHelper.FormatSign(value, required, builder);
@@ -227,7 +233,7 @@ namespace NodaTime.Format.Builder
             }
 
             #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder, IFormatProvider formatProvider)
+            public void Append(TInfo info, StringBuilder builder)
             {
                 builder.Append(text);
             }
@@ -239,7 +245,7 @@ namespace NodaTime.Format.Builder
         private sealed class TimeSeparaterNode : IFormatNode<TInfo>
         {
             #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder, IFormatProvider formatProvider)
+            public void Append(TInfo info, StringBuilder builder)
             {
                 builder.Append(info.FormatInfo.TimeSeparator);
             }

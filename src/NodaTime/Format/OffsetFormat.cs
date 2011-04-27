@@ -40,12 +40,12 @@ namespace NodaTime.Format
         internal static string Format(Offset value, string format, NodaFormatInfo formatProvider)
         {
             var formatter = MakeFormatter(format, formatProvider);
-            return formatter.Format(value);
+            return formatter.Format(value, formatProvider);
         }
 
         internal static string FormatX(Offset value, string format, NodaFormatInfo formatProvider)
         {
-            var parseInfo = new OffsetParseInfo(value, formatProvider, true, DateTimeParseStyles.None);
+            var parseInfo = new OffsetParseInfo(value, formatProvider);
             if (string.IsNullOrEmpty(format))
             {
                 format = "g";
@@ -75,7 +75,7 @@ namespace NodaTime.Format
             var builder = new FormatterBuilder<Offset, OffsetParseInfo>();
             var errorInfo = new ParseErrorInfo(formatProvider, true);
             DoMakeFormatPattern(format, errorInfo, builder);
-            return builder.Build();
+            return builder.Build((value, provider) => new OffsetParseInfo(value, provider));
         }
 
         internal static void DoMakeFormatPattern(string format, ParseErrorInfo errorInfo, FormatterBuilder<Offset, OffsetParseInfo> builder)
@@ -113,7 +113,7 @@ namespace NodaTime.Format
                         break;
                     case '\'':
                     case '"':
-                        builder.AddString(pattern.GetQuotedString(errorInfo));
+                        builder.AddString(pattern.GetQuotedString());
                         break;
                     case '\\':
                         if (!pattern.HasMoreCharacters)
@@ -126,23 +126,23 @@ namespace NodaTime.Format
                         errorInfo.FailParse12HourPatternNotSupported(typeof(Offset));
                         break; // Never gets here
                     case 'H':
-                        repeatLength = pattern.GetRepeatCount(2, errorInfo);
+                        repeatLength = pattern.GetRepeatCount(2);
                         builder.AddLeftPad(repeatLength, info => info.Hours.GetValueOrDefault());
                         break;
                     case 's':
-                        repeatLength = pattern.GetRepeatCount(2, errorInfo);
+                        repeatLength = pattern.GetRepeatCount(2);
                         builder.AddLeftPad(repeatLength, info => info.Seconds.GetValueOrDefault());
                         break;
                     case 'm':
-                        repeatLength = pattern.GetRepeatCount(2, errorInfo);
+                        repeatLength = pattern.GetRepeatCount(2);
                         builder.AddLeftPad(repeatLength, info => info.Minutes.GetValueOrDefault());
                         break;
                     case 'F':
-                        repeatLength = pattern.GetRepeatCount(3, errorInfo);
+                        repeatLength = pattern.GetRepeatCount(3);
                         builder.AddRightPadTruncate(repeatLength, 3, info => info.FractionalSeconds.GetValueOrDefault());
                         break;
                     case 'f':
-                        repeatLength = pattern.GetRepeatCount(3, errorInfo);
+                        repeatLength = pattern.GetRepeatCount(3);
                         builder.AddRightPad(repeatLength, 3, info => info.FractionalSeconds.GetValueOrDefault());
                         break;
                     default:
@@ -189,43 +189,41 @@ namespace NodaTime.Format
                                 pattern.MoveNext(); // Eat next character
                                 break;
                             }
-                            parseInfo.FailParsePercentDoubled();
+                            throw FormatError.PercentDoubled();
                         }
-                        parseInfo.FailParsePercentAtEndOfString();
-                        break;
+                        throw FormatError.PercentAtEndOfString();
                     case '\'':
                     case '"':
-                        outputBuffer.Append(pattern.GetQuotedString(parseInfo));
+                        outputBuffer.Append(pattern.GetQuotedString());
                         break;
                     case '\\':
                         if (!pattern.HasMoreCharacters)
                         {
-                            parseInfo.FailParseEscapeAtEndOfString();
+                            throw FormatError.EscapeAtEndOfString();
                         }
                         outputBuffer.Append(pattern.GetNextCharacter());
                         break;
                     case 'h':
-                        parseInfo.FailParse12HourPatternNotSupported(typeof(Offset));
-                        break; // Never gets here
+                        throw FormatError.Hour12PatternNotSupported(typeof(Offset));
                     case 'H':
-                        repeatLength = pattern.GetRepeatCount(2, parseInfo);
+                        repeatLength = pattern.GetRepeatCount(2);
                         FormatHelper.LeftPad(parseInfo.Hours.GetValueOrDefault(), repeatLength, outputBuffer);
                         break;
                     case 's':
-                        repeatLength = pattern.GetRepeatCount(2, parseInfo);
+                        repeatLength = pattern.GetRepeatCount(2);
                         FormatHelper.LeftPad(parseInfo.Seconds.GetValueOrDefault(), repeatLength, outputBuffer);
                         break;
                     case 'm':
-                        repeatLength = pattern.GetRepeatCount(2, parseInfo);
+                        repeatLength = pattern.GetRepeatCount(2);
                         FormatHelper.LeftPad(parseInfo.Minutes.GetValueOrDefault(), repeatLength, outputBuffer);
                         break;
                     case 'F':
-                        repeatLength = pattern.GetRepeatCount(3, parseInfo);
+                        repeatLength = pattern.GetRepeatCount(3);
                         FormatHelper.RightPadTruncate(parseInfo.FractionalSeconds.GetValueOrDefault(), repeatLength, 3, parseInfo.FormatInfo.DecimalSeparator,
                                                       outputBuffer);
                         break;
                     case 'f':
-                        repeatLength = pattern.GetRepeatCount(3, parseInfo);
+                        repeatLength = pattern.GetRepeatCount(3);
                         FormatHelper.RightPad(parseInfo.FractionalSeconds.GetValueOrDefault(), repeatLength, 3, outputBuffer);
                         break;
                     default:
@@ -267,7 +265,7 @@ namespace NodaTime.Format
                     break;
                 default:
                     string message = string.Format(Resources.Parse_UnknownStandardFormat, formatCharacter, typeof(Offset).FullName);
-                    throw new ParseException(ParseFailureKind.ParseUnknownStandardFormat, message);
+                    throw new ParseException(ParseFailureKind.UnknownStandardFormat, message);
             }
             return FormatPattern(parseInfo, pattern);
         }
@@ -279,9 +277,9 @@ namespace NodaTime.Format
             switch (formatCharacter)
             {
                 case 'g':
-                    return new FormatterG(formatProvider);
+                    return new FormatterG();
                 case 'n':
-                    return new FormatterN(formatProvider);
+                    return new FormatterN();
                 case 's':
                     pattern = formatInfo.OffsetPatternShort;
                     break;
@@ -296,36 +294,21 @@ namespace NodaTime.Format
                     break;
                 default:
                     string message = string.Format(Resources.Parse_UnknownStandardFormat, formatCharacter, typeof(Offset).FullName);
-                    throw new ParseException(ParseFailureKind.ParseUnknownStandardFormat, message);
+                    throw new ParseException(ParseFailureKind.UnknownStandardFormat, message);
             }
             return MakeFormatPattern(pattern, formatProvider);
         }
 
         private sealed class FormatterN : AbstractNodaFormatter<Offset>
         {
-            public FormatterN(IFormatProvider formatProvider)
-                : base(formatProvider)
-            {
-            }
-
             public override string Format(Offset value, IFormatProvider formatProvider)
             {
                 return value.Milliseconds.ToString("N0", formatProvider);
-            }
-
-            public override INodaFormatter<Offset> WithFormatProvider(IFormatProvider formatProvider)
-            {
-                return new FormatterN(formatProvider);
             }
         }
 
         private sealed class FormatterG : AbstractNodaFormatter<Offset>
         {
-            public FormatterG(IFormatProvider formatProvider)
-                : base(formatProvider)
-            {
-            }
-
             public override string Format(Offset value, IFormatProvider formatProvider)
             {
                 var formatInfo = NodaFormatInfo.GetInstance(formatProvider);
@@ -348,11 +331,6 @@ namespace NodaTime.Format
                 }
                 var formatter = MakeFormatter(pattern, formatProvider);
                 return formatter.Format(value);
-            }
-
-            public override INodaFormatter<Offset> WithFormatProvider(IFormatProvider formatProvider)
-            {
-                return new FormatterG(formatProvider);
             }
         }
 

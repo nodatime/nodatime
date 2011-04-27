@@ -78,6 +78,7 @@
     <Compile Include="Format\AbstractNodaFormatter.cs" />
     <Compile Include="Format\Builder\FormatNode.cs" />
     <Compile Include="Format\Builder\IFormatNode.cs" />
+    <Compile Include="Format\FormatError.cs" />
     <Compile Include="Format\FormatHelper.cs" />
     <Compile Include="Format\Builder\FormatterBuilder.cs" />
     <Compile Include="Format\INodaFormatter.cs" />

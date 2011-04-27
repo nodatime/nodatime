@@ -132,7 +132,7 @@ namespace NodaTime.Format
             {
                 return Current;
             }
-            throw new FormatException(Resources.Parse_UnexpectedEndOfString);
+            throw FormatError.UnexpectedEndOfString(Value);
         }
 
         /// <summary>

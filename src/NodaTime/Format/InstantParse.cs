@@ -49,7 +49,7 @@ namespace NodaTime.Format
         internal static Instant Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new InstantParseInfo(formatInfo, true, styles);
-            TryParseExactMultiple(value, AllFormats, parseResult);
+            DoParseMultiple(value, AllFormats, parseResult);
             return parseResult.Value;
         }
 
@@ -69,7 +69,7 @@ namespace NodaTime.Format
         internal static Instant ParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new InstantParseInfo(formatInfo, true, styles);
-            TryParseExact(value, format, parseResult);
+            DoParse(value, format, parseResult);
             return parseResult.Value;
         }
 
@@ -87,7 +87,7 @@ namespace NodaTime.Format
         internal static Instant ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new InstantParseInfo(formatInfo, true, styles);
-            TryParseExactMultiple(value, formats, parseResult);
+            DoParseMultiple(value, formats, parseResult);
             return parseResult.Value;
         }
 
@@ -100,10 +100,15 @@ namespace NodaTime.Format
         {
             result = Instant.MinValue;
             var parseResult = new InstantParseInfo(formatInfo, false, styles);
-            if (TryParseExact(value, format, parseResult))
+            try
             {
+                DoParse(value, format, parseResult);
                 result = parseResult.Value;
                 return true;
+            }
+            catch (FormatException)
+            {
+                // Do nothing
             }
             return false;
         }
@@ -112,15 +117,20 @@ namespace NodaTime.Format
         {
             result = Instant.MinValue;
             var parseResult = new InstantParseInfo(formatInfo, false, styles);
-            if (TryParseExactMultiple(value, formats, parseResult))
+            try
             {
+                DoParseMultiple(value, formats, parseResult);
                 result = parseResult.Value;
                 return true;
+            }
+            catch (FormatException)
+            {
+                // Do nothing
             }
             return false;
         }
 
-        private static bool DoStrictParse(string value, char format, InstantParseInfo parseInfo)
+        private static void DoStrictParse(string value, char format, InstantParseInfo parseInfo)
         {
             if (parseInfo.AllowLeadingWhite)
             {
@@ -133,98 +143,105 @@ namespace NodaTime.Format
             switch (format)
             {
                 case 'g':
-                    return DoStrictParseGeneral(value, parseInfo);
+                    DoStrictParseGeneral(value, parseInfo);
+                    break;
                 case 'n':
                 case 'd':
-                    return DoStrictParseNumber(value, parseInfo, format);
+                    DoStrictParseNumber(value, parseInfo, format);
+                    break;
+                default:
+                    throw FormatError.UnknownStandardFormat(format, typeof(Instant));
             }
-            return false;
         }
 
-        private static bool DoStrictParseGeneral(string value, InstantParseInfo parseInfo)
+        private static void DoStrictParseGeneral(string value, InstantParseInfo parseInfo)
         {
             string label = value.ToUpperInvariant();
             if (label.Equals(Instant.BeginningOfTimeLabel))
             {
                 parseInfo.Value = Instant.MinValue;
-                return true;
+                return;
             }
             if (label.Equals(Instant.EndOfTimeLabel))
             {
                 parseInfo.Value = Instant.MaxValue;
-                return true;
+                return;
             }
             DateTime result;
-            if (DateTime.TryParseExact(value, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", parseInfo.FormatInfo.DateTimeFormat,
-                                       DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out result))
+            if (!DateTime.TryParseExact(value, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", parseInfo.FormatInfo.DateTimeFormat,
+                                        DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out result))
             {
-                parseInfo.Value = SystemConversions.DateTimeToInstant(result);
-                return true;
+                throw FormatError.CannotParseValue(value, typeof(Instant), "g");
             }
-            return false;
+            parseInfo.Value = SystemConversions.DateTimeToInstant(result);
         }
 
-        private static bool DoStrictParseNumber(string value, InstantParseInfo parseInfo, char format)
+        private static void DoStrictParseNumber(string value, InstantParseInfo parseInfo, char format)
         {
             const NumberStyles parseStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowThousands;
             long number;
             if (Int64.TryParse(value, parseStyles, parseInfo.FormatInfo.NumberFormat, out number))
             {
                 parseInfo.Value = new Instant(number);
-                return true;
+                return;
             }
-            return parseInfo.FailParseCannotParseValue(value, typeof(Instant), format.ToString());
+            throw FormatError.CannotParseValue(value, typeof(Instant), format.ToString());
         }
 
-        private static bool TryParseExact(string value, string format, InstantParseInfo parseInfo)
+        private static void DoParse(string value, string format, InstantParseInfo parseInfo)
         {
             if (value == null)
             {
-                return parseInfo.FailArgumentNull("value");
+                throw new ArgumentNullException("value");
             }
             if (format == null)
             {
-                return parseInfo.FailArgumentNull("format");
+                throw new ArgumentNullException("format");
             }
             if (value.Length == 0)
             {
-                return parseInfo.FailParseValueStringEmpty();
+                throw FormatError.ValueStringEmpty();
             }
             if (format.Length == 0)
             {
-                return parseInfo.FailParseFormatStringEmpty();
+                throw FormatError.FormatStringEmpty();
             }
             format = format.Trim();
             if (format.Length > 1)
             {
-                return parseInfo.FailParseFormatInvalid(format);
+                throw FormatError.FormatInvalid(format);
             }
             char formatChar = format[0];
-            return DoStrictParse(value, formatChar, parseInfo);
+            DoStrictParse(value, formatChar, parseInfo);
         }
 
-        private static bool TryParseExactMultiple(string value, string[] formats, InstantParseInfo parseInfo)
+        private static void DoParseMultiple(string value, string[] formats, InstantParseInfo parseInfo)
         {
             if (formats == null)
             {
-                return parseInfo.FailArgumentNull("formats");
+                throw new ArgumentNullException("formats");
             }
             if (formats.Length == 0)
             {
-                return parseInfo.FailParseEmptyFormatsArray();
+                throw FormatError.EmptyFormatsArray();
             }
             foreach (string format in formats)
             {
                 if (string.IsNullOrEmpty(format))
                 {
-                    return parseInfo.FailParseFormatElementInvalid();
+                    throw FormatError.FormatElementInvalid();
                 }
-                if (TryParseExact(value, format, parseInfo))
+                try
                 {
-                    return true;
+                    DoParse(value, format, parseInfo);
+                    return;
+                }
+                catch (FormatError.FormatValueException)
+                {
+                    // do nothing
                 }
             }
-            return false;
+            throw FormatError.NoMatchingFormat();
         }
 
         #region Nested type: InstantParseInfo

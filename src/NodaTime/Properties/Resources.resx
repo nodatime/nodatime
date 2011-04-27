@@ -147,9 +147,6 @@
   <data name="OffsetPatternShort" xml:space="preserve">
     <value>+H</value>
   </data>
-  <data name="Parse_12HourPatternNotSupported" xml:space="preserve">
-    <value>The 'h' pattern flag (12 hour format) is not supported by the {0} type.</value>
-  </data>
   <data name="Parse_CannotParseValue" xml:space="preserve">
     <value>The value "{0}" cannot be parsed into an instance of {1} using pattern "{2}"</value>
   </data>
@@ -176,6 +173,9 @@
   </data>
   <data name="Parse_FormatStringEmpty" xml:space="preserve">
     <value>The format string is empty.</value>
+  </data>
+  <data name="Parse_Hour12PatternNotSupported" xml:space="preserve">
+    <value>The 'h' pattern flag (12 hour format) is not supported by the {0} type.</value>
   </data>
   <data name="Parse_MismatchedCharacter" xml:space="preserve">
     <value>The value string does not match a simple character in the format string "{0}".</value>
@@ -207,17 +207,23 @@
   <data name="Parse_PositiveSignInvalid" xml:space="preserve">
     <value>A positive value sign is not valid at this point.</value>
   </data>
+  <data name="Parse_PrecisionNotSupported" xml:space="preserve">
+    <value>The standard format "{0}" for type {1} does not support a precision.</value>
+  </data>
   <data name="Parse_QuotedStringMismatch" xml:space="preserve">
     <value>The value string does not match a quoted string in the pattern.</value>
   </data>
   <data name="Parse_RepeatCountExceeded" xml:space="preserve">
     <value>There were more consecutive copies of the pattern character "{0}" than the maximum allowed ({1}) in the format string.</value>
   </data>
+  <data name="Parse_StandardFormatWhitespace" xml:space="preserve">
+    <value>The standard format "{0}" for type {1} cannot contain whitespace.</value>
+  </data>
   <data name="Parse_TimeSeparatorMismatch" xml:space="preserve">
     <value>The value string does not match a time separator in the format string.</value>
   </data>
   <data name="Parse_UnexpectedEndOfString" xml:space="preserve">
-    <value>More characters were expected in the parsable string.</value>
+    <value>More characters were expected in the parsable string [{0}].</value>
   </data>
   <data name="Parse_UnknownFailure" xml:space="preserve">
     <value>Internal Error: The specified ParseFailureKind is unknown [{0}].</value>

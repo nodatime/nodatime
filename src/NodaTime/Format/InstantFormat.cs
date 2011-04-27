@@ -20,6 +20,7 @@ using System;
 using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Utility;
+
 #endregion
 
 namespace NodaTime.Format
@@ -37,7 +38,7 @@ namespace NodaTime.Format
         internal static string Format(Instant value, string format, IFormatProvider formatProvider)
         {
             var formatter = MakeFormatter(format, formatProvider);
-            return formatter.Format(value);
+            return formatter.Format(value, formatProvider);
         }
 
         internal static INodaFormatter<Instant> MakeFormatter(string format, IFormatProvider formatProvider)
@@ -48,43 +49,33 @@ namespace NodaTime.Format
             }
             if (format.Length > 1)
             {
-                throw new FormatException("Invalid format string: precision not allowed");
+                throw FormatError.PrecisionNotSupported(format, typeof(Instant));
             }
             char formatChar = Char.ToLowerInvariant(format[0]);
             if (Char.IsWhiteSpace(formatChar))
             {
-                throw new FormatException("Invalid format string: format cannot contain whitespace");
+                throw FormatError.StandardFormatWhitespace(format, typeof(Instant));
             }
             switch (formatChar)
             {
                 case 'g':
-                    return new FormatterG(formatProvider);
+                    return new FormatterG();
                 case 'd':
-                    return new FormatterD(formatProvider);
+                    return new FormatterD();
                 case 'n':
-                    return new FormatterN(formatProvider);
+                    return new FormatterN();
                 default:
-                    throw new FormatException("Invalid format string: unknown flag");
+                    throw FormatError.UnknownStandardFormat(formatChar, typeof(Instant));
             }
         }
 
         #region Nested type: FormatterD
         private sealed class FormatterD : AbstractNodaFormatter<Instant>
         {
-            public FormatterD(IFormatProvider formatProvider)
-                : base(formatProvider)
-            {
-            }
-
             public override string Format(Instant value, IFormatProvider formatProvider)
             {
                 var formatInfo = NodaFormatInfo.GetInstance(formatProvider);
                 return value.Ticks.ToString("D", formatInfo);
-            }
-
-            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
-            {
-                return new FormatterD(formatProvider);
             }
         }
         #endregion
@@ -92,11 +83,6 @@ namespace NodaTime.Format
         #region Nested type: FormatterG
         private sealed class FormatterG : AbstractNodaFormatter<Instant>
         {
-            public FormatterG(IFormatProvider formatProvider)
-                : base(formatProvider)
-            {
-            }
-
             public override string Format(Instant value, IFormatProvider formatProvider)
             {
                 if (value.Ticks == Instant.MinValue.Ticks)
@@ -111,31 +97,16 @@ namespace NodaTime.Format
                 return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.Month, utc.Day,
                                      utc.Hour, utc.Minute, utc.Second);
             }
-
-            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
-            {
-                return new FormatterG(formatProvider);
-            }
         }
         #endregion
 
         #region Nested type: FormatterN
         private sealed class FormatterN : AbstractNodaFormatter<Instant>
         {
-            public FormatterN(IFormatProvider formatProvider)
-                : base(formatProvider)
-            {
-            }
-
             public override string Format(Instant value, IFormatProvider formatProvider)
             {
                 var formatInfo = NodaFormatInfo.GetInstance(formatProvider);
                 return value.Ticks.ToString("N0", formatInfo);
-            }
-
-            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
-            {
-                return new FormatterN(formatProvider);
             }
         }
         #endregion

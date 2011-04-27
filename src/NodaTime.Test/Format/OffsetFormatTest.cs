@@ -28,6 +28,13 @@ namespace NodaTime.Test.Format
     public class OffsetFormatTest
     {
         [Test]
+        public void TestFormatJlk()
+        {
+            TestFormat(new OffsetFormattingTestSupport.OffsetData(Offset.Zero) { C = FormattingTestSupport.ItIt, S = ",", F = "%.", Name = "decimal separator" });
+        }
+        
+
+        [Test]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
         public void TestFormat(OffsetFormattingTestSupport.OffsetData data)

@@ -15,8 +15,8 @@
 // limitations under the License.
 #endregion
 #region usings
+using System;
 using System.Diagnostics;
-using NodaTime.Globalization;
 #endregion
 
 namespace NodaTime.Format
@@ -58,7 +58,7 @@ namespace NodaTime.Format
         /// <param name = "formatInfo">The format info.</param>
         /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
         /// <param name = "parseStyles">The parse styles.</param>
-        internal OffsetParseInfo(NodaFormatInfo formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
+        internal OffsetParseInfo(IFormatProvider formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
             : base(formatInfo, throwImmediate, parseStyles)
         {
         }
@@ -68,10 +68,8 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name = "value">The value.</param>
         /// <param name = "formatInfo">The format info.</param>
-        /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
-        /// <param name = "parseStyles">The parse styles.</param>
-        internal OffsetParseInfo(Offset value, NodaFormatInfo formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
-            : this(formatInfo, throwImmediate, parseStyles)
+        internal OffsetParseInfo(Offset value, IFormatProvider formatInfo)
+            : base(formatInfo, true, DateTimeParseStyles.None)
         {
             Milliseconds = value.Milliseconds;
             IsNegative = value.IsNegative;
