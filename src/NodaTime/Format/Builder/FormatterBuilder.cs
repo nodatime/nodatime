@@ -26,7 +26,24 @@ namespace NodaTime.Format.Builder
     internal sealed class FormatterBuilder<T, TInfo>
         where TInfo : ParseInfo
     {
+        #region Delegates
+        public delegate TInfo MakeFormattingParseInfo(T value, IFormatProvider formatProvider);
+        public delegate TInfo MakeParsingParseInfo(IFormatProvider formatProvider, bool throwImmediate, DateTimeParseStyles styles);
+        #endregion
+
         private readonly IList<IFormatNode<TInfo>> nodes = new List<IFormatNode<TInfo>>();
+
+        internal FormatterBuilder(string format)
+        {
+            FormatPattern = format;
+        }
+
+        internal string FormatPattern { get; private set; }
+
+        public override string ToString()
+        {
+            return "FormatterBuilder for \"" + FormatPattern + "\"";
+        }
 
         internal void Add(IFormatNode<TInfo> node)
         {
@@ -75,34 +92,7 @@ namespace NodaTime.Format.Builder
 
         public INodaFormatter<T> Build(MakeFormattingParseInfo makeInfo)
         {
-            return new PatternFormatter(nodes, makeInfo);
-        }
-
-        public delegate TInfo MakeFormattingParseInfo(T value, IFormatProvider formatProvider);
-        public delegate TInfo MakeParsingParseInfo(IFormatProvider formatProvider, bool throwImmediate, DateTimeParseStyles styles);
-
-        private sealed class PatternFormatter : AbstractNodaFormatter<T>
-        {
-            private readonly IFormatNode<TInfo>[] nodes;
-            private readonly MakeFormattingParseInfo makeInfo;
-
-            public PatternFormatter(ICollection<IFormatNode<TInfo>> patternList, MakeFormattingParseInfo makeInfo)
-            {
-                nodes = new IFormatNode<TInfo>[patternList.Count];
-                this.makeInfo = makeInfo;
-                patternList.CopyTo(nodes, 0);
-            }
-
-            public override string Format(T value, IFormatProvider formatProvider)
-            {
-                var info = makeInfo(value, formatProvider);
-                var builder = new StringBuilder();
-                foreach (var formatNode in nodes)
-                {
-                    formatNode.Append(info, builder);
-                }
-                return builder.ToString();
-            }
+            return new PatternFormatter(FormatPattern, nodes, makeInfo);
         }
 
         #region Nested type: DateSeparaterNode
@@ -114,6 +104,11 @@ namespace NodaTime.Format.Builder
                 builder.Append(info.FormatInfo.DateSeparator);
             }
             #endregion
+
+            public override string ToString()
+            {
+                return "Format date separator";
+            }
         }
         #endregion
 
@@ -126,6 +121,11 @@ namespace NodaTime.Format.Builder
                 builder.Append(info.FormatInfo.DecimalSeparator);
             }
             #endregion
+
+            public override string ToString()
+            {
+                return "Format decimal separator";
+            }
         }
         #endregion
 
@@ -148,6 +148,45 @@ namespace NodaTime.Format.Builder
                 FormatHelper.LeftPad(value, width, builder);
             }
             #endregion
+
+            public override string ToString()
+            {
+                return "Format left pad: width=" + width;
+            }
+        }
+        #endregion
+
+        #region Nested type: PatternFormatter
+        private sealed class PatternFormatter : AbstractNodaFormatter<T>
+        {
+            private readonly MakeFormattingParseInfo makeInfo;
+            private readonly IFormatNode<TInfo>[] nodes;
+
+            public PatternFormatter(string format, ICollection<IFormatNode<TInfo>> patternList, MakeFormattingParseInfo makeInfo)
+            {
+                FormatPattern = format;
+                nodes = new IFormatNode<TInfo>[patternList.Count];
+                this.makeInfo = makeInfo;
+                patternList.CopyTo(nodes, 0);
+            }
+
+            private string FormatPattern { get; set; }
+
+            public override string Format(T value, IFormatProvider formatProvider)
+            {
+                var info = makeInfo(value, formatProvider);
+                var builder = new StringBuilder();
+                foreach (var formatNode in nodes)
+                {
+                    formatNode.Append(info, builder);
+                }
+                return builder.ToString();
+            }
+
+            public override string ToString()
+            {
+                return "Formatter for \"" + FormatPattern + "\"";
+            }
         }
         #endregion
 
@@ -172,6 +211,11 @@ namespace NodaTime.Format.Builder
                 FormatHelper.RightPad(value, width, scale, builder);
             }
             #endregion
+
+            public override string ToString()
+            {
+                return "Format right pad: width=" + 3 + " scale=" + scale;
+            }
         }
         #endregion
 
@@ -197,6 +241,11 @@ namespace NodaTime.Format.Builder
                 FormatHelper.RightPadTruncate(value, width, scale, nfi.NumberDecimalSeparator, builder);
             }
             #endregion
+
+            public override string ToString()
+            {
+                return "Format right pad truncate: width=" + 3 + " scale=" + scale;
+            }
         }
         #endregion
 
@@ -219,6 +268,11 @@ namespace NodaTime.Format.Builder
                 FormatHelper.FormatSign(value, required, builder);
             }
             #endregion
+
+            public override string ToString()
+            {
+                return "Format sign: required=" + required;
+            }
         }
         #endregion
 
@@ -238,6 +292,11 @@ namespace NodaTime.Format.Builder
                 builder.Append(text);
             }
             #endregion
+
+            public override string ToString()
+            {
+                return "Format string: [" + text + "]";
+            }
         }
         #endregion
 
@@ -250,6 +309,11 @@ namespace NodaTime.Format.Builder
                 builder.Append(info.FormatInfo.TimeSeparator);
             }
             #endregion
+
+            public override string ToString()
+            {
+                return "Format time separator";
+            }
         }
         #endregion
     }

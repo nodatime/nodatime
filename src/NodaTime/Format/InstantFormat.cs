@@ -14,19 +14,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
 using System;
 using System.Globalization;
-using NodaTime.Globalization;
 using NodaTime.Utility;
-
 #endregion
 
 namespace NodaTime.Format
 {
     internal static class InstantFormat
     {
+        private static readonly INodaFormatter<Instant> FormatterD = new InstantFormatterD();
+        private static readonly INodaFormatter<Instant> FormatterG = new InstantFormatterG();
+        private static readonly INodaFormatter<Instant> FormatterN = new InstantFormatterN();
+
         /// <summary>
         ///   Handles common default processing and parameter validation for simple formatting.
         /// </summary>
@@ -59,29 +60,28 @@ namespace NodaTime.Format
             switch (formatChar)
             {
                 case 'g':
-                    return new FormatterG();
+                    return FormatterG;
                 case 'd':
-                    return new FormatterD();
+                    return FormatterD;
                 case 'n':
-                    return new FormatterN();
+                    return FormatterN;
                 default:
                     throw FormatError.UnknownStandardFormat(formatChar, typeof(Instant));
             }
         }
 
-        #region Nested type: FormatterD
-        private sealed class FormatterD : AbstractNodaFormatter<Instant>
+        #region Nested type: InstantFormatterD
+        private sealed class InstantFormatterD : AbstractNodaFormatter<Instant>
         {
             public override string Format(Instant value, IFormatProvider formatProvider)
             {
-                var formatInfo = NodaFormatInfo.GetInstance(formatProvider);
-                return value.Ticks.ToString("D", formatInfo);
+                return value.Ticks.ToString("D", formatProvider);
             }
         }
         #endregion
 
-        #region Nested type: FormatterG
-        private sealed class FormatterG : AbstractNodaFormatter<Instant>
+        #region Nested type: InstantFormatterG
+        private sealed class InstantFormatterG : AbstractNodaFormatter<Instant>
         {
             public override string Format(Instant value, IFormatProvider formatProvider)
             {
@@ -100,13 +100,12 @@ namespace NodaTime.Format
         }
         #endregion
 
-        #region Nested type: FormatterN
-        private sealed class FormatterN : AbstractNodaFormatter<Instant>
+        #region Nested type: InstantFormatterN
+        private sealed class InstantFormatterN : AbstractNodaFormatter<Instant>
         {
             public override string Format(Instant value, IFormatProvider formatProvider)
             {
-                var formatInfo = NodaFormatInfo.GetInstance(formatProvider);
-                return value.Ticks.ToString("N0", formatInfo);
+                return value.Ticks.ToString("N0", formatProvider);
             }
         }
         #endregion
