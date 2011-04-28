@@ -312,8 +312,7 @@ namespace NodaTime.Globalization
             {
                 if (DisableCaching || !Infos.TryGetValue(name, out result))
                 {
-                    result = new NodaFormatInfo(cultureInfo);
-                    result.IsReadOnly = true;
+                    result = new NodaFormatInfo(cultureInfo) { IsReadOnly = true };
                     if (!DisableCaching)
                     {
                         Infos.Add(name, result);
@@ -350,7 +349,7 @@ namespace NodaTime.Globalization
                     return GetFormatInfo(cultureInfo);
                 }
             }
-            return GetInstance(Thread.CurrentThread.CurrentCulture);
+            return GetInstance(CultureInfo.CurrentCulture);
         }
 
         /// <summary>
