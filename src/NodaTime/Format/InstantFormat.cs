@@ -14,20 +14,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 #region usings
 using System;
 using System.Globalization;
 using NodaTime.Utility;
+
 #endregion
 
 namespace NodaTime.Format
 {
     internal static class InstantFormat
     {
-        private static readonly INodaFormatter<Instant> FormatterD = new InstantFormatterD();
-        private static readonly INodaFormatter<Instant> FormatterG = new InstantFormatterG();
-        private static readonly INodaFormatter<Instant> FormatterN = new InstantFormatterN();
-
         /// <summary>
         ///   Handles common default processing and parameter validation for simple formatting.
         /// </summary>
@@ -38,11 +36,11 @@ namespace NodaTime.Format
         /// <returns>The value formatted as a string.</returns>
         internal static string Format(Instant value, string format, IFormatProvider formatProvider)
         {
-            var formatter = MakeFormatter(format);
-            return formatter.Format(value, formatProvider);
+            var formatter = MakeFormatter(format, formatProvider);
+            return formatter.Format(value);
         }
 
-        internal static INodaFormatter<Instant> MakeFormatter(string format)
+        internal static INodaFormatter<Instant> MakeFormatter(string format, IFormatProvider formatProvider)
         {
             if (string.IsNullOrEmpty(format))
             {
@@ -60,11 +58,11 @@ namespace NodaTime.Format
             switch (formatChar)
             {
                 case 'g':
-                    return FormatterG;
+                    return new InstantFormatterG(formatProvider);
                 case 'd':
-                    return FormatterD;
+                    return new InstantFormatterD(formatProvider);
                 case 'n':
-                    return FormatterN;
+                    return new InstantFormatterN(formatProvider);
                 default:
                     throw FormatError.UnknownStandardFormat(formatChar, typeof(Instant));
             }
@@ -73,9 +71,18 @@ namespace NodaTime.Format
         #region Nested type: InstantFormatterD
         private sealed class InstantFormatterD : AbstractNodaFormatter<Instant>
         {
-            public override string Format(Instant value, IFormatProvider formatProvider)
+            internal InstantFormatterD(IFormatProvider formatProvider) : base(formatProvider)
             {
-                return value.Ticks.ToString("D", formatProvider);
+            }
+
+            public override string Format(Instant value)
+            {
+                return value.Ticks.ToString("D", FormatProvider);
+            }
+
+            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new InstantFormatterD(formatProvider);
             }
         }
         #endregion
@@ -83,7 +90,11 @@ namespace NodaTime.Format
         #region Nested type: InstantFormatterG
         private sealed class InstantFormatterG : AbstractNodaFormatter<Instant>
         {
-            public override string Format(Instant value, IFormatProvider formatProvider)
+            internal InstantFormatterG(IFormatProvider formatProvider) : base(formatProvider)
+            {
+            }
+
+            public override string Format(Instant value)
             {
                 if (value.Ticks == Instant.MinValue.Ticks)
                 {
@@ -93,19 +104,40 @@ namespace NodaTime.Format
                 {
                     return Instant.EndOfTimeLabel;
                 }
-                var utc = SystemConversions.InstantToDateTime(value);
-                return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.Month, utc.Day,
-                                     utc.Hour, utc.Minute, utc.Second);
+                DateTime utc = SystemConversions.InstantToDateTime(value);
+                return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.Month, utc.Day, utc.Hour, utc.Minute,
+                                     utc.Second);
+            }
+
+            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new InstantFormatterG(formatProvider);
             }
         }
         #endregion
 
         #region Nested type: InstantFormatterN
+        /// <summary>
+        /// A Noda formatter implementation for the N pattern (ticks as a group separated number).
+        /// </summary>
         private sealed class InstantFormatterN : AbstractNodaFormatter<Instant>
         {
-            public override string Format(Instant value, IFormatProvider formatProvider)
+            /// <summary>
+            /// Initializes a new instance of the <see cref="InstantFormatterN"/> class.
+            /// </summary>
+            /// <param name="formatProvider">The format provider.</param>
+            internal InstantFormatterN(IFormatProvider formatProvider) : base(formatProvider)
             {
-                return value.Ticks.ToString("N0", formatProvider);
+            }
+
+            public override string Format(Instant value)
+            {
+                return value.Ticks.ToString("N0", FormatProvider);
+            }
+
+            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new InstantFormatterN(formatProvider);
             }
         }
         #endregion

@@ -14,24 +14,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 #region usings
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+
 #endregion
 
 namespace NodaTime.Format.Builder
 {
-    internal sealed class FormatterBuilder<T, TInfo>
-        where TInfo : ParseInfo
+    internal sealed class FormatterBuilder<T, TInfo> where TInfo : ParseInfo
     {
         #region Delegates
         public delegate TInfo MakeFormattingParseInfo(T value, IFormatProvider formatProvider);
+
         public delegate TInfo MakeParsingParseInfo(IFormatProvider formatProvider, bool throwImmediate, DateTimeParseStyles styles);
         #endregion
 
-        private readonly IList<IFormatNode<TInfo>> nodes = new List<IFormatNode<TInfo>>();
+        private readonly IList<IFormatterBuilderNode<TInfo>> nodes = new List<IFormatterBuilderNode<TInfo>>();
 
         internal FormatterBuilder(string format)
         {
@@ -45,136 +47,158 @@ namespace NodaTime.Format.Builder
             return "FormatterBuilder for \"" + FormatPattern + "\"";
         }
 
-        internal void Add(IFormatNode<TInfo> node)
+        internal void Add(IFormatterBuilderNode<TInfo> node)
         {
             nodes.Add(node);
         }
 
         public void AddString(string text)
         {
-            Add(new StringNode(text));
+            Add(new StringBuilderNode(text));
         }
 
         public void AddDateSeparator()
         {
-            Add(new DateSeparaterNode());
+            Add(new DateSeparaterBuilderNode());
         }
 
         public void AddTimeSeparator()
         {
-            Add(new TimeSeparaterNode());
+            Add(new TimeSeparaterBuilderNode());
         }
 
         public void AddDecimalSeparator()
         {
-            Add(new DecimalSeparaterNode());
+            Add(new DecimalSeparaterBuilderNode());
         }
 
         public void AddSign(bool required, Func<TInfo, ISignedValue> getValue)
         {
-            Add(new SignNode(required, getValue));
+            Add(new SignBuilderNode(required, getValue));
         }
 
         public void AddLeftPad(int width, Func<TInfo, int> getValue)
         {
-            Add(new LeftPadNode(width, getValue));
+            Add(new LeftPadBuilderNode(width, getValue));
         }
 
         public void AddRightPad(int width, int scale, Func<TInfo, int> getValue)
         {
-            Add(new RightPadNode(width, scale, getValue));
+            Add(new RightPadeBuilderNode(width, scale, getValue));
         }
 
         public void AddRightPadTruncate(int width, int scale, Func<TInfo, int> getValue)
         {
-            Add(new RightPadTruncateNode(width, scale, getValue));
+            Add(new RightPadTruncateBuilderNode(width, scale, getValue));
         }
 
-        public INodaFormatter<T> Build(MakeFormattingParseInfo makeInfo)
+        public INodaFormatter<T> Build(IFormatProvider formatProvider, MakeFormattingParseInfo makeInfo)
         {
-            return new PatternFormatter(FormatPattern, nodes, makeInfo);
+            return new PatternFormatter(FormatPattern, formatProvider, nodes, makeInfo);
         }
 
-        #region Nested type: DateSeparaterNode
-        private sealed class DateSeparaterNode : IFormatNode<TInfo>
+        #region Nested type: DateSeparaterBuilderNode
+        private sealed class DateSeparaterBuilderNode : IFormatterBuilderNode<TInfo>
         {
-            #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder)
+            #region IFormatterBuilderNode<TInfo> Members
+            public IFormatNode<TInfo> MakeNode(IFormatProvider formatProvider)
             {
-                builder.Append(info.FormatInfo.DateSeparator);
+                DateTimeFormatInfo info = DateTimeFormatInfo.GetInstance(formatProvider);
+                return new StringNode(info.DateSeparator);
             }
             #endregion
-
-            public override string ToString()
-            {
-                return "Format date separator";
-            }
         }
         #endregion
 
-        #region Nested type: DecimalSeparaterNode
-        private sealed class DecimalSeparaterNode : IFormatNode<TInfo>
+        #region Nested type: DecimalSeparaterBuilderNode
+        private sealed class DecimalSeparaterBuilderNode : IFormatterBuilderNode<TInfo>
         {
-            #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder)
+            #region IFormatterBuilderNode<TInfo> Members
+            public IFormatNode<TInfo> MakeNode(IFormatProvider formatProvider)
             {
-                builder.Append(info.FormatInfo.DecimalSeparator);
+                NumberFormatInfo info = NumberFormatInfo.GetInstance(formatProvider);
+                return new StringNode(info.NumberDecimalSeparator);
             }
             #endregion
-
-            public override string ToString()
-            {
-                return "Format decimal separator";
-            }
         }
         #endregion
 
-        #region Nested type: LeftPadNode
-        private sealed class LeftPadNode : IFormatNode<TInfo>
+        #region Nested type: LeftPadBuilderNode
+        private sealed class LeftPadBuilderNode : AbstractFormatterBuilderNode<TInfo>
         {
-            private readonly Func<TInfo, int> getValue;
-            private readonly int width;
-
-            public LeftPadNode(int width, Func<TInfo, int> getValue)
+            public LeftPadBuilderNode(int width, Func<TInfo, int> getValue) : base(new LeftPadNode(width, getValue))
             {
-                this.width = width;
-                this.getValue = getValue;
             }
 
-            #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder)
+            #region Nested type: LeftPadNode
+            private sealed class LeftPadNode : IFormatNode<TInfo>
             {
-                int value = getValue(info);
-                FormatHelper.LeftPad(value, width, builder);
+                private readonly Func<TInfo, int> getValue;
+                private readonly int width;
+
+                public LeftPadNode(int width, Func<TInfo, int> getValue)
+                {
+                    this.width = width;
+                    this.getValue = getValue;
+                }
+
+                #region IFormatNode<TInfo> Members
+                public void Append(TInfo info, StringBuilder builder)
+                {
+                    int value = getValue(info);
+                    FormatHelper.LeftPad(value, width, builder);
+                }
+                #endregion
+
+                public override string ToString()
+                {
+                    return "Format left pad: width=" + width;
+                }
             }
             #endregion
-
-            public override string ToString()
-            {
-                return "Format left pad: width=" + width;
-            }
         }
         #endregion
 
         #region Nested type: PatternFormatter
         private sealed class PatternFormatter : AbstractNodaFormatter<T>
         {
+            private readonly string formatPattern;
             private readonly MakeFormattingParseInfo makeInfo;
-            private readonly IFormatNode<TInfo>[] nodes;
+            private readonly IList<IFormatNode<TInfo>> nodes;
+            private readonly ICollection<IFormatterBuilderNode<TInfo>> patternList;
 
-            public PatternFormatter(string format, ICollection<IFormatNode<TInfo>> patternList, MakeFormattingParseInfo makeInfo)
+            public PatternFormatter(string format, IFormatProvider formatProvider, ICollection<IFormatterBuilderNode<TInfo>> patternList,
+                                    MakeFormattingParseInfo makeInfo) : base(formatProvider)
             {
-                FormatPattern = format;
-                nodes = new IFormatNode<TInfo>[patternList.Count];
+                formatPattern = format;
+                this.patternList = patternList;
+                nodes = new List<IFormatNode<TInfo>>(patternList.Count);
                 this.makeInfo = makeInfo;
-                patternList.CopyTo(nodes, 0);
+                foreach (var node in patternList)
+                {
+                    var formatNode = node.MakeNode(formatProvider);
+                    int count = nodes.Count;
+                    if (count > 0 && formatNode is StringNode && nodes[count - 1] is StringNode)
+                    {
+                        var snode = (StringNode)nodes[count - 1];
+                        snode.Text += ((StringNode)formatNode).Text;
+                    }
+                    else
+                    {
+                        nodes.Add(formatNode);
+                    }
+                }
             }
 
-            private string FormatPattern { get; set; }
-
-            public override string Format(T value, IFormatProvider formatProvider)
+            /// <summary>
+            /// Formats the specified value using the <see cref="IFormatProvider"/> given when the formatter
+            /// was constructed. This does NOT use the current thread <see cref="IFormatProvider"/>.
+            /// </summary>
+            /// <param name="value">The value to format.</param>
+            /// <returns>The value formatted as a string.</returns>
+            public override string Format(T value)
             {
-                var info = makeInfo(value, formatProvider);
+                TInfo info = makeInfo(value, FormatProvider);
                 var builder = new StringBuilder();
                 foreach (var formatNode in nodes)
                 {
@@ -183,95 +207,198 @@ namespace NodaTime.Format.Builder
                 return builder.ToString();
             }
 
+            /// <summary>
+            /// Returns a new copy of this formatter that uses the given <see cref="IFormatProvider"/> for
+            /// formatting instead of the one that this formatter uses.
+            /// </summary>
+            /// <param name="formatProvider">The format provider to use.</param>
+            /// <returns>A new copy of this formatter using the given <see cref="IFormatProvider"/>.</returns>
+            public override INodaFormatter<T> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new PatternFormatter(formatPattern, formatProvider, patternList, makeInfo);
+            }
+
+            /// <summary>
+            /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            /// </returns>
+            /// <filterpriority>2</filterpriority>
             public override string ToString()
             {
-                return "Formatter for \"" + FormatPattern + "\"";
+                return "Formatter for \"" + formatPattern + "\"";
             }
         }
         #endregion
 
-        #region Nested type: RightPadNode
-        private sealed class RightPadNode : IFormatNode<TInfo>
+        #region Nested type: RightPadTruncateBuilderNode
+        private sealed class RightPadTruncateBuilderNode : AbstractFormatterBuilderNode<TInfo>
         {
-            private readonly Func<TInfo, int> getValue;
-            private readonly int scale;
-            private readonly int width;
-
-            public RightPadNode(int width, int scale, Func<TInfo, int> getValue)
+            public RightPadTruncateBuilderNode(int width, int scale, Func<TInfo, int> getValue) : base(new RightPadTruncateNode(width, scale, getValue))
             {
-                this.width = width;
-                this.scale = scale;
-                this.getValue = getValue;
             }
 
-            #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder)
+            #region Nested type: RightPadTruncateNode
+            private sealed class RightPadTruncateNode : IFormatNode<TInfo>
             {
-                int value = getValue(info);
-                FormatHelper.RightPad(value, width, scale, builder);
+                private readonly Func<TInfo, int> getValue;
+                private readonly int scale;
+                private readonly int width;
+
+                public RightPadTruncateNode(int width, int scale, Func<TInfo, int> getValue)
+                {
+                    this.width = width;
+                    this.scale = scale;
+                    this.getValue = getValue;
+                }
+
+                #region IFormatNode<TInfo> Members
+                public void Append(TInfo info, StringBuilder builder)
+                {
+                    int value = getValue(info);
+                    NumberFormatInfo nfi = NumberFormatInfo.GetInstance(info.FormatProvider);
+                    FormatHelper.RightPadTruncate(value, width, scale, nfi.NumberDecimalSeparator, builder);
+                }
+                #endregion
+
+                public override string ToString()
+                {
+                    return "Format right pad truncate: width=" + 3 + " scale=" + scale;
+                }
             }
             #endregion
-
-            public override string ToString()
-            {
-                return "Format right pad: width=" + 3 + " scale=" + scale;
-            }
         }
         #endregion
 
-        #region Nested type: RightPadTruncateNode
-        private sealed class RightPadTruncateNode : IFormatNode<TInfo>
+        #region Nested type: RightPadeBuilderNode
+        private sealed class RightPadeBuilderNode : AbstractFormatterBuilderNode<TInfo>
         {
-            private readonly Func<TInfo, int> getValue;
-            private readonly int scale;
-            private readonly int width;
-
-            public RightPadTruncateNode(int width, int scale, Func<TInfo, int> getValue)
+            public RightPadeBuilderNode(int width, int scale, Func<TInfo, int> getValue) : base(new RightPadNode(width, scale, getValue))
             {
-                this.width = width;
-                this.scale = scale;
-                this.getValue = getValue;
             }
 
-            #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder)
+            #region Nested type: RightPadNode
+            private sealed class RightPadNode : IFormatNode<TInfo>
             {
-                int value = getValue(info);
-                var nfi = NumberFormatInfo.GetInstance(info.FormatProvider);
-                FormatHelper.RightPadTruncate(value, width, scale, nfi.NumberDecimalSeparator, builder);
+                private readonly Func<TInfo, int> getValue;
+                private readonly int scale;
+                private readonly int width;
+
+                public RightPadNode(int width, int scale, Func<TInfo, int> getValue)
+                {
+                    this.width = width;
+                    this.scale = scale;
+                    this.getValue = getValue;
+                }
+
+                #region IFormatNode<TInfo> Members
+                public void Append(TInfo info, StringBuilder builder)
+                {
+                    int value = getValue(info);
+                    FormatHelper.RightPad(value, width, scale, builder);
+                }
+                #endregion
+
+                public override string ToString()
+                {
+                    return "Format right pad: width=" + 3 + " scale=" + scale;
+                }
             }
             #endregion
-
-            public override string ToString()
-            {
-                return "Format right pad truncate: width=" + 3 + " scale=" + scale;
-            }
         }
         #endregion
 
-        #region Nested type: SignNode
-        private sealed class SignNode : IFormatNode<TInfo>
+        #region Nested type: SignBuilderNode
+        private sealed class SignBuilderNode : IFormatterBuilderNode<TInfo>
         {
             private readonly Func<TInfo, ISignedValue> getValue;
             private readonly bool required;
 
-            public SignNode(bool required, Func<TInfo, ISignedValue> getValue)
+            public SignBuilderNode(bool required, Func<TInfo, ISignedValue> getValue)
             {
                 this.required = required;
                 this.getValue = getValue;
             }
 
-            #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder)
+            #region IFormatterBuilderNode<TInfo> Members
+            public IFormatNode<TInfo> MakeNode(IFormatProvider formatProvider)
             {
-                var value = getValue(info);
-                FormatHelper.FormatSign(value, required, builder);
+                var info = NumberFormatInfo.GetInstance(formatProvider);
+                if (required)
+                {
+                    return new SignRequiredNode(info.PositiveSign, info.NegativeSign, getValue);
+                }
+                return new SignOptionalNode(info.NegativeSign, getValue);
             }
             #endregion
 
-            public override string ToString()
+            #region Nested type: SignOptionalNode
+            private sealed class SignOptionalNode : IFormatNode<TInfo>
             {
-                return "Format sign: required=" + required;
+                private readonly Func<TInfo, ISignedValue> getValue;
+                private readonly string negative;
+
+                public SignOptionalNode(string negative, Func<TInfo, ISignedValue> getValue)
+                {
+                    this.getValue = getValue;
+                    this.negative = negative;
+                }
+
+                #region IFormatNode<TInfo> Members
+                public void Append(TInfo info, StringBuilder builder)
+                {
+                    ISignedValue value = getValue(info);
+                    if (value.IsNegative)
+                    {
+                        builder.Append(negative);
+                    }
+                }
+                #endregion
+
+                public override string ToString()
+                {
+                    return "Format sign: optional";
+                }
+            }
+            #endregion
+
+            #region Nested type: SignRequiredNode
+            private sealed class SignRequiredNode : IFormatNode<TInfo>
+            {
+                private readonly Func<TInfo, ISignedValue> getValue;
+                private readonly string negative;
+                private readonly string positive;
+
+                public SignRequiredNode(string positive, string negative, Func<TInfo, ISignedValue> getValue)
+                {
+                    this.getValue = getValue;
+                    this.positive = positive;
+                    this.negative = negative;
+                }
+
+                #region IFormatNode<TInfo> Members
+                public void Append(TInfo info, StringBuilder builder)
+                {
+                    ISignedValue value = getValue(info);
+                    builder.Append(value.IsNegative ? negative : positive);
+                }
+                #endregion
+
+                public override string ToString()
+                {
+                    return "Format sign: required";
+                }
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Nested type: StringBuilderNode
+        private sealed class StringBuilderNode : AbstractFormatterBuilderNode<TInfo>
+        {
+            public StringBuilderNode(string text) : base(new StringNode(text))
+            {
             }
         }
         #endregion
@@ -279,41 +406,37 @@ namespace NodaTime.Format.Builder
         #region Nested type: StringNode
         private sealed class StringNode : IFormatNode<TInfo>
         {
-            private readonly string text;
+            internal string Text { get; set; }
 
             public StringNode(string text)
             {
-                this.text = text;
+                Text = text;
             }
 
             #region IFormatNode<TInfo> Members
             public void Append(TInfo info, StringBuilder builder)
             {
-                builder.Append(text);
+                builder.Append(Text);
             }
             #endregion
 
             public override string ToString()
             {
-                return "Format string: [" + text + "]";
+                return "Format string: [" + Text + "]";
             }
         }
         #endregion
 
-        #region Nested type: TimeSeparaterNode
-        private sealed class TimeSeparaterNode : IFormatNode<TInfo>
+        #region Nested type: TimeSeparaterBuilderNode
+        private sealed class TimeSeparaterBuilderNode : IFormatterBuilderNode<TInfo>
         {
-            #region IFormatNode<TInfo> Members
-            public void Append(TInfo info, StringBuilder builder)
+            #region IFormatterBuilderNode<TInfo> Members
+            public IFormatNode<TInfo> MakeNode(IFormatProvider formatProvider)
             {
-                builder.Append(info.FormatInfo.TimeSeparator);
+                DateTimeFormatInfo info = DateTimeFormatInfo.GetInstance(formatProvider);
+                return new StringNode(info.TimeSeparator);
             }
             #endregion
-
-            public override string ToString()
-            {
-                return "Format time separator";
-            }
         }
         #endregion
     }

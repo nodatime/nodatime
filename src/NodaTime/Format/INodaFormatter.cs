@@ -17,14 +17,39 @@
 
 #region usings
 using System;
+
 #endregion
 
 namespace NodaTime.Format
 {
+    /// <summary>
+    /// Provides an interface for value formatters in the Nodatime package.
+    /// </summary>
+    /// <typeparam name="T">The type to format.</typeparam>
     public interface INodaFormatter<in T>
     {
+        /// <summary>
+        /// Gets or sets the format provider use by this formatter to format values..
+        /// </summary>
+        /// <value>
+        /// The format provider.
+        /// </value>
+        IFormatProvider FormatProvider { get; set; }
+
+        /// <summary>
+        /// Formats the specified value using the <see cref="IFormatProvider"/> given when the formatter
+        /// was constructed. This does NOT use the current thread <see cref="IFormatProvider"/>.
+        /// </summary>
+        /// <param name="value">The value to format.</param>
+        /// <returns>The value formatted as a string.</returns>
         string Format(T value);
 
-        string Format(T value, IFormatProvider formatProvider);
+        /// <summary>
+        /// Returns a new copy of this formatter that uses the given <see cref="IFormatProvider"/> for
+        /// formatting instead of the one that this formatter uses.
+        /// </summary>
+        /// <param name="formatProvider">The format provider to use.</param>
+        /// <returns>A new copy of this formatter using the given <see cref="IFormatProvider"/>.</returns>
+        INodaFormatter<T> WithFormatProvider(IFormatProvider formatProvider);
     }
 }

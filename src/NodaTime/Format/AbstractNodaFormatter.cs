@@ -17,49 +17,46 @@
 
 #region usings
 using System;
-using System.Threading;
+
 #endregion
 
 namespace NodaTime.Format
 {
     internal abstract class AbstractNodaFormatter<T> : INodaFormatter<T>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractNodaFormatter&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="formatProvider">The format provider.</param>
+        protected AbstractNodaFormatter(IFormatProvider formatProvider)
+        {
+            FormatProvider = formatProvider;
+        }
+
         #region INodaFormatter<T> Members
-        public virtual string Format(T value)
-        {
-            return Format(value, Thread.CurrentThread.CurrentCulture);
-        }
+        /// <summary>
+        /// Gets or sets the format provider use by this formatter to format values..
+        /// </summary>
+        /// <value>
+        /// The format provider.
+        /// </value>
+        public IFormatProvider FormatProvider { get; set; }
 
-        public abstract string Format(T value, IFormatProvider formatProvider);
+        /// <summary>
+        /// Formats the specified value using the <see cref="IFormatProvider"/> given when the formatter
+        /// was constructed. This does NOT use the current thread <see cref="IFormatProvider"/>.
+        /// </summary>
+        /// <param name="value">The value to format.</param>
+        /// <returns>The value formatted as a string.</returns>
+        public abstract string Format(T value);
 
-        public INodaFormatter<T> WithFormatProvider(IFormatProvider formatProvider)
-        {
-            return new ProviderFormatter(this, formatProvider);
-        }
+        /// <summary>
+        /// Returns a new copy of this formatter that uses the given <see cref="IFormatProvider"/> for
+        /// formatting instead of the one that this formatter uses.
+        /// </summary>
+        /// <param name="formatProvider">The format provider to use.</param>
+        /// <returns>A new copy of this formatter using the given <see cref="IFormatProvider"/>.</returns>
+        public abstract INodaFormatter<T> WithFormatProvider(IFormatProvider formatProvider);
         #endregion
-
-        private sealed class ProviderFormatter : AbstractNodaFormatter<T>
-        {
-            private readonly INodaFormatter<T> formatter;
-            private readonly IFormatProvider provider;
-
-            public ProviderFormatter(INodaFormatter<T> formatter, IFormatProvider provider)
-            {
-                var providerFormatter = formatter as ProviderFormatter;
-                this.formatter = providerFormatter == null ? formatter : providerFormatter.formatter;
-                this.formatter = formatter;
-                this.provider = provider;
-            }
-
-            public override string Format(T value)
-            {
-                return Format(value, provider);
-            }
-
-            public override string Format(T value, IFormatProvider formatProvider)
-            {
-                return formatter.Format(value, formatProvider);
-            }
-        }
     }
 }
