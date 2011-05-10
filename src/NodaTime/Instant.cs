@@ -294,16 +294,16 @@ namespace NodaTime
         #endregion
 
         #region Formatting
-
         /// <summary>
         /// Compiles the given format pattern string and returns a formatter object that formats
         /// <see cref="Instant"/> objects using the given format and the thread's current culture.
         /// </summary>
         /// <param name="format">The format pattern string.</param>
+        /// <param name="formatProvider"></param>
         /// <returns>An <see cref="INodaFormatter{T}"/> formatter object.</returns>
-        public static INodaFormatter<Instant> GetFormatter(string format)
+        public static INodaFormatter<Instant> GetFormatter(string format, IFormatProvider formatProvider)
         {
-            return InstantFormat.MakeFormatter(format);
+            return InstantFormat.MakeFormatter(format, formatProvider);
         }
 
         /// <summary>

@@ -14,11 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 #region usings
 using System;
-using System.Collections.Generic;
 using NodaTime.Format.Builder;
 using NodaTime.Globalization;
+
 #endregion
 
 namespace NodaTime.Format
@@ -28,10 +29,6 @@ namespace NodaTime.Format
     /// </summary>
     internal static class OffsetFormat
     {
-        private static readonly INodaFormatter<Offset> FormatterN = new OffsetFormatterN();
-        private static readonly INodaFormatter<Offset> FormatterG = new OffsetFormatterG();
-        private static readonly IDictionary<string, INodaFormatter<Offset>> Formatters = new Dictionary<string, INodaFormatter<Offset>>();
-
         /// <summary>
         ///   Formats the given <see cref = "Offset" /> value using the given format.
         /// </summary>
@@ -42,8 +39,8 @@ namespace NodaTime.Format
         /// <returns>The value formatted as a string.</returns>
         internal static string Format(Offset value, string format, NodaFormatInfo formatProvider)
         {
-            var formatter = MakeFormatter(format, formatProvider);
-            return formatter.Format(value, formatProvider);
+            INodaFormatter<Offset> formatter = MakeFormatter(format, formatProvider);
+            return formatter.Format(value);
         }
 
         internal static INodaFormatter<Offset> MakeFormatter(string format, IFormatProvider formatProvider)
@@ -52,7 +49,7 @@ namespace NodaTime.Format
             {
                 format = "g";
             }
-            return format.Length == 1 ? MakeFormatStandard(format[0], formatProvider) : MakeFormatPattern(format);
+            return format.Length == 1 ? MakeFormatStandard(format[0], formatProvider) : MakeFormatPattern(format, formatProvider);
         }
 
         private static INodaFormatter<Offset> MakeFormatStandard(char formatCharacter, IFormatProvider formatProvider)
@@ -61,9 +58,9 @@ namespace NodaTime.Format
             switch (formatCharacter)
             {
                 case 'g':
-                    return FormatterG;
+                    return new OffsetFormatterG(formatProvider);
                 case 'n':
-                    return FormatterN;
+                    return new OffsetFormatterN(formatProvider);
                 case 's':
                     pattern = NodaFormatInfo.GetInstance(formatProvider).OffsetPatternShort;
                     break;
@@ -79,20 +76,14 @@ namespace NodaTime.Format
                 default:
                     throw FormatError.UnknownStandardFormat(formatCharacter, typeof(Offset));
             }
-            return MakeFormatPattern(pattern);
+            return MakeFormatPattern(pattern, formatProvider);
         }
 
-        internal static INodaFormatter<Offset> MakeFormatPattern(string format)
+        internal static INodaFormatter<Offset> MakeFormatPattern(string format, IFormatProvider formatProvider)
         {
-            INodaFormatter<Offset> result;
-            if (!Formatters.TryGetValue(format, out result))
-            {
-                var builder = new FormatterBuilder<Offset, OffsetParseInfo>(format);
-                DoMakeFormatPattern(format, builder);
-                result = builder.Build((value, provider) => new OffsetParseInfo(value, provider));
-                Formatters.Add(format, result);
-            }
-            return result;
+            var builder = new FormatterBuilder<Offset, OffsetParseInfo>(format);
+            DoMakeFormatPattern(format, builder);
+            return builder.Build(formatProvider, (value, provider) => new OffsetParseInfo(value, provider));
         }
 
         internal static void DoMakeFormatPattern(string format, FormatterBuilder<Offset, OffsetParseInfo> builder)
@@ -170,9 +161,13 @@ namespace NodaTime.Format
         #region Nested type: OffsetFormatterG
         private sealed class OffsetFormatterG : AbstractNodaFormatter<Offset>
         {
-            public override string Format(Offset value, IFormatProvider formatProvider)
+            internal OffsetFormatterG(IFormatProvider formatProvider) : base(formatProvider)
             {
-                var formatInfo = NodaFormatInfo.GetInstance(formatProvider);
+            }
+
+            public override string Format(Offset value)
+            {
+                NodaFormatInfo formatInfo = NodaFormatInfo.GetInstance(FormatProvider);
                 string pattern;
                 if (value.FractionalSeconds != 0)
                 {
@@ -190,8 +185,13 @@ namespace NodaTime.Format
                 {
                     pattern = formatInfo.OffsetPatternShort;
                 }
-                var formatter = MakeFormatter(pattern, formatProvider);
-                return formatter.Format(value, formatProvider);
+                INodaFormatter<Offset> formatter = MakeFormatter(pattern, FormatProvider);
+                return formatter.Format(value);
+            }
+
+            public override INodaFormatter<Offset> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new OffsetFormatterG(formatProvider);
             }
         }
         #endregion
@@ -199,9 +199,18 @@ namespace NodaTime.Format
         #region Nested type: OffsetFormatterN
         private sealed class OffsetFormatterN : AbstractNodaFormatter<Offset>
         {
-            public override string Format(Offset value, IFormatProvider formatProvider)
+            internal OffsetFormatterN(IFormatProvider formatProvider) : base(formatProvider)
             {
-                return value.Milliseconds.ToString("N0", formatProvider);
+            }
+
+            public override string Format(Offset value)
+            {
+                return value.Milliseconds.ToString("N0", FormatProvider);
+            }
+
+            public override INodaFormatter<Offset> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new OffsetFormatterN(formatProvider);
             }
         }
         #endregion
