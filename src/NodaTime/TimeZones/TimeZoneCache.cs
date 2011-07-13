@@ -64,7 +64,8 @@ namespace NodaTime.TimeZones
             {
                 string systemName = TimeZone.CurrentTimeZone.StandardName;
                 string timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName) ?? DateTimeZone.UtcId;
-                return ForId(timeZoneId);
+                // Use UTC if we can't find the time zone ID - e.g. if DateTimeZone has been set to use UTC only.
+                return ForId(timeZoneId) ?? DateTimeZone.Utc;
             }
         }
 

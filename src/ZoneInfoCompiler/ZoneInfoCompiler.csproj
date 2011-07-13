@@ -131,6 +131,7 @@
     <None Include="Data\2008i\europe" />
     <None Include="Data\2008i\northamerica" />
     <None Include="Data\2008i\pacificnew" />
+    <None Include="Data\2008i\Readme.txt" />
     <None Include="Data\2008i\southamerica" />
     <None Include="Data\2008i\systemv" />
     <None Include="Data\2010o\africa" />
@@ -150,23 +151,19 @@
     <None Include="Data\2010o\southamerica" />
     <None Include="Data\2010o\systemv" />
     <None Include="Data\2010o\zone.tab" />
-    <None Include="Tzdb\Data\africa" />
-    <None Include="Tzdb\Data\antarctica" />
-    <None Include="Tzdb\Data\asia" />
-    <None Include="Tzdb\Data\australasia" />
-    <None Include="Tzdb\Data\backward" />
-    <None Include="Tzdb\Data\etcetera" />
-    <None Include="Tzdb\Data\europe" />
-    <None Include="Tzdb\Data\northamerica" />
-    <None Include="Tzdb\Data\pacificnew" />
-    <None Include="Tzdb\Data\southamerica" />
-    <None Include="Tzdb\Data\systemv" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\2008i\Readme.txt" />
-    <Content Include="Data\winmap\supplementalData.xml" />
-    <Content Include="Tzdb\Data\Readme.txt" />
-    <Content Include="Tzdb\Data\supplementalData.xml" />
+    <None Include="Data\2011h\africa" />
+    <None Include="Data\2011h\antarctica" />
+    <None Include="Data\2011h\asia" />
+    <None Include="Data\2011h\australasia" />
+    <None Include="Data\2011h\backward" />
+    <None Include="Data\2011h\etcetera" />
+    <None Include="Data\2011h\europe" />
+    <None Include="Data\2011h\northamerica" />
+    <None Include="Data\2011h\pacificnew" />
+    <None Include="Data\2011h\Readme.txt" />
+    <None Include="Data\2011h\southamerica" />
+    <None Include="Data\2011h\systemv" />
+    <None Include="Data\winmap\supplementalData.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
