@@ -392,5 +392,27 @@ namespace ZoneInfoCompiler.Test
             Assert.AreEqual(2, database.Zones[0].Count, "Zones in set " + database.Zones[0].Name);
             Assert.AreEqual(3, database.Zones[1].Count, "Zones in set " + database.Zones[1].Name);
         }
+
+        /* ############################################################################### */
+
+        [Test]
+        public void Parse_2400_FromDay()
+        {
+            const string text = "Apr Sun>=1  24:00";
+            var tokens = Tokens.Tokenize(text);
+            var actual = Parser.ParseDateTimeOfYear(tokens);
+            var expected = new ZoneYearOffset(TransitionMode.Wall, 4, 2, (int)DayOfWeek.Monday, true, ToOffset(0, 0, 0, 0));
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Parse_2400_Last()
+        {
+            const string text = "Mar lastSun 24:00";
+            var tokens = Tokens.Tokenize(text);
+            var actual = Parser.ParseDateTimeOfYear(tokens);
+            var expected = new ZoneYearOffset(TransitionMode.Wall, 4, 1, (int)DayOfWeek.Monday, false, ToOffset(0, 0, 0, 0));
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
