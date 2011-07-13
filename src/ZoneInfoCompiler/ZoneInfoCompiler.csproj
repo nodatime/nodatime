@@ -163,7 +163,6 @@
     <None Include="Data\2011h\Readme.txt" />
     <None Include="Data\2011h\southamerica" />
     <None Include="Data\2011h\systemv" />
-    <None Include="Data\winmap\supplementalData.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
@@ -173,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\winmap\windowsZones.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
