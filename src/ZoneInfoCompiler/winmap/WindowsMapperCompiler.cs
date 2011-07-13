@@ -74,7 +74,7 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         /// </summary>
         /// <param name = "inputFile">The input file.</param>
         /// <returns>An <see cref = "IDictionary{TKey,TValue}" /> of Windows time zone names to POSIX names.</returns>
-        private static IDictionary<string, string> ReadInput(FileInfo inputFile)
+        private IDictionary<string, string> ReadInput(FileInfo inputFile)
         {
             var mappings = new Dictionary<string, string>();
             using (var reader = inputFile.OpenText())
@@ -87,14 +87,27 @@ namespace NodaTime.ZoneInfoCompiler.winmap
                 {
                     var document = new XPathDocument(xmlReader);
                     var navigator = document.CreateNavigator();
+                    // Old format
                     var nodes = navigator.Select("/supplementalData/timezoneData/mapTimezones[@type = 'windows']/mapZone");
+                    if (nodes.Count == 0)
+                    {
+                        // New format
+                        nodes = navigator.Select("/supplementalData/windowsZones/mapTimezones/mapZone");
+                        if (nodes.Count == 0)
+                        {
+                            log.Error("Unable to find any zone information in {0}", inputFile.FullName);
+                            return mappings;
+                        }
+                    }
                     while (nodes.MoveNext())
                     {
                         var node = nodes.Current;
                         var windowsName = node.GetAttribute("other", "");
                         var posixName = node.GetAttribute("type", "");
                         mappings.Add(windowsName, posixName);
+                        log.Info("Mapping Windows name {0} to Posix name {1}", windowsName, posixName);
                     }
+                    log.Info("Mapped {0} zones in total.", mappings.Count);
                 }
             }
             return mappings;
