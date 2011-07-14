@@ -75,7 +75,7 @@ namespace NodaTime.TimeZones
             }
             try
             {
-                localEnd = this.end.Plus(this.offset - this.savings);
+                localEnd = this.end.Plus(this.offset);
             }
             catch (OverflowException)
             {
@@ -142,6 +142,24 @@ namespace NodaTime.TimeZones
             [DebuggerStepThrough] get { return localStart; }
         }
 
+        /// <summary>
+        /// Returns the local start time of the interval, as LocalDateTime
+        /// in the ISO calendar.
+        /// </summary>
+        public LocalDateTime IsoLocalStart
+        {
+            [DebuggerStepThrough] get { return new LocalDateTime(localStart); }
+        }
+
+        /// <summary>
+        /// Returns the local start time of the interval, as LocalDateTime
+        /// in the ISO calendar. This does not include any daylight saving 
+        /// </summary>
+        public LocalDateTime IsoLocalEnd
+        {
+            [DebuggerStepThrough]
+            get { return new LocalDateTime(localEnd); }
+        }
         /// <summary>
         ///   Gets the name of this offset period (e.g. PST or PDT).
         /// </summary>
