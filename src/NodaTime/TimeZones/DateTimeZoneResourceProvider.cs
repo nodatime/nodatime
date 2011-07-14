@@ -31,7 +31,7 @@ namespace NodaTime.TimeZones
     {
         public const string IdMapKey = "IdMap";
 
-        private readonly ResourceManager manager;
+        private readonly ResourceSet source;
         private readonly IDictionary<string, string> timeZoneIdMap;
 
         /// <summary>
@@ -48,9 +48,27 @@ namespace NodaTime.TimeZones
         /// <param name = "baseName">GetName of the base.</param>
         /// <param name = "assembly">The assembly to search for the time zone resources.</param>
         public DateTimeZoneResourceProvider(string baseName, Assembly assembly)
+            : this(new ResourceManager(baseName, assembly))
         {
-            manager = new ResourceManager(baseName, assembly);
-            timeZoneIdMap = ResourceHelper.LoadDictionary(manager, IdMapKey);
+        }
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "DateTimeZoneResourceProvider" /> class.
+        /// </summary>
+        /// <param name="source">The <see cref="ResourceManager"/> to search for the time zone resources.</param>
+        public DateTimeZoneResourceProvider(ResourceManager source)
+            : this(ResourceHelper.GetDefaultResourceSet(source))
+        {
+        }
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "DateTimeZoneResourceProvider" /> class.
+        /// </summary>
+        /// <param name="source">The <see cref="ResourceSet"/> to search for the time zone resources.</param>
+        public DateTimeZoneResourceProvider(ResourceSet source)
+        {
+            this.source = source;
+            timeZoneIdMap = ResourceHelper.LoadDictionary(source, IdMapKey);
         }
 
         #region IDateTimeZoneProvider Members
@@ -69,7 +87,7 @@ namespace NodaTime.TimeZones
         public DateTimeZone ForId(string id)
         {
             var queryId = timeZoneIdMap.ContainsKey(id) ? timeZoneIdMap[id] : id;
-            return ResourceHelper.LoadTimeZone(manager, queryId, id);
+            return ResourceHelper.LoadTimeZone(source, queryId, id);
         }
 
         /// <summary>
