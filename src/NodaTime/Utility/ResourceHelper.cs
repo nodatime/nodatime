@@ -58,7 +58,8 @@ namespace NodaTime.Utility
         /// <param name="manager">The <see cref="ResourceManager"/> to get resources from.</param>
         /// <returns>The default <see cref="ResourceSet"/>.</returns>
         /// <remarks>The default <see cref="ResourceSet"/> for a <see cref="ResourceManager"/> is the <see cref="ResourceSet"/> that is used by <see cref="ResourceManager.GetObject(string)"/>.</remarks>
-        internal static ResourceSet GetDefaultResourceSet(ResourceManager manager) {
+        internal static ResourceSet GetDefaultResourceSet(ResourceManager manager)
+        {
             return manager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
         }
 
@@ -96,7 +97,7 @@ namespace NodaTime.Utility
         /// <returns>The <see cref="DateTimeZone"/> or <c>null</c> if there is no such resource.</returns>
         internal static DateTimeZone LoadTimeZone(ResourceSet source, string name, string id)
         {
-            if(source == null)
+            if (source == null)
             {
                 throw new ArgumentNullException("source");
             }
