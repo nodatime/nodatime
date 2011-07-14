@@ -140,7 +140,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             var files = options.InputFiles;
             var fileList = MakeFileList(sourceDirectory, files);
             ValidateArguments(sourceDirectory, fileList);
-            using (var output = new ResourceOutput(outputFile.Name, options.OutputType))
+            using (var output = new ResourceOutput(outputFile.FullName, options.OutputType))
             {
                 //// Using this conditional code makes debugging simpler in Visual Studio because exceptions will
                 //// be caught by VS and shown with the exception visualizer.
