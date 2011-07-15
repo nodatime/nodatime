@@ -306,9 +306,10 @@ namespace NodaTime.TimeZones
 
                 return node;
             }
+
             #region Nested type: HashCacheNode
             /// <summary>
-            /// 
+            /// See CreateInstantNode for an explanation.
             /// </summary>
             private class HashCacheNode
             {
@@ -341,7 +342,7 @@ namespace NodaTime.TimeZones
 
         #region Nested type: MruListCache
         /// <summary>
-        /// Implements a Most-recently-usage ordered cache list.
+        /// Implements a most-recently-used ordered cache list.
         /// </summary>
         /// <remarks>
         /// <para>
