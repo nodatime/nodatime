@@ -30,7 +30,7 @@ namespace NodaTime.Test.TimeZones
             timeZone = DateTimeZone.ForId("America/Los_Angeles") as CachedDateTimeZone;
             if (timeZone == null)
             {
-                Assert.Fail(@"The America/Los_Angeles time zone does not contain a CachedDateTimeZone.");
+                Assert.Fail("The America/Los_Angeles time zone does not contain a CachedDateTimeZone.");
             }
             summer = Instant.FromUtc(2010, 6, 1, 0, 0);
         }
@@ -49,14 +49,18 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneIntervalInstant_RepeatedCallsReturnDifferentObject()
         {
-            var actual = timeZone.GetZoneInterval(Instant.UnixEpoch);
-            for (int i = 0; i < timeZone.CacheSize + 1; i++)
+            // TODO: Work out whether this is a good test or not, and whether it's okay
+            // to just hard code a value which is more than the cache size here. We don't
+            // really need the cache size in the API in general.
+            int moreThanCacheSize = 512;
+            var original = timeZone.GetZoneInterval(Instant.UnixEpoch);
+            for (int i = 0; i < moreThanCacheSize; i++)
             {
                 var instant = Instant.UnixEpoch + Duration.FromStandardWeeks(52 * (i + 1));
                 Assert.IsNotNull(timeZone.GetZoneInterval(instant));
             }
-            var newPeriod = timeZone.GetZoneInterval(summer);
-            Assert.AreNotSame(actual, newPeriod);
+            var newInterval = timeZone.GetZoneInterval(summer);
+            Assert.AreNotSame(original, newInterval);
         }
 
         [Test]
