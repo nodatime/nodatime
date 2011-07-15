@@ -134,11 +134,28 @@ namespace NodaTime.TimeZones
 
         #region Nested type: HashArrayCache
         /// <summary>
-        /// This provides a simple cache based on a hash table.
+        /// This provides a simple cache based on two hash tables (one for local instants, another
+        /// for instants).
         /// </summary>
+        /// <remarks>
+        /// Each hash table entry is either entry or contains a node with enough
+        /// information for a particular "period" of about 40 days - so multiple calls for time
+        /// zone information within the same few years are likely to hit the cache. Note that
+        /// a single "period" may include a daylight saving change (or conceivably more than one);
+        /// a node therefore has to contain enough intervals to completely represent that period.
+        /// 
+        /// If another call is made which maps to the same cache entry number but is for a different
+        /// period, the existing hash entry is simply overridden.
+        /// </remarks>
         private class HashArrayCache : CachedDateTimeZone
         {
-            private const int DefaultCacheSize = 512;
+            // Currently we have no need or way to create hash cache zones with
+            // different cache sizes. But the cache size should always be a power of 2 to get the
+            // "period to cache entry" conversion simply as a bitmask operation.
+            private const int CacheSize = 512;
+            // Mask to AND the period number with in order to get the cache entry index. The
+            // result will always be in the range [0, CacheSize).
+            private const int CachePeriodMask = CacheSize - 1;
 
             /// <summary>
             /// Defines the number of bits to shift an instant value to get the period. This
@@ -146,9 +163,13 @@ namespace NodaTime.TimeZones
             /// </summary>
             private const int PeriodShift = 45;
 
-            private const long PeriodEndMask = 0x1fffffffffffL;
-
-            private readonly int cachePeriodMask;
+            // Mask to "or" a shifted period value with in order to get the end point.
+            // In other words:
+            // We shift a number of ticks *right* by PeriodShift to get the period number.
+            // We shift the period number *left* by PeriodShift to get the start of the period.
+            // We shift the period number *left* by PeriodShift and OR with PeriodEndMask to get
+            // the end of the period.
+            private const long PeriodEndMask = (1 << PeriodShift) - 1;
 
             private readonly HashCacheNode[] instantCache;
             private readonly HashCacheNode[] localInstantCache;
@@ -163,9 +184,8 @@ namespace NodaTime.TimeZones
                 {
                     throw new ArgumentNullException("timeZone");
                 }
-                cachePeriodMask = MakeMask(0);
-                instantCache = new HashCacheNode[cachePeriodMask + 1];
-                localInstantCache = new HashCacheNode[cachePeriodMask + 1];
+                instantCache = new HashCacheNode[CacheSize];
+                localInstantCache = new HashCacheNode[CacheSize];
             }
 
             #region Overrides of DateTimeZoneBase
@@ -178,7 +198,7 @@ namespace NodaTime.TimeZones
             public override ZoneInterval GetZoneInterval(Instant instant)
             {
                 int period = (int)(instant.Ticks >> PeriodShift);
-                int index = period & cachePeriodMask;
+                int index = period & CachePeriodMask;
                 var node = instantCache[index];
                 if (node == null || node.Period != period)
                 {
@@ -203,7 +223,7 @@ namespace NodaTime.TimeZones
             internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
             {
                 int period = (int)(localInstant.Ticks >> PeriodShift);
-                int index = period & cachePeriodMask;
+                int index = period & CachePeriodMask;
                 var node = localInstantCache[index];
                 if (node == null || node.Period != period)
                 {
@@ -223,10 +243,16 @@ namespace NodaTime.TimeZones
             #endregion
 
             /// <summary>
-            /// Creates the info.
+            /// Creates a hash table node with all the information for this period.
+            /// We start off by finding the interval for the start of the period, and
+            /// then repeatedly check whether that interval ends after the end of the
+            /// period - at which point we're done. If not, find the next interval, create
+            /// a new node referring to that interval and the previous interval, and keep going.
+            /// 
+            /// TODO: Simplify this significantly. There's no need to have anything more than
+            /// a single node with a list or array of intervals. In most cases it'll only be one
+            /// or two intervals anyway.
             /// </summary>
-            /// <param name="period"></param>
-            /// <returns></returns>
             private HashCacheNode CreateInstantNode(int period)
             {
                 var periodStart = new Instant((long)period << PeriodShift);
@@ -248,10 +274,12 @@ namespace NodaTime.TimeZones
             }
 
             /// <summary>
-            /// Creates the info.
+            /// See CreateInstantNode - this is the equivalent, but for local instants.
+            /// 
+            /// TODO: Local instants are actually conceivably trickier due to ambiguity
+            /// etc. I have a plan for fixing this, but again making this just a list
+            /// of intervals which occur at any point in the period would make life easier.
             /// </summary>
-            /// <param name="period"></param>
-            /// <returns></returns>
             private HashCacheNode CreateLocalInstantNode(int period)
             {
                 var periodStart = new LocalInstant((long)period << PeriodShift);
@@ -278,33 +306,6 @@ namespace NodaTime.TimeZones
 
                 return node;
             }
-
-            /// <summary>
-            /// Makes the mask.
-            /// </summary>
-            /// <param name="cacheSize">Size of the cache.</param>
-            /// <returns></returns>
-            private static int MakeMask(int cacheSize)
-            {
-                if (cacheSize <= 0)
-                {
-                    cacheSize = DefaultCacheSize;
-                }
-                else
-                {
-                    cacheSize--;
-                    int shift = 0;
-                    while (cacheSize > 0)
-                    {
-                        shift++;
-                        cacheSize >>= 1;
-                    }
-                    cacheSize = 1 << shift;
-                }
-
-                return cacheSize - 1;
-            }
-
             #region Nested type: HashCacheNode
             /// <summary>
             /// 
