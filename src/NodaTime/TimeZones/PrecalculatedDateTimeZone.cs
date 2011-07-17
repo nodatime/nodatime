@@ -38,7 +38,7 @@ namespace NodaTime.TimeZones
         /// <param name="transitions">The transitions.</param>
         /// <param name="precalcedEnd">The precalced end.</param>
         /// <param name="tailZone">The tail zone.</param>
-        public PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, DateTimeZone tailZone) : base(id, false)
+        internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, DateTimeZone tailZone) : base(id, false)
         {
             if (transitions == null)
             {
@@ -48,7 +48,7 @@ namespace NodaTime.TimeZones
             int size = transitions.Count;
             if (size == 0)
             {
-                throw new ArgumentException(@"There must be at least one transition", "transitions");
+                throw new ArgumentException("There must be at least one transition", "transitions");
             }
             periods = new ZoneInterval[size];
             for (int i = 0; i < size; i++)
@@ -85,8 +85,10 @@ namespace NodaTime.TimeZones
             {
                 return tailZone.GetZoneInterval(instant);
             }
+            // TODO: Consider using a binary search instead.
             for (var p = last; p >= 0; p--)
             {
+                // TODO: It's not clear how this would happen. Do we need it?
                 if (periods[p].End <= instant)
                 {
                     break;

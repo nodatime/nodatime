@@ -234,6 +234,7 @@ namespace NodaTime
         ///   due to zone transitions.</exception>
         internal virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
+            // TODO: Handle a null return value... possibly by throwing a new kind of exception.
             ZoneInterval interval = GetZoneInterval(localInstant);
             return interval.Offset;
         }
@@ -245,6 +246,18 @@ namespace NodaTime
         /// <param name = "localInstant">The <see cref = "T:NodaTime.LocalInstant" /> to query.</param>
         /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" /> or <c>null</c>.</returns>
         internal abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
+
+        // In the future:
+        // <summary>
+        // Finds all zone intervals for the given local instant. Usually there's one (i.e. only a single
+        // instant is mapped to the given local instant within the time zone) but during DST transitions
+        // there can be either 0 (the given local instant doesn't exist, e.g. local time skipped from 1am to
+        // 2am, but you gave us 1.30am) or 2 (the given local instant is ambiguous, e.g. local time skipped
+        // from 2am to 1am, but you gave us 1.30am).
+        // </summary>
+        // <param name="localInstant">The local instant to find matching zone intervals for</param>
+        // <returns>The struct containing up to two ZoneInterval references.</returns>
+        //internal abstract ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant);
         #endregion LocalInstant methods
 
         #region I/O
