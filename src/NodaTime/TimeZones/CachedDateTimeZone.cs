@@ -168,7 +168,8 @@ namespace NodaTime.TimeZones
             // We shift a number of ticks *right* by PeriodShift to get the period number.
             // We shift the period number *left* by PeriodShift to get the start of the period.
             // We shift the period number *left* by PeriodShift and OR with PeriodEndMask to get
-            // the end of the period.
+            // the end of the period (inclusive). An alternative would be to increment the period
+            // and just shift left, to get the period end in an *exclusive* form.
             private const long PeriodEndMask = (1 << PeriodShift) - 1;
 
             private readonly HashCacheNode[] instantCache;
@@ -348,7 +349,9 @@ namespace NodaTime.TimeZones
         /// <para>
         /// This class implements a simple linked list of periods in most-recently-used order. If
         /// the list grows beyond the CacheSize, the least-recently-used items are dropped in favor
-        /// of the new ones.
+        /// of the new ones. When a lookup is performed, it simply looks through this list in order.
+        /// This means it's efficient when many lookups are performed on for roughly the same time
+        /// period, but less efficient if they're scattered across many intervals.
         /// </para>
         /// <para>
         /// Special care is taken so that this cache will be is a valid state in the event that
