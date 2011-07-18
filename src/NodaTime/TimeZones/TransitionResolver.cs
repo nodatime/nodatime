@@ -1,6 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#region Copyright and license information
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2010 Jon Skeet
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+using System;
 
 namespace NodaTime.TimeZones
 {
@@ -12,10 +27,16 @@ namespace NodaTime.TimeZones
     /// don't occur at all). When the wall clock goes backward, some local times are ambiguous (they
     /// occur twice).
     /// </summary>
-    public class TransitionResolver
+    public sealed class TransitionResolver
     {
-        private delegate Instant Resolver(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant);
+        /// <summary>
+        /// Delegate signature matching both methods - handy as a way of keeping all the behaviour in a single class.
+        /// </summary>
+        private delegate Instant Resolver(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone);
 
+        /// <summary>
+        /// Strategy to use when resolving ambiguities.
+        /// </summary>
         public enum AmbiguityStrategy
         {
             /// <summary>
@@ -32,6 +53,9 @@ namespace NodaTime.TimeZones
             Later = 2
         }
 
+        /// <summary>
+        /// Strategy to use when resolving gaps.
+        /// </summary>
         public enum GapStrategy
         {
             /// <summary>
@@ -72,17 +96,17 @@ namespace NodaTime.TimeZones
         /// Determines the instant to treat the specified local instant as when there are two
         /// possible intervals involved.
         /// </summary>
-        internal Instant ResolveAmbiguity(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant)
+        internal Instant ResolveAmbiguity(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
         {
-            return ambiguityResolver(intervalBefore, intervalAfter, localInstant);
+            return ambiguityResolver(intervalBefore, intervalAfter, localInstant, zone);
         }
 
         /// <summary>
         /// Determines the instant to treat the specified local instant as when it falls in a gap.
         /// </summary>
-        internal Instant ResolveGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant)
+        internal Instant ResolveGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
         {
-            return gapResolver(intervalBefore, intervalAfter, localInstant);
+            return gapResolver(intervalBefore, intervalAfter, localInstant, zone);
         }
 
         /// <summary>
@@ -90,10 +114,86 @@ namespace NodaTime.TimeZones
         /// </summary>
         public static TransitionResolver FromStrategies(AmbiguityStrategy ambiguityStrategy, GapStrategy gapStrategy)
         {
-            // FIXME!
-            return null;
+            Resolver ambiguityResolver;
+            switch (ambiguityStrategy)
+            {
+                case AmbiguityStrategy.Strict:
+                    ambiguityResolver = StrictAmbiguity;
+                    break;
+                case AmbiguityStrategy.Earlier:
+                    ambiguityResolver = EarlyAmbiguity;
+                    break;
+                case AmbiguityStrategy.Later:
+                    ambiguityResolver = LateAmbiguity;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("ambiguityStrategy", "Invalid ambiguity strategy: " + ambiguityStrategy);
+            }
+            Resolver gapResolver;
+            switch (gapStrategy)
+            {
+                case GapStrategy.Strict:
+                    gapResolver = StrictGap;
+                    break;
+                case GapStrategy.EndOfEarlyInterval:
+                    gapResolver = EndOfEarlyIntervalGap;
+                    break;
+                case GapStrategy.StartOfLateInterval:
+                    gapResolver = StartOfLateIntervalGap;
+                    break;
+                case GapStrategy.PushBackward:
+                    gapResolver = PushBackwardGap;
+                    break;
+                case GapStrategy.PushForward:
+                    gapResolver = PushForwardGap;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("gapStrategy", "Invalid gap strategy: " + gapStrategy);
+            }
+            return new TransitionResolver(ambiguityResolver, gapResolver);
         }
 
+        private static Instant StrictAmbiguity(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        {
+            throw new AmbiguousTimeException(localInstant, zone);
+        }
+
+        private static Instant EarlyAmbiguity(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        {
+            return localInstant.Minus(intervalBefore.Offset);
+        }
+
+        private static Instant LateAmbiguity(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        {
+            return localInstant.Minus(intervalAfter.Offset);
+        }
+
+        private static Instant StrictGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        {
+            throw new SkippedTimeException(localInstant, zone);
+        }
+
+        private static Instant EndOfEarlyIntervalGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        {
+            return intervalBefore.End - Duration.One;
+        }
+
+        private static Instant StartOfLateIntervalGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        {
+            return intervalAfter.Start;
+        }
+
+        private static Instant PushBackwardGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        {
+            return localInstant.Minus(intervalAfter.Offset);
+        }
+
+        private static Instant PushForwardGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        {
+            return localInstant.Minus(intervalBefore.Offset);
+        }
+
+        #region Well-known resolvers
         private static readonly TransitionResolver strict = FromStrategies(AmbiguityStrategy.Strict, GapStrategy.Strict);
         /// <summary>
         /// Resolver which throws an exception in the case of either ambiguity or a gap.
@@ -132,5 +232,6 @@ namespace NodaTime.TimeZones
         /// This is the equivalent of FromStrategies(AmbiguityStrategy.Later, GapStrategy.PushForward).
         /// </summary>
         public static TransitionResolver PushBackward { get { return pushBackward; } }
+        #endregion
     }
 }

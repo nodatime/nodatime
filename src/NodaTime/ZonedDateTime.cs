@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using NodaTime.Calendars;
 using NodaTime.Utility;
 
 namespace NodaTime
