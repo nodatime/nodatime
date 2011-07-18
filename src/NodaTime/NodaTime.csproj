@@ -160,6 +160,7 @@
       <DependentUpon>winmap.resx</DependentUpon>
     </Compile>
     <Compile Include="TimeZones\ZoneInterval.cs" />
+    <Compile Include="TimeZones\ZoneIntervalPair.cs" />
     <Compile Include="TimeZones\ZoneYearOffset.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZone.cs" />
     <Compile Include="TimeZones\ZoneRecurrence.cs" />

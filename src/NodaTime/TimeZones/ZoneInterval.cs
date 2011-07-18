@@ -71,6 +71,8 @@ namespace NodaTime.TimeZones
             }
             catch (OverflowException)
             {
+                // TODO: Work out whether we can just compare start with Instant.MinValue and
+                // the equivalent later on. I don't like catching OverflowException like this...
                 localStart = LocalInstant.MinValue;
             }
             try
