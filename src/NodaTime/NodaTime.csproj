@@ -77,6 +77,7 @@
     <Compile Include="Clock.cs" />
     <Compile Include="Clocks\ClockBase.cs" />
     <Compile Include="Clocks\FixedClock.cs" />
+    <Compile Include="AmbiguousTimeException.cs" />
     <Compile Include="Format\DurationFormatter.cs" />
     <Compile Include="Format\FormatPattern.cs" />
     <Compile Include="Format\FormatterBase.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
+    <Compile Include="TimeZones\TransitionResolver.cs" />
     <Compile Include="TimeZones\NullDateTimeZone.cs" />
     <Compile Include="TimeZones\TimeZoneCache.cs" />
     <Compile Include="TimeZones\Transition.cs" />
