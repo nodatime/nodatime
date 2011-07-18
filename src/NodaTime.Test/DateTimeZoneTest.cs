@@ -163,10 +163,10 @@ namespace NodaTime.Test
             var ids = DateTimeZone.Ids;
             var idsCount = ids.Count();
             Assert.IsTrue(idsCount == 1, "idsCount == 1");
-            Assert.AreEqual("Ids\r\n", provider.ToString());
+            Assert.AreEqual("Ids\n", provider.ToString());
             var unknown = DateTimeZone.ForId("an unknown id");
             Assert.IsNull(unknown);
-            Assert.AreEqual("Ids\r\nForId(an unknown id)\r\n", provider.ToString());
+            Assert.AreEqual("Ids\nForId(an unknown id)\n", provider.ToString());
         }
 
         private class TestProvider : IDateTimeZoneProvider
