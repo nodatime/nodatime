@@ -58,6 +58,7 @@ namespace NodaTime.TimeZones
                 var period = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset, transition.Savings);
                 periods[i] = period;
             }
+            ValidatePeriods(periods);
         }
 
         /// <summary>
@@ -73,8 +74,35 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
+        /// Validates that all the periods before the tail zone make sense. We have to start at the beginning of time,
+        /// and then have adjoining periods. This is only called in the 
+        /// </summary>
+        /// <remarks>This is only called from the constructors, but is internal to make it easier to test.</remarks>
+        /// <exception cref="ArgumentException">The periods specified are invalid</exception>
+        internal static void ValidatePeriods(ZoneInterval[] periods)
+        {
+            if (periods.Length == 0)
+            {
+                throw new ArgumentException("No periods specified in precalculated time zone");
+            }
+            if (periods[0].Start != Instant.MinValue)
+            {
+                throw new ArgumentException("Periods in precalculated time zone must start with the beginning of time");
+            }
+            for (int i = 0; i < periods.Length - 1; i++)
+            {
+                if (periods[i].End != periods[i + 1].Start)
+                {
+                    throw new ArgumentException("Non-adjoining ZoneIntervals for precalculated time zone");
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
         /// for the given instant.
+        /// TODO: Is it even possible for a zone to not have a zone interval for a particular instant? It makes no logical
+        /// sense. Suggest we state that this can't happen, and throw an exception...
         /// </summary>
         /// <param name="instant">The Instant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>

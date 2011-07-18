@@ -75,6 +75,7 @@ namespace NodaTime
 
         /// <summary>
         ///   Returns the time zone with the given id.
+        /// TODO: Consider whether this should be ForID (as ID is a two-letter abbreviation).
         /// </summary>
         /// <param name = "id">The time zone id to find.</param>
         /// <returns>The <see cref = "DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>

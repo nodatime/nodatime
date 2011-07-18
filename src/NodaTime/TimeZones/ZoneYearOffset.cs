@@ -320,6 +320,8 @@ namespace NodaTime.TimeZones
             }
             catch (OverflowException)
             {
+                // TODO: Determine why we really want this behaviour, rather than just letting it throw?
+                // Would need explicit handling for MinValue and MaxValue probably...
                 return direction < 0 ? Instant.MinValue : Instant.MaxValue;
             }
         }
