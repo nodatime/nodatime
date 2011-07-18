@@ -144,6 +144,20 @@ namespace NodaTime.Test
             Assert.IsFalse(DateTimeZone.RemoveProvider(DateTimeZone.DefaultDateTimeZoneProvider));
         }
 
+        /// <summary>
+        /// Simply tests that every ID in the built-in database can be fetched. This is also
+        /// helpful for diagnostic debugging when we want to check that some potential
+        /// invariant holds for all time zones...
+        /// </summary>
+        [Test]
+        public void TestForId_AllIds()
+        {
+            foreach (string id in DateTimeZone.Ids)
+            {
+                Assert.IsNotNull(DateTimeZone.ForId(id));
+            }
+        }
+
         private static void ExcerciseProvider(TestProvider provider)
         {
             var ids = DateTimeZone.Ids;

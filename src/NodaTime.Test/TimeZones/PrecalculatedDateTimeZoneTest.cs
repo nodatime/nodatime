@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
@@ -31,7 +32,7 @@ namespace NodaTime.Test.TimeZones
             timeZone = cached.Uncached() as PrecalculatedDateTimeZone;
             if (timeZone == null)
             {
-                Assert.Fail(@"The Europe/Paris time zone does not contain a PrecalculatedDateTimeZone.");
+                Assert.Fail("The Europe/Paris time zone does not contain a PrecalculatedDateTimeZone.");
             }
             summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZone.Utc).ToInstant();
         }
@@ -54,6 +55,47 @@ namespace NodaTime.Test.TimeZones
             var expected = timeZone.GetZoneInterval(summer);
             var actual = timeZone.GetZoneInterval(expected.Start);
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Validation_EmptyPeriodArray()
+        {
+            Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(new ZoneInterval[0]));
+        }
+
+        [Test]
+        public void Validation_BadFirstStartingPoint()
+        {
+            ZoneInterval[] intervals =
+            {
+                new ZoneInterval("foo", new Instant(10), new Instant(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", new Instant(20), new Instant(30), Offset.Zero, Offset.Zero),                                       
+            };
+            Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals));
+        }
+
+        [Test]
+        public void Validation_NonAdjoiningIntervals()
+        {
+            ZoneInterval[] intervals =
+            {
+                new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", new Instant(25), new Instant(30), Offset.Zero, Offset.Zero),                                       
+            };
+            Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals));
+        }
+
+        [Test]
+        public void Validation_Success()
+        {
+            ZoneInterval[] intervals =
+            {
+                new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", new Instant(20), new Instant(30), Offset.Zero, Offset.Zero),                                       
+                new ZoneInterval("foo", new Instant(30), new Instant(100), Offset.Zero, Offset.Zero),                                       
+                new ZoneInterval("foo", new Instant(100), new Instant(200), Offset.Zero, Offset.Zero),                                       
+            };
+            PrecalculatedDateTimeZone.ValidatePeriods(intervals);
         }
     }
 }
