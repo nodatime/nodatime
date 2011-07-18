@@ -170,7 +170,7 @@ namespace NodaTime.TimeZones
             // We shift the period number *left* by PeriodShift and OR with PeriodEndMask to get
             // the end of the period (inclusive). An alternative would be to increment the period
             // and just shift left, to get the period end in an *exclusive* form.
-            private const long PeriodEndMask = (1 << PeriodShift) - 1;
+            private const long PeriodEndMask = (1L << PeriodShift) - 1;
 
             private readonly HashCacheNode[] instantCache;
             private readonly HashCacheNode[] localInstantCache;
