@@ -58,7 +58,7 @@ namespace NodaTime.TimeZones
                 var period = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset, transition.Savings);
                 periods[i] = period;
             }
-            ValidatePeriods(periods);
+            ValidatePeriods(periods, tailZone);
         }
 
         /// <summary>
@@ -71,6 +71,7 @@ namespace NodaTime.TimeZones
         {
             this.tailZone = tailZone;
             this.periods = periods;
+            ValidatePeriods(periods, tailZone);
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>This is only called from the constructors, but is internal to make it easier to test.</remarks>
         /// <exception cref="ArgumentException">The periods specified are invalid</exception>
-        internal static void ValidatePeriods(ZoneInterval[] periods)
+        internal static void ValidatePeriods(ZoneInterval[] periods, DateTimeZone tailZone)
         {
             if (periods.Length == 0)
             {
@@ -95,6 +96,10 @@ namespace NodaTime.TimeZones
                 {
                     throw new ArgumentException("Non-adjoining ZoneIntervals for precalculated time zone");
                 }
+            }
+            if (tailZone == null && periods[periods.Length - 1].End != Instant.MaxValue)
+            {
+                throw new ArgumentException("Null tail zone given but periods don't cover all of time");
             }
         }
 

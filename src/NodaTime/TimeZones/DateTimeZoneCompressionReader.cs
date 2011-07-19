@@ -21,7 +21,7 @@ using System.IO;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///   A very specifc compressing binary stream reader for time zones.
+    ///   A very specific compressing binary stream reader for time zones.
     /// </summary>
     internal class DateTimeZoneCompressionReader : DateTimeZoneReader
     {
@@ -29,7 +29,7 @@ namespace NodaTime.TimeZones
         ///   Initializes a new instance of the <see cref = "DateTimeZoneCompressionReader" /> class.
         /// </summary>
         /// <param name = "stream">The stream to read from.</param>
-        public DateTimeZoneCompressionReader(Stream stream) : base(stream)
+        internal DateTimeZoneCompressionReader(Stream stream) : base(stream)
         {
         }
 
@@ -40,7 +40,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteCount" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
-        public override int ReadCount()
+        internal override int ReadCount()
         {
             unchecked
             {
@@ -90,7 +90,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteMilliseconds" />.
         /// </remarks>
         /// <returns>The integer millisecond value from the stream.</returns>
-        public override int ReadMilliseconds()
+        internal override int ReadMilliseconds()
         {
             /*
              * Milliseconds encoding formats:
@@ -143,7 +143,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteTicks" />.
         /// </remarks>
         /// <returns>The long ticks value from the stream.</returns>
-        public override long ReadTicks()
+        internal override long ReadTicks()
         {
             /*
              * Ticks encoding formats:

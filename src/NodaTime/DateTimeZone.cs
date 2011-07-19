@@ -195,11 +195,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Gets the zone interval for the given instant. Null is returned if no interval is
-        ///   defined by the time zone for the given instant.
+        ///   Gets the zone interval for the given instant. This will never return null.
         /// </summary>
         /// <param name = "instant">The <see cref = "T:NodaTime.Instant" /> to query.</param>
-        /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" /> or <c>null</c>.</returns>
+        /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" />.</returns>
         public abstract ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
@@ -248,7 +247,6 @@ namespace NodaTime
         /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" /> or <c>null</c>.</returns>
         internal abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
 
-        // In the future:
         // <summary>
         // Finds all zone intervals for the given local instant. Usually there's one (i.e. only a single
         // instant is mapped to the given local instant within the time zone) but during DST transitions
@@ -258,7 +256,7 @@ namespace NodaTime
         // </summary>
         // <param name="localInstant">The local instant to find matching zone intervals for</param>
         // <returns>The struct containing up to two ZoneInterval references.</returns>
-        //internal abstract ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant);
+        internal virtual ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant) { return default(ZoneIntervalPair); }
         #endregion LocalInstant methods
 
         #region I/O
