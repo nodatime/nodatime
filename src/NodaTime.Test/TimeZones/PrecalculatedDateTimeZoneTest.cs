@@ -24,37 +24,95 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class PrecalculatedDateTimeZoneTest
     {
-        #region Setup/Teardown
-        [SetUp]
-        public void Setup()
-        {
-            var cached = DateTimeZone.ForId("Europe/Paris");
-            timeZone = cached.Uncached() as PrecalculatedDateTimeZone;
-            if (timeZone == null)
-            {
-                Assert.Fail("The Europe/Paris time zone does not contain a PrecalculatedDateTimeZone.");
-            }
-            summer = new ZonedDateTime(2010, 6, 1, 0, 0, 0, DateTimeZone.Utc).ToInstant();
-        }
-        #endregion
+        private static readonly ZoneInterval FirstInterval =
+            new ZoneInterval("First", Instant.MinValue, Instant.FromUtc(2000, 3, 10, 10, 0), Offset.ForHours(3), Offset.Zero);
 
-        private PrecalculatedDateTimeZone timeZone;
-        private Instant summer;
+        // Note that this is effectively UTC +3 + 1 hour DST.
+        private static readonly ZoneInterval SecondInterval =
+            new ZoneInterval("Second", FirstInterval.End, Instant.FromUtc(2000, 9, 15, 5, 0), Offset.ForHours(4), Offset.ForHours(1));
+
+        private static readonly ZoneInterval ThirdInterval =
+            new ZoneInterval("Third", SecondInterval.End, Instant.FromUtc(2005, 6, 20, 8, 0), Offset.ForHours(-5), Offset.Zero);
+
+        private static readonly FixedDateTimeZone TailZone = new FixedDateTimeZone("TestFixed", Offset.ForHours(-6));
+
+        private static readonly ZoneInterval TailZoneInterval = TailZone.GetZoneInterval(Instant.UnixEpoch);
+
+        private static readonly PrecalculatedDateTimeZone TestZone =
+            new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone);
 
         [Test]
         public void GetZoneIntervalInstant_End()
         {
-            var expected = timeZone.GetZoneInterval(summer);
-            var actual = timeZone.GetZoneInterval(expected.End - Duration.One);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(SecondInterval, TestZone.GetZoneInterval(SecondInterval.End - Duration.One));
         }
 
         [Test]
         public void GetZoneIntervalInstant_Start()
         {
-            var expected = timeZone.GetZoneInterval(summer);
-            var actual = timeZone.GetZoneInterval(expected.Start);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(SecondInterval, TestZone.GetZoneInterval(SecondInterval.Start));
+        }
+
+        [Test]
+        public void GetZoneIntervalInstant_TailZone()
+        {
+            Assert.AreEqual(TailZoneInterval, TestZone.GetZoneInterval(ThirdInterval.End));
+        }
+
+        [Test]
+        public void GetZoneIntervals_UnambiguousInPrecalculated()
+        {
+            var pair = TestZone.GetZoneIntervals(new LocalInstant(2000, 6, 1, 0, 0));
+            Assert.AreEqual(SecondInterval, pair.EarlyInterval);
+            Assert.IsNull(pair.LateInterval);
+        }
+
+        [Test]
+        public void GetZoneIntervals_UnambiguousInTailZone()
+        {
+            var pair = TestZone.GetZoneIntervals(new LocalInstant(2015, 1, 1, 0, 0));
+            Assert.AreEqual(TailZoneInterval, pair.EarlyInterval);
+            Assert.IsNull(pair.LateInterval);
+        }
+
+        [Test]
+        public void GetZoneIntervals_AmbiguousWithinPrecalculated()
+        {
+            // Transition from +4 to -5 has a 9 hour ambiguity
+            var pair = TestZone.GetZoneIntervals(ThirdInterval.LocalStart);
+            Assert.AreEqual(SecondInterval, pair.EarlyInterval);
+            Assert.AreEqual(ThirdInterval, pair.LateInterval);
+        }
+
+        [Test]
+        public void GetZoneIntervals_AmbiguousAroundTailZoneTransition()
+        {
+            // Transition from -5 to -6 has a 1 hour ambiguity
+            var pair = TestZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.One);
+            Assert.AreEqual(ThirdInterval, pair.EarlyInterval);
+            Assert.AreEqual(TailZoneInterval, pair.LateInterval);
+        }
+
+        [Test]
+        public void GetZoneIntervals_GapWithinPrecalculated()
+        {
+            // Transition from +3 to +4 has a 1 hour gap
+            Assert.IsTrue(FirstInterval.LocalEnd < SecondInterval.LocalStart);
+            var pair = TestZone.GetZoneIntervals(FirstInterval.LocalEnd);
+            Assert.IsNull(pair.EarlyInterval);
+            Assert.IsNull(pair.LateInterval);
+        }
+
+        [Test]
+        public void GetZoneIntervals_GapAroundTailZoneTransition()
+        {
+            // Can't use the normal zone for this; need to introduce a gap
+            var tailZone = new FixedDateTimeZone(Offset.ForHours(5));
+            var gapZone = new PrecalculatedDateTimeZone("Test", 
+                new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
+            var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd);
+            Assert.IsNull(pair.EarlyInterval);
+            Assert.IsNull(pair.LateInterval);
         }
 
         [Test]
@@ -120,5 +178,6 @@ namespace NodaTime.Test.TimeZones
             };
             PrecalculatedDateTimeZone.ValidatePeriods(intervals, null);
         }
+
     }
 }

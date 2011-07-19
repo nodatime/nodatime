@@ -83,7 +83,7 @@ namespace NodaTime.TimeZones
         {
             return period;
         }
-
+        
         internal override ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
         {
             return periodPair;

@@ -63,11 +63,12 @@ namespace NodaTime.TimeZones
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class.
+        /// This is only visible to make testing simpler.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="periods">The periods.</param>
         /// <param name="tailZone">The tail zone.</param>
-        private PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone) : base(id, false)
+        internal PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone) : base(id, false)
         {
             this.tailZone = tailZone;
             this.periods = periods;
@@ -158,7 +159,85 @@ namespace NodaTime.TimeZones
                     return periods[p];
                 }
             }
-            return null;
+            throw new InvalidOperationException("Local instant not found in precalculated zone");
+        }
+
+        internal override ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
+        {
+            int last = periods.Length - 1;
+            ZoneInterval lastPeriod = periods[last];
+
+            // If the result definitely isn't in the precalculated results, we still can't
+            // just return the pair from the tail zone - it may map to a value which
+            // we don't support.
+            if (lastPeriod.LocalEnd <= localInstant)
+            {
+                ZoneIntervalPair tailZonePair = tailZone.GetZoneIntervals(localInstant);
+                // TODO: Exhaustive testing!
+                switch (tailZonePair.MatchingIntervals)
+                {
+                    case 0:
+                        return ZoneIntervalPair.NoMatch;
+                    case 1:
+                        // Only valid if our local instant occurs after the cutover
+                        if (localInstant.Minus(tailZonePair.EarlyInterval.Offset) >= lastPeriod.End)
+                        {
+                            return tailZonePair;
+                        }
+                        return ZoneIntervalPair.NoMatch;
+                    case 2:
+                        // It's ambiguous in the tail zone. If the instant corresponding to the
+                        // earlier interval occurs after the cutover, we can return the pair as-is.
+                        if (localInstant.Minus(tailZonePair.EarlyInterval.Offset) >= lastPeriod.End)
+                        {
+                            return tailZonePair;
+                        }
+                        // If the instant corresponding to the later interval occurs after the
+                        // cutover, we can return an unambiguous pair.
+                        if (localInstant.Minus(tailZonePair.LateInterval.Offset) >= lastPeriod.End)
+                        {
+                            return new ZoneIntervalPair(tailZonePair.LateInterval, null);
+                        }
+                        // Both instants occur before the cutover (odd!) - so we have no match.
+                        return ZoneIntervalPair.NoMatch;
+                }
+            }
+            if (lastPeriod.Contains(localInstant) && tailZone != null)
+            {
+                // We may be ambiguous with the tail zone. If the tail zone is unambiguous
+                // for this instant, we can use the early interval. If it's ambiguous, that's
+                // presumably because the transition from precalculated occurs at the same
+                // point - so we're interested in the later interval.
+                ZoneIntervalPair tailZonePair = tailZone.GetZoneIntervals(localInstant);
+                ZoneInterval candidate = tailZonePair.LateInterval ?? tailZonePair.EarlyInterval;
+
+                // Still not necessarily a match... we're only interested in an interval
+                // such that the local instant in the candidate interval is after our interval's instant end.
+                if (candidate != null && localInstant.Minus(candidate.Offset) >= lastPeriod.End)
+                {
+                    return new ZoneIntervalPair(lastPeriod, candidate);
+                }
+            }
+            // Okay, not ambiguous with the tail zone - let's look through the precalculated intervals
+            for (var p = last; p >= 0; p--)
+            {
+                ZoneInterval candidate = periods[p];
+                if (candidate.LocalEnd <= localInstant)
+                {
+                    return ZoneIntervalPair.NoMatch;
+                }
+
+                if (candidate.Contains(localInstant))
+                {
+                    // Check if it *also* matches the previous one.
+                    if (p != 0 && periods[p - 1].Contains(localInstant))
+                    {
+                        return new ZoneIntervalPair(periods[p - 1], candidate);
+                    }
+                    return new ZoneIntervalPair(periods[p], null);
+                }
+            }
+            throw new InvalidOperationException("Local instant not found in precalculated zone");
         }
 
         /// <summary>

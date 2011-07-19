@@ -27,6 +27,8 @@ namespace NodaTime.TimeZones
     /// </summary>
     public struct ZoneIntervalPair
     {
+        internal static readonly ZoneIntervalPair NoMatch = new ZoneIntervalPair(null, null);
+        
         private readonly ZoneInterval earlyInterval;
         private readonly ZoneInterval lateInterval;
 
