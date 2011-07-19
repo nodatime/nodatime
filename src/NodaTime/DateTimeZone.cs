@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using NodaTime.TimeZones;
 
@@ -256,7 +257,11 @@ namespace NodaTime
         // </summary>
         // <param name="localInstant">The local instant to find matching zone intervals for</param>
         // <returns>The struct containing up to two ZoneInterval references.</returns>
-        internal virtual ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant) { return default(ZoneIntervalPair); }
+        internal virtual ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
+        {
+            // TODO: Make this abstract when all the subclasses override it.
+            throw new NotSupportedException();
+        }
         #endregion LocalInstant methods
 
         #region I/O

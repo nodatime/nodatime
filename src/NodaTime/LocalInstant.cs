@@ -38,21 +38,29 @@ namespace NodaTime
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
         /// </summary>
         /// <param name="ticks">The number of ticks from the Unix Epoch.</param>
-        public LocalInstant(long ticks)
+        internal LocalInstant(long ticks)
         {
             this.ticks = ticks;
         }
 
         /// <summary>
+        /// Convenience constructor for test purposes.
+        /// </summary>
+        internal LocalInstant(int year, int month, int day, int hour, int minute)
+            : this(Instant.FromUtc(year, month, day, hour, minute).Ticks)
+        {            
+        }
+
+        /// <summary>
         /// Ticks since the Unix epoch.
         /// </summary>
-        public long Ticks { get { return ticks; } }
+        internal long Ticks { get { return ticks; } }
 
         /// <summary>
         /// Returns a new LocalInstant for the current time adjusting for the current time zone.
         /// </summary>
         /// <value>The <see cref="LocalInstant"/> of the current time.</value>
-        public static LocalInstant Now
+        internal static LocalInstant Now
         {
             get
             {

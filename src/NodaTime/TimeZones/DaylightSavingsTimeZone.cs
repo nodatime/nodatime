@@ -92,8 +92,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        /// <param name="other">An object to compare with this object.
-        ///                 </param>
+        /// <param name="other">An object to compare with this object.</param>
         public bool Equals(DaylightSavingsTimeZone other)
         {
             if (ReferenceEquals(null, other))
