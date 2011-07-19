@@ -25,7 +25,7 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This occurs for autumn transitions, where the clock goes backward
+    /// This occurs for fall transitions, where the clock goes backward
     /// (usually by an hour). For example, suppose the time zone goes backward
     /// at 2am, so the second after 01:59:59 becomes 01:00:00. In that case,
     /// times such as 01:30:00 occur twice.
