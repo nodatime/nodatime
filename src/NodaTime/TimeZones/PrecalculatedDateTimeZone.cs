@@ -168,7 +168,10 @@ namespace NodaTime.TimeZones
         /// <returns><c>true</c> if this instance is cachable; otherwise, <c>false</c>.</returns>
         public bool IsCachable()
         {
-            return tailZone != null;
+            // TODO: Work out some decent rules for this. Previously we would only cache if the
+            // tail zone was non-null... which was *always* the case due to the use of NullDateTimeZone.
+            // We could potentially go back to returning tailZone != null - benchmarking required.
+            return true;
         }
 
         #region I/O
