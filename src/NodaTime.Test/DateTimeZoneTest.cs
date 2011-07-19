@@ -3,6 +3,7 @@ using NodaTime.TimeZones;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Text;
+using System;
 
 namespace NodaTime.Test
 {
@@ -95,10 +96,8 @@ namespace NodaTime.Test
         {
             DateTimeZone.SetUtcOnly(true); // Side-effect of reseting the cache
             var actual = DateTimeZone.Ids;
-            var actualCount = actual.Count();
-            Assert.IsTrue(actualCount == 1, "actualCount == 1");
-            var first = actual.First();
-            Assert.AreEqual(DateTimeZone.UtcId, first);
+            Assert.AreEqual(1, actual.Count());
+            Assert.AreEqual(DateTimeZone.UtcId, actual.First());
         }
 
         [Test]
@@ -106,7 +105,7 @@ namespace NodaTime.Test
         {
             var actual = DateTimeZone.Ids;
             var actualCount = actual.Count();
-            Assert.IsTrue(actualCount > 1, "actualCount > 1");
+            Assert.IsTrue(actualCount > 1);
             var utc = actual.Single(id => id == DateTimeZone.UtcId);
             Assert.AreEqual(DateTimeZone.UtcId, utc);
         }
@@ -161,38 +160,40 @@ namespace NodaTime.Test
         private static void ExcerciseProvider(TestProvider provider)
         {
             var ids = DateTimeZone.Ids;
-            var idsCount = ids.Count();
-            Assert.IsTrue(idsCount == 1, "idsCount == 1");
-            Assert.AreEqual("Ids\r\n", provider.ToString());
+            Assert.AreEqual(1, ids.Count());
+            Assert.AreEqual(1, provider.Calls.Count);
+            Assert.AreEqual("Ids", provider.Calls[0]);
             var unknown = DateTimeZone.ForId("an unknown id");
             Assert.IsNull(unknown);
-            Assert.AreEqual("Ids\r\nForId(an unknown id)\r\n", provider.ToString());
+            Assert.AreEqual(2, provider.Calls.Count);
+            Assert.AreEqual("ForId(an unknown id)", provider.Calls[1]);
         }
 
+        /// <summary>
+        /// Time zone provider which doesn't know about any zones, and remembers calls made
+        /// to it. (We could use a mocking framework as an alternative, if we need it elsewhere.)
+        /// </summary>
         private class TestProvider : IDateTimeZoneProvider
         {
-            private readonly StringBuilder builder = new StringBuilder();
+            private readonly List<string> calls = new List<string>();
             private readonly string[] list = new string[0];
 
             public IEnumerable<string> Ids
             {
                 get
                 {
-                    builder.AppendLine("Ids");
+                    calls.Add("Ids");
                     return list;
                 }
             }
 
             public DateTimeZone ForId(string id)
             {
-                builder.AppendLine("ForId(" + id + ")");
+                calls.Add("ForId(" + id + ")");
                 return null;
             }
 
-            public override string ToString()
-            {
-                return builder.ToString();
-            }
+            public List<String> Calls { get { return calls; } }
         }
     }
 }

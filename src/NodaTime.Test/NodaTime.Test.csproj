@@ -120,7 +120,6 @@
     <Compile Include="TimeZones\JordanTest.cs" />
     <Compile Include="TimeZones\ReadWriteCompressTest.cs" />
     <Compile Include="TimeZones\IoStream.cs" />
-    <Compile Include="TimeZones\NullDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneBaseTest.cs" />
     <Compile Include="DurationTest.cs" />

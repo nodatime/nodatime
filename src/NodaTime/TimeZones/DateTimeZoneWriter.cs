@@ -29,12 +29,12 @@ namespace NodaTime.TimeZones
     /// </summary>
     internal class DateTimeZoneWriter
     {
-        public const byte FlagTimeZoneCached = 0;
-        public const byte FlagTimeZoneDst = 1;
-        public const byte FlagTimeZoneFixed = 2;
-        public const byte FlagTimeZoneNull = 3;
-        public const byte FlagTimeZonePrecalculated = 4;
-        public const byte FlagTimeZoneUser = 5;
+        internal const byte FlagTimeZoneCached = 0;
+        internal const byte FlagTimeZoneDst = 1;
+        internal const byte FlagTimeZoneFixed = 2;
+        internal const byte FlagTimeZoneNull = 3;
+        internal const byte FlagTimeZonePrecalculated = 4;
+        internal const byte FlagTimeZoneUser = 5;
 
         protected readonly Stream Output;
 
@@ -42,7 +42,7 @@ namespace NodaTime.TimeZones
         ///   Constructs a DateTimeZoneWriter.
         /// </summary>
         /// <param name = "output">Where to send the serialized output.</param>
-        public DateTimeZoneWriter(Stream output)
+        internal DateTimeZoneWriter(Stream output)
         {
             Output = output;
         }
@@ -52,7 +52,7 @@ namespace NodaTime.TimeZones
         ///   Writes a boolean value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteBoolean(bool value)
+        internal void WriteBoolean(bool value)
         {
             WriteInt8((byte)(value ? 1 : 0));
         }
@@ -61,7 +61,7 @@ namespace NodaTime.TimeZones
         ///   Writes the given non-negative integer value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteCount(int value)
+        internal virtual void WriteCount(int value)
         {
             WriteInt32(value);
         }
@@ -70,7 +70,7 @@ namespace NodaTime.TimeZones
         ///   Writes the given dictionary of string to string to the stream.
         /// </summary>
         /// <param name = "dictionary">The <see cref = "IDictionary{TKey,TValue}" /> to write.</param>
-        public virtual void WriteDictionary(IDictionary<string, string> dictionary)
+        internal void WriteDictionary(IDictionary<string, string> dictionary)
         {
             if (dictionary == null)
             {
@@ -88,7 +88,7 @@ namespace NodaTime.TimeZones
         ///   Writes an enumeration's integer value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteEnum(int value)
+        internal void WriteEnum(int value)
         {
             WriteInteger(value);
         }
@@ -97,7 +97,7 @@ namespace NodaTime.TimeZones
         ///   Writes the <see cref = "Instant" /> value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteInstant(Instant value)
+        internal void WriteInstant(Instant value)
         {
             WriteTicks(value.Ticks);
         }
@@ -106,7 +106,7 @@ namespace NodaTime.TimeZones
         ///   Writes the integer value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteInteger(int value)
+        internal void WriteInteger(int value)
         {
             WriteInt32(value);
         }
@@ -115,7 +115,7 @@ namespace NodaTime.TimeZones
         ///   Writes the <see cref = "LocalInstant" /> value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteLocalInstant(LocalInstant value)
+        internal void WriteLocalInstant(LocalInstant value)
         {
             WriteTicks(value.Ticks);
         }
@@ -124,7 +124,7 @@ namespace NodaTime.TimeZones
         ///   Writes the integer milliseconds value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteMilliseconds(int value)
+        internal virtual void WriteMilliseconds(int value)
         {
             WriteInt32(value);
         }
@@ -133,7 +133,7 @@ namespace NodaTime.TimeZones
         ///   Writes the <see cref = "Offset" /> value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteOffset(Offset value)
+        internal void WriteOffset(Offset value)
         {
             WriteMilliseconds(value.Milliseconds);
         }
@@ -142,7 +142,7 @@ namespace NodaTime.TimeZones
         ///   Writes the string value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteString(string value)
+        internal void WriteString(string value)
         {
             byte[] data = Encoding.UTF8.GetBytes(value);
             int length = data.Length;
@@ -154,7 +154,7 @@ namespace NodaTime.TimeZones
         ///   Writes the long ticks value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteTicks(long value)
+        internal virtual void WriteTicks(long value)
         {
             WriteInt64(value);
         }
@@ -163,13 +163,14 @@ namespace NodaTime.TimeZones
         ///   Writes the <see cref = "DateTimeZone" /> value to the stream.
         /// </summary>
         /// <param name = "value">The value to write.</param>
-        public virtual void WriteTimeZone(DateTimeZone value)
+        internal void WriteTimeZone(DateTimeZone value)
         {
             if (value == null)
             {
-                throw new ArgumentNullException("timeZone");
+                WriteInt8(FlagTimeZoneNull);
+                return;
             }
-            if (value is FixedDateTimeZone)
+            else if (value is FixedDateTimeZone)
             {
                 WriteInt8(FlagTimeZoneFixed);
             }
@@ -184,10 +185,6 @@ namespace NodaTime.TimeZones
             else if (value is DaylightSavingsTimeZone)
             {
                 WriteInt8(FlagTimeZoneDst);
-            }
-            else if (value is NullDateTimeZone)
-            {
-                WriteInt8(FlagTimeZoneNull);
             }
             else
             {
