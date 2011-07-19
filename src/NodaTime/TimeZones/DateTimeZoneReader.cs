@@ -30,14 +30,13 @@ namespace NodaTime.TimeZones
     /// </summary>
     internal class DateTimeZoneReader
     {
-        public DateTimeZoneReader(Stream input)
+        internal DateTimeZoneReader(Stream input)
         {
             Input = input;
         }
 
         protected Stream Input { get; private set; }
 
-        #region IDateTimeZoneReader Members
         /// <summary>
         ///   Reads a boolean value from the stream.
         /// </summary>
@@ -45,7 +44,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteBoolean" />.
         /// </remarks>
         /// <returns>The boolean value.</returns>
-        public virtual bool ReadBoolean()
+        internal bool ReadBoolean()
         {
             return ReadInt8() == 0 ? false : true;
         }
@@ -57,7 +56,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteCount" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
-        public virtual int ReadCount()
+        internal virtual int ReadCount()
         {
             return ReadInt32();
         }
@@ -69,7 +68,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteDictionary" />.
         /// </remarks>
         /// <returns>The <see cref = "IDictionary{TKey,TValue}" /> value from the stream.</returns>
-        public virtual IDictionary<string, string> ReadDictionary()
+        internal IDictionary<string, string> ReadDictionary()
         {
             IDictionary<string, string> results = new Dictionary<string, string>();
             int count = ReadCount();
@@ -89,7 +88,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteEnum" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
-        public virtual int ReadEnum()
+        internal int ReadEnum()
         {
             return ReadInteger();
         }
@@ -101,7 +100,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteInstant" />.
         /// </remarks>
         /// <returns>The <see cref = "Instant" /> value from the stream.</returns>
-        public virtual Instant ReadInstant()
+        internal Instant ReadInstant()
         {
             return new Instant(ReadTicks());
         }
@@ -113,7 +112,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteInteger" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
-        public virtual int ReadInteger()
+        internal virtual int ReadInteger()
         {
             return ReadInt32();
         }
@@ -125,7 +124,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteLocalInstant" />.
         /// </remarks>
         /// <returns>The <see cref = "LocalInstant" /> value from the stream.</returns>
-        public virtual LocalInstant ReadLocalInstant()
+        internal LocalInstant ReadLocalInstant()
         {
             return new LocalInstant(ReadTicks());
         }
@@ -137,12 +136,12 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteMilliseconds" />.
         /// </remarks>
         /// <returns>The integer millisecond value from the stream.</returns>
-        public virtual int ReadMilliseconds()
+        internal virtual int ReadMilliseconds()
         {
             return ReadInt32();
         }
 
-        public virtual Offset ReadOffset()
+        internal Offset ReadOffset()
         {
             return new Offset(ReadMilliseconds());
         }
@@ -154,7 +153,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteString" />.
         /// </remarks>
         /// <returns>The string value from the stream.</returns>
-        public virtual string ReadString()
+        internal string ReadString()
         {
             int length = ReadCount();
             var data = new byte[length];
@@ -169,7 +168,7 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteTicks" />.
         /// </remarks>
         /// <returns>The long ticks value from the stream.</returns>
-        public virtual long ReadTicks()
+        internal virtual long ReadTicks()
         {
             return ReadInt64();
         }
@@ -181,43 +180,38 @@ namespace NodaTime.TimeZones
         ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteTimeZone" />.
         /// </remarks>
         /// <returns>The <see cref = "DateTimeZone" /> value from the stream.</returns>
-        public virtual DateTimeZone ReadTimeZone(string id)
+        internal DateTimeZone ReadTimeZone(string id)
         {
             int flag = ReadInt8();
-            if (flag == DateTimeZoneWriter.FlagTimeZoneFixed)
+            switch (flag)
             {
-                return FixedDateTimeZone.Read(this, id);
+                case DateTimeZoneWriter.FlagTimeZoneFixed:
+                    return FixedDateTimeZone.Read(this, id);
+                case DateTimeZoneWriter.FlagTimeZonePrecalculated:
+                    return PrecalculatedDateTimeZone.Read(this, id);
+                case DateTimeZoneWriter.FlagTimeZoneNull:
+                    return null; // Only used when reading a tail zone
+                case DateTimeZoneWriter.FlagTimeZoneCached:
+                    return CachedDateTimeZone.Read(this, id);
+                case DateTimeZoneWriter.FlagTimeZoneDst:
+                    return DaylightSavingsTimeZone.Read(this, id);
+                case DateTimeZoneWriter.FlagTimeZoneUser:
+                    string className = ReadString();
+                    Type type = Type.GetType(className);
+                    if (type == null)
+                    {
+                        throw new InvalidOperationException("Unknown DateTimeZone type: " + className);
+                    }
+                    MethodInfo method = type.GetMethod("Read", new[] { typeof(DateTimeZoneReader), typeof(string) });
+                    if (method == null)
+                    {
+                        throw new InvalidOperationException("Type " + type + " doesn't have appropriate Read method");
+                    }
+                    return (DateTimeZone)method.Invoke(null, new object[] { this, id });
+                default:
+                    throw new InvalidDataException("Unknown flag type " + flag);
             }
-            if (flag == DateTimeZoneWriter.FlagTimeZonePrecalculated)
-            {
-                return PrecalculatedDateTimeZone.Read(this, id);
-            }
-            if (flag == DateTimeZoneWriter.FlagTimeZoneCached)
-            {
-                return CachedDateTimeZone.Read(this, id);
-            }
-            if (flag == DateTimeZoneWriter.FlagTimeZoneDst)
-            {
-                return DaylightSavingsTimeZone.Read(this, id);
-            }
-            if (flag == DateTimeZoneWriter.FlagTimeZoneNull)
-            {
-                return NullDateTimeZone.Read(this, id);
-            }
-            string className = ReadString();
-            Type type = Type.GetType(className);
-            if (type == null)
-            {
-                throw new InvalidOperationException(@"Unknown DateTimeZone type: " + className);
-            }
-            MethodInfo method = type.GetMethod("Read", new[] { typeof(DateTimeZoneReader), typeof(string) });
-            if (method != null)
-            {
-                return method.Invoke(null, new object[] { this, id }) as DateTimeZone;
-            }
-            return null;
         }
-        #endregion
 
         /// <summary>
         ///   Reads a signed 16 bit integer value from the stream and returns it as an int.

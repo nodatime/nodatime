@@ -32,6 +32,7 @@ namespace NodaTime.TimeZones
     {
         private readonly Offset offset;
         private readonly ZoneInterval period;
+        private readonly ZoneIntervalPair periodPair;
 
         /// <summary>
         /// Creates a new fixed time zone.
@@ -50,6 +51,7 @@ namespace NodaTime.TimeZones
         {
             this.offset = offset;
             period = new ZoneInterval(id, Instant.MinValue, Instant.MaxValue, offset, Offset.Zero);
+            periodPair = new ZoneIntervalPair(period, null);
         }
 
         /// <summary>
@@ -77,15 +79,14 @@ namespace NodaTime.TimeZones
             return period;
         }
 
-        /// <summary>
-        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
-        /// for the given local instant.
-        /// </summary>
-        /// <param name="localInstant">The LocalInstant to test.</param>
-        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
             return period;
+        }
+
+        internal override ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
+        {
+            return periodPair;
         }
 
         /// <summary>

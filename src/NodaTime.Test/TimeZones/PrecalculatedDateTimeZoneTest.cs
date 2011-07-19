@@ -60,7 +60,8 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Validation_EmptyPeriodArray()
         {
-            Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(new ZoneInterval[0]));
+            Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(new ZoneInterval[0],
+                DateTimeZone.Utc));
         }
 
         [Test]
@@ -71,7 +72,7 @@ namespace NodaTime.Test.TimeZones
                 new ZoneInterval("foo", new Instant(10), new Instant(20), Offset.Zero, Offset.Zero),
                 new ZoneInterval("foo", new Instant(20), new Instant(30), Offset.Zero, Offset.Zero),                                       
             };
-            Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals));
+            Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc));
         }
 
         [Test]
@@ -82,7 +83,7 @@ namespace NodaTime.Test.TimeZones
                 new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
                 new ZoneInterval("foo", new Instant(25), new Instant(30), Offset.Zero, Offset.Zero),                                       
             };
-            Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals));
+            Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc));
         }
 
         [Test]
@@ -95,7 +96,29 @@ namespace NodaTime.Test.TimeZones
                 new ZoneInterval("foo", new Instant(30), new Instant(100), Offset.Zero, Offset.Zero),                                       
                 new ZoneInterval("foo", new Instant(100), new Instant(200), Offset.Zero, Offset.Zero),                                       
             };
-            PrecalculatedDateTimeZone.ValidatePeriods(intervals);
+            PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc);
+        }
+
+        [Test]
+        public void Validation_NullTailZoneWithMiddleOfTimeFinalPeriod()
+        {
+            ZoneInterval[] intervals =
+            {
+                new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", new Instant(20), new Instant(30), Offset.Zero, Offset.Zero)                                      
+            };
+            Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, null));
+        }
+
+        [Test]
+        public void Validation_NullTailZoneWithEotPeriodEnd()
+        {
+            ZoneInterval[] intervals =
+            {
+                new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", new Instant(20), Instant.MaxValue, Offset.Zero, Offset.Zero),                                       
+            };
+            PrecalculatedDateTimeZone.ValidatePeriods(intervals, null);
         }
     }
 }
