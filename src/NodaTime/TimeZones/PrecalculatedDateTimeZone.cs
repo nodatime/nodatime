@@ -173,7 +173,6 @@ namespace NodaTime.TimeZones
             if (lastPeriod.LocalEnd <= localInstant)
             {
                 ZoneIntervalPair tailZonePair = tailZone.GetZoneIntervals(localInstant);
-                // TODO: Exhaustive testing!
                 switch (tailZonePair.MatchingIntervals)
                 {
                     case 0:
@@ -205,9 +204,9 @@ namespace NodaTime.TimeZones
             if (lastPeriod.Contains(localInstant) && tailZone != null)
             {
                 // We may be ambiguous with the tail zone. If the tail zone is unambiguous
-                // for this instant, we can use the early interval. If it's ambiguous, that's
-                // presumably because the transition from precalculated occurs at the same
-                // point - so we're interested in the later interval.
+                // for this instant, we can use the early interval. If it's ambiguous, it's feasible
+                // that we actually have *three* viable intervals. I doubt this will ever happen,
+                // but if it does we'll use the later of the two intervals from the tail zone.
                 ZoneIntervalPair tailZonePair = tailZone.GetZoneIntervals(localInstant);
                 ZoneInterval candidate = tailZonePair.LateInterval ?? tailZonePair.EarlyInterval;
 
