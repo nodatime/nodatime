@@ -94,6 +94,40 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void GetZoneIntervals_AmbiguousAndValidInTailZoneTransition()
+        {
+            // Tail zone is -8 / -10, with the transition occurring just after
+            // the transition *to* the tail zone from the precalculated zone.
+            // A local instant of one hour before after the transition from the precalculated zone (which is -5)
+            // will therefore be ambiguous, with both resulting instants occurring after the transition
+            // from precalculated to tail. We somewhat-arbitrarily pick the later zone as the second zone
+            // for the ambiguity.
+            var tailZone = new SingleTransitionZone(ThirdInterval.End + Duration.FromHours(1), -8, -10);
+            var gapZone = new PrecalculatedDateTimeZone("Test",
+                new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
+
+            var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.FromHours(1));
+            Assert.AreEqual(ThirdInterval, pair.EarlyInterval);
+            Assert.AreEqual(tailZone.LateInterval, pair.LateInterval);
+        }
+
+        [Test]
+        public void GetZoneIntervals_AmbiguousButTooEarlyInTailZoneTransition()
+        {
+            // Tail zone is +10 / +8, with the transition occurring just after
+            // the transition *to* the tail zone from the precalculated zone.
+            // A local instant of one hour before after the transition from the precalculated zone (which is -5)
+            // will therefore be ambiguous, but the resulting instants from the ambiguity occur
+            // before our transition into the tail zone, so are ignored.
+            var tailZone = new SingleTransitionZone(ThirdInterval.End + Duration.FromHours(1), 10, 8);
+            var gapZone = new PrecalculatedDateTimeZone("Test",
+                new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
+            var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.FromHours(1));
+            Assert.AreEqual(ThirdInterval, pair.EarlyInterval);
+            Assert.IsNull(pair.LateInterval);
+        }
+
+        [Test]
         public void GetZoneIntervals_GapWithinPrecalculated()
         {
             // Transition from +3 to +4 has a 1 hour gap
@@ -104,13 +138,47 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void GetZoneIntervals_SingleIntervalAroundTailZoneTransition()
+        {
+            // Tail zone is fixed at +5. A local instant of one hour before the transition
+            // from the precalculated zone (which is -5) will therefore give an instant from
+            // the tail zone which occurs before the precalculated-to-tail transition,
+            // and can therefore be ignored, resulting in an overall unambiguous time.
+            var tailZone = new FixedDateTimeZone(Offset.ForHours(5));
+            var gapZone = new PrecalculatedDateTimeZone("Test",
+                new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
+            var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.FromHours(1));
+            Assert.AreEqual(ThirdInterval, pair.EarlyInterval);
+            Assert.IsNull(pair.LateInterval);
+        }
+
+        [Test]
         public void GetZoneIntervals_GapAroundTailZoneTransition()
         {
-            // Can't use the normal zone for this; need to introduce a gap
+            // Tail zone is fixed at +5. A local instant of one hour after the transition
+            // from the precalculated zone (which is -5) will therefore give an instant from
+            // the tail zone which occurs before the precalculated-to-tail transition,
+            // and can therefore be ignored, resulting in an overall gap.
             var tailZone = new FixedDateTimeZone(Offset.ForHours(5));
             var gapZone = new PrecalculatedDateTimeZone("Test", 
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
             var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd);
+            Assert.IsNull(pair.EarlyInterval);
+            Assert.IsNull(pair.LateInterval);
+        }
+
+        [Test]
+        public void GetZoneIntervals_GapAroundAndInTailZoneTransition()
+        {
+            // Tail zone is -10 / +5, with the transition occurring just after
+            // the transition *to* the tail zone from the precalculated zone.
+            // A local instant of one hour after the transition from the precalculated zone (which is -5)
+            // will therefore be in the gap. No zone interval matches, so the result is
+            // an empty pair.
+            var tailZone = new SingleTransitionZone(ThirdInterval.End + Duration.FromHours(1), -10, +5);
+            var gapZone = new PrecalculatedDateTimeZone("Test",
+                new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
+            var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd + Duration.FromHours(1));
             Assert.IsNull(pair.EarlyInterval);
             Assert.IsNull(pair.LateInterval);
         }
