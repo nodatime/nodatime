@@ -24,11 +24,19 @@ namespace NodaTime.TimeZones
     /// Provides a basic daylight savings time zone. A DST time zone has a simple recurrence
     /// where an extra offset is applied between two dates of a year.
     /// </summary>
+    /// <remarks>
+    /// IMPORTANT: This class does *not* represent a general purpose, "good for all time"
+    /// time zone. It is *only* used as a tail zone within PrecalculatedDateTimeZone; as such
+    /// it may not extend the start of time, although it *must* extend to the end of time;
+    /// this is validated on construction. Calls to GetZoneInterval(Instant) may fail
+    /// with an ArgumentOutOfRangeException, but 
+    /// </remarks>
     internal class DaylightSavingsTimeZone : DateTimeZone, IEquatable<DaylightSavingsTimeZone>
     {
         private readonly ZoneRecurrence standardRecurrence;
         private readonly Offset standardOffset;
         private readonly ZoneRecurrence dstRecurrence;
+        private readonly Instant minimumValidInstant;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DaylightSavingsTimeZone"/> class.
@@ -55,6 +63,10 @@ namespace NodaTime.TimeZones
             this.standardOffset = standardOffset;
             var dst = startRecurrence;
             var standard = endRecurrence;
+            if (!dst.IsInfinite || !standard.IsInfinite)
+            {
+                throw new ArgumentException("Both recurrences must extend to the end of time");
+            }
             if (startRecurrence.Savings == Offset.Zero)
             {
                 dst = endRecurrence;
@@ -76,6 +88,43 @@ namespace NodaTime.TimeZones
             }
             dstRecurrence = dst;
             standardRecurrence = standard;
+            minimumValidInstant = ComputeMinimumValidInstant(dstRecurrence, standardRecurrence, standardOffset);
+        }
+
+        /// <summary>
+        /// Computes the minimum instant which is covered by the combination of the two recurrences.
+        /// This isn't necessarily just "the minimum value of the later recurrence" as the earlier one
+        /// may have one more valid transition.
+        /// </summary>
+        private static Instant ComputeMinimumValidInstant(ZoneRecurrence dstRecurrence, ZoneRecurrence standardRecurrence,
+            Offset standardOffset)
+        {
+            int year = Math.Max(dstRecurrence.FromYear, standardRecurrence.FromYear);
+            if (year == int.MinValue)
+            {
+                return Instant.MinValue;
+            }
+            // Go for two years later, from February 1st - just to get a good run into things. We know there'll
+            // be at least a couple of transitions for each recurrence, so we can arbitrarily start with the
+            // DST one.
+            Instant current = Instant.FromUtc(year + 2, 2, 1, 0, 0);
+            // Keep walking backwards until one of of the recurrences gives up.
+            while (current > Instant.MinValue)
+            {
+                Transition? dstTransition = dstRecurrence.Previous(current, standardOffset, Offset.Zero);
+                if (dstTransition == null)
+                {
+                    break;
+                }
+                current = dstTransition.Value.Instant;
+                Transition? standardTransition = standardRecurrence.Previous(current, standardOffset, dstRecurrence.Savings);
+                if (standardTransition == null)
+                {
+                    break;
+                }
+                current = standardTransition.Value.Instant;                
+            }
+            return current;
         }
 
         #region IEquatable<DaylightSavingsTimeZone> Members
@@ -135,22 +184,25 @@ namespace NodaTime.TimeZones
         #endregion // Object overrides
 
         /// <summary>
-        /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
-        /// for the given instant.
+        /// Gets the zone interval for the given instant.
         /// </summary>
         /// <param name="instant">The Instant to test.</param>
-        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        /// <returns>The ZoneInterval in effect at the given instant.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The instant falls outside the bounds
+        /// of the recurrence rules of the zone.</exception>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
             var previous = PreviousTransition(instant + Duration.One);
             var next = NextTransition(instant);
-            // If we are outside of the value range of this TZ return null
+
             if (!previous.HasValue || !next.HasValue)
             {
-                return null;
+                throw new ArgumentOutOfRangeException("instant",
+                    "Specified instant is not covered by the recurrence rules of this time zone");
             }
             var recurrence = FindMatchingRecurrence(instant);
-            return new ZoneInterval(recurrence.Name, previous.Value.Instant, next.Value.Instant, standardOffset + recurrence.Savings, recurrence.Savings);
+            return new ZoneInterval(recurrence.Name, previous.Value.Instant, next.Value.Instant,
+                standardOffset + recurrence.Savings, recurrence.Savings);
         }
 
         /// <summary>
@@ -177,9 +229,26 @@ namespace NodaTime.TimeZones
 
         internal override ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
         {
-            var normal = localInstant.Minus(standardOffset);
+            // Work out the instants that this local instant would correspond with
+            // in each of standard or daylight saving time.
+            var standard = localInstant.Minus(standardOffset);
             var daylight = localInstant.Minus(standardOffset + dstRecurrence.Savings);
-            var normalRecurrence = FindMatchingRecurrence(normal);
+
+            // If daylight is invalid but standard is valid, we must start off with a winter recurrence, which we can return.
+            if (standard < minimumValidInstant)
+            {
+                return ZoneIntervalPair.NoMatch;
+            }
+            if (daylight < minimumValidInstant)
+            {
+                // TODO: Make this more efficient by remembering minimum values for
+                // each recurrence.
+                return FindMatchingRecurrence(standard) == standardRecurrence
+                    ? new ZoneIntervalPair(GetZoneInterval(standard), null)
+                    : ZoneIntervalPair.NoMatch;
+            }
+
+            var normalRecurrence = FindMatchingRecurrence(standard);
             var daylightRecurrence = FindMatchingRecurrence(daylight);
 
             // If the normal instant only occurs in the DST recurrence, and the daylight instant only occurs in the
@@ -191,34 +260,31 @@ namespace NodaTime.TimeZones
             // If the normal instant occurs in the standard recurrence, and the daylight instant occurs in the
             // DST recurrence, the local instant must be ambiguous.
             if (ReferenceEquals(normalRecurrence, standardRecurrence) && ReferenceEquals(daylightRecurrence, dstRecurrence))
-            {
-                // FIXME: Check this! What about negative DST? (Is that ever valid?)
-                return new ZoneIntervalPair(GetZoneInterval(normal), GetZoneInterval(daylight));
+            {   
+                // The instant corresponding with daylight saving time is always earlier than the instant
+                // corresponding with standard time.
+                return new ZoneIntervalPair(GetZoneInterval(daylight), GetZoneInterval(standard));
             }
-            return new ZoneIntervalPair(GetZoneInterval(normal), null);
+            // Unambiguous case
+            return new ZoneIntervalPair(GetZoneInterval(standard), null);
         }
 
         /// <summary>
-        /// Finds the matching recurrence.
+        /// Finds the recurrence containing the given instant, if any.
         /// </summary>
-        /// <param name="instant">The instant.</param>
-        /// <returns></returns>
+        /// <returns>The recurrence containing the given instant, or null if
+        /// the instant occurs before the start of the earlier recurrence.</returns>
         private ZoneRecurrence FindMatchingRecurrence(Instant instant)
         {
+            // FIXME: Check against minimum instant.
+
             // Find the transitions which start *after* the one we're currently in - then
             // pick the later of them, which will be the same "polarity" as the one we're currently
             // in.
-            Transition? start = dstRecurrence.Next(instant, standardOffset, standardRecurrence.Savings);
-            Transition? end = standardRecurrence.Next(instant, standardOffset, dstRecurrence.Savings);
-            if (start.HasValue)
-            {
-                if (end.HasValue)
-                {
-                    return (start.Value.Instant > end.Value.Instant) ? dstRecurrence : standardRecurrence;
-                }
-                return dstRecurrence;
-            }
-            return standardRecurrence;
+            Transition? nextDstStart = dstRecurrence.Next(instant, standardOffset, standardRecurrence.Savings);
+            Transition? nextStandardStart = standardRecurrence.Next(instant, standardOffset, dstRecurrence.Savings);
+            // Both transitions must be non-null, as our recurrences are infinite.
+            return nextDstStart.Value.Instant > nextStandardStart.Value.Instant ? dstRecurrence : standardRecurrence;
         }
 
         /// <summary>
@@ -254,6 +320,11 @@ namespace NodaTime.TimeZones
         /// </returns>
         private Transition? PreviousTransition(Instant instant)
         {
+            if (instant <= minimumValidInstant)
+            {
+                return null;
+            }
+
             Transition? start = dstRecurrence.Previous(instant, standardOffset, standardRecurrence.Savings);
             Transition? end = standardRecurrence.Previous(instant, standardOffset, dstRecurrence.Savings);
 

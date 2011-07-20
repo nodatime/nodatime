@@ -49,8 +49,8 @@ namespace NodaTime.TimeZones
         /// <param name="name">The name of the time zone period e.g. PST.</param>
         /// <param name="savings">The savings for this period.</param>
         /// <param name="yearOffset">The year offset of when this period starts in a year.</param>
-        /// <param name="fromYear"></param>
-        /// <param name="toYear"></param>
+        /// <param name="fromYear">The first year in which this recurrence is valid</param>
+        /// <param name="toYear">The last year in which this recurrence is valid</param>
         public ZoneRecurrence(String name, Offset savings, ZoneYearOffset yearOffset, int fromYear, int toYear)
         {
             if (name == null)
@@ -190,7 +190,7 @@ namespace NodaTime.TimeZones
 
             if (year > toYear)
             {
-                // First advance instant to start of year after toYear
+                // First pull instant back to the start of the year after toYear
                 instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, toYear + 1).Minus(wallOffset);
             }
 

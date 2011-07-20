@@ -31,12 +31,12 @@ namespace NodaTime.TimeZones
     /// <para>
     /// A year offset defines a way of determining an offset into a year based on certain criteria.
     /// The most basic is the month of the year and the day of the month. If only these two are
-    /// supplied then the offset is always the sae day of each year. The only exception is if the
+    /// supplied then the offset is always the same day of each year. The only exception is if the
     /// day is February 29th, then it only refers to those years that have a February 29th.
     /// </para>
     /// <para>
-    /// If the day of the week is specified then the offset determined byt the month and day are
-    /// adjusted to the nearest day that falls on the given day of the week. If then month and day
+    /// If the day of the week is specified then the offset determined by the month and day are
+    /// adjusted to the nearest day that falls on the given day of the week. If the month and day
     /// fall on that day of the week then nothing changes. Otherwise the offset is moved forward or
     /// backward up to 6 days to make the day fall on the correct day of the week. The direction the
     /// offset is moved is determined by the <see cref="AdvanceDayOfWeek"/> property.
@@ -134,6 +134,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Gets the tick of day when the rule takes effect.
         /// </summary>
+        // TODO: Is Offset really an appropriate type here? Duration might make more sense.
         public Offset TickOfDay { get { return tickOfDay; } }
 
         #region IEquatable<ZoneYearOffset> Members
