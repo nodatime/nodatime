@@ -21,25 +21,26 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///    Provides a basic daylight savings time zone. A DST time zone has a simple recurrence
-    ///    where an extra offset is applied between two dates of a year.
+    /// Provides a basic daylight savings time zone. A DST time zone has a simple recurrence
+    /// where an extra offset is applied between two dates of a year.
     /// </summary>
     internal class DaylightSavingsTimeZone : DateTimeZone, IEquatable<DaylightSavingsTimeZone>
     {
-        private readonly ZoneRecurrence endRecurrence;
+        private readonly ZoneRecurrence standardRecurrence;
         private readonly Offset standardOffset;
-        private readonly ZoneRecurrence startRecurrence;
+        private readonly ZoneRecurrence dstRecurrence;
 
         /// <summary>
-        ///    Initializes a new instance of the
-        ///    <see cref="DaylightSavingsTimeZone"/>
-        ///    class.
+        /// Initializes a new instance of the <see cref="DaylightSavingsTimeZone"/> class.
         /// </summary>
+        /// <remarks>
+        /// At least one of the recurrences (it doesn't matter which) must be a "standard", i.e. not have any savings
+        /// applied. The other may still not have any savings (e.g. for America/Resolute) but any savings must be
+        /// non-negative.
+        /// </remarks>
         /// <param name="id">The id.</param>
         /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="startRecurrence">
-        ///    The start recurrence.
-        /// </param>
+        /// <param name="startRecurrence">The start recurrence.</param>
         /// <param name="endRecurrence">The end recurrence.</param>
         internal DaylightSavingsTimeZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence) : base(id, false)
         {
@@ -52,38 +53,30 @@ namespace NodaTime.TimeZones
                 throw new ArgumentNullException("endRecurrence");
             }
             this.standardOffset = standardOffset;
-            var start = startRecurrence;
-            var end = endRecurrence;
+            var dst = startRecurrence;
+            var standard = endRecurrence;
             if (startRecurrence.Savings == Offset.Zero)
             {
-                start = endRecurrence;
-                end = startRecurrence;
+                dst = endRecurrence;
+                standard = startRecurrence;
             }
-            if (start.Name == end.Name)
+            if (dst.Savings < Offset.Zero)
             {
-                start = start.RenameAppend("-Summer");
+                // Not necessarily positive... America/Resolute ends up switching
+                // between two different zone names, neither of which has daylight savings...
+                throw new ArgumentException("Daylight savings must be non-negative");
             }
-            this.startRecurrence = start;
-            this.endRecurrence = end;
+            if (standard.Savings != Offset.Zero)
+            {
+                throw new ArgumentException("At least one recurrence must not have savings applied");
+            }
+            if (dst.Name == standard.Name)
+            {
+                dst = dst.RenameAppend("-Summer");
+            }
+            dstRecurrence = dst;
+            standardRecurrence = standard;
         }
-
-        /// <summary>
-        /// Gets the standard offset.
-        /// </summary>
-        /// <value>The standard offset.</value>
-        private Offset StandardOffset { get { return standardOffset; } }
-
-        /// <summary>
-        /// Gets the start recurrence.
-        /// </summary>
-        /// <value>The start recurrence.</value>
-        private ZoneRecurrence StartRecurrence { get { return startRecurrence; } }
-
-        /// <summary>
-        /// Gets the end recurrence.
-        /// </summary>
-        /// <value>The end recurrence.</value>
-        private ZoneRecurrence EndRecurrence { get { return endRecurrence; } }
 
         #region IEquatable<DaylightSavingsTimeZone> Members
         /// <summary>
@@ -103,8 +96,8 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return Id == other.Id && StandardOffset == other.StandardOffset && StartRecurrence.Equals(other.StartRecurrence) &&
-                   EndRecurrence.Equals(other.EndRecurrence);
+            return Id == other.Id && standardOffset == other.standardOffset && dstRecurrence.Equals(other.dstRecurrence) &&
+                   standardRecurrence.Equals(other.standardRecurrence);
         }
         #endregion
 
@@ -134,9 +127,9 @@ namespace NodaTime.TimeZones
         {
             int hashCode = HashCodeHelper.Initialize();
             hashCode = HashCodeHelper.Hash(hashCode, Id);
-            hashCode = HashCodeHelper.Hash(hashCode, StandardOffset);
-            hashCode = HashCodeHelper.Hash(hashCode, StartRecurrence);
-            hashCode = HashCodeHelper.Hash(hashCode, EndRecurrence);
+            hashCode = HashCodeHelper.Hash(hashCode, standardOffset);
+            hashCode = HashCodeHelper.Hash(hashCode, dstRecurrence);
+            hashCode = HashCodeHelper.Hash(hashCode, standardRecurrence);
             return hashCode;
         }
         #endregion // Object overrides
@@ -157,28 +150,52 @@ namespace NodaTime.TimeZones
                 return null;
             }
             var recurrence = FindMatchingRecurrence(instant);
-            return new ZoneInterval(recurrence.Name, previous.Value.Instant, next.Value.Instant, StandardOffset + recurrence.Savings, recurrence.Savings);
+            return new ZoneInterval(recurrence.Name, previous.Value.Instant, next.Value.Instant, standardOffset + recurrence.Savings, recurrence.Savings);
         }
 
         /// <summary>
-        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
-        /// for the given local instant.
+        /// Gets the zone offset period for the given local instant.
         /// </summary>
         /// <param name="localInstant">The LocalInstant to test.</param>
         /// <exception cref="SkippedTimeException"></exception>
-        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        /// <returns>The ZoneInterval containing the given local instant.</returns>
         internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
         {
-            var normal = localInstant.Minus(StandardOffset);
-            var daylight = localInstant.Minus(StandardOffset + startRecurrence.Savings);
-            var normalRecurrence = FindMatchingRecurrence(normal);
+            var standard = localInstant.Minus(standardOffset);
+            var daylight = localInstant.Minus(standardOffset + dstRecurrence.Savings);
+            var normalRecurrence = FindMatchingRecurrence(standard);
             var daylightRecurrence = FindMatchingRecurrence(daylight);
 
-            if (ReferenceEquals(normalRecurrence, startRecurrence) && ReferenceEquals(daylightRecurrence, endRecurrence))
+            // If the normal instant only occurs in the DST recurrence, and the daylight instant only occurs in the
+            // standard recurrence, the local instant must be in a gap.
+            if (ReferenceEquals(normalRecurrence, dstRecurrence) && ReferenceEquals(daylightRecurrence, standardRecurrence))
             {
                 throw new SkippedTimeException(localInstant, this);
             }
-            return GetZoneInterval(normal);
+            return GetZoneInterval(standard);
+        }
+
+        internal override ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
+        {
+            var normal = localInstant.Minus(standardOffset);
+            var daylight = localInstant.Minus(standardOffset + dstRecurrence.Savings);
+            var normalRecurrence = FindMatchingRecurrence(normal);
+            var daylightRecurrence = FindMatchingRecurrence(daylight);
+
+            // If the normal instant only occurs in the DST recurrence, and the daylight instant only occurs in the
+            // standard recurrence, the local instant must be in a gap.
+            if (ReferenceEquals(normalRecurrence, dstRecurrence) && ReferenceEquals(daylightRecurrence, standardRecurrence))
+            {
+                return ZoneIntervalPair.NoMatch;
+            }
+            // If the normal instant occurs in the standard recurrence, and the daylight instant occurs in the
+            // DST recurrence, the local instant must be ambiguous.
+            if (ReferenceEquals(normalRecurrence, standardRecurrence) && ReferenceEquals(daylightRecurrence, dstRecurrence))
+            {
+                // FIXME: Check this! What about negative DST? (Is that ever valid?)
+                return new ZoneIntervalPair(GetZoneInterval(normal), GetZoneInterval(daylight));
+            }
+            return new ZoneIntervalPair(GetZoneInterval(normal), null);
         }
 
         /// <summary>
@@ -191,17 +208,17 @@ namespace NodaTime.TimeZones
             // Find the transitions which start *after* the one we're currently in - then
             // pick the later of them, which will be the same "polarity" as the one we're currently
             // in.
-            Transition? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
-            Transition? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
+            Transition? start = dstRecurrence.Next(instant, standardOffset, standardRecurrence.Savings);
+            Transition? end = standardRecurrence.Next(instant, standardOffset, dstRecurrence.Savings);
             if (start.HasValue)
             {
                 if (end.HasValue)
                 {
-                    return (start.Value.Instant > end.Value.Instant) ? StartRecurrence : EndRecurrence;
+                    return (start.Value.Instant > end.Value.Instant) ? dstRecurrence : standardRecurrence;
                 }
-                return StartRecurrence;
+                return dstRecurrence;
             }
-            return EndRecurrence;
+            return standardRecurrence;
         }
 
         /// <summary>
@@ -214,8 +231,8 @@ namespace NodaTime.TimeZones
         /// </returns>
         private Transition? NextTransition(Instant instant)
         {
-            Transition? start = StartRecurrence.Next(instant, StandardOffset, EndRecurrence.Savings);
-            Transition? end = EndRecurrence.Next(instant, StandardOffset, StartRecurrence.Savings);
+            Transition? start = dstRecurrence.Next(instant, standardOffset, standardRecurrence.Savings);
+            Transition? end = standardRecurrence.Next(instant, standardOffset, dstRecurrence.Savings);
             if (start.HasValue)
             {
                 if (end.HasValue)
@@ -237,8 +254,8 @@ namespace NodaTime.TimeZones
         /// </returns>
         private Transition? PreviousTransition(Instant instant)
         {
-            Transition? start = StartRecurrence.Previous(instant, StandardOffset, EndRecurrence.Savings);
-            Transition? end = EndRecurrence.Previous(instant, StandardOffset, StartRecurrence.Savings);
+            Transition? start = dstRecurrence.Previous(instant, standardOffset, standardRecurrence.Savings);
+            Transition? end = standardRecurrence.Previous(instant, standardOffset, dstRecurrence.Savings);
 
             Transition? result = end;
             if (start.HasValue)
@@ -265,7 +282,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override Offset GetOffsetFromUtc(Instant instant)
         {
-            return FindMatchingRecurrence(instant).Savings + StandardOffset;
+            return FindMatchingRecurrence(instant).Savings + standardOffset;
         }
 
         /// <summary>
@@ -296,9 +313,9 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("writer");
             }
-            writer.WriteOffset(StandardOffset);
-            StartRecurrence.Write(writer);
-            EndRecurrence.Write(writer);
+            writer.WriteOffset(standardOffset);
+            dstRecurrence.Write(writer);
+            standardRecurrence.Write(writer);
         }
 
         internal static DateTimeZone Read(DateTimeZoneReader reader, string id)
