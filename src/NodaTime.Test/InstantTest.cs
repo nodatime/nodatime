@@ -114,6 +114,32 @@ namespace NodaTime.Test
             TestToStringBase(Instant.UnixEpoch, "1970-01-01T00:00:00Z");
         }
 
+        [Test]
+        public void Max()
+        {
+            Instant x = new Instant(100);
+            Instant y = new Instant(200);
+            Assert.AreEqual(y, Instant.Max(x, y));
+            Assert.AreEqual(y, Instant.Max(y, x));
+            Assert.AreEqual(x, Instant.Max(x, Instant.MinValue));
+            Assert.AreEqual(x, Instant.Max(Instant.MinValue, x));
+            Assert.AreEqual(Instant.MaxValue, Instant.Max(Instant.MaxValue, x));
+            Assert.AreEqual(Instant.MaxValue, Instant.Max(x, Instant.MaxValue));
+        }
+
+        [Test]
+        public void Min()
+        {
+            Instant x = new Instant(100);
+            Instant y = new Instant(200);
+            Assert.AreEqual(x, Instant.Min(x, y));
+            Assert.AreEqual(x, Instant.Min(y, x));
+            Assert.AreEqual(Instant.MinValue, Instant.Min(x, Instant.MinValue));
+            Assert.AreEqual(Instant.MinValue, Instant.Min(Instant.MinValue, x));
+            Assert.AreEqual(x, Instant.Min(Instant.MaxValue, x));
+            Assert.AreEqual(x, Instant.Min(x, Instant.MaxValue));
+        }
+
         private static void TestToStringBase(Instant value, string gvalue)
         {
             var actual = value.ToString();
