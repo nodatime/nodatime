@@ -122,7 +122,7 @@
     <Compile Include="TimeZones\ReadWriteCompressTest.cs" />
     <Compile Include="TimeZones\IoStream.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZoneTest.cs" />
-    <Compile Include="TimeZones\DateTimeZoneBaseTest.cs" />
+    <Compile Include="TimeZones\DateTimeZoneTest.cs" />
     <Compile Include="DurationTest.cs" />
     <Compile Include="DurationTest.Operators.cs">
       <DependentUpon>DurationTest.cs</DependentUpon>
