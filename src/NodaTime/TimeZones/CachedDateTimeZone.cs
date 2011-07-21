@@ -30,13 +30,18 @@ namespace NodaTime.TimeZones
     /// cache. It is possible that we may support multiple strategies selectable at runtime so the
     /// user can tune the performance based on their knowledge of how they are using the system.
     /// </para>
+    /// <para>
+    /// In fact, only one cache type is currently implemented: an MRU cache existed before
+    /// the GetZoneIntervals call was created in DateTimeZone, but as it wasn't being used, it
+    /// was more effort than it was worth to update. The mechanism is still available for future
+    /// expansion though.
+    /// </para>
     /// </remarks>
     internal abstract class CachedDateTimeZone : DateTimeZone
     {
         #region CacheType enum
         internal enum CacheType
         {
-            Mru,
             Hashtable
         }
         #endregion
@@ -80,7 +85,7 @@ namespace NodaTime.TimeZones
         /// <param name="timeZone">The time zone to cache.</param>
         /// <param name="type">The type of cache to store the zone in.</param>
         /// <returns>The cached time zone.</returns>
-        internal static DateTimeZone ForZone(DateTimeZone timeZone, CacheType type)
+        private static DateTimeZone ForZone(DateTimeZone timeZone, CacheType type)
         {
             if (timeZone == null)
             {
@@ -92,8 +97,6 @@ namespace NodaTime.TimeZones
             }
             switch (type)
             {
-                case CacheType.Mru:
-                    return new MruListCache(timeZone);
                 case CacheType.Hashtable:
                     return new HashArrayCache(timeZone);
                 default:
@@ -189,7 +192,7 @@ namespace NodaTime.TimeZones
                 localInstantCache = new HashCacheNode[CacheSize];
             }
 
-            #region Overrides of DateTimeZoneBase
+            #region Overrides of DateTimeZone
             /// <summary>
             /// Gets the zone offset period for the given instant. Null is returned if no period is
             /// defined by the time zone for the given instant.
@@ -240,6 +243,11 @@ namespace NodaTime.TimeZones
                     throw new SkippedTimeException(localInstant, TimeZone);
                 }
                 return node.Interval;
+            }
+
+            internal override ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
+            {
+                throw new NotImplementedException();
             }
             #endregion
 
@@ -336,188 +344,6 @@ namespace NodaTime.TimeZones
                 internal ZoneInterval Interval { get { return interval; } }
 
                 internal HashCacheNode Previous { get { return previous; } }
-            }
-            #endregion
-        }
-        #endregion
-
-        #region Nested type: MruListCache
-        /// <summary>
-        /// Implements a most-recently-used ordered cache list.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This class implements a simple linked list of periods in most-recently-used order. If
-        /// the list grows beyond the CacheSize, the least-recently-used items are dropped in favor
-        /// of the new ones. When a lookup is performed, it simply looks through this list in order.
-        /// This means it's efficient when many lookups are performed on for roughly the same time
-        /// period, but less efficient if they're scattered across many intervals.
-        /// </para>
-        /// <para>
-        /// Special care is taken so that this cache will be is a valid state in the event that
-        /// multiple threads operate on it at the same time. However, we do not guarentee that all
-        /// operations will be processed in order nor that all nodes will be updated. It is possible
-        /// for nodes to be dropped from the list in certain race conditions but this is acceptable
-        /// because those nodes will simply be recreated on the next request. By not locking the
-        /// object we increase the performance by a factor of 2.
-        /// </para>
-        /// </remarks>
-        private class MruListCache : CachedDateTimeZone
-        {
-            private const int CacheSize = 128;
-            private MruCacheNode head;
-
-            #region Overrides of DateTimeZoneBase
-            /// <summary>
-            /// Initializes a new instance of the <see cref="CachedDateTimeZone.MruListCache"/> class.
-            /// </summary>
-            /// <param name="timeZone">The time zone to cache.</param>
-            internal MruListCache(DateTimeZone timeZone) : base(timeZone)
-            {
-            }
-
-            /// <summary>
-            /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
-            /// for the given instant.
-            /// </summary>
-            /// <param name="instant">The Instant to test.</param>
-            /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-            public override ZoneInterval GetZoneInterval(Instant instant)
-            {
-                MruCacheNode previous = null;
-                int count = 0;
-                for (var node = head; node != null; node = node.Next)
-                {
-                    if (node.Period.Contains(instant))
-                    {
-                        return Use(previous, node);
-                    }
-                    if (++count > CacheSize)
-                    {
-                        break;
-                    }
-                    previous = node;
-                }
-                return AddNode(previous, TimeZone.GetZoneInterval(instant));
-            }
-
-            /// <summary>
-            /// Gets the zone offset period for the given local instant. Null is returned if no period
-            /// is defined by the time zone for the given local instant.
-            /// </summary>
-            /// <param name="localInstant">The LocalInstant to test.</param>
-            /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-            internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
-            {
-                MruCacheNode previous = null;
-                int count = 0;
-                for (var node = head; node != null; node = node.Next)
-                {
-                    if (node.Period.Contains(localInstant))
-                    {
-                        return Use(previous, node);
-                    }
-                    if (++count > CacheSize)
-                    {
-                        break;
-                    }
-                    previous = node;
-                }
-                return AddNode(previous, TimeZone.GetZoneInterval(localInstant));
-            }
-
-            /// <summary>
-            /// Adds the given period as a new node in the list.
-            /// </summary>
-            /// <remarks>
-            /// <para>
-            /// The new node is added as the head as it is the most-recently-used node. If the <paramref
-            /// name="last"/> parameter is not <c>null</c> then any nodes after <paramref name="last"/>
-            /// will be dropped which prevents the list from growing without bounds.
-            /// </para>
-            /// <para>
-            /// We do not lock this object before changing because the worst that can happen is if
-            /// multiple threads try and change this list at the same time one or more of the new nodes
-            /// will be dropped causing the periods not to be cached so they will be reloaded the next
-            /// time they are required. This is a small performance hit but much less than the hit of
-            /// locking the object on every access.
-            /// </para>
-            /// </remarks>
-            /// <param name="last">The last node to keep. If null then the list is not truncated.</param>
-            /// <param name="period">The period to add in the new node.</param>
-            /// <returns>The period added.</returns>
-            private ZoneInterval AddNode(MruCacheNode last, ZoneInterval period)
-            {
-                head = new MruCacheNode(period, head);
-                if (last != null)
-                {
-                    last.Next = null;
-                }
-                return period;
-            }
-
-            /// <summary>
-            /// Moves the given node to the head of the list to keep the list is a most-recently-used
-            /// order.
-            /// </summary>
-            /// <remarks>
-            /// <para>
-            /// The previous parameter points to the node immediately before the node to move so we know
-            /// where to unlink it from. If the previous parameter is <c>null</c> then node is already
-            /// at the head and does not need to be moved.
-            /// </para>
-            /// <para>
-            /// This method does not lock the object before changing because given this order of
-            /// operations the worst that will happen with multiple threads is one of the nodes being
-            /// moved to the front of the list may be dropped. If they are they will be reloaded the
-            /// next time they are requested. This is a small performance hit but much less than the hit
-            /// of locking the object on every access.
-            /// </para>
-            /// </remarks>
-            /// <param name="previous">The node before the new one being added. If <c>null</c> then the new node is the head.</param>
-            /// <param name="node">The node to move to the front of the list.</param>
-            /// <returns>The period in the node being moved.</returns>
-            private ZoneInterval Use(MruCacheNode previous, MruCacheNode node)
-            {
-                if (previous != null)
-                {
-                    previous.Next = node.Next;
-                    node.Next = head;
-                    head = node;
-                }
-                return node.Period;
-            }
-            #endregion
-
-            #region Nested type: MruCacheNode
-            /// <summary>
-            /// </summary>
-            private class MruCacheNode
-            {
-                private readonly ZoneInterval period;
-
-                /// <summary>
-                /// Initializes a new instance of the <see cref="MruCacheNode"/> class.
-                /// </summary>
-                /// <param name="period">The period contained in this node.</param>
-                /// <param name="next"></param>
-                internal MruCacheNode(ZoneInterval period, MruCacheNode next)
-                {
-                    this.period = period;
-                    Next = next;
-                }
-
-                /// <summary>
-                /// Gets the period in this node.
-                /// </summary>
-                /// <value>The ZoneOffsetPeriod.</value>
-                internal ZoneInterval Period { get { return period; } }
-
-                /// <summary>
-                /// Gets or sets the next.
-                /// </summary>
-                /// <value>The next.</value>
-                internal MruCacheNode Next { get; set; }
             }
             #endregion
         }
