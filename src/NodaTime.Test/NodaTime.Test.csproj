@@ -94,7 +94,7 @@
     <Compile Include="Format\DateTimeFormatterTest.Construction.cs">
       <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Format\DateTimeFormatterTest.CreationMehods.cs">
+    <Compile Include="Format\DateTimeFormatterTest.CreationMethods.cs">
       <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Format\DateTimeFormatterTest.Mocks.cs">
