@@ -36,6 +36,11 @@ namespace NodaTime.Test.TimeZones
             Assert.Throws<SkippedTimeException>(() => zone.GetOffsetFromLocal(localTime.LocalInstant));
         }
 
+        private static void AssertAmbiguous(LocalDateTime localTime, DateTimeZone zone)
+        {
+            Assert.Throws<AmbiguousTimeException>(() => zone.GetOffsetFromLocal(localTime.LocalInstant));
+        }
+
         private static void AssertOffset(int expectedHours, LocalDateTime localTime, DateTimeZone zone)
         {
             var offset = zone.GetOffsetFromLocal(localTime.LocalInstant);
@@ -54,8 +59,8 @@ namespace NodaTime.Test.TimeZones
             var ambiguous = new LocalDateTime(2010, 11, 7, 1, 30);
             var after = new LocalDateTime(2010, 11, 7, 2, 30);
             AssertOffset(-7, before, LosAngeles);
-            AssertOffset(-8, atTransition, LosAngeles);
-            AssertOffset(-8, ambiguous, LosAngeles);
+            AssertAmbiguous(atTransition, LosAngeles);
+            AssertAmbiguous(ambiguous, LosAngeles);
             AssertOffset(-8, after, LosAngeles);
         }
 
@@ -81,8 +86,8 @@ namespace NodaTime.Test.TimeZones
             var ambiguous = new LocalDateTime(2010, 4, 4, 2, 30);
             var after = new LocalDateTime(2010, 4, 4, 3, 30);
             AssertOffset(+13, before, NewZealand);
-            AssertOffset(+12, atTransition, NewZealand);
-            AssertOffset(+12, ambiguous, NewZealand);
+            AssertAmbiguous(atTransition, NewZealand);
+            AssertAmbiguous(ambiguous, NewZealand);
             AssertOffset(+12, after, NewZealand);
         }
 
@@ -108,8 +113,8 @@ namespace NodaTime.Test.TimeZones
             var ambiguous = new LocalDateTime(2010, 10, 31, 2, 30);
             var after = new LocalDateTime(2010, 10, 31, 3, 30);
             AssertOffset(2, before, Paris);
-            AssertOffset(1, ambiguous, Paris);
-            AssertOffset(1, atTransition, Paris);
+            AssertAmbiguous(ambiguous, Paris);
+            AssertAmbiguous(atTransition, Paris);
             AssertOffset(1, after, Paris);
         }
 

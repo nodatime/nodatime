@@ -176,7 +176,6 @@ namespace NodaTime.TimeZones
             private const long PeriodEndMask = (1L << PeriodShift) - 1;
 
             private readonly HashCacheNode[] instantCache;
-            private readonly HashCacheNode[] localInstantCache;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
@@ -189,7 +188,6 @@ namespace NodaTime.TimeZones
                     throw new ArgumentNullException("timeZone");
                 }
                 instantCache = new HashCacheNode[CacheSize];
-                localInstantCache = new HashCacheNode[CacheSize];
             }
 
             #region Overrides of DateTimeZone
@@ -214,33 +212,6 @@ namespace NodaTime.TimeZones
                 while (node.Interval.Start > instant)
                 {
                     node = node.Previous;
-                }
-                return node.Interval;
-            }
-
-            /// <summary>
-            /// Gets the zone offset period for the given local instant. Null is returned if no period
-            /// is defined by the time zone for the given local instant.
-            /// </summary>
-            /// <param name="localInstant">The LocalInstant to test.</param>
-            /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-            internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
-            {
-                int period = (int)(localInstant.Ticks >> PeriodShift);
-                int index = period & CachePeriodMask;
-                var node = localInstantCache[index];
-                if (node == null || node.Period != period)
-                {
-                    node = CreateLocalInstantNode(period);
-                    localInstantCache[index] = node;
-                }
-                while (node != null && node.Interval.LocalStart > localInstant)
-                {
-                    node = node.Previous;
-                }
-                if (node == null || node.Interval.LocalEnd <= localInstant)
-                {
-                    throw new SkippedTimeException(localInstant, TimeZone);
                 }
                 return node.Interval;
             }
@@ -276,41 +247,6 @@ namespace NodaTime.TimeZones
 
                 return node;
             }
-
-            /// <summary>
-            /// See CreateInstantNode - this is the equivalent, but for local instants.
-            /// 
-            /// TODO: Local instants are actually conceivably trickier due to ambiguity
-            /// etc. I have a plan for fixing this, but again making this just a list
-            /// of intervals which occur at any point in the period would make life easier.
-            /// </summary>
-            private HashCacheNode CreateLocalInstantNode(int period)
-            {
-                var periodStart = new LocalInstant((long)period << PeriodShift);
-                var interval = TimeZone.GetZoneInterval(periodStart);
-                var node = new HashCacheNode(interval, period, null);
-                var periodEnd = new LocalInstant(periodStart.Ticks | PeriodEndMask);
-                while (true)
-                {
-                    periodStart = node.Interval.LocalEnd;
-                    if (periodStart > periodEnd)
-                    {
-                        break;
-                    }
-                    try
-                    {
-                        interval = TimeZone.GetZoneInterval(periodStart);
-                    }
-                    catch (SkippedTimeException)
-                    {
-                        interval = TimeZone.GetZoneInterval(node.Interval.End);
-                    }
-                    node = new HashCacheNode(interval, period, node);
-                }
-
-                return node;
-            }
-
             #region Nested type: HashCacheNode
             /// <summary>
             /// See CreateInstantNode for an explanation.

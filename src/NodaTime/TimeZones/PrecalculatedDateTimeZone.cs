@@ -145,34 +145,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
-        /// for the given local instant.
-        /// </summary>
-        /// <param name="localInstant">The LocalInstant to test.</param>
-        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
-        {
-            int last = periods.Length - 1;
-            if (periods[last].LocalEnd <= localInstant)
-            {
-                ZoneInterval fromTailZone = tailZone.GetZoneInterval(localInstant);
-                return fromTailZone.Start < periods[last].End ? fromTailZone.WithStart(periods[last].End) : fromTailZone;
-            }
-            for (var p = last; p >= 0; p--)
-            {
-                if (periods[p].LocalEnd <= localInstant)
-                {
-                    break;
-                }
-                if (periods[p].Contains(localInstant))
-                {
-                    return periods[p];
-                }
-            }
-            throw new InvalidOperationException("Local instant not found in precalculated zone");
-        }
-
-        /// <summary>
         /// Returns true if this time zone is worth caching. Small time zones or time zones with
         /// lots of quick changes do not work well with <see cref="CachedDateTimeZone"/>.
         /// </summary>

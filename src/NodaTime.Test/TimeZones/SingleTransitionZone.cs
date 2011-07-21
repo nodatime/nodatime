@@ -39,12 +39,6 @@ namespace NodaTime.Test.TimeZones
             return earlyInterval.Contains(instant) ? earlyInterval : lateInterval;
         }
 
-        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
-        {
-            // This method will be removed anyway, so let's not implemented it
-            throw new NotImplementedException();
-        }
-
         internal override void Write(DateTimeZoneWriter writer)
         {
             throw new NotSupportedException();

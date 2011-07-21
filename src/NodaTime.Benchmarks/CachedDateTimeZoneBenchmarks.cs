@@ -28,7 +28,6 @@ namespace NodaTime.Benchmarks
         private readonly LocalInstant[] noCacheLocalInstants = new LocalInstant[500];
         private readonly DateTimeZone paris = DateTimeZone.ForId("Europe/Paris");
         private readonly Instant[] twoYearsCacheInstants = new Instant[365];
-        private readonly LocalInstant[] twoYearsCacheLocalInstants = new LocalInstant[365];
         private int cacheIndex;
         private int cacheLocalIndex;
         private int noCacheIndex;
@@ -61,10 +60,6 @@ namespace NodaTime.Benchmarks
             {
                 cacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (adjustment * i);
             }
-            for (int i = 0; i < twoYearsCacheLocalInstants.Length; i++)
-            {
-                twoYearsCacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (twoDays * i);
-            }
         }
 
         [Benchmark]
@@ -92,33 +87,6 @@ namespace NodaTime.Benchmarks
         {
             paris.GetZoneInterval(twoYearsCacheInstants[twoYearsCacheIndex]);
             twoYearsCacheIndex = (twoYearsCacheIndex + 1) % twoYearsCacheInstants.Length;
-        }
-
-        [Benchmark]
-        public void GetPeriodLocalInstant()
-        {
-            paris.GetZoneInterval(LocalInstant.LocalUnixEpoch);
-        }
-
-        [Benchmark]
-        public void GetPeriodLocalInstant_NoCache()
-        {
-            paris.GetZoneInterval(noCacheLocalInstants[noCacheLocalIndex]);
-            noCacheLocalIndex = (noCacheLocalIndex + 1) % noCacheLocalInstants.Length;
-        }
-
-        [Benchmark]
-        public void GetPeriodLocalInstant_Cache()
-        {
-            paris.GetZoneInterval(cacheLocalInstants[cacheLocalIndex]);
-            cacheLocalIndex = (cacheLocalIndex + 1) % cacheLocalInstants.Length;
-        }
-
-        [Benchmark]
-        public void GetPeriodLocalInstant_TwoYears()
-        {
-            paris.GetZoneInterval(twoYearsCacheLocalInstants[twoYearsCacheLocalIndex]);
-            twoYearsCacheLocalIndex = (twoYearsCacheLocalIndex + 1) % twoYearsCacheLocalInstants.Length;
         }
 
         [Benchmark]
