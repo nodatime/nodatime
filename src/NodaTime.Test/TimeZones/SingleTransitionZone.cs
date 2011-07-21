@@ -45,23 +45,6 @@ namespace NodaTime.Test.TimeZones
             throw new NotImplementedException();
         }
 
-        internal override ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
-        {
-            if (earlyInterval.Contains(localInstant))
-            {
-                if (lateInterval.Contains(localInstant))
-                {
-                    return ZoneIntervalPair.Ambiguous(earlyInterval, lateInterval);
-                }
-                return ZoneIntervalPair.Unambiguous(earlyInterval);
-            }
-            if (lateInterval.Contains(localInstant))
-            {
-                return ZoneIntervalPair.Unambiguous(lateInterval);
-            }
-            return ZoneIntervalPair.NoMatch;
-        }
-
         internal override void Write(DateTimeZoneWriter writer)
         {
             throw new NotSupportedException();

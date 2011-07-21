@@ -42,5 +42,34 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(end.LocalInstant, SampleInterval.LocalEnd);
             Assert.AreEqual(SampleEnd - SampleStart, SampleInterval.Duration);
         }
+
+        [Test]
+        public void Contains_Instant_Normal()
+        {
+            Assert.IsTrue(SampleInterval.Contains(SampleStart));
+            Assert.IsFalse(SampleInterval.Contains(SampleEnd));
+            Assert.IsFalse(SampleInterval.Contains(Instant.MinValue));
+            Assert.IsFalse(SampleInterval.Contains(Instant.MaxValue));
+        }
+
+        [Test]
+        public void Contains_Instant_WholeOfTime()
+        {
+            ZoneInterval interval = new ZoneInterval("All Time", Instant.MinValue, Instant.MaxValue,
+                Offset.ForHours(9), Offset.ForHours(1));
+            Assert.IsTrue(interval.Contains(SampleStart));
+            Assert.IsTrue(interval.Contains(Instant.MinValue));
+            Assert.IsTrue(interval.Contains(Instant.MaxValue));
+        }
+
+        [Test]
+        public void Contains_LocalInstant_WholeOfTime()
+        {
+            ZoneInterval interval = new ZoneInterval("All Time", Instant.MinValue, Instant.MaxValue,
+                Offset.ForHours(9), Offset.ForHours(1));
+            Assert.IsTrue(interval.Contains(SampleStart.Plus(Offset.Zero)));
+            Assert.IsTrue(interval.Contains(LocalInstant.MinValue));
+            Assert.IsTrue(interval.Contains(LocalInstant.MaxValue));
+        }
     }
 }

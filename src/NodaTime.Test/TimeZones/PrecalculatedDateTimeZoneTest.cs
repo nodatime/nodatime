@@ -36,7 +36,9 @@ namespace NodaTime.Test.TimeZones
 
         private static readonly FixedDateTimeZone TailZone = new FixedDateTimeZone("TestFixed", Offset.ForHours(-6));
 
-        private static readonly ZoneInterval TailZoneInterval = TailZone.GetZoneInterval(Instant.UnixEpoch);
+        // We don't actually want an interval from the beginning of time when we ask our composite time zone for an interval
+        // - because that could give the wrong idea. So we clamp it at the end of the precalculated interval.
+        private static readonly ZoneInterval ClampedTailZoneInterval = TailZone.GetZoneInterval(Instant.UnixEpoch).WithStart(ThirdInterval.End);
 
         private static readonly PrecalculatedDateTimeZone TestZone =
             new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone);
@@ -83,7 +85,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneIntervalInstant_TailZone()
         {
-            Assert.AreEqual(TailZoneInterval, TestZone.GetZoneInterval(ThirdInterval.End));
+            Assert.AreEqual(ClampedTailZoneInterval, TestZone.GetZoneInterval(ThirdInterval.End));
         }
 
         [Test]
@@ -98,7 +100,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_UnambiguousInTailZone()
         {
             var pair = TestZone.GetZoneIntervals(new LocalInstant(2015, 1, 1, 0, 0));
-            Assert.AreEqual(TailZoneInterval, pair.EarlyInterval);
+            Assert.AreEqual(ClampedTailZoneInterval, pair.EarlyInterval);
             Assert.IsNull(pair.LateInterval);
         }
 
@@ -117,25 +119,7 @@ namespace NodaTime.Test.TimeZones
             // Transition from -5 to -6 has a 1 hour ambiguity
             var pair = TestZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.One);
             Assert.AreEqual(ThirdInterval, pair.EarlyInterval);
-            Assert.AreEqual(TailZoneInterval, pair.LateInterval);
-        }
-
-        [Test]
-        public void GetZoneIntervals_AmbiguousAndValidInTailZoneTransition()
-        {
-            // Tail zone is -8 / -10, with the transition occurring just after
-            // the transition *to* the tail zone from the precalculated zone.
-            // A local instant of one hour before after the transition from the precalculated zone (which is -5)
-            // will therefore be ambiguous, with both resulting instants occurring after the transition
-            // from precalculated to tail. We somewhat-arbitrarily pick the later zone as the second zone
-            // for the ambiguity.
-            var tailZone = new SingleTransitionZone(ThirdInterval.End + Duration.FromHours(1), -8, -10);
-            var gapZone = new PrecalculatedDateTimeZone("Test",
-                new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
-
-            var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.FromHours(1));
-            Assert.AreEqual(ThirdInterval, pair.EarlyInterval);
-            Assert.AreEqual(tailZone.LateInterval, pair.LateInterval);
+            Assert.AreEqual(ClampedTailZoneInterval, pair.LateInterval);
         }
 
         [Test]
@@ -189,9 +173,9 @@ namespace NodaTime.Test.TimeZones
             var tailZone = new FixedDateTimeZone(Offset.ForHours(5));
             var gapZone = new PrecalculatedDateTimeZone("Test", 
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
-            var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd);
-            Assert.IsNull(pair.EarlyInterval);
-            Assert.IsNull(pair.LateInterval);
+            var actual = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd);
+            var expected = ZoneIntervalPair.NoMatch;
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]

@@ -119,5 +119,20 @@ namespace NodaTime.TimeZones
             hash = HashCodeHelper.Hash(hash, lateInterval);
             return hash;
         }
+
+        public override string ToString()
+        {
+            switch (MatchingIntervals)
+            {
+                case 0:
+                    return "No match (gap)";
+                case 1:
+                    return "Unambiguous: " + earlyInterval;
+                case 2:
+                    return "Ambiguous between " + earlyInterval + " and " + lateInterval;
+                default:
+                    throw new InvalidOperationException("Won't happen");
+            }
+        }
     }
 }

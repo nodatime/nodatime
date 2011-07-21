@@ -244,11 +244,6 @@ namespace NodaTime.TimeZones
                 }
                 return node.Interval;
             }
-
-            internal override ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
-            {
-                throw new NotImplementedException();
-            }
             #endregion
 
             /// <summary>

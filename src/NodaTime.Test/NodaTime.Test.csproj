@@ -198,6 +198,9 @@
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
     <Compile Include="ZonedDateTimeTest.cs" />
     <None Include="Tests.nunit" />
+    <Compile Include="TimeZones\DateTimeZoneTest.GetZoneIntervals.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">

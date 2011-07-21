@@ -281,7 +281,84 @@ namespace NodaTime
         /// <returns>The struct containing up to two ZoneInterval references.</returns>
         internal virtual ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
         {
-            throw new NotImplementedException();
+            Instant firstGuess = new Instant(localInstant.Ticks);
+            ZoneInterval interval = GetZoneInterval(firstGuess);
+
+            // Most of the time we'll go into here... the local instant and the instant
+            // are close enough that we've found the right instant.
+            if (interval.Contains(localInstant))
+            {
+                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
+                if (earlier != null)
+                {
+                    return ZoneIntervalPair.Ambiguous(earlier, interval);
+                }
+                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
+                if (later != null)
+                {
+                    return ZoneIntervalPair.Ambiguous(interval, later);
+                }
+                return ZoneIntervalPair.Unambiguous(interval);
+            }
+            else
+            {
+                // Our first guess was wrong. Either we need to change interval by one (either direction)
+                // or we're in a gap.
+                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
+                if (earlier != null)
+                {
+                    return ZoneIntervalPair.Unambiguous(earlier);
+                }
+                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
+                if (later != null)
+                {
+                    return ZoneIntervalPair.Unambiguous(later);
+                }
+                return ZoneIntervalPair.NoMatch;
+            }
+        }
+
+        /// <summary>
+        /// Returns the interval before this one, if it contains the given local instant, or null otherwise.
+        /// </summary>
+        private ZoneInterval GetEarlierMatchingInterval(ZoneInterval interval, LocalInstant localInstant)
+        {
+            if (interval.Start == Instant.MinValue)
+            {
+                return null;
+            }
+            // If the tick before this interval started *could* map to a later local instant, let's
+            // get the interval and check whether it actually includes the one we want.
+            Instant endOfPrevious = interval.Start - Duration.One;
+            if (endOfPrevious.Plus(MaxOffset) >= localInstant)
+            {
+                ZoneInterval candidate = GetZoneInterval(endOfPrevious);
+                if (candidate.Contains(localInstant))
+                {
+                    return candidate;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the next interval after this one, if it contains the given local instant, or null otherwise.
+        /// </summary>
+        private ZoneInterval GetLaterMatchingInterval(ZoneInterval interval, LocalInstant localInstant)
+        {
+            if (interval.End == Instant.MaxValue)
+            {
+                return null;
+            }
+            if (interval.End.Plus(MinOffset) <= localInstant)
+            {
+                ZoneInterval candidate = GetZoneInterval(interval.End);
+                if (candidate.Contains(localInstant))
+                {
+                    return candidate;
+                }
+            }
+            return null;
         }
         #endregion LocalInstant methods
 
