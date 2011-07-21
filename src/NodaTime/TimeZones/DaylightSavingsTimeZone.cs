@@ -347,6 +347,10 @@ namespace NodaTime.TimeZones
                 }
                 return dstTransition.Value;
             }
+            if (standardTransition.HasValue)
+            {
+                return standardTransition.Value;
+            }
             throw new ArgumentOutOfRangeException("instant", "Infinite recurrences should always have a next transition");
         }
 
@@ -372,6 +376,10 @@ namespace NodaTime.TimeZones
                 {
                     return dstTransition.Value;
                 }
+            }
+            if (standardTransition.HasValue)
+            {
+                return standardTransition.Value;
             }
             throw new ArgumentOutOfRangeException("instant", "Shouldn't call Previous with an out-of-range instant.");
         }
