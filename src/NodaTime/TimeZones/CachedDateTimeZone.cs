@@ -52,7 +52,7 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
         /// </summary>
         /// <param name="timeZone">The time zone to cache.</param>
-        private CachedDateTimeZone(DateTimeZone timeZone) : base(timeZone.Id, false)
+        private CachedDateTimeZone(DateTimeZone timeZone) : base(timeZone.Id, false, timeZone.MinOffset, timeZone.MaxOffset)
         {
             this.timeZone = timeZone;
         }

@@ -54,7 +54,10 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="startRecurrence">The start recurrence.</param>
         /// <param name="endRecurrence">The end recurrence.</param>
-        internal DaylightSavingsTimeZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence) : base(id, false)
+        internal DaylightSavingsTimeZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
+            : base(id, false,
+            standardOffset + Offset.Min(startRecurrence.Savings, endRecurrence.Savings),
+            standardOffset + Offset.Max(startRecurrence.Savings, endRecurrence.Savings))
         {
             if (startRecurrence == null)
             {

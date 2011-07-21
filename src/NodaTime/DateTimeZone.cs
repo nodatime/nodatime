@@ -25,7 +25,7 @@ namespace NodaTime
     ///   Represents a time zone.
     /// </summary>
     /// <remarks>
-    ///   Time zones primarily encapsulate two facts: and offset from UTC and a set of rules on how
+    ///   Time zones primarily encapsulate two facts: an offset from UTC and a set of rules on how
     ///   the values are adjusted.
     /// </remarks>
     public abstract class DateTimeZone
@@ -43,6 +43,8 @@ namespace NodaTime
 
         private readonly string id;
         private readonly bool isFixed;
+        private readonly Offset minOffset;
+        private readonly Offset maxOffset;
 
         /// <summary>
         ///   Gets the UTC (Coordinated Universal Time) time zone.
@@ -145,12 +147,16 @@ namespace NodaTime
         /// <summary>
         ///   Initializes a new instance of the <see cref = "T:NodaTime.DateTimeZone" /> class.
         /// </summary>
-        /// <param name = "id">The unique id of this time zone.</param>
-        /// <param name = "isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
-        protected DateTimeZone(string id, bool isFixed)
+        /// <param name="id">The unique id of this time zone.</param>
+        /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
+        /// <param name="minOffset">Minimum offset applied within this zone</param>
+        /// <param name="maxOffset">Maximum offset applied within this zone</param>
+        protected DateTimeZone(string id, bool isFixed, Offset minOffset, Offset maxOffset)
         {
             this.id = id;
             this.isFixed = isFixed;
+            this.minOffset = minOffset;
+            this.maxOffset = maxOffset;
         }
 
         /// <summary>
@@ -180,6 +186,16 @@ namespace NodaTime
         ///   be examined.
         /// </remarks>
         public bool IsFixed { get { return isFixed; } }
+
+        /// <summary>
+        /// Returns the least offset within this time zone.
+        /// </summary>
+        public Offset MinOffset { get { return minOffset; } }
+
+        /// <summary>
+        /// Returns the greatest offset within this time zone.
+        /// </summary>
+        public Offset MaxOffset { get { return maxOffset; } }
 
         /// <summary>
         ///   Returns the offset from UTC, where a positive duration indicates that local time is
@@ -248,16 +264,25 @@ namespace NodaTime
         /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" /> or <c>null</c>.</returns>
         internal abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
 
-        // <summary>
-        // Finds all zone intervals for the given local instant. Usually there's one (i.e. only a single
-        // instant is mapped to the given local instant within the time zone) but during DST transitions
-        // there can be either 0 (the given local instant doesn't exist, e.g. local time skipped from 1am to
-        // 2am, but you gave us 1.30am) or 2 (the given local instant is ambiguous, e.g. local time skipped
-        // from 2am to 1am, but you gave us 1.30am).
-        // </summary>
-        // <param name="localInstant">The local instant to find matching zone intervals for</param>
-        // <returns>The struct containing up to two ZoneInterval references.</returns>
-        internal abstract ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant);
+        /// <summary>
+        /// Finds all zone intervals for the given local instant. Usually there's one (i.e. only a single
+        /// instant is mapped to the given local instant within the time zone) but during DST transitions
+        /// there can be either 0 (the given local instant doesn't exist, e.g. local time skipped from 1am to
+        /// 2am, but you gave us 1.30am) or 2 (the given local instant is ambiguous, e.g. local time skipped
+        /// from 2am to 1am, but you gave us 1.30am).
+        /// </summary>
+        /// <remarks>
+        /// This method is implemented in terms of GetZoneInterval(Instant) within DateTimeZone,
+        /// and should work for any zone. However, derived classes may override this method
+        /// for optimization purposes, e.g. if the zone interval is always ambiguous with
+        /// a fixed value.
+        /// </remarks>
+        /// <param name="localInstant">The local instant to find matching zone intervals for</param>
+        /// <returns>The struct containing up to two ZoneInterval references.</returns>
+        internal virtual ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
+        {
+            throw new NotImplementedException();
+        }
         #endregion LocalInstant methods
 
         #region I/O

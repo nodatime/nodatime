@@ -56,6 +56,8 @@ namespace NodaTime.Test.TimeZones
             // TODO: Use a real LocalDateTime when we've implemented it!
             Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch));
             Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromUtc(Instant.UnixEpoch));
+            Assert.AreEqual(ZoneOffset, TestZone.MinOffset);
+            Assert.AreEqual(ZoneOffset, TestZone.MaxOffset);
         }
 
         [Test]
