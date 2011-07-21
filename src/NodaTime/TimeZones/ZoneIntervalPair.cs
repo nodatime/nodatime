@@ -15,6 +15,11 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using NodaTime.Utility;
+
 namespace NodaTime.TimeZones
 {
     /// <summary>
@@ -25,7 +30,7 @@ namespace NodaTime.TimeZones
     /// and get it that way. On the other hand, this is quite an awkward type... it *feels* like
     /// an implementation detail somehow.
     /// </summary>
-    public struct ZoneIntervalPair
+    public struct ZoneIntervalPair : IEquatable<ZoneIntervalPair>
     {
         internal static readonly ZoneIntervalPair NoMatch = new ZoneIntervalPair(null, null);
         
@@ -46,7 +51,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         public ZoneInterval LateInterval { get { return lateInterval; } }
 
-        internal ZoneIntervalPair(ZoneInterval early, ZoneInterval late)
+        private ZoneIntervalPair(ZoneInterval early, ZoneInterval late)
         {
             // TODO: Validation, if we want it:
             // - If early is null, late must be null
@@ -55,6 +60,64 @@ namespace NodaTime.TimeZones
             this.lateInterval = late;
         }
 
+        internal static ZoneIntervalPair Unambiguous(ZoneInterval interval)
+        {
+            return new ZoneIntervalPair(interval, null);
+        }
+
+        internal static ZoneIntervalPair Ambiguous(ZoneInterval early, ZoneInterval late)
+        {
+            return new ZoneIntervalPair(early, late);
+        }
+
+        /// <summary>
+        /// Returns the number of intervals contained within this pair - 0 for a "gap", 1 for an unambiguous match, 2 for an ambiguous match.
+        /// </summary>
         public int MatchingIntervals { get { return earlyInterval == null ? 0 : lateInterval == null ? 1 : 2; } }
+
+        /// <summary>
+        ///   Determines whether the specified <see cref = "T:System.Object" /> is equal to the current <see cref = "T:System.Object" />.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref = "T:System.Object" /> is equal to the current <see cref = "T:System.Object" />; otherwise, <c>false</c>.
+        /// </returns>
+        /// <param name = "obj">The <see cref = "T:System.Object" /> to compare with the current <see cref = "T:System.Object" />.</param>
+        /// <exception cref = "T:System.NullReferenceException">The <paramref name = "obj" /> parameter is null.</exception>
+        /// <filterpriority>2</filterpriority>
+        [DebuggerStepThrough]
+        public override bool Equals(object obj)
+        {
+            return obj is ZoneIntervalPair && Equals((ZoneIntervalPair)obj);
+        }
+
+        /// <summary>
+        ///   Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        ///   true if the current object is equal to the <paramref name = "other" /> parameter; otherwise, false.
+        /// </returns>
+        /// <param name = "other">An object to compare with this object.
+        /// </param>
+        [DebuggerStepThrough]
+        public bool Equals(ZoneIntervalPair other)
+        {
+            return EqualityComparer<ZoneInterval>.Default.Equals(earlyInterval, other.earlyInterval) &&
+                   EqualityComparer<ZoneInterval>.Default.Equals(lateInterval, other.lateInterval);
+        }
+
+        /// <summary>
+        ///   Serves as a hash function for a particular type.
+        /// </summary>
+        /// <returns>
+        ///   A hash code for the current <see cref = "T:System.Object" />.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override int GetHashCode()
+        {
+            int hash = HashCodeHelper.Initialize();
+            hash = HashCodeHelper.Hash(hash, earlyInterval);
+            hash = HashCodeHelper.Hash(hash, lateInterval);
+            return hash;
+        }
     }
 }
