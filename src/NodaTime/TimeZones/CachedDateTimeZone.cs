@@ -104,7 +104,7 @@ namespace NodaTime.TimeZones
             }
         }
 
-        #region Overrides of DateTimeZoneBase
+        #region Overrides of DateTimeZone
         /// <summary>
         /// Writes the time zone to the specified writer.
         /// </summary>

@@ -21,11 +21,11 @@ using NUnit.Framework;
 namespace NodaTime.Test.TimeZones
 {
     /// <summary>
-    /// Tests within this class test the functionality within DateTimeZoneBase, even though it
+    /// Tests within this class test the functionality within DateTimeZone, even though it
     /// tests it via concrete implementations.
     /// </summary>
     [TestFixture]
-    public class DateTimeZoneBaseTest
+    public class DateTimeZoneTest
     {
         private static readonly DateTimeZone LosAngeles = DateTimeZone.ForId("America/Los_Angeles");
         private static readonly DateTimeZone NewZealand = DateTimeZone.ForId("Pacific/Auckland");
