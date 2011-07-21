@@ -257,11 +257,7 @@ namespace NodaTime
         // </summary>
         // <param name="localInstant">The local instant to find matching zone intervals for</param>
         // <returns>The struct containing up to two ZoneInterval references.</returns>
-        internal virtual ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
-        {
-            // TODO: Make this abstract when all the subclasses override it.
-            throw new NotSupportedException();
-        }
+        internal abstract ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant);
         #endregion LocalInstant methods
 
         #region I/O
