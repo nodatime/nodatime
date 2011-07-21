@@ -42,13 +42,6 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void GetZoneIntervalLocalInstant_ZoneInterval()
-        {
-            var actual = TestZone.GetZoneInterval(LocalInstant.LocalUnixEpoch);
-            Assert.AreEqual(FixedPeriod, actual);
-        }
-
-        [Test]
         public void SimpleProperties_ReturnValuesFromConstructor()
         {
             Assert.AreEqual("UTC-8", TestZone.Id);

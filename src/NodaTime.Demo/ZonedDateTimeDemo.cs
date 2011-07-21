@@ -43,10 +43,7 @@ namespace NodaTime.Demo
         [Test]
         public void Ambiguity()
         {
-            ZonedDateTime late = new ZonedDateTime(2010, 10, 31, 1, 15, 0, Dublin);
-            Assert.AreEqual("20101031T011500.000Z", IsoDateTimeFormats.BasicDateTime.Print(late));
-            ZonedDateTime early = new ZonedDateTime(late.ToInstant() - Duration.OneHour, new Chronology(Dublin, CalendarSystem.Iso));
-            Assert.AreEqual("20101031T011500.000+0100", IsoDateTimeFormats.BasicDateTime.Print(early));
+            Assert.Throws<AmbiguousTimeException>(() => new ZonedDateTime(2010, 10, 31, 1, 15, 0, Dublin));
         }
 
         [Test]

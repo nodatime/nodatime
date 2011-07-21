@@ -160,28 +160,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Gets the zone offset period for the given local instant.
-        /// </summary>
-        /// <param name="localInstant">The LocalInstant to test.</param>
-        /// <exception cref="SkippedTimeException"></exception>
-        /// <returns>The ZoneInterval containing the given local instant.</returns>
-        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
-        {
-            var standard = localInstant.Minus(standardOffset);
-            var daylight = localInstant.Minus(standardOffset + dstRecurrence.Savings);
-
-            var normalRecurrence = FindMatchingRecurrence(standard);
-            var daylightRecurrence = FindMatchingRecurrence(daylight);
-            // If the normal instant only occurs in the DST recurrence, and the daylight instant only occurs in the
-            // standard recurrence, the local instant must be in a gap.
-            if (ReferenceEquals(normalRecurrence, dstRecurrence) && ReferenceEquals(daylightRecurrence, standardRecurrence))
-            {
-                throw new SkippedTimeException(localInstant, this);
-            }
-            return GetZoneInterval(standard);
-        }
-
-        /// <summary>
         /// Finds the recurrence containing the given instant, if any.
         /// </summary>
         /// <returns>The recurrence containing the given instant, or null if

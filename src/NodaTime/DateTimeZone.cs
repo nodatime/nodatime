@@ -242,27 +242,31 @@ namespace NodaTime
         /// <param name = "localInstant">The <see cref = "T:NodaTime.LocalInstant" /> to get the offset of.</param>
         /// <returns>The offset to subtract from the specified local time to obtain a UTC instant.</returns>
         /// <remarks>
-        ///   Around a DST transition, local times behave peculiarly. When the time springs forward,
-        ///   (e.g. 12:59 to 02:00) some times never occur; when the time falls back (e.g. 1:59 to
-        ///   01:00) some times occur twice. This method always returns a smaller offset when there is
-        ///   ambiguity, i.e. it treats the local time as the later of the possibilities.
+        /// Around a DST transition, local times behave peculiarly. When the time springs forward,
+        /// (e.g. 12:59 to 02:00) some times never occur; when the time falls back (e.g. 1:59 to
+        /// 01:00) some times occur twice. This method currently throws an exception in the face of either
+        /// ambiguity or a gap.
         /// </remarks>
         /// <exception cref = "T:NodaTime.SkippedTimeException">The local instant doesn't occur in this time zone
         ///   due to zone transitions.</exception>
+        /// <exception cref = "T:NodaTime.AmbiguousTimeException">The local instant occurs twice in this time zone
+        ///   due to zone transitions.</exception>
         internal virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
-            // TODO: Handle a null return value... possibly by throwing a new kind of exception.
-            ZoneInterval interval = GetZoneInterval(localInstant);
-            return interval.Offset;
+            var intervalPair = GetZoneIntervals(localInstant);
+            // FIXME: Use TransitionResolver
+            switch (intervalPair.MatchingIntervals)
+            {
+                case 0:
+                    throw new SkippedTimeException(localInstant, this);
+                case 1:
+                    return intervalPair.EarlyInterval.Offset;
+                case 2:
+                    throw new AmbiguousTimeException(localInstant, this);
+                default:
+                    throw new InvalidOperationException("Will never happen");
+            }
         }
-
-        /// <summary>
-        ///   Gets the zone interval for the given local instant. Null is returned if no interval is
-        ///   defined by the time zone for the given local instant.
-        /// </summary>
-        /// <param name = "localInstant">The <see cref = "T:NodaTime.LocalInstant" /> to query.</param>
-        /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" /> or <c>null</c>.</returns>
-        internal abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
 
         /// <summary>
         /// Finds all zone intervals for the given local instant. Usually there's one (i.e. only a single
