@@ -279,12 +279,12 @@ namespace NodaTime.TimeZones
             // If daylight is invalid but standard is valid, we must start off with a winter recurrence, which we can return.
             if (standard < minimumStandardInstant)
             {
-                return daylight < minimumDstInstant ? ZoneIntervalPair.NoMatch : new ZoneIntervalPair(GetZoneInterval(daylight), null);
+                return daylight < minimumDstInstant ? ZoneIntervalPair.NoMatch : ZoneIntervalPair.Unambiguous(GetZoneInterval(daylight));
             }
             if (daylight < minimumDstInstant)
             {
                 // Standard must be valid, given previous condition
-                return new ZoneIntervalPair(GetZoneInterval(standard), null);
+                return ZoneIntervalPair.Unambiguous(GetZoneInterval(standard));
             }
 
             var normalRecurrence = FindMatchingRecurrence(standard);
@@ -302,10 +302,10 @@ namespace NodaTime.TimeZones
             {   
                 // The instant corresponding with daylight saving time is always earlier than the instant
                 // corresponding with standard time.
-                return new ZoneIntervalPair(GetZoneInterval(daylight), GetZoneInterval(standard));
+                return ZoneIntervalPair.Ambiguous(GetZoneInterval(daylight), GetZoneInterval(standard));
             }
             // Unambiguous case
-            return new ZoneIntervalPair(GetZoneInterval(standard), null);
+            return ZoneIntervalPair.Unambiguous(GetZoneInterval(standard));
         }
 
         /// <summary>

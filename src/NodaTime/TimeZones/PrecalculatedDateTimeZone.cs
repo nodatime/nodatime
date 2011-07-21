@@ -201,7 +201,7 @@ namespace NodaTime.TimeZones
                         // cutover, we can return an unambiguous pair.
                         if (localInstant.Minus(tailZonePair.LateInterval.Offset) >= lastPeriod.End)
                         {
-                            return new ZoneIntervalPair(tailZonePair.LateInterval, null);
+                            return ZoneIntervalPair.Unambiguous(tailZonePair.LateInterval);
                         }
                         // Both instants occur before the cutover (odd!) - so we have no match.
                         return ZoneIntervalPair.NoMatch;
@@ -220,7 +220,7 @@ namespace NodaTime.TimeZones
                 // such that the local instant in the candidate interval is after our interval's instant end.
                 if (candidate != null && localInstant.Minus(candidate.Offset) >= lastPeriod.End)
                 {
-                    return new ZoneIntervalPair(lastPeriod, candidate);
+                    return ZoneIntervalPair.Ambiguous(lastPeriod, candidate);
                 }
             }
             // Okay, not ambiguous with the tail zone - let's look through the precalculated intervals
@@ -237,9 +237,9 @@ namespace NodaTime.TimeZones
                     // Check if it *also* matches the previous one.
                     if (p != 0 && periods[p - 1].Contains(localInstant))
                     {
-                        return new ZoneIntervalPair(periods[p - 1], candidate);
+                        return ZoneIntervalPair.Ambiguous(periods[p - 1], candidate);
                     }
-                    return new ZoneIntervalPair(periods[p], null);
+                    return ZoneIntervalPair.Unambiguous(periods[p]);
                 }
             }
             throw new InvalidOperationException("Local instant not found in precalculated zone");

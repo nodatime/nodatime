@@ -51,7 +51,7 @@ namespace NodaTime.TimeZones
         {
             this.offset = offset;
             period = new ZoneInterval(id, Instant.MinValue, Instant.MaxValue, offset, Offset.Zero);
-            periodPair = new ZoneIntervalPair(period, null);
+            periodPair = ZoneIntervalPair.Unambiguous(period);
         }
 
         /// <summary>

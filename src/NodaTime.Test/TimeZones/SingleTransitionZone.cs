@@ -49,9 +49,17 @@ namespace NodaTime.Test.TimeZones
         {
             if (earlyInterval.Contains(localInstant))
             {
-                return new ZoneIntervalPair(earlyInterval, lateInterval.Contains(localInstant) ? lateInterval : null);
+                if (lateInterval.Contains(localInstant))
+                {
+                    return ZoneIntervalPair.Ambiguous(earlyInterval, lateInterval);
+                }
+                return ZoneIntervalPair.Unambiguous(earlyInterval);
             }
-            return new ZoneIntervalPair(lateInterval.Contains(localInstant) ? lateInterval : null, null);
+            if (lateInterval.Contains(localInstant))
+            {
+                return ZoneIntervalPair.Unambiguous(lateInterval);
+            }
+            return ZoneIntervalPair.NoMatch;
         }
 
         internal override void Write(DateTimeZoneWriter writer)
