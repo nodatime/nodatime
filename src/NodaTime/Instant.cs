@@ -315,6 +315,22 @@ namespace NodaTime
             LocalInstant local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
             return new Instant(local.Ticks);
         }
+
+        /// <summary>
+        /// Returns the later instant of the given two.
+        /// </summary>
+        public static Instant Max(Instant x, Instant y)
+        {
+            return x > y ? x : y;
+        }
+
+        /// <summary>
+        /// Returns the earlier instant of the given two.
+        /// </summary>
+        public static Instant Min(Instant x, Instant y)
+        {
+            return x < y ? x : y;
+        }
         #endregion
 
         #region Formatting
