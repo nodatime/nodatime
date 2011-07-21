@@ -42,6 +42,33 @@ namespace NodaTime.Test.TimeZones
             new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone);
 
         [Test]
+        public void MinMaxOffsets()
+        {
+            Assert.AreEqual(Offset.ForHours(-6), TestZone.MinOffset);
+            Assert.AreEqual(Offset.ForHours(4), TestZone.MaxOffset);
+        }
+
+        [Test]
+        public void MinMaxOffsetsWithOtherTailZone()
+        {
+            var tailZone = new FixedDateTimeZone("TestFixed", Offset.ForHours(8));
+            var testZone = new PrecalculatedDateTimeZone("Test",
+                new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
+            Assert.AreEqual(Offset.ForHours(-5), testZone.MinOffset);
+            Assert.AreEqual(Offset.ForHours(8), testZone.MaxOffset);
+        }
+
+        [Test]
+        public void MinMaxOffsetsWithNullTailZone()
+        {
+            var testZone = new PrecalculatedDateTimeZone("Test",
+                new[] { FirstInterval, SecondInterval, ThirdInterval,
+                        new ZoneInterval("Last", ThirdInterval.End, Instant.MaxValue, Offset.Zero, Offset.Zero) }, null);
+            Assert.AreEqual(Offset.ForHours(-5), testZone.MinOffset);
+            Assert.AreEqual(Offset.ForHours(4), testZone.MaxOffset);
+        }
+
+        [Test]
         public void GetZoneIntervalInstant_End()
         {
             Assert.AreEqual(SecondInterval, TestZone.GetZoneInterval(SecondInterval.End - Duration.One));

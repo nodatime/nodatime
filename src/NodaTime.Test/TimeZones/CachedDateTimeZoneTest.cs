@@ -85,5 +85,12 @@ namespace NodaTime.Test.TimeZones
             var newPeriod = timeZone.GetZoneInterval(summer);
             Assert.AreSame(actual, newPeriod);
         }
+
+        [Test]
+        public void MinMaxOffsets()
+        {
+            Assert.AreEqual(timeZone.Uncached().MinOffset, timeZone.MinOffset);
+            Assert.AreEqual(timeZone.Uncached().MaxOffset, timeZone.MaxOffset);
+        }
     }
 }

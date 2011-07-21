@@ -26,7 +26,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         internal SingleTransitionZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter)
-            : base("Single", false)
+            : base("Single", false, Offset.Min(offsetBefore, offsetAfter), Offset.Max(offsetBefore, offsetAfter))
         {
             earlyInterval = new ZoneInterval("Single-Early", Instant.MinValue, transitionPoint,
                 offsetBefore, Offset.Zero);

@@ -38,7 +38,10 @@ namespace NodaTime.TimeZones
         /// <param name="transitions">The transitions.</param>
         /// <param name="precalcedEnd">The precalced end.</param>
         /// <param name="tailZone">The tail zone.</param>
-        internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, DateTimeZone tailZone) : base(id, false)
+        internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, DateTimeZone tailZone)
+            : base(id, false,
+                   ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Min),
+                   ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Max))
         {
             if (transitions == null)
             {
@@ -68,7 +71,10 @@ namespace NodaTime.TimeZones
         /// <param name="id">The id.</param>
         /// <param name="periods">The periods.</param>
         /// <param name="tailZone">The tail zone.</param>
-        internal PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone) : base(id, false)
+        internal PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone)
+            : base(id, false,
+                   ComputeOffset(periods, p => p.Offset, tailZone, Offset.Min),
+                   ComputeOffset(periods, p => p.Offset, tailZone, Offset.Max))
         {
             this.tailZone = tailZone;
             this.periods = periods;
@@ -304,5 +310,45 @@ namespace NodaTime.TimeZones
             return new PrecalculatedDateTimeZone(id, periods, tailZone);
         }
         #endregion // I/O
+
+        #region Offset computation for constructors
+        // Essentially Func<Offset, Offset, Offset>
+        private delegate Offset OffsetAggregator(Offset x, Offset y);
+        private delegate Offset OffsetExtractor<T>(T input);
+
+        // Reasonably simple way of computing the maximum/minimum offset
+        // from either periods or transitions, with or without a tail zone.
+        private static Offset ComputeOffset<T>(IEnumerable<T> elements,
+            OffsetExtractor<T> extractor,
+            DateTimeZone tailZone,
+            OffsetAggregator aggregator)
+        {
+            if (elements == null)
+            {
+                throw new ArgumentException("elements");
+            }
+            Offset ret;
+            using (var iterator = elements.GetEnumerator())
+            {
+                if (!iterator.MoveNext())
+                {
+                    throw new ArgumentException("No transitions / periods specified");
+                }
+                ret = extractor(iterator.Current);
+                while (iterator.MoveNext())
+                {
+                    ret = aggregator(ret, extractor(iterator.Current));
+                }
+            }
+            if (tailZone != null)
+            {
+                // Effectively a shortcut for picking either tailZone.MinOffset or
+                // tailZone.MaxOffset
+                Offset bestFromZone = aggregator(tailZone.MinOffset, tailZone.MaxOffset);
+                ret = aggregator(ret, bestFromZone);
+            }
+            return ret;
+        }
+        #endregion
     }
 }

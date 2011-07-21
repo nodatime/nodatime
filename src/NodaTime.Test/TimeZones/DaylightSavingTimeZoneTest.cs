@@ -27,6 +27,13 @@ namespace NodaTime.Test.TimeZones
             Offset.ForHours(5), Winter, Summer);
 
         [Test]
+        public void MinMaxOffsets()
+        {
+            Assert.AreEqual(Offset.ForHours(6), TestZone.MaxOffset);
+            Assert.AreEqual(Offset.ForHours(5), TestZone.MinOffset);
+        }
+
+        [Test]
         public void GetZoneInterval_Instant_Summer()
         {
             var interval = TestZone.GetZoneInterval(Instant.FromUtc(2010, 6, 1, 0, 0));

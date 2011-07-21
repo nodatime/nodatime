@@ -47,7 +47,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="offset">The offset.</param>
-        public FixedDateTimeZone(string id, Offset offset) : base(id, true)
+        public FixedDateTimeZone(string id, Offset offset) : base(id, true, offset, offset)
         {
             this.offset = offset;
             period = new ZoneInterval(id, Instant.MinValue, Instant.MaxValue, offset, Offset.Zero);
