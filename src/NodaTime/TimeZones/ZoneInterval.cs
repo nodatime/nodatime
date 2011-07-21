@@ -65,24 +65,17 @@ namespace NodaTime.TimeZones
             this.end = end;
             this.offset = offset;
             this.savings = savings;
-            try
-            {
-                localStart = this.start.Plus(this.offset);
-            }
-            catch (OverflowException)
-            {
-                // TODO: Work out whether we can just compare start with Instant.MinValue and
-                // the equivalent later on. I don't like catching OverflowException like this...
-                localStart = LocalInstant.MinValue;
-            }
-            try
-            {
-                localEnd = this.end.Plus(this.offset);
-            }
-            catch (OverflowException)
-            {
-                localEnd = LocalInstant.MaxValue;
-            }
+            localStart = start == Instant.MinValue ? LocalInstant.MinValue : this.start.Plus(this.offset);
+            localEnd = end == Instant.MaxValue ? LocalInstant.MaxValue : this.end.Plus(this.offset);
+        }
+
+        
+        /// <summary>
+        /// Returns a copy of this zone interval, but with the given start instant.
+        /// </summary>
+        internal ZoneInterval WithStart(Instant newStart)
+        {
+            return new ZoneInterval(name, newStart, end, offset, savings);
         }
 
         #region Properties
@@ -203,6 +196,10 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Determines whether this period contains the given Instant in its range.
         /// </summary>
+        /// <remarks>
+        /// Usually this is half-open, i.e. the end is exclusive, but an interval with an end point of "the end of time" 
+        /// is deemed to be inclusive at the end.
+        /// </remarks>
         /// <param name = "instant">The instant to test.</param>
         /// <returns>
         ///   <c>true</c> if this period contains the given Instant in its range; otherwise, <c>false</c>.
@@ -210,7 +207,7 @@ namespace NodaTime.TimeZones
         [DebuggerStepThrough]
         public bool Contains(Instant instant)
         {
-            return Start <= instant && instant < End;
+            return Start <= instant && (instant < End || End == Instant.MaxValue);
         }
 
         /// <summary>
@@ -223,7 +220,7 @@ namespace NodaTime.TimeZones
         [DebuggerStepThrough]
         internal bool Contains(LocalInstant localInstant)
         {
-            return LocalStart <= localInstant && localInstant < LocalEnd;
+            return LocalStart <= localInstant && (localInstant < LocalEnd || End == Instant.MaxValue);
         }
         #endregion // Contains
 

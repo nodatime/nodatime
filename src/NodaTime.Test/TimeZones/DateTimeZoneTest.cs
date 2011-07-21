@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.TimeZones;
 using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
@@ -23,9 +22,10 @@ namespace NodaTime.Test.TimeZones
     /// <summary>
     /// Tests within this class test the functionality within DateTimeZone, even though it
     /// tests it via concrete implementations.
+    /// TODO: Fix all tests to use SingleTransitionZone.
     /// </summary>
     [TestFixture]
-    public class DateTimeZoneTest
+    public partial class DateTimeZoneTest
     {
         private static readonly DateTimeZone LosAngeles = DateTimeZone.ForId("America/Los_Angeles");
         private static readonly DateTimeZone NewZealand = DateTimeZone.ForId("Pacific/Auckland");
