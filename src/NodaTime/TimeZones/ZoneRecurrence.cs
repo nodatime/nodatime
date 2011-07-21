@@ -304,5 +304,14 @@ namespace NodaTime.TimeZones
             return builder.ToString();
         }
         #endregion // Object overrides
+
+        /// <summary>
+        /// Returns either "this" (if this zone recurrence already has a from year of int.MinValue)
+        /// or a new zone recurrence which is identical but with a from year of int.MinValue.
+        /// </summary>
+        internal ZoneRecurrence ToStartOfTime()
+        {
+            return fromYear == int.MinValue ? this : new ZoneRecurrence(name, savings, yearOffset, int.MinValue, toYear);
+        }
     }
 }

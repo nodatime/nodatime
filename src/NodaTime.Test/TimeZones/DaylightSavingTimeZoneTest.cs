@@ -33,6 +33,7 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(Offset.ForHours(5), TestZone.MinOffset);
         }
 
+        // TODO: Consider removing all of these tests, as they only use DateTimeZone now...
         [Test]
         public void GetZoneInterval_Instant_Summer()
         {
@@ -58,28 +59,12 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void GetZoneInterval_Instant_Invalid()
-        {
-            // This is only just about invalid
-            var invalid = Instant.FromUtc(2000, 3, 9, 19, 59);
-            Assert.Throws<ArgumentOutOfRangeException>(() => TestZone.GetZoneInterval(invalid));
-        }
-
-        [Test]
         public void GetZoneInterval_Instant_StartOfFirstSummer()
         {
             // This is only just about valid
             var firstSummer = Instant.FromUtc(2000, 3, 9, 20, 0);
             var interval = TestZone.GetZoneInterval(firstSummer);
             Assert.AreEqual("Summer", interval.Name);
-        }
-
-        [Test]
-        public void GetZoneIntervals_BeforeRecurrenceStart()
-        {
-            var early = new LocalInstant(1990, 1, 1, 0, 0);
-            var pair = TestZone.GetZoneIntervals(early);
-            Assert.AreEqual(0, pair.MatchingIntervals);
         }
 
         [Test]
@@ -104,8 +89,9 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_AtFirstGapStart()
         {
             var startOfFirstGap = new LocalInstant(2000, 3, 10, 1, 0);
-            var pair = TestZone.GetZoneIntervals(startOfFirstGap);
-            Assert.AreEqual(0, pair.MatchingIntervals);
+            var actual = TestZone.GetZoneIntervals(startOfFirstGap);
+            var expected = ZoneIntervalPair.NoMatch;
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -220,49 +206,6 @@ namespace NodaTime.Test.TimeZones
             var pair = TestZone.GetZoneIntervals(unambiguousWinter);
             Assert.AreEqual("Winter", pair.EarlyInterval.Name);
             Assert.IsNull(pair.LateInterval);
-        }
-
-        [Test]
-        public void DisparateRecurrences_SummerEarlier()
-        {
-            // The summer recurrence starts in 2000; the winter
-            // recurrence starts in 2005. The first valid instant should be
-            // the start of the summer recurrence in 2005.
-            var summer = new ZoneRecurrence("Summer", Offset.ForHours(1),
-                new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, Offset.ForHours(1)), 2000, int.MaxValue);
-
-            var winter = new ZoneRecurrence("Winter", Offset.Zero,
-                new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, Offset.ForHours(2)), 2005, int.MaxValue);
-
-            var zone = new DaylightSavingsTimeZone("Test", Offset.ForHours(5), winter, summer);
-            AssertFirstInstant(zone, Instant.FromUtc(2005, 3, 9, 20, 0)); // March 10th local time.
-        }
-
-        [Test]
-        public void DisparateRecurrences_WinterEarlier()
-        {
-            // The summer recurrence starts in 2005; the winter
-            // recurrence starts in 2000. The first valid instant should be
-            // the start of the winter recurrence in 2004.
-            var summer = new ZoneRecurrence("Summer", Offset.ForHours(1),
-                new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, Offset.ForHours(1)), 2005, int.MaxValue);
-
-            var winter = new ZoneRecurrence("Winter", Offset.Zero,
-                new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, Offset.ForHours(2)), 2000, int.MaxValue);
-
-            var zone = new DaylightSavingsTimeZone("Test", Offset.ForHours(5), winter, summer);
-            AssertFirstInstant(zone, Instant.FromUtc(2004, 10, 4, 20, 0)); // October 5th local time.
-        }
-
-        /// <summary>
-        /// Checks that the given instant is the first valid one within the zone - i.e.
-        /// that calling zone.GetZoneInterval for that instant is okay, but with one
-        /// tick earlier an exception is thrown.
-        /// </summary>
-        private void AssertFirstInstant(DaylightSavingsTimeZone zone, Instant expectedFirst)
-        {
-            Assert.IsNotNull(zone.GetZoneInterval(expectedFirst));
-            Assert.Throws<ArgumentOutOfRangeException>(() => zone.GetZoneInterval(expectedFirst - Duration.One));
         }
     }
 }
