@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Utility;
+using NodaTime.TimeZones;
 
 namespace NodaTime
 {
@@ -259,6 +260,25 @@ namespace NodaTime
         public LocalTime TimeOfDay { get { return new LocalTime(HourOfDay, MinuteOfHour, SecondOfMinute, MillisecondOfSecond, TickOfMillisecond); } }
 
         public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth); } }
+
+        /// <summary>
+        /// Creates a new ZonedDateTime representing this local date/time in the given time zone.
+        /// A TransitionResolver is used to determine the behaviour when the local date/time
+        /// is ambiguous or does not occur in the given time zone.
+        /// </summary>
+        public ZonedDateTime InZone(DateTimeZone zone, TransitionResolver resolver)
+        {
+            if (zone == null)
+            {
+                throw new ArgumentNullException("zone");
+            }
+            if (resolver == null)
+            {
+                throw new ArgumentNullException("resolver");
+            }
+            // TODO: Make ToChronology a virtual method in CalendarSystem, caching IsoChronology in DateTimeZone.
+            return ZonedDateTime.FromLocalInstant(this.LocalInstant, new Chronology(zone, Calendar), resolver);
+        }
 
         #region Implementation of IEquatable<LocalDateTime>
         /// <summary>
