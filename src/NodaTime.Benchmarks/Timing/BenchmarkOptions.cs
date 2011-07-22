@@ -45,7 +45,7 @@ namespace NodaTime.Benchmarks.Timing
                        TypeFilter = args.FirstOrDefault(),
                        MethodFilter = args.Skip(1).FirstOrDefault(),
                        WarmUpTime = Duration.FromSeconds(1),
-                       TestTime = Duration.FromSeconds(3),
+                       TestTime = Duration.FromSeconds(10),
                        Timer = new WallTimer(),
                        DisplayRawData = args.Contains("-rawData")
                    };
