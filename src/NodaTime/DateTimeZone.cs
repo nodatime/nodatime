@@ -328,16 +328,19 @@ namespace NodaTime
         /// </summary>
         private ZoneInterval GetEarlierMatchingInterval(ZoneInterval interval, LocalInstant localInstant)
         {
-            if (interval.Start == Instant.MinValue)
+            // Micro-optimization to avoid fetching interval.Start multiple times. Seems
+            // to give a performance improvement on x86 at least...
+            Instant intervalStart = interval.Start;
+            if (intervalStart == Instant.MinValue)
             {
                 return null;
             }
             // If the tick before this interval started *could* map to a later local instant, let's
             // get the interval and check whether it actually includes the one we want.
-            Instant endOfPrevious = interval.Start - Duration.One;
-            if (endOfPrevious.Plus(MaxOffset) >= localInstant)
+            Instant endOfPrevious = intervalStart;
+            if (endOfPrevious.Plus(MaxOffset) > localInstant)
             {
-                ZoneInterval candidate = GetZoneInterval(endOfPrevious);
+                ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.One);
                 if (candidate.Contains(localInstant))
                 {
                     return candidate;
@@ -351,13 +354,16 @@ namespace NodaTime
         /// </summary>
         private ZoneInterval GetLaterMatchingInterval(ZoneInterval interval, LocalInstant localInstant)
         {
-            if (interval.End == Instant.MaxValue)
+            // Micro-optimization to avoid fetching interval.End multiple times. Seems
+            // to give a performance improvement on x86 at least...
+            Instant intervalEnd = interval.End;
+            if (intervalEnd == Instant.MaxValue)
             {
                 return null;
             }
-            if (interval.End.Plus(MinOffset) <= localInstant)
+            if (intervalEnd.Plus(MinOffset) <= localInstant)
             {
-                ZoneInterval candidate = GetZoneInterval(interval.End);
+                ZoneInterval candidate = GetZoneInterval(intervalEnd);
                 if (candidate.Contains(localInstant))
                 {
                     return candidate;
