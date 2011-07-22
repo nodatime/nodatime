@@ -188,7 +188,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Test_Offset()
         {
-            RunTests_Milliseconds(value => Dio.TestOffset((new Offset(value))));
+            RunTests_Milliseconds(value => Dio.TestOffset((Offset.FromMilliseconds(value))));
         }
 
         public void Test_String()

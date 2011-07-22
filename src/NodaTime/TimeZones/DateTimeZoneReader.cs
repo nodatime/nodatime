@@ -143,7 +143,7 @@ namespace NodaTime.TimeZones
 
         internal Offset ReadOffset()
         {
-            return new Offset(ReadMilliseconds());
+            return Offset.FromMilliseconds(ReadMilliseconds());
         }
 
         /// <summary>

@@ -143,7 +143,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 }
             }
             ticks = ticks * sign;
-            return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
+            return Offset.FromTicks(ticks);
         }
 
         /// <summary>

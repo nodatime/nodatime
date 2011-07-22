@@ -66,7 +66,7 @@ namespace NodaTime.Test.TimeZones
         {
             Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -1, true, Offset.MinValue),
                           "Tick of day MinValue");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 8, true, new Offset(-1)),
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 8, true, Offset.FromMilliseconds(-1)),
                           "Tick of day MinValue -1");
         }
 
@@ -107,7 +107,7 @@ namespace NodaTime.Test.TimeZones
             int delta = (Offset.MaxValue.Milliseconds / 100);
             for (int millisecond = 0; millisecond < Offset.MaxValue.Milliseconds; millisecond += delta)
             {
-                var tickOfDay = new Offset(millisecond);
+                var tickOfDay = Offset.FromMilliseconds(millisecond);
                 Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, 1, 0, true, tickOfDay), "Tick of Day " + tickOfDay);
             }
         }

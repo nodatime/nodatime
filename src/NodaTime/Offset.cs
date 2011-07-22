@@ -47,9 +47,9 @@ namespace NodaTime
         private const string ShortFormat = "S";
         private const string LongFormat = "L";
 
-        public static readonly Offset Zero = new Offset(0);
-        public static readonly Offset MinValue = new Offset(-NodaConstants.MillisecondsPerDay + 1);
-        public static readonly Offset MaxValue = new Offset(NodaConstants.MillisecondsPerDay - 1);
+        public static readonly Offset Zero = Offset.FromMilliseconds(0);
+        public static readonly Offset MinValue = Offset.FromMilliseconds(-NodaConstants.MillisecondsPerDay + 1);
+        public static readonly Offset MaxValue = Offset.FromMilliseconds(NodaConstants.MillisecondsPerDay - 1);
 
         private readonly int milliseconds;
 
@@ -62,7 +62,7 @@ namespace NodaTime
         ///   time wraps as it goes around the world multiple times
         /// </remarks>
         /// <param name = "milliseconds">The number of milliseconds.</param>
-        public Offset(int milliseconds)
+        private Offset(int milliseconds)
         {
             this.milliseconds = milliseconds % NodaConstants.MillisecondsPerDay;
         }
@@ -86,7 +86,7 @@ namespace NodaTime
         /// <returns>A new <see cref = "Offset" /> instance with a negated value.</returns>
         public static Offset operator -(Offset offset)
         {
-            return new Offset(-offset.Milliseconds);
+            return Offset.FromMilliseconds(-offset.Milliseconds);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace NodaTime
         /// <returns>A new <see cref = "Offset" /> representing the sum of the given values.</returns>
         public static Offset operator +(Offset left, Offset right)
         {
-            return new Offset(left.Milliseconds + right.Milliseconds);
+            return Offset.FromMilliseconds(left.Milliseconds + right.Milliseconds);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace NodaTime
         /// <returns>A new <see cref = "Offset" /> representing the difference of the given values.</returns>
         public static Offset operator -(Offset left, Offset right)
         {
-            return new Offset(left.Milliseconds - right.Milliseconds);
+            return Offset.FromMilliseconds(left.Milliseconds - right.Milliseconds);
         }
 
         /// <summary>
@@ -364,6 +364,11 @@ namespace NodaTime
             return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
         }
 
+        public static Offset FromMilliseconds(int milliseconds)
+        {
+            return new Offset(milliseconds);
+        }
+
         /// <summary>
         ///   Creates an offset with the specified number of hours.
         /// </summary>
@@ -426,7 +431,7 @@ namespace NodaTime
         public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
         {
             return
-                new Offset((hours * NodaConstants.MillisecondsPerHour) + (minutes * NodaConstants.MillisecondsPerMinute) +
+                Offset.FromMilliseconds((hours * NodaConstants.MillisecondsPerHour) + (minutes * NodaConstants.MillisecondsPerMinute) +
                            (seconds * NodaConstants.MillisecondsPerSecond) + milliseconds);
         }
 
