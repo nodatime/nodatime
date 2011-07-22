@@ -119,7 +119,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Reads the specified reader.
+        /// Reads the zone from the specified reader.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
@@ -166,15 +166,6 @@ namespace NodaTime.TimeZones
             /// </summary>
             private const int PeriodShift = 45;
 
-            // Mask to "or" a shifted period value with in order to get the end point.
-            // In other words:
-            // We shift a number of ticks *right* by PeriodShift to get the period number.
-            // We shift the period number *left* by PeriodShift to get the start of the period.
-            // We shift the period number *left* by PeriodShift and OR with PeriodEndMask to get
-            // the end of the period (inclusive). An alternative would be to increment the period
-            // and just shift left, to get the period end in an *exclusive* form.
-            private const long PeriodEndMask = (1L << PeriodShift) - 1;
-
             private readonly HashCacheNode[] instantCache;
 
             /// <summary>
@@ -190,7 +181,6 @@ namespace NodaTime.TimeZones
                 instantCache = new HashCacheNode[CacheSize];
             }
 
-            #region Overrides of DateTimeZone
             /// <summary>
             /// Gets the zone offset period for the given instant. Null is returned if no period is
             /// defined by the time zone for the given instant.
@@ -204,58 +194,58 @@ namespace NodaTime.TimeZones
                 var node = instantCache[index];
                 if (node == null || node.Period != period)
                 {
-                    node = CreateInstantNode(period);
+                    node = HashCacheNode.CreateNode(period, TimeZone);
                     instantCache[index] = node;
                 }
-                // TODO: Why doesn't this need to check for node being null,
-                // as we do in the LocalInterval version?
+
+                // Note: moving this code into an instance method in HashCacheNode makes a surprisingly
+                // large performance difference.
                 while (node.Interval.Start > instant)
                 {
                     node = node.Previous;
                 }
                 return node.Interval;
             }
-            #endregion
 
-            /// <summary>
-            /// Creates a hash table node with all the information for this period.
-            /// We start off by finding the interval for the start of the period, and
-            /// then repeatedly check whether that interval ends after the end of the
-            /// period - at which point we're done. If not, find the next interval, create
-            /// a new node referring to that interval and the previous interval, and keep going.
-            /// 
-            /// TODO: Simplify this significantly. There's no need to have anything more than
-            /// a single node with a list or array of intervals. In most cases it'll only be one
-            /// or two intervals anyway.
-            /// </summary>
-            private HashCacheNode CreateInstantNode(int period)
-            {
-                var periodStart = new Instant((long)period << PeriodShift);
-                var interval = TimeZone.GetZoneInterval(periodStart);
-                var node = new HashCacheNode(interval, period, null);
-                var periodEnd = new Instant(periodStart.Ticks | PeriodEndMask);
-                while (true)
-                {
-                    periodStart = node.Interval.End;
-                    if (periodStart > periodEnd)
-                    {
-                        break;
-                    }
-                    interval = TimeZone.GetZoneInterval(periodStart);
-                    node = new HashCacheNode(interval, period, node);
-                }
-
-                return node;
-            }
             #region Nested type: HashCacheNode
-            /// <summary>
-            /// See CreateInstantNode for an explanation.
-            /// </summary>
+            // Note: I (Jon) have tried optimizing this as a struct containing two ZoneIntervals
+            // and a list of zone intervals (normally null) for the rare case where there are more
+            // than two zone intervals in a period. It halved the performance...
             private class HashCacheNode
             {
                 private readonly ZoneInterval interval;
+                internal ZoneInterval Interval { get { return interval; } }
+
                 private readonly int period;
+                internal int Period { get { return period; } }
+
                 private readonly HashCacheNode previous;
+                internal HashCacheNode Previous { get { return previous; } }
+
+                /// <summary>
+                /// Creates a hash table node with all the information for this period.
+                /// We start off by finding the interval for the start of the period, and
+                /// then repeatedly check whether that interval ends after the end of the
+                /// period - at which point we're done. If not, find the next interval, create
+                /// a new node referring to that interval and the previous interval, and keep going.
+                /// </summary>
+                internal static HashCacheNode CreateNode(int period, DateTimeZone zone)
+                {
+                    var periodStart = new Instant((long)period << PeriodShift);
+                    var periodEnd = new Instant((long)(period + 1) << PeriodShift);
+
+                    var interval = zone.GetZoneInterval(periodStart);
+                    var node = new HashCacheNode(interval, period, null);
+
+                    // Keep going while the current interval ends before the period.
+                    while (interval.End < periodEnd)
+                    {
+                        interval = zone.GetZoneInterval(interval.End);
+                        node = new HashCacheNode(interval, period, node);
+                    }
+
+                    return node;
+                }
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="HashCacheNode"/> class.
@@ -263,18 +253,22 @@ namespace NodaTime.TimeZones
                 /// <param name="interval">The zone interval.</param>
                 /// <param name="period"></param>
                 /// <param name="previous">The previous <see cref="HashCacheNode"/> node.</param>
-                internal HashCacheNode(ZoneInterval interval, int period, HashCacheNode previous)
+                private HashCacheNode(ZoneInterval interval, int period, HashCacheNode previous)
                 {
                     this.period = period;
                     this.interval = interval;
                     this.previous = previous;
                 }
 
-                internal int Period { get { return period; } }
-
-                internal ZoneInterval Interval { get { return interval; } }
-
-                internal HashCacheNode Previous { get { return previous; } }
+                internal ZoneInterval FindInterval(Instant instant)
+                {
+                    HashCacheNode node = this;
+                    while (node.Interval.Start > instant)
+                    {
+                        node = node.Previous;
+                    }
+                    return node.Interval;
+                }
             }
             #endregion
         }
