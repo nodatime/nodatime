@@ -32,10 +32,13 @@ namespace NodaTime.TimeZones
     /// </summary>
     public struct ZoneIntervalPair : IEquatable<ZoneIntervalPair>
     {
-        internal static readonly ZoneIntervalPair NoMatch = new ZoneIntervalPair(null, null);
+        internal static readonly ZoneIntervalPair NoMatch = new ZoneIntervalPair(null, null, 0);
         
         private readonly ZoneInterval earlyInterval;
         private readonly ZoneInterval lateInterval;
+        // Obviously this can be computed from how many of the intervals are non-null, assuming
+        // we trust our callers... but computing it has a surprising impact on performance.
+        private readonly int matchingIntervals;
 
         /// <summary>
         /// The earlier of the two zone intervals matching the original local instant, or null
@@ -51,29 +54,31 @@ namespace NodaTime.TimeZones
         /// </summary>
         public ZoneInterval LateInterval { get { return lateInterval; } }
 
-        private ZoneIntervalPair(ZoneInterval early, ZoneInterval late)
+        private ZoneIntervalPair(ZoneInterval early, ZoneInterval late, int matchingIntervals)
         {
             // TODO: Validation, if we want it:
             // - If early is null, late must be null
             // - If both are specified, the end of early must equal the start of late
             this.earlyInterval = early;
             this.lateInterval = late;
+            this.matchingIntervals = matchingIntervals;
         }
 
         internal static ZoneIntervalPair Unambiguous(ZoneInterval interval)
         {
-            return new ZoneIntervalPair(interval, null);
+            return new ZoneIntervalPair(interval, null, 1);
         }
 
         internal static ZoneIntervalPair Ambiguous(ZoneInterval early, ZoneInterval late)
         {
-            return new ZoneIntervalPair(early, late);
+            return new ZoneIntervalPair(early, late, 2);
         }
 
         /// <summary>
         /// Returns the number of intervals contained within this pair - 0 for a "gap", 1 for an unambiguous match, 2 for an ambiguous match.
+        /// TODO: Could use an enum instead.
         /// </summary>
-        public int MatchingIntervals { get { return earlyInterval == null ? 0 : lateInterval == null ? 1 : 2; } }
+        public int MatchingIntervals { get { return matchingIntervals; } }
 
         /// <summary>
         ///   Determines whether the specified <see cref = "T:System.Object" /> is equal to the current <see cref = "T:System.Object" />.
