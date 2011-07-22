@@ -23,17 +23,12 @@ namespace NodaTime.Benchmarks
     internal class CachedDateTimeZoneBenchmarks
     {
         private readonly Instant[] cacheInstants = new Instant[100];
-        private readonly LocalInstant[] cacheLocalInstants = new LocalInstant[100];
         private readonly Instant[] noCacheInstants = new Instant[500];
-        private readonly LocalInstant[] noCacheLocalInstants = new LocalInstant[500];
         private readonly DateTimeZone paris = DateTimeZone.ForId("Europe/Paris");
         private readonly Instant[] twoYearsCacheInstants = new Instant[365];
         private int cacheIndex;
-        private int cacheLocalIndex;
         private int noCacheIndex;
-        private int noCacheLocalIndex;
         private int twoYearsCacheIndex;
-        private int twoYearsCacheLocalIndex;
 
         public CachedDateTimeZoneBenchmarks()
         {
@@ -50,15 +45,6 @@ namespace NodaTime.Benchmarks
             for (int i = 0; i < twoYearsCacheInstants.Length; i++)
             {
                 twoYearsCacheInstants[i] = Instant.UnixEpoch + (twoDays * i);
-            }
-
-            for (int i = 0; i < noCacheLocalInstants.Length; i++)
-            {
-                noCacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (adjustment * i);
-            }
-            for (int i = 0; i < cacheLocalInstants.Length; i++)
-            {
-                cacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (adjustment * i);
             }
         }
 
