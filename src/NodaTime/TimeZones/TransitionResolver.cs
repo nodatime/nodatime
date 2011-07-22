@@ -234,7 +234,7 @@ namespace NodaTime.TimeZones
         /// Resolver which throws an exception in the case of either ambiguity or a gap.
         /// This is the equivalent of FromStrategies(AmbiguityStrategy.Strict, GapStrategy.Strict).
         /// </summary>
-        public static TransitionResolver Strict { get { return null; } }
+        public static TransitionResolver Strict { get { return strict; } }
 
         private static readonly TransitionResolver preTransition = FromStrategies(AmbiguityStrategy.Earlier, GapStrategy.EndOfEarlyInterval);
         /// <summary>
