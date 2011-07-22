@@ -45,7 +45,7 @@ namespace ZoneInfoCompiler.Test
 
         private static Offset ToOffset(int hours, int minutes, int seconds, int fractions)
         {
-            return new Offset((((((hours * 60) + minutes) * 60) + seconds) * 1000) + fractions);
+            return Offset.FromMilliseconds((((((hours * 60) + minutes) * 60) + seconds) * 1000) + fractions);
         }
 
         private static void ValidateCounts(TzdbDatabase database, int ruleSets, int zoneLists, int links)

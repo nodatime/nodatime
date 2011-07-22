@@ -35,7 +35,7 @@ namespace NodaTime.Test
             millis += (minutes * NodaConstants.MillisecondsPerMinute);
             millis += (seconds * NodaConstants.MillisecondsPerSecond);
             millis += milliseconds;
-            return new Offset(millis);
+            return Offset.FromMilliseconds(millis);
         }
 
         [Test]
@@ -65,8 +65,8 @@ namespace NodaTime.Test
         [Test]
         public void Max()
         {
-            Offset x = new Offset(100);
-            Offset y = new Offset(200);
+            Offset x = Offset.FromMilliseconds(100);
+            Offset y = Offset.FromMilliseconds(200);
             Assert.AreEqual(y, Offset.Max(x, y));
             Assert.AreEqual(y, Offset.Max(y, x));
             Assert.AreEqual(x, Offset.Max(x, Offset.MinValue));
@@ -78,8 +78,8 @@ namespace NodaTime.Test
         [Test]
         public void Min()
         {
-            Offset x = new Offset(100);
-            Offset y = new Offset(200);
+            Offset x = Offset.FromMilliseconds(100);
+            Offset y = Offset.FromMilliseconds(200);
             Assert.AreEqual(x, Offset.Min(x, y));
             Assert.AreEqual(x, Offset.Min(y, x));
             Assert.AreEqual(Offset.MinValue, Offset.Min(x, Offset.MinValue));
