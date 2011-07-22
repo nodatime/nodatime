@@ -369,6 +369,7 @@ namespace NodaTime
         {
             var zone = chronology.Zone;
             var intervalPair = zone.GetZoneIntervals(localInstant);
+
             Instant instant; // Used for gap/ambiguity
             switch (intervalPair.MatchingIntervals)
             {
