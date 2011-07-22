@@ -68,29 +68,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Returns the offset for the given milliseconds value.
-        /// </summary>
-        /// <remarks>
-        ///   As offsets are immutable, this method may return the same object for the
-        ///   same input values i.e. there is no guarantee that this method will create a new
-        ///   object on each call. The values may be cached.
-        /// </remarks>
-        /// <param name = "milliseconds">The int milliseconds value.</param>
-        /// <returns>The <see cref = "Offset" /> for the given milliseconds value</returns>
-        public static Offset FromTicks(int milliseconds)
-        {
-            if (milliseconds == Zero.Milliseconds)
-            {
-                return Zero;
-            }
-            if (milliseconds == MinValue.Milliseconds)
-            {
-                return MinValue;
-            }
-            return milliseconds == MaxValue.Milliseconds ? MaxValue : new Offset(milliseconds);
-        }
-
-        /// <summary>
         ///   Gets the number of milliseconds in the offset.
         /// </summary>
         public int Milliseconds { get { return milliseconds; } }
