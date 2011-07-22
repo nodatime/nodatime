@@ -100,13 +100,14 @@ namespace NodaTime.Test.TimeZones
         private Instant ResolveGap(TransitionResolver.GapStrategy strategy)
         {
             var resolver = TransitionResolver.FromStrategies(TransitionResolver.AmbiguityStrategy.Strict, strategy);
-            return resolver.ResolveGap(Early2011, Summer2011, SkippedSpring, LosAngeles);
+            return resolver.ResolveGap(SkippedSpring, LosAngeles);
         }
 
         private Instant ResolveAmbiguity(TransitionResolver.AmbiguityStrategy strategy)
         {
             var resolver = TransitionResolver.FromStrategies(strategy, TransitionResolver.GapStrategy.Strict);
-            return resolver.ResolveAmbiguity(Summer2011, Late2011, AmbiguousFall, LosAngeles);
+            var pair = ZoneIntervalPair.Ambiguous(Summer2011, Late2011);
+            return resolver.ResolveAmbiguity(pair, AmbiguousFall, LosAngeles);
         }
     }
 }

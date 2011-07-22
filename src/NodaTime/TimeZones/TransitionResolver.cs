@@ -29,10 +29,8 @@ namespace NodaTime.TimeZones
     /// </summary>
     public sealed class TransitionResolver
     {
-        /// <summary>
-        /// Delegate signature matching both methods - handy as a way of keeping all the behaviour in a single class.
-        /// </summary>
-        private delegate Instant Resolver(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone);
+        private delegate Instant AmbiguityResolver(ZoneIntervalPair ambiguousIntervals, LocalInstant localInstant, DateTimeZone zone);
+        private delegate Instant GapResolver(LocalInstant localInstant, DateTimeZone zone);
 
         /// <summary>
         /// Strategy to use when resolving ambiguities.
@@ -83,10 +81,10 @@ namespace NodaTime.TimeZones
             PushBackward = 4
         }
 
-        private readonly Resolver ambiguityResolver;
-        private readonly Resolver gapResolver;
+        private readonly AmbiguityResolver ambiguityResolver;
+        private readonly GapResolver gapResolver;
 
-        private TransitionResolver(Resolver ambiguityResolver, Resolver gapResolver)
+        private TransitionResolver(AmbiguityResolver ambiguityResolver, GapResolver gapResolver)
         {
             this.ambiguityResolver = ambiguityResolver;
             this.gapResolver = gapResolver;
@@ -96,25 +94,25 @@ namespace NodaTime.TimeZones
         /// Determines the instant to treat the specified local instant as when there are two
         /// possible intervals involved.
         /// </summary>
-        internal Instant ResolveAmbiguity(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        internal Instant ResolveAmbiguity(ZoneIntervalPair ambiguousIntervals, LocalInstant localInstant, DateTimeZone zone)
         {
-            return ambiguityResolver(intervalBefore, intervalAfter, localInstant, zone);
+            return ambiguityResolver(ambiguousIntervals, localInstant, zone);
         }
 
         /// <summary>
         /// Determines the instant to treat the specified local instant as when it falls in a gap.
         /// </summary>
-        internal Instant ResolveGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        internal Instant ResolveGap(LocalInstant localInstant, DateTimeZone zone)
         {
-            return gapResolver(intervalBefore, intervalAfter, localInstant, zone);
+            return gapResolver(localInstant, zone);
         }
-
+        
         /// <summary>
         /// Creates a transition resolver from the given strategies.
         /// </summary>
         public static TransitionResolver FromStrategies(AmbiguityStrategy ambiguityStrategy, GapStrategy gapStrategy)
         {
-            Resolver ambiguityResolver;
+            AmbiguityResolver ambiguityResolver;
             switch (ambiguityStrategy)
             {
                 case AmbiguityStrategy.Strict:
@@ -129,7 +127,7 @@ namespace NodaTime.TimeZones
                 default:
                     throw new ArgumentOutOfRangeException("ambiguityStrategy", "Invalid ambiguity strategy: " + ambiguityStrategy);
             }
-            Resolver gapResolver;
+            GapResolver gapResolver;
             switch (gapStrategy)
             {
                 case GapStrategy.Strict:
@@ -153,44 +151,81 @@ namespace NodaTime.TimeZones
             return new TransitionResolver(ambiguityResolver, gapResolver);
         }
 
-        private static Instant StrictAmbiguity(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        private static Instant StrictAmbiguity(ZoneIntervalPair ambiguousIntervals, LocalInstant localInstant, DateTimeZone zone)
         {
             throw new AmbiguousTimeException(localInstant, zone);
         }
 
-        private static Instant EarlyAmbiguity(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        private static Instant EarlyAmbiguity(ZoneIntervalPair ambiguousIntervals, LocalInstant localInstant, DateTimeZone zone)
         {
-            return localInstant.Minus(intervalBefore.Offset);
+            return localInstant.Minus(ambiguousIntervals.EarlyInterval.Offset);
         }
 
-        private static Instant LateAmbiguity(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        private static Instant LateAmbiguity(ZoneIntervalPair ambiguousIntervals, LocalInstant localInstant, DateTimeZone zone)
         {
-            return localInstant.Minus(intervalAfter.Offset);
+            return localInstant.Minus(ambiguousIntervals.LateInterval.Offset);
         }
 
-        private static Instant StrictGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        private static Instant StrictGap(LocalInstant localInstant, DateTimeZone zone)
         {
             throw new SkippedTimeException(localInstant, zone);
         }
 
-        private static Instant EndOfEarlyIntervalGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        private static Instant EndOfEarlyIntervalGap(LocalInstant localInstant, DateTimeZone zone)
         {
+            var intervalBefore = GetEarlyGapInterval(localInstant, zone);
             return intervalBefore.End - Duration.One;
         }
 
-        private static Instant StartOfLateIntervalGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        private static Instant StartOfLateIntervalGap(LocalInstant localInstant, DateTimeZone zone)
         {
+            var intervalAfter = GetLateGapInterval(localInstant, zone);
             return intervalAfter.Start;
         }
 
-        private static Instant PushBackwardGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        private static Instant PushBackwardGap(LocalInstant localInstant, DateTimeZone zone)
         {
+            var intervalAfter = GetLateGapInterval(localInstant, zone);
             return localInstant.Minus(intervalAfter.Offset);
         }
 
-        private static Instant PushForwardGap(ZoneInterval intervalBefore, ZoneInterval intervalAfter, LocalInstant localInstant, DateTimeZone zone)
+        private static Instant PushForwardGap(LocalInstant localInstant, DateTimeZone zone)
         {
+            var intervalBefore = GetEarlyGapInterval(localInstant, zone);
             return localInstant.Minus(intervalBefore.Offset);
+        }
+
+        private static ZoneInterval GetEarlyGapInterval(LocalInstant localInstant, DateTimeZone zone)
+        {
+            Instant guess = new Instant(localInstant.Ticks);
+            ZoneInterval guessInterval = zone.GetZoneInterval(guess);
+            // If the local interval occurs before the zone interval we're looking at start,
+            // we need to find the earlier one; otherwise this interval must come after the gap, and
+            // it's therefore the one we want.
+            if (localInstant.Minus(guessInterval.Offset) < guessInterval.Start)
+            {
+                return zone.GetZoneInterval(guessInterval.Start - Duration.One);
+            }
+            else
+            {
+                return guessInterval;
+            }
+        }
+
+        private static ZoneInterval GetLateGapInterval(LocalInstant localInstant, DateTimeZone zone)
+        {
+            Instant guess = new Instant(localInstant.Ticks);
+            ZoneInterval guessInterval = zone.GetZoneInterval(guess);
+            // If the local interval occurs before the zone interval we're looking at starts,
+            // it's the one we're looking for. Otherwise, we need to find the next interval.
+            if (localInstant.Minus(guessInterval.Offset) < guessInterval.Start)
+            {
+                return guessInterval;
+            }
+            else
+            {
+                return zone.GetZoneInterval(guessInterval.End);
+            }
         }
 
         #region Well-known resolvers
