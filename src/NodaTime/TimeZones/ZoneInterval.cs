@@ -304,33 +304,7 @@ namespace NodaTime.TimeZones
             return buffer.ToString();
         }
         #endregion // object Overrides
-
-        #region operators
-        /// <summary>
-        ///   Implements the operator ==.
-        /// </summary>
-        /// <param name = "left">The left.</param>
-        /// <param name = "right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        [DebuggerStepThrough]
-        public static bool operator ==(ZoneInterval left, ZoneInterval right)
-        {
-            return Equals(left, right);
-        }
-
-        /// <summary>
-        ///   Implements the operator !=.
-        /// </summary>
-        /// <param name = "left">The left.</param>
-        /// <param name = "right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        [DebuggerStepThrough]
-        public static bool operator !=(ZoneInterval left, ZoneInterval right)
-        {
-            return !Equals(left, right);
-        }
-        #endregion // operators
-
+        
         #region I/O
         /// <summary>
         ///   Reads the specified reader.
