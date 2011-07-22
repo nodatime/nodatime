@@ -64,6 +64,15 @@ namespace NodaTime.Calendars
         {
         }
 
+        public override Chronology WithZone(DateTimeZone zone)
+        {
+            if (zone == null)
+            {
+                throw new ArgumentException("zone");
+            }
+            return zone.ToIsoChronology();
+        }
+
         protected override void AssembleFields(FieldSet.Builder fields)
         {
             if (fields == null)

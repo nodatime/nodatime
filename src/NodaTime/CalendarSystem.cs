@@ -163,6 +163,15 @@ namespace NodaTime
             return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, 0, 0, 0);
         }
 
+        public virtual Chronology WithZone(DateTimeZone zone)
+        {
+            if (zone == null)
+            {
+                throw new ArgumentException("zone");
+            }
+            return new Chronology(zone, this);
+        }
+
         #region Periods
         /// <summary>
         /// Gets the values of a period type from an interval.

@@ -28,9 +28,13 @@ namespace NodaTime
     /// </summary>
     public sealed class Chronology : IEquatable<Chronology>
     {
-        private static readonly Chronology isoUtc = new Chronology(DateTimeZone.Utc, CalendarSystem.Iso);
+        private static class Constants
+        {
+            // Not within Chronology directly as we don't want to trigger the DateTimeZone type initializer.
+            internal static readonly Chronology IsoUtc = new Chronology(DateTimeZone.Utc, CalendarSystem.Iso);
+        }
 
-        public static Chronology IsoUtc { get { return isoUtc; } }
+        public static Chronology IsoUtc { get { return Constants.IsoUtc; } }
 
         private readonly DateTimeZone zone;
         private readonly CalendarSystem calendarSystem;
