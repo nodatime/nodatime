@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Utility;
+using NodaTime.TimeZones;
 
 namespace NodaTime
 {
@@ -42,6 +43,17 @@ namespace NodaTime
         private readonly Chronology chronology;
         private readonly LocalInstant localInstant;
         private readonly Offset offset;
+
+        /// <summary>
+        /// Private constructor used by other code within this class that has already
+        /// validated and computed the appropriate field values. No further validation is performed.
+        /// </summary>
+        private ZonedDateTime(LocalInstant localInstant, Offset offset, Chronology chronology)
+        {
+            this.localInstant = localInstant;
+            this.offset = offset;
+            this.chronology = chronology;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct.
@@ -347,5 +359,33 @@ namespace NodaTime
             return !(left == right);
         }
         #endregion
+
+        /// <summary>
+        /// Creates a ZonedDateTime from a local instant. All parameters are assumed to have been
+        /// verified as non-null earlier.
+        /// </summary>
+        internal static ZonedDateTime FromLocalInstant(LocalInstant localInstant,
+            Chronology chronology, TransitionResolver resolver)
+        {
+            var zone = chronology.Zone;
+            var intervalPair = zone.GetZoneIntervals(localInstant);
+            Instant instant; // Used for gap/ambiguity
+            switch (intervalPair.MatchingIntervals)
+            {
+                case 0:
+                    instant = resolver.ResolveGap(localInstant, zone);
+                    break;
+                case 1:
+                    return new ZonedDateTime(localInstant, intervalPair.EarlyInterval.Offset, chronology);
+                case 2:
+                    instant = resolver.ResolveAmbiguity(intervalPair, localInstant, zone);
+                    break;
+                default:
+                    throw new InvalidOperationException("Can't happen");
+            }
+            // TODO: Fix TransitionResolver to return an OffsetInstant (new type) to avoid repetition.
+            Offset offset = zone.GetZoneInterval(instant).Offset;
+            return new ZonedDateTime(instant.Plus(offset), offset, chronology);
+        }
     }
 }
