@@ -17,12 +17,15 @@
 
 using NodaTime.Benchmarks.Extensions;
 using NodaTime.Benchmarks.Timing;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Benchmarks
 {
     internal class LocalDateTimeBenchmarks
     {
         private readonly LocalDateTime sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
+        private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
+
 
         [Benchmark]
         public void ConstructionToMinute()
@@ -94,6 +97,12 @@ namespace NodaTime.Benchmarks
         public void Millisecond()
         {
             sample.MillisecondOfSecond.Consume();
+        }
+
+        [Benchmark]
+        public void InZone_Unambiguous()
+        {
+            sample.InZone(Pacific, TransitionResolver.Strict);
         }
     }
 }
