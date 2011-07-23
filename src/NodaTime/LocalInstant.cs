@@ -56,20 +56,6 @@ namespace NodaTime
         /// </summary>
         internal long Ticks { get { return ticks; } }
 
-        /// <summary>
-        /// Returns a new LocalInstant for the current time adjusting for the current time zone.
-        /// </summary>
-        /// <value>The <see cref="LocalInstant"/> of the current time.</value>
-        internal static LocalInstant Now
-        {
-            get
-            {
-                var rightNow = Clock.Now;
-                var offsetToLocal = DateTimeZone.Current.GetOffsetFromUtc(rightNow);
-                return rightNow.Plus(offsetToLocal);
-            }
-        }
-
         #region Operators
         /// <summary>
         /// Returns an instant after adding the given duration

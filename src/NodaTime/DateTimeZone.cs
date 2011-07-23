@@ -71,17 +71,6 @@ namespace NodaTime
         public static DateTimeZone SystemDefault { get { return cache.SystemDefault; } }
 
         /// <summary>
-        ///   Gets or sets the current time zone.
-        /// </summary>
-        /// <remarks>
-        ///   This is the time zone that is used whenever a time zone is not given to a method. It can
-        ///   be set to any valid time zone. Setting it to <c>null</c> causes the
-        ///   <see cref = "P:NodaTime.DateTimeZone.SystemDefault" /> time zone to be used.
-        /// </remarks>
-        /// <value>The current <see cref = "T:NodaTime.DateTimeZone" />. This will never be <c>null</c>.</value>
-        public static DateTimeZone Current { get { return cache.Current; } set { cache.Current = value; } }
-
-        /// <summary>
         ///   Returns the time zone with the given id.
         /// TODO: Consider whether this should be ForID (as ID is a two-letter abbreviation).
         /// </summary>
