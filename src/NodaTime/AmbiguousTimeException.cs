@@ -66,5 +66,7 @@ namespace NodaTime
         }
 
         // TODO: IsoLocalDateTime as a convenience property?
+        // TODO: Does this only ever happen with reference to a user-specified calendar? If so, we can provide the LocalDateTime instead.
+        // TODO: Can we provide the earlier and later possibilities?
     }
 }
