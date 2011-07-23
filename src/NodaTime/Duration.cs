@@ -182,6 +182,8 @@ namespace NodaTime
         /// </summary>
         public long Ticks { get { return ticks; } }
 
+        // TODO: Add milliseconds, seconds, minutes, hours, standard days?
+
         #region Object overrides
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.

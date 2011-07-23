@@ -50,20 +50,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void CurrentDefaultsToNotNull()
-        {
-            Assert.IsNotNull(DateTimeZone.Current);
-        }
-
-        [Test]
-        public void CurrentCanBeSet()
-        {
-            DateTimeZone.Current = DateTimeZone.Utc;
-            Assert.IsNotNull(DateTimeZone.Current);
-            Assert.AreEqual(DateTimeZone.Utc, DateTimeZone.Current);
-        }
-
-        [Test]
         public void TestForId_nullId()
         {
             Assert.IsNull(DateTimeZone.ForId(null));
