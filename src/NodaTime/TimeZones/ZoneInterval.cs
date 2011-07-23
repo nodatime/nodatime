@@ -58,7 +58,7 @@ namespace NodaTime.TimeZones
             }
             if (start >= end)
             {
-                throw new ArgumentException(@"The start Instant must be less than the end Instant", "start");
+                throw new ArgumentException("The start Instant must be less than the end Instant", "start");
             }
             this.name = name;
             this.start = start;
@@ -292,15 +292,15 @@ namespace NodaTime.TimeZones
         {
             var buffer = new StringBuilder();
             buffer.Append(Name);
-            buffer.Append(@":[");
+            buffer.Append(":[");
             buffer.Append(Start);
-            buffer.Append(@", ");
+            buffer.Append(", ");
             buffer.Append(End);
-            buffer.Append(@") ");
+            buffer.Append(") ");
             buffer.Append(Offset);
-            buffer.Append(@" (");
+            buffer.Append(" (");
             buffer.Append(Savings);
-            buffer.Append(@")");
+            buffer.Append(")");
             return buffer.ToString();
         }
         #endregion // object Overrides

@@ -123,7 +123,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 throw new ArgumentNullException("text");
             }
             int sign = 1;
-            if (text.StartsWith(@"-", StringComparison.Ordinal))
+            if (text.StartsWith("-", StringComparison.Ordinal))
             {
                 sign = -1;
                 text = text.Substring(1);

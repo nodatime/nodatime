@@ -31,15 +31,15 @@ namespace NodaTime.Format
         private static readonly FormatterBase<Offset> LongFormatter = new OffsetLongFormatter();
         private static readonly FormatterBase<Offset> IsoFormatter = new OffsetIsoFormatter();
 
-        private const string LongPatternPt = @"{0}PT{1:D}H{2:D2}M{3:D2}.{4:D3}S";
-        private const string SecondsPatternPt = @"{0}PT{1:D}H{2:D2}M{3:D2}S";
-        private const string ShortPatternPt = @"{0}PT{1:D}H{2:D2}M";
-        private const string HoursPatternPt = @"{0}PT{1:D}H";
+        private const string LongPatternPt = "{0}PT{1:D}H{2:D2}M{3:D2}.{4:D3}S";
+        private const string SecondsPatternPt = "{0}PT{1:D}H{2:D2}M{3:D2}S";
+        private const string ShortPatternPt = "{0}PT{1:D}H{2:D2}M";
+        private const string HoursPatternPt = "{0}PT{1:D}H";
 
-        private const string MillisecondsPattern = @"{0}{1:D}:{2:D2}:{3:D2}.{4:D3}";
-        private const string SecondsPattern = @"{0}{1:D}:{2:D2}:{3:D2}";
-        private const string MinutesPattern = @"{0}{1:D}:{2:D2}";
-        private const string HoursPattern = @"{0}{1:D}";
+        private const string MillisecondsPattern = "{0}{1:D}:{2:D2}:{3:D2}.{4:D3}";
+        private const string SecondsPattern = "{0}{1:D}:{2:D2}:{3:D2}";
+        private const string MinutesPattern = "{0}{1:D}:{2:D2}";
+        private const string HoursPattern = "{0}{1:D}";
 
         /// <summary>
         ///   Gets the formatter for the given format string.
@@ -65,7 +65,7 @@ namespace NodaTime.Format
             {
                 return IsoFormatter;
             }
-            throw new FormatException(@"Offset does not support the '" + format + @"' format");
+            throw new FormatException("Offset does not support the '" + format + "' format");
         }
 
         /// <summary>
