@@ -43,8 +43,12 @@ namespace NodaTime
 
         private readonly string id;
         private readonly bool isFixed;
-        private readonly Offset minOffset;
-        private readonly Offset maxOffset;
+
+        // We very frequently need to add this to an instant, and there will be relatively few instances
+        // of DateTimeZone, so it makes sense to convert to ticks once and take the space cost, instead of
+        // performing the same multiplication over and over again.
+        private readonly long minOffsetTicks;
+        private readonly long maxOffsetTicks;
         private readonly Chronology isoChronology;
 
         /// <summary>
@@ -156,8 +160,8 @@ namespace NodaTime
         {
             this.id = id;
             this.isFixed = isFixed;
-            this.minOffset = minOffset;
-            this.maxOffset = maxOffset;
+            this.minOffsetTicks = minOffset.Ticks;
+            this.maxOffsetTicks = maxOffset.Ticks;
             isoChronology = new Chronology(this, CalendarSystem.Iso);
         }
 
@@ -191,12 +195,12 @@ namespace NodaTime
         /// <summary>
         /// Returns the least offset within this time zone.
         /// </summary>
-        public Offset MinOffset { get { return minOffset; } }
+        public Offset MinOffset { get { return Offset.FromTicks(minOffsetTicks); } }
 
         /// <summary>
         /// Returns the greatest offset within this time zone.
         /// </summary>
-        public Offset MaxOffset { get { return maxOffset; } }
+        public Offset MaxOffset { get { return Offset.FromTicks(maxOffsetTicks); } }
 
         /// <summary>
         ///   Returns the offset from UTC, where a positive duration indicates that local time is
@@ -338,7 +342,7 @@ namespace NodaTime
             // If the tick before this interval started *could* map to a later local instant, let's
             // get the interval and check whether it actually includes the one we want.
             Instant endOfPrevious = intervalStart;
-            if (endOfPrevious.Plus(MaxOffset) > localInstant)
+            if (endOfPrevious.Ticks + maxOffsetTicks > localInstant.Ticks)
             {
                 ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.One);
                 if (candidate.Contains(localInstant))
@@ -361,7 +365,7 @@ namespace NodaTime
             {
                 return null;
             }
-            if (intervalEnd.Plus(MinOffset) <= localInstant)
+            if (intervalEnd.Ticks + minOffsetTicks <= localInstant.Ticks)
             {
                 ZoneInterval candidate = GetZoneInterval(intervalEnd);
                 if (candidate.Contains(localInstant))
