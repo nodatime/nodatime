@@ -50,7 +50,7 @@ namespace NodaTime.Format
             {
                 return TicksFormatterD;
             }
-            throw new FormatException(@"Instant does not support the '" + format + @"' format");
+            throw new FormatException("Instant does not support the '" + format + "' format");
         }
 
         /// <summary>

@@ -320,11 +320,11 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             if (directory == null)
             {
-                throw new ArgumentNullException(name, @"The " + name + @" parameter cannot be null");
+                throw new ArgumentNullException(name, "The " + name + " parameter cannot be null");
             }
             if (!directory.Exists)
             {
-                throw new ArgumentException(@"The " + name + @" location does not exist or is not a directory: " + directory.FullName, name);
+                throw new ArgumentException("The " + name + " location does not exist or is not a directory: " + directory.FullName, name);
             }
         }
     }

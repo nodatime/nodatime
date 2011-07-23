@@ -30,10 +30,10 @@ namespace NodaTime.Format
         private static readonly FormatterBase<Duration> ShortFormatter = new DurationShortFormatter();
         private static readonly FormatterBase<Duration> LongFormatter = new DurationLongFormatter();
 
-        private const string LongPattern = @"{0}PT{1:D}H{2:D2}M{3:D2}.{4:D3}S";
-        private const string SecondsPattern = @"{0}PT{1:D}H{2:D2}M{3:D2}S";
-        private const string ShortPattern = @"{0}PT{1:D}H{2:D2}M";
-        private const string HoursPattern = @"{0}PT{1:D}H";
+        private const string LongPattern = "{0}PT{1:D}H{2:D2}M{3:D2}.{4:D3}S";
+        private const string SecondsPattern = "{0}PT{1:D}H{2:D2}M{3:D2}S";
+        private const string ShortPattern = "{0}PT{1:D}H{2:D2}M";
+        private const string HoursPattern = "{0}PT{1:D}H";
 
         /// <summary>
         ///   Gets the formatter for the given format string.
@@ -55,7 +55,7 @@ namespace NodaTime.Format
             {
                 return LongFormatter;
             }
-            throw new FormatException(@"Duration does not support the '" + format + @"' format");
+            throw new FormatException("Duration does not support the '" + format + "' format");
         }
 
         /// <summary>
