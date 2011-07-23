@@ -420,20 +420,15 @@ namespace NodaTime.TimeZones
         /// <returns>The base time offset as a <see cref="Duration"/>.</returns>
         private Offset GetOffset(Offset standardOffset, Offset savings)
         {
-            Offset offset;
             switch (mode)
             {
                 case TransitionMode.Wall:
-                    offset = standardOffset + savings;
-                    break;
+                    return standardOffset + savings;
                 case TransitionMode.Standard:
-                    offset = standardOffset;
-                    break;
+                    return standardOffset;
                 default:
-                    offset = Offset.Zero;
-                    break;
+                    return Offset.Zero;
             }
-            return offset;
         }
 
         /// <summary>
