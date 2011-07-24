@@ -28,7 +28,7 @@ namespace NodaTime.Calendars
         private const string GregorianName = "Gregorian";
 
         private const int DaysFrom0000To1970 = 719527;
-        private const long AverageTicksPerGregorianYear = (long)(365.2425m * NodaConstants.TicksPerDay);
+        private const long AverageTicksPerGregorianYear = (long)(365.2425m * NodaConstants.TicksPerStandardDay);
 
         // TODO: Consider making this public, but with a different name?
         // It roughly maps onto GregorianChronology.getInstanceUTC() except of course we don't have a time zone...
@@ -50,7 +50,7 @@ namespace NodaTime.Calendars
 
         internal override long AverageTicksPerYear { get { return AverageTicksPerGregorianYear; } }
         internal override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerGregorianYear / 2; } }
-        internal override long AverageTicksPerMonth { get { return (long)(365.2425m * NodaConstants.TicksPerDay / 12); } }
+        internal override long AverageTicksPerMonth { get { return (long)(365.2425m * NodaConstants.TicksPerStandardDay / 12); } }
         internal override long ApproxTicksAtEpochDividedByTwo { get { return (1970 * AverageTicksPerGregorianYear) / 2; } }
         // TODO: Check that this is still valid now we've moved to ticks. I suspect it's not... (divide by 10000?)
         internal override int MinYear { get { return -27258; } }
@@ -92,7 +92,7 @@ namespace NodaTime.Calendars
                 }
             }
 
-            return new LocalInstant((year * 365L + (leapYears - DaysFrom0000To1970)) * NodaConstants.TicksPerDay);
+            return new LocalInstant((year * 365L + (leapYears - DaysFrom0000To1970)) * NodaConstants.TicksPerStandardDay);
         }
 
         protected internal override bool IsLeapYear(int year)

@@ -37,10 +37,10 @@ namespace NodaTime.Test
         public void Factory_StandardDays()
         {
             Duration test = Duration.FromStandardDays(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerDay, test.Ticks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerStandardDay, test.Ticks);
 
             test = Duration.FromStandardDays(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerDay, test.Ticks);
+            Assert.AreEqual(2 * NodaConstants.TicksPerStandardDay, test.Ticks);
 
             test = Duration.FromStandardDays(0);
             Assert.AreEqual(Duration.Zero, test);
@@ -101,7 +101,7 @@ namespace NodaTime.Test
         [Test]
         public void ConstructFrom_Int64()
         {
-            long length = 4 * NodaConstants.TicksPerDay + 5 * NodaConstants.TicksPerHour + 6 * NodaConstants.TicksPerMinute + 7 * NodaConstants.TicksPerSecond +
+            long length = 4 * NodaConstants.TicksPerStandardDay + 5 * NodaConstants.TicksPerHour + 6 * NodaConstants.TicksPerMinute + 7 * NodaConstants.TicksPerSecond +
                                 8 * NodaConstants.TicksPerMillisecond + 9;
             var test = new Duration(length);
             Assert.AreEqual(length, test.Ticks);

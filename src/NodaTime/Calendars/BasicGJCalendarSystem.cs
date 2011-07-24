@@ -27,7 +27,7 @@ namespace NodaTime.Calendars
 
         private static readonly long[] MinTotalTicksByMonth;
         private static readonly long[] MaxTotalTicksByMonth;
-        private const long Feb29thTicks = (31L + 29 - 1) * NodaConstants.TicksPerDay;
+        private const long Feb29thTicks = (31L + 29 - 1) * NodaConstants.TicksPerStandardDay;
 
         static BasicGJCalendarSystem()
         {
@@ -37,8 +37,8 @@ namespace NodaTime.Calendars
             long maxSum = 0;
             for (int i = 0; i < 11; i++)
             {
-                minSum += MinDaysPerMonth[i] * NodaConstants.TicksPerDay;
-                maxSum += MaxDaysPerMonth[i] * NodaConstants.TicksPerDay;
+                minSum += MinDaysPerMonth[i] * NodaConstants.TicksPerStandardDay;
+                maxSum += MaxDaysPerMonth[i] * NodaConstants.TicksPerStandardDay;
                 MinTotalTicksByMonth[i + 1] = minSum;
                 MaxTotalTicksByMonth[i + 1] = maxSum;
             }
@@ -103,12 +103,12 @@ namespace NodaTime.Calendars
                 {
                     if (!IsLeapYear(minuendYear))
                     {
-                        subtrahendRem -= NodaConstants.TicksPerDay;
+                        subtrahendRem -= NodaConstants.TicksPerStandardDay;
                     }
                 }
                 else if (minuendRem >= Feb29thTicks && IsLeapYear(minuendYear))
                 {
-                    minuendRem -= NodaConstants.TicksPerDay;
+                    minuendRem -= NodaConstants.TicksPerStandardDay;
                 }
             }
 
