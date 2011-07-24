@@ -24,8 +24,8 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class ZoneYearOffsetTest
     {
-        private const long TicksPerStandardYear = NodaConstants.TicksPerDay * 365;
-        private const long TicksPerLeapYear = NodaConstants.TicksPerDay * 366;
+        private const long TicksPerStandardYear = NodaConstants.TicksPerStandardDay * 365;
+        private const long TicksPerLeapYear = NodaConstants.TicksPerStandardDay * 366;
 
         private Offset oneHour = Offset.ForHours(1);
         private Offset twoHours = Offset.ForHours(2);
@@ -126,7 +126,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var actual = offset.MakeInstant(1971, Offset.Zero, Offset.Zero);
-            var expected = new Instant(365L * NodaConstants.TicksPerDay);
+            var expected = new Instant(365L * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
         }
 
@@ -144,7 +144,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Standard, 1, 1, 0, true, Offset.Zero);
             var actual = offset.MakeInstant(1970, twoHours, oneHour);
-            var expected = new Instant((1L - 1) * NodaConstants.TicksPerDay - twoHours.Ticks);
+            var expected = new Instant((1L - 1) * NodaConstants.TicksPerStandardDay - twoHours.Ticks);
             Assert.AreEqual(expected, actual);
         }
 
@@ -153,7 +153,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
             var actual = offset.MakeInstant(1970, twoHours, oneHour);
-            var expected = new Instant((1L - 1) * NodaConstants.TicksPerDay - (twoHours.Ticks + oneHour.Ticks));
+            var expected = new Instant((1L - 1) * NodaConstants.TicksPerStandardDay - (twoHours.Ticks + oneHour.Ticks));
             Assert.AreEqual(expected, actual);
         }
 
@@ -162,7 +162,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Create(0, 0, 0, 1));
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
-            var expected = new Instant((1L - 1) * NodaConstants.TicksPerDay + NodaConstants.TicksPerMillisecond);
+            var expected = new Instant((1L - 1) * NodaConstants.TicksPerStandardDay + NodaConstants.TicksPerMillisecond);
             Assert.AreEqual(expected, actual);
         }
 
@@ -171,7 +171,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, (int)DayOfWeek.Wednesday, true, Offset.Zero);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
-            var expected = new Instant((7L - 1) * NodaConstants.TicksPerDay);
+            var expected = new Instant((7L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
         }
 
@@ -180,7 +180,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 15, (int)DayOfWeek.Wednesday, false, Offset.Zero);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
-            var expected = new Instant((14L - 1) * NodaConstants.TicksPerDay);
+            var expected = new Instant((14L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
         }
 
@@ -189,7 +189,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
-            var expected = new Instant((1L - 1) * NodaConstants.TicksPerDay);
+            var expected = new Instant((1L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
         }
 
@@ -198,7 +198,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, -2, 0, true, Offset.Zero);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
-            var expected = new Instant((30L - 1) * NodaConstants.TicksPerDay);
+            var expected = new Instant((30L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
         }
 
@@ -207,7 +207,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 5, 0, true, Offset.Zero);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
-            var expected = new Instant((5L - 1) * NodaConstants.TicksPerDay);
+            var expected = new Instant((5L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
         }
 
@@ -216,7 +216,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 2, 1, 0, true, Offset.Zero);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
-            var expected = new Instant((32L - 1) * NodaConstants.TicksPerDay);
+            var expected = new Instant((32L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
         }
 
@@ -316,7 +316,7 @@ namespace NodaTime.Test.TimeZones
             var actual = offset.MakeInstant(2006, Offset.Zero, Offset.Zero); // Nov 1 2006
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero); // Oct 31 2007
-            var expected = new Instant(baseTicks + (1 * TicksPerStandardYear) - NodaConstants.TicksPerDay);
+            var expected = new Instant(baseTicks + (1 * TicksPerStandardYear) - NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
         }
 
@@ -328,7 +328,7 @@ namespace NodaTime.Test.TimeZones
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero); // Oct 31 2007
             actual = offset.Next(actual, Offset.Zero, Offset.Zero); // Nov 5 2008
-            var expected = new Instant(baseTicks + TicksPerStandardYear + TicksPerLeapYear + (4 * NodaConstants.TicksPerDay));
+            var expected = new Instant(baseTicks + TicksPerStandardYear + TicksPerLeapYear + (4 * NodaConstants.TicksPerStandardDay));
             Assert.AreEqual(expected, actual);
         }
 

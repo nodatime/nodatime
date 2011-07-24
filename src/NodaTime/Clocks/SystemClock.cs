@@ -20,9 +20,9 @@ using System;
 namespace NodaTime.Clocks
 {
     /// <summary>
-    /// Singleton implementation of <see cref="ClockBase"/> which reads the current system time.
+    /// Singleton implementation of <see cref="IClock"/> which reads the current system time.
     /// </summary>
-    internal sealed class SystemClock : ClockBase
+    public sealed class SystemClock : IClock
     {
         /// <summary>
         /// The singleton instance of <see cref="SystemClock"/>.
@@ -30,14 +30,17 @@ namespace NodaTime.Clocks
         /// <value>The singleton instance of <see cref="SystemClock"/>.</value>
         internal static readonly SystemClock Instance = new SystemClock();
 
-        // TODO: We'll want to do better than this, but it'll do for now.
-        // private static readonly System.DateTime UnixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        private static readonly long UnixEpochTicks = (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks;
+        private static readonly long UnixEpochTicks = Instant.UnixEpoch.Ticks;
 
         /// <summary>
         /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
         /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
-        public override Instant Now { get { return new Instant(DateTime.UtcNow.Ticks - UnixEpochTicks); } }
+        public Instant Now { get { return new Instant(DateTime.UtcNow.Ticks - UnixEpochTicks); } }
+
+        /// <summary>
+        /// Retrieves the current system time; equivalent to calling <c>SystemClock.Instance.Now</c>.
+        /// </summary>
+        public static Instant SystemNow { get { return Instance.Now; } }
     }
 }

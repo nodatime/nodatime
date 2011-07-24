@@ -32,7 +32,7 @@ namespace NodaTime.Benchmarks
 
         public CachedDateTimeZoneBenchmarks()
         {
-            var adjustment = new Duration(NodaConstants.TicksPerDay * 365);
+            var adjustment = new Duration(NodaConstants.TicksPerStandardDay * 365);
             for (int i = 0; i < noCacheInstants.Length; i++)
             {
                 noCacheInstants[i] = Instant.UnixEpoch + (adjustment * i);
@@ -41,7 +41,7 @@ namespace NodaTime.Benchmarks
             {
                 cacheInstants[i] = Instant.UnixEpoch + (adjustment * i);
             }
-            var twoDays = new Duration(NodaConstants.TicksPerDay * 2);
+            var twoDays = new Duration(NodaConstants.TicksPerStandardDay * 2);
             for (int i = 0; i < twoYearsCacheInstants.Length; i++)
             {
                 twoYearsCacheInstants[i] = Instant.UnixEpoch + (twoDays * i);
