@@ -16,6 +16,7 @@
 #endregion
 
 using NodaTime.TimeZones;
+using NodaTime.Testing.TimeZones;
 using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones

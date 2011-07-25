@@ -185,7 +185,6 @@
     <Compile Include="TimeZones\MiscellaneousBugReports.cs" />
     <Compile Include="TimeZones\ParisTest.cs" />
     <Compile Include="TimeZones\ReadWriteStandardTest.cs" />
-    <Compile Include="TimeZones\SingleTransitionZone.cs" />
     <Compile Include="TimeZones\TransitionResolverTest.cs" />
     <Compile Include="TimeZones\TzTestHelper.cs" />
     <Compile Include="TimeZones\ZoneIntervalPairTest.cs" />
@@ -202,6 +201,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NodaTime.Testing\NodaTime.Testing.csproj">
+      <Project>{BC9407FE-A661-4DFE-8B24-D2E2F450743F}</Project>
+      <Name>NodaTime.Testing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
       <Project>{42B687A6-0F76-4638-A372-161C922A998B}</Project>
       <Name>NodaTime</Name>
