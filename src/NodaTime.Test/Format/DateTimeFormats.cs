@@ -39,11 +39,11 @@ namespace NodaTime.Test.Format
         #endregion
 
         private object[] StandardPatternTestData = {
-            new TestCaseData('d', (IFormatProvider)null, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC),
+            new TestCaseData('d', (IFormatProvider)null, CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC),
                              new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
-            new TestCaseData('d', EnUs, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
-            new TestCaseData('d', PortuBrazil, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero))
-            , new TestCaseData('d', CroCro, new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
+            new TestCaseData('d', EnUs, CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
+            new TestCaseData('d', PortuBrazil, CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
+            new TestCaseData('d', CroCro, CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, UTC), new DateTimeOffset(2004, 6, 9, 10, 20, 30, 40, TimeSpan.Zero)),
         };
 
         [Test]
@@ -54,6 +54,15 @@ namespace NodaTime.Test.Format
             var bclOutput = sDateTime.ToString(standardPattern.ToString(), provider);
 
             Assert.That(nodaOutput, Is.EqualTo(bclOutput));
+        }
+
+        /// <summary>
+        /// Single method to handle creating a ZonedDateTime so that while we mess around with
+        /// organization, we don't need to change multiple calls.
+        /// </summary>
+        private static ZonedDateTime CreateZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone zone)
+        {
+            return new LocalDateTime(year, month, day, hour, minute, second, millis).InZone(zone, TransitionResolver.Strict);
         }
     }
 }

@@ -79,14 +79,14 @@ namespace NodaTime.Test
         [Test]
         public void FromUtcNoSeconds()
         {
-            Instant viaUtc = new ZonedDateTime(2008, 4, 3, 10, 35, 0, DateTimeZone.Utc).ToInstant();
+            Instant viaUtc = DateTimeZone.Utc.At(new LocalDateTime(2008, 4, 3, 10, 35, 0)).ToInstant();
             Assert.AreEqual(viaUtc, Instant.FromUtc(2008, 4, 3, 10, 35));
         }
 
         [Test]
         public void FromUtcWithSeconds()
         {
-            Instant viaUtc = new ZonedDateTime(2008, 4, 3, 10, 35, 23, DateTimeZone.Utc).ToInstant();
+            Instant viaUtc = DateTimeZone.Utc.At(new LocalDateTime(2008, 4, 3, 10, 35, 23)).ToInstant();
             Assert.AreEqual(viaUtc, Instant.FromUtc(2008, 4, 3, 10, 35, 23));
         }
 

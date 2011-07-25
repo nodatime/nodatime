@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using NodaTime.TimeZones;
 
 namespace NodaTime
@@ -227,6 +228,39 @@ namespace NodaTime
         {
             ZoneInterval interval = GetZoneInterval(instant);
             return interval.Name;
+        }
+
+        public ZonedDateTime At(LocalDateTime localDateTime)
+        {
+            return At(localDateTime, TransitionResolver.Strict);
+        }
+
+        public ZonedDateTime At(LocalDateTime localDateTime, TransitionResolver resolver)
+        {
+            LocalInstant localInstant = localDateTime.LocalInstant;
+            var intervalPair = GetZoneIntervals(localInstant);
+            Chronology chronology = localDateTime.Calendar.WithZone(this);
+
+            Instant instant; // Used for gap/ambiguity
+            switch (intervalPair.MatchingIntervals)
+            {
+                case 0:
+                    instant = resolver.ResolveGap(localInstant, this);
+                    break;
+                case 1:
+                    return new ZonedDateTime(localInstant, intervalPair.EarlyInterval.Offset, chronology);
+                case 2:
+                    instant = resolver.ResolveAmbiguity(intervalPair, localInstant, this);
+                    break;
+                default:
+                    throw new InvalidOperationException("Can't happen");
+            }
+            // TODO: Fix TransitionResolver to return an OffsetInstant (new type) to avoid repetition.
+            Offset offset = GetZoneInterval(instant).Offset;
+
+            
+            
+            return new ZonedDateTime(instant.Plus(offset), offset, chronology);
         }
 
         #region LocalInstant methods

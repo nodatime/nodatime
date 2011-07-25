@@ -18,6 +18,7 @@
 using System;
 using NodaTime.Format;
 using NUnit.Framework;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test.Format
 {
@@ -31,34 +32,34 @@ namespace NodaTime.Test.Format
         }
 
         private object[] PrintTestData = {
-            new TestCaseData(Build(b => b.AppendCenturyOfEra(0, 4)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "20").SetName(
+            new TestCaseData(Build(b => b.AppendCenturyOfEra(0, 4)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "20").SetName(
                 "CenturyOfEra"),
-            new TestCaseData(Build(b => b.AppendYearOfCentury(0, 4)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "4").SetName(
+            new TestCaseData(Build(b => b.AppendYearOfCentury(0, 4)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "4").SetName(
                 "YearOfCentury"),
-            new TestCaseData(Build(b => b.AppendYear(0, 4)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "2004").SetName("Year"),
-            new TestCaseData(Build(b => b.AppendMonthOfYear(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "6").SetName("MonthOfYear"),
-            new TestCaseData(Build(b => b.AppendWeekOfWeekYear(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "24").SetName(
+            new TestCaseData(Build(b => b.AppendYear(0, 4)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "2004").SetName("Year"),
+            new TestCaseData(Build(b => b.AppendMonthOfYear(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "6").SetName("MonthOfYear"),
+            new TestCaseData(Build(b => b.AppendWeekOfWeekYear(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "24").SetName(
                 "WeekOfWeekYear"),
-            new TestCaseData(Build(b => b.AppendDayOfYear(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "161").SetName("DayOfYear"),
-            new TestCaseData(Build(b => b.AppendDayOfMonth(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "9").SetName("DayOfMonth"),
-            new TestCaseData(Build(b => b.AppendDayOfWeek(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "3").SetName("DayOfWeek"),
-            new TestCaseData(Build(b => b.AppendHourOfDay(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "10").SetName("HourOfDay"),
-            new TestCaseData(Build(b => b.AppendClockHourOfDay(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "10").SetName(
+            new TestCaseData(Build(b => b.AppendDayOfYear(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "161").SetName("DayOfYear"),
+            new TestCaseData(Build(b => b.AppendDayOfMonth(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "9").SetName("DayOfMonth"),
+            new TestCaseData(Build(b => b.AppendDayOfWeek(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "3").SetName("DayOfWeek"),
+            new TestCaseData(Build(b => b.AppendHourOfDay(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "10").SetName("HourOfDay"),
+            new TestCaseData(Build(b => b.AppendClockHourOfDay(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "10").SetName(
                 "ClockHourofDay"),
-            new TestCaseData(Build(b => b.AppendHourOfHalfDay(0)), new ZonedDateTime(2004, 6, 9, 18, 20, 30, 40, DateTimeZone.Utc), "6").SetName("HourOfHalfDay")
+            new TestCaseData(Build(b => b.AppendHourOfHalfDay(0)), CreateZonedDateTime(2004, 6, 9, 18, 20, 30, 40, DateTimeZone.Utc), "6").SetName("HourOfHalfDay")
             ,
-            new TestCaseData(Build(b => b.AppendClockHourOfHalfDay(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "10").SetName(
+            new TestCaseData(Build(b => b.AppendClockHourOfHalfDay(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "10").SetName(
                 "ClockHourOfHalfDay"),
-            new TestCaseData(Build(b => b.AppendMinuteOfDay(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "620").SetName("MinuteOfDay"),
-            new TestCaseData(Build(b => b.AppendMinuteOfHour(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "20").SetName("MinuteOfHour")
+            new TestCaseData(Build(b => b.AppendMinuteOfDay(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "620").SetName("MinuteOfDay"),
+            new TestCaseData(Build(b => b.AppendMinuteOfHour(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "20").SetName("MinuteOfHour")
             ,
-            new TestCaseData(Build(b => b.AppendSecondOfDay(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "37230").SetName("SecondOfDay")
+            new TestCaseData(Build(b => b.AppendSecondOfDay(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "37230").SetName("SecondOfDay")
             ,
-            new TestCaseData(Build(b => b.AppendSecondOfMinute(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "30").SetName(
+            new TestCaseData(Build(b => b.AppendSecondOfMinute(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "30").SetName(
                 "SecondOfMinute"), //TODO: Bug? (results are interchanged)
-            new TestCaseData(Build(b => b.AppendMillisecondsOfDay(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "37230040").SetName(
+            new TestCaseData(Build(b => b.AppendMillisecondsOfDay(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "37230040").SetName(
                 "MillisecondsOfDay").Ignore(),
-            new TestCaseData(Build(b => b.AppendMillisecondsOfSecond(0)), new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "40").SetName(
+            new TestCaseData(Build(b => b.AppendMillisecondsOfSecond(0)), CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc), "40").SetName(
                 "MillisecondsOfSecond").Ignore(),
         };
 
@@ -70,26 +71,26 @@ namespace NodaTime.Test.Format
         }
 
         private object[] ParseTestData = {
-            new TestCaseData(Build(b => b.AppendYearOfEra(0, 4)), "2008", new ZonedDateTime(2008, 1, 1, 0, 0, 0, Chronology.IsoUtc)).SetName("YearOfEra"),
-            new TestCaseData(Build(b => b.AppendYearOfCentury(0, 4)), "8", new ZonedDateTime(1908, 1, 1, 0, 0, 0, Chronology.IsoUtc)).SetName("YearOfCentury"),
-            new TestCaseData(Build(b => b.AppendYear(0, 4)), "2008", new ZonedDateTime(2008, 1, 1, 0, 0, 0, Chronology.IsoUtc)).SetName("Year"),
-            new TestCaseData(Build(b => b.AppendMonthOfYear(0)), "5", new ZonedDateTime(1970, 5, 1, 0, 0, 0, Chronology.IsoUtc)).SetName("MonthOfYear"),
-            new TestCaseData(Build(b => b.AppendWeekOfWeekYear(0)), "2", new ZonedDateTime(1970, 1, 5, 0, 0, 0, Chronology.IsoUtc)).SetName("WeekOfWeekYear"),
-            new TestCaseData(Build(b => b.AppendDayOfYear(0)), "32", new ZonedDateTime(1970, 2, 1, 0, 0, 0, Chronology.IsoUtc)).SetName("DayOfYear"),
-            new TestCaseData(Build(b => b.AppendDayOfMonth(0)), "28", new ZonedDateTime(1970, 1, 28, 0, 0, 0, Chronology.IsoUtc)).SetName("DayOfMonth"),
-            new TestCaseData(Build(b => b.AppendDayOfWeek(0)), "5", new ZonedDateTime(1970, 1, 2, 0, 0, 0, Chronology.IsoUtc)).SetName("DayOfWeek"),
-            new TestCaseData(Build(b => b.AppendHourOfDay(0)), "19", new ZonedDateTime(1970, 1, 1, 19, 0, 0, Chronology.IsoUtc)).SetName("HourOfDay"),
-            new TestCaseData(Build(b => b.AppendClockHourOfDay(0)), "10", new ZonedDateTime(1970, 1, 1, 10, 0, 0, Chronology.IsoUtc)).SetName("ClockHourOfDay"),
-            new TestCaseData(Build(b => b.AppendHourOfHalfDay(0)), "6", new ZonedDateTime(1970, 1, 1, 6, 0, 0, Chronology.IsoUtc)).SetName("HourOfHalfDay"),
-            new TestCaseData(Build(b => b.AppendClockHourOfHalfDay(0)), "5", new ZonedDateTime(1970, 1, 1, 5, 0, 0, Chronology.IsoUtc)).SetName(
+            new TestCaseData(Build(b => b.AppendYearOfEra(0, 4)), "2008", CreateZonedDateTime(2008, 1, 1, 0, 0, 0, DateTimeZone.Utc)).SetName("YearOfEra"),
+            new TestCaseData(Build(b => b.AppendYearOfCentury(0, 4)), "8", CreateZonedDateTime(1908, 1, 1, 0, 0, 0, DateTimeZone.Utc)).SetName("YearOfCentury"),
+            new TestCaseData(Build(b => b.AppendYear(0, 4)), "2008", CreateZonedDateTime(2008, 1, 1, 0, 0, 0, DateTimeZone.Utc)).SetName("Year"),
+            new TestCaseData(Build(b => b.AppendMonthOfYear(0)), "5", CreateZonedDateTime(1970, 5, 1, 0, 0, 0, DateTimeZone.Utc)).SetName("MonthOfYear"),
+            new TestCaseData(Build(b => b.AppendWeekOfWeekYear(0)), "2", CreateZonedDateTime(1970, 1, 5, 0, 0, 0, DateTimeZone.Utc)).SetName("WeekOfWeekYear"),
+            new TestCaseData(Build(b => b.AppendDayOfYear(0)), "32", CreateZonedDateTime(1970, 2, 1, 0, 0, 0, DateTimeZone.Utc)).SetName("DayOfYear"),
+            new TestCaseData(Build(b => b.AppendDayOfMonth(0)), "28", CreateZonedDateTime(1970, 1, 28, 0, 0, 0, DateTimeZone.Utc)).SetName("DayOfMonth"),
+            new TestCaseData(Build(b => b.AppendDayOfWeek(0)), "5", CreateZonedDateTime(1970, 1, 2, 0, 0, 0, DateTimeZone.Utc)).SetName("DayOfWeek"),
+            new TestCaseData(Build(b => b.AppendHourOfDay(0)), "19", CreateZonedDateTime(1970, 1, 1, 19, 0, 0, DateTimeZone.Utc)).SetName("HourOfDay"),
+            new TestCaseData(Build(b => b.AppendClockHourOfDay(0)), "10", CreateZonedDateTime(1970, 1, 1, 10, 0, 0, DateTimeZone.Utc)).SetName("ClockHourOfDay"),
+            new TestCaseData(Build(b => b.AppendHourOfHalfDay(0)), "6", CreateZonedDateTime(1970, 1, 1, 6, 0, 0, DateTimeZone.Utc)).SetName("HourOfHalfDay"),
+            new TestCaseData(Build(b => b.AppendClockHourOfHalfDay(0)), "5", CreateZonedDateTime(1970, 1, 1, 5, 0, 0, DateTimeZone.Utc)).SetName(
                 "ClockHourOfHalfDay"),
-            new TestCaseData(Build(b => b.AppendMinuteOfDay(0)), "620", new ZonedDateTime(1970, 1, 1, 10, 20, 0, Chronology.IsoUtc)).SetName("MinuteOfDay"),
-            new TestCaseData(Build(b => b.AppendMinuteOfHour(0)), "30", new ZonedDateTime(1970, 1, 1, 0, 30, 0, Chronology.IsoUtc)).SetName("MinuteOfHour"),
-            new TestCaseData(Build(b => b.AppendSecondOfDay(0)), "37230", new ZonedDateTime(1970, 1, 1, 10, 20, 30, Chronology.IsoUtc)).SetName("SecondOfDay"),
-            new TestCaseData(Build(b => b.AppendSecondOfMinute(0)), "30", new ZonedDateTime(1970, 1, 1, 0, 0, 30, Chronology.IsoUtc)).SetName("SecondOfMinute"),
-            new TestCaseData(Build(b => b.AppendMillisecondsOfDay(0)), "900", new ZonedDateTime(1970, 1, 1, 0, 0, 0, 900, Chronology.IsoUtc)).SetName(
+            new TestCaseData(Build(b => b.AppendMinuteOfDay(0)), "620", CreateZonedDateTime(1970, 1, 1, 10, 20, 0, DateTimeZone.Utc)).SetName("MinuteOfDay"),
+            new TestCaseData(Build(b => b.AppendMinuteOfHour(0)), "30", CreateZonedDateTime(1970, 1, 1, 0, 30, 0, DateTimeZone.Utc)).SetName("MinuteOfHour"),
+            new TestCaseData(Build(b => b.AppendSecondOfDay(0)), "37230", CreateZonedDateTime(1970, 1, 1, 10, 20, 30, DateTimeZone.Utc)).SetName("SecondOfDay"),
+            new TestCaseData(Build(b => b.AppendSecondOfMinute(0)), "30", CreateZonedDateTime(1970, 1, 1, 0, 0, 30, DateTimeZone.Utc)).SetName("SecondOfMinute"),
+            new TestCaseData(Build(b => b.AppendMillisecondsOfDay(0)), "900", CreateZonedDateTime(1970, 1, 1, 0, 0, 0, 900, DateTimeZone.Utc)).SetName(
                 "MillisecondsOfDay"),
-            new TestCaseData(Build(b => b.AppendMillisecondsOfSecond(0)), "50", new ZonedDateTime(1970, 1, 1, 0, 0, 0, 50, Chronology.IsoUtc)).SetName(
+            new TestCaseData(Build(b => b.AppendMillisecondsOfSecond(0)), "50", CreateZonedDateTime(1970, 1, 1, 0, 0, 0, 50, DateTimeZone.Utc)).SetName(
                 "MillisecondsOfSecond"),
         };
 
@@ -117,11 +118,25 @@ namespace NodaTime.Test.Format
         {
             var minDigits = 8;
             var maxDigits = 10;
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc);
+            var dt = CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, DateTimeZone.Utc);
 
             var formatter = builder.AppendYearOfEra(minDigits, maxDigits).ToFormatter();
 
             Assert.That(formatter.Print(dt), Is.EqualTo("00002004"));
+        }
+
+        private static ZonedDateTime CreateZonedDateTime(int year, int month, int day, int hour, int minute, int second, DateTimeZone zone)
+        {
+            return CreateZonedDateTime(year, month, day, hour, minute, second, 0, zone);
+        }
+
+        /// <summary>
+        /// Single method to handle creating a ZonedDateTime so that while we mess around with
+        /// organization, we don't need to change multiple calls.
+        /// </summary>
+        private static ZonedDateTime CreateZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone zone)
+        {
+            return new LocalDateTime(year, month, day, hour, minute, second, millis).InZone(zone, TransitionResolver.Strict);
         }
     }
 }

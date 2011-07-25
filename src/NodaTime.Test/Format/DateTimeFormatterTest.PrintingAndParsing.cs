@@ -20,6 +20,7 @@ using System.IO;
 using System.Text;
 using NodaTime.Format;
 using NUnit.Framework;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test.Format
 {
@@ -31,7 +32,7 @@ namespace NodaTime.Test.Format
         {
             var sut = new DateTimeFormatter(null, parser);
             var sw = new StringWriter();
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
+            var dt = CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
 
             Assert.Throws<NotSupportedException>(() => sut.PrintTo(sw, dt));
         }
@@ -41,7 +42,7 @@ namespace NodaTime.Test.Format
         {
             var sut = new DateTimeFormatter(printer, null);
             var sw = new StringWriter();
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
+            var dt = CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
 
             sut.PrintTo(sw, dt);
             Assert.That(printer.Calendar, Is.SameAs(dt.Chronology.Calendar));
@@ -52,7 +53,7 @@ namespace NodaTime.Test.Format
         {
             var sut = new DateTimeFormatter(printer, null);
             var sw = new StringWriter();
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
+            var dt = CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
 
             sut.PrintTo(sw, dt);
             Assert.That(printer.Zone, Is.SameAs(dt.Zone));
@@ -63,7 +64,7 @@ namespace NodaTime.Test.Format
         {
             var sut = new DateTimeFormatter(printer, null).WithCalendar(calendar1);
             var sw = new StringWriter();
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
+            var dt = CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
 
             sut.PrintTo(sw, dt);
             Assert.That(printer.Calendar, Is.SameAs(sut.Calendar));
@@ -76,7 +77,7 @@ namespace NodaTime.Test.Format
         {
             var sut = new DateTimeFormatter(printer, null).WithZone(zone2);
             var sw = new StringWriter();
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
+            var dt = CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
 
             sut.PrintTo(sw, dt);
             Assert.That(printer.Zone, Is.SameAs(sut.Zone));
@@ -88,7 +89,7 @@ namespace NodaTime.Test.Format
         {
             var sut = new DateTimeFormatter(printer, null);
             var sw = new StringWriter();
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
+            var dt = CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
 
             sut.PrintTo(sw, dt);
             Assert.That(printer.DtWriter, Is.SameAs(sw));
@@ -99,7 +100,7 @@ namespace NodaTime.Test.Format
         {
             var sut = new DateTimeFormatter(printer, null).WithProvider(provider1);
             var sw = new StringWriter();
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
+            var dt = CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
 
             sut.PrintTo(sw, dt);
             Assert.That(printer.DtProvider, Is.SameAs(provider1));
@@ -110,7 +111,7 @@ namespace NodaTime.Test.Format
         {
             var sut = new DateTimeFormatter(printer, null);
             var sb = new StringBuilder();
-            var dt = new ZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
+            var dt = CreateZonedDateTime(2004, 6, 9, 10, 20, 30, 40, zone1);
 
             sut.PrintTo(sb, dt);
             var actualBuilder = ((StringWriter)printer.DtWriter).GetStringBuilder();
@@ -190,5 +191,14 @@ namespace NodaTime.Test.Format
             Assert.That(parser.Position, Is.EqualTo(0));
         }
         #endregion
+
+        /// <summary>
+        /// Single method to handle creating a ZonedDateTime so that while we mess around with
+        /// organization, we don't need to change multiple calls.
+        /// </summary>
+        private static ZonedDateTime CreateZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone zone)
+        {
+            return new LocalDateTime(year, month, day, hour, minute, second, millis).InZone(zone, TransitionResolver.Strict);
+        }
     }
 }
