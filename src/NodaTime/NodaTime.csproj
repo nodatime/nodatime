@@ -70,10 +70,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalendarSystem.cs" />
-    <Compile Include="Clock.cs" />
-    <Compile Include="Clocks\ClockBase.cs" />
-    <Compile Include="Clocks\FixedClock.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
+    <Compile Include="Clocks\FakeClock.cs" />
     <Compile Include="Format\DurationFormatter.cs" />
     <Compile Include="Format\FormatPattern.cs" />
     <Compile Include="Format\FormatterBase.cs" />
@@ -86,6 +84,7 @@
     <Compile Include="Format\ParseResult.cs" />
     <Compile Include="Format\ZonedDateTimeFormatter.cs" />
     <Compile Include="Format\ZonedDateTimeParser.cs" />
+    <Compile Include="IClock.cs" />
     <Compile Include="IsoDayOfWeek.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />

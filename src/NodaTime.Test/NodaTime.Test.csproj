@@ -81,6 +81,8 @@
   <ItemGroup>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="ChronologyTest.cs" />
+    <Compile Include="Clocks\FakeClockTest.cs" />
+    <Compile Include="Clocks\SystemClockTest.cs" />
     <Compile Include="DateTimeZoneTest.cs" />
     <Compile Include="Format\DateTimeFormats.cs" />
     <Compile Include="Format\DateTimeFormatterBuilderTest.cs" />
