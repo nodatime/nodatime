@@ -15,11 +15,10 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
 using System;
-using NodaTime.Clocks;
+using NUnit.Framework;
 
-namespace NodaTime.Test.Clocks
+namespace NodaTime.Test
 {
     [TestFixture]
     public class SystemClockTest

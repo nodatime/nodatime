@@ -16,18 +16,22 @@
 #endregion
 
 using NUnit.Framework;
-using NodaTime.Clocks;
+using NodaTime;
+using NodaTime.Testing;
 
-namespace NodaTime.Test.Clocks
+namespace NodaTime.Test.Testing
 {
+    /// <summary>
+    /// Tests for the StubClock class in the Testing assembly.
+    /// </summary>
     [TestFixture]
-    public class FakeClockTest
+    public class StubClockTest
     {
         [Test]
         public void DirectConstruction()
         {
             Instant instant = new Instant(100L);
-            FakeClock clock = new FakeClock(instant);
+            StubClock clock = new StubClock(instant);
             Assert.AreEqual(instant, clock.Now);
         }
 
@@ -35,7 +39,7 @@ namespace NodaTime.Test.Clocks
         public void UtcDateConstruction()
         {
             Instant instant = Instant.FromUtc(2010, 1, 1, 0, 0);
-            FakeClock clock = FakeClock.FromUtc(2010, 1, 1);
+            StubClock clock = StubClock.FromUtc(2010, 1, 1);
             Assert.AreEqual(instant, clock.Now);
         }
 
@@ -43,14 +47,14 @@ namespace NodaTime.Test.Clocks
         public void UtcDateTimeConstruction()
         {
             Instant instant = Instant.FromUtc(2010, 1, 1, 10, 30, 25);
-            FakeClock clock = FakeClock.FromUtc(2010, 1, 1, 10, 30, 25);
+            StubClock clock = StubClock.FromUtc(2010, 1, 1, 10, 30, 25);
             Assert.AreEqual(instant, clock.Now);
         }
 
         [Test]
         public void Advance()
         {
-            FakeClock clock = new FakeClock(new Instant(100L));
+            StubClock clock = new StubClock(new Instant(100L));
             Duration d = new Duration(25);
             clock.Advance(d);
             Assert.AreEqual(125, clock.Now.Ticks);
@@ -59,7 +63,7 @@ namespace NodaTime.Test.Clocks
         [Test]
         public void AdvanceTicks()
         {
-            FakeClock clock = new FakeClock(new Instant(100L));
+            StubClock clock = new StubClock(new Instant(100L));
             clock.AdvanceTicks(3);
             Assert.AreEqual(103, clock.Now.Ticks);
         }
@@ -67,7 +71,7 @@ namespace NodaTime.Test.Clocks
         [Test]
         public void AdvanceMilliseconds()
         {
-            FakeClock clock = new FakeClock(new Instant(100L));
+            StubClock clock = new StubClock(new Instant(100L));
             clock.AdvanceMilliseconds(3);
             Assert.AreEqual(100 + 3 * NodaConstants.TicksPerMillisecond, clock.Now.Ticks);
         }
@@ -75,7 +79,7 @@ namespace NodaTime.Test.Clocks
         [Test]
         public void AdvanceSeconds()
         {
-            FakeClock clock = new FakeClock(new Instant(100L));
+            StubClock clock = new StubClock(new Instant(100L));
             clock.AdvanceSeconds(3);
             Assert.AreEqual(100 + 3 * NodaConstants.TicksPerSecond, clock.Now.Ticks);
         }
@@ -83,7 +87,7 @@ namespace NodaTime.Test.Clocks
         [Test]
         public void AdvanceMinutes()
         {
-            FakeClock clock = new FakeClock(new Instant(100L));
+            StubClock clock = new StubClock(new Instant(100L));
             clock.AdvanceMinutes(3);
             Assert.AreEqual(100 + 3 * NodaConstants.TicksPerMinute, clock.Now.Ticks);
         }
@@ -91,7 +95,7 @@ namespace NodaTime.Test.Clocks
         [Test]
         public void AdvanceHours()
         {
-            FakeClock clock = new FakeClock(new Instant(100L));
+            StubClock clock = new StubClock(new Instant(100L));
             clock.AdvanceHours(3);
             Assert.AreEqual(100 + 3 * NodaConstants.TicksPerHour, clock.Now.Ticks);
         }
@@ -99,7 +103,7 @@ namespace NodaTime.Test.Clocks
         [Test]
         public void AdvanceDays()
         {
-            FakeClock clock = new FakeClock(new Instant(100L));
+            StubClock clock = new StubClock(new Instant(100L));
             clock.AdvanceDays(3);
             Assert.AreEqual(100 + 3 * NodaConstants.TicksPerStandardDay, clock.Now.Ticks);
         }

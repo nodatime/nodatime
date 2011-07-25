@@ -71,7 +71,6 @@
   <ItemGroup>
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
-    <Compile Include="Clocks\FakeClock.cs" />
     <Compile Include="Format\DurationFormatter.cs" />
     <Compile Include="Format\FormatPattern.cs" />
     <Compile Include="Format\FormatterBase.cs" />
@@ -127,11 +126,11 @@
     <Compile Include="Calendars\GregorianCalendarSystem.cs" />
     <Compile Include="Calendars\IsoCalendarSystem.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.cs" />
-    <Compile Include="Clocks\SystemClock.cs" />
     <Compile Include="Fields\DurationFieldValue.cs" />
     <Compile Include="Period.cs" />
     <Compile Include="PeriodType.cs" />
     <Compile Include="SkippedTimeException.cs" />
+    <Compile Include="SystemClock.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
