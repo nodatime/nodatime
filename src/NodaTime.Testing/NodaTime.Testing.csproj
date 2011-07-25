@@ -61,6 +61,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StubClock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimeZones\SingleTransitionZone.cs" />
   </ItemGroup>

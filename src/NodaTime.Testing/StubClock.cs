@@ -15,17 +15,17 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime.Clocks
+namespace NodaTime.Testing
 {
     /// <summary>
     /// Clock which can be constructed with an initial instant, and then advanced programmatically.
     /// This class is designed to be used when testing classes which take an <see cref="IClock"/> as a dependency.
     /// </summary>
-    public sealed class FakeClock : IClock
+    public sealed class StubClock : IClock
     {
         private Instant now;
 
-        public FakeClock(Instant initial)
+        public StubClock(Instant initial)
         {
             now = initial;
         }
@@ -33,17 +33,17 @@ namespace NodaTime.Clocks
         /// <summary>
         /// Returns a fake clock initially set to midnight of the given year/month/day in UTC in the ISO calendar.
         /// </summary>
-        public static FakeClock FromUtc(int year, int month, int dayOfMonth)
+        public static StubClock FromUtc(int year, int month, int dayOfMonth)
         {
-            return new FakeClock(Instant.FromUtc(year, month, dayOfMonth, 0, 0));
+            return new StubClock(Instant.FromUtc(year, month, dayOfMonth, 0, 0));
         }
 
         /// <summary>
         /// Returns a fake clock initially set to the given year/month/day/time in UTC in the ISO calendar.
         /// </summary>
-        public static FakeClock FromUtc(int year, int month, int dayOfMonth, int hour, int minute, int second)
+        public static StubClock FromUtc(int year, int month, int dayOfMonth, int hour, int minute, int second)
         {
-            return new FakeClock(Instant.FromUtc(year, month, dayOfMonth, hour, minute, second));
+            return new StubClock(Instant.FromUtc(year, month, dayOfMonth, hour, minute, second));
         }
 
         /// <summary>

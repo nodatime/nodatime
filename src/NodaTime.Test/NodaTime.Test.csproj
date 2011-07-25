@@ -81,9 +81,8 @@
   <ItemGroup>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="ChronologyTest.cs" />
-    <Compile Include="Clocks\FakeClockTest.cs" />
-    <Compile Include="Clocks\SystemClockTest.cs" />
     <Compile Include="DateTimeZoneTest.cs" />
+    <Compile Include="Testing\StubClockTest.cs" />
     <Compile Include="Format\DateTimeFormats.cs" />
     <Compile Include="Format\DateTimeFormatterBuilderTest.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.Test.Decimal.cs">
@@ -117,6 +116,7 @@
     <Compile Include="PeriodTypeTest.IsSupported.cs" />
     <Compile Include="PeriodTypeTest.Masking.cs" />
     <Compile Include="PeriodTypeTest.Types.cs" />
+    <Compile Include="SystemClockTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\DaylightSavingTimeZoneTest.cs" />
