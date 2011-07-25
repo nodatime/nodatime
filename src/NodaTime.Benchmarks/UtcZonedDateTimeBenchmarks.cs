@@ -22,66 +22,67 @@ namespace NodaTime.Benchmarks
 {
     internal class UtcZonedDateTimeBenchmarks
     {
-        private readonly ZonedDateTime sample = new ZonedDateTime(2009, 12, 26, 10, 8, 30, DateTimeZone.Utc);
+        private static readonly LocalDateTime SampleLocal = new LocalDateTime(2009, 12, 26, 10, 8, 30);
+        private static readonly ZonedDateTime Sample = DateTimeZone.Utc.At(SampleLocal);
 
         [Benchmark]
         public void Construction()
         {
-            new ZonedDateTime(2009, 12, 26, 10, 8, 30, DateTimeZone.Utc).Consume();
+            DateTimeZone.Utc.At(SampleLocal);
         }
 
         [Benchmark]
         public void Year()
         {
-            sample.Year.Consume();
+            Sample.Year.Consume();
         }
 
         [Benchmark]
         public void Month()
         {
-            sample.MonthOfYear.Consume();
+            Sample.MonthOfYear.Consume();
         }
 
         [Benchmark]
         public void DayOfMonth()
         {
-            sample.DayOfMonth.Consume();
+            Sample.DayOfMonth.Consume();
         }
 
         [Benchmark]
         public void IsoDayOfWeek()
         {
-            sample.IsoDayOfWeek.Consume();
+            Sample.IsoDayOfWeek.Consume();
         }
 
         [Benchmark]
         public void DayOfYear()
         {
-            sample.DayOfYear.Consume();
+            Sample.DayOfYear.Consume();
         }
 
         [Benchmark]
         public void Hour()
         {
-            sample.HourOfDay.Consume();
+            Sample.HourOfDay.Consume();
         }
 
         [Benchmark]
         public void Minute()
         {
-            sample.MinuteOfHour.Consume();
+            Sample.MinuteOfHour.Consume();
         }
 
         [Benchmark]
         public void Second()
         {
-            sample.SecondOfMinute.Consume();
+            Sample.SecondOfMinute.Consume();
         }
 
         [Benchmark]
         public void Millisecond()
         {
-            sample.MillisecondOfSecond.Consume();
+            Sample.MillisecondOfSecond.Consume();
         }
     }
 }

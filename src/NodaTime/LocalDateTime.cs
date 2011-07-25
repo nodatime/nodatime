@@ -272,12 +272,7 @@ namespace NodaTime
             {
                 throw new ArgumentNullException("zone");
             }
-            if (resolver == null)
-            {
-                throw new ArgumentNullException("resolver");
-            }
-            // TODO: Make ToChronology a virtual method in CalendarSystem, caching IsoChronology in DateTimeZone.
-            return ZonedDateTime.FromLocalInstant(this.LocalInstant, Calendar.WithZone(zone), resolver);
+            return zone.At(this, resolver);
         }
 
         #region Implementation of IEquatable<LocalDateTime>

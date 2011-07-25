@@ -45,10 +45,10 @@ namespace NodaTime
         private readonly Offset offset;
 
         /// <summary>
-        /// Private constructor used by other code within this class that has already
-        /// validated and computed the appropriate field values. No further validation is performed.
+        /// Internal constructor used by other code that has already validated and 
+        /// computed the appropriate field values. No further validation is performed.
         /// </summary>
-        private ZonedDateTime(LocalInstant localInstant, Offset offset, Chronology chronology)
+        internal ZonedDateTime(LocalInstant localInstant, Offset offset, Chronology chronology)
         {
             this.localInstant = localInstant;
             this.offset = offset;
@@ -104,108 +104,6 @@ namespace NodaTime
             chronology = zone.ToIsoChronology();
             offset = chronology.Zone.GetOffsetFromUtc(instant);
             localInstant = instant.Plus(offset);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct.
-        /// </summary>
-        /// <param name="year">The year.</param>
-        /// <param name="month">The month.</param>
-        /// <param name="day">The day.</param>
-        /// <param name="hour">The hour.</param>
-        /// <param name="minute">The minute.</param>
-        /// <param name="second">The second.</param>
-        /// <param name="zone">The zone.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, DateTimeZone zone)
-            : this(year, month, day, hour, minute, second, zone.ToIsoChronology())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct.
-        /// </summary>
-        /// <param name="year">The year.</param>
-        /// <param name="month">The month.</param>
-        /// <param name="day">The day.</param>
-        /// <param name="hour">The hour.</param>
-        /// <param name="minute">The minute.</param>
-        /// <param name="second">The second.</param>
-        /// <param name="chronology">The chronology.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, Chronology chronology)
-            : this(year, month, day, hour, minute, second, 0, 0, chronology)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct.
-        /// </summary>
-        /// <param name="year">The year.</param>
-        /// <param name="month">The month.</param>
-        /// <param name="day">The day.</param>
-        /// <param name="hour">The hour.</param>
-        /// <param name="minute">The minute.</param>
-        /// <param name="second">The second.</param>
-        /// <param name="millisecond">The millisecond.</param>
-        /// <param name="zone">The zone.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, DateTimeZone zone)
-            : this(year, month, day, hour, minute, second, millisecond, zone.ToIsoChronology())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct.
-        /// </summary>
-        /// <param name="year">The year.</param>
-        /// <param name="month">The month.</param>
-        /// <param name="day">The day.</param>
-        /// <param name="hour">The hour.</param>
-        /// <param name="minute">The minute.</param>
-        /// <param name="second">The second.</param>
-        /// <param name="millisecond">The millisecond.</param>
-        /// <param name="chronology">The chronology.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, Chronology chronology)
-            : this(year, month, day, hour, minute, second, millisecond, 0, chronology)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct.
-        /// </summary>
-        /// <param name="year">The year.</param>
-        /// <param name="month">The month.</param>
-        /// <param name="day">The day.</param>
-        /// <param name="hour">The hour.</param>
-        /// <param name="minute">The minute.</param>
-        /// <param name="second">The second.</param>
-        /// <param name="millisecond">The millisecond.</param>
-        /// <param name="tick">The tick.</param>
-        /// <param name="zone">The zone.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tick, DateTimeZone zone)
-            : this(year, month, day, hour, minute, second, millisecond, tick, zone.ToIsoChronology())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct.
-        /// </summary>
-        /// <param name="year">The year.</param>
-        /// <param name="month">The month.</param>
-        /// <param name="day">The day.</param>
-        /// <param name="hour">The hour.</param>
-        /// <param name="minute">The minute.</param>
-        /// <param name="second">The second.</param>
-        /// <param name="millisecond">The millisecond.</param>
-        /// <param name="tick">The tick.</param>
-        /// <param name="chronology">The chronology.</param>
-        public ZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tick, Chronology chronology)
-        {
-            if (chronology == null)
-            {
-                throw new ArgumentNullException("chronology");
-            }
-            localInstant = chronology.Calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond, tick);
-            offset = chronology.Zone.GetOffsetFromLocal(localInstant);
-            this.chronology = chronology;
         }
 
         /// <summary>

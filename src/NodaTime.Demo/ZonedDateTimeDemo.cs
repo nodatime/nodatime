@@ -29,7 +29,7 @@ namespace NodaTime.Demo
         [Test]
         public void Construction()
         {
-            ZonedDateTime dt = new ZonedDateTime(2010, 6, 9, 15, 15, 0, Dublin);
+            ZonedDateTime dt = new LocalDateTime(2010, 6, 9, 15, 15, 0).InZone(Dublin, TransitionResolver.Strict);
 
             Assert.AreEqual(15, dt.HourOfDay);
             Assert.AreEqual(2010, dt.Year);
@@ -43,13 +43,13 @@ namespace NodaTime.Demo
         [Test]
         public void Ambiguity()
         {
-            Assert.Throws<AmbiguousTimeException>(() => new ZonedDateTime(2010, 10, 31, 1, 15, 0, Dublin));
+            Assert.Throws<AmbiguousTimeException>(() => new LocalDateTime(2010, 10, 31, 1, 15, 0).InZone(Dublin, TransitionResolver.Strict));
         }
 
         [Test]
         public void Impossibility()
         {
-            Assert.Throws<SkippedTimeException>(() => new ZonedDateTime(2010, 3, 28, 1, 15, 0, Dublin));
+            Assert.Throws<SkippedTimeException>(() => new LocalDateTime(2010, 3, 28, 1, 15, 0).InZone(Dublin, TransitionResolver.Strict));
         }
     }
 }

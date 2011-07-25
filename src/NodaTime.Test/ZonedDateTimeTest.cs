@@ -32,9 +32,9 @@ namespace NodaTime.Test
         private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
 
         [Test]
-        public void Constructor_SpecifyingDateAndTimeToMinutesInWinter()
+        public void ZoneAt_SpecifyingDateAndTimeToMinutesInWinter()
         {
-            var when = new ZonedDateTime(2009, 12, 22, 21, 39, 30, Pacific);
+            var when = Pacific.At(new LocalDateTime(2009, 12, 22, 21, 39, 30));
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
             Assert.AreEqual(instant, localInstant.Minus(Offset.ForHours(-8)));
@@ -49,9 +49,9 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Constructor_SpecifyingDateAndTimeToMinutesInSummer()
+        public void ZoneAt_SpecifyingDateAndTimeToMinutesInSummer()
         {
-            var when = new ZonedDateTime(2009, 6, 22, 21, 39, 30, Pacific);
+            var when = Pacific.At(new LocalDateTime(2009, 6, 22, 21, 39, 30));
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
             Assert.AreEqual(instant, localInstant.Minus(Offset.ForHours(-7)));
@@ -71,9 +71,9 @@ namespace NodaTime.Test
         /// therefore represent 09:30 UTC.
         /// </summary>
         [Test]
-        public void Constructor_WithAmbiguousTime_UsesLaterInstant()
+        public void ZoneAt_WithAmbiguousTime_UsesLaterInstant()
         {
-            var when = new ZonedDateTime(2009, 11, 2, 1, 30, 0, Pacific);
+            var when = Pacific.At(new LocalDateTime(2009, 11, 2, 1, 30, 0));
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
             Assert.AreEqual(localInstant.Minus(Offset.ForHours(-8)), instant);
@@ -99,9 +99,9 @@ namespace NodaTime.Test
         /// so 2am became 3am. This means that 2.30am doesn't exist on that day.
         /// </summary>
         [Test]
-        public void Constructor_WithImpossibleTime_ThrowsException()
+        public void ZoneAt_WithImpossibleTime_ThrowsException()
         {
-            Assert.Throws<SkippedTimeException>(() => new ZonedDateTime(2009, 3, 8, 2, 30, 0, Pacific));
+            Assert.Throws<SkippedTimeException>(() => Pacific.At(new LocalDateTime(2009, 3, 8, 2, 30, 0)));
         }
     }
 }

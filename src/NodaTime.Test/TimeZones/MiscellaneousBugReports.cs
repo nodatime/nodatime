@@ -33,7 +33,7 @@ namespace NodaTime.Test.TimeZones
         public void Niue()
         {
             DateTimeZone niue = DateTimeZone.ForId("Pacific/Niue");
-            var offset = niue.GetOffsetFromUtc(new ZonedDateTime(2010, 1, 1, 0, 0, 0, niue).ToInstant());
+            var offset = niue.GetOffsetFromUtc(niue.At(new LocalDateTime(2010, 1, 1, 0, 0, 0)).ToInstant());
             Assert.AreEqual(Offset.ForHours(-11), offset);
         }
 
@@ -41,7 +41,7 @@ namespace NodaTime.Test.TimeZones
         public void Kiritimati()
         {
             DateTimeZone kiritimati = DateTimeZone.ForId("Pacific/Kiritimati");
-            var offset = kiritimati.GetOffsetFromUtc(new ZonedDateTime(2010, 1, 1, 0, 0, 0, kiritimati).ToInstant());
+            var offset = kiritimati.GetOffsetFromUtc(kiritimati.At(new LocalDateTime(2010, 1, 1, 0, 0, 0)).ToInstant());
             Assert.AreEqual(Offset.ForHours(14), offset);
         }
 
@@ -49,7 +49,7 @@ namespace NodaTime.Test.TimeZones
         public void Pyongyang()
         {
             DateTimeZone pyongyang = DateTimeZone.ForId("Asia/Pyongyang");
-            var offset = pyongyang.GetOffsetFromUtc(new ZonedDateTime(2010, 1, 1, 0, 0, 0, pyongyang).ToInstant());
+            var offset = pyongyang.GetOffsetFromUtc(pyongyang.At(new LocalDateTime(2010, 1, 1, 0, 0, 0)).ToInstant());
             Assert.AreEqual(Offset.ForHours(9), offset);
         }
 

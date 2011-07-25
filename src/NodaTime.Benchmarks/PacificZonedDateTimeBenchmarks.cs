@@ -24,73 +24,73 @@ namespace NodaTime.Benchmarks
     internal class PacificZonedDateTimeBenchmarks
     {
         private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
-
-        private readonly ZonedDateTime sample = new ZonedDateTime(2009, 12, 26, 10, 8, 30, Pacific);
+        private static readonly LocalDateTime SampleLocal = new LocalDateTime(2009, 12, 26, 10, 8, 30);
+        private static readonly ZonedDateTime SampleZoned = Pacific.At(SampleLocal);
 
         [Benchmark]
         public void Construction()
         {
-            new ZonedDateTime(2009, 12, 26, 10, 8, 30, Pacific).Consume();
+            Pacific.At(SampleLocal);
         }
 
         [Benchmark]
         public void Year()
         {
-            sample.Year.Consume();
+            SampleZoned.Year.Consume();
         }
 
         [Benchmark]
         public void Month()
         {
-            sample.MonthOfYear.Consume();
+            SampleZoned.MonthOfYear.Consume();
         }
 
         [Benchmark]
         public void DayOfMonth()
         {
-            sample.DayOfMonth.Consume();
+            SampleZoned.DayOfMonth.Consume();
         }
 
         [Benchmark]
         public void IsoDayOfWeek()
         {
-            sample.IsoDayOfWeek.Consume();
+            SampleZoned.IsoDayOfWeek.Consume();
         }
 
         [Benchmark]
         public void DayOfYear()
         {
-            sample.DayOfYear.Consume();
+            SampleZoned.DayOfYear.Consume();
         }
 
         [Benchmark]
         public void Hour()
         {
-            sample.HourOfDay.Consume();
+            SampleZoned.HourOfDay.Consume();
         }
 
         [Benchmark]
         public void Minute()
         {
-            sample.MinuteOfHour.Consume();
+            SampleZoned.MinuteOfHour.Consume();
         }
 
         [Benchmark]
         public void Second()
         {
-            sample.SecondOfMinute.Consume();
+            SampleZoned.SecondOfMinute.Consume();
         }
 
         [Benchmark]
         public void Millisecond()
         {
-            sample.MillisecondOfSecond.Consume();
+            SampleZoned.MillisecondOfSecond.Consume();
         }
 
         [Benchmark]
         public void ToInstant()
         {
-            sample.ToInstant();
+            SampleZoned.ToInstant();
         }
     }
 }
