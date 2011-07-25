@@ -15,10 +15,13 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime.Clocks
+namespace NodaTime
 {
-    internal abstract class ClockBase
+    /// <summary>
+    /// Represents a clock which can tell the current time as an <see cref = "Instant" />.
+    /// </summary>
+    public interface IClock
     {
-        public abstract Instant Now { get; }
+        Instant Now { get; }
     }
 }
