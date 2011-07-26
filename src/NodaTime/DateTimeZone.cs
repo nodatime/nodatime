@@ -369,6 +369,32 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the ZonedDateTime with a LocalDateTime as early as possible on the given date.
+        /// If midnight exists unambiguously on the given date, it is returned.
+        /// If the given date has an amgbiguous start time (e.g. the clocks go back from 1am to midnight)
+        /// then the earlier ZonedDateTime is returned. If the given date has no midnight (e.g. the clocks
+        /// go forward from midnight to 1am) then the earliest valid value is returned; this will be the instant
+        /// of the transition.
+        /// </summary>
+        public ZonedDateTime AtStartOfDay(LocalDate date)
+        {
+            LocalInstant localInstant = date.LocalDateTime.LocalInstant;
+            Chronology chronology = date.Calendar.WithZone(this);
+            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
+            switch (pair.MatchingIntervals)
+            {
+                case 0:
+                    var interval = GetIntervalAfterGap(localInstant);
+                    return new ZonedDateTime(interval.LocalStart, interval.Offset, chronology);
+                case 1:
+                case 2:
+                    return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                default:
+                    throw new InvalidOperationException("This won't happen.");
+            }
+        }
+
+        /// <summary>
         /// Returns complete information about how the given LocalDateTime is mapped in this time zone.
         /// </summary>
         /// <remarks>Use this method if you need to know whether the given value is ambiguous, or if you

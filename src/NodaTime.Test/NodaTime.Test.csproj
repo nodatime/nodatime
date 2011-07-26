@@ -201,6 +201,9 @@
     <Compile Include="TimeZones\DateTimeZoneTest.GetZoneIntervals.cs">
       <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="TimeZones\DateTimeZoneTest.LocalConversions.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime.Testing\NodaTime.Testing.csproj">

@@ -41,6 +41,7 @@ namespace NodaTime
             this.localTime = localTime;
         }
 
+        public CalendarSystem Calendar { get { return localTime.Calendar; } }
         public int Year { get { return localTime.Year; } }
         public int MonthOfYear { get { return localTime.MonthOfYear; } }
         public int DayOfMonth { get { return localTime.DayOfMonth; } }
