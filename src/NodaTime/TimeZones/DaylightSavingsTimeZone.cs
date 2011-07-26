@@ -240,25 +240,7 @@ namespace NodaTime.TimeZones
         {
             return FindMatchingRecurrence(instant).Savings + standardOffset;
         }
-
-        /// <summary>
-        /// Returns the name associated with the given instant.
-        /// </summary>
-        /// <param name="instant">The instant to get the name for.</param>
-        /// <returns>
-        /// The name of this time. Never returns null.
-        /// </returns>
-        /// <remarks>
-        /// For a fixed time zone this will always return the same value but for a time zone that
-        /// honors daylight savings this will return a different name depending on the time of year
-        /// it represents. For example in the Pacific Standard Time (UTC-8) it will return either
-        /// PST or PDT depending on the time of year.
-        /// </remarks>
-        public override string GetName(Instant instant)
-        {
-            return FindMatchingRecurrence(instant).Name;
-        }
-
+        
         /// <summary>
         /// Writes the time zone to the specified writer.
         /// </summary>

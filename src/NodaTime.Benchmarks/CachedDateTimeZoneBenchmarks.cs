@@ -80,11 +80,5 @@ namespace NodaTime.Benchmarks
         {
             paris.GetOffsetFromUtc(Instant.UnixEpoch);
         }
-
-        [Benchmark]
-        public void Name()
-        {
-            paris.GetName(Instant.UnixEpoch);
-        }
     }
 }
