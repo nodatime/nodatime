@@ -262,38 +262,6 @@ namespace NodaTime
 
         #region LocalInstant methods
         /// <summary>
-        ///   Gets the offset to subtract from a local time to get the UTC time.
-        /// </summary>
-        /// <param name = "localInstant">The <see cref = "T:NodaTime.LocalInstant" /> to get the offset of.</param>
-        /// <returns>The offset to subtract from the specified local time to obtain a UTC instant.</returns>
-        /// <remarks>
-        /// Around a DST transition, local times behave peculiarly. When the time springs forward,
-        /// (e.g. 12:59 to 02:00) some times never occur; when the time falls back (e.g. 1:59 to
-        /// 01:00) some times occur twice. This method currently throws an exception in the face of either
-        /// ambiguity or a gap.
-        /// </remarks>
-        /// <exception cref = "T:NodaTime.SkippedTimeException">The local instant doesn't occur in this time zone
-        ///   due to zone transitions.</exception>
-        /// <exception cref = "T:NodaTime.AmbiguousTimeException">The local instant occurs twice in this time zone
-        ///   due to zone transitions.</exception>
-        internal virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
-        {
-            var intervalPair = GetZoneIntervals(localInstant);
-            // FIXME: Use TransitionResolver, or remove entirely...
-            switch (intervalPair.MatchingIntervals)
-            {
-                case 0:
-                    throw new SkippedTimeException(localInstant, this);
-                case 1:
-                    return intervalPair.EarlyInterval.Offset;
-                case 2:
-                    throw new AmbiguousTimeException(localInstant, this);
-                default:
-                    throw new InvalidOperationException("Will never happen");
-            }
-        }
-
-        /// <summary>
         /// Finds all zone intervals for the given local instant. Usually there's one (i.e. only a single
         /// instant is mapped to the given local instant within the time zone) but during DST transitions
         /// there can be either 0 (the given local instant doesn't exist, e.g. local time skipped from 1am to

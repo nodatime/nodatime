@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Fields;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Format
 {
@@ -122,7 +123,7 @@ namespace NodaTime.Format
         private readonly CalendarSystem calendarSystem;
         private Offset offset;
         private DateTimeZone zone;
-        private readonly LocalInstant localInstant;
+        private readonly LocalInstant initialLocalInstant;
         private readonly IFormatProvider provider;
 
         private SavedField[] savedFields = new SavedField[8];
@@ -133,18 +134,18 @@ namespace NodaTime.Format
         /// Initializes a bucket, with the option of specifying the pivot year for
         /// two-digit year parsing.
         /// </summary>
-        /// <param name="instant">The initial local instant</param>
+        /// <param name="localInstant">The initial local instant</param>
         /// <param name="calendarSystem">The calendar system to use</param>
         /// <param name="provider">The format provider to use</param>
         /// <param name="pivotYear">The pivot year to use when parsing two-digit years</param>
-        public DateTimeParserBucket(LocalInstant instant, CalendarSystem calendarSystem, IFormatProvider provider, int? pivotYear)
+        public DateTimeParserBucket(LocalInstant localInstant, CalendarSystem calendarSystem, IFormatProvider provider, int? pivotYear)
         {
             if (calendarSystem == null)
             {
                 throw new ArgumentNullException("calendarSystem");
             }
 
-            localInstant = instant;
+            initialLocalInstant = localInstant;
             this.calendarSystem = calendarSystem;
             this.provider = provider;
             PivotYear = pivotYear;
@@ -164,7 +165,7 @@ namespace NodaTime.Format
         /// <summary>
         /// Gets an initial local instant to start computing
         /// </summary>
-        public LocalInstant InitialLocalInstant { get { return localInstant; } }
+        public LocalInstant InitialLocalInstant { get { return initialLocalInstant; } }
 
         /// <summary>
         /// Gets the calendar system of the bucket
@@ -264,12 +265,12 @@ namespace NodaTime.Format
 
             Array.Sort(savedFieldsLocal, 0, savedFieldCountLocal);
 
-            LocalInstant instant = localInstant;
+            LocalInstant localInstant = initialLocalInstant;
             try
             {
                 for (int i = 0; i < savedFieldCountLocal; i++)
                 {
-                    instant = savedFields[i].Set(instant, resetField);
+                    localInstant = savedFields[i].Set(localInstant, resetField);
                 }
             }
             catch (FieldValueException e)
@@ -277,27 +278,25 @@ namespace NodaTime.Format
                 throw new FormatException("Cannot parse \"" + text + "\"", e);
             }
 
-            Instant result;
             if (zone == null)
             {
-                result = instant.Minus(offset);
+                return localInstant.Minus(offset);
             }
             else
             {
-                Offset offset = zone.GetOffsetFromLocal(instant);
-                result = instant.Minus(offset);
-                if (offset != zone.GetOffsetFromUtc(result))
+                ZoneIntervalPair intervalPair = zone.GetZoneIntervals(localInstant);
+                // TODO: Consider whether we should return the earlier one in the case of ambiguity.
+                if (intervalPair.MatchingIntervals != 1)
                 {
-                    String message = "Illegal instant due to time zone offset transition (" + zone + ')';
+                    String message = "Illegal or ambiguous local date/time due to time zone offset transition (" + zone + ')';
                     if (text != null)
                     {
                         message = "Cannot parse \"" + text + "\": " + message;
                     }
                     throw new ArgumentException(message);
                 }
+                return localInstant.Minus(intervalPair.EarlyInterval.Offset);
             }
-
-            return result;
         }
     }
 }

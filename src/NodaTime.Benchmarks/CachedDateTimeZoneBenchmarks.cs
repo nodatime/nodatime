@@ -82,12 +82,6 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void GetOffsetFromLocal()
-        {
-            paris.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch);
-        }
-
-        [Benchmark]
         public void Name()
         {
             paris.GetName(Instant.UnixEpoch);
