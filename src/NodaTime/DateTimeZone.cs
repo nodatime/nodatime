@@ -203,6 +203,9 @@ namespace NodaTime
         /// </returns>
         public virtual Offset GetOffsetFromUtc(Instant instant)
         {
+            // TODO: Remove? This is really just a convenience... There's some benefit
+            // in DaylightSavingsTimeZone, but with caching and precalculating it's likely to
+            // be irrelevant.
             ZoneInterval interval = GetZoneInterval(instant);
             return interval.Offset;
         }
@@ -213,24 +216,6 @@ namespace NodaTime
         /// <param name = "instant">The <see cref = "T:NodaTime.Instant" /> to query.</param>
         /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" />.</returns>
         public abstract ZoneInterval GetZoneInterval(Instant instant);
-
-        /// <summary>
-        ///   Returns the name associated with the given instant.
-        /// TODO: Remove this?
-        /// </summary>
-        /// <remarks>
-        ///   For a fixed time zone this will always return the same value but for a time zone that
-        ///   honors daylight savings this will return a different name depending on the time of year
-        ///   it represents. For example in the Pacific Standard Time (UTC-8) it will return either
-        ///   PST or PDT depending on the time of year.
-        /// </remarks>
-        /// <param name = "instant">The <see cref = "T:NodaTime.Instant" /> to get the name for.</param>
-        /// <returns>The name of this time. Never returns <c>null</c>.</returns>
-        public virtual string GetName(Instant instant)
-        {
-            ZoneInterval interval = GetZoneInterval(instant);
-            return interval.Name;
-        }
 
         /// <summary>
         /// Finds all zone intervals for the given local instant. Usually there's one (i.e. only a single
