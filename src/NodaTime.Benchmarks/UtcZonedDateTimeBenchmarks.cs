@@ -23,12 +23,12 @@ namespace NodaTime.Benchmarks
     internal class UtcZonedDateTimeBenchmarks
     {
         private static readonly LocalDateTime SampleLocal = new LocalDateTime(2009, 12, 26, 10, 8, 30);
-        private static readonly ZonedDateTime Sample = DateTimeZone.Utc.At(SampleLocal);
+        private static readonly ZonedDateTime Sample = DateTimeZone.Utc.AtExactly(SampleLocal);
 
         [Benchmark]
         public void Construction()
         {
-            DateTimeZone.Utc.At(SampleLocal);
+            DateTimeZone.Utc.AtExactly(SampleLocal);
         }
 
         [Benchmark]

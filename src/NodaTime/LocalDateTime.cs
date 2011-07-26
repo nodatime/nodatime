@@ -261,20 +261,6 @@ namespace NodaTime
 
         public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth); } }
 
-        /// <summary>
-        /// Creates a new ZonedDateTime representing this local date/time in the given time zone.
-        /// A TransitionResolver is used to determine the behaviour when the local date/time
-        /// is ambiguous or does not occur in the given time zone.
-        /// </summary>
-        public ZonedDateTime InZone(DateTimeZone zone, TransitionResolver resolver)
-        {
-            if (zone == null)
-            {
-                throw new ArgumentNullException("zone");
-            }
-            return zone.At(this, resolver);
-        }
-
         #region Implementation of IEquatable<LocalDateTime>
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.

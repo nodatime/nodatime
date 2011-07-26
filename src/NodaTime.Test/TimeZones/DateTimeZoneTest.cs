@@ -33,17 +33,17 @@ namespace NodaTime.Test.TimeZones
 
         private static void AssertImpossible(LocalDateTime localTime, DateTimeZone zone)
         {
-            Assert.Throws<SkippedTimeException>(() => zone.At(localTime));
+            Assert.Throws<SkippedTimeException>(() => zone.AtExactly(localTime));
         }
 
         private static void AssertAmbiguous(LocalDateTime localTime, DateTimeZone zone)
         {
-            Assert.Throws<AmbiguousTimeException>(() => zone.At(localTime));
+            Assert.Throws<AmbiguousTimeException>(() => zone.AtExactly(localTime));
         }
 
         private static void AssertOffset(int expectedHours, LocalDateTime localTime, DateTimeZone zone)
         {
-            var zoned = zone.At(localTime);
+            var zoned = zone.AtExactly(localTime);
             int actualHours = zoned.Offset.Milliseconds / NodaConstants.MillisecondsPerHour;
             Assert.AreEqual(expectedHours, actualHours);
         }

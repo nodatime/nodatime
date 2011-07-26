@@ -136,7 +136,8 @@ namespace NodaTime.Test.Format
         /// </summary>
         private static ZonedDateTime CreateZonedDateTime(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone zone)
         {
-            return new LocalDateTime(year, month, day, hour, minute, second, millis).InZone(zone, TransitionResolver.Strict);
+            return zone.AtExactly(new LocalDateTime(year, month, day, hour, minute, second, millis));
+
         }
     }
 }
