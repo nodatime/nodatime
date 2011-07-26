@@ -134,7 +134,6 @@
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
-    <Compile Include="TimeZones\TransitionResolver.cs" />
     <Compile Include="TimeZones\TimeZoneCache.cs" />
     <Compile Include="TimeZones\Transition.cs" />
     <Compile Include="TimeZones\WindowsToPosixResource.cs" />

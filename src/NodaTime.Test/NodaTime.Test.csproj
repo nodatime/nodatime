@@ -187,7 +187,6 @@
     <Compile Include="TimeZones\MiscellaneousBugReports.cs" />
     <Compile Include="TimeZones\ParisTest.cs" />
     <Compile Include="TimeZones\ReadWriteStandardTest.cs" />
-    <Compile Include="TimeZones\TransitionResolverTest.cs" />
     <Compile Include="TimeZones\TzTestHelper.cs" />
     <Compile Include="TimeZones\ZoneIntervalPairTest.cs" />
     <Compile Include="TimeZones\ZoneIntervalTest.cs" />
