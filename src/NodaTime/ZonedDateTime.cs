@@ -247,5 +247,11 @@ namespace NodaTime
             return !(left == right);
         }
         #endregion
+
+        // TODO: Something better :)
+        public override string ToString()
+        {
+            return "Local: " + localInstant + " Offset: " + offset + " Zone: " + chronology.Zone;
+        }
     }
 }
