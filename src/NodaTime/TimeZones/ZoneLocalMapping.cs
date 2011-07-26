@@ -39,6 +39,9 @@ namespace NodaTime.TimeZones
     {
         // TODO: Include zone and LocalDateTime information for completeness?
 
+        // TODO: Just have the Transition for the gap instead of the two ZoneIntervals? Significantly
+        // less information that way.
+
         /// <summary>
         /// The type of result represented by this mapping. The underlying integer value is the same
         /// as the number of ZonedDateTime values which map to the original LocalDateTime.
