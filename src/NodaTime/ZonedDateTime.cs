@@ -58,23 +58,6 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct.
         /// </summary>
-        /// <param name="localDateTime">The local date time.</param>
-        /// <param name="zone">The zone.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="zone"/> is <c>null</c>.</exception>
-        public ZonedDateTime(LocalDateTime localDateTime, DateTimeZone zone)
-        {
-            if (zone == null)
-            {
-                throw new ArgumentNullException("zone");
-            }
-            localInstant = localDateTime.LocalInstant;
-            offset = zone.GetOffsetFromLocal(localInstant);
-            chronology = new Chronology(zone, localDateTime.Calendar);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct.
-        /// </summary>
         /// <param name="instant">The instant.</param>
         /// <param name="chronology">The chronology.</param>
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="chronology"/> is <c>null</c>.</exception>
@@ -95,16 +78,23 @@ namespace NodaTime
         /// </summary>
         /// <param name="instant">The instant of time to represent.</param>
         /// <param name="zone">The time zone to represent the instant within.</param>
-        public ZonedDateTime(Instant instant, DateTimeZone zone)
+        public ZonedDateTime(Instant instant, DateTimeZone zone) : this(instant, ValidateZone(zone).ToIsoChronology())
+        {
+        }
+
+        /// <summary>
+        /// Used by the constructor above to allow us to perform argument validation
+        /// but still chain to another constructor.
+        /// </summary>
+        private static DateTimeZone ValidateZone(DateTimeZone zone)
         {
             if (zone == null)
             {
                 throw new ArgumentNullException("zone");
             }
-            chronology = zone.ToIsoChronology();
-            offset = chronology.Zone.GetOffsetFromUtc(instant);
-            localInstant = instant.Plus(offset);
+            return zone;
         }
+
 
         /// <summary>
         /// Gets the chronology.
@@ -257,34 +247,5 @@ namespace NodaTime
             return !(left == right);
         }
         #endregion
-
-        /// <summary>
-        /// Creates a ZonedDateTime from a local instant. All parameters are assumed to have been
-        /// verified as non-null earlier.
-        /// </summary>
-        internal static ZonedDateTime FromLocalInstant(LocalInstant localInstant,
-            Chronology chronology, TransitionResolver resolver)
-        {
-            var zone = chronology.Zone;
-            var intervalPair = zone.GetZoneIntervals(localInstant);
-
-            Instant instant; // Used for gap/ambiguity
-            switch (intervalPair.MatchingIntervals)
-            {
-                case 0:
-                    instant = resolver.ResolveGap(localInstant, zone);
-                    break;
-                case 1:
-                    return new ZonedDateTime(localInstant, intervalPair.EarlyInterval.Offset, chronology);
-                case 2:
-                    instant = resolver.ResolveAmbiguity(intervalPair, localInstant, zone);
-                    break;
-                default:
-                    throw new InvalidOperationException("Can't happen");
-            }
-            // TODO: Fix TransitionResolver to return an OffsetInstant (new type) to avoid repetition.
-            Offset offset = zone.GetZoneInterval(instant).Offset;
-            return new ZonedDateTime(instant.Plus(offset), offset, chronology);
-        }
     }
 }
