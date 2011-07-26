@@ -46,8 +46,6 @@ namespace NodaTime.Test.TimeZones
         {
             Assert.AreEqual("UTC-8", TestZone.Id);
             Assert.AreEqual("UTC-8", TestZone.GetName(Instant.UnixEpoch));
-            // TODO: Use a real LocalDateTime when we've implemented it!
-            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch));
             Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromUtc(Instant.UnixEpoch));
             Assert.AreEqual(ZoneOffset, TestZone.MinOffset);
             Assert.AreEqual(ZoneOffset, TestZone.MaxOffset);
