@@ -257,9 +257,6 @@ namespace NodaTime
             }
             // TODO: Fix TransitionResolver to return an OffsetInstant (new type) to avoid repetition.
             Offset offset = GetZoneInterval(instant).Offset;
-
-            
-            
             return new ZonedDateTime(instant.Plus(offset), offset, chronology);
         }
 
@@ -282,7 +279,7 @@ namespace NodaTime
         internal virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
             var intervalPair = GetZoneIntervals(localInstant);
-            // FIXME: Use TransitionResolver
+            // FIXME: Use TransitionResolver, or remove entirely...
             switch (intervalPair.MatchingIntervals)
             {
                 case 0:
