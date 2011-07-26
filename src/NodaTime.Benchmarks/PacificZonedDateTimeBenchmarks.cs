@@ -25,12 +25,12 @@ namespace NodaTime.Benchmarks
     {
         private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
         private static readonly LocalDateTime SampleLocal = new LocalDateTime(2009, 12, 26, 10, 8, 30);
-        private static readonly ZonedDateTime SampleZoned = Pacific.At(SampleLocal);
+        private static readonly ZonedDateTime SampleZoned = Pacific.AtExactly(SampleLocal);
 
         [Benchmark]
         public void Construction()
         {
-            Pacific.At(SampleLocal);
+            Pacific.AtExactly(SampleLocal);
         }
 
         [Benchmark]

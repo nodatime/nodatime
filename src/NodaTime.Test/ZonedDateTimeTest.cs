@@ -34,7 +34,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneAt_SpecifyingDateAndTimeToMinutesInWinter()
         {
-            var when = Pacific.At(new LocalDateTime(2009, 12, 22, 21, 39, 30));
+            var when = Pacific.AtExactly(new LocalDateTime(2009, 12, 22, 21, 39, 30));
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
             Assert.AreEqual(instant, localInstant.Minus(Offset.ForHours(-8)));
@@ -51,7 +51,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneAt_SpecifyingDateAndTimeToMinutesInSummer()
         {
-            var when = Pacific.At(new LocalDateTime(2009, 6, 22, 21, 39, 30));
+            var when = Pacific.AtExactly(new LocalDateTime(2009, 6, 22, 21, 39, 30));
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
             Assert.AreEqual(instant, localInstant.Minus(Offset.ForHours(-7)));
@@ -73,7 +73,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneAt_WithAmbiguousTime_UsesLaterInstant()
         {
-            var when = Pacific.At(new LocalDateTime(2009, 11, 2, 1, 30, 0));
+            var when = Pacific.AtExactly(new LocalDateTime(2009, 11, 2, 1, 30, 0));
             Instant instant = when.ToInstant();
             LocalInstant localInstant = when.LocalInstant;
             Assert.AreEqual(localInstant.Minus(Offset.ForHours(-8)), instant);
@@ -101,7 +101,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneAt_WithImpossibleTime_ThrowsException()
         {
-            Assert.Throws<SkippedTimeException>(() => Pacific.At(new LocalDateTime(2009, 3, 8, 2, 30, 0)));
+            Assert.Throws<SkippedTimeException>(() => Pacific.AtExactly(new LocalDateTime(2009, 3, 8, 2, 30, 0)));
         }
     }
 }

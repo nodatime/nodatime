@@ -98,11 +98,5 @@ namespace NodaTime.Benchmarks
         {
             sample.MillisecondOfSecond.Consume();
         }
-
-        [Benchmark]
-        public void InZone_Unambiguous()
-        {
-            sample.InZone(Pacific, TransitionResolver.Strict);
-        }
     }
 }
