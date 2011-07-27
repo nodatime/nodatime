@@ -89,7 +89,6 @@
     <Compile Include="Format\FormatterBase.cs" />
     <Compile Include="Format\InstantFormat.cs" />
     <Compile Include="Format\InstantParse.cs" />
-    <Compile Include="Format\JDateTimeFormatter.cs" />
     <Compile Include="Format\OffsetFormat.cs" />
     <Compile Include="Format\OffsetParseInfo.cs" />
     <Compile Include="Format\Parsable.cs" />
