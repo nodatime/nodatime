@@ -233,7 +233,12 @@ namespace NodaTime.Test.Format
             ValidateCharacter(parsable, parsable.Length, Parsable.Nul);
         }
 
-        internal static void ValidateParsable(Parsable parsable, string value, int length = -1)
+        internal static void ValidateParsable(Parsable parsable, string value)
+        {
+            ValidateParsable(parsable, value, -1);
+        }
+
+        internal static void ValidateParsable(Parsable parsable, string value, int length)
         {
             if (length < 0)
             {
