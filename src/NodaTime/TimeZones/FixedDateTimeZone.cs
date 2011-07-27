@@ -31,7 +31,8 @@ namespace NodaTime.TimeZones
     internal sealed class FixedDateTimeZone : DateTimeZone, IEquatable<FixedDateTimeZone>
     {
         private readonly Offset offset;
-        private readonly ZoneInterval period;
+        private readonly ZoneInterval interval;
+        private readonly ZoneIntervalPair intervalPair;
 
         /// <summary>
         /// Creates a new fixed time zone.
@@ -46,46 +47,41 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="offset">The offset.</param>
-        public FixedDateTimeZone(string id, Offset offset) : base(id, true)
+        public FixedDateTimeZone(string id, Offset offset) : base(id, true, offset, offset)
         {
             this.offset = offset;
-            period = new ZoneInterval(id, Instant.MinValue, Instant.MaxValue, offset, Offset.Zero);
+            interval = new ZoneInterval(id, Instant.MinValue, Instant.MaxValue, offset, Offset.Zero);
+            intervalPair = ZoneIntervalPair.Unambiguous(interval);
         }
 
         /// <summary>
         /// Makes the id for this time zone. The format is "UTC+/-Offset".
         /// </summary>
-        /// <param name="theOffset">The offset.</param>
+        /// <param name="offset">The offset.</param>
         /// <returns>The generated id string.</returns>
-        private static string MakeId(Offset theOffset)
+        private static string MakeId(Offset offset)
         {
-            if (theOffset == Offset.Zero)
+            if (offset == Offset.Zero)
             {
                 return DateTimeZone.UtcId;
             }
-            return string.Format(CultureInfo.InvariantCulture, @"{0}{1}", DateTimeZone.UtcId, theOffset.ToString("G"));
+            return string.Format(CultureInfo.InvariantCulture, "{0}{1}", DateTimeZone.UtcId, offset.ToString("G"));
         }
 
         /// <summary>
-        /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
-        /// for the given instant.
+        /// Gets the zone interval for the given instant. This implementation always returns the same interval.
         /// </summary>
-        /// <param name="instant">The Instant to test.</param>
-        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
-            return period;
+            return interval;
         }
 
         /// <summary>
-        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
-        /// for the given local instant.
+        /// Gets the zone interval pair for the given instant. This implementation always returns the same unambiguous interval pair.
         /// </summary>
-        /// <param name="localInstant">The LocalInstant to test.</param>
-        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
+        internal override ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
         {
-            return period;
+            return intervalPair;
         }
 
         /// <summary>
@@ -97,17 +93,6 @@ namespace NodaTime.TimeZones
         /// The offset from UTC at the specified instant.
         /// </returns>
         public override Offset GetOffsetFromUtc(Instant instant)
-        {
-            return offset;
-        }
-
-        /// <summary>
-        /// Returns the offset from local time to UTC, where a positive duration indicates that UTC is earlier
-        /// than local time. In other words, UTC = local time - (offset from local).
-        /// </summary>
-        /// <param name="localInstant">The instant for which to calculate the offset.</param>
-        /// <returns>The offset at the specified local time.</returns>
-        internal override Offset GetOffsetFromLocal(LocalInstant localInstant)
         {
             return offset;
         }

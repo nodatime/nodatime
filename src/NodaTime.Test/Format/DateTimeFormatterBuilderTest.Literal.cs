@@ -43,7 +43,7 @@ namespace NodaTime.Test.Format
             var literal = new DateTimeFormatterBuilder.CharacterLiteral(value);
             var writer = new StringWriter();
 
-            literal.PrintTo(writer, LocalInstant.Now, null, Offset.Zero, null, null);
+            literal.PrintTo(writer, new LocalInstant(0), null, Offset.Zero, null, null);
 
             Assert.That(writer.ToString(), Is.EqualTo(value.ToString()));
         }
@@ -114,7 +114,7 @@ namespace NodaTime.Test.Format
             var literal = new DateTimeFormatterBuilder.StringLiteral(value);
             var writer = new StringWriter();
 
-            literal.PrintTo(writer, LocalInstant.Now, null, Offset.Zero, null, null);
+            literal.PrintTo(writer, new LocalInstant(0), null, Offset.Zero, null, null);
 
             Assert.That(writer.ToString(), Is.EqualTo(value));
         }

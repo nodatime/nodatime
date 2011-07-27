@@ -107,8 +107,8 @@ namespace ZoneInfoCompilerW
             {
                 // Configure open file dialog box
                 var openFileDialog = new OpenFileDialog();
-                openFileDialog.DefaultExt = @".xml"; // Default file extension
-                openFileDialog.Filter = @"XML Documents (.xml)|*.xml"; // Filter files by extension
+                openFileDialog.DefaultExt = ".xml"; // Default file extension
+                openFileDialog.Filter = "XML Documents (.xml)|*.xml"; // Filter files by extension
 
                 // Process open file dialog box results
                 if (openFileDialog.ShowDialog() == true)

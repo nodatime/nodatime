@@ -284,6 +284,7 @@ namespace NodaTime.Format
                             /*
                             if ((parseInfo.fAllowTrailingWhite && pattern.HasMoreCharacters) && ParseByFormat(str, pattern, formatInfo, false, parseResult))
                             {
+
                                 return true;
                             }
                             */

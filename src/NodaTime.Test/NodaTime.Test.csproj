@@ -100,6 +100,7 @@
       <DependentUpon>InstantTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DateTimeZoneTest.cs" />
+    <Compile Include="Testing\StubClockTest.cs" />
     <Compile Include="Format\DateTimeFormats.cs" />
     <Compile Include="Format\DateTimeFormatterBuilderTest.cs" />
     <Compile Include="Format\DateTimeFormatterBuilder.Test.Decimal.cs">
@@ -112,7 +113,7 @@
     <Compile Include="Format\DateTimeFormatterTest.Construction.cs">
       <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Format\DateTimeFormatterTest.CreationMehods.cs">
+    <Compile Include="Format\DateTimeFormatterTest.CreationMethods.cs">
       <DependentUpon>DateTimeFormatterTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Format\DateTimeFormatterTest.Mocks.cs">
@@ -133,13 +134,15 @@
     <Compile Include="PeriodTypeTest.IsSupported.cs" />
     <Compile Include="PeriodTypeTest.Masking.cs" />
     <Compile Include="PeriodTypeTest.Types.cs" />
+    <Compile Include="SystemClockTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
+    <Compile Include="TimeZones\DaylightSavingTimeZoneTest.cs" />
+    <Compile Include="TimeZones\JordanTest.cs" />
     <Compile Include="TimeZones\ReadWriteCompressTest.cs" />
     <Compile Include="TimeZones\IoStream.cs" />
-    <Compile Include="TimeZones\NullDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZoneTest.cs" />
-    <Compile Include="TimeZones\DateTimeZoneBaseTest.cs" />
+    <Compile Include="TimeZones\DateTimeZoneTest.cs" />
     <Compile Include="DurationTest.cs" />
     <Compile Include="DurationTest.Operators.cs">
       <DependentUpon>DurationTest.cs</DependentUpon>
@@ -209,16 +212,27 @@
     <Compile Include="TimeZones\ParisTest.cs" />
     <Compile Include="TimeZones\ReadWriteStandardTest.cs" />
     <Compile Include="TimeZones\TzTestHelper.cs" />
+    <Compile Include="TimeZones\ZoneIntervalPairTest.cs" />
+    <Compile Include="TimeZones\ZoneIntervalTest.cs" />
     <Compile Include="TimeZones\ZoneRecurrenceTest.cs" />
     <Compile Include="TimeZones\DtzIoHelper.cs" />
     <Compile Include="TimeZones\ZoneTransitionTest.cs" />
     <Compile Include="TimeZones\ReadWriteTest.cs" />
-    <Compile Include="TimeZones\TzdbTest.cs" />
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
     <Compile Include="ZonedDateTimeTest.cs" />
     <None Include="Tests.nunit" />
+    <Compile Include="TimeZones\DateTimeZoneTest.GetZoneIntervals.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimeZones\DateTimeZoneTest.LocalConversions.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NodaTime.Testing\NodaTime.Testing.csproj">
+      <Project>{BC9407FE-A661-4DFE-8B24-D2E2F450743F}</Project>
+      <Name>NodaTime.Testing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
       <Project>{42B687A6-0F76-4638-A372-161C922A998B}</Project>
       <Name>NodaTime</Name>

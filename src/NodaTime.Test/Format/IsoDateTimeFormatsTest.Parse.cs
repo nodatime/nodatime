@@ -23,12 +23,12 @@ namespace NodaTime.Test.Format
     public partial class IsoDateTimeFormatsTest
     {
         private object[] DateElementParserTestData = {
-            new TestCaseData("2006-06-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
-            new TestCaseData("2006-06-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
-            new TestCaseData("2006-6-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
-            new TestCaseData("2006-6-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)), //Bug with weeks calculation
-            //new TestCaseData("2006-W27-3", new ZonedDateTime(2006, 7, 5, 0, 0, 0, 0, UTC) ),
-            new TestCaseData("2006-123", new ZonedDateTime(2006, 5, 3, 0, 0, 0, 0, UTC)),
+            new TestCaseData("2006-06-09", CreateZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+            new TestCaseData("2006-06-9", CreateZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+            new TestCaseData("2006-6-09", CreateZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+            new TestCaseData("2006-6-9", CreateZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)), //Bug with weeks calculation
+            //new TestCaseData("2006-W27-3", CreateZonedDateTime(2006, 7, 5, 0, 0, 0, 0, UTC) ),
+            new TestCaseData("2006-123", CreateZonedDateTime(2006, 5, 3, 0, 0, 0, 0, UTC)),
         };
 
         [Test]
@@ -40,12 +40,12 @@ namespace NodaTime.Test.Format
         }
 
         private object[] DateParserTestData = {
-            new TestCaseData("2006-06-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
-            new TestCaseData("2006-06-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
-            new TestCaseData("2006-6-09", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
-            new TestCaseData("2006-6-9", new ZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)), //Bug with weeks calculation
-            //new TestCaseData("2006-W27-3", new ZonedDateTime(2006, 7, 5, 0, 0, 0, 0, UTC) ),
-            new TestCaseData("2006-123", new ZonedDateTime(2006, 5, 3, 0, 0, 0, 0, UTC)),
+            new TestCaseData("2006-06-09", CreateZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+            new TestCaseData("2006-06-9", CreateZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+            new TestCaseData("2006-6-09", CreateZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)),
+            new TestCaseData("2006-6-9", CreateZonedDateTime(2006, 6, 9, 0, 0, 0, 0, UTC)), //Bug with weeks calculation
+            //new TestCaseData("2006-W27-3", CreateZonedDateTime(2006, 7, 5, 0, 0, 0, 0, UTC) ),
+            new TestCaseData("2006-123", CreateZonedDateTime(2006, 5, 3, 0, 0, 0, 0, UTC)),
         };
 
         [Test]

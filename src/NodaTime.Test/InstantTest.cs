@@ -77,15 +77,41 @@ namespace NodaTime.Test
         [Test]
         public void FromUtcNoSeconds()
         {
-            Instant viaUtc = new ZonedDateTime(2008, 4, 3, 10, 35, 0, DateTimeZone.Utc).ToInstant();
+            Instant viaUtc = DateTimeZone.Utc.AtExactly(new LocalDateTime(2008, 4, 3, 10, 35, 0)).ToInstant();
             Assert.AreEqual(viaUtc, Instant.FromUtc(2008, 4, 3, 10, 35));
         }
 
         [Test]
         public void FromUtcWithSeconds()
         {
-            Instant viaUtc = new ZonedDateTime(2008, 4, 3, 10, 35, 23, DateTimeZone.Utc).ToInstant();
+            Instant viaUtc = DateTimeZone.Utc.AtExactly(new LocalDateTime(2008, 4, 3, 10, 35, 23)).ToInstant();
             Assert.AreEqual(viaUtc, Instant.FromUtc(2008, 4, 3, 10, 35, 23));
+        }
+
+        [Test]
+        public void Max()
+        {
+            Instant x = new Instant(100);
+            Instant y = new Instant(200);
+            Assert.AreEqual(y, Instant.Max(x, y));
+            Assert.AreEqual(y, Instant.Max(y, x));
+            Assert.AreEqual(x, Instant.Max(x, Instant.MinValue));
+            Assert.AreEqual(x, Instant.Max(Instant.MinValue, x));
+            Assert.AreEqual(Instant.MaxValue, Instant.Max(Instant.MaxValue, x));
+            Assert.AreEqual(Instant.MaxValue, Instant.Max(x, Instant.MaxValue));
+        }
+
+        [Test]
+        public void Min()
+        {
+            Instant x = new Instant(100);
+            Instant y = new Instant(200);
+            Assert.AreEqual(x, Instant.Min(x, y));
+            Assert.AreEqual(x, Instant.Min(y, x));
+            Assert.AreEqual(Instant.MinValue, Instant.Min(x, Instant.MinValue));
+            Assert.AreEqual(Instant.MinValue, Instant.Min(Instant.MinValue, x));
+            Assert.AreEqual(x, Instant.Min(Instant.MaxValue, x));
+            Assert.AreEqual(x, Instant.Min(x, Instant.MaxValue));
         }
     }
 }

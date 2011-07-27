@@ -44,9 +44,9 @@ namespace NodaTime
     /// </remarks>
     public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable
     {
-        public static readonly Offset Zero = new Offset(0);
-        public static readonly Offset MinValue = new Offset(-NodaConstants.MillisecondsPerDay + 1);
-        public static readonly Offset MaxValue = new Offset(NodaConstants.MillisecondsPerDay - 1);
+        public static readonly Offset Zero = Offset.FromMilliseconds(0);
+        public static readonly Offset MinValue = Offset.FromMilliseconds(-NodaConstants.MillisecondsPerDay + 1);
+        public static readonly Offset MaxValue = Offset.FromMilliseconds(NodaConstants.MillisecondsPerDay - 1);
 
         private readonly int milliseconds;
 
@@ -56,11 +56,13 @@ namespace NodaTime
         /// <remarks>
         ///   Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value
         ///   given is outside this range then the value is forced into the range by considering that
-        ///   time wraps as it goes around the world multiple times
+        ///   time wraps as it goes around the world multiple times.
         /// </remarks>
         /// <param name = "milliseconds">The number of milliseconds.</param>
-        public Offset(int milliseconds)
+        private Offset(int milliseconds)
         {
+            // TODO: Should we perhaps just throw an ArgumentOutOfRangeException instead if it's out of bounds?
+            // When do we expect this to happen?
             this.milliseconds = milliseconds % NodaConstants.MillisecondsPerDay;
         }
 
@@ -111,7 +113,7 @@ namespace NodaTime
         /// <returns>A new <see cref = "Offset" /> instance with a negated value.</returns>
         public static Offset operator -(Offset offset)
         {
-            return new Offset(-offset.Milliseconds);
+            return Offset.FromMilliseconds(-offset.Milliseconds);
         }
 
         /// <summary>
@@ -132,7 +134,7 @@ namespace NodaTime
         /// <returns>A new <see cref = "Offset" /> representing the sum of the given values.</returns>
         public static Offset operator +(Offset left, Offset right)
         {
-            return new Offset(left.Milliseconds + right.Milliseconds);
+            return Offset.FromMilliseconds(left.Milliseconds + right.Milliseconds);
         }
 
         /// <summary>
@@ -154,7 +156,7 @@ namespace NodaTime
         /// <returns>A new <see cref = "Offset" /> representing the difference of the given values.</returns>
         public static Offset operator -(Offset left, Offset right)
         {
-            return new Offset(left.Milliseconds - right.Milliseconds);
+            return Offset.FromMilliseconds(left.Milliseconds - right.Milliseconds);
         }
 
         /// <summary>
@@ -435,24 +437,11 @@ namespace NodaTime
         /// <summary>
         ///   Returns the offset for the given milliseconds value.
         /// </summary>
-        /// <remarks>
-        ///   As offsets are immutable, this method may return the same object for the
-        ///   same input values i.e. there is no guarantee that this method will create a new
-        ///   object on each call. The values may be cached.
-        /// </remarks>
         /// <param name = "milliseconds">The int milliseconds value.</param>
         /// <returns>The <see cref = "Offset" /> for the given milliseconds value</returns>
         public static Offset FromMilliseconds(int milliseconds)
         {
-            if (milliseconds == Zero.Milliseconds)
-            {
-                return Zero;
-            }
-            if (milliseconds == MinValue.Milliseconds)
-            {
-                return MinValue;
-            }
-            return milliseconds == MaxValue.Milliseconds ? MaxValue : new Offset(milliseconds);
+             return new Offset(milliseconds);
         }
 
         /// <summary>
@@ -527,8 +516,26 @@ namespace NodaTime
         public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
         {
             return
-                new Offset((hours * NodaConstants.MillisecondsPerHour) + (minutes * NodaConstants.MillisecondsPerMinute) +
+                Offset.FromMilliseconds((hours * NodaConstants.MillisecondsPerHour) + (minutes * NodaConstants.MillisecondsPerMinute) +
                            (seconds * NodaConstants.MillisecondsPerSecond) + milliseconds);
+        }
+
+        /// <summary>
+        /// Returns the greater offset of the given two, i.e. the one which will give a later local
+        /// time when added to an instant.
+        /// </summary>
+        public static Offset Max(Offset x, Offset y)
+        {
+            return x > y ? x : y;
+        }
+
+        /// <summary>
+        /// Returns the lower offset of the given two, i.e. the one which will give an earlier local
+        /// time when added to an instant.
+        /// </summary>
+        public static Offset Min(Offset x, Offset y)
+        {
+            return x < y ? x : y;
         }
         #endregion Conversion
     }

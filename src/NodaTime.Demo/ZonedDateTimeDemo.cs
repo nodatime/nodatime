@@ -29,7 +29,7 @@ namespace NodaTime.Demo
         [Test]
         public void Construction()
         {
-            ZonedDateTime dt = new ZonedDateTime(2010, 6, 9, 15, 15, 0, Dublin);
+            ZonedDateTime dt = Dublin.AtExactly(new LocalDateTime(2010, 6, 9, 15, 15, 0));
 
             Assert.AreEqual(15, dt.HourOfDay);
             Assert.AreEqual(2010, dt.Year);
@@ -43,16 +43,13 @@ namespace NodaTime.Demo
         [Test]
         public void Ambiguity()
         {
-            ZonedDateTime late = new ZonedDateTime(2010, 10, 31, 1, 15, 0, Dublin);
-            Assert.AreEqual("20101031T011500.000Z", IsoDateTimeFormats.BasicDateTime.Print(late));
-            ZonedDateTime early = new ZonedDateTime(late.ToInstant() - Duration.OneHour, new Chronology(Dublin, CalendarSystem.Iso));
-            Assert.AreEqual("20101031T011500.000+0100", IsoDateTimeFormats.BasicDateTime.Print(early));
+            Assert.Throws<AmbiguousTimeException>(() => Dublin.AtExactly(new LocalDateTime(2010, 10, 31, 1, 15, 0)));
         }
 
         [Test]
         public void Impossibility()
         {
-            Assert.Throws<SkippedTimeException>(() => new ZonedDateTime(2010, 3, 28, 1, 15, 0, Dublin));
+            Assert.Throws<SkippedTimeException>(() => Dublin.AtExactly(new LocalDateTime(2010, 3, 28, 1, 15, 0)));
         }
     }
 }

@@ -331,7 +331,20 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     mode = ZoneYearOffset.NormalizeModeCharacter(zoneCharacter);
                     atTime = atTime.Substring(0, atTime.Length - 1);
                 }
-                tickOfDay = ParserHelper.ParseOffset(atTime);
+                if (atTime == "24:00")
+                {
+                    LocalDate date = (dayOfMonth == -1 ?
+                            new LocalDate(2001, monthOfYear, 1) + Period.FromMonths(1) :
+                            new LocalDate(2001, monthOfYear, dayOfMonth) + Period.FromDays(1));
+                    advanceDayOfWeek = (dayOfMonth != -1);
+                    monthOfYear = date.MonthOfYear;
+                    dayOfMonth = date.DayOfMonth;
+                    dayOfWeek = ((dayOfWeek - 1 + 1) % 7) + 1;
+                }
+                else
+                {
+                    tickOfDay = ParserHelper.ParseOffset(atTime);
+                }
             }
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
         }

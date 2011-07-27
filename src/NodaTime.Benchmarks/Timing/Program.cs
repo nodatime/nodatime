@@ -47,10 +47,10 @@ namespace NodaTime.Benchmarks.Timing
                 var ctor = type.GetConstructor(Type.EmptyTypes);
                 if (ctor == null)
                 {
-                    Console.WriteLine(@"Ignoring {0}: no public parameterless constructor", type.Name);
+                    Console.WriteLine("Ignoring {0}: no public parameterless constructor", type.Name);
                     continue;
                 }
-                Console.WriteLine(@"Running benchmarks in {0}", GetTypeDisplayName(type));
+                Console.WriteLine("Running benchmarks in {0}", GetTypeDisplayName(type));
                 object instance = ctor.Invoke(null);
                 foreach (var method in type.GetMethods(AllInstance).Where(IsBenchmark))
                 {
@@ -61,11 +61,11 @@ namespace NodaTime.Benchmarks.Timing
 
                     if (method.GetParameters().Length != 0)
                     {
-                        Console.WriteLine(@"Ignoring {0}: method has parameters", method.Name);
+                        Console.WriteLine("Ignoring {0}: method has parameters", method.Name);
                         continue;
                     }
                     BenchmarkResult result = RunBenchmark(method, instance, options);
-                    Console.WriteLine(@"  " + result.ToString(options));
+                    Console.WriteLine("  " + result.ToString(options));
                     results.Add(result);
                 }
             }

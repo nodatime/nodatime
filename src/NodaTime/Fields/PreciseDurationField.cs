@@ -26,9 +26,9 @@ namespace NodaTime.Fields
         internal static readonly PreciseDurationField Seconds = new PreciseDurationField(DurationFieldType.Seconds, NodaConstants.TicksPerSecond);
         internal static readonly PreciseDurationField Minutes = new PreciseDurationField(DurationFieldType.Minutes, NodaConstants.TicksPerMinute);
         internal static readonly PreciseDurationField Hours = new PreciseDurationField(DurationFieldType.Hours, NodaConstants.TicksPerHour);
-        internal static readonly PreciseDurationField HalfDays = new PreciseDurationField(DurationFieldType.HalfDays, NodaConstants.TicksPerDay / 2);
-        internal static readonly PreciseDurationField Days = new PreciseDurationField(DurationFieldType.Days, NodaConstants.TicksPerDay);
-        internal static readonly PreciseDurationField Weeks = new PreciseDurationField(DurationFieldType.Weeks, NodaConstants.TicksPerWeek);
+        internal static readonly PreciseDurationField HalfDays = new PreciseDurationField(DurationFieldType.HalfDays, NodaConstants.TicksPerStandardDay / 2);
+        internal static readonly PreciseDurationField Days = new PreciseDurationField(DurationFieldType.Days, NodaConstants.TicksPerStandardDay);
+        internal static readonly PreciseDurationField Weeks = new PreciseDurationField(DurationFieldType.Weeks, NodaConstants.TicksPerStandardWeek);
 
         /// <summary>
         /// The size of the unit, in ticks.

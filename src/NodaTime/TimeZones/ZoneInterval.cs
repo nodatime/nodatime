@@ -58,29 +58,24 @@ namespace NodaTime.TimeZones
             }
             if (start >= end)
             {
-                throw new ArgumentException(@"The start Instant must be less than the end Instant", "start");
+                throw new ArgumentException("The start Instant must be less than the end Instant", "start");
             }
             this.name = name;
             this.start = start;
             this.end = end;
             this.offset = offset;
             this.savings = savings;
-            try
-            {
-                localStart = this.start.Plus(this.offset);
-            }
-            catch (OverflowException)
-            {
-                localStart = LocalInstant.MinValue;
-            }
-            try
-            {
-                localEnd = this.end.Plus(this.offset - this.savings);
-            }
-            catch (OverflowException)
-            {
-                localEnd = LocalInstant.MaxValue;
-            }
+            localStart = start == Instant.MinValue ? LocalInstant.MinValue : this.start.Plus(this.offset);
+            localEnd = end == Instant.MaxValue ? LocalInstant.MaxValue : this.end.Plus(this.offset);
+        }
+
+        
+        /// <summary>
+        /// Returns a copy of this zone interval, but with the given start instant.
+        /// </summary>
+        internal ZoneInterval WithStart(Instant newStart)
+        {
+            return new ZoneInterval(name, newStart, end, offset, savings);
         }
 
         #region Properties
@@ -143,6 +138,24 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
+        /// Returns the local start time of the interval, as LocalDateTime
+        /// in the ISO calendar.
+        /// </summary>
+        public LocalDateTime IsoLocalStart
+        {
+            [DebuggerStepThrough] get { return new LocalDateTime(localStart); }
+        }
+
+        /// <summary>
+        /// Returns the local start time of the interval, as LocalDateTime
+        /// in the ISO calendar. This does not include any daylight saving 
+        /// </summary>
+        public LocalDateTime IsoLocalEnd
+        {
+            [DebuggerStepThrough]
+            get { return new LocalDateTime(localEnd); }
+        }
+        /// <summary>
         ///   Gets the name of this offset period (e.g. PST or PDT).
         /// </summary>
         /// <value>The name of this offset period (e.g. PST or PDT).</value>
@@ -183,6 +196,10 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Determines whether this period contains the given Instant in its range.
         /// </summary>
+        /// <remarks>
+        /// Usually this is half-open, i.e. the end is exclusive, but an interval with an end point of "the end of time" 
+        /// is deemed to be inclusive at the end.
+        /// </remarks>
         /// <param name = "instant">The instant to test.</param>
         /// <returns>
         ///   <c>true</c> if this period contains the given Instant in its range; otherwise, <c>false</c>.
@@ -190,7 +207,7 @@ namespace NodaTime.TimeZones
         [DebuggerStepThrough]
         public bool Contains(Instant instant)
         {
-            return Start <= instant && instant < End;
+            return Start <= instant && (instant < End || End == Instant.MaxValue);
         }
 
         /// <summary>
@@ -203,7 +220,7 @@ namespace NodaTime.TimeZones
         [DebuggerStepThrough]
         internal bool Contains(LocalInstant localInstant)
         {
-            return LocalStart <= localInstant && localInstant < LocalEnd;
+            return LocalStart <= localInstant && (localInstant < LocalEnd || End == Instant.MaxValue);
         }
         #endregion // Contains
 
@@ -275,45 +292,19 @@ namespace NodaTime.TimeZones
         {
             var buffer = new StringBuilder();
             buffer.Append(Name);
-            buffer.Append(@":[");
+            buffer.Append(":[");
             buffer.Append(Start);
-            buffer.Append(@", ");
+            buffer.Append(", ");
             buffer.Append(End);
-            buffer.Append(@") ");
+            buffer.Append(") ");
             buffer.Append(Offset);
-            buffer.Append(@" (");
+            buffer.Append(" (");
             buffer.Append(Savings);
-            buffer.Append(@")");
+            buffer.Append(")");
             return buffer.ToString();
         }
         #endregion // object Overrides
-
-        #region operators
-        /// <summary>
-        ///   Implements the operator ==.
-        /// </summary>
-        /// <param name = "left">The left.</param>
-        /// <param name = "right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        [DebuggerStepThrough]
-        public static bool operator ==(ZoneInterval left, ZoneInterval right)
-        {
-            return Equals(left, right);
-        }
-
-        /// <summary>
-        ///   Implements the operator !=.
-        /// </summary>
-        /// <param name = "left">The left.</param>
-        /// <param name = "right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        [DebuggerStepThrough]
-        public static bool operator !=(ZoneInterval left, ZoneInterval right)
-        {
-            return !Equals(left, right);
-        }
-        #endregion // operators
-
+        
         #region I/O
         /// <summary>
         ///   Reads the specified reader.

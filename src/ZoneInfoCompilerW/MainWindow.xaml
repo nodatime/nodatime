@@ -32,11 +32,11 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Margin="0,0,0,20" FontSize="14" TextWrapping="Wrap">
-                        This page is used to generate the data for mapping Microsoft Windows time zone names to ISO time zone names.
-                        This uses the supplemental data file (supplementalData.xml) provided by the
-                        <Hyperlink NavigateUri="http://cldr.unicode.org/index" ToolTip="http://cldr.unicode.org/index">CLDR - Unicode Common Locale Data Repository</Hyperlink>.
-                        The latest version can be found at 
-                        <Hyperlink NavigateUri="http://cldr.unicode.org/index/downloads" ToolTip="http://cldr.unicode.org/index/downloads">CLDR Downloads</Hyperlink>.
+                        This page is used to generate the time zone resource file from the zoneinfo database. The latest database files can be 
+                        downloaded from 
+                        <Hyperlink NavigateUri="ftp://elsie.nci.nih.gov/pub" ToolTip="ftp://elsie.nci.nih.gov/pub">ftp://elsie.nci.nih.gov/pub</Hyperlink>.
+                        Note that the "*.tab" files, "factory", "leapsecond", "solar87", "solar88", and "solar89" files should be deleted prior
+                        to conversion.
                     </TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="1" Text="Source Directory:" HorizontalAlignment="Right" Margin="0,0,5,0" FontSize="14" />
                     <local:FileSelector x:Name="TzdbSourceDirectory" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Height="25" FileSelectorName="{Binding Path=SourceDirectoryName, Mode=TwoWay}" SelectDirectory="True"/>
@@ -66,7 +66,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Margin="0,0,0,20" FontSize="14" TextWrapping="Wrap">
                         This page is used to generate the data for mapping Microsoft Windows time zone names to ISO time zone names.
-                        This uses the supplemental data file (supplementalData.xml) provided by the
+                        This uses the supplemental data file (previously supplementalData.xml, now windowsZones.xml) provided by the
                         <Hyperlink NavigateUri="http://cldr.unicode.org/index" ToolTip="http://cldr.unicode.org/index">CLDR - Unicode Common Locale Data Repository</Hyperlink>.
                         The latest version can be found at 
                         <Hyperlink NavigateUri="http://cldr.unicode.org/index/downloads" ToolTip="http://cldr.unicode.org/index/downloads">CLDR Downloads</Hyperlink>.
