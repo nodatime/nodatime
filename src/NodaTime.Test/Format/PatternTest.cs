@@ -22,112 +22,86 @@ using NUnit.Framework;
 namespace NodaTime.Test.Format
 {
     [TestFixture]
-    public class PatternTest
+    public class PatternTest : ParsableTest
     {
-        [Test]
-        public void TestConstructor()
+        internal override Parsable MakeParsable(string value)
         {
-            Assert.DoesNotThrow(() => new Pattern("this is a test"));
+            return new Pattern(value);
         }
 
-        [Test]
-        public void TestConstructor_empty()
-        {
-            Assert.Throws<ArgumentException>(() => new Pattern(""));
-        }
-
-        [Test]
-        public void TestConstructor_null()
-        {
-            Assert.Throws<ArgumentNullException>(() => new Pattern(null));
-        }
-
-        [Test]
-        public void TestGetNextCharacter()
-        {
-            var pattern = new Pattern("a");
-            char actual = pattern.GetNextCharacter();
-            Assert.AreEqual('a', actual);
-            Assert.Throws<FormatException>(() => pattern.GetNextCharacter());
-        }
-        /*
         [Test]
         public void TestGetQuotedString_EscapeAtEnd()
         {
             var pattern = new Pattern("'abc\\");
-            char openQuote;
-            Assert.True(pattern.TryGetNextCharacter(out openQuote));
-            Assert.AreEqual('\'', openQuote);
+            char openQuote = pattern.GetNextCharacter();
             Assert.Throws<FormatException>(() => pattern.GetQuotedString(openQuote));
+        }
+
+        [Test]
+        public void TestGetQuotedString_current()
+        {
+            var pattern = new Pattern("'abc'");
+            pattern.GetNextCharacter();
+            string actual = pattern.GetQuotedString();
+            Assert.AreEqual("abc", actual);
+            ValidateEndOfString(pattern);
         }
 
         [Test]
         public void TestGetQuotedString_empty()
         {
             var pattern = new Pattern("''");
-            char openQuote;
-            Assert.True(pattern.TryGetNextCharacter(out openQuote));
-            Assert.AreEqual('\'', openQuote);
+            char openQuote = pattern.GetNextCharacter();
             string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual(string.Empty, actual);
-            Assert.False(pattern.HasMoreCharacters);
+            ValidateEndOfString(pattern);
         }
 
         [Test]
         public void TestGetQuotedString_handlesDoubleQuote()
         {
             var pattern = new Pattern("\"abc\"");
-            char openQuote;
-            Assert.True(pattern.TryGetNextCharacter(out openQuote));
-            Assert.AreEqual('"', openQuote);
+            char openQuote = pattern.GetNextCharacter();
             string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
-            Assert.False(pattern.HasMoreCharacters);
+            ValidateEndOfString(pattern);
         }
 
         [Test]
         public void TestGetQuotedString_handlesEscape()
         {
             var pattern = new Pattern("'ab\\c'");
-            char openQuote;
-            Assert.True(pattern.TryGetNextCharacter(out openQuote));
-            Assert.AreEqual('\'', openQuote);
+            char openQuote = pattern.GetNextCharacter();
             string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
-            Assert.False(pattern.HasMoreCharacters);
+            ValidateEndOfString(pattern);
         }
 
         [Test]
         public void TestGetQuotedString_handlesEscapedCloseQuote()
         {
             var pattern = new Pattern("'ab\\'c'");
-            char openQuote;
-            Assert.True(pattern.TryGetNextCharacter(out openQuote));
-            Assert.AreEqual('\'', openQuote);
+            char openQuote = pattern.GetNextCharacter();
             string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual("ab'c", actual);
-            Assert.False(pattern.HasMoreCharacters);
+            ValidateEndOfString(pattern);
         }
 
         [Test]
         public void TestGetQuotedString_handlesOtherQuote()
         {
             var pattern = new Pattern("[abc]");
-            char openQuote;
-            Assert.True(pattern.TryGetNextCharacter(out openQuote));
-            Assert.AreEqual('[', openQuote);
+            pattern.GetNextCharacter();
             string actual = pattern.GetQuotedString(']');
             Assert.AreEqual("abc", actual);
-            Assert.False(pattern.HasMoreCharacters);
+            ValidateEndOfString(pattern);
         }
 
         [Test]
         public void TestGetQuotedString_missingCloseQuote()
         {
             var pattern = new Pattern("'abc");
-            char openQuote;
-            Assert.True(pattern.TryGetNextCharacter(out openQuote));
-            Assert.AreEqual('\'', openQuote);
+            char openQuote = pattern.GetNextCharacter();
             Assert.Throws<FormatException>(() => pattern.GetQuotedString(openQuote));
         }
 
@@ -135,32 +109,37 @@ namespace NodaTime.Test.Format
         public void TestGetQuotedString_notAtEnd()
         {
             var pattern = new Pattern("'abc'more");
-            char openQuote;
-            Assert.True(pattern.TryGetNextCharacter(out openQuote));
-            Assert.AreEqual('\'', openQuote);
+            char openQuote = pattern.GetNextCharacter();
             string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
-            Assert.True(pattern.HasMoreCharacters);
+            ValidateCharacter(pattern, 5, 'm');
         }
 
         [Test]
         public void TestGetQuotedString_simple()
         {
             var pattern = new Pattern("'abc'");
-            char openQuote;
-            Assert.True(pattern.TryGetNextCharacter(out openQuote));
-            Assert.AreEqual('\'', openQuote);
+            char openQuote = pattern.GetNextCharacter();
             string actual = pattern.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
-            Assert.False(pattern.HasMoreCharacters);
+            ValidateEndOfString(pattern);
+        }
+
+        [Test]
+        public void TestGetRepeatCount_current()
+        {
+            var pattern = new Pattern("aaa");
+            pattern.GetNextCharacter();
+            int actual = pattern.GetRepeatCount(10);
+            Assert.AreEqual(3, actual);
+            ValidateEndOfString(pattern);
         }
 
         [Test]
         public void TestGetRepeatCount_exceedsMax()
         {
             var pattern = new Pattern("aaa");
-            char ch;
-            Assert.True(pattern.TryGetNextCharacter(out ch));
+            char ch = pattern.GetNextCharacter();
             Assert.Throws<FormatException>(() => pattern.GetRepeatCount(2, ch));
         }
 
@@ -168,55 +147,30 @@ namespace NodaTime.Test.Format
         public void TestGetRepeatCount_one()
         {
             var pattern = new Pattern("a");
-            char ch;
-            Assert.True(pattern.TryGetNextCharacter(out ch));
+            char ch = pattern.GetNextCharacter();
             int actual = pattern.GetRepeatCount(10, ch);
             Assert.AreEqual(1, actual);
-            Assert.False(pattern.HasMoreCharacters);
+            ValidateEndOfString(pattern);
         }
 
         [Test]
         public void TestGetRepeatCount_stopsOnNonMatch()
         {
             var pattern = new Pattern("aaadaa");
-            char ch;
-            Assert.True(pattern.TryGetNextCharacter(out ch));
+            char ch = pattern.GetNextCharacter();
             int actual = pattern.GetRepeatCount(10, ch);
             Assert.AreEqual(3, actual);
-            Assert.True(pattern.HasMoreCharacters);
+            ValidateCharacter(pattern, 3, 'd');
         }
 
         [Test]
         public void TestGetRepeatCount_three()
         {
             var pattern = new Pattern("aaa");
-            char ch;
-            Assert.True(pattern.TryGetNextCharacter(out ch));
+            char ch = pattern.GetNextCharacter();
             int actual = pattern.GetRepeatCount(10, ch);
             Assert.AreEqual(3, actual);
-            Assert.False(pattern.HasMoreCharacters);
+            ValidateEndOfString(pattern);
         }
-
-        [Test]
-        public void TestTryGetNextCharacter()
-        {
-            var pattern = new Pattern("a");
-            char actual;
-            Assert.True(pattern.TryGetNextCharacter(out actual));
-            Assert.AreEqual('a', actual);
-            Assert.False(pattern.TryGetNextCharacter(out actual));
-            Assert.AreEqual('\u0000', actual);
-        }
-
-        [Test]
-        public void TestSkipWhiteSpaces_noWhitespace()
-        {
-            var pattern = new Pattern("asdf");
-            pattern.SkipWhiteSpaces();
-            char actual;
-            Assert.True(pattern.TryGetNextCharacter(out actual));
-            Assert.AreEqual('a', actual);
-        }
-         */
     }
 }
