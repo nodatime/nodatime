@@ -25,12 +25,10 @@ namespace NodaTime.TimeZones
     /// <summary>
     /// A pair of possibly null ZoneInterval values. This is the result of fetching a time zone
     /// interval by LocalInstant, as the result could be 0, 1 or 2 matching ZoneIntervals.
-    /// TODO: Decide if this should be public or not. We may well want a way of getting at the
-    /// offset for a particular LocalDateTime, rather than having to construct a ZonedDateTime
-    /// and get it that way. On the other hand, this is quite an awkward type... it *feels* like
-    /// an implementation detail somehow.
+    /// This is a sort of light-weight version of ZoneLocalMapping, used when we won't need to
+    /// know the details of the gaps and it's handy to use a struct instead of creating a new object.
     /// </summary>
-    public struct ZoneIntervalPair : IEquatable<ZoneIntervalPair>
+    internal struct ZoneIntervalPair : IEquatable<ZoneIntervalPair>
     {
         internal static readonly ZoneIntervalPair NoMatch = new ZoneIntervalPair(null, null, 0);
         
@@ -45,14 +43,14 @@ namespace NodaTime.TimeZones
         /// if there were no matches. If there is a single match (the most common case) this
         /// value will be non-null, and LateInterval will be null.
         /// </summary>
-        public ZoneInterval EarlyInterval { get { return earlyInterval; } }
+        internal ZoneInterval EarlyInterval { get { return earlyInterval; } }
 
         /// <summary>
         /// The later of the two zone intervals matching the original local instant, or null
         /// if there were no matches. If there is a single match (the most common case) this
         /// value will be null, and EarlyInterval will be non-null.
         /// </summary>
-        public ZoneInterval LateInterval { get { return lateInterval; } }
+        internal ZoneInterval LateInterval { get { return lateInterval; } }
 
         private ZoneIntervalPair(ZoneInterval early, ZoneInterval late, int matchingIntervals)
         {
@@ -75,10 +73,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns the number of intervals contained within this pair - 0 for a "gap", 1 for an unambiguous match, 2 for an ambiguous match.
-        /// TODO: Could use an enum instead.
+        /// Returns the number of intervals contained within this pair - 0 for a "gap",
+        /// 1 for an unambiguous match, 2 for an ambiguous match.
         /// </summary>
-        public int MatchingIntervals { get { return matchingIntervals; } }
+        internal int MatchingIntervals { get { return matchingIntervals; } }
 
         /// <summary>
         ///   Determines whether the specified <see cref = "T:System.Object" /> is equal to the current <see cref = "T:System.Object" />.
@@ -125,7 +123,7 @@ namespace NodaTime.TimeZones
             return hash;
         }
 
-        public override string ToString()
+        internal override string ToString()
         {
             switch (MatchingIntervals)
             {
