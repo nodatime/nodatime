@@ -22,7 +22,7 @@ using System.Text;
 
 namespace NodaTime.Format.Builder
 {
-    internal interface IFormatNode<in TInfo>
+    internal interface IFormatNode<TInfo>
         where TInfo : ParseInfo
     {
         void Append(TInfo info, StringBuilder builder);

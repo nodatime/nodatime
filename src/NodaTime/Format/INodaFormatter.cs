@@ -26,7 +26,7 @@ namespace NodaTime.Format
     /// Provides an interface for value formatters in the Nodatime package.
     /// </summary>
     /// <typeparam name="T">The type to format.</typeparam>
-    public interface INodaFormatter<in T>
+    public interface INodaFormatter<T>
     {
         /// <summary>
         /// Gets or sets the format provider use by this formatter to format values..
