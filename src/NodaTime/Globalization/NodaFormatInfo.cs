@@ -189,7 +189,8 @@ namespace NodaTime.Globalization
         /// </summary>
         /// <param name = "formatType">An object that specifies the type of format object to return.</param>
         /// <returns>
-        ///   An instance of the object specified by <paramref name = "formatType" />, if the <see cref = "T:System.IFormatProvider" /> implementation can supply that type of object; otherwise, null.
+        ///   An instance of the object specified by <paramref name = "formatType" />, if the <see cref = "T:System.IFormatProvider" />
+        ///   implementation can supply that type of object; otherwise, null.
         /// </returns>
         [DebuggerStepThrough]
         public object GetFormat(Type formatType)

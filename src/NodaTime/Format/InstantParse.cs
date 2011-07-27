@@ -47,7 +47,7 @@ namespace NodaTime.Format
         /// <exception cref = "FormatException">value is not a valid <see cref = "Instant" /> string.</exception>
         internal static Instant Parse(string value, NodaFormatInfo formatProvider, DateTimeParseStyles styles)
         {
-            var parseResult = new ParseResult<Instant>();
+            var parseResult = new InstantParseResult();
             if (!TryParse(value, formatProvider, styles, ref parseResult))
             {
                 throw parseResult.GetParseException();
@@ -70,7 +70,7 @@ namespace NodaTime.Format
         /// <exception cref = "FormatException">value is not a valid <see cref = "Instant" /> string.</exception>
         internal static Instant ParseExact(string value, string format, NodaFormatInfo formatProvider, DateTimeParseStyles styles)
         {
-            var parseResult = new ParseResult<Instant>();
+            var parseResult = new InstantParseResult();
             if (!TryParseExact(value, format, formatProvider, styles, ref parseResult))
             {
                 throw parseResult.GetParseException();
@@ -91,7 +91,7 @@ namespace NodaTime.Format
         /// <returns></returns>
         internal static Instant ParseExact(string value, string[] formats, NodaFormatInfo formatProvider, DateTimeParseStyles styles)
         {
-            var parseResult = new ParseResult<Instant>();
+            var parseResult = new InstantParseResult();
             if (!TryParseExactMultiple(value, formats, formatProvider, styles, ref parseResult))
             {
                 throw parseResult.GetParseException();
@@ -107,7 +107,7 @@ namespace NodaTime.Format
         internal static bool TryParseExact(string value, string format, NodaFormatInfo formatProvider, DateTimeParseStyles styles, out Instant result)
         {
             result = Instant.MinValue;
-            var parseResult = new ParseResult<Instant>();
+            var parseResult = new InstantParseResult();
             if (TryParseExact(value, format, formatProvider, styles, ref parseResult))
             {
                 result = parseResult.Value;
@@ -123,7 +123,7 @@ namespace NodaTime.Format
                 throw new ArgumentNullException("formatProvider");
             }
             result = Instant.MinValue;
-            var parseResult = new ParseResult<Instant>();
+            var parseResult = new InstantParseResult();
             if (TryParseExactMultiple(value, formats, formatProvider, styles, ref parseResult))
             {
                 result = parseResult.Value;
@@ -133,7 +133,7 @@ namespace NodaTime.Format
         }
 
         private static bool DoStrictParse(string value, char format, NodaFormatInfo formatProvider, DateTimeParseStyles styles,
-                                          ref ParseResult<Instant> parseResult)
+                                          ref InstantParseResult parseResult)
         {
             if ((styles & DateTimeParseStyles.AllowLeadingWhite) != DateTimeParseStyles.None)
             {
@@ -154,7 +154,7 @@ namespace NodaTime.Format
             return false;
         }
 
-        private static bool DoStrictParseGeneral(string value, NodaFormatInfo formatProvider, ref ParseResult<Instant> parseResult)
+        private static bool DoStrictParseGeneral(string value, NodaFormatInfo formatProvider, ref InstantParseResult parseResult)
         {
             string label = value.ToUpperInvariant();
             if (label.Equals(Instant.BeginningOfTimeLabel))
@@ -177,7 +177,7 @@ namespace NodaTime.Format
             return false;
         }
 
-        private static bool DoStrictParseNumber(string value, NodaFormatInfo formatProvider, ref ParseResult<Instant> parseResult)
+        private static bool DoStrictParseNumber(string value, NodaFormatInfo formatProvider, ref InstantParseResult parseResult)
         {
             const NumberStyles parseStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowThousands;
             long number;
@@ -186,67 +186,67 @@ namespace NodaTime.Format
                 parseResult.Value = new Instant(number);
                 return true;
             }
-            parseResult.SetFailure(ParseFailureKind.Format, "Parse_BadValue");
+            parseResult.SetFailure(ParseFailureKind.Format, "Parse_BadValue"); // TODO: Use correct message key
             return false;
         }
 
-        private static bool TryParse(string value, NodaFormatInfo formatProvider, DateTimeParseStyles styles, ref ParseResult<Instant> parseResult)
+        private static bool TryParse(string value, NodaFormatInfo formatProvider, DateTimeParseStyles styles, ref InstantParseResult parseResult)
         {
             return TryParseExactMultiple(value, AllFormats, formatProvider, styles, ref parseResult);
         }
 
         private static bool TryParseExact(string value, string format, NodaFormatInfo formatProvider, DateTimeParseStyles styles,
-                                          ref ParseResult<Instant> parseResult)
+                                          ref InstantParseResult parseResult)
         {
             if (formatProvider == null)
             {
-                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "formatProvider");
+                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "formatProvider"); // TODO: Use correct message key
             }
             if (value == null)
             {
-                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "value");
+                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "value"); // TODO: Use correct message key
             }
             if (format == null)
             {
-                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format");
+                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format"); // TODO: Use correct message key
             }
             if (value.Length == 0)
             {
-                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Value_Empty");
+                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Value_Empty"); // TODO: Use correct message key
             }
             if (format.Length == 0)
             {
-                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_Empty");
+                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_Empty"); // TODO: Use correct message key
             }
             format = format.Trim();
             if (format.Length > 1)
             {
-                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_Invalid", format);
+                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_Invalid", format); // TODO: Use correct message key
             }
             char formatChar = format[0];
             return DoStrictParse(value, formatChar, formatProvider, styles, ref parseResult);
         }
 
         private static bool TryParseExactMultiple(string value, string[] formats, NodaFormatInfo formatProvider, DateTimeParseStyles styles,
-                                                  ref ParseResult<Instant> parseResult)
+                                                  ref InstantParseResult parseResult)
         {
             if (formatProvider == null)
             {
-                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "formatProvider");
+                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "formatProvider"); // TODO: Use correct message key
             }
             if (formats == null)
             {
-                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format");
+                return parseResult.SetFailure(ParseFailureKind.ArgumentNull, "Argument_Null", null, "format"); // TODO: Use correct message key
             }
             if (formats.Length == 0)
             {
-                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_List_Empty");
+                return parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_List_Empty"); // TODO: Use correct message key
             }
             foreach (string format in formats)
             {
                 if (string.IsNullOrEmpty(format))
                 {
-                    parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_BadFormatSpecifier", null);
+                    parseResult.SetFailure(ParseFailureKind.Format, "TryParse_Format_BadFormatSpecifier", null); // TODO: Use correct message key
                     return false;
                 }
                 if (TryParseExact(value, format, formatProvider, styles, ref parseResult))
@@ -256,5 +256,12 @@ namespace NodaTime.Format
             }
             return false;
         }
+
+        #region Nested type: InstantParseResult
+        internal class InstantParseResult : ParseResult
+        {
+            internal Instant Value { get; set; }
+        }
+        #endregion
     }
 }
