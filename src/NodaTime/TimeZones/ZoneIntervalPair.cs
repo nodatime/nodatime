@@ -123,7 +123,7 @@ namespace NodaTime.TimeZones
             return hash;
         }
 
-        internal override string ToString()
+        public override string ToString()
         {
             switch (MatchingIntervals)
             {
