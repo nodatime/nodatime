@@ -14,10 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
+#region usings
 using System;
 using NodaTime.Format;
 using NodaTime.Globalization;
+#endregion
 
 namespace NodaTime
 {
@@ -53,21 +54,6 @@ namespace NodaTime
         ///   Ticks since the Unix epoch.
         /// </summary>
         public long Ticks { get { return ticks; } }
-
-        #region IEquatable<Instant> Members
-        /// <summary>
-        ///   Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name = "other">An object to compare with this object.</param>
-        /// <returns>
-        ///   true if the current object is equal to the <paramref name = "other" /> parameter;
-        ///   otherwise, false.
-        /// </returns>
-        public bool Equals(Instant other)
-        {
-            return Ticks == other.Ticks;
-        }
-        #endregion
 
         #region IComparable<Instant> Members
         /// <summary>
@@ -289,7 +275,7 @@ namespace NodaTime
         /// </summary>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
-            LocalInstant local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
+            var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
             return new Instant(local.Ticks);
         }
 
@@ -302,7 +288,7 @@ namespace NodaTime
         /// </summary>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
-            LocalInstant local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
+            var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
             return new Instant(local.Ticks);
         }
 
@@ -325,47 +311,15 @@ namespace NodaTime
 
         #region Formatting
         /// <summary>
-        ///   Returns a <see cref = "System.String" /> that represents this instance. Equivilent to
-        ///   calling <c>ToString(null)</c>.
+        /// Compiles the given format pattern string and returns a formatter object that formats
+        /// <see cref="Instant"/> objects using the given format and the thread's current culture.
         /// </summary>
-        /// <returns>
-        ///   A <see cref = "System.String" /> that represents this instance.
-        /// </returns>
-        public override string ToString()
+        /// <param name="format">The format pattern string.</param>
+        /// <param name="formatProvider"></param>
+        /// <returns>An <see cref="INodaFormatter{T}"/> formatter object.</returns>
+        public static INodaFormatter<Instant> GetFormatter(string format, IFormatProvider formatProvider)
         {
-            return InstantFormat.Format(this, null, NodaFormatInfo.CurrentInfo);
-        }
-
-        /// <summary>
-        ///   Formats the value of the current instance using the specified format.
-        /// </summary>
-        /// <returns>
-        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
-        /// </returns>
-        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
-        ///   -or- 
-        ///   null to use the default format defined for the type. 
-        /// </param>
-        /// <filterpriority>2</filterpriority>
-        public string ToString(string format)
-        {
-            return InstantFormat.Format(this, format, NodaFormatInfo.CurrentInfo);
-        }
-
-        /// <summary>
-        ///   Formats the value of the current instance using the specified <see cref="IFormatProvider"/>.
-        /// </summary>
-        /// <returns>
-        ///   A <see cref = "T:System.String" /> containing the value of the current instance.
-        /// </returns>
-        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
-        ///   -or- 
-        ///   null to obtain the format information from the current locale setting of the current thread. 
-        /// </param>
-        /// <filterpriority>2</filterpriority>
-        public string ToString(IFormatProvider formatProvider)
-        {
-            return InstantFormat.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
+            return InstantFormat.MakeFormatter(format, formatProvider);
         }
 
         /// <summary>
@@ -385,60 +339,119 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return InstantFormat.Format(this, format, NodaFormatInfo.GetInstance(formatProvider));
+            return InstantFormat.Format(this, format, formatProvider);
+        }
+
+        /// <summary>
+        ///   Returns a <see cref = "System.String" /> that represents this instance. Equivilent to
+        ///   calling <c>ToString(null)</c>.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return InstantFormat.Format(this, null, null);
+        }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        ///   -or- 
+        ///   null to use the default format defined for the type. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string format)
+        {
+            return InstantFormat.Format(this, format, null);
+        }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified <see cref = "IFormatProvider" />.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance.
+        /// </returns>
+        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the format information from the current locale setting of the current thread. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return InstantFormat.Format(this, null, formatProvider);
         }
         #endregion Formatting
 
         #region Parsing
-        public static Instant Parse(string s)
+        public static Instant Parse(string value)
         {
-            return InstantParse.Parse(s, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
+            return InstantParse.Parse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
         }
 
-        public static Instant Parse(string s, IFormatProvider formatProvider)
+        public static Instant Parse(string value, IFormatProvider formatProvider)
         {
-            return InstantParse.Parse(s, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+            return InstantParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
-        public static Instant Parse(string s, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        public static Instant Parse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return InstantParse.Parse(s, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
-        public static Instant ParseExact(string s, string format, IFormatProvider formatProvider)
+        public static Instant ParseExact(string value, string format, IFormatProvider formatProvider)
         {
-            return InstantParse.ParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+            return InstantParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
-        public static Instant ParseExact(string s, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        public static Instant ParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return InstantParse.ParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
-        public static Instant ParseExact(string s, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        public static Instant ParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return InstantParse.ParseExact(s, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantParse.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
-        public static bool TryParse(string s, out Instant result)
+        public static bool TryParse(string value, out Instant result)
         {
-            return InstantParse.TryParse(s, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
+            return InstantParse.TryParse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
         }
 
-        public static bool TryParse(string s, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        public static bool TryParse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
-            return InstantParse.TryParse(s, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantParse.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
-        public static bool TryParseExact(string s, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
-            return InstantParse.TryParseExact(s, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantParse.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
-        public static bool TryParseExact(string s, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
-            return InstantParse.TryParseExactMultiple(s, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantParse.TryParseExactMultiple(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
         #endregion Parsing
+
+        #region IEquatable<Instant> Members
+        /// <summary>
+        ///   Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name = "other">An object to compare with this object.</param>
+        /// <returns>
+        ///   true if the current object is equal to the <paramref name = "other" /> parameter;
+        ///   otherwise, false.
+        /// </returns>
+        public bool Equals(Instant other)
+        {
+            return Ticks == other.Ticks;
+        }
+        #endregion
     }
 }
