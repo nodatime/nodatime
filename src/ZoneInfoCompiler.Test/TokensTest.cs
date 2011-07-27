@@ -92,7 +92,7 @@ namespace ZoneInfoCompiler.Test
             // Initial offset for Ouagadougou
             const string text = "-0:06:04";
             var offset = ParserHelper.ParseOffset(text);
-            Assert.AreEqual(Offset.Create(0, -6, -4), offset);
+            Assert.AreEqual(-Offset.Create(0, 6, 4), offset);
         }
 
         /// <summary>

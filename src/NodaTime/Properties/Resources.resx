@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormatDefaultExceptionMessage" xml:space="preserve">
+    <value>Format error.</value>
+  </data>
+  <data name="Format_BadQuote" xml:space="preserve">
+    <value>Format string is missing a close quote: {0}</value>
+  </data>
+  <data name="Noda_ArgumentNull" xml:space="preserve">
+    <value>Argument cannot be null.</value>
+  </data>
+  <data name="Noda_CannotChangeReadOnly" xml:space="preserve">
+    <value>Cannot change a read only object.</value>
+  </data>
+  <data name="Noda_StringEmpty" xml:space="preserve">
+    <value>The string cannot be empty.</value>
+  </data>
+  <data name="Noda_StringEmptyOrWhitespace" xml:space="preserve">
+    <value>The string cannot be empty or only contain white space.</value>
+  </data>
+  <data name="OffsetPatternFull" xml:space="preserve">
+    <value>+H:mm:ss.fff</value>
+  </data>
+  <data name="OffsetPatternLong" xml:space="preserve">
+    <value>+H:mm:ss</value>
+  </data>
+  <data name="OffsetPatternMedium" xml:space="preserve">
+    <value>+H:mm</value>
+  </data>
+  <data name="OffsetPatternShort" xml:space="preserve">
+    <value>+H</value>
+  </data>
+  <data name="Parse_CannotParseValue" xml:space="preserve">
+    <value>The value "{0}" cannot be parsed into an instance of {1} using pattern "{2}"</value>
+  </data>
+  <data name="Parse_DoubleAssignment" xml:space="preserve">
+    <value>The pattern flag '{0}' cannot appear twice and parse different values.</value>
+  </data>
+  <data name="Parse_EmptyFormatsArray" xml:space="preserve">
+    <value>The list of formats cannot be empty.</value>
+  </data>
+  <data name="Parse_EscapeAtEndOfString" xml:space="preserve">
+    <value>The format string has an escape character (backslash '\') at the end of the string.</value>
+  </data>
+  <data name="Parse_EscapedCharacterMismatch" xml:space="preserve">
+    <value>The value string does not match an escaped character in the format string: "\{0}"</value>
+  </data>
+  <data name="Parse_ExtraValueCharacters" xml:space="preserve">
+    <value>The format matches a prefix of the value string but not the entire string. Part not matching: "{0}".</value>
+  </data>
+  <data name="Parse_FormatElementInvalid" xml:space="preserve">
+    <value>The items of the format string array cannot be null or empty.</value>
+  </data>
+  <data name="Parse_FormatInvalid" xml:space="preserve">
+    <value>The format string is invalid: "{0}"</value>
+  </data>
+  <data name="Parse_FormatStringEmpty" xml:space="preserve">
+    <value>The format string is empty.</value>
+  </data>
+  <data name="Parse_Hour12PatternNotSupported" xml:space="preserve">
+    <value>The 'h' pattern flag (12 hour format) is not supported by the {0} type.</value>
+  </data>
+  <data name="Parse_MismatchedCharacter" xml:space="preserve">
+    <value>The value string does not match a simple character in the format string "{0}".</value>
+  </data>
+  <data name="Parse_MismatchedNumber" xml:space="preserve">
+    <value>The value string does not match the required number from the format string "{0}".</value>
+  </data>
+  <data name="Parse_MismatchedSpace" xml:space="preserve">
+    <value>The value string does not match a space in the format string.</value>
+  </data>
+  <data name="Parse_MissingDecimalSeparator" xml:space="preserve">
+    <value>The format string contains a decimal separator that does not match the value and the decimal separator is not followed by an "F" pattern character.</value>
+  </data>
+  <data name="Parse_MissingEndQuote" xml:space="preserve">
+    <value>The format string is missing the end quote character "{0}".</value>
+  </data>
+  <data name="Parse_MissingSign" xml:space="preserve">
+    <value>The required value sign is missing.</value>
+  </data>
+  <data name="Parse_NoMatchingFormat" xml:space="preserve">
+    <value>None of the specified formats matches the given value string.</value>
+  </data>
+  <data name="Parse_PercentAtEndOfString" xml:space="preserve">
+    <value>A percent sign (%) appears at the end of the format string.</value>
+  </data>
+  <data name="Parse_PercentDoubled" xml:space="preserve">
+    <value>A percent sign (%) is followed by another percent sign in the format string.</value>
+  </data>
+  <data name="Parse_PositiveSignInvalid" xml:space="preserve">
+    <value>A positive value sign is not valid at this point.</value>
+  </data>
+  <data name="Parse_PrecisionNotSupported" xml:space="preserve">
+    <value>The standard format "{0}" for type {1} does not support a precision.</value>
+  </data>
+  <data name="Parse_QuotedStringMismatch" xml:space="preserve">
+    <value>The value string does not match a quoted string in the pattern.</value>
+  </data>
+  <data name="Parse_RepeatCountExceeded" xml:space="preserve">
+    <value>There were more consecutive copies of the pattern character "{0}" than the maximum allowed ({1}) in the format string.</value>
+  </data>
+  <data name="Parse_StandardFormatWhitespace" xml:space="preserve">
+    <value>The standard format "{0}" for type {1} cannot contain white space.</value>
+  </data>
+  <data name="Parse_TimeSeparatorMismatch" xml:space="preserve">
+    <value>The value string does not match a time separator in the format string.</value>
+  </data>
+  <data name="Parse_UnexpectedEndOfString" xml:space="preserve">
+    <value>More characters were expected in the parsable string [{0}].</value>
+  </data>
+  <data name="Parse_UnknownFailure" xml:space="preserve">
+    <value>Internal Error: The specified ParseFailureKind is unknown [{0}].</value>
+  </data>
+  <data name="Parse_UnknownStandardFormat" xml:space="preserve">
+    <value>The standard format "{0}" is not valid for the {1} type.</value>
+  </data>
+  <data name="Parse_ValueOutOfRange" xml:space="preserve">
+    <value>The value {0} is out of the legal range for the {1} type.</value>
+  </data>
+  <data name="Parse_ValueStringEmpty" xml:space="preserve">
+    <value>The value string is empty.</value>
+  </data>
+</root>

@@ -61,7 +61,11 @@ namespace NodaTime.TimeZones
         /// <returns>The generated id string.</returns>
         private static string MakeId(Offset offset)
         {
-            return offset == Offset.Zero ? UtcId  : UtcId + offset.ToString("I");
+            if (offset == Offset.Zero)
+            {
+                return DateTimeZone.UtcId;
+            }
+            return string.Format(CultureInfo.InvariantCulture, "{0}{1}", DateTimeZone.UtcId, offset.ToString("g"));
         }
 
         /// <summary>
