@@ -51,6 +51,7 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -82,10 +83,11 @@
     <Compile Include="Format\InstantParse.cs" />
     <Compile Include="Format\JDateTimeFormatter.cs" />
     <Compile Include="Format\OffsetFormat.cs" />
+    <Compile Include="Format\OffsetParseInfo.cs" />
     <Compile Include="Format\Parsable.cs" />
     <Compile Include="Format\ParseException.cs" />
-    <Compile Include="Format\ParseResult.cs" />
-    <Compile Include="Format\ParseResultImmediate.cs" />
+    <Compile Include="Format\ParseFailureKind.cs" />
+    <Compile Include="Format\ParseInfo.cs" />
     <Compile Include="Format\ParseString.cs" />
     <Compile Include="Format\Pattern.cs" />
     <Compile Include="IClock.cs" />

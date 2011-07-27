@@ -18,6 +18,9 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
+using NodaTime.Globalization;
+using NodaTime.Format;
+using NodaTime.Test.Format;
 
 namespace NodaTime.Test
 {
@@ -27,44 +30,44 @@ namespace NodaTime.Test
         private const string Nbsp = "\u00a0";
 
         private object[] toStringNoFormatData = {
-            new TestCaseData(EnUs, Offset.MaxValue, "+23:59:59.999").SetName("Offset.MaxValue, eu-US"),
+            new TestCaseData(EnUs, Offset.MaxValue, "+23:59:59.999").SetName("Offset.MaxValue, en-US"),
             new TestCaseData(EnUs, Offset.MinValue, "-23:59:59.999").SetName("Offset.MinValue, en-US"),
-            new TestCaseData(EnUs, HmsfOffset, "+05:12:34.567").SetName("Hours, minutes, seconds, fractions, en-US"),
-            new TestCaseData(EnUs, HmsOffset, "+05:12:34").SetName("Hours, minutes, seconds, en-US"),
-            new TestCaseData(EnUs, HmOffset, "+05:12").SetName("Hours, minutes, en-US"),
-            new TestCaseData(EnUs, HOffset, "+05").SetName("Hours, en-US"),
+            new TestCaseData(EnUs, HmsfOffset, "+5:12:34.567").SetName("Hours, minutes, seconds, fractions, en-US"),
+            new TestCaseData(EnUs, HmsOffset, "+5:12:34").SetName("Hours, minutes, seconds, en-US"),
+            new TestCaseData(EnUs, HmOffset, "+5:12").SetName("Hours, minutes, en-US"),
+            new TestCaseData(EnUs, HOffset, "+5").SetName("Hours, en-US"),
             new TestCaseData(FrFr, Offset.MaxValue, "+23:59:59,999").SetName("Offset.MaxValue, fr-FR"),
             new TestCaseData(FrFr, Offset.MinValue, "-23:59:59,999").SetName("Offset.MinValue, fr-FR"),
-            new TestCaseData(FrFr, HmsfOffset, "+05:12:34,567").SetName("Hours, minutes, seconds, fractions, fr-FR"),
-            new TestCaseData(FrFr, HmsOffset, "+05:12:34").SetName("Hours, minutes, seconds, fr-FR"),
-            new TestCaseData(FrFr, HmOffset, "+05:12").SetName("Hours, minutes, fr-FR"),
-            new TestCaseData(FrFr, HOffset, "+05").SetName("Hours, fr-FR"),
+            new TestCaseData(FrFr, HmsfOffset, "+5:12:34,567").SetName("Hours, minutes, seconds, fractions, fr-FR"),
+            new TestCaseData(FrFr, HmsOffset, "+5:12:34").SetName("Hours, minutes, seconds, fr-FR"),
+            new TestCaseData(FrFr, HmOffset, "+5:12").SetName("Hours, minutes, fr-FR"),
+            new TestCaseData(FrFr, HOffset, "+5").SetName("Hours, fr-FR"),
             new TestCaseData(ItIt, Offset.MaxValue, "+23.59.59,999").SetName("Offset.MaxValue, it-IT"),
             new TestCaseData(ItIt, Offset.MinValue, "-23.59.59,999").SetName("Offset.MinValue, it-IT"),
-            new TestCaseData(ItIt, HmsfOffset, "+05.12.34,567").SetName("Hours, minutes, seconds, fractions, it-IT"),
-            new TestCaseData(ItIt, HmsOffset, "+05.12.34").SetName("Hours, minutes, seconds, it-IT"),
-            new TestCaseData(ItIt, HmOffset, "+05.12").SetName("Hours, minutes, it-IT"),
-            new TestCaseData(ItIt, HOffset, "+05").SetName("Hours, it-IT"),
+            new TestCaseData(ItIt, HmsfOffset, "+5.12.34,567").SetName("Hours, minutes, seconds, fractions, it-IT"),
+            new TestCaseData(ItIt, HmsOffset, "+5.12.34").SetName("Hours, minutes, seconds, it-IT"),
+            new TestCaseData(ItIt, HmOffset, "+5.12").SetName("Hours, minutes, it-IT"),
+            new TestCaseData(ItIt, HOffset, "+5").SetName("Hours, it-IT"),
         };
 
         private object[] toStringFormatData = {
-            new TestCaseData(EnUs, Offset.MaxValue, null, "+23:59:59.999").SetName("Offset.MaxValue, null, eu-US"),
-            new TestCaseData(EnUs, Offset.MaxValue, "", "+23:59:59.999").SetName("Offset.MaxValue, '', eu-US"),
-            new TestCaseData(EnUs, Offset.MaxValue, "G", "+23:59:59.999").SetName("Offset.MaxValue, 'G', eu-US"),
+            new TestCaseData(EnUs, Offset.MaxValue, null, "+23:59:59.999").SetName("Offset.MaxValue, null, en-US"),
+            new TestCaseData(EnUs, Offset.MaxValue, "", "+23:59:59.999").SetName("Offset.MaxValue, '', en-US"),
+            new TestCaseData(EnUs, Offset.MaxValue, "G", "+23:59:59.999").SetName("Offset.MaxValue, 'G', en-US"),
             new TestCaseData(EnUs, Offset.MinValue, "G", "-23:59:59.999").SetName("Offset.MinValue, 'G', en-US"),
-            new TestCaseData(EnUs, HmsfOffset, "G", "+05:12:34.567").SetName("Hours, minutes, seconds, fractions, 'G', en-US"),
-            new TestCaseData(EnUs, HmsOffset, "G", "+05:12:34").SetName("Hours, minutes, seconds, 'G', en-US"),
-            new TestCaseData(EnUs, HmOffset, "G", "+05:12").SetName("Hours, minutes, 'G', en-US"),
-            new TestCaseData(EnUs, HOffset, "G", "+05").SetName("Hours, 'G', en-US"),
+            new TestCaseData(EnUs, HmsfOffset, "G", "+5:12:34.567").SetName("Hours, minutes, seconds, fractions, 'G', en-US"),
+            new TestCaseData(EnUs, HmsOffset, "G", "+5:12:34").SetName("Hours, minutes, seconds, 'G', en-US"),
+            new TestCaseData(EnUs, HmOffset, "G", "+5:12").SetName("Hours, minutes, 'G', en-US"),
+            new TestCaseData(EnUs, HOffset, "G", "+5").SetName("Hours, 'G', en-US"),
             new TestCaseData(EnUs, HmsfOffset, "N", "18,754,567").SetName("Hmsf, 'N', en-US"),
-            new TestCaseData(EnUs, HmsfOffset, "F", "+05:12:34.567").SetName("Hmsf, 'F', en-US"),
-            new TestCaseData(EnUs, HmsfOffset, "L", "+05:12:34").SetName("Hmsf, 'L', en-US"),
-            new TestCaseData(EnUs, HmsfOffset, "M", "+05:12").SetName("Hmsf, 'M', en-US"),
-            new TestCaseData(EnUs, HmsfOffset, "S", "+05").SetName("Hmsf, 'S', en-US"),
-            new TestCaseData(EnUs, Offset.Zero, "F", "+00:00:00.000").SetName("Zero, 'F', en-US"),
-            new TestCaseData(EnUs, Offset.Zero, "L", "+00:00:00").SetName("Zero, 'L', en-US"),
-            new TestCaseData(EnUs, Offset.Zero, "M", "+00:00").SetName("Zero, 'M', en-US"),
-            new TestCaseData(EnUs, Offset.Zero, "S", "+00").SetName("Zero, 'S', en-US"),
+            new TestCaseData(EnUs, HmsfOffset, "F", "+5:12:34.567").SetName("Hmsf, 'F', en-US"),
+            new TestCaseData(EnUs, HmsfOffset, "L", "+5:12:34").SetName("Hmsf, 'L', en-US"),
+            new TestCaseData(EnUs, HmsfOffset, "M", "+5:12").SetName("Hmsf, 'M', en-US"),
+            new TestCaseData(EnUs, HmsfOffset, "S", "+5").SetName("Hmsf, 'S', en-US"),
+            new TestCaseData(EnUs, Offset.Zero, "F", "+0:00:00.000").SetName("Zero, 'F', en-US"),
+            new TestCaseData(EnUs, Offset.Zero, "L", "+0:00:00").SetName("Zero, 'L', en-US"),
+            new TestCaseData(EnUs, Offset.Zero, "M", "+0:00").SetName("Zero, 'M', en-US"),
+            new TestCaseData(EnUs, Offset.Zero, "S", "+0").SetName("Zero, 'S', en-US"),
             new TestCaseData(EnUs, ThreeHours, "%+", "+").SetName("ThreeHours, '%+', en-US"),
             new TestCaseData(EnUs, ThreeHours, "%-", "").SetName("ThreeHours, '%-', en-US"),
             new TestCaseData(EnUs, NegativeThreeHours, "%+", "-").SetName("NegativeThreeHours, '%+', en-US"),
@@ -74,10 +77,8 @@ namespace NodaTime.Test
             new TestCaseData(EnUs, Offset.MaxValue, "'mmmmmmmmmm'", "mmmmmmmmmm").SetName("Offset.MaxValue, ''mmmmmmmmmm'', en-US"),
             new TestCaseData(EnUs, Offset.MaxValue, "zqw", "zqw").SetName("Offset.MaxValue, 'zqw', en-US"),
             new TestCaseData(EnUs, Offset.MaxValue, "%z", "z").SetName("Offset.MaxValue, '%z', en-US"),
-            new TestCaseData(EnUs, Full, "%h", "5").SetName("Full, '%h', en-US"),
-            new TestCaseData(EnUs, Offset.MaxValue, "%h", "23").SetName("Offset.MaxValue, '%h', en-US"),
             new TestCaseData(EnUs, Full, "%H", "5").SetName("Full, '%H', en-US"),
-            new TestCaseData(EnUs, Full, "HH", "05").SetName("Full, 'HH', en-US"),
+            new TestCaseData(EnUs, Offset.MaxValue, "%H", "23").SetName("Offset.MaxValue, '%H', en-US"),
             new TestCaseData(EnUs, Full, "%m", "6").SetName("Full, '%m', en-US"),
             new TestCaseData(EnUs, Offset.MaxValue, "%m", "59").SetName("Offset.MaxValue, '%m', en-US"),
             new TestCaseData(EnUs, Full, "mm", "06").SetName("Full, 'mm', en-US"),
@@ -110,38 +111,41 @@ namespace NodaTime.Test
             new TestCaseData(EnUs, ThreeFractional, "FFF", "456").SetName("ThreeFractional, 'FFF', en-US"),
             new TestCaseData(FrFr, Offset.MaxValue, "G", "+23:59:59,999").SetName("Offset.MaxValue, 'G', fr-FR"),
             new TestCaseData(FrFr, Offset.MinValue, "G", "-23:59:59,999").SetName("Offset.MinValue, 'G', fr-FR"),
-            new TestCaseData(FrFr, HmsfOffset, "G", "+05:12:34,567").SetName("Hours, minutes, seconds, fractions, 'G', fr-FR"),
-            new TestCaseData(FrFr, HmsOffset, "G", "+05:12:34").SetName("Hours, minutes, seconds, 'G', fr-FR"),
-            new TestCaseData(FrFr, HmOffset, "G", "+05:12").SetName("Hours, minutes, 'G', fr-FR"),
-            new TestCaseData(FrFr, HOffset, "G", "+05").SetName("Hours, 'G', fr-FR"),
+            new TestCaseData(FrFr, HmsfOffset, "G", "+5:12:34,567").SetName("Hours, minutes, seconds, fractions, 'G', fr-FR"),
+            new TestCaseData(FrFr, HmsOffset, "G", "+5:12:34").SetName("Hours, minutes, seconds, 'G', fr-FR"),
+            new TestCaseData(FrFr, HmOffset, "G", "+5:12").SetName("Hours, minutes, 'G', fr-FR"),
+            new TestCaseData(FrFr, HOffset, "G", "+5").SetName("Hours, 'G', fr-FR"),
             new TestCaseData(FrFr, HmsfOffset, "N", "18" + Nbsp + "754" + Nbsp + "567").SetName("Hmsf, 'N', fr-FR"),
             new TestCaseData(ItIt, Offset.MaxValue, "G", "+23.59.59,999").SetName("Offset.MaxValue, 'G', it-IT"),
             new TestCaseData(ItIt, Offset.MinValue, "G", "-23.59.59,999").SetName("Offset.MinValue, 'G', it-IT"),
-            new TestCaseData(ItIt, HmsfOffset, "G", "+05.12.34,567").SetName("Hours, minutes, seconds, fractions, 'G', it-IT"),
-            new TestCaseData(ItIt, HmsOffset, "G", "+05.12.34").SetName("Hours, minutes, seconds, 'G', it-IT"),
-            new TestCaseData(ItIt, HmOffset, "G", "+05.12").SetName("Hours, minutes, 'G', it-IT"),
-            new TestCaseData(ItIt, HOffset, "G", "+05").SetName("Hours, 'G', it-IT"),
+            new TestCaseData(ItIt, HmsfOffset, "G", "+5.12.34,567").SetName("Hours, minutes, seconds, fractions, 'G', it-IT"),
+            new TestCaseData(ItIt, HmsOffset, "G", "+5.12.34").SetName("Hours, minutes, seconds, 'G', it-IT"),
+            new TestCaseData(ItIt, HmOffset, "G", "+5.12").SetName("Hours, minutes, 'G', it-IT"),
+            new TestCaseData(ItIt, HOffset, "G", "+5").SetName("Hours, 'G', it-IT"),
             new TestCaseData(ItIt, HmsfOffset, "N", "18.754.567").SetName("Hmsf, 'N', it-IT"),
         };
 
         private object[] toStringFormatBadData = {
-            new TestCaseData("z").SetName("invalid standard format"),
-            new TestCaseData("\\").SetName("Escape without character"),
-            new TestCaseData("%").SetName("Expansion character without character"),
-            new TestCaseData("%%").SetName("Double expansion character"),
-            new TestCaseData("'").SetName("Missing end quote"),
-            new TestCaseData("'qwe").SetName("Missing end quote 2"),
-            new TestCaseData("'qwe\\'").SetName("Escaped end quote"),
-            new TestCaseData("'qwe\\").SetName("Escaped in quote missing character"),
-            new TestCaseData("ffff").SetName("Too many 'f'"),
-            new TestCaseData("hhh").SetName("Too many 'h'"),
-            new TestCaseData("mmm").SetName("Too many 'm'"),
-            new TestCaseData("sss").SetName("Too many 's'"),
-            new TestCaseData("mmmmmmmmmmmmmmmmmmm").SetName("Too many 'm'"),
+            new FormatFailureData<Offset>(Offset.Zero, "z", ParseFailureKind.ParseUnknownStandardFormat, "invalid standard format"),
+            new FormatFailureData<Offset>(Offset.Zero, "\\", ParseFailureKind.ParseUnknownStandardFormat, "Escape without character"),
+            new FormatFailureData<Offset>(Offset.Zero, "%", ParseFailureKind.ParseUnknownStandardFormat, "Expansion character without character"),
+            new FormatFailureData<Offset>(Offset.Zero, "%%", ParseFailureKind.ParsePercentDoubled, "Double expansion character"),
+            new FormatFailureData<Offset>(Offset.Zero, "'", ParseFailureKind.ParseUnknownStandardFormat, "Missing end quote"),
+            new FormatFailureData<Offset>(Offset.Zero, "'qwe", ParseFailureKind.ParseMissingEndQuote, "Missing end quote 2"),
+            new FormatFailureData<Offset>(Offset.Zero, "'qwe\\'", ParseFailureKind.ParseMissingEndQuote, "Escaped end quote"),
+            new FormatFailureData<Offset>(Offset.Zero, "'qwe\\", ParseFailureKind.ParseEscapeAtEndOfString, "Escaped in quote missing character"),
+            new FormatFailureData<Offset>(Offset.Zero, "ffff", ParseFailureKind.ParseRepeatCountExceeded, "Too many 'f'"),
+            new FormatFailureData<Offset>(Offset.Zero, "HHH", ParseFailureKind.ParseRepeatCountExceeded, "Too many 'H'"),
+            new FormatFailureData<Offset>(Offset.Zero, "mmm", ParseFailureKind.ParseRepeatCountExceeded, "Too many 'm'"),
+            new FormatFailureData<Offset>(Offset.Zero, "sss", ParseFailureKind.ParseRepeatCountExceeded, "Too many 's'"),
+            new FormatFailureData<Offset>(Offset.Zero, "mmmmmmmmmmmmmmmmmmm", ParseFailureKind.ParseRepeatCountExceeded, "Too many 'm'"),
+            new FormatFailureData<Offset>(Offset.Zero, "hh", ParseFailureKind.Parse12HourPatternNotSupported, "12 hours pattern not supported"),
         };
 
         [Test]
         [TestCaseSource("toStringNoFormatData")]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_Culture(CultureInfo cultureInfo, Offset value, string expected)
         {
             using (CultureSaver.SetUiCulture(EnUs))
@@ -153,6 +157,8 @@ namespace NodaTime.Test
 
         [Test]
         [TestCaseSource("toStringFormatData")]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_Format(CultureInfo cultureInfo, Offset value, string format, string expected)
         {
             using (CultureSaver.SetUiCulture(cultureInfo))
@@ -164,6 +170,8 @@ namespace NodaTime.Test
 
         [Test]
         [TestCaseSource("toStringFormatData")]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_FormatCulture(CultureInfo cultureInfo, Offset value, string format, string expected)
         {
             using (CultureSaver.SetUiCulture(EnUs))
@@ -175,13 +183,18 @@ namespace NodaTime.Test
 
         [Test]
         [TestCaseSource("toStringFormatBadData")]
-        public void TestToString_FormatFailure(string format)
+        [Category("Formating")]
+        [Category("Format")]
+        public void TestToString_FormatFailure(Offset value, string format, DateTimeParseStyles styles, ParseFailureInfo failureInfo)
         {
-            Assert.Throws<FormatException>(() => Offset.Zero.ToString(format));
+            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(failureInfo.Failure),
+                          () => Offset.Zero.ToString(format));
         }
 
         [Test]
         [TestCaseSource("toStringNoFormatData")]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_NoArg(CultureInfo cultureInfo, Offset value, string expected)
         {
             using (CultureSaver.SetUiCulture(cultureInfo))
@@ -192,15 +205,17 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [Category("Formating")]
+        [Category("Format")]
         public void TestToString_NullCulture()
         {
             using (CultureSaver.SetUiCulture(EnUs))
             {
                 IFormatProvider formatProvider = null;
                 string actual = Offset.Zero.ToString(formatProvider);
-                Assert.AreEqual("+00", actual);
+                Assert.AreEqual("+0", actual);
                 actual = Offset.Zero.ToString("G", formatProvider);
-                Assert.AreEqual("+00", actual);
+                Assert.AreEqual("+0", actual);
             }
         }
     }

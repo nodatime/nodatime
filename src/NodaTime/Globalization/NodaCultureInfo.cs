@@ -14,20 +14,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
+#region usings
 using System;
 using System.Globalization;
 using System.Threading;
+using NodaTime.Properties;
+#endregion
 
 namespace NodaTime.Globalization
 {
     /// <summary>
-    ///   Provides a <see cref = "CultureInfo" /> that supports NodaTime formatting information. This allows
+    ///   Provides wrapper around a <see cref = "CultureInfo" /> that supports NodaTime formatting information. This allows
     ///   for the <see cref = "NodaFormatInfo" /> data to be set into the <see cref = "Thread.CurrentUICulture" />
-    ///   so it does not have to be passed around. This object defers all unrecognized requests to the
-    ///   underlying culture info so it acts like a wrapper around a system culture info.
+    ///   so it does not have to be passed around. If the underlying culture info is read only then this is also
+    ///   read only. To change it you need to clone it first.
     /// </summary>
-    public class NodaCultureInfo : CultureInfo
+    public class NodaCultureInfo : CultureInfo, IFormatProvider, ICloneable
     {
         private static NodaCultureInfo invariantCulture;
         private NodaFormatInfo formatInfo;
@@ -36,7 +38,8 @@ namespace NodaTime.Globalization
         ///   Initializes a new instance of the <see cref = "NodaCultureInfo" /> class.
         /// </summary>
         /// <param name = "name">The name of the base culture.</param>
-        public NodaCultureInfo(string name) : base(name)
+        public NodaCultureInfo(string name)
+            : base(name)
         {
         }
 
@@ -45,7 +48,8 @@ namespace NodaTime.Globalization
         /// </summary>
         /// <param name = "name">The name of the base culture.</param>
         /// <param name = "useUserOverride">A Boolean that denotes whether to use the user-selected culture settings (true) or the default culture settings (false).</param>
-        public NodaCultureInfo(string name, bool useUserOverride) : base(name, useUserOverride)
+        public NodaCultureInfo(string name, bool useUserOverride)
+            : base(name, useUserOverride)
         {
         }
 
@@ -53,7 +57,8 @@ namespace NodaTime.Globalization
         ///   Initializes a new instance of the <see cref = "NodaCultureInfo" /> class.
         /// </summary>
         /// <param name = "culture">A predefined <see cref = "T:System.Globalization.CultureInfo" /> identifier, <see cref = "P:System.Globalization.CultureInfo.LCID" /> property of an existing <see cref = "T:System.Globalization.CultureInfo" /> object, or Windows-only culture identifier.</param>
-        public NodaCultureInfo(int culture) : base(culture)
+        public NodaCultureInfo(int culture)
+            : base(culture)
         {
         }
 
@@ -70,7 +75,8 @@ namespace NodaTime.Globalization
         ///   -or-
         ///   In .NET Compact Framework applications, <paramref name = "culture" /> is not supported by the operating system of the device.
         /// </exception>
-        public NodaCultureInfo(int culture, bool useUserOverride) : base(culture, useUserOverride)
+        public NodaCultureInfo(int culture, bool useUserOverride)
+            : base(culture, useUserOverride)
         {
         }
 
@@ -84,7 +90,7 @@ namespace NodaTime.Globalization
             {
                 if (invariantCulture == null)
                 {
-                    invariantCulture = new NodaCultureInfo(0x007f, false);
+                    invariantCulture = new NodaCultureInfo(CultureInfo.InvariantCulture.LCID, false);
                 }
                 return invariantCulture;
             }
@@ -106,7 +112,14 @@ namespace NodaTime.Globalization
                 }
                 return formatInfo;
             }
-            set { formatInfo = value; }
+            set
+            {
+                if (IsReadOnly)
+                {
+                    throw new InvalidOperationException(Resources.Noda_CannotChangeReadOnly);
+                }
+                formatInfo = value;
+            }
         }
 
         /// <summary>
@@ -122,7 +135,7 @@ namespace NodaTime.Globalization
         {
             get
             {
-                CultureInfo parent = base.Parent;
+                var parent = base.Parent;
                 if (CultureInfo.InvariantCulture.LCID == parent.LCID)
                 {
                     return InvariantCulture;
@@ -131,6 +144,25 @@ namespace NodaTime.Globalization
             }
         }
 
+        #region ICloneable Members
+        /// <summary>
+        ///   Creates a copy of the current <see cref = "T:System.Globalization.CultureInfo" />.
+        /// </summary>
+        /// <returns>
+        ///   A copy of the current <see cref = "T:System.Globalization.CultureInfo" />.
+        /// </returns>
+        public override object Clone()
+        {
+            var info = (NodaCultureInfo)base.Clone();
+            if (formatInfo != null)
+            {
+                info.formatInfo = (NodaFormatInfo)formatInfo.Clone();
+            }
+            return info;
+        }
+        #endregion
+
+        #region IFormatProvider Members
         /// <summary>
         ///   Gets an object that defines how to format the specified type.
         /// </summary>
@@ -150,5 +182,39 @@ namespace NodaTime.Globalization
             }
             return base.GetFormat(formatType);
         }
+        #endregion
+
+        /// <summary>
+        ///   Gets the culture info.
+        /// </summary>
+        /// <param name = "culture">The culture.</param>
+        /// <returns></returns>
+        public new static NodaCultureInfo GetCultureInfo(int culture)
+        {
+            return new NodaCultureInfo(culture);
+        }
+
+        /// <summary>
+        ///   Gets the culture info.
+        /// </summary>
+        /// <param name = "name">The name.</param>
+        /// <returns></returns>
+        public new static NodaCultureInfo GetCultureInfo(string name)
+        {
+            return new NodaCultureInfo(name);
+        }
+
+        #region object overrides
+        /// <summary>
+        ///   Returns a <see cref = "System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return "NodaCultureInfo: " + base.ToString();
+        }
+        #endregion object overrides
     }
 }

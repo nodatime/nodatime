@@ -70,21 +70,25 @@ namespace NodaTime.Format
             return true;
         }
 
-        internal bool ParseFractionExact(int maximumDigits, out double result)
+        internal bool ParseFractionExact(int maximumDigits, int scale, out int result)
         {
-            result = double.NaN;
+            if (scale < maximumDigits)
+            {
+                scale = maximumDigits;
+            }
+            result = Int32.MinValue;
             if (!IsDigit())
             {
                 return false;
             }
             result = GetDigit();
             int count = 1;
-            while (count < maximumDigits && MoveNext() && IsDigit())
+            while (MoveNext() && count < maximumDigits && IsDigit())
             {
-                result = (result * 10.0) + GetDigit();
+                result = (result * 10) + GetDigit();
                 count++;
             }
-            result = result / Math.Pow(10.0, count);
+            result = (int)(result * Math.Pow(10.0, scale - count));
             return (count == maximumDigits);
         }
 

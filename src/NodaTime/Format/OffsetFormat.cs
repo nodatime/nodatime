@@ -15,10 +15,14 @@
 // limitations under the License.
 #endregion
 
+#region usings
 using System;
-using System.Globalization;
 using System.Text;
 using NodaTime.Globalization;
+using NodaTime.Utility;
+using NodaTime.Properties;
+
+#endregion
 
 namespace NodaTime.Format
 {
@@ -38,26 +42,26 @@ namespace NodaTime.Format
         /// <returns>The value formatted as a string.</returns>
         internal static string Format(Offset value, string format, NodaFormatInfo formatProvider)
         {
-            var offsetInfo = new OffsetInfo(value, formatProvider);
+            var parseInfo = new OffsetParseInfo(value, formatProvider, true, DateTimeParseStyles.None);
             if (string.IsNullOrEmpty(format))
             {
                 format = "g";
             }
             if (format.Length == 1)
             {
-                return FormatStandard(offsetInfo, Char.ToLowerInvariant(format[0]));
+                return FormatStandard(parseInfo, Char.ToLowerInvariant(format[0]));
             }
-            return FormatPattern(offsetInfo, format);
+            return FormatPattern(parseInfo, format);
         }
 
         /// <summary>
         ///   Formats the given value based on the custom format pattern given.
         /// </summary>
-        /// <param name = "offsetInfo">The offset info to format.</param>
+        /// <param name = "parseInfo">The offset info to format.</param>
         /// <param name = "patternString">The custom foramt pattern.</param>
         /// <exception cref = "FormatException">if the value cannot be formatted.</exception>
         /// <returns>The formatted string.</returns>
-        private static string FormatPattern(OffsetInfo offsetInfo, string patternString)
+        private static string FormatPattern(OffsetParseInfo parseInfo, string patternString)
         {
             var pattern = new Pattern(patternString);
             var outputBuffer = new StringBuilder();
@@ -67,47 +71,60 @@ namespace NodaTime.Format
                 switch (pattern.Current)
                 {
                     case '+':
-                        FormatHelper.FormatSign(offsetInfo, true, outputBuffer);
+                        FormatHelper.FormatSign(parseInfo, true, outputBuffer);
                         break;
                     case '-':
-                        FormatHelper.FormatSign(offsetInfo, false, outputBuffer);
+                        FormatHelper.FormatSign(parseInfo, false, outputBuffer);
                         break;
                     case ':':
-                        outputBuffer.Append(offsetInfo.Dtfi.TimeSeparator);
+                        outputBuffer.Append(parseInfo.FormatInfo.TimeSeparator);
                         break;
                     case '.':
-                        outputBuffer.Append(offsetInfo.Nfi.NumberDecimalSeparator);
+                        outputBuffer.Append(parseInfo.FormatInfo.DecimalSeparator);
                         break;
                     case '%':
-                        outputBuffer.Append(FormatPattern(offsetInfo, pattern.GetNextCharacter().ToString()));
+                        if (pattern.HasMoreCharacters)
+                        {
+                            if (pattern.PeekNext() != '%')
+                            {
+                                outputBuffer.Append(FormatPattern(parseInfo, pattern.GetNextCharacter().ToString()));
+                                pattern.MoveNext(); // Eat next character
+                                break;
+                            }
+                            parseInfo.FailParsePercentDoubled();
+                        }
+                        parseInfo.FailParsePercentAtEndOfString();
                         break;
                     case '\'':
                     case '"':
-                        outputBuffer.Append(pattern.GetQuotedString());
+                        outputBuffer.Append(pattern.GetQuotedString(parseInfo));
                         break;
                     case '\\':
                         outputBuffer.Append(pattern.GetNextCharacter());
                         break;
                     case 'h':
+                        parseInfo.FailParse12HourPatternNotSupported(typeof(Offset).FullName);
+                        break; // Never gets here
                     case 'H':
-                        repeatLength = pattern.GetRepeatCount(2);
-                        FormatHelper.LeftPad(offsetInfo.Hours, repeatLength, outputBuffer);
+                        repeatLength = pattern.GetRepeatCount(2, parseInfo);
+                        FormatHelper.LeftPad(parseInfo.Hours.GetValueOrDefault(), repeatLength, outputBuffer);
                         break;
                     case 's':
-                        repeatLength = pattern.GetRepeatCount(2);
-                        FormatHelper.LeftPad(offsetInfo.Seconds, repeatLength, outputBuffer);
+                        repeatLength = pattern.GetRepeatCount(2, parseInfo);
+                        FormatHelper.LeftPad(parseInfo.Seconds.GetValueOrDefault(), repeatLength, outputBuffer);
                         break;
                     case 'm':
-                        repeatLength = pattern.GetRepeatCount(2);
-                        FormatHelper.LeftPad(offsetInfo.Minutes, repeatLength, outputBuffer);
+                        repeatLength = pattern.GetRepeatCount(2, parseInfo);
+                        FormatHelper.LeftPad(parseInfo.Minutes.GetValueOrDefault(), repeatLength, outputBuffer);
                         break;
                     case 'F':
-                        repeatLength = pattern.GetRepeatCount(3);
-                        FormatHelper.RightPadTruncate(offsetInfo.FractionalSecond, repeatLength, 3, offsetInfo.Nfi.NumberDecimalSeparator, outputBuffer);
+                        repeatLength = pattern.GetRepeatCount(3, parseInfo);
+                        FormatHelper.RightPadTruncate(parseInfo.FractionalSeconds.GetValueOrDefault(), repeatLength, 3, parseInfo.FormatInfo.DecimalSeparator,
+                                                      outputBuffer);
                         break;
                     case 'f':
-                        repeatLength = pattern.GetRepeatCount(3);
-                        FormatHelper.RightPad(offsetInfo.FractionalSecond, repeatLength, 3, outputBuffer);
+                        repeatLength = pattern.GetRepeatCount(3, parseInfo);
+                        FormatHelper.RightPad(parseInfo.FractionalSeconds.GetValueOrDefault(), repeatLength, 3, outputBuffer);
                         break;
                     default:
                         outputBuffer.Append(pattern.Current);
@@ -120,21 +137,21 @@ namespace NodaTime.Format
         /// <summary>
         ///   Formats the value using one of the standard format patterns.
         /// </summary>
-        /// <param name = "offsetInfo">The offset info to format.</param>
+        /// <param name = "parseInfo">The offset info to format.</param>
         /// <param name = "formatCharacter">The standard format character.</param>
         /// <exception cref = "FormatException">if the value cannot be formatted.</exception>
         /// <returns>The formatted string.</returns>
-        private static string FormatStandard(OffsetInfo offsetInfo, char formatCharacter)
+        private static string FormatStandard(OffsetParseInfo parseInfo, char formatCharacter)
         {
-            var formatInfo = offsetInfo.FormatProvider;
+            var formatInfo = parseInfo.FormatInfo;
             string pattern;
             switch (formatCharacter)
             {
                 case 'i':
                 case 'g':
-                    return FormatStandardGeneral(offsetInfo, formatInfo);
+                    return FormatStandardGeneral(parseInfo, formatInfo);
                 case 'n':
-                    return offsetInfo.Milliseconds.ToString("N0", offsetInfo.FormatProvider);
+                    return parseInfo.Milliseconds.GetValueOrDefault().ToString("N0", formatInfo);
                 case 's':
                     pattern = formatInfo.OffsetPatternShort;
                     break;
@@ -148,30 +165,31 @@ namespace NodaTime.Format
                     pattern = formatInfo.OffsetPatternFull;
                     break;
                 default:
-                    throw new FormatException("Invalid format string: unknown flag");
+                    string message = string.Format(Resources.Parse_UnknownStandardFormat, formatCharacter, typeof(Offset).FullName);
+                    throw new ParseException(ParseFailureKind.ParseUnknownStandardFormat, message);
             }
-            return FormatPattern(offsetInfo, pattern);
+            return FormatPattern(parseInfo, pattern);
         }
 
         /// <summary>
         ///   Determines the format pattern for the "g" specifier based on the value to format.
         /// </summary>
-        /// <param name = "offsetInfo">The <see cref = "OffsetInfo" /> of the value to format.</param>
+        /// <param name = "parseInfo">The <see cref = "OffsetParseInfo" /> of the value to format.</param>
         /// <param name = "formatInfo">The <see cref = "NodaFormatInfo" /> to use.</param>
         /// <exception cref = "FormatException">if the value cannot be formatted.</exception>
         /// <returns>The formatted string.</returns>
-        private static string FormatStandardGeneral(OffsetInfo offsetInfo, NodaFormatInfo formatInfo)
+        private static string FormatStandardGeneral(OffsetParseInfo parseInfo, NodaFormatInfo formatInfo)
         {
             string pattern;
-            if (offsetInfo.FractionalSecond != 0)
+            if (parseInfo.FractionalSeconds != 0)
             {
                 pattern = formatInfo.OffsetPatternFull;
             }
-            else if (offsetInfo.Seconds != 0)
+            else if (parseInfo.Seconds != 0)
             {
                 pattern = formatInfo.OffsetPatternLong;
             }
-            else if (offsetInfo.Minutes != 0)
+            else if (parseInfo.Minutes != 0)
             {
                 pattern = formatInfo.OffsetPatternMedium;
             }
@@ -179,103 +197,7 @@ namespace NodaTime.Format
             {
                 pattern = formatInfo.OffsetPatternShort;
             }
-            return FormatPattern(offsetInfo, pattern);
+            return FormatPattern(parseInfo, pattern);
         }
-
-        #region Nested type: OffsetInfo
-        /// <summary>
-        ///   Provides a holder for the parts of an <see cref = "Offset" /> value. This makes formatting simpler.
-        /// </summary>
-        private struct OffsetInfo : ISignedValue
-        {
-            /// <summary>
-            ///   The <see cref = "DateTimeFormatInfo" /> for the culture being used to format this value.
-            /// </summary>
-            public readonly DateTimeFormatInfo Dtfi;
-
-            /// <summary>
-            ///   The <see cref = "NodaFormatInfo" /> for the culture being used to format this value.
-            /// </summary>
-            public readonly NodaFormatInfo FormatProvider;
-
-            /// <summary>
-            ///   The fractions of a seconds in milliseconds.
-            /// </summary>
-            public readonly int FractionalSecond;
-
-            /// <summary>
-            ///   The hours in the range [0, 23].
-            /// </summary>
-            public readonly int Hours;
-
-            /// <summary>
-            ///   The total millisconds. This is the only value that can be negative.
-            /// </summary>
-            public readonly int Milliseconds;
-
-            /// <summary>
-            ///   The minutes in the range [0, 59].
-            /// </summary>
-            public readonly int Minutes;
-
-            /// <summary>
-            ///   The <see cref = "NumberFormatInfo" /> for the culture being used to format this value.
-            /// </summary>
-            public readonly NumberFormatInfo Nfi;
-
-            /// <summary>
-            ///   The seconds in the range [0, 59].
-            /// </summary>
-            public readonly int Seconds;
-
-            /// <summary>
-            ///   True if this value is negative.
-            /// </summary>
-            private readonly bool isNegative;
-
-            /// <summary>
-            ///   The sign string.
-            /// </summary>
-            private readonly string sign;
-
-            //public CultureInfo CultureInfo { get { return FormatProvider.CultureInfo; } }
-
-            /// <summary>
-            ///   Initializes a new instance of the <see cref = "OffsetInfo" /> struct.
-            /// </summary>
-            /// <param name = "value">The <see cref = "Offset" /> value.</param>
-            /// <param name = "formatProvider">The <see cref = "NodaFormatInfo" /> format provider for the culture
-            ///   this value is being formatted in.</param>
-            public OffsetInfo(Offset value, NodaFormatInfo formatProvider)
-            {
-                FormatProvider = formatProvider;
-                Dtfi = DateTimeFormatInfo.GetInstance(FormatProvider);
-                Nfi = NumberFormatInfo.GetInstance(FormatProvider);
-                Milliseconds = value.Milliseconds;
-                isNegative = value.IsNegative;
-                sign = isNegative ? Nfi.NegativeSign : Nfi.PositiveSign;
-                int milliseconds = Math.Abs(value.Milliseconds);
-                Hours = value.Hours;
-                Minutes = value.Minutes;
-                Seconds = value.Seconds;
-                FractionalSecond = value.FractionalSeconds;
-            }
-
-            #region ISignedValue Members
-            /// <summary>
-            ///   Gets a value indicating whether this instance is negative.
-            /// </summary>
-            /// <value>
-            ///   <c>true</c> if this instance is negative; otherwise, <c>false</c>.
-            /// </value>
-            public bool IsNegative { get { return isNegative; } }
-
-            /// <summary>
-            ///   Gets the sign.
-            /// </summary>
-            public string Sign { get { return sign; } }
-            #endregion
-        }
-        #endregion
     }
 }

@@ -15,14 +15,19 @@
 // limitations under the License.
 #endregion
 
+#region usings
 using System;
+using System.Diagnostics;
 using NodaTime.Properties;
+using System.Text;
+#endregion
 
 namespace NodaTime.Format
 {
+    [DebuggerStepThrough]
     internal abstract class Parsable
     {
-        internal const char NUL = '\u0000';
+        internal const char Nul = '\u0000';
 
         protected Parsable(string value)
         {
@@ -32,7 +37,7 @@ namespace NodaTime.Format
             }
             if (value == string.Empty)
             {
-                throw new ArgumentException(@"string is empty", "value");
+                throw new ArgumentException(Resources.Noda_StringEmpty, "value");
             }
             Value = value;
             Length = value.Length;
@@ -40,10 +45,38 @@ namespace NodaTime.Format
         }
 
         internal char Current { get; private set; }
-        internal bool HasMoreCharacters { get { return Index < Length; } }
+        internal bool HasMoreCharacters { get { return Index + 1 < Length; } }
         internal int Index { get; private set; }
         internal int Length { get; private set; }
         internal string Value { get; private set; }
+        internal string Remainder { get { return Value.Substring(Index); } }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            if (Index < 0)
+            {
+                builder.Append("<<>>");
+                builder.Append(Value);
+            }
+            else if (Index >= Length)
+            {
+                builder.Append(Value);
+                builder.Append("<<>>");
+            }
+            else
+            {
+                builder.Append(Value.Substring(0, Index));
+                builder.Append("<<");
+                builder.Append(Current);
+                builder.Append(">>");
+                if (Index < Length - 1)
+                {
+                    builder.Append(Value.Substring(Index + 1, Length - Index - 1));
+                }
+            }
+            return builder.ToString();
+        }
 
         /// <summary>
         ///   Gets the next character.
@@ -56,14 +89,19 @@ namespace NodaTime.Format
             {
                 return Current;
             }
-            throw new FormatException(Resources.Format_InvalidString);
+            throw new FormatException(Resources.Parse_UnexpectedEndOfString);
+        }
+
+        internal char PeekNext()
+        {
+            return HasMoreCharacters ? Value[Index + 1] : Nul;
         }
 
         internal bool Move(int targetIndex)
         {
             var inRange = 0 <= targetIndex && targetIndex < Length;
             Index = inRange ? targetIndex : Math.Max(-1, Math.Min(Length, targetIndex));
-            Current = inRange ? Value[Index] : NUL;
+            Current = inRange ? Value[Index] : Nul;
             return inRange;
         }
 
@@ -84,11 +122,11 @@ namespace NodaTime.Format
 
         internal bool SkipWhiteSpaces()
         {
-            while (Current != NUL && char.IsWhiteSpace(Current))
+            while (Current != Nul && char.IsWhiteSpace(Current))
             {
                 MoveNext();
             }
-            return Current != NUL;
+            return Current != Nul;
         }
 
         internal void TrimLeadingInQuoteSpaces()
@@ -114,7 +152,7 @@ namespace NodaTime.Format
         internal void TrimLeadingWhiteSpaces()
         {
             Move(0);
-            while (Current != NUL && char.IsWhiteSpace(Current))
+            while (Current != Nul && char.IsWhiteSpace(Current))
             {
                 MoveNext();
             }
