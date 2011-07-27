@@ -216,7 +216,7 @@ namespace NodaTime.Format
                 {
                     return parseInfo.FailParseValueOutOfRange(milliseconds, typeof(Offset));
                 }
-                parseInfo.Value = new Offset(milliseconds);
+                parseInfo.Value = Offset.FromMilliseconds(milliseconds);
                 return true;
             }
             return false;
@@ -347,6 +347,7 @@ namespace NodaTime.Format
                     {
                         if (!parseInfo.AllowInnerWhite && !str.Match(patternCharacter))
                         {
+
                             parseInfo.FailParseMismatchedSpace();
                             return false;
                         }

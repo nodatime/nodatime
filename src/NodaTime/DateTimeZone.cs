@@ -15,7 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using NodaTime.TimeZones;
 
 namespace NodaTime
@@ -24,7 +26,7 @@ namespace NodaTime
     ///   Represents a time zone.
     /// </summary>
     /// <remarks>
-    ///   Time zones primarily encapsulate two facts: and offset from UTC and a set of rules on how
+    ///   Time zones primarily encapsulate two facts: an offset from UTC and a set of rules on how
     ///   the values are adjusted.
     /// </remarks>
     public abstract class DateTimeZone
@@ -42,6 +44,13 @@ namespace NodaTime
 
         private readonly string id;
         private readonly bool isFixed;
+
+        // We very frequently need to add this to an instant, and there will be relatively few instances
+        // of DateTimeZone, so it makes sense to convert to ticks once and take the space cost, instead of
+        // performing the same multiplication over and over again.
+        private readonly long minOffsetTicks;
+        private readonly long maxOffsetTicks;
+        private readonly Chronology isoChronology;
 
         /// <summary>
         ///   Gets the UTC (Coordinated Universal Time) time zone.
@@ -63,18 +72,8 @@ namespace NodaTime
         public static DateTimeZone SystemDefault { get { return cache.SystemDefault; } }
 
         /// <summary>
-        ///   Gets or sets the current time zone.
-        /// </summary>
-        /// <remarks>
-        ///   This is the time zone that is used whenever a time zone is not given to a method. It can
-        ///   be set to any valid time zone. Setting it to <c>null</c> causes the
-        ///   <see cref = "P:NodaTime.DateTimeZone.SystemDefault" /> time zone to be used.
-        /// </remarks>
-        /// <value>The current <see cref = "T:NodaTime.DateTimeZone" />. This will never be <c>null</c>.</value>
-        public static DateTimeZone Current { get { return cache.Current; } set { cache.Current = value; } }
-
-        /// <summary>
         ///   Returns the time zone with the given id.
+        /// TODO: Consider whether this should be ForID (as ID is a two-letter abbreviation).
         /// </summary>
         /// <param name = "id">The time zone id to find.</param>
         /// <returns>The <see cref = "DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
@@ -143,21 +142,25 @@ namespace NodaTime
         /// <summary>
         ///   Initializes a new instance of the <see cref = "T:NodaTime.DateTimeZone" /> class.
         /// </summary>
-        /// <param name = "id">The unique id of this time zone.</param>
-        /// <param name = "isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
-        protected DateTimeZone(string id, bool isFixed)
+        /// <param name="id">The unique id of this time zone.</param>
+        /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
+        /// <param name="minOffset">Minimum offset applied within this zone</param>
+        /// <param name="maxOffset">Maximum offset applied within this zone</param>
+        protected DateTimeZone(string id, bool isFixed, Offset minOffset, Offset maxOffset)
         {
             this.id = id;
             this.isFixed = isFixed;
+            this.minOffsetTicks = minOffset.Ticks;
+            this.maxOffsetTicks = maxOffset.Ticks;
+            isoChronology = new Chronology(this, CalendarSystem.Iso);
         }
 
         /// <summary>
         /// Returns a chronology based on this time zone, in the ISO calendar system.
-        /// TODO(jonskeet): Cache this value?
         /// </summary>
         internal Chronology ToIsoChronology()
         {
-            return new Chronology(this, CalendarSystem.Iso);
+            return isoChronology;
         }
 
         /// <summary>
@@ -180,6 +183,17 @@ namespace NodaTime
         public bool IsFixed { get { return isFixed; } }
 
         /// <summary>
+        /// Returns the least offset within this time zone.
+        /// </summary>
+        public Offset MinOffset { get { return Offset.FromTicks(minOffsetTicks); } }
+
+        /// <summary>
+        /// Returns the greatest offset within this time zone.
+        /// </summary>
+        public Offset MaxOffset { get { return Offset.FromTicks(maxOffsetTicks); } }
+
+        #region Core abstract/virtual methods
+        /// <summary>
         ///   Returns the offset from UTC, where a positive duration indicates that local time is
         ///   later than UTC. In other words, local time = UTC + offset.
         /// </summary>
@@ -189,71 +203,293 @@ namespace NodaTime
         /// </returns>
         public virtual Offset GetOffsetFromUtc(Instant instant)
         {
+            // TODO: Remove? This is really just a convenience... There's some benefit
+            // in DaylightSavingsTimeZone, but with caching and precalculating it's likely to
+            // be irrelevant.
             ZoneInterval interval = GetZoneInterval(instant);
             return interval.Offset;
         }
 
         /// <summary>
-        ///   Gets the zone interval for the given instant. Null is returned if no interval is
-        ///   defined by the time zone for the given instant.
+        ///   Gets the zone interval for the given instant. This will never return null.
         /// </summary>
         /// <param name = "instant">The <see cref = "T:NodaTime.Instant" /> to query.</param>
-        /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" /> or <c>null</c>.</returns>
+        /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" />.</returns>
         public abstract ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
-        ///   Returns the name associated with the given instant.
+        /// Finds all zone intervals for the given local instant. Usually there's one (i.e. only a single
+        /// instant is mapped to the given local instant within the time zone) but during DST transitions
+        /// there can be either 0 (the given local instant doesn't exist, e.g. local time skipped from 1am to
+        /// 2am, but you gave us 1.30am) or 2 (the given local instant is ambiguous, e.g. local time skipped
+        /// from 2am to 1am, but you gave us 1.30am).
         /// </summary>
         /// <remarks>
-        ///   For a fixed time zone this will always return the same value but for a time zone that
-        ///   honors daylight savings this will return a different name depending on the time of year
-        ///   it represents. For example in the Pacific Standard Time (UTC-8) it will return either
-        ///   PST or PDT depending on the time of year.
+        /// This method is implemented in terms of GetZoneInterval(Instant) within DateTimeZone,
+        /// and should work for any zone. However, derived classes may override this method
+        /// for optimization purposes, e.g. if the zone interval is always ambiguous with
+        /// a fixed value.
         /// </remarks>
-        /// <param name = "instant">The <see cref = "T:NodaTime.Instant" /> to get the name for.</param>
-        /// <returns>The name of this time. Never returns <c>null</c>.</returns>
-        public virtual string GetName(Instant instant)
+        /// <param name="localInstant">The local instant to find matching zone intervals for</param>
+        /// <returns>The struct containing up to two ZoneInterval references.</returns>
+        internal virtual ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
         {
-            ZoneInterval interval = GetZoneInterval(instant);
-            return interval.Name;
+            Instant firstGuess = new Instant(localInstant.Ticks);
+            ZoneInterval interval = GetZoneInterval(firstGuess);
+
+            // Most of the time we'll go into here... the local instant and the instant
+            // are close enough that we've found the right instant.
+            if (interval.Contains(localInstant))
+            {
+                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
+                if (earlier != null)
+                {
+                    return ZoneIntervalPair.Ambiguous(earlier, interval);
+                }
+                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
+                if (later != null)
+                {
+                    return ZoneIntervalPair.Ambiguous(interval, later);
+                }
+                return ZoneIntervalPair.Unambiguous(interval);
+            }
+            else
+            {
+                // Our first guess was wrong. Either we need to change interval by one (either direction)
+                // or we're in a gap.
+                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
+                if (earlier != null)
+                {
+                    return ZoneIntervalPair.Unambiguous(earlier);
+                }
+                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
+                if (later != null)
+                {
+                    return ZoneIntervalPair.Unambiguous(later);
+                }
+                return ZoneIntervalPair.NoMatch;
+            }
         }
 
-        #region LocalInstant methods
-        /// <summary>
-        ///   Gets the offset to subtract from a local time to get the UTC time.
-        /// </summary>
-        /// <param name = "localInstant">The <see cref = "T:NodaTime.LocalInstant" /> to get the offset of.</param>
-        /// <returns>The offset to subtract from the specified local time to obtain a UTC instant.</returns>
-        /// <remarks>
-        ///   Around a DST transition, local times behave peculiarly. When the time springs forward,
-        ///   (e.g. 12:59 to 02:00) some times never occur; when the time falls back (e.g. 1:59 to
-        ///   01:00) some times occur twice. This method always returns a smaller offset when there is
-        ///   ambiguity, i.e. it treats the local time as the later of the possibilities.
-        /// </remarks>
-        /// <exception cref = "T:NodaTime.SkippedTimeException">The local instant doesn't occur in this time zone
-        ///   due to zone transitions.</exception>
-        internal virtual Offset GetOffsetFromLocal(LocalInstant localInstant)
-        {
-            ZoneInterval interval = GetZoneInterval(localInstant);
-            return interval.Offset;
-        }
 
         /// <summary>
-        ///   Gets the zone interval for the given local instant. Null is returned if no interval is
-        ///   defined by the time zone for the given local instant.
-        /// </summary>
-        /// <param name = "localInstant">The <see cref = "T:NodaTime.LocalInstant" /> to query.</param>
-        /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" /> or <c>null</c>.</returns>
-        internal abstract ZoneInterval GetZoneInterval(LocalInstant localInstant);
-        #endregion LocalInstant methods
-
-        #region I/O
-        /// <summary>
-        ///   Writes the time zone to the specified writer.
+        /// Writes the time zone to the specified writer. Used within ZoneInfoCompiler.
         /// </summary>
         /// <param name = "writer">The writer to write to.</param>
         internal abstract void Write(DateTimeZoneWriter writer);
-        #endregion I/O
+        #endregion
+
+        #region Conversion between local dates/times and ZonedDateTime
+        /// <summary>
+        /// If the given local date/time is mapped unambiguously to a single ZonedDateTime value, that is returned.
+        /// For ambiguous or skipped local date/time values, AmbiguousTimeException or SkippedTimeException are thrown respectively.
+        /// </summary>
+        /// <exception cref="SkippedTimeException">The given LocalDateTime is skipped due to a transition where the clocks go forward</exception>
+        /// <exception cref="AmbiguousTimeException">The given LocalDateTime is ambiguous due to a transition where the clocks go forward</exception>
+        public ZonedDateTime AtExactly(LocalDateTime localDateTime)
+        {
+            LocalInstant localInstant = localDateTime.LocalInstant;
+            Chronology chronology = localDateTime.Calendar.WithZone(this);
+            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
+            switch (pair.MatchingIntervals)
+            {
+                case 0:
+                    throw new SkippedTimeException(localDateTime.LocalInstant, this);
+                case 1:
+                    return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                case 2:
+                    throw new AmbiguousTimeException(localDateTime.LocalInstant, this);
+                default:
+                    throw new InvalidOperationException("This won't happen.");
+            }
+        }
+
+        /// <summary>
+        /// If the given local date/time is mapped unambiguously to a single ZonedDateTime value, that is returned.
+        /// For ambiguous local date/time values, the earlier mapping is returned.
+        /// For skipped local date/time values, SkippedTimeException is thrown.
+        /// </summary>
+        /// <exception cref="SkippedTimeException">The given LocalDateTime is skipped due to a transition where the clocks go forward</exception>
+        /// <exception cref="AmbiguousTimeException">The given LocalDateTime is ambiguous due to a transition where the clocks go forward</exception>
+        public ZonedDateTime AtEarlier(LocalDateTime localDateTime)
+        {
+            LocalInstant localInstant = localDateTime.LocalInstant;
+            Chronology chronology = localDateTime.Calendar.WithZone(this);
+            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
+            switch (pair.MatchingIntervals)
+            {
+                case 0:
+                    throw new SkippedTimeException(localDateTime.LocalInstant, this);
+                case 1:
+                case 2:
+                    return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                default:
+                    throw new InvalidOperationException("This won't happen.");
+            }
+        }
+
+        /// <summary>
+        /// If the given local date/time is mapped unambiguously to a single ZonedDateTime value, that is returned.
+        /// For ambiguous local date/time values, the later mapping is returned.
+        /// For skipped local date/time values, SkippedTimeException is thrown.
+        /// </summary>
+        /// <exception cref="SkippedTimeException">The given LocalDateTime is skipped due to a transition where the clocks go forward</exception>
+        /// <exception cref="AmbiguousTimeException">The given LocalDateTime is ambiguous due to a transition where the clocks go forward</exception>
+        public ZonedDateTime AtLater(LocalDateTime localDateTime)
+        {
+            LocalInstant localInstant = localDateTime.LocalInstant;
+            Chronology chronology = localDateTime.Calendar.WithZone(this);
+            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
+            switch (pair.MatchingIntervals)
+            {
+                case 0:
+                    throw new SkippedTimeException(localDateTime.LocalInstant, this);
+                case 1:
+                    return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                case 2:
+                    return new ZonedDateTime(localInstant, pair.LateInterval.Offset, chronology);
+                default:
+                    throw new InvalidOperationException("This won't happen.");
+            }
+        }
+
+        /// <summary>
+        /// Returns the ZonedDateTime with a LocalDateTime as early as possible on the given date.
+        /// If midnight exists unambiguously on the given date, it is returned.
+        /// If the given date has an amgbiguous start time (e.g. the clocks go back from 1am to midnight)
+        /// then the earlier ZonedDateTime is returned. If the given date has no midnight (e.g. the clocks
+        /// go forward from midnight to 1am) then the earliest valid value is returned; this will be the instant
+        /// of the transition.
+        /// </summary>
+        public ZonedDateTime AtStartOfDay(LocalDate date)
+        {
+            LocalInstant localInstant = date.LocalDateTime.LocalInstant;
+            Chronology chronology = date.Calendar.WithZone(this);
+            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
+            switch (pair.MatchingIntervals)
+            {
+                case 0:
+                    var interval = GetIntervalAfterGap(localInstant);
+                    return new ZonedDateTime(interval.LocalStart, interval.Offset, chronology);
+                case 1:
+                case 2:
+                    return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                default:
+                    throw new InvalidOperationException("This won't happen.");
+            }
+        }
+
+        /// <summary>
+        /// Returns complete information about how the given LocalDateTime is mapped in this time zone.
+        /// </summary>
+        /// <remarks>Use this method if you need to know whether the given value is ambiguous, or if you
+        /// want to find out about a potential "gap" in local dates and times due to a daylight saving transition.
+        /// </remarks>
+        public ZoneLocalMapping MapLocalDateTime(LocalDateTime localDateTime)
+        {
+            LocalInstant localInstant = localDateTime.LocalInstant;
+            Chronology chronology = localDateTime.Calendar.WithZone(this);
+            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
+            switch (pair.MatchingIntervals)
+            {
+                case 0:
+                    var before = GetIntervalBeforeGap(localInstant);
+                    var after = GetIntervalAfterGap(localInstant);
+                    return ZoneLocalMapping.SkippedResult(before, after);
+                case 1:
+                    var mapping = new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                    return ZoneLocalMapping.UnambiguousResult(mapping);
+                case 2:
+                    var earlier = new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                    var later = new ZonedDateTime(localInstant, pair.LateInterval.Offset, chronology);
+                    return ZoneLocalMapping.AmbiguousResult(earlier, later);
+                default:
+                    throw new InvalidOperationException("This won't happen.");
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Returns the interval before this one, if it contains the given local instant, or null otherwise.
+        /// </summary>
+        private ZoneInterval GetEarlierMatchingInterval(ZoneInterval interval, LocalInstant localInstant)
+        {
+            // Micro-optimization to avoid fetching interval.Start multiple times. Seems
+            // to give a performance improvement on x86 at least...
+            Instant intervalStart = interval.Start;
+            if (intervalStart == Instant.MinValue)
+            {
+                return null;
+            }
+            // If the tick before this interval started *could* map to a later local instant, let's
+            // get the interval and check whether it actually includes the one we want.
+            Instant endOfPrevious = intervalStart;
+            if (endOfPrevious.Ticks + maxOffsetTicks > localInstant.Ticks)
+            {
+                ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.One);
+                if (candidate.Contains(localInstant))
+                {
+                    return candidate;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the next interval after this one, if it contains the given local instant, or null otherwise.
+        /// </summary>
+        private ZoneInterval GetLaterMatchingInterval(ZoneInterval interval, LocalInstant localInstant)
+        {
+            // Micro-optimization to avoid fetching interval.End multiple times. Seems
+            // to give a performance improvement on x86 at least...
+            Instant intervalEnd = interval.End;
+            if (intervalEnd == Instant.MaxValue)
+            {
+                return null;
+            }
+            if (intervalEnd.Ticks + minOffsetTicks <= localInstant.Ticks)
+            {
+                ZoneInterval candidate = GetZoneInterval(intervalEnd);
+                if (candidate.Contains(localInstant))
+                {
+                    return candidate;
+                }
+            }
+            return null;
+        }
+
+        private ZoneInterval GetIntervalBeforeGap(LocalInstant localInstant)
+        {
+            Instant guess = new Instant(localInstant.Ticks);
+            ZoneInterval guessInterval = GetZoneInterval(guess);
+            // If the local interval occurs before the zone interval we're looking at start,
+            // we need to find the earlier one; otherwise this interval must come after the gap, and
+            // it's therefore the one we want.
+            if (localInstant.Minus(guessInterval.Offset) < guessInterval.Start)
+            {
+                return GetZoneInterval(guessInterval.Start - Duration.One);
+            }
+            else
+            {
+                return guessInterval;
+            }
+        }
+
+        private ZoneInterval GetIntervalAfterGap(LocalInstant localInstant)
+        {
+            Instant guess = new Instant(localInstant.Ticks);
+            ZoneInterval guessInterval = GetZoneInterval(guess);
+            // If the local interval occurs before the zone interval we're looking at starts,
+            // it's the one we're looking for. Otherwise, we need to find the next interval.
+            if (localInstant.Minus(guessInterval.Offset) < guessInterval.Start)
+            {
+                return guessInterval;
+            }
+            else
+            {
+                return GetZoneInterval(guessInterval.End);
+            }
+        }
 
         #region Object overrides
         /// <summary>

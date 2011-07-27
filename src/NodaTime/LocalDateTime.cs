@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Utility;
+using NodaTime.TimeZones;
 
 namespace NodaTime
 {

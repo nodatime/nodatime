@@ -24,9 +24,9 @@ namespace NodaTime.Test
         [Test]
         public void IEquatableIComparable_Tests()
         {
-            var value = new Offset(12345);
-            var equalValue = new Offset(12345);
-            var greaterValue = new Offset(5432199);
+            var value = Offset.FromMilliseconds(12345);
+            var equalValue = Offset.FromMilliseconds(12345);
+            var greaterValue = Offset.FromMilliseconds(5432199);
 
             TestHelper.TestEqualsStruct(value, equalValue, greaterValue);
             TestHelper.TestCompareToStruct(value, equalValue, greaterValue);
@@ -37,16 +37,16 @@ namespace NodaTime.Test
         public void UnaryPlusOperator()
         {
             Assert.AreEqual(Offset.Zero, +Offset.Zero, "+ 0");
-            Assert.AreEqual(new Offset(1), + new Offset(1), "+ 1");
-            Assert.AreEqual(new Offset(-7), + new Offset(-7), "+ (-7)");
+            Assert.AreEqual(Offset.FromMilliseconds(1), + Offset.FromMilliseconds(1), "+ 1");
+            Assert.AreEqual(Offset.FromMilliseconds(-7), + Offset.FromMilliseconds(-7), "+ (-7)");
         }
 
         [Test]
         public void NegateOperator()
         {
             Assert.AreEqual(Offset.Zero, -Offset.Zero, "-0");
-            Assert.AreEqual(new Offset(-1), -new Offset(1), "-1");
-            Assert.AreEqual(new Offset(7), -new Offset(-7), "- (-7)");
+            Assert.AreEqual(Offset.FromMilliseconds(-1), -Offset.FromMilliseconds(1), "-1");
+            Assert.AreEqual(Offset.FromMilliseconds(7), -Offset.FromMilliseconds(-7), "- (-7)");
         }
 
         #region operator +

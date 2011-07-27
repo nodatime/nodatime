@@ -42,20 +42,13 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void GetZoneIntervalLocalInstant_ZoneInterval()
-        {
-            var actual = TestZone.GetZoneInterval(LocalInstant.LocalUnixEpoch);
-            Assert.AreEqual(FixedPeriod, actual);
-        }
-
-        [Test]
         public void SimpleProperties_ReturnValuesFromConstructor()
         {
             Assert.AreEqual("UTC-8", TestZone.Id, "TestZone.Id");
-            Assert.AreEqual("UTC-8", TestZone.GetName(Instant.UnixEpoch), "TestZone.GetName()");
-            // TODO: Use a real LocalDateTime when we've implemented it!
-            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch), "TestZone.GetOffsetFromLocal()");
+            Assert.AreEqual("UTC-8", TestZone.GetZoneInterval(Instant.UnixEpoch).Name);
             Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromUtc(Instant.UnixEpoch), "TestZone.GetOffsetFromUtc()");
+            Assert.AreEqual(ZoneOffset, TestZone.MinOffset);
+            Assert.AreEqual(ZoneOffset, TestZone.MaxOffset);
         }
 
         [Test]
@@ -63,6 +56,14 @@ namespace NodaTime.Test.TimeZones
         {
             var dio = new DtzIoHelper("FixedDateTimeZone");
             dio.TestTimeZone(TestZone);
+        }
+
+        [Test]
+        public void GetZoneIntervals_ReturnsSingleInterval()
+        {
+            var intervals = TestZone.GetZoneIntervals(new LocalDateTime(2001, 7, 1, 1, 0, 0).LocalInstant);
+            Assert.AreEqual(FixedPeriod, intervals.EarlyInterval);
+            Assert.IsNull(intervals.LateInterval);
         }
     }
 }

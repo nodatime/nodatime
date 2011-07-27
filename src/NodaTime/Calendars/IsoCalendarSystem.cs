@@ -64,6 +64,15 @@ namespace NodaTime.Calendars
         {
         }
 
+        public override Chronology WithZone(DateTimeZone zone)
+        {
+            if (zone == null)
+            {
+                throw new ArgumentException("zone");
+            }
+            return zone.ToIsoChronology();
+        }
+
         protected override void AssembleFields(FieldSet.Builder fields)
         {
             if (fields == null)
@@ -94,7 +103,7 @@ namespace NodaTime.Calendars
             return
                 new LocalInstant(
                     unchecked(
-                        MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerDay + hourOfDay * NodaConstants.TicksPerHour +
+                        MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay + hourOfDay * NodaConstants.TicksPerHour +
                         minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond +
                         millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond));
         }
@@ -113,7 +122,7 @@ namespace NodaTime.Calendars
             return
                 new LocalInstant(
                     unchecked(
-                        MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerDay + hourOfDay * NodaConstants.TicksPerHour +
+                        MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay + hourOfDay * NodaConstants.TicksPerHour +
                         minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond));
         }
 
@@ -130,7 +139,7 @@ namespace NodaTime.Calendars
             return
                 new LocalInstant(
                     unchecked(
-                        MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerDay + hourOfDay * NodaConstants.TicksPerHour +
+                        MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay + hourOfDay * NodaConstants.TicksPerHour +
                         minuteOfHour * NodaConstants.TicksPerMinute));
         }
 

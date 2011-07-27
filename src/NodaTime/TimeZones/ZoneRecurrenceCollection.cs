@@ -35,7 +35,7 @@ namespace NodaTime.TimeZones
         // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
         // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the
         // future, then it won't be observed.
-        private static readonly int YearLimit = CalendarSystem.Iso.Fields.Year.GetValue(LocalInstant.Now) + 100;
+        private static readonly int YearLimit = CalendarSystem.Iso.Fields.Year.GetValue(new LocalInstant(SystemClock.Instance.Now.Ticks)) + 100;
 
         private readonly List<ZoneRecurrence> rules = new List<ZoneRecurrence>();
         private string initialNameKey;

@@ -83,7 +83,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this constant is 6,048.000,000,000 ticks.
         /// </remarks>
-        public static readonly Duration OneWeek = new Duration(NodaConstants.TicksPerWeek);
+        public static readonly Duration OneWeek = new Duration(NodaConstants.TicksPerStandardWeek);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 day.
@@ -92,7 +92,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this constant is 864 billion ticks; that is, 864,000,000,000 ticks.
         /// </remarks>
-        public static readonly Duration OneDay = new Duration(NodaConstants.TicksPerDay);
+        public static readonly Duration OneDay = new Duration(NodaConstants.TicksPerStandardDay);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 hour.
@@ -181,6 +181,8 @@ namespace NodaTime
         /// The number of ticks in the duration.
         /// </summary>
         public long Ticks { get { return ticks; } }
+
+        // TODO: Add milliseconds, seconds, minutes, hours, standard days?
 
         #region Object overrides
         /// <summary>

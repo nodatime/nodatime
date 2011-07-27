@@ -17,13 +17,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Resources;
 using System.Text.RegularExpressions;
-using NodaTime.TimeZones;
-using NodaTime.Properties;
-using System.Globalization;
 using System.Threading;
+using NodaTime.Properties;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Utility
 {
@@ -101,19 +101,30 @@ namespace NodaTime.Utility
         }
 
         /// <summary>
+        /// Gets the default <see cref="ResourceSet"/> from a <see cref="ResourceManager"/>.
+        /// </summary>
+        /// <param name="manager">The <see cref="ResourceManager"/> to get resources from.</param>
+        /// <returns>The default <see cref="ResourceSet"/>.</returns>
+        /// <remarks>The default <see cref="ResourceSet"/> for a <see cref="ResourceManager"/> is the <see cref="ResourceSet"/> that is used by <see cref="ResourceManager.GetObject(string)"/>.</remarks>
+        internal static ResourceSet GetDefaultResourceSet(ResourceManager manager)
+        {
+            return manager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+        }
+
+        /// <summary>
         /// Loads a dictionary of string to string with the given name from the given resource manager.
         /// </summary>
-        /// <param name="manager">The <see cref="ResourceManager"/> to load from.</param>
+        /// <param name="source">The <see cref="ResourceSet"/> to load from.</param>
         /// <param name="name">The resource name.</param>
         /// <returns>The <see cref="IDictionary{TKey,TValue}"/> or <c>null</c> if there is no such resource.</returns>
-        internal static IDictionary<string, string> LoadDictionary(ResourceManager manager, string name)
+        internal static IDictionary<string, string> LoadDictionary(ResourceSet source, string name)
         {
-            if (manager == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("manager");
+                throw new ArgumentNullException("source");
             }
             var normalizedName = NormalizeAsResourceName(name);
-            var bytes = manager.GetObject(normalizedName) as byte[];
+            var bytes = source.GetObject(normalizedName) as byte[];
             if (bytes != null)
             {
                 using (var stream = new MemoryStream(bytes))
@@ -128,18 +139,18 @@ namespace NodaTime.Utility
         /// <summary>
         /// Loads a time zone with the given name from the given resource manager.
         /// </summary>
-        /// <param name="manager">The <see cref="ResourceManager"/> to load from.</param>
+        /// <param name="source">The <see cref="ResourceSet"/> to load from.</param>
         /// <param name="name">The resource name.</param>
         /// <param name="id">The time zone id for the loaded time zone.</param>
         /// <returns>The <see cref="DateTimeZone"/> or <c>null</c> if there is no such resource.</returns>
-        internal static DateTimeZone LoadTimeZone(ResourceManager manager, string name, string id)
+        internal static DateTimeZone LoadTimeZone(ResourceSet source, string name, string id)
         {
-            if (manager == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("manager");
+                throw new ArgumentNullException("source");
             }
             var normalizedName = NormalizeAsResourceName(name);
-            var bytes = manager.GetObject(normalizedName) as byte[];
+            var bytes = source.GetObject(normalizedName) as byte[];
             if (bytes != null)
             {
                 using (var stream = new MemoryStream(bytes))

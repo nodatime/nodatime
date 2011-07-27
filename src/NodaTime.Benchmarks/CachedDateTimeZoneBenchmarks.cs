@@ -23,22 +23,16 @@ namespace NodaTime.Benchmarks
     internal class CachedDateTimeZoneBenchmarks
     {
         private readonly Instant[] cacheInstants = new Instant[100];
-        private readonly LocalInstant[] cacheLocalInstants = new LocalInstant[100];
         private readonly Instant[] noCacheInstants = new Instant[500];
-        private readonly LocalInstant[] noCacheLocalInstants = new LocalInstant[500];
         private readonly DateTimeZone paris = DateTimeZone.ForId("Europe/Paris");
         private readonly Instant[] twoYearsCacheInstants = new Instant[365];
-        private readonly LocalInstant[] twoYearsCacheLocalInstants = new LocalInstant[365];
         private int cacheIndex;
-        private int cacheLocalIndex;
         private int noCacheIndex;
-        private int noCacheLocalIndex;
         private int twoYearsCacheIndex;
-        private int twoYearsCacheLocalIndex;
 
         public CachedDateTimeZoneBenchmarks()
         {
-            var adjustment = new Duration(NodaConstants.TicksPerDay * 365);
+            var adjustment = new Duration(NodaConstants.TicksPerStandardDay * 365);
             for (int i = 0; i < noCacheInstants.Length; i++)
             {
                 noCacheInstants[i] = Instant.UnixEpoch + (adjustment * i);
@@ -47,23 +41,10 @@ namespace NodaTime.Benchmarks
             {
                 cacheInstants[i] = Instant.UnixEpoch + (adjustment * i);
             }
-            var twoDays = new Duration(NodaConstants.TicksPerDay * 2);
+            var twoDays = new Duration(NodaConstants.TicksPerStandardDay * 2);
             for (int i = 0; i < twoYearsCacheInstants.Length; i++)
             {
                 twoYearsCacheInstants[i] = Instant.UnixEpoch + (twoDays * i);
-            }
-
-            for (int i = 0; i < noCacheLocalInstants.Length; i++)
-            {
-                noCacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (adjustment * i);
-            }
-            for (int i = 0; i < cacheLocalInstants.Length; i++)
-            {
-                cacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (adjustment * i);
-            }
-            for (int i = 0; i < twoYearsCacheLocalInstants.Length; i++)
-            {
-                twoYearsCacheLocalInstants[i] = LocalInstant.LocalUnixEpoch + (twoDays * i);
             }
         }
 
@@ -95,48 +76,9 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void GetPeriodLocalInstant()
-        {
-            paris.GetZoneInterval(LocalInstant.LocalUnixEpoch);
-        }
-
-        [Benchmark]
-        public void GetPeriodLocalInstant_NoCache()
-        {
-            paris.GetZoneInterval(noCacheLocalInstants[noCacheLocalIndex]);
-            noCacheLocalIndex = (noCacheLocalIndex + 1) % noCacheLocalInstants.Length;
-        }
-
-        [Benchmark]
-        public void GetPeriodLocalInstant_Cache()
-        {
-            paris.GetZoneInterval(cacheLocalInstants[cacheLocalIndex]);
-            cacheLocalIndex = (cacheLocalIndex + 1) % cacheLocalInstants.Length;
-        }
-
-        [Benchmark]
-        public void GetPeriodLocalInstant_TwoYears()
-        {
-            paris.GetZoneInterval(twoYearsCacheLocalInstants[twoYearsCacheLocalIndex]);
-            twoYearsCacheLocalIndex = (twoYearsCacheLocalIndex + 1) % twoYearsCacheLocalInstants.Length;
-        }
-
-        [Benchmark]
         public void GetOffsetFromUtc()
         {
             paris.GetOffsetFromUtc(Instant.UnixEpoch);
-        }
-
-        [Benchmark]
-        public void GetOffsetFromLocal()
-        {
-            paris.GetOffsetFromLocal(LocalInstant.LocalUnixEpoch);
-        }
-
-        [Benchmark]
-        public void Name()
-        {
-            paris.GetName(Instant.UnixEpoch);
         }
     }
 }

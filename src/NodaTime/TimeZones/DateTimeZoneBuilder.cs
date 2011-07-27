@@ -256,7 +256,6 @@ namespace NodaTime.TimeZones
          * @param id  time zone id to assign
          * @param outputID  true if the zone id should be output
          */
-
         public DateTimeZone ToDateTimeZone(String zoneId)
         {
             if (zoneId == null)
@@ -313,10 +312,6 @@ namespace NodaTime.TimeZones
             {
                 var transition = transitions[0];
                 return new FixedDateTimeZone(zoneId, transition.WallOffset);
-            }
-            if (tailZone == null)
-            {
-                tailZone = NullDateTimeZone.Instance;
             }
             var precalcedEnd = nextTransition != null ? nextTransition.Instant : Instant.MaxValue;
             var zone = new PrecalculatedDateTimeZone(zoneId, transitions, precalcedEnd, tailZone);

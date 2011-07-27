@@ -38,7 +38,10 @@ namespace NodaTime.TimeZones
         /// <param name="transitions">The transitions.</param>
         /// <param name="precalcedEnd">The precalced end.</param>
         /// <param name="tailZone">The tail zone.</param>
-        public PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, DateTimeZone tailZone) : base(id, false)
+        internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, DateTimeZone tailZone)
+            : base(id, false,
+                   ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Min),
+                   ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Max))
         {
             if (transitions == null)
             {
@@ -48,7 +51,7 @@ namespace NodaTime.TimeZones
             int size = transitions.Count;
             if (size == 0)
             {
-                throw new ArgumentException(@"There must be at least one transition", "transitions");
+                throw new ArgumentException("There must be at least one transition", "transitions");
             }
             periods = new ZoneInterval[size];
             for (int i = 0; i < size; i++)
@@ -58,23 +61,60 @@ namespace NodaTime.TimeZones
                 var period = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset, transition.Savings);
                 periods[i] = period;
             }
+            ValidatePeriods(periods, tailZone);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class.
+        /// This is only visible to make testing simpler.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="periods">The periods.</param>
         /// <param name="tailZone">The tail zone.</param>
-        private PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone) : base(id, false)
+        internal PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone)
+            : base(id, false,
+                   ComputeOffset(periods, p => p.Offset, tailZone, Offset.Min),
+                   ComputeOffset(periods, p => p.Offset, tailZone, Offset.Max))
         {
             this.tailZone = tailZone;
             this.periods = periods;
+            ValidatePeriods(periods, tailZone);
+        }
+
+        /// <summary>
+        /// Validates that all the periods before the tail zone make sense. We have to start at the beginning of time,
+        /// and then have adjoining periods. This is only called in the 
+        /// </summary>
+        /// <remarks>This is only called from the constructors, but is internal to make it easier to test.</remarks>
+        /// <exception cref="ArgumentException">The periods specified are invalid</exception>
+        internal static void ValidatePeriods(ZoneInterval[] periods, DateTimeZone tailZone)
+        {
+            if (periods.Length == 0)
+            {
+                throw new ArgumentException("No periods specified in precalculated time zone");
+            }
+            if (periods[0].Start != Instant.MinValue)
+            {
+                throw new ArgumentException("Periods in precalculated time zone must start with the beginning of time");
+            }
+            for (int i = 0; i < periods.Length - 1; i++)
+            {
+                if (periods[i].End != periods[i + 1].Start)
+                {
+                    throw new ArgumentException("Non-adjoining ZoneIntervals for precalculated time zone");
+                }
+            }
+            if (tailZone == null && periods[periods.Length - 1].End != Instant.MaxValue)
+            {
+                throw new ArgumentException("Null tail zone given but periods don't cover all of time");
+            }
         }
 
         /// <summary>
         /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
         /// for the given instant.
+        /// TODO: Is it even possible for a zone to not have a zone interval for a particular instant? It makes no logical
+        /// sense. Suggest we state that this can't happen, and throw an exception...
         /// </summary>
         /// <param name="instant">The Instant to test.</param>
         /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
@@ -83,42 +123,20 @@ namespace NodaTime.TimeZones
             int last = periods.Length - 1;
             if (periods[last].End <= instant)
             {
-                return tailZone.GetZoneInterval(instant);
+                // Clamp the tail zone interval to start at the end of our final period, if necessary, so that the
+                // join is seamless.
+                ZoneInterval fromTailZone = tailZone.GetZoneInterval(instant);
+                return fromTailZone.Start < periods[last].End ? fromTailZone.WithStart(periods[last].End) : fromTailZone;
             }
+            // TODO: Consider using a binary search instead.
             for (var p = last; p >= 0; p--)
             {
+                // TODO: It's not clear how this would happen. Do we need it?
                 if (periods[p].End <= instant)
                 {
                     break;
                 }
                 if (periods[p].Contains(instant))
-                {
-                    return periods[p];
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the zone offset period for the given local instant. Null is returned if no period is defined by the time zone
-        /// for the given local instant.
-        /// </summary>
-        /// <param name="localInstant">The LocalInstant to test.</param>
-        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
-        internal override ZoneInterval GetZoneInterval(LocalInstant localInstant)
-        {
-            int last = periods.Length - 1;
-            if (periods[last].LocalEnd <= localInstant)
-            {
-                return tailZone.GetZoneInterval(localInstant);
-            }
-            for (var p = last; p >= 0; p--)
-            {
-                if (periods[p].LocalEnd <= localInstant)
-                {
-                    break;
-                }
-                if (periods[p].Contains(localInstant))
                 {
                     return periods[p];
                 }
@@ -133,7 +151,10 @@ namespace NodaTime.TimeZones
         /// <returns><c>true</c> if this instance is cachable; otherwise, <c>false</c>.</returns>
         public bool IsCachable()
         {
-            return tailZone != null;
+            // TODO: Work out some decent rules for this. Previously we would only cache if the
+            // tail zone was non-null... which was *always* the case due to the use of NullDateTimeZone.
+            // We could potentially go back to returning tailZone != null - benchmarking required.
+            return true;
         }
 
         #region I/O
@@ -188,5 +209,45 @@ namespace NodaTime.TimeZones
             return new PrecalculatedDateTimeZone(id, periods, tailZone);
         }
         #endregion // I/O
+
+        #region Offset computation for constructors
+        // Essentially Func<Offset, Offset, Offset>
+        private delegate Offset OffsetAggregator(Offset x, Offset y);
+        private delegate Offset OffsetExtractor<T>(T input);
+
+        // Reasonably simple way of computing the maximum/minimum offset
+        // from either periods or transitions, with or without a tail zone.
+        private static Offset ComputeOffset<T>(IEnumerable<T> elements,
+            OffsetExtractor<T> extractor,
+            DateTimeZone tailZone,
+            OffsetAggregator aggregator)
+        {
+            if (elements == null)
+            {
+                throw new ArgumentException("elements");
+            }
+            Offset ret;
+            using (var iterator = elements.GetEnumerator())
+            {
+                if (!iterator.MoveNext())
+                {
+                    throw new ArgumentException("No transitions / periods specified");
+                }
+                ret = extractor(iterator.Current);
+                while (iterator.MoveNext())
+                {
+                    ret = aggregator(ret, extractor(iterator.Current));
+                }
+            }
+            if (tailZone != null)
+            {
+                // Effectively a shortcut for picking either tailZone.MinOffset or
+                // tailZone.MaxOffset
+                Offset bestFromZone = aggregator(tailZone.MinOffset, tailZone.MaxOffset);
+                ret = aggregator(ret, bestFromZone);
+            }
+            return ret;
+        }
+        #endregion
     }
 }

@@ -43,5 +43,31 @@ namespace NodaTime.Test
         {
             return Offset.Create(hours, minutes, seconds, milliseconds);
         }
+
+        [Test]
+        public void Max()
+        {
+            Offset x = Offset.FromMilliseconds(100);
+            Offset y = Offset.FromMilliseconds(200);
+            Assert.AreEqual(y, Offset.Max(x, y));
+            Assert.AreEqual(y, Offset.Max(y, x));
+            Assert.AreEqual(x, Offset.Max(x, Offset.MinValue));
+            Assert.AreEqual(x, Offset.Max(Offset.MinValue, x));
+            Assert.AreEqual(Offset.MaxValue, Offset.Max(Offset.MaxValue, x));
+            Assert.AreEqual(Offset.MaxValue, Offset.Max(x, Offset.MaxValue));
+        }
+
+        [Test]
+        public void Min()
+        {
+            Offset x = Offset.FromMilliseconds(100);
+            Offset y = Offset.FromMilliseconds(200);
+            Assert.AreEqual(x, Offset.Min(x, y));
+            Assert.AreEqual(x, Offset.Min(y, x));
+            Assert.AreEqual(Offset.MinValue, Offset.Min(x, Offset.MinValue));
+            Assert.AreEqual(Offset.MinValue, Offset.Min(Offset.MinValue, x));
+            Assert.AreEqual(x, Offset.Min(Offset.MaxValue, x));
+            Assert.AreEqual(x, Offset.Min(x, Offset.MaxValue));
+        }
     }
 }

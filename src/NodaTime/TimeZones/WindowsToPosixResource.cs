@@ -44,7 +44,8 @@ namespace NodaTime.TimeZones
         static WindowsToPosixResource()
         {
             var manager = new ResourceManager(WindowToPosixMapBaseFull, Assembly.GetExecutingAssembly());
-            var map = ResourceHelper.LoadDictionary(manager, WindowToPosixMapKey);
+            var resources = ResourceHelper.GetDefaultResourceSet(manager);
+            var map = ResourceHelper.LoadDictionary(resources, WindowToPosixMapKey);
             foreach (var item in map)
             {
                 WindowsToPosixMap.Add(item.Key, item.Value);

@@ -1001,7 +1001,7 @@ namespace NodaTime.Format
                 {
                     return;
                 }
-                timezoneOffset = timezoneOffset - new Offset(minutes * NodaConstants.MillisecondsPerMinute);
+                timezoneOffset = timezoneOffset - Offset.FromMilliseconds(minutes * NodaConstants.MillisecondsPerMinute);
                 if (timezoneOffset == Offset.Zero && minFields <= 2)
                 {
                     return;
@@ -1017,7 +1017,7 @@ namespace NodaTime.Format
                 {
                     return;
                 }
-                timezoneOffset = timezoneOffset - new Offset(seconds * NodaConstants.MillisecondsPerSecond);
+                timezoneOffset = timezoneOffset - Offset.FromMilliseconds(seconds * NodaConstants.MillisecondsPerSecond);
                 if (timezoneOffset == Offset.Zero && minFields <= 3)
                 {
                     return;
@@ -1240,7 +1240,7 @@ namespace NodaTime.Format
                     }
                 }
 
-                bucket.Offset = new Offset(negative ? -offset : offset);
+                bucket.Offset = Offset.FromMilliseconds(negative ? -offset : offset);
                 return position;
             }
 
