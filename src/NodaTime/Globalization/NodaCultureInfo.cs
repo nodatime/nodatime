@@ -25,7 +25,7 @@ namespace NodaTime.Globalization
 {
     /// <summary>
     ///   Provides wrapper around a <see cref = "CultureInfo" /> that supports NodaTime formatting information. This allows
-    ///   for the <see cref = "NodaFormatInfo" /> data to be set into the <see cref = "Thread.CurrentUICulture" />
+    ///   for the <see cref = "NodaFormatInfo" /> data to be set into the <see cref = "Thread.CurrentCulture" />
     ///   so it does not have to be passed around. If the underlying culture info is read only then this is also
     ///   read only. To change it you need to clone it first.
     /// </summary>

@@ -21,6 +21,9 @@ using NodaTime.Globalization;
 
 namespace NodaTime.Format
 {
+    /// <summary>
+    ///   Provides a container for the interim parsed pieces of an <see cref = "Offset" /> value.
+    /// </summary>
     [DebuggerStepThrough]
     internal class OffsetParseInfo : ParseInfo, ISignedValue
     {
@@ -49,23 +52,41 @@ namespace NodaTime.Format
         /// </summary>
         internal int? Seconds;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "OffsetParseInfo" /> class.
+        /// </summary>
+        /// <param name = "formatInfo">The format info.</param>
+        /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
+        /// <param name = "parseStyles">The parse styles.</param>
         internal OffsetParseInfo(NodaFormatInfo formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
             : base(formatInfo, throwImmediate, parseStyles)
         {
         }
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "OffsetParseInfo" /> class.
+        /// </summary>
+        /// <param name = "value">The value.</param>
+        /// <param name = "formatInfo">The format info.</param>
+        /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
+        /// <param name = "parseStyles">The parse styles.</param>
         internal OffsetParseInfo(Offset value, NodaFormatInfo formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
             : this(formatInfo, throwImmediate, parseStyles)
         {
             Milliseconds = value.Milliseconds;
             IsNegative = value.IsNegative;
-            Sign = IsNegative ? formatInfo.NegativeSign : formatInfo.PositiveSign;
             Hours = value.Hours;
             Minutes = value.Minutes;
             Seconds = value.Seconds;
             FractionalSeconds = value.FractionalSeconds;
         }
 
+        /// <summary>
+        ///   Gets or sets the value.
+        /// </summary>
+        /// <value>
+        ///   The value.
+        /// </value>
         internal Offset Value { get; set; }
 
         #region ISignedValue Members
@@ -75,14 +96,17 @@ namespace NodaTime.Format
         /// <value>
         ///   <c>true</c> if this instance is negative; otherwise, <c>false</c>.
         /// </value>
-        public bool IsNegative { get; private set; }
+        public bool IsNegative { get; set; }
 
         /// <summary>
         ///   Gets the sign.
         /// </summary>
-        public string Sign { get; private set; }
+        public string Sign { get { return IsNegative ? FormatInfo.NegativeSign : FormatInfo.PositiveSign; } }
         #endregion
 
+        /// <summary>
+        ///   Calculates the value from the parsed pieces.
+        /// </summary>
         internal void CalculateValue()
         {
             int hours = Hours ?? 0;

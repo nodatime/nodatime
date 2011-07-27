@@ -15,9 +15,11 @@
 // limitations under the License.
 #endregion
 
+#region usings
 using System;
 using NodaTime.Format;
 using NodaTime.Globalization;
+#endregion
 
 namespace NodaTime
 {
@@ -318,6 +320,26 @@ namespace NodaTime
 
         #region Formatting
         /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        ///   -or- 
+        ///   null to use the default format defined for the type of the <see cref = "T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return OffsetFormat.Format(this, format, NodaFormatInfo.GetInstance(formatProvider));
+        }
+
+        /// <summary>
         ///   Returns a <see cref = "System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
@@ -358,26 +380,6 @@ namespace NodaTime
         public string ToString(IFormatProvider formatProvider)
         {
             return OffsetFormat.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
-        }
-
-        /// <summary>
-        ///   Formats the value of the current instance using the specified format.
-        /// </summary>
-        /// <returns>
-        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
-        /// </returns>
-        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
-        ///   -or- 
-        ///   null to use the default format defined for the type of the <see cref = "T:System.IFormattable" /> implementation. 
-        /// </param>
-        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
-        ///   -or- 
-        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
-        /// </param>
-        /// <filterpriority>2</filterpriority>
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            return OffsetFormat.Format(this, format, NodaFormatInfo.GetInstance(formatProvider));
         }
         #endregion Formatting
 
@@ -506,20 +508,25 @@ namespace NodaTime
         /// <param name = "hours">The number of hours.</param>
         /// <param name = "minutes">The number of minutes.</param>
         /// <param name = "seconds">The number of seconds.</param>
-        /// <param name = "milliseconds">The number of milliseconds.</param>
+        /// <param name = "fractionalSeconds">The number of milliseconds.</param>
         /// <returns>
         ///   A new <see cref = "Offset" /> representing the given values.
         /// </returns>
         /// <remarks>
         ///   TODO: not sure about the name. Anyone got a better one?
+        ///   TODO: The behaviour around negative values needs documenting too! (Make this internal for now?)
         /// </remarks>
-        public static Offset Create(int hours, int minutes, int seconds, int milliseconds)
+        public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds)
         {
-            return
-                Offset.FromMilliseconds((hours * NodaConstants.MillisecondsPerHour) + (minutes * NodaConstants.MillisecondsPerMinute) +
-                           (seconds * NodaConstants.MillisecondsPerSecond) + milliseconds);
+            int sign = Math.Sign(hours) < 0 ? -1 : 1;
+            int milliseconds = 0;
+            milliseconds += Math.Abs(hours) * NodaConstants.MillisecondsPerHour;
+            milliseconds += Math.Abs(minutes) * NodaConstants.MillisecondsPerMinute;
+            milliseconds += Math.Abs(seconds) * NodaConstants.MillisecondsPerSecond;
+            milliseconds += Math.Abs(fractionalSeconds);
+            return Offset.FromMilliseconds(sign * milliseconds);
         }
-
+        
         /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local
         /// time when added to an instant.

@@ -14,21 +14,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
 using System;
 using System.Diagnostics;
-using NodaTime.Properties;
 using System.Text;
+using NodaTime.Properties;
 #endregion
 
 namespace NodaTime.Format
 {
+    /// <summary>
+    ///   Provides the base for parsable strings: format strings (<see cref = "Pattern" />) and value
+    ///   strings (<see cref = "ParseString" />).
+    /// </summary>
     [DebuggerStepThrough]
     internal abstract class Parsable
     {
-        internal const char Nul = '\u0000';
+        /// <summary>
+        ///   A nul character. This character is not allowed in any parsable string and is used to
+        ///   indicate that the current character is not set.
+        /// </summary>
+        internal const char Nul = '\0';
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "Parsable" /> class.
+        /// </summary>
+        /// <param name = "value">The string to parse.</param>
         protected Parsable(string value)
         {
             if (value == null)
@@ -44,13 +55,45 @@ namespace NodaTime.Format
             Move(-1);
         }
 
+        /// <summary>
+        ///   Gets the current character.
+        /// </summary>
         internal char Current { get; private set; }
+
+        /// <summary>
+        ///   Gets a value indicating whether this instance has more characters.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has more characters; otherwise, <c>false</c>.
+        /// </value>
         internal bool HasMoreCharacters { get { return Index + 1 < Length; } }
+
+        /// <summary>
+        ///   Gets the current index into the string being parsed.
+        /// </summary>
         internal int Index { get; private set; }
+
+        /// <summary>
+        ///   Gets the length of the string being parsed.
+        /// </summary>
         internal int Length { get; private set; }
+
+        /// <summary>
+        ///   Gets the string being parsed.
+        /// </summary>
         internal string Value { get; private set; }
+
+        /// <summary>
+        ///   Gets the remainder the string that has not been parsed yet.
+        /// </summary>
         internal string Remainder { get { return Value.Substring(Index); } }
 
+        /// <summary>
+        ///   Returns a <see cref = "System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref = "System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             var builder = new StringBuilder();
@@ -92,11 +135,22 @@ namespace NodaTime.Format
             throw new FormatException(Resources.Parse_UnexpectedEndOfString);
         }
 
+        /// <summary>
+        ///   Returns the next character if there is one or <see cref = "Nul" /> if there isn't.
+        /// </summary>
+        /// <returns></returns>
         internal char PeekNext()
         {
             return HasMoreCharacters ? Value[Index + 1] : Nul;
         }
 
+        /// <summary>
+        ///   Moves the specified target index. If the new index is out of range of the valid indicies
+        ///   for this string then the index is set to the beginning or the end of the string whichever
+        ///   is nearest the requested index.
+        /// </summary>
+        /// <param name = "targetIndex">Index of the target.</param>
+        /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool Move(int targetIndex)
         {
             var inRange = 0 <= targetIndex && targetIndex < Length;
@@ -105,21 +159,38 @@ namespace NodaTime.Format
             return inRange;
         }
 
+        /// <summary>
+        ///   Moves to the current index. This resets various values and is used when the index
+        ///   is moved manually.
+        /// </summary>
+        /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool MoveCurrent()
         {
             return Move(Index);
         }
 
+        /// <summary>
+        ///   Moves to the enxt character.
+        /// </summary>
+        /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool MoveNext()
         {
             return Move(Index + 1);
         }
 
+        /// <summary>
+        ///   Moves to the previous character.
+        /// </summary>
+        /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool MovePrevious()
         {
             return Move(Index - 1);
         }
 
+        /// <summary>
+        ///   Moves the current index forward as long as the current character is a white space character.
+        /// </summary>
+        /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool SkipWhiteSpaces()
         {
             while (Current != Nul && char.IsWhiteSpace(Current))
@@ -129,6 +200,10 @@ namespace NodaTime.Format
             return Current != Nul;
         }
 
+        /// <summary>
+        ///   If the string starts with a quoted string then any leading white space characters in
+        ///   that string are removed. This modifies the value string.
+        /// </summary>
         internal void TrimLeadingInQuoteSpaces()
         {
             if (Length > 2)
@@ -149,6 +224,9 @@ namespace NodaTime.Format
             Move(-1);
         }
 
+        /// <summary>
+        ///   Any leading white space characters are removed. This modifies the value string.
+        /// </summary>
         internal void TrimLeadingWhiteSpaces()
         {
             Move(0);
@@ -164,6 +242,10 @@ namespace NodaTime.Format
             Move(-1);
         }
 
+        /// <summary>
+        ///   If the string end with a quoted string then any trailing white space characters in
+        ///   that string are removed. This modifies the value string.
+        /// </summary>
         internal void TrimTrailingInQuoteSpaces()
         {
             if (Length > 2)
@@ -178,6 +260,9 @@ namespace NodaTime.Format
             Move(-1);
         }
 
+        /// <summary>
+        ///   Any trailing white space characters are removed. This modifies the value string.
+        /// </summary>
         internal void TrimTrailingWhiteSpaces()
         {
             while (Length > 0 && char.IsWhiteSpace(Value[Length - 1]))

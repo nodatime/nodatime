@@ -22,37 +22,120 @@ using NodaTime.Properties;
 
 namespace NodaTime.Format
 {
+    /// <summary>
+    ///   Provides a container for the interim parsed pieces of values.
+    /// </summary>
     internal abstract class ParseInfo
     {
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "ParseInfo" /> class.
+        /// </summary>
+        /// <param name = "formatInfo">The format info.</param>
+        /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
         internal ParseInfo(NodaFormatInfo formatInfo, bool throwImmediate)
             : this(formatInfo, throwImmediate, DateTimeParseStyles.None)
         {
         }
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "ParseInfo" /> class.
+        /// </summary>
+        /// <param name = "formatInfo">The format info.</param>
+        /// <param name = "throwImmediate">if set to <c>true</c> [throw immediate].</param>
+        /// <param name = "parseStyles">The parse styles.</param>
         internal ParseInfo(NodaFormatInfo formatInfo, bool throwImmediate, DateTimeParseStyles parseStyles)
         {
             FormatInfo = formatInfo;
-            Failure = ParseFailureKind.None;
             ThrowImmediate = throwImmediate;
             AllowInnerWhite = (parseStyles & DateTimeParseStyles.AllowInnerWhite) != DateTimeParseStyles.None;
             AllowLeadingWhite = (parseStyles & DateTimeParseStyles.AllowLeadingWhite) != DateTimeParseStyles.None;
             AllowTrailingWhite = (parseStyles & DateTimeParseStyles.AllowTrailingWhite) != DateTimeParseStyles.None;
-            FailureMessageParameters = new object[0];
+            ClearFail();
         }
 
-        internal bool ThrowImmediate { get; private set; }
+        /// <summary>
+        ///   Gets or sets a value indicating whether we throw immediately upon a failure.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if we throw immediate; otherwise, <c>false</c>.
+        /// </value>
+        internal bool ThrowImmediate { get; set; }
+
+        /// <summary>
+        ///   Gets the failure type.
+        /// </summary>
         internal ParseFailureKind Failure { get; private set; }
+
+        /// <summary>
+        ///   Gets the name of the failure argument name if the failure is <see cref = "ParseFailureKind.ArgumentNull" />.
+        /// </summary>
+        /// <value>
+        ///   The name of the failure argument.
+        /// </value>
         internal string FailureArgumentName { get; private set; }
+
+        /// <summary>
+        ///   Gets the failure message.
+        /// </summary>
         internal string FailureMessage { get; private set; }
+
+        /// <summary>
+        ///   Gets the failure message parameters which are replaced in the failure message.
+        /// </summary>
         internal object[] FailureMessageParameters { get; private set; }
+
+        /// <summary>
+        ///   Gets a value indicating whether a failure has occurred.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if failed; otherwise, <c>false</c>.
+        /// </value>
         internal bool Failed { get { return Failure != ParseFailureKind.None; } }
+
+        /// <summary>
+        ///   Gets a value indicating whether inner white space is allowed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if inner white is allowed; otherwise, <c>false</c>.
+        /// </value>
         internal bool AllowInnerWhite { get; private set; }
+
+        /// <summary>
+        ///   Gets a value indicating whether leading white space is allowed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if leading white space is allowed; otherwise, <c>false</c>.
+        /// </value>
         internal bool AllowLeadingWhite { get; private set; }
+
+        /// <summary>
+        ///   Gets a value indicating whether trailing white space is allowed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if trailing white space is allowed; otherwise, <c>false</c>.
+        /// </value>
         internal bool AllowTrailingWhite { get; private set; }
+
+        /// <summary>
+        ///   Gets the format info object that controls the parsing of the object.
+        /// </summary>
         internal NodaFormatInfo FormatInfo { get; private set; }
 
-        protected virtual string DoubleAssignmentMessage { get { return Resources.Parse_DefaultDoubleAssignment; } }
+        /// <summary>
+        ///   Clears the failure information.
+        /// </summary>
+        internal void ClearFail()
+        {
+            Failure = ParseFailureKind.None;
+            FailureMessage = null;
+            FailureMessageParameters = new object[0];
+            FailureArgumentName = null;
+        }
 
+        /// <summary>
+        ///   Gets the failure exception object if a failure has occurred.
+        /// </summary>
+        /// <returns>An <see cref = "Exception" /> subclass or null.</returns>
         internal Exception GetFailureException()
         {
             switch (Failure)
@@ -61,52 +144,31 @@ namespace NodaTime.Format
                     return null;
                 case ParseFailureKind.ArgumentNull:
                     return new ArgumentNullException(FailureArgumentName, FailureMessage);
-                case ParseFailureKind.Format:
-                case ParseFailureKind.ParseEscapeAtEndOfString:
-                case ParseFailureKind.ParseDoubleAssigment:
-                case ParseFailureKind.ParseMissingEndQuote:
-                case ParseFailureKind.ParseRepeatCountExceeded:
-                case ParseFailureKind.ParseCannotParseValue:
-                case ParseFailureKind.ParseValueStringEmpty:
-                case ParseFailureKind.ParseFormatStringEmpty:
-                case ParseFailureKind.ParseFormatInvalid:
-                case ParseFailureKind.ParseFormatElementInvalid:
-                case ParseFailureKind.ParseEmptyFormatsArray:
-                case ParseFailureKind.ParseExtraValueCharacters:
-                case ParseFailureKind.ParsePercentDoubled:
-                case ParseFailureKind.ParsePercentAtEndOfString:
-                case ParseFailureKind.ParseQuotedStringMismatch:
-                case ParseFailureKind.ParseEscapedCharacterMismatch:
-                case ParseFailureKind.ParseMissingDecimalSeparator:
-                case ParseFailureKind.ParseTimeSeparatorMismatch:
-                case ParseFailureKind.ParseMismatchedNumber:
-                case ParseFailureKind.ParseMismatchedSpace:
-                case ParseFailureKind.ParseMismatchedCharacter:
-                case ParseFailureKind.ParseUnknownStandardFormat:
-                case ParseFailureKind.Parse12HourPatternNotSupported:
-                    return new ParseException(Failure, FailureMessage);
                 default:
-                    string message = string.Format(Resources.Parse_UnknownFailure, Failure) + Environment.NewLine + FailureMessage;
-                    return new InvalidOperationException(message); // TODO: figure out what exception to throw here.
+                    return new ParseException(Failure, FailureMessage);
             }
         }
 
+        /// <summary>
+        ///   Sets the failure information.
+        /// </summary>
+        /// <param name = "kind">The failure kind.</param>
+        /// <param name = "message">The failure message.</param>
+        /// <param name = "parameters">The optional failure parameters.</param>
+        /// <returns><c>false</c> indicating an error.</returns>
         private bool FailBasic(ParseFailureKind kind, string message, params object[] parameters)
         {
             Failure = kind;
             FailureMessageParameters = parameters;
-            FailureMessage = string.Format(message, parameters);
+            FailureMessage = string.Format(FormatInfo, message, parameters);
             return CheckImmediate();
         }
 
-        internal bool SetFormatError(string message, params object[] parameters)
-        {
-            Failure = ParseFailureKind.Format;
-            FailureMessageParameters = parameters;
-            FailureMessage = string.Format(message, parameters);
-            return CheckImmediate();
-        }
-
+        /// <summary>
+        ///   Reports an arugment null failure.
+        /// </summary>
+        /// <param name = "argumentName">Name of the argument.</param>
+        /// <returns><c>false</c> indicating an error.</returns>
         internal bool FailArgumentNull(string argumentName)
         {
             Failure = ParseFailureKind.ArgumentNull;
@@ -115,7 +177,12 @@ namespace NodaTime.Format
             return CheckImmediate();
         }
 
-        private bool CheckImmediate()
+        /// <summary>
+        ///   If the <see cref = "ThrowImmediate" /> flag is true and a failure has been registered an
+        ///   exception is thrown, otherwise returns a value indicating whether a failure has occurred.
+        /// </summary>
+        /// <returns></returns>
+        internal bool CheckImmediate()
         {
             if (ThrowImmediate)
             {
@@ -125,7 +192,7 @@ namespace NodaTime.Format
                     throw exception;
                 }
             }
-            return false;
+            return !Failed;
         }
 
         /// <summary>
@@ -151,6 +218,7 @@ namespace NodaTime.Format
             }
             return FailDoubleAssigment(patternCharacter);
         }
+
         internal bool FailParseEscapeAtEndOfString()
         {
             return FailBasic(ParseFailureKind.ParseEscapeAtEndOfString, Resources.Parse_EscapeAtEndOfString);
@@ -166,14 +234,14 @@ namespace NodaTime.Format
             return FailBasic(ParseFailureKind.ParseRepeatCountExceeded, Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
         }
 
-        internal bool FailParseCannotParseValue(string value, string typeName, string format)
+        internal bool FailParseCannotParseValue(string value, Type type, string format)
         {
-            return FailBasic(ParseFailureKind.ParseCannotParseValue, Resources.Parse_CannotParseValue, value, typeName, format);
+            return FailBasic(ParseFailureKind.ParseCannotParseValue, Resources.Parse_CannotParseValue, value, type.FullName, format);
         }
 
         internal bool FailDoubleAssigment(char patternCharacter)
         {
-            return FailBasic(ParseFailureKind.ParseDoubleAssigment, DoubleAssignmentMessage, patternCharacter);
+            return FailBasic(ParseFailureKind.ParseDoubleAssigment, Resources.Parse_DoubleAssignment, patternCharacter);
         }
 
         internal bool FailParseValueStringEmpty()
@@ -251,15 +319,34 @@ namespace NodaTime.Format
             return FailBasic(ParseFailureKind.ParseMismatchedCharacter, Resources.Parse_MismatchedCharacter, patternCharacter);
         }
 
-        internal bool FailParseUnknownStandardFormat(char patternCharacter, string typeName)
+        internal bool FailParseUnknownStandardFormat(char patternCharacter, Type type)
         {
-            return FailBasic(ParseFailureKind.ParseUnknownStandardFormat, Resources.Parse_UnknownStandardFormat, patternCharacter, typeName);
+            return FailBasic(ParseFailureKind.ParseUnknownStandardFormat, Resources.Parse_UnknownStandardFormat, patternCharacter, type.FullName);
         }
 
-        internal bool FailParse12HourPatternNotSupported(string typeName)
+        internal bool FailParse12HourPatternNotSupported(Type type)
         {
-            return FailBasic(ParseFailureKind.Parse12HourPatternNotSupported, Resources.Parse_12HourPatternNotSupported, typeName);
+            return FailBasic(ParseFailureKind.Parse12HourPatternNotSupported, Resources.Parse_12HourPatternNotSupported, type.FullName);
         }
 
+        internal bool FailParseNoMatchingFormat()
+        {
+            return FailBasic(ParseFailureKind.ParseNoMatchingFormat, Resources.Parse_NoMatchingFormat);
+        }
+
+        internal bool FailParseValueOutOfRange(object value, Type type)
+        {
+            return FailBasic(ParseFailureKind.ParseValueOutOfRange, Resources.Parse_ValueOutOfRange, value, type.FullName);
+        }
+
+        internal bool FailParseMissingSign()
+        {
+            return FailBasic(ParseFailureKind.ParseMissingSign, Resources.Parse_MissingSign);
+        }
+
+        internal bool FailParsePositiveSignInvalid()
+        {
+            return FailBasic(ParseFailureKind.ParsePositiveSignInvalid, Resources.Parse_PositiveSignInvalid);
+        }
     }
 }

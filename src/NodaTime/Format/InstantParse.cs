@@ -173,7 +173,7 @@ namespace NodaTime.Format
                 parseInfo.Value = new Instant(number);
                 return true;
             }
-            return parseInfo.FailParseCannotParseValue(value, typeof(Instant).FullName, format.ToString());
+            return parseInfo.FailParseCannotParseValue(value, typeof(Instant), format.ToString());
         }
 
         private static bool TryParseExact(string value, string format, InstantParseInfo parseInfo)

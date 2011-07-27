@@ -14,35 +14,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
-using System;
 using NodaTime.Format;
+using NodaTime.Globalization;
 using NUnit.Framework;
 #endregion
 
 namespace NodaTime.Test.Format
 {
-    public class ParseData<T> : TestCaseData
+    [TestFixture]
+    [Category("Formating")]
+    [Category("Format")]
+    public class OffsetFormatTest
     {
-        public ParseData(string value, string format, T result, string what)
-            : this(value, format, result, DateTimeParseStyles.None, what)
+        [Test]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
+        public void TestFormat(OffsetFormattingTestSupport.OffsetData data)
         {
+            FormattingTestSupport.RunFormatTest(data, () => OffsetFormat.Format(data.V, data.F, new NodaFormatInfo(data.C)));
         }
-
-        public ParseData(string value, string format, T result, DateTimeParseStyles styles, string what)
-            : base(value, format, result, styles)
-        {
-            string name = String.Format("value: [{0}], format: [{1}], {2}", value ?? "null", format ?? "null", what);
-            SetName(name);
-        }
-    }
-
-    public class ParseDataX<T>
-    {
-        public string Value { get; set; }
-        public string Format { get; set; }
-        public T Result { get; set; }
-        public DateTimeParseStyles Styles { get; set; }
     }
 }

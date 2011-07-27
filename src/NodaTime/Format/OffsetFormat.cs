@@ -14,21 +14,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
 using System;
 using System.Text;
 using NodaTime.Globalization;
-using NodaTime.Utility;
 using NodaTime.Properties;
-
 #endregion
 
 namespace NodaTime.Format
 {
     /// <summary>
-    ///   Provides a <see cref = "FormatterBase{T}" /> factory for generating <see cref = "Offset" />
-    ///   formatters base on the format string.
+    ///   Supports the formatting of <see cref="Offset"/> objects.
     /// </summary>
     internal static class OffsetFormat
     {
@@ -49,7 +45,7 @@ namespace NodaTime.Format
             }
             if (format.Length == 1)
             {
-                return FormatStandard(parseInfo, Char.ToLowerInvariant(format[0]));
+                return FormatStandard(parseInfo, format[0]);
             }
             return FormatPattern(parseInfo, format);
         }
@@ -100,10 +96,14 @@ namespace NodaTime.Format
                         outputBuffer.Append(pattern.GetQuotedString(parseInfo));
                         break;
                     case '\\':
+                        if (!pattern.HasMoreCharacters)
+                        {
+                            parseInfo.FailParseEscapeAtEndOfString();
+                        }
                         outputBuffer.Append(pattern.GetNextCharacter());
                         break;
                     case 'h':
-                        parseInfo.FailParse12HourPatternNotSupported(typeof(Offset).FullName);
+                        parseInfo.FailParse12HourPatternNotSupported(typeof(Offset));
                         break; // Never gets here
                     case 'H':
                         repeatLength = pattern.GetRepeatCount(2, parseInfo);
@@ -147,7 +147,6 @@ namespace NodaTime.Format
             string pattern;
             switch (formatCharacter)
             {
-                case 'i':
                 case 'g':
                     return FormatStandardGeneral(parseInfo, formatInfo);
                 case 'n':

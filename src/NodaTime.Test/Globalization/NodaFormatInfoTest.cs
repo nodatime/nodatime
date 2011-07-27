@@ -76,8 +76,8 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestConstructor_null()
         {
-            Assert.Throws<ArgumentNullException>(() => new NodaFormatInfo(null));
-
+            var info = new NodaFormatInfo(null);
+            Assert.AreEqual(Thread.CurrentThread.CurrentCulture.Name, info.CultureInfo.Name);
         }
 
         [Test]
@@ -154,6 +154,7 @@ namespace NodaTime.Test.Globalization
             {
                 var provider = new EmptyFormatProvider();
                 var actual = NodaFormatInfo.GetInstance(provider);
+                int x = 10;
                 Assert.AreSame(enUs.Name, actual.Name);
             }
         }
@@ -186,15 +187,15 @@ namespace NodaTime.Test.Globalization
         public void TestGetInstance_null()
         {
             NodaFormatInfo.ClearCache();
-            using (CultureSaver.SetUiCulture(enUs))
+            using (CultureSaver.SetBasicCulture(enUs))
             {
                 var info = NodaFormatInfo.GetInstance(null);
-                Assert.AreEqual(Thread.CurrentThread.CurrentUICulture, info.CultureInfo);
+                Assert.AreEqual(Thread.CurrentThread.CurrentCulture, info.CultureInfo);
             }
-            using (CultureSaver.SetUiCulture(enGb))
+            using (CultureSaver.SetBasicCulture(enGb))
             {
                 var info = NodaFormatInfo.GetInstance(null);
-                Assert.AreEqual(Thread.CurrentThread.CurrentUICulture, info.CultureInfo);
+                Assert.AreEqual(Thread.CurrentThread.CurrentCulture, info.CultureInfo);
             }
         }
 
