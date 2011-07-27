@@ -75,12 +75,12 @@ namespace NodaTime.Test.Format
                 }
             }
             Func<string> doit = () =>
-                                {
-                                    using (CultureSaver.SetCultures(data.ThreadCulture, data.ThreadUiCulture))
-                                    {
-                                        return test();
-                                    }
-                                };
+            {
+                using (CultureSaver.SetCultures(data.ThreadCulture, data.ThreadUiCulture))
+                {
+                    return test();
+                }
+            };
             if (data.Exception == null)
             {
                 Assert.AreEqual(data.S, doit());

@@ -20,6 +20,8 @@ using System.Globalization;
 using System.Threading;
 using NodaTime.Globalization;
 using NUnit.Framework;
+using NodaTime.Test.Format;
+
 #endregion
 
 namespace NodaTime.Test.Globalization
@@ -96,7 +98,7 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestGetFormat()
         {
-            using (CultureSaver.SetCultures(enGb))
+            using (CultureSaver.SetCultures(enGb, FailingCultureInfo.Instance))
             {
                 var info = new NodaFormatInfo(enUs);
                 Assert.AreSame(info, info.GetFormat(typeof(NodaFormatInfo)));
@@ -104,12 +106,10 @@ namespace NodaTime.Test.Globalization
                 var actualNfi = info.GetFormat(typeof(NumberFormatInfo));
                 Assert.AreSame(enUs.NumberFormat, actualNfi);
                 Assert.AreNotSame(Thread.CurrentThread.CurrentCulture.NumberFormat, actualNfi);
-                Assert.AreNotSame(Thread.CurrentThread.CurrentUICulture.NumberFormat, actualNfi);
 
                 var actualDtfi = info.GetFormat(typeof(DateTimeFormatInfo));
                 Assert.AreSame(enUs.DateTimeFormat, actualDtfi);
                 Assert.AreNotSame(Thread.CurrentThread.CurrentCulture.DateTimeFormat, actualDtfi);
-                Assert.AreNotSame(Thread.CurrentThread.CurrentUICulture.DateTimeFormat, actualDtfi);
             }
         }
 
@@ -139,7 +139,7 @@ namespace NodaTime.Test.Globalization
         public void TestGetInstance_CultureInfo()
         {
             NodaFormatInfo.ClearCache();
-            using (CultureSaver.SetUiCulture(enUs))
+            using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
             {
                 var actual = NodaFormatInfo.GetInstance(enGb);
                 Assert.AreSame(enGb.Name, actual.Name);
@@ -150,7 +150,7 @@ namespace NodaTime.Test.Globalization
         public void TestGetInstance_IFormatProvider()
         {
             NodaFormatInfo.ClearCache();
-            using (CultureSaver.SetUiCulture(enUs))
+            using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
             {
                 var provider = new EmptyFormatProvider();
                 var actual = NodaFormatInfo.GetInstance(provider);
@@ -162,7 +162,7 @@ namespace NodaTime.Test.Globalization
         public void TestGetInstance_NodaCultureInfo()
         {
             NodaFormatInfo.ClearCache();
-            using (CultureSaver.SetUiCulture(enUs))
+            using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
             {
                 var info = new NodaCultureInfo("en-GB");
                 var actual = NodaFormatInfo.GetInstance(info);
@@ -174,7 +174,7 @@ namespace NodaTime.Test.Globalization
         public void TestGetInstance_NodaFormatInfo()
         {
             NodaFormatInfo.ClearCache();
-            using (CultureSaver.SetUiCulture(enUs))
+            using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
             {
                 var info = new NodaFormatInfo(enGb);
                 var actual = NodaFormatInfo.GetInstance(info);
@@ -186,12 +186,12 @@ namespace NodaTime.Test.Globalization
         public void TestGetInstance_null()
         {
             NodaFormatInfo.ClearCache();
-            using (CultureSaver.SetBasicCulture(enUs))
+            using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
             {
                 var info = NodaFormatInfo.GetInstance(null);
                 Assert.AreEqual(Thread.CurrentThread.CurrentCulture, info.CultureInfo);
             }
-            using (CultureSaver.SetBasicCulture(enGb))
+            using (CultureSaver.SetCultures(enGb, FailingCultureInfo.Instance))
             {
                 var info = NodaFormatInfo.GetInstance(null);
                 Assert.AreEqual(Thread.CurrentThread.CurrentCulture, info.CultureInfo);
