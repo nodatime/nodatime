@@ -41,7 +41,10 @@ namespace NodaTime.Test
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
         public void TestToString_Format(OffsetFormattingTestSupport.OffsetData data)
         {
-            data.ThreadCulture = data.C ?? Thread.CurrentThread.CurrentCulture;
+            if (data.C != null)
+            {
+                data.ThreadCulture = data.C;
+            }
             FormattingTestSupport.RunFormatTest(data, () => data.V.ToString(data.F));
         }
 
@@ -61,7 +64,10 @@ namespace NodaTime.Test
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatWithoutFormat")]
         public void TestToString_NoArg(OffsetFormattingTestSupport.OffsetData data)
         {
-            data.ThreadCulture = data.C ?? Thread.CurrentThread.CurrentCulture;
+            if (data.C != null)
+            {
+                data.ThreadCulture = data.C;
+            }
             FormattingTestSupport.RunFormatTest(data, () => data.V.ToString());
         }
     }
