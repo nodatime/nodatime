@@ -18,6 +18,10 @@
 using NodaTime.Format;
 using NodaTime.Globalization;
 using NUnit.Framework;
+using System.Resources;
+using NodaTime.Properties;
+using System.Globalization;
+using System;
 #endregion
 
 namespace NodaTime.Test.Format
@@ -27,6 +31,16 @@ namespace NodaTime.Test.Format
     [Category("Format")]
     public class OffsetFormatTest
     {
+        [Test]
+        public void TestFormatJlk()
+        {
+            // OffsetFormat.Format(Offset.Zero, "hh", new NodaFormatInfo(FormattingTestSupport.EnUs));
+            
+            TestFormat(new OffsetFormattingTestSupport.OffsetData(5, 12, 34, 567) { C = FormattingTestSupport.FrFr, S = "+5:12:34,567", F = "g" });
+            
+        }
+        
+
         [Test]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]

@@ -15,11 +15,12 @@
 // limitations under the License.
 #endregion
 
+#region usings
 using System;
 using System.Globalization;
-using System.Threading;
 using NodaTime.Utility;
-using NodaTime.Globalization;
+
+#endregion
 
 namespace NodaTime.Format
 {
@@ -30,10 +31,16 @@ namespace NodaTime.Format
         /// </summary>
         /// <param name = "value">The value to format.</param>
         /// <param name = "format">The format string. If <c>null</c> or empty defaults to "g".</param>
-        /// <param name = "formatInfo">The <see cref = "IFormatProvider" /> to use. If <c>null</c> the thread's current culture is used.</param>
+        /// <param name = "formatProvider">The <see cref = "IFormatProvider" /> to use. If <c>null</c> the thread's current culture is used.</param>
         /// <exception cref = "FormatException"></exception>
         /// <returns>The value formatted as a string.</returns>
-        internal static string Format(Instant value, string format, NodaFormatInfo formatInfo)
+        internal static string Format(Instant value, string format, IFormatProvider formatProvider)
+        {
+            var formatter = MakeFormatter(format, formatProvider);
+            return formatter.Format(value);
+        }
+
+        internal static INodaFormatter<Instant> MakeFormatter(string format, IFormatProvider formatProvider)
         {
             if (string.IsNullOrEmpty(format))
             {
@@ -41,39 +48,98 @@ namespace NodaTime.Format
             }
             if (format.Length > 1)
             {
-                throw new FormatException("Invalid format string: precision not allowed");
+                throw FormatError.PrecisionNotSupported(format, typeof(Instant));
             }
             char formatChar = Char.ToLowerInvariant(format[0]);
             if (Char.IsWhiteSpace(formatChar))
             {
-                throw new FormatException("Invalid format string: format cannot contain whitespace");
+                throw FormatError.StandardFormatWhitespace(format, typeof(Instant));
             }
             switch (formatChar)
             {
                 case 'g':
-                    return FormatG(value);
+                    return new InstantFormatterG(formatProvider);
                 case 'd':
-                    return value.Ticks.ToString("D", formatInfo);
+                    return new InstantFormatterD(formatProvider);
                 case 'n':
-                    return value.Ticks.ToString("N0", formatInfo);
+                    return new InstantFormatterN(formatProvider);
                 default:
-                    throw new FormatException("Invalid format string: unknown flag");
+                    throw FormatError.UnknownStandardFormat(formatChar, typeof(Instant));
             }
         }
 
-        private static string FormatG(Instant value)
+        #region Nested type: InstantFormatterD
+        private sealed class InstantFormatterD : AbstractNodaFormatter<Instant>
         {
-            if (value.Ticks == Instant.MinValue.Ticks)
+            internal InstantFormatterD(IFormatProvider formatProvider) : base(formatProvider)
             {
-                return Instant.BeginningOfTimeLabel;
             }
-            if (value.Ticks == Instant.MaxValue.Ticks)
+
+            public override string Format(Instant value)
             {
-                return Instant.EndOfTimeLabel;
+                return value.Ticks.ToString("D", FormatProvider);
             }
-            var utc = SystemConversions.InstantToDateTime(value);
-            return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.Month, utc.Day,
-                                 utc.Hour, utc.Minute, utc.Second);
+
+            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new InstantFormatterD(formatProvider);
+            }
         }
+        #endregion
+
+        #region Nested type: InstantFormatterG
+        private sealed class InstantFormatterG : AbstractNodaFormatter<Instant>
+        {
+            internal InstantFormatterG(IFormatProvider formatProvider) : base(formatProvider)
+            {
+            }
+
+            public override string Format(Instant value)
+            {
+                if (value.Ticks == Instant.MinValue.Ticks)
+                {
+                    return Instant.BeginningOfTimeLabel;
+                }
+                if (value.Ticks == Instant.MaxValue.Ticks)
+                {
+                    return Instant.EndOfTimeLabel;
+                }
+                DateTime utc = SystemConversions.InstantToDateTime(value);
+                return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.Month, utc.Day, utc.Hour, utc.Minute,
+                                     utc.Second);
+            }
+
+            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new InstantFormatterG(formatProvider);
+            }
+        }
+        #endregion
+
+        #region Nested type: InstantFormatterN
+        /// <summary>
+        /// A Noda formatter implementation for the N pattern (ticks as a group separated number).
+        /// </summary>
+        private sealed class InstantFormatterN : AbstractNodaFormatter<Instant>
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="InstantFormatterN"/> class.
+            /// </summary>
+            /// <param name="formatProvider">The format provider.</param>
+            internal InstantFormatterN(IFormatProvider formatProvider) : base(formatProvider)
+            {
+            }
+
+            public override string Format(Instant value)
+            {
+                return value.Ticks.ToString("N0", FormatProvider);
+            }
+
+            public override INodaFormatter<Instant> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return new InstantFormatterN(formatProvider);
+            }
+        }
+        #endregion
     }
 }

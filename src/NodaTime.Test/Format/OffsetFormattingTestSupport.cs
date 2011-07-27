@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using NodaTime.Format;
+using NodaTime.Properties;
 #endregion
 
 namespace NodaTime.Test.Format
@@ -101,32 +102,32 @@ namespace NodaTime.Test.Format
             new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = LeadingSpace },
             new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = SurroundingSpace },
             new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = TrailingSpace },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "", F = "g", Kind = ParseFailureKind.ParseValueStringEmpty },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "1", F = "HH", Kind = ParseFailureKind.ParseMismatchedNumber, Parameters = {"HH"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "1", F = "mm", Kind = ParseFailureKind.ParseMismatchedNumber, Parameters = {"mm"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "1", F = "ss", Kind = ParseFailureKind.ParseMismatchedNumber, Parameters = {"ss"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "12", F = "%f", Kind = ParseFailureKind.ParseExtraValueCharacters, Parameters = {"2"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "12", F = "%F", Kind = ParseFailureKind.ParseExtraValueCharacters, Parameters = {"2"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "12:34 ", F = "HH:mm", Kind = ParseFailureKind.ParseExtraValueCharacters, Parameters = {" "} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "", Kind = ParseFailureKind.ParseFormatStringEmpty},
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "%%H", Kind = ParseFailureKind.ParsePercentDoubled},
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "ff", Kind = ParseFailureKind.ParseExtraValueCharacters, Parameters = {"3"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "FF", Kind = ParseFailureKind.ParseExtraValueCharacters, Parameters = {"3"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = null, Kind = ParseFailureKind.ArgumentNull, ArgumentName = "format" },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "1234", F = "fff", Kind = ParseFailureKind.ParseExtraValueCharacters, Parameters = {"4"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "1234", F = "FFF", Kind = ParseFailureKind.ParseExtraValueCharacters, Parameters = {"4"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "1a", F = "H ", Kind = ParseFailureKind.ParseMismatchedSpace},
-            new OffsetData(Offset.Zero) { C = EnUs, S = "2:", F = "%H", Kind = ParseFailureKind.ParseExtraValueCharacters, Parameters = {":"}},
-            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%.", Kind = ParseFailureKind.ParseMissingDecimalSeparator},
-            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%:", Kind = ParseFailureKind.ParseTimeSeparatorMismatch},
-            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%H", Kind = ParseFailureKind.ParseMismatchedNumber, Parameters = {"H"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%m", Kind = ParseFailureKind.ParseMismatchedNumber, Parameters = {"m"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%s", Kind = ParseFailureKind.ParseMismatchedNumber, Parameters = {"s"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = ".H", Kind = ParseFailureKind.ParseMissingDecimalSeparator},
-            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "\\'", Kind = ParseFailureKind.ParseEscapedCharacterMismatch, Parameters = {'\''} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "axc", F = "'abc'", Kind = ParseFailureKind.ParseQuotedStringMismatch},
-            new OffsetData(Offset.Zero) { C = EnUs, S = "z", F = "%y", Kind = ParseFailureKind.ParseMismatchedCharacter, Parameters = {'y'} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = null, F = "g", Kind = ParseFailureKind.ArgumentNull, ArgumentName = "value" },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "", F = "g", Exception=typeof(FormatException), Message = Resources.Parse_ValueStringEmpty },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "1", F = "HH", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MismatchedNumber, Parameters = {"HH"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "1", F = "mm", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MismatchedNumber, Parameters = {"mm"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "1", F = "ss", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MismatchedNumber, Parameters = {"ss"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "12", F = "%f", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {"2"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "12", F = "%F", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {"2"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "12:34 ", F = "HH:mm", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {" "} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "", Exception=typeof(FormatException), Message = Resources.Parse_FormatStringEmpty},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "%%H", Exception=typeof(FormatException), Message = Resources.Parse_PercentDoubled},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "ff", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {"3"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "FF", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {"3"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = null, Exception=typeof(ArgumentNullException), ArgumentName = "format" },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "1234", F = "fff", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {"4"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "1234", F = "FFF", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {"4"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "1a", F = "H ", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MismatchedSpace},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "2:", F = "%H", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {":"}},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%.", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MissingDecimalSeparator},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%:", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_TimeSeparatorMismatch},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%H", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MismatchedNumber, Parameters = {"H"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%m", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MismatchedNumber, Parameters = {"m"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%s", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MismatchedNumber, Parameters = {"s"} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = ".H", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MissingDecimalSeparator},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "\\'", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_EscapedCharacterMismatch, Parameters = {'\''} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "axc", F = "'abc'", Exception=typeof(FormatException), Message = Resources.Parse_QuotedStringMismatch},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "z", F = "%y", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MismatchedCharacter, Parameters = {'y'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = null, F = "g", Exception=typeof(ArgumentNullException), ArgumentName = "value" },
         };
 
         /// <summary>
@@ -220,21 +221,21 @@ namespace NodaTime.Test.Format
             new OffsetData(Offset.Zero) { C = EnUs, S = "+0:00", F = "m"  },
             new OffsetData(Offset.Zero) { C = EnUs, S = "+0:00:00", F = "l"  },
             new OffsetData(Offset.Zero) { C = EnUs, S = "+0:00:00.000", F = "f"  },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "!", Kind = ParseFailureKind.ParseUnknownStandardFormat, Parameters = {'!', typeof(Offset).FullName}},
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "%", Kind = ParseFailureKind.ParseUnknownStandardFormat, Parameters = { '%', typeof(Offset).FullName } },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "%%", Kind = ParseFailureKind.ParsePercentDoubled },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "%\\", Kind = ParseFailureKind.ParseEscapeAtEndOfString },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "\\", Kind = ParseFailureKind.ParseUnknownStandardFormat, Parameters = { '\\', typeof(Offset).FullName } },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "ffff", Kind = ParseFailureKind.ParseRepeatCountExceeded, Parameters = { 'f', 3 } },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "H%", Kind = ParseFailureKind.ParsePercentAtEndOfString },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "hh", Kind = ParseFailureKind.Parse12HourPatternNotSupported },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "HHH", Kind = ParseFailureKind.ParseRepeatCountExceeded, Parameters = { 'f', 3 } },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "mmm", Kind = ParseFailureKind.ParseRepeatCountExceeded, Parameters = { 'f', 3 } },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "mmmmmmmmmmmmmmmmmmm", Kind = ParseFailureKind.ParseRepeatCountExceeded, Parameters = { 'f', 3 } },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "'qwe", Kind = ParseFailureKind.ParseMissingEndQuote, Parameters = { '\'' } },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "'qwe\\", Kind = ParseFailureKind.ParseEscapeAtEndOfString },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "'qwe\\'", Kind = ParseFailureKind.ParseMissingEndQuote, Parameters = { '\'' } },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "sss", Kind = ParseFailureKind.ParseRepeatCountExceeded, Parameters = { 'f', 3 } },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "!", Exception=typeof(FormatException), Message = Resources.Parse_UnknownStandardFormat, Parameters = {'!', typeof(Offset).FullName}},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "%", Exception=typeof(FormatException), Message = Resources.Parse_UnknownStandardFormat, Parameters = { '%', typeof(Offset).FullName } },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "%%", Exception=typeof(FormatException), Message = Resources.Parse_PercentDoubled },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "%\\", Exception=typeof(FormatException), Message = Resources.Parse_EscapeAtEndOfString },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "\\", Exception=typeof(FormatException), Message = Resources.Parse_UnknownStandardFormat, Parameters = { '\\', typeof(Offset).FullName } },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "ffff", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_RepeatCountExceeded, Parameters = { 'f', 3 } },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "H%", Exception=typeof(FormatException), Message = Resources.Parse_PercentAtEndOfString },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "hh", Exception=typeof(FormatException), Message = Resources.Parse_Hour12PatternNotSupported, Parameters = { typeof(Offset).FullName } },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "HHH", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_RepeatCountExceeded, Parameters = { 'H', 2 } },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "mmm", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_RepeatCountExceeded, Parameters = { 'm', 2 } },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "mmmmmmmmmmmmmmmmmmm", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_RepeatCountExceeded, Parameters = { 'm', 2 } },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "'qwe", Exception=typeof(FormatException), Message = Resources.Parse_MissingEndQuote, Parameters = { '\'' } },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "'qwe\\", Exception=typeof(FormatException), Message = Resources.Parse_EscapeAtEndOfString },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "'qwe\\'", Exception=typeof(FormatException), Message = Resources.Parse_MissingEndQuote, Parameters = { '\'' } },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = "sss", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_RepeatCountExceeded, Parameters = { 's', 2 } },
             new OffsetData(5, 0, 0, 0) { C = FrFr, S = "+5", F = "g" },
             new OffsetData(5, 12, 0, 0) { C = FrFr, S = "+5:12", F = "g" },
             new OffsetData(5, 12, 34, 0) { C = FrFr, S = "+5:12:34", F = "g" },
@@ -256,7 +257,7 @@ namespace NodaTime.Test.Format
         };
 
         /// <summary>
-        ///   Base for building filtered lists of test data. This is here because we do not have access
+        ///   Base for building filtered lists of parsing test data. This is here because we do not have access
         ///   to LINQ.
         /// </summary>
         /// <param name = "test">The test predicate.</param>
@@ -280,10 +281,34 @@ namespace NodaTime.Test.Format
         }
 
         /// <summary>
+        ///   Base for building filtered lists of formatting test data. This is here because we do not have access
+        ///   to LINQ.
+        /// </summary>
+        /// <param name = "test">The test predicate.</param>
+        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        internal static IEnumerable<OffsetData> FilteredFormatTests(Predicate<OffsetData> test)
+        {
+            foreach (var data in OffsetFormatData)
+            {
+                if (test(data))
+                {
+                    yield return data;
+                }
+            }
+            foreach (var data in OffsetFormattingCommonData)
+            {
+                if (test(data))
+                {
+                    yield return data;
+                }
+            }
+        }
+
+        /// <summary>
         ///   Returns an iterator of test data with the parse style specified.
         /// </summary>
         /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> WithStyles()
+        internal static IEnumerable<OffsetData> ParseWithStyles()
         {
             return FilteredParseTests(data => data.Styles != DateTimeParseStyles.None);
         }
@@ -292,7 +317,7 @@ namespace NodaTime.Test.Format
         ///   Returns an iterator of test data with no parse style specified.
         /// </summary>
         /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> WithoutStyles()
+        internal static IEnumerable<OffsetData> ParseWithoutStyles()
         {
             return FilteredParseTests(data => data.Styles == DateTimeParseStyles.None);
         }
@@ -301,9 +326,9 @@ namespace NodaTime.Test.Format
         ///   Returns an iterator of test data with no format string specified.
         /// </summary>
         /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> WithoutFormat()
+        internal static IEnumerable<OffsetData> FormatWithoutFormat()
         {
-            return FilteredParseTests(data => data.F == null);
+            return FilteredFormatTests(data => data.F == null);
         }
 
         #region Nested type: OffsetData
@@ -364,5 +389,7 @@ namespace NodaTime.Test.Format
             }
         }
         #endregion
+
+        public static string Resource { get; set; }
     }
 }

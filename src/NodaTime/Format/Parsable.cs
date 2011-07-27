@@ -46,7 +46,7 @@ namespace NodaTime.Format
             {
                 throw new ArgumentNullException("value");
             }
-            if (value == string.Empty)
+            if (string.IsNullOrEmpty(value))
             {
                 throw new ArgumentException(Resources.Noda_StringEmpty, "value");
             }
@@ -132,7 +132,7 @@ namespace NodaTime.Format
             {
                 return Current;
             }
-            throw new FormatException(Resources.Parse_UnexpectedEndOfString);
+            throw FormatError.UnexpectedEndOfString(Value);
         }
 
         /// <summary>

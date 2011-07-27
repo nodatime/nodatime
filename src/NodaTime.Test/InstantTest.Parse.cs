@@ -32,8 +32,7 @@ namespace NodaTime.Test
         [Category("Parse")]
         public void TestParse_BadValue()
         {
-            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseCannotParseValue),
-                          () => Instant.Parse("ads"));
+            Assert.Catch<FormatException>(() => Instant.Parse("ads"));
         }
 
         [Test]
@@ -68,8 +67,7 @@ namespace NodaTime.Test
         [Category("Parse")]
         public void TestParse_N_extraSpace()
         {
-            Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(ParseFailureKind.ParseCannotParseValue),
-                          () => Instant.Parse(" " + threeMillion.Ticks.ToString("N0")));
+            Assert.Catch<FormatException>(() => Instant.Parse(" " + threeMillion.Ticks.ToString("N0")));
         }
 
         [Test]
@@ -215,8 +213,7 @@ namespace NodaTime.Test
         public void TestTryParseExact_N_null()
         {
             Instant result;
-            Assert.IsFalse(Instant.TryParseExact(null, "n", null, DateTimeParseStyles.None, out result));
-            Assert.AreEqual(Instant.MinValue, result);
+            Assert.Throws<ArgumentNullException>(() => Instant.TryParseExact(null, "n", null, DateTimeParseStyles.None, out result));
         }
 
         [Test]
@@ -225,8 +222,7 @@ namespace NodaTime.Test
         public void TestTryParseExact_NullFormat()
         {
             Instant result;
-            Assert.IsFalse(Instant.TryParseExact("0", (string)null, null, DateTimeParseStyles.None, out result));
-            Assert.AreEqual(Instant.MinValue, result);
+            Assert.Throws<ArgumentNullException>(() => Instant.TryParseExact("0", (string)null, null, DateTimeParseStyles.None, out result));
         }
 
         [Test]
@@ -235,8 +231,7 @@ namespace NodaTime.Test
         public void TestTryParseExact_NullFormatList()
         {
             Instant result;
-            Assert.IsFalse(Instant.TryParseExact("0", (string[])null, null, DateTimeParseStyles.None, out result));
-            Assert.AreEqual(Instant.MinValue, result);
+            Assert.Throws<ArgumentNullException>(() => Instant.TryParseExact("0", (string[])null, null, DateTimeParseStyles.None, out result));
         }
 
         [Test]
@@ -295,8 +290,7 @@ namespace NodaTime.Test
         public void TestTryParse_null()
         {
             Instant result;
-            Assert.IsFalse(Instant.TryParse(null, null, DateTimeParseStyles.None, out result));
-            Assert.AreEqual(Instant.MinValue, result);
+            Assert.Throws<ArgumentNullException>(() => Instant.TryParse(null, null, DateTimeParseStyles.None, out result));
         }
     }
 }

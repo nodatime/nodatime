@@ -154,7 +154,6 @@ namespace NodaTime.Test.Globalization
             {
                 var provider = new EmptyFormatProvider();
                 var actual = NodaFormatInfo.GetInstance(provider);
-                int x = 10;
                 Assert.AreSame(enUs.Name, actual.Name);
             }
         }

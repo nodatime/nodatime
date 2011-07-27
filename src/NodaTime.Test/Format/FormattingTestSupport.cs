@@ -19,6 +19,7 @@ using System;
 using System.Globalization;
 using NodaTime.Format;
 using NUnit.Framework;
+using NodaTime.Properties;
 #endregion
 
 namespace NodaTime.Test.Format
@@ -80,17 +81,18 @@ namespace NodaTime.Test.Format
                                         return test();
                                     }
                                 };
-            switch (data.Kind)
+            if (data.Exception == null)
             {
-                case ParseFailureKind.None:
-                    Assert.AreEqual(data.S, doit());
-                    break;
-                case ParseFailureKind.ArgumentNull:
-                    Assert.Throws<ArgumentNullException>(() => doit());
-                    break;
-                default:
-                    Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(data.Kind), () => doit());
-                    break;
+                Assert.AreEqual(data.S, doit());
+            }
+            else if (data.Message != null)
+            {
+                var message = string.Format(data.Message, data.Parameters.ToArray());
+                Assert.Throws(Is.TypeOf(data.Exception).And.Message.EqualTo(message), () => doit());
+            }
+            else
+            {
+                Assert.Throws(Is.TypeOf(data.Exception), () => doit());
             }
         }
 
@@ -125,7 +127,22 @@ namespace NodaTime.Test.Format
             {
                 formats = data.F.Split('\0');
             }
-            DoRunParseTest(data, test, formats, true);
+            Type oldException = data.Exception;
+            string oldMessage = data.Message;
+            if (typeof(FormatError.FormatValueException).Equals(data.Exception))
+            {
+                data.Exception = typeof(FormatException);
+                data.Message = Resources.Parse_NoMatchingFormat;
+            }
+            try
+            {
+                DoRunParseTest(data, test, formats, true);
+            }
+            finally
+            {
+                data.Exception = oldException;
+                data.Message = oldMessage;
+            }
         }
 
         /// <summary>
@@ -146,25 +163,18 @@ namespace NodaTime.Test.Format
                     return test(s);
                 }
             };
-            switch (data.Kind)
+            if (data.Exception == null)
             {
-                case ParseFailureKind.None:
-                    Assert.AreEqual(data.PV, doit(format));
-                    break;
-                case ParseFailureKind.ArgumentNull:
-                    Assert.Throws<ArgumentNullException>(() => doit(format));
-                    break;
-                default:
-                    var kind = data.Kind;
-                    if (isMulti)
-                    {
-                        if ((data.Kind & ParseFailureKind.TypeFormatError) == 0)
-                        {
-                            kind = ParseFailureKind.ParseNoMatchingFormat;
-                        }
-                    }
-                    Assert.Throws(Is.TypeOf<ParseException>().And.Property("Kind").EqualTo(kind), () => doit(format));
-                    break;
+                Assert.AreEqual(data.PV, doit(format));
+            }
+            else if (data.Message != null)
+            {
+                var message = string.Format(data.Message, data.Parameters.ToArray());
+                Assert.Throws(Is.TypeOf(data.Exception).And.Message.EqualTo(message), () => doit(format));
+            }
+            else
+            {
+                Assert.Throws(Is.TypeOf(data.Exception), () => doit(format));
             }
         }
 
@@ -199,7 +209,22 @@ namespace NodaTime.Test.Format
             {
                 formats = data.F.Split('\0');
             }
-            DoRunTryParseTest(data, test, formats);
+            Type oldException = data.Exception;
+            string oldMessage = data.Message;
+            if (typeof(FormatError.FormatValueException).Equals(data.Exception))
+            {
+                data.Exception = typeof(FormatException);
+                data.Message = Resources.Parse_NoMatchingFormat;
+            }
+            try
+            {
+                DoRunTryParseTest(data, test, formats);
+            }
+            finally
+            {
+                data.Exception = oldException;
+                data.Message = oldMessage;
+            }
         }
 
         /// <summary>
@@ -219,12 +244,22 @@ namespace NodaTime.Test.Format
                     return test(s, out value);
                 }
             };
-            bool isSuccess = data.Kind == ParseFailureKind.None;
-            T result;
-            Assert.IsTrue(isSuccess == doit(format, out result));
-            if (isSuccess)
+            try
             {
-                Assert.AreEqual(data.PV, result);
+                bool isSuccess = data.Exception == null;
+                T result;
+                Assert.IsTrue(isSuccess == doit(format, out result));
+                if (isSuccess)
+                {
+                    Assert.AreEqual(data.PV, result);
+                }
+            }
+            catch (Exception e)
+            {
+                if (!e.GetType().Equals(data.Exception))
+                {
+                    throw;
+                }
             }
         }
     }

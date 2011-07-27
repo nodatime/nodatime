@@ -17,29 +17,14 @@
 
 #region usings
 using System;
+using System.Text;
 #endregion
 
-namespace NodaTime.Format
+namespace NodaTime.Format.Builder
 {
-    public class ParseException : FormatException
+    internal interface IFormatNode<in TInfo>
+        where TInfo : ParseInfo
     {
-        public ParseException()
-        {
-            Kind = ParseFailureKind.Format;
-        }
-
-        public ParseException(ParseFailureKind kind, string message)
-            : base(message)
-        {
-            Kind = kind;
-        }
-
-        public ParseException(ParseFailureKind kind, string message, Exception innerException)
-            : base(message, innerException)
-        {
-            Kind = kind;
-        }
-
-        public ParseFailureKind Kind { get; private set; }
+        void Append(TInfo info, StringBuilder builder);
     }
 }

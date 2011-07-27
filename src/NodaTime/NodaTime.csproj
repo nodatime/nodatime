@@ -72,7 +72,15 @@
   <ItemGroup>
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
+    <Compile Include="Format\AbstractNodaFormatter.cs" />
+    <Compile Include="Format\Builder\AbstractFormatterBuilderNode.cs" />
+    <Compile Include="Format\Builder\FormatNode.cs" />
+    <Compile Include="Format\Builder\IFormatNode.cs" />
+    <Compile Include="Format\Builder\IFormatterBuilderNode.cs" />
+    <Compile Include="Format\FormatError.cs" />
     <Compile Include="Format\FormatHelper.cs" />
+    <Compile Include="Format\Builder\FormatterBuilder.cs" />
+    <Compile Include="Format\INodaFormatter.cs" />
     <Compile Include="Format\ISignedValue.cs" />
     <Compile Include="Format\OffsetParse.cs" />
     <Compile Include="Format\DateTimeParseStyles.cs" />
@@ -85,8 +93,6 @@
     <Compile Include="Format\OffsetFormat.cs" />
     <Compile Include="Format\OffsetParseInfo.cs" />
     <Compile Include="Format\Parsable.cs" />
-    <Compile Include="Format\ParseException.cs" />
-    <Compile Include="Format\ParseFailureKind.cs" />
     <Compile Include="Format\ParseInfo.cs" />
     <Compile Include="Format\ParseString.cs" />
     <Compile Include="Format\Pattern.cs" />
@@ -207,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Diagrams\Calendars.cd" />
     <None Include="Diagrams\DurationFields.cd" />
     <None Include="Diagrams\DateTimeFields.cd" />
