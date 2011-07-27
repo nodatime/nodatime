@@ -39,7 +39,7 @@ namespace NodaTime.Test.Format
         /// <param name = "format">The format string or string array.</param>
         /// <param name = "obj">The converted value.</param>
         /// <returns><c>true</c> if the conversion succeeded, <c>false</c> otherwise.</returns>
-        public delegate bool OutFunc<in TInput, T>(TInput format, out T obj);
+        public delegate bool OutFunc<TInput, T>(TInput format, out T obj);
         #endregion
 
         /// <summary>
