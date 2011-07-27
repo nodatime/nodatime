@@ -37,8 +37,6 @@ namespace NodaTime.Test.Format
     /// <typeparam name = "T">The type being tested.</typeparam>
     public abstract class AbstractFormattingData<T> : ITestCaseData
     {
-        public static readonly CultureInfo Failing = new FailingCultureInfo();
-
         /// <summary>
         ///   Initializes a new instance of the <see cref = "AbstractFormattingData&lt;T&gt;" /> class.
         /// </summary>

@@ -32,6 +32,11 @@ namespace NodaTime.Test
     ///   // Code to run under the United States English culture
     ///   }
     /// </example>
+    /// <remarks>
+    /// Currently only SetCultures is used, in order to ensure that the UI culture is
+    /// not used; the remaining methods are preserved at the moment in case we need them
+    /// later.
+    /// </remarks>
     public static class CultureSaver
     {
         /// <summary>

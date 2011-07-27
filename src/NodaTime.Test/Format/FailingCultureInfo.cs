@@ -31,6 +31,8 @@ namespace NodaTime.Test.Format
     {
         private const string CultureNotSet = "The formatting and parsing code tests should have set the correct culture.";
 
+        public static FailingCultureInfo Instance = new FailingCultureInfo();
+
         public FailingCultureInfo()
             : base("en-US")
         {
