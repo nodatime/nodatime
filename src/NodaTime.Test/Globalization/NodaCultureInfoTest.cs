@@ -14,12 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #region usings
 using System.Globalization;
 using System.Threading;
-using NodaTime.Globalization;
 using NUnit.Framework;
+using NodaTime.Globalization;
+
 #endregion
 
 namespace NodaTime.Test.Globalization

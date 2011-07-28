@@ -1,6 +1,6 @@
 #region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+// Copyright 2009-2011 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
 #if DEBUG
 using System.Diagnostics;
 #else
 using System;
+
 #endif
 
 namespace NodaTime.ZoneInfoCompiler

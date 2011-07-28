@@ -18,8 +18,8 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using NodaTime.Globalization;
 using NUnit.Framework;
+using NodaTime.Globalization;
 using NodaTime.Test.Format;
 
 #endregion
