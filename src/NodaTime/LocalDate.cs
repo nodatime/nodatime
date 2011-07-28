@@ -52,28 +52,19 @@ namespace NodaTime
         public int DayOfYear { get { return localTime.DayOfYear; } }
         public LocalDateTime LocalDateTime { get { return localTime; } }
 
-        /// <summary>
-        /// TODO: Decide policy when changing from (say) 25th February to 30th
-        /// </summary>
-        public LocalDate WithDay(int day)
-        {
-            return new LocalDate(Year, MonthOfYear, day);
-        }
-
-        /// <summary>
-        /// TODO: Decide policy when changing from (say) 30th March to February
-        /// </summary>
-        public LocalDate WithMonth(int month)
-        {
-            return new LocalDate(Year, month, DayOfMonth);
-        }
-
-        /// <summary>
-        /// TODO: Decide policy when changing from (say) 29th February 2008 to 2007
-        /// </summary>
         public LocalDate WithYear(int year)
         {
-            return new LocalDate(year, MonthOfYear, DayOfMonth);
+            return new LocalDate(LocalDateTime.WithYear(year));
+        }
+
+        public LocalDate WithMonthOfYear(int month)
+        {
+            return new LocalDate(LocalDateTime.WithMonthOfYear(month));
+        }
+
+        public LocalDate WithDayOfMonth(int day)
+        {
+            return new LocalDate(LocalDateTime.WithDayOfMonth(day));
         }
 
         /// <summary>

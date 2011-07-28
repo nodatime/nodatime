@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Utility;
+using NodaTime.Fields;
 
 namespace NodaTime
 {
@@ -259,6 +260,28 @@ namespace NodaTime
         public LocalTime TimeOfDay { get { return new LocalTime(HourOfDay, MinuteOfHour, SecondOfMinute, MillisecondOfSecond, TickOfMillisecond); } }
 
         public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth); } }
+
+        #region Pseudo-mutators
+        public LocalDateTime WithYear(int year)
+        {
+            return WithField(Calendar.Fields.Year, year);
+        }
+
+        public LocalDateTime WithMonthOfYear(int month)
+        {
+            return WithField(Calendar.Fields.MonthOfYear, month);
+        }
+
+        public LocalDateTime WithDayOfMonth(int day)
+        {
+            return WithField(Calendar.Fields.DayOfMonth, day);
+        }
+
+        private LocalDateTime WithField(DateTimeField field, long value)
+        {
+            return new LocalDateTime(field.SetValue(LocalInstant, value), Calendar);
+        }
+        #endregion
 
         #region Implementation of IEquatable<LocalDateTime>
         /// <summary>
