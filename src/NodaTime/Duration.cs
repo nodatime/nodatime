@@ -664,7 +664,7 @@ namespace NodaTime
         /// Parses the specified value into a <see cref="Duration"/>.
         /// </summary>
         /// <param name="value">The value to parse.</param>
-        /// <exception cref="FormatException">If the <paramref name="value"/> is badly formatted./**/</exception>
+        /// <exception cref="FormatException">If the <paramref name="value"/> is badly formatted.</exception>
         /// <exception cref="ArgumentNullException">If the <paramref name="value"/> is <c>null</c>.</exception>
         /// <returns>The <see cref="Duration"/>.</returns>
         public static Duration Parse(string value)

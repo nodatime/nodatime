@@ -250,12 +250,10 @@ namespace NodaTime.TimeZones
             return this;
         }
 
-        /**
-         * Processes all the rules and builds a DateTimeZone.
-         *
-         * @param id  time zone id to assign
-         * @param outputID  true if the zone id should be output
-         */
+        /// <summary>
+        /// Processes all the rules and builds a DateTimeZone.
+        /// </summary>
+        /// <param name="zoneId">Time zone ID to assign</param>
         public DateTimeZone ToDateTimeZone(String zoneId)
         {
             if (zoneId == null)

@@ -86,8 +86,8 @@ namespace NodaTime
 
         public override string ToString()
         {
-            // TODO: Shouldn't need to build a ZonedDateTime!
-            return IsoDateTimeFormats.TimeNoZone.Print(DateTimeZone.Utc.AtExactly(this.LocalDateTime));
+            // TODO: Implement as part of general formatting work
+            return string.Format("{0:00}:{1:00}:{2:00}", HourOfDay, MinuteOfHour, SecondOfDay);
         }
 
         public override int GetHashCode()

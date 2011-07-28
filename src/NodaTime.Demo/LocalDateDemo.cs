@@ -20,23 +20,6 @@ namespace NodaTime.Demo
             Assert.AreEqual(new LocalDate(2010, 6, 16), date);
         }
 
-        /*
-        [Test]
-        public void Arithmetic()
-        {
-            LocalDate date = new LocalDate(2010, 6, 16);
-            LocalDate birthday = new LocalDate(2010, 6, 19);
-            Assert.AreEqual(birthday, date + Days.Three);
-        }
-
-        [Test]
-        public void Wrapping()
-        {
-            LocalDate date = new LocalDate(2010, 1, 30);
-            LocalDate mystery = date + Months.One;
-            Assert.AreEqual(new LocalDate(2010, 2, 28), mystery);
-        }*/
-
         [Test]
         public void Validation()
         {

@@ -43,35 +43,5 @@ namespace NodaTime.Demo
             LocalDateTime dt = new LocalDateTime(2010, 6, 16, 16, 20);
             Assert.AreEqual("ISO: 2010-06-16T16:20:00 LOC", dt.ToString());
         }
-
-        /*
-        [Test]
-        public void SimpleArithmetic()
-        {
-            LocalDateTime start = new LocalDateTime(2010, 1, 5, 0, 0);
-            LocalDateTime end = start + Days.From(10);
-            Assert.AreEqual(new LocalDateTime(2010, 1, 15, 0, 0), end);
-        }
-
-        [Test]
-        public void ArithmeticIsNotReversible()
-        {
-            LocalDateTime start = new LocalDateTime(2010, 1, 30, 0, 0);
-            LocalDateTime end = start + Months.One;
-            Assert.AreEqual(new LocalDateTime(2010, 2, 28, 0, 0), end);
-            LocalDateTime backAgain = end - Months.One;
-            Assert.AreEqual(new LocalDateTime(2010, 1, 28, 0, 0), backAgain);
-        }
-
-        [Test]
-        public void ArithmeticIsNotComposable()
-        {
-            LocalDateTime start = new LocalDateTime(2010, 1, 30, 0, 0);
-            LocalDateTime addOneMonthTwice = (start + Months.One) + Months.One;
-            LocalDateTime addTwoMonthsOnce = start + (Months.One + Months.One);
-            Assert.AreEqual(new LocalDateTime(2010, 3, 28, 0, 0), addOneMonthTwice);
-            Assert.AreEqual(new LocalDateTime(2010, 3, 30, 0, 0), addTwoMonthsOnce);
-        }
-         */
     }
 }
