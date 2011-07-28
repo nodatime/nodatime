@@ -17,9 +17,10 @@
 #region usings
 using System;
 using System.Globalization;
-using NodaTime.Format;
 using NUnit.Framework;
+using NodaTime.Format;
 using NodaTime.Properties;
+
 #endregion
 
 namespace NodaTime.Test.Format

@@ -16,9 +16,9 @@
 #endregion
 
 using System;
-using NodaTime.Properties;
 using System.Globalization;
 using System.Runtime.Serialization;
+using NodaTime.Properties;
 
 namespace NodaTime.Format
 {

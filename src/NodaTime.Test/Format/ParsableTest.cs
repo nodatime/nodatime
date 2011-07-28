@@ -16,8 +16,8 @@
 #endregion
 
 using System;
-using NodaTime.Format;
 using NUnit.Framework;
+using NodaTime.Format;
 
 namespace NodaTime.Test.Format
 {

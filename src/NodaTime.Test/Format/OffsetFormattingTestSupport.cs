@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using NodaTime.Format;
 using NodaTime.Properties;
+
 #endregion
 
 namespace NodaTime.Test.Format

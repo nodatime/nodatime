@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using NodaTime.Properties;
+
 #endregion
 
 namespace NodaTime.Globalization

@@ -20,8 +20,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Threading;
-using NodaTime.Format;
 using NUnit.Framework;
+using NodaTime.Format;
+
 #endregion
 
 namespace NodaTime.Test.Format
