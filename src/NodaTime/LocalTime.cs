@@ -85,7 +85,7 @@ namespace NodaTime
         public override string ToString()
         {
             // TODO: Implement as part of general formatting work
-            return string.Format("{0:00}:{1:00}:{2:00}", HourOfDay, MinuteOfHour, SecondOfDay);
+            return string.Format("{0:00}:{1:00}:{2:00}", HourOfDay, MinuteOfHour, SecondOfMinute);
         }
 
         public override int GetHashCode()
