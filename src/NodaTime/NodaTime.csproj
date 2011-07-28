@@ -76,9 +76,11 @@
     <Compile Include="Format\Builder\AbstractFormatterBuilderNode.cs" />
     <Compile Include="Format\Builder\IFormatNode.cs" />
     <Compile Include="Format\Builder\IFormatterBuilderNode.cs" />
+    <Compile Include="Format\DurationFormatter.cs" />
     <Compile Include="Format\FormatError.cs" />
     <Compile Include="Format\FormatHelper.cs" />
     <Compile Include="Format\Builder\FormatterBuilder.cs" />
+    <Compile Include="Format\FormatterBase.cs" />
     <Compile Include="Format\INodaFormatter.cs" />
     <Compile Include="Format\ISignedValue.cs" />
     <Compile Include="Format\OffsetParse.cs" />
