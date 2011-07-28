@@ -21,14 +21,14 @@ using System.Globalization;
 namespace NodaTime.Format
 {
     /// <summary>
-    ///   Provides a <see cref = "FormatterBase{T}" /> factory for generating <see cref = "Duration" />
+    ///   Provides a <see cref = "INodaFormatter{T}" /> factory for generating <see cref = "Duration" />
     ///   formatters base on the format string.
     /// </summary>
     internal static class DurationFormatter
     {
-        internal static readonly FormatterBase<Duration> GeneralFormatter = new DurationGeneralFormatter();
-        private static readonly FormatterBase<Duration> ShortFormatter = new DurationShortFormatter();
-        private static readonly FormatterBase<Duration> LongFormatter = new DurationLongFormatter();
+        internal static readonly INodaFormatter<Duration> InvariantGeneralFormatter = new DurationGeneralFormatter(CultureInfo.InvariantCulture);
+        private static readonly INodaFormatter<Duration> InvariantShortFormatter = new DurationShortFormatter(CultureInfo.InvariantCulture);
+        private static readonly INodaFormatter<Duration> InvariantLongFormatter = new DurationLongFormatter(CultureInfo.InvariantCulture);
 
         private const string LongPattern = "{0}PT{1:D}H{2:D2}M{3:D2}.{4:D3}S";
         private const string SecondsPattern = "{0}PT{1:D}H{2:D2}M{3:D2}S";
@@ -39,38 +39,41 @@ namespace NodaTime.Format
         ///   Gets the formatter for the given format string.
         /// </summary>
         /// <param name = "format">The format string.</param>
-        /// <returns>The <see cref = "FormatterBase{T}" /> corresponding to the format string.</returns>
+        /// <returns>The <see cref = "INodaFormatter{T}" /> corresponding to the format string.</returns>
         /// <exception cref = "FormatException">format is invalid or not supported.</exception>
-        internal static FormatterBase<Duration> GetFormatter(string format)
+        internal static INodaFormatter<Duration> GetFormatter(string format)
         {
             if (string.IsNullOrEmpty(format) || format == "G" || format == "g")
             {
-                return GeneralFormatter;
+                return InvariantGeneralFormatter;
             }
             if (format == "S" || format == "s")
             {
-                return ShortFormatter;
+                return InvariantShortFormatter;
             }
             if (format == "L" || format == "l")
             {
-                return LongFormatter;
+                return InvariantLongFormatter;
             }
             throw new FormatException("Duration does not support the '" + format + "' format");
         }
 
         /// <summary>
-        ///   Provides an implementation of <see cref = "FormatterBase{T}" /> that formats <see cref = "Offset" />
+        ///   Provides an implementation of <see cref = "INodaFormatter{T}" /> that formats <see cref = "Offset" />
         ///   objects in the general format.
         /// </summary>
-        private class DurationGeneralFormatter : FormatterBase<Duration>
+        private class DurationGeneralFormatter : AbstractNodaFormatter<Duration>
         {
+            internal DurationGeneralFormatter(IFormatProvider formatProvider) : base(formatProvider)
+            {
+            }
+
             /// <summary>
             ///   Overridden in subclasses to provides the actual formatting implementation.
             /// </summary>
             /// <param name = "value">The value to format. This can be <c>null</c> if T is a reference type.</param>
-            /// <param name = "formatProvider">The format provider to use. This will never be <c>null</c>.</param>
             /// <returns>The formatted string.</returns>
-            protected override string FormatValue(Duration value, IFormatProvider formatProvider)
+            public override string Format(Duration value)
             {
                 bool negative = value.Ticks < 0;
                 long millisecondsValue = value.Ticks;
@@ -104,23 +107,33 @@ namespace NodaTime.Format
                 {
                     pattern = HoursPattern;
                 }
+                // TODO: Use the actual IFormatProvider? (Need to check pattern...)
                 return string.Format(CultureInfo.InvariantCulture, pattern, sign, hours, minutes, seconds, millisecondsValue);
+            }
+
+            public override INodaFormatter<Duration> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return formatProvider == FormatProvider ? this : new DurationGeneralFormatter(formatProvider);
             }
         }
 
         /// <summary>
-        ///   Provides an implementation of <see cref = "FormatterBase{T}" /> that formats <see cref = "Offset" />
+        ///   Provides an implementation of <see cref = "INodaFormatter{T}" /> that formats <see cref = "Offset" />
         ///   objects in the general format.
         /// </summary>
-        private class DurationLongFormatter : FormatterBase<Duration>
+        private class DurationLongFormatter : AbstractNodaFormatter<Duration>
         {
+            internal DurationLongFormatter(IFormatProvider formatProvider)
+                : base(formatProvider)
+            {
+            }
+
             /// <summary>
             ///   Overridden in subclasses to provides the actual formatting implementation.
             /// </summary>
             /// <param name = "value">The value to format. This can be <c>null</c> if T is a reference type.</param>
-            /// <param name = "formatProvider">The format provider to use. This will never be <c>null</c>.</param>
             /// <returns>The formatted string.</returns>
-            protected override string FormatValue(Duration value, IFormatProvider formatProvider)
+            public override string Format(Duration value)
             {
                 bool negative = value.Ticks < 0;
                 long millisecondsValue = value.Ticks;
@@ -137,23 +150,33 @@ namespace NodaTime.Format
                 long seconds = (millisecondsValue % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
                 millisecondsValue = millisecondsValue % NodaConstants.MillisecondsPerSecond;
                 string sign = negative ? "-" : "+";
+                // TODO: Use the actual IFormatProvider? (Need to check pattern...)
                 return string.Format(CultureInfo.InvariantCulture, LongPattern, sign, hours, minutes, seconds, millisecondsValue);
+            }
+
+            public override INodaFormatter<Duration> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return formatProvider == FormatProvider ? this : new DurationLongFormatter(formatProvider);
             }
         }
 
         /// <summary>
-        ///   Provides an implementation of <see cref = "FormatterBase{T}" /> that formats <see cref = "Offset" />
+        ///   Provides an implementation of <see cref = "INodaFormatter{T}" /> that formats <see cref = "Offset" />
         ///   objects in the general format.
         /// </summary>
-        private class DurationShortFormatter : FormatterBase<Duration>
+        private class DurationShortFormatter : AbstractNodaFormatter<Duration>
         {
+            internal DurationShortFormatter(IFormatProvider formatProvider)
+                : base(formatProvider)
+            {
+            }
+
             /// <summary>
             ///   Overridden in subclasses to provides the actual formatting implementation.
             /// </summary>
             /// <param name = "value">The value to format. This can be <c>null</c> if T is a reference type.</param>
-            /// <param name = "formatProvider">The format provider to use. This will never be <c>null</c>.</param>
             /// <returns>The formatted string.</returns>
-            protected override string FormatValue(Duration value, IFormatProvider formatProvider)
+            public override string Format(Duration value)
             {
                 bool negative = value.Ticks < 0;
                 long millisecondsValue = value.Ticks;
@@ -168,7 +191,13 @@ namespace NodaTime.Format
                 long hours = millisecondsValue / NodaConstants.MillisecondsPerHour;
                 long minutes = (millisecondsValue % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
                 string sign = negative ? "-" : "+";
+                // TODO: Use the actual IFormatProvider? (Need to check pattern...)
                 return string.Format(CultureInfo.InvariantCulture, ShortPattern, sign, hours, minutes);
+            }
+
+            public override INodaFormatter<Duration> WithFormatProvider(IFormatProvider formatProvider)
+            {
+                return formatProvider == FormatProvider ? this : new DurationShortFormatter(formatProvider);
             }
         }
     }

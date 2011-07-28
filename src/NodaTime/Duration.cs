@@ -225,7 +225,7 @@ namespace NodaTime
         /// </example>
         public override string ToString()
         {
-            return DurationFormatter.GeneralFormatter.Format(this, null);
+            return DurationFormatter.InvariantGeneralFormatter.Format(this);
         }
         #endregion  // Object overrides
 
@@ -243,7 +243,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string format)
         {
-            return DurationFormatter.GetFormatter(format).Format(this, null);
+            return DurationFormatter.GetFormatter(format).Format(this);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(IFormatProvider formatProvider)
         {
-            return DurationFormatter.GeneralFormatter.Format(this, formatProvider);
+            return DurationFormatter.InvariantGeneralFormatter.WithFormatProvider(formatProvider).Format(this);
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return DurationFormatter.GetFormatter(format).Format(this, formatProvider);
+            return DurationFormatter.GetFormatter(format).WithFormatProvider(formatProvider).Format(this);
         }
         #endregion Formatting
 

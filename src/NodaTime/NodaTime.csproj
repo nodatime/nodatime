@@ -80,7 +80,6 @@
     <Compile Include="Format\FormatError.cs" />
     <Compile Include="Format\FormatHelper.cs" />
     <Compile Include="Format\Builder\FormatterBuilder.cs" />
-    <Compile Include="Format\FormatterBase.cs" />
     <Compile Include="Format\INodaFormatter.cs" />
     <Compile Include="Format\ISignedValue.cs" />
     <Compile Include="Format\OffsetParse.cs" />
