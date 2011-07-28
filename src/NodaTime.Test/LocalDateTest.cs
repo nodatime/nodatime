@@ -74,5 +74,53 @@ namespace NodaTime.Test
             // Call to ToString just to make it a valid statement
             Assert.Throws<ArgumentNullException>(() => (date - (Period)null).ToString());
         }
+
+        [Test]
+        public void WithDayOfMonth_Simple()
+        {
+            LocalDate start = new LocalDate(2010, 3, 15);
+            LocalDate end = start.WithDayOfMonth(20);
+            Assert.AreEqual(new LocalDate(2010, 3, 20), end);
+        }
+
+        [Test]
+        public void WithDayOfMonth_MakingDayInvalid()
+        {
+            LocalDate date = new LocalDate(2010, 2, 25);
+            Assert.Throws<ArgumentOutOfRangeException>(() => date.WithDayOfMonth(30));
+        }
+
+        [Test]
+        public void WithMonthOfYear_Simple()
+        {
+            LocalDate start = new LocalDate(2010, 3, 15);
+            LocalDate end = start.WithMonthOfYear(8);
+            Assert.AreEqual(new LocalDate(2010, 8, 15), end);
+        }
+
+        [Test]
+        public void WithMonthOfYear_MakingDayInvalid()
+        {
+            LocalDate start = new LocalDate(2010, 3, 30);
+            LocalDate end = start.WithMonthOfYear(2);
+            Assert.AreEqual(new LocalDate(2010, 2, 28), end);
+        }
+
+        [Test]
+        public void WithYear_Simple()
+        {
+            LocalDate start = new LocalDate(2012, 3, 15);
+            LocalDate end = start.WithYear(2012);
+            Assert.AreEqual(new LocalDate(2012, 3, 15), end);
+        }
+
+        [Test]
+        public void WithYear_MakingDayInvalid()
+        {
+            LocalDate start = new LocalDate(2012, 2, 29);
+            LocalDate end = start.WithYear(2010);
+            Assert.AreEqual(new LocalDate(2010, 2, 28), end);
+        }
+
     }
 }
