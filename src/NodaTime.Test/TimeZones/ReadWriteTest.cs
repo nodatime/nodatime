@@ -24,20 +24,6 @@ namespace NodaTime.Test.TimeZones
 {
     public abstract class ReadWriteTest
     {
-        /*
-        #region Setup/Teardown
-        [SetUp]
-        public void SetUp()
-        {
-            dioStandard = new DtzIoHelper("standard", (stream) => new DateTimeZoneWriter(stream), (stream) => new DateTimeZoneReader(stream));
-            dioCompress = new DtzIoHelper("compress", (stream) => new DateTimeZoneCompressionWriter(stream), (stream) => new DateTimeZoneCompressionReader(stream));
-        }
-        #endregion
-
-        private DtzIoHelper dioStandard;
-        private DtzIoHelper dioCompress;
-        */
-
         /// <summary>
         ///   Returns the <see cref = "DtzIoHelper" /> to use for testing against.
         /// </summary>

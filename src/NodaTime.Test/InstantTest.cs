@@ -23,14 +23,6 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class InstantTest
     {
-        // Test is commented out as little of it makes sense at the moment. We may or may not want some of it :)
-        /*
-        // test in 2002/03 as time zones are more well known
-        // (before the late 90's they were all over the place)
-        private static readonly DateTimeZone Paris = DateTimeZone.ForID("Europe/Paris");
-        private static readonly DateTimeZone London = DateTimeZone.ForID("Europe/London");
-         */
-
         private const long Y2002Days =
             365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 +
             365 + 366 + 365 + 365 + 365 + 366 + 365;
@@ -38,9 +30,6 @@ namespace NodaTime.Test
         private const long Y2003Days =
             365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 +
             365 + 366 + 365 + 365 + 365 + 366 + 365 + 365;
-
-        // 2002-06-09
-        // private const long TestTimeNow = (Y2002Days + 31L + 28L + 31L + 30L + 31L + 9L - 1L) * NodaConstants.MillisecondsPerDay;
 
         // 2002-04-05
         private const long TestTime1 =

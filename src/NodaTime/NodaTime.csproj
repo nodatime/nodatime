@@ -85,7 +85,6 @@
     <Compile Include="Format\OffsetParse.cs" />
     <Compile Include="Format\DateTimeParseStyles.cs" />
     <Compile Include="Format\DurationFormatter.cs" />
-    <Compile Include="Format\FormatPattern.cs" />
     <Compile Include="Format\FormatterBase.cs" />
     <Compile Include="Format\InstantFormat.cs" />
     <Compile Include="Format\InstantParse.cs" />
@@ -102,7 +101,6 @@
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
     <Compile Include="FieldValueException.cs" />
-    <Compile Include="Format\DateTimeFormats.StandardPattern.cs" />
     <Compile Include="LocalDate.cs" />
     <Compile Include="LocalTime.cs" />
     <Compile Include="Offset.cs" />
@@ -139,7 +137,6 @@
     <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
     <Compile Include="Calendars\GregorianCalendarSystem.cs" />
     <Compile Include="Calendars\IsoCalendarSystem.cs" />
-    <Compile Include="Format\DateTimeFormatterBuilder.cs" />
     <Compile Include="Fields\DurationFieldValue.cs" />
     <Compile Include="Period.cs" />
     <Compile Include="PeriodType.cs" />
@@ -188,13 +185,8 @@
     <Compile Include="TimeZones\TransitionMode.cs" />
     <Compile Include="TimeZones\UtcProvider.cs" />
     <Compile Include="TimeZones\DateTimeZoneResourceProvider.cs" />
-    <Compile Include="Format\DateTimeFormatter.cs" />
-    <Compile Include="Format\DateTimeFormats.Pattern.cs" />
     <Compile Include="Format\DateTimeParserBucket.cs" />
     <Compile Include="Format\FormatUtils.cs" />
-    <Compile Include="Format\IDateTimeParser.cs" />
-    <Compile Include="Format\IDateTimePrinter.cs" />
-    <Compile Include="Format\IsoDateTimeFormats.cs" />
     <Compile Include="Chronology.cs" />
     <Compile Include="LocalDateTime.cs" />
     <Compile Include="Fields\DateTimeFieldType.cs" />
