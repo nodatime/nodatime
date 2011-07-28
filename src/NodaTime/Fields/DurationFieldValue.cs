@@ -17,7 +17,7 @@
 
 namespace NodaTime.Fields
 {
-    // TODO: Implement IEquatable[T] etc? I'm not currently sure there's much point.
+    // TODO: Implement IEquatable{T} etc? I'm not currently sure there's much point.
 
     /// <summary>
     /// A simple combination of a <see cref="DurationFieldType" /> and a 64-bit integer value.
