@@ -27,7 +27,7 @@ namespace NodaTime.Format.Builder
         #region Delegates
 
         /// <summary>
-        /// Equivalent to Func[T], but without requiring .NET 3.5. If we ever require .NET 3.5,
+        /// Equivalent to Func{T}, but without requiring .NET 3.5. If we ever require .NET 3.5,
         /// we can remove this.
         /// </summary>
         internal delegate TResult NodaFunc<TArg, TResult>(TArg input);
