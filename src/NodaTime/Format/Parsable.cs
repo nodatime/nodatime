@@ -14,12 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-#region usings
+
 using System;
 using System.Diagnostics;
 using System.Text;
 using NodaTime.Properties;
-#endregion
 
 namespace NodaTime.Format
 {

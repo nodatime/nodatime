@@ -84,8 +84,6 @@
     <Compile Include="Format\ISignedValue.cs" />
     <Compile Include="Format\OffsetParse.cs" />
     <Compile Include="Format\DateTimeParseStyles.cs" />
-    <Compile Include="Format\DurationFormatter.cs" />
-    <Compile Include="Format\FormatterBase.cs" />
     <Compile Include="Format\InstantFormat.cs" />
     <Compile Include="Format\InstantParse.cs" />
     <Compile Include="Format\OffsetFormat.cs" />

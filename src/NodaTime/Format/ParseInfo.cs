@@ -14,10 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-#region usings
+
 using NodaTime.Globalization;
 using System;
-#endregion
 
 namespace NodaTime.Format
 {
