@@ -15,12 +15,9 @@
 // limitations under the License.
 #endregion
 
-#region usings
 using System;
 using NodaTime.Format.Builder;
 using NodaTime.Globalization;
-
-#endregion
 
 namespace NodaTime.Format
 {

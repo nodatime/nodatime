@@ -15,13 +15,10 @@
 // limitations under the License.
 #endregion
 
-#region usings
 using System;
 using NodaTime.Properties;
-using System.Threading;
 using System.Globalization;
 using System.Runtime.Serialization;
-#endregion
 
 namespace NodaTime.Format
 {

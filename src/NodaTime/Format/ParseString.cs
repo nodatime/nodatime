@@ -15,9 +15,7 @@
 // limitations under the License.
 #endregion
 
-#region usings
 using System;
-#endregion
 
 namespace NodaTime.Format
 {
