@@ -32,12 +32,12 @@ namespace NodaTime.Format
 
         #region INodaFormatter<T> Members
         /// <summary>
-        /// Gets or sets the format provider use by this formatter to format values..
+        /// Gets the format provider use by this formatter to format values..
         /// </summary>
         /// <value>
         /// The format provider.
         /// </value>
-        public IFormatProvider FormatProvider { get; set; }
+        public IFormatProvider FormatProvider { get; private set; }
 
         /// <summary>
         /// Formats the specified value using the <see cref="IFormatProvider"/> given when the formatter

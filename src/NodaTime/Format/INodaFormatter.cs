@@ -20,18 +20,19 @@ using System;
 namespace NodaTime.Format
 {
     /// <summary>
-    /// Provides an interface for value formatters in the Nodatime package.
+    /// Provides an interface for value formatters in the Noda Time package. The formatters
+    /// provided by Noda Time are all immutable and thread-safe.
     /// </summary>
     /// <typeparam name="T">The type to format.</typeparam>
     public interface INodaFormatter<T>
     {
         /// <summary>
-        /// Gets or sets the format provider use by this formatter to format values..
+        /// Gets the format provider use by this formatter to format values.
         /// </summary>
         /// <value>
         /// The format provider.
         /// </value>
-        IFormatProvider FormatProvider { get; set; }
+        IFormatProvider FormatProvider { get; }
 
         /// <summary>
         /// Formats the specified value using the <see cref="IFormatProvider"/> given when the formatter
