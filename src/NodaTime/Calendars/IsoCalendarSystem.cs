@@ -143,6 +143,16 @@ namespace NodaTime.Calendars
                         minuteOfHour * NodaConstants.TicksPerMinute));
         }
 
+        public override int GetDaysInMonth(int year, int month)
+        {
+            return Calendar.GetDaysInMonth(year, month);
+        }
+
+        public override bool IsLeapYear(int year)
+        {
+            return Calendar.IsLeapYear(year);
+        }
+
         // TODO: Try overriding the GetLocalInstant methods to micro-optimise them (they will be called for almost every ZonedDateTime/LocalDateTime)
     }
 }
