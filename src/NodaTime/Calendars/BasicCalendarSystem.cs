@@ -43,9 +43,7 @@ namespace NodaTime.Calendars
         internal abstract long AverageTicksPerYear { get; }
         internal abstract long AverageTicksPerYearDividedByTwo { get; }
         internal abstract long ApproxTicksAtEpochDividedByTwo { get; }
-        internal abstract int GetDaysInMonth(int year, int month);
         protected abstract LocalInstant CalculateStartOfYear(int year);
-        protected internal abstract bool IsLeapYear(int year);
         protected internal abstract int GetMonthOfYear(LocalInstant localInstant, int year);
         internal abstract int GetDaysInMonthMax(int month);
         internal abstract long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);

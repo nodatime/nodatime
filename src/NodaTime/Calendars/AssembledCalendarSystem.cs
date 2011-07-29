@@ -62,6 +62,9 @@ namespace NodaTime.Calendars
 
         internal override sealed FieldSet Fields { get { return fields; } }
 
+        /// <summary>
+        /// The calendar system on top of which this calendar is assembled.
+        /// </summary>
         internal CalendarSystem Calendar { get { return baseCalendar; } }
 
         private FieldSet ConstructFields()

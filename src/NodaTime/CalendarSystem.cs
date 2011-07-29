@@ -73,6 +73,19 @@ namespace NodaTime
         /// </summary>
         public virtual bool UsesIsoDayOfWeek { get { return true; } }
 
+        /// <summary>
+        /// Returns the number of days in the given month within the given year.
+        /// </summary>
+        public abstract int GetDaysInMonth(int year, int month);
+
+        /// <summary>
+        /// Returns whether or not the given year is a leap year in this calendar.
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public abstract bool IsLeapYear(int year);
+
+
         internal abstract FieldSet Fields { get; }
 
         /// <summary>

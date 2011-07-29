@@ -101,5 +101,23 @@ namespace NodaTime.Test.Calendars
         {
             Assert.IsTrue(CalendarSystem.Iso.UsesIsoDayOfWeek);
         }
+
+        [Test]
+        public void IsLeapYear()
+        {
+            Assert.IsTrue(CalendarSystem.Iso.IsLeapYear(2012)); // 4 year rule
+            Assert.IsFalse(CalendarSystem.Iso.IsLeapYear(2011)); // 4 year rule
+            Assert.IsFalse(CalendarSystem.Iso.IsLeapYear(2100)); // 100 year rule
+            Assert.IsTrue(CalendarSystem.Iso.IsLeapYear(2000)); // 400 year rule
+        }
+
+        [Test]
+        public void GetDaysInMonth()
+        {
+            Assert.AreEqual(30, CalendarSystem.Iso.GetDaysInMonth(2010, 9));
+            Assert.AreEqual(31, CalendarSystem.Iso.GetDaysInMonth(2010, 1));
+            Assert.AreEqual(28, CalendarSystem.Iso.GetDaysInMonth(2010, 2));
+            Assert.AreEqual(29, CalendarSystem.Iso.GetDaysInMonth(2012, 2));
+        }
     }
 }

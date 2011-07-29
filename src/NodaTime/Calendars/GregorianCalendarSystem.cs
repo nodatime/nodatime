@@ -95,7 +95,7 @@ namespace NodaTime.Calendars
             return new LocalInstant((year * 365L + (leapYears - DaysFrom0000To1970)) * NodaConstants.TicksPerStandardDay);
         }
 
-        protected internal override bool IsLeapYear(int year)
+        public override bool IsLeapYear(int year)
         {
             return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
         }
