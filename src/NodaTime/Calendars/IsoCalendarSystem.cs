@@ -55,7 +55,7 @@ namespace NodaTime.Calendars
                 {
                     int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
                     MonthStartTicks[yearMonthIndex] = GregorianCalendarSystem.Default.GetYearMonthTicks(year, month);
-                    MonthLengths[yearMonthIndex] = GregorianCalendarSystem.Default.GetDaysInYearMonth(year, month);
+                    MonthLengths[yearMonthIndex] = GregorianCalendarSystem.Default.GetDaysInMonth(year, month);
                 }
             }
         }
