@@ -125,7 +125,7 @@ namespace NodaTime.Fields
 
             // Quietly force DOM to nearest sane value.
             int dayToUse = calendarSystem.GetDayOfMonth(localInstant, thisYear, thisMonth);
-            int maxDay = calendarSystem.GetDaysInYearMonth(yearToUse, monthToUse);
+            int maxDay = calendarSystem.GetDaysInMonth(yearToUse, monthToUse);
             dayToUse = Math.Min(dayToUse, maxDay);
             // Get proper date part, and return result
             long datePart = calendarSystem.GetYearMonthDayTicks(yearToUse, monthToUse, dayToUse);
@@ -190,7 +190,7 @@ namespace NodaTime.Fields
 
             // Quietly force DOM to nearest sane value.
             int dayToUse = calendarSystem.GetDayOfMonth(localInstant, thisYear, thisMonth);
-            int maxDay = calendarSystem.GetDaysInYearMonth(intYearToUse, intMonthToUse);
+            int maxDay = calendarSystem.GetDaysInMonth(intYearToUse, intMonthToUse);
             dayToUse = Math.Min(dayToUse, maxDay);
             // Get proper date part, and return result
             long datePart = calendarSystem.GetYearMonthDayTicks(intYearToUse, intMonthToUse, dayToUse);
@@ -226,7 +226,7 @@ namespace NodaTime.Fields
             // Before adjusting for remainder, account for special case of add
             // where the day-of-month is forced to the nearest sane value.
             int minuendDom = calendarSystem.GetDayOfMonth(minuendInstant, minuendYear, minuendMonth);
-            if (minuendDom == calendarSystem.GetDaysInYearMonth(minuendYear, minuendMonth))
+            if (minuendDom == calendarSystem.GetDaysInMonth(minuendYear, minuendMonth))
             {
                 // Last day of the minuend month...
                 int subtrahendDom = calendarSystem.GetDayOfMonth(subtrahendInstant, subtrahendYear, subtrahendMonth);
@@ -258,7 +258,7 @@ namespace NodaTime.Fields
             int month = (int)value;
             int thisYear = calendarSystem.GetYear(localInstant);
             int thisDom = calendarSystem.GetDayOfMonth(localInstant, thisYear);
-            int maxDom = calendarSystem.GetDaysInYearMonth(thisYear, month);
+            int maxDom = calendarSystem.GetDaysInMonth(thisYear, month);
             if (thisDom > maxDom)
             {
                 // Quietly force DOM to nearest sane value.

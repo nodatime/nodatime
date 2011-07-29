@@ -71,7 +71,7 @@ namespace NodaTime.Calendars
                                      : ((i < 304 * 84375) ? 10 : (i < 334 * 84375) ? 11 : 12)));
         }
 
-        internal override int GetDaysInYearMonth(int year, int month)
+        internal override int GetDaysInMonth(int year, int month)
         {
             return IsLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
         }

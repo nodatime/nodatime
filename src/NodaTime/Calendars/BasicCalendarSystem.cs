@@ -43,7 +43,7 @@ namespace NodaTime.Calendars
         internal abstract long AverageTicksPerYear { get; }
         internal abstract long AverageTicksPerYearDividedByTwo { get; }
         internal abstract long ApproxTicksAtEpochDividedByTwo { get; }
-        internal abstract int GetDaysInYearMonth(int year, int month);
+        internal abstract int GetDaysInMonth(int year, int month);
         protected abstract LocalInstant CalculateStartOfYear(int year);
         protected internal abstract bool IsLeapYear(int year);
         protected internal abstract int GetMonthOfYear(LocalInstant localInstant, int year);
@@ -205,7 +205,7 @@ namespace NodaTime.Calendars
         {
             int thisYear = GetYear(instant);
             int thisMonth = GetMonthOfYear(instant, thisYear);
-            return GetDaysInYearMonth(thisYear, thisMonth);
+            return GetDaysInMonth(thisYear, thisMonth);
         }
 
         internal int GetYear(LocalInstant instant)
@@ -379,7 +379,7 @@ namespace NodaTime.Calendars
         {
             FieldUtils.VerifyValueBounds(DateTimeFieldType.Year, year, MinYear, MaxYear);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MonthOfYear, monthOfYear, 1, GetMaxMonth());
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.DayOfMonth, dayOfMonth, 1, GetDaysInYearMonth(year, monthOfYear));
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.DayOfMonth, dayOfMonth, 1, GetDaysInMonth(year, monthOfYear));
             return GetYearMonthDayTicks(year, monthOfYear, dayOfMonth);
         }
 
