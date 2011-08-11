@@ -29,7 +29,7 @@ namespace NodaTime.Calendars
     /// When ISO does not define a field, but it can be determined (such as AM/PM) it is included.
     /// </para>
     /// <para>
-    /// With the exception of century related fields, ISOChronology is exactly the
+    /// With the exception of century related fields, IsoCalendarSystem is exactly the
     /// same as <see cref="GregorianCalendarSystem" />. In this chronology, centuries and year
     /// of century are zero based. For all years, the century is determined by
     /// dropping the last two digits of the year, ignoring sign. The year of century
@@ -46,6 +46,9 @@ namespace NodaTime.Calendars
         private const int LastOptimizedYear = 2100;
         private static readonly long[] MonthStartTicks = new long[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
         private static readonly int[] MonthLengths = new int[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
+
+        internal static readonly IsoCalendarSystem Instance = new IsoCalendarSystem(GregorianCalendarSystem.Default);
+
 
         static IsoCalendarSystem()
         {

@@ -47,7 +47,7 @@ namespace NodaTime
         /// is the value of the last two year digits.
         /// </para>
         /// </remarks>
-        public static readonly CalendarSystem Iso = new IsoCalendarSystem(GregorianCalendarSystem.Default);
+        public static CalendarSystem Iso { get { return IsoCalendarSystem.Instance; } }
 
         private readonly string name;
 
