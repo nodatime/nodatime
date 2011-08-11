@@ -38,13 +38,6 @@ namespace NodaTime.Demo
         }
 
         [Test]
-        public void Validation()
-        {
-            LocalDate date = new LocalDate(2008, 2, 29);
-            Assert.Throws<ArgumentOutOfRangeException>(() => date.WithYear(2010));
-        }
-
-        [Test]
         public void CombineWithTime()
         {
             LocalDate date = new LocalDate(2010, 6, 16);
