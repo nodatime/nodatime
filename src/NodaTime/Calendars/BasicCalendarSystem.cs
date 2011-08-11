@@ -27,7 +27,7 @@ namespace NodaTime.Calendars
 
         private const int YearCacheSize = 1 << 10;
         private const int YearCacheMask = YearCacheSize - 1;
-        private static readonly YearInfo[] yearCache = new YearInfo[YearCacheSize];
+        private readonly YearInfo[] yearCache = new YearInfo[YearCacheSize];
 
         private readonly int minDaysInFirstWeek;
 
@@ -142,6 +142,7 @@ namespace NodaTime.Calendars
             if (info.Year != year)
             {
                 info = new YearInfo(year, CalculateStartOfYear(year).Ticks);
+                // TODO: Check thread safety of this; write won't be atomic...
                 yearCache[year & YearCacheMask] = info;
             }
             return info.StartOfYearTicks;
@@ -224,7 +225,6 @@ namespace NodaTime.Calendars
 
             long yearStart = GetYearTicks(year);
             long diff = ticks - yearStart;
-
             if (diff < 0)
             {
                 year--;
