@@ -66,7 +66,7 @@ namespace NodaTime.Calendars
             return instances[minDaysInFirstWeek - 1];
         }
 
-        private GregorianCalendarSystem(int minDaysInFirstWeek) : base(GregorianName, null, minDaysInFirstWeek)
+        private GregorianCalendarSystem(int minDaysInFirstWeek) : base(GregorianName, minDaysInFirstWeek)
         {
         }
 
