@@ -16,50 +16,66 @@
 #endregion
 
 using System;
-using NodaTime.Fields;
 
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// Original name: GregorianChronology
+    /// Implements a pure proleptic Gregorian calendar system, which defines every
+    /// fourth year as leap, unless the year is divisible by 100 and not by 400.
+    /// This improves upon the Julian calendar leap year rule.
     /// </summary>
-    internal class GregorianCalendarSystem : BasicGJCalendarSystem
+    /// <remarks>
+    /// <para>
+    /// Although the Gregorian calendar did not exist before 1582 CE, this
+    /// chronology assumes it did, thus it is proleptic. This implementation also
+    /// fixes the start of the year at January 1, and defines the year zero.
+    /// </para>
+    /// <para>
+    /// This is exposed via <see cref="CalendarSystem.GetGregorianCalendar"/>.
+    /// </para>
+    /// </remarks>
+    internal sealed class GregorianCalendarSystem : BasicGJCalendarSystem
     {
         private const string GregorianName = "Gregorian";
 
         private const int DaysFrom0000To1970 = 719527;
         private const long AverageTicksPerGregorianYear = (long)(365.2425m * NodaConstants.TicksPerStandardDay);
 
-        // TODO: Consider making this public, but with a different name?
-        // It roughly maps onto GregorianChronology.getInstanceUTC() except of course we don't have a time zone...
-        internal static readonly GregorianCalendarSystem Default = new GregorianCalendarSystem(4);
+        private static readonly GregorianCalendarSystem[] instances;
+
+        static GregorianCalendarSystem()
+        {
+            instances = new GregorianCalendarSystem[7];
+            for (int i = 0; i < 7; i++)
+            {
+                instances[i] = new GregorianCalendarSystem(i + 1);
+            }
+        }
+
+        /// <summary>
+        /// Returns the instance of the Gregorian calendar system with the given number of days in the week.
+        /// </summary>
+        /// <param name="minDaysInFirstWeek">The minimum number of days at the start of the year to consider it
+        /// a week in that year as opposed to at the end of the previous year.</param>
+        internal static GregorianCalendarSystem GetInstance(int minDaysInFirstWeek)
+        {
+            if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7)
+            {
+                throw new ArgumentOutOfRangeException("minDaysInFirstWeek", "Minimum days in first week must be between 1 and 7 inclusive");
+            }
+            return instances[minDaysInFirstWeek - 1];
+        }
 
         private GregorianCalendarSystem(int minDaysInFirstWeek) : base(GregorianName, null, minDaysInFirstWeek)
         {
-        }
-
-        protected override void AssembleFields(FieldSet.Builder builder)
-        {
-            // TODO: This pattern appears all over the place. It *may* not be necessary
-            // now we've separated out all the time zone stuff.
-            if (Calendar == null)
-            {
-                base.AssembleFields(builder);
-            }
         }
 
         internal override long AverageTicksPerYear { get { return AverageTicksPerGregorianYear; } }
         internal override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerGregorianYear / 2; } }
         internal override long AverageTicksPerMonth { get { return (long)(365.2425m * NodaConstants.TicksPerStandardDay / 12); } }
         internal override long ApproxTicksAtEpochDividedByTwo { get { return (1970 * AverageTicksPerGregorianYear) / 2; } }
-        // TODO: Check that this is still valid now we've moved to ticks. I suspect it's not... (divide by 10000?)
-        internal override int MinYear { get { return -27258; } }
+        internal override int MinYear { get { return -27257; } }
         internal override int MaxYear { get { return 31196; } }
-
-        internal static Chronology GetInstance(DateTimeZone dateTimeZone)
-        {
-            throw new NotImplementedException();
-        }
 
         protected override LocalInstant CalculateStartOfYear(int year)
         {
