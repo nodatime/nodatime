@@ -31,6 +31,9 @@ namespace NodaTime
     /// </summary>
     public abstract class CalendarSystem
     {
+        // TODO: Consider moving the static accessors into a separate class. As we get more calendars,
+        // this approach will become unwieldy.
+
         /// <summary>
         /// Returns a calendar system that follows the rules of the ISO8601 standard,
         /// which is compatible with Gregorian for all modern dates.
@@ -65,6 +68,26 @@ namespace NodaTime
         public static CalendarSystem GetGregorianCalendar(int minDaysInFirstWeek)
         {
             return GregorianCalendarSystem.GetInstance(minDaysInFirstWeek);
+        }
+
+        /// <summary>
+        /// Returns a pure proleptic Julian calendar system, which defines every
+        /// fourth year as leap. This implementation follows the leap year rule
+        /// strictly, even for dates before 8 CE, where leap years were actually
+        /// irregular. In the Julian calendar, year zero does not exist: 1 BCE is
+        /// followed by 1 CE.
+        /// </summary>
+        /// <remarks>
+        /// Although the Julian calendar did not exist before 45 BCE, this chronology
+        /// assumes it did, thus it is proleptic. This implementation also fixes the
+        /// start of the year at January 1.
+        /// </remarks>
+        /// <param name="minDaysInFirstWeek">The minimum number of days in the first week of the year.
+        /// When computing the WeekOfWeekYear and WeekYear properties of a particular date, this is
+        /// used to decide at what point the week year changes.</param>
+        public static CalendarSystem GetJulianCalendar(int minDaysInFirstWeek)
+        {
+            return JulianCalendarSystem.GetInstance(minDaysInFirstWeek);
         }
 
         private readonly string name;
