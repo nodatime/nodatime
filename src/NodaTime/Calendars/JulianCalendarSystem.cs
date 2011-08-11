@@ -61,7 +61,7 @@ namespace NodaTime.Calendars
             return instances[minDaysInFirstWeek - 1];
         }
 
-        private JulianCalendarSystem(int minDaysInFirstWeek) : base(JulianName, null, minDaysInFirstWeek)
+        private JulianCalendarSystem(int minDaysInFirstWeek) : base(JulianName, minDaysInFirstWeek)
         {
         }
 
