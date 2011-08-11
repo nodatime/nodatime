@@ -46,6 +46,7 @@ namespace NodaTime
         public int DayOfMonth { get { return localTime.DayOfMonth; } }
         public IsoDayOfWeek IsoDayOfWeek { get { return localTime.IsoDayOfWeek; } }
         public int DayOfWeek { get { return localTime.DayOfWeek; } }
+        public int WeekYear { get { return localTime.WeekYear; } }
         public int WeekOfWeekYear { get { return localTime.WeekOfWeekYear; } }
         public int YearOfCentury { get { return localTime.YearOfCentury; } }
         public int YearOfEra { get { return localTime.YearOfEra; } }
