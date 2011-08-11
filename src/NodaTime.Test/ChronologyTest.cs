@@ -37,9 +37,10 @@ namespace NodaTime.Test
         [Test]
         public void Properties_Return_ConstructorArguments()
         {
-            var subject = new Chronology(TestZone, GregorianCalendarSystem.Default);
+            GregorianCalendarSystem calendar = GregorianCalendarSystem.GetInstance(4);
+            var subject = new Chronology(TestZone, calendar);
             Assert.AreSame(TestZone, subject.Zone);
-            Assert.AreSame(GregorianCalendarSystem.Default, subject.Calendar);
+            Assert.AreSame(calendar, subject.Calendar);
         }
 
         [Test]

@@ -49,6 +49,24 @@ namespace NodaTime
         /// </remarks>
         public static CalendarSystem Iso { get { return IsoCalendarSystem.Instance; } }
 
+        /// <summary>
+        /// Returns a pure proleptic Gregorian calendar system, which defines every
+        /// fourth year as leap, unless the year is divisible by 100 and not by 400.
+        /// This improves upon the Julian calendar leap year rule.
+        /// </summary>
+        /// <remarks>
+        /// Although the Gregorian calendar did not exist before 1582 CE, this
+        /// chronology assumes it did, thus it is proleptic. This implementation also
+        /// fixes the start of the year at January 1, and defines the year zero.
+        /// </remarks>
+        /// <param name="minDaysInFirstWeek">The minimum number of days in the first week of the year.
+        /// When computing the WeekOfWeekYear and WeekYear properties of a particular date, this is
+        /// used to decide at what point the week year changes.</param>
+        public static CalendarSystem GetGregorianCalendar(int minDaysInFirstWeek)
+        {
+            return GregorianCalendarSystem.GetInstance(minDaysInFirstWeek);
+        }
+
         private readonly string name;
 
         /// <summary>

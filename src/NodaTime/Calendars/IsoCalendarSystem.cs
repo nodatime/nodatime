@@ -47,18 +47,19 @@ namespace NodaTime.Calendars
         private static readonly long[] MonthStartTicks = new long[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
         private static readonly int[] MonthLengths = new int[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
 
-        internal static readonly IsoCalendarSystem Instance = new IsoCalendarSystem(GregorianCalendarSystem.Default);
-
+        internal static readonly IsoCalendarSystem Instance;
 
         static IsoCalendarSystem()
         {
+            GregorianCalendarSystem gregorianCalendar = GregorianCalendarSystem.GetInstance(4);
+            Instance = new IsoCalendarSystem(gregorianCalendar);
             for (int year = FirstOptimizedYear; year <= LastOptimizedYear; year++)
             {
                 for (int month = 1; month <= 12; month++)
                 {
                     int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
-                    MonthStartTicks[yearMonthIndex] = GregorianCalendarSystem.Default.GetYearMonthTicks(year, month);
-                    MonthLengths[yearMonthIndex] = GregorianCalendarSystem.Default.GetDaysInMonth(year, month);
+                    MonthStartTicks[yearMonthIndex] = gregorianCalendar.GetYearMonthTicks(year, month);
+                    MonthLengths[yearMonthIndex] = gregorianCalendar.GetDaysInMonth(year, month);
                 }
             }
         }

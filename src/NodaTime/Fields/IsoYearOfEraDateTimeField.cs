@@ -27,7 +27,7 @@ namespace NodaTime.Fields
     {
         internal static readonly DateTimeField Instance = new IsoYearOfEraDateTimeField();
 
-        private IsoYearOfEraDateTimeField() : base(GregorianCalendarSystem.Default.Fields.Year, DateTimeFieldType.YearOfEra)
+        private IsoYearOfEraDateTimeField() : base(GregorianCalendarSystem.GetInstance(4).Fields.Year, DateTimeFieldType.YearOfEra)
         {
         }
 
