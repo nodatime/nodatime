@@ -85,7 +85,7 @@ namespace NodaTime.Calendars
         {
             if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7)
             {
-                throw new ArgumentException("Invalid min days in first week: " + minDaysInFirstWeek);
+                throw new ArgumentOutOfRangeException("minDaysInFirstWeek", "Minimum days in first week must be between 1 and 7 inclusive");
             }
             this.minDaysInFirstWeek = minDaysInFirstWeek;
             // Effectively invalidate the first cache entry.
