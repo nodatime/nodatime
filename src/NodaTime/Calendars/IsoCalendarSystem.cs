@@ -36,7 +36,7 @@ namespace NodaTime.Calendars
     /// is the value of the last two year digits.
     /// </para>
     /// </remarks>
-    internal sealed class IsoCalendarSystem : AssembledCalendarSystem
+    internal sealed class IsoCalendarSystem : CalendarSystem
     {
         private const string IsoName = "ISO";
 
@@ -64,7 +64,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        internal IsoCalendarSystem(CalendarSystem baseSystem) : base(IsoName, baseSystem)
+        private IsoCalendarSystem(CalendarSystem baseSystem) : base(IsoName, baseSystem)
         {
         }
 
@@ -77,7 +77,7 @@ namespace NodaTime.Calendars
             return zone.ToIsoChronology();
         }
 
-        protected override void AssembleFields(FieldSet.Builder fields)
+        internal override void AssembleFields(FieldSet.Builder fields)
         {
             if (fields == null)
             {
@@ -147,6 +147,21 @@ namespace NodaTime.Calendars
                         minuteOfHour * NodaConstants.TicksPerMinute));
         }
 
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
+        {
+            int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
+            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
+                dayOfMonth > MonthLengths[yearMonthIndex] || tickOfDay < 0 || tickOfDay >= NodaConstants.TicksPerStandardDay)
+            {
+                return base.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
+            }
+            // This is guaranteed not to overflow, as we've already validated the arguments
+            return
+                new LocalInstant(
+                    unchecked(
+                        MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay + tickOfDay));
+        }
+
         public override int GetDaysInMonth(int year, int month)
         {
             return Calendar.GetDaysInMonth(year, month);
@@ -156,7 +171,5 @@ namespace NodaTime.Calendars
         {
             return Calendar.IsLeapYear(year);
         }
-
-        // TODO: Try overriding the GetLocalInstant methods to micro-optimise them (they will be called for almost every ZonedDateTime/LocalDateTime)
     }
 }

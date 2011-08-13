@@ -21,7 +21,7 @@ using NodaTime.Fields;
 namespace NodaTime.Calendars
 {
     // TODO: Optimisations of GetLocalInstant etc.
-    internal abstract class BasicCalendarSystem : AssembledCalendarSystem
+    internal abstract class BasicCalendarSystem : CalendarSystem
     {
         private static readonly FieldSet preciseFields = CreatePreciseFields();
 
@@ -94,7 +94,7 @@ namespace NodaTime.Calendars
             yearCache[0] = new YearInfo(1, LocalInstant.LocalUnixEpoch.Ticks);
         }
 
-        protected override void AssembleFields(FieldSet.Builder builder)
+        internal override void AssembleFields(FieldSet.Builder builder)
         {
             // First copy the fields that are the same for all basic
             // calendars

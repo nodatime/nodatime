@@ -130,7 +130,7 @@ namespace NodaTime.Calendars
             return new LocalInstant(ticks);
         }
 
-        protected override void AssembleFields(FieldSet.Builder builder)
+        internal override void AssembleFields(FieldSet.Builder builder)
         {
             base.AssembleFields(builder);
             // Julian chronology has no year zero.
