@@ -81,7 +81,7 @@ namespace NodaTime.Calendars
             return builder.Build();
         }
 
-        protected BasicCalendarSystem(string name, CalendarSystem baseCalendar, int minDaysInFirstWeek) : base(name, baseCalendar)
+        protected BasicCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler assembler) : base(name, AssembleFields + assembler)
         {
             if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7)
             {
@@ -94,8 +94,10 @@ namespace NodaTime.Calendars
             yearCache[0] = new YearInfo(1, LocalInstant.LocalUnixEpoch.Ticks);
         }
 
-        internal override void AssembleFields(FieldSet.Builder builder)
+        private static void AssembleFields(FieldSet.Builder builder, CalendarSystem @this)
         {
+            // None of the fields will call anything on the calendar system *yet*, so this is safe enough.
+            BasicCalendarSystem thisCalendar = (BasicCalendarSystem) @this;
             // First copy the fields that are the same for all basic
             // calendars
             builder.WithSupportedFieldsFrom(preciseFields);
@@ -103,8 +105,8 @@ namespace NodaTime.Calendars
             // Now create fields that have unique behavior for Gregorian and Julian
             // calendars.
 
-            builder.Year = new BasicYearDateTimeField(this);
-            builder.YearOfEra = new GJYearOfEraDateTimeField(builder.Year, this);
+            builder.Year = new BasicYearDateTimeField(thisCalendar);
+            builder.YearOfEra = new GJYearOfEraDateTimeField(builder.Year, thisCalendar);
 
             // Define one-based centuryOfEra and yearOfCentury.
             DateTimeField field = new OffsetDateTimeField(builder.YearOfEra, 99);
@@ -113,13 +115,13 @@ namespace NodaTime.Calendars
             field = new RemainderDateTimeField((DividedDateTimeField)builder.CenturyOfEra);
             builder.YearOfCentury = new OffsetDateTimeField(field, DateTimeFieldType.YearOfCentury, 1);
 
-            builder.Era = new GJEraDateTimeField(this);
-            builder.DayOfWeek = new GJDayOfWeekDateTimeField(this, builder.Days);
-            builder.DayOfMonth = new BasicDayOfMonthDateTimeField(this, builder.Days);
-            builder.DayOfYear = new BasicDayOfYearDateTimeField(this, builder.Days);
-            builder.MonthOfYear = new GJMonthOfYearDateTimeField(this);
-            builder.WeekYear = new BasicWeekYearDateTimeField(this);
-            builder.WeekOfWeekYear = new BasicWeekOfWeekYearDateTimeField(this, builder.Weeks);
+            builder.Era = new GJEraDateTimeField(thisCalendar);
+            builder.DayOfWeek = new GJDayOfWeekDateTimeField(thisCalendar, builder.Days);
+            builder.DayOfMonth = new BasicDayOfMonthDateTimeField(thisCalendar, builder.Days);
+            builder.DayOfYear = new BasicDayOfYearDateTimeField(thisCalendar, builder.Days);
+            builder.MonthOfYear = new GJMonthOfYearDateTimeField(thisCalendar);
+            builder.WeekYear = new BasicWeekYearDateTimeField(thisCalendar);
+            builder.WeekOfWeekYear = new BasicWeekOfWeekYearDateTimeField(thisCalendar, builder.Weeks);
 
             field = new RemainderDateTimeField(builder.WeekYear, DateTimeFieldType.WeekYearOfCentury, 100);
             builder.WeekYearOfCentury = new OffsetDateTimeField(field, DateTimeFieldType.WeekYearOfCentury, 1);
@@ -385,10 +387,6 @@ namespace NodaTime.Calendars
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
-            if (Calendar != null)
-            {
-                return Calendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
-            }
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
 
@@ -399,10 +397,6 @@ namespace NodaTime.Calendars
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
-            if (Calendar != null)
-            {
-                return Calendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
-            }
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, secondOfMinute, 0, 59);
@@ -415,10 +409,6 @@ namespace NodaTime.Calendars
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
                                                        int millisecondOfSecond, int tickOfMillisecond)
         {
-            if (Calendar != null)
-            {
-                return Calendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
-            }
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, secondOfMinute, 0, 59);
@@ -433,10 +423,6 @@ namespace NodaTime.Calendars
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
-            if (Calendar != null)
-            {
-                return Calendar.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
-            }
             // TODO: Report bug in Joda Time, which doesn't have the - 1 here.
             FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfDay, tickOfDay, 0, NodaConstants.TicksPerStandardDay - 1);
             return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + tickOfDay);

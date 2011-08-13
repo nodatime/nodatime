@@ -73,6 +73,7 @@
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
     <Compile Include="Calendars\JulianCalendarSystem.cs" />
+    <Compile Include="Calendars\WrappedCalendarSystem.cs" />
     <Compile Include="Fields\DelegatedDateTimeField.cs" />
     <Compile Include="Fields\SkipZeroDateTimeField.cs" />
     <Compile Include="Format\AbstractNodaFormatter.cs" />

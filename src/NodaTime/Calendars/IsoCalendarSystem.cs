@@ -36,7 +36,7 @@ namespace NodaTime.Calendars
     /// is the value of the last two year digits.
     /// </para>
     /// </remarks>
-    internal sealed class IsoCalendarSystem : CalendarSystem
+    internal sealed class IsoCalendarSystem : WrappedCalendarSystem
     {
         private const string IsoName = "ISO";
 
@@ -64,7 +64,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        private IsoCalendarSystem(CalendarSystem baseSystem) : base(IsoName, baseSystem)
+        private IsoCalendarSystem(CalendarSystem baseSystem) : base(IsoName, baseSystem, AssembleFields)
         {
         }
 
@@ -77,18 +77,14 @@ namespace NodaTime.Calendars
             return zone.ToIsoChronology();
         }
 
-        internal override void AssembleFields(FieldSet.Builder fields)
+        private static void AssembleFields(FieldSet.Builder builder, CalendarSystem @this)
         {
-            if (fields == null)
-            {
-                throw new ArgumentNullException("fields");
-            }
             // Use zero based century and year of century.
             DividedDateTimeField centuryOfEra = new DividedDateTimeField(IsoYearOfEraDateTimeField.Instance, DateTimeFieldType.CenturyOfEra, 100);
-            fields.CenturyOfEra = centuryOfEra;
-            fields.YearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.YearOfCentury);
-            fields.WeekYearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.WeekYearOfCentury);
-            fields.Centuries = centuryOfEra.DurationField;
+            builder.CenturyOfEra = centuryOfEra;
+            builder.YearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.YearOfCentury);
+            builder.WeekYearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.WeekYearOfCentury);
+            builder.Centuries = centuryOfEra.DurationField;
         }
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,

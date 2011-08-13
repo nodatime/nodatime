@@ -61,7 +61,8 @@ namespace NodaTime.Calendars
             return instances[minDaysInFirstWeek - 1];
         }
 
-        private JulianCalendarSystem(int minDaysInFirstWeek) : base(JulianName, minDaysInFirstWeek)
+        private JulianCalendarSystem(int minDaysInFirstWeek)
+            : base(JulianName, minDaysInFirstWeek, AssembleFields)
         {
         }
 
@@ -130,9 +131,8 @@ namespace NodaTime.Calendars
             return new LocalInstant(ticks);
         }
 
-        internal override void AssembleFields(FieldSet.Builder builder)
+        private static void AssembleFields(FieldSet.Builder builder, CalendarSystem @this)
         {
-            base.AssembleFields(builder);
             // Julian chronology has no year zero.
             builder.Year = new SkipZeroDateTimeField(builder.Year);
             builder.WeekYear = new SkipZeroDateTimeField(builder.WeekYear);
