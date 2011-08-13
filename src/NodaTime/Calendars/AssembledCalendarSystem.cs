@@ -27,8 +27,6 @@ namespace NodaTime.Calendars
     {
         private readonly FieldSet fields;
 
-        protected delegate void FieldAssembler(FieldSet.Builder builder, CalendarSystem baseCalendar);
-
         private readonly bool useBaseTimeOfDayFields;
         private readonly bool useBaseTickOfDayFields;
         private readonly bool useBaseYearMonthDayFields;
