@@ -37,6 +37,13 @@ namespace NodaTime
     /// </remarks>
     public abstract class CalendarSystem
     {
+        /// <summary>
+        /// Delegate used to construct fields. This is called within the base constructor, before the
+        /// derived class constructor bodies have been run - so it's *somewhat* unsafe to pass "this"
+        /// reference, but derived classes will just need to be careful.
+        /// </summary>
+        internal delegate void FieldAssembler(FieldSet.Builder builder, CalendarSystem @this);
+
         // TODO: Consider moving the static accessors into a separate class. As we get more calendars,
         // this approach will become unwieldy.
 
@@ -97,67 +104,20 @@ namespace NodaTime
         }
 
         private readonly FieldSet fields;
-        private readonly bool useBaseTimeOfDayFields;
-        private readonly bool useBaseTickOfDayFields;
-        private readonly bool useBaseYearMonthDayFields;
-        private readonly CalendarSystem baseCalendar;
         private readonly string name;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CalendarSystem"/> class.
         /// </summary>
         /// <param name="name">The name of the calendar</param>
-        /// <param name="baseCalendar">The calendar to delegate to where possible</param>
-        protected CalendarSystem(string name, CalendarSystem baseCalendar)
+        /// <param name="fieldAssembler">Delegate to invoke in order to assemble fields for this calendar.</param>
+        internal CalendarSystem(string name, FieldAssembler fieldAssembler)
         {
             this.name = name;
-            this.baseCalendar = baseCalendar;
-            fields = ConstructFields();
-
-            if (baseCalendar != null)
-            {
-                // Work out which fields from the base are still valid, so we can
-                // optimize by calling directly to the base calendar sometimes
-                FieldSet baseFields = baseCalendar.Fields;
-                useBaseTimeOfDayFields = baseFields.HourOfDay == fields.HourOfDay && baseFields.MinuteOfHour == fields.MinuteOfHour &&
-                                         baseFields.SecondOfMinute == fields.SecondOfMinute && baseFields.MillisecondOfSecond == fields.MillisecondOfSecond &&
-                                         baseFields.TickOfMillisecond == fields.TickOfMillisecond;
-                useBaseTickOfDayFields = baseFields.TickOfDay == fields.TickOfDay;
-                useBaseYearMonthDayFields = baseFields.Year == fields.Year && baseFields.MonthOfYear == fields.MonthOfYear &&
-                                            baseFields.DayOfMonth == fields.DayOfMonth;
-            }
-            else
-            {
-                useBaseYearMonthDayFields = false;
-                useBaseTimeOfDayFields = false;
-                useBaseYearMonthDayFields = false;
-            }
-        }
-
-        /// <summary>
-        /// The calendar system on top of which this calendar is assembled.
-        /// </summary>
-        internal CalendarSystem Calendar { get { return baseCalendar; } }
-
-        private FieldSet ConstructFields()
-        {
             FieldSet.Builder builder = new FieldSet.Builder();
-            if (Calendar != null)
-            {
-                builder.WithSupportedFieldsFrom(baseCalendar.Fields);
-            }
-            AssembleFields(builder);
-            return builder.Build();
+            fieldAssembler(builder, this);
+            this.fields = builder.Build();
         }
-
-        /// <summary>
-        /// I would really like to work out a way of avoiding this at some
-        /// point - abstract/virtual calls in the constructor are awful.
-        /// However, it's hard to work around this at the moment. Note that this would
-        /// normally be protected, but then we have accessibility issues as FieldSet.Builder
-        /// is internal. This method should only be called from ConstructFields anyway.
-        /// </summary>
-        internal abstract void AssembleFields(FieldSet.Builder builder);
 
         /// <summary>
         /// Gets the name of this calendar system. Each calendar system must have a unique name.
@@ -202,12 +162,6 @@ namespace NodaTime
         /// <returns>A LocalInstant instance</returns>
         internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
-            if (useBaseTickOfDayFields && useBaseYearMonthDayFields)
-            {
-                // Only call specialized implementation if applicable fields are the same.
-                return baseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
-            }
-
             LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
             instant = Fields.DayOfMonth.SetValue(instant, dayOfMonth);
@@ -235,13 +189,6 @@ namespace NodaTime
         internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
                                                       int millisecondOfSecond, int tickOfMillisecond)
         {
-            if (useBaseYearMonthDayFields && useBaseTimeOfDayFields)
-            {
-                // Only call specialized implementation if applicable fields are the same.
-                return baseCalendar.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond,
-                                                    tickOfMillisecond);
-            }
-
             LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
             instant = Fields.DayOfMonth.SetValue(instant, dayOfMonth);
@@ -270,12 +217,6 @@ namespace NodaTime
         internal virtual LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
                                                       int tickOfMillisecond)
         {
-            if (useBaseTimeOfDayFields)
-            {
-                // Only call specialized implementation if applicable fields are the same.
-                return baseCalendar.GetLocalInstant(localInstant, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
-            }
-
             localInstant = Fields.HourOfDay.SetValue(localInstant, hourOfDay);
             localInstant = Fields.MinuteOfHour.SetValue(localInstant, minuteOfHour);
             localInstant = Fields.SecondOfMinute.SetValue(localInstant, secondOfMinute);
