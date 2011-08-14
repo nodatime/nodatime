@@ -79,6 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calendars\CopticCalendarSystemTest.cs" />
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
     <Compile Include="Calendars\JulianCalendarSystemTest.cs" />
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
