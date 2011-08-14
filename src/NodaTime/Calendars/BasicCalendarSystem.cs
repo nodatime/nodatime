@@ -172,7 +172,7 @@ namespace NodaTime.Calendars
             return 1 + (int)((daysSince19700101 + 3) % 7);
         }
 
-        internal int GetDayOfMonth(LocalInstant localInstant)
+        internal virtual int GetDayOfMonth(LocalInstant localInstant)
         {
             int year = GetYear(localInstant);
             int month = GetMonthOfYear(localInstant, year);
@@ -192,26 +192,26 @@ namespace NodaTime.Calendars
             return (int)((localInstant.Ticks - dateTicks) / NodaConstants.TicksPerStandardDay) + 1;
         }
 
-        internal int GetDaysInMonthMax()
+        internal virtual int GetDaysInMonthMax()
         {
             return 31;
         }
 
-        internal int GetMonthOfYear(LocalInstant localInstant)
+        internal virtual int GetMonthOfYear(LocalInstant localInstant)
         {
             return GetMonthOfYear(localInstant, GetYear(localInstant));
         }
 
-        internal int GetDaysInMonthMax(LocalInstant instant)
+        internal int GetDaysInMonthMax(LocalInstant localInstant)
         {
-            int thisYear = GetYear(instant);
-            int thisMonth = GetMonthOfYear(instant, thisYear);
+            int thisYear = GetYear(localInstant);
+            int thisMonth = GetMonthOfYear(localInstant, thisYear);
             return GetDaysInMonth(thisYear, thisMonth);
         }
 
-        internal int GetYear(LocalInstant instant)
+        internal int GetYear(LocalInstant localInstant)
         {
-            long ticks = instant.Ticks;
+            long ticks = localInstant.Ticks;
             // Get an initial estimate of the year, and the millis value that
             // represents the start of that year. Then verify estimate and fix if
             // necessary.
@@ -237,7 +237,7 @@ namespace NodaTime.Calendars
                 long oneYear = NodaConstants.TicksPerStandardDay * (IsLeapYear(year) ? 366L : 365L);
                 yearStart += oneYear;
 
-                if (yearStart <= instant.Ticks)
+                if (yearStart <= localInstant.Ticks)
                 {
                     // Didn't go too far, so actually add one year.
                     year++;
@@ -269,7 +269,7 @@ namespace NodaTime.Calendars
         }
 
         // Note: no overload taking the year, as it's never used in Joda
-        internal int GetMaxMonth()
+        internal virtual int GetMaxMonth()
         {
             return 12;
         }
