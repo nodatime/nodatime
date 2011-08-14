@@ -42,16 +42,6 @@ namespace NodaTime.Fields
             return EraValue;
         }
 
-        internal override LocalInstant SetValue(LocalInstant instant, string text)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, EraValue, EraValue);

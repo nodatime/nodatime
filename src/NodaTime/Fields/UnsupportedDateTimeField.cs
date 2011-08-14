@@ -169,57 +169,7 @@ namespace NodaTime.Fields
             throw new NotSupportedException();
         }
 
-        internal override string GetAsText(LocalInstant localInstant, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override string GetAsText(LocalInstant localInstant)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override string GetAsText(int fieldValue, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override string GetAsShortText(LocalInstant localInstant, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override string GetAsShortText(LocalInstant localInstant)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override string GetAsShortText(int fieldValue, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
         internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override LocalInstant SetValue(LocalInstant instant, string text)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override int GetMaximumTextLength(IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override int GetMaximumShortTextLength(IFormatProvider provider)
         {
             throw new NotImplementedException();
         }
