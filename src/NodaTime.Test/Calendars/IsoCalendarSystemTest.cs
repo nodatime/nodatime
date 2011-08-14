@@ -139,7 +139,7 @@ namespace NodaTime.Test.Calendars
         public void WeekYearLessThanYear()
         {
             // January 1st 2011 was a Saturday, and therefore part of WeekYear 2010.
-            LocalDate localDate = new LocalDate(2012, 1, 1);
+            LocalDate localDate = new LocalDate(2011, 1, 1);
             Assert.AreEqual(2011, localDate.Year);
             Assert.AreEqual(2010, localDate.WeekYear);
             Assert.AreEqual(52, localDate.WeekOfWeekYear);
