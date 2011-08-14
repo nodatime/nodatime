@@ -35,6 +35,9 @@ namespace NodaTime
         /// </summary>
         public const string UtcId = "UTC";
 
+        /// <summary>
+        /// Gets the default time zone provider, which is initialized from resources within the NodaTime assembly.
+        /// </summary>
         public static readonly DateTimeZoneResourceProvider DefaultDateTimeZoneProvider = new DateTimeZoneResourceProvider("NodaTime.TimeZones.Tzdb");
 
         private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
@@ -293,11 +296,13 @@ namespace NodaTime
             switch (pair.MatchingIntervals)
             {
                 case 0:
-                    throw new SkippedTimeException(localDateTime.LocalInstant, this);
+                    throw new SkippedTimeException(localDateTime, this);
                 case 1:
                     return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
                 case 2:
-                    throw new AmbiguousTimeException(localDateTime.LocalInstant, this);
+                    throw new AmbiguousTimeException(localDateTime, this,
+                        new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology),
+                        new ZonedDateTime(localInstant, pair.LateInterval.Offset, chronology));
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }
@@ -318,7 +323,7 @@ namespace NodaTime
             switch (pair.MatchingIntervals)
             {
                 case 0:
-                    throw new SkippedTimeException(localDateTime.LocalInstant, this);
+                    throw new SkippedTimeException(localDateTime, this);
                 case 1:
                 case 2:
                     return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
@@ -342,7 +347,7 @@ namespace NodaTime
             switch (pair.MatchingIntervals)
             {
                 case 0:
-                    throw new SkippedTimeException(localDateTime.LocalInstant, this);
+                    throw new SkippedTimeException(localDateTime, this);
                 case 1:
                     return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
                 case 2:

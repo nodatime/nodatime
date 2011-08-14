@@ -23,13 +23,38 @@ namespace NodaTime
     /// </summary>
     public enum IsoDayOfWeek
     {
+        /// <summary>
+        /// Value indicating no day of the week; this will never be returned
+        /// by any IsoDayOfWeek property.
+        /// </summary>
         None = 0,
+        /// <summary>
+        /// Value representing Monday (1).
+        /// </summary>
         Monday = 1,
+        /// <summary>
+        /// Value representing Tuesday (2).
+        /// </summary>
         Tuesday = 2,
+        /// <summary>
+        /// Value representing Wednesday (3).
+        /// </summary>
         Wednesday = 3,
+        /// <summary>
+        /// Value representing Thursday (4).
+        /// </summary>
         Thursday = 4,
+        /// <summary>
+        /// Value representing Friday (5).
+        /// </summary>
         Friday = 5,
+        /// <summary>
+        /// Value representing Saturday (6).
+        /// </summary>
         Saturday = 6,
+        /// <summary>
+        /// Value representing Sunday (7).
+        /// </summary>
         Sunday = 7
     }
 }

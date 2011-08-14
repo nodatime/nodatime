@@ -35,35 +35,40 @@ namespace NodaTime
     /// not the same as other <see cref="ArgumentOutOfRangeException" /> causes,
     /// such as entering "15" for a month number.
     /// </para>
+    /// <para>
+    /// In theory this isn't calendar-specific; the local instant won't exist in
+    /// this time zone regardless of the calendar used. However, this exception is
+    /// always created in conjunction with a specific calendar, which leads to a more
+    /// natural way of examining its information and constructing an error message.
+    /// </para>
     /// </remarks>
     [Serializable]
     public class SkippedTimeException : ArgumentOutOfRangeException
     {
-        private readonly LocalInstant localInstant;
+        private readonly LocalDateTime localDateTime;
+        private readonly DateTimeZone zone;
 
         /// <summary>
         /// The local instant which is invalid in the time zone
         /// </summary>
-        internal LocalInstant LocalInstant { get { return localInstant; } }
-
-        private readonly DateTimeZone zone;
+        public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
         /// <summary>
         /// The time zone in which the local instant is invalid
         /// </summary>
         public DateTimeZone Zone { get { return zone; } }
 
-        internal SkippedTimeException(LocalInstant localInstant, DateTimeZone zone) : base("Local time " + localInstant + " is invalid in time zone " + zone.Id)
+        /// <summary>
+        /// Creates a new instance for the given local date/time and time zone.
+        /// </summary>
+        /// <remarks>
+        /// User code is unlikely to need to deliberately call this constructor except
+        /// possibly for testing.
+        /// </remarks>
+        public SkippedTimeException(LocalDateTime localDateTime, DateTimeZone zone) : base("Local time " + localDateTime + " is invalid in time zone " + zone.Id)
         {
-            this.localInstant = localInstant;
+            this.localDateTime = localDateTime;
             this.zone = zone;
         }
-
-        public LocalDateTime GetInvalidLocalDateTime(CalendarSystem calendar)
-        {
-            return new LocalDateTime(LocalInstant, calendar);
-        }
-
-        // TODO: IsoLocalDateTime as a convenience property?
     }
 }

@@ -342,6 +342,9 @@ namespace NodaTime
         #endregion
 
         #region object overrides
+        /// <summary>
+        /// Converts this calendar system to text by simply returning its name.
+        /// </summary>
         public override string ToString()
         {
             return Name;

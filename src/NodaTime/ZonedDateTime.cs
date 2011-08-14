@@ -174,7 +174,7 @@ namespace NodaTime
         public int MonthOfYear { get { return LocalDateTime.MonthOfYear; } }
 
         /// <summary>
-        /// Week within the WeekYear. See <see cref="WeekYear"/> for more details.
+        /// Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.
         /// </summary>
         public int WeekOfWeekYear { get { return LocalDateTime.WeekOfWeekYear; } }
 

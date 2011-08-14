@@ -17,22 +17,61 @@
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Original name: DurationFieldType.
+    /// Indicates the type of a value represented by a <see cref="DurationField"/>.
     /// </summary>
     public enum DurationFieldType
     {
+        /// <summary>
+        /// DurationFieldType for eras.
+        /// </summary>
         Eras,
+        /// <summary>
+        /// DurationFieldType for centuries.
+        /// </summary>
         Centuries,
+        /// <summary>
+        /// DurationFieldType for week-years.
+        /// </summary>
         WeekYears,
+        /// <summary>
+        /// DurationFieldType for years.
+        /// </summary>
         Years,
+        /// <summary>
+        /// DurationFieldType for months.
+        /// </summary>
         Months,
+        /// <summary>
+        /// DurationFieldType for weeks.
+        /// </summary>
         Weeks,
+        /// <summary>
+        /// DurationFieldType for days.
+        /// </summary>
         Days,
+        /// <summary>
+        /// DurationFieldType for half days.
+        /// </summary>
         HalfDays,
+        /// <summary>
+        /// DurationFieldType for hours.
+        /// </summary>
         Hours,
+        /// <summary>
+        /// DurationFieldType for minutes.
+        /// </summary>
         Minutes,
+        /// <summary>
+        /// DurationFieldType for seconds.
+        /// </summary>
         Seconds,
+        /// <summary>
+        /// DurationFieldType for milliseconds.
+        /// </summary>
         Milliseconds,
+        /// <summary>
+        /// DurationFieldType for ticks.
+        /// </summary>
         Ticks,
     }
 }

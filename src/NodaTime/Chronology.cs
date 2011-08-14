@@ -34,14 +34,27 @@ namespace NodaTime
             internal static readonly Chronology IsoUtc = new Chronology(DateTimeZone.Utc, CalendarSystem.Iso);
         }
 
+        /// <summary>
+        /// Gets a reference to a chronology instance for the ISO calendar system in UTC.
+        /// </summary>
         public static Chronology IsoUtc { get { return Constants.IsoUtc; } }
 
         private readonly DateTimeZone zone;
         private readonly CalendarSystem calendarSystem;
 
+        /// <summary>
+        /// Gets the time zone of this chronology.
+        /// </summary>
         public DateTimeZone Zone { get { return zone; } }
+
+        /// <summary>
+        /// Gets the calendar system of this chronology.
+        /// </summary>
         public CalendarSystem Calendar { get { return calendarSystem; } }
 
+        /// <summary>
+        /// Creates a chronology for the given time zone and calendar system.
+        /// </summary>
         public Chronology(DateTimeZone zone, CalendarSystem calendarSystem)
         {
             if (zone == null)
@@ -57,6 +70,9 @@ namespace NodaTime
         }
 
         #region Equality
+        /// <summary>
+        /// Compares two chronologies for equality by comparing their time zones and calendar systems.
+        /// </summary>
         public bool Equals(Chronology other)
         {
             if (ReferenceEquals(other, null))
@@ -67,11 +83,17 @@ namespace NodaTime
             return Zone == other.Zone && Calendar == other.Calendar;
         }
 
+        /// <summary>
+        /// Compares two chronologies for equality by comparing their time zones and calendar systems.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return Equals(obj as Chronology);
         }
 
+        /// <summary>
+        /// Returns a hash code for this chronology by hashing the time zone and calendar.
+        /// </summary>
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();

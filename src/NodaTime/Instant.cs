@@ -33,17 +33,33 @@ namespace NodaTime
     /// </remarks>
     public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable
     {
+        /// <summary>
+        /// String used to represent "the beginning of time" (as far as Noda Time is concerned).
+        /// </summary>
         public const string BeginningOfTimeLabel = "BOT";
+        /// <summary>
+        /// String used to represent "the end of time" (as far as Noda Time is concerned).
+        /// </summary>
         public const string EndOfTimeLabel = "EOT";
 
+        /// <summary>
+        /// The instant at the Unix epoch of midnight 1st January 1970 UTC.
+        /// </summary>
         public static readonly Instant UnixEpoch = new Instant(0);
+
+        /// <summary>
+        /// The minimum instant value, which is also used to represent the beginning of time.
+        /// </summary>
         public static readonly Instant MinValue = new Instant(Int64.MinValue);
+        /// <summary>
+        /// The maximum instant value, which is also used to represent the end of time.
+        /// </summary>
         public static readonly Instant MaxValue = new Instant(Int64.MaxValue);
 
         private readonly long ticks;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "Instant" /> struct.
+        /// Initializes a new instance of the <see cref = "Instant" /> struct.
         /// </summary>
         /// <param name = "ticks">The ticks from the unix epoch.</param>
         public Instant(long ticks)
@@ -52,7 +68,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Ticks since the Unix epoch.
+        /// Ticks since the Unix epoch.
         /// </summary>
         public long Ticks { get { return ticks; } }
 
@@ -389,51 +405,93 @@ namespace NodaTime
         #endregion Formatting
 
         #region Parsing
+        /// <summary>
+        /// Parses the given string using the current culture's default format provider.
+        /// </summary>
         public static Instant Parse(string value)
         {
             return InstantParse.Parse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
         }
 
+        /// <summary>
+        /// Parses the given string using the specified format provider.
+        /// </summary>
         public static Instant Parse(string value, IFormatProvider formatProvider)
         {
             return InstantParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
+        /// <summary>
+        /// Parses the given string using the specified format provider and style.
+        /// </summary>
         public static Instant Parse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
             return InstantParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
+        /// <summary>
+        /// Parses the given string using the specified format pattern and format provider.
+        /// </summary>
         public static Instant ParseExact(string value, string format, IFormatProvider formatProvider)
         {
             return InstantParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
+        /// <summary>
+        /// Parses the given string using the specified format pattern, format provider and style.
+        /// </summary>
         public static Instant ParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
             return InstantParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
+        /// <summary>
+        /// Parses the given string using the specified format patterns, format provider and style.
+        /// </summary>
         public static Instant ParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
             return InstantParse.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
+        /// <summary>
+        /// Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
+        /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Instant result)
         {
             return InstantParse.TryParse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
         }
 
+        /// <summary>
+        /// Attempts to parse the given string using the specified format provider and style.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
             return InstantParse.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
+        /// <summary>
+        /// Attempts to parse the given string using the specified format pattern, format provider and style.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
             return InstantParse.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
+        /// <summary>
+        /// Attempts to parse the given string using the specified format patterns, format provider and style.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
             return InstantParse.TryParseExactMultiple(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);

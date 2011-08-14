@@ -78,8 +78,7 @@ namespace NodaTime.Globalization
         ///   The <see cref = "NumberFormatInfo" />. May not be <c>null</c>.
         /// </value>
         public NumberFormatInfo NumberFormat
-        {
-            
+        {            
             get { return numberFormat; }
             
             set { SetValue(value, ref numberFormat); }
@@ -103,12 +102,14 @@ namespace NodaTime.Globalization
         ///   Gets the decimal separator.
         /// </summary>
         public string DecimalSeparator
-        {
-            
+        {            
             get { return NumberFormat.NumberDecimalSeparator; }
         }
 
-        public string Name {  get;   private set; }
+        /// <summary>
+        /// Name of the culture providing this formatting information.
+        /// </summary>
+        public string Name { get; private set; }
 
         /// <summary>
         ///   Gets the positive sign.

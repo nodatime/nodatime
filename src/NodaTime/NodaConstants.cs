@@ -32,12 +32,31 @@ namespace NodaTime
     {
         // TODO: Enum for this instead? (With duplicate values where appropriate.)
 
+        /// <summary>
+        /// Constant for the era known as BCE (Before Common Era).
+        /// </summary>
         // ReSharper disable InconsistentNaming
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BCE", Justification = "BCE is the expected initialism")] public const int BCE = 0;
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BCE", Justification = "BCE is the expected initialism")]
+        public const int BCE = 0;
+        /// <summary>
+        /// Constant for the BC era; equal to BCE but provided for flexibility of expression..
+        /// </summary>
         public const int BC = BCE;
+        /// <summary>
+        /// Constant for the BC era; equal to BCE but provided for flexibility of expression..
+        /// </summary>
         public const int BeforeCommonEra = BCE;
+        /// <summary>
+        /// Constant for the common era.
+        /// </summary>
         public const int CE = 1;
+        /// <summary>
+        /// Constant for the common era; equal to CE but provided for flexibility of expression.
+        /// </summary>
         public const int CommonEra = CE;
+        /// <summary>
+        /// Constant for the "Anno Domini" era; equal to CE but provided for flexibility of expression.
+        /// </summary>
         public const int AD = CE;
         // ReSharper restore InconsistentNaming
 

@@ -20,13 +20,33 @@ using System.Globalization;
 
 namespace NodaTime.Format
 {
+    /// <summary>
+    /// Styles applied when parsing values.
+    /// </summary>
+    // TODO: Rename to NodaParseStyles? Applies to more than just DateTime.
     [Flags]
     public enum DateTimeParseStyles
     {
+        /// <summary>
+        /// Default formatting options must be used.
+        /// </summary>
         None = DateTimeStyles.None,
+        /// <summary>
+        /// Leading white-space characters must be ignored during parsing, except if they occur in the specified format patterns.
+        /// </summary>
         AllowInnerWhite = DateTimeStyles.AllowInnerWhite,
+        /// <summary>
+        /// Trailing white-space characters must be ignored during parsing, except if they occur in the specified format patterns.
+        /// </summary>
         AllowLeadingWhite = DateTimeStyles.AllowLeadingWhite,
+        /// <summary>
+        /// Extra white-space characters in the middle of the string must be ignored during parsing, except if they occur in the specified format patterns.
+        /// </summary>
         AllowTrailingWhite = DateTimeStyles.AllowTrailingWhite,
+        /// <summary>
+        /// Extra white-space characters anywhere in the string must be ignored during parsing, except if they occur in the specified format patterns.
+        /// This value is a combination of the AllowLeadingWhite, AllowTrailingWhite, and AllowInnerWhite values.
+        /// </summary>
         AllowWhiteSpaces = DateTimeStyles.AllowWhiteSpaces,
     }
 }
