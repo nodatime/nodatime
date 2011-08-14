@@ -17,7 +17,6 @@
 
 using NUnit.Framework;
 using NodaTime.Calendars;
-using NodaTime.Fields;
 
 namespace NodaTime.Test.Calendars
 {
