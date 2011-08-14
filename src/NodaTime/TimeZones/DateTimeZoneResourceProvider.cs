@@ -24,18 +24,21 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///   Provides an implementation of a <see cref = "IDateTimeZoneProvider" /> that looks
-    ///   for its time zone definitions from a named resource in an assembly.
+    /// Provides an implementation of a <see cref="IDateTimeZoneProvider" /> that looks
+    /// for its time zone definitions from a named resource in an assembly.
     /// </summary>
     public sealed class DateTimeZoneResourceProvider : IDateTimeZoneProvider
     {
+        /// <summary>
+        /// The key used to find ID mappings within the resource.
+        /// </summary>
         public const string IdMapKey = "IdMap";
 
         private readonly ResourceSet source;
         private readonly IDictionary<string, string> timeZoneIdMap;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DateTimeZoneResourceProvider" /> class.
+        /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider" /> class.
         /// </summary>
         /// <param name = "baseName">GetName of the base.</param>
         public DateTimeZoneResourceProvider(string baseName) : this(baseName, Assembly.GetExecutingAssembly())
@@ -43,7 +46,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DateTimeZoneResourceProvider" /> class.
+        /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider" /> class.
         /// </summary>
         /// <param name = "baseName">GetName of the base.</param>
         /// <param name = "assembly">The assembly to search for the time zone resources.</param>
@@ -53,7 +56,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DateTimeZoneResourceProvider" /> class.
+        /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider" /> class.
         /// </summary>
         /// <param name="source">The <see cref="ResourceManager"/> to search for the time zone resources.</param>
         public DateTimeZoneResourceProvider(ResourceManager source)
@@ -62,7 +65,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DateTimeZoneResourceProvider" /> class.
+        /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider" /> class.
         /// </summary>
         /// <param name="source">The <see cref="ResourceSet"/> to search for the time zone resources.</param>
         public DateTimeZoneResourceProvider(ResourceSet source)
@@ -73,16 +76,16 @@ namespace NodaTime.TimeZones
 
         #region IDateTimeZoneProvider Members
         /// <summary>
-        ///   Returns the time zone definition associated with the given id.
+        /// Returns the time zone definition associated with the given id.
         /// </summary>
-        /// <param name = "id">The id of the time zone to return.</param>
+        /// <param name="id">The id of the time zone to return.</param>
         /// <returns>
         /// The <see cref="DateTimeZone"/> or <c>null</c> if there is no time zone with the given id.
         /// </returns>
         /// <remarks>
-        ///   If the time zone does not yet exist, its definition is loaded from where ever this
-        ///   provider gets time zone definitions. Time zones should not be cached in the provider as
-        ///   they will be cached in <see cref="DateTimeZone" />.
+        /// If the time zone does not yet exist, its definition is loaded from where ever this
+        /// provider gets time zone definitions. Time zones should not be cached in the provider as
+        /// they will be cached in <see cref="DateTimeZone" />.
         /// </remarks>
         public DateTimeZone ForId(string id)
         {
@@ -91,9 +94,8 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Returns an enumeration of the available ids from this provider.
+        /// Returns a sequence of the available IDs from this provider.
         /// </summary>
-        /// <value>The <see cref = "IEnumerable{T}" /> of ids.</value>
         public IEnumerable<string> Ids
         {
             [DebuggerStepThrough] get { return timeZoneIdMap.Keys; }

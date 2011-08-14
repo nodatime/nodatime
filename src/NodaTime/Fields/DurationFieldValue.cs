@@ -17,8 +17,6 @@
 
 namespace NodaTime.Fields
 {
-    // TODO: Implement IEquatable{T} etc? I'm not currently sure there's much point.
-
     /// <summary>
     /// A simple combination of a <see cref="DurationFieldType" /> and a 64-bit integer value.
     /// These are used when representing periods.
@@ -26,11 +24,21 @@ namespace NodaTime.Fields
     public struct DurationFieldValue
     {
         private readonly DurationFieldType fieldType;
+        private readonly long value;
+
+        /// <summary>
+        /// The <see cref="DurationFieldType"/> component of the value.
+        /// </summary>
         public DurationFieldType FieldType { get { return fieldType; } }
 
-        private readonly long value;
+        /// <summary>
+        /// The 64-bit integer component of the value.
+        /// </summary>
         public long Value { get { return value; } }
 
+        /// <summary>
+        /// Creates a new instance combining the specified type and value.
+        /// </summary>
         public DurationFieldValue(DurationFieldType fieldType, long value)
         {
             this.fieldType = fieldType;

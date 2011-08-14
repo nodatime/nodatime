@@ -21,6 +21,10 @@ namespace NodaTime
     /// </summary>
     public interface IClock
     {
+        /// <summary>
+        /// Gets the current instant in time according to this clock. This is an instant on
+        /// the time line which is independent of both time zone and calendar system.
+        /// </summary>
         Instant Now { get; }
     }
 }

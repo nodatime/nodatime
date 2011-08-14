@@ -35,38 +35,57 @@ namespace NodaTime
     /// not the same as other <see cref="ArgumentOutOfRangeException" /> causes,
     /// such as entering "15" for a month number.
     /// </para>
+    /// <para>
+    /// In theory this isn't calendar-specific; the local instant will be ambiguous in
+    /// this time zone regardless of the calendar used. However, this exception is
+    /// always created in conjunction with a specific calendar, which leads to a more
+    /// natural way of examining its information and constructing an error message.
+    /// </para>
     /// </remarks>
     [Serializable]
     public class AmbiguousTimeException : ArgumentOutOfRangeException
     {
-        private readonly LocalInstant localInstant;
-
-        /// <summary>
-        /// The local instant which is invalid in the time zone
-        /// </summary>
-        internal LocalInstant LocalInstant { get { return localInstant; } }
-
+        private readonly LocalDateTime localDateTime;
         private readonly DateTimeZone zone;
+        private readonly ZonedDateTime earlierMapping;
+        private readonly ZonedDateTime laterMapping;
 
         /// <summary>
-        /// The time zone in which the local instant is invalid
+        /// The local date and time which is ambiguous in the time zone.
+        /// </summary>
+        internal LocalDateTime LocalDateTime { get { return localDateTime; } }
+
+        /// <summary>
+        /// The time zone in which the local date and time is ambiguous.
         /// </summary>
         public DateTimeZone Zone { get { return zone; } }
 
-        internal AmbiguousTimeException(LocalInstant localInstant, DateTimeZone zone)
-            : base("Local time " + localInstant + " is ambiguous in time zone " + zone.Id)
+        /// <summary>
+        /// The earlier of the two occurrences of the local date and time within the time zone.
+        /// </summary>
+        public ZonedDateTime EarlierMapping { get { return earlierMapping; } }
+
+        /// <summary>
+        /// The later of the two occurrences of the local date and time within the time zone.
+        /// </summary>
+        public ZonedDateTime LaterMapping { get { return earlierMapping; } }
+
+        /// <summary>
+        /// Constructs an instance from the given information.
+        /// </summary>
+        /// <remarks>
+        /// User code is unlikely to need to deliberately call this constructor except
+        /// possibly for testing.
+        /// </remarks>
+        public AmbiguousTimeException(LocalDateTime localDateTime, DateTimeZone zone,
+            ZonedDateTime earlierMapping,
+            ZonedDateTime laterMapping)
+            : base("Local time " + localDateTime + " is ambiguous in time zone " + zone.Id)
         {
-            this.localInstant = localInstant;
+            this.localDateTime = localDateTime;
             this.zone = zone;
+            this.earlierMapping = earlierMapping;
+            this.laterMapping = laterMapping;
         }
-
-        public LocalDateTime GetInvalidLocalDateTime(CalendarSystem calendar)
-        {
-            return new LocalDateTime(LocalInstant, calendar);
-        }
-
-        // TODO: IsoLocalDateTime as a convenience property?
-        // TODO: Does this only ever happen with reference to a user-specified calendar? If so, we can provide the LocalDateTime instead.
-        // TODO: Can we provide the earlier and later possibilities?
     }
 }
