@@ -98,67 +98,150 @@ namespace NodaTime
         /// <summary>
         /// Gets the chronology.
         /// </summary>
-        /// <value>The chronology.</value>
         public Chronology Chronology { get { return chronology; } }
 
         /// <summary>
-        /// Gets the offset.
+        /// Gets the offset 
         /// </summary>
-        /// <value>The offset.</value>
         public Offset Offset { get { return offset; } }
 
         /// <summary>
-        /// Gets the zone.
+        /// Gets the time zone 
         /// </summary>
-        /// <value>The zone.</value>
         public DateTimeZone Zone { get { return Chronology.Zone; } }
 
         /// <summary>
         /// Gets the local instant.
         /// </summary>
-        /// <value>The local instant.</value>
         internal LocalInstant LocalInstant { get { return localInstant; } }
 
+        /// <summary>
+        /// Gets the local date and time represented by this zoned date and time. The returned <see cref="LocalDateTime"/>
+        /// will have the same calendar system and return the same values for each of the calendar properties
+        /// (Year, MonthOfYear and so on), but not be associated with any particular time zone.
+        /// </summary>
         public LocalDateTime LocalDateTime { get { return new LocalDateTime(LocalInstant, chronology.Calendar); } }
 
+        /// <summary>
+        /// Gets the era for this date and time. The precise meaning of this value depends on the calendar
+        /// system in use.
+        /// </summary>
         public int Era { get { return LocalDateTime.Era; } }
 
+        /// <summary>
+        /// Gets the century within the era of this date and time.
+        /// </summary>
         public int CenturyOfEra { get { return LocalDateTime.CenturyOfEra; } }
 
+        /// <summary>
+        /// Gets the year of this date and time.
+        /// </summary>
         public int Year { get { return LocalDateTime.Year; } }
 
+        /// <summary>
+        /// Gets the year of this date and time within its century.
+        /// </summary>
         public int YearOfCentury { get { return LocalDateTime.YearOfCentury; } }
 
+        /// <summary>
+        /// Gets the year of this date and time within its era.
+        /// </summary>
         public int YearOfEra { get { return LocalDateTime.YearOfEra; } }
 
+        /// <summary>
+        /// Gets the "week year" of this date and time.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The WeekYear is the year that matches with the WeekOfWeekYear field.
+        /// In the standard ISO8601 week algorithm, the first week of the year
+        /// is that in which at least 4 days are in the year. As a result of this
+        /// definition, day 1 of the first week may be in the previous year.
+        /// The WeekYear allows you to query the effective year for that day
+        /// </para>
+        /// <para>
+        /// For example, January 1st 2011 was a Saturday, so only two days of that week
+        /// (Saturday and Sunday) were in 2011. Therefore January 1st is part of
+        /// week 52 of WeekYear 2010. Conversely, December 31st 2012 is a Monday,
+        /// so is part of week 1 of WeekYear 2013.
+        /// </para>
+        /// </remarks>
         public int WeekYear { get { return LocalDateTime.WeekYear; } }
 
+        /// <summary>
+        /// Gets the month of this date and time within the year.
+        /// </summary>
         public int MonthOfYear { get { return LocalDateTime.MonthOfYear; } }
 
+        /// <summary>
+        /// Week within the WeekYear. See <see cref="WeekYear"/> for more details.
+        /// </summary>
         public int WeekOfWeekYear { get { return LocalDateTime.WeekOfWeekYear; } }
 
+        /// <summary>
+        /// Day of this date and time within the year.
+        /// </summary>
         public int DayOfYear { get { return LocalDateTime.DayOfYear; } }
 
+        /// <summary>
+        /// Day of this date and time within the month.
+        /// </summary>
         public int DayOfMonth { get { return LocalDateTime.DayOfMonth; } }
 
+        /// <summary>
+        /// Week day of this date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
+        /// for calendars which use ISO days of the week.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         public IsoDayOfWeek IsoDayOfWeek { get { return LocalDateTime.IsoDayOfWeek; } }
 
+        /// <summary>
+        /// Week day of this date and time as a number.
+        /// </summary>
+        /// <remarks>
+        /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
+        /// </remarks>
+        /// <seealso cref="IsoDayOfWeek"/>
         public int DayOfWeek { get { return LocalDateTime.DayOfWeek; } }
 
+        /// <summary>
+        /// Hour of day of this date and time, in the range 0 to 23 inclusive.
+        /// </summary>
         public int HourOfDay { get { return LocalDateTime.HourOfDay; } }
 
+        /// <summary>
+        /// Minute of this date and time, in the range 0 to 59 inclusive.
+        /// </summary>
         public int MinuteOfHour { get { return LocalDateTime.MinuteOfHour; } }
 
+        /// <summary>
+        /// Second of this date and time within the minute, in the range 0 to 59 inclusive.
+        /// </summary>
         public int SecondOfMinute { get { return LocalDateTime.SecondOfMinute; } }
 
+        /// <summary>
+        /// Second of this date and time within the day, in the range 0 to 86,399 inclusive.
+        /// </summary>
         public int SecondOfDay { get { return LocalDateTime.SecondOfDay; } }
 
+        /// <summary>
+        /// Millisecond of this date and time within the second, in the range 0 to 999 inclusive.
+        /// </summary>
         public int MillisecondOfSecond { get { return LocalDateTime.MillisecondOfSecond; } }
 
+        /// <summary>
+        /// Millisecond of this date and time within the day, in the range 0 to 86,399,999 inclusive.
+        /// </summary>
         public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
 
+        /// <summary>
+        /// Tick of this date and time within the millisceond, in the range 0 to 9,999 inclusive.
+        /// </summary>
         public int TickOfMillisecond { get { return LocalDateTime.TickOfMillisecond; } }
 
+        /// <summary>
+        /// Tick of this date and time within the day, in the range 0 to 863,999,999,999 inclusive.
+        /// </summary>
         public long TickOfDay { get { return LocalDateTime.TickOfDay; } }
 
         /// <summary>
@@ -207,7 +290,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the hash code for this instance.
+        /// Computes the hash code for this instance.
         /// </summary>
         /// <returns>
         /// A 32-bit signed integer that is the hash code for this instance.
@@ -247,7 +330,10 @@ namespace NodaTime
         }
         #endregion
 
-        // TODO: Something better :)
+        /// <summary>
+        /// Converts this date and time to text according to the default formatting for the culture.
+        /// </summary>
+        // TODO: Improve description and make the implementation match the documentation :)
         public override string ToString()
         {
             return "Local: " + localInstant + " Offset: " + offset + " Zone: " + chronology.Zone;

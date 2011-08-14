@@ -134,5 +134,25 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(28, CalendarSystem.Iso.GetDaysInMonth(2010, 2));
             Assert.AreEqual(29, CalendarSystem.Iso.GetDaysInMonth(2012, 2));
         }
+
+        [Test]
+        public void WeekYearLessThanYear()
+        {
+            // January 1st 2011 was a Saturday, and therefore part of WeekYear 2010.
+            LocalDate localDate = new LocalDate(2012, 1, 1);
+            Assert.AreEqual(2011, localDate.Year);
+            Assert.AreEqual(2010, localDate.WeekYear);
+            Assert.AreEqual(52, localDate.WeekOfWeekYear);
+        }
+
+        [Test]
+        public void WeekYearGreaterThanYear()
+        {
+            // December 31st 2012 is a Monday, and thus part of WeekYear 2013.
+            LocalDate localDate = new LocalDate(2012, 12, 31);
+            Assert.AreEqual(2012, localDate.Year);
+            Assert.AreEqual(2013, localDate.WeekYear);
+            Assert.AreEqual(1, localDate.WeekOfWeekYear);
+        }
     }
 }
