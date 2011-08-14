@@ -71,36 +71,6 @@ namespace NodaTime.Fields
 
         internal override DurationField DurationField { get { return wrappedField.DurationField; } }
 
-        internal override string GetAsShortText(int fieldValue, IFormatProvider provider)
-        {
-            return wrappedField.GetAsShortText(fieldValue, provider);
-        }
-
-        internal override string GetAsShortText(LocalInstant localInstant)
-        {
-            return wrappedField.GetAsShortText(localInstant);
-        }
-
-        internal override string GetAsShortText(LocalInstant localInstant, IFormatProvider provider)
-        {
-            return wrappedField.GetAsShortText(localInstant, provider);
-        }
-
-        internal override string GetAsText(int fieldValue, IFormatProvider provider)
-        {
-            return wrappedField.GetAsText(fieldValue, provider);
-        }
-
-        internal override string GetAsText(LocalInstant localInstant)
-        {
-            return wrappedField.GetAsText(localInstant);
-        }
-
-        internal override string GetAsText(LocalInstant localInstant, IFormatProvider provider)
-        {
-            return wrappedField.GetAsText(localInstant, provider);
-        }
-
         internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return wrappedField.GetDifference(minuendInstant, subtrahendInstant);
@@ -114,16 +84,6 @@ namespace NodaTime.Fields
         internal override int GetLeapAmount(LocalInstant localInstant)
         {
             return wrappedField.GetLeapAmount(localInstant);
-        }
-
-        internal override int GetMaximumShortTextLength(IFormatProvider provider)
-        {
-            return wrappedField.GetMaximumShortTextLength(provider);
-        }
-
-        internal override int GetMaximumTextLength(IFormatProvider provider)
-        {
-            return wrappedField.GetMaximumTextLength(provider);
         }
 
         internal override long GetMaximumValue()
@@ -183,16 +143,6 @@ namespace NodaTime.Fields
         internal override LocalInstant RoundHalfFloor(LocalInstant localInstant)
         {
             return wrappedField.RoundHalfFloor(localInstant);
-        }
-
-        internal override LocalInstant SetValue(LocalInstant instant, string text)
-        {
-            return wrappedField.SetValue(instant, text);
-        }
-
-        internal override LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
-        {
-            return wrappedField.SetValue(instant, text, provider);
         }
 
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)

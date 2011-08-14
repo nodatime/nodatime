@@ -51,7 +51,7 @@ namespace NodaTime.Fields
         /// duration range field name. If the range field is not applicable, then
         /// the name of the field is simply the (singular) duration field name.
         /// </remarks>
-        internal String Name { get { return FieldType.ToString(); } }
+        internal string Name { get { return FieldType.ToString(); } }
 
         /// <summary>
         /// Gets the duration per unit value of this field, or UnsupportedDurationField if field has no duration.
@@ -235,42 +235,6 @@ namespace NodaTime.Fields
         /// <param name="value">The value to set, in the units of the field</param>
         /// <returns>The updated local instant</returns>
         internal abstract LocalInstant SetValue(LocalInstant localInstant, long value);
-
-        /// <summary>
-        /// Sets a value in the local instant supplied from a human-readable, text value.
-        /// </summary>
-        /// <param name="instant">The local instant to set in</param>
-        /// <param name="text">The text value to set</param>
-        /// <param name="provider">The format provider to use</param>
-        /// <returns>The updated local instant</returns>
-        /// <remarks>
-        /// If setting this field would make other fields invalid, then those fields
-        /// may be changed. For example if the current date is the 31st January, and
-        /// the month is set to February, the day would be invalid. Instead, the day
-        /// would be changed to the closest value - the 28th/29th February as appropriate.
-        /// </remarks>
-        internal virtual LocalInstant SetValue(LocalInstant instant, string text, IFormatProvider provider)
-        {
-            int value = ConvertText(text, provider);
-            return SetValue(instant, value);
-        }
-
-        /// <summary>
-        /// Sets a value in the local instant supplied from a human-readable, text value.
-        /// </summary>
-        /// <param name="instant">The local instant to set in</param>
-        /// <param name="text">The text value to set</param>
-        /// <returns>The updated local instant</returns>
-        /// <remarks>
-        /// If setting this field would make other fields invalid, then those fields
-        /// may be changed. For example if the current date is the 31st January, and
-        /// the month is set to February, the day would be invalid. Instead, the day
-        /// would be changed to the closest value - the 28th/29th February as appropriate.
-        /// </remarks>        
-        internal virtual LocalInstant SetValue(LocalInstant instant, String text)
-        {
-            return SetValue(instant, text, null);
-        }
         #endregion
 
         #region Leap
@@ -452,154 +416,6 @@ namespace NodaTime.Fields
             return localInstant - RoundFloor(localInstant);
         }
         #endregion
-
-        #region Text
-        /// <summary>
-        /// Get the maximum text value for this field.
-        /// </summary>
-        /// <param name="provider">The format provider to use</param>
-        /// <returns>The maximum text length</returns>
-        /// <remarks>
-        /// The default implementation returns the equivalent of 
-        /// GetMaximumValue().ToString().Length.
-        /// </remarks>
-        internal virtual int GetMaximumTextLength(IFormatProvider provider)
-        {
-            int max = (int)GetMaximumValue();
-            if (max >= 0)
-            {
-                if (max < 10)
-                {
-                    return 1;
-                }
-                else if (max < 100)
-                {
-                    return 2;
-                }
-                else if (max < 1000)
-                {
-                    return 3;
-                }
-            }
-            return max.ToString(provider).Length;
-        }
-
-        /// <summary>
-        /// Get the maximum short text value for this field.
-        /// </summary>
-        /// <param name="provider">The format provider to use</param>
-        /// <returns>The maximum short text length</returns>
-        /// <remarks>
-        /// The default implementation returns GetMaximumTextLength().
-        /// </remarks>
-        internal virtual int GetMaximumShortTextLength(IFormatProvider provider)
-        {
-            return GetMaximumTextLength(provider);
-        }
-
-        /// <summary>
-        /// Get the human-readable, text value of this field from the local instant.
-        /// <para>
-        /// The default implementation calls <see cref="GetAsText(int, IFormatProvider)"/>.
-        /// </para>
-        /// </summary>
-        /// <param name="localInstant">The local instant to query</param>
-        /// <param name="provider">Format provider to use</param>
-        /// <returns>The text value of the field</returns>
-        internal virtual string GetAsText(LocalInstant localInstant, IFormatProvider provider)
-        {
-            return GetAsText(GetValue(localInstant), provider);
-        }
-
-        /// <summary>
-        /// Get the human-readable, text value of this field from the local instant.
-        /// <para>
-        /// The default implementation calls <see cref="GetAsText(int, IFormatProvider)"/>.
-        /// </para>
-        /// </summary>
-        /// <param name="localInstant">The local instant to query</param>
-        /// <returns>The text value of the field</returns>
-        internal virtual string GetAsText(LocalInstant localInstant)
-        {
-            return GetAsText(localInstant, null);
-        }
-
-        /// <summary>
-        /// Get the human-readable, text value of this field from the field value.
-        /// <para>
-        /// The default implementation returns fieldValue.ToString(provider).
-        /// </para>
-        /// <para>
-        /// Note: subclasses that override this method should also override
-        /// GetMaximumTextLength.
-        /// </para>
-        /// </summary>
-        /// <param name="fieldValue">the numeric value to convert to text</param>
-        /// <param name="provider">Format provider to use</param>
-        /// <returns>The text value of the field</returns>
-        internal virtual string GetAsText(int fieldValue, IFormatProvider provider)
-        {
-            return fieldValue.ToString(provider);
-        }
-
-        /// <summary>
-        /// Get the human-readable, text value of this field from the field value.
-        /// <para>
-        /// The default implementation returns fieldValue.ToString(provider).
-        /// </para>
-        /// </summary>
-        /// <param name="localInstant">The local instant to query</param>
-        /// <param name="provider">Format provider to use</param>
-        /// <returns>The text value of the field</returns>
-        internal virtual string GetAsShortText(LocalInstant localInstant, IFormatProvider provider)
-        {
-            return GetAsShortText(GetValue(localInstant), provider);
-        }
-
-        /// <summary>
-        /// Get the human-readable, short text value of this field from the local instant.
-        /// <para>
-        /// The default implementation calls <see cref="GetAsShortText(int, IFormatProvider)"/>.
-        /// </para>
-        /// </summary>
-        /// <param name="localInstant">The local instant to query</param>
-        /// <returns>The text value of the field</returns>
-        internal virtual string GetAsShortText(LocalInstant localInstant)
-        {
-            return GetAsShortText(localInstant, null);
-        }
-
-        /// <summary>
-        /// Get the human-readable, short text value of this field from the field value.
-        /// <para>
-        /// The default implementation calls <see cref="GetAsText(int, IFormatProvider)"/>.
-        /// </para>
-        /// <para>
-        /// Note: subclasses that override this method should also override
-        /// GetMaximumShortTextLength.
-        /// </para>
-        /// </summary>
-        /// <param name="fieldValue">the numeric value to convert to text</param>
-        /// <param name="provider">Format provider to use</param>
-        /// <returns>The text value of the field</returns>
-        internal virtual string GetAsShortText(int fieldValue, IFormatProvider provider)
-        {
-            return GetAsText(fieldValue, provider);
-        }
-        #endregion
-
-        protected int ConvertText(String text, IFormatProvider provider)
-        {
-            int result = 0;
-            if (Int32.TryParse(text, out result))
-            {
-                return result;
-            }
-            else
-            {
-                throw new FieldValueException(FieldType, text);
-            }
-        }
 
         public override string ToString()
         {

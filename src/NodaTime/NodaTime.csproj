@@ -189,7 +189,6 @@
     <Compile Include="TimeZones\TransitionMode.cs" />
     <Compile Include="TimeZones\UtcProvider.cs" />
     <Compile Include="TimeZones\DateTimeZoneResourceProvider.cs" />
-    <Compile Include="Format\DateTimeParserBucket.cs" />
     <Compile Include="Format\FormatUtils.cs" />
     <Compile Include="Chronology.cs" />
     <Compile Include="LocalDateTime.cs" />
