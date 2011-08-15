@@ -310,9 +310,6 @@ namespace NodaTime
         /// <summary>
         /// Implements the operator ==.
         /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
         public static bool operator ==(ZonedDateTime left, ZonedDateTime right)
         {
             return left.Equals(right);
@@ -321,12 +318,53 @@ namespace NodaTime
         /// <summary>
         /// Implements the operator !=.
         /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
         public static bool operator !=(ZonedDateTime left, ZonedDateTime right)
         {
             return !(left == right);
+        }
+
+        /// <summary>
+        /// Returns a new ZonedDateTime with the time advanced by the given duration. Note that
+        /// due to daylight saving time changes this may not advance the local time by the same amount.
+        /// </summary>
+        /// <remarks>
+        /// The returned value uses the same calendar system and time zone as the left operand.
+        /// </remarks>
+        /// <param name="left">The ZonedDateTime to add the duration to.</param>
+        /// <param name="right">The duration to add.</param>
+        public static ZonedDateTime operator +(ZonedDateTime left, Duration right)
+        {
+            return new ZonedDateTime(left.ToInstant() + right, left.Chronology);
+        }
+
+        /// <summary>
+        /// Adds a duration to zoned date and time. Friendly alternative to <c>operator+()</c>.
+        /// </summary>
+        public static ZonedDateTime Add(ZonedDateTime left, Duration right)
+        {
+            return left + right;
+        }
+
+        /// <summary>
+        /// Subtracts a duration from zoned date and time. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        public static ZonedDateTime Subtract(ZonedDateTime left, Duration right)
+        {
+            return left - right;
+        }
+
+        /// <summary>
+        /// Returns a new ZonedDateTime with the duration subtracted. Note that
+        /// due to daylight saving time changes this may not change the local time by the same amount.
+        /// </summary>
+        /// <remarks>
+        /// The returned value uses the same calendar system and time zone as the left operand.
+        /// </remarks>
+        /// <param name="left">The ZonedDateTime to subtract the duration from.</param>
+        /// <param name="right">The duration to add.</param>
+        public static ZonedDateTime operator -(ZonedDateTime left, Duration right)
+        {
+            return new ZonedDateTime(left.ToInstant() - right, left.Chronology);
         }
         #endregion
 

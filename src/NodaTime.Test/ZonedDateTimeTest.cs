@@ -16,6 +16,7 @@
 #endregion
 
 using NUnit.Framework;
+using NodaTime.Testing.TimeZones;
 
 namespace NodaTime.Test
 {
@@ -28,6 +29,11 @@ namespace NodaTime.Test
     [TestFixture]
     public class ZonedDateTimeTest
     {
+        /// <summary>
+        /// Changes from UTC+3 to UTC+4 at 1am local time on June 13th 2011.
+        /// </summary>
+        private static SingleTransitionZone SampleZone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 3, 4);
+
         private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
 
         [Test]
@@ -101,6 +107,34 @@ namespace NodaTime.Test
         public void ZoneAt_WithImpossibleTime_ThrowsException()
         {
             Assert.Throws<SkippedTimeException>(() => Pacific.AtExactly(new LocalDateTime(2009, 3, 8, 2, 30, 0)));
+        }
+
+        [Test]
+        public void Add_AroundTimeZoneTransition()
+        {
+            // Before the transition at 3pm...
+            ZonedDateTime before = SampleZone.AtExactly(new LocalDateTime(2011, 6, 12, 15, 0));
+            // 24 hours elapsed, and it's 4pm
+            ZonedDateTime afterExpected = SampleZone.AtExactly(new LocalDateTime(2011, 6, 13, 16, 0));
+            ZonedDateTime afterAdd = ZonedDateTime.Add(before, Duration.OneDay);
+            ZonedDateTime afterOperator = before + Duration.OneDay;
+
+            Assert.AreEqual(afterExpected, afterAdd);
+            Assert.AreEqual(afterExpected, afterOperator);
+        }
+
+        [Test]
+        public void Subtract_AroundTimeZoneTransition()
+        {
+            // After the transition at 4pm...
+            ZonedDateTime after = SampleZone.AtExactly(new LocalDateTime(2011, 6, 13, 16, 0));
+            // 24 hours earlier, and it's 3pm
+            ZonedDateTime beforeExpected = SampleZone.AtExactly(new LocalDateTime(2011, 6, 12, 15, 0));
+            ZonedDateTime beforeSubtract = ZonedDateTime.Subtract(after, Duration.OneDay);
+            ZonedDateTime beforeOperator = after - Duration.OneDay;
+
+            Assert.AreEqual(beforeExpected, beforeSubtract);
+            Assert.AreEqual(beforeExpected, beforeOperator);
         }
     }
 }
