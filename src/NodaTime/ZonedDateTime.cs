@@ -179,24 +179,24 @@ namespace NodaTime
         public int WeekOfWeekYear { get { return LocalDateTime.WeekOfWeekYear; } }
 
         /// <summary>
-        /// Day of this date and time within the year.
+        /// Gets the day of this date and time within the year.
         /// </summary>
         public int DayOfYear { get { return LocalDateTime.DayOfYear; } }
 
         /// <summary>
-        /// Day of this date and time within the month.
+        /// Gets the day of this date and time within the month.
         /// </summary>
         public int DayOfMonth { get { return LocalDateTime.DayOfMonth; } }
 
         /// <summary>
-        /// Week day of this date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
+        /// Gets the week day of this date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
         /// for calendars which use ISO days of the week.
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         public IsoDayOfWeek IsoDayOfWeek { get { return LocalDateTime.IsoDayOfWeek; } }
 
         /// <summary>
-        /// Week day of this date and time as a number.
+        /// Gets the week day of this date and time as a number.
         /// </summary>
         /// <remarks>
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
@@ -205,42 +205,42 @@ namespace NodaTime
         public int DayOfWeek { get { return LocalDateTime.DayOfWeek; } }
 
         /// <summary>
-        /// Hour of day of this date and time, in the range 0 to 23 inclusive.
+        /// Gets the hour of day of this date and time, in the range 0 to 23 inclusive.
         /// </summary>
         public int HourOfDay { get { return LocalDateTime.HourOfDay; } }
 
         /// <summary>
-        /// Minute of this date and time, in the range 0 to 59 inclusive.
+        /// Gets the minute of this date and time, in the range 0 to 59 inclusive.
         /// </summary>
         public int MinuteOfHour { get { return LocalDateTime.MinuteOfHour; } }
 
         /// <summary>
-        /// Second of this date and time within the minute, in the range 0 to 59 inclusive.
+        /// Gets the second of this date and time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
         public int SecondOfMinute { get { return LocalDateTime.SecondOfMinute; } }
 
         /// <summary>
-        /// Second of this date and time within the day, in the range 0 to 86,399 inclusive.
+        /// Gets the second of this date and time within the day, in the range 0 to 86,399 inclusive.
         /// </summary>
         public int SecondOfDay { get { return LocalDateTime.SecondOfDay; } }
 
         /// <summary>
-        /// Millisecond of this date and time within the second, in the range 0 to 999 inclusive.
+        /// Gets the millisecond of this date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
         public int MillisecondOfSecond { get { return LocalDateTime.MillisecondOfSecond; } }
 
         /// <summary>
-        /// Millisecond of this date and time within the day, in the range 0 to 86,399,999 inclusive.
+        /// Gets the millisecond of this date and time within the day, in the range 0 to 86,399,999 inclusive.
         /// </summary>
         public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
 
         /// <summary>
-        /// Tick of this date and time within the millisceond, in the range 0 to 9,999 inclusive.
+        /// Gets the tick of this date and time within the millisceond, in the range 0 to 9,999 inclusive.
         /// </summary>
         public int TickOfMillisecond { get { return LocalDateTime.TickOfMillisecond; } }
 
         /// <summary>
-        /// Tick of this date and time within the day, in the range 0 to 863,999,999,999 inclusive.
+        /// Gets the tick of this date and time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
         public long TickOfDay { get { return LocalDateTime.TickOfDay; } }
 
