@@ -46,8 +46,17 @@ namespace NodaTime
     /// </remarks>
     public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable
     {
+        /// <summary>
+        /// An offset of zero ticks - effectively the permanent offset for UTC.
+        /// </summary>
         public static readonly Offset Zero = Offset.FromMilliseconds(0);
+        /// <summary>
+        /// The minimum permitted offset; one millisecond less than a standard day before UTC.
+        /// </summary>
         public static readonly Offset MinValue = Offset.FromMilliseconds(-NodaConstants.MillisecondsPerStandardDay + 1);
+        /// <summary>
+        /// The minimum permitted offset; one millisecond less than a standard day after UTC.
+        /// </summary>
         public static readonly Offset MaxValue = Offset.FromMilliseconds(NodaConstants.MillisecondsPerStandardDay - 1);
 
         private readonly int milliseconds;
@@ -118,6 +127,9 @@ namespace NodaTime
             return Offset.FromMilliseconds(-offset.Milliseconds);
         }
 
+        /// <summary>
+        /// Returns the negation of the specified offset. This is the method form of the unary minus operator.
+        /// </summary>
         public static Offset Negate(Offset offset)
         {
             return -offset;
@@ -133,6 +145,9 @@ namespace NodaTime
             return offset;
         }
 
+        /// <summary>
+        /// Returns the specified offset. This is the method form of the unary plus operator.
+        /// </summary>
         public static Offset Plus(Offset offset)
         {
             return offset;
@@ -394,51 +409,93 @@ namespace NodaTime
         #endregion Formatting
 
         #region Parsing
+        /// <summary>
+        /// Parses the given string using the current culture's default format provider.
+        /// </summary>
         public static Offset Parse(string value)
         {
             return OffsetParse.Parse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
         }
 
+        /// <summary>
+        /// Parses the given string using the specified format provider.
+        /// </summary>
         public static Offset Parse(string value, IFormatProvider formatProvider)
         {
             return OffsetParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
+        /// <summary>
+        /// Parses the given string using the specified format provider and style.
+        /// </summary>
         public static Offset Parse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
             return OffsetParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
+        /// <summary>
+        /// Parses the given string using the specified format pattern and format provider.
+        /// </summary>
         public static Offset ParseExact(string value, string format, IFormatProvider formatProvider)
         {
             return OffsetParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
+        /// <summary>
+        /// Parses the given string using the specified format pattern, format provider and style.
+        /// </summary>
         public static Offset ParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
             return OffsetParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
+        /// <summary>
+        /// Parses the given string using the specified format patterns, format provider and style.
+        /// </summary>
         public static Offset ParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
             return OffsetParse.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
+        /// <summary>
+        /// Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
+        /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Offset result)
         {
             return OffsetParse.TryParse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
         }
 
+        /// <summary>
+        /// Attempts to parse the given string using the specified format provider and style.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
         {
             return OffsetParse.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
+        /// <summary>
+        /// Attempts to parse the given string using the specified format pattern, format provider and style.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
         {
             return OffsetParse.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
+        /// <summary>
+        /// Attempts to parse the given string using the specified format patterns, format provider and style.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
         {
             return OffsetParse.TryParseExactMultiple(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);

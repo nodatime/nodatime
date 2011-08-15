@@ -31,12 +31,11 @@ namespace NodaTime
     /// <remarks>
     /// Periods operate on calendar-related types such as
     /// <see cref="LocalDateTime" /> whereas <see cref="Duration"/> operates on instants
-    /// on the time line. <see cref="ZonedDateTime" /> includes both concepts, so both
-    /// durations and periods can be added to zoned date-time instances - although the
-    /// results may not be the same. For example, adding a two hour period to a ZonedDateTime
-    /// will always give a result has a local date-time which is two hours later, even if that
-    /// means that three hours would have to actually pass in experienced time to arrive at
-    /// that local date-time, due to changes in the UTC offset (e.g. for daylight savings).
+    /// on the time line. Although <see cref="ZonedDateTime" /> includes both concepts, it is generally
+    /// simpler to consider period-based arithmetic solely on local dates and times, so only
+    /// duration-based arithmetic is supported on ZonedDateTime. This avoids ambiguities
+    /// and skipped date/time values becoming a problem within a series of calculations; instead,
+    /// these can be considered just once, at the point of conversion to a ZonedDateTime.
     /// </remarks>
     public sealed class Period : IEnumerable<DurationFieldValue>, IEquatable<Period>
     {
@@ -55,6 +54,9 @@ namespace NodaTime
             this.periodType = periodType;
         }
 
+        /// <summary>
+        /// Returns the type of this period, which describes the fields within this period.
+        /// </summary>
         public PeriodType PeriodType { get { return periodType; } }
 
         private static Period CreateSingleFieldPeriod(PeriodType periodType, long value)
@@ -63,41 +65,65 @@ namespace NodaTime
             return new Period(periodType, values);
         }
 
+        /// <summary>
+        /// Creates a period representing the specified number of years.
+        /// </summary>
         public static Period FromYears(long years)
         {
             return CreateSingleFieldPeriod(PeriodType.Years, years);
         }
 
+        /// <summary>
+        /// Creates a period representing the specified number of months.
+        /// </summary>
         public static Period FromMonths(long months)
         {
             return CreateSingleFieldPeriod(PeriodType.Months, months);
         }
 
+        /// <summary>
+        /// Creates a period representing the specified number of days.
+        /// </summary>
         public static Period FromDays(long days)
         {
             return CreateSingleFieldPeriod(PeriodType.Days, days);
         }
 
+        /// <summary>
+        /// Creates a period representing the specified number of hours.
+        /// </summary>
         public static Period FromHours(long hours)
         {
             return CreateSingleFieldPeriod(PeriodType.Hours, hours);
         }
 
+        /// <summary>
+        /// Creates a period representing the specified number of minutes.
+        /// </summary>
         public static Period FromMinutes(long minutes)
         {
             return CreateSingleFieldPeriod(PeriodType.Minutes, minutes);
         }
 
+        /// <summary>
+        /// Creates a period representing the specified number of seconds.
+        /// </summary>
         public static Period FromSeconds(long seconds)
         {
             return CreateSingleFieldPeriod(PeriodType.Seconds, seconds);
         }
 
+        /// <summary>
+        /// Creates a period representing the specified number of miliseconds.
+        /// </summary>
         public static Period FromMillseconds(long milliseconds)
         {
             return CreateSingleFieldPeriod(PeriodType.Milliseconds, milliseconds);
         }
 
+        /// <summary>
+        /// Creates a period representing the specified number of ticks.
+        /// </summary>
         public static Period FromTicks(long ticks)
         {
             return CreateSingleFieldPeriod(PeriodType.Ticks, ticks);
@@ -287,14 +313,41 @@ namespace NodaTime
         }
 
         #region Helper properties
+        /// <summary>
+        /// Gets the number of years within this period.
+        /// </summary>
         public long Years { get { return this[DurationFieldType.Years]; } }
+        /// <summary>
+        /// Gets the number of months within this period.
+        /// </summary>
         public long Months { get { return this[DurationFieldType.Months]; } }
+        /// <summary>
+        /// Gets the number of weeks within this period.
+        /// </summary>
         public long Weeks { get { return this[DurationFieldType.Weeks]; } }
+        /// <summary>
+        /// Gets the number of days within this period.
+        /// </summary>
         public long Days { get { return this[DurationFieldType.Days]; } }
+        /// <summary>
+        /// Gets the number of hours within this period.
+        /// </summary>
         public long Hours { get { return this[DurationFieldType.Hours]; } }
+        /// <summary>
+        /// Gets the number of minutes within this period.
+        /// </summary>
         public long Minutes { get { return this[DurationFieldType.Minutes]; } }
+        /// <summary>
+        /// Gets the number of seconds within this period.
+        /// </summary>
         public long Seconds { get { return this[DurationFieldType.Seconds]; } }
-        public long Millseconds { get { return this[DurationFieldType.Milliseconds]; } }
+        /// <summary>
+        /// Gets the number of milliseconds within this period.
+        /// </summary>
+        public long Milliseconds { get { return this[DurationFieldType.Milliseconds]; } }
+        /// <summary>
+        /// Gets the number of ticks within this period.
+        /// </summary>
         public long Ticks { get { return this[DurationFieldType.Ticks]; } }
         #endregion
 
