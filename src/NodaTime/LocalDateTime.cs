@@ -205,73 +205,179 @@ namespace NodaTime
             this.calendar = calendar;
         }
 
-        /// <summary>
-        /// Gets the local instant.
-        /// </summary>
-        /// <value>The local instant.</value>
         internal LocalInstant LocalInstant { get { return localInstant; } }
 
         /// <summary>
-        /// Gets the calendar.
+        /// Gets the calendar system associated with this local date and time.
         /// </summary>
-        /// <value>The calendar.</value>
         public CalendarSystem Calendar { get { return calendar; } }
 
+        /// <summary>
+        /// Gets the era for this local date and time. The precise meaning of this value depends on the calendar
+        /// system in use.
+        /// </summary>
         public int Era { get { return calendar.Fields.Era.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the century within the era of this local date and time.
+        /// </summary>
         public int CenturyOfEra { get { return calendar.Fields.CenturyOfEra.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the year of this local date and time.
+        /// </summary>
         public int Year { get { return calendar.Fields.Year.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the year of this local date and time within its century.
+        /// </summary>
         public int YearOfCentury { get { return calendar.Fields.YearOfCentury.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the year of this local date and time within its era.
+        /// </summary>
         public int YearOfEra { get { return calendar.Fields.YearOfEra.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the "week year" of this local date and time.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The WeekYear is the year that matches with the WeekOfWeekYear field.
+        /// In the standard ISO8601 week algorithm, the first week of the year
+        /// is that in which at least 4 days are in the year. As a result of this
+        /// definition, day 1 of the first week may be in the previous year.
+        /// The WeekYear allows you to query the effective year for that day
+        /// </para>
+        /// <para>
+        /// For example, January 1st 2011 was a Saturday, so only two days of that week
+        /// (Saturday and Sunday) were in 2011. Therefore January 1st is part of
+        /// week 52 of WeekYear 2010. Conversely, December 31st 2012 is a Monday,
+        /// so is part of week 1 of WeekYear 2013.
+        /// </para>
+        /// </remarks>
         public int WeekYear { get { return calendar.Fields.WeekYear.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the month of this local date and time within the year.
+        /// </summary>
         public int MonthOfYear { get { return calendar.Fields.MonthOfYear.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.
+        /// </summary>
         public int WeekOfWeekYear { get { return calendar.Fields.WeekOfWeekYear.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the day of this local date and time within the year.
+        /// </summary>
         public int DayOfYear { get { return calendar.Fields.DayOfYear.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the day of this local date and time within the month.
+        /// </summary>
         public int DayOfMonth { get { return calendar.Fields.DayOfMonth.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the week day of this local date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
+        /// for calendars which use ISO days of the week.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         public IsoDayOfWeek IsoDayOfWeek { get { return calendar.GetIsoDayOfWeek(localInstant); } }
 
+        /// <summary>
+        /// Gets the week day of this local date and time as a number.
+        /// </summary>
+        /// <remarks>
+        /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
+        /// </remarks>
+        /// <seealso cref="IsoDayOfWeek"/>
         public int DayOfWeek { get { return calendar.Fields.DayOfWeek.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
+        /// </summary>
         public int HourOfDay { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the minute of this local date and time, in the range 0 to 59 inclusive.
+        /// </summary>
         public int MinuteOfHour { get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the second of this local date and time within the minute, in the range 0 to 59 inclusive.
+        /// </summary>
         public int SecondOfMinute { get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the second of this local date and time within the day, in the range 0 to 86,399 inclusive.
+        /// </summary>
         public int SecondOfDay { get { return calendar.Fields.SecondOfDay.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the millisecond of this local date and time within the second, in the range 0 to 999 inclusive.
+        /// </summary>
         public int MillisecondOfSecond { get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the millisecond of this local date and time within the day, in the range 0 to 86,399,999 inclusive.
+        /// </summary>
         public int MillisecondOfDay { get { return calendar.Fields.MillisecondOfDay.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the tick of this local date and time within the millisceond, in the range 0 to 9,999 inclusive.
+        /// </summary>
         public int TickOfMillisecond { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
 
+        /// <summary>
+        /// Gets the tick of this local date and time within the day, in the range 0 to 863,999,999,999 inclusive.
+        /// </summary>
         public long TickOfDay { get { return calendar.Fields.TickOfDay.GetInt64Value(localInstant); } }
 
+        /// <summary>
+        /// Gets the time portion of this local date and time as a <see cref="LocalTime"/>.
+        /// </summary>
         public LocalTime TimeOfDay { get { return new LocalTime(HourOfDay, MinuteOfHour, SecondOfMinute, MillisecondOfSecond, TickOfMillisecond); } }
 
+        /// <summary>
+        /// Gets the date portion of this local date and time as a <see cref="LocalDate"/>.
+        /// </summary>
         public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth); } }
 
         #region Pseudo-mutators
+        /// <summary>
+        /// Returns a new local date and time with the same month and day of month as this one, but in the specified year.
+        /// The time of day is unaffected.
+        /// </summary>
+        /// <remarks>
+        /// If the month/day combination are invalid for the specified year, they are rounded accordingly.
+        /// For example, calling <c>WithYear(2011)</c> on a local date representing February 29th 2012
+        /// would return a date representing February 28th 2011.
+        /// </remarks>
         public LocalDateTime WithYear(int year)
         {
             return WithField(Calendar.Fields.Year, year);
         }
 
+        /// <summary>
+        /// Returns a new local date and time with the same year and day of month as this one, but in the specified month.
+        /// The time of day is unaffected.
+        /// </summary>
+        /// <remarks>
+        /// If the year/day combination are invalid for the specified month, they are rounded accordingly.
+        /// For example, calling <c>WithMonthOfYear(2)</c> on a local date representing January 30th 2011
+        /// would return a date representing February 28th 2011.
+        /// </remarks>
         public LocalDateTime WithMonthOfYear(int month)
         {
             return WithField(Calendar.Fields.MonthOfYear, month);
         }
 
+        /// <summary>
+        /// Returns a new local date and time with the same year and month as this one, but on the specified day.
+        /// The time of day is unaffected.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">The specified day is invalid for the current date's year and month.</exception>
         public LocalDateTime WithDayOfMonth(int day)
         {
             return WithField(Calendar.Fields.DayOfMonth, day);
