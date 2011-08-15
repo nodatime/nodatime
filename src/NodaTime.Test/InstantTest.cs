@@ -32,12 +32,12 @@ namespace NodaTime.Test
 
         // 2002-04-05
         private const long TestTime1 =
-            (Y2002Days + 31L + 28L + 31L + 5L - 1L) * NodaConstants.MillisecondsPerDay + 12L * NodaConstants.MillisecondsPerHour +
+            (Y2002Days + 31L + 28L + 31L + 5L - 1L) * NodaConstants.MillisecondsPerStandardDay + 12L * NodaConstants.MillisecondsPerHour +
             24L * NodaConstants.MillisecondsPerMinute;
 
         // 2003-05-06
         private const long TestTime2 =
-            (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * NodaConstants.MillisecondsPerDay + 14L * NodaConstants.MillisecondsPerHour +
+            (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * NodaConstants.MillisecondsPerStandardDay + 14L * NodaConstants.MillisecondsPerHour +
             28L * NodaConstants.MillisecondsPerMinute;
 
         private Instant one = new Instant(1L);

@@ -119,7 +119,7 @@ namespace NodaTime.Calendars
             builder.DayOfWeek = new GJDayOfWeekDateTimeField(thisCalendar, builder.Days);
             builder.DayOfMonth = new BasicDayOfMonthDateTimeField(thisCalendar, builder.Days);
             builder.DayOfYear = new BasicDayOfYearDateTimeField(thisCalendar, builder.Days);
-            builder.MonthOfYear = new GJMonthOfYearDateTimeField(thisCalendar);
+            builder.MonthOfYear = new BasicMonthOfYearDateTimeField(thisCalendar, 2); // February is the leap month
             builder.WeekYear = new BasicWeekYearDateTimeField(thisCalendar);
             builder.WeekOfWeekYear = new BasicWeekOfWeekYearDateTimeField(thisCalendar, builder.Weeks);
 

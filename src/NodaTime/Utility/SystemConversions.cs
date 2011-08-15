@@ -20,8 +20,8 @@ using System;
 namespace NodaTime.Utility
 {
     /// <summary>
-    ///   Provides conversions between .NET system types and NodeTime types. Not all possible
-    ///   conversions are present, just the one necessary to support NodaTime functionality.
+    /// Provides conversions between .NET system types and NodeTime types. Not all possible
+    /// conversions are present, just the one necessary to support NodaTime functionality.
     /// </summary>
     internal static class SystemConversions
     {

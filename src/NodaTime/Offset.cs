@@ -47,8 +47,8 @@ namespace NodaTime
     public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable
     {
         public static readonly Offset Zero = Offset.FromMilliseconds(0);
-        public static readonly Offset MinValue = Offset.FromMilliseconds(-NodaConstants.MillisecondsPerDay + 1);
-        public static readonly Offset MaxValue = Offset.FromMilliseconds(NodaConstants.MillisecondsPerDay - 1);
+        public static readonly Offset MinValue = Offset.FromMilliseconds(-NodaConstants.MillisecondsPerStandardDay + 1);
+        public static readonly Offset MaxValue = Offset.FromMilliseconds(NodaConstants.MillisecondsPerStandardDay - 1);
 
         private readonly int milliseconds;
 
@@ -65,7 +65,7 @@ namespace NodaTime
         {
             // TODO: Should we perhaps just throw an ArgumentOutOfRangeException instead if it's out of bounds?
             // When do we expect this to happen?
-            this.milliseconds = milliseconds % NodaConstants.MillisecondsPerDay;
+            this.milliseconds = milliseconds % NodaConstants.MillisecondsPerStandardDay;
         }
 
         /// <summary>
