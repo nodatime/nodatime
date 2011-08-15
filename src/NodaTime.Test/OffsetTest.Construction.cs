@@ -31,7 +31,7 @@ namespace NodaTime.Test
         [Test]
         public void ConstructFrom_Int64()
         {
-            int length = 4 * NodaConstants.MillisecondsPerDay + 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute +
+            int length = 4 * NodaConstants.MillisecondsPerStandardDay + 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute +
                          7 * NodaConstants.MillisecondsPerSecond + 8;
             int expected = 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute + 7 * NodaConstants.MillisecondsPerSecond + 8;
             var test = Offset.FromMilliseconds(length);

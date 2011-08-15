@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2011 Jon Skeet
 // 
@@ -15,17 +15,20 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Calendars;
+using System.Runtime.CompilerServices;
 
-namespace NodaTime.Fields
+namespace NodaTime
 {
-    internal sealed class GJMonthOfYearDateTimeField : BasicMonthOfYearDateTimeField
+    /// <summary>
+    /// <para>
+    /// The NodaTime namespace contains the core types for NodaTime, including the public classes for time zone and calendar
+    /// support which have implementations in other namespaces. For formatting and parsing functionality, see the
+    /// NodaTime.Format and NodaTime.Globalization namespaces.
+    /// </para>
+    /// </summary>
+    [CompilerGenerated]
+    internal static class NamespaceDoc
     {
-        internal GJMonthOfYearDateTimeField(BasicCalendarSystem calendarSystem) : base(calendarSystem, NodaConstants.February)
-        {
-        }
-
-        // There will be more stuff here, honest :)
-        // It's all i18n stuff though, which we don't support yet...
+        // No actual code here - it's just for the sake of documenting the namespace.
     }
 }

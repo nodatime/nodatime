@@ -61,7 +61,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         internal Zone(string name, Offset offset, string rules, string format)
-            : this(name, offset, rules, format, Int32.MaxValue, NodaConstants.January, 1, Offset.Zero, (char)0)
+            : this(name, offset, rules, format, Int32.MaxValue, 1, 1, Offset.Zero, (char)0)
         {
             
         }

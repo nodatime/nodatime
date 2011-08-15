@@ -109,7 +109,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             var value = NextString(tokens, name);
             int result = ParseMonth(value);
-            return result == 0 ? NodaConstants.January : result;
+            return result == 0 ? 1 : result;
         }
 
         /// <summary>
@@ -510,7 +510,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             var rules = NextOptional(tokens, "Rules");
             var format = NextString(tokens, "Format");
             int year = NextYear(tokens, "Until Year", Int32.MaxValue);
-            int monthOfYear = NextMonth(tokens, "Until Month", NodaConstants.January);
+            int monthOfYear = NextMonth(tokens, "Until Month", 1);
             int dayOfMonth = NextInteger(tokens, "Until Day", 1);
             var tickOfDay = Offset.Zero;
             var zoneCharacter = (char)0;

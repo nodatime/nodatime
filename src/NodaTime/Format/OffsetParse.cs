@@ -210,7 +210,7 @@ namespace NodaTime.Format
             int milliseconds;
             if (Int32.TryParse(value, NumberStyles.Integer | NumberStyles.AllowThousands, parseInfo.FormatInfo.NumberFormat, out milliseconds))
             {
-                if (milliseconds < -NodaConstants.MillisecondsPerDay || NodaConstants.MillisecondsPerDay < milliseconds)
+                if (milliseconds < -NodaConstants.MillisecondsPerStandardDay || NodaConstants.MillisecondsPerStandardDay < milliseconds)
                 {
                     throw FormatError.ValueOutOfRange(milliseconds, typeof(Offset));
                 }

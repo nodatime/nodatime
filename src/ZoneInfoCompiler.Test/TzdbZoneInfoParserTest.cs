@@ -284,7 +284,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYear()
         {
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969");
-            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, NodaConstants.January, 1, Offset.Zero, (char)0);
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, 1, 1, Offset.Zero, (char)0);
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -292,7 +292,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYearMonthDay()
         {
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23");
-            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, NodaConstants.March, 23, Offset.Zero, (char)0);
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, 3, 23, Offset.Zero, (char)0);
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -300,7 +300,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYearMonthDayTime()
         {
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856");
-            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, NodaConstants.March, 23, ToOffset(14, 53, 27, 856), (char)0);
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, 3, 23, ToOffset(14, 53, 27, 856), (char)0);
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -308,7 +308,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseZone_withYearMonthDayTimeZone()
         {
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856s");
-            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, NodaConstants.March, 23, ToOffset(14, 53, 27, 856), 's');
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, 3, 23, ToOffset(14, 53, 27, 856), 's');
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
