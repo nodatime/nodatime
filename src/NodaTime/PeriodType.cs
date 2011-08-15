@@ -90,7 +90,7 @@ namespace NodaTime
                                                                  DurationFieldType.Milliseconds, DurationFieldType.Ticks);
         #endregion
 
-        #region Static Properties
+        #region Static properties
         /// <summary>Gets a type that defines just the years field.</summary>
         public static PeriodType Years { get { return years; } }
 
@@ -171,7 +171,7 @@ namespace NodaTime
 
         // The sole purpose of this member is to improve perfomance
         // of searching the index of the field for particular period type.
-        // Otherwise, it would be looping through fieldTypes array
+        // Otherwise, it would be looping through fieldTypes array.
         private readonly int[] indices;
 
         private PeriodType(string name, params DurationFieldType[] fieldTypes) : this(name, fieldTypes, BuildIndices(fieldTypes))
@@ -403,6 +403,10 @@ namespace NodaTime
         #endregion
 
         #region Equality
+        /// <summary>
+        /// Compares this object with another <see cref="PeriodType"/> for equality.
+        /// </summary>
+        /// <returns>True if <paramref name="other"/> consists of the same field types as this period type; False otherwise.</returns>
         public bool Equals(PeriodType other)
         {
             if (ReferenceEquals(this, other))
@@ -432,11 +436,18 @@ namespace NodaTime
             return true;
         }
 
+        /// <summary>
+        /// Compares this object with another for equality.
+        /// </summary>
+        /// <returns>True if <paramref name="obj"/> is a <see cref="PeriodType"/> consisting of the same field types; False otherwise.</returns>
         public override bool Equals(object obj)
         {
             return Equals(obj as PeriodType);
         }
 
+        /// <summary>
+        /// Returns the hash code for this period type, based on the field types within it.
+        /// </summary>
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
@@ -448,11 +459,17 @@ namespace NodaTime
             return hash;
         }
 
+        /// <summary>
+        /// Compares two period types for equality.
+        /// </summary>
         public static bool operator ==(PeriodType left, PeriodType right)
         {
             return Equals(left, right);
         }
 
+        /// <summary>
+        /// Compares two period types for inequality.
+        /// </summary>
         public static bool operator !=(PeriodType left, PeriodType right)
         {
             return !Equals(left, right);
@@ -486,16 +503,25 @@ namespace NodaTime
             }
         }
 
+        /// <summary>
+        /// Returns a text representation of this period type.
+        /// </summary>
         public override string ToString()
         {
             return "PeriodType[" + Name + "]";
         }
 
+        /// <summary>
+        /// Returns an iterator over the field types within this period.
+        /// </summary>
         public IEnumerator<DurationFieldType> GetEnumerator()
         {
             return ((IEnumerable<DurationFieldType>)fieldTypes).GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns the field type at the given index, which must be between 0 (inclusive) and <see cref="Size"/> (exclusive).
+        /// </summary>
         public DurationFieldType this[int index]
         {
             get { return fieldTypes[index]; }
