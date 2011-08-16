@@ -376,5 +376,14 @@ namespace NodaTime
         {
             return "Local: " + localInstant + " Offset: " + offset + " Zone: " + chronology.Zone;
         }
+
+        /// <summary>
+        /// Constructs a <see cref="DateTimeOffset"/> value with the same local time and offset from
+        /// UTC as this value.
+        /// </summary>
+        public DateTimeOffset ToDateTimeOffset()
+        {
+            return new DateTimeOffset(SystemConversions.DateTimeEpochTicks + LocalInstant.Ticks, Offset.ToTimeSpan());
+        }
     }
 }

@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
 
@@ -135,6 +136,15 @@ namespace NodaTime.Test
 
             Assert.AreEqual(beforeExpected, beforeSubtract);
             Assert.AreEqual(beforeExpected, beforeOperator);
+        }
+
+        [Test]
+        public void DateTimeOffset()
+        {
+            ZonedDateTime zoned = SampleZone.AtExactly(new LocalDateTime(2011, 3, 5, 1, 0, 0));
+            DateTimeOffset expected = new DateTimeOffset(2011, 3, 5, 1, 0, 0, TimeSpan.FromHours(3));
+            DateTimeOffset actual = zoned.ToDateTimeOffset();
+            Assert.AreEqual(expected, actual);
         }
     }
 }
