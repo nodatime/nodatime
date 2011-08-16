@@ -344,51 +344,6 @@ namespace NodaTime
         /// </summary>
         public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth); } }
 
-        #region Pseudo-mutators
-        /// <summary>
-        /// Returns a new local date and time with the same month and day of month as this one, but in the specified year.
-        /// The time of day is unaffected.
-        /// </summary>
-        /// <remarks>
-        /// If the month/day combination are invalid for the specified year, they are rounded accordingly.
-        /// For example, calling <c>WithYear(2011)</c> on a local date representing February 29th 2012
-        /// would return a date representing February 28th 2011.
-        /// </remarks>
-        public LocalDateTime WithYear(int year)
-        {
-            return WithField(Calendar.Fields.Year, year);
-        }
-
-        /// <summary>
-        /// Returns a new local date and time with the same year and day of month as this one, but in the specified month.
-        /// The time of day is unaffected.
-        /// </summary>
-        /// <remarks>
-        /// If the year/day combination are invalid for the specified month, they are rounded accordingly.
-        /// For example, calling <c>WithMonthOfYear(2)</c> on a local date representing January 30th 2011
-        /// would return a date representing February 28th 2011.
-        /// </remarks>
-        public LocalDateTime WithMonthOfYear(int month)
-        {
-            return WithField(Calendar.Fields.MonthOfYear, month);
-        }
-
-        /// <summary>
-        /// Returns a new local date and time with the same year and month as this one, but on the specified day.
-        /// The time of day is unaffected.
-        /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">The specified day is invalid for the current date's year and month.</exception>
-        public LocalDateTime WithDayOfMonth(int day)
-        {
-            return WithField(Calendar.Fields.DayOfMonth, day);
-        }
-
-        private LocalDateTime WithField(DateTimeField field, long value)
-        {
-            return new LocalDateTime(field.SetValue(LocalInstant, value), Calendar);
-        }
-        #endregion
-
         #region Implementation of IEquatable<LocalDateTime>
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.

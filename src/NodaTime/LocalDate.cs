@@ -42,7 +42,8 @@ namespace NodaTime
         {
         }
 
-        private LocalDate(LocalDateTime localTime)
+        // Visible for extension methods.
+        internal LocalDate(LocalDateTime localTime)
         {
             this.localTime = localTime;
         }
@@ -127,41 +128,6 @@ namespace NodaTime
         /// Gets a <see cref="LocalDateTime" /> at midnight on the date represented by this local date, in the same calendar system.
         /// </summary>
         public LocalDateTime LocalDateTime { get { return localTime; } }
-
-        /// <summary>
-        /// Returns a new local date with the same month and day of month as this one, but in the specified year.
-        /// </summary>
-        /// <remarks>
-        /// If the month/day combination are invalid for the specified year, they are rounded accordingly.
-        /// For example, calling <c>WithYear(2011)</c> on a local date representing February 29th 2012
-        /// would return a date representing February 28th 2011.
-        /// </remarks>
-        public LocalDate WithYear(int year)
-        {
-            return new LocalDate(LocalDateTime.WithYear(year));
-        }
-
-        /// <summary>
-        /// Returns a new local date with the same year and day of month as this one, but in the specified month.
-        /// </summary>
-        /// <remarks>
-        /// If the year/day combination are invalid for the specified month, they are rounded accordingly.
-        /// For example, calling <c>WithMonthOfYear(2)</c> on a local date representing January 30th 2011
-        /// would return a date representing February 28th 2011.
-        /// </remarks>
-        public LocalDate WithMonthOfYear(int month)
-        {
-            return new LocalDate(LocalDateTime.WithMonthOfYear(month));
-        }
-
-        /// <summary>
-        /// Returns a new local date with the same year and month as this one, but on the specified day.
-        /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">The specified day is invalid for the current date's year and month.</exception>
-        public LocalDate WithDayOfMonth(int day)
-        {
-            return new LocalDate(LocalDateTime.WithDayOfMonth(day));
-        }
 
         /// <summary>
         /// Adds the specified period to the date.
