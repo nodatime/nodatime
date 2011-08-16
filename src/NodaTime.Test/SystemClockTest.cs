@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.Utility;
 
 namespace NodaTime.Test
 {
@@ -26,7 +27,7 @@ namespace NodaTime.Test
         [Test]
         public void SystemNow()
         {
-            long frameworkNowTicks = DateTime.UtcNow.Ticks;
+            long frameworkNowTicks = DateTime.UtcNow.Ticks - SystemConversions.DateTimeEpochTicks;
             long nodaTicks = SystemClock.SystemNow.Ticks;
             Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).Ticks);
         }
@@ -34,7 +35,7 @@ namespace NodaTime.Test
         [Test]
         public void InstanceNow()
         {
-            long frameworkNowTicks = DateTime.UtcNow.Ticks;
+            long frameworkNowTicks = DateTime.UtcNow.Ticks - SystemConversions.DateTimeEpochTicks;
             long nodaTicks = SystemClock.Instance.Now.Ticks;
             Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).Ticks);
         }
@@ -42,11 +43,13 @@ namespace NodaTime.Test
         [Test]
         public void Sanity()
         {
+            // Previously all the conversions missed the SystemConversions.DateTimeEpochTicks,
+            // so they were self-consistent but not consistent with sanity.
             Instant minimumExpected = Instant.FromUtc(2011, 8, 1, 0, 0);
             Instant maximumExpected = Instant.FromUtc(2020, 1, 1, 0, 0);
             Instant now = SystemClock.SystemNow;
-            Assert.IsTrue(minimumExpected < now);
-            Assert.IsTrue(now < maximumExpected);
+            Assert.Less(minimumExpected.Ticks, now.Ticks);
+            Assert.Less(now.Ticks, maximumExpected.Ticks);
         }
     }
 }
