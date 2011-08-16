@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime
 {
@@ -30,13 +31,11 @@ namespace NodaTime
         /// <value>The singleton instance of <see cref="SystemClock"/>.</value>
         internal static readonly SystemClock Instance = new SystemClock();
 
-        private static readonly long UnixEpochTicks = Instant.UnixEpoch.Ticks;
-
         /// <summary>
         /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
         /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
-        public Instant Now { get { return new Instant(DateTime.UtcNow.Ticks - UnixEpochTicks); } }
+        public Instant Now { get { return new Instant(DateTime.UtcNow.Ticks - SystemConversions.DateTimeEpochTicks); } }
 
         /// <summary>
         /// Retrieves the current system time; equivalent to calling <c>SystemClock.Instance.Now</c>.

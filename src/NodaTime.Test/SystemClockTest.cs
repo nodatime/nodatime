@@ -38,5 +38,15 @@ namespace NodaTime.Test
             long nodaTicks = SystemClock.Instance.Now.Ticks;
             Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).Ticks);
         }
+
+        [Test]
+        public void Sanity()
+        {
+            Instant minimumExpected = Instant.FromUtc(2011, 8, 1, 0, 0);
+            Instant maximumExpected = Instant.FromUtc(2020, 1, 1, 0, 0);
+            Instant now = SystemClock.SystemNow;
+            Assert.IsTrue(minimumExpected < now);
+            Assert.IsTrue(now < maximumExpected);
+        }
     }
 }
