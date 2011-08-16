@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Globalization;
 using NUnit.Framework;
 
@@ -67,6 +68,13 @@ namespace NodaTime.Test
             Assert.AreEqual(Offset.MinValue, Offset.Min(Offset.MinValue, x));
             Assert.AreEqual(x, Offset.Min(Offset.MaxValue, x));
             Assert.AreEqual(x, Offset.Min(x, Offset.MaxValue));
+        }
+
+        [Test]
+        public void ToTimeSpan()
+        {
+            TimeSpan ts = Offset.FromMilliseconds(1234).ToTimeSpan();
+            Assert.AreEqual(ts, TimeSpan.FromMilliseconds(1234));
         }
     }
 }

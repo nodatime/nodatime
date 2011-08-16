@@ -116,6 +116,24 @@ namespace NodaTime
         /// <value>The number of ticks.</value>
         public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
 
+        /// <summary>
+        /// Returns the greater offset of the given two, i.e. the one which will give a later local
+        /// time when added to an instant.
+        /// </summary>
+        public static Offset Max(Offset x, Offset y)
+        {
+            return x > y ? x : y;
+        }
+
+        /// <summary>
+        /// Returns the lower offset of the given two, i.e. the one which will give an earlier local
+        /// time when added to an instant.
+        /// </summary>
+        public static Offset Min(Offset x, Offset y)
+        {
+            return x < y ? x : y;
+        }
+
         #region Operators
         /// <summary>
         ///   Implements the unary operator - (negation).
@@ -593,24 +611,14 @@ namespace NodaTime
             milliseconds += Math.Abs(fractionalSeconds);
             return Offset.FromMilliseconds(sign * milliseconds);
         }
-        
-        /// <summary>
-        /// Returns the greater offset of the given two, i.e. the one which will give a later local
-        /// time when added to an instant.
-        /// </summary>
-        public static Offset Max(Offset x, Offset y)
-        {
-            return x > y ? x : y;
-        }
 
         /// <summary>
-        /// Returns the lower offset of the given two, i.e. the one which will give an earlier local
-        /// time when added to an instant.
+        /// Converts this offset to a .NET standard <see cref="TimeSpan" /> value.
         /// </summary>
-        public static Offset Min(Offset x, Offset y)
+        public TimeSpan ToTimeSpan()
         {
-            return x < y ? x : y;
+            return TimeSpan.FromMilliseconds(milliseconds);
         }
-        #endregion Conversion
+        #endregion
     }
 }
