@@ -172,7 +172,7 @@ namespace NodaTime.Format
             {
                 throw FormatError.CannotParseValue(value, typeof(Instant), "g");
             }
-            parseInfo.Value = SystemConversions.DateTimeToInstant(result);
+            parseInfo.Value = Instant.FromDateTimeUtc(result);
         }
 
         private static void DoStrictParseNumber(string value, InstantParseInfo parseInfo, char format)

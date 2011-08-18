@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -100,6 +101,41 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.MinValue, Instant.Min(Instant.MinValue, x));
             Assert.AreEqual(x, Instant.Min(Instant.MaxValue, x));
             Assert.AreEqual(x, Instant.Min(x, Instant.MaxValue));
+        }
+
+        [Test]
+        public void ToDateTimeUtc()
+        {
+            Instant x = Instant.FromUtc(2011, 08, 18, 20, 53);
+            DateTime expected = new DateTime(2011, 08, 18, 20, 53, 0, DateTimeKind.Utc);
+            DateTime actual = x.ToDateTimeUtc();
+            Assert.AreEqual(expected, actual);
+
+            // Kind isn't checked by Equals...
+            Assert.AreEqual(DateTimeKind.Utc, actual.Kind);
+        }
+
+        [Test]
+        public void ToDateTimeOffset()
+        {
+            Instant x = Instant.FromUtc(2011, 08, 18, 20, 53);
+            DateTimeOffset expected = new DateTimeOffset(2011, 08, 18, 20, 53, 0, TimeSpan.Zero);
+            Assert.AreEqual(expected, x.ToDateTimeOffset());
+        }
+
+        [Test]
+        public void FromDateTimeUtc_Invalid()
+        {
+            Assert.Throws<ArgumentException>(() => Instant.FromDateTimeUtc(new DateTime(2011, 08, 18, 20, 53, 0, DateTimeKind.Local)));
+            Assert.Throws<ArgumentException>(() => Instant.FromDateTimeUtc(new DateTime(2011, 08, 18, 20, 53, 0, DateTimeKind.Unspecified)));
+        }
+
+        [Test]
+        public void FromDateTimeUtc_Valid()
+        {
+            DateTime x = new DateTime(2011, 08, 18, 20, 53, 0, DateTimeKind.Utc);
+            Instant expected = Instant.FromUtc(2011, 08, 18, 20, 53);
+            Assert.AreEqual(expected, Instant.FromDateTimeUtc(x));
         }
     }
 }

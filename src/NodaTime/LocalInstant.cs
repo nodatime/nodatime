@@ -56,6 +56,31 @@ namespace NodaTime
         /// </summary>
         internal long Ticks { get { return ticks; } }
 
+        /// <summary>
+        /// Constructs a <see cref="DateTime"/> from this LocalInstant which has a <see cref="DateTime.Kind" />
+        /// of <see cref="DateTimeKind.Unspecified"/> and represents the same local date and time as this value.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
+        /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
+        /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
+        /// the Noda Time non-system-specific "local" concept as exists in .NET.
+        /// </remarks>
+        public DateTime ToDateTimeUnspecified()
+        {
+            return new DateTime(ticks + NodaConstants.DateTimeEpochTicks, DateTimeKind.Unspecified);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="DateTime" /> of any kind to a LocalDateTime in the ISO calendar. This does not perform
+        /// any time zone conversions, so a DateTime with a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/>
+        /// will still have the same day/hour/minute etc - it won't be converted into the local system time.
+        /// </summary>
+        internal static LocalInstant FromDateTime(DateTime dateTime)
+        {
+            return new LocalInstant(dateTime.Ticks - NodaConstants.DateTimeEpochTicks);
+        }
+
         #region Operators
         /// <summary>
         /// Returns an instant after adding the given duration

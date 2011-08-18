@@ -169,5 +169,17 @@ namespace NodaTime
         /// The value of this constant is 7.
         /// </summary>
         public const int DaysPerStandardWeek = 7;
+
+        /// <summary>
+        /// The number of ticks in a <see cref="DateTime"/> at the Unix epoch.
+        /// </summary>
+        /// <remarks>
+        /// Noda Time and the .NET framework use different "epochs" or origins for their time frames.
+        /// Noda Time associates 0 ticks with midnight on January 1st 1970 UTC; .NET associates
+        /// 0 ticks with midnight on January 0001 UTC. If the value of this field is added to
+        /// the number of ticks in an <see cref="Instant"/>, the result is the number of ticks in
+        /// the corresponding DateTime.
+        /// </remarks>
+        public static readonly long DateTimeEpochTicks = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks;
     }
 }

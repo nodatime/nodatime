@@ -139,12 +139,36 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void DateTimeOffset()
+        public void ToDateTimeOffset()
         {
             ZonedDateTime zoned = SampleZone.AtExactly(new LocalDateTime(2011, 3, 5, 1, 0, 0));
             DateTimeOffset expected = new DateTimeOffset(2011, 3, 5, 1, 0, 0, TimeSpan.FromHours(3));
             DateTimeOffset actual = zoned.ToDateTimeOffset();
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ToDateTimeUtc()
+        {
+            ZonedDateTime zoned = SampleZone.AtExactly(new LocalDateTime(2011, 3, 5, 1, 0, 0));
+            // Note that this is 10pm the previous day, UTC - so 1am local time
+            DateTime expected = new DateTime(2011, 3, 4, 22, 0, 0, DateTimeKind.Utc);
+            DateTime actual = zoned.ToDateTimeUtc();
+            Assert.AreEqual(expected, actual);
+            // Kind isn't checked by Equals...
+            Assert.AreEqual(DateTimeKind.Utc, actual.Kind);
+
+        }
+
+        [Test]
+        public void ToDateTimeUnspecified()
+        {
+            ZonedDateTime zoned = SampleZone.AtExactly(new LocalDateTime(2011, 3, 5, 1, 0, 0));
+            DateTime expected = new DateTime(2011, 3, 5, 1, 0, 0, DateTimeKind.Unspecified);
+            DateTime actual = zoned.ToDateTimeUnspecified();
+            Assert.AreEqual(expected, actual);
+            // Kind isn't checked by Equals...
+            Assert.AreEqual(DateTimeKind.Unspecified, actual.Kind);
         }
     }
 }

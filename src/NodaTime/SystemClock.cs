@@ -35,7 +35,7 @@ namespace NodaTime
         /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
         /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
-        public Instant Now { get { return new Instant(DateTime.UtcNow.Ticks - SystemConversions.DateTimeEpochTicks); } }
+        public Instant Now { get { return new Instant(DateTime.UtcNow.Ticks - NodaConstants.DateTimeEpochTicks); } }
 
         /// <summary>
         /// Retrieves the current system time; equivalent to calling <c>SystemClock.Instance.Now</c>.
