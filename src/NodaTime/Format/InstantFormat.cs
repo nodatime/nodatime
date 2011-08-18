@@ -26,10 +26,10 @@ namespace NodaTime.Format
         /// <summary>
         ///   Handles common default processing and parameter validation for simple formatting.
         /// </summary>
-        /// <param name = "value">The value to format.</param>
-        /// <param name = "format">The format string. If <c>null</c> or empty defaults to "g".</param>
-        /// <param name = "formatProvider">The <see cref = "IFormatProvider" /> to use. If <c>null</c> the thread's current culture is used.</param>
-        /// <exception cref = "FormatException"></exception>
+        /// <param name="value">The value to format.</param>
+        /// <param name="format">The format string. If <c>null</c> or empty defaults to "g".</param>
+        /// <param name="formatProvider">The <see cref="IFormatProvider" /> to use. If <c>null</c> the thread's current culture is used.</param>
+        /// <exception cref="FormatException"></exception>
         /// <returns>The value formatted as a string.</returns>
         internal static string Format(Instant value, string format, IFormatProvider formatProvider)
         {

@@ -26,8 +26,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
     ///   Provides a compiler for Olson (TZDB) zone info files into the internal format used by Noda
-    ///   Time for its <see cref = "DateTimeZone" /> definitions. This read a set of files and generates
-    ///   a resource file with the compiled contents suitable for reading with <see cref = "NodaTime.TimeZones.DateTimeZoneResourceProvider" /> or one of its variants.
+    ///   Time for its <see cref="DateTimeZone" /> definitions. This read a set of files and generates
+    ///   a resource file with the compiled contents suitable for reading with <see cref="NodaTime.TimeZones.DateTimeZoneResourceProvider" /> or one of its variants.
     /// </summary>
     public class TzdbZoneInfoCompiler
     {
@@ -35,9 +35,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private readonly TzdbZoneInfoParser tzdbParser;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TzdbZoneInfoCompiler" /> class.
+        ///   Initializes a new instance of the <see cref="TzdbZoneInfoCompiler" /> class.
         /// </summary>
-        /// <param name = "log">The log to send all output messages to.</param>
+        /// <param name="log">The log to send all output messages to.</param>
         public TzdbZoneInfoCompiler(ILog log)
         {
             this.log = log;
@@ -47,9 +47,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Adds a recurring savings rule to the time zone builder.
         /// </summary>
-        /// <param name = "builder">The <see cref = "DateTimeZoneBuilder" /> to add to.</param>
-        /// <param name = "nameFormat">The name format pattern.</param>
-        /// <param name = "ruleSet">The <see cref = "ZoneRecurrenceCollection" /> describing the recurring savings.</param>
+        /// <param name="builder">The <see cref="DateTimeZoneBuilder" /> to add to.</param>
+        /// <param name="nameFormat">The name format pattern.</param>
+        /// <param name="ruleSet">The <see cref="ZoneRecurrenceCollection" /> describing the recurring savings.</param>
         private static void AddRecurring(DateTimeZoneBuilder builder, String nameFormat, IEnumerable<ZoneRule> ruleSet)
         {
             foreach (var rule in ruleSet)
@@ -64,8 +64,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Compiles the specified files and generates the output resource file.
         /// </summary>
-        /// <param name = "fileList">The enumeration of <see cref = "FileInfo" /> objects.</param>
-        /// <param name = "output">The destination <see cref = "DirectoryInfo" /> object.</param>
+        /// <param name="fileList">The enumeration of <see cref="FileInfo" /> objects.</param>
+        /// <param name="output">The destination <see cref="DirectoryInfo" /> object.</param>
         /// <returns></returns>
         internal int Compile(IEnumerable<FileInfo> fileList, ResourceOutput output)
         {
@@ -77,10 +77,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Returns a newly created <see cref = "DateTimeZone" /> built from the given time zone data.
+        ///   Returns a newly created <see cref="DateTimeZone" /> built from the given time zone data.
         /// </summary>
-        /// <param name = "zoneList">The time zone definition parts to add.</param>
-        /// <param name = "ruleSets">The rule sets map to use in looking up rules for the time zones..</param>
+        /// <param name="zoneList">The time zone definition parts to add.</param>
+        /// <param name="ruleSets">The rule sets map to use in looking up rules for the time zones..</param>
         private static DateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, IList<ZoneRule>> ruleSets)
         {
             var builder = new DateTimeZoneBuilder();
@@ -122,7 +122,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Executes compiler with the specified command line.
         /// </summary>
-        /// <param name = "arguments">The command line arguments.</param>
+        /// <param name="arguments">The command line arguments.</param>
         /// <returns>0 if successful, non-zero if an error occurred.</returns>
         internal int Execute(string[] arguments)
         {
@@ -167,7 +167,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <remarks>
         ///   <para>
-        ///     First we go through the list of time zones and generate an <see cref = "DateTimeZone" />
+        ///     First we go through the list of time zones and generate an <see cref="DateTimeZone" />
         ///     object for each one. We create a mapping between the time zone name and itself (for
         ///     writing out later). Then we write out the time zone as a resource to the current writer.
         ///   </para>
@@ -180,8 +180,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///     supported by this resource file.
         ///   </para>
         /// </remarks>
-        /// <param name = "database">The database of parsed zone info records.</param>
-        /// <param name = "output">The output file <see cref = "ResourceOutput" />.</param>
+        /// <param name="database">The database of parsed zone info records.</param>
+        /// <param name="output">The output file <see cref="ResourceOutput" />.</param>
         private static void GenerateDateTimeZones(TzdbDatabase database, ResourceOutput output)
         {
             var timeZoneMap = new Dictionary<string, string>();
@@ -208,7 +208,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Writes various informational counts to the log.
         /// </summary>
-        /// <param name = "database">The database to query for the counts.</param>
+        /// <param name="database">The database to query for the counts.</param>
         private void LogCounts(TzdbDatabase database)
         {
             log.Info("=======================================");
@@ -227,9 +227,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   is logged. If the list is empty then all of the files in the <paramref name = "source" />
         ///   directory are returned.
         /// </remarks>
-        /// <param name = "source">The source directory <see cref = "DirectoryInfo" /> object.</param>
-        /// <param name = "files">The enumeration of file name strings.</param>
-        /// <returns>Am <see cref = "IEnumerable{T}" /> of <see cref = "FileInfo" /> objects.</returns>
+        /// <param name="source">The source directory <see cref="DirectoryInfo" /> object.</param>
+        /// <param name="files">The enumeration of file name strings.</param>
+        /// <returns>Am <see cref="IEnumerable{T}" /> of <see cref="FileInfo" /> objects.</returns>
         private IEnumerable<FileInfo> MakeFileList(DirectoryInfo source, IEnumerable<string> files)
         {
             if (files == null || files.Count() == 0)
@@ -260,8 +260,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Parses all of the given files.
         /// </summary>
-        /// <param name = "files">The <see cref = "IEnumerable{T}" /> of <see cref = "FileInfo" /> objects.</param>
-        /// <param name = "database">The <see cref = "TzdbDatabase" /> where the parsed data is placed.</param>
+        /// <param name="files">The <see cref="IEnumerable{T}" /> of <see cref="FileInfo" /> objects.</param>
+        /// <param name="database">The <see cref="TzdbDatabase" /> where the parsed data is placed.</param>
         private void ParseAllFiles(IEnumerable<FileInfo> files, TzdbDatabase database)
         {
             foreach (var file in files)
@@ -272,13 +272,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Parses the file defined by the given <see cref = "FileInfo" />.
+        ///   Parses the file defined by the given <see cref="FileInfo" />.
         /// </summary>
         /// <remarks>
         ///   Currently this compiler only handles files in the Olson (TZDB) zone info format.
         /// </remarks>
-        /// <param name = "file">The file to parse.</param>
-        /// <param name = "database">The <see cref = "TzdbDatabase" /> where the parsed data is placed.</param>
+        /// <param name="file">The file to parse.</param>
+        /// <param name="database">The <see cref="TzdbDatabase" /> where the parsed data is placed.</param>
         internal void ParseFile(FileInfo file, TzdbDatabase database)
         {
             log.FileName = file.Name;
@@ -299,8 +299,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Validates the program arguments. If anything is not setup correctly then an exception os
         ///   thrown and compilation does not proceed.
         /// </summary>
-        /// <param name = "source">The source directory <see cref = "DirectoryInfo" /> object.</param>
-        /// <param name = "fileList">The <see cref = "IEnumerable{T}" /> of <see cref = "FileInfo" /> objects. Cannot be <c>null</c>.</param>
+        /// <param name="source">The source directory <see cref="DirectoryInfo" /> object.</param>
+        /// <param name="fileList">The <see cref="IEnumerable{T}" /> of <see cref="FileInfo" /> objects. Cannot be <c>null</c>.</param>
         private static void ValidateArguments(FileSystemInfo source, IEnumerable<FileInfo> fileList)
         {
             ValidateExistingDirectory(source, "source");
@@ -314,8 +314,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Validates the the given directory info object is valid and refers to an existing
         ///   directory.
         /// </summary>
-        /// <param name = "directory">The <see cref = "DirectoryInfo" /> to check.</param>
-        /// <param name = "name">The name to use in error messages.</param>
+        /// <param name="directory">The <see cref="DirectoryInfo" /> to check.</param>
+        /// <param name="name">The name to use in error messages.</param>
         private static void ValidateExistingDirectory(FileSystemInfo directory, string name)
         {
             if (directory == null)

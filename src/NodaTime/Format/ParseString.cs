@@ -25,9 +25,9 @@ namespace NodaTime.Format
     internal class ParseString : Parsable
     {
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ParseString" /> class.
+        ///   Initializes a new instance of the <see cref="ParseString" /> class.
         /// </summary>
-        /// <param name = "value">The string to parse.</param>
+        /// <param name="value">The string to parse.</param>
         internal ParseString(string value)
             : base(value)
         {
@@ -37,7 +37,7 @@ namespace NodaTime.Format
         ///   Attempts to match the specified character with the current character of the string. If the
         ///   character matches then the index is moved passed the character.
         /// </summary>
-        /// <param name = "character">The character to match.</param>
+        /// <param name="character">The character to match.</param>
         /// <returns><c>true</c> if the character matches.</returns>
         internal bool Match(char character)
         {
@@ -53,7 +53,7 @@ namespace NodaTime.Format
         ///   Attempts to match the specified string with the current point in the string. If the
         ///   character matches then the index is moved passed the string.
         /// </summary>
-        /// <param name = "match">The string to match.</param>
+        /// <param name="match">The string to match.</param>
         /// <returns><c>true</c> if the string matches.</returns>
         internal bool Match(string match)
         {
@@ -70,9 +70,9 @@ namespace NodaTime.Format
         ///   digits are not present then the index is unchanged. If there are more digits than
         ///   the maximum allowed they are ignored.
         /// </summary>
-        /// <param name = "minimumDigits">The minimum allowed digits.</param>
-        /// <param name = "maximumDigits">The maximum allowed digits.</param>
-        /// <param name = "result">The result integer value.</param>
+        /// <param name="minimumDigits">The minimum allowed digits.</param>
+        /// <param name="maximumDigits">The maximum allowed digits.</param>
+        /// <param name="result">The result integer value.</param>
         /// <returns><c>true</c> if the digits were parsed.</returns>
         internal bool ParseDigits(int minimumDigits, int maximumDigits, out int result)
         {
@@ -103,9 +103,9 @@ namespace NodaTime.Format
         /// <summary>
         ///   Parses digits at the current point in the string as a fractional value.
         /// </summary>
-        /// <param name = "maximumDigits">The maximum allowed digits.</param>
-        /// <param name = "scale">The scale of the fractional value.</param>
-        /// <param name = "result">The result value scaled by scale.</param>
+        /// <param name="maximumDigits">The maximum allowed digits.</param>
+        /// <param name="scale">The scale of the fractional value.</param>
+        /// <param name="result">The result value scaled by scale.</param>
         /// <returns><c>true</c> if the digits were parsed.</returns>
         internal bool ParseFractionExact(int maximumDigits, int scale, out int result)
         {

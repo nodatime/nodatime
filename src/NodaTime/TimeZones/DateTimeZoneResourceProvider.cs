@@ -40,7 +40,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider" /> class.
         /// </summary>
-        /// <param name = "baseName">GetName of the base.</param>
+        /// <param name="baseName">GetName of the base.</param>
         public DateTimeZoneResourceProvider(string baseName) : this(baseName, Assembly.GetExecutingAssembly())
         {
         }
@@ -48,8 +48,8 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider" /> class.
         /// </summary>
-        /// <param name = "baseName">GetName of the base.</param>
-        /// <param name = "assembly">The assembly to search for the time zone resources.</param>
+        /// <param name="baseName">GetName of the base.</param>
+        /// <param name="assembly">The assembly to search for the time zone resources.</param>
         public DateTimeZoneResourceProvider(string baseName, Assembly assembly)
             : this(new ResourceManager(baseName, assembly))
         {

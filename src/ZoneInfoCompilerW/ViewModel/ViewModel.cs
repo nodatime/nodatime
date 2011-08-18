@@ -39,8 +39,8 @@ namespace ZoneInfoCompilerW.ViewModel
         ///   To single an "all properies changed" message use an empty string for the
         ///   <paramref name = "propertyName" /> argument.
         /// </remarks>
-        /// <param name = "propertyName">The name of the changed property.</param>
-        /// <exception cref = "ArgumentNullException">The propertyName argument is null.</exception>
+        /// <param name="propertyName">The name of the changed property.</param>
+        /// <exception cref="ArgumentNullException">The propertyName argument is null.</exception>
         protected void NotifyPropertyChanged(string propertyName)
         {
             if (string.IsNullOrEmpty(propertyName))

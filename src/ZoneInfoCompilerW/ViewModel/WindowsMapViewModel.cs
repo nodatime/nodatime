@@ -29,7 +29,7 @@ namespace ZoneInfoCompilerW.ViewModel
         private ResourceOutputType outputType = ResourceOutputType.ResX;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "WindowsMapViewModel" /> class.
+        /// Initializes a new instance of the <see cref="WindowsMapViewModel" /> class.
         /// </summary>
         public WindowsMapViewModel()
         {

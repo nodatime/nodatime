@@ -17,7 +17,7 @@
 namespace NodaTime
 {
     /// <summary>
-    /// Represents a clock which can tell the current time as an <see cref = "Instant" />.
+    /// Represents a clock which can tell the current time as an <see cref="Instant" />.
     /// </summary>
     public interface IClock
     {

@@ -29,9 +29,9 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         private readonly ILog log;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "WindowsMapperCompiler" /> class.
+        ///   Initializes a new instance of the <see cref="WindowsMapperCompiler" /> class.
         /// </summary>
-        /// <param name = "log">The log to write message to.</param>
+        /// <param name="log">The log to write message to.</param>
         public WindowsMapperCompiler(ILog log)
         {
             this.log = log;
@@ -40,7 +40,7 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         /// <summary>
         ///   Executes the specified arguments.
         /// </summary>
-        /// <param name = "arguments">The arguments.</param>
+        /// <param name="arguments">The arguments.</param>
         /// <returns></returns>
         internal int Execute(string[] arguments)
         {
@@ -72,8 +72,8 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         /// <summary>
         ///   Reads the input XML file for the windows mappings.
         /// </summary>
-        /// <param name = "inputFile">The input file.</param>
-        /// <returns>An <see cref = "IDictionary{TKey,TValue}" /> of Windows time zone names to POSIX names.</returns>
+        /// <param name="inputFile">The input file.</param>
+        /// <returns>An <see cref="IDictionary{TKey,TValue}" /> of Windows time zone names to POSIX names.</returns>
         private IDictionary<string, string> ReadInput(FileInfo inputFile)
         {
             var mappings = new Dictionary<string, string>();

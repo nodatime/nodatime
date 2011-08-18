@@ -41,15 +41,15 @@ namespace NodaTime.TimeZones
         private readonly Instant start;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ZoneInterval" /> class.
+        ///   Initializes a new instance of the <see cref="ZoneInterval" /> class.
         /// </summary>
-        /// <param name = "name">The name of this offset period (e.g. PST or PDT).</param>
-        /// <param name = "start">The first <see cref = "Instant" /> that the <paramref name = "offset" /> applies.</param>
-        /// <param name = "end">The last <see cref = "Instant" /> (exclusive) that the <paramref name = "offset" /> applies.</param>
-        /// <param name = "offset">The <see cref = "Offset" /> from UTC for this period including any daylight savings.</param>
-        /// <param name = "savings">The <see cref = "Offset" /> daylight savings contribution to the offset.</param>
-        /// <exception cref = "ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
-        /// <exception cref = "ArgumentNullException">If the <paramref name = "name" /> parameter is null.</exception>
+        /// <param name="name">The name of this offset period (e.g. PST or PDT).</param>
+        /// <param name="start">The first <see cref="Instant" /> that the <paramref name = "offset" /> applies.</param>
+        /// <param name="end">The last <see cref="Instant" /> (exclusive) that the <paramref name = "offset" /> applies.</param>
+        /// <param name="offset">The <see cref="Offset" /> from UTC for this period including any daylight savings.</param>
+        /// <param name="savings">The <see cref="Offset" /> daylight savings contribution to the offset.</param>
+        /// <exception cref="ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
+        /// <exception cref="ArgumentNullException">If the <paramref name = "name" /> parameter is null.</exception>
         public ZoneInterval(string name, Instant start, Instant end, Offset offset, Offset savings)
         {
             if (name == null)
@@ -200,7 +200,7 @@ namespace NodaTime.TimeZones
         /// Usually this is half-open, i.e. the end is exclusive, but an interval with an end point of "the end of time" 
         /// is deemed to be inclusive at the end.
         /// </remarks>
-        /// <param name = "instant">The instant to test.</param>
+        /// <param name="instant">The instant to test.</param>
         /// <returns>
         ///   <c>true</c> if this period contains the given Instant in its range; otherwise, <c>false</c>.
         /// </returns>
@@ -213,7 +213,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Determines whether this period contains the given LocalInstant in its range.
         /// </summary>
-        /// <param name = "localInstant">The local instant to test.</param>
+        /// <param name="localInstant">The local instant to test.</param>
         /// <returns>
         ///   <c>true</c> if this period contains the given LocalInstant in its range; otherwise, <c>false</c>.
         /// </returns>
@@ -231,7 +231,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         ///   true if the current object is equal to the <paramref name = "other" /> parameter; otherwise, false.
         /// </returns>
-        /// <param name = "other">An object to compare with this object.
+        /// <param name="other">An object to compare with this object.
         /// </param>
         [DebuggerStepThrough]
         public bool Equals(ZoneInterval other)
@@ -250,13 +250,13 @@ namespace NodaTime.TimeZones
 
         #region object Overrides
         /// <summary>
-        ///   Determines whether the specified <see cref = "T:System.Object" /> is equal to the current <see cref = "T:System.Object" />.
+        ///   Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref = "T:System.Object" /> is equal to the current <see cref = "T:System.Object" />; otherwise, <c>false</c>.
+        ///   <c>true</c> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, <c>false</c>.
         /// </returns>
-        /// <param name = "obj">The <see cref = "T:System.Object" /> to compare with the current <see cref = "T:System.Object" />.</param>
-        /// <exception cref = "T:System.NullReferenceException">The <paramref name = "obj" /> parameter is null.</exception>
+        /// <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />.</param>
+        /// <exception cref="T:System.NullReferenceException">The <paramref name = "obj" /> parameter is null.</exception>
         /// <filterpriority>2</filterpriority>
         [DebuggerStepThrough]
         public override bool Equals(object obj)
@@ -268,7 +268,7 @@ namespace NodaTime.TimeZones
         ///   Serves as a hash function for a particular type.
         /// </summary>
         /// <returns>
-        ///   A hash code for the current <see cref = "T:System.Object" />.
+        ///   A hash code for the current <see cref="T:System.Object" />.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
@@ -283,10 +283,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Returns a <see cref = "System.String" /> that represents this instance.
+        ///   Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "System.String" /> that represents this instance.
+        ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -309,7 +309,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Reads the specified reader.
         /// </summary>
-        /// <param name = "reader">The reader.</param>
+        /// <param name="reader">The reader.</param>
         /// <returns></returns>
         internal static ZoneInterval Read(DateTimeZoneReader reader)
         {
@@ -328,7 +328,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the specified writer.
         /// </summary>
-        /// <param name = "writer">The writer.</param>
+        /// <param name="writer">The writer.</param>
         internal void Write(DateTimeZoneWriter writer)
         {
             if (writer == null)

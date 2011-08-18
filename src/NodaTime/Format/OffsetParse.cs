@@ -23,11 +23,11 @@ using NodaTime.Properties;
 namespace NodaTime.Format
 {
     /// <summary>
-    ///   Provides the implementation for parsing strings into <see cref = "Offset" /> values.
+    ///   Provides the implementation for parsing strings into <see cref="Offset" /> values.
     /// </summary>
     /// <remarks>
     ///   The concept and general format for this class comes from the Microsoft system libraries and their
-    ///   implementations of parsing of objects like <see cref = "int" /> and <see cref = "DateTime" />.
+    ///   implementations of parsing of objects like <see cref="int" /> and <see cref="DateTime" />.
     /// </remarks>
     internal static class OffsetParse
     {
@@ -36,9 +36,9 @@ namespace NodaTime.Format
         /// <summary>
         ///   Parses the specified value.
         /// </summary>
-        /// <param name = "value">The value.</param>
-        /// <param name = "formatInfo">The format info.</param>
-        /// <param name = "styles">The styles.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="formatInfo">The format info.</param>
+        /// <param name="styles">The styles.</param>
         /// <returns></returns>
         internal static Offset Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {

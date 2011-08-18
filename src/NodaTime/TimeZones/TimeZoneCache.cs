@@ -35,9 +35,9 @@ namespace NodaTime.TimeZones
         private readonly ReaderWriterLock accessLock = new ReaderWriterLock();
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "T:NodaTime.TimeZones.TimeZoneCache" /> class.
+        ///   Initializes a new instance of the <see cref="T:NodaTime.TimeZones.TimeZoneCache" /> class.
         /// </summary>
-        /// <param name = "isUtcOnly">if set to <c>true</c> only the UTC provider will be available.</param>
+        /// <param name="isUtcOnly">if set to <c>true</c> only the UTC provider will be available.</param>
         internal TimeZoneCache(bool isUtcOnly)
         {
             AddProvider(new UtcProvider());
@@ -57,7 +57,7 @@ namespace NodaTime.TimeZones
         ///     used otherwise UTC will be used.
         ///   </para>
         /// </remarks>
-        /// <value>The system default <see cref = "T:NodaTime.DateTimeZone" /> this will never be <c>null</c>.</value>
+        /// <value>The system default <see cref="T:NodaTime.DateTimeZone" /> this will never be <c>null</c>.</value>
         internal DateTimeZone SystemDefault
         {
             get
@@ -76,9 +76,9 @@ namespace NodaTime.TimeZones
         /// <remarks>
         ///   This is the time zone that is used whenever a time zone is not given to a method. It can
         ///   be set to any valid time zone. Setting it to <c>null</c> causes the
-        ///   <see cref = "P:NodaTime.DateTimeZone.SystemDefault" /> time zone to be used.
+        ///   <see cref="P:NodaTime.DateTimeZone.SystemDefault" /> time zone to be used.
         /// </remarks>
-        /// <value>The current <see cref = "T:NodaTime.DateTimeZone" />. This will never be <c>null</c>.</value>
+        /// <value>The current <see cref="T:NodaTime.DateTimeZone" />. This will never be <c>null</c>.</value>
         internal DateTimeZone Current
         {
             get
@@ -111,7 +111,7 @@ namespace NodaTime.TimeZones
         ///   Gets the complete list of valid time zone ids provided by all of the registered
         ///   providers. This list will be sorted in lexigraphical order by the id name.
         /// </summary>
-        /// <value>The <see cref = "IEnumerable{T}" /> of string ids.</value>
+        /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
         internal IEnumerable<string> Ids
         {
             get
@@ -159,7 +159,7 @@ namespace NodaTime.TimeZones
         ///   allows for adding new or replacing existing time zones without updating the system. If
         ///   the provider is already on the list nothing changes.
         /// </remarks>
-        /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to add.</param>
+        /// <param name="provider">The <see cref="IDateTimeZoneProvider" /> to add.</param>
         internal void AddProvider(IDateTimeZoneProvider provider)
         {
             accessLock.AcquireReaderLock(Timeout.Infinite);
@@ -192,7 +192,7 @@ namespace NodaTime.TimeZones
         /// <remarks>
         ///   If the provider is not on the list nothing changes.
         /// </remarks>
-        /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to remove.</param>
+        /// <param name="provider">The <see cref="IDateTimeZoneProvider" /> to remove.</param>
         /// <returns><c>true</c> if the provider was removed.</returns>
         internal bool RemoveProvider(IDateTimeZoneProvider provider)
         {
@@ -225,8 +225,8 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Returns the time zone with the given id.
         /// </summary>
-        /// <param name = "id">The time zone id to find.</param>
-        /// <returns>The <see cref = "DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
+        /// <param name="id">The time zone id to find.</param>
+        /// <returns>The <see cref="DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
         internal DateTimeZone ForId(string id)
         {
             DateTimeZone result;

@@ -34,10 +34,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private readonly ZoneRecurrence recurrence;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ZoneRule" /> class.
+        ///   Initializes a new instance of the <see cref="ZoneRule" /> class.
         /// </summary>
-        /// <param name = "recurrence">The recurrence definition of this rule.</param>
-        /// <param name = "letterS">The daylight savings indicator letter for time zone names.</param>
+        /// <param name="recurrence">The recurrence definition of this rule.</param>
+        /// <param name="letterS">The daylight savings indicator letter for time zone names.</param>
         public ZoneRule(ZoneRecurrence recurrence, string letterS)
         {
             this.recurrence = recurrence;
@@ -63,7 +63,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <param name = "other">An object to compare with this object.</param>
+        /// <param name="other">An object to compare with this object.</param>
         /// <returns>
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
@@ -82,8 +82,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Implements the operator ==.
         /// </summary>
-        /// <param name = "left">The left.</param>
-        /// <param name = "right">The right.</param>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(ZoneRule left, ZoneRule right)
         {
@@ -93,8 +93,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Implements the operator !=.
         /// </summary>
-        /// <param name = "left">The left.</param>
-        /// <param name = "right">The right.</param>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
         public static bool operator !=(ZoneRule left, ZoneRule right)
         {
@@ -105,7 +105,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Formats the name.
         /// </summary>
-        /// <param name = "nameFormat">The name format.</param>
+        /// <param name="nameFormat">The name format.</param>
         /// <returns></returns>
         public String FormatName(String nameFormat)
         {
@@ -130,14 +130,14 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 
         #region Object overrides
         /// <summary>
-        ///   Determines whether the specified <see cref = "System.Object" /> is equal to this instance.
+        ///   Determines whether the specified <see cref="System.Object" /> is equal to this instance.
         /// </summary>
-        /// <param name = "obj">The <see cref = "System.Object" /> to compare with this instance.</param>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance;
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         ///   otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref = "T:System.NullReferenceException">
+        /// <exception cref="T:System.NullReferenceException">
         ///   The <paramref name = "obj" /> parameter is null.
         /// </exception>
         public override bool Equals(object obj)
@@ -162,10 +162,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Returns a <see cref = "System.String" /> that represents this instance.
+        ///   Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "System.String" /> that represents this instance.
+        ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {

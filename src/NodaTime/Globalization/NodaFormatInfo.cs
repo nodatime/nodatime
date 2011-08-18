@@ -45,9 +45,9 @@ namespace NodaTime.Globalization
         private string offsetPatternShort;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "NodaFormatInfo" /> class.
+        ///   Initializes a new instance of the <see cref="NodaFormatInfo" /> class.
         /// </summary>
-        /// <param name = "cultureInfo">The culture info to base this on.</param>
+        /// <param name="cultureInfo">The culture info to base this on.</param>
         internal NodaFormatInfo(CultureInfo cultureInfo)
         {
             if (cultureInfo == null)
@@ -75,7 +75,7 @@ namespace NodaTime.Globalization
         ///   Gets or sets the number format.
         /// </summary>
         /// <value>
-        ///   The <see cref = "NumberFormatInfo" />. May not be <c>null</c>.
+        ///   The <see cref="NumberFormatInfo" />. May not be <c>null</c>.
         /// </value>
         public NumberFormatInfo NumberFormat
         {            
@@ -88,7 +88,7 @@ namespace NodaTime.Globalization
         ///   Gets or sets the date time format.
         /// </summary>
         /// <value>
-        ///   The <see cref = "DateTimeFormatInfo" />. May not be <c>null</c>.
+        ///   The <see cref="DateTimeFormatInfo" />. May not be <c>null</c>.
         /// </value>
         public DateTimeFormatInfo DateTimeFormat
         {
@@ -148,7 +148,7 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets the <see cref = "NodaFormatInfo" /> object for the current thread.
+        ///   Gets the <see cref="NodaFormatInfo" /> object for the current thread.
         /// </summary>
         public static NodaFormatInfo CurrentInfo
         {
@@ -177,7 +177,7 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets or sets the <see cref = "Offset" /> "F" pattern.
+        ///   Gets or sets the <see cref="Offset" /> "F" pattern.
         /// </summary>
         /// <value>
         ///   The offset full pattern.
@@ -191,7 +191,7 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets or sets the <see cref = "Offset" /> "L" pattern.
+        ///   Gets or sets the <see cref="Offset" /> "L" pattern.
         /// </summary>
         /// <value>
         ///   The offset pattern long.
@@ -205,7 +205,7 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets or sets the <see cref = "Offset" /> "M" pattern.
+        ///   Gets or sets the <see cref="Offset" /> "M" pattern.
         /// </summary>
         /// <value>
         ///   The offset pattern medium.
@@ -219,7 +219,7 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets or sets the <see cref = "Offset" /> "S" pattern.
+        ///   Gets or sets the <see cref="Offset" /> "S" pattern.
         /// </summary>
         /// <value>
         ///   The offset pattern short.
@@ -252,9 +252,9 @@ namespace NodaTime.Globalization
         /// <summary>
         ///   Returns an object that provides formatting services for the specified type.
         /// </summary>
-        /// <param name = "formatType">An object that specifies the type of format object to return.</param>
+        /// <param name="formatType">An object that specifies the type of format object to return.</param>
         /// <returns>
-        ///   An instance of the object specified by <paramref name = "formatType" />, if the <see cref = "T:System.IFormatProvider" />
+        ///   An instance of the object specified by <paramref name = "formatType" />, if the <see cref="T:System.IFormatProvider" />
         ///   implementation can supply that type of object; otherwise, null.
         /// </returns>
         
@@ -298,10 +298,10 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets the <see cref = "NodaFormatInfo" /> for the given <see cref = "CultureInfo" />.
+        ///   Gets the <see cref="NodaFormatInfo" /> for the given <see cref="CultureInfo" />.
         /// </summary>
-        /// <param name = "cultureInfo">The culture info.</param>
-        /// <returns>The <see cref = "NodaFormatInfo" />. Will next be <c>null</c>.</returns>
+        /// <param name="cultureInfo">The culture info.</param>
+        /// <returns>The <see cref="NodaFormatInfo" />. Will next be <c>null</c>.</returns>
         internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
         {
             if (cultureInfo == null)
@@ -325,12 +325,12 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets the <see cref = "NodaFormatInfo" /> for the given <see cref = "IFormatProvider" />. If the
-        ///   format provider is <c>null</c> or if it does not provide a <see cref = "NodaFormatInfo" />
+        ///   Gets the <see cref="NodaFormatInfo" /> for the given <see cref="IFormatProvider" />. If the
+        ///   format provider is <c>null</c> or if it does not provide a <see cref="NodaFormatInfo" />
         ///   object then the format object for the current thread is returned.
         /// </summary>
-        /// <param name = "provider">The <see cref = "IFormatProvider" />.</param>
-        /// <returns>The <see cref = "NodaFormatInfo" />. Will next be <c>null.</c></returns>
+        /// <param name="provider">The <see cref="IFormatProvider" />.</param>
+        /// <returns>The <see cref="NodaFormatInfo" />. Will next be <c>null.</c></returns>
         public static NodaFormatInfo GetInstance(IFormatProvider provider)
         {
             if (provider != null)
@@ -355,10 +355,10 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Sets the <see cref = "NodaFormatInfo" /> to use for the given culture.
+        ///   Sets the <see cref="NodaFormatInfo" /> to use for the given culture.
         /// </summary>
-        /// <param name = "cultureInfo">The culture info.</param>
-        /// <param name = "formatInfo">The format info.</param>
+        /// <param name="cultureInfo">The culture info.</param>
+        /// <param name="formatInfo">The format info.</param>
         internal static void SetFormatInfo(CultureInfo cultureInfo, NodaFormatInfo formatInfo)
         {
             if (cultureInfo == null)
@@ -378,10 +378,10 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Returns a <see cref = "System.String" /> that represents this instance.
+        ///   Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "System.String" /> that represents this instance.
+        ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
         
         public override string ToString()

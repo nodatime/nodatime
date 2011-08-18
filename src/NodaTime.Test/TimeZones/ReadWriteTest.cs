@@ -25,7 +25,7 @@ namespace NodaTime.Test.TimeZones
     public abstract class ReadWriteTest
     {
         /// <summary>
-        ///   Returns the <see cref = "DtzIoHelper" /> to use for testing against.
+        ///   Returns the <see cref="DtzIoHelper" /> to use for testing against.
         /// </summary>
         internal DtzIoHelper Dio { get; set; }
 

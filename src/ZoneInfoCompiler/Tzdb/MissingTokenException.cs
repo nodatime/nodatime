@@ -25,18 +25,18 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     public class MissingTokenException : Exception
     {
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "MissingTokenException" /> class.
+        ///   Initializes a new instance of the <see cref="MissingTokenException" /> class.
         /// </summary>
-        /// <param name = "name">The name.</param>
+        /// <param name="name">The name.</param>
         public MissingTokenException(string name) : this(name, "Missing token " + name)
         {
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "MissingTokenException" /> class.
+        ///   Initializes a new instance of the <see cref="MissingTokenException" /> class.
         /// </summary>
-        /// <param name = "name">The name.</param>
-        /// <param name = "message">The message.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="message">The message.</param>
         public MissingTokenException(string name, string message) : base(message)
         {
             Name = name;

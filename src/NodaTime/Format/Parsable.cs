@@ -23,8 +23,8 @@ using NodaTime.Properties;
 namespace NodaTime.Format
 {
     /// <summary>
-    ///   Provides the base for parsable strings: format strings (<see cref = "Pattern" />) and value
-    ///   strings (<see cref = "ParseString" />).
+    ///   Provides the base for parsable strings: format strings (<see cref="Pattern" />) and value
+    ///   strings (<see cref="ParseString" />).
     /// </summary>
     [DebuggerStepThrough]
     internal abstract class Parsable
@@ -36,9 +36,9 @@ namespace NodaTime.Format
         internal const char Nul = '\0';
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "Parsable" /> class.
+        ///   Initializes a new instance of the <see cref="Parsable" /> class.
         /// </summary>
-        /// <param name = "value">The string to parse.</param>
+        /// <param name="value">The string to parse.</param>
         protected Parsable(string value)
         {
             if (value == null)
@@ -88,10 +88,10 @@ namespace NodaTime.Format
         internal string Remainder { get { return Value.Substring(Index); } }
 
         /// <summary>
-        ///   Returns a <see cref = "System.String" /> that represents this instance.
+        ///   Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "System.String" /> that represents this instance.
+        ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -124,7 +124,7 @@ namespace NodaTime.Format
         ///   Gets the next character.
         /// </summary>
         /// <returns>The next character from the string.</returns>
-        /// <exception cref = "FormatException">if there are no more characters.</exception>
+        /// <exception cref="FormatException">if there are no more characters.</exception>
         internal char GetNextCharacter()
         {
             if (MoveNext())
@@ -135,7 +135,7 @@ namespace NodaTime.Format
         }
 
         /// <summary>
-        ///   Returns the next character if there is one or <see cref = "Nul" /> if there isn't.
+        ///   Returns the next character if there is one or <see cref="Nul" /> if there isn't.
         /// </summary>
         /// <returns></returns>
         internal char PeekNext()
@@ -148,7 +148,7 @@ namespace NodaTime.Format
         ///   for this string then the index is set to the beginning or the end of the string whichever
         ///   is nearest the requested index.
         /// </summary>
-        /// <param name = "targetIndex">Index of the target.</param>
+        /// <param name="targetIndex">Index of the target.</param>
         /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool Move(int targetIndex)
         {

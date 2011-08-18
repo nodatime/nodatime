@@ -34,10 +34,10 @@ namespace NodaTime.ZoneInfoCompiler
         private DateTimeZoneWriter timeZoneWriter;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ResourceOutput" /> class.
+        ///   Initializes a new instance of the <see cref="ResourceOutput" /> class.
         /// </summary>
-        /// <param name = "name">The output file name.</param>
-        /// <param name = "type">The resource type.</param>
+        /// <param name="name">The output file name.</param>
+        /// <param name="type">The resource type.</param>
         public ResourceOutput(string name, ResourceOutputType type)
         {
             OutputFileName = ChangeExtension(name, type);
@@ -61,8 +61,8 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Returns the given file name with the extension set based on the given resource output type.
         /// </summary>
-        /// <param name = "fileName">The file name to change.</param>
-        /// <param name = "type">The <see cref = "ResourceOutputType" />.</param>
+        /// <param name="fileName">The file name to change.</param>
+        /// <param name="type">The <see cref="ResourceOutputType" />.</param>
         /// <returns>The file extension to use.</returns>
         public static string ChangeExtension(string fileName, ResourceOutputType type)
         {
@@ -71,12 +71,12 @@ namespace NodaTime.ZoneInfoCompiler
         }
 
         /// <summary>
-        ///   Returns the appropriate implementation of <see cref = "IResourceWriter" /> to use to
+        ///   Returns the appropriate implementation of <see cref="IResourceWriter" /> to use to
         ///   generate the output file as directed by the command line arguments.
         /// </summary>
-        /// <param name = "name">The name of the output file.</param>
-        /// <param name = "type">The output file type.</param>
-        /// <returns>The <see cref = "IResourceWriter" /> to write to.</returns>
+        /// <param name="name">The name of the output file.</param>
+        /// <param name="type">The output file type.</param>
+        /// <returns>The <see cref="IResourceWriter" /> to write to.</returns>
         private static IResourceWriter GetResourceWriter(string name, ResourceOutputType type)
         {
             IResourceWriter result;
@@ -100,8 +100,8 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Writes dictionary of string to string to  a resource with the given name.
         /// </summary>
-        /// <param name = "name">The resource name.</param>
-        /// <param name = "dictionary">The <see cref = "IDictionary{TKey,TValue}" /> to write.</param>
+        /// <param name="name">The resource name.</param>
+        /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
         public void WriteDictionary(string name, IDictionary<string, string> dictionary)
         {
             MakeOutput();
@@ -112,7 +112,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Writes contents of this object's memory stream to the resource writer.
         /// </summary>
-        /// <param name = "name">The name of the resource to write.</param>
+        /// <param name="name">The name of the resource to write.</param>
         private void WriteResource(string name)
         {
             memory.Flush();
@@ -124,8 +124,8 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Writes a time zone to a resource with the given name.
         /// </summary>
-        /// <param name = "name">The resource name.</param>
-        /// <param name = "timeZone">The <see cref = "DateTimeZone" /> to write.</param>
+        /// <param name="name">The resource name.</param>
+        /// <param name="timeZone">The <see cref="DateTimeZone" /> to write.</param>
         public void WriteTimeZone(string name, DateTimeZone timeZone)
         {
             MakeOutput();

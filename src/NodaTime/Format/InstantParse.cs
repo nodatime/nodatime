@@ -23,11 +23,11 @@ using NodaTime.Utility;
 namespace NodaTime.Format
 {
     /// <summary>
-    ///   Provides the implementation for parsing strings into <see cref = "Instant" /> values.
+    ///   Provides the implementation for parsing strings into <see cref="Instant" /> values.
     /// </summary>
     /// <remarks>
     ///   The concept and general format for this class comes from the Microsoft system libraries and their
-    ///   implementations of parsing of objects like <see cref = "int" /> and <see cref = "DateTime" />.
+    ///   implementations of parsing of objects like <see cref="int" /> and <see cref="DateTime" />.
     /// </remarks>
     internal static class InstantParse
     {
@@ -39,12 +39,12 @@ namespace NodaTime.Format
         /// <remarks>
         ///   This attempts to parse the value in each of the valid formats until one matches.
         /// </remarks>
-        /// <param name = "value">The string value to parse.</param>
-        /// <param name = "formatInfo">The <see cref = "IFormatProvider" /> to use.</param>
-        /// <param name = "styles">The <see cref = "DateTimeParseStyles" /> flags.</param>
-        /// <returns>The parsed <see cref = "Instant" /> value.</returns>
-        /// <exception cref = "ArgumentNullException">value is <c>null</c>.</exception>
-        /// <exception cref = "FormatException">value is not a valid <see cref = "Instant" /> string.</exception>
+        /// <param name="value">The string value to parse.</param>
+        /// <param name="formatInfo">The <see cref="IFormatProvider" /> to use.</param>
+        /// <param name="styles">The <see cref="DateTimeParseStyles" /> flags.</param>
+        /// <returns>The parsed <see cref="Instant" /> value.</returns>
+        /// <exception cref="ArgumentNullException">value is <c>null</c>.</exception>
+        /// <exception cref="FormatException">value is not a valid <see cref="Instant" /> string.</exception>
         internal static Instant Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new InstantParseInfo(formatInfo, styles);
@@ -58,13 +58,13 @@ namespace NodaTime.Format
         /// <remarks>
         ///   This attempts to parse the value in the given format.
         /// </remarks>
-        /// <param name = "value">The string value to parse.</param>
-        /// <param name = "format">The format to use.</param>
-        /// <param name = "formatInfo">The <see cref = "IFormatProvider" /> to use.</param>
-        /// <param name = "styles">The <see cref = "DateTimeParseStyles" /> flags.</param>
-        /// <returns>The parsed <see cref = "Instant" /> value.</returns>
-        /// <exception cref = "ArgumentNullException">value or format is <c>null</c>.</exception>
-        /// <exception cref = "FormatException">value is not a valid <see cref = "Instant" /> string.</exception>
+        /// <param name="value">The string value to parse.</param>
+        /// <param name="format">The format to use.</param>
+        /// <param name="formatInfo">The <see cref="IFormatProvider" /> to use.</param>
+        /// <param name="styles">The <see cref="DateTimeParseStyles" /> flags.</param>
+        /// <returns>The parsed <see cref="Instant" /> value.</returns>
+        /// <exception cref="ArgumentNullException">value or format is <c>null</c>.</exception>
+        /// <exception cref="FormatException">value is not a valid <see cref="Instant" /> string.</exception>
         internal static Instant ParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {
             var parseResult = new InstantParseInfo(formatInfo, styles);
@@ -78,10 +78,10 @@ namespace NodaTime.Format
         /// <remarks>
         ///   This attempts to parse the value in the given formats. The first one to match is used.
         /// </remarks>
-        /// <param name = "value"></param>
-        /// <param name = "formats"></param>
-        /// <param name = "formatInfo"></param>
-        /// <param name = "styles"></param>
+        /// <param name="value"></param>
+        /// <param name="formats"></param>
+        /// <param name="formatInfo"></param>
+        /// <param name="styles"></param>
         /// <returns></returns>
         internal static Instant ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
         {

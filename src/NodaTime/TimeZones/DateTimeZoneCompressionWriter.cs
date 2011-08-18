@@ -51,9 +51,9 @@ namespace NodaTime.TimeZones
         internal const byte FlagMinValue = 0xff;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DateTimeZoneCompressionWriter" /> class.
+        ///   Initializes a new instance of the <see cref="DateTimeZoneCompressionWriter" /> class.
         /// </summary>
-        /// <param name = "output">Where to send the serialized output.</param>
+        /// <param name="output">Where to send the serialized output.</param>
         internal DateTimeZoneCompressionWriter(Stream output) : base(output)
         {
         }
@@ -64,7 +64,7 @@ namespace NodaTime.TimeZones
         /// <remarks>
         /// Negative values are handled but in an inefficient way (5 bytes).
         /// </remarks>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal override void WriteCount(int value)
         {
             unchecked
@@ -117,7 +117,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the integer milliseconds value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal override void WriteMilliseconds(int value)
         {
             /*
@@ -182,7 +182,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the long ticks value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal override void WriteTicks(long value)
         {
             /*

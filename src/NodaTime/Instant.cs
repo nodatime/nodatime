@@ -59,9 +59,9 @@ namespace NodaTime
         private readonly long ticks;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "Instant" /> struct.
+        /// Initializes a new instance of the <see cref="Instant" /> struct.
         /// </summary>
-        /// <param name = "ticks">The ticks from the unix epoch.</param>
+        /// <param name="ticks">The ticks from the unix epoch.</param>
         public Instant(long ticks)
         {
             this.ticks = ticks;
@@ -76,7 +76,7 @@ namespace NodaTime
         /// <summary>
         ///   Compares the current object with another object of the same type.
         /// </summary>
-        /// <param name = "other">An object to compare with this object.</param>
+        /// <param name="other">An object to compare with this object.</param>
         /// <returns>
         ///   A 32-bit signed integer that indicates the relative order of the objects being compared.
         ///   The return value has the following meanings:
@@ -107,11 +107,11 @@ namespace NodaTime
 
         #region Object overrides
         /// <summary>
-        ///   Determines whether the specified <see cref = "System.Object" /> is equal to this instance.
+        ///   Determines whether the specified <see cref="System.Object" /> is equal to this instance.
         /// </summary>
-        /// <param name = "obj">The <see cref = "System.Object" /> to compare with this instance.</param>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance;
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         ///   otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object obj)
@@ -138,24 +138,24 @@ namespace NodaTime
 
         #region Operators
         /// <summary>
-        ///   Implements the operator + (addition) for <see cref = "Instant" /> + <see cref = "Duration" />.
+        ///   Implements the operator + (addition) for <see cref="Instant" /> + <see cref="Duration" />.
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref = "Instant" /> representing the sum of the given values.</returns>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Instant operator +(Instant left, Duration right)
         {
             return new Instant(left.Ticks + right.Ticks);
         }
 
         /// <summary>
-        ///   Adds the given offset to this instant, to return a <see cref = "LocalInstant" />.
+        ///   Adds the given offset to this instant, to return a <see cref="LocalInstant" />.
         /// </summary>
         /// <remarks>
         ///   This was previously an operator+ implementation, but operators can't be internal.
         /// </remarks>
-        /// <param name = "offset">The right hand side of the operator.</param>
-        /// <returns>A new <see cref = "LocalInstant" /> representing the sum of the given values.</returns>
+        /// <param name="offset">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="LocalInstant" /> representing the sum of the given values.</returns>
         internal LocalInstant Plus(Offset offset)
         {
             return new LocalInstant(Ticks + offset.Ticks);
@@ -164,31 +164,31 @@ namespace NodaTime
         /// <summary>
         ///   Adds a duration to an instant. Friendly alternative to <c>operator+()</c>.
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref = "Instant" /> representing the sum of the given values.</returns>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Instant Add(Instant left, Duration right)
         {
             return left + right;
         }
 
         /// <summary>
-        ///   Implements the operator - (subtraction) for <see cref = "Instant" /> - <see cref = "Instant" />.
+        ///   Implements the operator - (subtraction) for <see cref="Instant" /> - <see cref="Instant" />.
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref = "Instant" /> representing the sum of the given values.</returns>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Duration operator -(Instant left, Instant right)
         {
             return new Duration(left.Ticks - right.Ticks);
         }
 
         /// <summary>
-        ///   Implements the operator - (subtraction) for <see cref = "Instant" /> - <see cref = "Duration" />.
+        ///   Implements the operator - (subtraction) for <see cref="Instant" /> - <see cref="Duration" />.
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref = "Instant" /> representing the sum of the given values.</returns>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Instant operator -(Instant left, Duration right)
         {
             return new Instant(left.Ticks - right.Ticks);
@@ -197,9 +197,9 @@ namespace NodaTime
         /// <summary>
         ///   Subtracts one instant from another. Friendly alternative to <c>operator-()</c>.
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref = "Duration" /> representing the difference of the given values.</returns>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration" /> representing the difference of the given values.</returns>
         public static Duration Subtract(Instant left, Instant right)
         {
             return left - right;
@@ -208,9 +208,9 @@ namespace NodaTime
         /// <summary>
         ///   Subtracts a duration from an instant. Friendly alternative to <c>operator-()</c>.
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref = "Instant" /> representing the difference of the given values.</returns>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
         public static Instant Subtract(Instant left, Duration right)
         {
             return left - right;
@@ -219,8 +219,8 @@ namespace NodaTime
         /// <summary>
         ///   Implements the operator == (equality).
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Instant left, Instant right)
         {
@@ -230,8 +230,8 @@ namespace NodaTime
         /// <summary>
         ///   Implements the operator != (inequality).
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator !=(Instant left, Instant right)
         {
@@ -241,8 +241,8 @@ namespace NodaTime
         /// <summary>
         ///   Implements the operator &lt; (less than).
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Instant left, Instant right)
         {
@@ -252,8 +252,8 @@ namespace NodaTime
         /// <summary>
         ///   Implements the operator &lt;= (less than or equal).
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Instant left, Instant right)
         {
@@ -263,8 +263,8 @@ namespace NodaTime
         /// <summary>
         ///   Implements the operator &gt; (greater than).
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Instant left, Instant right)
         {
@@ -274,8 +274,8 @@ namespace NodaTime
         /// <summary>
         ///   Implements the operator &gt;= (greater than or equal).
         /// </summary>
-        /// <param name = "left">The left hand side of the operator.</param>
-        /// <param name = "right">The right hand side of the operator.</param>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Instant left, Instant right)
         {
@@ -286,8 +286,8 @@ namespace NodaTime
         #region Convenience methods
         /// <summary>
         ///   Returns a new instant corresponding to the given UTC date and time in the ISO calendar.
-        ///   In most cases applications should use <see cref = "ZonedDateTime" /> to represent a date
-        ///   and time, but this method is useful in some situations where an <see cref = "Instant" /> is
+        ///   In most cases applications should use <see cref="ZonedDateTime" /> to represent a date
+        ///   and time, but this method is useful in some situations where an <see cref="Instant" /> is
         ///   required, such as time zone testing.
         /// </summary>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
@@ -299,7 +299,7 @@ namespace NodaTime
         /// <summary>
         ///   Returns a new instant corresponding to the given UTC date and
         ///   time in the ISO calendar. In most cases applications should 
-        ///   use <see cref = "ZonedDateTime" />
+        ///   use <see cref="ZonedDateTime" />
         ///   to represent a date and time, but this method is useful in some 
         ///   situations where an Instant is required, such as time zone testing.
         /// </summary>
@@ -343,13 +343,13 @@ namespace NodaTime
         ///   Formats the value of the current instance using the specified format.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
-        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        /// <param name="format">The <see cref="T:System.String" /> specifying the format to use.
         ///   -or- 
-        ///   null to use the default format defined for the type of the <see cref = "T:System.IFormattable" /> implementation. 
+        ///   null to use the default format defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
         /// </param>
-        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
         ///   -or- 
         ///   null to obtain the numeric format information from the current locale setting of the operating system. 
         /// </param>
@@ -360,11 +360,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Returns a <see cref = "System.String" /> that represents this instance. Equivilent to
+        ///   Returns a <see cref="System.String" /> that represents this instance. Equivilent to
         ///   calling <c>ToString(null)</c>.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "System.String" /> that represents this instance.
+        ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -375,9 +375,9 @@ namespace NodaTime
         ///   Formats the value of the current instance using the specified format.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "T:System.String" /> containing the value of the current instance in the specified format.
+        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
-        /// <param name = "format">The <see cref = "T:System.String" /> specifying the format to use.
+        /// <param name="format">The <see cref="T:System.String" /> specifying the format to use.
         ///   -or- 
         ///   null to use the default format defined for the type. 
         /// </param>
@@ -388,12 +388,12 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Formats the value of the current instance using the specified <see cref = "IFormatProvider" />.
+        ///   Formats the value of the current instance using the specified <see cref="IFormatProvider" />.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "T:System.String" /> containing the value of the current instance.
+        ///   A <see cref="T:System.String" /> containing the value of the current instance.
         /// </returns>
-        /// <param name = "formatProvider">The <see cref = "T:System.IFormatProvider" /> to use to format the value.
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
         ///   -or- 
         ///   null to obtain the format information from the current locale setting of the current thread. 
         /// </param>
@@ -502,7 +502,7 @@ namespace NodaTime
         /// <summary>
         ///   Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <param name = "other">An object to compare with this object.</param>
+        /// <param name="other">An object to compare with this object.</param>
         /// <returns>
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.

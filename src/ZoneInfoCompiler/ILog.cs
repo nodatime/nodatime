@@ -27,9 +27,9 @@ namespace NodaTime.ZoneInfoCompiler
     public interface ILog
     {
         /// <summary>
-        ///   Gets the <see cref = "TextWriter" /> that sends its output to <see cref = "Error" />.
+        ///   Gets the <see cref="TextWriter" /> that sends its output to <see cref="Error" />.
         /// </summary>
-        /// <value>The <see cref = "TextWriter" />.</value>
+        /// <value>The <see cref="TextWriter" />.</value>
         TextWriter ErrorWriter { get; }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace NodaTime.ZoneInfoCompiler
         string FileName { get; set; }
 
         /// <summary>
-        ///   Gets the <see cref = "TextWriter" /> that sends its output to <see cref = "Info" />.
+        ///   Gets the <see cref="TextWriter" /> that sends its output to <see cref="Info" />.
         /// </summary>
-        /// <value>The <see cref = "TextWriter" />.</value>
+        /// <value>The <see cref="TextWriter" />.</value>
         TextWriter InfoWriter { get; }
 
         /// <summary>
@@ -52,30 +52,30 @@ namespace NodaTime.ZoneInfoCompiler
         int LineNumber { get; set; }
 
         /// <summary>
-        ///   Gets the <see cref = "TextWriter" /> that sends its output to <see cref = "Warn" />.
+        ///   Gets the <see cref="TextWriter" /> that sends its output to <see cref="Warn" />.
         /// </summary>
-        /// <value>The <see cref = "TextWriter" />.</value>
+        /// <value>The <see cref="TextWriter" />.</value>
         TextWriter WarnWriter { get; }
 
         /// <summary>
         ///   Writes an error message to the log. The string is formatted using string.Format().
         /// </summary>
-        /// <param name = "format">The format string to log.</param>
-        /// <param name = "arguments">The arguments for the string format if any.</param>
+        /// <param name="format">The format string to log.</param>
+        /// <param name="arguments">The arguments for the string format if any.</param>
         void Error(string format, params object[] arguments);
 
         /// <summary>
         ///   Writes an information message to the log. The string is formatted using string.Format().
         /// </summary>
-        /// <param name = "format">The format string to log.</param>
-        /// <param name = "arguments">The arguments for the string format if any.</param>
+        /// <param name="format">The format string to log.</param>
+        /// <param name="arguments">The arguments for the string format if any.</param>
         void Info(string format, params object[] arguments);
 
         /// <summary>
         ///   Writes a warning message to the log. The string is formatted using string.Format().
         /// </summary>
-        /// <param name = "format">The format string to log.</param>
-        /// <param name = "arguments">The arguments for the string format if any.</param>
+        /// <param name="format">The format string to log.</param>
+        /// <param name="arguments">The arguments for the string format if any.</param>
         void Warn(string format, params object[] arguments);
     }
 }

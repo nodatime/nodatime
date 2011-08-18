@@ -26,19 +26,19 @@ namespace NodaTime.Format
     internal class ParseInfo
     {
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ParseInfo" /> class.
+        ///   Initializes a new instance of the <see cref="ParseInfo" /> class.
         /// </summary>
-        /// <param name = "formatProvider">The format info.</param>
+        /// <param name="formatProvider">The format info.</param>
         internal ParseInfo(IFormatProvider formatProvider)
             : this(formatProvider, DateTimeParseStyles.None)
         {
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ParseInfo" /> class.
+        ///   Initializes a new instance of the <see cref="ParseInfo" /> class.
         /// </summary>
-        /// <param name = "formatProvider">The format info.</param>
-        /// <param name = "parseStyles">The parse styles.</param>
+        /// <param name="formatProvider">The format info.</param>
+        /// <param name="parseStyles">The parse styles.</param>
         internal ParseInfo(IFormatProvider formatProvider, DateTimeParseStyles parseStyles)
         {
             FormatProvider = formatProvider;
@@ -88,10 +88,10 @@ namespace NodaTime.Format
         ///   previously set or if it has that the new value is the same as the old one. If the new value is
         ///   different than the old one then a failure is set.
         /// </remarks>
-        /// <typeparam name = "T">The base type of the values.</typeparam>
-        /// <param name = "currentValue">The current value.</param>
-        /// <param name = "newValue">The new value.</param>
-        /// <param name = "patternCharacter">The pattern character for the error message if any.</param>
+        /// <typeparam name="T">The base type of the values.</typeparam>
+        /// <param name="currentValue">The current value.</param>
+        /// <param name="newValue">The new value.</param>
+        /// <param name="patternCharacter">The pattern character for the error message if any.</param>
         /// <returns><c>true</c> if the current value is not set or if the current value equals the new value, <c>false</c> otherwise.</returns>
         internal static bool AssignNewValue<T>(ref T? currentValue, T newValue, char patternCharacter) where T : struct
         {

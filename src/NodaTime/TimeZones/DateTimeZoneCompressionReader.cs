@@ -26,9 +26,9 @@ namespace NodaTime.TimeZones
     internal class DateTimeZoneCompressionReader : DateTimeZoneReader
     {
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DateTimeZoneCompressionReader" /> class.
+        ///   Initializes a new instance of the <see cref="DateTimeZoneCompressionReader" /> class.
         /// </summary>
-        /// <param name = "stream">The stream to read from.</param>
+        /// <param name="stream">The stream to read from.</param>
         internal DateTimeZoneCompressionReader(Stream stream) : base(stream)
         {
         }
@@ -37,7 +37,7 @@ namespace NodaTime.TimeZones
         ///   Reads a non-negative integer value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteCount" />.
+        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteCount" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
         internal override int ReadCount()
@@ -87,7 +87,7 @@ namespace NodaTime.TimeZones
         ///   Reads an integer millisecond value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteMilliseconds" />.
+        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteMilliseconds" />.
         /// </remarks>
         /// <returns>The integer millisecond value from the stream.</returns>
         internal override int ReadMilliseconds()
@@ -140,7 +140,7 @@ namespace NodaTime.TimeZones
         ///   Reads a long ticks value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref = "DateTimeZoneWriter.WriteTicks" />.
+        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteTicks" />.
         /// </remarks>
         /// <returns>The long ticks value from the stream.</returns>
         internal override long ReadTicks()

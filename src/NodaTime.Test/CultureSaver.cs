@@ -42,8 +42,8 @@ namespace NodaTime.Test
         /// <summary>
         ///   Sets the basic culture.
         /// </summary>
-        /// <param name = "newCultureInfo">The new culture info.</param>
-        /// <returns>An <see cref = "IDisposable" /> so the culture can be reset.</returns>
+        /// <param name="newCultureInfo">The new culture info.</param>
+        /// <returns>An <see cref="IDisposable" /> so the culture can be reset.</returns>
         public static IDisposable SetBasicCulture(CultureInfo newCultureInfo)
         {
             return new BasicSaver(newCultureInfo);
@@ -52,8 +52,8 @@ namespace NodaTime.Test
         /// <summary>
         ///   Sets the UI culture of the current thread.
         /// </summary>
-        /// <param name = "newCultureInfo">The new culture info.</param>
-        /// <returns>An <see cref = "IDisposable" /> so the culture can be reset.</returns>
+        /// <param name="newCultureInfo">The new culture info.</param>
+        /// <returns>An <see cref="IDisposable" /> so the culture can be reset.</returns>
         public static IDisposable SetUiCulture(CultureInfo newCultureInfo)
         {
             return new UiSaver(newCultureInfo);
@@ -62,8 +62,8 @@ namespace NodaTime.Test
         /// <summary>
         ///   Sets both the UI and basic cultures of the current thread.
         /// </summary>
-        /// <param name = "newCultureInfo">The new culture info.</param>
-        /// <returns>An <see cref = "IDisposable" /> so the culture can be reset.</returns>
+        /// <param name="newCultureInfo">The new culture info.</param>
+        /// <returns>An <see cref="IDisposable" /> so the culture can be reset.</returns>
         public static IDisposable SetCultures(CultureInfo newCultureInfo)
         {
             return new BothSaver(newCultureInfo, newCultureInfo);
@@ -72,9 +72,9 @@ namespace NodaTime.Test
         /// <summary>
         ///   Sets both the UI and basic cultures of the current thread.
         /// </summary>
-        /// <param name = "newCultureInfo">The new culture info.</param>
+        /// <param name="newCultureInfo">The new culture info.</param>
         /// <param name="newUiCultureInfo">The new UI culture info.</param>
-        /// <returns>An <see cref = "IDisposable" /> so the culture can be reset.</returns>
+        /// <returns>An <see cref="IDisposable" /> so the culture can be reset.</returns>
         public static IDisposable SetCultures(CultureInfo newCultureInfo, CultureInfo newUiCultureInfo)
         {
             return new BothSaver(newCultureInfo, newUiCultureInfo);
@@ -82,7 +82,7 @@ namespace NodaTime.Test
 
         #region Nested type: BasicSaver
         /// <summary>
-        ///   Provides the <see cref = "IDisposable" /> for saving the original basic culture and resetting
+        ///   Provides the <see cref="IDisposable" /> for saving the original basic culture and resetting
         ///   it back.
         /// </summary>
         private sealed class BasicSaver : IDisposable
@@ -90,9 +90,9 @@ namespace NodaTime.Test
             private readonly CultureInfo oldCulture;
 
             /// <summary>
-            ///   Initializes a new instance of the <see cref = "BasicSaver" /> class.
+            ///   Initializes a new instance of the <see cref="BasicSaver" /> class.
             /// </summary>
-            /// <param name = "newCulture">The new basic culture to set.</param>
+            /// <param name="newCulture">The new basic culture to set.</param>
             public BasicSaver(CultureInfo newCulture)
             {
                 oldCulture = Thread.CurrentThread.CurrentCulture;
@@ -113,7 +113,7 @@ namespace NodaTime.Test
 
         #region Nested type: BothSaver
         /// <summary>
-        ///   Provides the <see cref = "IDisposable" /> for saving the original cultures and resetting
+        ///   Provides the <see cref="IDisposable" /> for saving the original cultures and resetting
         ///   them back.
         /// </summary>
         private sealed class BothSaver : IDisposable
@@ -122,9 +122,9 @@ namespace NodaTime.Test
             private readonly CultureInfo oldUiCulture;
 
             /// <summary>
-            ///   Initializes a new instance of the <see cref = "UiSaver" /> class.
+            ///   Initializes a new instance of the <see cref="UiSaver" /> class.
             /// </summary>
-            /// <param name = "newCulture">The new basic culture to set.</param>
+            /// <param name="newCulture">The new basic culture to set.</param>
             /// <param name="newUiCulture">The new UI culture to set.</param>
             public BothSaver(CultureInfo newCulture, CultureInfo newUiCulture)
             {
@@ -150,7 +150,7 @@ namespace NodaTime.Test
 
         #region Nested type: UiSaver
         /// <summary>
-        ///   Provides the <see cref = "IDisposable" /> for saving the original UI culture and resetting
+        ///   Provides the <see cref="IDisposable" /> for saving the original UI culture and resetting
         ///   it back.
         /// </summary>
         private sealed class UiSaver : IDisposable
@@ -158,9 +158,9 @@ namespace NodaTime.Test
             private readonly CultureInfo oldCulture;
 
             /// <summary>
-            ///   Initializes a new instance of the <see cref = "UiSaver" /> class.
+            ///   Initializes a new instance of the <see cref="UiSaver" /> class.
             /// </summary>
-            /// <param name = "newCulture">The new UI culture to set.</param>
+            /// <param name="newCulture">The new UI culture to set.</param>
             public UiSaver(CultureInfo newCulture)
             {
                 oldCulture = Thread.CurrentThread.CurrentUICulture;

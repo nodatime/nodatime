@@ -30,7 +30,7 @@ namespace ZoneInfoCompilerW.ViewModel
         private string targetFileName;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "WindowsMapViewModel" /> class.
+        ///   Initializes a new instance of the <see cref="WindowsMapViewModel" /> class.
         /// </summary>
         public TzdbViewModel()
         {
