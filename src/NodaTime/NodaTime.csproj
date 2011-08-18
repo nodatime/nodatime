@@ -63,7 +63,7 @@
     <WarningLevel>4</WarningLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>NodeTime.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\NodaTime.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
   </PropertyGroup>
