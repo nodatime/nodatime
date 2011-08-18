@@ -512,5 +512,36 @@ namespace NodaTime
             return Ticks == other.Ticks;
         }
         #endregion
+
+        /// <summary>
+        /// Constructs a <see cref="DateTime"/> from this Instant which has a <see cref="DateTime.Kind" />
+        /// of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as this value.
+        /// </summary>
+        public DateTime ToDateTimeUtc()
+        {
+            return new DateTime(ticks + NodaConstants.DateTimeEpochTicks, DateTimeKind.Utc);
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="DateTimeOffset"/> from this Instant which has an offset of zero.
+        /// </summary>
+        public DateTimeOffset ToDateTimeOffset()
+        {
+            return new DateTimeOffset(ticks + NodaConstants.DateTimeEpochTicks, TimeSpan.Zero);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="DateTime"/> into a new Instant representing the same instant in time.
+        /// </summary>
+        /// <param name="dateTime">Date and time value which must have a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/></param>
+        /// <exception cref="ArgumentException"><paramref name="dateTime"/> has the wrong <see cref="DateTime.Kind"/>.</exception>
+        public static Instant FromDateTimeUtc(DateTime dateTime)
+        {
+            if (dateTime.Kind != DateTimeKind.Utc)
+            {
+                throw new ArgumentException("Invalid DateTime.Kind for Instant.FromDateTimeUtc", "dateTime");
+            }
+            return new Instant(dateTime.Ticks - NodaConstants.DateTimeEpochTicks);
+        }
     }
 }

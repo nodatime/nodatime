@@ -101,7 +101,7 @@ namespace NodaTime.Format
                 {
                     return Instant.EndOfTimeLabel;
                 }
-                DateTime utc = SystemConversions.InstantToDateTime(value);
+                DateTime utc = value.ToDateTimeUtc();
                 return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z", utc.Year, utc.Month, utc.Day, utc.Hour, utc.Minute,
                                      utc.Second);
             }

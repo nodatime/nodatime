@@ -105,6 +105,7 @@
       <DependentUpon>InstantTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DateTimeZoneTest.cs" />
+    <Compile Include="LocalDateTimeTest.cs" />
     <Compile Include="Testing\StubClockTest.cs" />
     <Compile Include="Fields\DurationFieldValueTest.cs" />
     <Compile Include="LocalDateTest.cs" />

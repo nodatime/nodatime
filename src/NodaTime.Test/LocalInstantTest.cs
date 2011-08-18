@@ -16,6 +16,7 @@
 #endregion
 
 using NUnit.Framework;
+using System;
 
 namespace NodaTime.Test
 {
@@ -61,5 +62,18 @@ namespace NodaTime.Test
             Assert.AreEqual(TestTime2, (time1 + duration).Ticks);
             Assert.AreEqual(TestTime1, (time2 - duration).Ticks);
         }
+
+        [Test]
+        public void FromDateTime()
+        {
+            LocalInstant expected = new LocalInstant(2011, 08, 18, 20, 53);
+            foreach (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
+            {
+                DateTime x = new DateTime(2011, 08, 18, 20, 53, 0, kind);
+                LocalInstant actual = LocalInstant.FromDateTime(x);
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
     }
 }

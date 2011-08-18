@@ -381,9 +381,40 @@ namespace NodaTime
         /// Constructs a <see cref="DateTimeOffset"/> value with the same local time and offset from
         /// UTC as this value.
         /// </summary>
+        /// <remarks>
+        /// An offset does not convey as much information as a time zone; a <see cref="DateTimeOffset"/>
+        /// represents an instant in time along with an associated local time, but it doesn't allow you
+        /// to find out what the local time would be for another instant.
+        /// </remarks>
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset(SystemConversions.DateTimeEpochTicks + LocalInstant.Ticks, Offset.ToTimeSpan());
+            return new DateTimeOffset(NodaConstants.DateTimeEpochTicks + LocalInstant.Ticks, Offset.ToTimeSpan());
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="DateTime"/> from this ZonedDateTime which has a <see cref="DateTime.Kind" />
+        /// of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as this value
+        /// rather than the same local time.
+        /// </summary>
+        public DateTime ToDateTimeUtc()
+        {
+            return ToInstant().ToDateTimeUtc();
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="DateTime"/> from this ZonedDateTime which has a <see cref="DateTime.Kind" />
+        /// of <see cref="DateTimeKind.Unspecified"/> and represents the same local time as this value
+        /// rather than the same instant in time.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
+        /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
+        /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
+        /// the Noda Time non-system-specific "local" concept as exists in .NET.
+        /// </remarks>
+        public DateTime ToDateTimeUnspecified()
+        {
+            return LocalInstant.ToDateTimeUnspecified();
         }
     }
 }
