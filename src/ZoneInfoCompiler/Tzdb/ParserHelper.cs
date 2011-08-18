@@ -30,10 +30,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Converts an hour string to its long value.
         /// </summary>
-        /// <param name = "text">The text to convert.</param>
+        /// <param name="text">The text to convert.</param>
         /// <returns>The hour in the range [-23, 23].</returns>
-        /// <exception cref = "ArgumentNullException">If the text is null.</exception>
-        /// <exception cref = "FormatException">If the text is not a valid integer in the range [-23, 23].</exception>
+        /// <exception cref="ArgumentNullException">If the text is null.</exception>
+        /// <exception cref="FormatException">If the text is not a valid integer in the range [-23, 23].</exception>
         internal static long ConvertHourToTicks(string text)
         {
             int value = Int32.Parse(text, NumberStyles.Integer, CultureInfo.InvariantCulture);
@@ -47,10 +47,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Converts a minute string to its long value.
         /// </summary>
-        /// <param name = "text">The text to convert.</param>
+        /// <param name="text">The text to convert.</param>
         /// <returns>The minute in the range [0, 59].</returns>
-        /// <exception cref = "ArgumentNullException">If the text is null.</exception>
-        /// <exception cref = "FormatException">If the text is not a valid integer in the range [0, 59].</exception>
+        /// <exception cref="ArgumentNullException">If the text is null.</exception>
+        /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 59].</exception>
         internal static long ConvertMinuteToTicks(string text)
         {
             int value = Int32.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture);
@@ -64,10 +64,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Converts a second string to its double value.
         /// </summary>
-        /// <param name = "text">The text to convert.</param>
+        /// <param name="text">The text to convert.</param>
         /// <returns>The second in the range [0, 60).</returns>
-        /// <exception cref = "ArgumentNullException">If the text is null.</exception>
-        /// <exception cref = "FormatException">If the text is not a valid integer in the range [0, 60).</exception>
+        /// <exception cref="ArgumentNullException">If the text is null.</exception>
+        /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 60).</exception>
         internal static long ConvertSecondsWithFractionalToTicks(string text)
         {
             double number = Double.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowDecimalPoint,
@@ -83,7 +83,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Formats the optional.
         /// </summary>
-        /// <param name = "value">The value.</param>
+        /// <param name="value">The value.</param>
         /// <returns></returns>
         public static string FormatOptional(string value)
         {
@@ -93,10 +93,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Parses the given text for an integer. Leading and trailing white space is ignored.
         /// </summary>
-        /// <param name = "text">The text to parse.</param>
-        /// <param name = "defaultValue">The default value to use if the number cannot be parsed.</param>
+        /// <param name="text">The text to parse.</param>
+        /// <param name="defaultValue">The default value to use if the number cannot be parsed.</param>
         /// <returns>An integer.</returns>
-        /// <exception cref = "FormatException">If the text is not a valid integer.</exception>
+        /// <exception cref="FormatException">If the text is not a valid integer.</exception>
         internal static int ParseInteger(string text, int defaultValue)
         {
             int value = defaultValue;
@@ -113,9 +113,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Parses a time offset string into an integer number of ticks.
         /// </summary>
-        /// <param name = "text">The value to parse.</param>
+        /// <param name="text">The value to parse.</param>
         /// <returns>an integer number of ticks</returns>
-        /// <exception cref = "ArgumentNullException">If the text is null.</exception>
+        /// <exception cref="ArgumentNullException">If the text is null.</exception>
         public static Offset ParseOffset(string text)
         {
             if (text == null)
@@ -150,9 +150,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Parses an optional value. If the string value is "-" then null is returned otherwise the
         ///   input string is returned.
         /// </summary>
-        /// <param name = "text">The value to parse.</param>
+        /// <param name="text">The value to parse.</param>
         /// <returns>The input string or null.</returns>
-        /// <exception cref = "ArgumentNullException">If the text is null.</exception>
+        /// <exception cref="ArgumentNullException">If the text is null.</exception>
         public static string ParseOptional(String text)
         {
             if (text == null)
@@ -165,8 +165,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Parses the year.
         /// </summary>
-        /// <param name = "text">The text to parse.</param>
-        /// <param name = "defaultValue">The default value.</param>
+        /// <param name="text">The text to parse.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns>The parsed year.</returns>
         [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         public static int ParseYear(String text, int defaultValue)

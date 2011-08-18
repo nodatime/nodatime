@@ -79,13 +79,13 @@ namespace NodaTime.TimeZones
         internal int MatchingIntervals { get { return matchingIntervals; } }
 
         /// <summary>
-        ///   Determines whether the specified <see cref = "T:System.Object" /> is equal to the current <see cref = "T:System.Object" />.
+        ///   Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref = "T:System.Object" /> is equal to the current <see cref = "T:System.Object" />; otherwise, <c>false</c>.
+        ///   <c>true</c> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, <c>false</c>.
         /// </returns>
-        /// <param name = "obj">The <see cref = "T:System.Object" /> to compare with the current <see cref = "T:System.Object" />.</param>
-        /// <exception cref = "T:System.NullReferenceException">The <paramref name = "obj" /> parameter is null.</exception>
+        /// <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />.</param>
+        /// <exception cref="T:System.NullReferenceException">The <paramref name = "obj" /> parameter is null.</exception>
         /// <filterpriority>2</filterpriority>
         [DebuggerStepThrough]
         public override bool Equals(object obj)
@@ -99,7 +99,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         ///   true if the current object is equal to the <paramref name = "other" /> parameter; otherwise, false.
         /// </returns>
-        /// <param name = "other">An object to compare with this object.
+        /// <param name="other">An object to compare with this object.
         /// </param>
         [DebuggerStepThrough]
         public bool Equals(ZoneIntervalPair other)
@@ -112,7 +112,7 @@ namespace NodaTime.TimeZones
         ///   Serves as a hash function for a particular type.
         /// </summary>
         /// <returns>
-        ///   A hash code for the current <see cref = "T:System.Object" />.
+        ///   A hash code for the current <see cref="T:System.Object" />.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override int GetHashCode()

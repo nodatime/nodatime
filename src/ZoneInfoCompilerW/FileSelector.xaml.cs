@@ -39,7 +39,7 @@ namespace ZoneInfoCompilerW
         public static DependencyProperty SelectDirectoryProperty = DependencyProperty.Register("SelectDirectory", typeof(bool), typeof(FileSelector));
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "FileSelector" /> class.
+        ///   Initializes a new instance of the <see cref="FileSelector" /> class.
         /// </summary>
         public FileSelector()
         {
@@ -71,8 +71,8 @@ namespace ZoneInfoCompilerW
         /// <remarks>
         ///   We copy the new value to the text field and its tooltip.
         /// </remarks>
-        /// <param name = "d">The object that changed.</param>
-        /// <param name = "e">The description of the change.</param>
+        /// <param name="d">The object that changed.</param>
+        /// <param name="e">The description of the change.</param>
         private static void FileSelectorNameChangeCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var selector = (FileSelector)d;
@@ -83,8 +83,8 @@ namespace ZoneInfoCompilerW
         /// <summary>
         ///   Handles the select button being clicked.
         /// </summary>
-        /// <param name = "sender">The source of the event.</param>
-        /// <param name = "e">The event definition.</param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event definition.</param>
         private void SelectFileButtonClick(object sender, RoutedEventArgs e)
         {
             if (SelectDirectory)

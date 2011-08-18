@@ -22,17 +22,17 @@ using NodaTime.ZoneInfoCompiler;
 namespace ZoneInfoCompilerW
 {
     /// <summary>
-    ///   Provides an <see cref = "ILog" /> implementation that appends all of the messages
-    ///   to be logged to a <see cref = "ListBox" />.
+    ///   Provides an <see cref="ILog" /> implementation that appends all of the messages
+    ///   to be logged to a <see cref="ListBox" />.
     /// </summary>
     internal class ListBoxLog : LogBase
     {
         private readonly ListBox control;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ListBoxLog" /> class.
+        ///   Initializes a new instance of the <see cref="ListBoxLog" /> class.
         /// </summary>
-        /// <param name = "control">The list box to append to.</param>
+        /// <param name="control">The list box to append to.</param>
         public ListBoxLog(ListBox control)
         {
             this.control = control;
@@ -43,8 +43,8 @@ namespace ZoneInfoCompilerW
         ///   destination can be different based on the message type and different loggers may not
         ///   send all messages to the destination.
         /// </summary>
-        /// <param name = "type">The type of log message.</param>
-        /// <param name = "message">The message to log.</param>
+        /// <param name="type">The type of log message.</param>
+        /// <param name="message">The message to log.</param>
         protected override void LogMessage(LogType type, string message)
         {
             if (message == null)

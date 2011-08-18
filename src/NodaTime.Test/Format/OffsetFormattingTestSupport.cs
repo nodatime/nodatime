@@ -25,7 +25,7 @@ using NodaTime.Properties;
 namespace NodaTime.Test.Format
 {
     /// <summary>
-    ///   Defines the test data for the <see cref = "Offset" /> type formatting and parsing tests.
+    ///   Defines the test data for the <see cref="Offset" /> type formatting and parsing tests.
     /// </summary>
     public class OffsetFormattingTestSupport : FormattingTestSupport
     {
@@ -261,8 +261,8 @@ namespace NodaTime.Test.Format
         ///   Base for building filtered lists of parsing test data. This is here because we do not have access
         ///   to LINQ.
         /// </summary>
-        /// <param name = "test">The test predicate.</param>
-        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        /// <param name="test">The test predicate.</param>
+        /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
         internal static IEnumerable<OffsetData> FilteredParseTests(Predicate<OffsetData> test)
         {
             foreach (var data in OffsetParseData)
@@ -285,8 +285,8 @@ namespace NodaTime.Test.Format
         ///   Base for building filtered lists of formatting test data. This is here because we do not have access
         ///   to LINQ.
         /// </summary>
-        /// <param name = "test">The test predicate.</param>
-        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        /// <param name="test">The test predicate.</param>
+        /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
         internal static IEnumerable<OffsetData> FilteredFormatTests(Predicate<OffsetData> test)
         {
             foreach (var data in OffsetFormatData)
@@ -308,7 +308,7 @@ namespace NodaTime.Test.Format
         /// <summary>
         ///   Returns an iterator of test data with the parse style specified.
         /// </summary>
-        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
         internal static IEnumerable<OffsetData> ParseWithStyles()
         {
             return FilteredParseTests(data => data.Styles != DateTimeParseStyles.None);
@@ -317,7 +317,7 @@ namespace NodaTime.Test.Format
         /// <summary>
         ///   Returns an iterator of test data with no parse style specified.
         /// </summary>
-        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
         internal static IEnumerable<OffsetData> ParseWithoutStyles()
         {
             return FilteredParseTests(data => data.Styles == DateTimeParseStyles.None);
@@ -326,7 +326,7 @@ namespace NodaTime.Test.Format
         /// <summary>
         ///   Returns an iterator of test data with no format string specified.
         /// </summary>
-        /// <returns>An <see cref = "IEnumerable{OffsetData}" /></returns>
+        /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
         internal static IEnumerable<OffsetData> FormatWithoutFormat()
         {
             return FilteredFormatTests(data => data.F == null);
@@ -334,26 +334,26 @@ namespace NodaTime.Test.Format
 
         #region Nested type: OffsetData
         /// <summary>
-        ///   A container for test data for formatting and parsing <see cref = "Offset" /> objects.
+        ///   A container for test data for formatting and parsing <see cref="Offset" /> objects.
         /// </summary>
         public sealed class OffsetData : AbstractFormattingData<Offset>
         {
             /// <summary>
-            ///   Initializes a new instance of the <see cref = "OffsetData" /> class.
+            ///   Initializes a new instance of the <see cref="OffsetData" /> class.
             /// </summary>
-            /// <param name = "value">The value.</param>
+            /// <param name="value">The value.</param>
             public OffsetData(Offset value)
                 : base(value)
             {
             }
 
             /// <summary>
-            ///   Initializes a new instance of the <see cref = "OffsetData" /> class.
+            ///   Initializes a new instance of the <see cref="OffsetData" /> class.
             /// </summary>
-            /// <param name = "hours">The hours.</param>
-            /// <param name = "minutes">The minutes.</param>
-            /// <param name = "seconds">The seconds.</param>
-            /// <param name = "fractions">The fractions.</param>
+            /// <param name="hours">The hours.</param>
+            /// <param name="minutes">The minutes.</param>
+            /// <param name="seconds">The seconds.</param>
+            /// <param name="fractions">The fractions.</param>
             public OffsetData(int hours, int minutes, int seconds, int fractions)
                 : this(Offset.Create(hours, minutes, seconds, fractions))
             {
@@ -365,7 +365,7 @@ namespace NodaTime.Test.Format
             ///   labels so it doesn't have to be beautiful. Must handle <c>null</c> if the type is a reference
             ///   type. This should not throw an exception.
             /// </summary>
-            /// <param name = "value">The value to format.</param>
+            /// <param name="value">The value to format.</param>
             /// <returns>The string representation.</returns>
             protected override string ValueLabel(Offset value)
             {

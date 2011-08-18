@@ -21,7 +21,7 @@ using System.Globalization;
 namespace NodaTime.Format
 {
     /// <summary>
-    ///   Provides a <see cref = "INodaFormatter{T}" /> factory for generating <see cref = "Duration" />
+    ///   Provides a <see cref="INodaFormatter{T}" /> factory for generating <see cref="Duration" />
     ///   formatters base on the format string.
     /// </summary>
     internal static class DurationFormatter
@@ -38,9 +38,9 @@ namespace NodaTime.Format
         /// <summary>
         ///   Gets the formatter for the given format string.
         /// </summary>
-        /// <param name = "format">The format string.</param>
-        /// <returns>The <see cref = "INodaFormatter{T}" /> corresponding to the format string.</returns>
-        /// <exception cref = "FormatException">format is invalid or not supported.</exception>
+        /// <param name="format">The format string.</param>
+        /// <returns>The <see cref="INodaFormatter{T}" /> corresponding to the format string.</returns>
+        /// <exception cref="FormatException">format is invalid or not supported.</exception>
         internal static INodaFormatter<Duration> GetFormatter(string format)
         {
             if (string.IsNullOrEmpty(format) || format == "G" || format == "g")
@@ -59,7 +59,7 @@ namespace NodaTime.Format
         }
 
         /// <summary>
-        ///   Provides an implementation of <see cref = "INodaFormatter{T}" /> that formats <see cref = "Offset" />
+        ///   Provides an implementation of <see cref="INodaFormatter{T}" /> that formats <see cref="Offset" />
         ///   objects in the general format.
         /// </summary>
         private class DurationGeneralFormatter : AbstractNodaFormatter<Duration>
@@ -71,7 +71,7 @@ namespace NodaTime.Format
             /// <summary>
             ///   Overridden in subclasses to provides the actual formatting implementation.
             /// </summary>
-            /// <param name = "value">The value to format. This can be <c>null</c> if T is a reference type.</param>
+            /// <param name="value">The value to format. This can be <c>null</c> if T is a reference type.</param>
             /// <returns>The formatted string.</returns>
             public override string Format(Duration value)
             {
@@ -118,7 +118,7 @@ namespace NodaTime.Format
         }
 
         /// <summary>
-        ///   Provides an implementation of <see cref = "INodaFormatter{T}" /> that formats <see cref = "Offset" />
+        ///   Provides an implementation of <see cref="INodaFormatter{T}" /> that formats <see cref="Offset" />
         ///   objects in the general format.
         /// </summary>
         private class DurationLongFormatter : AbstractNodaFormatter<Duration>
@@ -131,7 +131,7 @@ namespace NodaTime.Format
             /// <summary>
             ///   Overridden in subclasses to provides the actual formatting implementation.
             /// </summary>
-            /// <param name = "value">The value to format. This can be <c>null</c> if T is a reference type.</param>
+            /// <param name="value">The value to format. This can be <c>null</c> if T is a reference type.</param>
             /// <returns>The formatted string.</returns>
             public override string Format(Duration value)
             {
@@ -161,7 +161,7 @@ namespace NodaTime.Format
         }
 
         /// <summary>
-        ///   Provides an implementation of <see cref = "INodaFormatter{T}" /> that formats <see cref = "Offset" />
+        ///   Provides an implementation of <see cref="INodaFormatter{T}" /> that formats <see cref="Offset" />
         ///   objects in the general format.
         /// </summary>
         private class DurationShortFormatter : AbstractNodaFormatter<Duration>
@@ -174,7 +174,7 @@ namespace NodaTime.Format
             /// <summary>
             ///   Overridden in subclasses to provides the actual formatting implementation.
             /// </summary>
-            /// <param name = "value">The value to format. This can be <c>null</c> if T is a reference type.</param>
+            /// <param name="value">The value to format. This can be <c>null</c> if T is a reference type.</param>
             /// <returns>The formatted string.</returns>
             public override string Format(Duration value)
             {

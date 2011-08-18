@@ -21,7 +21,7 @@ using NodaTime.ZoneInfoCompiler;
 namespace ZoneInfoCompilerW
 {
     /// <summary>
-    ///   Provides the container object for log messages added to a <see cref = "ListBox" />.
+    ///   Provides the container object for log messages added to a <see cref="ListBox" />.
     /// </summary>
     /// <remarks>
     ///   This type is immutable and thread-safe.
@@ -29,10 +29,10 @@ namespace ZoneInfoCompilerW
     public class ListBoxLogItem
     {
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ListBoxLogItem" /> class.
+        ///   Initializes a new instance of the <see cref="ListBoxLogItem" /> class.
         /// </summary>
-        /// <param name = "type">The log message type.</param>
-        /// <param name = "message">The log message.</param>
+        /// <param name="type">The log message type.</param>
+        /// <param name="message">The log message.</param>
         public ListBoxLogItem(LogBase.LogType type, string message)
         {
             Type = type;
@@ -53,10 +53,10 @@ namespace ZoneInfoCompilerW
         public LogBase.LogType Type { get; private set; }
 
         /// <summary>
-        ///   Returns a <see cref = "T:System.String" /> that represents the current <see cref = "T:System.Object" />.
+        ///   Returns a <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "T:System.String" /> that represents the current <see cref = "T:System.Object" />.
+        ///   A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override string ToString()

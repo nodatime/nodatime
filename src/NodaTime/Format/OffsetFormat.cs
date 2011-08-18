@@ -22,17 +22,17 @@ using NodaTime.Globalization;
 namespace NodaTime.Format
 {
     /// <summary>
-    ///   Supports the formatting of <see cref = "Offset" /> objects.
+    ///   Supports the formatting of <see cref="Offset" /> objects.
     /// </summary>
     internal static class OffsetFormat
     {
         /// <summary>
-        ///   Formats the given <see cref = "Offset" /> value using the given format.
+        ///   Formats the given <see cref="Offset" /> value using the given format.
         /// </summary>
-        /// <param name = "value">The value to format.</param>
-        /// <param name = "format">The format string. If <c>null</c> or empty defaults to "g".</param>
-        /// <param name = "formatProvider">The <see cref = "NodaFormatInfo" /> to use. Must not be null.</param>
-        /// <exception cref = "FormatException">if the value cannot be formatted.</exception>
+        /// <param name="value">The value to format.</param>
+        /// <param name="format">The format string. If <c>null</c> or empty defaults to "g".</param>
+        /// <param name="formatProvider">The <see cref="NodaFormatInfo" /> to use. Must not be null.</param>
+        /// <exception cref="FormatException">if the value cannot be formatted.</exception>
         /// <returns>The value formatted as a string.</returns>
         internal static string Format(Offset value, string format, NodaFormatInfo formatProvider)
         {

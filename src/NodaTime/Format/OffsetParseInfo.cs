@@ -21,7 +21,7 @@ using System.Diagnostics;
 namespace NodaTime.Format
 {
     /// <summary>
-    ///   Provides a container for the interim parsed pieces of an <see cref = "Offset" /> value.
+    ///   Provides a container for the interim parsed pieces of an <see cref="Offset" /> value.
     /// </summary>
     [DebuggerStepThrough]
     internal class OffsetParseInfo : ParseInfo, ISignedValue
@@ -52,20 +52,20 @@ namespace NodaTime.Format
         internal int? Seconds;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "OffsetParseInfo" /> class.
+        ///   Initializes a new instance of the <see cref="OffsetParseInfo" /> class.
         /// </summary>
-        /// <param name = "formatInfo">The format info.</param>
-        /// <param name = "parseStyles">The parse styles.</param>
+        /// <param name="formatInfo">The format info.</param>
+        /// <param name="parseStyles">The parse styles.</param>
         internal OffsetParseInfo(IFormatProvider formatInfo, DateTimeParseStyles parseStyles)
             : base(formatInfo, parseStyles)
         {
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "OffsetParseInfo" /> class.
+        ///   Initializes a new instance of the <see cref="OffsetParseInfo" /> class.
         /// </summary>
-        /// <param name = "value">The value.</param>
-        /// <param name = "formatInfo">The format info.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="formatInfo">The format info.</param>
         internal OffsetParseInfo(Offset value, IFormatProvider formatInfo)
             : base(formatInfo, DateTimeParseStyles.None)
         {

@@ -25,8 +25,8 @@ using NodaTime.Properties;
 namespace NodaTime.Globalization
 {
     /// <summary>
-    ///   Provides wrapper around a <see cref = "CultureInfo" /> that supports NodaTime formatting information. This allows
-    ///   for the <see cref = "NodaFormatInfo" /> data to be set into the <see cref = "Thread.CurrentCulture" />
+    ///   Provides wrapper around a <see cref="CultureInfo" /> that supports NodaTime formatting information. This allows
+    ///   for the <see cref="NodaFormatInfo" /> data to be set into the <see cref="Thread.CurrentCulture" />
     ///   so it does not have to be passed around. If the underlying culture info is read only then this is also
     ///   read only. To change it you need to clone it first.
     /// </summary>
@@ -36,42 +36,42 @@ namespace NodaTime.Globalization
         private NodaFormatInfo formatInfo;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "NodaCultureInfo" /> class.
+        ///   Initializes a new instance of the <see cref="NodaCultureInfo" /> class.
         /// </summary>
-        /// <param name = "name">The name of the base culture.</param>
+        /// <param name="name">The name of the base culture.</param>
         public NodaCultureInfo(string name)
             : base(name)
         {
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "NodaCultureInfo" /> class.
+        ///   Initializes a new instance of the <see cref="NodaCultureInfo" /> class.
         /// </summary>
-        /// <param name = "name">The name of the base culture.</param>
-        /// <param name = "useUserOverride">A Boolean that denotes whether to use the user-selected culture settings (true) or the default culture settings (false).</param>
+        /// <param name="name">The name of the base culture.</param>
+        /// <param name="useUserOverride">A Boolean that denotes whether to use the user-selected culture settings (true) or the default culture settings (false).</param>
         public NodaCultureInfo(string name, bool useUserOverride)
             : base(name, useUserOverride)
         {
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "NodaCultureInfo" /> class.
+        ///   Initializes a new instance of the <see cref="NodaCultureInfo" /> class.
         /// </summary>
-        /// <param name = "culture">A predefined <see cref = "T:System.Globalization.CultureInfo" /> identifier, <see cref = "P:System.Globalization.CultureInfo.LCID" /> property of an existing <see cref = "T:System.Globalization.CultureInfo" /> object, or Windows-only culture identifier.</param>
+        /// <param name="culture">A predefined <see cref="T:System.Globalization.CultureInfo" /> identifier, <see cref="P:System.Globalization.CultureInfo.LCID" /> property of an existing <see cref="T:System.Globalization.CultureInfo" /> object, or Windows-only culture identifier.</param>
         public NodaCultureInfo(int culture)
             : base(culture)
         {
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "NodaCultureInfo" /> class.
+        ///   Initializes a new instance of the <see cref="NodaCultureInfo" /> class.
         /// </summary>
-        /// <param name = "culture">A predefined <see cref = "T:System.Globalization.CultureInfo" /> identifier, <see cref = "P:System.Globalization.CultureInfo.LCID" /> property of an existing <see cref = "T:System.Globalization.CultureInfo" /> object, or Windows-only culture identifier.</param>
-        /// <param name = "useUserOverride">A Boolean that denotes whether to use the user-selected culture settings (true) or the default culture settings (false).</param>
-        /// <exception cref = "T:System.ArgumentOutOfRangeException">
+        /// <param name="culture">A predefined <see cref="T:System.Globalization.CultureInfo" /> identifier, <see cref="P:System.Globalization.CultureInfo.LCID" /> property of an existing <see cref="T:System.Globalization.CultureInfo" /> object, or Windows-only culture identifier.</param>
+        /// <param name="useUserOverride">A Boolean that denotes whether to use the user-selected culture settings (true) or the default culture settings (false).</param>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">
         ///   <paramref name = "culture" /> is less than zero.
         /// </exception>
-        /// <exception cref = "T:System.ArgumentException">
+        /// <exception cref="T:System.ArgumentException">
         ///   <paramref name = "culture" /> is not a valid culture identifier.
         ///   -or-
         ///   In .NET Compact Framework applications, <paramref name = "culture" /> is not supported by the operating system of the device.
@@ -101,7 +101,7 @@ namespace NodaTime.Globalization
         ///   Gets or sets the noda format info of this object.
         /// </summary>
         /// <value>
-        ///   The <see cref = "NodaFormatInfo" /> value. This will never be <c>null</c>.
+        ///   The <see cref="NodaFormatInfo" /> value. This will never be <c>null</c>.
         /// </value>
         public NodaFormatInfo NodaFormatInfo
         {
@@ -124,13 +124,13 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets the <see cref = "T:System.Globalization.CultureInfo" /> that represents the parent culture of the current
-        ///   <see cref = "T:System.Globalization.CultureInfo" />.
+        ///   Gets the <see cref="T:System.Globalization.CultureInfo" /> that represents the parent culture of the current
+        ///   <see cref="T:System.Globalization.CultureInfo" />.
         /// </summary>
         /// <value></value>
         /// <returns>
-        ///   The <see cref = "T:System.Globalization.CultureInfo" /> that represents the parent culture of the current
-        ///   <see cref = "T:System.Globalization.CultureInfo" />.
+        ///   The <see cref="T:System.Globalization.CultureInfo" /> that represents the parent culture of the current
+        ///   <see cref="T:System.Globalization.CultureInfo" />.
         /// </returns>
         public new NodaCultureInfo Parent
         {
@@ -147,10 +147,10 @@ namespace NodaTime.Globalization
 
         #region ICloneable Members
         /// <summary>
-        ///   Creates a copy of the current <see cref = "T:System.Globalization.CultureInfo" />.
+        ///   Creates a copy of the current <see cref="T:System.Globalization.CultureInfo" />.
         /// </summary>
         /// <returns>
-        ///   A copy of the current <see cref = "T:System.Globalization.CultureInfo" />.
+        ///   A copy of the current <see cref="T:System.Globalization.CultureInfo" />.
         /// </returns>
         public override object Clone()
         {
@@ -167,11 +167,11 @@ namespace NodaTime.Globalization
         /// <summary>
         ///   Gets an object that defines how to format the specified type.
         /// </summary>
-        /// <param name = "formatType">The <see cref = "T:System.Type" /> for which to get a formatting object. This method only supports the <see cref = "T:System.Globalization.NumberFormatInfo" /> and <see cref = "T:System.Globalization.DateTimeFormatInfo" /> types.</param>
+        /// <param name="formatType">The <see cref="T:System.Type" /> for which to get a formatting object. This method only supports the <see cref="T:System.Globalization.NumberFormatInfo" /> and <see cref="T:System.Globalization.DateTimeFormatInfo" /> types.</param>
         /// <returns>
-        ///   The value of the <see cref = "P:System.Globalization.CultureInfo.NumberFormat" /> property, which is a <see cref = "T:System.Globalization.NumberFormatInfo" /> containing the default number format information for the current <see cref = "T:System.Globalization.CultureInfo" />, if <paramref name = "formatType" /> is the <see cref = "T:System.Type" /> object for the <see cref = "T:System.Globalization.NumberFormatInfo" /> class.
+        ///   The value of the <see cref="P:System.Globalization.CultureInfo.NumberFormat" /> property, which is a <see cref="T:System.Globalization.NumberFormatInfo" /> containing the default number format information for the current <see cref="T:System.Globalization.CultureInfo" />, if <paramref name = "formatType" /> is the <see cref="T:System.Type" /> object for the <see cref="T:System.Globalization.NumberFormatInfo" /> class.
         ///   -or-
-        ///   The value of the <see cref = "P:System.Globalization.CultureInfo.DateTimeFormat" /> property, which is a <see cref = "T:System.Globalization.DateTimeFormatInfo" /> containing the default date and time format information for the current <see cref = "T:System.Globalization.CultureInfo" />, if <paramref name = "formatType" /> is the <see cref = "T:System.Type" /> object for the <see cref = "T:System.Globalization.DateTimeFormatInfo" /> class.
+        ///   The value of the <see cref="P:System.Globalization.CultureInfo.DateTimeFormat" /> property, which is a <see cref="T:System.Globalization.DateTimeFormatInfo" /> containing the default date and time format information for the current <see cref="T:System.Globalization.CultureInfo" />, if <paramref name = "formatType" /> is the <see cref="T:System.Type" /> object for the <see cref="T:System.Globalization.DateTimeFormatInfo" /> class.
         ///   -or-
         ///   null, if <paramref name = "formatType" /> is any other object.
         /// </returns>
@@ -188,7 +188,7 @@ namespace NodaTime.Globalization
         /// <summary>
         ///   Gets the culture info.
         /// </summary>
-        /// <param name = "culture">The culture.</param>
+        /// <param name="culture">The culture.</param>
         /// <returns></returns>
         public new static NodaCultureInfo GetCultureInfo(int culture)
         {
@@ -198,7 +198,7 @@ namespace NodaTime.Globalization
         /// <summary>
         ///   Gets the culture info.
         /// </summary>
-        /// <param name = "name">The name.</param>
+        /// <param name="name">The name.</param>
         /// <returns></returns>
         public new static NodaCultureInfo GetCultureInfo(string name)
         {
@@ -207,10 +207,10 @@ namespace NodaTime.Globalization
 
         #region object overrides
         /// <summary>
-        ///   Returns a <see cref = "System.String" /> that represents this instance.
+        ///   Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "System.String" /> that represents this instance.
+        ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {

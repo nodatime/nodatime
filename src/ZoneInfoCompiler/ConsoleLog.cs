@@ -25,7 +25,7 @@ namespace NodaTime.ZoneInfoCompiler
 {
     /// <summary>
     ///   An implementation of ILog that sends its output to the Console. If the debug version of the
-    ///   system is run then the output is written using the <see cref = "System.Diagnostics.Debug" />
+    ///   system is run then the output is written using the <see cref="System.Diagnostics.Debug" />
     ///   class so the output will show up in the IDE.
     /// </summary>
     internal class ConsoleLog : LogBase
@@ -47,8 +47,8 @@ namespace NodaTime.ZoneInfoCompiler
         ///   output. The destination can be different based on the type and different
         ///   loggers may not send all messages to the destination.
         /// </summary>
-        /// <param name = "type">The type of log message.</param>
-        /// <param name = "message">The message to log.</param>
+        /// <param name="type">The type of log message.</param>
+        /// <param name="message">The message to log.</param>
         protected override void LogMessage(LogType type, string message)
         {
             switch (type)
@@ -70,7 +70,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Writes the specified message to the console or the debug output.
         /// </summary>
-        /// <param name = "message">The message to write.</param>
+        /// <param name="message">The message to write.</param>
         private static void Write(string message)
         {
 #if DEBUG

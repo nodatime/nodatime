@@ -37,7 +37,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DtzIoHelper" /> class.
+        ///   Initializes a new instance of the <see cref="DtzIoHelper" /> class.
         /// </summary>
         internal DtzIoHelper(string name, Func<Stream, DateTimeZoneWriter> createWriter, Func<Stream, DateTimeZoneReader> createReader)
         {

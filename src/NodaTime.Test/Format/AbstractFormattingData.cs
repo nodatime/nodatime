@@ -35,13 +35,13 @@ namespace NodaTime.Test.Format
     ///   may be empty or null to test error conditions). Format tests will take the value and format it and validate
     ///   it against the string value, parse tests will do the opposite.
     /// </remarks>
-    /// <typeparam name = "T">The type being tested.</typeparam>
+    /// <typeparam name="T">The type being tested.</typeparam>
     public abstract class AbstractFormattingData<T> : ITestCaseData
     {
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "AbstractFormattingData&lt;T&gt;" /> class.
+        ///   Initializes a new instance of the <see cref="AbstractFormattingData&lt;T&gt;" /> class.
         /// </summary>
-        /// <param name = "value">The value.</param>
+        /// <param name="value">The value.</param>
         protected AbstractFormattingData(T value)
         {
             V = value;
@@ -92,7 +92,7 @@ namespace NodaTime.Test.Format
         ///   Gets or sets the culture info to use when formatting or parsing.
         /// </summary>
         /// <value>
-        ///   The <see cref = "CultureInfo" /> to use.
+        ///   The <see cref="CultureInfo" /> to use.
         /// </value>
         public CultureInfo C { get; set; }
 
@@ -117,7 +117,7 @@ namespace NodaTime.Test.Format
         public string Message { get; set; }
 
         /// <summary>
-        ///   Gets or sets the name of the argument. If the expected failure is <see cref = "ParseFailureKind.ArgumentNull" />
+        ///   Gets or sets the name of the argument. If the expected failure is <see cref="ParseFailureKind.ArgumentNull" />
         ///   then this is the name of the null argument, otherwise this is ignored.
         /// </summary>
         /// <value>
@@ -253,7 +253,7 @@ namespace NodaTime.Test.Format
         public string IgnoreReason { get; set; }
 
         /// <summary>
-        ///   Gets a value indicating whether this <see cref = "T:NUnit.Framework.ITestCaseData" /> is ignored.
+        ///   Gets a value indicating whether this <see cref="T:NUnit.Framework.ITestCaseData" /> is ignored.
         /// </summary>
         /// <value>
         ///   <c>true</c> if ignored; otherwise, <c>false</c>.
@@ -272,7 +272,7 @@ namespace NodaTime.Test.Format
         ///   labels so it doesn't have to be beautiful. Must handle <c>null</c> if the type is a reference
         ///   type. This should not throw an exception.
         /// </summary>
-        /// <param name = "value">The value to format.</param>
+        /// <param name="value">The value to format.</param>
         /// <returns>The string representation.</returns>
         protected abstract string ValueLabel(T value);
     }

@@ -34,7 +34,7 @@ namespace ZoneInfoCompilerW
         private readonly WindowsMapViewModel windowsMapModel = new WindowsMapViewModel();
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "MainWindow" /> class.
+        ///   Initializes a new instance of the <see cref="MainWindow" /> class.
         /// </summary>
         public MainWindow()
         {
@@ -45,11 +45,11 @@ namespace ZoneInfoCompilerW
         }
 
         /// <summary>
-        ///   Invoked by the <see cref = "BackgroundWorker" /> to perform the background work.
+        ///   Invoked by the <see cref="BackgroundWorker" /> to perform the background work.
         ///   This compiles the time zone data base resources.
         /// </summary>
-        /// <param name = "sender">The source of the event.</param>
-        /// <param name = "args">The event arguments.</param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="args">The event arguments.</param>
         private void TzdbWorkerDoWork(object sender, DoWorkEventArgs args)
         {
             var options = new TzdbCompilerOptions();
@@ -62,11 +62,11 @@ namespace ZoneInfoCompilerW
         }
 
         /// <summary>
-        ///   Invoked by the <see cref = "BackgroundWorker" /> when the background work
+        ///   Invoked by the <see cref="BackgroundWorker" /> when the background work
         ///   is done.
         /// </summary>
-        /// <param name = "sender">The source of the event.</param>
-        /// <param name = "e">The event arguments.</param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void TzdbWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             TzdbConvert.InvokeIfRequired(() => TzdbConvert.IsEnabled = true);
@@ -75,8 +75,8 @@ namespace ZoneInfoCompilerW
         /// <summary>
         ///   Handles the compile the TZDB button. Starts the compiler in the background.
         /// </summary>
-        /// <param name = "sender">The source of the event.</param>
-        /// <param name = "e">The event arguments.</param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void Tzdb_Convert_Click(object sender, RoutedEventArgs e)
         {
             TzdbConvert.IsEnabled = false;
@@ -90,8 +90,8 @@ namespace ZoneInfoCompilerW
         ///   Handles the main window closing event. We save certain information for
         ///   use the next time the application is run.
         /// </summary>
-        /// <param name = "sender">The source of the event.</param>
-        /// <param name = "e">The event arguments.</param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             Settings.Default.TzdbSourceDirectoryName = tzdbModel.SourceDirectoryName;
@@ -105,11 +105,11 @@ namespace ZoneInfoCompilerW
         }
 
         /// <summary>
-        ///   Invoked by the <see cref = "BackgroundWorker" /> to perform the background work.
+        ///   Invoked by the <see cref="BackgroundWorker" /> to perform the background work.
         ///   This compiles the Windows mapping file resource.
         /// </summary>
-        /// <param name = "sender">The source of the event.</param>
-        /// <param name = "args">The event arguments.</param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="args">The event arguments.</param>
         private void WinmapWorkerDoWork(object sender, DoWorkEventArgs args)
         {
             // var worker = sender as BackgroundWorker;
@@ -122,11 +122,11 @@ namespace ZoneInfoCompilerW
         }
 
         /// <summary>
-        ///   Invoked by the <see cref = "BackgroundWorker" /> when the background work
+        ///   Invoked by the <see cref="BackgroundWorker" /> when the background work
         ///   is done.
         /// </summary>
-        /// <param name = "sender">The source of the event.</param>
-        /// <param name = "e">The event arguments.</param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void WinmapWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             WinmapConvert.InvokeIfRequired(() => WinmapConvert.IsEnabled = true);
@@ -135,8 +135,8 @@ namespace ZoneInfoCompilerW
         /// <summary>
         ///   Handles the compile the Windows mapping file button. Starts the compiler in the background.
         /// </summary>
-        /// <param name = "sender">The source of the event.</param>
-        /// <param name = "e">The event arguments.</param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void Winmap_Convert_Click(object sender, RoutedEventArgs e)
         {
             WinmapConvert.IsEnabled = false;

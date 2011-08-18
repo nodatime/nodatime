@@ -57,7 +57,7 @@ namespace NodaTime
         /// <summary>
         ///   Gets the UTC (Coordinated Universal Time) time zone.
         /// </summary>
-        /// <value>The UTC <see cref = "T:NodaTime.DateTimeZone" />.</value>
+        /// <value>The UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
         public static DateTimeZone Utc { get { return UtcZone; } }
 
         /// <summary>
@@ -70,15 +70,15 @@ namespace NodaTime
         ///     used otherwise UTC will be used.
         ///   </para>
         /// </remarks>
-        /// <value>The system default <see cref = "T:NodaTime.DateTimeZone" /> this will never be <c>null</c>.</value>
+        /// <value>The system default <see cref="T:NodaTime.DateTimeZone" /> this will never be <c>null</c>.</value>
         public static DateTimeZone SystemDefault { get { return cache.SystemDefault; } }
 
         /// <summary>
         ///   Returns the time zone with the given id.
         /// TODO: Consider whether this should be ForID (as ID is a two-letter abbreviation).
         /// </summary>
-        /// <param name = "id">The time zone id to find.</param>
-        /// <returns>The <see cref = "DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
+        /// <param name="id">The time zone id to find.</param>
+        /// <returns>The <see cref="DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
         public static DateTimeZone ForId(string id)
         {
             return cache.ForId(id);
@@ -88,7 +88,7 @@ namespace NodaTime
         ///   Gets the complete list of valid time zone ids provided by all of the registered
         ///   providers. This list will be sorted in lexigraphical order by the id name.
         /// </summary>
-        /// <value>The <see cref = "IEnumerable{T}" /> of string ids.</value>
+        /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
         public static IEnumerable<string> Ids { get { return cache.Ids; } }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace NodaTime
         ///   allows for adding new or replacing existing time zones without updating the system. If
         ///   the provider is already on the list nothing changes.
         /// </remarks>
-        /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to add.</param>
+        /// <param name="provider">The <see cref="IDateTimeZoneProvider" /> to add.</param>
         public static void AddProvider(IDateTimeZoneProvider provider)
         {
             cache.AddProvider(provider);
@@ -112,7 +112,7 @@ namespace NodaTime
         /// <remarks>
         ///   If the provider is not on the list nothing changes.
         /// </remarks>
-        /// <param name = "provider">The <see cref = "IDateTimeZoneProvider" /> to remove.</param>
+        /// <param name="provider">The <see cref="IDateTimeZoneProvider" /> to remove.</param>
         /// <returns><c>true</c> if the provider was removed.</returns>
         public static bool RemoveProvider(IDateTimeZoneProvider provider)
         {
@@ -132,17 +132,17 @@ namespace NodaTime
         ///     When this method is called all existing providers are removed from the list. Then the UTC
         ///     provideer will be added and if the <paramref name = "utcOnlyFlag" /> is <c>false</c> then default
         ///     provider. This means that any providers added by user code will be removed. The
-        ///     <see cref = "P:NodaTime.DateTimeZone.Current" /> setting will also be lost.
+        ///     <see cref="P:NodaTime.DateTimeZone.Current" /> setting will also be lost.
         ///   </para>
         /// </remarks>
-        /// <param name = "utcOnlyFlag">if set to <c>true</c> then only the UTC provider will be available.</param>
+        /// <param name="utcOnlyFlag">if set to <c>true</c> then only the UTC provider will be available.</param>
         internal static void SetUtcOnly(bool utcOnlyFlag)
         {
             cache = new TimeZoneCache(utcOnlyFlag);
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "T:NodaTime.DateTimeZone" /> class.
+        ///   Initializes a new instance of the <see cref="T:NodaTime.DateTimeZone" /> class.
         /// </summary>
         /// <param name="id">The unique id of this time zone.</param>
         /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
@@ -199,7 +199,7 @@ namespace NodaTime
         ///   Returns the offset from UTC, where a positive duration indicates that local time is
         ///   later than UTC. In other words, local time = UTC + offset.
         /// </summary>
-        /// <param name = "instant">The instant for which to calculate the offset.</param>
+        /// <param name="instant">The instant for which to calculate the offset.</param>
         /// <returns>
         ///   The offset from UTC at the specified instant.
         /// </returns>
@@ -215,8 +215,8 @@ namespace NodaTime
         /// <summary>
         ///   Gets the zone interval for the given instant. This will never return null.
         /// </summary>
-        /// <param name = "instant">The <see cref = "T:NodaTime.Instant" /> to query.</param>
-        /// <returns>The defined <see cref = "T:NodaTime.TimeZones.ZoneInterval" />.</returns>
+        /// <param name="instant">The <see cref="T:NodaTime.Instant" /> to query.</param>
+        /// <returns>The defined <see cref="T:NodaTime.TimeZones.ZoneInterval" />.</returns>
         public abstract ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace NodaTime
         /// <summary>
         /// Writes the time zone to the specified writer. Used within ZoneInfoCompiler.
         /// </summary>
-        /// <param name = "writer">The writer to write to.</param>
+        /// <param name="writer">The writer to write to.</param>
         internal abstract void Write(DateTimeZoneWriter writer);
         #endregion
 
@@ -497,10 +497,10 @@ namespace NodaTime
 
         #region Object overrides
         /// <summary>
-        ///   Returns a <see cref = "T:System.String" /> that represents the current <see cref = "T:System.Object" />.
+        ///   Returns a <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "T:System.String" /> that represents the current <see cref = "T:System.Object" />.
+        ///   A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override string ToString()

@@ -56,9 +56,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public static readonly string[] Months = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TzdbZoneInfoParser" /> class.
+        ///   Initializes a new instance of the <see cref="TzdbZoneInfoParser" /> class.
         /// </summary>
-        /// <param name = "log">The log to use for logging messages.</param>
+        /// <param name="log">The log to use for logging messages.</param>
         internal TzdbZoneInfoParser(ILog log)
         {
             Log = log;
@@ -73,8 +73,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Logs the given error message and then throws a ParseException to return to the top level.
         /// </summary>
-        /// <param name = "format">The message format.</param>
-        /// <param name = "arguments">The optional arguments for the message.</param>
+        /// <param name="format">The message format.</param>
+        /// <param name="arguments">The optional arguments for the message.</param>
         private void Error(string format, params object[] arguments)
         {
             Log.Error(format, arguments);
@@ -84,9 +84,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Nexts the offset.
         /// </summary>
-        /// <param name = "tokens">The tokens.</param>
-        /// <param name = "name">The name.</param>
-        /// <param name = "defaultValue">The default value.</param>
+        /// <param name="tokens">The tokens.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
         private static int NextInteger(Tokens tokens, string name, int defaultValue)
         {
@@ -102,8 +102,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Nexts the month.
         /// </summary>
-        /// <param name = "tokens">The tokens.</param>
-        /// <param name = "name">The name.</param>
+        /// <param name="tokens">The tokens.</param>
+        /// <param name="name">The name.</param>
         /// <returns></returns>
         private int NextMonth(Tokens tokens, string name)
         {
@@ -115,9 +115,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Nexts the month.
         /// </summary>
-        /// <param name = "tokens">The tokens.</param>
-        /// <param name = "name">The name.</param>
-        /// <param name = "defaultValue">The default value.</param>
+        /// <param name="tokens">The tokens.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
         private static int NextMonth(Tokens tokens, string name, int defaultValue)
         {
@@ -137,8 +137,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Nexts the offset.
         /// </summary>
-        /// <param name = "tokens">The tokens.</param>
-        /// <param name = "name">The name.</param>
+        /// <param name="tokens">The tokens.</param>
+        /// <param name="name">The name.</param>
         /// <returns></returns>
         private Offset NextOffset(Tokens tokens, string name)
         {
@@ -148,8 +148,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Nexts the optional.
         /// </summary>
-        /// <param name = "tokens">The tokens.</param>
-        /// <param name = "name">The name.</param>
+        /// <param name="tokens">The tokens.</param>
+        /// <param name="name">The name.</param>
         /// <returns></returns>
         private string NextOptional(Tokens tokens, string name)
         {
@@ -159,8 +159,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Nexts the string.
         /// </summary>
-        /// <param name = "tokens">The tokens.</param>
-        /// <param name = "name">The name.</param>
+        /// <param name="tokens">The tokens.</param>
+        /// <param name="name">The name.</param>
         /// <returns></returns>
         private string NextString(Tokens tokens, string name)
         {
@@ -174,9 +174,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Nexts the string.
         /// </summary>
-        /// <param name = "tokens">The tokens.</param>
-        /// <param name = "name">The name.</param>
-        /// <param name = "defaultValue">The default value.</param>
+        /// <param name="tokens">The tokens.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
         private static string NextString(Tokens tokens, string name, string defaultValue)
         {
@@ -191,9 +191,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Nexts the year.
         /// </summary>
-        /// <param name = "tokens">The tokens.</param>
-        /// <param name = "name">The name.</param>
-        /// <param name = "defaultValue">The default value.</param>
+        /// <param name="tokens">The tokens.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
         private static int NextYear(Tokens tokens, string name, int defaultValue)
         {
@@ -210,8 +210,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Parses the TZDB time zone info file from the given stream and merges its information
         ///   with the given database. The stream is not closed or disposed.
         /// </summary>
-        /// <param name = "input">The stream input to parse.</param>
-        /// <param name = "database">The database to fill.</param>
+        /// <param name="input">The stream input to parse.</param>
+        /// <param name="database">The database to fill.</param>
         public void Parse(Stream input, TzdbDatabase database)
         {
             Parse(new StreamReader(input, true), database);
@@ -221,8 +221,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Parses the TZDB time zone info file from the given reader and merges its information
         ///   with the given database. The reader is not closed or disposed.
         /// </summary>
-        /// <param name = "reader">The reader to read.</param>
-        /// <param name = "database">The database to fill.</param>
+        /// <param name="reader">The reader to read.</param>
+        /// <param name="database">The database to fill.</param>
         public void Parse(TextReader reader, TzdbDatabase database)
         {
             Log.LineNumber = 1;
@@ -265,7 +265,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Parses the date time of year.
         /// </summary>
-        /// <param name = "tokens">The tokens to parse.</param>
+        /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The DateTimeOfYear object.</returns>
         /// <remarks>
         ///   IN ON AT
@@ -352,7 +352,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Parses the day of week.
         /// </summary>
-        /// <param name = "text">The text.</param>
+        /// <param name="text">The text.</param>
         /// <returns></returns>
         internal static int ParseDayOfWeek(String text)
         {
@@ -393,8 +393,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///     but they must all be together and only the first line can have a name.
         ///   </para>
         /// </remarks>
-        /// <param name = "line">The line to parse.</param>
-        /// <param name = "database">The database to fill.</param>
+        /// <param name="line">The line to parse.</param>
+        /// <param name="database">The database to fill.</param>
         internal void ParseLine(string line, TzdbDatabase database)
         {
             int index = line.IndexOf("#", StringComparison.Ordinal);
@@ -443,7 +443,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Parses an alias link and returns the ZoneAlias object.
         /// </summary>
-        /// <param name = "tokens">The tokens to parse.</param>
+        /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The ZoneAlias object.</returns>
         internal ZoneAlias ParseLink(Tokens tokens)
         {
@@ -455,7 +455,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Parses the month.
         /// </summary>
-        /// <param name = "text">The text.</param>
+        /// <param name="text">The text.</param>
         /// <returns>The month number 1-12 or 0 if the month is not valid</returns>
         internal static int ParseMonth(String text)
         {
@@ -475,7 +475,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <remarks>
         ///   # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
         /// </remarks>
-        /// <param name = "tokens">The tokens to parse.</param>
+        /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The Rule object.</returns>
         internal ZoneRule ParseRule(Tokens tokens)
         {
@@ -501,8 +501,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <remarks>
         ///   # GMTOFF RULES FORMAT [ UntilYear [ UntilMonth [ UntilDay [ UntilTime [ ZoneCharacter ] ] ] ] ]
         /// </remarks>
-        /// <param name = "name">The name of the zone being parsed.</param>
-        /// <param name = "tokens">The tokens to parse.</param>
+        /// <param name="name">The name of the zone being parsed.</param>
+        /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The Zone object.</returns>
         internal Zone ParseZone(string name, Tokens tokens)
         {

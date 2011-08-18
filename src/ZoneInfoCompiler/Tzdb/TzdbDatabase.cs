@@ -28,7 +28,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private readonly SortedList<string, ZoneList> zoneLists;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TzdbDatabase" /> class.
+        ///   Initializes a new instance of the <see cref="TzdbDatabase" /> class.
         /// </summary>
         internal TzdbDatabase()
         {
@@ -69,7 +69,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Adds the given zone alias to the database.
         /// </summary>
-        /// <param name = "alias">The zone alias to add.</param>
+        /// <param name="alias">The zone alias to add.</param>
         internal void AddAlias(ZoneAlias alias)
         {
             Aliases.Add(alias.Alias, alias.Existing);
@@ -79,7 +79,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Adds the given rule to the appropriate RuleSet. If there is no existing
         ///   RuleSet, one is created and added to the database.
         /// </summary>
-        /// <param name = "rule">The rule to add.</param>
+        /// <param name="rule">The rule to add.</param>
         internal void AddRule(ZoneRule rule)
         {
             IList<ZoneRule> ruleSet;
@@ -95,7 +95,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Adds the given zone to the current zone list. If there is no zone list or the
         ///   zone is for a different named zone a new zone list is created.
         /// </summary>
-        /// <param name = "zone">The zone to add.</param>
+        /// <param name="zone">The zone to add.</param>
         internal void AddZone(Zone zone)
         {
             var name = zone.Name;

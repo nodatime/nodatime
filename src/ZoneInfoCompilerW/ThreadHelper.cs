@@ -29,8 +29,8 @@ namespace ZoneInfoCompilerW
         /// <summary>
         ///   Simple helper extension method to marshall to correct thread if its required
         /// </summary>
-        /// <param name = "control">The source control.</param>
-        /// <param name = "methodcall">The method to call.</param>
+        /// <param name="control">The source control.</param>
+        /// <param name="methodcall">The method to call.</param>
         public static void InvokeIfRequired(this DispatcherObject control, Action methodcall)
         {
             control.InvokeIfRequired(methodcall, DispatcherPriority.Background);
@@ -39,9 +39,9 @@ namespace ZoneInfoCompilerW
         /// <summary>
         ///   Simple helper extension method to marshall to correct thread if its required
         /// </summary>
-        /// <param name = "control">The source control.</param>
-        /// <param name = "methodcall">The method to call.</param>
-        /// <param name = "priorityForCall">The thread priority.</param>
+        /// <param name="control">The source control.</param>
+        /// <param name="methodcall">The method to call.</param>
+        /// <param name="priorityForCall">The thread priority.</param>
         public static void InvokeIfRequired(this DispatcherObject control, Action methodcall, DispatcherPriority priorityForCall)
         {
             //see if we need to Invoke call to Dispatcher thread

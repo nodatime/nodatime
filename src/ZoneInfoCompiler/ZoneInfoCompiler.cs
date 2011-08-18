@@ -34,7 +34,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Runs the compiler from the command line.
         /// </summary>
-        /// <param name = "arguments">The command line arguments. Each compiler defines its own.</param>
+        /// <param name="arguments">The command line arguments. Each compiler defines its own.</param>
         /// <returns>0 for success, non-0 for error.</returns>
         private static int Main(string[] arguments)
         {
@@ -71,7 +71,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Usages the specified log.
         /// </summary>
-        /// <param name = "log">The log.</param>
+        /// <param name="log">The log.</param>
         /// <returns></returns>
         private static int Usage(ILog log)
         {

@@ -53,17 +53,17 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Writes an error message to the log. The string is formatted using string.Format().
         /// </summary>
-        /// <param name = "format">The format string to log.</param>
-        /// <param name = "arguments">The arguments for the string format if any.</param>
+        /// <param name="format">The format string to log.</param>
+        /// <param name="arguments">The arguments for the string format if any.</param>
         public virtual void Error(string format, params object[] arguments)
         {
             LogMessage(LogType.Error, Format(format, arguments));
         }
 
         /// <summary>
-        ///   Gets the <see cref = "TextWriter" /> that sends its output to <see cref = "Error" />.
+        ///   Gets the <see cref="TextWriter" /> that sends its output to <see cref="Error" />.
         /// </summary>
-        /// <value>The <see cref = "TextWriter" />.</value>
+        /// <value>The <see cref="TextWriter" />.</value>
         public TextWriter ErrorWriter
         {
             get { return new LogTextWriter(Error); }
@@ -79,17 +79,17 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Writes an information message to the log. The string is formatted using string.Format().
         /// </summary>
-        /// <param name = "format">The format string to log.</param>
-        /// <param name = "arguments">The arguments for the string format if any.</param>
+        /// <param name="format">The format string to log.</param>
+        /// <param name="arguments">The arguments for the string format if any.</param>
         public virtual void Info(string format, params object[] arguments)
         {
             LogMessage(LogType.Informational, Format(format, arguments));
         }
 
         /// <summary>
-        ///   Gets the <see cref = "TextWriter" /> that sends its output to <see cref = "Info" />.
+        ///   Gets the <see cref="TextWriter" /> that sends its output to <see cref="Info" />.
         /// </summary>
-        /// <value>The <see cref = "TextWriter" />.</value>
+        /// <value>The <see cref="TextWriter" />.</value>
         public TextWriter InfoWriter
         {
             get { return new LogTextWriter(Info); }
@@ -104,17 +104,17 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Writes a warning message to the log. The string is formatted using string.Format().
         /// </summary>
-        /// <param name = "format">The format string to log.</param>
-        /// <param name = "arguments">The arguments for the string format if any.</param>
+        /// <param name="format">The format string to log.</param>
+        /// <param name="arguments">The arguments for the string format if any.</param>
         public virtual void Warn(string format, params object[] arguments)
         {
             LogMessage(LogType.Warning, Format(format, arguments));
         }
 
         /// <summary>
-        ///   Gets the <see cref = "TextWriter" /> that sends its output to <see cref = "Warn" />.
+        ///   Gets the <see cref="TextWriter" /> that sends its output to <see cref="Warn" />.
         /// </summary>
-        /// <value>The <see cref = "TextWriter" />.</value>
+        /// <value>The <see cref="TextWriter" />.</value>
         public TextWriter WarnWriter
         {
             get { return new LogTextWriter(Warn); }
@@ -124,8 +124,8 @@ namespace NodaTime.ZoneInfoCompiler
         /// <summary>
         ///   Helper method to format the specified message string with optional file location information.
         /// </summary>
-        /// <param name = "format">The format string.</param>
-        /// <param name = "arguments">The optional arguments.</param>
+        /// <param name="format">The format string.</param>
+        /// <param name="arguments">The optional arguments.</param>
         /// <returns>The formatted message string.</returns>
         private string Format(string format, object[] arguments)
         {
@@ -148,8 +148,8 @@ namespace NodaTime.ZoneInfoCompiler
         ///   destination can be different based on the message type and different loggers may not
         ///   send all messages to the destination.
         /// </summary>
-        /// <param name = "type">The type of log message.</param>
-        /// <param name = "message">The message to log.</param>
+        /// <param name="type">The type of log message.</param>
+        /// <param name="message">The message to log.</param>
         protected abstract void LogMessage(LogType type, string message);
 
         #region Nested type: LogOutputMethod
@@ -158,7 +158,7 @@ namespace NodaTime.ZoneInfoCompiler
 
         #region Nested type: LogTextWriter
         /// <summary>
-        ///   Private class to implement a <see cref = "TextWriter" /> that sends its output
+        ///   Private class to implement a <see cref="TextWriter" /> that sends its output
         ///   to the given output method.
         /// </summary>
         private class LogTextWriter : TextWriter
@@ -167,16 +167,16 @@ namespace NodaTime.ZoneInfoCompiler
             private readonly LogOutputMethod output;
 
             /// <summary>
-            ///   Initializes a new instance of the <see cref = "LogTextWriter" /> class.
+            ///   Initializes a new instance of the <see cref="LogTextWriter" /> class.
             /// </summary>
-            /// <param name = "output">The log.</param>
+            /// <param name="output">The log.</param>
             public LogTextWriter(LogOutputMethod output) : base(CultureInfo.InvariantCulture)
             {
                 this.output = output;
             }
 
             /// <summary>
-            ///   When overridden in a derived class, returns the <see cref = "T:System.Text.Encoding" /> in which the output is written.
+            ///   When overridden in a derived class, returns the <see cref="T:System.Text.Encoding" /> in which the output is written.
             /// </summary>
             /// <returns>The Encoding in which the output is written.</returns>
             public override Encoding Encoding
@@ -198,11 +198,11 @@ namespace NodaTime.ZoneInfoCompiler
             /// <summary>
             ///   Writes a character to the text stream.
             /// </summary>
-            /// <param name = "value">The character to write to the text stream.</param>
-            /// <exception cref = "T:System.ObjectDisposedException">
-            ///   The <see cref = "T:System.IO.TextWriter" /> is closed.
+            /// <param name="value">The character to write to the text stream.</param>
+            /// <exception cref="T:System.ObjectDisposedException">
+            ///   The <see cref="T:System.IO.TextWriter" /> is closed.
             /// </exception>
-            /// <exception cref = "T:System.IO.IOException">
+            /// <exception cref="T:System.IO.IOException">
             ///   An I/O error occurs.
             /// </exception>
             public override void Write(char value)

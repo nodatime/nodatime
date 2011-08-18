@@ -26,12 +26,12 @@ namespace NodaTime.Test
     public static class TestHelper
     {
         /// <summary>
-        ///   Tests the <see cref = "IComparable.CompareTo" /> method for reference objects.
+        ///   Tests the <see cref="IComparable.CompareTo" /> method for reference objects.
         /// </summary>
-        /// <typeparam name = "T">The type to test.</typeparam>
-        /// <param name = "value">The base value.</param>
-        /// <param name = "equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name = "greaterValue">The value greater than the base value..</param>
+        /// <typeparam name="T">The type to test.</typeparam>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="greaterValue">The value greater than the base value..</param>
         public static void TestCompareToClass<T>(T value, T equalValue, T greaterValue) where T : class, IComparable<T>
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
@@ -44,12 +44,12 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the <see cref = "IComparable.CompareTo" /> method for value objects.
+        ///   Tests the <see cref="IComparable.CompareTo" /> method for value objects.
         /// </summary>
-        /// <typeparam name = "T">The type to test.</typeparam>
-        /// <param name = "value">The base value.</param>
-        /// <param name = "equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name = "greaterValue">The value greater than the base value..</param>
+        /// <typeparam name="T">The type to test.</typeparam>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="greaterValue">The value greater than the base value..</param>
         public static void TestCompareToStruct<T>(T value, T equalValue, T greaterValue) where T : struct, IComparable<T>
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
@@ -61,13 +61,13 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the <see cref = "M:IEquatable.Equals" /> method for reference objects. Also tests the
+        ///   Tests the <see cref="M:IEquatable.Equals" /> method for reference objects. Also tests the
         ///   object equals method.
         /// </summary>
-        /// <typeparam name = "T">The type to test.</typeparam>
-        /// <param name = "value">The base value.</param>
-        /// <param name = "equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name = "unEqualValue">The value not equal to the base value.</param>
+        /// <typeparam name="T">The type to test.</typeparam>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="unEqualValue">The value not equal to the base value.</param>
         public static void TestEqualsClass<T>(T value, T equalValue, T unEqualValue) where T : class, IEquatable<T>
         {
             TestObjectEquals(value, equalValue, unEqualValue);
@@ -79,13 +79,13 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the <see cref = "M:IEquatable.Equals" /> method for value objects. Also tests the
+        ///   Tests the <see cref="M:IEquatable.Equals" /> method for value objects. Also tests the
         ///   object equals method.
         /// </summary>
-        /// <typeparam name = "T">The type to test.</typeparam>
-        /// <param name = "value">The base value.</param>
-        /// <param name = "equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name = "unEqualValue">The value not equal to the base value.</param>
+        /// <typeparam name="T">The type to test.</typeparam>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="unEqualValue">The value not equal to the base value.</param>
         public static void TestEqualsStruct<T>(T value, T equalValue, T unEqualValue) where T : struct, IEquatable<T>
         {
             TestObjectEquals(value, equalValue, unEqualValue);
@@ -96,15 +96,15 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the <see cref = "M:System.Object.Equals" /> method.
+        ///   Tests the <see cref="M:System.Object.Equals" /> method.
         /// </summary>
         /// <remarks>
         ///   It takes three, non-null values: a value,
         ///   a value that is equal to but not the same object, and a value that is not equal to the base value.
         /// </remarks>
-        /// <param name = "value">The base value.</param>
-        /// <param name = "equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name = "unEqualValue">The value not equal to the base value.</param>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="unEqualValue">The value not equal to the base value.</param>
         public static void TestObjectEquals(object value, object equalValue, object unEqualValue)
         {
             ValidateInput(value, equalValue, unEqualValue, "unEqualValue");
@@ -120,10 +120,10 @@ namespace NodaTime.Test
         /// <summary>
         ///   Tests the less than (^lt;) and greater than (&gt;) operators if they exist on the object.
         /// </summary>
-        /// <typeparam name = "T">The type to test.</typeparam>
-        /// <param name = "value">The base value.</param>
-        /// <param name = "equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name = "greaterValue">The value greater than the base value..</param>
+        /// <typeparam name="T">The type to test.</typeparam>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="greaterValue">The value greater than the base value..</param>
         public static void TestOperatorComparison<T>(T value, T equalValue, T greaterValue)
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
@@ -162,10 +162,10 @@ namespace NodaTime.Test
         ///   Tests the equality (==), inequality (!=), less than (^lt;), greater than (&gt;), less than or equals (&lt;=),
         ///   and freater than of equals (&gt;=) operators if they exist on the object.
         /// </summary>
-        /// <typeparam name = "T">The type to test.</typeparam>
-        /// <param name = "value">The base value.</param>
-        /// <param name = "equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name = "greaterValue">The value greater than the base value..</param>
+        /// <typeparam name="T">The type to test.</typeparam>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="greaterValue">The value greater than the base value..</param>
         public static void TestOperatorComparisonEquality<T>(T value, T equalValue, T greaterValue)
         {
             TestOperatorEquality(value, equalValue, greaterValue);
@@ -204,10 +204,10 @@ namespace NodaTime.Test
         /// <summary>
         ///   Tests the equality and inequality operators (==, !=) if they exist on the object.
         /// </summary>
-        /// <typeparam name = "T">The type to test.</typeparam>
-        /// <param name = "value">The base value.</param>
-        /// <param name = "equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name = "unEqualValue">The value not equal to the base value.</param>
+        /// <typeparam name="T">The type to test.</typeparam>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="unEqualValue">The value not equal to the base value.</param>
         public static void TestOperatorEquality<T>(T value, T equalValue, T unEqualValue)
         {
             ValidateInput(value, equalValue, unEqualValue, "unEqualValue");
@@ -288,10 +288,10 @@ namespace NodaTime.Test
         /// <summary>
         ///   Validates that the input parameters to the test methods are valid.
         /// </summary>
-        /// <param name = "value">The base value.</param>
-        /// <param name = "equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name = "unEqualValue">The value not equal to the base value.</param>
-        /// <param name = "unEqualName">GetName of the not equal value error messages..</param>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="unEqualValue">The value not equal to the base value.</param>
+        /// <param name="unEqualName">GetName of the not equal value error messages..</param>
         private static void ValidateInput(object value, object equalValue, object unEqualValue, string unEqualName)
         {
             Assert.NotNull(value, "value cannot be null in TestObjectEquals() method");

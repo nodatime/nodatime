@@ -23,7 +23,7 @@ using System.Text;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///   Provides an <see cref = "DateTimeZone" /> writer that simply writes the values
+    ///   Provides an <see cref="DateTimeZone" /> writer that simply writes the values
     ///   without any compression. Can be used as a base for implementing specific 
     ///   compression writers by overriding the methods for the types to be compressed.
     /// </summary>
@@ -41,7 +41,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Constructs a DateTimeZoneWriter.
         /// </summary>
-        /// <param name = "output">Where to send the serialized output.</param>
+        /// <param name="output">Where to send the serialized output.</param>
         internal DateTimeZoneWriter(Stream output)
         {
             Output = output;
@@ -51,7 +51,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes a boolean value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal void WriteBoolean(bool value)
         {
             WriteInt8((byte)(value ? 1 : 0));
@@ -60,7 +60,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the given non-negative integer value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal virtual void WriteCount(int value)
         {
             WriteInt32(value);
@@ -69,7 +69,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the given dictionary of string to string to the stream.
         /// </summary>
-        /// <param name = "dictionary">The <see cref = "IDictionary{TKey,TValue}" /> to write.</param>
+        /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
         internal void WriteDictionary(IDictionary<string, string> dictionary)
         {
             if (dictionary == null)
@@ -87,16 +87,16 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes an enumeration's integer value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal void WriteEnum(int value)
         {
             WriteInteger(value);
         }
 
         /// <summary>
-        ///   Writes the <see cref = "Instant" /> value to the stream.
+        ///   Writes the <see cref="Instant" /> value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal void WriteInstant(Instant value)
         {
             WriteTicks(value.Ticks);
@@ -105,16 +105,16 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the integer value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal void WriteInteger(int value)
         {
             WriteInt32(value);
         }
 
         /// <summary>
-        ///   Writes the <see cref = "LocalInstant" /> value to the stream.
+        ///   Writes the <see cref="LocalInstant" /> value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal void WriteLocalInstant(LocalInstant value)
         {
             WriteTicks(value.Ticks);
@@ -123,16 +123,16 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the integer milliseconds value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal virtual void WriteMilliseconds(int value)
         {
             WriteInt32(value);
         }
 
         /// <summary>
-        ///   Writes the <see cref = "Offset" /> value to the stream.
+        ///   Writes the <see cref="Offset" /> value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal void WriteOffset(Offset value)
         {
             WriteMilliseconds(value.Milliseconds);
@@ -141,7 +141,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the string value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal void WriteString(string value)
         {
             byte[] data = Encoding.UTF8.GetBytes(value);
@@ -153,16 +153,16 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the long ticks value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal virtual void WriteTicks(long value)
         {
             WriteInt64(value);
         }
 
         /// <summary>
-        ///   Writes the <see cref = "DateTimeZone" /> value to the stream.
+        ///   Writes the <see cref="DateTimeZone" /> value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         internal void WriteTimeZone(DateTimeZone value)
         {
             if (value == null)
@@ -198,7 +198,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the given 16 bit integer value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         protected void WriteInt16(short value)
         {
             unchecked
@@ -211,7 +211,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the given 32 bit integer value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         protected void WriteInt32(int value)
         {
             unchecked
@@ -224,7 +224,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the given 64 bit integer value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         protected void WriteInt64(long value)
         {
             unchecked
@@ -237,7 +237,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         ///   Writes the given 8 bit integer value to the stream.
         /// </summary>
-        /// <param name = "value">The value to write.</param>
+        /// <param name="value">The value to write.</param>
         protected void WriteInt8(byte value)
         {
             unchecked

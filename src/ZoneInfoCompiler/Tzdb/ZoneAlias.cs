@@ -33,10 +33,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private readonly string existing;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ZoneAlias" /> class.
+        ///   Initializes a new instance of the <see cref="ZoneAlias" /> class.
         /// </summary>
-        /// <param name = "existing">The existing zone name.</param>
-        /// <param name = "alias">The alias zone name.</param>
+        /// <param name="existing">The existing zone name.</param>
+        /// <param name="alias">The alias zone name.</param>
         internal ZoneAlias(string existing, string alias)
         {
             this.existing = existing;
@@ -65,7 +65,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <summary>
         ///   Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <param name = "other">An object to compare with this object.</param>
+        /// <param name="other">An object to compare with this object.</param>
         /// <returns>
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
@@ -81,14 +81,14 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         #endregion
 
         /// <summary>
-        ///   Determines whether the specified <see cref = "System.Object" /> is equal to this instance.
+        ///   Determines whether the specified <see cref="System.Object" /> is equal to this instance.
         /// </summary>
-        /// <param name = "obj">The <see cref = "System.Object" /> to compare with this instance.</param>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance;
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         ///   otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref = "T:System.NullReferenceException">
+        /// <exception cref="T:System.NullReferenceException">
         ///   The <paramref name = "obj" /> parameter is null.
         /// </exception>
         public override bool Equals(object obj)
@@ -112,10 +112,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Returns a <see cref = "System.String" /> that represents this instance.
+        ///   Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        ///   A <see cref = "System.String" /> that represents this instance.
+        ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {

@@ -41,9 +41,9 @@ namespace NodaTime.Format
         /// <summary>
         ///   Formats a sign character.
         /// </summary>
-        /// <param name = "value">The <see cref = "ISignedValue" /> value.</param>
-        /// <param name = "required">if set to <c>true</c> the sin will always be output, otherwise only if the value is negative.</param>
-        /// <param name = "outputBuffer">The output buffer to add the sign to.</param>
+        /// <param name="value">The <see cref="ISignedValue" /> value.</param>
+        /// <param name="required">if set to <c>true</c> the sin will always be output, otherwise only if the value is negative.</param>
+        /// <param name="outputBuffer">The output buffer to add the sign to.</param>
         internal static void FormatSign(ISignedValue value, bool required, StringBuilder outputBuffer)
         {
             if (required || value.IsNegative)
@@ -59,10 +59,10 @@ namespace NodaTime.Format
         ///   Left pads with zeros the value into a field of <paramref name = "length" /> characters. If the value
         ///   is longer than <paramref name = "length" />, the entire value is formatted.
         /// </remarks>
-        /// <param name = "value">The value to format.</param>
-        /// <param name = "length">The length to fill.</param>
-        /// <param name = "outputBuffer">The output buffer to add the digits to.</param>
-        /// <exception cref = "FormatException">if too many characters are requested. <see cref = "MaximumPaddingLength" />.</exception>
+        /// <param name="value">The value to format.</param>
+        /// <param name="length">The length to fill.</param>
+        /// <param name="outputBuffer">The output buffer to add the digits to.</param>
+        /// <exception cref="FormatException">if too many characters are requested. <see cref="MaximumPaddingLength" />.</exception>
         internal static void LeftPad(int value, int length, StringBuilder outputBuffer)
         {
             if (length > MaximumPaddingLength)
@@ -87,10 +87,10 @@ namespace NodaTime.Format
         /// <summary>
         ///   Formats the given value right padded with zeros.
         /// </summary>
-        /// <param name = "value">The value to format.</param>
-        /// <param name = "length">The length to fill.</param>
-        /// <param name = "scale">The scale of the value i.e. the number of significant digits is the range of the value.</param>
-        /// <param name = "outputBuffer">The output buffer to add the digits to.</param>
+        /// <param name="value">The value to format.</param>
+        /// <param name="length">The length to fill.</param>
+        /// <param name="scale">The scale of the value i.e. the number of significant digits is the range of the value.</param>
+        /// <param name="outputBuffer">The output buffer to add the digits to.</param>
         internal static void RightPad(int value, int length, int scale, StringBuilder outputBuffer)
         {
             if (scale < 1)
@@ -110,11 +110,11 @@ namespace NodaTime.Format
         ///   Formats the given value right padded with zeros. The rightmost zeros are truncated.  If the entire value is truncated then
         ///   the preceeding decimal separater is also removed.
         /// </summary>
-        /// <param name = "value">The value to format.</param>
-        /// <param name = "length">The length to fill.</param>
-        /// <param name = "scale">The scale of the value i.e. the number of significant digits is the range of the value.</param>
-        /// <param name = "decimalSeparator">The decimal separator for this culture.</param>
-        /// <param name = "outputBuffer">The output buffer to add the digits to.</param>
+        /// <param name="value">The value to format.</param>
+        /// <param name="length">The length to fill.</param>
+        /// <param name="scale">The scale of the value i.e. the number of significant digits is the range of the value.</param>
+        /// <param name="decimalSeparator">The decimal separator for this culture.</param>
+        /// <param name="outputBuffer">The output buffer to add the digits to.</param>
         internal static void RightPadTruncate(int value, int length, int scale, string decimalSeparator, StringBuilder outputBuffer)
         {
             if (scale < 1)
