@@ -23,9 +23,7 @@ using NodaTime.Globalization;
 
 namespace NodaTime.Test.Format
 {
-    [TestFixture]
-    [Category("Formatting")]
-    [Category("Parse")]
+    [TestFixture, Category("Formatting"), Category("Parse")]
     public class OffsetParseTest
     {
         [Test]

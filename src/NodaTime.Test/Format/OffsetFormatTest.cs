@@ -23,9 +23,7 @@ using NodaTime.Globalization;
 
 namespace NodaTime.Test.Format
 {
-    [TestFixture]
-    [Category("Formatting")]
-    [Category("Format")]
+    [TestFixture, Category("Formatting"), Category("Format")]
     public class OffsetFormatTest
     {
         [Test]
@@ -35,8 +33,7 @@ namespace NodaTime.Test.Format
             
             TestFormat(new OffsetFormattingTestSupport.OffsetData(5, 12, 34, 567) { C = FormattingTestSupport.FrFr, S = "+5:12:34,567", F = "g" });
             
-        }
-        
+        }        
 
         [Test]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]

@@ -27,52 +27,40 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class InstantTest
     {
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestParse_BadValue()
         {
             Assert.Catch<FormatException>(() => Instant.Parse("ads"));
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestParse_D()
         {
             var actual = Instant.Parse(threeMillion.Ticks.ToString("D"));
             Assert.AreEqual(threeMillion, actual);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestParse_G()
         {
             var actual = Instant.Parse("1970-01-01T00:00:00Z");
             Assert.AreEqual(Instant.UnixEpoch, actual);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestParse_N()
         {
             var actual = Instant.Parse(threeMillion.Ticks.ToString("N0"));
             Assert.AreEqual(threeMillion, actual);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestParse_N_extraSpace()
         {
             Assert.Catch<FormatException>(() => Instant.Parse(" " + threeMillion.Ticks.ToString("N0")));
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestParse_N_frFR()
         {
             var frFr = new CultureInfo("fr-FR");
@@ -80,35 +68,27 @@ namespace NodaTime.Test
             Assert.AreEqual(threeMillion, actual);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestParse_N_leadingSpace_Flaged()
         {
             var actual = Instant.Parse(" " + threeMillion.Ticks.ToString("N0"), null, DateTimeParseStyles.AllowLeadingWhite);
             Assert.AreEqual(threeMillion, actual);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestParse_N_trailingSpace_Flaged()
         {
             var actual = Instant.Parse(threeMillion.Ticks.ToString("N0") + " ", null, DateTimeParseStyles.AllowTrailingWhite);
             Assert.AreEqual(threeMillion, actual);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestParse_null()
         {
             Assert.Throws<ArgumentNullException>(() => Instant.Parse(null));
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_D()
         {
             Instant result;
@@ -116,9 +96,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.MinValue, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_FormatListEmpty()
         {
             Instant result;
@@ -126,9 +104,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.MinValue, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_G()
         {
             Instant result;
@@ -136,9 +112,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.UnixEpoch, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_G_BOT()
         {
             Instant result;
@@ -146,9 +120,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.MinValue, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_G_EOT()
         {
             Instant result;
@@ -156,9 +128,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.MaxValue, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_InvalidFormat()
         {
             Instant result;
@@ -166,9 +136,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.MinValue, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_N()
         {
             Instant result;
@@ -176,9 +144,7 @@ namespace NodaTime.Test
             Assert.AreEqual(threeMillion, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_NG()
         {
             Instant result;
@@ -186,9 +152,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.UnixEpoch, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_N_BadString()
         {
             Instant result;
@@ -196,9 +160,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.MinValue, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_N_fr()
         {
             var frFr = new CultureInfo("fr-FR");
@@ -207,36 +169,28 @@ namespace NodaTime.Test
             Assert.AreEqual(threeMillion, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_N_null()
         {
             Instant result;
             Assert.Throws<ArgumentNullException>(() => Instant.TryParseExact(null, "n", null, DateTimeParseStyles.None, out result));
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_NullFormat()
         {
             Instant result;
             Assert.Throws<ArgumentNullException>(() => Instant.TryParseExact("0", (string)null, null, DateTimeParseStyles.None, out result));
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_NullFormatList()
         {
             Instant result;
             Assert.Throws<ArgumentNullException>(() => Instant.TryParseExact("0", (string[])null, null, DateTimeParseStyles.None, out result));
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_ValidValue_WrongFormat()
         {
             Instant result;
@@ -244,9 +198,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.MinValue, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParse_BadValue()
         {
             Instant result;
@@ -254,9 +206,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.MinValue, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParse_D()
         {
             Instant result;
@@ -264,9 +214,7 @@ namespace NodaTime.Test
             Assert.AreEqual(threeMillion, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParse_G()
         {
             Instant result;
@@ -274,9 +222,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Instant.UnixEpoch, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParse_N()
         {
             Instant result;
@@ -284,9 +230,7 @@ namespace NodaTime.Test
             Assert.AreEqual(threeMillion, result);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Parse")]
+        [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParse_null()
         {
             Instant result;

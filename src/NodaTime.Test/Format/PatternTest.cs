@@ -23,10 +23,7 @@ using NodaTime.Format;
 
 namespace NodaTime.Test.Format
 {
-    [TestFixture]
-    [Category("Formatting")]
-    [Category("Format")]
-    [Category("Parse")]
+    [TestFixture, Category("Formatting"), Category("Format"), Category("Parse")]
     public class PatternTest : ParsableTest
     {
         internal override Parsable MakeParsable(string value)
