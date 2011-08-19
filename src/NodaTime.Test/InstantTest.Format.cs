@@ -25,7 +25,7 @@ namespace NodaTime.Test
     public partial class InstantTest
     {
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Format")]
         public void TestToString_InvalidFormat()
         {
@@ -33,7 +33,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Format")]
         public void TestToString_MinValue()
         {
@@ -41,7 +41,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Format")]
         public void TestToString_MaxValue()
         {
@@ -49,7 +49,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Format")]
         public void TestToString_UnixEpoch()
         {

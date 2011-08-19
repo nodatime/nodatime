@@ -21,7 +21,7 @@ using NodaTime.Format;
 namespace NodaTime.Test.Format
 {
     [TestFixture]
-    [Category("Formating")]
+    [Category("Formatting")]
     [Category("Parse")]
     public class ParseStringTest : ParsableTest
     {
