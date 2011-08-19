@@ -241,6 +241,7 @@ namespace NodaTime.Format
                 {
                     throw FormatError.FormatElementInvalid();
                 }
+                // TODO: Implement this without catching exceptions.
                 try
                 {
                     DoParse(value, format, parseInfo);

@@ -119,10 +119,11 @@ namespace NodaTime.Test
 
         #region TryParse
         [Test]
-        public void TryParse_ThrowsArgumentNull_IfValueIsNull()
+        public void TryParse_ReturnsFalse_IfValueIsNull()
         {
             Duration result;
-            Assert.That(() => Duration.TryParse(null, out result), Throws.InstanceOf<ArgumentNullException>());
+            Assert.IsFalse(Duration.TryParse(null, out result));
+            Assert.AreEqual(Duration.Zero, result);
         }
 
         [Test]

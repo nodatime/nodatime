@@ -601,12 +601,11 @@ namespace NodaTime
         /// <returns>True if value was converted successfully; otherwise, false.</returns>
         public static bool TryParse(string value, out Duration result)
         {
+            result = Zero;
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                return false;
             }
-
-            result = Zero;
 
             int len = value.Length;
             if (len >= 4 && (value[0] == 'P' || value[0] == 'p') && (value[1] == 'T' || value[1] == 't') && (value[len - 1] == 'S' || value[len - 1] == 's'))
@@ -668,6 +667,11 @@ namespace NodaTime
         /// <returns>The <see cref="Duration"/>.</returns>
         public static Duration Parse(string value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+
             Duration result;
             if (TryParse(value, out result))
             {
