@@ -23,6 +23,11 @@ namespace NodaTime.Format
     /// Provides an interface for value formatters in the Noda Time package. The formatters
     /// provided by Noda Time are all immutable and thread-safe.
     /// </summary>
+    /// <para>
+    /// Noda Time supports the common .NET model of overloaded ToString, Parse and TryParse methods,
+    /// but using this type and <see cref="INodaParser{T}"/> allows formatting patterns and 
+    /// options to be set one and then reused.
+    /// </para>
     /// <typeparam name="T">The type to format.</typeparam>
     public interface INodaFormatter<T>
     {

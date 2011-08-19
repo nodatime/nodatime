@@ -90,6 +90,7 @@
     <Compile Include="Format\FormatHelper.cs" />
     <Compile Include="Format\Builder\FormatterBuilder.cs" />
     <Compile Include="Format\INodaFormatter.cs" />
+    <Compile Include="Format\INodaParser.cs" />
     <Compile Include="Format\ISignedValue.cs" />
     <Compile Include="Format\OffsetParse.cs" />
     <Compile Include="Format\DateTimeParseStyles.cs" />
