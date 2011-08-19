@@ -28,7 +28,7 @@ namespace NodaTime.Test
     public partial class InstantTest
     {
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestParse_BadValue()
         {
@@ -36,7 +36,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestParse_D()
         {
@@ -45,7 +45,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestParse_G()
         {
@@ -54,7 +54,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestParse_N()
         {
@@ -63,7 +63,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestParse_N_extraSpace()
         {
@@ -71,7 +71,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestParse_N_frFR()
         {
@@ -81,7 +81,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestParse_N_leadingSpace_Flaged()
         {
@@ -90,7 +90,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestParse_N_trailingSpace_Flaged()
         {
@@ -99,7 +99,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestParse_null()
         {
@@ -107,7 +107,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_D()
         {
@@ -117,7 +117,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_FormatListEmpty()
         {
@@ -127,7 +127,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_G()
         {
@@ -137,7 +137,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_G_BOT()
         {
@@ -147,7 +147,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_G_EOT()
         {
@@ -157,7 +157,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_InvalidFormat()
         {
@@ -167,7 +167,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_N()
         {
@@ -177,7 +177,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_NG()
         {
@@ -187,7 +187,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_N_BadString()
         {
@@ -197,7 +197,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_N_fr()
         {
@@ -208,7 +208,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_N_null()
         {
@@ -217,7 +217,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_NullFormat()
         {
@@ -226,7 +226,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_NullFormatList()
         {
@@ -235,7 +235,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParseExact_ValidValue_WrongFormat()
         {
@@ -245,7 +245,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParse_BadValue()
         {
@@ -255,7 +255,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParse_D()
         {
@@ -265,7 +265,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParse_G()
         {
@@ -275,7 +275,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParse_N()
         {
@@ -285,7 +285,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Parse")]
         public void TestTryParse_null()
         {

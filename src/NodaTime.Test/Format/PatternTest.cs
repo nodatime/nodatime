@@ -24,7 +24,7 @@ using NodaTime.Format;
 namespace NodaTime.Test.Format
 {
     [TestFixture]
-    [Category("Formating")]
+    [Category("Formatting")]
     [Category("Format")]
     [Category("Parse")]
     public class PatternTest : ParsableTest

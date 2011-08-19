@@ -26,7 +26,7 @@ namespace NodaTime.Test
     public partial class OffsetTest
     {
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Format")]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatWithoutFormat")]
         public void TestToString_Culture(OffsetFormattingTestSupport.OffsetData data)
@@ -35,7 +35,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Format")]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
@@ -49,7 +49,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Format")]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
@@ -59,7 +59,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Category("Formating")]
+        [Category("Formatting")]
         [Category("Format")]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "FormatWithoutFormat")]
         public void TestToString_NoArg(OffsetFormattingTestSupport.OffsetData data)
