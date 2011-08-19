@@ -99,6 +99,7 @@ namespace NodaTime.Format
         {
             result = Instant.MinValue;
             var parseResult = new InstantParseInfo(formatInfo, styles);
+            // TODO: Implement TryParseExact without catching exceptions
             try
             {
                 DoParse(value, format, parseResult);
@@ -109,6 +110,10 @@ namespace NodaTime.Format
             {
                 // Do nothing
             }
+            catch (ArgumentNullException)
+            {
+                // Do nothing
+            }
             return false;
         }
 
@@ -116,6 +121,7 @@ namespace NodaTime.Format
         {
             result = Instant.MinValue;
             var parseResult = new InstantParseInfo(formatInfo, styles);
+            // TODO: Implement TryParseExact without catching exceptions
             try
             {
                 DoParseMultiple(value, formats, parseResult);
@@ -126,6 +132,11 @@ namespace NodaTime.Format
             {
                 // Do nothing
             }
+            catch (ArgumentNullException)
+            {
+                // Do nothing
+            }
+
             return false;
         }
 
