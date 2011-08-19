@@ -173,21 +173,24 @@ namespace NodaTime.Test
         public void TestTryParseExact_N_null()
         {
             Instant result;
-            Assert.Throws<ArgumentNullException>(() => Instant.TryParseExact(null, "n", null, DateTimeParseStyles.None, out result));
+            Assert.IsFalse(Instant.TryParseExact(null, "n", null, DateTimeParseStyles.None, out result));
+            Assert.AreEqual(Instant.MinValue, result);
         }
 
         [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_NullFormat()
         {
             Instant result;
-            Assert.Throws<ArgumentNullException>(() => Instant.TryParseExact("0", (string)null, null, DateTimeParseStyles.None, out result));
+            Assert.IsFalse(Instant.TryParseExact("0", (string)null, null, DateTimeParseStyles.None, out result));
+            Assert.AreEqual(Instant.MinValue, result);
         }
 
         [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_NullFormatList()
         {
             Instant result;
-            Assert.Throws<ArgumentNullException>(() => Instant.TryParseExact("0", (string[])null, null, DateTimeParseStyles.None, out result));
+            Assert.IsFalse(Instant.TryParseExact("0", (string[])null, null, DateTimeParseStyles.None, out result));
+            Assert.AreEqual(Instant.MinValue, result);
         }
 
         [Test, Category("Formatting"), Category("Parse")]
@@ -234,7 +237,16 @@ namespace NodaTime.Test
         public void TestTryParse_null()
         {
             Instant result;
-            Assert.Throws<ArgumentNullException>(() => Instant.TryParse(null, null, DateTimeParseStyles.None, out result));
+            Assert.IsFalse(Instant.TryParse(null, null, DateTimeParseStyles.None, out result));
+            Assert.AreEqual(Instant.MinValue, result);
+        }
+
+        [Test, Category("Formatting"), Category("Parse")]
+        public void TestTryParse_null_SimpleOverload()
+        {
+            Instant result;
+            Assert.IsFalse(Instant.TryParse(null, out result));
+            Assert.AreEqual(Instant.MinValue, result);
         }
     }
 }
