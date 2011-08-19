@@ -68,8 +68,9 @@ namespace NodaTime.Format
 
         internal static bool TryParseExactMultiple(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out Offset result)
         {
-            result = Offset.MinValue;
+            result = Offset.Zero;
             var parseResult = new OffsetParseInfo(formatInfo, styles);
+            // TODO: Implement TryParse without exceptions
             try
             {
                 DoParseMultiple(value, formats, parseResult);
@@ -80,12 +81,17 @@ namespace NodaTime.Format
             {
                 return false;
             }
+            catch (ArgumentNullException)
+            {
+                return false;
+            }
         }
 
         internal static bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out Offset result)
         {
-            result = Offset.MinValue;
+            result = Offset.Zero;
             var parseResult = new OffsetParseInfo(formatInfo, styles);
+            // TODO: Implement TryParse without exceptions
             try
             {
                 DoParse(value, format, parseResult);
@@ -93,6 +99,10 @@ namespace NodaTime.Format
                 return true;
             }
             catch (FormatException)
+            {
+                return false;
+            }
+            catch (ArgumentNullException)
             {
                 return false;
             }
