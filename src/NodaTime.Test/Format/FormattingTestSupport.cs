@@ -245,23 +245,10 @@ namespace NodaTime.Test.Format
                     return test(s, out value);
                 }
             };
-            try
-            {
-                bool isSuccess = data.Exception == null;
-                T result;
-                Assert.IsTrue(isSuccess == doit(format, out result));
-                if (isSuccess)
-                {
-                    Assert.AreEqual(data.PV, result);
-                }
-            }
-            catch (Exception e)
-            {
-                if (!e.GetType().Equals(data.Exception))
-                {
-                    throw;
-                }
-            }
+            bool isSuccess = data.Exception == null;
+            T result;
+            Assert.IsTrue(isSuccess == doit(format, out result));
+            Assert.AreEqual(data.PV, result);
         }
     }
 }
