@@ -24,33 +24,25 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class InstantTest
     {
-        [Test]
-        [Category("Formatting")]
-        [Category("Format")]
+        [Test, Category("Formatting"), Category("Format")]
         public void TestToString_InvalidFormat()
         {
             Assert.Throws<FormatException>(() => Instant.UnixEpoch.ToString("A"));
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Format")]
+        [Test, Category("Formatting"), Category("Format")]
         public void TestToString_MinValue()
         {
             TestToStringBase(Instant.MinValue, Instant.BeginningOfTimeLabel);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Format")]
+        [Test, Category("Formatting"), Category("Format")]
         public void TestToString_MaxValue()
         {
             TestToStringBase(Instant.MaxValue, Instant.EndOfTimeLabel);
         }
 
-        [Test]
-        [Category("Formatting")]
-        [Category("Format")]
+        [Test, Category("Formatting"), Category("Format")]
         public void TestToString_UnixEpoch()
         {
             TestToStringBase(Instant.UnixEpoch, "1970-01-01T00:00:00Z");
