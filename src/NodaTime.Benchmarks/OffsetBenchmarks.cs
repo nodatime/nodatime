@@ -44,7 +44,7 @@ namespace NodaTime.Benchmarks
         public void TryParseExact_InvalidValue()
         {
             Offset result;
-            Offset.TryParseExact("35:34", "HH:mm", InvariantFormatInfo, DateTimeParseStyles.None, out result);
+            Offset.TryParseExact("123:45", "HH:mm", InvariantFormatInfo, DateTimeParseStyles.None, out result);
         }
     }
 }
