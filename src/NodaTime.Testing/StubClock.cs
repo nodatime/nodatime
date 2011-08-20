@@ -24,6 +24,9 @@ namespace NodaTime.Testing
     {
         private Instant now;
 
+        /// <summary>
+        /// Creates a stub clock initially set to the given instant.
+        /// </summary>
         public StubClock(Instant initial)
         {
             now = initial;

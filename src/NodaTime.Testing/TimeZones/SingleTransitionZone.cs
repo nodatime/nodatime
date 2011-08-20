@@ -29,16 +29,34 @@ namespace NodaTime.Testing.TimeZones
     public class SingleTransitionZone : DateTimeZone
     {
         private readonly ZoneInterval earlyInterval;
+        /// <summary>
+        /// The ZoneInterval for the period before the transition.
+        /// </summary>
         public ZoneInterval EarlyInterval { get { return earlyInterval; } }
 
         private readonly ZoneInterval lateInterval;
+        /// <summary>
+        /// The ZoneInterval for the period after the transition.
+        /// </summary>
         public ZoneInterval LateInterval { get { return lateInterval; } }
 
+        /// <summary>
+        /// Creates a zone with a single transition between two offsets.
+        /// </summary>
+        /// <param name="transitionPoint">The transition point as an <see cref="Instant"/>.</param>
+        /// <param name="offsetBeforeHours">The offset of local time from UTC, in hours, before the transition.</param>
+        /// <param name="offsetAfterHours">The offset of local time from UTC, in hours, before the transition.</param>
         public SingleTransitionZone(Instant transitionPoint, int offsetBeforeHours, int offsetAfterHours)
             : this(transitionPoint, Offset.ForHours(offsetBeforeHours), Offset.ForHours(offsetAfterHours))
         {
         }
 
+        /// <summary>
+        /// Creates a zone with a single transition between two offsets.
+        /// </summary>
+        /// <param name="transitionPoint">The transition point as an <see cref="Instant"/>.</param>
+        /// <param name="offsetBefore">The offset of local time from UTC before the transition.</param>
+        /// <param name="offsetAfter">The offset of local time from UTC before the transition.</param>
         public SingleTransitionZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter)
             : base("Single", false, Offset.Min(offsetBefore, offsetAfter), Offset.Max(offsetBefore, offsetAfter))
         {
@@ -48,11 +66,17 @@ namespace NodaTime.Testing.TimeZones
                 offsetAfter, Offset.Zero);
         }
 
+        /// <summary>
+        /// Returns the zone interval before or after the transition, based on the instant provided.
+        /// </summary>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
             return earlyInterval.Contains(instant) ? earlyInterval : lateInterval;
         }
 
+        /// <summary>
+        /// Always throws <see cref="NotSupportedException"/> - this time zone cannot be written to a <see cref="DateTimeZoneWriter"/>.
+        /// </summary>
         internal override void Write(DateTimeZoneWriter writer)
         {
             throw new NotSupportedException();
