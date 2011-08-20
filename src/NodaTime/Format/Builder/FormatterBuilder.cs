@@ -25,13 +25,6 @@ namespace NodaTime.Format.Builder
     internal sealed class FormatterBuilder<T, TInfo> where TInfo : ParseInfo
     {
         #region Delegates
-
-        /// <summary>
-        /// Equivalent to Func{T}, but without requiring .NET 3.5. If we ever require .NET 3.5,
-        /// we can remove this.
-        /// </summary>
-        internal delegate TResult NodaFunc<TArg, TResult>(TArg input);
-
         public delegate TInfo MakeFormattingParseInfo(T value, IFormatProvider formatProvider);
 
         public delegate TInfo MakeParsingParseInfo(IFormatProvider formatProvider, bool throwImmediate, DateTimeParseStyles styles);
