@@ -102,5 +102,17 @@ namespace NodaTime.Format
             }
             throw FormatError.DoubleAssigment(patternCharacter);
         }
+
+        // TODO: Potentially get rid of AssignNewValue if everything is converted to the new style.
+        internal static bool TryAssignNewValue<T>(ref T? currentValue, T newValue, char patternCharacter) where T : struct
+        {
+            if (currentValue == null || currentValue.Value.Equals(newValue))
+            {
+                currentValue = newValue;
+                return true;
+            }
+            return false;
+        }
+
     }
 }
