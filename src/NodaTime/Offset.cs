@@ -479,7 +479,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
         /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Offset result)
@@ -490,7 +490,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the specified format provider and style.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
@@ -501,7 +501,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the specified format pattern, format provider and style.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
@@ -512,7 +512,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the specified format patterns, format provider and style.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
