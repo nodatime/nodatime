@@ -116,7 +116,7 @@ namespace NodaTime.Test.Format
         }
 
         /// <summary>
-        ///   Runs a parse test that accepts multiple format strings (which includes a lsit of one string).
+        ///   Runs a parse test that accepts multiple format strings (which includes a list of one string).
         /// </summary>
         /// <typeparam name="T">The type being tested.</typeparam>
         /// <param name="data">The test data.</param>
@@ -130,7 +130,8 @@ namespace NodaTime.Test.Format
             }
             Type oldException = data.Exception;
             string oldMessage = data.Message;
-            if (typeof(FormatError.FormatValueException).Equals(data.Exception))
+            // TODO: See if this is actually required.
+            if (data.Exception == typeof(UnparsableValueException))
             {
                 data.Exception = typeof(FormatException);
                 data.Message = Resources.Parse_NoMatchingFormat;
@@ -212,7 +213,7 @@ namespace NodaTime.Test.Format
             }
             Type oldException = data.Exception;
             string oldMessage = data.Message;
-            if (typeof(FormatError.FormatValueException).Equals(data.Exception))
+            if (data.Exception == typeof(UnparsableValueException))
             {
                 data.Exception = typeof(FormatException);
                 data.Message = Resources.Parse_NoMatchingFormat;

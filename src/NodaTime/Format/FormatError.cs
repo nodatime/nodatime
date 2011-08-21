@@ -22,11 +22,12 @@ using NodaTime.Properties;
 
 namespace NodaTime.Format
 {
+    // TODO: Remove this class (including FormatError.UnparsableValueException) when the pattern and value parsing has been separated.
     internal static class FormatError
     {
         internal static FormatException PositiveSignInvalid()
         {
-            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_PositiveSignInvalid));
+            return new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_PositiveSignInvalid));
         }
 
         internal static FormatException EscapeAtEndOfString()
@@ -46,7 +47,7 @@ namespace NodaTime.Format
 
         internal static FormatException CannotParseValue(string value, Type type, string format)
         {
-            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_CannotParseValue, value, type, format));
+            return new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_CannotParseValue, value, type, format));
         }
 
         internal static FormatException DoubleAssigment(char patternCharacter)
@@ -81,7 +82,7 @@ namespace NodaTime.Format
 
         internal static FormatException ExtraValueCharacters(string remainder)
         {
-            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_ExtraValueCharacters, remainder));
+            return new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_ExtraValueCharacters, remainder));
         }
 
         internal static FormatException PercentDoubled()
@@ -101,32 +102,32 @@ namespace NodaTime.Format
 
         internal static FormatException EscapedCharacterMismatch(char patternCharacter)
         {
-            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_EscapedCharacterMismatch, patternCharacter));
+            return new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_EscapedCharacterMismatch, patternCharacter));
         }
 
         internal static FormatException MissingDecimalSeparator()
         {
-            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_MissingDecimalSeparator));
+            return new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_MissingDecimalSeparator));
         }
 
         internal static FormatException TimeSeparatorMismatch()
         {
-            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_TimeSeparatorMismatch));
+            return new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_TimeSeparatorMismatch));
         }
 
         internal static FormatException MismatchedNumber(string pattern)
         {
-            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_MismatchedNumber, pattern));
+            return new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_MismatchedNumber, pattern));
         }
 
         internal static FormatException MismatchedSpace()
         {
-            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_MismatchedSpace));
+            return new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_MismatchedSpace));
         }
 
         internal static FormatException MismatchedCharacter(char patternCharacter)
         {
-            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_MismatchedCharacter, patternCharacter));
+            return new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_MismatchedCharacter, patternCharacter));
         }
 
         internal static FormatException UnknownStandardFormat(char patternCharacter, Type type)
@@ -156,7 +157,7 @@ namespace NodaTime.Format
 
         internal static FormatException ValueOutOfRange(object value, Type type)
         {
-            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_ValueOutOfRange, value, type));
+            return new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_ValueOutOfRange, value, type));
         }
 
         internal static FormatException MissingSign()
@@ -168,39 +169,5 @@ namespace NodaTime.Format
         {
             return new FormatException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_UnexpectedEndOfString, pattern));
         }
-
-        #region Nested type: FormatValueException
-        /// <summary>
-        /// Thrown when the value could not be parsed and the multiple pattern calls should try
-        /// the next pattern.
-        /// </summary>
-        [Serializable]
-        internal class FormatValueException : FormatException
-        {
-            public FormatValueException()
-            {
-            }
-
-            public FormatValueException(string message)
-                : base(message)
-            {
-            }
-
-            public FormatValueException(string format, params string[] args)
-                : base(string.Format(format, args))
-            {
-            }
-
-            protected FormatValueException(SerializationInfo info, StreamingContext context)
-                : base(info, context)
-            {
-            }
-
-            public override string ToString()
-            {
-                return "FormatValueException: " + Message;
-            }
-        }
-        #endregion
     }
 }

@@ -80,7 +80,7 @@ namespace NodaTime.Format
 
         internal static ParseResult<T> ForInvalidValue(string formatString, params object[] parameters)
         {
-            return ForInvalidValue(() => new FormatError.FormatValueException(string.Format(CultureInfo.CurrentCulture, formatString, parameters)));
+            return ForInvalidValue(() => new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, formatString, parameters)));
         }
 
         private static ParseResult<T> ForInvalidValue(NodaFunc<Exception> exceptionProvider)
@@ -93,8 +93,7 @@ namespace NodaTime.Format
             return new ParseResult<T>(() => new ArgumentNullException(parameter), false);
         }
 
-        internal static readonly ParseResult<T> PositiveSignInvalid =
-            ForInvalidValue(() => new FormatError.FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_PositiveSignInvalid)));
+        internal static readonly ParseResult<T> PositiveSignInvalid = ForInvalidValue(Resources.Parse_PositiveSignInvalid);
 
         internal static ParseResult<T> EscapeAtEndOfString = ForInvalidFormat(Resources.Parse_EscapeAtEndOfString);
 
