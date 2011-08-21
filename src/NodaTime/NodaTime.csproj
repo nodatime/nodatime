@@ -87,6 +87,7 @@
     <Compile Include="Format\Builder\AbstractFormatterBuilderNode.cs" />
     <Compile Include="Format\Builder\IFormatNode.cs" />
     <Compile Include="Format\Builder\IFormatterBuilderNode.cs" />
+    <Compile Include="Format\InstantParser.cs" />
     <Compile Include="Format\NonThrowingPattern.cs" />
     <Compile Include="Format\Delegates.cs" />
     <Compile Include="Format\DurationFormatter.cs" />

@@ -405,12 +405,13 @@ namespace NodaTime
         #endregion Formatting
 
         #region Parsing
+        private static readonly InstantParser InstantParser = new InstantParser();
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
         public static Instant Parse(string value)
         {
-            return InstantParse.Parse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
+            return InstantParser.Parse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
         }
 
         /// <summary>
@@ -418,7 +419,7 @@ namespace NodaTime
         /// </summary>
         public static Instant Parse(string value, IFormatProvider formatProvider)
         {
-            return InstantParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+            return InstantParser.Parse(value, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
         /// <summary>
@@ -426,7 +427,7 @@ namespace NodaTime
         /// </summary>
         public static Instant Parse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return InstantParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantParser.Parse(value, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
         /// <summary>
@@ -434,7 +435,7 @@ namespace NodaTime
         /// </summary>
         public static Instant ParseExact(string value, string format, IFormatProvider formatProvider)
         {
-            return InstantParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+            return InstantParser.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
         }
 
         /// <summary>
@@ -442,7 +443,7 @@ namespace NodaTime
         /// </summary>
         public static Instant ParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return InstantParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantParser.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
         /// <summary>
@@ -450,7 +451,7 @@ namespace NodaTime
         /// </summary>
         public static Instant ParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
         {
-            return InstantParse.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantParser.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
         }
 
         /// <summary>
@@ -461,7 +462,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Instant result)
         {
-            return InstantParse.TryParse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
+            return InstantParser.TryParse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
         }
 
         /// <summary>
@@ -472,7 +473,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
-            return InstantParse.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantParser.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
         /// <summary>
@@ -483,7 +484,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
-            return InstantParse.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantParser.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
 
         /// <summary>
@@ -494,7 +495,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
         {
-            return InstantParse.TryParseExactMultiple(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantParser.TryParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
         }
         #endregion Parsing
 
