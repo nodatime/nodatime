@@ -97,7 +97,6 @@
     <Compile Include="Format\INodaParser.cs" />
     <Compile Include="Format\ISignedValue.cs" />
     <Compile Include="Format\NonThrowingParsable.cs" />
-    <Compile Include="Format\OffsetParse.cs" />
     <Compile Include="Format\DateTimeParseStyles.cs" />
     <Compile Include="Format\InstantFormat.cs" />
     <Compile Include="Format\InstantParse.cs" />
