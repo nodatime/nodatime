@@ -58,6 +58,8 @@ namespace NodaTime.Format
         /// Attempts to parse the given text, but does not throw an exception if parsing fails.
         /// Instead, the return value indicates success or failure.
         /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         bool TryParse(string text, out T value);
 
         /// <summary>

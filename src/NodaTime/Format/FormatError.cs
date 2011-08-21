@@ -41,7 +41,7 @@ namespace NodaTime.Format
 
         internal static FormatException RepeatCountExceeded(char patternCharacter, int maximumCount)
         {
-            return new FormatException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount));
+            return new FormatValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount));
         }
 
         internal static FormatException CannotParseValue(string value, Type type, string format)
@@ -186,19 +186,9 @@ namespace NodaTime.Format
             {
             }
 
-            public FormatValueException(string format, params string[] args)
-                : base(string.Format(format, args))
-            {
-            }
-
             protected FormatValueException(SerializationInfo info, StreamingContext context)
                 : base(info, context)
             {
-            }
-
-            public override string ToString()
-            {
-                return "FormatValueException: " + Message;
             }
         }
         #endregion
