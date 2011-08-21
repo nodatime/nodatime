@@ -80,32 +80,22 @@ namespace NodaTime.Format
         internal NodaFormatInfo FormatInfo { get; private set; }
 
         /// <summary>
-        ///   Assigns the new value if the current value is not set.
+        /// Assigns the new value if the current value is not set.
         /// </summary>
         /// <remarks>
-        ///   When parsing an object by pattern a particular value (e.g. hours) can only be set once, or if set
-        ///   more than once it should be set to the same value. This method checks thatthe value has not been
-        ///   previously set or if it has that the new value is the same as the old one. If the new value is
-        ///   different than the old one then a failure is set.
+        /// When parsing an object by pattern a particular value (e.g. hours) can only be set once, or if set
+        /// more than once it should be set to the same value. This method checks that the value has not been
+        /// previously set or if it has that the new value is the same as the old one. If the new value is
+        /// different than the old one then a failure is set.
         /// </remarks>
         /// <typeparam name="T">The base type of the values.</typeparam>
         /// <param name="currentValue">The current value.</param>
         /// <param name="newValue">The new value.</param>
         /// <param name="patternCharacter">The pattern character for the error message if any.</param>
-        /// <returns><c>true</c> if the current value is not set or if the current value equals the new value, <c>false</c> otherwise.</returns>
-        internal static bool AssignNewValue<T>(ref T? currentValue, T newValue, char patternCharacter) where T : struct
-        {
-            if (currentValue == null || currentValue.Value.Equals(newValue))
-            {
-                currentValue = newValue;
-                return true;
-            }
-            throw FormatError.DoubleAssigment(patternCharacter);
-        }
-
-        // TODO: Potentially get rid of AssignNewValue if everything is converted to the new style.
+        /// <returns><c>true</c> if the current value was not previously set or if the current value equals the new value, <c>false</c> otherwise.</returns>
         internal static bool TryAssignNewValue<T>(ref T? currentValue, T newValue, char patternCharacter) where T : struct
         {
+            // TODO: for some fields it makes sense to allow duplication with equal values; in others it doesn't.
             if (currentValue == null || currentValue.Value.Equals(newValue))
             {
                 currentValue = newValue;

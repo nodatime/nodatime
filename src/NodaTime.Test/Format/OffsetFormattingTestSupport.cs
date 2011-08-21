@@ -30,7 +30,7 @@ namespace NodaTime.Test.Format
     public class OffsetFormattingTestSupport : FormattingTestSupport
     {
         /// <summary>
-        ///   Test data that can only be used to test formatting.
+        /// Test data that can only be used to test formatting.
         /// </summary>
         internal static OffsetData[] OffsetFormatData = {
             new OffsetData(3, 0, 0, 0) { C = EnUs, S = "", F = "%-", PV = Offset.Zero },
@@ -52,7 +52,7 @@ namespace NodaTime.Test.Format
         };
 
         /// <summary>
-        ///   Test data that can only be used to test parsing.
+        /// Test data that can only be used to test parsing.
         /// </summary>
         internal static OffsetData[] OffsetParseData = {
             new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34  ", F = "  '  'HH:mm'  '  ", Styles = AllSpace },
@@ -128,12 +128,15 @@ namespace NodaTime.Test.Format
             new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "\\'", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_EscapedCharacterMismatch, Parameters = {'\''} },
             new OffsetData(Offset.Zero) { C = EnUs, S = "axc", F = "'abc'", Exception=typeof(FormatException), Message = Resources.Parse_QuotedStringMismatch},
             new OffsetData(Offset.Zero) { C = EnUs, S = "z", F = "%y", Exception=typeof(FormatError.FormatValueException), Message = Resources.Parse_MismatchedCharacter, Parameters = {'y'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "10:11", F = "HH:HH", Exception=typeof(FormatException), Message = Resources.Parse_DoubleAssignment, Parameters = {'H'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "10:11", F = "mm:mm", Exception=typeof(FormatException), Message = Resources.Parse_DoubleAssignment, Parameters = {'m'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "10:11", F = "ss:ss", Exception=typeof(FormatException), Message = Resources.Parse_DoubleAssignment, Parameters = {'s'} },
             new OffsetData(Offset.Zero) { C = EnUs, S = null, F = "g", Exception=typeof(ArgumentNullException), ArgumentName = "value" },
         };
 
         /// <summary>
-        ///   Common test data for both formatting and parsing. A test should be placed here unless is truely
-        ///   cannot be run both ways. This ensures that as many roud-trip type tests are performed as possible.
+        /// Common test data for both formatting and parsing. A test should be placed here unless is truly
+        /// cannot be run both ways. This ensures that as many roud-trip type tests are performed as possible.
         /// </summary>
         internal static OffsetData[] OffsetFormattingCommonData = {
             new OffsetData(Offset.Zero) { C = EnUs, S = ".", F = "%.", Name = "decimal separator" },
