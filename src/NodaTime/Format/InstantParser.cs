@@ -55,7 +55,7 @@ namespace NodaTime.Format
             format = format.Trim();
             if (format.Length > 1)
             {
-                throw FormatError.FormatInvalid(format);
+                return ParseResult<Instant>.FormatInvalid(format);
             }
             char formatChar = format[0];
             return DoStrictParse(value, formatChar, formatInfo, parseStyles);
