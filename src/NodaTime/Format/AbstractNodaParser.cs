@@ -15,18 +15,26 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NodaTime.Globalization;
 
 namespace NodaTime.Format
 {
+    /// <summary>
+    /// Base class providing simple support for the various
+    ///  Parse/TryParse/ParseExact/TryParseExact overloads provided by individual
+    /// types.
+    /// </summary>
+    // TODO: Rename to indicate that this is different to INodaParser? It's the "BCL style" of parsing
+    // rather than the "build a parser with a single pattern" approach.
     internal abstract class AbstractNodaParser<T>
     {
         private readonly string[] allFormats;
+        private readonly T failureValue;
 
-        protected AbstractNodaParser(string[] allFormats)
+        protected AbstractNodaParser(string[] allFormats, T failureValue)
         {
             this.allFormats = allFormats;
+            this.failureValue = failureValue;
         }
 
         internal T Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
@@ -51,12 +59,12 @@ namespace NodaTime.Format
 
         internal bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out T result)
         {
-            return ParseSingle(value, format, formatInfo, styles).TryGetResult(out result);
+            return ParseSingle(value, format, formatInfo, styles).TryGetResult(failureValue, out result);
         }
 
         internal bool TryParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out T result)
         {
-            return ParseMultiple(value, formats, formatInfo, styles).TryGetResult(out result);
+            return ParseMultiple(value, formats, formatInfo, styles).TryGetResult(failureValue, out result);
         }
 
         protected virtual ParseResult<T> ParseMultiple(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
