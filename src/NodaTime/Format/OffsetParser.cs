@@ -232,7 +232,10 @@ namespace NodaTime.Format
                     }
                     if (str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
-                        ParseInfo.AssignNewValue(ref parseInfo.Hours, value, patternCharacter);
+                        if (!ParseInfo.TryAssignNewValue(ref parseInfo.Hours, value, patternCharacter))
+                        {
+                            return ParseResult<Offset>.DoubleAssigment(patternCharacter);
+                        }
                         break;
                     }
                     return ParseResult<Offset>.MismatchedNumber(new string(patternCharacter, count));
@@ -244,7 +247,10 @@ namespace NodaTime.Format
                     }
                     if (str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
-                        ParseInfo.AssignNewValue(ref parseInfo.Minutes, value, patternCharacter);
+                        if (!ParseInfo.TryAssignNewValue(ref parseInfo.Minutes, value, patternCharacter))
+                        {
+                            return ParseResult<Offset>.DoubleAssigment(patternCharacter);
+                        }
                         break;
                     }
                     return ParseResult<Offset>.MismatchedNumber(new string(patternCharacter, count));
@@ -256,7 +262,10 @@ namespace NodaTime.Format
                     }
                     if (str.ParseDigits(count < 2 ? 1 : 2, 2, out value))
                     {
-                        ParseInfo.AssignNewValue(ref parseInfo.Seconds, value, patternCharacter);
+                        if (!ParseInfo.TryAssignNewValue(ref parseInfo.Seconds, value, patternCharacter))
+                        {
+                            return ParseResult<Offset>.DoubleAssigment(patternCharacter);
+                        }
                         break;
                     }
                     return ParseResult<Offset>.MismatchedNumber(new string(patternCharacter, count));
