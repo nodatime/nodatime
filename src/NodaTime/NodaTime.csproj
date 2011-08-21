@@ -100,7 +100,6 @@
     <Compile Include="Format\NonThrowingParsable.cs" />
     <Compile Include="Format\DateTimeParseStyles.cs" />
     <Compile Include="Format\InstantFormat.cs" />
-    <Compile Include="Format\InstantParse.cs" />
     <Compile Include="Format\OffsetFormat.cs" />
     <Compile Include="Format\OffsetParseInfo.cs" />
     <Compile Include="Format\OffsetParser.cs" />
