@@ -26,7 +26,7 @@ namespace NodaTime.Format
     {
         private static readonly string[] AllFormats = { "g", "n", "d" };
 
-        internal OffsetParser() : base(AllFormats)
+        internal OffsetParser() : base(AllFormats, Offset.Zero)
         {
         }
 
