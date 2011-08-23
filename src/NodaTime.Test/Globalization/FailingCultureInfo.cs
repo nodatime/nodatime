@@ -20,7 +20,7 @@ using System.Globalization;
 
 #endregion
 
-namespace NodaTime.Test.Format
+namespace NodaTime.Test.Globalization
 {
     /// <summary>
     /// Throws an exception if called. This forces the testing code set or pass a valid culture in all
