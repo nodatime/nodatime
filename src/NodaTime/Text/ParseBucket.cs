@@ -15,35 +15,18 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Runtime.Serialization;
-
-namespace NodaTime.Format
+namespace NodaTime.Text
 {
     /// <summary>
-    /// Exception thrown to indicate that the specified value could not be parsed.
+    /// Base class for "buckets" of parse data - as field values are parsed, they are stored in a bucket,
+    /// then the final value is calculated at the end.
     /// </summary>
-    [Serializable]
-    public class UnparsableValueException : FormatException
+    internal abstract class ParseBucket<T>
     {
-        public UnparsableValueException()
-        {
-        }
-
-        public UnparsableValueException(string message)
-            : base(message)
-        {
-        }
-
-        public UnparsableValueException(string format, params string[] args)
-            : base(string.Format(format, args))
-        {
-        }
-
-        protected UnparsableValueException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
+        /// <summary>
+        /// Performs the final conversion from fields to a value. The parse can still fail here, if there
+        /// are incompatible field values.
+        /// </summary>
+        internal abstract ParseResult<T> CalculateValue();
     }
 }

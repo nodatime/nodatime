@@ -19,6 +19,7 @@ using System;
 using System.Globalization;
 using System.Runtime.Serialization;
 using NodaTime.Properties;
+using NodaTime.Text;
 
 namespace NodaTime.Format
 {

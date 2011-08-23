@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2011 Jon Skeet
 // 
@@ -15,26 +15,19 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Text;
 
-namespace NodaTime.Format
+namespace NodaTime.Text.Patterns
 {
     /// <summary>
-    /// Equivalent of Pattern but without throwing exceptions
+    /// Extends <see cref="TextCursor"/> to simplify parsing patterns such as "yyyy-MM-dd".
     /// </summary>
-    internal class NonThrowingPattern : NonThrowingParsable
+    internal class PatternCursor : TextCursor
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NonThrowingPattern" /> class.
-        /// </summary>
-        /// <param name="pattern">The format pattern string.</param>
-        internal NonThrowingPattern(string pattern)
+        internal PatternCursor(string pattern)
             : base(pattern)
         {
         }
-
-        // TODO: Remove the next four methods...
 
         /// <summary>
         /// Gets the quoted string using the current character as the close quote character.
@@ -43,8 +36,7 @@ namespace NodaTime.Format
         /// It is expected that this will be null before the call, and this method will set it to a non-null value
         /// if this method could not complete successfully.</param>
         /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be <c>null</c>.</returns>
-        /// <exception cref="FormatException">If the end quote is missing.</exception>
-        internal string GetQuotedString<T>(ref ParseResult<T> failure)
+        internal string GetQuotedString<T>(ref PatternParseResult<T> failure)
         {
             return GetQuotedString(Current, ref failure);
         }
@@ -57,8 +49,7 @@ namespace NodaTime.Format
         /// It is expected that this will be null before the call, and this method will set it to a non-null value
         /// if this method could not complete successfully.</param>
         /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be <c>null</c>.</returns>
-        /// <exception cref="FormatException">If the end quote is missing.</exception>
-        internal string GetQuotedString<T>(char closeQuote, ref ParseResult<T> failure)
+        internal string GetQuotedString<T>(char closeQuote, ref PatternParseResult<T> failure)
         {
             var builder = new StringBuilder(Length - Index);
             bool endQuoteFound = false;
@@ -74,7 +65,7 @@ namespace NodaTime.Format
                 {
                     if (!MoveNext())
                     {
-                        failure = ParseResult<T>.EscapeAtEndOfString;
+                        failure = PatternParseResult<T>.EscapeAtEndOfString;
                         return null;
                     }
                 }
@@ -82,22 +73,21 @@ namespace NodaTime.Format
             }
             if (!endQuoteFound)
             {
-                failure = ParseResult<T>.MissingEndQuote(closeQuote);
+                failure = PatternParseResult<T>.MissingEndQuote(closeQuote);
                 return null;
             }
             return builder.ToString();
         }
 
         /// <summary>
-        ///   Gets the pattern repeat count.
+        /// Gets the pattern repeat count.
         /// </summary>
         /// <param name="maximumCount">The maximum number of repetitions allowed.</param>
         /// <param name="failure">A ref parameter to accept an early failure result of the current parsing operation.
         /// It is expected that this will be null before the call, and this method will set it to a non-null value
         /// if this method could not complete successfully.</param>
         /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
-        /// <exception cref="FormatException">if the count exceeds <paramref name = "maximumCount" />.</exception>
-        internal int GetRepeatCount<T>(int maximumCount, ref ParseResult<T> failure)
+        internal int GetRepeatCount<T>(int maximumCount, ref PatternParseResult<T> failure)
         {
             return GetRepeatCount(maximumCount, Current, ref failure);
         }
@@ -111,8 +101,7 @@ namespace NodaTime.Format
         /// It is expected that this will be null before the call, and this method will set it to a non-null value
         /// if this method could not complete successfully.</param>
         /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
-        /// <exception cref="FormatException">if the count exceeds <paramref name = "maximumCount" />.</exception>
-        internal int GetRepeatCount<T>(int maximumCount, char patternCharacter, ref ParseResult<T> failure)
+        internal int GetRepeatCount<T>(int maximumCount, char patternCharacter, ref PatternParseResult<T> failure)
         {
             int startPos = Index;
             while (MoveNext() && Current == patternCharacter)
@@ -125,7 +114,7 @@ namespace NodaTime.Format
             }
             if (repeatLength > maximumCount)
             {
-                failure = ParseResult<T>.RepeatCountExceeded(patternCharacter, maximumCount);
+                failure = PatternParseResult<T>.RepeatCountExceeded(patternCharacter, maximumCount);
                 return 0;
             }
             return repeatLength;

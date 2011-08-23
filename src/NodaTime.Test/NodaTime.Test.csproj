@@ -87,6 +87,7 @@
     <Compile Include="CultureSaver.cs" />
     <Compile Include="Fields\SkipZeroDateTimeFieldTest.cs" />
     <Compile Include="Format\AbstractFormattingData.cs" />
+    <Compile Include="Format\NonThrowingParsableTest.cs" />
     <Compile Include="Format\FormattingTestSupport.cs" />
     <Compile Include="Format\OffsetFormattingTestSupport.cs" />
     <Compile Include="Format\OffsetFormatTest.cs" />
@@ -117,6 +118,9 @@
     <Compile Include="PeriodTypeTest.Masking.cs" />
     <Compile Include="PeriodTypeTest.Types.cs" />
     <Compile Include="SystemClockTest.cs" />
+    <Compile Include="Text\AbstractFormattingData.cs" />
+    <Compile Include="Text\FormattingTestSupport.cs" />
+    <Compile Include="Text\OffsetFormattingTestSupport.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\DaylightSavingTimeZoneTest.cs" />

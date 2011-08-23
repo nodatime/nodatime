@@ -32,6 +32,11 @@ namespace NodaTime.Globalization
     [DebuggerStepThrough]
     public class NodaFormatInfo : IFormatProvider, ICloneable
     {
+        /// <summary>
+        /// A NodaFormatInfo wrapping the invariant culture.
+        /// </summary>
+        public static NodaFormatInfo InvariantInfo  = new NodaFormatInfo(CultureInfo.InvariantCulture);
+
         private static readonly IDictionary<String, NodaFormatInfo> Infos = new Dictionary<string, NodaFormatInfo>();
         internal static bool DisableCaching; // Used in testing and debugging
 
@@ -197,8 +202,7 @@ namespace NodaTime.Globalization
         ///   The offset pattern long.
         /// </value>
         public string OffsetPatternLong
-        {
-            
+        {            
             get { return offsetPatternLong; }
             
             set { SetValue(value, ref offsetPatternLong); }
@@ -310,8 +314,14 @@ namespace NodaTime.Globalization
             }
             string name = cultureInfo.Name;
             NodaFormatInfo result;
+            if (cultureInfo == CultureInfo.InvariantCulture)
+            {
+                return InvariantInfo;
+            }
             lock (Infos)
             {
+                // TODO: Consider fetching by the cultureInfo instead, as otherwise two culture instances
+                // with the same name will give the wrong result.
                 if (DisableCaching || !Infos.TryGetValue(name, out result))
                 {
                     result = new NodaFormatInfo(cultureInfo) { IsReadOnly = true };
