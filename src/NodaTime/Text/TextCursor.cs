@@ -22,7 +22,11 @@ using System.Text;
 namespace NodaTime.Text
 {
     /// <summary>
-    /// Provides a cursor over text being parsed.
+    /// Provides a cursor over text being parsed. None of the methods in this class throw exceptions (unless
+    /// there is a bug in Noda Time, in which case an exception is appropriate) and none of the methods
+    /// have ref parameters indicating failures, unlike subclasses. This class is used as the basis for both
+    /// value and pattern parsing, so can make no judgement about what's wrong (i.e. it wouldn't know what
+    /// type of failure to indicate). Instead, methods return Boolean values to indicate success or failure.
     /// </summary>
     [DebuggerStepThrough]
     internal abstract class TextCursor
@@ -108,24 +112,6 @@ namespace NodaTime.Text
                 }
             }
             return builder.ToString();
-        }
-
-        /// <summary>
-        /// Gets the next character.
-        /// </summary>
-        /// <param name="failure">A ref parameter to accept an early failure result of the current parsing operation.
-        /// It is expected that this will be null before the call, and this method will set it to a non-null value
-        /// if this method could not complete successfully.</param>
-        /// <returns>The next character from the string.</returns>
-        /// <exception cref="FormatException">if there are no more characters.</exception>
-        internal char GetNextCharacter<T>(ref ParseResult<T> failure)
-        {
-            if (MoveNext())
-            {
-                return Current;
-            }
-            failure = ParseResult<T>.UnexpectedEndOfString(Value);
-            return default(char);
         }
 
         /// <summary>
