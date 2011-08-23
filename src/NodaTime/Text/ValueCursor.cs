@@ -149,6 +149,5 @@ namespace NodaTime.Text
         {
             return char.IsNumber(Current);
         }
-
     }
 }

@@ -124,6 +124,7 @@
     <Compile Include="Text\Patterns\PatternCursorTest.cs" />
     <Compile Include="Text\TextCursorTestBase.cs" />
     <Compile Include="Text\OffsetFormattingTestSupport.cs" />
+    <Compile Include="Text\ValueCursorTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\DaylightSavingTimeZoneTest.cs" />
