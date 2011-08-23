@@ -39,11 +39,11 @@ namespace NodaTime.Text
                                                               };
 
         /// <summary>
-        ///   Formats the given value left padded with zeros.
+        /// Formats the given value left padded with zeros.
         /// </summary>
         /// <remarks>
-        ///   Left pads with zeros the value into a field of <paramref name = "length" /> characters. If the value
-        ///   is longer than <paramref name = "length" />, the entire value is formatted.
+        /// Left pads with zeros the value into a field of <paramref name = "length" /> characters. If the value
+        /// is longer than <paramref name = "length" />, the entire value is formatted.
         /// </remarks>
         /// <param name="value">The value to format.</param>
         /// <param name="length">The length to fill.</param>
@@ -71,7 +71,7 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        ///   Formats the given value right padded with zeros.
+        /// Formats the given value right padded with zeros.
         /// </summary>
         /// <param name="value">The value to format.</param>
         /// <param name="length">The length to fill.</param>
@@ -93,8 +93,8 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        ///   Formats the given value right padded with zeros. The rightmost zeros are truncated.  If the entire value is truncated then
-        ///   the preceeding decimal separater is also removed.
+        /// Formats the given value right padded with zeros. The rightmost zeros are truncated.  If the entire value is truncated then
+        /// the preceeding decimal separater is also removed.
         /// </summary>
         /// <param name="value">The value to format.</param>
         /// <param name="length">The length to fill.</param>
