@@ -24,7 +24,7 @@ using NodaTime.Text;
 
 #endregion
 
-namespace NodaTime.Test.Format
+namespace NodaTime.Test.Text
 {
     /// <summary>
     ///   Provides various formatting and parsing test helper values and methods.
@@ -49,11 +49,11 @@ namespace NodaTime.Test.Format
         /// </summary>
         public const string Nbsp = "\u00a0";
 
-        public const DateTimeParseStyles LeadingSpace = DateTimeParseStyles.AllowLeadingWhite;
-        public const DateTimeParseStyles TrailingSpace = DateTimeParseStyles.AllowTrailingWhite;
-        public const DateTimeParseStyles InnerSpace = DateTimeParseStyles.AllowInnerWhite;
-        public const DateTimeParseStyles SurroundingSpace = DateTimeParseStyles.AllowLeadingWhite | DateTimeParseStyles.AllowTrailingWhite;
-        public const DateTimeParseStyles AllSpace = DateTimeParseStyles.AllowWhiteSpaces;
+        public const ParseStyles LeadingSpace = ParseStyles.AllowLeadingWhite;
+        public const ParseStyles TrailingSpace = ParseStyles.AllowTrailingWhite;
+        public const ParseStyles InnerSpace = ParseStyles.AllowInnerWhite;
+        public const ParseStyles SurroundingSpace = ParseStyles.AllowLeadingWhite | ParseStyles.AllowTrailingWhite;
+        public const ParseStyles AllSpace = ParseStyles.AllowWhiteSpaces;
 
         public static readonly CultureInfo EnUs = new CultureInfo("en-US");
         public static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
@@ -214,9 +214,10 @@ namespace NodaTime.Test.Format
             }
             Type oldException = data.Exception;
             string oldMessage = data.Message;
-            if (data.Exception == typeof(UnparsableValueException))
+            // TODO: See if we can clean this up...
+            // ValueStringEmpty is an failure mode which aborts immediately - there's no point in continuing with multiple patterns.
+            if (data.Exception == typeof(UnparsableValueException) && data.Message != Resources.Parse_ValueStringEmpty)
             {
-                data.Exception = typeof(FormatException);
                 data.Message = Resources.Parse_NoMatchingFormat;
             }
             try

@@ -19,6 +19,7 @@ using System;
 using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Properties;
+using NodaTime.Text;
 
 namespace NodaTime.Format
 {
@@ -30,7 +31,7 @@ namespace NodaTime.Format
         {
         }
 
-        protected override ParseResult<Offset> ParseSingle(string value, string format, Globalization.NodaFormatInfo formatInfo, DateTimeParseStyles parseStyles)
+        protected override ParseResult<Offset> ParseSingle(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles parseStyles)
         {
             if (value == null)
             {
@@ -342,6 +343,5 @@ namespace NodaTime.Format
                     return null;
             }
         }
-
     }
 }

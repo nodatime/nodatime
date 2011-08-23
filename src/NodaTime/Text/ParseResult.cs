@@ -18,9 +18,8 @@
 using System;
 using System.Globalization;
 using NodaTime.Properties;
-using NodaTime.Text;
 
-namespace NodaTime.Format
+namespace NodaTime.Text
 {
     internal class ParseResult<T>
     {
@@ -71,7 +70,7 @@ namespace NodaTime.Format
         #region Factory methods and readonly static fields
         internal static ParseResult<T> ForInvalidFormat(string formatString, params object[] parameters)
         {
-            return ForInvalidFormat(() => new FormatException(string.Format(CultureInfo.CurrentCulture, formatString, parameters)));
+            return ForInvalidFormat(() => new InvalidPatternException(string.Format(CultureInfo.CurrentCulture, formatString, parameters)));
         }
 
         internal static ParseResult<T> ForInvalidFormat(NodaFunc<Exception> exceptionProvider)
@@ -185,7 +184,7 @@ namespace NodaTime.Format
             return ForInvalidFormat(Resources.Parse_Hour12PatternNotSupported, type.FullName);
         }
 
-        internal static readonly ParseResult<T> NoMatchingFormat = ForInvalidFormat(Resources.Parse_NoMatchingFormat);
+        internal static readonly ParseResult<T> NoMatchingFormat = ForInvalidValue(Resources.Parse_NoMatchingFormat);
 
         internal static ParseResult<T> ValueOutOfRange(object value, Type type)
         {

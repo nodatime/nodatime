@@ -18,6 +18,7 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
+using NodaTime.Globalization;
 
 namespace NodaTime.Test
 {
@@ -75,6 +76,12 @@ namespace NodaTime.Test
         {
             TimeSpan ts = Offset.FromMilliseconds(1234).ToTimeSpan();
             Assert.AreEqual(ts, TimeSpan.FromMilliseconds(1234));
+        }
+
+        [Test]
+        public void Tmp()
+        {
+            Offset.ParseExact(".6", ".FFF", NodaFormatInfo.InvariantInfo);
         }
     }
 }

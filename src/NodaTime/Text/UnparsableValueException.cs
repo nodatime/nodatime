@@ -18,29 +18,33 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace NodaTime.Format
+namespace NodaTime.Text
 {
     /// <summary>
-    /// Exception thrown to indicate that the format pattern provided for either formatting or parsing is invalid.
+    /// Exception thrown to indicate that the specified value could not be parsed.
     /// </summary>
     [Serializable]
-    public class InvalidPatternException : FormatException
+    public class UnparsableValueException : FormatException
     {
-        public InvalidPatternException()
+        /// <summary>
+        /// Creates a new UnparsableValueException with no message.
+        /// </summary>
+        public UnparsableValueException()
         {
         }
 
-        public InvalidPatternException(string message)
+        /// <summary>
+        /// Creates a new UnparsableValueException with the given message.
+        /// </summary>
+        public UnparsableValueException(string message)
             : base(message)
         {
         }
 
-        public InvalidPatternException(string format, params string[] args)
-            : base(string.Format(format, args))
-        {
-        }
-
-        protected InvalidPatternException(SerializationInfo info, StreamingContext context)
+        /// <summary>
+        /// Creates a new UnparsableValueException from the given serialization information.
+        /// </summary>
+        protected UnparsableValueException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }

@@ -17,7 +17,7 @@
 
 using NodaTime.Globalization;
 
-namespace NodaTime.Format
+namespace NodaTime.Text
 {
     /// <summary>
     /// Base class providing simple support for the various
@@ -37,37 +37,37 @@ namespace NodaTime.Format
             this.failureValue = failureValue;
         }
 
-        internal T Parse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
+        internal T Parse(string value, NodaFormatInfo formatInfo, ParseStyles styles)
         {
             return ParseExact(value, allFormats, formatInfo, styles);
         }
 
-        internal T ParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
+        internal T ParseExact(string value, string format, NodaFormatInfo formatInfo, ParseStyles styles)
         {
             return ParseSingle(value, format, formatInfo, styles).GetResultOrThrow();
         }
 
-        internal T ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
+        internal T ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, ParseStyles styles)
         {
             return ParseMultiple(value, formats, formatInfo, styles).GetResultOrThrow();
         }
 
-        internal bool TryParse(string value, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out T result)
+        internal bool TryParse(string value, NodaFormatInfo formatInfo, ParseStyles styles, out T result)
         {
             return TryParseExact(value, allFormats, formatInfo, styles, out result);
         }
 
-        internal bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out T result)
+        internal bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, ParseStyles styles, out T result)
         {
             return ParseSingle(value, format, formatInfo, styles).TryGetResult(failureValue, out result);
         }
 
-        internal bool TryParseExact(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles, out T result)
+        internal bool TryParseExact(string value, string[] formats, NodaFormatInfo formatInfo, ParseStyles styles, out T result)
         {
             return ParseMultiple(value, formats, formatInfo, styles).TryGetResult(failureValue, out result);
         }
 
-        protected virtual ParseResult<T> ParseMultiple(string value, string[] formats, NodaFormatInfo formatInfo, DateTimeParseStyles styles)
+        protected virtual ParseResult<T> ParseMultiple(string value, string[] formats, NodaFormatInfo formatInfo, ParseStyles styles)
         {
             if (formats == null)
             {
@@ -89,6 +89,8 @@ namespace NodaTime.Format
             return ParseResult<T>.NoMatchingFormat;
         }
 
-        protected abstract ParseResult<T> ParseSingle(string value, string format, NodaFormatInfo formatInfo, DateTimeParseStyles styles);
+        protected abstract ParseResult<T> ParseSingle(string value, string format, NodaFormatInfo formatInfo, ParseStyles styles);
+
+        public abstract string Format(T value, string format, NodaFormatInfo formatInfo);
     }
 }

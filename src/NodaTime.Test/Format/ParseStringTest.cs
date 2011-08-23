@@ -21,9 +21,9 @@ using NodaTime.Format;
 namespace NodaTime.Test.Format
 {
     [TestFixture, Category("Formatting"), Category("Parse")]
-    public class ParseStringTest : ParsableTest
+    public class ParseStringTest : NonThrowingParsableTest
     {
-        internal override Parsable MakeParsable(string value)
+        internal override NonThrowingParsable MakeParsable(string value)
         {
             return new ParseString(value);
         }

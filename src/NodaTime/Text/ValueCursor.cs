@@ -17,18 +17,15 @@
 
 using System;
 
-namespace NodaTime.Format
+namespace NodaTime.Text
 {
-    /// <summary>
-    ///   Provides a simple parser for value strings.
-    /// </summary>
-    internal class ParseString : NonThrowingParsable
+    internal sealed class ValueCursor : TextCursor
     {
         /// <summary>
-        ///   Initializes a new instance of the <see cref="ParseString" /> class.
+        ///   Initializes a new instance of the <see cref="ValueCursor" /> class.
         /// </summary>
         /// <param name="value">The string to parse.</param>
-        internal ParseString(string value)
+        internal ValueCursor(string value)
             : base(value)
         {
         }
@@ -85,7 +82,7 @@ namespace NodaTime.Format
                 {
                     break;
                 }
-                result = (result * 10) + GetDigit();
+                result = result * 10 + GetDigit();
                 count++;
                 if (!MoveNext())
                 {
@@ -101,13 +98,17 @@ namespace NodaTime.Format
         }
 
         /// <summary>
-        ///   Parses digits at the current point in the string as a fractional value.
+        /// Parses digits at the current point in the string as a fractional value.
+        /// At least one digit must be present, if allRequired is false there's no requirement for *all*
+        /// the digits to be present.
         /// </summary>
         /// <param name="maximumDigits">The maximum allowed digits.</param>
         /// <param name="scale">The scale of the fractional value.</param>
         /// <param name="result">The result value scaled by scale.</param>
+        /// <param name="allRequired">If true, <paramref name="maximumDigits"/> digits must be present in the
+        /// input sequence. If false, there must be just at least one digit.</param>
         /// <returns><c>true</c> if the digits were parsed.</returns>
-        internal bool ParseFractionExact(int maximumDigits, int scale, out int result)
+        internal bool ParseFraction(int maximumDigits, int scale, out int result, bool allRequired)
         {
             if (scale < maximumDigits)
             {
@@ -126,7 +127,7 @@ namespace NodaTime.Format
                 count++;
             }
             result = (int)(result * Math.Pow(10.0, scale - count));
-            return (count == maximumDigits);
+            return !allRequired || (count == maximumDigits);
         }
 
         /// <summary>
@@ -148,5 +149,6 @@ namespace NodaTime.Format
         {
             return char.IsNumber(Current);
         }
+
     }
 }

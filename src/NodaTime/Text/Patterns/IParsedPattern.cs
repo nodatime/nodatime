@@ -15,21 +15,12 @@
 // limitations under the License.
 #endregion
 
-// This file contains all the delegates declared within the NodaTime.Format namespace.
-// It's simpler than either nesting them or giving them a file per delegate.
-using System;
-
-namespace NodaTime.Format
+namespace NodaTime.Text.Patterns
 {
-    /// <summary>
-    /// Equivalent to Func[TArg, TResult], but without requiring .NET 3.5. If we ever require .NET 3.5,
-    /// we can remove this.
-    /// </summary>
-    internal delegate TResult NodaFunc<TArg, TResult>(TArg input);
+    internal interface IParsedPattern<T>
+    {
+        ParseResult<T> Parse(string value);
+        string Format(T value);
 
-    /// <summary>
-    /// Equivalent to Func[TResult], but without requiring .NET 3.5. If we ever require .NET 3.5,
-    /// we can remove this.
-    /// </summary>
-    internal delegate TResult NodaFunc<TResult>();
+    }
 }

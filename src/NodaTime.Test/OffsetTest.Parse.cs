@@ -17,7 +17,7 @@
 #region usings
 using NUnit.Framework;
 using NodaTime.Globalization;
-using NodaTime.Test.Format;
+using NodaTime.Test.Text;
 
 #endregion
 
