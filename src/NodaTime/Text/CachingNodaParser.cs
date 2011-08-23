@@ -30,6 +30,10 @@ namespace NodaTime.Text
 
         protected override ParseResult<T> ParseSingle(string value, string pattern, NodaFormatInfo formatInfo, ParseStyles styles)
         {
+            if (pattern == null)
+            {
+                return ParseResult<T>.ArgumentNull("format");
+            }
             // TODO: Validate styles before we try to parse.
             PatternParseResult<T> patternParseResult = GetCachedPattern(pattern, formatInfo, styles);
             if (!patternParseResult.Success)
