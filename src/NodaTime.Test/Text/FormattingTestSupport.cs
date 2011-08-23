@@ -27,14 +27,14 @@ using NodaTime.Text;
 namespace NodaTime.Test.Text
 {
     /// <summary>
-    ///   Provides various formatting and parsing test helper values and methods.
+    /// Provides various formatting and parsing test helper values and methods.
     /// </summary>
     public abstract class FormattingTestSupport
     {
         #region Delegates
         /// <summary>
-        ///   Provides a delegate that takes an input value and converts if to an output
-        ///   type and store it in an out variable.
+        /// Provides a delegate that takes an input value and converts if to an output
+        /// type and store it in an out variable.
         /// </summary>
         /// <typeparam name="TInput">The type of the input.</typeparam>
         /// <typeparam name="T">The type of the converted value.</typeparam>
@@ -45,7 +45,7 @@ namespace NodaTime.Test.Text
         #endregion
 
         /// <summary>
-        ///   A non-breaking space.
+        /// A non-breaking space.
         /// </summary>
         public const string Nbsp = "\u00a0";
 
@@ -60,9 +60,9 @@ namespace NodaTime.Test.Text
         public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
 
         /// <summary>
-        ///   Runs the format test. If the format string contains a '\0' character (which indicates that
-        ///   this is a multiple format string test) then it is ignored as formatting does not support
-        ///   multiple format strings. The thread culture is set (and restored) during the test.
+        /// Runs the format test. If the format string contains a '\0' character (which indicates that
+        /// this is a multiple format string test) then it is ignored as formatting does not support
+        /// multiple format strings. The thread culture is set (and restored) during the test.
         /// </summary>
         /// <typeparam name="T">The type being tested.</typeparam>
         /// <param name="data">The test data.</param>
@@ -99,7 +99,7 @@ namespace NodaTime.Test.Text
         }
 
         /// <summary>
-        ///   Runs a parse test that accepts a single format string.
+        /// Runs a parse test that accepts a single format string.
         /// </summary>
         /// <typeparam name="T">The type being tested.</typeparam>
         /// <param name="data">The test data.</param>
@@ -117,7 +117,7 @@ namespace NodaTime.Test.Text
         }
 
         /// <summary>
-        ///   Runs a parse test that accepts multiple format strings (which includes a list of one string).
+        /// Runs a parse test that accepts multiple format strings (which includes a list of one string).
         /// </summary>
         /// <typeparam name="T">The type being tested.</typeparam>
         /// <param name="data">The test data.</param>
@@ -149,7 +149,7 @@ namespace NodaTime.Test.Text
         }
 
         /// <summary>
-        ///   Performs the actual parse test after setting the correct environment.
+        /// Performs the actual parse test after setting the correct environment.
         /// </summary>
         /// <typeparam name="TInput">The type of the format string.</typeparam>
         /// <typeparam name="T">The type being tested.</typeparam>
@@ -182,7 +182,7 @@ namespace NodaTime.Test.Text
         }
 
         /// <summary>
-        ///   Runs a try parse test that accepts a single format string.
+        /// Runs a try parse test that accepts a single format string.
         /// </summary>
         /// <typeparam name="T">The type being tested.</typeparam>
         /// <param name="data">The test data.</param>
@@ -200,7 +200,7 @@ namespace NodaTime.Test.Text
         }
 
         /// <summary>
-        ///   Runs a try parse test that accepts multiple format strings.
+        /// Runs a try parse test that accepts multiple format strings.
         /// </summary>
         /// <typeparam name="T">The type being tested.</typeparam>
         /// <param name="data">The test data.</param>
@@ -232,7 +232,7 @@ namespace NodaTime.Test.Text
         }
 
         /// <summary>
-        ///   Performs the actual try parse test after setting the correct environment.
+        /// Performs the actual try parse test after setting the correct environment.
         /// </summary>
         /// <typeparam name="TInput">The type of the format string.</typeparam>
         /// <typeparam name="T">The type being tested.</typeparam>
