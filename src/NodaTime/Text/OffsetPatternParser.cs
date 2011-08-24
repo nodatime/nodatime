@@ -26,7 +26,7 @@ namespace NodaTime.Text
 {
     internal class OffsetPatternParser : IPatternParser<Offset>
     {
-        private static readonly string[] AllFormats = { "g", "n", "d" };
+        internal static readonly string[] AllFormats = { "g", "n", "d" };
 
         private delegate PatternParseResult<Offset> CharacterHandler(PatternCursor patternCursor, SteppedPatternBuilder<Offset, OffsetParseBucket> patternBuilder);
 

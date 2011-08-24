@@ -110,6 +110,7 @@
     <Compile Include="Format\ParseResult.cs" />
     <Compile Include="Format\ParseString.cs" />
     <Compile Include="Format\Pattern.cs" />
+    <Compile Include="Globalization\PerFormatInfoPatternCache.cs" />
     <Compile Include="Text\AbstractNodaParser.cs" />
     <Compile Include="Text\CachingNodaParser.cs" />
     <Compile Include="Text\FormatHelper.cs" />

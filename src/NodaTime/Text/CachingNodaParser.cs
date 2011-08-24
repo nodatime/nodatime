@@ -9,6 +9,7 @@ namespace NodaTime.Text
 {
     internal class CachingNodaParser<T> : AbstractNodaParser<T>
     {
+        // TODO: Consider having a cache per NodaFormatInfo instead...
         // TODO: Have a nice way of validating this
         private const int StyleCombinations = 16;
 

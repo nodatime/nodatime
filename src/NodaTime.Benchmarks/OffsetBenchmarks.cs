@@ -69,6 +69,13 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
+        public void TryParseExact_Valid_FormatInfoCache()
+        {
+            Offset result;
+            InvariantFormatInfo.OffsetParser.TryParseExact("12:34", "HH:mm", InvariantFormatInfo, ParseStyles.None, out result);
+        }
+
+        [Benchmark]
         public void TryParseExact_InvalidFormat_New()
         {
             Offset result;

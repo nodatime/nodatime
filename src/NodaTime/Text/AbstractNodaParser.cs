@@ -26,6 +26,7 @@ namespace NodaTime.Text
     /// </summary>
     // TODO: Rename to indicate that this is different to INodaParser? It's the "BCL style" of parsing
     // rather than the "build a parser with a single pattern" approach.
+    // TODO: Rename to indicate that this does formatting too...
     internal abstract class AbstractNodaParser<T>
     {
         private readonly string[] allFormats;
