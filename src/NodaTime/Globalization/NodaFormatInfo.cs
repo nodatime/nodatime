@@ -21,6 +21,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using NodaTime.Properties;
+using NodaTime.Text;
+using NodaTime.Text.Patterns;
 
 #endregion
 
@@ -32,6 +34,12 @@ namespace NodaTime.Globalization
     [DebuggerStepThrough]
     public class NodaFormatInfo : IFormatProvider, ICloneable
     {
+        #region Patterns and pattern parsers
+        private static readonly IPatternParser<Offset> OffsetPatternParser = new OffsetPatternParser();
+
+        private readonly PerFormatInfoPatternCache<Offset> offsetPatternCache;
+        #endregion
+
         /// <summary>
         /// A NodaFormatInfo wrapping the invariant culture.
         /// </summary>
@@ -69,12 +77,15 @@ namespace NodaTime.Globalization
             OffsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
             offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
             offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
+            offsetPatternCache = new PerFormatInfoPatternCache<Offset>(OffsetPatternParser, Text.OffsetPatternParser.AllFormats, Offset.Zero, this);
         }
 
         /// <summary>
         ///   Gets the culture info.
         /// </summary>
         public CultureInfo CultureInfo {  get;  private set; }
+
+        internal AbstractNodaParser<Offset> OffsetParser { get { return offsetPatternCache; } }
 
         /// <summary>
         ///   Gets or sets the number format.
