@@ -16,26 +16,28 @@
 #endregion
 
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
 
 namespace NodaTime.Text
 {
     /// <summary>
-    /// Base class providing simple support for the various
-    ///  Parse/TryParse/ParseExact/TryParseExact overloads provided by individual
-    /// types.
+    /// Class providing simple support for the various Parse/TryParse/ParseExact/TryParseExact/Format overloads 
+    /// provided by individual types.
     /// </summary>
-    // TODO: Rename to indicate that this is different to INodaParser? It's the "BCL style" of parsing
-    // rather than the "build a parser with a single pattern" approach.
-    // TODO: Rename to indicate that this does formatting too...
-    internal abstract class AbstractNodaParser<T>
+    internal sealed class PatternSupport<T>
     {
         private readonly string[] allFormats;
         private readonly T failureValue;
+        private readonly NodaFunc<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser;
+        private readonly string defaultFormatPattern;
 
-        protected AbstractNodaParser(string[] allFormats, T failureValue)
+        internal PatternSupport(string[] allFormats, string defaultFormatPattern, T failureValue,
+            NodaFunc<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser)
         {
             this.allFormats = allFormats;
             this.failureValue = failureValue;
+            this.patternParser = patternParser;
+            this.defaultFormatPattern = defaultFormatPattern;
         }
 
         internal T Parse(string value, NodaFormatInfo formatInfo, ParseStyles styles)
@@ -68,7 +70,7 @@ namespace NodaTime.Text
             return ParseMultiple(value, formats, formatInfo, styles).TryGetResult(failureValue, out result);
         }
 
-        protected virtual ParseResult<T> ParseMultiple(string value, string[] formats, NodaFormatInfo formatInfo, ParseStyles styles)
+        internal ParseResult<T> ParseMultiple(string value, string[] formats, NodaFormatInfo formatInfo, ParseStyles styles)
         {
             if (formats == null)
             {
@@ -90,8 +92,31 @@ namespace NodaTime.Text
             return ParseResult<T>.NoMatchingFormat;
         }
 
-        protected abstract ParseResult<T> ParseSingle(string value, string format, NodaFormatInfo formatInfo, ParseStyles styles);
+        internal ParseResult<T> ParseSingle(string value, string pattern, NodaFormatInfo formatInfo, ParseStyles styles)
+        {
+            if (pattern == null)
+            {
+                // TODO: Rename format to pattern everywhere...
+                return ParseResult<T>.ArgumentNull("format");
+            }
+            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(pattern, styles);
+            if (!patternResult.Success)
+            {
+                return patternResult.ToParseResult();
+            }
+            IParsedPattern<T> parsedPattern = patternResult.GetResultOrThrow();
+            return parsedPattern.Parse(value);
+        }
 
-        public abstract string Format(T value, string format, NodaFormatInfo formatInfo);
+        internal string Format(T value, string pattern, NodaFormatInfo formatInfo)
+        {
+            if (string.IsNullOrEmpty(pattern))
+            {
+                pattern = defaultFormatPattern;
+            }
+            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(pattern, ParseStyles.None);
+            IParsedPattern<T> parsedPattern = patternResult.GetResultOrThrow();
+            return parsedPattern.Format(value);
+        }
     }
 }

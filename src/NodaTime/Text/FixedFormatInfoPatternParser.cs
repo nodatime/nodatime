@@ -15,29 +15,25 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
-using NodaTime.Text;
+using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 
-namespace NodaTime.Globalization
+namespace NodaTime.Text
 {
     /// <summary>
-    /// Cache of patterns for a single NodaFormatInfo.
+    /// A pattern parser for a single format info, which caches patterns by text/style.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    internal sealed class PerFormatInfoPatternCache<T> : AbstractNodaParser<T>
+    internal sealed class FixedFormatInfoPatternParser<T>
     {
         private const int StyleCombinations = 16;
 
-        private const string DefaultFormattingPattern = "g";
         private readonly IPatternParser<T> patternParser;
         // TODO: Replace this with a real LRU cache or something similar.
         private readonly Dictionary<string, PatternParseResult<T>>[] caches;
         private readonly NodaFormatInfo formatInfo;
 
-        internal PerFormatInfoPatternCache(IPatternParser<T> patternParser, string[] allFormats, T failureValue, NodaFormatInfo formatInfo)
-            : base(allFormats, failureValue)
+        internal FixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
         {
             this.patternParser = patternParser;
             // There aren't many valid style combinations, so we partition the caches by style.
@@ -45,37 +41,10 @@ namespace NodaTime.Globalization
             this.formatInfo = formatInfo;
         }
 
-        protected override ParseResult<T> ParseSingle(string value, string pattern, NodaFormatInfo formatInfo, ParseStyles styles)
-        {
-            // Assume the right formatInfo... suggests the design smells a little.
-
-            if (pattern == null)
-            {
-                return ParseResult<T>.ArgumentNull("format");
-            }
-            // TODO: Validate styles before we try to parse.
-            PatternParseResult<T> patternParseResult = GetCachedPattern(pattern, styles);
-            if (!patternParseResult.Success)
-            {
-                return patternParseResult.ToParseResult();
-            }
-            return patternParseResult.GetResultOrThrow().Parse(value);
-        }
-
-        public override string Format(T value, string pattern, NodaFormatInfo formatInfo)
-        {
-            if (string.IsNullOrEmpty(pattern))
-            {
-                pattern = DefaultFormattingPattern;
-            }
-            PatternParseResult<T> patternParseResult = GetCachedPattern(pattern, ParseStyles.None);
-            IParsedPattern<T> parsedPattern = patternParseResult.GetResultOrThrow();
-            return parsedPattern.Format(value);
-        }
-
-        private PatternParseResult<T> GetCachedPattern(string pattern, ParseStyles styles)
+        internal PatternParseResult<T> ParsePattern(string pattern, ParseStyles styles)
         {
             // TODO: This currently only caches valid patterns. Is that reasonable?
+            // TODO: Validate styles here or elsewhere?
 
             // This should be in range.
             var cache = caches[(int) styles];
@@ -111,5 +80,6 @@ namespace NodaTime.Globalization
             }
             return result;
         }
+
     }
 }

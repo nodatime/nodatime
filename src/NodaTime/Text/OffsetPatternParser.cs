@@ -26,8 +26,6 @@ namespace NodaTime.Text
 {
     internal class OffsetPatternParser : IPatternParser<Offset>
     {
-        internal static readonly string[] AllFormats = { "g", "n", "d" };
-
         private delegate PatternParseResult<Offset> CharacterHandler(PatternCursor patternCursor, SteppedPatternBuilder<Offset, OffsetParseBucket> patternBuilder);
 
         private static readonly Dictionary<char, CharacterHandler> PatternCharacterHandlers = new Dictionary<char, CharacterHandler>()
@@ -129,11 +127,6 @@ namespace NodaTime.Text
                 }
             }
             return PatternParseResult<Offset>.ForValue(patternBuilder.Build());
-        }
-
-        internal AbstractNodaParser<Offset> CreateCachingParser()
-        {
-            return new CachingNodaParser<Offset>(this, AllFormats, Offset.Zero);
         }
 
         #region Standard patterns

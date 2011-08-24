@@ -35,9 +35,9 @@ namespace NodaTime.Globalization
     public class NodaFormatInfo : IFormatProvider, ICloneable
     {
         #region Patterns and pattern parsers
-        private static readonly IPatternParser<Offset> OffsetPatternParser = new OffsetPatternParser();
+        private static readonly IPatternParser<Offset> GeneralOffsetPatternParser = new OffsetPatternParser();
 
-        private readonly PerFormatInfoPatternCache<Offset> offsetPatternCache;
+        private readonly FixedFormatInfoPatternParser<Offset> offsetPatternParser;
         #endregion
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace NodaTime.Globalization
             OffsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
             offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
             offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
-            offsetPatternCache = new PerFormatInfoPatternCache<Offset>(OffsetPatternParser, Text.OffsetPatternParser.AllFormats, Offset.Zero, this);
+            offsetPatternParser = new FixedFormatInfoPatternParser<Offset>(GeneralOffsetPatternParser, this);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace NodaTime.Globalization
         /// </summary>
         public CultureInfo CultureInfo {  get;  private set; }
 
-        internal AbstractNodaParser<Offset> OffsetParser { get { return offsetPatternCache; } }
+        internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return offsetPatternParser; } }
 
         /// <summary>
         ///   Gets or sets the number format.

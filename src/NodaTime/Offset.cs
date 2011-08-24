@@ -427,7 +427,10 @@ namespace NodaTime
         #endregion Formatting
 
         #region Parsing
-        private static readonly AbstractNodaParser<Offset> OffsetParser = new OffsetPatternParser().CreateCachingParser();
+        private static readonly string[] AllFormats = { "g", "n", "d" };
+        private const string DefaultFormatPattern = "g";
+
+        private static readonly PatternSupport<Offset> OffsetParser = new PatternSupport<Offset>(AllFormats, DefaultFormatPattern, Offset.Zero, fi => fi.OffsetPatternParser);
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
