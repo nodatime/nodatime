@@ -68,6 +68,7 @@ namespace NodaTime.Text
         internal bool ContinueAfterErrorWithMultipleFormats { get { return continueWithMultiple; } }
 
         #region Factory methods and readonly static fields
+
         internal static ParseResult<T> ForInvalidFormat(string formatString, params object[] parameters)
         {
             return ForInvalidFormat(() => new InvalidPatternException(string.Format(CultureInfo.CurrentCulture, formatString, parameters)));
@@ -95,21 +96,9 @@ namespace NodaTime.Text
 
         internal static readonly ParseResult<T> PositiveSignInvalid = ForInvalidValue(Resources.Parse_PositiveSignInvalid);
 
-        internal static ParseResult<T> EscapeAtEndOfString = ForInvalidFormat(Resources.Parse_EscapeAtEndOfString);
-
-        internal static ParseResult<T> MissingEndQuote(char closeQuote)
+        internal static ParseResult<T> CannotParseValue(string value, string format)
         {
-            return ForInvalidFormat(Resources.Parse_MissingEndQuote, closeQuote);
-        }
-
-        internal static ParseResult<T> RepeatCountExceeded(char patternCharacter, int maximumCount)
-        {
-            return ForInvalidFormat(Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
-        }
-
-        internal static ParseResult<T> CannotParseValue(string value, Type type, string format)
-        {
-            return ForInvalidValue(Resources.Parse_CannotParseValue, value, type, format);
+            return ForInvalidValue(Resources.Parse_CannotParseValue, value, typeof(T), format);
         }
 
         internal static ParseResult<T> DoubleAssigment(char patternCharacter)
@@ -121,26 +110,12 @@ namespace NodaTime.Text
         internal static readonly ParseResult<T> ValueStringEmpty =
             new ParseResult<T>(() => new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_ValueStringEmpty)), false);
 
-        internal static readonly ParseResult<T> FormatStringEmpty = ForInvalidFormat(Resources.Parse_FormatStringEmpty);
-
-        internal static ParseResult<T> FormatInvalid(string format)
-        {
-            return ForInvalidFormat(Resources.Parse_FormatInvalid, format);
-        }
-
-        internal static readonly ParseResult<T> EmptyFormatsArray = ForInvalidFormat(Resources.Parse_EmptyFormatsArray);
-
-        internal static readonly ParseResult<T> FormatElementInvalid = ForInvalidFormat(Resources.Parse_FormatElementInvalid);
-
         internal static ParseResult<T> ExtraValueCharacters(string remainder)
         {
             return ForInvalidValue(Resources.Parse_ExtraValueCharacters, remainder);
         }
 
-        internal static readonly ParseResult<T> PercentDoubled = ForInvalidFormat(Resources.Parse_PercentDoubled);
-
-        internal static readonly ParseResult<T> PercentAtEndOfString = ForInvalidFormat(Resources.Parse_PercentAtEndOfString);
-
+        // TODO: This should be ForInvalidValue
         internal static readonly ParseResult<T> QuotedStringMismatch = ForInvalidFormat(Resources.Parse_QuotedStringMismatch);
 
         internal static ParseResult<T> EscapedCharacterMismatch(char patternCharacter)
@@ -164,26 +139,6 @@ namespace NodaTime.Text
             return ForInvalidValue(Resources.Parse_MismatchedCharacter, patternCharacter);
         }
 
-        internal static ParseResult<T> UnknownStandardFormat(char patternCharacter, Type type)
-        {
-            return ForInvalidFormat(Resources.Parse_UnknownStandardFormat, patternCharacter, type);
-        }
-
-        internal static ParseResult<T> PrecisionNotSupported(string pattern, Type type)
-        {
-            return ForInvalidFormat(Resources.Parse_PrecisionNotSupported, pattern, type);
-        }
-
-        internal static ParseResult<T> StandardFormatWhitespace(string pattern, Type type)
-        {
-            return ForInvalidFormat(Resources.Parse_StandardFormatWhitespace, pattern, type);
-        }
-
-        internal static ParseResult<T> Hour12PatternNotSupported(Type type)
-        {
-            return ForInvalidFormat(Resources.Parse_Hour12PatternNotSupported, type.FullName);
-        }
-
         internal static readonly ParseResult<T> NoMatchingFormat = ForInvalidValue(Resources.Parse_NoMatchingFormat);
 
         internal static ParseResult<T> ValueOutOfRange(object value, Type type)
@@ -191,12 +146,8 @@ namespace NodaTime.Text
             return ForInvalidValue(Resources.Parse_ValueOutOfRange, value, type);
         }
 
+        // TODO: This should be ForInvalidValue
         internal static readonly ParseResult<T> MissingSign = ForInvalidFormat(Resources.Parse_MissingSign);
-
-        internal static ParseResult<T> UnexpectedEndOfString(string pattern)
-        {
-            return ForInvalidFormat(Resources.Parse_UnexpectedEndOfString, pattern);
-        }
         #endregion
     }
 }

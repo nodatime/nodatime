@@ -36,8 +36,10 @@ namespace NodaTime.Globalization
     {
         #region Patterns and pattern parsers
         private static readonly IPatternParser<Offset> GeneralOffsetPatternParser = new OffsetPatternParser();
+        private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser();
 
         private readonly FixedFormatInfoPatternParser<Offset> offsetPatternParser;
+        private readonly FixedFormatInfoPatternParser<Instant> instantPatternParser;
         #endregion
 
         /// <summary>
@@ -78,6 +80,7 @@ namespace NodaTime.Globalization
             offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
             offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
             offsetPatternParser = new FixedFormatInfoPatternParser<Offset>(GeneralOffsetPatternParser, this);
+            instantPatternParser = new FixedFormatInfoPatternParser<Instant>(GeneralInstantPatternParser, this);
         }
 
         /// <summary>
@@ -86,6 +89,7 @@ namespace NodaTime.Globalization
         public CultureInfo CultureInfo {  get;  private set; }
 
         internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return offsetPatternParser; } }
+        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return instantPatternParser; } }
 
         /// <summary>
         ///   Gets or sets the number format.
