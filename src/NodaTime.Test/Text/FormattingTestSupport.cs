@@ -18,7 +18,6 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
-using NodaTime.Format;
 using NodaTime.Properties;
 using NodaTime.Text;
 
