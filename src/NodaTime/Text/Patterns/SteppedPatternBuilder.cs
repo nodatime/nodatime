@@ -27,9 +27,9 @@ namespace NodaTime.Text.Patterns
     /// </summary>
     internal class SteppedPatternBuilder<TResult, TBucket> where TBucket : ParseBucket<TResult>
     {
-        private NodaFormatInfo formatInfo;
+        private readonly NodaFormatInfo formatInfo;
 
-        private readonly List<NodaAction<TResult, StringBuilder>> formatActions;
+        private NodaAction<TResult, StringBuilder> formatActions;
         private readonly List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions;
         private readonly NodaFunc<TBucket> bucketProvider;
 
@@ -39,7 +39,7 @@ namespace NodaTime.Text.Patterns
             AllowInnerWhite = (parseStyles & ParseStyles.AllowInnerWhite) != ParseStyles.None;
             AllowLeadingWhite = (parseStyles & ParseStyles.AllowLeadingWhite) != ParseStyles.None;
             AllowTrailingWhite = (parseStyles & ParseStyles.AllowTrailingWhite) != ParseStyles.None;
-            formatActions = new List<NodaAction<TResult, StringBuilder>>();
+            formatActions = null;
             parseActions = new List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>>();
             this.bucketProvider = bucketProvider;
         }
@@ -72,7 +72,7 @@ namespace NodaTime.Text.Patterns
 
         internal void AddFormatAction(NodaAction<TResult, StringBuilder> formatAction)
         {
-            formatActions.Add(formatAction);
+            formatActions += formatAction;
         }
 
         /// <summary>
@@ -201,11 +201,11 @@ namespace NodaTime.Text.Patterns
 
         private class SteppedPattern : IParsedPattern<TResult>
         {
-            private readonly List<NodaAction<TResult, StringBuilder>> formatActions;
+            private readonly NodaAction<TResult, StringBuilder> formatActions;
             private readonly List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions;
             private readonly NodaFunc<TBucket> bucketProvider;
 
-            public SteppedPattern(List<NodaAction<TResult, StringBuilder>> formatActions,
+            public SteppedPattern(NodaAction<TResult, StringBuilder> formatActions,
                 List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions,
                 NodaFunc<TBucket> bucketProvider)
             {
@@ -247,10 +247,8 @@ namespace NodaTime.Text.Patterns
             public string Format(TResult value)
             {
                 StringBuilder builder = new StringBuilder();
-                foreach (var action in formatActions)
-                {
-                    action(value, builder);
-                }
+                // This will call all the actions in the multicast delegate.
+                formatActions(value, builder);
                 return builder.ToString();
             }
         }
