@@ -118,6 +118,7 @@
     <Compile Include="Text\InvalidPatternException.cs" />
     <Compile Include="Text\OffsetPatternParser.cs" />
     <Compile Include="Text\PatternSupport.cs" />
+    <Compile Include="Text\Patterns\AbstractParsedPattern.cs" />
     <Compile Include="Text\Patterns\IPatternParser.cs" />
     <Compile Include="Text\Patterns\PatternCursor.cs" />
     <Compile Include="Text\Patterns\PatternParseResult.cs" />
