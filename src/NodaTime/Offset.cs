@@ -18,6 +18,7 @@
 using System;
 using NodaTime.Globalization;
 using NodaTime.Text;
+using NodaTime.Text.Patterns;
 
 #endregion
 
@@ -430,7 +431,7 @@ namespace NodaTime
         private static readonly string[] AllFormats = { "g", "n", "d" };
         private const string DefaultFormatPattern = "g";
 
-        private static readonly PatternSupport<Offset> OffsetParser = new PatternSupport<Offset>(AllFormats, DefaultFormatPattern, Offset.Zero, fi => fi.OffsetPatternParser);
+        private static readonly PatternBclSupport<Offset> OffsetParser = new PatternBclSupport<Offset>(AllFormats, DefaultFormatPattern, Offset.Zero, fi => fi.OffsetPatternParser);
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>

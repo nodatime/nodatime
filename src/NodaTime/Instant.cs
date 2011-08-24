@@ -19,6 +19,7 @@ using System;
 using NodaTime.Format;
 using NodaTime.Globalization;
 using NodaTime.Text;
+using NodaTime.Text.Patterns;
 
 #endregion
 
@@ -409,7 +410,7 @@ namespace NodaTime
         private static readonly string[] AllFormats = { "g", "n" };
         private const string DefaultFormatPattern = "g";
 
-        private static readonly PatternSupport<Instant> InstantParser = new PatternSupport<Instant>(AllFormats, DefaultFormatPattern, Instant.MinValue, fi => fi.InstantPatternParser);
+        private static readonly PatternBclSupport<Instant> InstantParser = new PatternBclSupport<Instant>(AllFormats, DefaultFormatPattern, Instant.MinValue, fi => fi.InstantPatternParser);
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
