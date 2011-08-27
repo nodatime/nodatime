@@ -21,6 +21,6 @@ namespace NodaTime.Text.Patterns
 {
     internal interface IPatternParser<T>
     {
-        PatternParseResult<T> ParsePattern(string pattern, NodaFormatInfo formatInfo, ParseStyles parseStyles);
+        PatternParseResult<T> ParsePattern(string pattern, NodaFormatInfo formatInfo);
     }
 }

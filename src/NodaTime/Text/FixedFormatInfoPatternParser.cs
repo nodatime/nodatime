@@ -30,35 +30,23 @@ namespace NodaTime.Text
 
         private readonly IPatternParser<T> patternParser;
         // TODO: Replace this with a real LRU cache or something similar.
-        private readonly Dictionary<string, PatternParseResult<T>>[] caches;
+        private readonly Dictionary<string, PatternParseResult<T>> cache;
         private readonly NodaFormatInfo formatInfo;
 
         internal FixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
         {
             this.patternParser = patternParser;
             // There aren't many valid style combinations, so we partition the caches by style.
-            caches = new Dictionary<string, PatternParseResult<T>>[StyleCombinations];
+            cache = new Dictionary<string, PatternParseResult<T>>();
             this.formatInfo = formatInfo;
         }
 
-        internal PatternParseResult<T> ParsePattern(string pattern, ParseStyles styles)
+        internal PatternParseResult<T> ParsePattern(string pattern)
         {
             // TODO: This currently only caches valid patterns. Is that reasonable?
-            // TODO: Validate styles here or elsewhere?
 
-            // This should be in range.
-            var cache = caches[(int) styles];
-
-            if (cache == null)
-            {
-                // It's possible that another thread won't notice the addition of this value. That's okay - we may
-                // do more parsing than absolutely necessary. The important thing is that the dictionary will be usable
-                // by the end of its constructor, and all of that is published by the constructor. We actually *use*
-                // the caches in a thread-safe way.
-                cache = new Dictionary<string, PatternParseResult<T>>();
-                caches[(int)styles] = cache;
-            }
-
+            // I don't normally like locking on anything other than object, but I trust
+            // Dictionary not to lock on itself.
             lock (cache)
             {
                 PatternParseResult<T> cached;
@@ -70,7 +58,7 @@ namespace NodaTime.Text
 
             // Unlock, create the parser and then update the cache if necessary. We don't want to lock
             // for longer than we need to.
-            var result = patternParser.ParsePattern(pattern, formatInfo, styles);
+            var result = patternParser.ParsePattern(pattern, formatInfo);
             if (result.Success)
             {
                 lock (cache)

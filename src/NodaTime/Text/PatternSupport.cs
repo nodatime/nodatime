@@ -40,37 +40,37 @@ namespace NodaTime.Text
             this.defaultFormatPattern = defaultFormatPattern;
         }
 
-        internal T Parse(string value, NodaFormatInfo formatInfo, ParseStyles styles)
+        internal T Parse(string value, NodaFormatInfo formatInfo)
         {
-            return ParseExact(value, allFormats, formatInfo, styles);
+            return ParseExact(value, allFormats, formatInfo);
         }
 
-        internal T ParseExact(string value, string format, NodaFormatInfo formatInfo, ParseStyles styles)
+        internal T ParseExact(string value, string format, NodaFormatInfo formatInfo)
         {
-            return ParseSingle(value, format, formatInfo, styles).GetResultOrThrow();
+            return ParseSingle(value, format, formatInfo).GetResultOrThrow();
         }
 
-        internal T ParseExact(string value, string[] formats, NodaFormatInfo formatInfo, ParseStyles styles)
+        internal T ParseExact(string value, string[] formats, NodaFormatInfo formatInfo)
         {
-            return ParseMultiple(value, formats, formatInfo, styles).GetResultOrThrow();
+            return ParseMultiple(value, formats, formatInfo).GetResultOrThrow();
         }
 
-        internal bool TryParse(string value, NodaFormatInfo formatInfo, ParseStyles styles, out T result)
+        internal bool TryParse(string value, NodaFormatInfo formatInfo, out T result)
         {
-            return TryParseExact(value, allFormats, formatInfo, styles, out result);
+            return TryParseExact(value, allFormats, formatInfo, out result);
         }
 
-        internal bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, ParseStyles styles, out T result)
+        internal bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, out T result)
         {
-            return ParseSingle(value, format, formatInfo, styles).TryGetResult(failureValue, out result);
+            return ParseSingle(value, format, formatInfo).TryGetResult(failureValue, out result);
         }
 
-        internal bool TryParseExact(string value, string[] formats, NodaFormatInfo formatInfo, ParseStyles styles, out T result)
+        internal bool TryParseExact(string value, string[] formats, NodaFormatInfo formatInfo, out T result)
         {
-            return ParseMultiple(value, formats, formatInfo, styles).TryGetResult(failureValue, out result);
+            return ParseMultiple(value, formats, formatInfo).TryGetResult(failureValue, out result);
         }
 
-        internal ParseResult<T> ParseMultiple(string value, string[] formats, NodaFormatInfo formatInfo, ParseStyles styles)
+        internal ParseResult<T> ParseMultiple(string value, string[] formats, NodaFormatInfo formatInfo)
         {
             if (formats == null)
             {
@@ -83,7 +83,7 @@ namespace NodaTime.Text
 
             foreach (string format in formats)
             {
-                ParseResult<T> result = ParseSingle(value, format, formatInfo, styles);
+                ParseResult<T> result = ParseSingle(value, format, formatInfo);
                 if (result.Success || !result.ContinueAfterErrorWithMultipleFormats)
                 {
                     return result;
@@ -92,14 +92,14 @@ namespace NodaTime.Text
             return ParseResult<T>.NoMatchingFormat;
         }
 
-        internal ParseResult<T> ParseSingle(string value, string pattern, NodaFormatInfo formatInfo, ParseStyles styles)
+        internal ParseResult<T> ParseSingle(string value, string pattern, NodaFormatInfo formatInfo)
         {
             if (pattern == null)
             {
                 // TODO: Rename format to pattern everywhere...
                 return ParseResult<T>.ArgumentNull("format");
             }
-            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(pattern, styles);
+            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(pattern);
             if (!patternResult.Success)
             {
                 return patternResult.ToParseResult();
@@ -114,7 +114,7 @@ namespace NodaTime.Text
             {
                 pattern = defaultFormatPattern;
             }
-            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(pattern, ParseStyles.None);
+            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(pattern);
             IParsedPattern<T> parsedPattern = patternResult.GetResultOrThrow();
             return parsedPattern.Format(value);
         }

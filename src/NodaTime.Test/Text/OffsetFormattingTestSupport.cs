@@ -56,54 +56,6 @@ namespace NodaTime.Test.Text
         /// Test data that can only be used to test parsing.
         /// </summary>
         internal static OffsetData[] OffsetParseData = {
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34  ", F = "  '  'HH:mm'  '  ", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34  ", F = "  '  'HH:mm'  '  ", Styles = SurroundingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34  ", F = "HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34  ", F = "HH:mm", Styles = SurroundingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34", F = "  '  'HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34", F = "  '  'HH:mm", Styles = LeadingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34", F = "HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "  12:34", F = "HH:mm", Styles = LeadingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = " 12:34", F = "HH :mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = " 12:34", F = "HH :mm", Styles = InnerSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = " 12:34", F = "HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = " 12:34", F = "HH:mm", Styles = InnerSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12  :34", F = "HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12  :34", F = "HH:mm", Styles = InnerSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34  ", F = "HH:mm'  '  ", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34  ", F = "HH:mm'  '  ", Styles = TrailingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34  ", F = "HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34  ", F = "HH:mm", Styles = TrailingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "  '  'HH:mm'  '  ", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "  '  'HH:mm'  '  ", Styles = SurroundingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "  '  'HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "  '  'HH:mm", Styles = LeadingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "  HH:mm  ", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "'  'HH:mm'  '", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "  HH:mm  ", Styles = SurroundingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "'  'HH:mm'  '", Styles = SurroundingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "  HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "'  'HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "  HH:mm", Styles = LeadingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "'  'HH:mm", Styles = LeadingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = " HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = " HH:mm", Styles = InnerSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH  :mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH  :mm", Styles = InnerSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm'  '  ", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm'  '  ", Styles = TrailingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm  ", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm'  '", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm  ", Styles = TrailingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm'  '", Styles = TrailingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = AllSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = InnerSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = LeadingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = SurroundingSpace },
-            new OffsetData(12, 34, 0, 0) { C = EnUs, S = "12:34", F = "HH:mm", Styles = TrailingSpace },
             new OffsetData(Offset.Zero) { C = EnUs, S = "", F = "g", Exception=typeof(UnparsableValueException), Message = Resources.Parse_ValueStringEmpty },
             new OffsetData(Offset.Zero) { C = EnUs, S = "1", F = "HH", Exception=typeof(UnparsableValueException), Message = Resources.Parse_MismatchedNumber, Parameters = {"HH"} },
             new OffsetData(Offset.Zero) { C = EnUs, S = "1", F = "mm", Exception=typeof(UnparsableValueException), Message = Resources.Parse_MismatchedNumber, Parameters = {"mm"} },
@@ -118,7 +70,7 @@ namespace NodaTime.Test.Text
             new OffsetData(Offset.Zero) { C = EnUs, S = "123", F = null, Exception=typeof(ArgumentNullException), ArgumentName = "format" },
             new OffsetData(Offset.Zero) { C = EnUs, S = "1234", F = "fff", Exception=typeof(UnparsableValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {"4"} },
             new OffsetData(Offset.Zero) { C = EnUs, S = "1234", F = "FFF", Exception=typeof(UnparsableValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {"4"} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "1a", F = "H ", Exception=typeof(UnparsableValueException), Message = Resources.Parse_MismatchedSpace},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "1a", F = "H ", Exception=typeof(UnparsableValueException), Message = Resources.Parse_MismatchedCharacter, Parameters = {' '}},
             new OffsetData(Offset.Zero) { C = EnUs, S = "2:", F = "%H", Exception=typeof(UnparsableValueException), Message = Resources.Parse_ExtraValueCharacters, Parameters = {":"}},
             new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%.", Exception=typeof(UnparsableValueException), Message = Resources.Parse_MissingDecimalSeparator},
             new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%:", Exception=typeof(UnparsableValueException), Message = Resources.Parse_TimeSeparatorMismatch},
@@ -140,6 +92,7 @@ namespace NodaTime.Test.Text
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
         /// </summary>
         internal static OffsetData[] OffsetFormattingCommonData = {
+            // TODO: A negative value of half an hour
             new OffsetData(Offset.Zero) { C = EnUs, S = ".", F = "%.", Name = "decimal separator" },
             new OffsetData(Offset.Zero) { C = EnUs, S = ":", F = "%:", Name = "date separator" },
             new OffsetData(Offset.Zero) { C = ItIt, S = ",", F = "%.", Name = "decimal separator" },
@@ -262,8 +215,8 @@ namespace NodaTime.Test.Text
         };
 
         /// <summary>
-        ///   Base for building filtered lists of parsing test data. This is here because we do not have access
-        ///   to LINQ.
+        /// Base for building filtered lists of parsing test data. This is here because we do not have access
+        /// to LINQ.
         /// </summary>
         /// <param name="test">The test predicate.</param>
         /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
@@ -307,24 +260,6 @@ namespace NodaTime.Test.Text
                     yield return data;
                 }
             }
-        }
-
-        /// <summary>
-        ///   Returns an iterator of test data with the parse style specified.
-        /// </summary>
-        /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> ParseWithStyles()
-        {
-            return FilteredParseTests(data => data.Styles != ParseStyles.None);
-        }
-
-        /// <summary>
-        ///   Returns an iterator of test data with no parse style specified.
-        /// </summary>
-        /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> ParseWithoutStyles()
-        {
-            return FilteredParseTests(data => data.Styles == ParseStyles.None);
         }
 
         /// <summary>

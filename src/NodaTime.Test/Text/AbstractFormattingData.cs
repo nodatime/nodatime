@@ -46,7 +46,6 @@ namespace NodaTime.Test.Text
         {
             V = value;
             PV = value;
-            Styles = ParseStyles.None;
             Parameters = new List<object>();
             ThreadCulture = CultureInfo.InvariantCulture;
             ThreadUiCulture = CultureInfo.InvariantCulture;
@@ -95,14 +94,6 @@ namespace NodaTime.Test.Text
         ///   The <see cref="CultureInfo" /> to use.
         /// </value>
         public CultureInfo C { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the styles to use for parsing.
-        /// </summary>
-        /// <value>
-        ///   The parsing styles.
-        /// </value>
-        public ParseStyles Styles { get; set; }
 
         /// <summary>
         ///   Gets or sets the optional test name. This name is appended to the generated test name
@@ -203,11 +194,6 @@ namespace NodaTime.Test.Text
                 }
                 builder.Append(String.Format(", string: [{0}], format: {1}", formatted, format));
 
-                if (Styles != ParseStyles.None)
-                {
-                    builder.Append(", Styles = ");
-                    builder.Append(Styles);
-                }
                 if (Exception != null)
                 {
                     builder.Append(", Exception = ");

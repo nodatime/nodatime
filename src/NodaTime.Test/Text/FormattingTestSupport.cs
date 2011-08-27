@@ -49,12 +49,6 @@ namespace NodaTime.Test.Text
         /// </summary>
         public const string Nbsp = "\u00a0";
 
-        public const ParseStyles LeadingSpace = ParseStyles.AllowLeadingWhite;
-        public const ParseStyles TrailingSpace = ParseStyles.AllowTrailingWhite;
-        public const ParseStyles InnerSpace = ParseStyles.AllowInnerWhite;
-        public const ParseStyles SurroundingSpace = ParseStyles.AllowLeadingWhite | ParseStyles.AllowTrailingWhite;
-        public const ParseStyles AllSpace = ParseStyles.AllowWhiteSpaces;
-
         public static readonly CultureInfo EnUs = new CultureInfo("en-US");
         public static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
         public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
