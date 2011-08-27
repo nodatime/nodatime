@@ -436,7 +436,7 @@ namespace NodaTime
         /// </summary>
         public static Offset Parse(string value)
         {
-            return OffsetParser.Parse(value, NodaFormatInfo.CurrentInfo, ParseStyles.None);
+            return OffsetParser.Parse(value, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -444,15 +444,7 @@ namespace NodaTime
         /// </summary>
         public static Offset Parse(string value, IFormatProvider formatProvider)
         {
-            return OffsetParser.Parse(value, NodaFormatInfo.GetInstance(formatProvider), ParseStyles.None);
-        }
-
-        /// <summary>
-        /// Parses the given string using the specified format provider and style.
-        /// </summary>
-        public static Offset Parse(string value, IFormatProvider formatProvider, ParseStyles styles)
-        {
-            return OffsetParser.Parse(value, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return OffsetParser.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -460,23 +452,15 @@ namespace NodaTime
         /// </summary>
         public static Offset ParseExact(string value, string format, IFormatProvider formatProvider)
         {
-            return OffsetParser.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), ParseStyles.None);
+            return OffsetParser.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
-        /// Parses the given string using the specified format pattern, format provider and style.
+        /// Parses the given string using the specified format patterns and format provider.
         /// </summary>
-        public static Offset ParseExact(string value, string format, IFormatProvider formatProvider, ParseStyles styles)
+        public static Offset ParseExact(string value, string[] formats, IFormatProvider formatProvider)
         {
-            return OffsetParser.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles);
-        }
-
-        /// <summary>
-        /// Parses the given string using the specified format patterns, format provider and style.
-        /// </summary>
-        public static Offset ParseExact(string value, string[] formats, IFormatProvider formatProvider, ParseStyles styles)
-        {
-            return OffsetParser.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return OffsetParser.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -487,18 +471,18 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Offset result)
         {
-            return OffsetParser.TryParse(value, NodaFormatInfo.CurrentInfo, ParseStyles.None, out result);
+            return OffsetParser.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
         }
 
         /// <summary>
-        /// Attempts to parse the given string using the specified format provider and style.
+        /// Attempts to parse the given string using the specified format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParse(string value, IFormatProvider formatProvider, ParseStyles styles, out Offset result)
+        public static bool TryParse(string value, IFormatProvider formatProvider, out Offset result)
         {
-            return OffsetParser.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return OffsetParser.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
@@ -507,20 +491,20 @@ namespace NodaTime
         /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, ParseStyles styles, out Offset result)
+        public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, out Offset result)
         {
-            return OffsetParser.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return OffsetParser.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
-        /// Attempts to parse the given string using the specified format patterns, format provider and style.
+        /// Attempts to parse the given string using the specified format patterns and format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, ParseStyles styles, out Offset result)
+        public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, out Offset result)
         {
-            return OffsetParser.TryParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return OffsetParser.TryParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
         #endregion Parsing
 

@@ -33,25 +33,13 @@ namespace NodaTime.Text.Patterns
         private readonly List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions;
         private readonly NodaFunc<TBucket> bucketProvider;
 
-        internal SteppedPatternBuilder(NodaFormatInfo formatInfo, ParseStyles parseStyles, NodaFunc<TBucket> bucketProvider)
+        internal SteppedPatternBuilder(NodaFormatInfo formatInfo, NodaFunc<TBucket> bucketProvider)
         {
             this.formatInfo = formatInfo;
-            AllowInnerWhite = (parseStyles & ParseStyles.AllowInnerWhite) != ParseStyles.None;
-            AllowLeadingWhite = (parseStyles & ParseStyles.AllowLeadingWhite) != ParseStyles.None;
-            AllowTrailingWhite = (parseStyles & ParseStyles.AllowTrailingWhite) != ParseStyles.None;
             formatActions = null;
             parseActions = new List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>>();
             this.bucketProvider = bucketProvider;
         }
-
-        /// <summary>Indicates whether or not inner white space is allowed.</summary>
-        internal bool AllowInnerWhite { get; private set; }
-
-        /// <summary>Indicates whether or not leading white space is allowed.</summary>
-        internal bool AllowLeadingWhite { get; private set; }
-
-        /// <summary>Indicates whether or not trailing white space is allowed.</summary>
-        internal bool AllowTrailingWhite { get; private set; }
 
         public NodaFormatInfo FormatInfo { get { return formatInfo; } }
 

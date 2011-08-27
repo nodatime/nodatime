@@ -36,7 +36,7 @@ namespace NodaTime.Benchmarks
         public OffsetBenchmarks()
         {
             offsetPatternParser = new OffsetPatternParser();
-            var parseResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo, ParseStyles.None);
+            var parseResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
             offsetPattern = parseResult.GetResultOrThrow();
         }
         
@@ -65,27 +65,27 @@ namespace NodaTime.Benchmarks
         public void TryParseExact_Valid_New()
         {
             Offset result;
-            Offset.TryParseExact("12:34", "HH:mm", InvariantFormatInfo, ParseStyles.None, out result);
+            Offset.TryParseExact("12:34", "HH:mm", InvariantFormatInfo, out result);
         }
 
         [Benchmark]
         public void TryParseExact_InvalidFormat_New()
         {
             Offset result;
-            Offset.TryParseExact("12:34", "hh:mm", InvariantFormatInfo, ParseStyles.None, out result);
+            Offset.TryParseExact("12:34", "hh:mm", InvariantFormatInfo, out result);
         }
 
         [Benchmark]
         public void TryParseExact_InvalidValue_New()
         {
             Offset result;
-            Offset.TryParseExact("123:45", "HH:mm", InvariantFormatInfo, ParseStyles.None, out result);
+            Offset.TryParseExact("123:45", "HH:mm", InvariantFormatInfo, out result);
         }
 
         [Benchmark]
         public void ParseExactIncludingPreparse_Valid()
         {
-            var parsePatternResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo, ParseStyles.None);
+            var parsePatternResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
             var pattern = parsePatternResult.GetResultOrThrow();
             Offset result;
             NodaTime.Text.ParseResult<Offset> parseResult = pattern.Parse("12:34");
@@ -103,13 +103,13 @@ namespace NodaTime.Benchmarks
         [Benchmark]
         public void ParsePattern_Invalid()
         {
-            offsetPatternParser.ParsePattern("hh:mm", InvariantFormatInfo, ParseStyles.None);
+            offsetPatternParser.ParsePattern("hh:mm", InvariantFormatInfo);
         }
 
         [Benchmark]
         public void ParsePattern_Valid()
         {
-            offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo, ParseStyles.None);
+            offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
         }
 
         [Benchmark]

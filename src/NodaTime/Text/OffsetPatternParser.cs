@@ -38,11 +38,7 @@ namespace NodaTime.Text
             { ':', HandleColon }, //(pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<Offset>.TimeSeparatorMismatch) },
             { '+', HandlePlus },
             { '-', HandleMinus },
-            {
-                'h',
-                (pattern, builder) =>
-                PatternParseResult<Offset>.Hour12PatternNotSupported
-                },
+            { 'h', (pattern, builder) => PatternParseResult<Offset>.Hour12PatternNotSupported },
             { 'H', Handle24HourSpecifier },
             { 'm', HandleMinuteSpecifier },
             { 's', HandleSecondSpecifier },
@@ -50,7 +46,7 @@ namespace NodaTime.Text
             { 'F', HandleFractionSpecifier },
         };
 
-        public PatternParseResult<Offset> ParsePattern(string pattern, NodaFormatInfo formatInfo, ParseStyles parseStyles)
+        public PatternParseResult<Offset> ParsePattern(string pattern, NodaFormatInfo formatInfo)
         {
             if (pattern == null)
             {
@@ -68,53 +64,22 @@ namespace NodaTime.Text
                 {
                     return PatternParseResult<Offset>.ForValue(CreateNumberPattern(formatInfo));
                 }
-                return ExpandStandardFormatPattern(patternCharacter, formatInfo, parseStyles);
+                return ExpandStandardFormatPattern(patternCharacter, formatInfo);
             }
 
-            var patternBuilder = new SteppedPatternBuilder<Offset, OffsetParseBucket>(formatInfo, parseStyles, () => new OffsetParseBucket());
+            var patternBuilder = new SteppedPatternBuilder<Offset, OffsetParseBucket>(formatInfo, () => new OffsetParseBucket());
             var patternCursor = new PatternCursor(pattern);
 
-            // FIXME: Still need to reproduce the whitespace in the pattern when formatting.
-            // FIXME: Put all of this in one place... in the builder?
-            // FIXME: Presumably we don't have tests for this...
-            if (patternBuilder.AllowTrailingWhite)
-            {
-                patternCursor.TrimTrailingWhiteSpaces();
-                patternCursor.TrimTrailingInQuoteSpaces();
-                patternBuilder.AddParseAction((str, bucket) =>
-                {
-                    str.TrimTrailingWhiteSpaces();
-                    return null;
-                });
-            }
-            if (patternBuilder.AllowLeadingWhite)
-            {
-                patternCursor.TrimLeadingWhiteSpaces();
-                patternCursor.TrimLeadingInQuoteSpaces();
-                patternBuilder.AddParseAction((str, bucket) =>
-                {
-                    str.TrimLeadingWhiteSpaces();
-                    return null;
-                });
-            }
             // Prime the pump...
-            // TODO: Add this to the builder
+            // TODO: Add this to the builder?
             patternBuilder.AddParseAction((str, bucket) =>
                                           {
                                               str.MoveNext();
                                               return null;
                                           });
 
-            bool allowInnerWhite = patternBuilder.AllowInnerWhite;
-
             while (patternCursor.MoveNext())
             {
-                // Not sure about this... skipping here means we don't get to know whether there *was* whitespace
-                // when we hit a space in the pattern itself.
-                if (allowInnerWhite)
-                {
-                    patternBuilder.SkipWhiteSpace();
-                }
                 CharacterHandler handler;
                 if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
                 {
@@ -130,9 +95,8 @@ namespace NodaTime.Text
         }
 
         #region Standard patterns
-        private PatternParseResult<Offset> ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo, ParseStyles parseStyles)
+        private PatternParseResult<Offset> ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)
         {
-            // TODO: Cache these by culture.
             string singlePatternResource = null;
             switch (patternCharacter)
             {
@@ -142,7 +106,7 @@ namespace NodaTime.Text
                     foreach (char c in "flms")
                     {
                         // Each of the parsers could fail
-                        var individual = ExpandStandardFormatPattern(c, formatInfo, parseStyles);
+                        var individual = ExpandStandardFormatPattern(c, formatInfo);
                         if (!individual.Success)
                         {
                             return individual;
@@ -171,7 +135,7 @@ namespace NodaTime.Text
             }
             // TODO: Guard against recursion? Validate that the pattern expands to a longer pattern?
             string pattern = Resources.ResourceManager.GetString(singlePatternResource, formatInfo.CultureInfo);
-            return ParsePattern(pattern, formatInfo, parseStyles);
+            return ParsePattern(pattern, formatInfo);
         }
 
         private string FormatGeneral(Offset value, List<IParsedPattern<Offset>> parsedPatterns)
@@ -227,23 +191,7 @@ namespace NodaTime.Text
             {
                 return failure;
             }
-            builder.AddParseAction((str, bucket) =>
-            {
-                foreach (char character in quoted)
-                {
-                    if (character == ' ' && builder.AllowInnerWhite)
-                    {
-                        str.SkipWhiteSpaces();
-                    }
-                    else if (!str.Match(character))
-                    {
-                        return ParseResult<Offset>.QuotedStringMismatch;
-                    }
-                }
-                return null;
-            });
-            builder.AddFormatAction((offset, sb) => sb.Append(quoted));
-            return null;
+            return builder.AddLiteral(quoted, ParseResult<Offset>.QuotedStringMismatch);
         }
 
         private static PatternParseResult<Offset> HandleBackslash(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
@@ -434,17 +382,7 @@ namespace NodaTime.Text
 
         private static PatternParseResult<Offset> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
-            char current = pattern.Current;
-            if (current == ' ')
-            {
-                builder.AddParseAction((str, bucket) => !builder.AllowInnerWhite && !str.Match(' ') ? ParseResult<Offset>.MismatchedSpace : null);
-                builder.AddFormatAction((offset, sb) => sb.Append(current));
-            }
-            else
-            {
-                builder.AddLiteral(current, ParseResult<Offset>.MismatchedCharacter);
-            }
-            return null;
+            return builder.AddLiteral(pattern.Current, ParseResult<Offset>.MismatchedCharacter);
         }
 
         private static IParsedPattern<Offset> CreateNumberPattern(NodaFormatInfo formatInfo)
