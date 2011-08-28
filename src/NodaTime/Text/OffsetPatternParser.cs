@@ -238,14 +238,13 @@ namespace NodaTime.Text
 
                     // If there *was* a decimal separator, we should definitely have a number.
                     int fractionalSeconds;
-                    if (!valueCursor.ParseFraction(count, 3, out fractionalSeconds, false)) // We don't need *all* the digits to be present
+                    // Last argument is false because we don't need *all* the digits to be present
+                    if (!valueCursor.ParseFraction(count, 3, out fractionalSeconds, false))
                     {
                         return ParseResult<Offset>.MismatchedNumber(new string('F', count));
                     }
-                    if (!BucketHelper.TryAssignNewValue(ref bucket.FractionalSeconds, fractionalSeconds, 'F'))
-                    {
-                        return ParseResult<Offset>.DoubleAssigment('F');
-                    }
+                    // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
+                    bucket.FractionalSeconds = fractionalSeconds;
                     return null;
                 });
                 builder.AddFormatAction((offset, sb) => sb.Append(decimalSeparator));
@@ -260,12 +259,24 @@ namespace NodaTime.Text
 
         private static PatternParseResult<Offset> HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
+            PatternParseResult<Offset> failure = builder.AddField(PatternFields.Sign, pattern.Current);
+            if (failure != null)
+            {
+                return failure;
+            }
+
             builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.TotalMilliseconds >= 0);
             return null;
         }
 
         private static PatternParseResult<Offset> HandleMinus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
+            PatternParseResult<Offset> failure = builder.AddField(PatternFields.Sign, pattern.Current);
+            if (failure != null)
+            {
+                return failure;
+            }
+
             builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.TotalMilliseconds >= 0);
             return null;
         }
@@ -278,21 +289,13 @@ namespace NodaTime.Text
             {
                 return failure;
             }
-            
-            // TODO: Make this part of the *pattern* failure detection.
-            builder.AddParseAction((str, bucket) =>
+            failure = builder.AddField(PatternFields.Hours24, pattern.Current);
+            if (failure != null)
             {
-                int value;
-                if (str.ParseDigits(count, 2, out value))
-                {
-                    if (!BucketHelper.TryAssignNewValue(ref bucket.Hours, value, 'H'))
-                    {
-                        return ParseResult<Offset>.DoubleAssigment('H');
-                    }
-                    return null;
-                }
-                return ParseResult<Offset>.MismatchedNumber(new string('H', count));
-            });
+                return failure;
+            }
+
+            builder.AddParseValueAction(count, 2, pattern.Current, 0, 23, (bucket, value) => bucket.Hours = value);
             builder.AddFormatAction((offset, sb) => FormatHelper.LeftPad(offset.Hours, count, sb)); // builder.AddFormatLeftPad(count, offset => offset.Hours);
             return null;
         }
@@ -305,22 +308,13 @@ namespace NodaTime.Text
             {
                 return failure;
             }
-            // TODO: Make this part of the *pattern* failure detection.
-            builder.AddParseAction((str, bucket) =>
+            failure = builder.AddField(PatternFields.Minutes, pattern.Current);
+            if (failure != null)
             {
-                int value;
-                if (str.ParseDigits(count, 2, out value))
-                {
-                    if (!BucketHelper.TryAssignNewValue(ref bucket.Minutes, value, 'm'))
-                    {
-                        return ParseResult<Offset>.DoubleAssigment('m');
-                    }
-                    return null;
-                }
-                return ParseResult<Offset>.MismatchedNumber(new string('m', count));
-            });
-            builder.AddFormatAction((offset, sb) => FormatHelper.LeftPad(offset.Minutes, count, sb)); //builder.AddFormatLeftPad(count, offset => offset.Minutes);
-            
+                return failure;
+            }
+            builder.AddParseValueAction(count, 2, pattern.Current, 0, 59, (bucket, value) => bucket.Minutes = value);
+            builder.AddFormatAction((offset, sb) => FormatHelper.LeftPad(offset.Minutes, count, sb)); //builder.AddFormatLeftPad(count, offset => offset.Minutes);            
             return null;
         }
 
@@ -332,20 +326,13 @@ namespace NodaTime.Text
             {
                 return failure;
             }
-            // TODO: Make this part of the *pattern* failure detection.
-            builder.AddParseAction((str, bucket) =>
+            failure = builder.AddField(PatternFields.Seconds, pattern.Current);
+            if (failure != null)
             {
-                int value;
-                if (str.ParseDigits(count, 2, out value))
-                {
-                    if (!BucketHelper.TryAssignNewValue(ref bucket.Seconds, value, 's'))
-                    {
-                        return ParseResult<Offset>.DoubleAssigment('s');
-                    }
-                    return null;
-                }
-                return ParseResult<Offset>.MismatchedNumber(new string('s', count));
-            });
+                return failure;
+            }
+
+            builder.AddParseValueAction(count, 2, pattern.Current, 0, 59, (bucket, value) => bucket.Seconds = value);
             builder.AddFormatAction((offset, sb) => FormatHelper.LeftPad(offset.Seconds, count, sb)); //builder.AddFormatLeftPad(count, offset => offset.Seconds);
             return null;
         }
@@ -360,6 +347,12 @@ namespace NodaTime.Text
             {
                 return failure;
             }
+            failure = builder.AddField(PatternFields.Milliseconds, pattern.Current);
+            if (failure != null)
+            {
+                return failure;
+            }
+
             builder.AddParseAction((str, bucket) =>
             {
                 int fractionalSeconds;
@@ -369,11 +362,8 @@ namespace NodaTime.Text
                 {
                     return ParseResult<Offset>.MismatchedNumber(new string(patternCharacter, count));
                 }
-                if (!BucketHelper.TryAssignNewValue(ref bucket.FractionalSeconds, fractionalSeconds, pattern.Current))
-                {
-                    // TODO: Make this part of the *pattern* failure detection.
-                    return ParseResult<Offset>.DoubleAssigment(patternCharacter);
-                }
+                // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
+                bucket.FractionalSeconds = fractionalSeconds;
                 return null;
             });
             return patternCharacter == 'f' ? builder.AddFormatRightPad(count, 3, offset => offset.FractionalSeconds)
@@ -396,7 +386,7 @@ namespace NodaTime.Text
                     if (milliseconds < -NodaConstants.MillisecondsPerStandardDay ||
                         NodaConstants.MillisecondsPerStandardDay < milliseconds)
                     {
-                        return ParseResult<Offset>.ValueOutOfRange(milliseconds, typeof(Offset));
+                        return ParseResult<Offset>.ValueOutOfRange(milliseconds);
                     }
                     return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
                 }

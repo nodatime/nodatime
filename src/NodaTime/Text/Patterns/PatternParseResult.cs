@@ -154,6 +154,11 @@ namespace NodaTime.Text.Patterns
         {
             return ForInvalidFormat(Resources.Parse_UnexpectedEndOfString, pattern);
         }
+
+        internal static PatternParseResult<T> RepeatedFieldInPattern(char field)
+        {
+            return ForInvalidFormat(Resources.Parse_RepeatedFieldInPattern, field);
+        }
         #endregion
     }
 }

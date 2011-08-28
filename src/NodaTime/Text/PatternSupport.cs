@@ -78,7 +78,7 @@ namespace NodaTime.Text
             }
             if (formats.Length == 0)
             {
-                return ParseResult<T>.EmptyFormatsArray;
+                return PatternParseResult<T>.EmptyFormatsArray.ToParseResult();
             }
 
             foreach (string format in formats)

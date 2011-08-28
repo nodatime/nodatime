@@ -79,12 +79,17 @@ namespace NodaTime.Test.Text
             new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "%s", Exception=typeof(UnparsableValueException), Message = Resources.Parse_MismatchedNumber, Parameters = {"s"} },
             new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = ".H", Exception=typeof(UnparsableValueException), Message = Resources.Parse_MissingDecimalSeparator},
             new OffsetData(Offset.Zero) { C = EnUs, S = "a", F = "\\'", Exception=typeof(UnparsableValueException), Message = Resources.Parse_EscapedCharacterMismatch, Parameters = {'\''} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "axc", F = "'abc'", Exception=typeof(InvalidPatternException), Message = Resources.Parse_QuotedStringMismatch},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "axc", F = "'abc'", Exception=typeof(UnparsableValueException), Message = Resources.Parse_QuotedStringMismatch},
             new OffsetData(Offset.Zero) { C = EnUs, S = "z", F = "%y", Exception=typeof(UnparsableValueException), Message = Resources.Parse_MismatchedCharacter, Parameters = {'y'} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "10:11", F = "HH:HH", Exception=typeof(InvalidPatternException), Message = Resources.Parse_DoubleAssignment, Parameters = {'H'} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "10:11", F = "mm:mm", Exception=typeof(InvalidPatternException), Message = Resources.Parse_DoubleAssignment, Parameters = {'m'} },
-            new OffsetData(Offset.Zero) { C = EnUs, S = "10:11", F = "ss:ss", Exception=typeof(InvalidPatternException), Message = Resources.Parse_DoubleAssignment, Parameters = {'s'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "10:10", F = "HH:HH", Exception=typeof(InvalidPatternException), Message = Resources.Parse_RepeatedFieldInPattern, Parameters = {'H'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "10:10", F = "mm:mm", Exception=typeof(InvalidPatternException), Message = Resources.Parse_RepeatedFieldInPattern, Parameters = {'m'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "10:10", F = "ss:ss", Exception=typeof(InvalidPatternException), Message = Resources.Parse_RepeatedFieldInPattern, Parameters = {'s'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "-10:10", F = "+HH:-mm", Exception=typeof(InvalidPatternException), Message = Resources.Parse_RepeatedFieldInPattern, Parameters = {'-'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "-10:10", F = "-HH:+mm", Exception=typeof(InvalidPatternException), Message = Resources.Parse_RepeatedFieldInPattern, Parameters = {'+'} },
             new OffsetData(Offset.Zero) { C = EnUs, S = null, F = "g", Exception=typeof(ArgumentNullException), ArgumentName = "value" },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "24", F = "HH", Exception=typeof(UnparsableValueException), Message = Resources.Parse_FieldValueOutOfRange, Parameters = {24, 'H', typeof(Offset) }},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "60", F = "mm", Exception=typeof(UnparsableValueException), Message = Resources.Parse_FieldValueOutOfRange, Parameters = {60, 'm', typeof(Offset) }},
+            new OffsetData(Offset.Zero) { C = EnUs, S = "60", F = "ss", Exception=typeof(UnparsableValueException), Message = Resources.Parse_FieldValueOutOfRange, Parameters = {60, 's', typeof(Offset) }},
         };
 
         /// <summary>
