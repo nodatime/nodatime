@@ -508,7 +508,7 @@ namespace NodaTime
         }
         #endregion Parsing
 
-        #region Conversion
+        #region Construction
         /// <summary>
         ///   Returns the offset for the given milliseconds value.
         /// </summary>
@@ -538,45 +538,12 @@ namespace NodaTime
         /// </returns>
         public static Offset FromHours(int hours)
         {
-            return Create(hours, 0, 0, 0);
+            return new Offset(hours * NodaConstants.MillisecondsPerHour);
         }
 
         /// <summary>
-        ///   Creates an offset with the specified number of hours and minutes.
-        /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <returns>
-        ///   A new <see cref="Offset" /> representing the given values.
-        /// </returns>
-        /// <remarks>
-        ///   TODO: not sure about the name. Anyone got a better one?
-        /// </remarks>
-        public static Offset Create(int hours, int minutes)
-        {
-            return Create(hours, minutes, 0, 0);
-        }
-
-        /// <summary>
-        ///   Creates an offset with the specified number of hours, minutes, and seconds.
-        /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <param name="seconds">The number of seconds.</param>
-        /// <returns>
-        ///   A new <see cref="Offset" /> representing the given values.
-        /// </returns>
-        /// <remarks>
-        ///   TODO: not sure about the name. Anyone got a better one?
-        /// </remarks>
-        public static Offset Create(int hours, int minutes, int seconds)
-        {
-            return Create(hours, minutes, seconds, 0);
-        }
-
-        /// <summary>
-        ///   Creates an offset with the specified number of hours, minutes, seconds, and
-        ///   milliseconds.
+        /// Creates an offset with the specified number of hours, minutes, seconds, and
+        /// milliseconds.
         /// </summary>
         /// <param name="hours">The number of hours.</param>
         /// <param name="minutes">The number of minutes.</param>
@@ -599,7 +566,9 @@ namespace NodaTime
             milliseconds += Math.Abs(fractionalSeconds);
             return Offset.FromMilliseconds(sign * milliseconds);
         }
+        #endregion
 
+        #region Conversion
         /// <summary>
         /// Converts this offset to a .NET standard <see cref="TimeSpan" /> value.
         /// </summary>

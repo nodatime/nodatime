@@ -83,7 +83,7 @@ namespace ZoneInfoCompiler.Test
             // Initial offset for Paris
             const string text = "0:09:21";
             var offset = ParserHelper.ParseOffset(text);
-            Assert.AreEqual(Offset.Create(0, 9, 21), offset);
+            Assert.AreEqual(Offset.Create(0, 9, 21, 0), offset);
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace ZoneInfoCompiler.Test
             // Initial offset for Ouagadougou
             const string text = "-0:06:04";
             var offset = ParserHelper.ParseOffset(text);
-            Assert.AreEqual(-Offset.Create(0, 6, 4), offset);
+            Assert.AreEqual(-Offset.Create(0, 6, 4, 0), offset);
         }
 
         /// <summary>
