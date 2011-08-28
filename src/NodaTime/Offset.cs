@@ -536,7 +536,7 @@ namespace NodaTime
         /// <returns>
         ///   A new <see cref="Offset" /> representing the given value.
         /// </returns>
-        public static Offset ForHours(int hours)
+        public static Offset FromHours(int hours)
         {
             return Create(hours, 0, 0, 0);
         }

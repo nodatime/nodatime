@@ -23,7 +23,7 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class FixedDateTimeZoneTest
     {
-        private static readonly Offset ZoneOffset = Offset.ForHours(-8);
+        private static readonly Offset ZoneOffset = Offset.FromHours(-8);
         private static readonly FixedDateTimeZone TestZone = new FixedDateTimeZone(ZoneOffset);
         // private static readonly FixedDateTimeZone PstTimeZone = new FixedDateTimeZone("test", OneHour);
         private static readonly ZoneInterval FixedPeriod = new ZoneInterval(TestZone.Id, Instant.MinValue, Instant.MaxValue, ZoneOffset, Offset.Zero);

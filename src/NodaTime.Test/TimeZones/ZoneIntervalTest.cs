@@ -28,15 +28,15 @@ namespace NodaTime.Test.TimeZones
 
         private static readonly ZoneInterval SampleInterval =
             new ZoneInterval("TestTime", SampleStart, SampleEnd,
-                Offset.ForHours(9), Offset.ForHours(1));
+                Offset.FromHours(9), Offset.FromHours(1));
 
         [Test]
         public void PassthroughProperties()
         {
             Assert.AreEqual("TestTime", SampleInterval.Name);
-            Assert.AreEqual(Offset.ForHours(8), SampleInterval.BaseOffset);
-            Assert.AreEqual(Offset.ForHours(1), SampleInterval.Savings);
-            Assert.AreEqual(Offset.ForHours(9), SampleInterval.Offset);
+            Assert.AreEqual(Offset.FromHours(8), SampleInterval.BaseOffset);
+            Assert.AreEqual(Offset.FromHours(1), SampleInterval.Savings);
+            Assert.AreEqual(Offset.FromHours(9), SampleInterval.Offset);
             Assert.AreEqual(SampleStart, SampleInterval.Start);
             Assert.AreEqual(SampleEnd, SampleInterval.End);
         }
@@ -69,7 +69,7 @@ namespace NodaTime.Test.TimeZones
         public void Contains_Instant_WholeOfTime()
         {
             ZoneInterval interval = new ZoneInterval("All Time", Instant.MinValue, Instant.MaxValue,
-                Offset.ForHours(9), Offset.ForHours(1));
+                Offset.FromHours(9), Offset.FromHours(1));
             Assert.IsTrue(interval.Contains(SampleStart));
             Assert.IsTrue(interval.Contains(Instant.MinValue));
             Assert.IsTrue(interval.Contains(Instant.MaxValue));
@@ -79,7 +79,7 @@ namespace NodaTime.Test.TimeZones
         public void Contains_LocalInstant_WholeOfTime()
         {
             ZoneInterval interval = new ZoneInterval("All Time", Instant.MinValue, Instant.MaxValue,
-                Offset.ForHours(9), Offset.ForHours(1));
+                Offset.FromHours(9), Offset.FromHours(1));
             Assert.IsTrue(interval.Contains(SampleStart.Plus(Offset.Zero)));
             Assert.IsTrue(interval.Contains(LocalInstant.MinValue));
             Assert.IsTrue(interval.Contains(LocalInstant.MaxValue));

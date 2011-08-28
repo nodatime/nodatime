@@ -27,9 +27,9 @@ namespace NodaTime.Test.TimeZones
         private const long TicksPerStandardYear = NodaConstants.TicksPerStandardDay * 365;
         private const long TicksPerLeapYear = NodaConstants.TicksPerStandardDay * 366;
 
-        private Offset oneHour = Offset.ForHours(1);
-        private Offset twoHours = Offset.ForHours(2);
-        // private Offset minusOneHour = Offset.ForHours(-1);
+        private Offset oneHour = Offset.FromHours(1);
+        private Offset twoHours = Offset.FromHours(2);
+        // private Offset minusOneHour = Offset.FromHours(-1);
 
         [Test]
         public void Construct_InvalidMonth_Exception()

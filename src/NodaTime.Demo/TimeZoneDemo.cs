@@ -47,8 +47,8 @@ namespace NodaTime.Demo
             Assert.AreEqual("BST", interval.Name);
             Assert.AreEqual(Instant.FromUtc(2010, 3, 28, 1, 0), interval.Start);
             Assert.AreEqual(Instant.FromUtc(2010, 10, 31, 1, 0), interval.End);
-            Assert.AreEqual(Offset.ForHours(1), interval.Offset);
-            Assert.AreEqual(Offset.ForHours(1), interval.Savings);
+            Assert.AreEqual(Offset.FromHours(1), interval.Offset);
+            Assert.AreEqual(Offset.FromHours(1), interval.Savings);
         }
     }
 }
