@@ -159,6 +159,8 @@ namespace NodaTime.Test.Text
             new OffsetData(5, 12, 34, 567) { C = EnUs, S = "+5:12:34.567", F = "f"  },
             new OffsetData(5, 12, 34, 567) { C = EnUs, S = "+5:12:34.567", F = "g"  },
             new OffsetData(5, 12, 34, 567) { C = EnUs, S = "18,754,567", F = "n"  },
+            // See issue 15
+            new OffsetData(0, 0, 12, 340) { C = EnUs, S = "12.34", F = "ss.FFF"  },
             new OffsetData(5, 6, 7, 8) { C = EnUs, S = "0", F = "%f", PV = Offset.Create(0, 0, 0, 0)  },
             new OffsetData(5, 6, 7, 8) { C = EnUs, S = "00", F = "ff", PV = Offset.Create(0, 0, 0, 0)  },
             new OffsetData(5, 6, 7, 8) { C = EnUs, S = "008", F = "fff", PV = Offset.Create(0, 0, 0, 8)  },
