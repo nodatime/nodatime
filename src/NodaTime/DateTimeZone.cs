@@ -152,8 +152,8 @@ namespace NodaTime
         {
             this.id = id;
             this.isFixed = isFixed;
-            this.minOffsetTicks = minOffset.Ticks;
-            this.maxOffsetTicks = maxOffset.Ticks;
+            this.minOffsetTicks = minOffset.TotalTicks;
+            this.maxOffsetTicks = maxOffset.TotalTicks;
             isoChronology = new Chronology(this, CalendarSystem.Iso);
         }
 
