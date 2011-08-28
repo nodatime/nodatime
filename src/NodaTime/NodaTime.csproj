@@ -232,6 +232,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\HashCodeHelper.cs" />
     <Compile Include="Utility\ResourceHelper.cs" />
+    <Compile Include="Utility\Preconditions.cs" />
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -92,7 +92,6 @@ namespace NodaTime.Test.Text
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
         /// </summary>
         internal static OffsetData[] OffsetFormattingCommonData = {
-            // TODO: A negative value of half an hour
             new OffsetData(Offset.Zero) { C = EnUs, S = ".", F = "%.", Name = "decimal separator" },
             new OffsetData(Offset.Zero) { C = EnUs, S = ":", F = "%:", Name = "date separator" },
             new OffsetData(Offset.Zero) { C = ItIt, S = ",", F = "%.", Name = "decimal separator" },
@@ -143,9 +142,9 @@ namespace NodaTime.Test.Text
             new OffsetData(12, 0, 0, 0) { C = EnUs, S = "12", F = "HH" },
             new OffsetData(2, 0, 0, 0) { C = EnUs, S = "2", F = "%H" },
             new OffsetData(2, 0, 0, 0) { C = EnUs, S = "2", F = "%H" },
-            new OffsetData(-3, 0, 0, 0) { C = EnUs, S = "-", F = "%-", PV = Offset.Zero  },
+            new OffsetData(3, 0, 0, 0, true) { C = EnUs, S = "-", F = "%-", PV = Offset.Zero  },
             new OffsetData(3, 0, 0, 0) { C = EnUs, S = "+", F = "%+", PV = Offset.Zero  },
-            new OffsetData(-3, 0, 0, 0) { C = EnUs, S = "-", F = "%+", PV = Offset.Zero  },
+            new OffsetData(3, 0, 0, 0, true) { C = EnUs, S = "-", F = "%+", PV = Offset.Zero  },
             new OffsetData(5, 0, 0, 0) { C = EnUs, S = "+5", F = "g"  },
             new OffsetData(5, 12, 0, 0) { C = EnUs, S = "+5:12", F = "g"  },
             new OffsetData(5, 12, 34, 0) { C = EnUs, S = "+5:12:34", F = "g"  },
@@ -212,6 +211,7 @@ namespace NodaTime.Test.Text
             new OffsetData(Offset.MinValue) { C = null, S = "-23:59:59.999", F = "g", ThreadCulture = EnUs },
             new OffsetData(Offset.MaxValue) { C = EnUs, S = "+23:59:59.999", F = "g", ThreadCulture = ItIt },
             new OffsetData(Offset.MinValue) { C = EnUs, S = "-23:59:59.999", F = "g", ThreadCulture = ItIt },
+            new OffsetData(0, 30, 0, 0, true) { C = EnUs, S = "-00:30", F = "+HH:mm" }
         };
 
         /// <summary>
@@ -287,14 +287,19 @@ namespace NodaTime.Test.Text
             }
 
             /// <summary>
-            ///   Initializes a new instance of the <see cref="OffsetData" /> class.
+            /// Initializes a new instance of the <see cref="OffsetData" /> class.
             /// </summary>
             /// <param name="hours">The hours.</param>
             /// <param name="minutes">The minutes.</param>
             /// <param name="seconds">The seconds.</param>
             /// <param name="fractions">The fractions.</param>
             public OffsetData(int hours, int minutes, int seconds, int fractions)
-                : this(Offset.Create(hours, minutes, seconds, fractions))
+                : this(hours, minutes, seconds, fractions, false)
+            {
+            }
+
+            public OffsetData(int hours, int minutes, int seconds, int fractions, bool negative)
+                : this(Offset.Create(hours, minutes, seconds, fractions, negative))
             {
             }
 

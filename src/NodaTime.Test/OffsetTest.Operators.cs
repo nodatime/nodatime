@@ -54,16 +54,16 @@ namespace NodaTime.Test
         public void OperatorPlus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(0, (Offset.Zero + Offset.Zero).TotalMilliseconds, "0 + 0");
-            Assert.AreEqual(MakeOffset(3, 0, 0, 0), ThreeHours + Offset.Zero, "1 + 0");
-            Assert.AreEqual(MakeOffset(3, 0, 0, 0), Offset.Zero + ThreeHours, "0 + 1");
+            Assert.AreEqual(Offset.Create(3, 0, 0, 0), ThreeHours + Offset.Zero, "1 + 0");
+            Assert.AreEqual(Offset.Create(3, 0, 0, 0), Offset.Zero + ThreeHours, "0 + 1");
         }
 
         [Test]
         public void OperatorPlus_NonZero()
         {
-            Assert.AreEqual(MakeOffset(6, 0, 0, 0), ThreeHours + ThreeHours, "3,000,000 + 1");
+            Assert.AreEqual(Offset.Create(6, 0, 0, 0), ThreeHours + ThreeHours, "3,000,000 + 1");
             Assert.AreEqual(Offset.Zero, ThreeHours + NegativeThreeHours, "1 + (-1)");
-            Assert.AreEqual(MakeOffset(-9, 0, 0, 0), NegativeTwelveHours + ThreeHours, "-TwelveHours + threeHours");
+            Assert.AreEqual(Offset.Create(9, 0, 0, 0, true), NegativeTwelveHours + ThreeHours, "-TwelveHours + threeHours");
         }
         #endregion
 
@@ -72,16 +72,16 @@ namespace NodaTime.Test
         public void OperatorMinus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(Offset.Zero, Offset.Zero - Offset.Zero, "0 - 0");
-            Assert.AreEqual(MakeOffset(3, 0, 0, 0), ThreeHours - Offset.Zero, "1 - 0");
-            Assert.AreEqual(MakeOffset(-3, 0, 0, 0), Offset.Zero - ThreeHours, "0 - 1");
+            Assert.AreEqual(Offset.Create(3, 0, 0, 0), ThreeHours - Offset.Zero, "1 - 0");
+            Assert.AreEqual(Offset.Create(3, 0, 0, 0, true), Offset.Zero - ThreeHours, "0 - 1");
         }
 
         [Test]
         public void OperatorMinus_NonZero()
         {
             Assert.AreEqual(Offset.Zero, ThreeHours - ThreeHours, "3,000,000 - 1");
-            Assert.AreEqual(MakeOffset(6, 0, 0, 0), ThreeHours - NegativeThreeHours, "1 - (-1)");
-            Assert.AreEqual(MakeOffset(-15, 0, 0, 0), NegativeTwelveHours - ThreeHours, "-TwelveHours - threeHours");
+            Assert.AreEqual(Offset.Create(6, 0, 0, 0), ThreeHours - NegativeThreeHours, "1 - (-1)");
+            Assert.AreEqual(Offset.Create(15, 0, 0, 0, true), NegativeTwelveHours - ThreeHours, "-TwelveHours - threeHours");
         }
         #endregion
     }
