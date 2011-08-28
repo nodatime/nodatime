@@ -24,10 +24,10 @@ namespace NodaTime.Test.TimeZones
     public class DaylightSavingTimeZoneTest
     {
         private static readonly ZoneRecurrence Winter = new ZoneRecurrence("Winter", Offset.Zero,
-            new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, Offset.ForHours(2)), 2000, int.MaxValue);
+            new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, Offset.FromHours(2)), 2000, int.MaxValue);
 
-        private static readonly ZoneRecurrence Summer = new ZoneRecurrence("Summer", Offset.ForHours(1),
-            new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, Offset.ForHours(1)), 2000, int.MaxValue);
+        private static readonly ZoneRecurrence Summer = new ZoneRecurrence("Summer", Offset.FromHours(1),
+            new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, Offset.FromHours(1)), 2000, int.MaxValue);
 
         /// <summary>
         /// Time zone with the following characteristics:
@@ -37,13 +37,13 @@ namespace NodaTime.Test.TimeZones
         /// - Winter time (DST = 0) always starts at 2am local time on October 5th (skips to 1am)
         /// </summary>
         private static readonly DaylightSavingsTimeZone TestZone = new DaylightSavingsTimeZone("Test",
-            Offset.ForHours(5), Winter, Summer);
+            Offset.FromHours(5), Winter, Summer);
 
         [Test]
         public void MinMaxOffsets()
         {
-            Assert.AreEqual(Offset.ForHours(6), TestZone.MaxOffset);
-            Assert.AreEqual(Offset.ForHours(5), TestZone.MinOffset);
+            Assert.AreEqual(Offset.FromHours(6), TestZone.MaxOffset);
+            Assert.AreEqual(Offset.FromHours(5), TestZone.MinOffset);
         }
 
         // TODO: Consider removing all of these tests, as they only use DateTimeZone now...
@@ -52,9 +52,9 @@ namespace NodaTime.Test.TimeZones
         {
             var interval = TestZone.GetZoneInterval(Instant.FromUtc(2010, 6, 1, 0, 0));
             Assert.AreEqual("Summer", interval.Name);
-            Assert.AreEqual(Offset.ForHours(6), interval.Offset);
-            Assert.AreEqual(Offset.ForHours(5), interval.BaseOffset);
-            Assert.AreEqual(Offset.ForHours(1), interval.Savings);
+            Assert.AreEqual(Offset.FromHours(6), interval.Offset);
+            Assert.AreEqual(Offset.FromHours(5), interval.BaseOffset);
+            Assert.AreEqual(Offset.FromHours(1), interval.Savings);
             Assert.AreEqual(new LocalInstant(2010, 3, 10, 2, 0), interval.LocalStart);
             Assert.AreEqual(new LocalInstant(2010, 10, 5, 2, 0), interval.LocalEnd);
         }
@@ -64,9 +64,9 @@ namespace NodaTime.Test.TimeZones
         {
             var interval = TestZone.GetZoneInterval(Instant.FromUtc(2010, 11, 1, 0, 0));
             Assert.AreEqual("Winter", interval.Name);
-            Assert.AreEqual(Offset.ForHours(5), interval.Offset);
-            Assert.AreEqual(Offset.ForHours(5), interval.BaseOffset);
-            Assert.AreEqual(Offset.ForHours(0), interval.Savings);
+            Assert.AreEqual(Offset.FromHours(5), interval.Offset);
+            Assert.AreEqual(Offset.FromHours(5), interval.BaseOffset);
+            Assert.AreEqual(Offset.FromHours(0), interval.Savings);
             Assert.AreEqual(new LocalInstant(2010, 10, 5, 1, 0), interval.LocalStart);
             Assert.AreEqual(new LocalInstant(2011, 3, 10, 1, 0), interval.LocalEnd);
         }

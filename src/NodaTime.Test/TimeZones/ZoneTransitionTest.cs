@@ -184,8 +184,8 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void IsTransitionFrom_laterInstantAndEqualButOppositeStandardAndSavings_false()
         {
-            var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.ForHours(1), Offset.Zero);
-            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.ForHours(1));
+            var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.FromHours(1), Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.FromHours(1));
             Assert.False(newValue.IsTransitionFrom(oldValue));
         }
 

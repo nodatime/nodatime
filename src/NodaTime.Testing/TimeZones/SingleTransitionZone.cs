@@ -47,7 +47,7 @@ namespace NodaTime.Testing.TimeZones
         /// <param name="offsetBeforeHours">The offset of local time from UTC, in hours, before the transition.</param>
         /// <param name="offsetAfterHours">The offset of local time from UTC, in hours, before the transition.</param>
         public SingleTransitionZone(Instant transitionPoint, int offsetBeforeHours, int offsetAfterHours)
-            : this(transitionPoint, Offset.ForHours(offsetBeforeHours), Offset.ForHours(offsetAfterHours))
+            : this(transitionPoint, Offset.FromHours(offsetBeforeHours), Offset.FromHours(offsetAfterHours))
         {
         }
 
