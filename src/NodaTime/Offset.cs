@@ -31,8 +31,7 @@ namespace NodaTime
     /// <remarks>
     ///   <para>
     ///     Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
-    ///     is outside this range then the value is forced into the range by considering that time wraps
-    ///     as it goes around the world multiple times.
+    ///     is outside this range then an exception is thrown.
     ///   </para>
     ///   <para>
     ///     Internally, offsets are stored as an <see cref="int" /> number of milliseconds instead of
@@ -55,7 +54,7 @@ namespace NodaTime
         /// </summary>
         public static readonly Offset MinValue = Offset.FromMilliseconds(-NodaConstants.MillisecondsPerStandardDay + 1);
         /// <summary>
-        /// The minimum permitted offset; one millisecond less than a standard day after UTC.
+        /// The maximum permitted offset; one millisecond less than a standard day after UTC.
         /// </summary>
         public static readonly Offset MaxValue = Offset.FromMilliseconds(NodaConstants.MillisecondsPerStandardDay - 1);
 
@@ -115,7 +114,7 @@ namespace NodaTime
         /// Returns the number of ticks represented by this offset.
         /// </summary>
         /// <value>The number of ticks.</value>
-        public long Ticks { get { return TotalMilliseconds * NodaConstants.TicksPerMillisecond; } }
+        public long TotalTicks { get { return TotalMilliseconds * NodaConstants.TicksPerMillisecond; } }
 
         /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local

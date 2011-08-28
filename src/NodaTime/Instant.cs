@@ -158,7 +158,7 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalInstant" /> representing the sum of the given values.</returns>
         internal LocalInstant Plus(Offset offset)
         {
-            return new LocalInstant(Ticks + offset.Ticks);
+            return new LocalInstant(Ticks + offset.TotalTicks);
         }
 
         /// <summary>
