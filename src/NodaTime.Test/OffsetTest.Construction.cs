@@ -30,7 +30,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void FromMillis()
+        public void FromMillis_Valid()
         {
             int length = 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute +
                          7 * NodaConstants.MillisecondsPerSecond + 8;
@@ -43,45 +43,98 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void FromMilliseconds_BelowMin()
-        {
-            int millis = -24 * NodaConstants.MillisecondsPerHour;
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(millis));
-        }
-
-        [Test]
-        public void FromMilliseconds_AboveMax()
+        public void FromMilliseconds_Invalid()
         {
             int millis = 24 * NodaConstants.MillisecondsPerHour;
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(millis));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(-millis));
         }
 
         [Test]
-        public void FromTicks_BelowMin()
+        public void FromTicks_Valid()
         {
-            long ticks = -24 * NodaConstants.TicksPerHour;
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(ticks));
+            Offset value = Offset.FromTicks(-15 * NodaConstants.TicksPerMinute);
+            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerMinute, value.TotalMilliseconds);
         }
-
+        
         [Test]
-        public void FromTicks_AboveMax()
+        public void FromTicks_Invalid()
         {
             long ticks = 24 * NodaConstants.TicksPerHour;
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(ticks));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(-ticks));
         }
 
         [Test]
-        public void FromHours_BelowMin()
+        public void FromHours_Valid()
         {
+            Offset value = Offset.FromHours(-15);
+            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerHour, value.TotalMilliseconds);
+        }
+
+        [Test]
+        public void FromHours_Invalid()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(24));
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(-24));
         }
 
         [Test]
-        public void FromHours_AboveMax()
+        public void Create_NoSign_Valid()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(24));
+            Offset value = Offset.Create(5, 4, 3, 200);
+            Assert.IsFalse(value.IsNegative);
+            Assert.AreEqual(5, value.Hours);
+            Assert.AreEqual(4, value.Minutes);
+            Assert.AreEqual(3, value.Seconds);
+            Assert.AreEqual(200, value.FractionalSeconds);
         }
 
+        [Test]
+        public void Create_NoSign_Invalid()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(-24, 0, 0, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(24, 0, 0, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, -1, 0, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, 60, 0, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, 0, -1, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, 0, 60, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, 0, 0, -1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, 0, 0, 1000));
+        }
+
+        [Test]
+        public void Create_WithSign_Valid()
+        {
+            Offset value = Offset.Create(5, 4, 3, 200, false);
+            Assert.IsFalse(value.IsNegative);
+            Assert.AreEqual(5, value.Hours);
+            Assert.AreEqual(4, value.Minutes);
+            Assert.AreEqual(3, value.Seconds);
+            Assert.AreEqual(200, value.FractionalSeconds);
+
+            Offset value2 = Offset.Create(5, 4, 3, 200, true);
+            Assert.IsTrue(value2.IsNegative);
+            Assert.AreEqual(5, value2.Hours);
+            Assert.AreEqual(4, value2.Minutes);
+            Assert.AreEqual(3, value2.Seconds);
+            Assert.AreEqual(200, value2.FractionalSeconds);
+
+            Assert.AreEqual(-value.TotalMilliseconds, value2.TotalMilliseconds);
+        }
+
+        [Test]
+        public void Create_WithSign_Invalid()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(-24, 0, 0, 0, false));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(24, 0, 0, 0, false));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, -1, 0, 0, false));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, 60, 0, 0, false));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, 0, -1, 0, false));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, 0, 60, 0, false));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, 0, 0, -1, false));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.Create(0, 0, 0, 1000, false));
+        }
 
     }
 }

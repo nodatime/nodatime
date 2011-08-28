@@ -64,14 +64,10 @@ namespace NodaTime.Text
         internal override ParseResult<Offset> CalculateValue()
         {
             int hours = Hours ?? 0;
-            if (IsNegative)
-            {
-                hours = -hours;
-            }
             int minutes = Minutes ?? 0;
             int seconds = Seconds ?? 0;
             int fractionalSeconds = FractionalSeconds ?? 0;
-            Offset offset = Offset.Create(hours, minutes, seconds, fractionalSeconds);
+            Offset offset = Offset.Create(hours, minutes, seconds, fractionalSeconds, IsNegative);
             return ParseResult<Offset>.ForValue(offset);
         }
     }

@@ -18,6 +18,7 @@
 using System;
 using NodaTime.Globalization;
 using NodaTime.Text;
+using NodaTime.Utility;
 
 #endregion
 
@@ -69,11 +70,10 @@ namespace NodaTime
         /// <param name="milliseconds">The number of milliseconds in the offset.</param>
         private Offset(int milliseconds)
         {
-            if (milliseconds <= -NodaConstants.MillisecondsPerStandardDay ||
-                milliseconds >= NodaConstants.MillisecondsPerStandardDay)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            // TODO: Possibly move this to all the public factory methods instead, and trust internal callers.
+            Preconditions.CheckArgumentRange("milliseconds", milliseconds,
+                -NodaConstants.MillisecondsPerStandardDay + 1,
+                NodaConstants.MillisecondsPerStandardDay - 1);
             this.milliseconds = milliseconds;
         }
 
@@ -543,12 +543,13 @@ namespace NodaTime
 
         /// <summary>
         /// Creates an offset with the specified number of hours, minutes, seconds, and
-        /// milliseconds.
+        /// milliseconds. This offset is always non-negative.
         /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <param name="seconds">The number of seconds.</param>
-        /// <param name="fractionalSeconds">The number of milliseconds.</param>
+        /// <param name="hours">The number of hours, in the range [0, 24).</param>
+        /// <param name="minutes">The number of minutes, in the range [0, 60).</param>
+        /// <param name="seconds">The number of second, in the range [0, 60).</param>
+        /// <param name="fractionalSeconds">The number of milliseconds within the second,
+        /// in the range [0, 1000).</param>
         /// <returns>
         ///   A new <see cref="Offset" /> representing the given values.
         /// </returns>
@@ -558,12 +559,31 @@ namespace NodaTime
         /// </remarks>
         public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds)
         {
-            int sign = Math.Sign(hours) < 0 ? -1 : 1;
+            return Create(hours, minutes, seconds, fractionalSeconds, false);
+        }
+
+        /// <summary>
+        /// Creates an offset from the given values, including a sign to indicate whether or not the returned
+        /// offset should be negative.
+        /// </summary>
+        /// <param name="hours">The number of hours, in the range [0, 24).</param>
+        /// <param name="minutes">The number of minutes, in the range [0, 60).</param>
+        /// <param name="seconds">The number of second, in the range [0, 60).</param>
+        /// <param name="fractionalSeconds">The number of milliseconds within the second,
+        /// in the range [0, 1000).</param>
+        /// <param name="negative">True if a negative offset should be created, false for a positive one.</param>
+        public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds, bool negative)
+        {
+            Preconditions.CheckArgumentRange("hours", hours, 0, 23);
+            Preconditions.CheckArgumentRange("minutes", minutes, 0, 59);
+            Preconditions.CheckArgumentRange("seconds", seconds, 0, 59);
+            Preconditions.CheckArgumentRange("fractionalSeconds", fractionalSeconds, 0, 999);
+            int sign = negative ? -1 : 1;
             int milliseconds = 0;
-            milliseconds += Math.Abs(hours) * NodaConstants.MillisecondsPerHour;
-            milliseconds += Math.Abs(minutes) * NodaConstants.MillisecondsPerMinute;
-            milliseconds += Math.Abs(seconds) * NodaConstants.MillisecondsPerSecond;
-            milliseconds += Math.Abs(fractionalSeconds);
+            milliseconds += hours * NodaConstants.MillisecondsPerHour;
+            milliseconds += minutes * NodaConstants.MillisecondsPerMinute;
+            milliseconds += seconds * NodaConstants.MillisecondsPerSecond;
+            milliseconds += fractionalSeconds;
             return Offset.FromMilliseconds(sign * milliseconds);
         }
         #endregion
