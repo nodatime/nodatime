@@ -53,7 +53,7 @@ namespace NodaTime.Test
         [Test]
         public void OperatorPlus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0, (Offset.Zero + Offset.Zero).Milliseconds, "0 + 0");
+            Assert.AreEqual(0, (Offset.Zero + Offset.Zero).TotalMilliseconds, "0 + 0");
             Assert.AreEqual(MakeOffset(3, 0, 0, 0), ThreeHours + Offset.Zero, "1 + 0");
             Assert.AreEqual(MakeOffset(3, 0, 0, 0), Offset.Zero + ThreeHours, "0 + 1");
         }

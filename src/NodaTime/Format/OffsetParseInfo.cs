@@ -69,7 +69,7 @@ namespace NodaTime.Format
         internal OffsetParseInfo(Offset value, IFormatProvider formatInfo)
             : base(formatInfo, DateTimeParseStyles.None)
         {
-            Milliseconds = value.Milliseconds;
+            Milliseconds = value.TotalMilliseconds;
             IsNegative = value.IsNegative;
             Hours = value.Hours;
             Minutes = value.Minutes;

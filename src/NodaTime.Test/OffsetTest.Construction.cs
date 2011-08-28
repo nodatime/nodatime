@@ -16,6 +16,7 @@
 #endregion
 
 using NUnit.Framework;
+using System;
 
 namespace NodaTime.Test
 {
@@ -25,17 +26,62 @@ namespace NodaTime.Test
         public void Zero()
         {
             Offset test = Offset.Zero;
-            Assert.AreEqual(0, test.Milliseconds);
+            Assert.AreEqual(0, test.TotalMilliseconds);
         }
 
         [Test]
-        public void ConstructFrom_Int64()
+        public void FromMillis()
         {
-            int length = 4 * NodaConstants.MillisecondsPerStandardDay + 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute +
+            int length = 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute +
                          7 * NodaConstants.MillisecondsPerSecond + 8;
-            int expected = 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute + 7 * NodaConstants.MillisecondsPerSecond + 8;
             var test = Offset.FromMilliseconds(length);
-            Assert.AreEqual(expected, test.Milliseconds);
+            Assert.AreEqual(5, test.Hours);
+            Assert.AreEqual(6, test.Minutes);
+            Assert.AreEqual(7, test.Seconds);
+            Assert.AreEqual(8, test.FractionalSeconds);
+            Assert.AreEqual(length, test.TotalMilliseconds);
         }
+
+        [Test]
+        public void FromMilliseconds_BelowMin()
+        {
+            int millis = -24 * NodaConstants.MillisecondsPerHour;
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(millis));
+        }
+
+        [Test]
+        public void FromMilliseconds_AboveMax()
+        {
+            int millis = 24 * NodaConstants.MillisecondsPerHour;
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(millis));
+        }
+
+        [Test]
+        public void FromTicks_BelowMin()
+        {
+            long ticks = -24 * NodaConstants.TicksPerHour;
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(ticks));
+        }
+
+        [Test]
+        public void FromTicks_AboveMax()
+        {
+            long ticks = 24 * NodaConstants.TicksPerHour;
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(ticks));
+        }
+
+        [Test]
+        public void FromHours_BelowMin()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(-24));
+        }
+
+        [Test]
+        public void FromHours_AboveMax()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(24));
+        }
+
+
     }
 }

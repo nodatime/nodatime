@@ -202,7 +202,7 @@ namespace NodaTime.Format
 
             public override string Format(Offset value)
             {
-                return value.Milliseconds.ToString("N0", FormatProvider);
+                return value.TotalMilliseconds.ToString("N0", FormatProvider);
             }
 
             public override INodaFormatter<Offset> WithFormatProvider(IFormatProvider formatProvider)

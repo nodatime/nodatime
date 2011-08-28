@@ -62,19 +62,20 @@ namespace NodaTime
         private readonly int milliseconds;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="Offset" /> struct.
+        /// Initializes a new instance of the <see cref="Offset" /> struct.
         /// </summary>
         /// <remarks>
-        ///   Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value
-        ///   given is outside this range then the value is forced into the range by considering that
-        ///   time wraps as it goes around the world multiple times.
+        /// Offsets are constrained to the range (-24 hours, 24 hours).
         /// </remarks>
-        /// <param name="milliseconds">The number of milliseconds.</param>
+        /// <param name="milliseconds">The number of milliseconds in the offset.</param>
         private Offset(int milliseconds)
         {
-            // TODO: Should we perhaps just throw an ArgumentOutOfRangeException instead if it's out of bounds?
-            // When do we expect this to happen?
-            this.milliseconds = milliseconds % NodaConstants.MillisecondsPerStandardDay;
+            if (milliseconds <= -NodaConstants.MillisecondsPerStandardDay ||
+                milliseconds >= NodaConstants.MillisecondsPerStandardDay)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            this.milliseconds = milliseconds;
         }
 
         /// <summary>
@@ -96,25 +97,25 @@ namespace NodaTime
         public int Minutes { get { return (Math.Abs(milliseconds) % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute; } }
 
         /// <summary>
-        ///   Gets the seconds of the offset. This is always a positive value.
+        /// Gets the seconds of the offset. This is always a positive value.
         /// </summary>
         public int Seconds { get { return (Math.Abs(milliseconds) % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond; } }
 
         /// <summary>
-        ///   Gets the fractional seconds of the offset i.e. the milliseconds of the second. This is always a positive value.
+        /// Gets the fractional seconds of the offset i.e. the milliseconds of the second. This is always a positive value.
         /// </summary>
         public int FractionalSeconds { get { return Math.Abs(milliseconds) % NodaConstants.MillisecondsPerSecond; } }
 
         /// <summary>
-        ///   Gets the number of milliseconds in the offset.
+        /// Gets the total number of milliseconds in the offset.
         /// </summary>
-        public int Milliseconds { get { return milliseconds; } }
+        public int TotalMilliseconds { get { return milliseconds; } }
 
         /// <summary>
-        ///   Returns the number of ticks represented by this offset.
+        /// Returns the number of ticks represented by this offset.
         /// </summary>
         /// <value>The number of ticks.</value>
-        public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
+        public long Ticks { get { return TotalMilliseconds * NodaConstants.TicksPerMillisecond; } }
 
         /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local
@@ -142,7 +143,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset" /> instance with a negated value.</returns>
         public static Offset operator -(Offset offset)
         {
-            return Offset.FromMilliseconds(-offset.Milliseconds);
+            return Offset.FromMilliseconds(-offset.TotalMilliseconds);
         }
 
         /// <summary>
@@ -179,7 +180,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset" /> representing the sum of the given values.</returns>
         public static Offset operator +(Offset left, Offset right)
         {
-            return Offset.FromMilliseconds(left.Milliseconds + right.Milliseconds);
+            return Offset.FromMilliseconds(left.TotalMilliseconds + right.TotalMilliseconds);
         }
 
         /// <summary>
@@ -201,7 +202,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
         public static Offset operator -(Offset left, Offset right)
         {
-            return Offset.FromMilliseconds(left.Milliseconds - right.Milliseconds);
+            return Offset.FromMilliseconds(left.TotalMilliseconds - right.TotalMilliseconds);
         }
 
         /// <summary>
@@ -311,7 +312,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Offset other)
         {
-            return Milliseconds.CompareTo(other.Milliseconds);
+            return TotalMilliseconds.CompareTo(other.TotalMilliseconds);
         }
         #endregion
 
@@ -326,7 +327,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Offset other)
         {
-            return Milliseconds == other.Milliseconds;
+            return TotalMilliseconds == other.TotalMilliseconds;
         }
         #endregion
 
@@ -357,7 +358,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return Milliseconds.GetHashCode();
+            return TotalMilliseconds.GetHashCode();
         }
         #endregion  // Object overrides
 
