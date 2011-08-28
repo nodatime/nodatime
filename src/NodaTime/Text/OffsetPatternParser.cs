@@ -260,13 +260,13 @@ namespace NodaTime.Text
 
         private static PatternParseResult<Offset> HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
-            builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.Milliseconds >= 0);
+            builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.TotalMilliseconds >= 0);
             return null;
         }
 
         private static PatternParseResult<Offset> HandleMinus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
-            builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.Milliseconds >= 0);
+            builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.TotalMilliseconds >= 0);
             return null;
         }
 
@@ -402,7 +402,7 @@ namespace NodaTime.Text
                 }
                 return ParseResult<Offset>.CannotParseValue(value, typeof(Offset), "n");
             };
-            NodaFunc<Offset, string> formatter = value => value.Milliseconds.ToString("N0", formatInfo);
+            NodaFunc<Offset, string> formatter = value => value.TotalMilliseconds.ToString("N0", formatInfo);
             return new SimpleParsedPattern<Offset>(parser, formatter);
         }
 

@@ -104,8 +104,8 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Construct_ValidTickOfDay()
         {
-            int delta = (Offset.MaxValue.Milliseconds / 100);
-            for (int millisecond = 0; millisecond < Offset.MaxValue.Milliseconds; millisecond += delta)
+            int delta = (Offset.MaxValue.TotalMilliseconds / 100);
+            for (int millisecond = 0; millisecond < Offset.MaxValue.TotalMilliseconds; millisecond += delta)
             {
                 var tickOfDay = Offset.FromMilliseconds(millisecond);
                 Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, 1, 0, true, tickOfDay), "Tick of Day " + tickOfDay);

@@ -128,8 +128,15 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(expected, actual, name + " Milliseconds ");
         }
 
-        public void TestOffset(Offset expected)
+        public void TestOffset(int testValue)
         {
+            // Just ignore any invalid values we're asked to test
+            if (testValue < Offset.MinValue.TotalMilliseconds ||
+                testValue > Offset.MaxValue.TotalMilliseconds)
+            {
+                return;
+            }
+            Offset expected = Offset.FromMilliseconds(testValue);
             Reset();
             Writer.WriteOffset(expected);
             var actual = Reader.ReadOffset();
