@@ -26,32 +26,32 @@ namespace NodaTime.Text
     internal class OffsetParseBucket : ParseBucket<Offset>
     {
         /// <summary>
-        ///   The fractions of a seconds in milliseconds.
+        /// The fractions of a seconds in milliseconds.
         /// </summary>
-        internal int? FractionalSeconds;
+        internal int FractionalSeconds;
 
         /// <summary>
         ///   The hours in the range [0, 23].
         /// </summary>
-        internal int? Hours;
+        internal int Hours;
 
         /// <summary>
         ///   The total millisconds. This is the only value that can be negative.
         /// </summary>
-        internal int? Milliseconds;
+        internal int Milliseconds;
 
         /// <summary>
         ///   The minutes in the range [0, 59].
         /// </summary>
-        internal int? Minutes;
+        internal int Minutes;
 
         /// <summary>
         ///   The seconds in the range [0, 59].
         /// </summary>
-        internal int? Seconds;
+        internal int Seconds;
 
         /// <summary>
-        ///   Gets a value indicating whether this instance is negative.
+        /// Gets a value indicating whether this instance is negative.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is negative; otherwise, <c>false</c>.
@@ -59,15 +59,11 @@ namespace NodaTime.Text
         public bool IsNegative;
 
         /// <summary>
-        ///   Calculates the value from the parsed pieces.
+        /// Calculates the value from the parsed pieces.
         /// </summary>
         internal override ParseResult<Offset> CalculateValue()
         {
-            int hours = Hours ?? 0;
-            int minutes = Minutes ?? 0;
-            int seconds = Seconds ?? 0;
-            int fractionalSeconds = FractionalSeconds ?? 0;
-            Offset offset = Offset.Create(hours, minutes, seconds, fractionalSeconds, IsNegative);
+            Offset offset = Offset.Create(Hours, Minutes, Seconds, FractionalSeconds, IsNegative);
             return ParseResult<Offset>.ForValue(offset);
         }
     }

@@ -32,6 +32,7 @@ namespace NodaTime.Text.Patterns
         private NodaAction<TResult, StringBuilder> formatActions;
         private readonly List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions;
         private readonly NodaFunc<TBucket> bucketProvider;
+        private PatternFields usedFields;
 
         internal SteppedPatternBuilder(NodaFormatInfo formatInfo, NodaFunc<TBucket> bucketProvider)
         {
@@ -53,6 +54,21 @@ namespace NodaTime.Text.Patterns
             return new SteppedPattern(formatActions, parseActions, bucketProvider);
         }
 
+        /// <summary>
+        /// Registers that a pattern field has been used in this pattern, and returns a suitable error
+        /// result if it's already been used.
+        /// </summary>
+        internal PatternParseResult<TResult> AddField(PatternFields field, char characterInPattern)
+        {
+            PatternFields newUsedFields = usedFields | field;
+            if (newUsedFields == usedFields)
+            {
+                return PatternParseResult<TResult>.RepeatedFieldInPattern(characterInPattern);
+            }
+            usedFields = newUsedFields;
+            return null;
+        }
+
         internal void AddParseAction(NodaFunc<ValueCursor, TBucket, ParseResult<TResult>> parseAction)
         {
             parseActions.Add(parseAction);
@@ -61,6 +77,26 @@ namespace NodaTime.Text.Patterns
         internal void AddFormatAction(NodaAction<TResult, StringBuilder> formatAction)
         {
             formatActions += formatAction;
+        }
+
+        internal void AddParseValueAction(int minimumDigits, int maximumDigits, char patternChar,
+                                          int minimumValue, int maximumValue,
+                                          NodaAction<TBucket, int> valueSetter)
+        {
+            AddParseAction((cursor, bucket) =>
+            {
+                int value;
+                if (cursor.ParseDigits(minimumDigits, maximumDigits, out value))
+                {
+                    if (value < minimumValue || value > maximumValue)
+                    {
+                        return ParseResult<TResult>.FieldValueOutOfRange(value, patternChar);
+                    }
+                    valueSetter(bucket, value);
+                    return null;
+                }
+                return ParseResult<TResult>.MismatchedNumber(new string(patternChar, minimumDigits));
+            });
         }
 
         /// <summary>

@@ -151,7 +151,7 @@ namespace NodaTime.Test.Text.Patterns
             int actual = cursor.GetRepeatCount(10, ref failure);
             AssertNoFailure();
             Assert.AreEqual(3, actual);
-            ValidateEndOfString(cursor);
+            ValidateCurrentCharacter(cursor, 2, 'a');
         }
 
         [Test]
@@ -171,7 +171,7 @@ namespace NodaTime.Test.Text.Patterns
             int actual = cursor.GetRepeatCount(10, ch, ref failure);
             AssertNoFailure();
             Assert.AreEqual(1, actual);
-            ValidateEndOfString(cursor);
+            ValidateCurrentCharacter(cursor, 0, 'a');
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace NodaTime.Test.Text.Patterns
             int actual = cursor.GetRepeatCount(10, ch, ref failure);
             AssertNoFailure();
             Assert.AreEqual(3, actual);
-            ValidateEndOfString(cursor);
+            ValidateCurrentCharacter(cursor, 2, 'a');
         }
 
         private void AssertInvalidPatternFailure()

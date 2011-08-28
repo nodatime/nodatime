@@ -203,10 +203,10 @@ namespace NodaTime.Test.Text
             ValidateCurrentCharacter(cursor, -1, TextCursor.Nul);
         }
 
-        internal static void ValidateCurrentCharacter(TextCursor cursor, int expectedNextIndex, char expectedNextCharacter)
+        internal static void ValidateCurrentCharacter(TextCursor cursor, int expectedCurrentIndex, char expectedCurrentCharacter)
         {
-            TestHelper.AssertCharEqual(expectedNextCharacter, cursor.Current);
-            Assert.AreEqual(expectedNextIndex, cursor.Index);
+            TestHelper.AssertCharEqual(expectedCurrentCharacter, cursor.Current);
+            Assert.AreEqual(expectedCurrentIndex, cursor.Index);
         }
 
         internal static void ValidateEndOfString(TextCursor cursor)

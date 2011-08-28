@@ -93,7 +93,7 @@ namespace NodaTime.Text.Patterns
         }
 
         /// <summary>
-        ///   Gets the pattern repeat count.
+        /// Gets the pattern repeat count.
         /// </summary>
         /// <param name="maximumCount">The maximum number of repetitions allowed.</param>
         /// <param name="patternCharacter">The pattern character to count.</param>
@@ -108,10 +108,8 @@ namespace NodaTime.Text.Patterns
             {
             }
             int repeatLength = Index - startPos;
-            if (Index < Length)
-            {
-                MovePrevious();
-            }
+            // Move the cursor back to the last character of the repeated pattern
+            MovePrevious();
             if (repeatLength > maximumCount)
             {
                 failure = PatternParseResult<T>.RepeatCountExceeded(patternCharacter, maximumCount);
