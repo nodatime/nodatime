@@ -17,7 +17,6 @@
 #region usings
 using System;
 using NodaTime.Globalization;
-using NodaTime.Text;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 
