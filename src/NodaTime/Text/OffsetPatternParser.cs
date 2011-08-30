@@ -131,7 +131,7 @@ namespace NodaTime.Text
                     break;
                 default:
                     // Will be turned into an exception.
-                    return PatternParseResult<Offset>.UnknownStandardFormat(patternCharacter, typeof(Offset));
+                    return PatternParseResult<Offset>.UnknownStandardFormat(patternCharacter);
             }
             // TODO: Guard against recursion? Validate that the pattern expands to a longer pattern?
             string pattern = Resources.ResourceManager.GetString(singlePatternResource, formatInfo.CultureInfo);
@@ -390,7 +390,7 @@ namespace NodaTime.Text
                     }
                     return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
                 }
-                return ParseResult<Offset>.CannotParseValue(value, typeof(Offset), "n");
+                return ParseResult<Offset>.CannotParseValue(value, "n");
             };
             NodaFunc<Offset, string> formatter = value => value.TotalMilliseconds.ToString("N0", formatInfo);
             return new SimpleParsedPattern<Offset>(parser, formatter);

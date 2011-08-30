@@ -68,6 +68,7 @@ namespace NodaTime.Text
         internal bool ContinueAfterErrorWithMultipleFormats { get { return continueWithMultiple; } }
 
         #region Factory methods and readonly static fields
+
         internal static ParseResult<T> ForInvalidFormat(string formatString, params object[] parameters)
         {
             return ForInvalidFormat(() => new InvalidPatternException(string.Format(CultureInfo.CurrentCulture, formatString, parameters)));
@@ -95,11 +96,9 @@ namespace NodaTime.Text
 
         internal static readonly ParseResult<T> PositiveSignInvalid = ForInvalidValue(Resources.Parse_PositiveSignInvalid);
 
-        internal static ParseResult<T> EscapeAtEndOfString = ForInvalidFormat(Resources.Parse_EscapeAtEndOfString);
-
-        internal static ParseResult<T> CannotParseValue(string value, Type type, string format)
+        internal static ParseResult<T> CannotParseValue(string value, string format)
         {
-            return ForInvalidValue(Resources.Parse_CannotParseValue, value, type, format);
+            return ForInvalidValue(Resources.Parse_CannotParseValue, value, typeof(T), format);
         }
 
         internal static ParseResult<T> DoubleAssigment(char patternCharacter)
@@ -116,10 +115,7 @@ namespace NodaTime.Text
             return ForInvalidValue(Resources.Parse_ExtraValueCharacters, remainder);
         }
 
-        internal static readonly ParseResult<T> PercentDoubled = ForInvalidFormat(Resources.Parse_PercentDoubled);
-
-        internal static readonly ParseResult<T> PercentAtEndOfString = ForInvalidFormat(Resources.Parse_PercentAtEndOfString);
-
+        // TODO: This should be ForInvalidValue
         internal static readonly ParseResult<T> QuotedStringMismatch = ForInvalidValue(Resources.Parse_QuotedStringMismatch);
 
         internal static ParseResult<T> EscapedCharacterMismatch(char patternCharacter)
@@ -150,12 +146,7 @@ namespace NodaTime.Text
             return ForInvalidValue(Resources.Parse_ValueOutOfRange, value, typeof(T));
         }
 
-        internal static readonly ParseResult<T> MissingSign = ForInvalidFormat(Resources.Parse_MissingSign);
-
-        internal static ParseResult<T> UnexpectedEndOfString(string pattern)
-        {
-            return ForInvalidValue(Resources.Parse_UnexpectedEndOfString, pattern);
-        }
+        internal static readonly ParseResult<T> MissingSign = ForInvalidValue(Resources.Parse_MissingSign);
 
         internal static ParseResult<T> FieldValueOutOfRange(object value, char field)
         {

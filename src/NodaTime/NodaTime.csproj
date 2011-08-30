@@ -113,13 +113,15 @@
     <Compile Include="Text\FixedFormatInfoPatternParser.cs" />
     <Compile Include="Text\FormatHelper.cs" />
     <Compile Include="Text\BucketHelper.cs" />
+    <Compile Include="Text\InstantPatternParser.cs" />
     <Compile Include="Text\InvalidPatternException.cs" />
     <Compile Include="Text\OffsetPatternParser.cs" />
-    <Compile Include="Text\PatternSupport.cs" />
+    <Compile Include="Text\Patterns\AbstractParsedPattern.cs" />
     <Compile Include="Text\Patterns\IPatternParser.cs" />
     <Compile Include="Text\Patterns\PatternCursor.cs" />
     <Compile Include="Text\Patterns\PatternFields.cs" />
     <Compile Include="Text\Patterns\PatternParseResult.cs" />
+    <Compile Include="Text\Patterns\PatternBclSupport.cs" />
     <Compile Include="Text\TextCursor.cs" />
     <Compile Include="Text\OffsetParseBucket.cs" />
     <Compile Include="Text\ParseBucket.cs" />
