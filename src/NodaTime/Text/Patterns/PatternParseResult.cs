@@ -129,19 +129,19 @@ namespace NodaTime.Text.Patterns
 
         internal static readonly PatternParseResult<T> QuotedStringMismatch = ForInvalidFormat(Resources.Parse_QuotedStringMismatch);
 
-        internal static PatternParseResult<T> UnknownStandardFormat(char patternCharacter, Type type)
+        internal static PatternParseResult<T> UnknownStandardFormat(char patternCharacter)
         {
-            return ForInvalidFormat(Resources.Parse_UnknownStandardFormat, patternCharacter, type);
+            return ForInvalidFormat(Resources.Parse_UnknownStandardFormat, patternCharacter, typeof(T));
         }
 
-        internal static PatternParseResult<T> PrecisionNotSupported(string pattern, Type type)
+        internal static PatternParseResult<T> PrecisionNotSupported(string pattern)
         {
-            return ForInvalidFormat(Resources.Parse_PrecisionNotSupported, pattern, type);
+            return ForInvalidFormat(Resources.Parse_PrecisionNotSupported, pattern, typeof(T));
         }
 
-        internal static PatternParseResult<T> StandardFormatWhitespace(string pattern, Type type)
+        internal static PatternParseResult<T> StandardFormatWhitespace(string pattern)
         {
-            return ForInvalidFormat(Resources.Parse_StandardFormatWhitespace, pattern, type);
+            return ForInvalidFormat(Resources.Parse_StandardFormatWhitespace, pattern, typeof(T));
         }
 
         internal static readonly PatternParseResult<T> Hour12PatternNotSupported = ForInvalidFormat(Resources.Parse_Hour12PatternNotSupported, typeof(T).FullName);

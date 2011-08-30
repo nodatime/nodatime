@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2011 Jon Skeet
 // 
@@ -16,22 +16,21 @@
 #endregion
 
 using NodaTime.Globalization;
-using NodaTime.Text.Patterns;
 
-namespace NodaTime.Text
+namespace NodaTime.Text.Patterns
 {
     /// <summary>
     /// Class providing simple support for the various Parse/TryParse/ParseExact/TryParseExact/Format overloads 
     /// provided by individual types.
     /// </summary>
-    internal sealed class PatternSupport<T>
+    internal sealed class PatternBclSupport<T>
     {
         private readonly string[] allFormats;
         private readonly T failureValue;
         private readonly NodaFunc<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser;
         private readonly string defaultFormatPattern;
 
-        internal PatternSupport(string[] allFormats, string defaultFormatPattern, T failureValue,
+        internal PatternBclSupport(string[] allFormats, string defaultFormatPattern, T failureValue,
             NodaFunc<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser)
         {
             this.allFormats = allFormats;
@@ -96,8 +95,7 @@ namespace NodaTime.Text
         {
             if (pattern == null)
             {
-                // TODO: Rename format to pattern everywhere...
-                return ParseResult<T>.ArgumentNull("format");
+                return ParseResult<T>.ArgumentNull("pattern");
             }
             PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(pattern);
             if (!patternResult.Success)
