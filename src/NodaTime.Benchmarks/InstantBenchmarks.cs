@@ -16,10 +16,7 @@
 #endregion
 
 using NodaTime.Benchmarks.Timing;
-using NodaTime.Format;
 using NodaTime.Globalization;
-using System.Globalization;
-using NodaTime.Text;
 using NodaTime.Text.Patterns;
 
 namespace NodaTime.Benchmarks
@@ -28,14 +25,13 @@ namespace NodaTime.Benchmarks
     {
         private static readonly NodaFormatInfo InvariantFormatInfo = NodaFormatInfo.InvariantInfo;
         private static readonly Instant Sample = Instant.FromUtc(2011, 8, 24, 12, 29, 30);
-        private static readonly InstantParser InstantParser = new InstantParser();
         private static readonly IParsedPattern<Instant> GeneralParsedPattern =
             NodaFormatInfo.InvariantInfo.InstantPatternParser.ParsePattern("g").GetResultOrThrow();
         private static readonly IParsedPattern<Instant> NumberParsedPattern =
             NodaFormatInfo.InvariantInfo.InstantPatternParser.ParsePattern("n").GetResultOrThrow();
 
         [Benchmark]
-        public void TryParseExact_Valid_General_WithNewCode()
+        public void TryParseExact_Valid_General()
         {
             Instant result;
             Instant.TryParseExact("2011-08-21T08:11:30Z", "g", InvariantFormatInfo, out result);
@@ -46,13 +42,6 @@ namespace NodaTime.Benchmarks
         {
             Instant result;
             GeneralParsedPattern.Parse("2011-08-21T08:11:30Z").TryGetResult(Instant.MinValue, out result);
-        }
-
-        [Benchmark]
-        public void TryParseExact_Valid_General_WithInstantParser()
-        {
-            Instant result;
-            InstantParser.TryParseExact("2011-08-21T08:11:30Z", "g", InvariantFormatInfo, DateTimeParseStyles.None, out result);
         }
 
         [Benchmark]
@@ -70,20 +59,6 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void TryParseExact_Valid_Numeric_WithInstantParser()
-        {
-            Instant result;
-            InstantParser.TryParseExact("123456789", "n", InvariantFormatInfo, DateTimeParseStyles.None, out result);
-        }
-
-        [Benchmark]
-        public void TryParseExact_InvalidFormat_WithInstantParser()
-        {
-            Instant result;
-            InstantParser.TryParseExact("0", "x", InvariantFormatInfo, DateTimeParseStyles.None, out result);
-        }
-
-        [Benchmark]
         public void TryParseExact_InvalidValue_General()
         {
             Instant result;
@@ -98,25 +73,7 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void FormatN_WithInstantFormat()
-        {
-            InstantFormat.Format(Sample, "n", InvariantFormatInfo);
-        }
-
-        [Benchmark]
-        public void FormatG_WithInstantFormat()
-        {
-            InstantFormat.Format(Sample, "g", InvariantFormatInfo);
-        }
-
-        [Benchmark]
-        public void FormatD_WithInstantFormat()
-        {
-            InstantFormat.Format(Sample, "d", InvariantFormatInfo);
-        }
-
-        [Benchmark]
-        public void FormatN_WithNewCode()
+        public void FormatN()
         {
             Sample.ToString("n", InvariantFormatInfo);
         }
@@ -128,13 +85,13 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void FormatG_WithNewCode()
+        public void FormatG()
         {
             Sample.ToString("g", InvariantFormatInfo);
         }
 
         [Benchmark]
-        public void FormatD_WithNewCode()
+        public void FormatD()
         {
             Sample.ToString("d", InvariantFormatInfo);
         }

@@ -16,7 +16,6 @@
 #endregion
 
 using NodaTime.Benchmarks.Timing;
-using NodaTime.Format;
 using NodaTime.Globalization;
 using System.Globalization;
 using NodaTime.Text;
@@ -28,7 +27,6 @@ namespace NodaTime.Benchmarks
     {
         private static readonly NodaFormatInfo InvariantFormatInfo = NodaFormatInfo.GetFormatInfo(CultureInfo.InvariantCulture);
         private static readonly Offset SampleOffset = Offset.Create(12, 34, 0, 0);
-        private static readonly OffsetParser OldParser = new OffsetParser();
 
         private readonly IParsedPattern<Offset> offsetPattern;
         private readonly OffsetPatternParser offsetPatternParser;
@@ -41,42 +39,21 @@ namespace NodaTime.Benchmarks
         }
         
         [Benchmark]
-        public void TryParseExact_Valid_Old()
-        {
-            Offset result;
-            OldParser.TryParseExact("12:34", "HH:mm", InvariantFormatInfo, DateTimeParseStyles.None, out result);
-        }
-
-        [Benchmark]
-        public void TryParseExact_InvalidFormat_Old()
-        {
-            Offset result;
-            OldParser.TryParseExact("12:34", "hh:mm", InvariantFormatInfo, DateTimeParseStyles.None, out result);
-        }
-
-        [Benchmark]
-        public void TryParseExact_InvalidValue_Old()
-        {
-            Offset result;
-            OldParser.TryParseExact("123:45", "HH:mm", InvariantFormatInfo, DateTimeParseStyles.None, out result);
-        }
-
-        [Benchmark]
-        public void TryParseExact_Valid_New()
+        public void TryParseExact_Valid()
         {
             Offset result;
             Offset.TryParseExact("12:34", "HH:mm", InvariantFormatInfo, out result);
         }
 
         [Benchmark]
-        public void TryParseExact_InvalidFormat_New()
+        public void TryParseExact_InvalidFormat()
         {
             Offset result;
             Offset.TryParseExact("12:34", "hh:mm", InvariantFormatInfo, out result);
         }
 
         [Benchmark]
-        public void TryParseExact_InvalidValue_New()
+        public void TryParseExact_InvalidValue()
         {
             Offset result;
             Offset.TryParseExact("123:45", "HH:mm", InvariantFormatInfo, out result);
@@ -121,13 +98,7 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void ToString_ExplicitFormat_Old()
-        {
-            OffsetFormat.Format(SampleOffset, "HH:mm", InvariantFormatInfo);
-        }
-
-        [Benchmark]
-        public void ToString_ExplicitFormat_New()
+        public void ToString_ExplicitFormat()
         {
             SampleOffset.ToString("HH:mm", InvariantFormatInfo);
         }
