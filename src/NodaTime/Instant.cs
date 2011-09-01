@@ -16,8 +16,8 @@
 #endregion
 #region usings
 using System;
-using NodaTime.Format;
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
 
 #endregion
 
@@ -158,7 +158,7 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalInstant" /> representing the sum of the given values.</returns>
         internal LocalInstant Plus(Offset offset)
         {
-            return new LocalInstant(Ticks + offset.Ticks);
+            return new LocalInstant(Ticks + offset.TotalTicks);
         }
 
         /// <summary>
@@ -328,18 +328,6 @@ namespace NodaTime
 
         #region Formatting
         /// <summary>
-        /// Compiles the given format pattern string and returns a formatter object that formats
-        /// <see cref="Instant"/> objects using the given format and the thread's current culture.
-        /// </summary>
-        /// <param name="format">The format pattern string.</param>
-        /// <param name="formatProvider"></param>
-        /// <returns>An <see cref="INodaFormatter{T}"/> formatter object.</returns>
-        public static INodaFormatter<Instant> GetFormatter(string format, IFormatProvider formatProvider)
-        {
-            return InstantFormat.MakeFormatter(format, formatProvider);
-        }
-
-        /// <summary>
         ///   Formats the value of the current instance using the specified format.
         /// </summary>
         /// <returns>
@@ -356,7 +344,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return InstantFormat.Format(this, format, formatProvider);
+            return InstantPattern.Format(this, format, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -368,7 +356,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return InstantFormat.Format(this, null, null);
+            return InstantPattern.Format(this, null, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -384,7 +372,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string format)
         {
-            return InstantFormat.Format(this, format, null);
+            return InstantPattern.Format(this, format, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -400,17 +388,21 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(IFormatProvider formatProvider)
         {
-            return InstantFormat.Format(this, null, formatProvider);
+            return InstantPattern.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
         }
         #endregion Formatting
 
         #region Parsing
+        private static readonly string[] AllFormats = { "g", "n" };
+        private const string DefaultFormatPattern = "g";
+
+        private static readonly PatternBclSupport<Instant> InstantPattern = new PatternBclSupport<Instant>(AllFormats, DefaultFormatPattern, Instant.MinValue, fi => fi.InstantPatternParser);
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
         public static Instant Parse(string value)
         {
-            return InstantParse.Parse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
+            return InstantPattern.Parse(value, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -418,15 +410,7 @@ namespace NodaTime
         /// </summary>
         public static Instant Parse(string value, IFormatProvider formatProvider)
         {
-            return InstantParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
-        }
-
-        /// <summary>
-        /// Parses the given string using the specified format provider and style.
-        /// </summary>
-        public static Instant Parse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles)
-        {
-            return InstantParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantPattern.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -434,23 +418,7 @@ namespace NodaTime
         /// </summary>
         public static Instant ParseExact(string value, string format, IFormatProvider formatProvider)
         {
-            return InstantParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
-        }
-
-        /// <summary>
-        /// Parses the given string using the specified format pattern, format provider and style.
-        /// </summary>
-        public static Instant ParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
-        {
-            return InstantParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles);
-        }
-
-        /// <summary>
-        /// Parses the given string using the specified format patterns, format provider and style.
-        /// </summary>
-        public static Instant ParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
-        {
-            return InstantParse.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return InstantPattern.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -461,40 +429,40 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Instant result)
         {
-            return InstantParse.TryParse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
+            return InstantPattern.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
         }
 
         /// <summary>
-        /// Attempts to parse the given string using the specified format provider and style.
+        /// Attempts to parse the given string using the specified format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        public static bool TryParse(string value, IFormatProvider formatProvider, out Instant result)
         {
-            return InstantParse.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantPattern.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
-        /// Attempts to parse the given string using the specified format pattern, format provider and style.
+        /// Attempts to parse the given string using the specified format pattern and format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, out Instant result)
         {
-            return InstantParse.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantPattern.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
-        /// Attempts to parse the given string using the specified format patterns, format provider and style.
+        /// Attempts to parse the given string using the specified format patterns and format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Instant result)
+        public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, out Instant result)
         {
-            return InstantParse.TryParseExactMultiple(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return InstantPattern.TryParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
         #endregion Parsing
 

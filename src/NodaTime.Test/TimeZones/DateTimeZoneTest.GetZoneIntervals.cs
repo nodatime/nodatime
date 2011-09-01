@@ -40,8 +40,8 @@ namespace NodaTime.Test.TimeZones
 	{
         private static readonly Instant Transition = Instant.FromUtc(2000, 1, 1, 0, 0);
 
-        private static readonly Offset Minus5 = Offset.ForHours(-5);
-        private static readonly Offset Plus10 = Offset.ForHours(10);
+        private static readonly Offset Minus5 = Offset.FromHours(-5);
+        private static readonly Offset Plus10 = Offset.FromHours(10);
 
         private static readonly LocalInstant TransitionMinus5 = Transition.Plus(Minus5);
         private static readonly LocalInstant TransitionPlus10 = Transition.Plus(Plus10);
@@ -230,7 +230,7 @@ namespace NodaTime.Test.TimeZones
         public void TrickyCase()
         {
             // 1am occurs unambiguously in the early zone.
-            var zone = new SingleTransitionZone(Transition, Offset.ForHours(3), Offset.ForHours(5));
+            var zone = new SingleTransitionZone(Transition, Offset.FromHours(3), Offset.FromHours(5));
             var actual = zone.GetZoneIntervals(new LocalInstant(2000, 1, 1, 1, 0));
             var expected = ZoneIntervalPair.Unambiguous(zone.EarlyInterval);
             Assert.AreEqual(expected, actual);

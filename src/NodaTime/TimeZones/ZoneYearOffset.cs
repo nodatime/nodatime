@@ -76,6 +76,9 @@ namespace NodaTime.TimeZones
         private readonly int dayOfWeek;
         private readonly TransitionMode mode;
         private readonly int monthOfYear;
+
+        // TODO: store this as a Duration? It's not accurate to the nearest tick, and it's not really
+        // the right type to use here.
         private readonly Offset tickOfDay;
 
         /// <summary>
@@ -95,7 +98,7 @@ namespace NodaTime.TimeZones
             {
                 FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
             }
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks);
+            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.TotalTicks);
 
             this.mode = mode;
             this.monthOfYear = monthOfYear;
@@ -198,7 +201,7 @@ namespace NodaTime.TimeZones
             CalendarSystem calendar = CalendarSystem.Iso;
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.Fields.MonthOfYear.SetValue(instant, monthOfYear);
-            instant = calendar.Fields.TickOfDay.SetValue(instant, tickOfDay.Ticks);
+            instant = calendar.Fields.TickOfDay.SetValue(instant, tickOfDay.TotalTicks);
             instant = SetDayOfMonth(calendar, instant);
             instant = SetDayOfWeek(calendar, instant);
 
@@ -291,7 +294,7 @@ namespace NodaTime.TimeZones
                 CalendarSystem calendar = CalendarSystem.Iso;
                 LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, monthOfYear);
                 // Be lenient with tick of day.
-                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, tickOfDay.Ticks);
+                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, tickOfDay.TotalTicks);
                 newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
                 int signDirection = Math.Sign(direction);

@@ -26,16 +26,16 @@ namespace NodaTime.Test.TimeZones
     public class PrecalculatedDateTimeZoneTest
     {
         private static readonly ZoneInterval FirstInterval =
-            new ZoneInterval("First", Instant.MinValue, Instant.FromUtc(2000, 3, 10, 10, 0), Offset.ForHours(3), Offset.Zero);
+            new ZoneInterval("First", Instant.MinValue, Instant.FromUtc(2000, 3, 10, 10, 0), Offset.FromHours(3), Offset.Zero);
 
         // Note that this is effectively UTC +3 + 1 hour DST.
         private static readonly ZoneInterval SecondInterval =
-            new ZoneInterval("Second", FirstInterval.End, Instant.FromUtc(2000, 9, 15, 5, 0), Offset.ForHours(4), Offset.ForHours(1));
+            new ZoneInterval("Second", FirstInterval.End, Instant.FromUtc(2000, 9, 15, 5, 0), Offset.FromHours(4), Offset.FromHours(1));
 
         private static readonly ZoneInterval ThirdInterval =
-            new ZoneInterval("Third", SecondInterval.End, Instant.FromUtc(2005, 6, 20, 8, 0), Offset.ForHours(-5), Offset.Zero);
+            new ZoneInterval("Third", SecondInterval.End, Instant.FromUtc(2005, 6, 20, 8, 0), Offset.FromHours(-5), Offset.Zero);
 
-        private static readonly FixedDateTimeZone TailZone = new FixedDateTimeZone("TestFixed", Offset.ForHours(-6));
+        private static readonly FixedDateTimeZone TailZone = new FixedDateTimeZone("TestFixed", Offset.FromHours(-6));
 
         // We don't actually want an interval from the beginning of time when we ask our composite time zone for an interval
         // - because that could give the wrong idea. So we clamp it at the end of the precalculated interval.
@@ -47,18 +47,18 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MinMaxOffsets()
         {
-            Assert.AreEqual(Offset.ForHours(-6), TestZone.MinOffset);
-            Assert.AreEqual(Offset.ForHours(4), TestZone.MaxOffset);
+            Assert.AreEqual(Offset.FromHours(-6), TestZone.MinOffset);
+            Assert.AreEqual(Offset.FromHours(4), TestZone.MaxOffset);
         }
 
         [Test]
         public void MinMaxOffsetsWithOtherTailZone()
         {
-            var tailZone = new FixedDateTimeZone("TestFixed", Offset.ForHours(8));
+            var tailZone = new FixedDateTimeZone("TestFixed", Offset.FromHours(8));
             var testZone = new PrecalculatedDateTimeZone("Test",
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
-            Assert.AreEqual(Offset.ForHours(-5), testZone.MinOffset);
-            Assert.AreEqual(Offset.ForHours(8), testZone.MaxOffset);
+            Assert.AreEqual(Offset.FromHours(-5), testZone.MinOffset);
+            Assert.AreEqual(Offset.FromHours(8), testZone.MaxOffset);
         }
 
         [Test]
@@ -67,8 +67,8 @@ namespace NodaTime.Test.TimeZones
             var testZone = new PrecalculatedDateTimeZone("Test",
                 new[] { FirstInterval, SecondInterval, ThirdInterval,
                         new ZoneInterval("Last", ThirdInterval.End, Instant.MaxValue, Offset.Zero, Offset.Zero) }, null);
-            Assert.AreEqual(Offset.ForHours(-5), testZone.MinOffset);
-            Assert.AreEqual(Offset.ForHours(4), testZone.MaxOffset);
+            Assert.AreEqual(Offset.FromHours(-5), testZone.MinOffset);
+            Assert.AreEqual(Offset.FromHours(4), testZone.MaxOffset);
         }
 
         [Test]
@@ -156,7 +156,7 @@ namespace NodaTime.Test.TimeZones
             // from the precalculated zone (which is -5) will therefore give an instant from
             // the tail zone which occurs before the precalculated-to-tail transition,
             // and can therefore be ignored, resulting in an overall unambiguous time.
-            var tailZone = new FixedDateTimeZone(Offset.ForHours(5));
+            var tailZone = new FixedDateTimeZone(Offset.FromHours(5));
             var gapZone = new PrecalculatedDateTimeZone("Test",
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
             var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.FromHours(1));
@@ -171,7 +171,7 @@ namespace NodaTime.Test.TimeZones
             // from the precalculated zone (which is -5) will therefore give an instant from
             // the tail zone which occurs before the precalculated-to-tail transition,
             // and can therefore be ignored, resulting in an overall gap.
-            var tailZone = new FixedDateTimeZone(Offset.ForHours(5));
+            var tailZone = new FixedDateTimeZone(Offset.FromHours(5));
             var gapZone = new PrecalculatedDateTimeZone("Test", 
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
             var actual = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd);

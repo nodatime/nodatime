@@ -79,30 +79,31 @@
     <Compile Include="Calendars\CopticCalendarSystem.cs" />
     <Compile Include="Calendars\JulianCalendarSystem.cs" />
     <Compile Include="Calendars\WrappedCalendarSystem.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
     <Compile Include="Fields\DelegatedDateTimeField.cs" />
     <Compile Include="Fields\SkipZeroDateTimeField.cs" />
-    <Compile Include="Format\AbstractNodaFormatter.cs" />
-    <Compile Include="Format\Builder\AbstractFormatterBuilderNode.cs" />
-    <Compile Include="Format\Builder\IFormatNode.cs" />
-    <Compile Include="Format\Builder\IFormatterBuilderNode.cs" />
-    <Compile Include="Format\DurationFormatter.cs" />
-    <Compile Include="Format\FormatError.cs" />
-    <Compile Include="Format\FormatHelper.cs" />
-    <Compile Include="Format\Builder\FormatterBuilder.cs" />
-    <Compile Include="Format\INodaFormatter.cs" />
-    <Compile Include="Format\INodaParser.cs" />
-    <Compile Include="Format\ISignedValue.cs" />
-    <Compile Include="Format\OffsetParse.cs" />
-    <Compile Include="Format\DateTimeParseStyles.cs" />
-    <Compile Include="Format\InstantFormat.cs" />
-    <Compile Include="Format\InstantParse.cs" />
-    <Compile Include="Format\OffsetFormat.cs" />
-    <Compile Include="Format\OffsetParseInfo.cs" />
-    <Compile Include="Format\Parsable.cs" />
-    <Compile Include="Format\ParseInfo.cs" />
-    <Compile Include="Format\ParseString.cs" />
-    <Compile Include="Format\Pattern.cs" />
+    <Compile Include="Text\FixedFormatInfoPatternParser.cs" />
+    <Compile Include="Text\FormatHelper.cs" />
+    <Compile Include="Text\BucketHelper.cs" />
+    <Compile Include="Text\InstantPatternParser.cs" />
+    <Compile Include="Text\InvalidPatternException.cs" />
+    <Compile Include="Text\OffsetPatternParser.cs" />
+    <Compile Include="Text\Patterns\AbstractParsedPattern.cs" />
+    <Compile Include="Text\Patterns\IPatternParser.cs" />
+    <Compile Include="Text\Patterns\PatternCursor.cs" />
+    <Compile Include="Text\Patterns\PatternFields.cs" />
+    <Compile Include="Text\Patterns\PatternParseResult.cs" />
+    <Compile Include="Text\Patterns\PatternBclSupport.cs" />
+    <Compile Include="Text\TextCursor.cs" />
+    <Compile Include="Text\OffsetParseBucket.cs" />
+    <Compile Include="Text\ParseBucket.cs" />
+    <Compile Include="Text\ParseResult.cs" />
+    <Compile Include="Text\Patterns\CompositePattern.cs" />
+    <Compile Include="Text\Patterns\IParsedPattern.cs" />
+    <Compile Include="Text\Patterns\SimpleParsedPattern.cs" />
+    <Compile Include="Text\Patterns\SteppedPatternBuilder.cs" />
+    <Compile Include="Text\UnparsableValueException.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="Globalization\NodaCultureInfo.cs" />
     <Compile Include="Globalization\NodaFormatInfo.cs" />
@@ -160,6 +161,7 @@
     </Compile>
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="SystemClock.cs" />
+    <Compile Include="Text\ValueCursor.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
@@ -193,7 +195,6 @@
     <Compile Include="TimeZones\TransitionMode.cs" />
     <Compile Include="TimeZones\UtcProvider.cs" />
     <Compile Include="TimeZones\DateTimeZoneResourceProvider.cs" />
-    <Compile Include="Format\FormatUtils.cs" />
     <Compile Include="Chronology.cs" />
     <Compile Include="LocalDateTime.cs" />
     <Compile Include="Fields\DateTimeFieldType.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\HashCodeHelper.cs" />
     <Compile Include="Utility\ResourceHelper.cs" />
+    <Compile Include="Utility\Preconditions.cs" />
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -44,7 +44,7 @@ namespace NodaTime.Test.TimeZones
         private static void AssertOffset(int expectedHours, LocalDateTime localTime, DateTimeZone zone)
         {
             var zoned = zone.AtExactly(localTime);
-            int actualHours = zoned.Offset.Milliseconds / NodaConstants.MillisecondsPerHour;
+            int actualHours = zoned.Offset.TotalMilliseconds / NodaConstants.MillisecondsPerHour;
             Assert.AreEqual(expectedHours, actualHours);
         }
 

@@ -21,6 +21,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using NodaTime.Properties;
+using NodaTime.Text;
+using NodaTime.Text.Patterns;
 
 #endregion
 
@@ -32,6 +34,19 @@ namespace NodaTime.Globalization
     [DebuggerStepThrough]
     public class NodaFormatInfo : IFormatProvider, ICloneable
     {
+        #region Patterns and pattern parsers
+        private static readonly IPatternParser<Offset> GeneralOffsetPatternParser = new OffsetPatternParser();
+        private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser();
+
+        private readonly FixedFormatInfoPatternParser<Offset> offsetPatternParser;
+        private readonly FixedFormatInfoPatternParser<Instant> instantPatternParser;
+        #endregion
+
+        /// <summary>
+        /// A NodaFormatInfo wrapping the invariant culture.
+        /// </summary>
+        public static NodaFormatInfo InvariantInfo  = new NodaFormatInfo(CultureInfo.InvariantCulture);
+
         private static readonly IDictionary<String, NodaFormatInfo> Infos = new Dictionary<string, NodaFormatInfo>();
         internal static bool DisableCaching; // Used in testing and debugging
 
@@ -64,12 +79,17 @@ namespace NodaTime.Globalization
             OffsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
             offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
             offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
+            offsetPatternParser = new FixedFormatInfoPatternParser<Offset>(GeneralOffsetPatternParser, this);
+            instantPatternParser = new FixedFormatInfoPatternParser<Instant>(GeneralInstantPatternParser, this);
         }
 
         /// <summary>
         ///   Gets the culture info.
         /// </summary>
         public CultureInfo CultureInfo {  get;  private set; }
+
+        internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return offsetPatternParser; } }
+        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return instantPatternParser; } }
 
         /// <summary>
         ///   Gets or sets the number format.
@@ -197,8 +217,7 @@ namespace NodaTime.Globalization
         ///   The offset pattern long.
         /// </value>
         public string OffsetPatternLong
-        {
-            
+        {            
             get { return offsetPatternLong; }
             
             set { SetValue(value, ref offsetPatternLong); }
@@ -310,8 +329,14 @@ namespace NodaTime.Globalization
             }
             string name = cultureInfo.Name;
             NodaFormatInfo result;
+            if (cultureInfo == CultureInfo.InvariantCulture)
+            {
+                return InvariantInfo;
+            }
             lock (Infos)
             {
+                // TODO: Consider fetching by the cultureInfo instead, as otherwise two culture instances
+                // with the same name will give the wrong result.
                 if (DisableCaching || !Infos.TryGetValue(name, out result))
                 {
                     result = new NodaFormatInfo(cultureInfo) { IsReadOnly = true };

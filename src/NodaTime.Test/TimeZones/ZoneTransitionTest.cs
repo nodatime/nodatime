@@ -26,8 +26,8 @@ namespace NodaTime.Test.TimeZones
     {
         private readonly Offset threeHours = Offset.Create(3, 0, 0, 0);
         private Offset oneHour = Offset.Create(1, 0, 0, 0);
-        private Offset minusOneHour = Offset.Create(-1, 0, 0, 0);
-        private readonly Offset minusTwoHours = Offset.Create(-2, 0, 0, 0);
+        private Offset minusOneHour = Offset.Create(1, 0, 0, 0, true);
+        private readonly Offset minusTwoHours = Offset.Create(2, 0, 0, 0, true);
 
         [Test]
         public void Construct_NullName_Exception()
@@ -50,7 +50,7 @@ namespace NodaTime.Test.TimeZones
         public void Construct_BeginningOfTime_Truncated()
         {
             const string name = "abc";
-            var instant = new Instant(Instant.MinValue.Ticks + oneHour.Ticks);
+            var instant = new Instant(Instant.MinValue.Ticks + oneHour.TotalTicks);
             var actual = new ZoneTransition(instant, name, minusTwoHours, minusTwoHours);
             Assert.AreEqual(instant, actual.Instant, "Instant");
             Assert.AreEqual(minusOneHour, actual.StandardOffset, "StandardOffset");
@@ -61,7 +61,7 @@ namespace NodaTime.Test.TimeZones
         public void Construct_EndOfTime_Truncated()
         {
             const string name = "abc";
-            var instant = new Instant(Instant.MaxValue.Ticks + minusOneHour.Ticks);
+            var instant = new Instant(Instant.MaxValue.Ticks + minusOneHour.TotalTicks);
             var actual = new ZoneTransition(instant, name, threeHours, threeHours);
             Assert.AreEqual(instant, actual.Instant, "Instant");
             Assert.AreEqual(oneHour, actual.StandardOffset, "StandardOffset");
@@ -184,8 +184,8 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void IsTransitionFrom_laterInstantAndEqualButOppositeStandardAndSavings_false()
         {
-            var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.ForHours(1), Offset.Zero);
-            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.ForHours(1));
+            var newValue = new ZoneTransition(Instant.UnixEpoch + Duration.One, "abc", Offset.FromHours(1), Offset.Zero);
+            var oldValue = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.FromHours(1));
             Assert.False(newValue.IsTransitionFrom(oldValue));
         }
 

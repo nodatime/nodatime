@@ -50,6 +50,7 @@ namespace NodaTime.Benchmarks.Timing
                     Console.WriteLine("Ignoring {0}: no public parameterless constructor", type.Name);
                     continue;
                 }
+                Console.WriteLine("Environment: CLR {0} on {1}", Environment.Version, Environment.OSVersion);
                 Console.WriteLine("Running benchmarks in {0}", GetTypeDisplayName(type));
                 object instance = ctor.Invoke(null);
                 foreach (var method in type.GetMethods(AllInstance).Where(IsBenchmark))
