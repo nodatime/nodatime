@@ -20,8 +20,6 @@ using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
 using NodaTime.Globalization;
-using NodaTime.Test.Format;
-
 #endregion
 
 namespace NodaTime.Test.Globalization

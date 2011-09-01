@@ -16,8 +16,9 @@
 #endregion
 #region usings
 using System;
-using NodaTime.Format;
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 #endregion
 
@@ -31,8 +32,7 @@ namespace NodaTime
     /// <remarks>
     ///   <para>
     ///     Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
-    ///     is outside this range then the value is forced into the range by considering that time wraps
-    ///     as it goes around the world multiple times.
+    ///     is outside this range then an exception is thrown.
     ///   </para>
     ///   <para>
     ///     Internally, offsets are stored as an <see cref="int" /> number of milliseconds instead of
@@ -55,26 +55,26 @@ namespace NodaTime
         /// </summary>
         public static readonly Offset MinValue = Offset.FromMilliseconds(-NodaConstants.MillisecondsPerStandardDay + 1);
         /// <summary>
-        /// The minimum permitted offset; one millisecond less than a standard day after UTC.
+        /// The maximum permitted offset; one millisecond less than a standard day after UTC.
         /// </summary>
         public static readonly Offset MaxValue = Offset.FromMilliseconds(NodaConstants.MillisecondsPerStandardDay - 1);
 
         private readonly int milliseconds;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="Offset" /> struct.
+        /// Initializes a new instance of the <see cref="Offset" /> struct.
         /// </summary>
         /// <remarks>
-        ///   Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value
-        ///   given is outside this range then the value is forced into the range by considering that
-        ///   time wraps as it goes around the world multiple times.
+        /// Offsets are constrained to the range (-24 hours, 24 hours).
         /// </remarks>
-        /// <param name="milliseconds">The number of milliseconds.</param>
+        /// <param name="milliseconds">The number of milliseconds in the offset.</param>
         private Offset(int milliseconds)
         {
-            // TODO: Should we perhaps just throw an ArgumentOutOfRangeException instead if it's out of bounds?
-            // When do we expect this to happen?
-            this.milliseconds = milliseconds % NodaConstants.MillisecondsPerStandardDay;
+            // TODO: Possibly move this to all the public factory methods instead, and trust internal callers.
+            Preconditions.CheckArgumentRange("milliseconds", milliseconds,
+                -NodaConstants.MillisecondsPerStandardDay + 1,
+                NodaConstants.MillisecondsPerStandardDay - 1);
+            this.milliseconds = milliseconds;
         }
 
         /// <summary>
@@ -96,25 +96,25 @@ namespace NodaTime
         public int Minutes { get { return (Math.Abs(milliseconds) % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute; } }
 
         /// <summary>
-        ///   Gets the seconds of the offset. This is always a positive value.
+        /// Gets the seconds of the offset. This is always a positive value.
         /// </summary>
         public int Seconds { get { return (Math.Abs(milliseconds) % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond; } }
 
         /// <summary>
-        ///   Gets the fractional seconds of the offset i.e. the milliseconds of the second. This is always a positive value.
+        /// Gets the fractional seconds of the offset i.e. the milliseconds of the second. This is always a positive value.
         /// </summary>
         public int FractionalSeconds { get { return Math.Abs(milliseconds) % NodaConstants.MillisecondsPerSecond; } }
 
         /// <summary>
-        ///   Gets the number of milliseconds in the offset.
+        /// Gets the total number of milliseconds in the offset.
         /// </summary>
-        public int Milliseconds { get { return milliseconds; } }
+        public int TotalMilliseconds { get { return milliseconds; } }
 
         /// <summary>
-        ///   Returns the number of ticks represented by this offset.
+        /// Returns the number of ticks represented by this offset.
         /// </summary>
         /// <value>The number of ticks.</value>
-        public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
+        public long TotalTicks { get { return TotalMilliseconds * NodaConstants.TicksPerMillisecond; } }
 
         /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local
@@ -142,7 +142,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset" /> instance with a negated value.</returns>
         public static Offset operator -(Offset offset)
         {
-            return Offset.FromMilliseconds(-offset.Milliseconds);
+            return Offset.FromMilliseconds(-offset.TotalMilliseconds);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset" /> representing the sum of the given values.</returns>
         public static Offset operator +(Offset left, Offset right)
         {
-            return Offset.FromMilliseconds(left.Milliseconds + right.Milliseconds);
+            return Offset.FromMilliseconds(left.TotalMilliseconds + right.TotalMilliseconds);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
         public static Offset operator -(Offset left, Offset right)
         {
-            return Offset.FromMilliseconds(left.Milliseconds - right.Milliseconds);
+            return Offset.FromMilliseconds(left.TotalMilliseconds - right.TotalMilliseconds);
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Offset other)
         {
-            return Milliseconds.CompareTo(other.Milliseconds);
+            return TotalMilliseconds.CompareTo(other.TotalMilliseconds);
         }
         #endregion
 
@@ -326,7 +326,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Offset other)
         {
-            return Milliseconds == other.Milliseconds;
+            return TotalMilliseconds == other.TotalMilliseconds;
         }
         #endregion
 
@@ -357,7 +357,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return Milliseconds.GetHashCode();
+            return TotalMilliseconds.GetHashCode();
         }
         #endregion  // Object overrides
 
@@ -379,7 +379,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return OffsetFormat.Format(this, format, NodaFormatInfo.GetInstance(formatProvider));
+            return OffsetPattern.Format(this, format, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -390,7 +390,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return OffsetFormat.Format(this, null, NodaFormatInfo.CurrentInfo);
+            return OffsetPattern.Format(this, null, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string format)
         {
-            return OffsetFormat.Format(this, format, NodaFormatInfo.CurrentInfo);
+            return OffsetPattern.Format(this, format, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -422,17 +422,21 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(IFormatProvider formatProvider)
         {
-            return OffsetFormat.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
+            return OffsetPattern.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
         }
         #endregion Formatting
 
         #region Parsing
+        private static readonly string[] AllFormats = { "g", "n", "d" };
+        private const string DefaultFormatPattern = "g";
+
+        private static readonly PatternBclSupport<Offset> OffsetPattern = new PatternBclSupport<Offset>(AllFormats, DefaultFormatPattern, Offset.Zero, fi => fi.OffsetPatternParser);
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
         public static Offset Parse(string value)
         {
-            return OffsetParse.Parse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None);
+            return OffsetPattern.Parse(value, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -440,15 +444,7 @@ namespace NodaTime
         /// </summary>
         public static Offset Parse(string value, IFormatProvider formatProvider)
         {
-            return OffsetParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
-        }
-
-        /// <summary>
-        /// Parses the given string using the specified format provider and style.
-        /// </summary>
-        public static Offset Parse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles)
-        {
-            return OffsetParse.Parse(value, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return OffsetPattern.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -456,71 +452,63 @@ namespace NodaTime
         /// </summary>
         public static Offset ParseExact(string value, string format, IFormatProvider formatProvider)
         {
-            return OffsetParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), DateTimeParseStyles.None);
+            return OffsetPattern.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
-        /// Parses the given string using the specified format pattern, format provider and style.
+        /// Parses the given string using the specified format patterns and format provider.
         /// </summary>
-        public static Offset ParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles)
+        public static Offset ParseExact(string value, string[] formats, IFormatProvider formatProvider)
         {
-            return OffsetParse.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles);
-        }
-
-        /// <summary>
-        /// Parses the given string using the specified format patterns, format provider and style.
-        /// </summary>
-        public static Offset ParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles)
-        {
-            return OffsetParse.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles);
+            return OffsetPattern.ParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
         /// Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
         /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Offset result)
         {
-            return OffsetParse.TryParse(value, NodaFormatInfo.CurrentInfo, DateTimeParseStyles.None, out result);
+            return OffsetPattern.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
         }
 
         /// <summary>
-        /// Attempts to parse the given string using the specified format provider and style.
+        /// Attempts to parse the given string using the specified format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParse(string value, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
+        public static bool TryParse(string value, IFormatProvider formatProvider, out Offset result)
         {
-            return OffsetParse.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return OffsetPattern.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
         /// Attempts to parse the given string using the specified format pattern, format provider and style.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
+        public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, out Offset result)
         {
-            return OffsetParse.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return OffsetPattern.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
-        /// Attempts to parse the given string using the specified format patterns, format provider and style.
+        /// Attempts to parse the given string using the specified format patterns and format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, DateTimeParseStyles styles, out Offset result)
+        public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, out Offset result)
         {
-            return OffsetParse.TryParseExactMultiple(value, formats, NodaFormatInfo.GetInstance(formatProvider), styles, out result);
+            return OffsetPattern.TryParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
         #endregion Parsing
 
-        #region Conversion
+        #region Construction
         /// <summary>
         ///   Returns the offset for the given milliseconds value.
         /// </summary>
@@ -548,52 +536,20 @@ namespace NodaTime
         /// <returns>
         ///   A new <see cref="Offset" /> representing the given value.
         /// </returns>
-        public static Offset ForHours(int hours)
+        public static Offset FromHours(int hours)
         {
-            return Create(hours, 0, 0, 0);
+            return new Offset(hours * NodaConstants.MillisecondsPerHour);
         }
 
         /// <summary>
-        ///   Creates an offset with the specified number of hours and minutes.
+        /// Creates an offset with the specified number of hours, minutes, seconds, and
+        /// milliseconds. This offset is always non-negative.
         /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <returns>
-        ///   A new <see cref="Offset" /> representing the given values.
-        /// </returns>
-        /// <remarks>
-        ///   TODO: not sure about the name. Anyone got a better one?
-        /// </remarks>
-        public static Offset Create(int hours, int minutes)
-        {
-            return Create(hours, minutes, 0, 0);
-        }
-
-        /// <summary>
-        ///   Creates an offset with the specified number of hours, minutes, and seconds.
-        /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <param name="seconds">The number of seconds.</param>
-        /// <returns>
-        ///   A new <see cref="Offset" /> representing the given values.
-        /// </returns>
-        /// <remarks>
-        ///   TODO: not sure about the name. Anyone got a better one?
-        /// </remarks>
-        public static Offset Create(int hours, int minutes, int seconds)
-        {
-            return Create(hours, minutes, seconds, 0);
-        }
-
-        /// <summary>
-        ///   Creates an offset with the specified number of hours, minutes, seconds, and
-        ///   milliseconds.
-        /// </summary>
-        /// <param name="hours">The number of hours.</param>
-        /// <param name="minutes">The number of minutes.</param>
-        /// <param name="seconds">The number of seconds.</param>
-        /// <param name="fractionalSeconds">The number of milliseconds.</param>
+        /// <param name="hours">The number of hours, in the range [0, 24).</param>
+        /// <param name="minutes">The number of minutes, in the range [0, 60).</param>
+        /// <param name="seconds">The number of second, in the range [0, 60).</param>
+        /// <param name="fractionalSeconds">The number of milliseconds within the second,
+        /// in the range [0, 1000).</param>
         /// <returns>
         ///   A new <see cref="Offset" /> representing the given values.
         /// </returns>
@@ -603,15 +559,36 @@ namespace NodaTime
         /// </remarks>
         public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds)
         {
-            int sign = Math.Sign(hours) < 0 ? -1 : 1;
-            int milliseconds = 0;
-            milliseconds += Math.Abs(hours) * NodaConstants.MillisecondsPerHour;
-            milliseconds += Math.Abs(minutes) * NodaConstants.MillisecondsPerMinute;
-            milliseconds += Math.Abs(seconds) * NodaConstants.MillisecondsPerSecond;
-            milliseconds += Math.Abs(fractionalSeconds);
-            return Offset.FromMilliseconds(sign * milliseconds);
+            return Create(hours, minutes, seconds, fractionalSeconds, false);
         }
 
+        /// <summary>
+        /// Creates an offset from the given values, including a sign to indicate whether or not the returned
+        /// offset should be negative.
+        /// </summary>
+        /// <param name="hours">The number of hours, in the range [0, 24).</param>
+        /// <param name="minutes">The number of minutes, in the range [0, 60).</param>
+        /// <param name="seconds">The number of second, in the range [0, 60).</param>
+        /// <param name="fractionalSeconds">The number of milliseconds within the second,
+        /// in the range [0, 1000).</param>
+        /// <param name="negative">True if a negative offset should be created, false for a positive one.</param>
+        public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds, bool negative)
+        {
+            Preconditions.CheckArgumentRange("hours", hours, 0, 23);
+            Preconditions.CheckArgumentRange("minutes", minutes, 0, 59);
+            Preconditions.CheckArgumentRange("seconds", seconds, 0, 59);
+            Preconditions.CheckArgumentRange("fractionalSeconds", fractionalSeconds, 0, 999);
+            int sign = negative ? -1 : 1;
+            int milliseconds = 0;
+            milliseconds += hours * NodaConstants.MillisecondsPerHour;
+            milliseconds += minutes * NodaConstants.MillisecondsPerMinute;
+            milliseconds += seconds * NodaConstants.MillisecondsPerSecond;
+            milliseconds += fractionalSeconds;
+            return Offset.FromMilliseconds(sign * milliseconds);
+        }
+        #endregion
+
+        #region Conversion
         /// <summary>
         /// Converts this offset to a .NET standard <see cref="TimeSpan" /> value.
         /// </summary>

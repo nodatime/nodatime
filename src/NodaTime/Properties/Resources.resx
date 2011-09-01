@@ -165,6 +165,9 @@
   <data name="Parse_ExtraValueCharacters" xml:space="preserve">
     <value>The format matches a prefix of the value string but not the entire string. Part not matching: "{0}".</value>
   </data>
+  <data name="Parse_FieldValueOutOfRange" xml:space="preserve">
+    <value>The value {0} is out range for the field '{1}' in the {2} type.</value>
+  </data>
   <data name="Parse_FormatElementInvalid" xml:space="preserve">
     <value>The items of the format string array cannot be null or empty.</value>
   </data>
@@ -215,6 +218,9 @@
   </data>
   <data name="Parse_RepeatCountExceeded" xml:space="preserve">
     <value>There were more consecutive copies of the pattern character "{0}" than the maximum allowed ({1}) in the format string.</value>
+  </data>
+  <data name="Parse_RepeatedFieldInPattern" xml:space="preserve">
+    <value>The field "{0}" is specified multiple times in the pattern.</value>
   </data>
   <data name="Parse_StandardFormatWhitespace" xml:space="preserve">
     <value>The standard format "{0}" for type {1} cannot contain white space.</value>

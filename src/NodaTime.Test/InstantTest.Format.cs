@@ -18,6 +18,7 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
+using NodaTime.Text;
 
 namespace NodaTime.Test
 {
@@ -27,7 +28,7 @@ namespace NodaTime.Test
         [Test, Category("Formatting"), Category("Format")]
         public void TestToString_InvalidFormat()
         {
-            Assert.Throws<FormatException>(() => Instant.UnixEpoch.ToString("A"));
+            Assert.Throws<InvalidPatternException>(() => Instant.UnixEpoch.ToString("A"));
         }
 
         [Test, Category("Formatting"), Category("Format")]

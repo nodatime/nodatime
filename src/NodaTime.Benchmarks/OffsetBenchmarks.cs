@@ -16,35 +16,97 @@
 #endregion
 
 using NodaTime.Benchmarks.Timing;
-using NodaTime.Format;
 using NodaTime.Globalization;
 using System.Globalization;
+using NodaTime.Text;
+using NodaTime.Text.Patterns;
 
 namespace NodaTime.Benchmarks
 {
     internal class OffsetBenchmarks
     {
         private static readonly NodaFormatInfo InvariantFormatInfo = NodaFormatInfo.GetFormatInfo(CultureInfo.InvariantCulture);
+        private static readonly Offset SampleOffset = Offset.Create(12, 34, 0, 0);
 
+        private readonly IParsedPattern<Offset> offsetPattern;
+        private readonly OffsetPatternParser offsetPatternParser;
+
+        public OffsetBenchmarks()
+        {
+            offsetPatternParser = new OffsetPatternParser();
+            var parseResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
+            offsetPattern = parseResult.GetResultOrThrow();
+        }
+        
         [Benchmark]
         public void TryParseExact_Valid()
         {
             Offset result;
-            Offset.TryParseExact("12:34", "HH:mm", InvariantFormatInfo, DateTimeParseStyles.None, out result);
+            Offset.TryParseExact("12:34", "HH:mm", InvariantFormatInfo, out result);
         }
 
         [Benchmark]
         public void TryParseExact_InvalidFormat()
         {
             Offset result;
-            Offset.TryParseExact("12:34", "bb:mm", InvariantFormatInfo, DateTimeParseStyles.None, out result);
+            Offset.TryParseExact("12:34", "hh:mm", InvariantFormatInfo, out result);
         }
 
         [Benchmark]
         public void TryParseExact_InvalidValue()
         {
             Offset result;
-            Offset.TryParseExact("123:45", "HH:mm", InvariantFormatInfo, DateTimeParseStyles.None, out result);
+            Offset.TryParseExact("123:45", "HH:mm", InvariantFormatInfo, out result);
+        }
+
+        [Benchmark]
+        public void ParseExactIncludingPreparse_Valid()
+        {
+            var parsePatternResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
+            var pattern = parsePatternResult.GetResultOrThrow();
+            Offset result;
+            NodaTime.Text.ParseResult<Offset> parseResult = pattern.Parse("12:34");
+            parseResult.TryGetResult(default(Offset), out result);
+        }
+
+        [Benchmark]
+        public void PreparsedParseExact_Valid()
+        {
+            Offset result;
+            NodaTime.Text.ParseResult<Offset> parseResult = offsetPattern.Parse("12:34");
+            parseResult.TryGetResult(default(Offset), out result);
+        }
+
+        [Benchmark]
+        public void ParsePattern_Invalid()
+        {
+            offsetPatternParser.ParsePattern("hh:mm", InvariantFormatInfo);
+        }
+
+        [Benchmark]
+        public void ParsePattern_Valid()
+        {
+            offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
+        }
+
+        [Benchmark]
+        public void PreparedParseExact_InvalidValue()
+        {
+            Offset result;
+            NodaTime.Text.ParseResult<Offset> parseResult = offsetPattern.Parse("123:45");
+            parseResult.TryGetResult(default(Offset), out result);
+        }
+
+        [Benchmark]
+        public void ToString_ExplicitFormat()
+        {
+            SampleOffset.ToString("HH:mm", InvariantFormatInfo);
+        }
+
+        [Benchmark]
+        public void ParsedPattern_Format()
+        {
+            offsetPattern.Format(SampleOffset);
         }
     }
 }

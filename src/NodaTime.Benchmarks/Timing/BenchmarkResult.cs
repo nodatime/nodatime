@@ -24,8 +24,8 @@ namespace NodaTime.Benchmarks.Timing
     /// </summary>
     internal class BenchmarkResult
     {
-        private const string LongFormatString = "{0}: {1:N0} cps; ({2:N0} iterations in {3:N0} ticks)";
-        private const string ShortFormatString = "{0}: {1:N0} cps";
+        private const string LongFormatString = "{0}: {1:N0} cps; ({2:N0} iterations in {3:N0} ticks; {4:N0} ticks per iteration)";
+        private const string ShortFormatString = "{0}: {1:N0} cps ({4:N0} tpc)";
         private readonly MethodInfo method;
         private readonly int iterations;
         private readonly Duration duration;
@@ -41,11 +41,12 @@ namespace NodaTime.Benchmarks.Timing
         internal long Iterations { get { return iterations; } }
         internal Duration Duration { get { return duration; } }
         internal long CallsPerSecond { get { return iterations * NodaConstants.TicksPerSecond / duration.Ticks; } }
+        internal long TicksPerCall { get { return Duration.Ticks / iterations; } }
 
         public string ToString(BenchmarkOptions options)
         {
             string formatString = options.DisplayRawData ? LongFormatString : ShortFormatString;
-            return string.Format(formatString, Method.Name, CallsPerSecond, Iterations, Duration.Ticks);
+            return string.Format(formatString, Method.Name, CallsPerSecond, Iterations, Duration.Ticks, TicksPerCall);
         }
     }
 }

@@ -36,3 +36,5 @@ _ReSharper*/
 [Tt]ests.[Vv]isual[Ss]tate*
 SandcastleOutput/
 glob:Help/
+syntax: glob
+*.dotCover

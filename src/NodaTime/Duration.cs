@@ -17,7 +17,6 @@
 
 using System;
 using System.Globalization;
-using NodaTime.Format;
 
 namespace NodaTime
 {
@@ -34,7 +33,7 @@ namespace NodaTime
     /// This type is immutable and thread-safe.
     /// </para>
     /// </remarks>
-    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IFormattable
+    public struct Duration : IEquatable<Duration>, IComparable<Duration>
     {
         #region Public readonly fields
         /// <summary>
@@ -214,74 +213,14 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the value as a <see cref="String"/> in the ISO8601 duration format including
-        /// only seconds and ticks.
+        /// Gets the value as a <see cref="String"/> showing the number of ticks represented by this duration.
+        /// TODO: We should *consider* representing this as in the same way as a period, but I'm reluctant to do so.
         /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents the instance as an ISO8601 string
-        /// </returns>
-        /// <example>
-        /// For example, "PT72.3450000S" represents 1 minute, 12 seconds and 345 milliseconds.
-        /// </example>
         public override string ToString()
         {
-            return DurationFormatter.InvariantGeneralFormatter.Format(this);
+            return Ticks.ToString();
         }
         #endregion  // Object overrides
-
-        #region Formatting
-        /// <summary>
-        ///   Formats the value of the current instance using the specified format.
-        /// </summary>
-        /// <returns>
-        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
-        /// </returns>
-        /// <param name="format">The <see cref="T:System.String" /> specifying the format to use.
-        ///   -or- 
-        ///   null to use the default format defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
-        /// </param>
-        /// <filterpriority>2</filterpriority>
-        public string ToString(string format)
-        {
-            return DurationFormatter.GetFormatter(format).Format(this);
-        }
-
-        /// <summary>
-        ///   Formats the value of the current instance using the specified format.
-        /// </summary>
-        /// <returns>
-        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
-        /// </returns>
-        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
-        ///   -or- 
-        ///   null to obtain the format information from the current locale setting of the operating system. 
-        /// </param>
-        /// <filterpriority>2</filterpriority>
-        public string ToString(IFormatProvider formatProvider)
-        {
-            return DurationFormatter.InvariantGeneralFormatter.WithFormatProvider(formatProvider).Format(this);
-        }
-
-        /// <summary>
-        ///   Formats the value of the current instance using the specified format.
-        /// </summary>
-        /// <returns>
-        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
-        /// </returns>
-        /// <param name="format">The <see cref="T:System.String" /> specifying the format to use.
-        ///   -or- 
-        ///   null to use the default format defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
-        /// </param>
-        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
-        ///   -or- 
-        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
-        /// </param>
-        /// <filterpriority>2</filterpriority>
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            return DurationFormatter.GetFormatter(format).WithFormatProvider(formatProvider).Format(this);
-        }
-        #endregion Formatting
 
         #region Operators
         /// <summary>
@@ -589,95 +528,6 @@ namespace NodaTime
         public static Duration FromMilliseconds(long milliseconds)
         {
             return OneMillisecond * milliseconds;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a duration to its <see cref="Duration"/> equivalent 
-        /// and returns a value that indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="value">The value to parse.</param>
-        /// <param name="result">When this method returns, contains an object that represents the duration specified by value,
-        /// or Duration.Zero if the conversion failed. This parameter is passed uninitialized.</param>
-        /// <returns>True if value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string value, out Duration result)
-        {
-            result = Zero;
-            if (value == null)
-            {
-                return false;
-            }
-
-            int len = value.Length;
-            if (len >= 4 && (value[0] == 'P' || value[0] == 'p') && (value[1] == 'T' || value[1] == 't') && (value[len - 1] == 'S' || value[len - 1] == 's'))
-            {
-                // ok
-            }
-            else
-            {
-                return false;
-            }
-
-            var body = value.Substring(2, len - 3);
-            int dot = -1;
-            for (int i = 0; i < body.Length; i++)
-            {
-                if ((body[i] >= '0' && body[i] <= '9') || (i == 0 && body[0] == '-'))
-                {
-                    // ok
-                }
-                else if (i > 0 && body[i] == '.' && dot == -1)
-                {
-                    // ok
-                    dot = i;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            long seconds;
-            int ticks = 0;
-            if (dot > 0)
-            {
-                seconds = long.Parse(body.Substring(0, dot), CultureInfo.InvariantCulture);
-                var ticksValue = body.Substring(dot + 1);
-                if (ticksValue.Length != 7)
-                {
-                    ticksValue = ticksValue + "0000000";
-                }
-                ticks = FormatUtils.ParseDigits(ticksValue, 0, 7);
-            }
-            else
-            {
-                seconds = long.Parse(body, CultureInfo.InvariantCulture);
-            }
-
-            result = seconds < 0 ? FromSeconds(seconds) - new Duration(ticks) : FromSeconds(seconds) + new Duration(ticks);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Parses the specified value into a <see cref="Duration"/>.
-        /// </summary>
-        /// <param name="value">The value to parse.</param>
-        /// <exception cref="FormatException">If the <paramref name="value"/> is badly formatted.</exception>
-        /// <exception cref="ArgumentNullException">If the <paramref name="value"/> is <c>null</c>.</exception>
-        /// <returns>The <see cref="Duration"/>.</returns>
-        public static Duration Parse(string value)
-        {
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
-            }
-
-            Duration result;
-            if (TryParse(value, out result))
-            {
-                return result;
-            }
-            throw new FormatException("Invalid format: \"" + value + '"');
         }
     }
 }
