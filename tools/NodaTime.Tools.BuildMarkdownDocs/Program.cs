@@ -17,6 +17,7 @@
 
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Web;
 using MarkdownSharp;
 
@@ -33,6 +34,9 @@ namespace NodaTime.Tools.BuildMarkdownDocs
         private const string MarkdownSuffix = "txt";
         private const string TemplateTitle = "%TITLE%";
         private const string TemplateBody = "%BODY%";
+        private const string ApiUrlPrefix = "../api/html/";
+        private static readonly Regex NamespacePattern = new Regex(@"noda-ns://(\S*)", RegexOptions.Multiline);
+        private static readonly Regex TypePattern = new Regex(@"noda-type://(\S*)", RegexOptions.Multiline);
 
         private static int Main(string[] args)
         {
@@ -102,6 +106,7 @@ namespace NodaTime.Tools.BuildMarkdownDocs
                 {
                     title = HttpUtility.HtmlEncode(reader.ReadLine());
                     string markdown = reader.ReadToEnd();
+                    markdown = TranslateNodaUrls(markdown);
                     body = new Markdown().Transform(markdown).Replace("<pre>", "<pre class=\"prettyprint\">");
                 }
 
@@ -110,6 +115,23 @@ namespace NodaTime.Tools.BuildMarkdownDocs
 
                 File.WriteAllText(outputFile, html);
             }
+        }
+
+        /// <summary>
+        /// Translates URLs of the form noda-ns://NodaTime.Text or noda-type://NodaTime.Text.ParseResult
+        /// into "real" URLs relative to the generated documentation.
+        /// </summary>
+        private static string TranslateNodaUrls(string markdown)
+        {
+            markdown = NamespacePattern.Replace(markdown, match => TranslateUrl(match, "N"));
+            markdown = TypePattern.Replace(markdown, match => TranslateUrl(match, "T"));
+            return markdown;
+        }
+
+        private static string TranslateUrl(Match match, string memberTypePrefix)
+        {
+            string name = match.Groups[1].Value;
+            return ApiUrlPrefix + memberTypePrefix + "_" + name.Replace(".", "_") + ".htm";
         }
 
         private static void CheckDirectoryExists(string path)
