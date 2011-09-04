@@ -22,16 +22,24 @@ using NodaTime.TimeZones;
 namespace NodaTime
 {
     /// <summary>
-    ///   Represents a time zone.
+    /// Represents a time zone - a mapping between UTC and local time.
     /// </summary>
     /// <remarks>
-    ///   Time zones primarily encapsulate two facts: an offset from UTC and a set of rules on how
-    ///   the values are adjusted.
+    /// <para>
+    /// A time zone maps UTC instants to local instants - or, equivalently, to the offset from UTC
+    /// at any particular instant.
+    /// </para>
+    /// <para>The mapping is unambiguous in the "UTC to local" direction, but
+    /// the reverse is not true: when the offset changes, usually due to a Daylight Saving transition,
+    /// the change either creates a gap (a period of local time which never occurs in the time zone)
+    /// or an ambiguity (a period of local time which occurs twice in the time zone). Mapping back from
+    /// local time to an instant requires consideration of how these problematic times will be handled.
+    /// </para>
     /// </remarks>
     public abstract class DateTimeZone
     {
         /// <summary>
-        ///   This is the ID of the UTC (Coordinated Universal Time) time zone.
+        /// This is the ID of the UTC (Coordinated Universal Time) time zone.
         /// </summary>
         public const string UtcId = "UTC";
 
