@@ -1,0 +1,10 @@
+Text handling in Noda Time
+
+You handle text pretty simply. Like this:
+
+    OffsetPattern p = new OffsetPattern("HH:mm");
+    string x = p.Format(new Offset());
+    
+Simple, huh? *That's really good.*
+
+   
