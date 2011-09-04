@@ -38,3 +38,7 @@ SandcastleOutput/
 glob:Help/
 syntax: glob
 *.dotCover
+docs/api/fti/*
+docs/api/*.aspx
+docs/api/Web.Config
+docs/api/*.xml
