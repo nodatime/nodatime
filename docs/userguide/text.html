@@ -3,17 +3,89 @@
   <head>
     <link href="prettify.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="prettify.js"></script>
-    <title>Text handling in Noda Time</title>
+    <title>Handling text in Noda Time</title>
   </head>
   <body onload="prettyPrint()">
-    <h1>Text handling in Noda Time</h1>
-    <p>You handle text pretty simply. Like this:</p>
+    <h1>Handling text in Noda Time</h1>
+    <p>There are two primary options for text handling in Noda Time. You
+can either follow the "normal" approach from the .NET Base Class
+Library (BCL) or use the pattern-based approach which is specific to
+Noda Time. You are <em>encouraged</em> to use the pattern-based approach as
+we believe it is more robust, clearer, and performs better than the
+BCL approach - but the choice is yours. Ultimately the two APIs use
+the same implementation, so you can transition from on to the other
+without worrying about compatibility - or you can even mix and match
+the two, if you must.</p>
 
-<pre class="prettyprint"><code>OffsetPattern p = new OffsetPattern("HH:mm");
-string x = p.Format(new Offset());
-</code></pre>
+<p>All the types responsible for text in Noda Time are in the
+<a href="../api/html/N_NodaTime_Text.htm">NodaTime.Text</a> namespace.</p>
 
-<p>Simple, huh? <em>That's really good.</em></p>
+<h2>The pattern-based API</h2>
+
+<p>A <em>pattern</em> is an object capable of <em>parsing</em> from text to a specific
+type, and <em>formatting</em> a value to text. Parsing and formatting don't
+take any other options: the pattern knows everything about how to
+map between the value and text. In particular, internationalization
+is handled using a <a href="../api/html/T_NodaTime_Globalization_NodaFormatInfo.htm"><code>NodaFormatInfo</code></a>, which implements
+<a href="http://msdn.microsoft.com/en-us/library/system.iformatprovider.aspx"><code>IFormatProvider</code></a>. Whereas using the BCL approach the format
+information has to be specified on every call, using the pattern
+approach the format information is fixed for any particular pattern.
+Convenience methods are provided to create new pattern instances
+based on existing ones but with different internationalization
+information or other options.</p>
+
+<h2>The BCL-based API</h2>
+
+<p>Each of the core Noda Time types (<a href="../api/html/T_NodaTime_LocalDateTime.htm"><code>LocalDateTime</code></a>,
+<a href="../api/html/T_NodaTime_Instant.htm"><code>Instant</code></a> etc) provide (or will provide :) methods with the
+following signatures:</p>
+
+<p><strong>Formatting (instance methods):</strong></p>
+
+<ul>
+<li><code>ToString()</code>: Formats the value using the default pattern for the
+current thread's format provider.</li>
+<li><code>ToString(IFormatProvider)</code>: Formats the value using the default
+pattern for the specified format provider.</li>
+<li><code>ToString(string)</code>: Formats the value with the given pattern in
+the current thread's format provider.</li>
+<li><code>ToString(string, IFormatProvider)</code>: Formats the value with the
+given pattern and format provider.</li>
+</ul>
+
+<p><strong>Parsing (static methods):</strong></p>
+
+<ul>
+<li><code>Parse(string)</code>: Parses the given text in all default patterns for
+the current thread's format provider, throwing an exception if the
+text cannot be parsed.</li>
+<li><code>Parse(string, IFormatProvider)</code>: Parses the given text in all
+default patterns for the specified format provider, throwing an
+exception if the text cannot be parsed.</li>
+<li><code>ParseExact(string, string, IFormatProvider)</code>: Parses the given
+text in exactly the pattern and format provider specified, throwing
+an exception if the text cannot be parsed.</li>
+<li><code>TryParse(string, out ResultType)</code>: Attempts to parse the given
+text in all default patterns for the current thread's format
+provider, returning a <code>bool</code> value to indicate success or failure
+and using an <code>out</code> parameter to convey the parsed value (on success)
+or some default value (on failure).</li>
+<li><code>TryParse(string, IFormatProvider, out ResultType)</code>: Attempts to parse the given
+text in all default patterns for the given format
+provider, returning a <code>bool</code> value to indicate success or failure
+and using an <code>out</code> parameter to convey the parsed value (on success)
+or some default value (on failure).</li>
+<li><code>TryParseExact(string, string, IFormatProvider, out ResultType)</code>: Attempts to parse the given
+text in the exact pattern specified using the given format provider, 
+returning a <code>bool</code> value to indicate success or failure and using
+an <code>out</code> parameter to convey the parsed value (on success)
+or some default value (on failure).</li>
+<li><code>TryParseExact(string, string[], IFormatProvider, out ResultType)</code>: Attempts to parse the given
+text in any of the patterns specified using the given format provider,
+returning a <code>bool</code> value to indicate success or failure and using
+an <code>out</code> parameter to convey the parsed value (on success)
+or some default value (on failure).</li>
+</ul>
 
   </body>
 </html>
