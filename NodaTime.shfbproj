@@ -15,7 +15,7 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>Documentation</Name>
     <!-- SHFB properties -->
-    <OutputPath>.\Help\</OutputPath>
+    <OutputPath>.\docs\api\</OutputPath>
     <HtmlHelpName>Help</HtmlHelpName>
     <Language>en-US</Language>
     <ProjectSummary>Noda-Time, a .NET port of Joda-Time.
