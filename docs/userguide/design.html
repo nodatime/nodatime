@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Design philosophy and conventions in Noda Time</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Design philosophy and conventions in Noda Time</h1>
+    <p>(I should note that the "we" below is mostly the royal "we",
+expressed by the author, Jon Skeet. Hopefully most of the
+contributors to Noda Time agree with most of the below, but please
+don't assume that they all agree with everything.)</p>
+
+<p>Noda Time has been designed with the following goals in mind:</p>
+
+<ul>
+<li><p><strong>We want to force you to think about decisions you really <em>need</em> to
+think about.</strong><br />
+In particular, what kind of data do you <em>really</em> have
+and <em>really</em> need? Is it local or global? Do you need the system
+time zone or some other time zone? If you're converting from a local
+time to a global one in a particular time zone, how do you want to
+handle ambiguities or gaps?</p></li>
+<li><p><strong>We want to solve the 99% case.</strong><br />
+Noda Time doesn't support leap
+seconds, relativity or various other subtleties around time lines.
+While we support some other calendars, we don't support you creating
+your own calendar - because you almost certainly don't need to.
+By focusing on the needs of the vast majority of users, we will make
+<em>their</em> lives easier... but this does mean that if you need
+something really specialized, Noda Time isn't likely to be right for
+you.</p>
+
+<p>While we sympathize with the "make simple things easy, make
+complex things possible" motto, our experience is typically that in
+making complex things possible (with no indication that anyone
+actually wants to do those things), the simple things become that
+much harder.</p></li>
+<li><p><strong>We don't want to be your performance bottleneck.</strong><br />
+We regard Noda Time as a system-level library: we don't know exactly
+how you'll use it, or how performance-criticial that use will be.
+We're willing to do more work (occasionally at the expense of
+<em>internal</em> complexity) to get out of your way, but we're not going
+to sacrifice <em>public</em> elegance for this.</p></li>
+<li><p><strong>We want your code to be robust in the face of new versions.</strong><br />
+Noda Time follows <a href="http://semver.org/">Semantic Versioning</a> so you should be able to
+spot incompatible versions - but additionally, by limiting the
+amount of "hooks" we provide, we've reduced the coupling between
+your code and ours.</p></li>
+<li><p><strong>We want your code using Noda Time to be testable.</strong><br />
+To some people that will conjure up images of interfaces and virtual
+methods everywhere - but that's not the case. Instead, we recommend
+that you inject appropriate dependencies (such as clocks) and we
+provide designed-for-testing implementations of types such as time
+zones.</p></li>
+<li><p><strong>We don't like defaults.</strong><br />
+Just about the only thing Noda Time will default for you is the use
+of the ISO calendar, as we believe that's what the majority of
+developers want. However, we do <em>not</em> default to using the system
+time zone, or using "now" as a default date/time value, or using
+the current thread's current format provider for parsing and
+formatting (except for the BCL-compatible method calls; see <a href="text.html">text
+handling</a> for more information on this).
+We make it easy to do all of these things, but they're just not
+appropriate as implicit defaults. It's too easy to <em>accidentally</em>
+depend on the time zone your system happens to be running in (etc)
+without anything obvious in your code.</p></li>
+</ul>
+
+<h2>What this means in practice</h2>
+
+<ul>
+<li><p>There are rather more types and <a href="concepts.html">concepts</a> to learn about in
+Noda Time than in .NET. One of the <em>problems</em> with .NET's date and
+time API is that <code>DateTime</code> doesn't have a single well-defined
+meaning.</p></li>
+<li><p>There are more value types in Noda Time than in many other
+libraries. We believe they're justified as value types (they
+represent single values) but you need to be aware of the impact on
+boxing and the like. In many cases the default value of the type (e.g. <code>new
+LocalDateTime()</code> or <code>default(LocalDateTime)</code>) is <em>not</em> a useful
+value. This is unfortunate, but hard to avoid.</p></li>
+<li><p>All the value types and almost all the reference types are
+immutable and thread-safe. We expect objects like calendars, time
+zones, and patterns for formatting and parsing text to be reused
+freely between many threads. Occasionally there's hidden mutability
+in terms of caches, but this should not be visible to you, the user.</p></li>
+<li><p>Almost all types are sealed, and there actually aren't very many
+interfaces. Even the abstract classes often have internal abstract
+methods, so can't be derived from by your code. This follows Josh
+Bloch's approach of "design for inheritance or prohibit it" -
+inheritance takes a lot of effort to do robustly, and we don't want
+to break your code because you happen to rely on us calling a
+particular method at a particular time.</p>
+
+<p>We're aware that this is one of the most contentious aspects of
+Noda Time's design - particularly as <a href="http://joda-time.sf.net">Joda Time</a> is <em>very</em>
+extensible - but we believe that it's highly unlikely that you'll
+ever <em>want</em> to extend Noda Time anyway. We want to be an
+externally-simple library you can just rely on. If you have extra
+requirements, chances are someone else will want to do something
+similar - so pop along to the <a href="http://groups.google.com/group/noda-time">mailing list</a> and we can collaborate on
+trying to solve your problem within Noda Time itself.</p></li>
+</ul>
+
+  </body>
+</html>
