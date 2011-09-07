@@ -68,15 +68,6 @@ namespace NodaTime.Calendars
         {
         }
 
-        public override Chronology WithZone(DateTimeZone zone)
-        {
-            if (zone == null)
-            {
-                throw new ArgumentException("zone");
-            }
-            return zone.ToIsoChronology();
-        }
-
         private static void AssembleFields(FieldSet.Builder builder, CalendarSystem @this)
         {
             // Use zero based century and year of century.
