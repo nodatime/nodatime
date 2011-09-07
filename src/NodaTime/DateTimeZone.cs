@@ -60,7 +60,6 @@ namespace NodaTime
         // performing the same multiplication over and over again.
         private readonly long minOffsetTicks;
         private readonly long maxOffsetTicks;
-        private readonly Chronology isoChronology;
 
         /// <summary>
         ///   Gets the UTC (Coordinated Universal Time) time zone.
@@ -162,15 +161,6 @@ namespace NodaTime
             this.isFixed = isFixed;
             this.minOffsetTicks = minOffset.TotalTicks;
             this.maxOffsetTicks = maxOffset.TotalTicks;
-            isoChronology = new Chronology(this, CalendarSystem.Iso);
-        }
-
-        /// <summary>
-        /// Returns a chronology based on this time zone, in the ISO calendar system.
-        /// </summary>
-        internal Chronology ToIsoChronology()
-        {
-            return isoChronology;
         }
 
         /// <summary>

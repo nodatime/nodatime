@@ -234,25 +234,6 @@ namespace NodaTime
             return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, 0, 0, 0);
         }
 
-        /// <summary>
-        /// Returns the logical combination of this calendar system with the specified time zone.
-        /// </summary>
-        /// <remarks>
-        /// Logically, this is equivalent to just calling the Chronology constructor specifying
-        /// the calendar system and the given time zone. However, in the common case of the ISO
-        /// calendar, we can optimize by caching an ISO chronology with each time zone: the override
-        /// of this method in the ISO calendar system uses this cached representation, avoiding creating
-        /// objects unnecessarily.
-        /// </remarks>
-        public virtual Chronology WithZone(DateTimeZone zone)
-        {
-            if (zone == null)
-            {
-                throw new ArgumentException("zone");
-            }
-            return new Chronology(zone, this);
-        }
-
         #region Periods
         /// <summary>
         /// Gets the values of a period type from an interval.
