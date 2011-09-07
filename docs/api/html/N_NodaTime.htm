@@ -13,12 +13,7 @@
             <p>
             CalendarSystem is thread-safe and immutable, and all subclasses must be
             as well.
-            </p></div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_NodaTime_Chronology.htm">Chronology</a></td><td><div class="summary">
-            A chronology is a calendar system with an associated time zone, for example
-            "the ISO calendar in the Europe/London time zone".
-            TODO: Make this a struct? The hard work will be done in the calendar system
-            and time zone classes.
-            </div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a></td><td><div class="summary">
+            </p></div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a></td><td><div class="summary">
             Represents a time zone - a mapping between UTC and local time.
             </div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_NodaTime_FieldValueException.htm">FieldValueException</a></td><td><div class="summary">
             Exception thrown when attempting to set a field outside its supported range.
@@ -63,8 +58,8 @@
               ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
               UTC (e.g. for America).
             </div></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" alt="Public structure" title="Public structure" /></td><td><a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a></td><td><div class="summary">
-            A date and time with an associated chronology - or to look at it a different way, a
-            LocalDateTime plus a time zone.
+            A <a href="P_NodaTime_ZonedDateTime_LocalDateTime.htm">LocalDateTime</a> in a specific time zone and with a particular offset to distinguish between otherwise-ambiguous
+            instants. A ZonedDateTime is global, in that it maps to a single <a href="T_NodaTime_Instant.htm">Instant</a>.
             </div></td></tr></table></div><h1 class="heading"><span onclick="ExpandCollapse(interfaceToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(interfaceToggle, event)" tabindex="0"><img id="interfaceToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Interfaces</span></h1><div id="interfaceSection" class="section" name="collapseableSection" style=""><table id="typeList" class="members" frame="lhs" cellpadding="2"><col width="10%" /><tr><th class="iconColumn">
            
        </th><th class="nameColumn">Interface</th><th class="descriptionColumn">Description</th></tr><tr data="interface; public"><td><img src="../icons/pubinterface.gif" alt="Public interface" title="Public interface" /></td><td><a href="T_NodaTime_IClock.htm">IClock</a></td><td><div class="summary">
