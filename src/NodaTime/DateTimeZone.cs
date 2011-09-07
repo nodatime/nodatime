@@ -298,19 +298,17 @@ namespace NodaTime
         /// <exception cref="AmbiguousTimeException">The given LocalDateTime is ambiguous due to a transition where the clocks go forward</exception>
         public ZonedDateTime AtExactly(LocalDateTime localDateTime)
         {
-            LocalInstant localInstant = localDateTime.LocalInstant;
-            Chronology chronology = localDateTime.Calendar.WithZone(this);
-            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
+            ZoneIntervalPair pair = GetZoneIntervals(localDateTime.LocalInstant);
             switch (pair.MatchingIntervals)
             {
                 case 0:
                     throw new SkippedTimeException(localDateTime, this);
                 case 1:
-                    return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this);
                 case 2:
                     throw new AmbiguousTimeException(localDateTime, this,
-                        new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology),
-                        new ZonedDateTime(localInstant, pair.LateInterval.Offset, chronology));
+                        new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this),
+                        new ZonedDateTime(localDateTime, pair.LateInterval.Offset, this));
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }
@@ -325,16 +323,14 @@ namespace NodaTime
         /// <exception cref="AmbiguousTimeException">The given LocalDateTime is ambiguous due to a transition where the clocks go forward</exception>
         public ZonedDateTime AtEarlier(LocalDateTime localDateTime)
         {
-            LocalInstant localInstant = localDateTime.LocalInstant;
-            Chronology chronology = localDateTime.Calendar.WithZone(this);
-            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
+            ZoneIntervalPair pair = GetZoneIntervals(localDateTime.LocalInstant);
             switch (pair.MatchingIntervals)
             {
                 case 0:
                     throw new SkippedTimeException(localDateTime, this);
                 case 1:
                 case 2:
-                    return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this);
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }
@@ -349,17 +345,15 @@ namespace NodaTime
         /// <exception cref="AmbiguousTimeException">The given LocalDateTime is ambiguous due to a transition where the clocks go forward</exception>
         public ZonedDateTime AtLater(LocalDateTime localDateTime)
         {
-            LocalInstant localInstant = localDateTime.LocalInstant;
-            Chronology chronology = localDateTime.Calendar.WithZone(this);
-            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
+            ZoneIntervalPair pair = GetZoneIntervals(localDateTime.LocalInstant);
             switch (pair.MatchingIntervals)
             {
                 case 0:
                     throw new SkippedTimeException(localDateTime, this);
                 case 1:
-                    return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this);
                 case 2:
-                    return new ZonedDateTime(localInstant, pair.LateInterval.Offset, chronology);
+                    return new ZonedDateTime(localDateTime, pair.LateInterval.Offset, this);
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }
@@ -368,7 +362,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the ZonedDateTime with a LocalDateTime as early as possible on the given date.
         /// If midnight exists unambiguously on the given date, it is returned.
-        /// If the given date has an amgbiguous start time (e.g. the clocks go back from 1am to midnight)
+        /// If the given date has an ambiguous start time (e.g. the clocks go back from 1am to midnight)
         /// then the earlier ZonedDateTime is returned. If the given date has no midnight (e.g. the clocks
         /// go forward from midnight to 1am) then the earliest valid value is returned; this will be the instant
         /// of the transition.
@@ -376,16 +370,15 @@ namespace NodaTime
         public ZonedDateTime AtStartOfDay(LocalDate date)
         {
             LocalInstant localInstant = date.LocalDateTime.LocalInstant;
-            Chronology chronology = date.Calendar.WithZone(this);
             ZoneIntervalPair pair = GetZoneIntervals(localInstant);
             switch (pair.MatchingIntervals)
             {
                 case 0:
                     var interval = GetIntervalAfterGap(localInstant);
-                    return new ZonedDateTime(interval.LocalStart, interval.Offset, chronology);
+                    return new ZonedDateTime(new LocalDateTime(interval.LocalStart, date.Calendar), interval.Offset, this);
                 case 1:
                 case 2:
-                    return new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                    return new ZonedDateTime(date.LocalDateTime, pair.EarlyInterval.Offset, this);
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }
@@ -400,7 +393,6 @@ namespace NodaTime
         public ZoneLocalMapping MapLocalDateTime(LocalDateTime localDateTime)
         {
             LocalInstant localInstant = localDateTime.LocalInstant;
-            Chronology chronology = localDateTime.Calendar.WithZone(this);
             ZoneIntervalPair pair = GetZoneIntervals(localInstant);
             switch (pair.MatchingIntervals)
             {
@@ -409,11 +401,11 @@ namespace NodaTime
                     var after = GetIntervalAfterGap(localInstant);
                     return ZoneLocalMapping.SkippedResult(before, after);
                 case 1:
-                    var mapping = new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
+                    var mapping = new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this);
                     return ZoneLocalMapping.UnambiguousResult(mapping);
                 case 2:
-                    var earlier = new ZonedDateTime(localInstant, pair.EarlyInterval.Offset, chronology);
-                    var later = new ZonedDateTime(localInstant, pair.LateInterval.Offset, chronology);
+                    var earlier = new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this);
+                    var later = new ZonedDateTime(localDateTime, pair.LateInterval.Offset, this);
                     return ZoneLocalMapping.AmbiguousResult(earlier, later);
                 default:
                     throw new InvalidOperationException("This won't happen.");

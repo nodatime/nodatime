@@ -21,54 +21,46 @@ using NodaTime.Utility;
 namespace NodaTime
 {
     /// <summary>
-    /// A date and time with an associated chronology - or to look at it a different way, a
-    /// LocalDateTime plus a time zone.
+    /// A <see cref="LocalDateTime"/> in a specific time zone and with a particular offset to distinguish between otherwise-ambiguous
+    /// instants. A ZonedDateTime is global, in that it maps to a single <see cref="Instant"/>.
     /// </summary>
-    /// <remarks>
-    /// <para>
-    /// Some seemingly valid values do not represent a valid instant due to the local time moving
-    /// forward during a daylight saving transition, thus "skipping" the given value. Other values
-    /// occur twice (due to local time moving backward), in which case a ZonedDateTime will always
-    /// represent the later of the two possible times, when converting it to an instant.
-    /// </para>
-    /// <para>
-    /// A value constructed with "new ZonedDateTime()" will represent the Unix epoch in the ISO
-    /// calendar system in the UTC time zone. That is the only situation in which the chronology is
-    /// assumed rather than specified.
-    /// </para>
-    /// </remarks>
     public struct ZonedDateTime : IEquatable<ZonedDateTime>
     {
-        private readonly Chronology chronology;
-        private readonly LocalInstant localInstant;
+        private readonly LocalDateTime localDateTime;
+        private readonly DateTimeZone zone;
         private readonly Offset offset;
 
         /// <summary>
         /// Internal constructor used by other code that has already validated and 
         /// computed the appropriate field values. No further validation is performed.
         /// </summary>
-        internal ZonedDateTime(LocalInstant localInstant, Offset offset, Chronology chronology)
+        internal ZonedDateTime(LocalDateTime localDateTime, Offset offset, DateTimeZone zone)
         {
-            this.localInstant = localInstant;
+            this.localDateTime = localDateTime;
             this.offset = offset;
-            this.chronology = chronology;
+            this.zone = zone;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct.
         /// </summary>
+        /// <param name="calendar">The calendar system.</param>
         /// <param name="instant">The instant.</param>
-        /// <param name="chronology">The chronology.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="chronology"/> is <c>null</c>.</exception>
-        public ZonedDateTime(Instant instant, Chronology chronology)
+        /// <param name="zone">The time zone.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="calendar"/> or <paramref name="zone"/> is <c>null</c>.</exception>
+        public ZonedDateTime(Instant instant, DateTimeZone zone, CalendarSystem calendar)
         {
-            if (chronology == null)
+            if (zone == null)
             {
-                throw new ArgumentNullException("chronology");
+                throw new ArgumentNullException("zone");
             }
-            offset = chronology.Zone.GetOffsetFromUtc(instant);
-            localInstant = instant.Plus(offset);
-            this.chronology = chronology;
+            if (calendar == null)
+            {
+                throw new ArgumentNullException("calendar");
+            }
+            offset = zone.GetOffsetFromUtc(instant);
+            localDateTime = new LocalDateTime(instant.Plus(offset), calendar);
+            this.zone = zone;
         }
 
         /// <summary>
@@ -77,28 +69,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="instant">The instant of time to represent.</param>
         /// <param name="zone">The time zone to represent the instant within.</param>
-        public ZonedDateTime(Instant instant, DateTimeZone zone) : this(instant, ValidateZone(zone).ToIsoChronology())
+        public ZonedDateTime(Instant instant, DateTimeZone zone) : this(instant, zone, CalendarSystem.Iso)
         {
         }
-
-        /// <summary>
-        /// Used by the constructor above to allow us to perform argument validation
-        /// but still chain to another constructor.
-        /// </summary>
-        private static DateTimeZone ValidateZone(DateTimeZone zone)
-        {
-            if (zone == null)
-            {
-                throw new ArgumentNullException("zone");
-            }
-            return zone;
-        }
-
-
-        /// <summary>
-        /// Gets the chronology.
-        /// </summary>
-        public Chronology Chronology { get { return chronology; } }
 
         /// <summary>
         /// Gets the offset 
@@ -108,19 +81,19 @@ namespace NodaTime
         /// <summary>
         /// Gets the time zone 
         /// </summary>
-        public DateTimeZone Zone { get { return Chronology.Zone; } }
+        public DateTimeZone Zone { get { return zone; } }
 
         /// <summary>
         /// Gets the local instant.
         /// </summary>
-        internal LocalInstant LocalInstant { get { return localInstant; } }
+        internal LocalInstant LocalInstant { get { return localDateTime.LocalInstant; } }
 
         /// <summary>
         /// Gets the local date and time represented by this zoned date and time. The returned <see cref="LocalDateTime"/>
         /// will have the same calendar system and return the same values for each of the calendar properties
         /// (Year, MonthOfYear and so on), but not be associated with any particular time zone.
         /// </summary>
-        public LocalDateTime LocalDateTime { get { return new LocalDateTime(LocalInstant, chronology.Calendar); } }
+        public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
         /// <summary>
         /// Gets the era for this date and time. The precise meaning of this value depends on the calendar
@@ -255,7 +228,7 @@ namespace NodaTime
         /// </remarks>
         public Instant ToInstant()
         {
-            return localInstant.Minus(offset);
+            return localDateTime.LocalInstant.Minus(offset);
         }
 
         #region Equality
@@ -265,11 +238,10 @@ namespace NodaTime
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        /// <param name="other">An object to compare with this object.
-        ///                 </param>
+        /// <param name="other">An object to compare with this object.</param>
         public bool Equals(ZonedDateTime other)
         {
-            return LocalInstant == other.LocalInstant && Offset == other.Offset && Chronology == other.Chronology;
+            return LocalDateTime == other.LocalDateTime && Offset == other.Offset && Zone == other.Zone;
         }
 
         /// <summary>
@@ -278,8 +250,8 @@ namespace NodaTime
         /// <returns>
         /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        /// <param name="obj">Another object to compare to. 
-        ///                 </param><filterpriority>2</filterpriority>
+        /// <param name="obj">Another object to compare to.</param> 
+        /// <filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
             if (obj is ZonedDateTime)
@@ -301,7 +273,7 @@ namespace NodaTime
             int hash = HashCodeHelper.Initialize();
             hash = HashCodeHelper.Hash(hash, LocalInstant);
             hash = HashCodeHelper.Hash(hash, Offset);
-            hash = HashCodeHelper.Hash(hash, Chronology);
+            hash = HashCodeHelper.Hash(hash, Zone);
             return hash;
         }
         #endregion
@@ -334,7 +306,7 @@ namespace NodaTime
         /// <param name="right">The duration to add.</param>
         public static ZonedDateTime operator +(ZonedDateTime left, Duration right)
         {
-            return new ZonedDateTime(left.ToInstant() + right, left.Chronology);
+            return new ZonedDateTime(left.ToInstant() + right, left.Zone, left.LocalDateTime.Calendar);
         }
 
         /// <summary>
@@ -364,7 +336,7 @@ namespace NodaTime
         /// <param name="right">The duration to add.</param>
         public static ZonedDateTime operator -(ZonedDateTime left, Duration right)
         {
-            return new ZonedDateTime(left.ToInstant() - right, left.Chronology);
+            return new ZonedDateTime(left.ToInstant() - right, left.Zone, left.LocalDateTime.Calendar);
         }
         #endregion
 
@@ -374,7 +346,7 @@ namespace NodaTime
         // TODO: Improve description and make the implementation match the documentation :)
         public override string ToString()
         {
-            return "Local: " + localInstant + " Offset: " + offset + " Zone: " + chronology.Zone;
+            return "Local: " + localDateTime + " Offset: " + offset + " Zone: " + zone;
         }
 
         /// <summary>
