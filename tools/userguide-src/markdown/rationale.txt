@@ -1,0 +1,5 @@
+Why does Noda Time exist?
+
+TBD - see the [related blog post][1] for now.
+
+[1]: http://noda-time.blogspot.com/2011/08/what-wrong-with-datetime-anyway.html

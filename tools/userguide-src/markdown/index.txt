@@ -1,0 +1,36 @@
+Noda Time User Guide
+
+In time, this will form the user documentation to complement the
+API documentation. At the moment it's a little sparse - if
+there's anything you would like to see here sooner rather than
+later, please drop a line to the mailing list.
+
+User guide contents
+-------------------
+
+- [Why does this project exist?][7]
+- [Core concepts][8]
+- [Design principles][9]
+- [Text handling][10]
+
+Resources
+---------
+
+- [Project home page][3]
+- [Online user guide][4] (the latest version of this page)
+- [Latest API documentation][5]
+- [Relative API documentation][6] (if you're viewing this page
+offline, it's the offline API docs)
+- [Blog][1]
+- [Mailing list][2]
+
+[1]: http://noda-time.blogspot.com
+[2]: http://groups.google.com/group/noda-time
+[3]: http://noda-time.googlecode.com
+[4]: http://noda-time.googlecode.com/hg/docs/userguide/index.html
+[5]: http://noda-time.googlecode.com/hg/docs/api/Index.html
+[6]: ../api/Index.html
+[7]: rationale.html
+[8]: concepts.html
+[9]: design.html
+[10]: text.html
