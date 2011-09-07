@@ -23,9 +23,10 @@ namespace NodaTime
     /// <summary>
     /// A chronology is a calendar system with an associated time zone, for example
     /// "the ISO calendar in the Europe/London time zone".
-    /// TODO: Make this a struct? The hard work will be done in the calendar system
-    /// and time zone classes.
     /// </summary>
+    // TODO: Remove this entirely? Just include the calendar and time zone in ZonedDateTime?
+    // That would reduce the number of concepts by one, although it would also make ZonedDateTime
+    // a bit larger. We'd need to look at the performance figures.
     public sealed class Chronology : IEquatable<Chronology>
     {
         private static class Constants
