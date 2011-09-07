@@ -83,7 +83,6 @@
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
     <Compile Include="Calendars\JulianCalendarSystemTest.cs" />
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
-    <Compile Include="ChronologyTest.cs" />
     <Compile Include="CultureSaver.cs" />
     <Compile Include="Fields\SkipZeroDateTimeFieldTest.cs" />
     <Compile Include="Text\FormatHelperTest.cs" />
