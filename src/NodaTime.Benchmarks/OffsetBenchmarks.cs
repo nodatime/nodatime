@@ -66,7 +66,7 @@ namespace NodaTime.Benchmarks
             var pattern = parsePatternResult.GetResultOrThrow();
             Offset result;
             NodaTime.Text.ParseResult<Offset> parseResult = pattern.Parse("12:34");
-            parseResult.TryGetResult(default(Offset), out result);
+            parseResult.TryGetValue(default(Offset), out result);
         }
 
         [Benchmark]
@@ -74,7 +74,7 @@ namespace NodaTime.Benchmarks
         {
             Offset result;
             NodaTime.Text.ParseResult<Offset> parseResult = offsetPattern.Parse("12:34");
-            parseResult.TryGetResult(default(Offset), out result);
+            parseResult.TryGetValue(default(Offset), out result);
         }
 
         [Benchmark]
@@ -94,7 +94,7 @@ namespace NodaTime.Benchmarks
         {
             Offset result;
             NodaTime.Text.ParseResult<Offset> parseResult = offsetPattern.Parse("123:45");
-            parseResult.TryGetResult(default(Offset), out result);
+            parseResult.TryGetValue(default(Offset), out result);
         }
 
         [Benchmark]

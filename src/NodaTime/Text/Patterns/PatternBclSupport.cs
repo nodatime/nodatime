@@ -46,12 +46,12 @@ namespace NodaTime.Text.Patterns
 
         internal T ParseExact(string value, string format, NodaFormatInfo formatInfo)
         {
-            return ParseSingle(value, format, formatInfo).GetResultOrThrow();
+            return ParseSingle(value, format, formatInfo).GetValueOrThrow();
         }
 
         internal T ParseExact(string value, string[] formats, NodaFormatInfo formatInfo)
         {
-            return ParseMultiple(value, formats, formatInfo).GetResultOrThrow();
+            return ParseMultiple(value, formats, formatInfo).GetValueOrThrow();
         }
 
         internal bool TryParse(string value, NodaFormatInfo formatInfo, out T result)
@@ -61,12 +61,12 @@ namespace NodaTime.Text.Patterns
 
         internal bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, out T result)
         {
-            return ParseSingle(value, format, formatInfo).TryGetResult(failureValue, out result);
+            return ParseSingle(value, format, formatInfo).TryGetValue(failureValue, out result);
         }
 
         internal bool TryParseExact(string value, string[] formats, NodaFormatInfo formatInfo, out T result)
         {
-            return ParseMultiple(value, formats, formatInfo).TryGetResult(failureValue, out result);
+            return ParseMultiple(value, formats, formatInfo).TryGetValue(failureValue, out result);
         }
 
         internal ParseResult<T> ParseMultiple(string value, string[] formats, NodaFormatInfo formatInfo)

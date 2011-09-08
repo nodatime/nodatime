@@ -47,11 +47,11 @@ namespace NodaTime.Text
         /// otherwise.
         /// </summary>
         /// <remarks>
-        /// This method is exactly equivalent to calling the <see cref="GetResultOrThrow"/> method, but is terser if the code is
+        /// This method is exactly equivalent to calling the <see cref="GetValueOrThrow"/> method, but is terser if the code is
         /// already clear that it will throw if the parse failed.
         /// </remarks>
         /// <returns>The result of the parsing operation if it was successsful.</returns>
-        public T Value { get { return GetResultOrThrow(); } }
+        public T Value { get { return GetValueOrThrow(); } }
 
         /// <summary>
         /// Returns the value from the parse operation if it was successful, or throws an exception indicating the parse failure
@@ -62,7 +62,7 @@ namespace NodaTime.Text
         /// an exception on failure.
         /// </remarks>
         /// <returns>The result of the parsing operation if it was successsful.</returns>
-        public T GetResultOrThrow()
+        public T GetValueOrThrow()
         {
             if (exceptionProvider == null)
             {
@@ -78,7 +78,7 @@ namespace NodaTime.Text
         /// <param name="failureValue">The "default" value to set in <paramref name="result"/> if parsing failed.</param>
         /// <param name="result">The parameter to store the parsed value in on success.</param>
         /// <returns>True if this parse result was successful, or false otherwise.</returns>
-        public bool TryGetResult(T failureValue, out T result)
+        public bool TryGetValue(T failureValue, out T result)
         {
             bool success = exceptionProvider == null;
             result = success ? value : failureValue;
