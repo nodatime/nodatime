@@ -21,7 +21,11 @@ using NodaTime.Properties;
 
 namespace NodaTime.Text
 {
-    internal class ParseResult<T>
+    /// <summary>
+    /// The result of a parse operation. 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ParseResult<T>
     {
         private readonly T value;
         private readonly NodaFunc<Exception> exceptionProvider;
@@ -38,7 +42,27 @@ namespace NodaTime.Text
             this.value = value;
         }
 
-        internal T GetResultOrThrow()
+        /// <summary>
+        /// Returns the value from the parse operation if it was successful, or throws an exception indicating the parse failure
+        /// otherwise.
+        /// </summary>
+        /// <remarks>
+        /// This method is exactly equivalent to calling the <see cref="GetResultOrThrow"/> method, but is terser if the code is
+        /// already clear that it will throw if the parse failed.
+        /// </remarks>
+        /// <returns>The result of the parsing operation if it was successsful.</returns>
+        public T Value { get { return GetResultOrThrow(); } }
+
+        /// <summary>
+        /// Returns the value from the parse operation if it was successful, or throws an exception indicating the parse failure
+        /// otherwise.
+        /// </summary>
+        /// <remarks>
+        /// This method is exactly equivalent to fetching the <see cref="Value"/> property, but more explicit in terms of throwing
+        /// an exception on failure.
+        /// </remarks>
+        /// <returns>The result of the parsing operation if it was successsful.</returns>
+        public T GetResultOrThrow()
         {
             if (exceptionProvider == null)
             {
@@ -51,19 +75,29 @@ namespace NodaTime.Text
         /// Returns the success value, and sets the out parameter to either
         /// the specified failure value of T or the successful parse result value.
         /// </summary>
-        internal bool TryGetResult(T failureValue, out T result)
+        /// <param name="failureValue">The "default" value to set in <paramref name="result"/> if parsing failed.</param>
+        /// <param name="result">The parameter to store the parsed value in on success.</param>
+        /// <returns>True if this parse result was successful, or false otherwise.</returns>
+        public bool TryGetResult(T failureValue, out T result)
         {
             bool success = exceptionProvider == null;
             result = success ? value : failureValue;
             return success;
         }
 
+        // TODO: Expose this?
         internal static ParseResult<T> ForValue(T value)
         {
             return new ParseResult<T>(value);
         }
 
-        internal bool Success { get { return exceptionProvider == null; } }
+        /// <summary>
+        /// Indicates whether the parse operation was successful.
+        /// </summary>
+        /// <remarks>
+        /// This returns True if and only if fetching the value with the <see cref="Value"/> property will return with no exception.
+        /// </remarks>
+        public bool Success { get { return exceptionProvider == null; } }
 
         internal bool ContinueAfterErrorWithMultipleFormats { get { return continueWithMultiple; } }
 
