@@ -46,6 +46,8 @@ namespace NodaTime.Text
             { 'F', HandleFractionSpecifier },
         };
 
+        // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
+        // interface implementation.
         public PatternParseResult<Offset> ParsePattern(string pattern, NodaFormatInfo formatInfo)
         {
             if (pattern == null)

@@ -35,7 +35,8 @@ namespace NodaTime.Text
         /// Parses the given text value according to the rules of this pattern.
         /// </summary>
         /// <remarks>
-        /// This method never throws an exception (barring a bug in Noda Time itself). Even errors such 
+        /// This method never throws an exception (barring a bug in Noda Time itself). Even errors such as
+        /// the argument being null are wrapped in a parse result.
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>

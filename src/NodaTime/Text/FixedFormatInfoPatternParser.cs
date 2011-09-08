@@ -26,8 +26,6 @@ namespace NodaTime.Text
     /// </summary>
     internal sealed class FixedFormatInfoPatternParser<T>
     {
-        private const int StyleCombinations = 16;
-
         private readonly IPatternParser<T> patternParser;
         // TODO: Replace this with a real LRU cache or something similar.
         private readonly Dictionary<string, PatternParseResult<T>> cache;

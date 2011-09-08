@@ -19,6 +19,11 @@ using NodaTime.Globalization;
 
 namespace NodaTime.Text.Patterns
 {
+    /// <summary>
+    /// Internal interface used by FixedForamtInfoPatternParser. Unfortunately
+    /// even though this is internal, implementations must either use public methods
+    /// or explicit interface implementation.
+    /// </summary>
     internal interface IPatternParser<T>
     {
         PatternParseResult<T> ParsePattern(string pattern, NodaFormatInfo formatInfo);
