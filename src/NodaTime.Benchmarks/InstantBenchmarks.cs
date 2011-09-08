@@ -42,7 +42,7 @@ namespace NodaTime.Benchmarks
         public void TryParseExact_Valid_General_ParsedPattern()
         {
             Instant result;
-            GeneralPattern.Parse("2011-08-21T08:11:30Z").TryGetResult(Instant.MinValue, out result);
+            GeneralPattern.Parse("2011-08-21T08:11:30Z").TryGetValue(Instant.MinValue, out result);
         }
 
         [Benchmark]
@@ -56,7 +56,7 @@ namespace NodaTime.Benchmarks
         public void TryParseExact_Valid_Numeric_ParsedPattern()
         {
             Instant result;
-            NumberPattern.Parse("123456789").TryGetResult(Instant.MinValue, out result);
+            NumberPattern.Parse("123456789").TryGetValue(Instant.MinValue, out result);
         }
 
         [Benchmark]

@@ -41,14 +41,14 @@ namespace NodaTime.Test.Text
         public void GetValueOrThrow_Success()
         {
             ParseResult<int> result = ParseResult<int>.ForValue(5);
-            Assert.AreEqual(5, result.GetResultOrThrow());
+            Assert.AreEqual(5, result.GetValueOrThrow());
         }
 
         [Test]
         public void GetValueOrThrow_Failure()
         {
             ParseResult<int> result = ParseResult<int>.ForInvalidValue("text");
-            Assert.Throws<UnparsableValueException>(() => result.GetResultOrThrow());
+            Assert.Throws<UnparsableValueException>(() => result.GetValueOrThrow());
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace NodaTime.Test.Text
         {
             ParseResult<int> result = ParseResult<int>.ForValue(5);
             int actual;
-            Assert.IsTrue(result.TryGetResult(-1, out actual));
+            Assert.IsTrue(result.TryGetValue(-1, out actual));
             Assert.AreEqual(5, actual);
         }
 
@@ -65,7 +65,7 @@ namespace NodaTime.Test.Text
         {
             ParseResult<int> result = ParseResult<int>.ForInvalidValue("text");
             int actual;
-            Assert.IsFalse(result.TryGetResult(-1, out actual));
+            Assert.IsFalse(result.TryGetValue(-1, out actual));
             Assert.AreEqual(-1, actual);
         }
     }
