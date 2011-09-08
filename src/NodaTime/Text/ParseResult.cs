@@ -85,12 +85,6 @@ namespace NodaTime.Text
             return success;
         }
 
-        // TODO: Expose this?
-        internal static ParseResult<T> ForValue(T value)
-        {
-            return new ParseResult<T>(value);
-        }
-
         /// <summary>
         /// Indicates whether the parse operation was successful.
         /// </summary>
@@ -102,13 +96,13 @@ namespace NodaTime.Text
         internal bool ContinueAfterErrorWithMultipleFormats { get { return continueWithMultiple; } }
 
         #region Factory methods and readonly static fields
-
-        internal static ParseResult<T> ForInvalidFormat(string formatString, params object[] parameters)
+        // TODO: Expose this and following method?
+        internal static ParseResult<T> ForValue(T value)
         {
-            return ForInvalidFormat(() => new InvalidPatternException(string.Format(CultureInfo.CurrentCulture, formatString, parameters)));
+            return new ParseResult<T>(value);
         }
 
-        internal static ParseResult<T> ForInvalidFormat(NodaFunc<Exception> exceptionProvider)
+        internal static ParseResult<T> ForException(NodaFunc<Exception> exceptionProvider)
         {
             return new ParseResult<T>(exceptionProvider, false);
         }
@@ -135,11 +129,6 @@ namespace NodaTime.Text
             return ForInvalidValue(Resources.Parse_CannotParseValue, value, typeof(T), format);
         }
 
-        internal static ParseResult<T> DoubleAssigment(char patternCharacter)
-        {
-            return ForInvalidFormat(Resources.Parse_DoubleAssignment, patternCharacter);
-        }
-
         // Special case: it's a fault with the value, but we still don't want to continue with multiple patterns.
         internal static readonly ParseResult<T> ValueStringEmpty =
             new ParseResult<T>(() => new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_ValueStringEmpty)), false);
@@ -149,7 +138,6 @@ namespace NodaTime.Text
             return ForInvalidValue(Resources.Parse_ExtraValueCharacters, remainder);
         }
 
-        // TODO: This should be ForInvalidValue
         internal static readonly ParseResult<T> QuotedStringMismatch = ForInvalidValue(Resources.Parse_QuotedStringMismatch);
 
         internal static ParseResult<T> EscapedCharacterMismatch(char patternCharacter)

@@ -47,7 +47,7 @@ namespace NodaTime.Text.Patterns
             {
                 throw new InvalidOperationException("ToParseResult called on successful pattern parse");
             }
-            return ParseResult<T>.ForInvalidFormat(exceptionProvider);
+            return ParseResult<T>.ForException(exceptionProvider);
         }
 
         internal IPattern<T> GetResultOrThrow()
