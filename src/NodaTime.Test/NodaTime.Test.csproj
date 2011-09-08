@@ -121,6 +121,7 @@
     <Compile Include="SystemClockTest.cs" />
     <Compile Include="Text\AbstractFormattingData.cs" />
     <Compile Include="Text\FormattingTestSupport.cs" />
+    <Compile Include="Text\ParseResultTest.cs" />
     <Compile Include="Text\Patterns\PatternCursorTest.cs" />
     <Compile Include="Text\TextCursorTestBase.cs" />
     <Compile Include="Text\OffsetFormattingTestSupport.cs" />
