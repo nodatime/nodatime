@@ -2,12 +2,39 @@
 <html>
   <head>
     <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="prettify.js"></script>
     <title>Why does Noda Time exist?</title>
   </head>
   <body onload="prettyPrint()">
     <h1>Why does Noda Time exist?</h1>
-    <p>TBD - see the <a href="http://noda-time.blogspot.com/2011/08/what-wrong-with-datetime-anyway.html">related blog post</a> for now.</p>
+    <p>Noda Time exists for .NET for the same reason that <a href="http://joda-time.sf.net">Joda Time</a>
+exists for Java: the built-in libraries are inadequate. Both
+platforms provide far too few types to represent date and time
+values in a way which encourages the developer to really consider
+what kind of data they're dealing with... which in turn makes it
+hard to treat the data consistently.</p>
+
+<p>While the .NET date/time types are actually easier to use than their
+Java counterparts (largely as a result of being immutable structs
+instead of mutable classes), they're actually less powerful - in
+.NET, there's no such concept of "a date and time in a specific time
+zone" for example.</p>
+
+<p>Noda Time aims to change that with a library which is powerful and
+easy to use <em>correctly</em>. It is built on the underlying "engine" of
+Joda Time, but the public API has been largely rewritten, both to
+provide an API which is more idiomatic for .NET, and also to rectify
+some of the Joda Time decisions which the Noda Time team view as
+"unfortunate". (Some of these are simply due to having different goals;
+others I'd argue are really mistakes.)</p>
+
+<p>For a more detailed critique on the problems with the existing
+date/time support in .NET (and <code>DateTime</code> in particular), see this
+<a href="http://noda-time.blogspot.com/2011/08/what-wrong-with-datetime-anyway.html">blog post</a>. Of course, if a later version of .NET comes out with
+a new date/time API, the Noda Time team would happily go into
+retirement (other than for the sake of those forced to stick with
+earlier versions of .NET, of course).</p>
 
   </body>
 </html>
