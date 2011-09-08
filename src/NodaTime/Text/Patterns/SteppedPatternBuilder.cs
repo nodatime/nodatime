@@ -49,7 +49,7 @@ namespace NodaTime.Text.Patterns
         /// and for thread safety (publishing a new object, thus leading to a memory barrier).
         /// Note that this builder *must not* be used after the result has been built.
         /// </summary>
-        internal IParsedPattern<TResult> Build()
+        internal IPattern<TResult> Build()
         {
             return new SteppedPattern(formatActions, parseActions, bucketProvider);
         }
@@ -223,7 +223,7 @@ namespace NodaTime.Text.Patterns
             return null;
         }
 
-        private class SteppedPattern : IParsedPattern<TResult>
+        private class SteppedPattern : IPattern<TResult>
         {
             private readonly NodaAction<TResult, StringBuilder> formatActions;
             private readonly List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions;

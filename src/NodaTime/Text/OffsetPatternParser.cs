@@ -102,7 +102,7 @@ namespace NodaTime.Text
             {
                 case 'g':
                 {
-                    var parsePatterns = new List<IParsedPattern<Offset>>();
+                    var parsePatterns = new List<IPattern<Offset>>();
                     foreach (char c in "flms")
                     {
                         // Each of the parsers could fail
@@ -138,7 +138,7 @@ namespace NodaTime.Text
             return ParsePattern(pattern, formatInfo);
         }
 
-        private string FormatGeneral(Offset value, List<IParsedPattern<Offset>> parsedPatterns)
+        private string FormatGeneral(Offset value, List<IPattern<Offset>> parsedPatterns)
         {
             // Note: this relies on the order in ExpandStandardFormatPattern
             int index;
@@ -375,7 +375,7 @@ namespace NodaTime.Text
             return builder.AddLiteral(pattern.Current, ParseResult<Offset>.MismatchedCharacter);
         }
 
-        private static IParsedPattern<Offset> CreateNumberPattern(NodaFormatInfo formatInfo)
+        private static IPattern<Offset> CreateNumberPattern(NodaFormatInfo formatInfo)
         {
             NodaFunc<string, ParseResult<Offset>> parser = value =>
             {
@@ -393,7 +393,7 @@ namespace NodaTime.Text
                 return ParseResult<Offset>.CannotParseValue(value, "n");
             };
             NodaFunc<Offset, string> formatter = value => value.TotalMilliseconds.ToString("N0", formatInfo);
-            return new SimpleParsedPattern<Offset>(parser, formatter);
+            return new SimplePattern<Offset>(parser, formatter);
         }
 
         #endregion

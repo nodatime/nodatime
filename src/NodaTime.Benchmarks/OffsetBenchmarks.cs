@@ -28,7 +28,7 @@ namespace NodaTime.Benchmarks
         private static readonly NodaFormatInfo InvariantFormatInfo = NodaFormatInfo.GetFormatInfo(CultureInfo.InvariantCulture);
         private static readonly Offset SampleOffset = Offset.Create(12, 34, 0, 0);
 
-        private readonly IParsedPattern<Offset> offsetPattern;
+        private readonly IPattern<Offset> offsetPattern;
         private readonly OffsetPatternParser offsetPatternParser;
 
         public OffsetBenchmarks()

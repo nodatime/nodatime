@@ -22,13 +22,13 @@ namespace NodaTime.Text.Patterns
     /// <summary>
     /// Abstract class to provide common facilities
     /// </summary>
-    internal abstract class AbstractParsedPattern<T> : IParsedPattern<T>
+    internal abstract class AbstractPattern<T> : IPattern<T>
     {
         private readonly NodaFormatInfo formatInfo;
 
         protected NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
-        protected AbstractParsedPattern(NodaFormatInfo formatInfo)
+        protected AbstractPattern(NodaFormatInfo formatInfo)
         {
             this.formatInfo = formatInfo;
         }

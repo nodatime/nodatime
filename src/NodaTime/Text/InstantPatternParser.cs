@@ -55,17 +55,17 @@ namespace NodaTime.Text
             switch (patternChar)
             {
                 case 'g':
-                    return PatternParseResult<Instant>.ForValue(new GeneralParsedPattern(formatInfo));
+                    return PatternParseResult<Instant>.ForValue(new GeneralPattern(formatInfo));
                 case 'n':
-                    return PatternParseResult<Instant>.ForValue(new NumberParsedPattern(formatInfo, pattern, "N0"));
+                    return PatternParseResult<Instant>.ForValue(new NumberPattern(formatInfo, pattern, "N0"));
                 case 'd':
-                    return PatternParseResult<Instant>.ForValue(new NumberParsedPattern(formatInfo, pattern, "D"));
+                    return PatternParseResult<Instant>.ForValue(new NumberPattern(formatInfo, pattern, "D"));
                 default:
                     return PatternParseResult<Instant>.UnknownStandardFormat(patternChar);
             }
         }
 
-        private sealed class GeneralParsedPattern : AbstractParsedPattern<Instant>
+        private sealed class GeneralPattern : AbstractPattern<Instant>
         {
             private static readonly DateTimeField YearField;
             private static readonly DateTimeField MonthOfYearField;
@@ -74,7 +74,7 @@ namespace NodaTime.Text
             private static readonly DateTimeField MinuteOfHourField;
             private static readonly DateTimeField SecondOfMinuteField;
 
-            static GeneralParsedPattern()
+            static GeneralPattern()
             {
                 var isoFields = CalendarSystem.Iso.Fields;
                 YearField = isoFields.Year;
@@ -85,7 +85,7 @@ namespace NodaTime.Text
                 SecondOfMinuteField = isoFields.SecondOfMinute;
             }
  
-            internal GeneralParsedPattern(NodaFormatInfo formatInfo) : base(formatInfo)
+            internal GeneralPattern(NodaFormatInfo formatInfo) : base(formatInfo)
             {
             }
 
@@ -132,13 +132,13 @@ namespace NodaTime.Text
             }
         }
 
-        private sealed class NumberParsedPattern : AbstractParsedPattern<Instant>
+        private sealed class NumberPattern : AbstractPattern<Instant>
         {
             private const NumberStyles ParsingNumberStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowThousands;
             private readonly string pattern;
             private readonly string systemFormatString;
 
-            internal NumberParsedPattern(NodaFormatInfo formatInfo, string pattern, string systemFormatString)
+            internal NumberPattern(NodaFormatInfo formatInfo, string pattern, string systemFormatString)
                 : base(formatInfo)
             {
                 this.pattern = pattern;

@@ -17,6 +17,7 @@
 
 using NodaTime.Benchmarks.Timing;
 using NodaTime.Globalization;
+using NodaTime.Text;
 using NodaTime.Text.Patterns;
 
 namespace NodaTime.Benchmarks
@@ -25,9 +26,9 @@ namespace NodaTime.Benchmarks
     {
         private static readonly NodaFormatInfo InvariantFormatInfo = NodaFormatInfo.InvariantInfo;
         private static readonly Instant Sample = Instant.FromUtc(2011, 8, 24, 12, 29, 30);
-        private static readonly IParsedPattern<Instant> GeneralParsedPattern =
+        private static readonly IPattern<Instant> GeneralPattern =
             NodaFormatInfo.InvariantInfo.InstantPatternParser.ParsePattern("g").GetResultOrThrow();
-        private static readonly IParsedPattern<Instant> NumberParsedPattern =
+        private static readonly IPattern<Instant> NumberPattern =
             NodaFormatInfo.InvariantInfo.InstantPatternParser.ParsePattern("n").GetResultOrThrow();
 
         [Benchmark]
@@ -41,7 +42,7 @@ namespace NodaTime.Benchmarks
         public void TryParseExact_Valid_General_ParsedPattern()
         {
             Instant result;
-            GeneralParsedPattern.Parse("2011-08-21T08:11:30Z").TryGetResult(Instant.MinValue, out result);
+            GeneralPattern.Parse("2011-08-21T08:11:30Z").TryGetResult(Instant.MinValue, out result);
         }
 
         [Benchmark]
@@ -55,7 +56,7 @@ namespace NodaTime.Benchmarks
         public void TryParseExact_Valid_Numeric_ParsedPattern()
         {
             Instant result;
-            NumberParsedPattern.Parse("123456789").TryGetResult(Instant.MinValue, out result);
+            NumberPattern.Parse("123456789").TryGetResult(Instant.MinValue, out result);
         }
 
         [Benchmark]
@@ -81,7 +82,7 @@ namespace NodaTime.Benchmarks
         [Benchmark]
         public void FormatN_WithParsedPattern()
         {
-            NumberParsedPattern.Format(Sample);
+            NumberPattern.Format(Sample);
         }
 
         [Benchmark]
@@ -99,7 +100,7 @@ namespace NodaTime.Benchmarks
         [Benchmark]
         public void FormatG_WithParsedPattern()
         {
-            GeneralParsedPattern.Format(Sample);
+            GeneralPattern.Format(Sample);
         }
     }
 }

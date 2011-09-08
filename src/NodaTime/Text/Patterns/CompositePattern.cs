@@ -21,28 +21,28 @@ namespace NodaTime.Text.Patterns
 {
     /// <summary>
     /// Composite pattern which parses by trying several parse patterns in turn, and formats
-    /// by calling a delegate (which may have come from another <see cref="IParsedPattern{T}"/> to start with).
+    /// by calling a delegate (which may have come from another <see cref="IPattern{T}"/> to start with).
     /// </summary>
-    internal class CompositePattern<T> : IParsedPattern<T>
+    internal class CompositePattern<T> : IPattern<T>
     {
-        private List<IParsedPattern<T>> parsePatterns;
+        private List<IPattern<T>> parsePatterns;
         private NodaFunc<T, string> formatter;
 
-        internal CompositePattern(IEnumerable<IParsedPattern<T>> parsePatterns, IParsedPattern<T> formatPattern)
+        internal CompositePattern(IEnumerable<IPattern<T>> parsePatterns, IPattern<T> formatPattern)
         {
-            this.parsePatterns = new List<IParsedPattern<T>>(parsePatterns);
+            this.parsePatterns = new List<IPattern<T>>(parsePatterns);
             this.formatter = formatPattern.Format;
         }
 
-        internal CompositePattern(IEnumerable<IParsedPattern<T>> parsePatterns, NodaFunc<T, string> formatter)
+        internal CompositePattern(IEnumerable<IPattern<T>> parsePatterns, NodaFunc<T, string> formatter)
         {
-            this.parsePatterns = new List<IParsedPattern<T>>(parsePatterns);
+            this.parsePatterns = new List<IPattern<T>>(parsePatterns);
             this.formatter = formatter;
         }
 
         public ParseResult<T> Parse(string value)
         {
-            foreach (IParsedPattern<T> pattern in parsePatterns)
+            foreach (IPattern<T> pattern in parsePatterns)
             {
                 ParseResult<T> result = pattern.Parse(value);
                 if (result.Success || !result.ContinueAfterErrorWithMultipleFormats)
