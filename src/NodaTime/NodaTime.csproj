@@ -88,8 +88,9 @@
     <Compile Include="Text\BucketHelper.cs" />
     <Compile Include="Text\InstantPatternParser.cs" />
     <Compile Include="Text\InvalidPatternException.cs" />
+    <Compile Include="Text\IPattern.cs" />
     <Compile Include="Text\OffsetPatternParser.cs" />
-    <Compile Include="Text\Patterns\AbstractParsedPattern.cs" />
+    <Compile Include="Text\Patterns\AbstractPattern.cs" />
     <Compile Include="Text\Patterns\IPatternParser.cs" />
     <Compile Include="Text\Patterns\PatternCursor.cs" />
     <Compile Include="Text\Patterns\PatternFields.cs" />
@@ -100,8 +101,7 @@
     <Compile Include="Text\ParseBucket.cs" />
     <Compile Include="Text\ParseResult.cs" />
     <Compile Include="Text\Patterns\CompositePattern.cs" />
-    <Compile Include="Text\Patterns\IParsedPattern.cs" />
-    <Compile Include="Text\Patterns\SimpleParsedPattern.cs" />
+    <Compile Include="Text\Patterns\SimplePattern.cs" />
     <Compile Include="Text\Patterns\SteppedPatternBuilder.cs" />
     <Compile Include="Text\UnparsableValueException.cs" />
     <Compile Include="IClock.cs" />

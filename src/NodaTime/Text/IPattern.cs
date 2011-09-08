@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2011 Jon Skeet
 // 
@@ -14,12 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-namespace NodaTime.Text.Patterns
+namespace NodaTime.Text
 {
-    internal interface IParsedPattern<T>
+    internal interface IPattern<T>
     {
         ParseResult<T> Parse(string value);
         string Format(T value);
-
     }
 }

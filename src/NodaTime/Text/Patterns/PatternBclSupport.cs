@@ -91,30 +91,30 @@ namespace NodaTime.Text.Patterns
             return ParseResult<T>.NoMatchingFormat;
         }
 
-        internal ParseResult<T> ParseSingle(string value, string pattern, NodaFormatInfo formatInfo)
+        internal ParseResult<T> ParseSingle(string value, string patternText, NodaFormatInfo formatInfo)
         {
-            if (pattern == null)
+            if (patternText == null)
             {
-                return ParseResult<T>.ArgumentNull("pattern");
+                return ParseResult<T>.ArgumentNull("patternText");
             }
-            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(pattern);
+            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(patternText);
             if (!patternResult.Success)
             {
                 return patternResult.ToParseResult();
             }
-            IParsedPattern<T> parsedPattern = patternResult.GetResultOrThrow();
-            return parsedPattern.Parse(value);
+            IPattern<T> pattern = patternResult.GetResultOrThrow();
+            return pattern.Parse(value);
         }
 
-        internal string Format(T value, string pattern, NodaFormatInfo formatInfo)
+        internal string Format(T value, string patternText, NodaFormatInfo formatInfo)
         {
-            if (string.IsNullOrEmpty(pattern))
+            if (string.IsNullOrEmpty(patternText))
             {
-                pattern = defaultFormatPattern;
+                patternText = defaultFormatPattern;
             }
-            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(pattern);
-            IParsedPattern<T> parsedPattern = patternResult.GetResultOrThrow();
-            return parsedPattern.Format(value);
+            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(patternText);
+            IPattern<T> pattern = patternResult.GetResultOrThrow();
+            return pattern.Format(value);
         }
     }
 }

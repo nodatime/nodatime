@@ -26,7 +26,7 @@ namespace NodaTime.Text.Patterns
     /// </summary>
     internal class PatternParseResult<T>
     {
-        private readonly IParsedPattern<T> value;
+        private readonly IPattern<T> value;
         private readonly NodaFunc<Exception> exceptionProvider;
         private readonly bool continueWithMultiple;
 
@@ -36,7 +36,7 @@ namespace NodaTime.Text.Patterns
             this.continueWithMultiple = continueWithMultiple;
         }
 
-        private PatternParseResult(IParsedPattern<T> value)
+        private PatternParseResult(IPattern<T> value)
         {
             this.value = value;
         }
@@ -50,7 +50,7 @@ namespace NodaTime.Text.Patterns
             return ParseResult<T>.ForInvalidFormat(exceptionProvider);
         }
 
-        internal IParsedPattern<T> GetResultOrThrow()
+        internal IPattern<T> GetResultOrThrow()
         {
             if (exceptionProvider == null)
             {
@@ -63,14 +63,14 @@ namespace NodaTime.Text.Patterns
         /// Returns the success value, and sets the out parameter to either
         /// the specified failure value of T or the successful parse result value.
         /// </summary>
-        internal bool TryGetResult(out IParsedPattern<T> result)
+        internal bool TryGetResult(out IPattern<T> result)
         {
             bool success = exceptionProvider == null;
             result = success ? value : null;
             return success;
         }
 
-        internal static PatternParseResult<T> ForValue(IParsedPattern<T> value)
+        internal static PatternParseResult<T> ForValue(IPattern<T> value)
         {
             return new PatternParseResult<T>(value);
         }
