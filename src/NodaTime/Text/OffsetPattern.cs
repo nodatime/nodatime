@@ -27,16 +27,23 @@ namespace NodaTime.Text
     public sealed class OffsetPattern : IPattern<Offset>
     {
         private readonly string patternText;
+        private readonly NodaFormatInfo formatInfo;
         private readonly IPattern<Offset> pattern;
 
         /// <summary>
         /// Returns the pattern text for this pattern, as supplied on creation.
         /// </summary>
-        public string PatternText { get { return PatternText; } }
+        public string PatternText { get { return patternText; } }
 
-        private OffsetPattern(string patternText, IPattern<Offset> pattern)
+        /// <summary>
+        /// Returns the localization information used in this pattern.
+        /// </summary>
+        public NodaFormatInfo FormatInfo { get { return formatInfo; } }
+
+        private OffsetPattern(string patternText, NodaFormatInfo formatInfo, IPattern<Offset> pattern)
         {
             this.patternText = patternText;
+            this.formatInfo = formatInfo;
             this.pattern = pattern;
         }
 
@@ -85,7 +92,7 @@ namespace NodaTime.Text
                 throw new ArgumentNullException("formatInfo");
             }
             var patternParseResult = formatInfo.OffsetPatternParser.ParsePattern(patternText);
-            return new OffsetPattern(patternText, patternParseResult.GetResultOrThrow());
+            return new OffsetPattern(patternText, formatInfo, patternParseResult.GetResultOrThrow());
         }
 
         /// <summary>
