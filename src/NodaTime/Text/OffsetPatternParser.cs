@@ -48,20 +48,20 @@ namespace NodaTime.Text
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
         // interface implementation.
-        public PatternParseResult<Offset> ParsePattern(string pattern, NodaFormatInfo formatInfo)
+        public PatternParseResult<Offset> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            if (pattern == null)
+            if (patternText == null)
             {
-                return PatternParseResult<Offset>.ArgumentNull("format");
+                return PatternParseResult<Offset>.ArgumentNull("patternText");
             }
-            if (pattern.Length == 0)
+            if (patternText.Length == 0)
             {
                 return PatternParseResult<Offset>.FormatStringEmpty;
             }
 
-            if (pattern.Length == 1)
+            if (patternText.Length == 1)
             {
-                char patternCharacter = pattern[0];
+                char patternCharacter = patternText[0];
                 if (patternCharacter == 'n')
                 {
                     return PatternParseResult<Offset>.ForValue(CreateNumberPattern(formatInfo));
@@ -70,7 +70,7 @@ namespace NodaTime.Text
             }
 
             var patternBuilder = new SteppedPatternBuilder<Offset, OffsetParseBucket>(formatInfo, () => new OffsetParseBucket());
-            var patternCursor = new PatternCursor(pattern);
+            var patternCursor = new PatternCursor(patternText);
 
             // Prime the pump...
             // TODO: Add this to the builder?
@@ -104,7 +104,7 @@ namespace NodaTime.Text
             {
                 case 'g':
                 {
-                    var parsePatterns = new List<IPattern<Offset>>();
+                    var patterns = new List<IPattern<Offset>>();
                     foreach (char c in "flms")
                     {
                         // Each of the parsers could fail
@@ -114,10 +114,10 @@ namespace NodaTime.Text
                             return individual;
                         }
                         // We know this is safe now.
-                        parsePatterns.Add(individual.GetResultOrThrow());
+                        patterns.Add(individual.GetResultOrThrow());
                     }
-                    NodaFunc<Offset, string> formatter = value => FormatGeneral(value, parsePatterns);
-                    return PatternParseResult<Offset>.ForValue(new CompositePattern<Offset>(parsePatterns, formatter));
+                    NodaFunc<Offset, string> formatter = value => FormatGeneral(value, patterns);
+                    return PatternParseResult<Offset>.ForValue(new CompositePattern<Offset>(patterns, formatter));
                 }
                 case 'f':
                     singlePatternResource = "OffsetPatternFull";
@@ -136,11 +136,11 @@ namespace NodaTime.Text
                     return PatternParseResult<Offset>.UnknownStandardFormat(patternCharacter);
             }
             // TODO: Guard against recursion? Validate that the pattern expands to a longer pattern?
-            string pattern = Resources.ResourceManager.GetString(singlePatternResource, formatInfo.CultureInfo);
-            return ParsePattern(pattern, formatInfo);
+            string patternText = Resources.ResourceManager.GetString(singlePatternResource, formatInfo.CultureInfo);
+            return ParsePattern(patternText, formatInfo);
         }
 
-        private string FormatGeneral(Offset value, List<IPattern<Offset>> parsedPatterns)
+        private string FormatGeneral(Offset value, List<IPattern<Offset>> patterns)
         {
             // Note: this relies on the order in ExpandStandardFormatPattern
             int index;
@@ -160,7 +160,7 @@ namespace NodaTime.Text
             {
                 index = 3;
             }
-            return parsedPatterns[index].Format(value);
+            return patterns[index].Format(value);
         }
         #endregion
 

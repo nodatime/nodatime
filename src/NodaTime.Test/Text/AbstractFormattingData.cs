@@ -80,12 +80,12 @@ namespace NodaTime.Test.Text
         public string S { get; set; }
 
         /// <summary>
-        ///   Gets or sets the format string.
+        ///   Gets or sets the pattern text.
         /// </summary>
         /// <value>
-        ///   The format string.
+        ///   The pattern text.
         /// </value>
-        public string F { get; set; }
+        public string P { get; set; }
 
         /// <summary>
         ///   Gets or sets the culture info to use when formatting or parsing.
@@ -166,16 +166,16 @@ namespace NodaTime.Test.Text
             {
                 string formatted = S ?? "null";
                 string format;
-                if (F == null)
+                if (P == null)
                 {
                     format = "null";
                 }
                 else
                 {
-                    var parts = F.Split('\0');
+                    var parts = P.Split('\0');
                     if (parts.Length == 1)
                     {
-                        format = "[" + F + "]";
+                        format = "[" + P + "]";
                     }
                     else
                     {
