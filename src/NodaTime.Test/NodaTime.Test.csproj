@@ -85,6 +85,25 @@
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="CultureSaver.cs" />
     <Compile Include="Fields\SkipZeroDateTimeFieldTest.cs" />
+    <Compile Include="LocalDateTest.cs" />
+    <Compile Include="LocalDateTest.AddUnit.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTest.BasicProperties.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTest.Construction.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTest.Conversion.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTest.Equality.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTest.PeriodArithmetic.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Text\FormatHelperTest.cs" />
     <Compile Include="Globalization\FailingCultureInfo.cs" />
     <Compile Include="Globalization\NodaCultureInfoTest.cs" />
@@ -97,9 +116,11 @@
     </Compile>
     <Compile Include="DateTimeZoneTest.cs" />
     <Compile Include="LocalDateTimeTest.cs" />
+    <Compile Include="LocalDateTimeTest.AddUnit.cs">
+      <DependentUpon>LocalDateTimeTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Testing\StubClockTest.cs" />
     <Compile Include="Fields\DurationFieldValueTest.cs" />
-    <Compile Include="LocalDateTest.cs" />
     <Compile Include="LocalTimeTest.cs" />
     <Compile Include="PeriodTest.cs" />
     <Compile Include="PeriodTypeTest.cs" />

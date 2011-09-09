@@ -214,5 +214,70 @@ namespace NodaTime
             }
             return this == (LocalDate)obj;
         }
+
+        /// <summary>
+        /// Creates a new LocalDate representing the same physical date, but in a different calendar.
+        /// The returned LocalDate is likely to have different field values to this one.
+        /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
+        /// </summary>
+        /// <param name="calendarSystem">The calendar system to convert this local date to. Must not be null.</param>
+        /// <returns>The converted LocalDate</returns>
+        public LocalDate WithCalendar(CalendarSystem calendarSystem)
+        {
+            // TODO: This currently assumes the time will stay as midnight. Is that valid?
+            return new LocalDate(LocalDateTime.WithCalendar(calendarSystem));
+        }
+
+        /// <summary>
+        /// Returns a new LocalDate representing the current value with the given number of years added.
+        /// </summary>
+        /// <remarks>
+        /// If the resulting date is invalid, lower fields (typically the day of month) are reduced to find a valid value.
+        /// For example, adding one year to February 29th 2012 will return February 28th 2013; subtracting one year from
+        /// February 29th 2012 will return February 28th 2011.
+        /// </remarks>
+        /// <param name="years">The number of years to add</param>
+        /// <returns>The current value plus the given number of years.</returns>
+        public LocalDate AddYears(int years)
+        {
+            return new LocalDate(LocalDateTime.AddYears(years));
+        }
+
+        /// <summary>
+        /// Returns a new LocalDate representing the current value with the given number of months added.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method does not try to maintain the year of the current value, so adding four months to a value in 
+        /// October will result in a value in the following February.
+        /// </para>
+        /// <para>
+        /// If the resulting date is invalid, the day of month is reduced to find a valid value.
+        /// For example, adding one month to January 30th 2011 will return February 28th 2011; subtracting one month from
+        /// March 30th 2011 will return February 28th 2011.
+        /// </para>
+        /// </remarks>
+        /// <param name="months">The number of months to add</param>
+        /// <returns>The current date plus the given number of months</returns>
+        public LocalDate AddMonths(int months)
+        {
+            return new LocalDate(LocalDateTime.AddMonths(months));
+        }
+
+        /// <summary>
+        /// Returns a new LocalDate representing the current value with the given number of days added.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method does not try to maintain the month or year of the current value, so adding 3 days to a value of January 30th
+        /// will result in a value of February 2nd.
+        /// </para>
+        /// </remarks>
+        /// <param name="days">The number of days to add</param>
+        /// <returns>The current value plus the given number of days.</returns>
+        public LocalDate AddDays(int days)
+        {
+            return new LocalDate(LocalDateTime.AddDays(days));
+        }
     }
 }

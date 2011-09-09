@@ -25,7 +25,7 @@ namespace NodaTime.Test
     /// </summary>
     // TODO: We need more tests, desperately!
     [TestFixture]
-    public class LocalDateTimeTest
+    public partial class LocalDateTimeTest
     {
         [Test]
         public void ToDateTimeUnspecified()
@@ -48,6 +48,17 @@ namespace NodaTime.Test
                 LocalDateTime actual = LocalDateTime.FromDateTime(x);
                 Assert.AreEqual(expected, actual);
             }
+        }
+
+        [Test]
+        public void WithCalendar()
+        {
+            LocalDateTime isoEpoch = new LocalDateTime(1970, 1, 1, 0, 0, 0);
+            LocalDateTime julianEpoch = isoEpoch.WithCalendar(CalendarSystem.GetJulianCalendar(4));
+            Assert.AreEqual(1969, julianEpoch.Year);
+            Assert.AreEqual(12, julianEpoch.MonthOfYear);
+            Assert.AreEqual(19, julianEpoch.DayOfMonth);
+            Assert.AreEqual(isoEpoch.TimeOfDay, julianEpoch.TimeOfDay);
         }
     }
 }
