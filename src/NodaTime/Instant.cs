@@ -333,18 +333,18 @@ namespace NodaTime
         /// <returns>
         ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
-        /// <param name="format">The <see cref="T:System.String" /> specifying the format to use.
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
         ///   -or- 
-        ///   null to use the default format defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        ///   null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
         /// </param>
         /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
         ///   -or- 
         ///   null to obtain the numeric format information from the current locale setting of the operating system. 
         /// </param>
         /// <filterpriority>2</filterpriority>
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string patternText, IFormatProvider formatProvider)
         {
-            return InstantPattern.Format(this, format, NodaFormatInfo.GetInstance(formatProvider));
+            return InstantPattern.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -365,14 +365,14 @@ namespace NodaTime
         /// <returns>
         ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
-        /// <param name="format">The <see cref="T:System.String" /> specifying the format to use.
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
         ///   -or- 
-        ///   null to use the default format defined for the type. 
+        ///   null to use the default pattern defined for the type. 
         /// </param>
         /// <filterpriority>2</filterpriority>
-        public string ToString(string format)
+        public string ToString(string patternText)
         {
-            return InstantPattern.Format(this, format, NodaFormatInfo.CurrentInfo);
+            return InstantPattern.Format(this, patternText, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -393,10 +393,10 @@ namespace NodaTime
         #endregion Formatting
 
         #region Parsing
-        private static readonly string[] AllFormats = { "g", "n" };
+        private static readonly string[] AllPatterns = { "g", "n" };
         private const string DefaultFormatPattern = "g";
 
-        private static readonly PatternBclSupport<Instant> InstantPattern = new PatternBclSupport<Instant>(AllFormats, DefaultFormatPattern, Instant.MinValue, fi => fi.InstantPatternParser);
+        private static readonly PatternBclSupport<Instant> InstantPattern = new PatternBclSupport<Instant>(AllPatterns, DefaultFormatPattern, Instant.MinValue, fi => fi.InstantPatternParser);
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
@@ -414,11 +414,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Parses the given string using the specified format pattern and format provider.
+        /// Parses the given string using the specified pattern and format provider.
         /// </summary>
-        public static Instant ParseExact(string value, string format, IFormatProvider formatProvider)
+        public static Instant ParseExact(string value, string patternText, IFormatProvider formatProvider)
         {
-            return InstantPattern.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider));
+            return InstantPattern.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -444,25 +444,25 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Attempts to parse the given string using the specified format pattern and format provider.
+        /// Attempts to parse the given string using the specified pattern and format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParseExact(string value, string format, IFormatProvider formatProvider, out Instant result)
+        public static bool TryParseExact(string value, string patternText, IFormatProvider formatProvider, out Instant result)
         {
-            return InstantPattern.TryParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return InstantPattern.TryParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
-        /// Attempts to parse the given string using the specified format patterns and format provider.
+        /// Attempts to parse the given string using the specified patterns and format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
-        public static bool TryParseExact(string value, string[] formats, IFormatProvider formatProvider, out Instant result)
+        public static bool TryParseExact(string value, string[] patterns, IFormatProvider formatProvider, out Instant result)
         {
-            return InstantPattern.TryParseExact(value, formats, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return InstantPattern.TryParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
         #endregion Parsing
 

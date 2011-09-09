@@ -36,30 +36,30 @@ namespace NodaTime.Text
     /// </remarks>
     internal sealed class InstantPatternParser : IPatternParser<Instant>
     {
-        public PatternParseResult<Instant> ParsePattern(string pattern, NodaFormatInfo formatInfo)
+        public PatternParseResult<Instant> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            if (pattern == null)
+            if (patternText == null)
             {
-                return PatternParseResult<Instant>.ArgumentNull("format");
+                return PatternParseResult<Instant>.ArgumentNull("patternText");
             }
-            if (pattern.Length == 0)
+            if (patternText.Length == 0)
             {
                 return PatternParseResult<Instant>.FormatStringEmpty;
             }
-            pattern = pattern.Trim();
-            if (pattern.Length > 1)
+            patternText = patternText.Trim();
+            if (patternText.Length > 1)
             {
-                return PatternParseResult<Instant>.FormatInvalid(pattern);
+                return PatternParseResult<Instant>.FormatInvalid(patternText);
             }
-            char patternChar = char.ToLowerInvariant(pattern[0]);
+            char patternChar = char.ToLowerInvariant(patternText[0]);
             switch (patternChar)
             {
                 case 'g':
                     return PatternParseResult<Instant>.ForValue(new GeneralPattern(formatInfo));
                 case 'n':
-                    return PatternParseResult<Instant>.ForValue(new NumberPattern(formatInfo, pattern, "N0"));
+                    return PatternParseResult<Instant>.ForValue(new NumberPattern(formatInfo, patternText, "N0"));
                 case 'd':
-                    return PatternParseResult<Instant>.ForValue(new NumberPattern(formatInfo, pattern, "D"));
+                    return PatternParseResult<Instant>.ForValue(new NumberPattern(formatInfo, patternText, "D"));
                 default:
                     return PatternParseResult<Instant>.UnknownStandardFormat(patternChar);
             }
@@ -135,13 +135,13 @@ namespace NodaTime.Text
         private sealed class NumberPattern : AbstractPattern<Instant>
         {
             private const NumberStyles ParsingNumberStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowThousands;
-            private readonly string pattern;
+            private readonly string patternText;
             private readonly string systemFormatString;
 
-            internal NumberPattern(NodaFormatInfo formatInfo, string pattern, string systemFormatString)
+            internal NumberPattern(NodaFormatInfo formatInfo, string patternText, string systemFormatString)
                 : base(formatInfo)
             {
-                this.pattern = pattern;
+                this.patternText = patternText;
                 this.systemFormatString = systemFormatString;
             }
 
@@ -152,7 +152,7 @@ namespace NodaTime.Text
                 {
                     return ParseResult<Instant>.ForValue(new Instant(number));
                 }
-                return ParseResult<Instant>.CannotParseValue(value, pattern);
+                return ParseResult<Instant>.CannotParseValue(value, patternText);
             }
 
             public override string Format(Instant value)

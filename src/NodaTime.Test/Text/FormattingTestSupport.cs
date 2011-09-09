@@ -37,10 +37,10 @@ namespace NodaTime.Test.Text
         /// </summary>
         /// <typeparam name="TInput">The type of the input.</typeparam>
         /// <typeparam name="T">The type of the converted value.</typeparam>
-        /// <param name="format">The format string or string array.</param>
+        /// <param name="pattern">The pattern text or string array.</param>
         /// <param name="obj">The converted value.</param>
         /// <returns><c>true</c> if the conversion succeeded, <c>false</c> otherwise.</returns>
-        public delegate bool OutFunc<TInput, T>(TInput format, out T obj);
+        public delegate bool OutFunc<TInput, T>(TInput pattern, out T obj);
         #endregion
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace NodaTime.Test.Text
         /// <param name="test">The method under test.</param>
         public static void RunFormatTest<T>(AbstractFormattingData<T> data, Func<string> test)
         {
-            if (data.F != null)
+            if (data.P != null)
             {
-                if (data.F.Split('\0').Length != 1)
+                if (data.P.Split('\0').Length != 1)
                 {
                     return;
                 }
@@ -99,14 +99,14 @@ namespace NodaTime.Test.Text
         /// <param name="test">The method under test.</param>
         public static void RunParseSingleTest<T>(AbstractFormattingData<T> data, Func<string, T> test)
         {
-            if (data.F != null)
+            if (data.P != null)
             {
-                if (data.F.Split('\0').Length != 1)
+                if (data.P.Split('\0').Length != 1)
                 {
                     return;
                 }
             }
-            DoRunParseTest(data, test, data.F, false);
+            DoRunParseTest(data, test, data.P, false);
         }
 
         /// <summary>
@@ -118,9 +118,9 @@ namespace NodaTime.Test.Text
         public static void RunParseMultipleTest<T>(AbstractFormattingData<T> data, Func<string[], T> test)
         {
             string[] formats = null;
-            if (data.F != null)
+            if (data.P != null)
             {
-                formats = data.F.Split('\0');
+                formats = data.P.Split('\0');
             }
             Type oldException = data.Exception;
             string oldMessage = data.Message;
@@ -148,9 +148,9 @@ namespace NodaTime.Test.Text
         /// <typeparam name="T">The type being tested.</typeparam>
         /// <param name="data">The test data.</param>
         /// <param name="test">The method under test.</param>
-        /// <param name="format">The format string or string list.</param>
+        /// <param name="pattern">The pattern text or string list.</param>
         /// <param name="isMulti"><c>true</c> if this is a multiple format string method.</param>
-        private static void DoRunParseTest<TInput, T>(AbstractFormattingData<T> data, Func<TInput, T> test, TInput format, bool isMulti)
+        private static void DoRunParseTest<TInput, T>(AbstractFormattingData<T> data, Func<TInput, T> test, TInput pattern, bool isMulti)
         {
             Func<TInput, T> doit = s =>
             {
@@ -161,16 +161,16 @@ namespace NodaTime.Test.Text
             };
             if (data.Exception == null)
             {
-                Assert.AreEqual(data.PV, doit(format));
+                Assert.AreEqual(data.PV, doit(pattern));
             }
             else if (data.Message != null)
             {
                 var message = string.Format(data.Message, data.Parameters.ToArray());
-                Assert.Throws(Is.TypeOf(data.Exception).And.Message.EqualTo(message), () => doit(format));
+                Assert.Throws(Is.TypeOf(data.Exception).And.Message.EqualTo(message), () => doit(pattern));
             }
             else
             {
-                Assert.Throws(Is.TypeOf(data.Exception), () => doit(format));
+                Assert.Throws(Is.TypeOf(data.Exception), () => doit(pattern));
             }
         }
 
@@ -182,14 +182,14 @@ namespace NodaTime.Test.Text
         /// <param name="test">The method under test.</param>
         public static void RunTryParseSingleTest<T>(AbstractFormattingData<T> data, OutFunc<string, T> test)
         {
-            if (data.F != null)
+            if (data.P != null)
             {
-                if (data.F.Split('\0').Length != 1)
+                if (data.P.Split('\0').Length != 1)
                 {
                     return;
                 }
             }
-            DoRunTryParseTest(data, test, data.F);
+            DoRunTryParseTest(data, test, data.P);
         }
 
         /// <summary>
@@ -201,9 +201,9 @@ namespace NodaTime.Test.Text
         public static void RunTryParseMultipleTest<T>(AbstractFormattingData<T> data, OutFunc<string[], T> test)
         {
             string[] formats = null;
-            if (data.F != null)
+            if (data.P != null)
             {
-                formats = data.F.Split('\0');
+                formats = data.P.Split('\0');
             }
             Type oldException = data.Exception;
             string oldMessage = data.Message;
@@ -231,8 +231,8 @@ namespace NodaTime.Test.Text
         /// <typeparam name="T">The type being tested.</typeparam>
         /// <param name="data">The test data.</param>
         /// <param name="test">The method under test.</param>
-        /// <param name="format">The format string or string list.</param>
-        private static void DoRunTryParseTest<TInput, T>(AbstractFormattingData<T> data, OutFunc<TInput, T> test, TInput format)
+        /// <param name="pattern">The pattern text or string list.</param>
+        private static void DoRunTryParseTest<TInput, T>(AbstractFormattingData<T> data, OutFunc<TInput, T> test, TInput pattern)
         {
             OutFunc<TInput, T> doit = (TInput s, out T value) =>
             {
@@ -243,7 +243,7 @@ namespace NodaTime.Test.Text
             };
             bool isSuccess = data.Exception == null;
             T result;
-            Assert.IsTrue(isSuccess == doit(format, out result));
+            Assert.IsTrue(isSuccess == doit(pattern, out result));
             Assert.AreEqual(data.PV, result);
         }
     }

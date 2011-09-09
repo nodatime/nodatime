@@ -41,7 +41,7 @@ namespace NodaTime.Test
             {
                 data.ThreadCulture = data.C;
             }
-            FormattingTestSupport.RunFormatTest(data, () => data.V.ToString(data.F));
+            FormattingTestSupport.RunFormatTest(data, () => data.V.ToString(data.P));
         }
 
         [Test, Category("Formatting"), Category("Format")]
@@ -49,7 +49,7 @@ namespace NodaTime.Test
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
         public void TestToString_FormatCulture(OffsetFormattingTestSupport.OffsetData data)
         {
-            FormattingTestSupport.RunFormatTest(data, () => data.V.ToString(data.F, data.C));
+            FormattingTestSupport.RunFormatTest(data, () => data.V.ToString(data.P, data.C));
         }
 
         [Test, Category("Formatting"), Category("Format")]
