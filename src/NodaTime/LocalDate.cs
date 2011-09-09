@@ -23,7 +23,7 @@ namespace NodaTime
     /// LocalDate is an immutable struct representing a date within the calendar,
     /// with no reference to a particular time zone or time of day.
     /// </summary>
-    public struct LocalDate
+    public struct LocalDate : IEquatable<LocalDate>
     {
         private readonly LocalDateTime localTime;
 
@@ -143,7 +143,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Combines the given <see cref="LocalDate"/> and <code>LocalTime</code> components
+        /// Combines the given <see cref="LocalDate"/> and <see cref="LocalTime"/> components
         /// into a single <see cref="LocalDateTime"/>.
         /// </summary>
         public static LocalDateTime operator +(LocalDate date, LocalTime time)
@@ -167,7 +167,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two <code>LocalDate</code> values for equality. This requires
+        /// Compares two <see cref="LocalDate" /> values for equality. This requires
         /// that the dates be the same, within the same calendar.
         /// </summary>
         public static bool operator ==(LocalDate lhs, LocalDate rhs)
@@ -176,7 +176,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two <code>LocalDate</code> values for inequality.
+        /// Compares two <see cref="LocalDate" /> values for inequality.
         /// </summary>
         public static bool operator !=(LocalDate lhs, LocalDate rhs)
         {
@@ -203,7 +203,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two <code>LocalDate</code> values for equality. This requires
+        /// Compares two <see cref="LocalDate"/> values for equality. This requires
         /// that the dates be the same, within the same calendar.
         /// </summary>
         public override bool Equals(object obj)
@@ -213,6 +213,15 @@ namespace NodaTime
                 return false;
             }
             return this == (LocalDate)obj;
+        }
+
+        /// <summary>
+        /// Compares two <see cref="LocalDate"/> values for equality. This requires
+        /// that the dates be the same, within the same calendar.
+        /// </summary>
+        public bool Equals(LocalDate other)
+        {
+            return this == other;
         }
 
         /// <summary>
