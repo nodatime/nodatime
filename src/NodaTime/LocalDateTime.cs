@@ -477,5 +477,76 @@ namespace NodaTime
             return Calendar + ": " + LocalInstant;
         }
         #endregion
+
+        /// <summary>
+        /// Creates a new LocalDateTime representing the same physical date and time, but in a different calendar.
+        /// The returned LocalDateTime is likely to have different date field values to this one.
+        /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
+        /// </summary>
+        /// <param name="calendarSystem">The calendar system to convert this local date to. Must not be null.</param>
+        /// <returns>The converted LocalDateTime.</returns>
+        public LocalDateTime WithCalendar(CalendarSystem calendarSystem)
+        {
+            if (calendarSystem == null)
+            {
+                throw new ArgumentNullException("calendarSystem");
+            }
+            return new LocalDateTime(localInstant, calendarSystem);
+        }
+
+        /// <summary>
+        /// Returns a new LocalDateTime representing the current value with the given number of years added.
+        /// </summary>
+        /// <remarks>
+        /// If the resulting date is invalid, lower fields (typically the day of month) are reduced to find a valid value.
+        /// For example, adding one year to February 29th 2012 will return February 28th 2013; subtracting one year from
+        /// February 29th 2012 will return February 28th 2011.
+        /// </remarks>
+        /// <param name="years">The number of years to add</param>
+        /// <returns>The current value plus the given number of years.</returns>
+        public LocalDateTime AddYears(int years)
+        {
+            LocalInstant newLocalInstant = calendar.Fields.Year.Add(localInstant, years);
+            return new LocalDateTime(newLocalInstant, calendar);
+        }
+
+        /// <summary>
+        /// Returns a new LocalDateTime representing the current value with the given number of months added.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method does not try to maintain the year of the current value, so adding four months to a value in 
+        /// October will result in a value in the following February.
+        /// </para>
+        /// <para>
+        /// If the resulting date is invalid, the day of month is reduced to find a valid value.
+        /// For example, adding one month to January 30th 2011 will return February 28th 2011; subtracting one month from
+        /// March 30th 2011 will return February 28th 2011.
+        /// </para>
+        /// </remarks>
+        /// <param name="months">The number of months to add</param>
+        /// <returns>The current value plus the given number of months.</returns>
+        public LocalDateTime AddMonths(int months)
+        {
+            LocalInstant newLocalInstant = calendar.Fields.MonthOfYear.Add(localInstant, months);
+            return new LocalDateTime(newLocalInstant, calendar);
+        }
+
+        /// <summary>
+        /// Returns a new LocalDateTime representing the current value with the given number of days added.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method does not try to maintain the month or year of the current value, so adding 3 days to a value on January 30th
+        /// will result in a value on February 2nd.
+        /// </para>
+        /// </remarks>
+        /// <param name="days">The number of days to add</param>
+        /// <returns>The current value plus the given number of days.</returns>
+        public LocalDateTime AddDays(int days)
+        {
+            LocalInstant newLocalInstant = calendar.Fields.DayOfYear.Add(localInstant, days);
+            return new LocalDateTime(newLocalInstant, calendar);
+        }
     }
 }
