@@ -128,5 +128,15 @@ namespace NodaTime.Test
             // Round-trip back across the boundary
             Assert.AreEqual(start, start.AddDays(8).AddDays(-8));
         }
+
+        [Test]
+        public void AddWeeks_Simple()
+        {
+            LocalDate start = new LocalDate(2011, 4, 2);
+            LocalDate expectedForward = new LocalDate(2011, 4, 23);
+            LocalDate expectedBackward = new LocalDate(2011, 3, 12);
+            Assert.AreEqual(expectedForward, start.AddWeeks(3));
+            Assert.AreEqual(expectedBackward, start.AddWeeks(-3));
+        }
     }
 }

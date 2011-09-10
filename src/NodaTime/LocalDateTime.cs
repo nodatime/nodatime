@@ -548,5 +548,16 @@ namespace NodaTime
             LocalInstant newLocalInstant = calendar.Fields.DayOfYear.Add(localInstant, days);
             return new LocalDateTime(newLocalInstant, calendar);
         }
+
+        /// <summary>
+        /// Returns a new LocalDateTime representing the current value with the given number of weeks added.
+        /// </summary>
+        /// <param name="weeks">The number of weeks to add</param>
+        /// <returns>The current value plus the given number of weeks.</returns>
+        public LocalDateTime AddWeeks(int weeks)
+        {
+            LocalInstant newLocalInstant = calendar.Fields.WeekOfWeekYear.Add(localInstant, weeks);
+            return new LocalDateTime(newLocalInstant, calendar);
+        }
     }
 }
