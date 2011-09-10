@@ -288,5 +288,15 @@ namespace NodaTime
         {
             return new LocalDate(LocalDateTime.AddDays(days));
         }
+
+        /// <summary>
+        /// Returns a new LocalDateTime representing the current value with the given number of weeks added.
+        /// </summary>
+        /// <param name="weeks">The number of weeks to add</param>
+        /// <returns>The current value plus the given number of weeks.</returns>
+        public LocalDate AddWeeks(int weeks)
+        {
+            return new LocalDate(LocalDateTime.AddWeeks(weeks));
+        }
     }
 }
