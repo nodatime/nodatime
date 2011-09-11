@@ -27,17 +27,11 @@ namespace NodaTime.Test.Fields
         private readonly long unitTicks;
         private readonly bool precise;
 
-        internal FakeDurationField(long unitTicks, bool precise) : base(DurationFieldType.Seconds)
+        internal FakeDurationField(long unitTicks, bool precise) : base(DurationFieldType.Seconds, unitTicks, precise, true)
         {
             this.unitTicks = unitTicks;
             this.precise = precise;
         }
-
-        internal override bool IsSupported { get { return true; } }
-
-        internal override bool IsPrecise { get { return precise; } }
-
-        internal override long UnitTicks { get { return unitTicks; } }
 
         internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {

@@ -26,6 +26,19 @@ namespace NodaTime.Utility
     /// </summary>
     internal static class Preconditions
     {
+        /// <summary>
+        /// Returns the given argument after checking whether it's null. This is useful for putting
+        /// nullity checks in parameters which are passed to base class constructors.
+        /// </summary>
+        internal static T CheckNotNull<T>(T argument, string paramName) where T : class
+        {
+            if (argument == null)
+            {
+                throw new ArgumentNullException(paramName);
+            }
+            return argument;
+        }
+
         internal static void CheckArgumentRange(string paramName, long value, long minInclusive, long maxInclusive)
         {
             if (value < minInclusive || value > maxInclusive)

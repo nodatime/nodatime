@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -26,7 +27,9 @@ namespace NodaTime.Fields
     {
         private readonly int scale;
 
-        public ScaledDurationField(DurationField wrappedField, DurationFieldType fieldType, int scale) : base(wrappedField, fieldType)
+        public ScaledDurationField(DurationField wrappedField, DurationFieldType fieldType, int scale)
+            : base(Preconditions.CheckNotNull(wrappedField, "wrappedField"),
+                   fieldType, wrappedField.UnitTicks * scale)
         {
             if (scale == 0 || scale == 1)
             {
@@ -34,8 +37,6 @@ namespace NodaTime.Fields
             }
             this.scale = scale;
         }
-
-        internal override bool IsSupported { get { return true; } }
 
         internal override int GetValue(Duration duration)
         {
@@ -86,7 +87,5 @@ namespace NodaTime.Fields
         {
             return WrappedField.GetInt64Difference(minuendInstant, subtrahendInstant) / scale;
         }
-
-        internal override long UnitTicks { get { return WrappedField.UnitTicks * scale; } }
     }
 }

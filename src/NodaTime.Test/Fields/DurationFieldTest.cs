@@ -99,19 +99,13 @@ namespace NodaTime.Test.Fields
 
         private class StubDurationField : DurationField
         {
-            internal StubDurationField() : base(DurationFieldType.Seconds)
+            internal StubDurationField() : this(DurationFieldType.Seconds)
             {
             }
 
-            internal StubDurationField(DurationFieldType fieldType) : base(fieldType)
+            internal StubDurationField(DurationFieldType fieldType) : base(fieldType, 123, true, true)
             {
             }
-
-            internal override bool IsSupported { get { return true; } }
-
-            internal override bool IsPrecise { get { return true; } }
-
-            internal override long UnitTicks { get { return 123; } }
 
             internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
             {

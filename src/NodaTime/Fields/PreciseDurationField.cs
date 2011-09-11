@@ -29,31 +29,13 @@ namespace NodaTime.Fields
         internal static readonly PreciseDurationField Days = new PreciseDurationField(DurationFieldType.Days, NodaConstants.TicksPerStandardDay);
         internal static readonly PreciseDurationField Weeks = new PreciseDurationField(DurationFieldType.Weeks, NodaConstants.TicksPerStandardWeek);
 
-        /// <summary>
-        /// The size of the unit, in ticks.
-        /// </summary>
-        private readonly long unitTicks;
-
-        internal PreciseDurationField(DurationFieldType type, long unitTicks) : base(type)
+        internal PreciseDurationField(DurationFieldType type, long unitTicks) : base(type, unitTicks, true, true)
         {
-            this.unitTicks = unitTicks;
         }
-
-        /// <summary>
-        /// Always returns true.
-        /// </summary>
-        internal override bool IsPrecise { get { return true; } }
-
-        /// <summary>
-        /// Always returns true.
-        /// </summary>
-        internal override bool IsSupported { get { return true; } }
-
-        internal override long UnitTicks { get { return unitTicks; } }
 
         internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
-            return duration.Ticks / unitTicks;
+            return duration.Ticks / UnitTicks;
         }
 
         internal override Duration GetDuration(long value, LocalInstant localInstant)

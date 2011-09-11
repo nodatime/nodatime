@@ -25,15 +25,9 @@ namespace NodaTime.Fields
 
         public static TicksDurationField Instance { get { return instance; } }
 
-        private TicksDurationField() : base(DurationFieldType.Ticks)
+        private TicksDurationField() : base(DurationFieldType.Ticks, 1, true, true)
         {
         }
-
-        internal override bool IsSupported { get { return true; } }
-
-        internal override bool IsPrecise { get { return true; } }
-
-        internal override long UnitTicks { get { return 1; } }
 
         internal override int GetValue(Duration duration)
         {
