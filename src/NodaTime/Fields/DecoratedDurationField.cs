@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -26,7 +27,13 @@ namespace NodaTime.Fields
     {
         private readonly DurationField wrappedField;
 
-        internal DecoratedDurationField(DurationField wrappedField, DurationFieldType fieldType) : base(fieldType)
+        internal DecoratedDurationField(DurationField wrappedField, DurationFieldType fieldType)
+            : this(Preconditions.CheckNotNull(wrappedField, "wrappedField"), fieldType, wrappedField.UnitTicks)
+        {
+        }
+
+        internal DecoratedDurationField(DurationField wrappedField, DurationFieldType fieldType, long unitTicks)
+            : base(fieldType, unitTicks, wrappedField.IsPrecise, true)
         {
             if (wrappedField == null)
             {
@@ -40,10 +47,6 @@ namespace NodaTime.Fields
         }
 
         protected DurationField WrappedField { get { return wrappedField; } }
-
-        internal override bool IsPrecise { get { return wrappedField.IsPrecise; } }
-
-        internal override long UnitTicks { get { return wrappedField.UnitTicks; } }
 
         internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {

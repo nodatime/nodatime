@@ -45,7 +45,7 @@ namespace NodaTime.Fields
         public static readonly UnsupportedDurationField Milliseconds = cache[(int)DurationFieldType.Milliseconds];
         public static readonly UnsupportedDurationField Ticks = cache[(int)DurationFieldType.Ticks];
 
-        private UnsupportedDurationField(DurationFieldType fieldType) : base(fieldType)
+        private UnsupportedDurationField(DurationFieldType fieldType) : base(fieldType, 0, true, false)
         {
         }
 
@@ -63,21 +63,6 @@ namespace NodaTime.Fields
             }
             return cache[(int)fieldType];
         }
-
-        /// <summary>
-        /// This field is not supported, always returns false
-        /// </summary>
-        internal override bool IsSupported { get { return false; } }
-
-        /// <summary>
-        /// This field is precise, always returns true
-        /// </summary>
-        internal override bool IsPrecise { get { return true; } }
-
-        /// <summary>
-        /// Always returns zero.
-        /// </summary>
-        internal override long UnitTicks { get { return 0; } }
 
         /// <summary>
         /// Always throws NotSupportedException

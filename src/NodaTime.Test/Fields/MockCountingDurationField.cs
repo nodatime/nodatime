@@ -28,16 +28,10 @@ namespace NodaTime.Test.Fields
         {
         }
 
-        internal MockCountingDurationField(DurationFieldType fieldType, long unitTicks) : base(fieldType)
+        internal MockCountingDurationField(DurationFieldType fieldType, long unitTicks) : base(fieldType, unitTicks, true, true)
         {
             this.unitTicks = unitTicks;
         }
-
-        internal override bool IsSupported { get { return true; } }
-
-        internal override bool IsPrecise { get { return true; } }
-
-        internal override long UnitTicks { get { return unitTicks; } }
 
         internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {

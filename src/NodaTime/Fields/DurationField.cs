@@ -33,14 +33,20 @@ namespace NodaTime.Fields
         }
 
         private readonly DurationFieldType fieldType;
+        private readonly long unitTicks;
+        private readonly bool precise;
+        private readonly bool supported;
 
-        protected DurationField(DurationFieldType fieldType)
+        protected DurationField(DurationFieldType fieldType, long unitTicks, bool precise, bool supported)
         {
             if (!IsTypeValid(fieldType))
             {
                 throw new ArgumentOutOfRangeException("fieldType");
             }
             this.fieldType = fieldType;
+            this.unitTicks = unitTicks;
+            this.precise = precise;
+            this.supported = supported;
         }
 
         /// <summary>
@@ -51,21 +57,21 @@ namespace NodaTime.Fields
         /// <summary>
         /// Returns true if this field is supported.
         /// </summary>
-        internal abstract bool IsSupported { get; }
+        internal bool IsSupported { get { return supported; } }
 
         /// <summary>
         /// Is this field precise. A precise field can calculate its value from
         /// milliseconds without needing a reference date. Put another way, a
         /// precise field's unit size is not variable.
         /// </summary>
-        internal abstract bool IsPrecise { get; }
+        internal bool IsPrecise { get { return precise; } }
 
         /// <summary>
         /// Returns the amount of ticks per unit value of this field.
         /// For example, if this field represents "seconds", then this returns the
         /// ticks in one second.
         /// </summary>
-        internal abstract long UnitTicks { get; }
+        internal long UnitTicks { get { return unitTicks; } }
 
         #region Extract field value from a duration
         /// <summary>

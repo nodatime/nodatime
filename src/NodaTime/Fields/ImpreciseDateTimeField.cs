@@ -86,16 +86,10 @@ namespace NodaTime.Fields
         {
             private readonly ImpreciseDateTimeField linkedField;
 
-            internal LinkedDurationField(ImpreciseDateTimeField linkedField, DurationFieldType fieldType) : base(fieldType)
+            internal LinkedDurationField(ImpreciseDateTimeField linkedField, DurationFieldType fieldType) : base(fieldType, linkedField.UnitTicks, false, true)
             {
                 this.linkedField = linkedField;
             }
-
-            internal override bool IsSupported { get { return true; } }
-
-            internal override bool IsPrecise { get { return false; } }
-
-            internal override long UnitTicks { get { return linkedField.UnitTicks; } }
 
             internal override int GetValue(Duration duration, LocalInstant localInstant)
             {
