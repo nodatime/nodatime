@@ -26,7 +26,6 @@ namespace NodaTime.Fields
     internal abstract class DelegatedDateTimeField : DateTimeField
     {
         private readonly DateTimeField wrappedField;
-        private readonly DateTimeFieldType type;
 
         internal DelegatedDateTimeField(DateTimeField wrappedField) : this(wrappedField, wrappedField.FieldType)
         {
@@ -37,7 +36,6 @@ namespace NodaTime.Fields
             // No validation: this is internal, and only ever constructed when creating calendar systems.
             // In other words, we'll see it go bang soon enough if we screw up...
             this.wrappedField = wrappedField;
-            this.type = type;
         }
 
         internal DateTimeField WrappedField { get { return wrappedField; } }

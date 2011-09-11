@@ -20,9 +20,12 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Porting status: need AddWrapField. Also consider making min/max ints - check usage.
+    /// Divides a DateTimeField such that the retrieved values are reduced by a
+    /// fixed divisor. The field's unit duration is scaled accordingly, but the
+    /// range duration is unchanged.
     /// </summary>
-    internal class DividedDateTimeField : DecoratedDateTimeField
+    // Porting status: need AddWrapField. Also consider making min/max ints - check usage.
+    internal sealed class DividedDateTimeField : DecoratedDateTimeField
     {
         private readonly int divisor;
         private readonly DurationField divisorDurationField;

@@ -20,8 +20,9 @@ using NodaTime.Calendars;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Porting status: Needs partial and max for set support.
+    /// Provides time calculations for the day of the year component of time.
     /// </summary>
+    // Porting status: Needs partial and max for set support.
     internal sealed class BasicDayOfYearDateTimeField : PreciseDurationDateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;

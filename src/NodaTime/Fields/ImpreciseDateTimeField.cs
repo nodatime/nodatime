@@ -82,6 +82,7 @@ namespace NodaTime.Fields
             return difference;
         }
 
+        // TODO: Work out why this doesn't derive from DecoratedDurationField as it does in Joda 2.0
         private class LinkedDurationField : DurationField
         {
             private readonly ImpreciseDateTimeField linkedField;

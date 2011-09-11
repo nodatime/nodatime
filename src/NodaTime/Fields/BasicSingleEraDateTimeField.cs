@@ -19,6 +19,9 @@ using System;
 
 namespace NodaTime.Fields
 {
+    /// <summary>
+    /// Provides time calculations for the coptic era component of time.
+    /// </summary>
     internal class BasicSingleEraDateTimeField : DateTimeField
     {
         private const int EraValue = NodaConstants.CE;
