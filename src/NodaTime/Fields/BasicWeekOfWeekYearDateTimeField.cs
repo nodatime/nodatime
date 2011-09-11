@@ -20,8 +20,9 @@ using NodaTime.Calendars;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Needs partial and max for set support.
+    /// Provides time calculations for the week of a week based year component of time.
     /// </summary>
+    // Needs partial and max for set support.
     internal sealed class BasicWeekOfWeekYearDateTimeField : PreciseDurationDateTimeField
     {
         private static readonly Duration ThreeDays = Duration.FromStandardDays(3);

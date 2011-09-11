@@ -21,8 +21,13 @@ using NodaTime.Utility;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Porting status: Done.
+    /// Implementing only the minimum required set of methods. These implemented
+    /// methods delegate to a wrapped field. This design allows new DurationField types
+    /// to be defined that piggyback on top of another, inheriting all the safe method
+    /// implementations from this class. Should any method require pure delegation to the
+    /// wrapped field, simply override and use the provided WrappedField property.
     /// </summary>
+    // TODO: Decide whether this is pulling its weight.
     internal abstract class DecoratedDurationField : DurationField
     {
         private readonly DurationField wrappedField;
