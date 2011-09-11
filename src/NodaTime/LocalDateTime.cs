@@ -506,7 +506,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of years.</returns>
         public LocalDateTime AddYears(int years)
         {
-            LocalInstant newLocalInstant = calendar.Fields.Year.Add(localInstant, years);
+            LocalInstant newLocalInstant = calendar.Fields.Years.Add(localInstant, years);
             return new LocalDateTime(newLocalInstant, calendar);
         }
 
@@ -528,7 +528,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of months.</returns>
         public LocalDateTime AddMonths(int months)
         {
-            LocalInstant newLocalInstant = calendar.Fields.MonthOfYear.Add(localInstant, months);
+            LocalInstant newLocalInstant = calendar.Fields.Months.Add(localInstant, months);
             return new LocalDateTime(newLocalInstant, calendar);
         }
 
@@ -545,7 +545,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of days.</returns>
         public LocalDateTime AddDays(int days)
         {
-            LocalInstant newLocalInstant = calendar.Fields.DayOfYear.Add(localInstant, days);
+            LocalInstant newLocalInstant = calendar.Fields.Days.Add(localInstant, days);
             return new LocalDateTime(newLocalInstant, calendar);
         }
 
@@ -556,7 +556,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of weeks.</returns>
         public LocalDateTime AddWeeks(int weeks)
         {
-            LocalInstant newLocalInstant = calendar.Fields.WeekOfWeekYear.Add(localInstant, weeks);
+            LocalInstant newLocalInstant = calendar.Fields.Weeks.Add(localInstant, weeks);
             return new LocalDateTime(newLocalInstant, calendar);
         }
     }
