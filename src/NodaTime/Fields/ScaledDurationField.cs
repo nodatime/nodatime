@@ -23,69 +23,74 @@ namespace NodaTime.Fields
     /// <summary>
     /// TODO: Decide whether this wouldn't be better as a DelegatedDurationField...
     /// </summary>
-    internal sealed class ScaledDurationField : DecoratedDurationField
+    internal sealed class ScaledDurationField : DurationField
     {
         private readonly int scale;
+        private readonly DurationField wrappedField;
 
-        public ScaledDurationField(DurationField wrappedField, DurationFieldType fieldType, int scale)
-            : base(Preconditions.CheckNotNull(wrappedField, "wrappedField"),
-                   fieldType, wrappedField.UnitTicks * scale)
+        internal ScaledDurationField(DurationField wrappedField, DurationFieldType fieldType, int scale)
+            : base(fieldType, Preconditions.CheckNotNull(wrappedField, "wrappedField").UnitTicks * scale, wrappedField.IsPrecise, true)
         {
+            if (!wrappedField.IsSupported)
+            {
+                throw new ArgumentException("Wrapped field must be supported", "wrappedField");
+            }
             if (scale == 0 || scale == 1)
             {
                 throw new ArgumentOutOfRangeException("scale", "The scale must not be 0 or 1");
             }
             this.scale = scale;
+            this.wrappedField = wrappedField;
         }
 
         internal override int GetValue(Duration duration)
         {
-            return WrappedField.GetValue(duration) / scale;
+            return wrappedField.GetValue(duration) / scale;
         }
 
         internal override int GetValue(Duration duration, LocalInstant localInstant)
         {
-            return WrappedField.GetValue(duration, localInstant) / scale;
+            return wrappedField.GetValue(duration, localInstant) / scale;
         }
 
         internal override long GetInt64Value(Duration duration)
         {
-            return WrappedField.GetInt64Value(duration) / scale;
+            return wrappedField.GetInt64Value(duration) / scale;
         }
 
         internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
-            return WrappedField.GetInt64Value(duration, localInstant) / scale;
+            return wrappedField.GetInt64Value(duration, localInstant) / scale;
         }
 
         internal override Duration GetDuration(long value)
         {
-            return WrappedField.GetDuration(value * scale);
+            return wrappedField.GetDuration(value * scale);
         }
 
         internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
-            return WrappedField.GetDuration(value * scale, localInstant);
+            return wrappedField.GetDuration(value * scale, localInstant);
         }
 
         internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
-            return WrappedField.Add(localInstant, value * scale);
+            return wrappedField.Add(localInstant, value * scale);
         }
 
         internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
-            return WrappedField.Add(localInstant, value * scale);
+            return wrappedField.Add(localInstant, value * scale);
         }
 
         internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            return WrappedField.GetDifference(minuendInstant, subtrahendInstant) / scale;
+            return wrappedField.GetDifference(minuendInstant, subtrahendInstant) / scale;
         }
 
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            return WrappedField.GetInt64Difference(minuendInstant, subtrahendInstant) / scale;
+            return wrappedField.GetInt64Difference(minuendInstant, subtrahendInstant) / scale;
         }
     }
 }
