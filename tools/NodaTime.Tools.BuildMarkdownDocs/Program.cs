@@ -35,8 +35,8 @@ namespace NodaTime.Tools.BuildMarkdownDocs
         private const string TemplateTitle = "%TITLE%";
         private const string TemplateBody = "%BODY%";
         private const string ApiUrlPrefix = "../api/html/";
-        private static readonly Regex NamespacePattern = new Regex(@"noda-ns://(\S*)", RegexOptions.Multiline);
-        private static readonly Regex TypePattern = new Regex(@"noda-type://(\S*)", RegexOptions.Multiline);
+        private static readonly Regex NamespacePattern = new Regex(@"noda-ns://([A-Za-z0-9_.]*)", RegexOptions.Multiline);
+        private static readonly Regex TypePattern = new Regex(@"noda-type://([A-Za-z0-9_.]*)", RegexOptions.Multiline);
 
         private static int Main(string[] args)
         {
@@ -131,6 +131,7 @@ namespace NodaTime.Tools.BuildMarkdownDocs
         private static string TranslateUrl(Match match, string memberTypePrefix)
         {
             string name = match.Groups[1].Value;
+            Console.WriteLine("Matched {0}", name);
             return ApiUrlPrefix + memberTypePrefix + "_" + name.Replace(".", "_") + ".htm";
         }
 
