@@ -88,24 +88,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetDifference_DelegatesToDurationField()
-        {
-            MockCountingDurationField.differences = 0;
-            DateTimeField field = CreateSecondOfMinuteField();
-            Assert.AreEqual(30, field.GetDifference(new LocalInstant(0), new LocalInstant(0)));
-            Assert.AreEqual(1, MockCountingDurationField.differences);
-        }
-
-        [Test]
-        public void GetInt64Difference_DelegatesToDurationField()
-        {
-            MockCountingDurationField.differences64 = 0;
-            DateTimeField field = CreateSecondOfMinuteField();
-            Assert.AreEqual(30L, field.GetInt64Difference(new LocalInstant(0), new LocalInstant(0)));
-            Assert.AreEqual(1, MockCountingDurationField.differences64);
-        }
-
-        [Test]
         public void SetValue()
         {
             DateTimeField field = CreateSecondOfMinuteField();

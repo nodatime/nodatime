@@ -209,7 +209,7 @@ namespace NodaTime.Fields
             int months = value;
             return SetValue(localInstant, FieldUtils.GetWrappedValue(GetValue(localInstant), months, MinimumValue, max));
         }
-
+        /*
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             if (minuendInstant < subtrahendInstant)
@@ -250,6 +250,7 @@ namespace NodaTime.Fields
 
             return difference;
         }
+         */
 
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {

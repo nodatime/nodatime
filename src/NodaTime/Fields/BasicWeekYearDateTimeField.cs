@@ -80,6 +80,7 @@ namespace NodaTime.Fields
             return Add(localInstant, value);
         }
 
+        /* FIXME: Where should this logic go?
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             if (minuendInstant < subtrahendInstant)
@@ -104,7 +105,7 @@ namespace NodaTime.Fields
                 difference--;
             }
             return difference;
-        }
+        }*/
 
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {

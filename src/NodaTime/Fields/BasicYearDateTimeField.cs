@@ -92,12 +92,13 @@ namespace NodaTime.Fields
             return calendarSystem.SetYear(localInstant, (int)value);
         }
 
+        /* FIXME: Where should this logic go?
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return minuendInstant < subtrahendInstant
                        ? -calendarSystem.GetYearDifference(subtrahendInstant, minuendInstant)
                        : calendarSystem.GetYearDifference(minuendInstant, subtrahendInstant);
-        }
+        }*/
         #endregion
 
         #region Leap

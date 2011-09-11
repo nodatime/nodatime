@@ -47,16 +47,6 @@ namespace NodaTime.Fields
             return WrappedField.Add(localInstant, value);
         }
 
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return WrappedField.GetDifference(minuendInstant, subtrahendInstant);
-        }
-
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return WrappedField.GetInt64Difference(minuendInstant, subtrahendInstant);
-        }
-
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, 1, GetMaximumValue());

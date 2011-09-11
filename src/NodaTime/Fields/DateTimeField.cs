@@ -181,44 +181,6 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Computes the difference between two instants, as measured in the units
-        /// of this field. Any fractional units are dropped from the result. Calling
-        /// GetDifference reverses the effect of calling add. In the following code:
-        /// <code>
-        /// LocalInstant instant = ...
-        /// int v = ...
-        /// int age = GetDifference(Add(instant, v), instant);
-        /// </code>
-        /// The value 'age' is the same as the value 'v'.
-        /// </summary>
-        /// <param name="minuendInstant">The local instant to subtract from</param>
-        /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
-        /// <returns>The difference in the units of this field</returns>
-        internal virtual int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return DurationField.GetDifference(minuendInstant, subtrahendInstant);
-        }
-
-        /// <summary>
-        /// Computes the difference between two instants, as measured in the units
-        /// of this field. Any fractional units are dropped from the result. Calling
-        /// GetDifference reverses the effect of calling add. In the following code:
-        /// <code>
-        /// LocalInstant instant = ...
-        /// int v = ...
-        /// int age = GetDifference(Add(instant, v), instant);
-        /// </code>
-        /// The value 'age' is the same as the value 'v'.
-        /// </summary>
-        /// <param name="minuendInstant">The local instant to subtract from</param>
-        /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
-        /// <returns>The difference in the units of this field</returns>
-        internal virtual long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return DurationField.GetInt64Difference(minuendInstant, subtrahendInstant);
-        }
-
-        /// <summary>
         /// Sets a value in the local instant supplied.
         /// <para>
         /// The value of this field will be set.

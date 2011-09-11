@@ -49,39 +49,6 @@ namespace NodaTime.Fields
 
         internal override DurationField DurationField { get { return durationField; } }
 
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return (int)GetInt64Difference(minuendInstant, subtrahendInstant);
-        }
-
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            if (minuendInstant < subtrahendInstant)
-            {
-                return -GetInt64Difference(subtrahendInstant, minuendInstant);
-            }
-
-            long difference = (minuendInstant.Ticks - subtrahendInstant.Ticks) / unitTicks;
-
-            // TODO: Check this; it's assymetric (< then <=, but > then > for if/while)
-            if (Add(subtrahendInstant, difference) < minuendInstant)
-            {
-                do
-                {
-                    difference++;
-                } while (Add(subtrahendInstant, difference) <= minuendInstant);
-                difference--;
-            }
-            else if (Add(subtrahendInstant, difference) > minuendInstant)
-            {
-                do
-                {
-                    difference--;
-                } while (Add(subtrahendInstant, difference) > minuendInstant);
-            }
-            return difference;
-        }
-
         private class LinkedDurationField : DurationField
         {
             private readonly ImpreciseDateTimeField linkedField;
@@ -97,14 +64,48 @@ namespace NodaTime.Fields
 
             internal override long UnitTicks { get { return linkedField.UnitTicks; } }
 
+            internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            {
+                return (int)GetInt64Difference(minuendInstant, subtrahendInstant);
+            }
+
+            internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            {
+                if (minuendInstant < subtrahendInstant)
+                {
+                    return -GetInt64Difference(subtrahendInstant, minuendInstant);
+                }
+
+                long difference = (minuendInstant.Ticks - subtrahendInstant.Ticks) / UnitTicks;
+
+                // TODO: Check this; it's assymetric (< then <=, but > then > for if/while)
+                if (Add(subtrahendInstant, difference) < minuendInstant)
+                {
+                    do
+                    {
+                        difference++;
+                    } while (Add(subtrahendInstant, difference) <= minuendInstant);
+                    difference--;
+                }
+                else if (Add(subtrahendInstant, difference) > minuendInstant)
+                {
+                    do
+                    {
+                        difference--;
+                    } while (Add(subtrahendInstant, difference) > minuendInstant);
+                }
+                return difference;
+            }
+
+
             internal override int GetValue(Duration duration, LocalInstant localInstant)
             {
-                return linkedField.GetDifference(localInstant + duration, localInstant);
+                return GetDifference(localInstant + duration, localInstant);
             }
 
             internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
             {
-                return linkedField.GetInt64Difference(localInstant + duration, localInstant);
+                return GetInt64Difference(localInstant + duration, localInstant);
             }
 
             internal override Duration GetDuration(long value, LocalInstant localInstant)
@@ -123,16 +124,6 @@ namespace NodaTime.Fields
             {
                 return linkedField.Add(localInstant, value);
             }
-
-            internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-            {
-                return linkedField.GetDifference(minuendInstant, subtrahendInstant);
-            }
-
-            internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-            {
-                return linkedField.GetInt64Difference(minuendInstant, subtrahendInstant);
-            }
-        }
+       }
     }
 }

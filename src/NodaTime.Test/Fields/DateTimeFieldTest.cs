@@ -88,35 +88,6 @@ namespace NodaTime.Test.Fields
             Assert.That(MockCountingDurationField.Add64ValueArg, Is.EqualTo(valueArg));
         }
 
-        [Test]
-        public void GetDifference_DelegatesToDurationFieldGetDifference()
-        {
-            MockCountingDurationField.differences = 0;
-            var firstInstant = new LocalInstant(2);
-            var secondInstant = new LocalInstant(3);
-            var field = new StubDateTimeField();
-
-            field.GetDifference(firstInstant, secondInstant);
-
-            Assert.That(MockCountingDurationField.differences, Is.EqualTo(1));
-            Assert.That(MockCountingDurationField.DiffFirstArg, Is.EqualTo(firstInstant));
-            Assert.That(MockCountingDurationField.DiffSecondArg, Is.EqualTo(secondInstant));
-        }
-
-        [Test]
-        public void GetInt64Difference_DelegatesToDurationFieldGetInt64Difference()
-        {
-            MockCountingDurationField.differences64 = 0;
-            var firstInstant = new LocalInstant(4);
-            var secondInstant = new LocalInstant(5);
-            var field = new StubDateTimeField();
-
-            field.GetInt64Difference(firstInstant, secondInstant);
-
-            Assert.That(MockCountingDurationField.differences64, Is.EqualTo(1));
-            Assert.That(MockCountingDurationField.Diff64FirstArg, Is.EqualTo(firstInstant));
-            Assert.That(MockCountingDurationField.Diff64SecondArg, Is.EqualTo(secondInstant));
-        }
         #endregion
 
         #region Leap

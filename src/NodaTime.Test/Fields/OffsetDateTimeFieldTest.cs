@@ -111,21 +111,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetInt64Difference_DelegatesToWrappedField()
-        {
-            OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(-21L,
-                            field.GetInt64Difference(new LocalInstant(20 * NodaConstants.TicksPerSecond), new LocalInstant(41 * NodaConstants.TicksPerSecond)));
-        }
-
-        [Test]
-        public void GetDifference_DelegatesToWrappedField()
-        {
-            OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(-21L, field.GetDifference(new LocalInstant(20 * NodaConstants.TicksPerSecond), new LocalInstant(41 * NodaConstants.TicksPerSecond)));
-        }
-
-        [Test]
         public void SetValue_AdjustsByOffset()
         {
             OffsetDateTimeField field = GetSampleField();
