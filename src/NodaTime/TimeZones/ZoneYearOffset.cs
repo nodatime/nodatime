@@ -303,7 +303,7 @@ namespace NodaTime.TimeZones
                     int signDifference = Math.Sign((localInstant - newInstant).Ticks);
                     if (signDifference == 0 || signDirection == signDifference)
                     {
-                        newInstant = calendar.Fields.Year.Add(newInstant, direction);
+                        newInstant = calendar.Fields.Years.Add(newInstant, direction);
                         newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
                     }
                 }
@@ -313,7 +313,7 @@ namespace NodaTime.TimeZones
                     int signDifference = Math.Sign((localInstant - newInstant).Ticks);
                     if (signDifference == 0 || signDirection == signDifference)
                     {
-                        newInstant = calendar.Fields.Year.Add(newInstant, direction);
+                        newInstant = calendar.Fields.Years.Add(newInstant, direction);
                         newInstant = calendar.Fields.MonthOfYear.SetValue(newInstant, monthOfYear);
                         newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
                         newInstant = SetDayOfWeek(calendar, newInstant);
@@ -348,7 +348,7 @@ namespace NodaTime.TimeZones
             {
                 while (calendar.Fields.Year.IsLeap(instant) == false)
                 {
-                    instant = calendar.Fields.Year.Add(instant, direction);
+                    instant = calendar.Fields.Years.Add(instant, direction);
                 }
             }
             instant = SetDayOfMonth(calendar, instant);
@@ -371,8 +371,8 @@ namespace NodaTime.TimeZones
             else if (dayOfMonth < 0)
             {
                 instant = calendar.Fields.DayOfMonth.SetValue(instant, 1);
-                instant = calendar.Fields.MonthOfYear.Add(instant, 1);
-                instant = calendar.Fields.DayOfMonth.Add(instant, dayOfMonth);
+                instant = calendar.Fields.Months.Add(instant, 1);
+                instant = calendar.Fields.Days.Add(instant, dayOfMonth);
             }
             return instant;
         }
@@ -409,7 +409,7 @@ namespace NodaTime.TimeZones
                             daysToAdd -= 7;
                         }
                     }
-                    instant = calendar.Fields.DayOfWeek.Add(instant, daysToAdd);
+                    instant = calendar.Fields.Days.Add(instant, daysToAdd);
                 }
             }
             return instant;

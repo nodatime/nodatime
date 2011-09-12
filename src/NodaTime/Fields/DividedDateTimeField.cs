@@ -78,26 +78,6 @@ namespace NodaTime.Fields
             return value >= 0 ? value / divisor : ((value + 1) / divisor) - 1;
         }
 
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return WrappedField.Add(localInstant, value * divisor);
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            return WrappedField.Add(localInstant, value * divisor);
-        }
-
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return WrappedField.GetDifference(minuendInstant, subtrahendInstant) / divisor;
-        }
-
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return WrappedField.GetInt64Difference(minuendInstant, subtrahendInstant) / divisor;
-        }
-
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, min, max);

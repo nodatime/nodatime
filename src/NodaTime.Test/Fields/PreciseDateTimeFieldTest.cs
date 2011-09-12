@@ -70,42 +70,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void Add_WithInt32Value()
-        {
-            MockCountingDurationField.int32Additions = 0;
-            DateTimeField field = CreateSecondOfMinuteField();
-            Assert.AreEqual(61L, field.Add(new LocalInstant(1L), 1).Ticks);
-            Assert.AreEqual(1, MockCountingDurationField.int32Additions);
-        }
-
-        [Test]
-        public void Add_WithInt64Value()
-        {
-            MockCountingDurationField.int64Additions = 0;
-            DateTimeField field = CreateSecondOfMinuteField();
-            Assert.AreEqual(61L, field.Add(new LocalInstant(1L), 1L).Ticks);
-            Assert.AreEqual(1, MockCountingDurationField.int64Additions);
-        }
-
-        [Test]
-        public void GetDifference_DelegatesToDurationField()
-        {
-            MockCountingDurationField.differences = 0;
-            DateTimeField field = CreateSecondOfMinuteField();
-            Assert.AreEqual(30, field.GetDifference(new LocalInstant(0), new LocalInstant(0)));
-            Assert.AreEqual(1, MockCountingDurationField.differences);
-        }
-
-        [Test]
-        public void GetInt64Difference_DelegatesToDurationField()
-        {
-            MockCountingDurationField.differences64 = 0;
-            DateTimeField field = CreateSecondOfMinuteField();
-            Assert.AreEqual(30L, field.GetInt64Difference(new LocalInstant(0), new LocalInstant(0)));
-            Assert.AreEqual(1, MockCountingDurationField.differences64);
-        }
-
-        [Test]
         public void SetValue()
         {
             DateTimeField field = CreateSecondOfMinuteField();

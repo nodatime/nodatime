@@ -99,41 +99,5 @@ namespace NodaTime.Test.Fields
             DateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
             Assert.Throws<NotSupportedException>(() => action(field));
         }
-
-        [Test]
-        public void AddInt32_DelegatesToDurationField()
-        {
-            MockCountingDurationField.int32Additions = 0;
-            DateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
-            Assert.AreEqual(61, field.Add(new LocalInstant(1), 1).Ticks);
-            Assert.AreEqual(1, MockCountingDurationField.int32Additions);
-        }
-
-        [Test]
-        public void AddInt64_DelegatesToDurationField()
-        {
-            MockCountingDurationField.int64Additions = 0;
-            DateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
-            Assert.AreEqual(61, field.Add(new LocalInstant(1), 1L).Ticks);
-            Assert.AreEqual(1, MockCountingDurationField.int64Additions);
-        }
-
-        [Test]
-        public void GetDifference_DelegatesToDurationFieldGetDifference()
-        {
-            MockCountingDurationField.differences = 0;
-            DateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
-            Assert.AreEqual(30, field.GetDifference(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch));
-            Assert.AreEqual(1, MockCountingDurationField.differences);
-        }
-
-        [Test]
-        public void GetInt64Difference_DelegatesToDurationFieldGetInt64Difference()
-        {
-            MockCountingDurationField.differences64 = 0;
-            DateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
-            Assert.AreEqual(30, field.GetInt64Difference(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch));
-            Assert.AreEqual(1, MockCountingDurationField.differences64);
-        }
     }
 }

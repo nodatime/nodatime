@@ -97,60 +97,6 @@ namespace NodaTime.Fields
         internal abstract long GetInt64Value(LocalInstant localInstant);
 
         /// <summary>
-        /// Adds a value (which may be negative) to the local instant value.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// The value will be added to this field. If the value is too large to be
-        /// added solely to this field, larger fields will increase as required.
-        /// Smaller fields should be unaffected, except where the result would be
-        /// an invalid value for a smaller field. In this case the smaller field is
-        /// adjusted to be in range. For example, in the ISO chronology:
-        /// </para>
-        /// <list type="bullet">
-        /// <item>2000-08-20 add six months is 2001-02-20</item>
-        /// <item>2000-08-20 add twenty months is 2002-04-20</item>
-        /// <item>2000-08-20 add minus nine months is 1999-11-20</item>
-        /// <item>2001-01-31 add one month  is 2001-02-28</item>
-        /// <item>2001-01-31 add two months is 2001-03-31</item>
-        /// </list>
-        /// </remarks>
-        /// <param name="localInstant">The local instant to add to</param>
-        /// <param name="value">The value to add, in the units of the field</param>
-        /// <returns>The updated local instant</returns>
-        internal virtual LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return DurationField.Add(localInstant, value);
-        }
-
-        /// <summary>
-        /// Adds a value (which may be negative) to the local instant value.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// The value will be added to this field. If the value is too large to be
-        /// added solely to this field, larger fields will increase as required.
-        /// Smaller fields should be unaffected, except where the result would be
-        /// an invalid value for a smaller field. In this case the smaller field is
-        /// adjusted to be in range. For example, in the ISO chronology:
-        /// </para>
-        /// <list type="bullet">
-        /// <item>2000-08-20 add six months is 2001-02-20</item>
-        /// <item>2000-08-20 add twenty months is 2002-04-20</item>
-        /// <item>2000-08-20 add minus nine months is 1999-11-20</item>
-        /// <item>2001-01-31 add one month  is 2001-02-28</item>
-        /// <item>2001-01-31 add two months is 2001-03-31</item>
-        /// </list>
-        /// </remarks>
-        /// <param name="localInstant">The local instant to add to</param>
-        /// <param name="value">The value to add, in the units of the field</param>
-        /// <returns>The updated local instant</returns>
-        internal virtual LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            return DurationField.Add(localInstant, value);
-        }
-
-        /// <summary>
         /// Adds a value (which may be negative) to the local instant,
         /// wrapping within this field.
         /// </summary>
@@ -178,44 +124,6 @@ namespace NodaTime.Fields
             int current = GetValue(localInstant);
             int wrapped = FieldUtils.GetWrappedValue(current, value, (int)GetMinimumValue(localInstant), (int)GetMaximumValue(localInstant));
             return SetValue(localInstant, wrapped);
-        }
-
-        /// <summary>
-        /// Computes the difference between two instants, as measured in the units
-        /// of this field. Any fractional units are dropped from the result. Calling
-        /// GetDifference reverses the effect of calling add. In the following code:
-        /// <code>
-        /// LocalInstant instant = ...
-        /// int v = ...
-        /// int age = GetDifference(Add(instant, v), instant);
-        /// </code>
-        /// The value 'age' is the same as the value 'v'.
-        /// </summary>
-        /// <param name="minuendInstant">The local instant to subtract from</param>
-        /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
-        /// <returns>The difference in the units of this field</returns>
-        internal virtual int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return DurationField.GetDifference(minuendInstant, subtrahendInstant);
-        }
-
-        /// <summary>
-        /// Computes the difference between two instants, as measured in the units
-        /// of this field. Any fractional units are dropped from the result. Calling
-        /// GetDifference reverses the effect of calling add. In the following code:
-        /// <code>
-        /// LocalInstant instant = ...
-        /// int v = ...
-        /// int age = GetDifference(Add(instant, v), instant);
-        /// </code>
-        /// The value 'age' is the same as the value 'v'.
-        /// </summary>
-        /// <param name="minuendInstant">The local instant to subtract from</param>
-        /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
-        /// <returns>The difference in the units of this field</returns>
-        internal virtual long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return DurationField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }
 
         /// <summary>
@@ -322,7 +230,7 @@ namespace NodaTime.Fields
             LocalInstant newInstant = RoundFloor(localInstant);
             if (newInstant != localInstant)
             {
-                newInstant = Add(newInstant, 1);
+                newInstant = DurationField.Add(newInstant, 1);
             }
             return newInstant;
         }
