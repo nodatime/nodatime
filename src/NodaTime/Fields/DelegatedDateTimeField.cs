@@ -52,32 +52,12 @@ namespace NodaTime.Fields
             return wrappedField.GetInt64Value(localInstant);
         }
 
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return wrappedField.Add(localInstant, value);
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            return wrappedField.Add(localInstant, value);
-        }
-
         internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             return wrappedField.AddWrapField(localInstant, value);
         }
 
         internal override DurationField DurationField { get { return wrappedField.DurationField; } }
-
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return wrappedField.GetDifference(minuendInstant, subtrahendInstant);
-        }
-
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return wrappedField.GetInt64Difference(minuendInstant, subtrahendInstant);
-        }
 
         internal override int GetLeapAmount(LocalInstant localInstant)
         {

@@ -80,8 +80,12 @@
     <Compile Include="Calendars\JulianCalendarSystem.cs" />
     <Compile Include="Calendars\WrappedCalendarSystem.cs" />
     <Compile Include="Delegates.cs" />
+    <Compile Include="Fields\BasicMonthDurationField.cs" />
     <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
+    <Compile Include="Fields\BasicWeekYearDurationField.cs" />
+    <Compile Include="Fields\BasicYearDurationField.cs" />
     <Compile Include="Fields\DelegatedDateTimeField.cs" />
+    <Compile Include="Fields\ImpreciseDurationField.cs" />
     <Compile Include="Fields\SkipZeroDateTimeField.cs" />
     <Compile Include="Text\FixedFormatInfoPatternParser.cs" />
     <Compile Include="Text\FormatHelper.cs" />
@@ -129,7 +133,6 @@
     <Compile Include="Fields\GJDayOfWeekDateTimeField.cs" />
     <Compile Include="Fields\GJEraDateTimeField.cs" />
     <Compile Include="Fields\GJYearOfEraDateTimeField.cs" />
-    <Compile Include="Fields\ImpreciseDateTimeField.cs" />
     <Compile Include="Fields\IsoYearOfEraDateTimeField.cs" />
     <Compile Include="Fields\OffsetDateTimeField.cs" />
     <Compile Include="Fields\PreciseDateTimeField.cs" />

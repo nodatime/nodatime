@@ -84,26 +84,6 @@ namespace NodaTime.Fields
             throw new NotSupportedException();
         }
 
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return durationField.Add(localInstant, value);
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            return durationField.Add(localInstant, value);
-        }
-
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return durationField.GetDifference(minuendInstant, subtrahendInstant);
-        }
-
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return durationField.GetInt64Difference(minuendInstant, subtrahendInstant);
-        }
-
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             throw new NotSupportedException();

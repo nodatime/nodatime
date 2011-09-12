@@ -22,17 +22,22 @@ namespace NodaTime.Fields
     /// <summary>
     /// A year field suitable for many calendars.
     /// </summary>
-    internal sealed class BasicYearDateTimeField : ImpreciseDateTimeField
+    internal sealed class BasicYearDateTimeField : DateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;
+        private readonly DurationField durationField;
 
-        internal BasicYearDateTimeField(BasicCalendarSystem calendarSystem) : base(DateTimeFieldType.Year, calendarSystem.AverageTicksPerYear)
+        internal BasicYearDateTimeField(BasicCalendarSystem calendarSystem)
+            : base(DateTimeFieldType.Year)
         {
             this.calendarSystem = calendarSystem;
+            durationField = new BasicYearDurationField(calendarSystem);
         }
 
+        internal override DurationField DurationField { get { return durationField; } }
+
         /// <summary>
-        /// Always returns null(not supported)
+        /// Always returns null (not supported)
         /// </summary>
         internal override DurationField RangeDurationField { get { return null; } }
 
@@ -63,16 +68,6 @@ namespace NodaTime.Fields
             return calendarSystem.GetYear(localInstant);
         }
 
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return value == 0 ? localInstant : SetValue(localInstant, GetValue(localInstant) + value);
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            return Add(localInstant, (int)value);
-        }
-
         internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             if (value == 0)
@@ -90,13 +85,6 @@ namespace NodaTime.Fields
         {
             FieldUtils.VerifyValueBounds(this, value, calendarSystem.MinYear, calendarSystem.MaxYear);
             return calendarSystem.SetYear(localInstant, (int)value);
-        }
-
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return minuendInstant < subtrahendInstant
-                       ? -calendarSystem.GetYearDifference(subtrahendInstant, minuendInstant)
-                       : calendarSystem.GetYearDifference(minuendInstant, subtrahendInstant);
         }
         #endregion
 

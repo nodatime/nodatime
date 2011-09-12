@@ -28,7 +28,8 @@ namespace NodaTime.Fields
         private readonly int min;
         private readonly int max;
 
-        internal OffsetDateTimeField(DateTimeField field, int offset) // If the field is null, we want to let the 
+        internal OffsetDateTimeField(DateTimeField field, int offset)
+            // If the field is null, we want to let the 
             // base constructor throw the exception, rather than
             // fail to dereference it properly here.
             : this(field, field == null ? null : field.FieldType, offset, int.MinValue, int.MaxValue)
@@ -39,7 +40,7 @@ namespace NodaTime.Fields
         {
         }
 
-        public OffsetDateTimeField(DateTimeField field, DateTimeFieldType fieldType, int offset, int minValue, int maxValue) : base(field, fieldType)
+        private OffsetDateTimeField(DateTimeField field, DateTimeFieldType fieldType, int offset, int minValue, int maxValue) : base(field, fieldType)
         {
             if (offset == 0)
             {
@@ -59,20 +60,6 @@ namespace NodaTime.Fields
         internal override long GetInt64Value(LocalInstant localInstant)
         {
             return base.GetInt64Value(localInstant) + offset;
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            localInstant = base.Add(localInstant, value);
-            FieldUtils.VerifyValueBounds(this, GetInt64Value(localInstant), min, max);
-            return localInstant;
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            localInstant = base.Add(localInstant, value);
-            FieldUtils.VerifyValueBounds(this, GetInt64Value(localInstant), min, max);
-            return localInstant;
         }
 
         internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
