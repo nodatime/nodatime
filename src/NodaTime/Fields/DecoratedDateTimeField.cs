@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -42,12 +43,10 @@ namespace NodaTime.Fields
     {
         private readonly DateTimeField wrappedField;
 
-        protected DecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType) : base(fieldType)
+        protected DecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType, DurationField durationField)
+            : base(fieldType, durationField, Preconditions.CheckNotNull(wrappedField, "wrappedField").IsLenient, true)
         {
-            if (wrappedField == null)
-            {
-                throw new ArgumentNullException("wrappedField");
-            }
+            // Already checked for nullity by now
             if (!wrappedField.IsSupported)
             {
                 throw new ArgumentException("The wrapped field must be supported");
@@ -55,16 +54,17 @@ namespace NodaTime.Fields
             this.wrappedField = wrappedField;
         }
 
+        protected DecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType)
+            : this(Preconditions.CheckNotNull(wrappedField, "wrappedField"), fieldType, wrappedField.DurationField)
+        {
+        }
+
         /// <summary>
         /// Gets the wrapped date time field.
         /// </summary>
         public DateTimeField WrappedField { get { return wrappedField; } }
 
-        internal override DurationField DurationField { get { return wrappedField.DurationField; } }
-
         internal override DurationField RangeDurationField { get { return wrappedField.RangeDurationField; } }
-
-        internal override bool IsLenient { get { return wrappedField.IsLenient; } }
 
         internal override long GetInt64Value(LocalInstant localInstant)
         {

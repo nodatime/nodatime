@@ -189,11 +189,12 @@ namespace NodaTime.Test.Fields
 
         private class StubDateTimeField : DateTimeField
         {
-            internal StubDateTimeField(DateTimeFieldType type) : base(type)
+            internal StubDateTimeField(DateTimeFieldType type) : base(type, new MockCountingDurationField(DurationFieldType.Seconds))
             {
             }
 
-            internal StubDateTimeField() : base(DateTimeFieldType.SecondOfMinute)
+            internal StubDateTimeField()
+                : this(DateTimeFieldType.SecondOfMinute)
             {
             }
 
@@ -212,8 +213,6 @@ namespace NodaTime.Test.Fields
             {
                 return localInstant;
             }
-
-            internal override DurationField DurationField { get { return new MockCountingDurationField(DurationFieldType.Seconds); } }
 
             internal override DurationField RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
 
@@ -237,8 +236,6 @@ namespace NodaTime.Test.Fields
             {
                 return new LocalInstant((localInstant.Ticks / 60L) * 60L);
             }
-
-            internal override bool IsLenient { get { return false; } }
         }
     }
 }

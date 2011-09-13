@@ -31,40 +31,22 @@ namespace NodaTime.Fields
         /// </summary>
         private readonly long unitTicks;
 
-        private readonly DurationField unitField;
-
-        protected PreciseDurationDateTimeField(DateTimeFieldType fieldType, DurationField unit) : base(fieldType)
+        protected PreciseDurationDateTimeField(DateTimeFieldType fieldType, DurationField unitField)
+            : base(fieldType, unitField)
         {
-            if (unit == null)
-            {
-                throw new ArgumentNullException("unit");
-            }
-            if (!unit.IsPrecise)
+            if (!unitField.IsPrecise)
             {
                 throw new ArgumentException("Unit duration field must be precise");
             }
 
-            unitTicks = unit.UnitTicks;
+            unitTicks = unitField.UnitTicks;
             if (unitTicks < 1)
             {
                 throw new ArgumentException("The unit ticks must be at least one");
             }
-            unitField = unit;
         }
 
         internal long UnitTicks { get { return unitTicks; } }
-
-        /// <summary>
-        /// Gets the duration per unit value of this field, or UnsupportedDurationField if field has no duration.
-        /// For example, if this
-        /// field represents "hour of day", then the duration is an hour.
-        /// </summary>
-        internal override DurationField DurationField { get { return unitField; } }
-
-        /// <summary>
-        /// Returns false by default.
-        /// </summary>
-        internal override bool IsLenient { get { return false; } }
 
         #region Values
         /// <summary>

@@ -28,19 +28,17 @@ namespace NodaTime.Fields
     internal sealed class DividedDateTimeField : DecoratedDateTimeField
     {
         private readonly int divisor;
-        private readonly DurationField divisorDurationField;
         private readonly long min;
         private readonly long max;
 
-        internal DividedDateTimeField(DateTimeField field, DateTimeFieldType fieldType, int divisor) : base(field, fieldType)
+        internal DividedDateTimeField(DateTimeField field, DateTimeFieldType fieldType, int divisor)
+            : base(field, fieldType, new ScaledDurationField(field.DurationField, fieldType.DurationFieldType, divisor))
         {
             if (divisor < 2)
             {
                 throw new ArgumentOutOfRangeException("divisor", "The divisor must be at least 2");
             }
 
-            DurationField unitField = field.DurationField;
-            divisorDurationField = unitField == null ? null : new ScaledDurationField(unitField, fieldType.DurationFieldType, divisor);
             this.divisor = divisor;
 
             long fieldMin = field.GetMinimumValue();
@@ -50,21 +48,7 @@ namespace NodaTime.Fields
             max = fieldMax >= 0 ? fieldMax / divisor : ((fieldMax + 1) / divisor - 1);
         }
 
-        internal DividedDateTimeField(RemainderDateTimeField remainderField, DateTimeFieldType fieldType) : base(remainderField.WrappedField, fieldType)
-        {
-            divisor = remainderField.Divisor;
-            divisorDurationField = remainderField.RemainderRangeField;
-            DateTimeField field = WrappedField;
-
-            long fieldMin = field.GetMinimumValue();
-            min = fieldMin >= 0 ? fieldMin / divisor : ((fieldMin + 1) / divisor - 1);
-
-            long fieldMax = field.GetMinimumValue();
-            max = fieldMax >= 0 ? fieldMax / divisor : ((fieldMax + 1) / divisor - 1);
-        }
-
         internal int Divisor { get { return divisor; } }
-        internal DurationField DivisorDurationField { get { return divisorDurationField; } }
 
         internal override int GetValue(LocalInstant localInstant)
         {
@@ -85,8 +69,6 @@ namespace NodaTime.Fields
             long remainder = wrappedValue >= 0 ? wrappedValue % divisor : (divisor - 1) + ((wrappedValue + 1) % divisor);
             return WrappedField.SetValue(localInstant, value * divisor + remainder);
         }
-
-        internal override DurationField DurationField { get { return divisorDurationField; } }
 
         internal override long GetMinimumValue()
         {

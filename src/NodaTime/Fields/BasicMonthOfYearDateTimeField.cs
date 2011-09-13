@@ -32,7 +32,7 @@ namespace NodaTime.Fields
         private readonly DurationField durationField;
 
         internal BasicMonthOfYearDateTimeField(BasicCalendarSystem calendarSystem, int leapMonth)
-            : base(DateTimeFieldType.MonthOfYear)
+            : base(DateTimeFieldType.MonthOfYear, new BasicMonthDurationField(calendarSystem))
         {
             this.calendarSystem = calendarSystem;
             max = calendarSystem.GetMaxMonth();
@@ -40,11 +40,7 @@ namespace NodaTime.Fields
             durationField = new BasicMonthDurationField(calendarSystem);
         }
 
-        internal override DurationField DurationField { get { return durationField; } }
-
         internal override DurationField RangeDurationField { get { return calendarSystem.Fields.Years; } }
-
-        internal override bool IsLenient { get { return false; } }
 
         #region Values
         /// <summary>
