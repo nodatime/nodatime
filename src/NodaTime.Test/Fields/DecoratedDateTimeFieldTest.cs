@@ -62,7 +62,6 @@ namespace NodaTime.Test.Fields
             LocalInstant when2 = new LocalInstant(98765L);
             Duration duration = new Duration(10000L);
             // Just a smattering
-            AssertDelegated(x => x.GetDifference(when1, when2));
             AssertDelegated(x => x.GetValue(when1));
             AssertDelegated(x => x.GetInt64Value(when1));
             AssertDelegated(x => x.GetMaximumValue(when1));

@@ -23,26 +23,22 @@ namespace NodaTime.Fields
     /// <summary>
     /// Provides time calculations for the week of the weekyear component of time.
     /// </summary>
-    internal sealed class BasicWeekYearDateTimeField : ImpreciseDateTimeField
+    internal sealed class BasicWeekYearDateTimeField : DateTimeField
     {
-        private static readonly Duration Week53Ticks = Duration.FromStandardWeeks(52);
         private readonly BasicCalendarSystem calendarSystem;
+        private readonly DurationField durationField;
 
-        internal BasicWeekYearDateTimeField(BasicCalendarSystem calendarSystem) : base(DateTimeFieldType.WeekYear, calendarSystem.AverageTicksPerYear)
+        internal BasicWeekYearDateTimeField(BasicCalendarSystem calendarSystem)
+            : base(DateTimeFieldType.WeekYear, new BasicWeekYearDurationField(calendarSystem))
         {
             this.calendarSystem = calendarSystem;
+            durationField = new BasicWeekYearDurationField(calendarSystem);
         }
 
         /// <summary>
         /// Always returns null(not supported)
         /// </summary>
         internal override DurationField RangeDurationField { get { return null; } }
-
-        /// <summary>
-        /// Always returns false, that means that it does not accept values that
-        /// are out of bounds.
-        /// </summary>
-        internal override bool IsLenient { get { return false; } }
 
         #region Values
         /// <summary>
@@ -65,45 +61,10 @@ namespace NodaTime.Fields
             return calendarSystem.GetWeekYear(localInstant);
         }
 
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return value == 0 ? localInstant : SetValue(localInstant, GetValue(localInstant) + value);
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            return Add(localInstant, (int)value);
-        }
-
         internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
-            return Add(localInstant, value);
-        }
-
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            if (minuendInstant < subtrahendInstant)
-            {
-                return -GetInt64Difference(subtrahendInstant, minuendInstant);
-            }
-            int minuendWeekYear = GetValue(minuendInstant);
-            int subtrahendWeekYear = GetValue(subtrahendInstant);
-
-            Duration minuendRemainder = Remainder(minuendInstant);
-            Duration subtrahendRemainder = Remainder(subtrahendInstant);
-
-            // Balance leap weekyear differences on remainders.
-            if (subtrahendRemainder >= Week53Ticks && calendarSystem.GetWeeksInYear(minuendWeekYear) <= 52)
-            {
-                subtrahendRemainder -= Duration.OneWeek;
-            }
-
-            int difference = minuendWeekYear - subtrahendWeekYear;
-            if (minuendRemainder < subtrahendRemainder)
-            {
-                difference--;
-            }
-            return difference;
+            // TODO: This won't wrap...
+            return DurationField.Add(localInstant, value);
         }
 
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)

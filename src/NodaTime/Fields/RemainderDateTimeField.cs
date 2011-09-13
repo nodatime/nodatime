@@ -34,8 +34,7 @@ namespace NodaTime.Fields
                 throw new ArgumentOutOfRangeException("divisor", "The divisor must be at least 2");
             }
 
-            DurationField durationField = field.DurationField;
-            remainderRangeField = durationField == null ? null : new ScaledDurationField(durationField, fieldType.RangeDurationFieldType.Value, divisor);
+            remainderRangeField = new ScaledDurationField(field.DurationField, fieldType.RangeDurationFieldType.Value, divisor);
             this.divisor = divisor;
         }
 
@@ -46,7 +45,7 @@ namespace NodaTime.Fields
         internal RemainderDateTimeField(DividedDateTimeField dividedField, DateTimeFieldType fieldType) : base(dividedField.WrappedField, fieldType)
         {
             divisor = dividedField.Divisor;
-            remainderRangeField = dividedField.DivisorDurationField;
+            remainderRangeField = dividedField.DurationField;
         }
 
         internal DurationField RemainderRangeField { get { return remainderRangeField; } }

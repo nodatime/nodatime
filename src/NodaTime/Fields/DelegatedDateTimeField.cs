@@ -31,7 +31,8 @@ namespace NodaTime.Fields
         {
         }
 
-        internal DelegatedDateTimeField(DateTimeField wrappedField, DateTimeFieldType type) : base(type)
+        internal DelegatedDateTimeField(DateTimeField wrappedField, DateTimeFieldType type)
+            : base(type, wrappedField.DurationField, wrappedField.IsLenient, wrappedField.IsSupported)
         {
             // No validation: this is internal, and only ever constructed when creating calendar systems.
             // In other words, we'll see it go bang soon enough if we screw up...
@@ -39,8 +40,6 @@ namespace NodaTime.Fields
         }
 
         internal DateTimeField WrappedField { get { return wrappedField; } }
-        internal override bool IsSupported { get { return wrappedField.IsSupported; } }
-        internal override bool IsLenient { get { return wrappedField.IsLenient; } }
 
         internal override int GetValue(LocalInstant localInstant)
         {
@@ -52,31 +51,9 @@ namespace NodaTime.Fields
             return wrappedField.GetInt64Value(localInstant);
         }
 
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return wrappedField.Add(localInstant, value);
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            return wrappedField.Add(localInstant, value);
-        }
-
         internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             return wrappedField.AddWrapField(localInstant, value);
-        }
-
-        internal override DurationField DurationField { get { return wrappedField.DurationField; } }
-
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return wrappedField.GetDifference(minuendInstant, subtrahendInstant);
-        }
-
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return wrappedField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }
 
         internal override int GetLeapAmount(LocalInstant localInstant)

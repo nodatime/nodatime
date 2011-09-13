@@ -57,66 +57,6 @@ namespace NodaTime.Test.Fields
             Assert.That(field.GetInt64ValueWasCalled, Is.True);
             Assert.That(field.GetInt64ValueArg, Is.EqualTo(arg));
         }
-
-        [Test]
-        public void AddInt32_DelegatesToDurationField()
-        {
-            MockCountingDurationField.int32Additions = 0;
-            var instantArg = new LocalInstant(1);
-            var valueArg = 1;
-            var field = new StubDateTimeField();
-
-            field.Add(instantArg, valueArg);
-
-            Assert.That(MockCountingDurationField.int32Additions, Is.EqualTo(1));
-            Assert.That(MockCountingDurationField.AddInstantArg, Is.EqualTo(instantArg));
-            Assert.That(MockCountingDurationField.AddValueArg, Is.EqualTo(valueArg));
-        }
-
-        [Test]
-        public void AddInt64_DelegatesToDurationField()
-        {
-            MockCountingDurationField.int64Additions = 0;
-            var instantArg = new LocalInstant(2);
-            var valueArg = 5L;
-            var field = new StubDateTimeField();
-
-            field.Add(instantArg, valueArg);
-
-            Assert.That(MockCountingDurationField.int64Additions, Is.EqualTo(1));
-            Assert.That(MockCountingDurationField.Add64InstantArg, Is.EqualTo(instantArg));
-            Assert.That(MockCountingDurationField.Add64ValueArg, Is.EqualTo(valueArg));
-        }
-
-        [Test]
-        public void GetDifference_DelegatesToDurationFieldGetDifference()
-        {
-            MockCountingDurationField.differences = 0;
-            var firstInstant = new LocalInstant(2);
-            var secondInstant = new LocalInstant(3);
-            var field = new StubDateTimeField();
-
-            field.GetDifference(firstInstant, secondInstant);
-
-            Assert.That(MockCountingDurationField.differences, Is.EqualTo(1));
-            Assert.That(MockCountingDurationField.DiffFirstArg, Is.EqualTo(firstInstant));
-            Assert.That(MockCountingDurationField.DiffSecondArg, Is.EqualTo(secondInstant));
-        }
-
-        [Test]
-        public void GetInt64Difference_DelegatesToDurationFieldGetInt64Difference()
-        {
-            MockCountingDurationField.differences64 = 0;
-            var firstInstant = new LocalInstant(4);
-            var secondInstant = new LocalInstant(5);
-            var field = new StubDateTimeField();
-
-            field.GetInt64Difference(firstInstant, secondInstant);
-
-            Assert.That(MockCountingDurationField.differences64, Is.EqualTo(1));
-            Assert.That(MockCountingDurationField.Diff64FirstArg, Is.EqualTo(firstInstant));
-            Assert.That(MockCountingDurationField.Diff64SecondArg, Is.EqualTo(secondInstant));
-        }
         #endregion
 
         #region Leap
@@ -249,11 +189,12 @@ namespace NodaTime.Test.Fields
 
         private class StubDateTimeField : DateTimeField
         {
-            internal StubDateTimeField(DateTimeFieldType type) : base(type)
+            internal StubDateTimeField(DateTimeFieldType type) : base(type, new MockCountingDurationField(DurationFieldType.Seconds))
             {
             }
 
-            internal StubDateTimeField() : base(DateTimeFieldType.SecondOfMinute)
+            internal StubDateTimeField()
+                : this(DateTimeFieldType.SecondOfMinute)
             {
             }
 
@@ -272,8 +213,6 @@ namespace NodaTime.Test.Fields
             {
                 return localInstant;
             }
-
-            internal override DurationField DurationField { get { return new MockCountingDurationField(DurationFieldType.Seconds); } }
 
             internal override DurationField RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
 
@@ -297,8 +236,6 @@ namespace NodaTime.Test.Fields
             {
                 return new LocalInstant((localInstant.Ticks / 60L) * 60L);
             }
-
-            internal override bool IsLenient { get { return false; } }
         }
     }
 }

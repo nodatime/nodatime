@@ -30,8 +30,6 @@ namespace NodaTime.Fields
         private static readonly object cacheLock = new object();
         private static readonly UnsupportedDateTimeField[] cache = new UnsupportedDateTimeField[DateTimeFieldType.MaxOrdinal + 1];
 
-        private readonly DurationField durationField;
-
         /// <summary>
         /// Returns an instance for the specified field type and duration field.
         /// The returned value is cached.
@@ -59,20 +57,13 @@ namespace NodaTime.Fields
             }
         }
 
-        private UnsupportedDateTimeField(DateTimeFieldType fieldType, DurationField durationField) : base(fieldType)
+        private UnsupportedDateTimeField(DateTimeFieldType fieldType, DurationField durationField) : base(fieldType, durationField, false, false)
         {
-            this.durationField = durationField;
         }
-
-        internal override DurationField DurationField { get { return durationField; } }
 
         internal override DurationField RangeDurationField { get { return null; } }
 
         internal override DurationField LeapDurationField { get { return null; } }
-
-        internal override bool IsSupported { get { return false; } }
-
-        internal override bool IsLenient { get { return false; } }
 
         internal override int GetValue(LocalInstant localInstant)
         {
@@ -82,26 +73,6 @@ namespace NodaTime.Fields
         internal override long GetInt64Value(LocalInstant localInstant)
         {
             throw new NotSupportedException();
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return durationField.Add(localInstant, value);
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            return durationField.Add(localInstant, value);
-        }
-
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return durationField.GetDifference(minuendInstant, subtrahendInstant);
-        }
-
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return durationField.GetInt64Difference(minuendInstant, subtrahendInstant);
         }
 
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)

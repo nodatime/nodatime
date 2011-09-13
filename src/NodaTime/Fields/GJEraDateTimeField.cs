@@ -27,16 +27,13 @@ namespace NodaTime.Fields
     {
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal GJEraDateTimeField(BasicCalendarSystem calendarSystem) : base(DateTimeFieldType.Era)
+        internal GJEraDateTimeField(BasicCalendarSystem calendarSystem) 
+            : base(DateTimeFieldType.Era, UnsupportedDurationField.Eras)
         {
             this.calendarSystem = calendarSystem;
         }
 
-        internal override DurationField DurationField { get { return UnsupportedDurationField.Eras; } }
-
         internal override DurationField RangeDurationField { get { return null; } }
-
-        internal override bool IsLenient { get { return false; } }
 
         #region Values
         internal override long GetInt64Value(LocalInstant localInstant)
