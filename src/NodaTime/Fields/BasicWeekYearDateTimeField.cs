@@ -29,24 +29,16 @@ namespace NodaTime.Fields
         private readonly DurationField durationField;
 
         internal BasicWeekYearDateTimeField(BasicCalendarSystem calendarSystem)
-            : base(DateTimeFieldType.WeekYear)
+            : base(DateTimeFieldType.WeekYear, new BasicWeekYearDurationField(calendarSystem))
         {
             this.calendarSystem = calendarSystem;
             durationField = new BasicWeekYearDurationField(calendarSystem);
         }
 
-        internal override DurationField DurationField { get { return durationField; } }
-
         /// <summary>
         /// Always returns null(not supported)
         /// </summary>
         internal override DurationField RangeDurationField { get { return null; } }
-
-        /// <summary>
-        /// Always returns false, that means that it does not accept values that
-        /// are out of bounds.
-        /// </summary>
-        internal override bool IsLenient { get { return false; } }
 
         #region Values
         /// <summary>

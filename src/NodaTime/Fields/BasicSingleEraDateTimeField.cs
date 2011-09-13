@@ -28,12 +28,13 @@ namespace NodaTime.Fields
 
         private readonly string name;
 
-        internal BasicSingleEraDateTimeField(string name) : base(DateTimeFieldType.Era)
+        internal BasicSingleEraDateTimeField(string name)
+            : base(DateTimeFieldType.Era, UnsupportedDurationField.Eras)
         {
             this.name = name;
         }
 
-        internal override bool IsLenient { get { return false; } }
+        internal override string Name { get { return name; } }
 
         internal override int GetValue(LocalInstant localInstant)
         {
@@ -75,8 +76,6 @@ namespace NodaTime.Fields
         {
             return LocalInstant.MinValue;
         }
-
-        internal override DurationField DurationField { get { return UnsupportedDurationField.Eras; } }
 
         // TODO: Fix this. Joda returns a null. Could return an unsupported field?
         internal override DurationField RangeDurationField

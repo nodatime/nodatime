@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -32,7 +33,7 @@ namespace NodaTime.Fields
             // If the field is null, we want to let the 
             // base constructor throw the exception, rather than
             // fail to dereference it properly here.
-            : this(field, field == null ? null : field.FieldType, offset, int.MinValue, int.MaxValue)
+            : this(Preconditions.CheckNotNull(field, "field"), field.FieldType, offset, int.MinValue, int.MaxValue)
         {
         }
 
@@ -40,7 +41,8 @@ namespace NodaTime.Fields
         {
         }
 
-        private OffsetDateTimeField(DateTimeField field, DateTimeFieldType fieldType, int offset, int minValue, int maxValue) : base(field, fieldType)
+        private OffsetDateTimeField(DateTimeField field, DateTimeFieldType fieldType, int offset, int minValue, int maxValue)
+            : base(field, fieldType)
         {
             if (offset == 0)
             {

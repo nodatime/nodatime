@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -27,14 +28,22 @@ namespace NodaTime.Fields
     internal abstract class DateTimeField
     {
         private readonly DateTimeFieldType fieldType;
+        private readonly DurationField durationField;
+        private readonly bool isSupported;
+        private readonly bool isLenient;
 
-        protected DateTimeField(DateTimeFieldType fieldType)
+        protected DateTimeField(DateTimeFieldType fieldType, DurationField durationField)
+            : this(fieldType, durationField, false, true)
         {
-            if (fieldType == null)
-            {
-                throw new ArgumentNullException("fieldType");
-            }
-            this.fieldType = fieldType;
+        }
+
+        protected DateTimeField(DateTimeFieldType fieldType, DurationField durationField,
+            bool isLenient, bool isSupported)
+        {
+            this.fieldType = Preconditions.CheckNotNull(fieldType, "fieldType");
+            this.durationField = Preconditions.CheckNotNull(durationField, "durationField");
+            this.isLenient = isLenient;
+            this.isSupported = isSupported;
         }
 
         /// <summary>
@@ -51,14 +60,14 @@ namespace NodaTime.Fields
         /// duration range field name. If the range field is not applicable, then
         /// the name of the field is simply the (singular) duration field name.
         /// </remarks>
-        internal string Name { get { return FieldType.ToString(); } }
+        internal virtual string Name { get { return FieldType.ToString(); } }
 
         /// <summary>
         /// Gets the duration per unit value of this field, or UnsupportedDurationField if field has no duration.
         /// For example, if this
         /// field represents "hour of day", then the duration is an hour.
         /// </summary>
-        internal abstract DurationField DurationField { get; }
+        internal DurationField DurationField { get { return durationField; } }
 
         /// <summary>
         /// Returns the range duration of this field. For example, if this field
@@ -67,16 +76,16 @@ namespace NodaTime.Fields
         internal abstract DurationField RangeDurationField { get; }
 
         /// <summary>
-        /// Defaults to fields being supported
+        /// Whether or not this is a supported field.
         /// </summary>
-        internal virtual bool IsSupported { get { return true; } }
+        internal bool IsSupported { get { return isSupported; } }
 
         /// <summary>
         /// Returns true if the set method is lenient. If so, it accepts values that
         /// are out of bounds. For example, a lenient day of month field accepts 32
         /// for January, converting it to February 1.
         /// </summary>
-        internal abstract bool IsLenient { get; }
+        internal bool IsLenient { get { return isLenient; } }
 
         #region Values
         /// <summary>
