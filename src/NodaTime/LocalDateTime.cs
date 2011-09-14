@@ -337,7 +337,18 @@ namespace NodaTime
         /// <summary>
         /// Gets the time portion of this local date and time as a <see cref="LocalTime"/>.
         /// </summary>
-        public LocalTime TimeOfDay { get { return new LocalTime(new LocalInstant(calendar.Fields.TickOfDay.GetInt64Value(localInstant))); } }
+        public LocalTime TimeOfDay
+        {
+            get
+            {
+                long ticks = localInstant.Ticks % NodaConstants.TicksPerStandardDay;
+                if (ticks < 0)
+                {
+                    ticks += NodaConstants.TicksPerStandardDay;
+                }
+                return new LocalTime(new LocalInstant(ticks));
+            }
+        }
 
         /// <summary>
         /// Gets the date portion of this local date and time as a <see cref="LocalDate"/> in the same calendar system as this value.
