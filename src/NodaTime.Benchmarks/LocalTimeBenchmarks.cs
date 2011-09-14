@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2011 Jon Skeet
 // 
@@ -20,58 +20,33 @@ using NodaTime.Benchmarks.Timing;
 
 namespace NodaTime.Benchmarks
 {
-    internal class LocalDateTimeBenchmarks
+    internal class LocalTimeBenchmarks
     {
-        private readonly LocalDateTime sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
-        private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
-
-
-        [Benchmark]
-        public void ConstructionToMinute()
-        {
-            new LocalDateTime(2009, 12, 26, 10, 8).Consume();
-        }
+        private readonly LocalTime sample = new LocalTime(10, 8, 30, 300, 1234);
+        private static readonly LocalDateTime LocalDateTime = new LocalDateTime(2011, 9, 14, 15, 10, 25);
 
         [Benchmark]
         public void ConstructionToSecond()
         {
-            new LocalDateTime(2009, 12, 26, 10, 8, 30).Consume();
+            new LocalTime(15, 10, 25).Consume();
+        }
+
+        [Benchmark]
+        public void ConstructionToMillisecond()
+        {
+            new LocalTime(15, 10, 25, 500).Consume();
         }
 
         [Benchmark]
         public void ConstructionToTick()
         {
-            new LocalDateTime(2009, 12, 26, 10, 8, 30, 0, 0).Consume();
+            new LocalTime(15, 10, 25, 500, 1234).Consume();
         }
 
         [Benchmark]
-        public void Year()
+        public void ConversionFromLocalDateTime()
         {
-            sample.Year.Consume();
-        }
-
-        [Benchmark]
-        public void Month()
-        {
-            sample.MonthOfYear.Consume();
-        }
-
-        [Benchmark]
-        public void DayOfMonth()
-        {
-            sample.DayOfMonth.Consume();
-        }
-
-        [Benchmark]
-        public void IsoDayOfWeek()
-        {
-            sample.IsoDayOfWeek.Consume();
-        }
-
-        [Benchmark]
-        public void DayOfYear()
-        {
-            sample.DayOfYear.Consume();
+            LocalDateTime.TimeOfDay.Consume();
         }
 
         [Benchmark]
@@ -103,5 +78,6 @@ namespace NodaTime.Benchmarks
         {
             sample.TickOfMillisecond.Consume();
         }
+
     }
 }

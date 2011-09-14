@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CachedDateTimeZoneBenchmarks.cs" />
     <Compile Include="InstantBenchmarks.cs" />
+    <Compile Include="LocalTimeBenchmarks.cs" />
     <Compile Include="OffsetBenchmarks.cs" />
     <Compile Include="PacificZonedDateTimeBenchmarks.cs" />
     <Compile Include="FrameworkComparisons\UtcDateTimeBenchmarks.cs" />
