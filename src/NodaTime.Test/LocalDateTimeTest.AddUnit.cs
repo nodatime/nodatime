@@ -138,5 +138,87 @@ namespace NodaTime.Test
             Assert.AreEqual(expectedForward, start.AddWeeks(3));
             Assert.AreEqual(expectedBackward, start.AddWeeks(-3));
         }
+
+        [Test]
+        public void AddHours_Simple()
+        {
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
+            LocalDateTime expectedForward = new LocalDateTime(2011, 4, 2, 14, 15, 8);
+            LocalDateTime expectedBackward = new LocalDateTime(2011, 4, 2, 10, 15, 8);
+            Assert.AreEqual(expectedForward, start.AddHours(2));
+            Assert.AreEqual(expectedBackward, start.AddHours(-2));
+        }
+
+        [Test]
+        public void AddHours_CrossingDayBoundary()
+        {
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
+            LocalDateTime expected = new LocalDateTime(2011, 4, 3, 8, 15, 8);
+            Assert.AreEqual(expected, start.AddHours(20));
+            Assert.AreEqual(start, start.AddHours(20).AddHours(-20));
+        }
+
+        [Test]
+        public void AddHours_CrossingYearBoundary()
+        {
+            // Christmas day + 10 days and 1 hour
+            LocalDateTime start = new LocalDateTime(2011, 12, 25, 12, 15, 8);
+            LocalDateTime expected = new LocalDateTime(2012, 1, 4, 13, 15, 8);
+            Assert.AreEqual(expected, start.AddHours(241));
+            Assert.AreEqual(start, start.AddHours(241).AddHours(-241));
+        }
+
+        // Having tested that hours cross boundaries correctly, the other time unit
+        // tests are straightforward
+        [Test]
+        public void AddMinutes_Simple()
+        {
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
+            LocalDateTime expectedForward = new LocalDateTime(2011, 4, 2, 12, 17, 8);
+            LocalDateTime expectedBackward = new LocalDateTime(2011, 4, 2, 12, 13, 8);
+            Assert.AreEqual(expectedForward, start.AddMinutes(2));
+            Assert.AreEqual(expectedBackward, start.AddMinutes(-2));
+        }
+
+        [Test]
+        public void AddSeconds_Simple()
+        {
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
+            LocalDateTime expectedForward = new LocalDateTime(2011, 4, 2, 12, 15, 18);
+            LocalDateTime expectedBackward = new LocalDateTime(2011, 4, 2, 12, 14, 58);
+            Assert.AreEqual(expectedForward, start.AddSeconds(10));
+            Assert.AreEqual(expectedBackward, start.AddSeconds(-10));
+        }
+
+        [Test]
+        public void AddMilliseconds_Simple()
+        {
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8, 300);
+            LocalDateTime expectedForward = new LocalDateTime(2011, 4, 2, 12, 15, 8, 700);
+            LocalDateTime expectedBackward = new LocalDateTime(2011, 4, 2, 12, 15, 7, 900);
+            Assert.AreEqual(expectedForward, start.AddMilliseconds(400));
+            Assert.AreEqual(expectedBackward, start.AddMilliseconds(-400));
+        }
+
+        [Test]
+        public void AddTicks_Simple()
+        {
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8, 300, 7500);
+            LocalDateTime expectedForward = new LocalDateTime(2011, 4, 2, 12, 15, 8, 301, 1500);
+            LocalDateTime expectedBackward = new LocalDateTime(2011, 4, 2, 12, 15, 8, 300, 3500);
+            Assert.AreEqual(expectedForward, start.AddTicks(4000));
+            Assert.AreEqual(expectedBackward, start.AddTicks(-4000));
+        }
+
+        [Test]
+        public void AddTicks_Long()
+        {
+            Assert.IsTrue(NodaConstants.TicksPerStandardDay > int.MaxValue);
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
+            LocalDateTime expectedForward = new LocalDateTime(2011, 4, 3, 12, 15, 8);
+            LocalDateTime expectedBackward = new LocalDateTime(2011, 4, 1, 12, 15, 8);
+            Assert.AreEqual(expectedForward, start.AddTicks(NodaConstants.TicksPerStandardDay));
+            Assert.AreEqual(expectedBackward, start.AddTicks(-NodaConstants.TicksPerStandardDay));
+        }
     }
 }
