@@ -104,6 +104,12 @@
     <Compile Include="LocalDateTest.PeriodArithmetic.cs">
       <DependentUpon>LocalDateTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="LocalTimeTest.AddUnit.cs">
+      <DependentUpon>LocalTimeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalTimeTest.Operators.cs">
+      <DependentUpon>LocalTimeTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Text\FormatHelperTest.cs" />
     <Compile Include="Globalization\FailingCultureInfo.cs" />
     <Compile Include="Globalization\NodaCultureInfoTest.cs" />

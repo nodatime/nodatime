@@ -185,5 +185,64 @@ namespace NodaTime
             }
             return this == (LocalTime)obj;
         }
+
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of hours added.
+        /// </summary>
+        /// <remarks>
+        /// If the value goes past the start or end of the day, it wraps - so 11pm plus two hours is 1am, for example.
+        /// </remarks>
+        /// <param name="hours">The number of hours to add</param>
+        /// <returns>The current value plus the given number of hours.</returns>
+        public LocalTime AddHours(long hours)
+        {
+            return LocalDateTime.AddHours(hours).TimeOfDay;
+        }
+
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of minutes added.
+        /// </summary>
+        /// <remarks>
+        /// If the value goes past the start or end of the day, it wraps - so 11pm plus 120 minutes is 1am, for example.
+        /// </remarks>
+        /// <param name="minutes">The number of minutes to add</param>
+        /// <returns>The current value plus the given number of minutes.</returns>
+        public LocalTime AddMinutes(long minutes)
+        {
+            return LocalDateTime.AddMinutes(minutes).TimeOfDay;
+        }
+
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of seconds added.
+        /// </summary>
+        /// <remarks>
+        /// If the value goes past the start or end of the day, it wraps - so 11:59pm plus 120 seconds is 12:01am, for example.
+        /// </remarks>
+        /// <param name="seconds">The number of seconds to add</param>
+        /// <returns>The current value plus the given number of seconds.</returns>
+        public LocalTime AddSeconds(long seconds)
+        {
+            return LocalDateTime.AddSeconds(seconds).TimeOfDay;
+        }
+
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of seconds added.
+        /// </summary>
+        /// <param name="seconds">The number of seconds to add</param>
+        /// <returns>The current value plus the given number of seconds.</returns>
+        public LocalTime AddMilliseconds(long milliseconds)
+        {
+            return LocalDateTime.AddMilliseconds(milliseconds).TimeOfDay;
+        }
+
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of ticks added.
+        /// </summary>
+        /// <param name="ticks">The number of ticks to add</param>
+        /// <returns>The current value plus the given number of seconds.</returns>
+        public LocalTime AddTicks(long ticks)
+        {
+            return LocalDateTime.AddTicks(ticks).TimeOfDay;
+        }
     }
 }
