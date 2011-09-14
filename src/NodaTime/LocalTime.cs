@@ -16,6 +16,8 @@
 #endregion
 
 using System;
+using NodaTime.Fields;
+
 namespace NodaTime
 {
     /// <summary>
@@ -24,6 +26,8 @@ namespace NodaTime
     /// </summary>
     public struct LocalTime : IEquatable<LocalTime>
     {
+        private static readonly FieldSet IsoFields = CalendarSystem.Iso.Fields;
+
         private readonly LocalInstant localInstant;
 
         /// <summary>
@@ -60,10 +64,13 @@ namespace NodaTime
         /// <param name="tickWithinMillisecond">The tick within the millisecond.</param>
         public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
-            localInstant = new LocalDateTime(1970, 1, 1, hour, minute, second, millisecond, tickWithinMillisecond, CalendarSystem.Iso).LocalInstant;
+            localInstant = CalendarSystem.Iso.GetLocalInstant(1970, 1, 1, hour, minute, second, millisecond, tickWithinMillisecond);
         }
 
-        private LocalTime(LocalInstant localInstant)
+        /// <summary>
+        /// Constructor only called from other parts of Noda Time - trusted to be within January 1st 1970 UTC.
+        /// </summary>
+        internal LocalTime(LocalInstant localInstant)
         {
             this.localInstant = localInstant;
         }
@@ -71,42 +78,42 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int HourOfDay { get { return LocalDateTime.HourOfDay; } }
+        public int HourOfDay { get { return IsoFields.HourOfDay.GetValue(localInstant); } }
         
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int MinuteOfHour { get { return LocalDateTime.MinuteOfHour; } }
+        public int MinuteOfHour { get { return IsoFields.MinuteOfHour.GetValue(localInstant); ; } }
 
         /// <summary>
         /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int SecondOfMinute { get { return LocalDateTime.SecondOfMinute; } }
+        public int SecondOfMinute { get { return IsoFields.SecondOfMinute.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the second of this local time within the day, in the range 0 to 86,399 inclusive.
         /// </summary>
-        public int SecondOfDay { get { return LocalDateTime.SecondOfDay; } }
+        public int SecondOfDay { get { return IsoFields.SecondOfDay.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int MillisecondOfSecond { get { return LocalDateTime.MillisecondOfSecond; } }
+        public int MillisecondOfSecond { get { return IsoFields.MillisecondOfSecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the millisecond of this local time within the day, in the range 0 to 86,399,999 inclusive.
         /// </summary>
-        public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
+        public int MillisecondOfDay { get { return IsoFields.MillisecondOfDay.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the millisceond, in the range 0 to 9,999 inclusive.
         /// </summary>
-        public int TickOfMillisecond { get { return LocalDateTime.TickOfMillisecond; } }
+        public int TickOfMillisecond { get { return IsoFields.TickOfMillisecond.GetValue(localInstant); ; } }
 
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
-        public long TickOfDay { get { return LocalDateTime.TickOfDay; } }
+        public long TickOfDay { get { return IsoFields.TickOfDay.GetInt64Value(localInstant); ; } }
 
         /// <summary>
         /// Returns a LocalDateTime with this local time, on January 1st 1970 in the ISO calendar.
