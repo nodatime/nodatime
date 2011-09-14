@@ -37,8 +37,15 @@ namespace NodaTime
         /// <param name="hour">The hour of day.</param>
         /// <param name="minute">The minute of the hour.</param>
         /// <param name="second">The second of the minute.</param>
-        public LocalTime(int hour, int minute, int second) : this(hour, minute, second, 0, 0)
+        public LocalTime(int hour, int minute, int second)
         {
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hour, 0, NodaConstants.HoursPerStandardDay - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minute, 0, NodaConstants.MinutesPerHour - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, second, 0, NodaConstants.SecondsPerMinute - 1);
+            localInstant = new LocalInstant(
+                hour * NodaConstants.TicksPerHour +
+                minute * NodaConstants.TicksPerMinute +
+                second * NodaConstants.TicksPerSecond);
         }
 
         /// <summary>
@@ -50,8 +57,16 @@ namespace NodaTime
         /// <param name="second">The second of the minute.</param>
         /// <param name="millisecond">The millisecond of the second.</param>
         public LocalTime(int hour, int minute, int second, int millisecond)
-            : this(hour, minute, second, millisecond, 0)
         {
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hour, 0, NodaConstants.HoursPerStandardDay - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minute, 0, NodaConstants.MinutesPerHour - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, second, 0, NodaConstants.SecondsPerMinute - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MillisecondOfSecond, minute, 0, NodaConstants.MillisecondsPerSecond - 1);
+            localInstant = new LocalInstant(
+                hour * NodaConstants.TicksPerHour +
+                minute * NodaConstants.TicksPerMinute +
+                second * NodaConstants.TicksPerSecond +
+                millisecond * NodaConstants.TicksPerMillisecond);
         }
 
         /// <summary>
@@ -64,7 +79,17 @@ namespace NodaTime
         /// <param name="tickWithinMillisecond">The tick within the millisecond.</param>
         public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
-            localInstant = CalendarSystem.Iso.GetLocalInstant(1970, 1, 1, hour, minute, second, millisecond, tickWithinMillisecond);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hour, 0, NodaConstants.HoursPerStandardDay - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minute, 0, NodaConstants.MinutesPerHour - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, second, 0, NodaConstants.SecondsPerMinute - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MillisecondOfSecond, minute, 0, NodaConstants.MillisecondsPerSecond - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfMillisecond, minute, 0, NodaConstants.TicksPerMillisecond - 1);
+            localInstant = new LocalInstant(
+                hour * NodaConstants.TicksPerHour +
+                minute * NodaConstants.TicksPerMinute +
+                second * NodaConstants.TicksPerSecond +
+                millisecond * NodaConstants.TicksPerMillisecond +
+                tickWithinMillisecond);
         }
 
         /// <summary>
