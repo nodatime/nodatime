@@ -247,9 +247,9 @@ namespace NodaTime
         /// </remarks>
         /// <param name="years">The number of years to add</param>
         /// <returns>The current value plus the given number of years.</returns>
-        public LocalDate AddYears(int years)
+        public LocalDate PlusYears(int years)
         {
-            return new LocalDate(LocalDateTime.AddYears(years));
+            return new LocalDate(LocalDateTime.PlusYears(years));
         }
 
         /// <summary>
@@ -268,9 +268,9 @@ namespace NodaTime
         /// </remarks>
         /// <param name="months">The number of months to add</param>
         /// <returns>The current date plus the given number of months</returns>
-        public LocalDate AddMonths(int months)
+        public LocalDate PlusMonths(int months)
         {
-            return new LocalDate(LocalDateTime.AddMonths(months));
+            return new LocalDate(LocalDateTime.PlusMonths(months));
         }
 
         /// <summary>
@@ -284,9 +284,9 @@ namespace NodaTime
         /// </remarks>
         /// <param name="days">The number of days to add</param>
         /// <returns>The current value plus the given number of days.</returns>
-        public LocalDate AddDays(int days)
+        public LocalDate PlusDays(int days)
         {
-            return new LocalDate(LocalDateTime.AddDays(days));
+            return new LocalDate(LocalDateTime.PlusDays(days));
         }
 
         /// <summary>
@@ -294,9 +294,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="weeks">The number of weeks to add</param>
         /// <returns>The current value plus the given number of weeks.</returns>
-        public LocalDate AddWeeks(int weeks)
+        public LocalDate PlusWeeks(int weeks)
         {
-            return new LocalDate(LocalDateTime.AddWeeks(weeks));
+            return new LocalDate(LocalDateTime.PlusWeeks(weeks));
         }
     }
 }

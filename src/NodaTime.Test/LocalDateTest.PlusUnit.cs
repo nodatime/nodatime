@@ -22,121 +22,121 @@ namespace NodaTime.Test
     public partial class LocalDateTest
     {
         [Test]
-        public void AddYear_Simple()
+        public void PlusYear_Simple()
         {
             LocalDate start = new LocalDate(2011, 6, 26);
             LocalDate expected = new LocalDate(2016, 6, 26);
-            Assert.AreEqual(expected, start.AddYears(5));
+            Assert.AreEqual(expected, start.PlusYears(5));
 
             expected = new LocalDate(2006, 6, 26);
-            Assert.AreEqual(expected, start.AddYears(-5));
+            Assert.AreEqual(expected, start.PlusYears(-5));
         }
 
         [Test]
-        public void AddYear_LeapToNonLeap()
+        public void PlusYear_LeapToNonLeap()
         {
             LocalDate start = new LocalDate(2012, 2, 29);
             LocalDate expected = new LocalDate(2013, 2, 28);
-            Assert.AreEqual(expected, start.AddYears(1));
+            Assert.AreEqual(expected, start.PlusYears(1));
 
             expected = new LocalDate(2011, 2, 28);
-            Assert.AreEqual(expected, start.AddYears(-1));
+            Assert.AreEqual(expected, start.PlusYears(-1));
         }
 
         [Test]
-        public void AddYear_LeapToLeap()
+        public void PlusYear_LeapToLeap()
         {
             LocalDate start = new LocalDate(2012, 2, 29);
             LocalDate expected = new LocalDate(2016, 2, 29);
-            Assert.AreEqual(expected, start.AddYears(4));
+            Assert.AreEqual(expected, start.PlusYears(4));
         }
 
         [Test]
-        public void AddMonth_Simple()
+        public void PlusMonth_Simple()
         {
             LocalDate start = new LocalDate(2012, 4, 15);
             LocalDate expected = new LocalDate(2012, 8, 15);
-            Assert.AreEqual(expected, start.AddMonths(4));
+            Assert.AreEqual(expected, start.PlusMonths(4));
         }
 
         [Test]
-        public void AddMonth_ChangingYear()
+        public void PlusMonth_ChangingYear()
         {
             LocalDate start = new LocalDate(2012, 10, 15);
             LocalDate expected = new LocalDate(2013, 2, 15);
-            Assert.AreEqual(expected, start.AddMonths(4));
+            Assert.AreEqual(expected, start.PlusMonths(4));
         }
 
         [Test]
-        public void AddMonth_WithTruncation()
+        public void PlusMonth_WithTruncation()
         {
             LocalDate start = new LocalDate(2011, 1, 30);
             LocalDate expected = new LocalDate(2011, 2, 28);
-            Assert.AreEqual(expected, start.AddMonths(1));
+            Assert.AreEqual(expected, start.PlusMonths(1));
         }
 
         [Test]
-        public void AddDays_Simple()
+        public void PlusDays_Simple()
         {
             LocalDate start = new LocalDate(2011, 1, 15);
             LocalDate expected = new LocalDate(2011, 1, 23);
-            Assert.AreEqual(expected, start.AddDays(8));
+            Assert.AreEqual(expected, start.PlusDays(8));
 
             expected = new LocalDate(2011, 1, 7);
-            Assert.AreEqual(expected, start.AddDays(-8));
+            Assert.AreEqual(expected, start.PlusDays(-8));
         }
 
         [Test]
-        public void AddDays_MonthBoundary()
+        public void PlusDays_MonthBoundary()
         {
             LocalDate start = new LocalDate(2011, 1, 26);
             LocalDate expected = new LocalDate(2011, 2, 3);
-            Assert.AreEqual(expected, start.AddDays(8));
+            Assert.AreEqual(expected, start.PlusDays(8));
 
             // Round-trip back across the boundary
-            Assert.AreEqual(start, start.AddDays(8).AddDays(-8));
+            Assert.AreEqual(start, start.PlusDays(8).PlusDays(-8));
         }
 
         [Test]
-        public void AddDays_YearBoundary()
+        public void PlusDays_YearBoundary()
         {
             LocalDate start = new LocalDate(2011, 12, 26);
             LocalDate expected = new LocalDate(2012, 1, 3);
-            Assert.AreEqual(expected, start.AddDays(8));
+            Assert.AreEqual(expected, start.PlusDays(8));
 
             // Round-trip back across the boundary
-            Assert.AreEqual(start, start.AddDays(8).AddDays(-8));
+            Assert.AreEqual(start, start.PlusDays(8).PlusDays(-8));
         }
 
         [Test]
-        public void AddDays_EndOfFebruary_InLeapYear()
+        public void PlusDays_EndOfFebruary_InLeapYear()
         {
             LocalDate start = new LocalDate(2012, 2, 26);
             LocalDate expected = new LocalDate(2012, 3, 5);
-            Assert.AreEqual(expected, start.AddDays(8));
+            Assert.AreEqual(expected, start.PlusDays(8));
             // Round-trip back across the boundary
-            Assert.AreEqual(start, start.AddDays(8).AddDays(-8));
+            Assert.AreEqual(start, start.PlusDays(8).PlusDays(-8));
         }
 
         [Test]
-        public void AddDays_EndOfFebruary_NotInLeapYear()
+        public void PlusDays_EndOfFebruary_NotInLeapYear()
         {
             LocalDate start = new LocalDate(2011, 2, 26);
             LocalDate expected = new LocalDate(2011, 3, 6);
-            Assert.AreEqual(expected, start.AddDays(8));
+            Assert.AreEqual(expected, start.PlusDays(8));
 
             // Round-trip back across the boundary
-            Assert.AreEqual(start, start.AddDays(8).AddDays(-8));
+            Assert.AreEqual(start, start.PlusDays(8).PlusDays(-8));
         }
 
         [Test]
-        public void AddWeeks_Simple()
+        public void PlusWeeks_Simple()
         {
             LocalDate start = new LocalDate(2011, 4, 2);
             LocalDate expectedForward = new LocalDate(2011, 4, 23);
             LocalDate expectedBackward = new LocalDate(2011, 3, 12);
-            Assert.AreEqual(expectedForward, start.AddWeeks(3));
-            Assert.AreEqual(expectedBackward, start.AddWeeks(-3));
+            Assert.AreEqual(expectedForward, start.PlusWeeks(3));
+            Assert.AreEqual(expectedBackward, start.PlusWeeks(-3));
         }
     }
 }

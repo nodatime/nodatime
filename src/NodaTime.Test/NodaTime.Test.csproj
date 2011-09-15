@@ -86,7 +86,7 @@
     <Compile Include="CultureSaver.cs" />
     <Compile Include="Fields\SkipZeroDateTimeFieldTest.cs" />
     <Compile Include="LocalDateTest.cs" />
-    <Compile Include="LocalDateTest.AddUnit.cs">
+    <Compile Include="LocalDateTest.PlusUnit.cs">
       <DependentUpon>LocalDateTest.cs</DependentUpon>
     </Compile>
     <Compile Include="LocalDateTest.BasicProperties.cs">
@@ -104,7 +104,7 @@
     <Compile Include="LocalDateTest.PeriodArithmetic.cs">
       <DependentUpon>LocalDateTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="LocalTimeTest.AddUnit.cs">
+    <Compile Include="LocalTimeTest.PlusUnit.cs">
       <DependentUpon>LocalTimeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="LocalTimeTest.Operators.cs">
@@ -122,7 +122,7 @@
     </Compile>
     <Compile Include="DateTimeZoneTest.cs" />
     <Compile Include="LocalDateTimeTest.cs" />
-    <Compile Include="LocalDateTimeTest.AddUnit.cs">
+    <Compile Include="LocalDateTimeTest.PlusUnit.cs">
       <DependentUpon>LocalDateTimeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Testing\StubClockTest.cs" />

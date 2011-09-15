@@ -226,9 +226,9 @@ namespace NodaTime
         /// </remarks>
         /// <param name="hours">The number of hours to add</param>
         /// <returns>The current value plus the given number of hours.</returns>
-        public LocalTime AddHours(long hours)
+        public LocalTime PlusHours(long hours)
         {
-            return LocalDateTime.AddHours(hours).TimeOfDay;
+            return LocalDateTime.PlusHours(hours).TimeOfDay;
         }
 
         /// <summary>
@@ -239,9 +239,9 @@ namespace NodaTime
         /// </remarks>
         /// <param name="minutes">The number of minutes to add</param>
         /// <returns>The current value plus the given number of minutes.</returns>
-        public LocalTime AddMinutes(long minutes)
+        public LocalTime PlusMinutes(long minutes)
         {
-            return LocalDateTime.AddMinutes(minutes).TimeOfDay;
+            return LocalDateTime.PlusMinutes(minutes).TimeOfDay;
         }
 
         /// <summary>
@@ -252,9 +252,9 @@ namespace NodaTime
         /// </remarks>
         /// <param name="seconds">The number of seconds to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
-        public LocalTime AddSeconds(long seconds)
+        public LocalTime PlusSeconds(long seconds)
         {
-            return LocalDateTime.AddSeconds(seconds).TimeOfDay;
+            return LocalDateTime.PlusSeconds(seconds).TimeOfDay;
         }
 
         /// <summary>
@@ -262,9 +262,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="milliseconds">The number of seconds to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
-        public LocalTime AddMilliseconds(long milliseconds)
+        public LocalTime PlusMilliseconds(long milliseconds)
         {
-            return LocalDateTime.AddMilliseconds(milliseconds).TimeOfDay;
+            return LocalDateTime.PlusMilliseconds(milliseconds).TimeOfDay;
         }
 
         /// <summary>
@@ -272,9 +272,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="ticks">The number of ticks to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
-        public LocalTime AddTicks(long ticks)
+        public LocalTime PlusTicks(long ticks)
         {
-            return LocalDateTime.AddTicks(ticks).TimeOfDay;
+            return LocalDateTime.PlusTicks(ticks).TimeOfDay;
         }
     }
 }
