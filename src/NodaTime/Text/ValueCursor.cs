@@ -136,6 +136,11 @@ namespace NodaTime.Text
         /// <returns></returns>
         private int GetDigit()
         {
+            int c = Current;
+            if (c >= '0' && c <= '9')
+            {
+                return c - '0';
+            }
             return (int)char.GetNumericValue(Current);
         }
 
