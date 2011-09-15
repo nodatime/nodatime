@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Patterns for Offset values</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Patterns for Offset values</h1>
+    <p>The <a href="../api/html/T_NodaTime_Offset.htm"><code>Offset</code></a> type supports the following patterns:</p>
+
+<h2>Standard Patterns</h2>
+
+<p>The following standard patterns are supported:</p>
+
+<ul>
+<li><code>f</code>: Full format, displaying all information including fractional seconds.
+Typical pattern text: <code>+H:mm:ss.fff</code></li>
+<li><code>l</code>: Long format, displaying information down to the second.
+Typical pattern text: <code>+H:mm:ss</code></li>
+<li><code>m</code>: Medium format, displaying information down to the minute. Typical pattern
+text: <code>+H:mm</code></li>
+<li><code>s</code>: Short format, displaying information down to the hour. Typical pattern
+text: <code>+H</code></li>
+<li><p><code>g</code>: general pattern. Formatting depends on the value passed in:</p>
+
+<ul>
+<li>If the offset has fractional seconds, the full format is used; otherwise</li>
+<li>If the offset has seconds, the long format is used; otherwise</li>
+<li>If the offset has minutes, the medium format is used; otherwise</li>
+<li>The short format is used</li>
+</ul>
+
+<p>When parsing, the other standard format patterns are tried one at a time.</p></li>
+</ul>
+
+<h2>Custom Patterns</h2>
+
+<p>TBD!</p>
+
+  </body>
+</html>

@@ -1,0 +1,29 @@
+Patterns for Offset values
+
+The [`Offset`](noda-type://NodaTime.Offset) type supports the following patterns:
+
+Standard Patterns
+-----------------
+
+The following standard patterns are supported:
+
+- `f`: Full format, displaying all information including fractional seconds.
+  Typical pattern text: `+H:mm:ss.fff`
+- `l`: Long format, displaying information down to the second.
+  Typical pattern text: `+H:mm:ss`
+- `m`: Medium format, displaying information down to the minute. Typical pattern
+  text: `+H:mm`
+- `s`: Short format, displaying information down to the hour. Typical pattern
+  text: `+H`
+- `g`: general pattern. Formatting depends on the value passed in:
+  - If the offset has fractional seconds, the full format is used; otherwise
+  - If the offset has seconds, the long format is used; otherwise
+  - If the offset has minutes, the medium format is used; otherwise
+  - The short format is used
+
+  When parsing, the other standard format patterns are tried one at a time.
+
+Custom Patterns
+---------------
+
+TBD!
