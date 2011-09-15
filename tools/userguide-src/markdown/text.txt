@@ -100,6 +100,14 @@ specifiers being available for some types but not others.
 - [Offset patterns](offset-patterns.html)
 - [Instant patterns](instant-patterns.html)
 
+<a name="custom-patterns">Custom patterns</a>
+---------------
+
+Notes to come, including:
+
+- Handling of duplicate fields vs inconsistent data
+- Repeat character count including fractional values
+
   [1]: http://msdn.microsoft.com/en-us/library/system.iformatprovider.aspx
   [2]: noda-type://NodaTime.Globalization.NodaFormatInfo
   [3]: noda-ns://NodaTime.Text
