@@ -136,7 +136,7 @@ namespace NodaTime.Text
                     return PatternParseResult<Offset>.UnknownStandardFormat(patternCharacter);
             }
             // TODO: Guard against recursion? Validate that the pattern expands to a longer pattern?
-            string patternText = Resources.ResourceManager.GetString(singlePatternResource, formatInfo.CultureInfo);
+            string patternText = PatternResources.ResourceManager.GetString(singlePatternResource, formatInfo.CultureInfo);
             return ParsePattern(patternText, formatInfo);
         }
 

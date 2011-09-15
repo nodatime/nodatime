@@ -126,9 +126,9 @@ namespace NodaTime.Test.Text
             string oldMessage = data.Message;
             // TODO: See if we can clean this up...
             // ValueStringEmpty is an failure mode which aborts immediately - there's no point in continuing with multiple patterns.
-            if (data.Exception == typeof(UnparsableValueException) && data.Message != Resources.Parse_ValueStringEmpty)
+            if (data.Exception == typeof(UnparsableValueException) && data.Message != Messages.Parse_ValueStringEmpty)
             {
-                data.Message = Resources.Parse_NoMatchingFormat;
+                data.Message = Messages.Parse_NoMatchingFormat;
             }
             try
             {
@@ -209,9 +209,9 @@ namespace NodaTime.Test.Text
             string oldMessage = data.Message;
             // TODO: See if we can clean this up...
             // ValueStringEmpty is an failure mode which aborts immediately - there's no point in continuing with multiple patterns.
-            if (data.Exception == typeof(UnparsableValueException) && data.Message != Resources.Parse_ValueStringEmpty)
+            if (data.Exception == typeof(UnparsableValueException) && data.Message != Messages.Parse_ValueStringEmpty)
             {
-                data.Message = Resources.Parse_NoMatchingFormat;
+                data.Message = Messages.Parse_NoMatchingFormat;
             }
             try
             {

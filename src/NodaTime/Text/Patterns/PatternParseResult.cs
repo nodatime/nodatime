@@ -95,69 +95,69 @@ namespace NodaTime.Text.Patterns
             return new PatternParseResult<T>(() => new ArgumentNullException(parameter), false);
         }
 
-        internal static PatternParseResult<T> EscapeAtEndOfString = ForInvalidFormat(Resources.Parse_EscapeAtEndOfString);
+        internal static PatternParseResult<T> EscapeAtEndOfString = ForInvalidFormat(Messages.Parse_EscapeAtEndOfString);
 
         internal static PatternParseResult<T> MissingEndQuote(char closeQuote)
         {
-            return ForInvalidFormat(Resources.Parse_MissingEndQuote, closeQuote);
+            return ForInvalidFormat(Messages.Parse_MissingEndQuote, closeQuote);
         }
 
         internal static PatternParseResult<T> RepeatCountExceeded(char patternCharacter, int maximumCount)
         {
-            return ForInvalidFormat(Resources.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
+            return ForInvalidFormat(Messages.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
         }
 
         internal static PatternParseResult<T> DoubleAssigment(char patternCharacter)
         {
-            return ForInvalidFormat(Resources.Parse_DoubleAssignment, patternCharacter);
+            return ForInvalidFormat(Messages.Parse_DoubleAssignment, patternCharacter);
         }
 
-        internal static readonly PatternParseResult<T> FormatStringEmpty = ForInvalidFormat(Resources.Parse_FormatStringEmpty);
+        internal static readonly PatternParseResult<T> FormatStringEmpty = ForInvalidFormat(Messages.Parse_FormatStringEmpty);
 
         internal static PatternParseResult<T> FormatInvalid(string format)
         {
-            return ForInvalidFormat(Resources.Parse_FormatInvalid, format);
+            return ForInvalidFormat(Messages.Parse_FormatInvalid, format);
         }
 
-        internal static readonly PatternParseResult<T> EmptyFormatsArray = ForInvalidFormat(Resources.Parse_EmptyFormatsArray);
+        internal static readonly PatternParseResult<T> EmptyFormatsArray = ForInvalidFormat(Messages.Parse_EmptyFormatsArray);
 
-        internal static readonly PatternParseResult<T> FormatElementInvalid = ForInvalidFormat(Resources.Parse_FormatElementInvalid);
+        internal static readonly PatternParseResult<T> FormatElementInvalid = ForInvalidFormat(Messages.Parse_FormatElementInvalid);
 
-        internal static readonly PatternParseResult<T> PercentDoubled = ForInvalidFormat(Resources.Parse_PercentDoubled);
+        internal static readonly PatternParseResult<T> PercentDoubled = ForInvalidFormat(Messages.Parse_PercentDoubled);
 
-        internal static readonly PatternParseResult<T> PercentAtEndOfString = ForInvalidFormat(Resources.Parse_PercentAtEndOfString);
+        internal static readonly PatternParseResult<T> PercentAtEndOfString = ForInvalidFormat(Messages.Parse_PercentAtEndOfString);
 
-        internal static readonly PatternParseResult<T> QuotedStringMismatch = ForInvalidFormat(Resources.Parse_QuotedStringMismatch);
+        internal static readonly PatternParseResult<T> QuotedStringMismatch = ForInvalidFormat(Messages.Parse_QuotedStringMismatch);
 
         internal static PatternParseResult<T> UnknownStandardFormat(char patternCharacter)
         {
-            return ForInvalidFormat(Resources.Parse_UnknownStandardFormat, patternCharacter, typeof(T));
+            return ForInvalidFormat(Messages.Parse_UnknownStandardFormat, patternCharacter, typeof(T));
         }
 
         internal static PatternParseResult<T> PrecisionNotSupported(string pattern)
         {
-            return ForInvalidFormat(Resources.Parse_PrecisionNotSupported, pattern, typeof(T));
+            return ForInvalidFormat(Messages.Parse_PrecisionNotSupported, pattern, typeof(T));
         }
 
         internal static PatternParseResult<T> StandardFormatWhitespace(string pattern)
         {
-            return ForInvalidFormat(Resources.Parse_StandardFormatWhitespace, pattern, typeof(T));
+            return ForInvalidFormat(Messages.Parse_StandardFormatWhitespace, pattern, typeof(T));
         }
 
-        internal static readonly PatternParseResult<T> Hour12PatternNotSupported = ForInvalidFormat(Resources.Parse_Hour12PatternNotSupported, typeof(T).FullName);
+        internal static readonly PatternParseResult<T> Hour12PatternNotSupported = ForInvalidFormat(Messages.Parse_Hour12PatternNotSupported, typeof(T).FullName);
 
-        internal static readonly PatternParseResult<T> NoMatchingFormat = ForInvalidFormat(Resources.Parse_NoMatchingFormat);
+        internal static readonly PatternParseResult<T> NoMatchingFormat = ForInvalidFormat(Messages.Parse_NoMatchingFormat);
 
-        internal static readonly PatternParseResult<T> MissingSign = ForInvalidFormat(Resources.Parse_MissingSign);
+        internal static readonly PatternParseResult<T> MissingSign = ForInvalidFormat(Messages.Parse_MissingSign);
 
         internal static PatternParseResult<T> UnexpectedEndOfString(string pattern)
         {
-            return ForInvalidFormat(Resources.Parse_UnexpectedEndOfString, pattern);
+            return ForInvalidFormat(Messages.Parse_UnexpectedEndOfString, pattern);
         }
 
         internal static PatternParseResult<T> RepeatedFieldInPattern(char field)
         {
-            return ForInvalidFormat(Resources.Parse_RepeatedFieldInPattern, field);
+            return ForInvalidFormat(Messages.Parse_RepeatedFieldInPattern, field);
         }
         #endregion
     }

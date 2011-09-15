@@ -117,7 +117,7 @@ namespace NodaTime.Globalization
             {
                 if (IsReadOnly)
                 {
-                    throw new InvalidOperationException(Resources.Noda_CannotChangeReadOnly);
+                    throw new InvalidOperationException(Messages.Noda_CannotChangeReadOnly);
                 }
                 formatInfo = value;
             }

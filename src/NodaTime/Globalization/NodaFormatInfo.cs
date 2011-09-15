@@ -74,7 +74,7 @@ namespace NodaTime.Globalization
             DateTimeFormat = cultureInfo.DateTimeFormat;
             Name = cultureInfo.Name;
             description = "NodaFormatInfo[" + cultureInfo.Name + "]";
-            var manager = Resources.ResourceManager;
+            var manager = PatternResources.ResourceManager;
             offsetPatternFull = manager.GetString("OffsetPatternFull", cultureInfo);
             OffsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
             offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
@@ -307,11 +307,11 @@ namespace NodaTime.Globalization
         {
             if (IsReadOnly)
             {
-                throw new InvalidOperationException(Resources.Noda_CannotChangeReadOnly);
+                throw new InvalidOperationException(Messages.Noda_CannotChangeReadOnly);
             }
             if (value == null)
             {
-                throw new ArgumentNullException("value", Resources.Noda_ArgumentNull);
+                throw new ArgumentNullException("value", Messages.Noda_ArgumentNull);
             }
             property = value;
         }

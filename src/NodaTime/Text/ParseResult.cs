@@ -122,57 +122,57 @@ namespace NodaTime.Text
             return new ParseResult<T>(() => new ArgumentNullException(parameter), false);
         }
 
-        internal static readonly ParseResult<T> PositiveSignInvalid = ForInvalidValue(Resources.Parse_PositiveSignInvalid);
+        internal static readonly ParseResult<T> PositiveSignInvalid = ForInvalidValue(Messages.Parse_PositiveSignInvalid);
 
         internal static ParseResult<T> CannotParseValue(string value, string format)
         {
-            return ForInvalidValue(Resources.Parse_CannotParseValue, value, typeof(T), format);
+            return ForInvalidValue(Messages.Parse_CannotParseValue, value, typeof(T), format);
         }
 
         // Special case: it's a fault with the value, but we still don't want to continue with multiple patterns.
         internal static readonly ParseResult<T> ValueStringEmpty =
-            new ParseResult<T>(() => new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Resources.Parse_ValueStringEmpty)), false);
+            new ParseResult<T>(() => new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Messages.Parse_ValueStringEmpty)), false);
 
         internal static ParseResult<T> ExtraValueCharacters(string remainder)
         {
-            return ForInvalidValue(Resources.Parse_ExtraValueCharacters, remainder);
+            return ForInvalidValue(Messages.Parse_ExtraValueCharacters, remainder);
         }
 
-        internal static readonly ParseResult<T> QuotedStringMismatch = ForInvalidValue(Resources.Parse_QuotedStringMismatch);
+        internal static readonly ParseResult<T> QuotedStringMismatch = ForInvalidValue(Messages.Parse_QuotedStringMismatch);
 
         internal static ParseResult<T> EscapedCharacterMismatch(char patternCharacter)
         {
-            return ForInvalidValue(Resources.Parse_EscapedCharacterMismatch, patternCharacter);
+            return ForInvalidValue(Messages.Parse_EscapedCharacterMismatch, patternCharacter);
         }
 
-        internal static ParseResult<T> MissingDecimalSeparator = ForInvalidValue(Resources.Parse_MissingDecimalSeparator);
+        internal static ParseResult<T> MissingDecimalSeparator = ForInvalidValue(Messages.Parse_MissingDecimalSeparator);
 
-        internal static ParseResult<T> TimeSeparatorMismatch = ForInvalidValue(Resources.Parse_TimeSeparatorMismatch);
+        internal static ParseResult<T> TimeSeparatorMismatch = ForInvalidValue(Messages.Parse_TimeSeparatorMismatch);
 
         internal static ParseResult<T> MismatchedNumber(string pattern)
         {
-            return ForInvalidValue(Resources.Parse_MismatchedNumber, pattern);
+            return ForInvalidValue(Messages.Parse_MismatchedNumber, pattern);
         }
 
-        internal static ParseResult<T> MismatchedSpace = ForInvalidValue(Resources.Parse_MismatchedSpace);
+        internal static ParseResult<T> MismatchedSpace = ForInvalidValue(Messages.Parse_MismatchedSpace);
 
         internal static ParseResult<T> MismatchedCharacter(char patternCharacter)
         {
-            return ForInvalidValue(Resources.Parse_MismatchedCharacter, patternCharacter);
+            return ForInvalidValue(Messages.Parse_MismatchedCharacter, patternCharacter);
         }
 
-        internal static readonly ParseResult<T> NoMatchingFormat = ForInvalidValue(Resources.Parse_NoMatchingFormat);
+        internal static readonly ParseResult<T> NoMatchingFormat = ForInvalidValue(Messages.Parse_NoMatchingFormat);
 
         internal static ParseResult<T> ValueOutOfRange(object value)
         {
-            return ForInvalidValue(Resources.Parse_ValueOutOfRange, value, typeof(T));
+            return ForInvalidValue(Messages.Parse_ValueOutOfRange, value, typeof(T));
         }
 
-        internal static readonly ParseResult<T> MissingSign = ForInvalidValue(Resources.Parse_MissingSign);
+        internal static readonly ParseResult<T> MissingSign = ForInvalidValue(Messages.Parse_MissingSign);
 
         internal static ParseResult<T> FieldValueOutOfRange(object value, char field)
         {
-            return ForInvalidValue(Resources.Parse_FieldValueOutOfRange, value, field, typeof(T));
+            return ForInvalidValue(Messages.Parse_FieldValueOutOfRange, value, field, typeof(T));
         }
         #endregion
     }
