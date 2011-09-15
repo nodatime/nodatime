@@ -52,7 +52,7 @@ namespace NodaTime.Utility
         /// <returns>The formatted string.</returns>
         internal static string GetMessage(string id, params object[] replacements)
         {
-            var message = Resources.ResourceManager.GetString(id) ?? id;
+            var message = Messages.ResourceManager.GetString(id) ?? id;
             return String.Format(CultureInfo.CurrentCulture, message, replacements);
         }
 
@@ -72,7 +72,7 @@ namespace NodaTime.Utility
         internal static string GetMessage(IFormatProvider formatProvider, string invariant, string id, params object[] replacements)
         {
             var culture = GetCulture(formatProvider);
-            string message = culture.Equals(CultureInfo.InvariantCulture) ? invariant : (Resources.ResourceManager.GetString(id) ?? id);
+            string message = culture.Equals(CultureInfo.InvariantCulture) ? invariant : (Messages.ResourceManager.GetString(id) ?? id);
             return replacements.Length == 0 ? message : String.Format(CultureInfo.CurrentCulture, message, replacements);
         }
 

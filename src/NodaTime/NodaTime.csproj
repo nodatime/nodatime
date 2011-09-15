@@ -87,6 +87,11 @@
     <Compile Include="Fields\DelegatedDateTimeField.cs" />
     <Compile Include="Fields\ImpreciseDurationField.cs" />
     <Compile Include="Fields\SkipZeroDateTimeField.cs" />
+    <Compile Include="Properties\PatternResources.Designer.cs">
+      <DependentUpon>PatternResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Text\FixedFormatInfoPatternParser.cs" />
     <Compile Include="Text\FormatHelper.cs" />
     <Compile Include="Text\BucketHelper.cs" />
@@ -152,15 +157,10 @@
     <Compile Include="Fields\DurationFieldValue.cs" />
     <Compile Include="Period.cs" />
     <Compile Include="PeriodType.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="Properties\Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Resources.de-DE.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.de-DE.resx</DependentUpon>
+      <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="SystemClock.cs" />
@@ -236,14 +236,24 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="Properties\PatternResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>PatternResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.de-DE.resx">
+    <EmbeddedResource Include="Properties\Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.de-DE.Designer.cs</LastGenOutput>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\PatternResources.de-DE.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PatternResources.de-DE.resx</DependentUpon>
+    </Compile>    
+    <EmbeddedResource Include="Properties\PatternResources.de-DE.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PatternResources.de-DE.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="TimeZones\Tzdb.resx">
       <SubType>
