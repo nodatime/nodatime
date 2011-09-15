@@ -337,13 +337,23 @@ namespace NodaTime
         /// <summary>
         /// Gets the time portion of this local date and time as a <see cref="LocalTime"/>.
         /// </summary>
-        // TODO: Optimize this using TickOfDay?
-        public LocalTime TimeOfDay { get { return new LocalTime(HourOfDay, MinuteOfHour, SecondOfMinute, MillisecondOfSecond, TickOfMillisecond); } }
+        public LocalTime TimeOfDay
+        {
+            get
+            {
+                long ticks = localInstant.Ticks % NodaConstants.TicksPerStandardDay;
+                if (ticks < 0)
+                {
+                    ticks += NodaConstants.TicksPerStandardDay;
+                }
+                return new LocalTime(new LocalInstant(ticks));
+            }
+        }
 
         /// <summary>
-        /// Gets the date portion of this local date and time as a <see cref="LocalDate"/>.
+        /// Gets the date portion of this local date and time as a <see cref="LocalDate"/> in the same calendar system as this value.
         /// </summary>
-        public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth); } }
+        public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth, calendar); } }
 
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this value which has a <see cref="DateTime.Kind" />

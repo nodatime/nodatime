@@ -60,5 +60,27 @@ namespace NodaTime.Test
             Assert.AreEqual(19, julianEpoch.DayOfMonth);
             Assert.AreEqual(isoEpoch.TimeOfDay, julianEpoch.TimeOfDay);
         }
+
+        // Verifies that negative local instant ticks don't cause a problem with the date
+        [Test]
+        public void TimeOfDay_Before1970()
+        {
+            LocalDateTime dateTime = new LocalDateTime(1965, 11, 8, 12, 5, 23);
+            LocalTime expected = new LocalTime(12, 5, 23);
+            Assert.AreEqual(expected, dateTime.TimeOfDay);
+
+            Assert.AreEqual(new LocalDateTime(1970, 1, 1, 12, 5, 23), dateTime.TimeOfDay.LocalDateTime);
+        }
+
+        // Verifies that positive local instant ticks don't cause a problem with the date
+        [Test]
+        public void TimeOfDay_After1970()
+        {
+            LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
+            LocalTime expected = new LocalTime(12, 5, 23);
+            Assert.AreEqual(expected, dateTime.TimeOfDay);
+
+            Assert.AreEqual(new LocalDateTime(1970, 1, 1, 12, 5, 23), dateTime.TimeOfDay.LocalDateTime);
+        }
     }
 }

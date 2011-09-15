@@ -16,6 +16,8 @@
 #endregion
 
 using System;
+using NodaTime.Fields;
+
 namespace NodaTime
 {
     /// <summary>
@@ -24,6 +26,8 @@ namespace NodaTime
     /// </summary>
     public struct LocalTime : IEquatable<LocalTime>
     {
+        private static readonly FieldSet IsoFields = CalendarSystem.Iso.Fields;
+
         private readonly LocalInstant localInstant;
 
         /// <summary>
@@ -33,8 +37,15 @@ namespace NodaTime
         /// <param name="hour">The hour of day.</param>
         /// <param name="minute">The minute of the hour.</param>
         /// <param name="second">The second of the minute.</param>
-        public LocalTime(int hour, int minute, int second) : this(hour, minute, second, 0, 0)
+        public LocalTime(int hour, int minute, int second)
         {
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hour, 0, NodaConstants.HoursPerStandardDay - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minute, 0, NodaConstants.MinutesPerHour - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, second, 0, NodaConstants.SecondsPerMinute - 1);
+            localInstant = new LocalInstant(
+                hour * NodaConstants.TicksPerHour +
+                minute * NodaConstants.TicksPerMinute +
+                second * NodaConstants.TicksPerSecond);
         }
 
         /// <summary>
@@ -46,8 +57,16 @@ namespace NodaTime
         /// <param name="second">The second of the minute.</param>
         /// <param name="millisecond">The millisecond of the second.</param>
         public LocalTime(int hour, int minute, int second, int millisecond)
-            : this(hour, minute, second, millisecond, 0)
         {
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hour, 0, NodaConstants.HoursPerStandardDay - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minute, 0, NodaConstants.MinutesPerHour - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, second, 0, NodaConstants.SecondsPerMinute - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MillisecondOfSecond, minute, 0, NodaConstants.MillisecondsPerSecond - 1);
+            localInstant = new LocalInstant(
+                hour * NodaConstants.TicksPerHour +
+                minute * NodaConstants.TicksPerMinute +
+                second * NodaConstants.TicksPerSecond +
+                millisecond * NodaConstants.TicksPerMillisecond);
         }
 
         /// <summary>
@@ -60,10 +79,23 @@ namespace NodaTime
         /// <param name="tickWithinMillisecond">The tick within the millisecond.</param>
         public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
-            localInstant = new LocalDateTime(1970, 1, 1, hour, minute, second, millisecond, tickWithinMillisecond, CalendarSystem.Iso).LocalInstant;
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hour, 0, NodaConstants.HoursPerStandardDay - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minute, 0, NodaConstants.MinutesPerHour - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, second, 0, NodaConstants.SecondsPerMinute - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MillisecondOfSecond, minute, 0, NodaConstants.MillisecondsPerSecond - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfMillisecond, minute, 0, NodaConstants.TicksPerMillisecond - 1);
+            localInstant = new LocalInstant(
+                hour * NodaConstants.TicksPerHour +
+                minute * NodaConstants.TicksPerMinute +
+                second * NodaConstants.TicksPerSecond +
+                millisecond * NodaConstants.TicksPerMillisecond +
+                tickWithinMillisecond);
         }
 
-        private LocalTime(LocalInstant localInstant)
+        /// <summary>
+        /// Constructor only called from other parts of Noda Time - trusted to be within January 1st 1970 UTC.
+        /// </summary>
+        internal LocalTime(LocalInstant localInstant)
         {
             this.localInstant = localInstant;
         }
@@ -71,42 +103,42 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int HourOfDay { get { return LocalDateTime.HourOfDay; } }
+        public int HourOfDay { get { return IsoFields.HourOfDay.GetValue(localInstant); } }
         
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int MinuteOfHour { get { return LocalDateTime.MinuteOfHour; } }
+        public int MinuteOfHour { get { return IsoFields.MinuteOfHour.GetValue(localInstant); ; } }
 
         /// <summary>
         /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int SecondOfMinute { get { return LocalDateTime.SecondOfMinute; } }
+        public int SecondOfMinute { get { return IsoFields.SecondOfMinute.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the second of this local time within the day, in the range 0 to 86,399 inclusive.
         /// </summary>
-        public int SecondOfDay { get { return LocalDateTime.SecondOfDay; } }
+        public int SecondOfDay { get { return IsoFields.SecondOfDay.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int MillisecondOfSecond { get { return LocalDateTime.MillisecondOfSecond; } }
+        public int MillisecondOfSecond { get { return IsoFields.MillisecondOfSecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the millisecond of this local time within the day, in the range 0 to 86,399,999 inclusive.
         /// </summary>
-        public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
+        public int MillisecondOfDay { get { return IsoFields.MillisecondOfDay.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the millisceond, in the range 0 to 9,999 inclusive.
         /// </summary>
-        public int TickOfMillisecond { get { return LocalDateTime.TickOfMillisecond; } }
+        public int TickOfMillisecond { get { return IsoFields.TickOfMillisecond.GetValue(localInstant); ; } }
 
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
-        public long TickOfDay { get { return LocalDateTime.TickOfDay; } }
+        public long TickOfDay { get { return IsoFields.TickOfDay.GetInt64Value(localInstant); ; } }
 
         /// <summary>
         /// Returns a LocalDateTime with this local time, on January 1st 1970 in the ISO calendar.
@@ -184,6 +216,65 @@ namespace NodaTime
                 return false;
             }
             return this == (LocalTime)obj;
+        }
+
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of hours added.
+        /// </summary>
+        /// <remarks>
+        /// If the value goes past the start or end of the day, it wraps - so 11pm plus two hours is 1am, for example.
+        /// </remarks>
+        /// <param name="hours">The number of hours to add</param>
+        /// <returns>The current value plus the given number of hours.</returns>
+        public LocalTime AddHours(long hours)
+        {
+            return LocalDateTime.AddHours(hours).TimeOfDay;
+        }
+
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of minutes added.
+        /// </summary>
+        /// <remarks>
+        /// If the value goes past the start or end of the day, it wraps - so 11pm plus 120 minutes is 1am, for example.
+        /// </remarks>
+        /// <param name="minutes">The number of minutes to add</param>
+        /// <returns>The current value plus the given number of minutes.</returns>
+        public LocalTime AddMinutes(long minutes)
+        {
+            return LocalDateTime.AddMinutes(minutes).TimeOfDay;
+        }
+
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of seconds added.
+        /// </summary>
+        /// <remarks>
+        /// If the value goes past the start or end of the day, it wraps - so 11:59pm plus 120 seconds is 12:01am, for example.
+        /// </remarks>
+        /// <param name="seconds">The number of seconds to add</param>
+        /// <returns>The current value plus the given number of seconds.</returns>
+        public LocalTime AddSeconds(long seconds)
+        {
+            return LocalDateTime.AddSeconds(seconds).TimeOfDay;
+        }
+
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of seconds added.
+        /// </summary>
+        /// <param name="seconds">The number of seconds to add</param>
+        /// <returns>The current value plus the given number of seconds.</returns>
+        public LocalTime AddMilliseconds(long milliseconds)
+        {
+            return LocalDateTime.AddMilliseconds(milliseconds).TimeOfDay;
+        }
+
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of ticks added.
+        /// </summary>
+        /// <param name="ticks">The number of ticks to add</param>
+        /// <returns>The current value plus the given number of seconds.</returns>
+        public LocalTime AddTicks(long ticks)
+        {
+            return LocalDateTime.AddTicks(ticks).TimeOfDay;
         }
     }
 }
