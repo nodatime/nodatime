@@ -15,15 +15,15 @@
 <p>The following standard patterns are supported:</p>
 
 <ul>
-<li><code>f</code>: Full format, displaying all information including fractional seconds.
+<li><code>f</code>: Full format, displaying all information including fractional seconds.<br />
 Typical pattern text: <code>+H:mm:ss.fff</code></li>
-<li><code>l</code>: Long format, displaying information down to the second.
+<li><code>l</code>: Long format, displaying information down to the second.<br />
 Typical pattern text: <code>+H:mm:ss</code></li>
-<li><code>m</code>: Medium format, displaying information down to the minute. Typical pattern
-text: <code>+H:mm</code></li>
-<li><code>s</code>: Short format, displaying information down to the hour. Typical pattern
-text: <code>+H</code></li>
-<li><p><code>g</code>: general pattern. Formatting depends on the value passed in:</p>
+<li><code>m</code>: Medium format, displaying information down to the minute.<br />
+Typical pattern text: <code>+H:mm</code></li>
+<li><code>s</code>: Short format, displaying information down to the hour.<br />
+Typical pattern text: <code>+H</code></li>
+<li><p><code>g</code>: General pattern. Formatting depends on the value passed in:</p>
 
 <ul>
 <li>If the offset has fractional seconds, the full format is used; otherwise</li>
@@ -37,7 +37,137 @@ text: <code>+H</code></li>
 
 <h2>Custom Patterns</h2>
 
-<p>TBD!</p>
+<p>The following custom offset patterns are supported. See <a href="text.html#custom-patterns">custom pattern notes</a>
+for general notes on custom patterns.</p>
+
+<table>
+  <thead>
+    <tr>
+      <td>Character</td>
+      <td>Meaning</td>
+      <td>Example</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>%</code></td>
+      <td>Escape to force a single-character custom pattern to be treated as such.</td>
+      <td><code>%H</code> => <code>5</code></td>
+    </tr>
+    <tr>
+      <td><code>'</code></td>
+      <td>
+        Open and close a text literal, which can include
+        double quotes.
+      </td>
+      <td><code>HH'H'mm'm'</code> => <code>07H30M</code></td>
+    </tr>
+    <tr>
+      <td><code>"</code></td>
+      <td>
+        Open and close a text literal, which can include
+        single quotes.
+      </td>
+      <td><code>HH"'"mm</code> => <code>07'30</code></td>
+    </tr>
+    <tr>
+      <td><code>\</code></td>
+      <td>
+        Escapes the following character.
+      </td>
+      <td><code>HH\'mm</code> => <code>07'30</code></td>
+    </tr>
+    <tr>
+      <td><code>.</code></td>
+      <td>
+        The decimal separator for the format provider; period
+        in the invariant culture.
+      </td>
+      <td><code>ss.fff</code> => <code>10.123</code></td>
+    </tr>
+    <tr>
+      <td><code>:</code></td>
+      <td>
+        The time separator for the format provider; colon
+        in the invariant colture.
+      </td>
+      <td><code>HH:mm</code> => <code>07:30</code></td>
+    </tr>
+    <tr>
+      <td><code>+</code></td>
+      <td>
+        The sign of the value, always specified whether positive or negative.
+        The character used will depend on the format provider; <code>+</code> and <code>-</code> are
+        used by the invariant culture.
+      </td>
+      <td>
+        Positive value: <code>+HH:mm</code> => <code>+07:30</code> <br />
+        Negative value: <code>+HH:mm</code> => <code>-07:30</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>-</code></td>
+      <td>
+        The sign of the value, only specified when the value is negative.
+        The character used will depend on the format provider; <code>-</code> is
+        used by the invariant culture.
+      </td>
+      <td>
+        Positive value: <code>-HH:mm</code> => <code>07:30</code> <br />
+        Negative value: <code>-HH:mm</code> => <code>-07:30</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>H</code> or <code>HH</code></td>
+      <td>
+        Number of hours in the offset. <code>HH</code> is zero-padded; <code>H</code> is not.
+      </td>
+      <td>
+        <code>H:mm</code> => <code>7:30</code> <br />
+        <code>HH:mm</code> => <code>07:30</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>m</code> or <code>mm</code></td>
+      <td>
+        Number of minutes within the hour. <code>mm</code> is zero-padded; <code>m</code> is not.
+      </td>
+      <td>
+        5 minutes: <code>m:ss</code> => <code>5:00</code> <br />
+        5 minutes: <code>mm:ss</code> => <code>05:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>s</code> or <code>ss</code></td>
+      <td>
+        Number of seconds within the minute. <code>ss</code> is zero-padded; <code>s</code> is not.
+      </td>
+      <td>
+        5 seconds: <code>s.fff</code> => <code>5.000</code> <br />
+        5 seconds: <code>ss.fff</code> => <code>05.000</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>f</code>, <code>ff</code> or <code>fff</code></td>
+      <td>
+        FIXME
+      </td>
+      <td>
+        FIXME
+      </td>
+    </tr>
+    <tr>
+      <td><code>F</code>, <code>FF</code> or <code>FFF</code></td>
+      <td>
+        FIXME
+      </td>
+      <td>
+        FIXME
+      </td>
+    </tr>
+  </tbody>
+
+</table>
 
   </body>
 </html>

@@ -1,7 +1,23 @@
 body {
-  font-family: Arial,Liberation Sans,DejaVu Sans,sans-serif
+  font-family: Arial,Liberation Sans,DejaVu Sans,sans-serif;
+  size: 80%
 }
 
 h1, h2 {
   font-family: Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table thead {
+  background-color: #e5e5e5
+}
+
+table td {
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  padding: 4px;
 }
