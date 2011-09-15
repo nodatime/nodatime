@@ -515,7 +515,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="years">The number of years to add</param>
         /// <returns>The current value plus the given number of years.</returns>
-        public LocalDateTime AddYears(int years)
+        public LocalDateTime PlusYears(int years)
         {
             LocalInstant newLocalInstant = calendar.Fields.Years.Add(localInstant, years);
             return new LocalDateTime(newLocalInstant, calendar);
@@ -537,7 +537,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="months">The number of months to add</param>
         /// <returns>The current value plus the given number of months.</returns>
-        public LocalDateTime AddMonths(int months)
+        public LocalDateTime PlusMonths(int months)
         {
             LocalInstant newLocalInstant = calendar.Fields.Months.Add(localInstant, months);
             return new LocalDateTime(newLocalInstant, calendar);
@@ -554,7 +554,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="days">The number of days to add</param>
         /// <returns>The current value plus the given number of days.</returns>
-        public LocalDateTime AddDays(int days)
+        public LocalDateTime PlusDays(int days)
         {
             LocalInstant newLocalInstant = calendar.Fields.Days.Add(localInstant, days);
             return new LocalDateTime(newLocalInstant, calendar);
@@ -565,7 +565,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="weeks">The number of weeks to add</param>
         /// <returns>The current value plus the given number of weeks.</returns>
-        public LocalDateTime AddWeeks(int weeks)
+        public LocalDateTime PlusWeeks(int weeks)
         {
             LocalInstant newLocalInstant = calendar.Fields.Weeks.Add(localInstant, weeks);
             return new LocalDateTime(newLocalInstant, calendar);
@@ -576,7 +576,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="hours">The number of hours to add</param>
         /// <returns>The current value plus the given number of hours.</returns>
-        public LocalDateTime AddHours(long hours)
+        public LocalDateTime PlusHours(long hours)
         {
             LocalInstant newLocalInstant = calendar.Fields.Hours.Add(localInstant, hours);
             return new LocalDateTime(newLocalInstant, calendar);
@@ -587,7 +587,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="minutes">The number of minutes to add</param>
         /// <returns>The current value plus the given number of minutes.</returns>
-        public LocalDateTime AddMinutes(long minutes)
+        public LocalDateTime PlusMinutes(long minutes)
         {
             LocalInstant newLocalInstant = calendar.Fields.Minutes.Add(localInstant, minutes);
             return new LocalDateTime(newLocalInstant, calendar);
@@ -598,7 +598,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="seconds">The number of seconds to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
-        public LocalDateTime AddSeconds(long seconds)
+        public LocalDateTime PlusSeconds(long seconds)
         {
             LocalInstant newLocalInstant = calendar.Fields.Seconds.Add(localInstant, seconds);
             return new LocalDateTime(newLocalInstant, calendar);
@@ -609,7 +609,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="milliseconds">The number of seconds to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
-        public LocalDateTime AddMilliseconds(long milliseconds)
+        public LocalDateTime PlusMilliseconds(long milliseconds)
         {
             LocalInstant newLocalInstant = calendar.Fields.Milliseconds.Add(localInstant, milliseconds);
             return new LocalDateTime(newLocalInstant, calendar);
@@ -620,7 +620,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="ticks">The number of ticks to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
-        public LocalDateTime AddTicks(long ticks)
+        public LocalDateTime PlusTicks(long ticks)
         {
             LocalInstant newLocalInstant = calendar.Fields.Ticks.Add(localInstant, ticks);
             return new LocalDateTime(newLocalInstant, calendar);
