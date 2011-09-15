@@ -607,7 +607,7 @@ namespace NodaTime
         /// <summary>
         /// Returns a new LocalDateTime representing the current value with the given number of seconds added.
         /// </summary>
-        /// <param name="seconds">The number of seconds to add</param>
+        /// <param name="milliseconds">The number of seconds to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
         public LocalDateTime AddMilliseconds(long milliseconds)
         {
