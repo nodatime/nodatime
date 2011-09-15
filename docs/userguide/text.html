@@ -28,17 +28,28 @@ type, and <em>formatting</em> a value to text. Parsing and formatting don't
 take any other options: the pattern knows everything about how to
 map between the value and text. In particular, internationalization
 is handled using a <a href="../api/html/T_NodaTime_Globalization_NodaFormatInfo.htm"><code>NodaFormatInfo</code></a>, which implements
-<a href="http://msdn.microsoft.com/en-us/library/system.iformatprovider.aspx"><code>IFormatProvider</code></a>. Whereas using the BCL approach the format
+<a href="http://msdn.microsoft.com/en-us/library/system.iformatprovider.aspx"><code>IFormatProvider</code></a>.</p>
+
+<p>Whereas using the BCL approach the format
 information has to be specified on every call, using the pattern
 approach the format information is fixed for any particular pattern.
 Convenience methods are provided to create new pattern instances
 based on existing ones but with different internationalization
 information or other options.</p>
 
+<p>Each core Noda type has its own pattern type such as
+<a href="../api/html/T_NodaTime_Text_OffsetPattern.htm"><code>OffsetPattern</code></a>. All
+these patterns implement the
+<a href="../api/html/T_NodaTime_Text_IPattern_1.htm"><code>IPattern&lt;T&gt;</code></a> interface,
+which has simple <code>Format</code> and <code>Parse</code> methods taking just the value
+and text respectively. The result of <code>Parse</code> is a
+<a href="../api/html/T_NodaTime_Text_ParseResult_1.htm"><code>ParseResult&lt;T&gt;</code></a> which
+encapsulates both success and failure results.</p>
+
 <h2>The BCL-based API</h2>
 
 <p>Each of the core Noda Time types (<a href="../api/html/T_NodaTime_LocalDateTime.htm"><code>LocalDateTime</code></a>,
-<a href="../api/html/T_NodaTime_Instant.htm"><code>Instant</code></a> etc) provide (or will provide :) methods with the
+<a href="../api/html/T_NodaTime_Instant.htm"><code>Instant</code></a> etc) provides (or will provide :) methods with the
 following signatures:</p>
 
 <p><strong>Formatting (instance methods):</strong></p>
@@ -86,6 +97,18 @@ text in any of the patterns specified using the given format provider,
 returning a <code>bool</code> value to indicate success or failure and using
 an <code>out</code> parameter to convey the parsed value (on success)
 or some default value (on failure).</li>
+</ul>
+
+<h2>Pattern text</h2>
+
+<p>Each type has its own separate pattern text documentation. The
+available patterns are as consistent as possible within reason, but
+documenting each separately avoids confusion with some field
+specifiers being available for some types but not others.</p>
+
+<ul>
+<li><a href="offset-patterns.html">Offset patterns</a></li>
+<li><a href="instant-patterns.html">Instant patterns</a></li>
 </ul>
 
   </body>

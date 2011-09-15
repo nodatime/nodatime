@@ -28,7 +28,7 @@ namespace NodaTime.Text
     /// times, rather than specifying the pattern text repeatedly. All patterns are immutable and thread-safe,
     /// and include the <see cref="NodaFormatInfo"/> used for localization purposes.
     /// </remarks>
-    /// <typeparam name="T">Type of value to parse or format</typeparam>
+    /// <typeparam name="T">Type of value to parse or format.</typeparam>
     public interface IPattern<T>
     {
         /// <summary>

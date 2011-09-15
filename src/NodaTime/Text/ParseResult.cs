@@ -24,8 +24,8 @@ namespace NodaTime.Text
     /// <summary>
     /// The result of a parse operation. 
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class ParseResult<T>
+    /// <typeparam name="T">The type which was parsed, such as a <see cref="LocalDateTime"/>.</typeparam>
+    public sealed class ParseResult<T>
     {
         private readonly T value;
         private readonly NodaFunc<Exception> exceptionProvider;

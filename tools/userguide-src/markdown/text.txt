@@ -21,18 +21,29 @@ type, and *formatting* a value to text. Parsing and formatting don't
 take any other options: the pattern knows everything about how to
 map between the value and text. In particular, internationalization
 is handled using a [`NodaFormatInfo`][2], which implements
-[`IFormatProvider`][1]. Whereas using the BCL approach the format
+[`IFormatProvider`][1].
+
+Whereas using the BCL approach the format
 information has to be specified on every call, using the pattern
 approach the format information is fixed for any particular pattern.
 Convenience methods are provided to create new pattern instances
 based on existing ones but with different internationalization
 information or other options.
 
+Each core Noda type has its own pattern type such as
+[`OffsetPattern`](noda-type://NodaTime.Text.OffsetPattern). All
+these patterns implement the
+[`IPattern<T>`](noda-type://NodaTime.Text.IPattern_1) interface,
+which has simple `Format` and `Parse` methods taking just the value
+and text respectively. The result of `Parse` is a
+[`ParseResult<T>`](noda-type://NodaTime.Text.ParseResult_1) which
+encapsulates both success and failure results.
+
 The BCL-based API
 -----------------
 
 Each of the core Noda Time types ([`LocalDateTime`][4],
-[`Instant`][5] etc) provide (or will provide :) methods with the
+[`Instant`][5] etc) provides (or will provide :) methods with the
 following signatures:
 
 **Formatting (instance methods):**
@@ -77,6 +88,17 @@ text in any of the patterns specified using the given format provider,
 returning a `bool` value to indicate success or failure and using
 an `out` parameter to convey the parsed value (on success)
 or some default value (on failure).
+
+Pattern text
+------------
+
+Each type has its own separate pattern text documentation. The
+available patterns are as consistent as possible within reason, but
+documenting each separately avoids confusion with some field
+specifiers being available for some types but not others.
+
+- [Offset patterns](offset-patterns.html)
+- [Instant patterns](instant-patterns.html)
 
   [1]: http://msdn.microsoft.com/en-us/library/system.iformatprovider.aspx
   [2]: noda-type://NodaTime.Globalization.NodaFormatInfo
