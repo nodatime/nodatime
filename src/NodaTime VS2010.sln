@@ -15,11 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Demo", "NodaTime.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoneInfoCompilerW", "ZoneInfoCompilerW\ZoneInfoCompilerW.csproj", "{73EEBD0B-8ABE-48EE-96E5-D6A23CF76F99}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ECB7E05E-F7A0-4D39-89D8-42CCCDAD2960}"
-	ProjectSection(SolutionItems) = preProject
-		NodaTime VS2010.vsmdi = NodaTime VS2010.vsmdi
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Testing", "NodaTime.Testing\NodaTime.Testing.csproj", "{BC9407FE-A661-4DFE-8B24-D2E2F450743F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Experimental", "NodaTime.Experimental\NodaTime.Experimental.csproj", "{D83B7D3A-9034-4A95-9714-F6A75F602749}"
@@ -27,9 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Experimental.Test", "NodaTime.Experimental.Test\NodaTime.Experimental.Test.csproj", "{254FA79B-3E8E-4066-B9F2-05176C78085D}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = NodaTime VS2010.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
