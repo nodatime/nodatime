@@ -95,6 +95,7 @@
     <Compile Include="Text\FixedFormatInfoPatternParser.cs" />
     <Compile Include="Text\FormatHelper.cs" />
     <Compile Include="Text\BucketHelper.cs" />
+    <Compile Include="Text\InstantPattern.cs" />
     <Compile Include="Text\InstantPatternParser.cs" />
     <Compile Include="Text\InvalidPatternException.cs" />
     <Compile Include="Text\IPattern.cs" />
@@ -250,7 +251,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PatternResources.de-DE.resx</DependentUpon>
-    </Compile>    
+    </Compile>
     <EmbeddedResource Include="Properties\PatternResources.de-DE.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PatternResources.de-DE.Designer.cs</LastGenOutput>
