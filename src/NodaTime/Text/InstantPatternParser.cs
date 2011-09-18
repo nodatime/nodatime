@@ -55,7 +55,7 @@ namespace NodaTime.Text
             switch (patternChar)
             {
                 case 'g':
-                    return PatternParseResult<Instant>.ForValue(new GeneralPattern(formatInfo));
+                    return PatternParseResult<Instant>.ForValue(new GeneralPattern());
                 case 'n':
                     return PatternParseResult<Instant>.ForValue(new NumberPattern(formatInfo, patternText, "N0"));
                 case 'd':
@@ -85,7 +85,7 @@ namespace NodaTime.Text
                 SecondOfMinuteField = isoFields.SecondOfMinute;
             }
  
-            internal GeneralPattern(NodaFormatInfo formatInfo) : base(formatInfo)
+            internal GeneralPattern() : base(NodaFormatInfo.InvariantInfo)
             {
             }
 
