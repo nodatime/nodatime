@@ -49,6 +49,28 @@ namespace NodaTime.Test.Text
             new OffsetData(Offset.MinValue) { C = ItIt, S = "-23.59.59,999" },
             new OffsetData(Offset.MaxValue) { C = null, S = "+23:59:59.999", ThreadCulture = EnUs },
             new OffsetData(Offset.MinValue) { C = null, S = "-23:59:59.999", ThreadCulture = EnUs },
+
+            // Demonstrating fractional digit behaviour. Some of these could be parse as well, and duplicate
+            // other tests, but they're mostly here for reference :)
+            new OffsetData(0, 0, 3, 456) { C = EnUs, S = "3.456", P = "s.fff" },
+            new OffsetData(0, 0, 3, 456) { C = EnUs, S = "3.45", P = "s.ff" }, // Fractions truncate for rounding purposes
+            new OffsetData(0, 0, 3, 456) { C = EnUs, S = "3.4", P = "s.f" },
+            new OffsetData(0, 0, 3, 456) { C = EnUs, S = "3.456", P = "s.FFF" },
+            new OffsetData(0, 0, 3, 456) { C = EnUs, S = "3.45", P = "s.FF" },
+            new OffsetData(0, 0, 3, 456) { C = EnUs, S = "3.4", P = "s.F" },
+            // Demonstrate the difference between F and FF
+            new OffsetData(0, 0, 3, 450) { C = EnUs, S = "3.450", P = "s.fff" },
+            new OffsetData(0, 0, 3, 450) { C = EnUs, S = "3.45", P = "s.ff" },
+            new OffsetData(0, 0, 3, 450) { C = EnUs, S = "3.45", P = "s.FFF" }, // Last digit dropped
+            new OffsetData(0, 0, 3, 450) { C = EnUs, S = "3.45", P = "s.FF" },
+
+            // Decimal point is dropped for F
+            new OffsetData(0, 0, 3, 0) { C = EnUs, S = "3.00", P = "s.ff" },
+            new OffsetData(0, 0, 3, 0) { C = EnUs, S = "3", P = "s.FF" },
+
+            // But no other character is dropped - e.g. not the time separator
+            new OffsetData(0, 0, 3, 0) { C = EnUs, S = "3:00", P = "s:ff" },
+            new OffsetData(0, 0, 3, 0) { C = EnUs, S = "3:", P = "s:FF" },
         };
 
         /// <summary>
