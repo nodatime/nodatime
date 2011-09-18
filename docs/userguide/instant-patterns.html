@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Patterns for Instant values</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Patterns for Instant values</h1>
+    <p>The <a href="../api/html/T_NodaTime_Instant.htm"><code>Instant</code></a> type supports the following patterns:</p>
+
+<h2>Standard Patterns</h2>
+
+<p>The following standard patterns are supported:</p>
+
+<ul>
+<li><p><code>g</code>: General format pattern.<br />
+The ISO-8601 representation of this instant in UTC, using the
+pattern "yyyy-MM-ddTHH:mm:ss".</p></li>
+<li><p><code>n</code>: Numeric with thousand separators.<br />
+This gives the number of ticks since the Unix epoch as an integer,
+including thousands separators. Sample on September 16th 2011:
+"13,161,548,674,473,131"</p></li>
+<li><p><code>d</code>: Numeric without thousand separators.<br />
+This gives the number of ticks since the Unix epoch as an integer,
+not including thousands separators. Sample on September 16th 2011:
+"13161548674473131"</p></li>
+</ul>
+
+<p>(TODO: Possibly support an "f" standard pattern which is like "g"
+but down to ticks.)</p>
+
+<h2>Custom Patterns</h2>
+
+<p><a href="../api/html/T_NodaTime_Instant.htm"><code>Instant</code></a> doesn't currently support
+any custom patterns.</p>
+
+  </body>
+</html>
