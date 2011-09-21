@@ -14,25 +14,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-#region usings
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NodaTime.Properties;
 using NodaTime.Text;
-
-#endregion
 
 namespace NodaTime.Test.Text
 {
     /// <summary>
-    ///   Defines the test data for the <see cref="Offset" /> type formatting and parsing tests.
+    /// Defines the test data for the <see cref="Offset" /> type formatting and parsing tests.
     /// </summary>
     public class OffsetFormattingTestSupport : FormattingTestSupport
     {
         /// <summary>
         /// Test data that can only be used to test formatting.
         /// </summary>
-        internal static OffsetData[] OffsetFormatData = {
+        internal static readonly OffsetData[] OffsetFormatData = {
             new OffsetData(3, 0, 0, 0) { C = EnUs, S = "", P = "%-", PV = Offset.Zero },
             new OffsetData(5, 6, 7, 8) { C = EnUs, S = "", P = "%F"  },
             new OffsetData(5, 6, 7, 8) { C = EnUs, S = "", P = "FF"  },
@@ -76,7 +74,7 @@ namespace NodaTime.Test.Text
         /// <summary>
         /// Test data that can only be used to test parsing.
         /// </summary>
-        internal static OffsetData[] OffsetParseData = {
+        internal static readonly OffsetData[] OffsetParseData = {
             new OffsetData(Offset.Zero) { C = EnUs, S = "", P = "g", Exception=typeof(UnparsableValueException), Message = Messages.Parse_ValueStringEmpty },
             new OffsetData(Offset.Zero) { C = EnUs, S = "1", P = "HH", Exception=typeof(UnparsableValueException), Message = Messages.Parse_MismatchedNumber, Parameters = {"HH"} },
             new OffsetData(Offset.Zero) { C = EnUs, S = "1", P = "mm", Exception=typeof(UnparsableValueException), Message = Messages.Parse_MismatchedNumber, Parameters = {"mm"} },
@@ -117,7 +115,7 @@ namespace NodaTime.Test.Text
         /// Common test data for both formatting and parsing. A test should be placed here unless is truly
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
         /// </summary>
-        internal static OffsetData[] OffsetFormattingCommonData = {
+        internal static readonly OffsetData[] OffsetFormattingCommonData = {
             new OffsetData(Offset.Zero) { C = EnUs, S = ".", P = "%.", Name = "decimal separator" },
             new OffsetData(Offset.Zero) { C = EnUs, S = ":", P = "%:", Name = "date separator" },
             new OffsetData(Offset.Zero) { C = ItIt, S = ",", P = "%.", Name = "decimal separator" },
@@ -242,71 +240,26 @@ namespace NodaTime.Test.Text
             new OffsetData(0, 30, 0, 0, true) { C = EnUs, S = "-00:30", P = "+HH:mm" }
         };
 
-        /// <summary>
-        /// Base for building filtered lists of parsing test data. This is here because we do not have access
-        /// to LINQ.
-        /// </summary>
-        /// <param name="test">The test predicate.</param>
-        /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> FilteredParseTests(Predicate<OffsetData> test)
-        {
-            foreach (var data in OffsetParseData)
-            {
-                if (test(data))
-                {
-                    yield return data;
-                }
-            }
-            foreach (var data in OffsetFormattingCommonData)
-            {
-                if (test(data))
-                {
-                    yield return data;
-                }
-            }
-        }
+        internal static readonly IEnumerable<OffsetData> AllParseData = OffsetParseData.Concat(OffsetFormattingCommonData);
+        internal static readonly IEnumerable<OffsetData> AllFormatData = OffsetFormatData.Concat(OffsetFormattingCommonData);
 
         /// <summary>
-        ///   Base for building filtered lists of formatting test data. This is here because we do not have access
-        ///   to LINQ.
-        /// </summary>
-        /// <param name="test">The test predicate.</param>
-        /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> FilteredFormatTests(Predicate<OffsetData> test)
-        {
-            foreach (var data in OffsetFormatData)
-            {
-                if (test(data))
-                {
-                    yield return data;
-                }
-            }
-            foreach (var data in OffsetFormattingCommonData)
-            {
-                if (test(data))
-                {
-                    yield return data;
-                }
-            }
-        }
-
-        /// <summary>
-        ///   Returns an iterator of test data with no format string specified.
+        /// Returns an iterator of test data with no format string specified.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
         internal static IEnumerable<OffsetData> FormatWithoutFormat()
         {
-            return FilteredFormatTests(data => data.P == null);
+            return AllFormatData.Where(data => data.P == null);
         }
 
         #region Nested type: OffsetData
         /// <summary>
-        ///   A container for test data for formatting and parsing <see cref="Offset" /> objects.
+        /// A container for test data for formatting and parsing <see cref="Offset" /> objects.
         /// </summary>
         public sealed class OffsetData : AbstractFormattingData<Offset>
         {
             /// <summary>
-            ///   Initializes a new instance of the <see cref="OffsetData" /> class.
+            /// Initializes a new instance of the <see cref="OffsetData" /> class.
             /// </summary>
             /// <param name="value">The value.</param>
             public OffsetData(Offset value)
@@ -332,10 +285,10 @@ namespace NodaTime.Test.Text
             }
 
             /// <summary>
-            ///   Returns a string representation of the given value. This will usually not call the ToString()
-            ///   method as that is problably being tested. The returned string is only used in test code and
-            ///   labels so it doesn't have to be beautiful. Must handle <c>null</c> if the type is a reference
-            ///   type. This should not throw an exception.
+            /// Returns a string representation of the given value. This will usually not call the ToString()
+            /// method as that is problably being tested. The returned string is only used in test code and
+            /// labels so it doesn't have to be beautiful. Must handle <c>null</c> if the type is a reference
+            /// type. This should not throw an exception.
             /// </summary>
             /// <param name="value">The value to format.</param>
             /// <returns>The string representation.</returns>
