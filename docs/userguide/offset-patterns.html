@@ -37,8 +37,8 @@ Typical pattern text: <code>+H</code></li>
 
 <h2>Custom Patterns</h2>
 
-<p>The following custom offset patterns are supported. See <a href="text.html#custom-patterns">custom pattern notes</a>
-for general notes on custom patterns.</p>
+<p>The following custom offset pattern characters are supported for local times. See <a href="text.html#custom-patterns">custom pattern notes</a>
+for general notes on custom patterns, including characters used for escaping and text literals.</p>
 
 <table>
   <thead>
@@ -49,74 +49,6 @@ for general notes on custom patterns.</p>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td><code>%</code></td>
-      <td>Escape to force a single-character custom pattern to be treated as such.</td>
-      <td><code>%H</code> => <code>5</code></td>
-    </tr>
-    <tr>
-      <td><code>'</code></td>
-      <td>
-        Open and close a text literal, which can include
-        double quotes.
-      </td>
-      <td><code>HH'H'mm'm'</code> => <code>07H30M</code></td>
-    </tr>
-    <tr>
-      <td><code>"</code></td>
-      <td>
-        Open and close a text literal, which can include
-        single quotes.
-      </td>
-      <td><code>HH"'"mm</code> => <code>07'30</code></td>
-    </tr>
-    <tr>
-      <td><code>\</code></td>
-      <td>
-        Escapes the following character.
-      </td>
-      <td><code>HH\'mm</code> => <code>07'30</code></td>
-    </tr>
-    <tr>
-      <td><code>.</code></td>
-      <td>
-        The decimal separator for the format provider; period
-        in the invariant culture.
-      </td>
-      <td><code>ss.fff</code> => <code>10.123</code></td>
-    </tr>
-    <tr>
-      <td><code>:</code></td>
-      <td>
-        The time separator for the format provider; colon
-        in the invariant colture.
-      </td>
-      <td><code>HH:mm</code> => <code>07:30</code></td>
-    </tr>
-    <tr>
-      <td><code>+</code></td>
-      <td>
-        The sign of the value, always specified whether positive or negative.
-        The character used will depend on the format provider; <code>+</code> and <code>-</code> are
-        used by the invariant culture.
-      </td>
-      <td>
-        Positive value: <code>+HH:mm</code> => <code>+07:30</code> <br />
-        Negative value: <code>+HH:mm</code> => <code>-07:30</code>
-      </td>
-    </tr>
-    <tr>
-      <td><code>-</code></td>
-      <td>
-        The sign of the value, only specified when the value is negative.
-        The character used will depend on the format provider; <code>-</code> is
-        used by the invariant culture.
-      </td>
-      <td>
-        Positive value: <code>-HH:mm</code> => <code>07:30</code> <br />
-        Negative value: <code>-HH:mm</code> => <code>-07:30</code>
-      </td>
-    </tr>
     <tr>
       <td><code>H</code> or <code>HH</code></td>
       <td>
@@ -150,23 +82,73 @@ for general notes on custom patterns.</p>
     <tr>
       <td><code>f</code>, <code>ff</code> or <code>fff</code></td>
       <td>
-        FIXME
+        The fractional second part of the offset, using exactly the specified number of characters.
+        Trailing digits are truncated towards zero.
       </td>
       <td>
-        FIXME
+        1 second, 340 milliseconds: <code>s.fff</code> => 340 <br />
+        1 second, 340 milliseconds: <code>s.ff</code> => 34 <br />
+        1 second, 340 milliseconds: <code>s.f</code> => 3 <br />
       </td>
     </tr>
     <tr>
       <td><code>F</code>, <code>FF</code> or <code>FFF</code></td>
       <td>
-        FIXME
+        The fractional second part of the offset, using at most the specified number of characters.
+        Trailing digits are truncated towards zero, and trailing insignificant zeroes are truncated.
+        If this comes after a decimal separator and the value is zero, the decimal separator is
+        also truncated.
       </td>
       <td>
-        FIXME
+        1 second, 340 milliseconds: <code>s.FFF</code> => <code>1.34</code> <br />
+        1 second, 340 milliseconds: <code>s.FF</code> => <code>1.34</code> <br />
+        1 second, 340 milliseconds: <code>s.F</code> => <code>1.3</code> <br />
+        Exactly 1 second: <code>s.F</code> => <code>1</code> <br />
       </td>
     </tr>
-  </tbody>
-
+    <tr>
+      <td><code>+</code></td>
+      <td>
+        The sign of the value, always specified whether positive or negative.
+        The character used will depend on the format provider; <code>+</code> and <code>-</code> are
+        used by the invariant culture. A positive offset is used when local time is ahead of
+        UTC (e.g. Europe) and a negative offset is used when local time is behind UTC (e.g. America).
+      </td>
+      <td>
+        Positive value: <code>+HH:mm</code> => <code>+07:30</code> <br />
+        Negative value: <code>+HH:mm</code> => <code>-07:30</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>-</code></td>
+      <td>
+        The sign of the value, only specified when the value is negative.
+        The character used will depend on the format provider; <code>-</code> is
+        used by the invariant culture.
+      </td>
+      <td>
+        Positive value: <code>-HH:mm</code> => <code>07:30</code> <br />
+        Negative value: <code>-HH:mm</code> => <code>-07:30</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>.</code></td>
+      <td>
+        The culture-specific decimal separator.
+      </td>
+      <td>
+        12 seconds, 500 milliseconds (en-US): <code>ss.FFF</code> => <code>12.500</code>
+        12 seconds, 500 milliseconds (fr-FR): <code>ss.FFF</code> => <code>12,500</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>:</code></td>
+      <td>
+        The time separator for the format provider; colon in the invariant colture.
+      </td>
+      <td><code>HH:mm</code> => <code>07:30</code></td>
+    </tr>
+  </tbody>    
 </table>
 
   </body>
