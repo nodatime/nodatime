@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Patterns for LocalTime values</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Patterns for LocalTime values</h1>
+    <p>The <a href="../api/html/T_NodaTime_LocalTime.htm"><code>LocalTime</code></a> type supports the following patterns:</p>
+
+<h2>Standard Patterns</h2>
+
+<p>The following standard patterns are supported:</p>
+
+<p>TODO</p>
+
+<h2>Custom Patterns</h2>
+
+<p>The following custom offset pattern characters are supported for local times. See <a href="text.html#custom-patterns">custom pattern notes</a>
+for general notes on custom patterns, including characters used for escaping and text literals.</p>
+
+<table>
+  <thead>
+    <tr>
+      <td>Character</td>
+      <td>Meaning</td>
+      <td>Example</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>H</code> or <code>HH</code></td>
+      <td>
+        The hour of day in the 24-hour clock; a value 0-23.
+      </td>
+      <td>
+        7.30am: <code>H:mm</code> => <code>7:30</code> <br />
+        7.30am: <code>HH:mm</code> => <code>07:30</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>h</code> or <code>hh</code></td>
+      <td>
+        The hour of day in the 12-hour clock; a value 1-12.
+      </td>
+      <td>
+        8.30pm: <code>H:mm</code> => <code>7:30</code> <br />
+        8.30pm: <code>HH:mm</code> => <code>07:30</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>m</code> or <code>mm</code></td>
+      <td>
+        Number of minutes within the hour. <code>mm</code> is zero-padded; <code>m</code> is not.
+      </td>
+      <td>
+        5 minutes: <code>m:ss</code> => <code>5:00</code> <br />
+        5 minutes: <code>mm:ss</code> => <code>05:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>s</code> or <code>ss</code></td>
+      <td>
+        Number of seconds within the minute. <code>ss</code> is zero-padded; <code>s</code> is not.
+      </td>
+      <td>
+        5 seconds: <code>s.fff</code> => <code>5.000</code> <br />
+        5 seconds: <code>ss.fff</code> => <code>05.000</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>f</code>, <code>ff</code> or <code>fff</code></td>
+      <td>
+        The fractional second part of the offset, using exactly the specified number of characters.
+        Trailing digits are truncated towards zero.
+      </td>
+      <td>
+        1 second, 340 milliseconds: <code>s.fff</code> => 340 <br />
+        1 second, 340 milliseconds: <code>s.ff</code> => 34 <br />
+        1 second, 340 milliseconds: <code>s.f</code> => 3 <br />
+      </td>
+    </tr>
+    <tr>
+      <td><code>F</code>, <code>FF</code> or <code>FFF</code></td>
+      <td>
+        The fractional second part of the offset, using at most the specified number of characters.
+        Trailing digits are truncated towards zero, and trailing insignificant zeroes are truncated.
+        If this comes after a decimal separator and the value is zero, the decimal separator is
+        also truncated.
+      </td>
+      <td>
+        1 second, 340 milliseconds: <code>s.FFF</code> => <code>1.34</code> <br />
+        1 second, 340 milliseconds: <code>s.FF</code> => <code>1.34</code> <br />
+        1 second, 340 milliseconds: <code>s.F</code> => <code>1.3</code> <br />
+        Exactly 1 second: <code>s.F</code> => <code>1</code> <br />
+      </td>
+    </tr>
+    <tr>
+      <td><code>+</code></td>
+      <td>
+        The sign of the value, always specified whether positive or negative.
+        The character used will depend on the format provider; <code>+</code> and <code>-</code> are
+        used by the invariant culture. A positive offset is used when local time is ahead of
+        UTC (e.g. Europe) and a negative offset is used when local time is behind UTC (e.g. America).
+      </td>
+      <td>
+        Positive value: <code>+HH:mm</code> => <code>+07:30</code> <br />
+        Negative value: <code>+HH:mm</code> => <code>-07:30</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>-</code></td>
+      <td>
+        The sign of the value, only specified when the value is negative.
+        The character used will depend on the format provider; <code>-</code> is
+        used by the invariant culture.
+      </td>
+      <td>
+        Positive value: <code>-HH:mm</code> => <code>07:30</code> <br />
+        Negative value: <code>-HH:mm</code> => <code>-07:30</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>.</code></td>
+      <td>
+        The culture-specific decimal separator.
+      </td>
+      <td>
+        12 seconds, 500 milliseconds (en-US): <code>ss.FFF</code> => <code>12.500</code>
+        12 seconds, 500 milliseconds (fr-FR): <code>ss.FFF</code> => <code>12,500</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>:</code></td>
+      <td>
+        The time separator for the format provider; colon in the invariant colture.
+      </td>
+      <td><code>HH:mm</code> => <code>07:30</code></td>
+    </tr>
+  </tbody>
+
+</table>
+
+  </body>
+</html>
