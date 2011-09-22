@@ -27,32 +27,28 @@ namespace NodaTime.Test
     public partial class OffsetTest
     {
         [Test]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetParseData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "AllParseData")]
         public void TestParseExact_multiple(OffsetFormattingTestSupport.OffsetData data)
         {
             FormattingTestSupport.RunParseMultipleTest(data, formats => Offset.ParseExact(data.S, formats, new NodaFormatInfo(data.C)));
         }
 
         [Test]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetParseData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "AllParseData")]
         public void TestParseExact(OffsetFormattingTestSupport.OffsetData data)
         {
             FormattingTestSupport.RunParseSingleTest(data, format => Offset.ParseExact(data.S, format, new NodaFormatInfo(data.C)));
         }
 
         [Test]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetParseData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "AllParseData")]
         public void TestTryParseExact_multiple(OffsetFormattingTestSupport.OffsetData data)
         {
             FormattingTestSupport.RunTryParseMultipleTest(data, (string[] formats, out Offset value) => Offset.TryParseExact(data.S, formats, new NodaFormatInfo(data.C), out value));
         }
 
         [Test]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetParseData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "AllParseData")]
         public void TestTryParseExact_single(OffsetFormattingTestSupport.OffsetData data)
         {
             FormattingTestSupport.RunTryParseSingleTest(data, (string format, out Offset value) => Offset.TryParseExact(data.S, format, new NodaFormatInfo(data.C), out value));
