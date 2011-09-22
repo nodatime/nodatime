@@ -109,9 +109,60 @@ specifiers being available for some types but not others.</p>
 <ul>
 <li><a href="offset-patterns.html">Offset patterns</a></li>
 <li><a href="instant-patterns.html">Instant patterns</a></li>
+<li><a href="localtime-patterns.html">LocalTime patterns</a></li>
 </ul>
 
 <h2><a name="custom-patterns">Custom patterns</a></h2>
+
+<p>All custom patterns support the following characters:</p>
+
+<table>
+  <thead>
+    <tr>
+      <td>Character</td>
+      <td>Meaning</td>
+      <td>Example</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>%</code></td>
+      <td>Escape to force a single-character custom pattern to be treated as such.</td>
+      <td><code>%H</code> => <code>5</code></td>
+    </tr>
+    <tr>
+      <td><code>'</code></td>
+      <td>
+        Open and close a text literal, which can include
+        double quotes.
+      </td>
+      <td><code>HH'H'mm'm'</code> => <code>07H30M</code></td>
+    </tr>
+    <tr>
+      <td><code>"</code></td>
+      <td>
+        Open and close a text literal, which can include
+        single quotes.
+      </td>
+      <td><code>HH"'"mm</code> => <code>07'30</code></td>
+    </tr>
+    <tr>
+      <td><code>\</code></td>
+      <td>
+        Escapes the following character.
+      </td>
+      <td><code>HH\'mm</code> => <code>07'30</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Additionally:</p>
+
+<ul>
+<li>Where valid, <code>:</code> always refers to the culture-specific time separator (a colon in the invariant culture)</li>
+<li>Where valid, <code>/</code> always refers to the culture-specific date separator (a forward slash in the invariant culture)</li>
+<li>Where valid, <code>.</code> always refers to the culture-specific decimal separator (a period in the invariant culture)</li>
+</ul>
 
 <p>Notes to come, including:</p>
 
