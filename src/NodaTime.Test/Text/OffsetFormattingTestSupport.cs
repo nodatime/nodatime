@@ -30,7 +30,7 @@ namespace NodaTime.Test.Text
         /// <summary>
         /// Test data that can only be used to test formatting.
         /// </summary>
-        internal static readonly OffsetData[] OffsetFormatData = {
+        internal static readonly OffsetData[] FormatData = {
             new OffsetData(3, 0, 0, 0) { C = EnUs, S = "", P = "%-", PV = Offset.Zero },
             new OffsetData(5, 6, 7, 8) { C = EnUs, S = "", P = "%F"  },
             new OffsetData(5, 6, 7, 8) { C = EnUs, S = "", P = "FF"  },
@@ -74,7 +74,7 @@ namespace NodaTime.Test.Text
         /// <summary>
         /// Test data that can only be used to test parsing.
         /// </summary>
-        internal static readonly OffsetData[] OffsetParseData = {
+        internal static readonly OffsetData[] ParseData = {
             new OffsetData(Offset.Zero) { C = EnUs, S = "", P = "g", Exception=typeof(UnparsableValueException), Message = Messages.Parse_ValueStringEmpty },
             new OffsetData(Offset.Zero) { C = EnUs, S = "1", P = "HH", Exception=typeof(UnparsableValueException), Message = Messages.Parse_MismatchedNumber, Parameters = {"HH"} },
             new OffsetData(Offset.Zero) { C = EnUs, S = "1", P = "mm", Exception=typeof(UnparsableValueException), Message = Messages.Parse_MismatchedNumber, Parameters = {"mm"} },
@@ -115,7 +115,7 @@ namespace NodaTime.Test.Text
         /// Common test data for both formatting and parsing. A test should be placed here unless is truly
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
         /// </summary>
-        internal static readonly OffsetData[] OffsetFormattingCommonData = {
+        internal static readonly OffsetData[] CommonData = {
             new OffsetData(Offset.Zero) { C = EnUs, S = ".", P = "%.", Name = "decimal separator" },
             new OffsetData(Offset.Zero) { C = EnUs, S = ":", P = "%:", Name = "date separator" },
             new OffsetData(Offset.Zero) { C = ItIt, S = ",", P = "%.", Name = "decimal separator" },
@@ -240,17 +240,9 @@ namespace NodaTime.Test.Text
             new OffsetData(0, 30, 0, 0, true) { C = EnUs, S = "-00:30", P = "+HH:mm" }
         };
 
-        internal static readonly IEnumerable<OffsetData> AllParseData = OffsetParseData.Concat(OffsetFormattingCommonData);
-        internal static readonly IEnumerable<OffsetData> AllFormatData = OffsetFormatData.Concat(OffsetFormattingCommonData);
-
-        /// <summary>
-        /// Returns an iterator of test data with no format string specified.
-        /// </summary>
-        /// <returns>An <see cref="IEnumerable{OffsetData}" /></returns>
-        internal static IEnumerable<OffsetData> FormatWithoutFormat()
-        {
-            return AllFormatData.Where(data => data.P == null);
-        }
+        internal static readonly IEnumerable<OffsetData> AllParseData = ParseData.Concat(CommonData);
+        internal static readonly IEnumerable<OffsetData> AllFormatData = FormatData.Concat(CommonData);
+        internal static readonly IEnumerable<OffsetData> FormatWithoutFormat = AllFormatData.Where(data => data.P == null);
 
         #region Nested type: OffsetData
         /// <summary>
@@ -315,7 +307,5 @@ namespace NodaTime.Test.Text
             }
         }
         #endregion
-
-        public static string Resource { get; set; }
     }
 }

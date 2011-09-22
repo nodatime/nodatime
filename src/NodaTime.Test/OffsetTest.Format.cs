@@ -33,8 +33,7 @@ namespace NodaTime.Test
         }
 
         [Test, Category("Formatting"), Category("Format")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "AllFormatData")]
         public void TestToString_Format(OffsetFormattingTestSupport.OffsetData data)
         {
             if (data.C != null)
@@ -45,8 +44,7 @@ namespace NodaTime.Test
         }
 
         [Test, Category("Formatting"), Category("Format")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormattingCommonData")]
-        [TestCaseSource(typeof(OffsetFormattingTestSupport), "OffsetFormatData")]
+        [TestCaseSource(typeof(OffsetFormattingTestSupport), "AllFormatData")]
         public void TestToString_FormatCulture(OffsetFormattingTestSupport.OffsetData data)
         {
             FormattingTestSupport.RunFormatTest(data, () => data.V.ToString(data.P, data.C));
