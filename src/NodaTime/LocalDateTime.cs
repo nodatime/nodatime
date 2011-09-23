@@ -300,6 +300,11 @@ namespace NodaTime
         public int HourOfDay { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
 
         /// <summary>
+        /// Gets the hour of the half-day of this local date and time, in the range 1 to 12 inclusive.
+        /// </summary>
+        public int ClockHourOfHalfDay { get { return calendar.Fields.ClockHourOfHalfDay.GetValue(localInstant); } }
+
+        /// <summary>
         /// Gets the minute of this local date and time, in the range 0 to 59 inclusive.
         /// </summary>
         public int MinuteOfHour { get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
@@ -325,9 +330,15 @@ namespace NodaTime
         public int MillisecondOfDay { get { return calendar.Fields.MillisecondOfDay.GetValue(localInstant); } }
 
         /// <summary>
-        /// Gets the tick of this local date and time within the millisceond, in the range 0 to 9,999 inclusive.
+        /// Gets the tick of this local date and time within the millisecond, in the range 0 to 9,999 inclusive.
         /// </summary>
         public int TickOfMillisecond { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
+
+        /// <summary>
+        /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
+        /// </summary>
+        // TODO: Introduce a field for this?
+        public int TickOfSecond { get { return TickOfMillisecond + (int) (MillisecondOfSecond * NodaConstants.TicksPerMillisecond); } }
 
         /// <summary>
         /// Gets the tick of this local date and time within the day, in the range 0 to 863,999,999,999 inclusive.

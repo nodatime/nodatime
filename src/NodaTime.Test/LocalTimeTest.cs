@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -23,5 +22,14 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class LocalTimeTest
     {
+        [Test]
+        public void ClockHourOfHalfDay()
+        {
+            Assert.AreEqual(12, new LocalTime(0, 0, 0).ClockHourOfHalfDay);
+            Assert.AreEqual(1, new LocalTime(1, 0, 0).ClockHourOfHalfDay);
+            Assert.AreEqual(12, new LocalTime(12, 0, 0).ClockHourOfHalfDay);
+            Assert.AreEqual(1, new LocalTime(13, 0, 0).ClockHourOfHalfDay);
+            Assert.AreEqual(11, new LocalTime(23, 0, 0).ClockHourOfHalfDay);
+        }
     }
 }

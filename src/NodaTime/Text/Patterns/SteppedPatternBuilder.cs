@@ -51,7 +51,7 @@ namespace NodaTime.Text.Patterns
         /// </summary>
         internal IPattern<TResult> Build()
         {
-            return new SteppedPattern(formatActions, parseActions, bucketProvider);
+            return new SteppedPattern(formatActions, parseActions, bucketProvider, usedFields);
         }
 
         /// <summary>
@@ -228,14 +228,16 @@ namespace NodaTime.Text.Patterns
             private readonly NodaAction<TResult, StringBuilder> formatActions;
             private readonly List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions;
             private readonly NodaFunc<TBucket> bucketProvider;
+            private readonly PatternFields usedFields;
 
             public SteppedPattern(NodaAction<TResult, StringBuilder> formatActions,
                 List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions,
-                NodaFunc<TBucket> bucketProvider)
+                NodaFunc<TBucket> bucketProvider, PatternFields usedFields)
             {
                 this.formatActions = formatActions;
                 this.parseActions = parseActions;
                 this.bucketProvider = bucketProvider;
+                this.usedFields = usedFields;
             }
 
             public ParseResult<TResult> Parse(string value)
@@ -265,7 +267,7 @@ namespace NodaTime.Text.Patterns
                     return ParseResult<TResult>.ExtraValueCharacters(valueCursor.Remainder);
                 }
 
-                return bucket.CalculateValue();
+                return bucket.CalculateValue(usedFields);
             }
 
             public string Format(TResult value)

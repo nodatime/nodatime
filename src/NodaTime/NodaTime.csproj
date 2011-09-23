@@ -99,6 +99,8 @@
     <Compile Include="Text\InstantPatternParser.cs" />
     <Compile Include="Text\InvalidPatternException.cs" />
     <Compile Include="Text\IPattern.cs" />
+    <Compile Include="Text\LocalTimePattern.cs" />
+    <Compile Include="Text\LocalTimePatternParser.cs" />
     <Compile Include="Text\OffsetPattern.cs" />
     <Compile Include="Text\OffsetPatternParser.cs" />
     <Compile Include="Text\Patterns\AbstractPattern.cs" />
@@ -108,7 +110,6 @@
     <Compile Include="Text\Patterns\PatternParseResult.cs" />
     <Compile Include="Text\Patterns\PatternBclSupport.cs" />
     <Compile Include="Text\TextCursor.cs" />
-    <Compile Include="Text\OffsetParseBucket.cs" />
     <Compile Include="Text\ParseBucket.cs" />
     <Compile Include="Text\ParseResult.cs" />
     <Compile Include="Text\Patterns\CompositePattern.cs" />

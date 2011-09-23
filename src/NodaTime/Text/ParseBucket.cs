@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using NodaTime.Text.Patterns;
+
 namespace NodaTime.Text
 {
     /// <summary>
@@ -26,6 +29,6 @@ namespace NodaTime.Text
         /// Performs the final conversion from fields to a value. The parse can still fail here, if there
         /// are incompatible field values.
         /// </summary>
-        internal abstract ParseResult<T> CalculateValue();
+        internal abstract ParseResult<T> CalculateValue(PatternFields usedFields);
     }
 }
