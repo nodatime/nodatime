@@ -36,7 +36,6 @@ namespace NodaTime.Text.Patterns
         Hours24 = 1 << 2,
         Minutes = 1 << 3,
         Seconds = 1 << 4,
-        Milliseconds = 1 << 5,
-        Ticks = 1 << 6
+        FractionalSeconds = 1 << 5,
     }
 }

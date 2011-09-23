@@ -101,6 +101,8 @@ namespace NodaTime.Test.Text
             new OffsetData(Offset.Zero) { C = EnUs, S = "axc", P = "'abc'", Exception=typeof(UnparsableValueException), Message = Messages.Parse_QuotedStringMismatch},
             new OffsetData(Offset.Zero) { C = EnUs, S = "z", P = "%y", Exception=typeof(UnparsableValueException), Message = Messages.Parse_MismatchedCharacter, Parameters = {'y'} },
             new OffsetData(Offset.Zero) { C = EnUs, S = "10:10", P = "HH:HH", Exception=typeof(InvalidPatternException), Message = Messages.Parse_RepeatedFieldInPattern, Parameters = {'H'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "10:10", P = "FF:ff", Exception=typeof(InvalidPatternException), Message = Messages.Parse_RepeatedFieldInPattern, Parameters = {'f'} },
+            new OffsetData(Offset.Zero) { C = EnUs, S = "10:10", P = "ff:FF", Exception=typeof(InvalidPatternException), Message = Messages.Parse_RepeatedFieldInPattern, Parameters = {'F'} },
             new OffsetData(Offset.Zero) { C = EnUs, S = "10:10", P = "mm:mm", Exception=typeof(InvalidPatternException), Message = Messages.Parse_RepeatedFieldInPattern, Parameters = {'m'} },
             new OffsetData(Offset.Zero) { C = EnUs, S = "10:10", P = "ss:ss", Exception=typeof(InvalidPatternException), Message = Messages.Parse_RepeatedFieldInPattern, Parameters = {'s'} },
             new OffsetData(Offset.Zero) { C = EnUs, S = "-10:10", P = "+HH:-mm", Exception=typeof(InvalidPatternException), Message = Messages.Parse_RepeatedFieldInPattern, Parameters = {'-'} },

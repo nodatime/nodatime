@@ -37,7 +37,8 @@ for general notes on custom patterns, including characters used for escaping and
     <tr>
       <td><code>h</code> or <code>hh</code></td>
       <td>
-        The hour of day in the 12-hour clock; a value 1-12.
+        The hour of day in the 12-hour clock; a value 1-12. When parsing, if no
+		am/pm designator is specified, the parsed value is in the morning.
       </td>
       <td>
         8.30pm: <code>H:mm</code> => <code>7:30</code> <br />
@@ -65,10 +66,10 @@ for general notes on custom patterns, including characters used for escaping and
       </td>
     </tr>
     <tr>
-      <td><code>f</code>, <code>ff</code> or <code>fff</code></td>
+      <td><code>f</code>, <code>ff</code> ... up to <code>fffffff</code></td>
       <td>
-        The fractional second part of the offset, using exactly the specified number of characters.
-		Trailing digits are truncated towards zero.
+        The fractional second part of the offset, using exactly the specified number of characters
+		(up to 7, for a representation accurate to a tick).
       </td>
       <td>
         1 second, 340 milliseconds: <code>s.fff</code> => 340 <br />
@@ -77,9 +78,10 @@ for general notes on custom patterns, including characters used for escaping and
       </td>
     </tr>
     <tr>
-      <td><code>F</code>, <code>FF</code> or <code>FFF</code></td>
+      <td><code>F</code>, <code>FF</code> ... up to <code>FFFFFFF</code></td>
       <td>
-        The fractional second part of the offset, using at most the specified number of characters.
+        The fractional second part of the offset, using at most the specified number of characters
+		(up to 7, for a representation accurate to a tick).
 		Trailing digits are truncated towards zero, and trailing insignificant zeroes are truncated.
 		If this comes after a decimal separator and the value is zero, the decimal separator is
 		also truncated.
@@ -102,31 +104,6 @@ for general notes on custom patterns, including characters used for escaping and
 	    13:10: <code>h:mm:sst</code> => <code>1:10:00P</code>
       </td>
 	</tr>
-    <tr>
-      <td><code>+</code></td>
-      <td>
-        The sign of the value, always specified whether positive or negative.
-        The character used will depend on the format provider; <code>+</code> and <code>-</code> are
-        used by the invariant culture. A positive offset is used when local time is ahead of
-		UTC (e.g. Europe) and a negative offset is used when local time is behind UTC (e.g. America).
-      </td>
-      <td>
-        Positive value: <code>+HH:mm</code> => <code>+07:30</code> <br />
-        Negative value: <code>+HH:mm</code> => <code>-07:30</code>
-      </td>
-    </tr>
-    <tr>
-      <td><code>-</code></td>
-      <td>
-        The sign of the value, only specified when the value is negative.
-        The character used will depend on the format provider; <code>-</code> is
-        used by the invariant culture.
-      </td>
-      <td>
-        Positive value: <code>-HH:mm</code> => <code>07:30</code> <br />
-        Negative value: <code>-HH:mm</code> => <code>-07:30</code>
-      </td>
-    </tr>
 	<tr>
 	  <td><code>.</code></td>
 	  <td>

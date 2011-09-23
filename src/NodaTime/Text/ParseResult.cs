@@ -174,6 +174,14 @@ namespace NodaTime.Text
         {
             return ForInvalidValue(Messages.Parse_FieldValueOutOfRange, value, field, typeof(T));
         }
+
+        /// <summary>
+        /// Two fields (e.g. "hour of day" and "hour of half day") were mutually inconsistent.
+        /// </summary>
+        internal static ParseResult<T> InconsistentValues(char field1, char field2)
+        {
+            return ForInvalidValue(Messages.Parse_InconsistentValues2, field1, field2, typeof(T));
+        }
         #endregion
     }
 }

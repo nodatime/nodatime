@@ -168,6 +168,9 @@
   <data name="Parse_Hour12PatternNotSupported" xml:space="preserve">
     <value>The 'h' pattern flag (12 hour format) is not supported by the {0} type.</value>
   </data>
+  <data name="Parse_InconsistentValues2" xml:space="preserve">
+    <value>The individual values for the fields '{0}' and '{1}' created an inconsistency in the {2} type.</value>
+  </data>
   <data name="Parse_MismatchedCharacter" xml:space="preserve">
     <value>The value string does not match a simple character in the format string "{0}".</value>
   </data>

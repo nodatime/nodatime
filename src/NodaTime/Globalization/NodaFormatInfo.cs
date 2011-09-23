@@ -37,9 +37,11 @@ namespace NodaTime.Globalization
         #region Patterns and pattern parsers
         private static readonly IPatternParser<Offset> GeneralOffsetPatternParser = new OffsetPatternParser();
         private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser();
+        private static readonly IPatternParser<LocalTime> GeneralLocalTimePatternParser = new LocalTimePatternParser();
 
         private readonly FixedFormatInfoPatternParser<Offset> offsetPatternParser;
         private readonly FixedFormatInfoPatternParser<Instant> instantPatternParser;
+        private readonly FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
         #endregion
 
         /// <summary>
@@ -81,15 +83,17 @@ namespace NodaTime.Globalization
             offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
             offsetPatternParser = new FixedFormatInfoPatternParser<Offset>(GeneralOffsetPatternParser, this);
             instantPatternParser = new FixedFormatInfoPatternParser<Instant>(GeneralInstantPatternParser, this);
+            localTimePatternParser = new FixedFormatInfoPatternParser<LocalTime>(GeneralLocalTimePatternParser, this);
         }
 
         /// <summary>
-        ///   Gets the culture info.
+        /// Gets the culture info associated with this format provider.
         /// </summary>
         public CultureInfo CultureInfo {  get;  private set; }
 
         internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return offsetPatternParser; } }
         internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return instantPatternParser; } }
+        internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return localTimePatternParser; } }
 
         /// <summary>
         ///   Gets or sets the number format.
@@ -112,7 +116,6 @@ namespace NodaTime.Globalization
         /// </value>
         public DateTimeFormatInfo DateTimeFormat
         {
-            
             get { return dateTimeFormat; }
             
             set { SetValue(value, ref dateTimeFormat); }
@@ -183,9 +186,7 @@ namespace NodaTime.Globalization
         /// </value>
         public bool IsReadOnly
         {
-            
             get { return isReadOnly; }
-            
             set
             {
                 if (isReadOnly && value != true)
@@ -204,9 +205,7 @@ namespace NodaTime.Globalization
         /// </value>
         public string OffsetPatternFull
         {
-            
             get { return offsetPatternFull; }
-            
             set { SetValue(value, ref offsetPatternFull); }
         }
 
@@ -219,7 +218,6 @@ namespace NodaTime.Globalization
         public string OffsetPatternLong
         {            
             get { return offsetPatternLong; }
-            
             set { SetValue(value, ref offsetPatternLong); }
         }
 
@@ -231,9 +229,7 @@ namespace NodaTime.Globalization
         /// </value>
         public string OffsetPatternMedium
         {
-            
             get { return offsetPatternMedium; }
-            
             set { SetValue(value, ref offsetPatternMedium); }
         }
 
@@ -303,7 +299,7 @@ namespace NodaTime.Globalization
             lock (Infos) Infos.Clear();
         }
 
-        private void SetValue<T>(T value, ref T property)
+        private void SetValue<T>(T value, ref T property) where T : class
         {
             if (IsReadOnly)
             {

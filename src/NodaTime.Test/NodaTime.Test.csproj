@@ -83,6 +83,9 @@
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
     <Compile Include="Calendars\JulianCalendarSystemTest.cs" />
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
+    <Compile Include="LocalTimeTest.Parse.cs">
+      <DependentUpon>LocalTimeTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="CultureSaver.cs" />
     <Compile Include="Fields\SkipZeroDateTimeFieldTest.cs" />
     <Compile Include="LocalDateTest.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="LocalTimeTest.Operators.cs">
       <DependentUpon>LocalTimeTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Text\LocalTimePatternTestSupport.cs" />
     <Compile Include="Text\FormatHelperTest.cs" />
     <Compile Include="Globalization\FailingCultureInfo.cs" />
     <Compile Include="Globalization\NodaCultureInfoTest.cs" />
@@ -232,6 +236,9 @@
     <Compile Include="TimeZones\ReadWriteTest.cs" />
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
     <Compile Include="ZonedDateTimeTest.cs" />
+    <Compile Include="LocalTimeTest.Format.cs">
+      <DependentUpon>LocalTimeTest.cs</DependentUpon>
+    </Compile>
     <None Include="Tests.nunit" />
     <Compile Include="TimeZones\DateTimeZoneTest.GetZoneIntervals.cs">
       <DependentUpon>DateTimeZoneTest.cs</DependentUpon>

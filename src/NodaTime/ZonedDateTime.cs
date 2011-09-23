@@ -183,6 +183,11 @@ namespace NodaTime
         public int HourOfDay { get { return LocalDateTime.HourOfDay; } }
 
         /// <summary>
+        /// Gets the hour of the half-day of this date and time, in the range 1 to 12 inclusive.
+        /// </summary>
+        public int ClockHourOfHalfDay { get { return LocalDateTime.ClockHourOfHalfDay; } }
+        
+        /// <summary>
         /// Gets the minute of this date and time, in the range 0 to 59 inclusive.
         /// </summary>
         public int MinuteOfHour { get { return LocalDateTime.MinuteOfHour; } }
@@ -208,9 +213,15 @@ namespace NodaTime
         public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
 
         /// <summary>
-        /// Gets the tick of this date and time within the millisceond, in the range 0 to 9,999 inclusive.
+        /// Gets the tick of this date and time within the millisecond, in the range 0 to 9,999 inclusive.
         /// </summary>
         public int TickOfMillisecond { get { return LocalDateTime.TickOfMillisecond; } }
+
+        /// <summary>
+        /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
+        /// </summary>
+        // TODO: Introduce a field for this?
+        public int TickOfSecond { get { return TickOfMillisecond + (int) (MillisecondOfSecond * NodaConstants.TicksPerMillisecond); } }
 
         /// <summary>
         /// Gets the tick of this date and time within the day, in the range 0 to 863,999,999,999 inclusive.

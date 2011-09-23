@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Properties;
@@ -24,7 +25,7 @@ using NodaTime.Text.Patterns;
 
 namespace NodaTime.Text
 {
-    internal class OffsetPatternParser : IPatternParser<Offset>
+    internal sealed class OffsetPatternParser : IPatternParser<Offset>
     {
         private delegate PatternParseResult<Offset> CharacterHandler(PatternCursor patternCursor, SteppedPatternBuilder<Offset, OffsetParseBucket> patternBuilder);
 
@@ -205,7 +206,7 @@ namespace NodaTime.Text
             builder.AddLiteral(pattern.Current, ParseResult<Offset>.EscapedCharacterMismatch);
             return null;
         }
-        
+
         private static PatternParseResult<Offset> HandleColon(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
             string timeSeparator = builder.FormatInfo.TimeSeparator;
@@ -213,7 +214,7 @@ namespace NodaTime.Text
             builder.AddFormatAction((offset, sb) => sb.Append(timeSeparator));
             return null;
         }
-    
+
         private static PatternParseResult<Offset> HandlePeriod(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
             string decimalSeparator = builder.FormatInfo.DecimalSeparator;
@@ -349,7 +350,7 @@ namespace NodaTime.Text
             {
                 return failure;
             }
-            failure = builder.AddField(PatternFields.Milliseconds, pattern.Current);
+            failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
             if (failure != null)
             {
                 return failure;
@@ -397,7 +398,50 @@ namespace NodaTime.Text
             NodaFunc<Offset, string> formatter = value => value.TotalMilliseconds.ToString("N0", formatInfo);
             return new SimplePattern<Offset>(parser, formatter);
         }
-
         #endregion
+
+        /// <summary>
+        /// Provides a container for the interim parsed pieces of an <see cref="Offset" /> value.
+        /// </summary>
+        [DebuggerStepThrough]
+        internal sealed class OffsetParseBucket : ParseBucket<Offset>
+        {
+            /// <summary>
+            /// The hours in the range [0, 23].
+            /// </summary>
+            internal int Hours;
+
+            /// <summary>
+            /// The minutes in the range [0, 59].
+            /// </summary>
+            internal int Minutes;
+
+            /// <summary>
+            /// The seconds in the range [0, 59].
+            /// </summary>
+            internal int Seconds;
+
+            /// <summary>
+            /// The fractions of a second in milliseconds.
+            /// </summary>
+            internal int FractionalSeconds;
+
+            /// <summary>
+            /// Gets a value indicating whether this instance is negative.
+            /// </summary>
+            /// <value>
+            /// <c>true</c> if this instance is negative; otherwise, <c>false</c>.
+            /// </value>
+            public bool IsNegative;
+
+            /// <summary>
+            /// Calculates the value from the parsed pieces.
+            /// </summary>
+            internal override ParseResult<Offset> CalculateValue(PatternFields usedFields)
+            {
+                Offset offset = Offset.Create(Hours, Minutes, Seconds, FractionalSeconds, IsNegative);
+                return ParseResult<Offset>.ForValue(offset);
+            }
+        }
     }
 }

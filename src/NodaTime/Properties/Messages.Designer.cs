@@ -214,6 +214,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The individual values for the fields &apos;{0}&apos; and &apos;{1}&apos; created an inconsistency in the {2} type..
+        /// </summary>
+        internal static string Parse_InconsistentValues2 {
+            get {
+                return ResourceManager.GetString("Parse_InconsistentValues2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value string does not match a simple character in the format string &quot;{0}&quot;..
         /// </summary>
         internal static string Parse_MismatchedCharacter {

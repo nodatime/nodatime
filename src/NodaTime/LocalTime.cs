@@ -17,6 +17,8 @@
 
 using System;
 using NodaTime.Fields;
+using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
 
 namespace NodaTime
 {
@@ -26,6 +28,15 @@ namespace NodaTime
     /// </summary>
     public struct LocalTime : IEquatable<LocalTime>
     {
+        /// <summary>
+        /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
+        /// </summary>
+        public static readonly LocalTime Midnight = new LocalTime(0, 0, 0);
+        /// <summary>
+        /// Local time at noon, i.e. 12 hours, 0 minutes, 0 seconds.
+        /// </summary>
+        public static readonly LocalTime Noon = new LocalTime(12, 0, 0);
+
         private static readonly FieldSet IsoFields = CalendarSystem.Iso.Fields;
 
         private readonly LocalInstant localInstant;
@@ -104,7 +115,12 @@ namespace NodaTime
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
         public int HourOfDay { get { return IsoFields.HourOfDay.GetValue(localInstant); } }
-        
+
+        /// <summary>
+        /// Gets the hour of the half-day of this date and time, in the range 1 to 12 inclusive.
+        /// </summary>
+        public int ClockHourOfHalfDay { get { return IsoFields.ClockHourOfHalfDay.GetValue(localInstant); } }
+
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
         /// </summary>
@@ -131,9 +147,15 @@ namespace NodaTime
         public int MillisecondOfDay { get { return IsoFields.MillisecondOfDay.GetValue(localInstant); } }
 
         /// <summary>
-        /// Gets the tick of this local time within the millisceond, in the range 0 to 9,999 inclusive.
+        /// Gets the tick of this local time within the millisecond, in the range 0 to 9,999 inclusive.
         /// </summary>
         public int TickOfMillisecond { get { return IsoFields.TickOfMillisecond.GetValue(localInstant); ; } }
+
+        /// <summary>
+        /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
+        /// </summary>
+        // TODO: Introduce a field for this?
+        public int TickOfSecond { get { return TickOfMillisecond + (int) (MillisecondOfSecond * NodaConstants.TicksPerMillisecond); } }
 
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
@@ -176,16 +198,6 @@ namespace NodaTime
         public static bool operator !=(LocalTime lhs, LocalTime rhs)
         {
             return lhs.localInstant != rhs.localInstant;
-        }
-
-        /// <summary>
-        /// Converts this local time to text form, using the current format provider's default
-        /// formatting information.
-        /// </summary>
-        public override string ToString()
-        {
-            // TODO: Implement as part of general formatting work
-            return string.Format("{0:00}:{1:00}:{2:00}", HourOfDay, MinuteOfHour, SecondOfMinute);
         }
 
         /// <summary>
@@ -276,5 +288,154 @@ namespace NodaTime
         {
             return LocalDateTime.PlusTicks(ticks).TimeOfDay;
         }
+
+        #region Formatting
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
+        ///   -or- 
+        ///   null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string patternText, IFormatProvider formatProvider)
+        {
+            return LocalTimePattern.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
+        }
+
+        /// <summary>
+        ///   Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return LocalTimePattern.Format(this, null, NodaFormatInfo.CurrentInfo);
+        }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
+        ///   -or- 
+        ///   null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string patternText)
+        {
+            return LocalTimePattern.Format(this, patternText, NodaFormatInfo.CurrentInfo);
+        }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return LocalTimePattern.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
+        }
+        #endregion Formatting
+
+        #region Parsing
+        // TODO: FIXME!
+        private static readonly string[] AllPatterns = { "HH:mm:ss.FFF" };
+        private const string DefaultFormatPattern = "HH:mm:ss.FFF";
+
+        private static readonly PatternBclSupport<LocalTime> LocalTimePattern = new PatternBclSupport<LocalTime>(AllPatterns, DefaultFormatPattern, LocalTime.Midnight, fi => fi.LocalTimePatternParser);
+        /// <summary>
+        /// Parses the given string using the current culture's default format provider.
+        /// </summary>
+        public static LocalTime Parse(string value)
+        {
+            return LocalTimePattern.Parse(value, NodaFormatInfo.CurrentInfo);
+        }
+
+        /// <summary>
+        /// Parses the given string using the specified format provider.
+        /// </summary>
+        public static LocalTime Parse(string value, IFormatProvider formatProvider)
+        {
+            return LocalTimePattern.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
+        }
+
+        /// <summary>
+        /// Parses the given string using the specified format pattern and format provider.
+        /// </summary>
+        public static LocalTime ParseExact(string value, string format, IFormatProvider formatProvider)
+        {
+            return LocalTimePattern.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider));
+        }
+
+        /// <summary>
+        /// Parses the given string using the specified patterns and format provider.
+        /// </summary>
+        public static LocalTime ParseExact(string value, string[] patterns, IFormatProvider formatProvider)
+        {
+            return LocalTimePattern.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
+        }
+
+        /// <summary>
+        /// Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
+        /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="LocalTime.Midnight"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
+        public static bool TryParse(string value, out LocalTime result)
+        {
+            return LocalTimePattern.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
+        }
+
+        /// <summary>
+        /// Attempts to parse the given string using the specified format provider.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="LocalTime.Midnight"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
+        public static bool TryParse(string value, IFormatProvider formatProvider, out LocalTime result)
+        {
+            return LocalTimePattern.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
+        }
+
+        /// <summary>
+        /// Attempts to parse the given string using the specified pattern, format provider and style.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="LocalTime.Midnight"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
+        public static bool TryParseExact(string value, string patternText, IFormatProvider formatProvider, out LocalTime result)
+        {
+            return LocalTimePattern.TryParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider), out result);
+        }
+
+        /// <summary>
+        /// Attempts to parse the given string using the specified patterns and format provider.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="LocalTime.Midnight"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
+        public static bool TryParseExact(string value, string[] patterns, IFormatProvider formatProvider, out LocalTime result)
+        {
+            return LocalTimePattern.TryParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider), out result);
+        }
+        #endregion Parsing
+
     }
 }
