@@ -343,7 +343,6 @@ namespace NodaTime.Text
         private static PatternParseResult<Offset> HandleFractionSpecifier(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
             PatternParseResult<Offset> failure = null;
-            // TODO: fix the scaling of the value
             char patternCharacter = pattern.Current;
             int count = pattern.GetRepeatCount(3, ref failure);
             if (failure != null)

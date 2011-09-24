@@ -144,16 +144,15 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets the negative sign.
+        /// Gets the negative sign.
         /// </summary>
         public string NegativeSign
-        {
-            
+        {            
             get { return NumberFormat.NegativeSign; }
         }
 
         /// <summary>
-        ///   Gets the time separator.
+        /// Gets the time separator.
         /// </summary>
         public string TimeSeparator
         {
@@ -162,16 +161,31 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets the date separator.
+        /// Gets the date separator.
         /// </summary>
         public string DateSeparator
-        {
-            
+        {            
             get { return DateTimeFormat.DateSeparator; }
         }
 
         /// <summary>
-        ///   Gets the <see cref="NodaFormatInfo" /> object for the current thread.
+        /// Gets the AM designator.
+        /// </summary>
+        public string AMDesignator
+        {
+            get { return DateTimeFormat.AMDesignator; }
+        }
+
+        /// <summary>
+        /// Gets the PM designator.
+        /// </summary>
+        public string PMDesignator
+        {
+            get { return DateTimeFormat.PMDesignator; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="NodaFormatInfo" /> object for the current thread.
         /// </summary>
         public static NodaFormatInfo CurrentInfo
         {

@@ -42,7 +42,7 @@ namespace NodaTime.Text
             { 's', HandleSecondSpecifier },
             { 'f', HandleFractionSpecifier },
             { 'F', HandleFractionSpecifier },
-            // TODO: AM/PM designator
+            { 't', HandleAmPmDesignator }
         };
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
@@ -139,7 +139,9 @@ namespace NodaTime.Text
     
         private static PatternParseResult<LocalTime> HandlePeriod(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
         {
-            string decimalSeparator = builder.FormatInfo.DecimalSeparator;
+            // TODO: Verify this... it looks like the decimal separator isn't used by the BCL...
+            // Update docs and offset pattern, probably.
+            string decimalSeparator = ".";// builder.FormatInfo.DecimalSeparator;
             // If the next part of the pattern is an F, then this decimal separator is effectively optional.
             // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
             // seconds part as normal. Otherwise, we continue on to the next parsing token.
@@ -260,7 +262,6 @@ namespace NodaTime.Text
         private static PatternParseResult<LocalTime> HandleFractionSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
         {
             PatternParseResult<LocalTime> failure = null;
-            // TODO: fix the scaling of the value
             char patternCharacter = pattern.Current;
             int count = pattern.GetRepeatCount(FractionOfSecondLength, ref failure);
             if (failure != null)
@@ -288,6 +289,56 @@ namespace NodaTime.Text
             });
             return patternCharacter == 'f' ? builder.AddFormatRightPad(count, FractionOfSecondLength, localTime => localTime.TickOfSecond)
                                            : builder.AddFormatRightPadTruncate(count, FractionOfSecondLength, localTime => localTime.TickOfSecond);
+        }
+
+        private static PatternParseResult<LocalTime> HandleAmPmDesignator(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
+        {
+            PatternParseResult<LocalTime> failure = null;
+            int count = pattern.GetRepeatCount(2, ref failure);
+            if (failure != null)
+            {
+                return failure;
+            }
+            string amDesignator = builder.FormatInfo.AMDesignator;
+            string pmDesignator = builder.FormatInfo.PMDesignator;
+            // TODO: Work out if the single character designator should also consume the full designator if it's present.
+            // Single character designator
+            if (count == 1)
+            {
+                builder.AddParseAction((str, bucket) =>
+                {
+                    if (str.Match(amDesignator[0]))
+                    {
+                        bucket.AmPm = false;
+                        return null;
+                    }
+                    if (str.Match(pmDesignator[0]))
+                    {
+                        bucket.AmPm = true;
+                        return null;
+                    }
+                    return ParseResult<LocalTime>.MissingAmPmDesignator;
+                });
+                builder.AddFormatAction((localTime, sb) => sb.Append(localTime.HourOfDay > 11 ? pmDesignator[0] : amDesignator[0]));
+                return null;
+            }
+            // Full designator
+            builder.AddParseAction((str, bucket) =>
+            {
+                if (str.Match(amDesignator))
+                {
+                    bucket.AmPm = false;
+                    return null;
+                }
+                if (str.Match(pmDesignator))
+                {
+                    bucket.AmPm = true;
+                    return null;
+                }
+                return ParseResult<LocalTime>.MissingAmPmDesignator;
+            });
+            builder.AddFormatAction((localTime, sb) => sb.Append(localTime.HourOfDay > 11 ? pmDesignator : amDesignator));
+            return null;
         }
 
         private static PatternParseResult<LocalTime> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
@@ -322,6 +373,11 @@ namespace NodaTime.Text
             /// The seconds in the range [0, 59].
             /// </summary>
             internal int Seconds;
+
+            /// <summary>
+            /// AM (false) or PM (true).
+            /// </summary>
+            internal bool AmPm = false;
 
             /// <summary>
             /// Calculates the value from the parsed pieces.
