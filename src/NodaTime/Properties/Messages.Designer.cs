@@ -250,6 +250,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value string does not match the AM or PM designator for the culture at the required place..
+        /// </summary>
+        internal static string Parse_MissingAmPmDesignator {
+            get {
+                return ResourceManager.GetString("Parse_MissingAmPmDesignator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The format string contains a decimal separator that does not match the value and the decimal separator is not followed by an &quot;F&quot; pattern character..
         /// </summary>
         internal static string Parse_MissingDecimalSeparator {
