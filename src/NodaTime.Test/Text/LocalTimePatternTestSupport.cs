@@ -53,7 +53,8 @@ namespace NodaTime.Test.Text
         internal static readonly LocalTimeData[] CommonData = {
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = ".", P = "%.", Name = "decimal separator" },
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = ":", P = "%:", Name = "date separator" },
-            new LocalTimeData(LocalTime.Midnight) { C = ItIt, S = ",", P = "%.", Name = "decimal separator" },
+            // TODO: Work out what this should actually do...
+            new LocalTimeData(LocalTime.Midnight) { C = ItIt, S = ".", P = "%.", Name = "decimal separator" },
             new LocalTimeData(LocalTime.Midnight) { C = ItIt, S = ".", P = "%:", Name = "date separator" },
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "H", P = "\\H" },
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "HHss", P = "'HHss'" },
