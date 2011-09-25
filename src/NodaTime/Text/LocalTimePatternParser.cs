@@ -103,6 +103,8 @@ namespace NodaTime.Text
                     return formatInfo.DateTimeFormat.ShortTimePattern;
                 case 'T':
                     return formatInfo.DateTimeFormat.LongTimePattern;
+                case 'r':
+                    return "HH:mm:ss.FFFFFFF";
                 default:
                     // Will be turned into an exception.
                     return null;

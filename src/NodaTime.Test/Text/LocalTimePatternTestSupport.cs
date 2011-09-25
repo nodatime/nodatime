@@ -125,6 +125,21 @@ namespace NodaTime.Test.Text
             new LocalTimeData(5, 6, 7, 8) { C = EnUs, S = "5", P = "%H", PV = new LocalTime(5, 0, 0, 0)  },
             new LocalTimeData(5, 6, 7, 8) { C = EnUs, S = "6", P = "%m", PV = new LocalTime(0, 6, 0, 0)  },
             new LocalTimeData(5, 6, 7, 8) { C = EnUs, S = "7", P = "%s", PV = new LocalTime(0, 0, 7, 0)  },
+            new LocalTimeData(14, 15, 16) { C = EnUs, S = "14:15:16", P = "r" },
+            new LocalTimeData(14, 15, 16, 700) { C = EnUs, S = "14:15:16.7", P = "r" },
+            new LocalTimeData(14, 15, 16, 780) { C = EnUs, S = "14:15:16.78", P = "r" },
+            new LocalTimeData(14, 15, 16, 789) { C = EnUs, S = "14:15:16.789", P = "r" },
+            new LocalTimeData(14, 15, 16, 789, 1000) { C = EnUs, S = "14:15:16.7891", P = "r" },
+            new LocalTimeData(14, 15, 16, 789, 1200) { C = EnUs, S = "14:15:16.78912", P = "r" },
+            new LocalTimeData(14, 15, 16, 789, 1230) { C = EnUs, S = "14:15:16.789123", P = "r" },
+            new LocalTimeData(14, 15, 16, 789, 1234) { C = EnUs, S = "14:15:16.7891234", P = "r" },
+            new LocalTimeData(14, 15, 16, 700) { C = BnBd, S = "14.15.16.7", P = "r" },
+            new LocalTimeData(14, 15, 16, 780) { C = BnBd, S = "14.15.16.78", P = "r" },
+            new LocalTimeData(14, 15, 16, 789) { C = BnBd, S = "14.15.16.789", P = "r" },
+            new LocalTimeData(14, 15, 16, 789, 1000) { C = BnBd, S = "14.15.16.7891", P = "r" },
+            new LocalTimeData(14, 15, 16, 789, 1200) { C = BnBd, S = "14.15.16.78912", P = "r" },
+            new LocalTimeData(14, 15, 16, 789, 1230) { C = BnBd, S = "14.15.16.789123", P = "r" },
+            new LocalTimeData(14, 15, 16, 789, 1234) { C = BnBd, S = "14.15.16.7891234", P = "r" },
         };
 
         internal static readonly LocalTimeData[] InvalidPatterns = {
