@@ -65,6 +65,18 @@ namespace NodaTime.Test.Text
             AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
         }
 
+        [Test]
+        public void CreateWithInvariantInfo_NullPatternText()
+        {
+            Assert.Throws<ArgumentNullException>(() => LocalTimePattern.CreateWithInvariantInfo(null));
+        }
+
+        [Test]
+        public void Create_NullFormatInfo()
+        {
+            Assert.Throws<ArgumentNullException>(() => LocalTimePattern.Create("HH", null));
+        }
+
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             var pattern = LocalTimePattern.Create(patternText, NodaFormatInfo.GetFormatInfo(culture));

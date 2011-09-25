@@ -67,7 +67,15 @@ namespace NodaTime.Text
                 {
                     return PatternParseResult<Offset>.ForValue(CreateNumberPattern(formatInfo));
                 }
-                return ExpandStandardFormatPattern(patternCharacter, formatInfo);
+                if (patternCharacter == 'g')
+                {
+                    return CreateGeneralPattern(formatInfo);
+                }
+                patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
+                if (patternText == null)
+                {
+                    return PatternParseResult<Offset>.UnknownStandardFormat(patternCharacter);
+                }
             }
 
             var patternBuilder = new SteppedPatternBuilder<Offset, OffsetParseBucket>(formatInfo, () => new OffsetParseBucket());
@@ -98,47 +106,40 @@ namespace NodaTime.Text
         }
 
         #region Standard patterns
-        private PatternParseResult<Offset> ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)
+        private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)
         {
-            string singlePatternResource = null;
             switch (patternCharacter)
             {
-                case 'g':
-                {
-                    var patterns = new List<IPattern<Offset>>();
-                    foreach (char c in "flms")
-                    {
-                        // Each of the parsers could fail
-                        var individual = ExpandStandardFormatPattern(c, formatInfo);
-                        if (!individual.Success)
-                        {
-                            return individual;
-                        }
-                        // We know this is safe now.
-                        patterns.Add(individual.GetResultOrThrow());
-                    }
-                    NodaFunc<Offset, string> formatter = value => FormatGeneral(value, patterns);
-                    return PatternParseResult<Offset>.ForValue(new CompositePattern<Offset>(patterns, formatter));
-                }
                 case 'f':
-                    singlePatternResource = "OffsetPatternFull";
-                    break;
+                    return formatInfo.OffsetPatternFull;
                 case 'l':
-                    singlePatternResource = "OffsetPatternLong";
-                    break;
+                    return formatInfo.OffsetPatternLong;
                 case 'm':
-                    singlePatternResource = "OffsetPatternMedium";
-                    break;
+                    return formatInfo.OffsetPatternMedium;
                 case 's':
-                    singlePatternResource = "OffsetPatternShort";
-                    break;
+                    return formatInfo.OffsetPatternShort;
                 default:
                     // Will be turned into an exception.
-                    return PatternParseResult<Offset>.UnknownStandardFormat(patternCharacter);
+                    return null;
             }
-            // TODO: Guard against recursion? Validate that the pattern expands to a longer pattern?
-            string patternText = PatternResources.ResourceManager.GetString(singlePatternResource, formatInfo.CultureInfo);
-            return ParsePattern(patternText, formatInfo);
+        }
+
+        private PatternParseResult<Offset> CreateGeneralPattern(NodaFormatInfo formatInfo)
+        {
+            var patterns = new List<IPattern<Offset>>();
+            foreach (char c in "flms")
+            {
+                // Each of the parsers could fail
+                var individual = ParsePattern(c.ToString(), formatInfo);
+                if (!individual.Success)
+                {
+                    return individual;
+                }
+                // We know this is safe now.
+                patterns.Add(individual.GetResultOrThrow());
+            }
+            NodaFunc<Offset, string> formatter = value => FormatGeneral(value, patterns);
+            return PatternParseResult<Offset>.ForValue(new CompositePattern<Offset>(patterns, formatter));
         }
 
         private string FormatGeneral(Offset value, List<IPattern<Offset>> patterns)

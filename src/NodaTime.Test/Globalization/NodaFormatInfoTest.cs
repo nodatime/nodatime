@@ -47,10 +47,47 @@ namespace NodaTime.Test.Globalization
             Assert.NotNull(info1);
             Assert.IsTrue(info1.IsReadOnly);
 
-            var info2 = (NodaFormatInfo)info1.Clone();
+            var info2 = info1.Clone();
             Assert.IsFalse(info2.IsReadOnly);
             Assert.AreNotSame(info1, info2);
             Assert.AreEqual(info1.Name, info2.Name);
+        }
+
+        [Test]
+        public void TestClone_WithNodaCultureInfo()
+        {
+            NodaCultureInfo culture = NodaCultureInfo.InvariantCulture;
+            NodaFormatInfo formatInfo = new NodaFormatInfo(culture);
+
+            NodaFormatInfo clone = formatInfo.Clone();
+            Assert.AreNotSame(clone, formatInfo);
+            Assert.AreNotSame(clone.CultureInfo, formatInfo.CultureInfo);
+            Assert.AreSame(((NodaCultureInfo)clone.CultureInfo).NodaFormatInfo, clone);
+        }
+
+        [Test]
+        public void TestCloneClonesSubFormatInfo()
+        {
+            var clone1 = (NodaFormatInfo) NodaFormatInfo.InvariantInfo.Clone();
+            var clone2 = (NodaFormatInfo) NodaFormatInfo.InvariantInfo.Clone();
+            Assert.AreNotSame(clone1.CultureInfo, clone2.CultureInfo);
+            Assert.AreNotSame(clone1.NumberFormat, clone2.NumberFormat);
+            Assert.AreNotSame(clone1.DateTimeFormat, clone2.NumberFormat);
+        }
+
+        [Test]
+        public void TestClonePatternParsersUncached()
+        {
+            var offset = Offset.Create(5, 10, 0, 0);
+            var clone1 = NodaFormatInfo.InvariantInfo.Clone();
+            clone1.OffsetPatternLong = "HH";
+            var clone2 = clone1.Clone();
+            clone2.OffsetPatternLong = "mm";
+
+            var pattern1 = clone1.OffsetPatternParser.ParsePattern("l").GetResultOrThrow();
+            var pattern2 = clone2.OffsetPatternParser.ParsePattern("l").GetResultOrThrow();
+            Assert.AreEqual("05", pattern1.Format(offset));
+            Assert.AreEqual("10", pattern2.Format(offset));
         }
 
         [Test]

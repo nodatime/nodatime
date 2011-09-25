@@ -128,11 +128,9 @@ namespace NodaTime.Test.Text
         };
 
         internal static readonly LocalTimeData[] InvalidPatterns = {
-            /* TODO: Bring these back when we have standard patterns
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "123", P = "!", Exception=typeof(InvalidPatternException), Message = Messages.Parse_UnknownStandardFormat, Parameters = {'!', typeof(LocalTime).FullName}},
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "123", P = "%", Exception=typeof(InvalidPatternException), Message = Messages.Parse_UnknownStandardFormat, Parameters = { '%', typeof(LocalTime).FullName } },
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "123", P = "\\", Exception=typeof(InvalidPatternException), Message = Messages.Parse_UnknownStandardFormat, Parameters = { '\\', typeof(LocalTime).FullName } },
-             */
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "123", P = "%%", Exception=typeof(InvalidPatternException), Message = Messages.Parse_PercentDoubled },
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "123", P = "%\\", Exception=typeof(InvalidPatternException), Message = Messages.Parse_EscapeAtEndOfString },
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "123", P = "ffffffff", Exception=typeof(InvalidPatternException), Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'f', 7 } },
