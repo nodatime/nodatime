@@ -83,10 +83,11 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static LocalTimePattern Create(string patternText, NodaFormatInfo formatInfo)
         {
+            // TODO: Work out the best place to do this test. Currently it's also done in LocalTimePatternParser.
             if (patternText == null)
             {
                 throw new ArgumentNullException("patternText");
-            }
+            }            
             if (formatInfo == null)
             {
                 throw new ArgumentNullException("formatInfo");

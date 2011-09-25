@@ -39,9 +39,10 @@ namespace NodaTime.Globalization
         private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser();
         private static readonly IPatternParser<LocalTime> GeneralLocalTimePatternParser = new LocalTimePatternParser();
 
-        private readonly FixedFormatInfoPatternParser<Offset> offsetPatternParser;
-        private readonly FixedFormatInfoPatternParser<Instant> instantPatternParser;
-        private readonly FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
+        // Not read-only as they need to be changed after cloning.
+        private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
+        private FixedFormatInfoPatternParser<Instant> instantPatternParser;
+        private FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
         #endregion
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace NodaTime.Globalization
         private string offsetPatternShort;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="NodaFormatInfo" /> class.
+        /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class.
         /// </summary>
         /// <param name="cultureInfo">The culture info to base this on.</param>
         internal NodaFormatInfo(CultureInfo cultureInfo)
@@ -82,9 +83,9 @@ namespace NodaTime.Globalization
             offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
             offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
 
-            offsetPatternParser = new FixedFormatInfoPatternParser<Offset>(GeneralOffsetPatternParser, this);
-            instantPatternParser = new FixedFormatInfoPatternParser<Instant>(GeneralInstantPatternParser, this);
-            localTimePatternParser = new FixedFormatInfoPatternParser<LocalTime>(GeneralLocalTimePatternParser, this);
+            offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateCachingParser(GeneralOffsetPatternParser, this);
+            instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateCachingParser(GeneralInstantPatternParser, this);
+            localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateCachingParser(GeneralLocalTimePatternParser, this);
         }
 
         /// <summary>
@@ -97,22 +98,23 @@ namespace NodaTime.Globalization
         internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return localTimePatternParser; } }
 
         /// <summary>
-        ///   Gets or sets the number format.
+        /// Gets or sets the number format. This is usually initialized from the <see cref="CultureInfo"/>, but may be
+        /// changed indepedently.
         /// </summary>
         /// <value>
-        ///   The <see cref="NumberFormatInfo" />. May not be <c>null</c>.
+        /// The <see cref="NumberFormatInfo" />. May not be <c>null</c>.
         /// </value>
         public NumberFormatInfo NumberFormat
         {            
-            get { return numberFormat; }            
+            get { return numberFormat; }
             set { SetValue(value, ref numberFormat); }
         }
 
         /// <summary>
-        ///   Gets or sets the date time format.
+        /// Gets or sets the date time format.
         /// </summary>
         /// <value>
-        ///   The <see cref="DateTimeFormatInfo" />. May not be <c>null</c>.
+        /// The <see cref="DateTimeFormatInfo" />. May not be <c>null</c>.
         /// </value>
         public DateTimeFormatInfo DateTimeFormat
         {
@@ -121,7 +123,7 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets the decimal separator.
+        /// Gets the decimal separator from the number format associated with this provider.
         /// </summary>
         public string DecimalSeparator { get { return NumberFormat.NumberDecimalSeparator; } }
 
@@ -239,16 +241,58 @@ namespace NodaTime.Globalization
 
         #region ICloneable Members
         /// <summary>
-        ///   Creates a new object that is a copy of the current instance.
+        /// Creates a new object that is a copy of the current instance.
         /// </summary>
-        /// <returns>
-        ///   A new object that is a copy of this instance.
-        /// </returns>
-        
-        public object Clone()
+        /// <remarks>
+        /// This method is present to implement ICloneable, which has a return value of <see cref="System.Object"/>.
+        /// The implementation simply calls the public <see cref="Clone()"/> method.
+        /// </remarks>
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <remarks>
+        /// The returned value is always writable and independent of the original object. The culture info,
+        /// number format and date/time format all cloned too.
+        /// </remarks>
+        public virtual NodaFormatInfo Clone()
         {
             var info = (NodaFormatInfo)MemberwiseClone();
             info.isReadOnly = false;
+
+            // Take care when cloning culture information - we want two end up with two objects referring to each other
+            var cultureInfo = CultureInfo;
+            var nodaCultureInfo = cultureInfo as NodaCultureInfo;
+            info.CultureInfo = nodaCultureInfo == null ? (CultureInfo) cultureInfo.Clone() : nodaCultureInfo.Clone(info);
+            info.NumberFormat = (NumberFormatInfo) NumberFormat.Clone();
+            info.DateTimeFormat = (DateTimeFormatInfo) DateTimeFormat.Clone();
+            info.offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateNonCachingParser(GeneralOffsetPatternParser, info);
+            info.instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateNonCachingParser(GeneralInstantPatternParser, info);
+            info.localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateNonCachingParser(GeneralLocalTimePatternParser, info);
+            return info;
+        }
+
+        /// <summary>
+        /// Returns a clone with the specified NodaCultureInfo as the CultureInfo.
+        /// This is to avoid stack overflows when cloning a NodaFormatInfo with a NodaCultureInfo. This is slightly tricky,
+        /// as when you clone either a NodaCultureInfo or a NodaFormatInfo with a NodaCultureInfo as its culture, we need
+        /// to create two objects which refer to each other.
+        /// </summary>
+        internal NodaFormatInfo Clone(NodaCultureInfo clonedCultureInfo)
+        {
+            // TODO: Potentially extract common code with the parameterless Clone method above.
+            var info = (NodaFormatInfo)MemberwiseClone();
+            info.isReadOnly = false;
+            info.CultureInfo = clonedCultureInfo;
+            info.NumberFormat = (NumberFormatInfo)NumberFormat.Clone();
+            info.DateTimeFormat = (DateTimeFormatInfo)DateTimeFormat.Clone();
+            info.offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateNonCachingParser(GeneralOffsetPatternParser, info);
+            info.instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateNonCachingParser(GeneralInstantPatternParser, info);
+            info.localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateNonCachingParser(GeneralLocalTimePatternParser, info);
             return info;
         }
         #endregion

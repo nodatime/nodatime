@@ -24,48 +24,81 @@ namespace NodaTime.Text
     /// <summary>
     /// A pattern parser for a single format info, which caches patterns by text/style.
     /// </summary>
-    internal sealed class FixedFormatInfoPatternParser<T>
+    // TODO: Consider making this an interface. It was a sealed class before we needed a non-caching implementation.
+    internal abstract class FixedFormatInfoPatternParser<T>
     {
         private readonly IPatternParser<T> patternParser;
-        // TODO: Replace this with a real LRU cache or something similar.
-        private readonly Dictionary<string, PatternParseResult<T>> cache;
         private readonly NodaFormatInfo formatInfo;
 
-        internal FixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
+        internal abstract PatternParseResult<T> ParsePattern(string pattern);
+
+        private FixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
         {
             this.patternParser = patternParser;
-            // There aren't many valid style combinations, so we partition the caches by style.
-            cache = new Dictionary<string, PatternParseResult<T>>();
             this.formatInfo = formatInfo;
         }
 
-        internal PatternParseResult<T> ParsePattern(string pattern)
+        internal static FixedFormatInfoPatternParser<T> CreateCachingParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
         {
-            // TODO: This currently only caches valid patterns. Is that reasonable?
-
-            // I don't normally like locking on anything other than object, but I trust
-            // Dictionary not to lock on itself.
-            lock (cache)
-            {
-                PatternParseResult<T> cached;
-                if (cache.TryGetValue(pattern, out cached))
-                {
-                    return cached;
-                }
-            }
-
-            // Unlock, create the parser and then update the cache if necessary. We don't want to lock
-            // for longer than we need to.
-            var result = patternParser.ParsePattern(pattern, formatInfo);
-            if (result.Success)
-            {
-                lock (cache)
-                {
-                    cache[pattern] = result;
-                }
-            }
-            return result;
+            return new CachingFixedFormatInfoPatternParser(patternParser, formatInfo);
         }
 
+        internal static FixedFormatInfoPatternParser<T> CreateNonCachingParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
+        {
+            return new NonCachingFixedFormatInfoPatternParser(patternParser, formatInfo);
+        }
+
+        private class CachingFixedFormatInfoPatternParser: FixedFormatInfoPatternParser<T>
+        {
+            // TODO: Replace this with a real LRU cache or something similar.
+            private readonly Dictionary<string, PatternParseResult<T>> cache;
+
+            internal CachingFixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
+                : base(patternParser, formatInfo)
+            {                
+                cache = new Dictionary<string, PatternParseResult<T>>();
+            }
+
+            internal override PatternParseResult<T> ParsePattern(string pattern)
+            {
+                // TODO: This currently only caches valid patterns. Is that reasonable?
+
+                // I don't normally like locking on anything other than object, but I trust
+                // Dictionary not to lock on itself.
+                lock (cache)
+                {
+                    PatternParseResult<T> cached;
+                    if (cache.TryGetValue(pattern, out cached))
+                    {
+                        return cached;
+                    }
+                }
+
+                // Unlock, create the parser and then update the cache if necessary. We don't want to lock
+                // for longer than we need to.
+                var result = patternParser.ParsePattern(pattern, formatInfo);
+                if (result.Success)
+                {
+                    lock (cache)
+                    {
+                        cache[pattern] = result;
+                    }
+                }
+                return result;
+            }
+        }
+
+        private class NonCachingFixedFormatInfoPatternParser : FixedFormatInfoPatternParser<T>
+        {
+            internal NonCachingFixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
+                : base(patternParser, formatInfo)
+            {                
+            }
+
+            internal override PatternParseResult<T>  ParsePattern(string pattern)
+            {
+                return patternParser.ParsePattern(pattern, formatInfo);
+            }
+        }
     }
 }

@@ -58,7 +58,15 @@ namespace NodaTime.Text
                 return PatternParseResult<LocalTime>.FormatStringEmpty;
             }
 
-            // TODO: Standard patterns
+            if (patternText.Length == 1)
+            {
+                char patternCharacter = patternText[0];
+                patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
+                if (patternText == null)
+                {
+                    return PatternParseResult<LocalTime>.UnknownStandardFormat(patternCharacter);
+                }
+            }
 
             var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo, () => new LocalTimeParseBucket());
             var patternCursor = new PatternCursor(patternText);
@@ -85,6 +93,20 @@ namespace NodaTime.Text
                 }
             }
             return PatternParseResult<LocalTime>.ForValue(patternBuilder.Build());
+        }
+
+        private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)
+        {
+            switch (patternCharacter)
+            {
+                case 't':
+                    return formatInfo.DateTimeFormat.ShortTimePattern;
+                case 'T':
+                    return formatInfo.DateTimeFormat.LongTimePattern;
+                default:
+                    // Will be turned into an exception.
+                    return null;
+            }
         }
 
         #region Character handlers

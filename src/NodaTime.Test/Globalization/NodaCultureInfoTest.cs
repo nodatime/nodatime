@@ -32,7 +32,14 @@ namespace NodaTime.Test.Globalization
             var actual1 = NodaCultureInfo.InvariantCulture;
             var actual2 = actual1.Clone();
             Assert.AreNotSame(actual1, actual2);
-            Assert.AreEqual(actual1, actual2);
+            Assert.AreEqual(actual1, actual2);            
+        }
+
+        [Test]
+        public void TestClone_NodaFormatInfoReferences()
+        {
+            var clone = (NodaCultureInfo) NodaCultureInfo.InvariantCulture.Clone();
+            Assert.AreSame(clone, clone.NodaFormatInfo.CultureInfo);
         }
 
         [Test]

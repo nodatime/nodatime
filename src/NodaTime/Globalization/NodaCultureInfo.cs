@@ -147,18 +147,25 @@ namespace NodaTime.Globalization
 
         #region ICloneable Members
         /// <summary>
-        ///   Creates a copy of the current <see cref="T:System.Globalization.CultureInfo" />.
+        /// Creates a copy of the current <see cref="T:System.Globalization.CultureInfo" />.
         /// </summary>
         /// <returns>
-        ///   A copy of the current <see cref="T:System.Globalization.CultureInfo" />.
+        /// A copy of the current <see cref="T:System.Globalization.CultureInfo" />.
         /// </returns>
         public override object Clone()
         {
             var info = (NodaCultureInfo)base.Clone();
             if (formatInfo != null)
             {
-                info.formatInfo = (NodaFormatInfo)formatInfo.Clone();
+                info.formatInfo = formatInfo.Clone(info);
             }
+            return info;
+        }
+
+        internal NodaCultureInfo Clone(NodaFormatInfo formatInfo)
+        {
+            var info = (NodaCultureInfo)base.Clone();
+            info.formatInfo = formatInfo;
             return info;
         }
         #endregion
