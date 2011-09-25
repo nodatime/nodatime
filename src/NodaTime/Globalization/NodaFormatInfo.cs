@@ -81,6 +81,7 @@ namespace NodaTime.Globalization
             OffsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
             offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
             offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
+
             offsetPatternParser = new FixedFormatInfoPatternParser<Offset>(GeneralOffsetPatternParser, this);
             instantPatternParser = new FixedFormatInfoPatternParser<Instant>(GeneralInstantPatternParser, this);
             localTimePatternParser = new FixedFormatInfoPatternParser<LocalTime>(GeneralLocalTimePatternParser, this);
@@ -103,8 +104,7 @@ namespace NodaTime.Globalization
         /// </value>
         public NumberFormatInfo NumberFormat
         {            
-            get { return numberFormat; }
-            
+            get { return numberFormat; }            
             set { SetValue(value, ref numberFormat); }
         }
 
@@ -116,18 +116,14 @@ namespace NodaTime.Globalization
         /// </value>
         public DateTimeFormatInfo DateTimeFormat
         {
-            get { return dateTimeFormat; }
-            
+            get { return dateTimeFormat; }            
             set { SetValue(value, ref dateTimeFormat); }
         }
 
         /// <summary>
         ///   Gets the decimal separator.
         /// </summary>
-        public string DecimalSeparator
-        {            
-            get { return NumberFormat.NumberDecimalSeparator; }
-        }
+        public string DecimalSeparator { get { return NumberFormat.NumberDecimalSeparator; } }
 
         /// <summary>
         /// Name of the culture providing this formatting information.
@@ -137,52 +133,32 @@ namespace NodaTime.Globalization
         /// <summary>
         ///   Gets the positive sign.
         /// </summary>
-        public string PositiveSign
-        {
-            
-            get { return NumberFormat.PositiveSign; }
-        }
+        public string PositiveSign { get { return NumberFormat.PositiveSign; } }
 
         /// <summary>
         /// Gets the negative sign.
         /// </summary>
-        public string NegativeSign
-        {            
-            get { return NumberFormat.NegativeSign; }
-        }
+        public string NegativeSign { get { return NumberFormat.NegativeSign; } }
 
         /// <summary>
         /// Gets the time separator.
         /// </summary>
-        public string TimeSeparator
-        {
-            
-            get { return DateTimeFormat.TimeSeparator; }
-        }
+        public string TimeSeparator { get { return DateTimeFormat.TimeSeparator; } }
 
         /// <summary>
         /// Gets the date separator.
         /// </summary>
-        public string DateSeparator
-        {            
-            get { return DateTimeFormat.DateSeparator; }
-        }
+        public string DateSeparator { get { return DateTimeFormat.DateSeparator; } }
 
         /// <summary>
         /// Gets the AM designator.
         /// </summary>
-        public string AMDesignator
-        {
-            get { return DateTimeFormat.AMDesignator; }
-        }
+        public string AMDesignator { get { return DateTimeFormat.AMDesignator; } }
 
         /// <summary>
         /// Gets the PM designator.
         /// </summary>
-        public string PMDesignator
-        {
-            get { return DateTimeFormat.PMDesignator; }
-        }
+        public string PMDesignator { get { return DateTimeFormat.PMDesignator; } }
 
         /// <summary>
         /// Gets the <see cref="NodaFormatInfo" /> object for the current thread.
@@ -193,10 +169,10 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is read only.
+        /// Gets or sets a value indicating whether this instance is read only.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is read only; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance is read only; otherwise, <c>false</c>.
         /// </value>
         public bool IsReadOnly
         {
@@ -212,10 +188,10 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets or sets the <see cref="Offset" /> "F" pattern.
+        /// Gets or sets the <see cref="Offset" /> "F" pattern.
         /// </summary>
         /// <value>
-        ///   The offset full pattern.
+        /// The full standard offset pattern.
         /// </value>
         public string OffsetPatternFull
         {
@@ -224,10 +200,10 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets or sets the <see cref="Offset" /> "L" pattern.
+        /// Gets or sets the <see cref="Offset" /> "L" pattern.
         /// </summary>
         /// <value>
-        ///   The offset pattern long.
+        /// The long standard offset pattern.
         /// </value>
         public string OffsetPatternLong
         {            
@@ -236,10 +212,10 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets or sets the <see cref="Offset" /> "M" pattern.
+        /// Gets or sets the <see cref="Offset" /> "M" pattern.
         /// </summary>
         /// <value>
-        ///   The offset pattern medium.
+        /// The medium standard offset pattern.
         /// </value>
         public string OffsetPatternMedium
         {
