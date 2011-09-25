@@ -51,6 +51,8 @@ namespace NodaTime.Test.Text
         public static readonly CultureInfo EnUs = new CultureInfo("en-US");
         public static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
         public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
+        // Bengali: uses a time separator of "."
+        public static readonly CultureInfo BnBd = new CultureInfo("bn-BD");
 
         /// <summary>
         /// Runs the format test. If the format string contains a '\0' character (which indicates that
