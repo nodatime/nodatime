@@ -355,9 +355,8 @@ namespace NodaTime
         #endregion Formatting
 
         #region Parsing
-        // TODO: FIXME!
-        private static readonly string[] AllPatterns = { "HH:mm:ss.FFF" };
-        private const string DefaultFormatPattern = "HH:mm:ss.FFF";
+        private static readonly string[] AllPatterns = { "T", "t", "r" }; // Long, short, round-trip
+        private const string DefaultFormatPattern = "T"; // Long
 
         private static readonly PatternBclSupport<LocalTime> LocalTimePattern = new PatternBclSupport<LocalTime>(AllPatterns, DefaultFormatPattern, LocalTime.Midnight, fi => fi.LocalTimePatternParser);
         /// <summary>

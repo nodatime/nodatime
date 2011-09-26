@@ -31,13 +31,21 @@ namespace NodaTime.Test.Text
         /// Test data that can only be used to test formatting.
         /// </summary>
         internal static readonly LocalTimeData[] FormatData = {
-            new LocalTimeData(5, 6, 7, 8) { C = EnUs, S = "", P = "%F"  },
-            new LocalTimeData(5, 6, 7, 8) { C = EnUs, S = "", P = "FF"  },
-            new LocalTimeData(5, 0, 0, 0) { C = EnUs, S = "05:00:00" },
-            new LocalTimeData(5, 12, 0, 0) { C = EnUs, S = "05:12:00" },
-            new LocalTimeData(5, 12, 34, 0) { C = EnUs, S = "05:12:34" },
-            new LocalTimeData(5, 12, 34, 567) { C = EnUs, S = "05:12:34.567" },
-            new LocalTimeData(5, 12, 34, 567, 8901) { C = EnUs, S = "05:12:34.567" }
+            new LocalTimeData(5, 6, 7, 8) { C = Invariant, S = "", P = "%F"  },
+            new LocalTimeData(5, 6, 7, 8) { C = Invariant, S = "", P = "FF"  },
+
+            // Invariant culture uses HH:mm:ss for the "long" pattern
+            new LocalTimeData(5, 0, 0, 0) { C = Invariant, S = "05:00:00" },
+            new LocalTimeData(5, 12, 0, 0) { C = Invariant, S = "05:12:00" },
+            new LocalTimeData(5, 12, 34, 0) { C = Invariant, S = "05:12:34" },
+
+            // US uses hh:mm:ss tt for the "long" pattern
+            new LocalTimeData(17, 0, 0, 0) { C = EnUs, S = "5:00:00 PM" },
+            new LocalTimeData(5, 0, 0, 0) { C = EnUs, S = "5:00:00 AM" },
+            new LocalTimeData(5, 12, 0, 0) { C = EnUs, S = "5:12:00 AM" },
+            new LocalTimeData(5, 12, 34, 0) { C = EnUs, S = "5:12:34 AM" },
+            new LocalTimeData(5, 12, 34, 567) { C = EnUs, S = "5:12:34 AM" },
+            new LocalTimeData(5, 12, 34, 567, 8901) { C = EnUs, S = "5:12:34 AM" }
         };
 
         /// <summary>
