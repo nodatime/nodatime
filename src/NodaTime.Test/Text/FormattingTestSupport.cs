@@ -48,6 +48,7 @@ namespace NodaTime.Test.Text
         /// </summary>
         public const string Nbsp = "\u00a0";
 
+        public static readonly CultureInfo Invariant = CultureInfo.InvariantCulture;
         public static readonly CultureInfo EnUs = new CultureInfo("en-US");
         public static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
         public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
