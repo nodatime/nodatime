@@ -259,15 +259,6 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The format string contains a decimal separator that does not match the value and the decimal separator is not followed by an &quot;F&quot; pattern character..
-        /// </summary>
-        internal static string Parse_MissingDecimalSeparator {
-            get {
-                return ResourceManager.GetString("Parse_MissingDecimalSeparator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The format string is missing the end quote character &quot;{0}&quot;..
         /// </summary>
         internal static string Parse_MissingEndQuote {

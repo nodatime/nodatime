@@ -218,7 +218,8 @@ namespace NodaTime.Text
 
         private static PatternParseResult<Offset> HandlePeriod(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
-            string decimalSeparator = builder.FormatInfo.DecimalSeparator;
+            // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
+
             // If the next part of the pattern is an F, then this decimal separator is effectively optional.
             // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
             // seconds part as normal. Otherwise, we continue on to the next parsing token.
@@ -234,13 +235,13 @@ namespace NodaTime.Text
                 }
                 builder.AddParseAction((valueCursor, bucket) =>
                 {
-                    // If the next token isn't the decimal separator, we assume it's part of the next token in the pattern
-                    if (!valueCursor.Match(decimalSeparator))
+                    // If the next token isn't a period, we assume it's part of the next token in the pattern
+                    if (!valueCursor.Match("."))
                     {
                         return null;
                     }
 
-                    // If there *was* a decimal separator, we should definitely have a number.
+                    // If there *was* a period, we should definitely have a number.
                     int fractionalSeconds;
                     // Last argument is false because we don't need *all* the digits to be present
                     if (!valueCursor.ParseFraction(count, 3, out fractionalSeconds, false))
@@ -251,13 +252,13 @@ namespace NodaTime.Text
                     bucket.FractionalSeconds = fractionalSeconds;
                     return null;
                 });
-                builder.AddFormatAction((offset, sb) => sb.Append(decimalSeparator));
+                builder.AddFormatAction((offset, sb) => sb.Append("."));
                 builder.AddFormatRightPadTruncate(count, 3, offset => offset.FractionalSeconds);
                 return null;
             }
             else
             {
-                return builder.AddLiteral(decimalSeparator, ParseResult<Offset>.MissingDecimalSeparator);
+                return builder.AddLiteral('.', ParseResult<Offset>.MismatchedCharacter);
             }
         }
 

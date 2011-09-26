@@ -145,8 +145,6 @@ namespace NodaTime.Text
             return ForInvalidValue(Messages.Parse_EscapedCharacterMismatch, patternCharacter);
         }
 
-        internal static ParseResult<T> MissingDecimalSeparator = ForInvalidValue(Messages.Parse_MissingDecimalSeparator);
-
         internal static ParseResult<T> TimeSeparatorMismatch = ForInvalidValue(Messages.Parse_TimeSeparatorMismatch);
 
         internal static ParseResult<T> MismatchedNumber(string pattern)
