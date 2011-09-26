@@ -163,9 +163,8 @@ namespace NodaTime.Text
     
         private static PatternParseResult<LocalTime> HandlePeriod(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
         {
-            // TODO: Verify this... it looks like the decimal separator isn't used by the BCL...
-            // Update docs and offset pattern, probably.
-            string decimalSeparator = ".";// builder.FormatInfo.DecimalSeparator;
+            // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
+
             // If the next part of the pattern is an F, then this decimal separator is effectively optional.
             // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
             // seconds part as normal. Otherwise, we continue on to the next parsing token.
@@ -182,7 +181,7 @@ namespace NodaTime.Text
                 builder.AddParseAction((valueCursor, bucket) =>
                 {
                     // If the next token isn't the decimal separator, we assume it's part of the next token in the pattern
-                    if (!valueCursor.Match(decimalSeparator))
+                    if (!valueCursor.Match('.'))
                     {
                         return null;
                     }
@@ -198,13 +197,13 @@ namespace NodaTime.Text
                     bucket.FractionalSeconds = fractionalSeconds;
                     return null;
                 });
-                builder.AddFormatAction((localTime, sb) => sb.Append(decimalSeparator));
+                builder.AddFormatAction((localTime, sb) => sb.Append('.'));
                 builder.AddFormatRightPadTruncate(count, FractionOfSecondLength, localTime => localTime.TickOfSecond);
                 return null;
             }
             else
             {
-                return builder.AddLiteral(decimalSeparator, ParseResult<LocalTime>.MissingDecimalSeparator);
+                return builder.AddLiteral('.', ParseResult<LocalTime>.MismatchedCharacter);
             }
         }
 
