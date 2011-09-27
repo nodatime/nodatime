@@ -322,6 +322,12 @@ namespace NodaTime.Text
             {
                 return failure;
             }
+            failure = builder.AddField(PatternFields.AmPm, pattern.Current);
+            if (failure != null)
+            {
+                return failure;
+            }
+
             string amDesignator = builder.FormatInfo.AMDesignator;
             string pmDesignator = builder.FormatInfo.PMDesignator;
             // TODO: Work out if the single character designator should also consume the full designator if it's present.
@@ -332,12 +338,12 @@ namespace NodaTime.Text
                 {
                     if (str.Match(amDesignator[0]))
                     {
-                        bucket.AmPm = false;
+                        bucket.AmPm = 0;
                         return null;
                     }
                     if (str.Match(pmDesignator[0]))
                     {
-                        bucket.AmPm = true;
+                        bucket.AmPm = 1;
                         return null;
                     }
                     return ParseResult<LocalTime>.MissingAmPmDesignator;
@@ -350,12 +356,12 @@ namespace NodaTime.Text
             {
                 if (str.Match(amDesignator))
                 {
-                    bucket.AmPm = false;
+                    bucket.AmPm = 0;
                     return null;
                 }
                 if (str.Match(pmDesignator))
                 {
-                    bucket.AmPm = true;
+                    bucket.AmPm = 1;
                     return null;
                 }
                 return ParseResult<LocalTime>.MissingAmPmDesignator;
@@ -398,15 +404,16 @@ namespace NodaTime.Text
             internal int Seconds;
 
             /// <summary>
-            /// AM (false) or PM (true).
+            /// AM (0) or PM (1).
             /// </summary>
-            internal bool AmPm = false;
+            internal int AmPm = 0;
 
             /// <summary>
             /// Calculates the value from the parsed pieces.
             /// </summary>            
             internal override ParseResult<LocalTime> CalculateValue(PatternFields usedFields)
             {
+                int hour = Hours24;
                 if ((usedFields & PatternFields.Hours12) != 0 &&
                     (usedFields & PatternFields.Hours24) != 0)
                 {
@@ -415,7 +422,23 @@ namespace NodaTime.Text
                         return ParseResult<LocalTime>.InconsistentValues('h', 'H');
                     }
                 }
-                throw new NotImplementedException();
+                if ((usedFields & PatternFields.Hours24) != 0 &&
+                    (usedFields & PatternFields.AmPm) != 0)
+                {
+                    if (Hours24 / 12 != AmPm)
+                    {
+                        return ParseResult<LocalTime>.InconsistentValues('H', 't');
+                    }
+                }
+                // No 24-hour value; use AM/PM designator and 12-hour value if we have one
+                if ((usedFields & PatternFields.Hours24) == 0)
+                {
+                    hour = (Hours12 % 12) + AmPm * 12;
+                }
+
+                return ParseResult<LocalTime>.ForValue(new LocalTime(hour, Minutes, Seconds,
+                    (int)(FractionalSeconds / NodaConstants.TicksPerSecond),
+                    (int)(FractionalSeconds % NodaConstants.TicksPerSecond)));
             }
         }
     }

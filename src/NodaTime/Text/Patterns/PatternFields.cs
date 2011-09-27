@@ -37,5 +37,6 @@ namespace NodaTime.Text.Patterns
         Minutes = 1 << 3,
         Seconds = 1 << 4,
         FractionalSeconds = 1 << 5,
+        AmPm = 1 << 6
     }
 }
