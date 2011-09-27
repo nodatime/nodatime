@@ -23,7 +23,6 @@ namespace NodaTime.Test
 {
 	public partial class LocalTimeTest
 	{
-        /*
         [Test]
         [TestCaseSource(typeof(LocalTimePatternTestSupport), "AllParseData")]
         public void TestParseExact_multiple(LocalTimePatternTestSupport.LocalTimeData data)
@@ -50,6 +49,6 @@ namespace NodaTime.Test
         public void TestTryParseExact_single(LocalTimePatternTestSupport.LocalTimeData data)
         {
             FormattingTestSupport.RunTryParseSingleTest(data, (string format, out LocalTime value) => LocalTime.TryParseExact(data.S, format, new NodaFormatInfo(data.C), out value));
-        }*/
+        }
 	}
 }
