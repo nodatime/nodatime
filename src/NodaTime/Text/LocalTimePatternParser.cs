@@ -419,7 +419,7 @@ namespace NodaTime.Text
                 {
                     if (Hours12 % 12 != Hours24 % 12)
                     {
-                        return ParseResult<LocalTime>.InconsistentValues('h', 'H');
+                        return ParseResult<LocalTime>.InconsistentValues('H', 'h');
                     }
                 }
                 if ((usedFields & PatternFields.Hours24) != 0 &&
