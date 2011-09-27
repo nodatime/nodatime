@@ -52,6 +52,8 @@ namespace NodaTime.Test.Text
         /// Test data that can only be used to test parsing.
         /// </summary>
         internal static readonly LocalTimeData[] ParseData = {
+            new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "17 6", P="HH h", Exception = typeof(UnparsableValueException), Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName}},
+            new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "17 AM", P="HH tt", Exception = typeof(UnparsableValueException), Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
         };
 
         /// <summary>
@@ -148,6 +150,15 @@ namespace NodaTime.Test.Text
             new LocalTimeData(14, 15, 16, 789, 1200) { C = BnBd, S = "14.15.16.78912", P = "r" },
             new LocalTimeData(14, 15, 16, 789, 1230) { C = BnBd, S = "14.15.16.789123", P = "r" },
             new LocalTimeData(14, 15, 16, 789, 1234) { C = BnBd, S = "14.15.16.7891234", P = "r" },
+
+            // Mixtures of 12 and 24 hour times
+            new LocalTimeData(18, 0, 0) { C = EnUs, S = "18 6 PM", P = "HH h tt" },
+            new LocalTimeData(18, 0, 0) { C = EnUs, S = "18 6", P = "HH h" },
+            new LocalTimeData(18, 0, 0) { C = EnUs, S = "18 PM", P = "HH tt" },
+            new LocalTimeData(18, 0, 0) { C = EnUs, S = "6 PM", P = "h tt" },
+            new LocalTimeData(6, 0, 0) { C = EnUs, S = "6", P = "%h" },
+            new LocalTimeData(0, 0, 0) { C = EnUs, S = "AM", P = "tt" },
+            new LocalTimeData(12, 0, 0) { C = EnUs, S = "PM", P = "tt" },
         };
 
         internal static readonly LocalTimeData[] InvalidPatterns = {
