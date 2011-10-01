@@ -117,7 +117,7 @@ namespace NodaTime
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hour, 0, NodaConstants.HoursPerStandardDay - 1);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minute, 0, NodaConstants.MinutesPerHour - 1);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, second, 0, NodaConstants.SecondsPerMinute - 1);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfSecond, tickWithinSecond, 0, NodaConstants.MillisecondsPerSecond - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfSecond, tickWithinSecond, 0, NodaConstants.TicksPerSecond - 1);
             return new LocalTime(new LocalInstant(
                 hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +

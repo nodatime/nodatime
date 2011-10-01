@@ -154,6 +154,7 @@
     <Compile Include="Text\AbstractFormattingData.cs" />
     <Compile Include="Text\FormattingTestSupport.cs" />
     <Compile Include="Text\OffsetPatternTest.cs" />
+    <Compile Include="Text\ParseBucketTest.cs" />
     <Compile Include="Text\ParseResultTest.cs" />
     <Compile Include="Text\Patterns\PatternCursorTest.cs" />
     <Compile Include="Text\Patterns\PatternParseResultTest.cs" />
@@ -248,6 +249,9 @@
     </Compile>
     <Compile Include="TimeZones\DateTimeZoneTest.LocalConversions.cs">
       <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Text\LocalTimePatternTest.WithTemplateValue.cs">
+      <DependentUpon>LocalTimePatternTest.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
