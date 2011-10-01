@@ -72,7 +72,7 @@ namespace NodaTime
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hour, 0, NodaConstants.HoursPerStandardDay - 1);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minute, 0, NodaConstants.MinutesPerHour - 1);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, second, 0, NodaConstants.SecondsPerMinute - 1);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.MillisecondOfSecond, minute, 0, NodaConstants.MillisecondsPerSecond - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MillisecondOfSecond, millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
             localInstant = new LocalInstant(
                 hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +
@@ -93,14 +93,36 @@ namespace NodaTime
             FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hour, 0, NodaConstants.HoursPerStandardDay - 1);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minute, 0, NodaConstants.MinutesPerHour - 1);
             FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, second, 0, NodaConstants.SecondsPerMinute - 1);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.MillisecondOfSecond, minute, 0, NodaConstants.MillisecondsPerSecond - 1);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfMillisecond, minute, 0, NodaConstants.TicksPerMillisecond - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MillisecondOfSecond, millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfMillisecond, tickWithinMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
             localInstant = new LocalInstant(
                 hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +
                 second * NodaConstants.TicksPerSecond +
                 millisecond * NodaConstants.TicksPerMillisecond +
                 tickWithinMillisecond);
+        }
+
+        /// <summary>
+        /// Factory method for creating a local time from the hour of day, minute of hour, second of minute, and tick of second.
+        /// This is not a constructor overload as it would have the same signature as the one taking millisecond of second.
+        /// </summary>
+        /// <param name="hour">The hour of day in the desired time, in the range [0, 23].</param>
+        /// <param name="minute">The minute of hour in the desired time, in the range [0, 59].</param>
+        /// <param name="second">The second of minute in the desired time, in the range [0, 59].</param>
+        /// <param name="tickWithinSecond">The tick within the second in the desired time, in the range [0, 9999999].</param>
+        /// <returns>The resulting time.</returns>
+        public static LocalTime FromHourMinuteSecondTick(int hour, int minute, int second, int tickWithinSecond)
+        {
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hour, 0, NodaConstants.HoursPerStandardDay - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minute, 0, NodaConstants.MinutesPerHour - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, second, 0, NodaConstants.SecondsPerMinute - 1);
+            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfSecond, tickWithinSecond, 0, NodaConstants.MillisecondsPerSecond - 1);
+            return new LocalTime(new LocalInstant(
+                hour * NodaConstants.TicksPerHour +
+                minute * NodaConstants.TicksPerMinute +
+                second * NodaConstants.TicksPerSecond +
+                tickWithinSecond));
         }
 
         /// <summary>
@@ -149,13 +171,12 @@ namespace NodaTime
         /// <summary>
         /// Gets the tick of this local time within the millisecond, in the range 0 to 9,999 inclusive.
         /// </summary>
-        public int TickOfMillisecond { get { return IsoFields.TickOfMillisecond.GetValue(localInstant); ; } }
+        public int TickOfMillisecond { get { return IsoFields.TickOfMillisecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
-        // TODO: Introduce a field for this?
-        public int TickOfSecond { get { return TickOfMillisecond + (int) (MillisecondOfSecond * NodaConstants.TicksPerMillisecond); } }
+        public int TickOfSecond { get { return IsoFields.TickOfSecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.

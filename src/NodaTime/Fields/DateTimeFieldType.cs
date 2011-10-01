@@ -70,8 +70,9 @@ namespace NodaTime.Fields
                                                                                            DurationFieldType.Milliseconds, 23);
 
         public static readonly DateTimeFieldType TickOfDay = new DateTimeFieldType("TickOfDay", DurationFieldType.Ticks, DurationFieldType.Days, 24);
+        public static readonly DateTimeFieldType TickOfSecond = new DateTimeFieldType("TickOfSecond", DurationFieldType.Ticks, DurationFieldType.Seconds, 25);
 
-        internal static readonly int MaxOrdinal = 24; // Update this if new types are ever added.
+        internal static readonly int MaxOrdinal = 25; // Update this if new types are ever added.
 
         private readonly string name;
         private readonly DurationFieldType durationFieldType;
@@ -158,6 +159,8 @@ namespace NodaTime.Fields
                     return calendar.Fields.TickOfMillisecond;
                 case 24:
                     return calendar.Fields.TickOfDay;
+                case 25:
+                    return calendar.Fields.TickOfSecond;
                 default:
                     throw new InvalidOperationException();
             }

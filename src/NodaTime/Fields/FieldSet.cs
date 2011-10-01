@@ -38,6 +38,7 @@ namespace NodaTime.Fields
         private readonly DurationField centuries;
         private readonly DurationField eras;
 
+        private readonly DateTimeField tickOfSecond;
         private readonly DateTimeField tickOfMillisecond;
         private readonly DateTimeField tickOfDay;
         private readonly DateTimeField millisecondOfSecond;
@@ -78,6 +79,7 @@ namespace NodaTime.Fields
         internal DurationField Centuries { get { return centuries; } }
         internal DurationField Eras { get { return eras; } }
 
+        internal DateTimeField TickOfSecond { get { return tickOfSecond; } }
         internal DateTimeField TickOfMillisecond { get { return tickOfMillisecond; } }
         internal DateTimeField TickOfDay { get { return tickOfDay; } }
         internal DateTimeField MillisecondOfSecond { get { return millisecondOfSecond; } }
@@ -120,6 +122,7 @@ namespace NodaTime.Fields
             centuries = builder.Centuries ?? UnsupportedDurationField.Centuries;
             eras = builder.Eras ?? UnsupportedDurationField.Eras;
 
+            tickOfSecond = builder.TickOfSecond ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.TickOfSecond, ticks);
             tickOfMillisecond = builder.TickOfMillisecond ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.TickOfMillisecond, ticks);
             tickOfDay = builder.TickOfDay ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.TickOfDay, ticks);
             millisecondOfSecond = builder.MillisecondOfSecond ?? UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MillisecondOfSecond, milliseconds);
@@ -176,6 +179,7 @@ namespace NodaTime.Fields
             internal DurationField Centuries { get; set; }
             internal DurationField Eras { get; set; }
 
+            internal DateTimeField TickOfSecond { get; set; }
             internal DateTimeField TickOfMillisecond { get; set; }
             internal DateTimeField TickOfDay { get; set; }
             internal DateTimeField MillisecondOfSecond { get; set; }
@@ -226,6 +230,7 @@ namespace NodaTime.Fields
                 Centuries = baseSet.Centuries;
                 Eras = baseSet.Eras;
 
+                TickOfSecond = baseSet.TickOfSecond;
                 TickOfMillisecond = baseSet.TickOfMillisecond;
                 TickOfDay = baseSet.TickOfDay;
                 MillisecondOfSecond = baseSet.MillisecondOfSecond;
@@ -278,6 +283,7 @@ namespace NodaTime.Fields
                 Centuries = other.Centuries.IsSupported ? other.Centuries : Centuries;
                 Eras = other.Eras.IsSupported ? other.Eras : Eras;
 
+                TickOfSecond = other.TickOfSecond.IsSupported ? other.TickOfSecond : TickOfSecond;
                 TickOfMillisecond = other.TickOfMillisecond.IsSupported ? other.TickOfMillisecond : TickOfMillisecond;
                 TickOfDay = other.TickOfDay.IsSupported ? other.TickOfDay : TickOfDay;
                 MillisecondOfSecond = other.MillisecondOfSecond.IsSupported ? other.MillisecondOfSecond : MillisecondOfSecond;

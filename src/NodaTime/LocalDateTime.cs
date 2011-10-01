@@ -337,8 +337,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
-        // TODO: Introduce a field for this?
-        public int TickOfSecond { get { return TickOfMillisecond + (int) (MillisecondOfSecond * NodaConstants.TicksPerMillisecond); } }
+        public int TickOfSecond { get { return calendar.Fields.TickOfSecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local date and time within the day, in the range 0 to 863,999,999,999 inclusive.
