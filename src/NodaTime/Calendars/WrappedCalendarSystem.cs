@@ -48,9 +48,12 @@ namespace NodaTime.Calendars
             // Work out which fields from the base are still valid, so we can
             // optimize by calling directly to the base calendar sometimes.
             FieldSet baseFields = baseCalendar.Fields;
-            useBaseTimeOfDayFields = baseFields.HourOfDay == Fields.HourOfDay && baseFields.MinuteOfHour == Fields.MinuteOfHour &&
-                                        baseFields.SecondOfMinute == Fields.SecondOfMinute && baseFields.MillisecondOfSecond == Fields.MillisecondOfSecond &&
-                                        baseFields.TickOfMillisecond == Fields.TickOfMillisecond;
+            useBaseTimeOfDayFields = baseFields.HourOfDay == Fields.HourOfDay && 
+                                        baseFields.MinuteOfHour == Fields.MinuteOfHour &&
+                                        baseFields.SecondOfMinute == Fields.SecondOfMinute && 
+                                        baseFields.MillisecondOfSecond == Fields.MillisecondOfSecond &&
+                                        baseFields.TickOfMillisecond == Fields.TickOfMillisecond &&
+                                        baseFields.TickOfSecond == Fields.TickOfSecond;
             useBaseTickOfDayFields = baseFields.TickOfDay == Fields.TickOfDay;
             useBaseYearMonthDayFields = baseFields.Year == Fields.Year && baseFields.MonthOfYear == Fields.MonthOfYear &&
                                         baseFields.DayOfMonth == Fields.DayOfMonth;

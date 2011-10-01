@@ -60,6 +60,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(0, epoch.MillisecondOfDay);
             Assert.AreEqual(0, epoch.TickOfDay);
             Assert.AreEqual(0, epoch.TickOfMillisecond);
+            Assert.AreEqual(0, epoch.TickOfSecond);
         }
 
         [Test]
@@ -87,6 +88,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(345 + now.SecondOfDay * 1000, now.MillisecondOfDay);
             Assert.AreEqual(now.MillisecondOfDay * 10000L + 8765, now.TickOfDay);
             Assert.AreEqual(8765, now.TickOfMillisecond);
+            Assert.AreEqual(3458765, now.TickOfSecond);
         }
 
         [Test]

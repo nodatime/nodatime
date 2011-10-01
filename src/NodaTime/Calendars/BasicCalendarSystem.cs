@@ -64,6 +64,7 @@ namespace NodaTime.Calendars
                                            Days = PreciseDurationField.Days,
                                            Weeks = PreciseDurationField.Weeks
                                        };
+            builder.TickOfSecond = new PreciseDateTimeField(DateTimeFieldType.TickOfSecond, builder.Ticks, builder.Seconds);
             builder.TickOfMillisecond = new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, builder.Ticks, builder.Milliseconds);
             builder.TickOfDay = new PreciseDateTimeField(DateTimeFieldType.TickOfDay, builder.Ticks, builder.Days);
             builder.MillisecondOfSecond = new PreciseDateTimeField(DateTimeFieldType.MillisecondOfSecond, builder.Milliseconds, builder.Seconds);
