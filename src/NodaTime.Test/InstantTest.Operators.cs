@@ -119,38 +119,6 @@ namespace NodaTime.Test
         }
         #endregion
 
-        #region CompareTo
-        [Test]
-        public void CompareTo_Self_IsEqual()
-        {
-            Assert.AreEqual(0, one.CompareTo(one), "1 == 1 (same object)");
-        }
-
-        [Test]
-        public void CompareTo_WithEqualTicks_IsEqual()
-        {
-            Assert.AreEqual(0, one.CompareTo(onePrime), "1 == 1 (different objects)");
-        }
-
-        [Test]
-        public void CompareTo_WithMoreTicks_IsGreater()
-        {
-            Assert.Greater(one.CompareTo(negativeFiftyMillion), 0, "1 > -50,000,000");
-            Assert.Greater(threeMillion.CompareTo(one), 0, "3,000,000 > 1");
-            Assert.Greater(negativeOne.CompareTo(negativeFiftyMillion), 0, "-1 > -50,000,000");
-            Assert.Greater(Instant.MaxValue.CompareTo(Instant.MinValue), 0, "MaxValue > MinValue");
-        }
-
-        [Test]
-        public void CompareTo_WithLessTicks_IsLess()
-        {
-            Assert.Less(negativeFiftyMillion.CompareTo(one), 0, "-50,000,000 < 1");
-            Assert.Less(one.CompareTo(threeMillion), 0, "1 < 3,000,000");
-            Assert.Less(negativeFiftyMillion.CompareTo(negativeOne), 0, "-50,000,000 > -1");
-            Assert.Less(Instant.MinValue.CompareTo(Instant.MaxValue), 0, "MinValue < MaxValue");
-        }
-        #endregion
-
         #region operator ==
         [Test]
         public void OperatorEquals_ToSelf_IsTrue()
@@ -384,6 +352,17 @@ namespace NodaTime.Test
             Assert.AreEqual(2999999L, (threeMillion - one).Ticks, "3,000,000 - 1");
             Assert.AreEqual(2L, (one - negativeOne).Ticks, "1 - (-1)");
             Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).Ticks, "-50,000,000 - 1");
+        }
+        #endregion
+
+        #region IComparable and IComparable{T}
+        [Test]
+        public void CompareTo()
+        {
+            TestHelper.TestCompareToStruct(one, one, threeMillion);
+            TestHelper.TestCompareToStruct(Instant.MinValue, Instant.MinValue, Instant.MaxValue);
+            TestHelper.TestNonGenericCompareTo(one, one, threeMillion);
+            TestHelper.TestNonGenericCompareTo(Instant.MinValue, Instant.MinValue, Instant.MaxValue);
         }
         #endregion
     }

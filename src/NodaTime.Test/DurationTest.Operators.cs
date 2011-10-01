@@ -33,6 +33,7 @@ namespace NodaTime.Test
         public void Comparison()
         {
             TestHelper.TestCompareToStruct(negativeFiftyMillion, new Duration(-50000000), threeMillion);
+            TestHelper.TestNonGenericCompareTo(negativeFiftyMillion, new Duration(-50000000), threeMillion);
             TestHelper.TestOperatorComparisonEquality(negativeFiftyMillion, new Duration(-50000000), threeMillion);
         }
 

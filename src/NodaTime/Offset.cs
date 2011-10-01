@@ -44,7 +44,7 @@ namespace NodaTime
     ///     This type is immutable and thread-safe.
     ///   </para>
     /// </remarks>
-    public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable
+    public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable
     {
         /// <summary>
         /// An offset of zero ticks - effectively the permanent offset for UTC.
@@ -312,6 +312,30 @@ namespace NodaTime
         public int CompareTo(Offset other)
         {
             return TotalMilliseconds.CompareTo(other.TotalMilliseconds);
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two offsets.
+        /// </summary>
+        /// <remarks>
+        /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
+        /// </remarks>
+        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="Offset"/>.</exception>
+        /// <param name="obj">The object to compare this value with.</param>
+        /// <returns>The result of comparing this instant with another one; see <see cref="CompareTo(NodaTime.Offset)"/> for general details.
+        /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
+        /// </returns>
+        int IComparable.CompareTo(object obj)
+        {
+            if (obj == null)
+            {
+                return 1;
+            }
+            if (!(obj is Offset))
+            {
+                throw new ArgumentException("Argument did not refer to an instance of NodaTime.Offset.", "obj");
+            }
+            return CompareTo((Offset)obj);
         }
         #endregion
 

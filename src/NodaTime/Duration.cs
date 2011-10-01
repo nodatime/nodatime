@@ -33,7 +33,7 @@ namespace NodaTime
     /// This type is immutable and thread-safe.
     /// </para>
     /// </remarks>
-    public struct Duration : IEquatable<Duration>, IComparable<Duration>
+    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable
     {
         #region Public readonly fields
         /// <summary>
@@ -430,6 +430,30 @@ namespace NodaTime
         public int CompareTo(Duration other)
         {
             return Ticks.CompareTo(other.Ticks);
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two offsets.
+        /// </summary>
+        /// <remarks>
+        /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
+        /// </remarks>
+        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="Duration"/>.</exception>
+        /// <param name="obj">The object to compare this value with.</param>
+        /// <returns>The result of comparing this instant with another one; see <see cref="CompareTo(NodaTime.Duration)"/> for general details.
+        /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
+        /// </returns>
+        int IComparable.CompareTo(object obj)
+        {
+            if (obj == null)
+            {
+                return 1;
+            }
+            if (!(obj is Duration))
+            {
+                throw new ArgumentException("Argument did not refer to an instance of NodaTime.Duration.", "obj");
+            }
+            return CompareTo((Duration)obj);
         }
         #endregion
 
