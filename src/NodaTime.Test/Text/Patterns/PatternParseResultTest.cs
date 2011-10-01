@@ -18,7 +18,6 @@
 using System;
 using NUnit.Framework;
 using NodaTime.Text;
-using NodaTime.Text;
 using NodaTime.Text.Patterns;
 
 namespace NodaTime.Test.Text.Patterns

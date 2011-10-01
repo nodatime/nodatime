@@ -30,6 +30,7 @@ namespace NodaTime.Test
 
             TestHelper.TestEqualsStruct(value, equalValue, greaterValue);
             TestHelper.TestCompareToStruct(value, equalValue, greaterValue);
+            TestHelper.TestNonGenericCompareTo(value, equalValue, greaterValue);
             TestHelper.TestOperatorComparisonEquality(value, equalValue, greaterValue);
         }
 

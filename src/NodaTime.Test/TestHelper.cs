@@ -26,7 +26,7 @@ namespace NodaTime.Test
     public static class TestHelper
     {
         /// <summary>
-        ///   Tests the <see cref="IComparable.CompareTo" /> method for reference objects.
+        ///   Tests the <see cref="IComparable{T}.CompareTo" /> method for reference objects.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
@@ -44,7 +44,7 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the <see cref="IComparable.CompareTo" /> method for value objects.
+        /// Tests the <see cref="IComparable{T}.CompareTo" /> method for value objects.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
@@ -53,11 +53,35 @@ namespace NodaTime.Test
         public static void TestCompareToStruct<T>(T value, T equalValue, T greaterValue) where T : struct, IComparable<T>
         {
             ValidateInput(value, equalValue, greaterValue, "greaterValue");
-            Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo<T>(value)");
-            Assert.AreEqual(value.CompareTo(equalValue), 0, "value.CompareTo<T>(equalValue)");
-            Assert.AreEqual(equalValue.CompareTo(value), 0, "equalValue.CompareTo<T>(value)");
-            Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo<T>(greaterValue)");
-            Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo<T>(value)");
+            Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo(value)");
+            Assert.AreEqual(value.CompareTo(equalValue), 0, "value.CompareTo(equalValue)");
+            Assert.AreEqual(equalValue.CompareTo(value), 0, "equalValue.CompareTo(value)");
+            Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo(greaterValue)");
+            Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo(value)");
+        }
+
+        /// <summary>
+        /// Tests the <see cref="IComparable.CompareTo" /> method - note that this is the non-generic interface.
+        /// </summary>
+        /// <typeparam name="T">The type to test.</typeparam>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="greaterValue">The value greater than the base value..</param>
+        public static void TestNonGenericCompareTo<T>(T value, T equalValue, T greaterValue) where T : IComparable
+        {
+            // Just type the values as plain IComparable for simplicity
+            IComparable value2 = value;
+            IComparable equalValue2 = equalValue;
+            IComparable greaterValue2 = greaterValue;
+
+            ValidateInput(value2, equalValue2, greaterValue2, "greaterValue");
+            Assert.Greater(value2.CompareTo(null), 0, "value.CompareTo<T>(null)");
+            Assert.AreEqual(value2.CompareTo(value2), 0, "value.CompareTo<T>(value)");
+            Assert.AreEqual(value2.CompareTo(equalValue2), 0, "value.CompareTo<T>(equalValue)");
+            Assert.AreEqual(equalValue2.CompareTo(value2), 0, "equalValue.CompareTo<T>(value)");
+            Assert.Less(value2.CompareTo(greaterValue2), 0, "value.CompareTo<T>(greaterValue)");
+            Assert.Greater(greaterValue2.CompareTo(value2), 0, "greaterValue.CompareTo<T>(value)");
+            Assert.Throws<ArgumentException>(() => value2.CompareTo(new object()));
         }
 
         /// <summary>

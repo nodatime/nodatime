@@ -26,7 +26,7 @@ namespace NodaTime
     /// of the same date in UTC. This needs a better description, and possibly a better name
     /// at some point...
     /// </summary>
-    internal struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>
+    internal struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>, IComparable
     {
         public static readonly LocalInstant LocalUnixEpoch = new LocalInstant(0);
         public static readonly LocalInstant MinValue = new LocalInstant(Int64.MinValue);
@@ -251,6 +251,30 @@ namespace NodaTime
         public int CompareTo(LocalInstant other)
         {
             return Ticks.CompareTo(other.Ticks);
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two local instants.
+        /// </summary>
+        /// <remarks>
+        /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
+        /// </remarks>
+        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="LocalInstant"/>.</exception>
+        /// <param name="obj">The object to compare this value with.</param>
+        /// <returns>The result of comparing this instant with another one; see <see cref="CompareTo(NodaTime.LocalInstant)"/> for general details.
+        /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
+        /// </returns>
+        int IComparable.CompareTo(object obj)
+        {
+            if (obj == null)
+            {
+                return 1;
+            }
+            if (!(obj is LocalInstant))
+            {
+                throw new ArgumentException("Argument did not refer to an instance of NodaTime.LocalInstant.", "obj");
+            }
+            return CompareTo((LocalInstant)obj);
         }
         #endregion
 

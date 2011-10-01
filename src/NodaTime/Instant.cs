@@ -31,7 +31,7 @@ namespace NodaTime
     /// <remarks>
     ///   This type is immutable and thread-safe.
     /// </remarks>
-    public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable
+    public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable
     {
         /// <summary>
         /// String used to represent "the beginning of time" (as far as Noda Time is concerned).
@@ -72,9 +72,9 @@ namespace NodaTime
         /// </summary>
         public long Ticks { get { return ticks; } }
 
-        #region IComparable<Instant> Members
+        #region IComparable<Instant> and IComparable Members
         /// <summary>
-        ///   Compares the current object with another object of the same type.
+        /// Compares the current object with another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>
@@ -102,6 +102,30 @@ namespace NodaTime
         public int CompareTo(Instant other)
         {
             return Ticks.CompareTo(other.Ticks);
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two instants.
+        /// </summary>
+        /// <remarks>
+        /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
+        /// </remarks>
+        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="Instant"/>.</exception>
+        /// <param name="obj">The object to compare this value with.</param>
+        /// <returns>The result of comparing this instant with another one; see <see cref="CompareTo(NodaTime.Instant)"/> for general details.
+        /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
+        /// </returns>
+        int IComparable.CompareTo(object obj)
+        {
+            if (obj == null)
+            {
+                return 1;
+            }
+            if (!(obj is Instant))
+            {
+                throw new ArgumentException("Argument did not refer to an instance of NodaTime.Instant.", "obj");
+            }
+            return CompareTo((Instant)obj);
         }
         #endregion
 

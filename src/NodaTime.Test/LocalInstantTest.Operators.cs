@@ -151,6 +151,19 @@ namespace NodaTime.Test
         }
         #endregion
 
+        [Test]
+        public void IEquatableIComparable_Tests()
+        {
+            var value = new LocalInstant(12345);
+            var equalValue = new LocalInstant(12345);
+            var greaterValue = new LocalInstant(5432199);
+
+            TestHelper.TestEqualsStruct(value, equalValue, greaterValue);
+            TestHelper.TestCompareToStruct(value, equalValue, greaterValue);
+            TestHelper.TestNonGenericCompareTo(value, equalValue, greaterValue);
+            TestHelper.TestOperatorComparisonEquality(value, equalValue, greaterValue);
+        }
+
         #region operator ==
         [Test]
         public void OperatorEquals_ToSelf_IsTrue()
