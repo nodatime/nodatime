@@ -29,6 +29,18 @@ namespace NodaTime.Text
         /// Performs the final conversion from fields to a value. The parse can still fail here, if there
         /// are incompatible field values.
         /// </summary>
+        /// <param name="usedFields">Indicates which fields were part of the original text pattern.</param>
+        /// <param name="templateValue">The template value to use for unspecified fields.</param>
         internal abstract ParseResult<T> CalculateValue(PatternFields usedFields);
+
+        /// <summary>
+        /// Convenience method to check whether a particular field has been used. It's here as it'll primarily
+        /// be used by buckets; ideally we'd make it an extension method on PatternFields, or use Unconstrained
+        /// Melody...
+        /// </summary>
+        internal static bool IsFieldUsed(PatternFields usedFields, PatternFields fieldToTest)
+        {
+            return (usedFields & fieldToTest) != 0;
+        }
     }
 }

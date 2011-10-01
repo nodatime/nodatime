@@ -164,7 +164,8 @@ namespace NodaTime.Test.Text
             };
             if (data.Exception == null)
             {
-                Assert.AreEqual(data.PV, doit(pattern));
+                var actual = doit(pattern);
+                Assert.AreEqual(data.PV, actual);
             }
             else if (data.Message != null)
             {

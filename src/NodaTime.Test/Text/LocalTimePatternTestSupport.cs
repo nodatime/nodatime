@@ -56,6 +56,25 @@ namespace NodaTime.Test.Text
             new LocalTimeData(LocalTime.Midnight) { C = EnUs, S = "17 AM", P="HH tt", Exception = typeof(UnparsableValueException), Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
         };
 
+        internal static readonly LocalTimeData[] TemplateValueData = {
+            // Pattern specifies nothing - template value is passed through
+            new LocalTimeData(new LocalTime(1, 2, 3, 4, 5)) { C = EnUs, S = "X", P="%X", TemplateValue = new LocalTime(1, 2, 3, 4, 5) },
+            // Tests for each individual field being propagated
+            new LocalTimeData(new LocalTime(1, 6, 7, 8, 9)) { C = EnUs, S = "06:07.0080009", P="mm:ss.FFFFFFF", TemplateValue = new LocalTime(1, 2, 3, 4, 5) },
+            new LocalTimeData(new LocalTime(6, 2, 7, 8, 9)) { C = EnUs, S = "06:07.0080009", P="HH:ss.FFFFFFF", TemplateValue = new LocalTime(1, 2, 3, 4, 5) },
+            new LocalTimeData(new LocalTime(6, 7, 3, 8, 9)) { C = EnUs, S = "06:07.0080009", P="HH:mm.FFFFFFF", TemplateValue = new LocalTime(1, 2, 3, 4, 5) },
+            new LocalTimeData(new LocalTime(6, 7, 8, 4, 5)) { C = EnUs, S = "06:07:08", P="HH:mm:ss", TemplateValue = new LocalTime(1, 2, 3, 4, 5) },
+
+            // Hours are tricky because of the ways they can be specified
+            new LocalTimeData(new LocalTime(6, 2, 3)) { C = EnUs, S = "6", P="%h", TemplateValue = new LocalTime(1, 2, 3) },
+            new LocalTimeData(new LocalTime(18, 2, 3)) { C = EnUs, S = "6", P="%h", TemplateValue = new LocalTime(14, 2, 3) },
+            new LocalTimeData(new LocalTime(2, 2, 3)) { C = EnUs, S = "AM", P="tt", TemplateValue = new LocalTime(14, 2, 3) },
+            new LocalTimeData(new LocalTime(14, 2, 3)) { C = EnUs, S = "PM", P="tt", TemplateValue = new LocalTime(14, 2, 3) },
+            new LocalTimeData(new LocalTime(2, 2, 3)) { C = EnUs, S = "AM", P="tt", TemplateValue = new LocalTime(2, 2, 3) },
+            new LocalTimeData(new LocalTime(14, 2, 3)) { C = EnUs, S = "PM", P="tt", TemplateValue = new LocalTime(2, 2, 3) },
+            new LocalTimeData(new LocalTime(17, 2, 3)) { C = EnUs, S = "5 PM", P="h tt", TemplateValue = new LocalTime(1, 2, 3) },
+        };
+
         /// <summary>
         /// Common test data for both formatting and parsing. A test should be placed here unless is truly
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
@@ -190,6 +209,8 @@ namespace NodaTime.Test.Text
         /// </summary>
         public sealed class LocalTimeData : AbstractFormattingData<LocalTime>
         {
+            public LocalTime TemplateValue { get; set; }
+
             /// <summary>
             /// Initializes a new instance of the <see cref="LocalTimeData" /> class.
             /// </summary>
@@ -197,6 +218,8 @@ namespace NodaTime.Test.Text
             public LocalTimeData(LocalTime value)
                 : base(value)
             {
+                // Default to midnight
+                TemplateValue = LocalTime.Midnight;
             }
 
             public LocalTimeData(int hours, int minutes, int seconds)

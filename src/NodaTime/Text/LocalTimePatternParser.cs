@@ -22,8 +22,13 @@ using NodaTime.Text.Patterns;
 
 namespace NodaTime.Text
 {
+    /// <summary>
+    /// Pattern parser for <see cref="LocalTime"/> values.
+    /// </summary>
     internal sealed class LocalTimePatternParser : IPatternParser<LocalTime>
     {
+        private readonly LocalTime templateValue;
+
         private const int FractionOfSecondLength = 7;
         private delegate PatternParseResult<LocalTime> CharacterHandler(PatternCursor patternCursor, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> patternBuilder);
 
@@ -44,6 +49,11 @@ namespace NodaTime.Text
             { 'F', HandleFractionSpecifier },
             { 't', HandleAmPmDesignator }
         };
+
+        public LocalTimePatternParser(LocalTime templateValue)
+        {
+            this.templateValue = templateValue;
+        }
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
         // interface implementation.
@@ -68,7 +78,7 @@ namespace NodaTime.Text
                 }
             }
 
-            var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo, () => new LocalTimeParseBucket());
+            var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo, () => new LocalTimeParseBucket(templateValue));
             var patternCursor = new PatternCursor(patternText);
 
             // Prime the pump...
@@ -174,6 +184,11 @@ namespace NodaTime.Text
                 PatternParseResult<LocalTime> failure = null;
                 pattern.MoveNext();
                 int count = pattern.GetRepeatCount(FractionOfSecondLength, ref failure);
+                if (failure != null)
+                {
+                    return failure;
+                }
+                failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
                 if (failure != null)
                 {
                     return failure;
@@ -378,6 +393,8 @@ namespace NodaTime.Text
 
         private sealed class LocalTimeParseBucket : ParseBucket<LocalTime>
         {
+            private readonly LocalTime templateValue;
+
             /// <summary>
             /// The fractions of a second in ticks, in the range [0, 9999999]
             /// </summary>
@@ -408,37 +425,70 @@ namespace NodaTime.Text
             /// </summary>
             internal int AmPm = 0;
 
+            internal LocalTimeParseBucket(LocalTime templateValue)
+            {
+                this.templateValue = templateValue;
+            }
+
             /// <summary>
             /// Calculates the value from the parsed pieces.
             /// </summary>            
             internal override ParseResult<LocalTime> CalculateValue(PatternFields usedFields)
             {
-                int hour = Hours24;
-                if ((usedFields & PatternFields.Hours12) != 0 &&
-                    (usedFields & PatternFields.Hours24) != 0)
+                int hour;
+                ParseResult<LocalTime> failure = DetermineHour(usedFields, out hour);
+                if (failure != null)
                 {
-                    if (Hours12 % 12 != Hours24 % 12)
-                    {
-                        return ParseResult<LocalTime>.InconsistentValues('H', 'h');
-                    }
+                    return failure;
                 }
-                if ((usedFields & PatternFields.Hours24) != 0 &&
-                    (usedFields & PatternFields.AmPm) != 0)
-                {
-                    if (Hours24 / 12 != AmPm)
-                    {
-                        return ParseResult<LocalTime>.InconsistentValues('H', 't');
-                    }
-                }
-                // No 24-hour value; use AM/PM designator and 12-hour value if we have one
-                if ((usedFields & PatternFields.Hours24) == 0)
-                {
-                    hour = (Hours12 % 12) + AmPm * 12;
-                }
+                int minutes = IsFieldUsed(usedFields, PatternFields.Minutes) ? Minutes : templateValue.MinuteOfHour;
+                int seconds = IsFieldUsed(usedFields, PatternFields.Seconds) ? Seconds : templateValue.SecondOfMinute;
+                int fraction = IsFieldUsed(usedFields, PatternFields.FractionalSeconds) ? FractionalSeconds : templateValue.TickOfSecond;
 
-                return ParseResult<LocalTime>.ForValue(new LocalTime(hour, Minutes, Seconds,
-                    (int)(FractionalSeconds / NodaConstants.TicksPerSecond),
-                    (int)(FractionalSeconds % NodaConstants.TicksPerSecond)));
+                return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondTick(hour, minutes, seconds, fraction));
+            }
+
+            private ParseResult<LocalTime> DetermineHour(PatternFields usedFields, out int hour)
+            {
+                hour = 0;
+                if (IsFieldUsed(usedFields, PatternFields.Hours24))
+                {
+                    if (IsFieldUsed(usedFields, PatternFields.Hours12) && IsFieldUsed(usedFields, PatternFields.Hours24))
+                    {
+                        if (Hours12 % 12 != Hours24 % 12)
+                        {
+                            return ParseResult<LocalTime>.InconsistentValues('H', 'h');
+                        }
+                    }
+                    if (IsFieldUsed(usedFields, PatternFields.AmPm))
+                    {
+                        if (Hours24 / 12 != AmPm)
+                        {
+                            return ParseResult<LocalTime>.InconsistentValues('H', 't');
+                        }
+                    }
+                    hour = Hours24;
+                    return null;
+                }
+                // Okay, it's definitely valid - but we've still got 8 possibilities for what's been specified.
+                switch (usedFields & (PatternFields.Hours12 | PatternFields.AmPm))
+                {
+                    case PatternFields.Hours12 | PatternFields.AmPm:
+                        hour = (Hours12 % 12) + AmPm * 12;
+                        break;
+                    case PatternFields.Hours12:
+                        // Preserve AM/PM from template value
+                        hour = (Hours12 % 12) + (templateValue.HourOfDay / 12) * 12;
+                        break;
+                    case PatternFields.AmPm:
+                        // Preserve 12-hour hour of day from template value, use specified AM/PM
+                        hour = (templateValue.HourOfDay % 12) + AmPm * 12;
+                        break;
+                    case 0:
+                        hour = templateValue.HourOfDay;
+                        break;
+                }
+                return null;
             }
         }
     }

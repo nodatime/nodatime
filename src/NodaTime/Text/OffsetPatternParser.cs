@@ -233,6 +233,11 @@ namespace NodaTime.Text
                 {
                     return failure;
                 }
+                failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
+                if (failure != null)
+                {
+                    return failure;
+                }
                 builder.AddParseAction((valueCursor, bucket) =>
                 {
                     // If the next token isn't a period, we assume it's part of the next token in the pattern

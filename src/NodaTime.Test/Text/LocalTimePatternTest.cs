@@ -26,7 +26,7 @@ using NodaTime.Text;
 namespace NodaTime.Test.Text
 {
     [TestFixture]
-    public class LocalTimePatternTest
+    public partial class LocalTimePatternTest
     {
         // Used by tests via reflection - do not remove!
         private static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();

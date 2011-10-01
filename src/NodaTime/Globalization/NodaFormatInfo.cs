@@ -37,7 +37,7 @@ namespace NodaTime.Globalization
         #region Patterns and pattern parsers
         private static readonly IPatternParser<Offset> GeneralOffsetPatternParser = new OffsetPatternParser();
         private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser();
-        private static readonly IPatternParser<LocalTime> GeneralLocalTimePatternParser = new LocalTimePatternParser();
+        private static readonly IPatternParser<LocalTime> GeneralLocalTimePatternParser = new LocalTimePatternParser(LocalTime.Midnight);
 
         // Not read-only as they need to be changed after cloning.
         private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
