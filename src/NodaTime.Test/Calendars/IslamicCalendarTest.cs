@@ -15,8 +15,10 @@
 // limitations under the License.
 #endregion
 
+using System.Globalization;
 using NUnit.Framework;
 using NodaTime.Calendars;
+using System;
 
 namespace NodaTime.Test.Calendars
 {
@@ -239,7 +241,6 @@ namespace NodaTime.Test.Calendars
         public void ThursdayEpoch()
         {
             CalendarSystem thursdayEpochCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
-
             CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
 
             LocalDate thursdayEpoch = new LocalDate(1, 1, 1, thursdayEpochCalendar);
@@ -251,12 +252,61 @@ namespace NodaTime.Test.Calendars
         public void FridayEpoch()
         {
             CalendarSystem fridayEpochCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil);
-
             CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
 
             LocalDate fridayEpoch = new LocalDate(1, 1, 1, fridayEpochCalendar);
             LocalDate fridayEpochJulian = new LocalDate(622, 7, 16, julianCalendar);
             Assert.AreEqual(fridayEpochJulian, fridayEpoch.WithCalendar(julianCalendar));
+        }
+
+        [Test]
+        public void BclUsesAstronomicalEpoch()
+        {
+            Calendar hijri = new HijriCalendar();
+            DateTime bclDirect = new DateTime(1, 1, 1, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
+
+            CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
+            LocalDate julianIslamicEpoch = new LocalDate(622, 7, 15, julianCalendar);
+            LocalDate isoIslamicEpoch = julianIslamicEpoch.WithCalendar(CalendarSystem.Iso);
+            DateTime bclFromNoda = isoIslamicEpoch.LocalDateTime.ToDateTimeUnspecified();
+            Assert.AreEqual(bclDirect, bclFromNoda);
+        }
+
+        [Test]
+        public void SampleDateBclCompatibility()
+        {
+            Calendar hijri = new HijriCalendar();
+            DateTime bclDirect = new DateTime(1302, 10, 15, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
+
+            CalendarSystem islamicCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
+            LocalDate iso = new LocalDate(1302, 10, 15, islamicCalendar);
+            DateTime bclFromNoda = iso.LocalDateTime.ToDateTimeUnspecified();
+            Assert.AreEqual(bclDirect, bclFromNoda);
+        }
+
+        /// <summary>
+        /// This tests every day for 9000 (ISO) years, to check that it always matches the year, month and day.
+        /// </summary>
+        [Test, Ignore("Takes a long time")]
+        public void BclThroughHistory()
+        {
+            Calendar hijri = new HijriCalendar();
+            DateTime bclDirect = new DateTime(1, 1, 1, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
+
+            CalendarSystem islamicCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
+            CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
+            LocalDate julianIslamicEpoch = new LocalDate(622, 7, 15, julianCalendar);
+            LocalDate islamicDate = julianIslamicEpoch.WithCalendar(islamicCalendar);
+
+            for (int i = 0; i < 9000 * 365; i++)
+            {
+                Assert.AreEqual(bclDirect, islamicDate.LocalDateTime.ToDateTimeUnspecified());
+                Assert.AreEqual(hijri.GetYear(bclDirect), islamicDate.Year, i.ToString());
+                Assert.AreEqual(hijri.GetMonth(bclDirect), islamicDate.MonthOfYear);
+                Assert.AreEqual(hijri.GetDayOfMonth(bclDirect), islamicDate.DayOfMonth);
+                bclDirect = hijri.AddDays(bclDirect, 1);
+                islamicDate = islamicDate.PlusDays(1);
+            }
         }
     }
 }
