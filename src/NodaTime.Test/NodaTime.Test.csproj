@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Calendars\CopticCalendarSystemTest.cs" />
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
+    <Compile Include="Calendars\IslamicCalendarTest.cs" />
     <Compile Include="Calendars\JulianCalendarSystemTest.cs" />
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="LocalTimeTest.Parse.cs">
