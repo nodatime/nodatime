@@ -26,8 +26,7 @@ namespace NodaTime.Test.Text
     [TestFixture]
     public partial class LocalDatePatternTest
     {
-        private static readonly DateTime SampleDateTime = new DateTime(1976, 6, 19, 21, 13, 34, 123, DateTimeKind.Unspecified).AddTicks(4567);
-        private static readonly LocalDate SampleLocalDate = new LocalDate(1976, 6, 19);
+        private static readonly LocalDate SampleLocalDate = new LocalDate(1376, 6, 19);
 
         [Test]
         [TestCaseSource("InvalidPatternData")]
@@ -75,8 +74,14 @@ namespace NodaTime.Test.Text
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             var pattern = LocalDatePattern.Create(patternText, NodaFormatInfo.GetFormatInfo(culture));
+            // Create the BCL version in the culture's calendar, so that when formatted it really will have those
+            // values, even though that may represent a completely different date/time to the Noda Time version...
+            // we're only testing the formatting here.
+            // Note that we're using Jon's -600th birthday so as to be in the right year range for the Saudi calendar.
+            DateTime sampleDateTime = new DateTime(1376, 6, 19, 21, 13, 34, 123, culture.Calendar,
+                                                   DateTimeKind.Unspecified).AddTicks(4567);
 
-            Assert.AreEqual(SampleDateTime.ToString(patternText, culture), pattern.Format(SampleLocalDate));
+            Assert.AreEqual(sampleDateTime.ToString(patternText, culture), pattern.Format(SampleLocalDate));
         }
     }
 }
