@@ -83,6 +83,11 @@
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
     <Compile Include="Calendars\JulianCalendarSystemTest.cs" />
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
+    <Compile Include="Text\PatternTestData.cs" />
+    <Compile Include="Text\LocalDatePatternTest.cs" />
+    <Compile Include="Text\LocalDatePatternTest.Data.cs">
+      <DependentUpon>LocalDatePatternTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="LocalTimeTest.Parse.cs">
       <DependentUpon>LocalTimeTest.cs</DependentUpon>
     </Compile>

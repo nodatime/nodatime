@@ -99,6 +99,8 @@
     <Compile Include="Text\InstantPatternParser.cs" />
     <Compile Include="Text\InvalidPatternException.cs" />
     <Compile Include="Text\IPattern.cs" />
+    <Compile Include="Text\LocalDatePattern.cs" />
+    <Compile Include="Text\LocalDatePatternParser.cs" />
     <Compile Include="Text\LocalTimePattern.cs" />
     <Compile Include="Text\LocalTimePatternParser.cs" />
     <Compile Include="Text\OffsetPattern.cs" />

@@ -156,6 +156,8 @@ Notes to come, including:
 
 - Handling of duplicate fields vs inconsistent data
 - Repeat character count including fractional values
+- Template values
+- Potential future options
 
 
 
