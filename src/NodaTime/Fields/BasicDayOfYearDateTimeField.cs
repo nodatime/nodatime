@@ -52,7 +52,7 @@ namespace NodaTime.Fields
         internal override long GetMaximumValue(LocalInstant localInstant)
         {
             int year = calendarSystem.GetYear(localInstant);
-            return calendarSystem.GetDaysInYearMax(year);
+            return calendarSystem.GetDaysInYear(year);
         }
 
         internal override long GetMinimumValue()

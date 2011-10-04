@@ -103,6 +103,81 @@ namespace NodaTime
             return JulianCalendarSystem.GetInstance(minDaysInFirstWeek);
         }
 
+        /*//  * Implements the Islamic, or Hijri, calendar system using arithmetic rules.
+ * <p>
+ * This calendar is a lunar calendar with a shorter year than ISO.
+ * Year 1 in the Islamic calendar began on July 16, 622 CE (Julian), thus
+ * Islamic years do not begin at the same time as Julian years. This chronology
+ * is not proleptic, as it does not allow dates before the first Islamic year.
+ * <p>
+ * There are two basic forms of the Islamic calendar, the tabular and the
+ * observed. The observed form cannot easily be used by computers as it
+ * relies on human observation of the new moon.
+ * The tabular calendar, implemented here, is an arithmetical approximation
+ * of the observed form that follows relatively simple rules.
+ * <p>
+ * The tabular form of the calendar defines 12 months of alternately
+ * 30 and 29 days. The last month is extended to 30 days in a leap year.
+ * Leap years occur according to a 30 year cycle. There are four recognised
+ * patterns of leap years in the 30 year cycle:
+ * <pre>
+ * Years 2, 5, 7, 10, 13, 15, 18, 21, 24, 26 & 29 - 15-based, used by Microsoft
+ * Years 2, 5, 7, 10, 13, 16, 18, 21, 24, 26 & 29 - 16-based, most commonly used
+ * Years 2, 5, 8, 10, 13, 16, 19, 21, 24, 27 & 29 - Indian
+ * Years 2, 5, 8, 11, 13, 16, 19, 21, 24, 27 & 30 - Habash al-Hasib
+ * </pre>
+ * You can select which pattern to use via the factory methods, or use the
+ * default (16-based).
+ * <p>
+ * This implementation defines a day as midnight to midnight exactly as per
+ * the ISO chronology. This correct start of day is at sunset on the previous
+ * day, however this cannot readily be modelled and has been ignored. */
+        /// <summary>
+        /// Returns an Islamic, or Hijri, calendar system.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This represents the civil Hijri calendar, rather than the religious one based
+        /// on lunar observation. This calendar is a lunar calendar with a shorter year than ISO.
+        /// Year 1 in the Islamic calendar began on July 15th or 16th, 622 CE (Julian), thus
+        /// Islamic years do not begin at the same time as Julian years. This chronology
+        /// is not proleptic, as it does not allow dates before the first Islamic year.
+        /// </para>
+        /// <para>
+        /// There are two basic forms of the Islamic calendar, the tabular and the
+        /// observed. The observed form cannot easily be used by computers as it
+        /// relies on human observation of the new moon. The tabular calendar, implemented here, is an
+        /// arithmetic approximation of the observed form that follows relatively simple rules.
+        /// </para>
+        /// <para>
+        /// The tabular form of the calendar defines 12 months of alternately
+        /// 30 and 29 days. The last month is extended to 30 days in a leap year.
+        /// Leap years occur according to a 30 year cycle. There are four recognised
+        /// patterns of leap years in the 30 year cycle:
+        /// </para>
+        /// <list type="table">
+        ///    <listheader><term>Origin</term><description>Leap years</description></listheader>
+        ///    <item><term>Kūshyār ibn Labbān</term><description>2, 5, 7, 10, 13, 15, 18, 21, 24, 26, 29</description></item>
+        ///    <item><term>al-Fazārī</term><description>2, 5, 7, 10, 13, 16, 18, 21, 24, 26, 29</description></item>
+        ///    <item><term>Fātimid (also known as Misri or Bohra)</term><description>2, 5, 8, 10, 13, 16, 19, 21, 24, 27, 29</description></item>
+        ///    <item><term>Habash al-Hasib</term><description>2, 5, 8, 11, 13, 16, 19, 21, 24, 27, 30</description></item>
+        /// </list>
+        /// <para>
+        /// The leap year pattern to use is determined from the first parameter to this factory method.
+        /// The second parameter determines which epoch is used - the "astronomical" or "Thursday" epoch
+        /// (July 15th 622CE) or the "civil" or "Friday" epoch (July 16th 622CE).
+        /// </para>
+        /// <para>
+        /// This implementation defines a day as midnight to midnight exactly as per
+        /// the ISO chronology. This correct start of day is at sunset on the previous
+        /// day, however this cannot readily be modelled and has been ignored.
+        /// </para>
+        /// </remarks>
+        public static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
+        {
+            return IslamicCalendar.GetInstance(leapYearPattern, epoch);
+        }
+
         private readonly FieldSet fields;
         private readonly string name;
 

@@ -210,7 +210,7 @@ namespace NodaTime.Calendars
             return GetDaysInMonth(thisYear, thisMonth);
         }
 
-        internal int GetYear(LocalInstant localInstant)
+        internal virtual int GetYear(LocalInstant localInstant)
         {
             long ticks = localInstant.Ticks;
             // Get an initial estimate of the year, and the millis value that
@@ -248,12 +248,12 @@ namespace NodaTime.Calendars
             return year;
         }
 
-        internal int GetDaysInYearMax()
+        internal virtual int GetDaysInYearMax()
         {
             return 366;
         }
 
-        internal int GetDaysInYearMax(int year)
+        internal virtual int GetDaysInYear(int year)
         {
             return IsLeapYear(year) ? 366 : 365;
         }
