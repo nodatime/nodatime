@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using NodaTime.Fields;
 
 namespace NodaTime.Calendars
@@ -82,7 +83,8 @@ namespace NodaTime.Calendars
             return builder.Build();
         }
 
-        protected BasicCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler assembler) : base(name, AssembleFields + assembler)
+        protected BasicCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler assembler, IEnumerable<Era> eras)
+            : base(name, AssembleFields + assembler, eras)
         {
             if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7)
             {

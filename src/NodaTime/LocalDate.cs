@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Calendars;
 
 namespace NodaTime
 {
@@ -56,24 +57,16 @@ namespace NodaTime
             this.localTime = localTime;
         }
 
-        /// <summary>
-        /// Gets the calendar system associated with this local date.
-        /// </summary>
+        /// <summary>Gets the calendar system associated with this local date.</summary>
         public CalendarSystem Calendar { get { return localTime.Calendar; } }
 
-        /// <summary>
-        /// Gets the year of this local date.
-        /// </summary>
+        /// <summary>Gets the year of this local date.</summary>
         public int Year { get { return localTime.Year; } }
 
-        /// <summary>
-        /// Gets the month of this local date within the year.
-        /// </summary>
+        /// <summary>Gets the month of this local date within the year.</summary>
         public int MonthOfYear { get { return localTime.MonthOfYear; } }
 
-        /// <summary>
-        /// Gets the day of this local date within the month.
-        /// </summary>
+        /// <summary>Gets the day of this local date within the month.</summary>
         public int DayOfMonth { get { return localTime.DayOfMonth; } }
 
         /// <summary>
@@ -112,24 +105,19 @@ namespace NodaTime
         /// </remarks>
         public int WeekYear { get { return localTime.WeekYear; } }
 
-        /// <summary>
-        /// Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.
-        /// </summary>
+        /// <summary>Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.</summary>
         public int WeekOfWeekYear { get { return localTime.WeekOfWeekYear; } }
 
-        /// <summary>
-        /// Gets the year of this local date within the century.
-        /// </summary>
+        /// <summary>Gets the year of this local date within the century.</summary>
         public int YearOfCentury { get { return localTime.YearOfCentury; } }
 
-        /// <summary>
-        /// Gets the year of this local date within the era.
-        /// </summary>
+        /// <summary>Gets the year of this local date within the era.</summary>
         public int YearOfEra { get { return localTime.YearOfEra; } }
 
-        /// <summary>
-        /// Gets the day of this local date within the year.
-        /// </summary>
+        /// <summary>Gets the era of this local date.</summary>
+        public Era Era { get { return localTime.Era; } }
+
+        /// <summary>Gets the day of this local date within the year.</summary>
         public int DayOfYear { get { return localTime.DayOfYear; } }
 
         /// <summary>

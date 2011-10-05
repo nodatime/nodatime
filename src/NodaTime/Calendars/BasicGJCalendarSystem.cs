@@ -44,12 +44,12 @@ namespace NodaTime.Calendars
         }
 
         protected BasicGJCalendarSystem(string name, int minDaysInFirstWeek)
-            : base(name, minDaysInFirstWeek, null)
+            : this(name, minDaysInFirstWeek, null)
         {
         }
 
         protected BasicGJCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler fieldAssembler)
-            : base(name, minDaysInFirstWeek, fieldAssembler)
+            : base(name, minDaysInFirstWeek, fieldAssembler, new[] { Era.BeforeCommon, Era.Common })
         {
         }
 

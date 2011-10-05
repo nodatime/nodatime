@@ -64,7 +64,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        private IsoCalendarSystem(CalendarSystem baseSystem) : base(IsoName, baseSystem, AssembleFields)
+        private IsoCalendarSystem(CalendarSystem baseSystem) : base(IsoName, baseSystem, AssembleFields, new[] { Era.BeforeCommon, Era.Common })
         {
         }
 

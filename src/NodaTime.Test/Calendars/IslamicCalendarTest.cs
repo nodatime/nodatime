@@ -34,7 +34,7 @@ namespace NodaTime.Test.Calendars
             LocalDateTime ldt = new LocalDateTime(1945, 11, 12, 0, 0, 0, 0, CalendarSystem.Iso);
 
             ldt = ldt.WithCalendar(SampleCalendar);
-            Assert.AreEqual(IslamicCalendar.AH, ldt.Era);
+            Assert.AreEqual(Era.AnnoHegirae, ldt.Era);
             Assert.AreEqual(14, ldt.CenturyOfEra);  // TODO confirm
             Assert.AreEqual(64, ldt.YearOfCentury);
             Assert.AreEqual(1364, ldt.YearOfEra);
@@ -56,7 +56,7 @@ namespace NodaTime.Test.Calendars
         {
             LocalDateTime ldt = new LocalDateTime(2005, 11, 26, 0, 0, 0, 0, CalendarSystem.Iso);
             ldt = ldt.WithCalendar(SampleCalendar);
-            Assert.AreEqual(IslamicCalendar.AH, ldt.Era);
+            Assert.AreEqual(Era.AnnoHegirae, ldt.Era);
             Assert.AreEqual(15, ldt.CenturyOfEra);  // TODO confirm
             Assert.AreEqual(26, ldt.YearOfCentury);
             Assert.AreEqual(1426, ldt.YearOfEra);
@@ -76,7 +76,7 @@ namespace NodaTime.Test.Calendars
         public void SampleDate3()
         {
             LocalDateTime ldt = new LocalDateTime(1426, 12, 24, 0, 0, 0, 0, SampleCalendar);
-            Assert.AreEqual(IslamicCalendar.AH, ldt.Era);
+            Assert.AreEqual(Era.AnnoHegirae, ldt.Era);
 
             Assert.AreEqual(1426, ldt.Year);
             Assert.AreEqual(12, ldt.MonthOfYear);

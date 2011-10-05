@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using NodaTime.Fields;
 
 namespace NodaTime.Calendars
@@ -35,8 +36,8 @@ namespace NodaTime.Calendars
         /// </summary>
         internal CalendarSystem Calendar { get { return baseCalendar; } }
 
-        protected WrappedCalendarSystem(string name, CalendarSystem baseCalendar, FieldAssembler assembler)
-            : base(name, (builder, @this) => AssembleFields(builder, @this, baseCalendar, assembler))
+        protected WrappedCalendarSystem(string name, CalendarSystem baseCalendar, FieldAssembler assembler, IEnumerable<Era> eras)
+            : base(name, (builder, @this) => AssembleFields(builder, @this, baseCalendar, assembler), eras)
         {
             // Quick sanity check - the point of separating out this class is to only use it in
             // situations where we really have a calendar to wrap.
