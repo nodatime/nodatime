@@ -30,13 +30,21 @@ namespace NodaTime
         /// <summary>
         /// Constructs an instance for the given year, month and day in the ISO calendar.
         /// </summary>
-        public LocalDate(int year, int month, int day) : this(year, month, day, CalendarSystem.Iso)
+        /// <param name="year">Year of the new date/</param>
+        /// <param name="month">Month of year of the new date/</param>
+        /// <param name="day">Day of month of the new date/</param>
+        public LocalDate(int year, int month, int day)
+            : this(year, month, day, CalendarSystem.Iso)
         {
         }
 
         /// <summary>
         /// Constructs an instance for the given year, month and day in the specified calendar.
         /// </summary>
+        /// <param name="year">Year of the new date/</param>
+        /// <param name="month">Month of year of the new date/</param>
+        /// <param name="day">Day of month of the new date/</param>
+        /// <param name="calendar">Calendar system in which to create the date</param>
         public LocalDate(int year, int month, int day, CalendarSystem calendar)
             : this(new LocalDateTime(year, month, day, 0, 0, calendar))
         {
@@ -132,6 +140,9 @@ namespace NodaTime
         /// <summary>
         /// Adds the specified period to the date.
         /// </summary>
+        /// <param name="date">The date to add the period to</param>
+        /// <param name="period">The period to add</param>
+        /// <returns>The sum of the given date and period</returns>
         // TODO: Assert no units smaller than a day, and more documentation.
         public static LocalDate operator +(LocalDate date, Period period)
         {
@@ -146,6 +157,9 @@ namespace NodaTime
         /// Combines the given <see cref="LocalDate"/> and <see cref="LocalTime"/> components
         /// into a single <see cref="LocalDateTime"/>.
         /// </summary>
+        /// <param name="date">The date to add the time to</param>
+        /// <param name="time">The time to add</param>
+        /// <returns>The sum of the given date and time</returns>
         public static LocalDateTime operator +(LocalDate date, LocalTime time)
         {
             LocalInstant localDateInstant = date.localTime.LocalInstant;
@@ -154,8 +168,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Subtracts the specified period to the date.
+        /// Subtracts the specified period from the date.
         /// </summary>
+        /// <param name="date">The date to subtract the period from</param>
+        /// <param name="period">The period to subtract</param>
+        /// <returns>The result of subtracting the given period from the date</returns>
         // TODO: Assert no units smaller than a day, and more documentation.
         public static LocalDate operator -(LocalDate date, Period period)
         {
@@ -170,6 +187,9 @@ namespace NodaTime
         /// Compares two <see cref="LocalDate" /> values for equality. This requires
         /// that the dates be the same, within the same calendar.
         /// </summary>
+        /// <param name="lhs">The first value to compare</param>
+        /// <param name="rhs">The second value to compare</param>
+        /// <returns>True if the two dates are the same and in the same calendar; false otherwise</returns>
         public static bool operator ==(LocalDate lhs, LocalDate rhs)
         {
             return lhs.localTime == rhs.localTime;
@@ -178,6 +198,9 @@ namespace NodaTime
         /// <summary>
         /// Compares two <see cref="LocalDate" /> values for inequality.
         /// </summary>
+        /// <param name="lhs">The first value to compare</param>
+        /// <param name="rhs">The second value to compare</param>
+        /// <returns>False if the two dates are the same and in the same calendar; true otherwise</returns>
         public static bool operator !=(LocalDate lhs, LocalDate rhs)
         {
             return lhs.localTime != rhs.localTime;
@@ -188,6 +211,7 @@ namespace NodaTime
         /// <summary>
         /// Formats this local date according to the current format provider.
         /// </summary>
+        /// <returns>A formatted text representation of this date.</returns>
         public override string ToString()
         {
             // TODO: Implement as part of general formatting work
@@ -197,6 +221,7 @@ namespace NodaTime
         /// <summary>
         /// Returns a hash code for this local date.
         /// </summary>
+        /// <returns>A hash code for this local date.</returns>
         public override int GetHashCode()
         {
             return localTime.GetHashCode();
@@ -206,6 +231,8 @@ namespace NodaTime
         /// Compares two <see cref="LocalDate"/> values for equality. This requires
         /// that the dates be the same, within the same calendar.
         /// </summary>
+        /// <param name="obj">The object to compare this date with.</param>
+        /// <returns>True if the given value is another local date equal to this one; false otherwise.</returns>
         public override bool Equals(object obj)
         {
             if (!(obj is LocalDate))
@@ -219,6 +246,8 @@ namespace NodaTime
         /// Compares two <see cref="LocalDate"/> values for equality. This requires
         /// that the dates be the same, within the same calendar.
         /// </summary>
+        /// <param name="other">The value to compare this date with.</param>
+        /// <returns>True if the given value is another local date equal to this one; false otherwise.</returns>
         public bool Equals(LocalDate other)
         {
             return this == other;

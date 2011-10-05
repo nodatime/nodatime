@@ -74,17 +74,17 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the offset 
+        /// Gets the offset of the local representation of this value from UTC.
         /// </summary>
         public Offset Offset { get { return offset; } }
 
         /// <summary>
-        /// Gets the time zone 
+        /// Gets the time zone associated with this value.
         /// </summary>
         public DateTimeZone Zone { get { return zone; } }
 
         /// <summary>
-        /// Gets the local instant.
+        /// Gets the local instant associated with this value.
         /// </summary>
         internal LocalInstant LocalInstant { get { return localDateTime.LocalInstant; } }
 
@@ -236,6 +236,7 @@ namespace NodaTime
         /// Conceptually this is a conversion (which is why it's not a property) but
         /// in reality the conversion is done at the point of construction.
         /// </remarks>
+        /// <returns>The instant corresponding to this value.</returns>
         public Instant ToInstant()
         {
             return localDateTime.LocalInstant.Minus(offset);
@@ -249,6 +250,7 @@ namespace NodaTime
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
+        /// <returns>True if the specified value is the same instant in the same time zone; false otherwise.</returns>
         public bool Equals(ZonedDateTime other)
         {
             return LocalDateTime == other.LocalDateTime && Offset == other.Offset && Zone == other.Zone;
@@ -262,6 +264,7 @@ namespace NodaTime
         /// </returns>
         /// <param name="obj">Another object to compare to.</param> 
         /// <filterpriority>2</filterpriority>
+        /// <returns>True if the specified value is a <see cref="ZonedDateTime"/> representing the same instant in the same time zone; false otherwise.</returns>
         public override bool Equals(object obj)
         {
             if (obj is ZonedDateTime)
@@ -292,6 +295,9 @@ namespace NodaTime
         /// <summary>
         /// Implements the operator ==.
         /// </summary>
+        /// <param name="left">The first value to compare</param>
+        /// <param name="right">The second value to compare</param>
+        /// <returns>True if the two operands are equal according to <see cref="Equals(ZonedDateTime)"/>; false otherwise</returns>
         public static bool operator ==(ZonedDateTime left, ZonedDateTime right)
         {
             return left.Equals(right);
@@ -300,6 +306,9 @@ namespace NodaTime
         /// <summary>
         /// Implements the operator !=.
         /// </summary>
+        /// <param name="left">The first value to compare</param>
+        /// <param name="right">The second value to compare</param>
+        /// <returns>False if the two operands are equal according to <see cref="Equals(ZonedDateTime)"/>; true otherwise</returns>
         public static bool operator !=(ZonedDateTime left, ZonedDateTime right)
         {
             return !(left == right);
@@ -312,27 +321,34 @@ namespace NodaTime
         /// <remarks>
         /// The returned value uses the same calendar system and time zone as the left operand.
         /// </remarks>
-        /// <param name="left">The ZonedDateTime to add the duration to.</param>
-        /// <param name="right">The duration to add.</param>
-        public static ZonedDateTime operator +(ZonedDateTime left, Duration right)
+        /// <param name="zonedDateTime">The ZonedDateTime to add the duration to.</param>
+        /// <param name="duration">The duration to add.</param>
+        /// <returns>A new value with the time advanced by the given duration, in the same calendar system and time zone.</returns>
+        public static ZonedDateTime operator +(ZonedDateTime zonedDateTime, Duration duration)
         {
-            return new ZonedDateTime(left.ToInstant() + right, left.Zone, left.LocalDateTime.Calendar);
+            return new ZonedDateTime(zonedDateTime.ToInstant() + duration, zonedDateTime.Zone, zonedDateTime.LocalDateTime.Calendar);
         }
 
         /// <summary>
         /// Adds a duration to zoned date and time. Friendly alternative to <c>operator+()</c>.
         /// </summary>
-        public static ZonedDateTime Add(ZonedDateTime left, Duration right)
+        /// <param name="zonedDateTime">The value to add the duration to.</param>
+        /// <param name="duration">The duration to add</param>
+        /// <returns>A new value with the time advanced by the given duration, in the same calendar system and time zone.</returns>
+        public static ZonedDateTime Add(ZonedDateTime zonedDateTime, Duration duration)
         {
-            return left + right;
+            return zonedDateTime + duration;
         }
 
         /// <summary>
         /// Subtracts a duration from zoned date and time. Friendly alternative to <c>operator-()</c>.
         /// </summary>
-        public static ZonedDateTime Subtract(ZonedDateTime left, Duration right)
+        /// <param name="zonedDateTime">The value to subtract the duration from.</param>
+        /// <param name="duration">The duration to subtract.</param>
+        /// <returns>A new value with the time "rewound" by the given duration, in the same calendar system and time zone.</returns>
+        public static ZonedDateTime Subtract(ZonedDateTime zonedDateTime, Duration duration)
         {
-            return left - right;
+            return zonedDateTime - duration;
         }
 
         /// <summary>
@@ -342,17 +358,19 @@ namespace NodaTime
         /// <remarks>
         /// The returned value uses the same calendar system and time zone as the left operand.
         /// </remarks>
-        /// <param name="left">The ZonedDateTime to subtract the duration from.</param>
-        /// <param name="right">The duration to add.</param>
-        public static ZonedDateTime operator -(ZonedDateTime left, Duration right)
+        /// <param name="zonedDateTime">The value to subtract the duration from.</param>
+        /// <param name="duration">The duration to subtract.</param>
+        /// <returns>A new value with the time "rewound" by the given duration, in the same calendar system and time zone.</returns>
+        public static ZonedDateTime operator -(ZonedDateTime zonedDateTime, Duration duration)
         {
-            return new ZonedDateTime(left.ToInstant() - right, left.Zone, left.LocalDateTime.Calendar);
+            return new ZonedDateTime(zonedDateTime.ToInstant() - duration, zonedDateTime.Zone, zonedDateTime.LocalDateTime.Calendar);
         }
         #endregion
 
         /// <summary>
         /// Converts this date and time to text according to the default formatting for the culture.
         /// </summary>
+        /// <returns>A text representation of this value.</returns>
         // TODO: Improve description and make the implementation match the documentation :)
         public override string ToString()
         {
@@ -368,6 +386,7 @@ namespace NodaTime
         /// represents an instant in time along with an associated local time, but it doesn't allow you
         /// to find out what the local time would be for another instant.
         /// </remarks>
+        /// <returns>A <see cref="DateTimeOffset"/> representation of this value.</returns>
         public DateTimeOffset ToDateTimeOffset()
         {
             return new DateTimeOffset(NodaConstants.DateTimeEpochTicks + LocalInstant.Ticks, Offset.ToTimeSpan());
@@ -378,6 +397,8 @@ namespace NodaTime
         /// of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as this value
         /// rather than the same local time.
         /// </summary>
+        /// <returns>A <see cref="DateTime"/> representation of this value with a "universal" kind, with the same
+        /// instant of time as this value.</returns>
         public DateTime ToDateTimeUtc()
         {
             return ToInstant().ToDateTimeUtc();
@@ -394,6 +415,8 @@ namespace NodaTime
         /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
         /// the Noda Time non-system-specific "local" concept as exists in .NET.
         /// </remarks>
+        /// <returns>A <see cref="DateTime"/> representation of this value with an "unspecified" kind, with the same
+        /// local date and time as this value.</returns>
         public DateTime ToDateTimeUnspecified()
         {
             return LocalInstant.ToDateTimeUnspecified();

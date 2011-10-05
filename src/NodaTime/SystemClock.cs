@@ -32,6 +32,13 @@ namespace NodaTime
         internal static readonly SystemClock Instance = new SystemClock();
 
         /// <summary>
+        /// Constructor present to prevent external construction.
+        /// </summary>
+        private SystemClock()
+        {
+        }
+
+        /// <summary>
         /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
         /// <value>The current time in ticks as an <see cref="Instant"/>.</value>

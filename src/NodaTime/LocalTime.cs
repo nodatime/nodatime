@@ -188,17 +188,27 @@ namespace NodaTime
         /// </summary>
         public LocalDateTime LocalDateTime { get { return new LocalDateTime(localInstant); } }
 
+        // TODO: Assert no units as large a day
         /// <summary>
-        /// TODO: Assert no units as large a day
+        /// Creates a new local time by adding a period to an existing time. The period must not contain
+        /// any fields as large as a day or larger.
         /// </summary>
+        /// <param name="time">The time to add the period to</param>
+        /// <param name="period">The period to add</param>
+        /// <returns>The result of adding the period to the time, wrapping via midnight if necessary</returns>
         public static LocalTime operator +(LocalTime time, Period period)
         {
             return (time.LocalDateTime + period).TimeOfDay;
         }
 
+        // TODO: Assert no units as large as a day
         /// <summary>
-        /// TODO: Assert no units as large as a day
+        /// Creates a new local time by subtracting a period from an existing time. The period must not contain
+        /// any fields as large as a day or larger.
         /// </summary>
+        /// <param name="time">The time to subtract the period from</param>
+        /// <param name="period">The period to subtract</param>
+        /// <returns>The result of subtract the period from the time, wrapping via midnight if necessary</returns>
         public static LocalTime operator -(LocalTime time, Period period)
         {
             return (time.LocalDateTime - period).TimeOfDay;
@@ -208,6 +218,9 @@ namespace NodaTime
         /// Compares two local times for equality, by checking whether they represent
         /// the exact same local time, down to the tick.
         /// </summary>
+        /// <param name="lhs">The first value to compare</param>
+        /// <param name="rhs">The second value to compare</param>
+        /// <returns>True if the two times are the same; false otherwise</returns>
         public static bool operator ==(LocalTime lhs, LocalTime rhs)
         {
             return lhs.localInstant == rhs.localInstant;
@@ -216,6 +229,9 @@ namespace NodaTime
         /// <summary>
         /// Compares two local times for inequality.
         /// </summary>
+        /// <param name="lhs">The first value to compare</param>
+        /// <param name="rhs">The second value to compare</param>
+        /// <returns>False if the two times are the same; true otherwise</returns>
         public static bool operator !=(LocalTime lhs, LocalTime rhs)
         {
             return lhs.localInstant != rhs.localInstant;
@@ -224,6 +240,7 @@ namespace NodaTime
         /// <summary>
         /// Returns a hash code for this local time.
         /// </summary>
+        /// <returns>A hash code for this local time.</returns>
         public override int GetHashCode()
         {
             return localInstant.GetHashCode();
@@ -233,6 +250,8 @@ namespace NodaTime
         /// Compares this local time with the specified one for equality,
         /// by checking whether the two values represent the exact same local time, down to the tick.
         /// </summary>
+        /// <param name="other">The other local time to compare this one with</param>
+        /// <returns>True if the specified time is equal to this one; false otherwise</returns>
         public bool Equals(LocalTime other)
         {
             return this == other;
@@ -242,6 +261,8 @@ namespace NodaTime
         /// Compares this local time with the specified reference. A local time is
         /// only equal to another local time with the same underlying tick value.
         /// </summary>
+        /// <param name="obj">The object to compare this one with</param>
+        /// <returns>True if the specified value is a local time is equal to this one; false otherwise</returns>
         public override bool Equals(object obj)
         {
             if (!(obj is LocalTime))
@@ -383,6 +404,8 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <returns>The parsed local time.</returns>
         public static LocalTime Parse(string value)
         {
             return LocalTimePattern.Parse(value, NodaFormatInfo.CurrentInfo);
@@ -391,6 +414,9 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the specified format provider.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed local time.</returns>
         public static LocalTime Parse(string value, IFormatProvider formatProvider)
         {
             return LocalTimePattern.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
@@ -399,14 +425,22 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the specified format pattern and format provider.
         /// </summary>
-        public static LocalTime ParseExact(string value, string format, IFormatProvider formatProvider)
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patternText">The text of the pattern to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed local time.</returns>
+        public static LocalTime ParseExact(string value, string patternText, IFormatProvider formatProvider)
         {
-            return LocalTimePattern.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider));
+            return LocalTimePattern.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
         /// Parses the given string using the specified patterns and format provider.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patterns">The patterns to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed local time.</returns>
         public static LocalTime ParseExact(string value, string[] patterns, IFormatProvider formatProvider)
         {
             return LocalTimePattern.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
@@ -417,6 +451,8 @@ namespace NodaTime
         /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="LocalTime.Midnight"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="result">The parsed local time, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out LocalTime result)
         {
@@ -428,6 +464,9 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="LocalTime.Midnight"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed local time, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, out LocalTime result)
         {
@@ -439,6 +478,10 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="LocalTime.Midnight"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patternText">The text of the pattern to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed local time, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string patternText, IFormatProvider formatProvider, out LocalTime result)
         {
@@ -450,6 +493,10 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="LocalTime.Midnight"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patterns">The patterns to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed local time, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] patterns, IFormatProvider formatProvider, out LocalTime result)
         {

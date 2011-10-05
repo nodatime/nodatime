@@ -284,6 +284,8 @@ namespace NodaTime
         /// If the given local date/time is mapped unambiguously to a single ZonedDateTime value, that is returned.
         /// For ambiguous or skipped local date/time values, AmbiguousTimeException or SkippedTimeException are thrown respectively.
         /// </summary>
+        /// <param name="localDateTime">The local date and time to map in this time zone.</param>
+        /// <returns>The unambiguous <see cref="ZonedDateTime"/> with the same local date and time as the given parameter in this time zone.</returns>
         /// <exception cref="SkippedTimeException">The given LocalDateTime is skipped due to a transition where the clocks go forward</exception>
         /// <exception cref="AmbiguousTimeException">The given LocalDateTime is ambiguous due to a transition where the clocks go forward</exception>
         public ZonedDateTime AtExactly(LocalDateTime localDateTime)
@@ -309,8 +311,10 @@ namespace NodaTime
         /// For ambiguous local date/time values, the earlier mapping is returned.
         /// For skipped local date/time values, SkippedTimeException is thrown.
         /// </summary>
+        /// <param name="localDateTime">The local date and time to map in this time zone.</param>
+        /// <returns>The <see cref="ZonedDateTime"/> value with the same local time as <paramref name="localDateTime"/>,
+        /// either unambiguously or the earlier of two ambiguous possibilities.</returns>
         /// <exception cref="SkippedTimeException">The given LocalDateTime is skipped due to a transition where the clocks go forward</exception>
-        /// <exception cref="AmbiguousTimeException">The given LocalDateTime is ambiguous due to a transition where the clocks go forward</exception>
         public ZonedDateTime AtEarlier(LocalDateTime localDateTime)
         {
             ZoneIntervalPair pair = GetZoneIntervals(localDateTime.LocalInstant);
@@ -331,8 +335,10 @@ namespace NodaTime
         /// For ambiguous local date/time values, the later mapping is returned.
         /// For skipped local date/time values, SkippedTimeException is thrown.
         /// </summary>
+        /// <param name="localDateTime">The local date and time to map in this time zone.</param>
+        /// <returns>The <see cref="ZonedDateTime"/> value with the same local time as <paramref name="localDateTime"/>,
+        /// either unambiguously or the earlier of two ambiguous possibilities.</returns>
         /// <exception cref="SkippedTimeException">The given LocalDateTime is skipped due to a transition where the clocks go forward</exception>
-        /// <exception cref="AmbiguousTimeException">The given LocalDateTime is ambiguous due to a transition where the clocks go forward</exception>
         public ZonedDateTime AtLater(LocalDateTime localDateTime)
         {
             ZoneIntervalPair pair = GetZoneIntervals(localDateTime.LocalInstant);
@@ -357,6 +363,8 @@ namespace NodaTime
         /// go forward from midnight to 1am) then the earliest valid value is returned; this will be the instant
         /// of the transition.
         /// </summary>
+        /// <param name="date">The local date to map in this time zone.</param>
+        /// <returns>The <see cref="ZonedDateTime"/> representing the earliest time in the given date, in this time zone.</returns>
         public ZonedDateTime AtStartOfDay(LocalDate date)
         {
             LocalInstant localInstant = date.LocalDateTime.LocalInstant;
@@ -380,6 +388,8 @@ namespace NodaTime
         /// <remarks>Use this method if you need to know whether the given value is ambiguous, or if you
         /// want to find out about a potential "gap" in local dates and times due to a daylight saving transition.
         /// </remarks>
+        /// <param name="localDateTime">The local date and time to map in this time zone.</param>
+        /// <returns>A mapping of the given local date and time to zero, one or two zoned date/time values.</returns>
         public ZoneLocalMapping MapLocalDateTime(LocalDateTime localDateTime)
         {
             LocalInstant localInstant = localDateTime.LocalInstant;

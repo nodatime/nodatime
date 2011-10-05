@@ -259,6 +259,7 @@ namespace NodaTime.Globalization
         /// The returned value is always writable and independent of the original object. The culture info,
         /// number format and date/time format all cloned too.
         /// </remarks>
+        /// <returns>A writable clone of this value.</returns>
         public virtual NodaFormatInfo Clone()
         {
             var info = (NodaFormatInfo)MemberwiseClone();

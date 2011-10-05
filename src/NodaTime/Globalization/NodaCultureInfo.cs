@@ -193,20 +193,20 @@ namespace NodaTime.Globalization
         #endregion
 
         /// <summary>
-        ///   Gets the culture info.
+        /// Gets the culture info for a specified culture identifier.
         /// </summary>
-        /// <param name="culture">The culture.</param>
-        /// <returns></returns>
+        /// <param name="culture">The culture identifier to build a <see cref="NodaCultureInfo"/> for.</param>
+        /// <returns>A new <see cref="NodaCultureInfo"/> for the culture with the given name.</returns>
         public new static NodaCultureInfo GetCultureInfo(int culture)
         {
             return new NodaCultureInfo(culture);
         }
 
         /// <summary>
-        ///   Gets the culture info.
+        /// Gets the culture info for a specified culture name.
         /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
+        /// <param name="name">The culture name to build a <see cref="NodaCultureInfo"/> for.</param>
+        /// <returns>A new <see cref="NodaCultureInfo"/> for the culture with the given name.</returns>
         public new static NodaCultureInfo GetCultureInfo(string name)
         {
             return new NodaCultureInfo(name);

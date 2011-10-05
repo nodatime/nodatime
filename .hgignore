@@ -44,3 +44,4 @@ docs/api/Web.Config
 docs/api/*.xml
 *.crunchproject.local.xml
 *.crunchsolution.local.xml
+NodaTime.shfbproj_Jon

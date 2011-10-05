@@ -365,6 +365,7 @@ namespace NodaTime
         /// </summary>
         public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth, calendar); } }
 
+        // TODO: Add an overload for the calendar to use?
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this value which has a <see cref="DateTime.Kind" />
         /// of <see cref="DateTimeKind.Unspecified"/>.
@@ -375,6 +376,7 @@ namespace NodaTime
         /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
         /// the Noda Time non-system-specific "local" concept as exists in .NET.
         /// </remarks>
+        /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
         public DateTime ToDateTimeUnspecified()
         {
             return localInstant.ToDateTimeUnspecified();
@@ -385,6 +387,8 @@ namespace NodaTime
         /// any time zone conversions, so a DateTime with a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/>
         /// will still have the same day/hour/minute etc - it won't be converted into the local system time.
         /// </summary>
+        /// <param name="dateTime">Value to convert into a Noda Time local date and time</param>
+        /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified one.</returns>
         internal static LocalDateTime FromDateTime(DateTime dateTime)
         {
             return new LocalDateTime(LocalInstant.FromDateTime(dateTime), CalendarSystem.Iso);
@@ -394,11 +398,10 @@ namespace NodaTime
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        /// <param name="other">An object to compare with this object.
-        ///                 </param>
         public bool Equals(LocalDateTime other)
         {
             return localInstant == other.localInstant && calendar.Equals(other.calendar);

@@ -34,8 +34,9 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        /// Creates a new InvalidPatternException with the given.
+        /// Creates a new InvalidPatternException with the given message.
         /// </summary>
+        /// <param name="message">A message describing the nature of the failure</param>
         public InvalidPatternException(string message)
             : base(message)
         {
@@ -44,6 +45,8 @@ namespace NodaTime.Text
         /// <summary>
         /// Creates a new InvalidPatternException from the given serialization information.
         /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
         protected InvalidPatternException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

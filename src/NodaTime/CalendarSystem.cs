@@ -78,6 +78,8 @@ namespace NodaTime
         /// <param name="minDaysInFirstWeek">The minimum number of days in the first week of the year.
         /// When computing the WeekOfWeekYear and WeekYear properties of a particular date, this is
         /// used to decide at what point the week year changes.</param>
+        /// <returns>A suitable Gregorian calendar reference; the same reference may be returned by several
+        /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetGregorianCalendar(int minDaysInFirstWeek)
         {
             return GregorianCalendarSystem.GetInstance(minDaysInFirstWeek);
@@ -98,6 +100,8 @@ namespace NodaTime
         /// <param name="minDaysInFirstWeek">The minimum number of days in the first week of the year.
         /// When computing the WeekOfWeekYear and WeekYear properties of a particular date, this is
         /// used to decide at what point the week year changes.</param>
+        /// <returns>A suitable Julian calendar reference; the same reference may be returned by several
+        /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetJulianCalendar(int minDaysInFirstWeek)
         {
             return JulianCalendarSystem.GetInstance(minDaysInFirstWeek);
@@ -144,6 +148,10 @@ namespace NodaTime
         /// day, however this cannot readily be modelled and has been ignored.
         /// </para>
         /// </remarks>
+        /// <param name="leapYearPattern">The pattern of years in the 30-year cycle to consider as leap years</param>
+        /// <param name="epoch">The kind of epoch to use (astronomical or civil)</param>
+        /// <returns>A suitable Islamic calendar reference; the same reference may be returned by several
+        /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
         {
             return IslamicCalendar.GetInstance(leapYearPattern, epoch);
@@ -181,13 +189,16 @@ namespace NodaTime
         /// <summary>
         /// Returns the number of days in the given month within the given year.
         /// </summary>
+        /// <param name="year">The year in which to consider the month</param>
+        /// <param name="month">The month to determine the number of days in</param>
+        /// <returns>The number of days in the given month and year.</returns>
         public abstract int GetDaysInMonth(int year, int month);
 
         /// <summary>
         /// Returns whether or not the given year is a leap year in this calendar.
         /// </summary>
-        /// <param name="year"></param>
-        /// <returns></returns>
+        /// <param name="year">The year to consider.</param>
+        /// <returns>True if the given year is a leap year; false otherwise.</returns>
         public abstract bool IsLeapYear(int year);
 
         internal FieldSet Fields { get { return fields; } }
@@ -205,7 +216,7 @@ namespace NodaTime
         /// <param name="monthOfYear">Month to use</param>
         /// <param name="dayOfMonth">Day of month to use</param>
         /// <param name="tickOfDay">Tick of day to use</param>
-        /// <returns>A LocalInstant instance</returns>
+        /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and tick-of-day.</returns>
         internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
             LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
@@ -223,15 +234,15 @@ namespace NodaTime
         /// determine the result. Subclasses are encouraged to provide a more
         /// efficient implementation.
         /// </para>        
-        /// <param name="year">Year to use</param>
-        /// <param name="monthOfYear">Month to use</param>
-        /// <param name="dayOfMonth">Day of month to use</param>
-        /// <param name="hourOfDay">Hour to use</param>
-        /// <param name="minuteOfHour">Minute to use</param>
-        /// <param name="secondOfMinute">Second to use</param>
-        /// <param name="millisecondOfSecond">Millisecond to use</param>
-        /// <param name="tickOfMillisecond">Tick to use</param>
-        /// <returns>A LocalInstant instance</returns>
+        /// <param name="year">Absolute year (not year within era; may be negative)</param>
+        /// <param name="monthOfYear">Month of year</param>
+        /// <param name="dayOfMonth">Day of month</param>
+        /// <param name="hourOfDay">Hour within the day (0-23)</param>
+        /// <param name="minuteOfHour">Minute within the hour</param>
+        /// <param name="secondOfMinute">Second within the minute</param>
+        /// <param name="millisecondOfSecond">Millisecond within the second</param>
+        /// <param name="tickOfMillisecond">Tick within the millisecond</param>
+        /// <returns>A <see cref="LocalInstant"/> with the given values.</returns>
         internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
                                                       int millisecondOfSecond, int tickOfMillisecond)
         {
@@ -259,7 +270,7 @@ namespace NodaTime
         /// <param name="secondOfMinute">Second to use</param>
         /// <param name="millisecondOfSecond">Milliscond to use</param>
         /// <param name="tickOfMillisecond">Tick to use</param>
-        /// <returns>A LocalInstant instance</returns>
+        /// <returns>A <see cref="LocalInstant"/> value with the given values.</returns>
         internal virtual LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
                                                       int tickOfMillisecond)
         {
@@ -372,6 +383,7 @@ namespace NodaTime
         /// <summary>
         /// Converts this calendar system to text by simply returning its name.
         /// </summary>
+        /// <returns>The name of this calendar system.</returns>
         public override string ToString()
         {
             return Name;

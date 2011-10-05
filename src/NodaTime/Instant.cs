@@ -309,11 +309,17 @@ namespace NodaTime
 
         #region Convenience methods
         /// <summary>
-        ///   Returns a new instant corresponding to the given UTC date and time in the ISO calendar.
-        ///   In most cases applications should use <see cref="ZonedDateTime" /> to represent a date
-        ///   and time, but this method is useful in some situations where an <see cref="Instant" /> is
-        ///   required, such as time zone testing.
+        /// Returns a new instant corresponding to the given UTC date and time in the ISO calendar.
+        /// In most cases applications should use <see cref="ZonedDateTime" /> to represent a date
+        /// and time, but this method is useful in some situations where an <see cref="Instant" /> is
+        /// required, such as time zone testing.
         /// </summary>
+        /// <param name="year">Year of the instant to return.</param>
+        /// <param name="monthOfYear">Month of year of the instant to return.</param>
+        /// <param name="dayOfMonth">Day of month of the instant to return.</param>
+        /// <param name="hourOfDay">Hour of day of the instant to return.</param>
+        /// <param name="minuteOfHour">Minute of hour of the instant to return.</param>
+        /// <returns>The instant representing the given date and time in UTC and the ISO calendar.</returns>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
             var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
@@ -321,12 +327,19 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Returns a new instant corresponding to the given UTC date and
-        ///   time in the ISO calendar. In most cases applications should 
-        ///   use <see cref="ZonedDateTime" />
-        ///   to represent a date and time, but this method is useful in some 
-        ///   situations where an Instant is required, such as time zone testing.
+        /// Returns a new instant corresponding to the given UTC date and
+        /// time in the ISO calendar. In most cases applications should 
+        /// use <see cref="ZonedDateTime" />
+        /// to represent a date and time, but this method is useful in some 
+        /// situations where an Instant is required, such as time zone testing.
         /// </summary>
+        /// <param name="year">Year of the instant to return.</param>
+        /// <param name="monthOfYear">Month of year of the instant to return.</param>
+        /// <param name="dayOfMonth">Day of month of the instant to return.</param>
+        /// <param name="hourOfDay">Hour of day of the instant to return.</param>
+        /// <param name="minuteOfHour">Minute of hour of the instant to return.</param>
+        /// <param name="secondOfMinute">Second of minute of the instant to return.</param>
+        /// <returns>The instant representing the given date and time in UTC and the ISO calendar.</returns>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
             var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
@@ -336,6 +349,9 @@ namespace NodaTime
         /// <summary>
         /// Returns the later instant of the given two.
         /// </summary>
+        /// <param name="x">The first instant to compare.</param>
+        /// <param name="y">The second instant to compare.</param>
+        /// <returns>The later instant of <paramref name="x"/> or <paramref name="y"/>.</returns>
         public static Instant Max(Instant x, Instant y)
         {
             return x > y ? x : y;
@@ -344,6 +360,9 @@ namespace NodaTime
         /// <summary>
         /// Returns the earlier instant of the given two.
         /// </summary>
+        /// <param name="x">The first instant to compare.</param>
+        /// <param name="y">The second instant to compare.</param>
+        /// <returns>The earlier instant of <paramref name="x"/> or <paramref name="y"/>.</returns>
         public static Instant Min(Instant x, Instant y)
         {
             return x < y ? x : y;
@@ -424,6 +443,8 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <returns>The parsed instant.</returns>
         public static Instant Parse(string value)
         {
             return InstantPattern.Parse(value, NodaFormatInfo.CurrentInfo);
@@ -432,6 +453,9 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the specified format provider.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed instant.</returns>
         public static Instant Parse(string value, IFormatProvider formatProvider)
         {
             return InstantPattern.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
@@ -440,9 +464,25 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the specified pattern and format provider.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patternText">The text of the pattern to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed instant.</returns>
         public static Instant ParseExact(string value, string patternText, IFormatProvider formatProvider)
         {
             return InstantPattern.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
+        }
+
+        /// <summary>
+        /// Parses the given string using the specified patterns and format provider.
+        /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patterns">The patterns to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed instant.</returns>
+        public static Instant ParseExact(string value, string[] patterns, IFormatProvider formatProvider)
+        {
+            return InstantPattern.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -450,6 +490,8 @@ namespace NodaTime
         /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="result">The parsed instant, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Instant result)
         {
@@ -461,6 +503,9 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed instant, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, out Instant result)
         {
@@ -472,6 +517,10 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patternText">The text of the pattern to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed instant, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string patternText, IFormatProvider formatProvider, out Instant result)
         {
@@ -483,6 +532,10 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patterns">The patterns to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed instant, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] patterns, IFormatProvider formatProvider, out Instant result)
         {
@@ -509,6 +562,7 @@ namespace NodaTime
         /// Constructs a <see cref="DateTime"/> from this Instant which has a <see cref="DateTime.Kind" />
         /// of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as this value.
         /// </summary>
+        /// <returns>A <see cref="DateTime"/> representing the same instant in time as this value, with a kind of "universal".</returns>
         public DateTime ToDateTimeUtc()
         {
             return new DateTime(ticks + NodaConstants.DateTimeEpochTicks, DateTimeKind.Utc);
@@ -517,6 +571,7 @@ namespace NodaTime
         /// <summary>
         /// Constructs a <see cref="DateTimeOffset"/> from this Instant which has an offset of zero.
         /// </summary>
+        /// <returns>A <see cref="DateTimeOffset"/> representing the same instant in time as this value.</returns>
         public DateTimeOffset ToDateTimeOffset()
         {
             return new DateTimeOffset(ticks + NodaConstants.DateTimeEpochTicks, TimeSpan.Zero);
@@ -525,6 +580,7 @@ namespace NodaTime
         /// <summary>
         /// Converts a <see cref="DateTime"/> into a new Instant representing the same instant in time.
         /// </summary>
+        /// <returns>An <see cref="Instant"/> value representing the same instant in time as the given universal <see cref="DateTime"/>.</returns>
         /// <param name="dateTime">Date and time value which must have a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/></param>
         /// <exception cref="ArgumentException"><paramref name="dateTime"/> has the wrong <see cref="DateTime.Kind"/>.</exception>
         public static Instant FromDateTimeUtc(DateTime dateTime)
