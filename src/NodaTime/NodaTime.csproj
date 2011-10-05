@@ -76,6 +76,7 @@
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
     <Compile Include="Calendars\BasicFixedMonthCalendarSystem.cs" />
+    <Compile Include="Calendars\BuddhistCalendarSystem.cs" />
     <Compile Include="Calendars\CopticCalendarSystem.cs" />
     <Compile Include="Calendars\IslamicCalendar.cs" />
     <Compile Include="Calendars\IslamicEpoch.cs" />

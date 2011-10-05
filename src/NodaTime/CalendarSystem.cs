@@ -157,6 +157,28 @@ namespace NodaTime
             return IslamicCalendar.GetInstance(leapYearPattern, epoch);
         }
 
+        /// <summary>
+        /// Returns the singleton instance of the Thai Buddhist calendar.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// A calendar that matches the BuddhistCalendar class supplied by Sun in Java.
+        /// </para>
+        /// <para>
+        /// The calendar is identical to the Gregorian/Julian, except that the year is offset by +543
+        /// and the era is named "BE" for Buddhist Era.
+        /// </para>
+        /// <para>
+        /// This calendar is intended to model the calendar used in Thailand, but the actual rules
+        /// for Thailand are much more involved than the algorithms covered by the calendar returned
+        /// from this property. This implementation is accurate from 1941 (ISO) onwards.
+        /// </para>
+        /// <para>
+        /// It is hoped that if there is demand for a more accurate calendar, it may developed here.
+        /// </para>
+        /// </remarks>
+        public static CalendarSystem BuddhistCalendar { get { return BuddhistCalendar.Instance; } }
+
         private readonly FieldSet fields;
         private readonly string name;
 
