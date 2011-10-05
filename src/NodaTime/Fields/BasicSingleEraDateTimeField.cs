@@ -20,12 +20,11 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Provides time calculations for the coptic era component of time.
+    /// Provides the era component of any calendar with only a single era.
+    /// This always returns a value of 0, as it's always the sole entry in the list of eras.
     /// </summary>
     internal class BasicSingleEraDateTimeField : DateTimeField
     {
-        private const int EraValue = NodaConstants.CE;
-
         private readonly string name;
 
         internal BasicSingleEraDateTimeField(string name)
@@ -38,17 +37,17 @@ namespace NodaTime.Fields
 
         internal override int GetValue(LocalInstant localInstant)
         {
-            return EraValue;
+            return 0;
         }
 
         internal override long GetInt64Value(LocalInstant localInstant)
         {
-            return EraValue;
+            return 0;
         }
 
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            FieldUtils.VerifyValueBounds(this, value, EraValue, EraValue);
+            FieldUtils.VerifyValueBounds(this, value, 0, 0);
             return localInstant;
         }
 
@@ -77,7 +76,7 @@ namespace NodaTime.Fields
             return LocalInstant.MinValue;
         }
 
-        // TODO: Fix this. Joda returns a null. Could return an unsupported field?
+        // FIXME: Joda returns a null. Could return an unsupported field?
         internal override DurationField RangeDurationField
         {
             get { throw new NotSupportedException(); }
@@ -85,12 +84,12 @@ namespace NodaTime.Fields
 
         internal override long GetMinimumValue()
         {
-            return EraValue;
+            return 0;
         }
 
         internal override long GetMaximumValue()
         {
-            return EraValue;
+            return 0;
         }
     }
 }

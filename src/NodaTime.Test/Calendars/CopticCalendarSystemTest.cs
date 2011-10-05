@@ -55,7 +55,7 @@ namespace NodaTime.Test.Calendars
             LocalDateTime iso = new LocalDateTime(2004, 6, 9, 0, 0, 0, 0);
             LocalDateTime coptic = new LocalDateTime(iso.LocalInstant, copticCalendar);
 
-            Assert.AreEqual(CopticCalendarSystem.AnnoMartyrm, coptic.Era);
+            Assert.AreEqual(Era.AnnoMartyrm, coptic.Era);
             Assert.AreEqual(18, coptic.CenturyOfEra);
             Assert.AreEqual(20, coptic.YearOfCentury);
             Assert.AreEqual(1720, coptic.YearOfEra);

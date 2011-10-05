@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Calendars;
 using NodaTime.Utility;
 using NodaTime.Fields;
 
@@ -207,36 +208,23 @@ namespace NodaTime
 
         internal LocalInstant LocalInstant { get { return localInstant; } }
 
-        /// <summary>
-        /// Gets the calendar system associated with this local date and time.
-        /// </summary>
+        /// <summary>Gets the calendar system associated with this local date and time.</summary>
         public CalendarSystem Calendar { get { return calendar; } }
 
-        /// <summary>
-        /// Gets the era for this local date and time. The precise meaning of this value depends on the calendar
-        /// system in use.
-        /// </summary>
-        public int Era { get { return calendar.Fields.Era.GetValue(localInstant); } }
-
-        /// <summary>
-        /// Gets the century within the era of this local date and time.
-        /// </summary>
+        /// <summary>Gets the century within the era of this local date and time.</summary>
         public int CenturyOfEra { get { return calendar.Fields.CenturyOfEra.GetValue(localInstant); } }
 
-        /// <summary>
-        /// Gets the year of this local date and time.
-        /// </summary>
+        /// <summary>Gets the year of this local date and time.</summary>
         public int Year { get { return calendar.Fields.Year.GetValue(localInstant); } }
 
-        /// <summary>
-        /// Gets the year of this local date and time within its century.
-        /// </summary>
+        /// <summary>Gets the year of this local date and time within its century.</summary>
         public int YearOfCentury { get { return calendar.Fields.YearOfCentury.GetValue(localInstant); } }
 
-        /// <summary>
-        /// Gets the year of this local date and time within its era.
-        /// </summary>
+        /// <summary>Gets the year of this local date and time within its era.</summary>
         public int YearOfEra { get { return calendar.Fields.YearOfEra.GetValue(localInstant); } }
+
+        /// <summary>Gets the era of this local date.</summary>
+        public Era Era { get { return calendar.Eras[calendar.Fields.Era.GetValue(localInstant)]; } }
 
         /// <summary>
         /// Gets the "week year" of this local date and time.

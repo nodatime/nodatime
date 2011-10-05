@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
+
 namespace NodaTime.Calendars
 {
     /// <summary>
@@ -33,8 +35,8 @@ namespace NodaTime.Calendars
 
         private const long AverageTicksPerFixedMonthYear = (long)(365.25 * NodaConstants.TicksPerStandardDay);
 
-        protected BasicFixedMonthCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler fieldAssembler)
-            : base(name, minDaysInFirstWeek, fieldAssembler)
+        protected BasicFixedMonthCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler fieldAssembler, IEnumerable<Era> eras)
+            : base(name, minDaysInFirstWeek, fieldAssembler, eras)
         {
         }
 

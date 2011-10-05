@@ -60,9 +60,6 @@ namespace NodaTime.Calendars
         /// <summary>The length of a long month, in ticks./</summary>
         private const long TicksPerLongMonth = LongMonthLength * NodaConstants.TicksPerStandardDay;
 
-        /// <summary>The length of a short month, in ticks./</summary>
-        private const long TicksPerShortMonth = ShortMonthLength * NodaConstants.TicksPerStandardDay;
-
         /// <summary>The ticks in a typical month.</summary>
         private const long TicksPerMonth = (long) (29.53056 * NodaConstants.TicksPerStandardDay);
 
@@ -100,7 +97,7 @@ namespace NodaTime.Calendars
             return new IslamicCalendar(patternBits, epochTicks);
         }
 
-        private IslamicCalendar(int leapYearPatternBits, long epochTicks) : base("TODO", 4, AssembleFields)
+        private IslamicCalendar(int leapYearPatternBits, long epochTicks) : base("Hijri (Islamic)", 4, AssembleFields, new[] { Era.AnnoHegirae })
         {
             this.leapYearPatternBits = leapYearPatternBits;
             this.epochTicks = epochTicks;

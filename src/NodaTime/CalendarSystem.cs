@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using NodaTime.Calendars;
 using NodaTime.Fields;
 
@@ -159,15 +160,18 @@ namespace NodaTime
 
         private readonly FieldSet fields;
         private readonly string name;
+        private readonly IList<Era> eras; 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CalendarSystem"/> class.
         /// </summary>
         /// <param name="name">The name of the calendar</param>
         /// <param name="fieldAssembler">Delegate to invoke in order to assemble fields for this calendar.</param>
-        internal CalendarSystem(string name, FieldAssembler fieldAssembler)
+        /// <param name="eras">The eras within this calendar, which need not be unique to the calendar.</param>
+        internal CalendarSystem(string name, FieldAssembler fieldAssembler, IEnumerable<Era> eras)
         {
             this.name = name;
+            this.eras = new List<Era>(eras).AsReadOnly();
             FieldSet.Builder builder = new FieldSet.Builder();
             fieldAssembler(builder, this);
             this.fields = builder.Build();
@@ -195,11 +199,29 @@ namespace NodaTime
         public abstract int GetDaysInMonth(int year, int month);
 
         /// <summary>
+        /// Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
+        /// from a year-of-era and an era.
+        /// </summary>
+        /// <param name="yearOfEra">The year within the era.</param>
+        /// <param name="era">The era in which to consider the year</param>
+        /// <returns>The absolute year represented by the specified year of era.</returns>
+        public int GetAbsoluteYear(int yearOfEra, int era)
+        {
+            // FIXME
+            return 0;
+        }
+
+        /// <summary>
         /// Returns whether or not the given year is a leap year in this calendar.
         /// </summary>
         /// <param name="year">The year to consider.</param>
         /// <returns>True if the given year is a leap year; false otherwise.</returns>
         public abstract bool IsLeapYear(int year);
+
+        /// <summary>
+        /// Returns a read-only list of eras for this calendar.
+        /// </summary>
+        public IList<Era> Eras { get { return eras; } }
 
         internal FieldSet Fields { get { return fields; } }
 
