@@ -17,7 +17,7 @@
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Indicates the type of a value represented by a <see cref="DurationField"/>.
+    /// Indicates the type of a value represented by a duration field.
     /// </summary>
     public enum DurationFieldType
     {

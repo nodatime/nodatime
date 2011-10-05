@@ -36,6 +36,7 @@ namespace NodaTime.Text
         /// <summary>
         /// Creates a new UnparsableValueException with the given message.
         /// </summary>
+        /// <param name="message">The failure message</param>
         public UnparsableValueException(string message)
             : base(message)
         {
@@ -44,6 +45,8 @@ namespace NodaTime.Text
         /// <summary>
         /// Creates a new UnparsableValueException from the given serialization information.
         /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
         protected UnparsableValueException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

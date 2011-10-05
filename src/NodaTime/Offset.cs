@@ -120,6 +120,9 @@ namespace NodaTime
         /// Returns the greater offset of the given two, i.e. the one which will give a later local
         /// time when added to an instant.
         /// </summary>
+        /// <param name="x">The first offset</param>
+        /// <param name="y">The second offset</param>
+        /// <returns>The greater offset of <paramref name="x"/> and <paramref name="y"/>.</returns>
         public static Offset Max(Offset x, Offset y)
         {
             return x > y ? x : y;
@@ -129,6 +132,9 @@ namespace NodaTime
         /// Returns the lower offset of the given two, i.e. the one which will give an earlier local
         /// time when added to an instant.
         /// </summary>
+        /// <param name="x">The first offset</param>
+        /// <param name="y">The second offset</param>
+        /// <returns>The lower offset of <paramref name="x"/> and <paramref name="y"/>.</returns>
         public static Offset Min(Offset x, Offset y)
         {
             return x < y ? x : y;
@@ -148,13 +154,15 @@ namespace NodaTime
         /// <summary>
         /// Returns the negation of the specified offset. This is the method form of the unary minus operator.
         /// </summary>
+        /// <param name="offset">The offset to negate.</param>
+        /// <returns>The negation of the specified offset.</returns>
         public static Offset Negate(Offset offset)
         {
             return -offset;
         }
 
         /// <summary>
-        ///   Implements the unary operator + .
+        /// Implements the unary operator + .
         /// </summary>
         /// <param name="offset">The operand.</param>
         /// <returns>The same <see cref="Offset" /> instance</returns>
@@ -166,13 +174,15 @@ namespace NodaTime
         /// <summary>
         /// Returns the specified offset. This is the method form of the unary plus operator.
         /// </summary>
+        /// <param name="offset">The offset to return.</param>
+        /// <returns>The same offset as the one passed in.</returns>
         public static Offset Plus(Offset offset)
         {
             return offset;
         }
 
         /// <summary>
-        ///   Implements the operator + (addition).
+        /// Implements the operator + (addition).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -194,25 +204,25 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Implements the operator - (subtraction).
+        /// Implements the operator - (subtraction).
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <param name="minuend">The left hand side of the operator.</param>
+        /// <param name="subtrahend">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
-        public static Offset operator -(Offset left, Offset right)
+        public static Offset operator -(Offset minuend, Offset subtrahend)
         {
-            return Offset.FromMilliseconds(left.TotalMilliseconds - right.TotalMilliseconds);
+            return Offset.FromMilliseconds(minuend.TotalMilliseconds - subtrahend.TotalMilliseconds);
         }
 
         /// <summary>
-        ///   Subtracts one Offset from another. Friendly alternative to <c>operator-()</c>.
+        /// Subtracts one Offset from another. Friendly alternative to <c>operator-()</c>.
         /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
+        /// <param name="minuend">The left hand side of the operator.</param>
+        /// <param name="subtrahend">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
-        public static Offset Subtract(Offset left, Offset right)
+        public static Offset Subtract(Offset minuend, Offset subtrahend)
         {
-            return left - right;
+            return minuend - subtrahend;
         }
 
         /// <summary>
@@ -458,6 +468,8 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <returns>The parsed offset.</returns>
         public static Offset Parse(string value)
         {
             return OffsetPattern.Parse(value, NodaFormatInfo.CurrentInfo);
@@ -466,6 +478,9 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the specified format provider.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed offset.</returns>
         public static Offset Parse(string value, IFormatProvider formatProvider)
         {
             return OffsetPattern.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
@@ -474,14 +489,22 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the specified format pattern and format provider.
         /// </summary>
-        public static Offset ParseExact(string value, string format, IFormatProvider formatProvider)
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patternText">The text of the pattern to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed offset.</returns>
+        public static Offset ParseExact(string value, string patternText, IFormatProvider formatProvider)
         {
-            return OffsetPattern.ParseExact(value, format, NodaFormatInfo.GetInstance(formatProvider));
+            return OffsetPattern.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
         /// Parses the given string using the specified patterns and format provider.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patterns">The patterns to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed offset.</returns>
         public static Offset ParseExact(string value, string[] patterns, IFormatProvider formatProvider)
         {
             return OffsetPattern.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
@@ -492,6 +515,8 @@ namespace NodaTime
         /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="result">The parsed offset, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Offset result)
         {
@@ -503,6 +528,9 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed offset, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, out Offset result)
         {
@@ -514,6 +542,10 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patternText">The text of the pattern to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed offset, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string patternText, IFormatProvider formatProvider, out Offset result)
         {
@@ -525,6 +557,10 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Offset.Zero"/> is stored in the parameter and the return value is false.
         /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patterns">The patterns to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed offset, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] patterns, IFormatProvider formatProvider, out Offset result)
         {
@@ -544,21 +580,25 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Froms the ticks.
+        /// Creates a new offset from the given number of ticks.
         /// </summary>
-        /// <param name="ticks">The ticks.</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Offsets are only accurate to millisecond precision; the given number of ticks is simply divided
+        /// by 10,000 to give the number of milliseconds - any remainder is truncated.
+        /// </remarks>
+        /// <param name="ticks">The number of ticks specifying the length of the new offset.</param>
+        /// <returns>An offset representing the given number of ticks, to the (truncated) millisecond.</returns>
         public static Offset FromTicks(long ticks)
         {
             return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
         }
 
         /// <summary>
-        ///   Creates an offset with the specified number of hours.
+        /// Creates an offset with the specified number of hours.
         /// </summary>
-        /// <param name="hours">The number of hours.</param>
+        /// <param name="hours">The number of hours to represent in the new offset.</param>
         /// <returns>
-        ///   A new <see cref="Offset" /> representing the given value.
+        /// A new <see cref="Offset" /> representing the given value.
         /// </returns>
         public static Offset FromHours(int hours)
         {
@@ -581,6 +621,7 @@ namespace NodaTime
         ///   TODO: not sure about the name. Anyone got a better one?
         ///   TODO: The behaviour around negative values needs documenting too! (Make this internal for now?)
         /// </remarks>
+        /// <returns>A new <see cref="Offset"/> representing the given values.</returns>
         public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds)
         {
             return Create(hours, minutes, seconds, fractionalSeconds, false);
@@ -596,6 +637,7 @@ namespace NodaTime
         /// <param name="fractionalSeconds">The number of milliseconds within the second,
         /// in the range [0, 1000).</param>
         /// <param name="negative">True if a negative offset should be created, false for a positive one.</param>
+        /// <returns>A new <see cref="Offset"/> representing the given values.</returns>
         public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds, bool negative)
         {
             Preconditions.CheckArgumentRange("hours", hours, 0, 23);
@@ -616,6 +658,7 @@ namespace NodaTime
         /// <summary>
         /// Converts this offset to a .NET standard <see cref="TimeSpan" /> value.
         /// </summary>
+        /// <returns>An equivalent <see cref="TimeSpan"/> to this value.</returns>
         public TimeSpan ToTimeSpan()
         {
             return TimeSpan.FromMilliseconds(milliseconds);

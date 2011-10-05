@@ -406,6 +406,7 @@ namespace NodaTime
         /// <summary>
         /// Compares this object with another <see cref="PeriodType"/> for equality.
         /// </summary>
+        /// <param name="other">The other period type to compare this one with.</param>
         /// <returns>True if <paramref name="other"/> consists of the same field types as this period type; False otherwise.</returns>
         public bool Equals(PeriodType other)
         {
@@ -439,6 +440,7 @@ namespace NodaTime
         /// <summary>
         /// Compares this object with another for equality.
         /// </summary>
+        /// <param name="obj">The object to compare this one with.</param>
         /// <returns>True if <paramref name="obj"/> is a <see cref="PeriodType"/> consisting of the same field types; False otherwise.</returns>
         public override bool Equals(object obj)
         {
@@ -448,6 +450,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the hash code for this period type, based on the field types within it.
         /// </summary>
+        /// <returns>The hash code for this period type.</returns>
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
@@ -462,6 +465,9 @@ namespace NodaTime
         /// <summary>
         /// Compares two period types for equality.
         /// </summary>
+        /// <param name="left">The first value to compare</param>
+        /// <param name="right">The second value to compare</param>
+        /// <returns>True if the two period types are equal; false otherwise.</returns>
         public static bool operator ==(PeriodType left, PeriodType right)
         {
             return Equals(left, right);
@@ -470,6 +476,9 @@ namespace NodaTime
         /// <summary>
         /// Compares two period types for inequality.
         /// </summary>
+        /// <param name="left">The first value to compare</param>
+        /// <param name="right">The second value to compare</param>
+        /// <returns>False if the two period types are equal; true otherwise.</returns>
         public static bool operator !=(PeriodType left, PeriodType right)
         {
             return !Equals(left, right);
@@ -506,6 +515,7 @@ namespace NodaTime
         /// <summary>
         /// Returns a text representation of this period type.
         /// </summary>
+        /// <returns>A text representation of this period type.</returns>
         public override string ToString()
         {
             return "PeriodType[" + Name + "]";
@@ -514,6 +524,7 @@ namespace NodaTime
         /// <summary>
         /// Returns an iterator over the field types within this period.
         /// </summary>
+        /// <returns>An iterator over the field types within this period.</returns>
         public IEnumerator<DurationFieldType> GetEnumerator()
         {
             return ((IEnumerable<DurationFieldType>)fieldTypes).GetEnumerator();
@@ -522,11 +533,17 @@ namespace NodaTime
         /// <summary>
         /// Returns the field type at the given index, which must be between 0 (inclusive) and <see cref="Size"/> (exclusive).
         /// </summary>
+        /// <param name="index">The index of the field type to fetch</param>
+        /// <returns>The field type at the given index.</returns>
         public DurationFieldType this[int index]
         {
             get { return fieldTypes[index]; }
         }
 
+        /// <summary>
+        /// Returns an iterator over the field types within this period.
+        /// </summary>
+        /// <returns>An iterator over the field types within this period.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

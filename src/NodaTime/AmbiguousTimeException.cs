@@ -77,6 +77,10 @@ namespace NodaTime
         /// User code is unlikely to need to deliberately call this constructor except
         /// possibly for testing.
         /// </remarks>
+        /// <param name="localDateTime">The local date and time that was ambiguous</param>
+        /// <param name="zone">The time zone in which the mapping is ambiguous</param>
+        /// <param name="earlierMapping">The earlier possible mapping</param>
+        /// <param name="laterMapping">The later possible mapping</param>
         public AmbiguousTimeException(LocalDateTime localDateTime, DateTimeZone zone,
             ZonedDateTime earlierMapping,
             ZonedDateTime laterMapping)

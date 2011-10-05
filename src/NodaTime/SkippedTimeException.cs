@@ -65,6 +65,8 @@ namespace NodaTime
         /// User code is unlikely to need to deliberately call this constructor except
         /// possibly for testing.
         /// </remarks>
+        /// <param name="localDateTime">The local date time which is skipped in the specified time zone.</param>
+        /// <param name="zone">The time zone in which the local date time does not exist.</param>
         public SkippedTimeException(LocalDateTime localDateTime, DateTimeZone zone) : base("Local time " + localDateTime + " is invalid in time zone " + zone.Id)
         {
             this.localDateTime = localDateTime;

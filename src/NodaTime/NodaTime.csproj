@@ -81,6 +81,7 @@
     <Compile Include="Calendars\IslamicEpoch.cs" />
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\JulianCalendarSystem.cs" />
+    <Compile Include="Calendars\NamespaceDoc.cs" />
     <Compile Include="Calendars\WrappedCalendarSystem.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Fields\BasicMonthDurationField.cs" />
@@ -89,7 +90,9 @@
     <Compile Include="Fields\BasicYearDurationField.cs" />
     <Compile Include="Fields\DelegatedDateTimeField.cs" />
     <Compile Include="Fields\ImpreciseDurationField.cs" />
+    <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Fields\SkipZeroDateTimeField.cs" />
+    <Compile Include="Globalization\NamespaceDoc.cs" />
     <Compile Include="Properties\PatternResources.Designer.cs">
       <DependentUpon>PatternResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -104,6 +107,7 @@
     <Compile Include="Text\IPattern.cs" />
     <Compile Include="Text\LocalTimePattern.cs" />
     <Compile Include="Text\LocalTimePatternParser.cs" />
+    <Compile Include="Text\NamespaceDoc.cs" />
     <Compile Include="Text\OffsetPattern.cs" />
     <Compile Include="Text\OffsetPatternParser.cs" />
     <Compile Include="Text\Patterns\AbstractPattern.cs" />
@@ -173,6 +177,7 @@
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
+    <Compile Include="TimeZones\NamespaceDoc.cs" />
     <Compile Include="TimeZones\TimeZoneCache.cs" />
     <Compile Include="TimeZones\Transition.cs" />
     <Compile Include="TimeZones\WindowsToPosixResource.cs" />

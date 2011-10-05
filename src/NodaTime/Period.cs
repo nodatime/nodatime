@@ -68,6 +68,8 @@ namespace NodaTime
         /// <summary>
         /// Creates a period representing the specified number of years.
         /// </summary>
+        /// <param name="years">The number of years in the new period</param>
+        /// <returns>A period consisting of the given number of years.</returns>
         public static Period FromYears(long years)
         {
             return CreateSingleFieldPeriod(PeriodType.Years, years);
@@ -76,6 +78,8 @@ namespace NodaTime
         /// <summary>
         /// Creates a period representing the specified number of months.
         /// </summary>
+        /// <param name="months">The number of months in the new period</param>
+        /// <returns>A period consisting of the given number of months.</returns>
         public static Period FromMonths(long months)
         {
             return CreateSingleFieldPeriod(PeriodType.Months, months);
@@ -84,6 +88,8 @@ namespace NodaTime
         /// <summary>
         /// Creates a period representing the specified number of days.
         /// </summary>
+        /// <param name="days">The number of days in the new period</param>
+        /// <returns>A period consisting of the given number of days.</returns>
         public static Period FromDays(long days)
         {
             return CreateSingleFieldPeriod(PeriodType.Days, days);
@@ -92,6 +98,8 @@ namespace NodaTime
         /// <summary>
         /// Creates a period representing the specified number of hours.
         /// </summary>
+        /// <param name="hours">The number of hours in the new period</param>
+        /// <returns>A period consisting of the given number of hours.</returns>
         public static Period FromHours(long hours)
         {
             return CreateSingleFieldPeriod(PeriodType.Hours, hours);
@@ -100,6 +108,8 @@ namespace NodaTime
         /// <summary>
         /// Creates a period representing the specified number of minutes.
         /// </summary>
+        /// <param name="minutes">The number of minutes in the new period</param>
+        /// <returns>A period consisting of the given number of minutes.</returns>
         public static Period FromMinutes(long minutes)
         {
             return CreateSingleFieldPeriod(PeriodType.Minutes, minutes);
@@ -108,6 +118,8 @@ namespace NodaTime
         /// <summary>
         /// Creates a period representing the specified number of seconds.
         /// </summary>
+        /// <param name="seconds">The number of seconds in the new period</param>
+        /// <returns>A period consisting of the given number of seconds.</returns>
         public static Period FromSeconds(long seconds)
         {
             return CreateSingleFieldPeriod(PeriodType.Seconds, seconds);
@@ -116,6 +128,8 @@ namespace NodaTime
         /// <summary>
         /// Creates a period representing the specified number of miliseconds.
         /// </summary>
+        /// <param name="milliseconds">The number of milliseconds in the new period</param>
+        /// <returns>A period consisting of the given number of milliseconds.</returns>
         public static Period FromMillseconds(long milliseconds)
         {
             return CreateSingleFieldPeriod(PeriodType.Milliseconds, milliseconds);
@@ -124,6 +138,8 @@ namespace NodaTime
         /// <summary>
         /// Creates a period representing the specified number of ticks.
         /// </summary>
+        /// <param name="ticks">The number of ticks in the new period</param>
+        /// <returns>A period consisting of the given number of ticks.</returns>
         public static Period FromTicks(long ticks)
         {
             return CreateSingleFieldPeriod(PeriodType.Ticks, ticks);
@@ -133,6 +149,9 @@ namespace NodaTime
         /// Adds two periods together, by simply adding the values for each field. Currently this
         /// returns a period with a period type of "all fields".
         /// </summary>
+        /// <param name="left">The first period to add</param>
+        /// <param name="right">The second period to add</param>
+        /// <returns>The sum of the two periods.</returns>
         public static Period operator +(Period left, Period right)
         {
             if (left == null)
@@ -158,15 +177,18 @@ namespace NodaTime
         /// Subtracts one periods from another, by simply subtracting each field value. Currently this
         /// returns a period with a period type of "all fields".
         /// </summary>
-        public static Period operator -(Period left, Period right)
+        /// <param name="minuend">The period to subtract the second operand from</param>
+        /// <param name="subtrahend">The period to subtract the first operand from</param>
+        /// <returns>The result of subtracting all the values in the second operand from the values in the first.</returns>
+        public static Period operator -(Period minuend, Period subtrahend)
         {
-            if (left == null)
+            if (minuend == null)
             {
-                throw new ArgumentNullException("left");
+                throw new ArgumentNullException("minuend");
             }
-            if (right == null)
+            if (subtrahend == null)
             {
-                throw new ArgumentNullException("right");
+                throw new ArgumentNullException("subtrahend");
             }
             PeriodType all = PeriodType.AllFields;
             long[] newValues = new long[all.Size];
@@ -174,7 +196,7 @@ namespace NodaTime
             for (int i = 0; i < all.Size; i++)
             {
                 DurationFieldType fieldType = all[i];
-                newValues[i] = left[fieldType] - right[fieldType];
+                newValues[i] = minuend[fieldType] - subtrahend[fieldType];
             }
             return new Period(PeriodType.AllFields, newValues);
         }
@@ -213,6 +235,9 @@ namespace NodaTime
         /// <summary>
         /// Returns the difference between two date/times using the "all fields" period type.
         /// </summary>
+        /// <param name="start">Start date/time</param>
+        /// <param name="end">End date/time</param>
+        /// <returns>The period between the two date and time values, using all period fields.</returns>
         public static Period Between(LocalDateTime start, LocalDateTime end)
         {
             return Between(start, end, PeriodType.AllFields);
@@ -229,13 +254,13 @@ namespace NodaTime
         /// will give a value between <paramref name="start"/> and <paramref name="end"/>. In other words,
         /// any rounding is "towards start"; this is true whether the resulting period is negative or positive.
         /// </remarks>
-        /// <param name="start">Start date/time</param>
-        /// <param name="end">End date/time</param>
+        /// <param name="start">Start date</param>
+        /// <param name="end">End date</param>
         /// <param name="periodType">Period type to use for calculations</param>
         /// <exception cref="ArgumentException"><paramref name="periodType"/> contains time fields</exception>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
         /// <exception cref="ArgumentNullException"><paramref name="periodType"/> is null</exception>
-        /// <returns>The period between the given dates</returns>
+        /// <returns>The period between the given dates using the specified period type</returns>
         public static Period Between(LocalDate start, LocalDate end, PeriodType periodType)
         {
             return Between(start.LocalDateTime, end.LocalDateTime, periodType);
@@ -244,6 +269,9 @@ namespace NodaTime
         /// <summary>
         /// Returns the difference between two dates using the "year month day" period type.
         /// </summary>
+        /// <param name="start">Start date</param>
+        /// <param name="end">End date</param>
+        /// <returns>The period between the two dates, using year, month and day fields.</returns>
         public static Period Between(LocalDate start, LocalDate end)
         {
             return Between(start.LocalDateTime, end.LocalDateTime, PeriodType.YearMonthDay);
@@ -260,8 +288,8 @@ namespace NodaTime
         /// will give a value between <paramref name="start"/> and <paramref name="end"/>. In other words,
         /// any rounding is "towards start"; this is true whether the resulting period is negative or positive.
         /// </remarks>
-        /// <param name="start">Start date/time</param>
-        /// <param name="end">End date/time</param>
+        /// <param name="start">Start time</param>
+        /// <param name="end">End time</param>
         /// <param name="periodType">Period type to use for calculations</param>
         /// <exception cref="ArgumentException"><paramref name="periodType"/> contains time fields</exception>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
@@ -275,6 +303,9 @@ namespace NodaTime
         /// <summary>
         /// Returns the difference between two dates using the "time" period type.
         /// </summary>
+        /// <param name="start">Start time</param>
+        /// <param name="end">End time</param>
+        /// <returns>The period between the two times, using the "time" period fields.</returns>
         public static Period Between(LocalTime start, LocalTime end)
         {
             return Between(start.LocalDateTime, end.LocalDateTime, PeriodType.Time);
@@ -283,6 +314,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the fields and values within this period.
         /// </summary>
+        /// <returns>The fields and values within this period.</returns>
         public IEnumerator<DurationFieldValue> GetEnumerator()
         {
             for (int i = 0; i < values.Length; i++)
@@ -294,6 +326,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the fields and values within this period.
         /// </summary>
+        /// <returns>The fields and values within this period.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -303,6 +336,8 @@ namespace NodaTime
         /// Returns the value of the given field within this period. If the period does not contain
         /// the given field, 0 is returned.
         /// </summary>
+        /// <param name="fieldType">The type of field to fetch the value of.</param>
+        /// <returns>The value of the given field within this period, or 0 if this period does not contain the given field.</returns>
         public long this[DurationFieldType fieldType]
         {
             get
@@ -355,6 +390,8 @@ namespace NodaTime
         /// <summary>
         /// Compares the given object for equality with this one, as per <see cref="Equals(Period)"/>.
         /// </summary>
+        /// <param name="other">The value to compare this one with.</param>
+        /// <returns>true if the other object is a period equal to this one, consistent with <see cref="Equals(Period)"/></returns>
         public override bool Equals(object other)
         {
             return Equals(other as Period);
@@ -363,6 +400,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the hash code for this period, consistent with <see cref="Equals(Period)"/>.
         /// </summary>
+        /// <returns>The hash code for this period.</returns>
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
@@ -382,6 +420,8 @@ namespace NodaTime
         /// - so a period of "one hour" is the same whether or not it's potentially got other fields with
         /// a zero value. However, no normalization takes place, so "one hour" is not equal to "sixty minutes".
         /// </remarks>
+        /// <param name="other">The period to compare this one with.</param>
+        /// <returns>True if this period has the same values for the same fields as the one specified.</returns>
         public bool Equals(Period other)
         {
             if (other == null)
