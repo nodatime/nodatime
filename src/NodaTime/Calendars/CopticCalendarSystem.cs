@@ -41,16 +41,9 @@ namespace NodaTime.Calendars
      /// </remarks>
     internal sealed class CopticCalendarSystem : BasicFixedMonthCalendarSystem
     {
-        /// <summary>
-        /// Constant value for 'Anno Martyrum' or 'Era of the Martyrs', equivalent
-        /// to the value returned for AD/CE.
-        /// </summary>
-        public const int AnnoMartyrm = NodaConstants.CE;
-
-
         private const string CopticName = "Coptic";
         private static readonly CopticCalendarSystem[] instances;
-        private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField("AM");
+        private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoMartyrm);
         // TODO: Validate these
         internal override int MinYear { get { return -29226; } }
         internal override int MaxYear { get { return 29227; } }

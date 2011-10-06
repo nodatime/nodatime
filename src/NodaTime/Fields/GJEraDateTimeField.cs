@@ -26,6 +26,8 @@ namespace NodaTime.Fields
     internal sealed class GJEraDateTimeField : DateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;
+        private const int BeforeCommonEraIndex = 0;
+        private const int CommonEraIndex = 1;
 
         internal GJEraDateTimeField(BasicCalendarSystem calendarSystem) 
             : base(DateTimeFieldType.Era, UnsupportedDurationField.Eras)
@@ -38,12 +40,12 @@ namespace NodaTime.Fields
         #region Values
         internal override long GetInt64Value(LocalInstant localInstant)
         {
-            return calendarSystem.GetYear(localInstant) <= 0 ? NodaConstants.BeforeCommonEra : NodaConstants.CommonEra;
+            return calendarSystem.GetYear(localInstant) <= 0 ? BeforeCommonEraIndex : CommonEraIndex;
         }
 
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            FieldUtils.VerifyValueBounds(this, value, NodaConstants.BCE, NodaConstants.CE);
+            FieldUtils.VerifyValueBounds(this, value, BeforeCommonEraIndex, CommonEraIndex);
 
             int oldEra = GetValue(localInstant);
             if (oldEra != value)
@@ -61,24 +63,24 @@ namespace NodaTime.Fields
         #region Ranges
         internal override long GetMaximumValue()
         {
-            return NodaConstants.CommonEra;
+            return CommonEraIndex;
         }
 
         internal override long GetMinimumValue()
         {
-            return NodaConstants.BeforeCommonEra;
+            return BeforeCommonEraIndex;
         }
         #endregion
 
         #region Rounding
         internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
-            return GetValue(localInstant) == NodaConstants.CommonEra ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1) : new LocalInstant(long.MinValue);
+            return GetValue(localInstant) == CommonEraIndex ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1) : new LocalInstant(long.MinValue);
         }
 
         internal override LocalInstant RoundCeiling(LocalInstant localInstant)
         {
-            return GetValue(localInstant) == NodaConstants.BeforeCommonEra
+            return GetValue(localInstant) == BeforeCommonEraIndex
                        ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
                        : new LocalInstant(long.MaxValue);
         }
