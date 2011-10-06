@@ -26,42 +26,34 @@ namespace NodaTime.Test.Calendars
     /// Tests for <see cref="JulianCalendarSystem"/>.
     /// </summary>
     [TestFixture]
-    public class JulianCalendarSystemTest
+    public partial class JulianCalendarSystemTest
     {
+        private static readonly CalendarSystem Julian = JulianCalendarSystem.GetInstance(4);
+
         /// <summary>
         /// The Unix epoch is equivalent to December 19th 1969 in the Julian calendar.
         /// </summary>
         [Test]
         public void Epoch()
         {
-            CalendarSystem calendar = JulianCalendarSystem.GetInstance(4);
-            LocalDateTime julianEpoch = new LocalDateTime(LocalInstant.LocalUnixEpoch, calendar);
+            LocalDateTime julianEpoch = new LocalDateTime(LocalInstant.LocalUnixEpoch, Julian);
             Assert.AreEqual(1969, julianEpoch.Year);
             Assert.AreEqual(12, julianEpoch.MonthOfYear);
             Assert.AreEqual(19, julianEpoch.DayOfMonth);
         }
 
         [Test]
-        public void YearZeroIsSkipped()
-        {
-            CalendarSystem calendar = JulianCalendarSystem.GetInstance(4);
-            LocalDateTime startOfYearOne = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar);
-            LocalDateTime dayBeforeStartOfYearOne = startOfYearOne - Period.FromDays(1);
-            Assert.AreEqual(-1, dayBeforeStartOfYearOne.Year);
-            Assert.AreEqual(12, dayBeforeStartOfYearOne.MonthOfYear);
-            Assert.AreEqual(31, dayBeforeStartOfYearOne.DayOfMonth);
-        }
-
-        [Test]
         public void LeapYears()
         {
-            CalendarSystem calendar = JulianCalendarSystem.GetInstance(4);
-            Assert.IsTrue(calendar.IsLeapYear(1900)); // No 100 year rule...
-            Assert.IsFalse(calendar.IsLeapYear(1901));
-            Assert.IsTrue(calendar.IsLeapYear(1904));
-            Assert.IsTrue(calendar.IsLeapYear(2000));
-            Assert.IsTrue(calendar.IsLeapYear(2100)); // No 100 year rule...
-            Assert.IsTrue(calendar.IsLeapYear(2400));
+            Assert.IsTrue(Julian.IsLeapYear(1900)); // No 100 year rule...
+            Assert.IsFalse(Julian.IsLeapYear(1901));
+            Assert.IsTrue(Julian.IsLeapYear(1904));
+            Assert.IsTrue(Julian.IsLeapYear(2000));
+            Assert.IsTrue(Julian.IsLeapYear(2100)); // No 100 year rule...
+            Assert.IsTrue(Julian.IsLeapYear(2400));
+            // Check 1BC, 5BC etc...
+            Assert.IsTrue(Julian.IsLeapYear(0));
+            Assert.IsTrue(Julian.IsLeapYear(-4));
         }
 
         [Test]

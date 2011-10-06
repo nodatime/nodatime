@@ -38,8 +38,6 @@ namespace NodaTime.Calendars
         /// </summary>
         protected abstract long GetTotalTicksByYearMonth(int year, int month);
 
-        internal abstract int MinYear { get; }
-        internal abstract int MaxYear { get; }
         internal abstract long AverageTicksPerMonth { get; }
         internal abstract long AverageTicksPerYear { get; }
         internal abstract long AverageTicksPerYearDividedByTwo { get; }

@@ -109,6 +109,30 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns a Coptic calendar system, which defines every fourth year as
+        /// leap, much like the Julian calendar. The year is broken down into 12 months,
+        /// each 30 days in length. An extra period at the end of the year is either 5
+        /// or 6 days in length. In this implementation, it is considered a 13th month.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Year 1 in the Coptic calendar began on August 29, 284 CE (Julian), thus
+        /// Coptic years do not begin at the same time as Julian years. This chronology
+        /// is not proleptic, as it does not allow dates before the first Coptic year.
+        /// </para>
+        /// <para>
+        /// This implementation defines a day as midnight to midnight exactly as per
+        /// the ISO chronology. Some references indicate that a coptic day starts at
+        /// sunset on the previous ISO day, but this has not been confirmed and is not
+        /// implemented.
+        /// </para>
+        /// </remarks>
+        public static CalendarSystem GetCopticCalendar(int minDaysInFirstWeek)
+        {
+            return CopticCalendarSystem.GetInstance(minDaysInFirstWeek);
+        }
+
+        /// <summary>
         /// Returns an Islamic, or Hijri, calendar system.
         /// </summary>
         /// <remarks>
@@ -199,19 +223,6 @@ namespace NodaTime
         public abstract int GetDaysInMonth(int year, int month);
 
         /// <summary>
-        /// Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
-        /// from a year-of-era and an era.
-        /// </summary>
-        /// <param name="yearOfEra">The year within the era.</param>
-        /// <param name="era">The era in which to consider the year</param>
-        /// <returns>The absolute year represented by the specified year of era.</returns>
-        public int GetAbsoluteYear(int yearOfEra, int era)
-        {
-            // FIXME
-            return 0;
-        }
-
-        /// <summary>
         /// Returns whether or not the given year is a leap year in this calendar.
         /// </summary>
         /// <param name="year">The year to consider.</param>
@@ -219,9 +230,113 @@ namespace NodaTime
         public abstract bool IsLeapYear(int year);
 
         /// <summary>
+        /// The minimum valid year within this calendar.
+        /// </summary>
+        // TODO: Back these by simple fields?
+        public abstract int MinYear { get; }
+
+        /// <summary>
+        /// The maximum valid year within this calendar.
+        /// </summary>
+        public abstract int MaxYear { get; }
+
+        #region Era-based members
+        /// <summary>
         /// Returns a read-only list of eras for this calendar.
         /// </summary>
         public IList<Era> Eras { get { return eras; } }
+
+        /// <summary>
+        /// Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
+        /// from a year-of-era and an era.
+        /// </summary>
+        /// <param name="yearOfEra">The year within the era.</param>
+        /// <param name="era">The era in which to consider the year</param>
+        /// <returns>The absolute year represented by the specified year of era.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="era"/> is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="yearOfEra"/> is out of the range of years for the given era</exception>
+        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era of this calendar</exception>
+        public int GetAbsoluteYear(int yearOfEra, Era era)
+        {
+            return GetAbsoluteYear(yearOfEra, GetEraIndex(era));
+        }
+
+        /// <summary>
+        /// Returns the maximum valid year in the given era.
+        /// </summary>
+        /// <param name="era">The era in which to find the greatest year</param>
+        /// <returns>The maximum valid year in the given eraera.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="era"/> is null</exception>
+        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era of this calendar</exception>
+        public int GetMaxYearOfEra(Era era)
+        {
+            return GetMaxYearOfEra(GetEraIndex(era));
+        }
+
+        /// <summary>
+        /// Returns the minimum valid year in the given era.
+        /// </summary>
+        /// <param name="era">The era in which to find the greatest year</param>
+        /// <returns>The minimum valid year in the given eraera.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="era"/> is null</exception>
+        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era of this calendar</exception>
+        public int GetMinYearOfEra(Era era)
+        {
+            return GetMinYearOfEra(GetEraIndex(era));
+        }
+
+        /// <summary>
+        /// Convenience method to perform nullity and validity checking on the era, converting it to
+        /// the index within the list of eras supported by this calendar system.
+        /// </summary>
+        private int GetEraIndex(Era era)
+        {
+            if (era == null)
+            {
+                throw new ArgumentNullException("era");
+            }
+            int index = Eras.IndexOf(era);
+            if (index == -1)
+            {
+                throw new ArgumentException("Era does not belong to this calendar", "era");
+            }
+            return index;
+        }
+
+        /// <summary>
+        /// See <see cref="GetMinYearOfEra(Era)"/> - but this uses a pre-validated index.
+        /// This default implementation returns 1, but can be overridden by derived classes.
+        /// </summary>
+        internal virtual int GetMinYearOfEra(int eraIndex)
+        {
+            return 1;
+        }
+
+        /// <summary>
+        /// See <see cref="GetMinYearOfEra(Era)"/> - but this uses a pre-validated index.
+        /// This default implementation returns the maximum year for this calendar, which is
+        /// a valid implementation for single-era calendars.
+        /// </summary>
+        internal virtual int GetMaxYearOfEra(int eraIndex)
+        {
+            return MaxYear;
+        }
+
+        /// <summary>
+        /// See <see cref="GetAbsoluteYear(int, Era)"/> - but this uses a pre-validated index.
+        /// This default implementation validates that the year is between 1 and MaxYear inclusive,
+        /// but then returns it as-is, expecting that there's no further work to be
+        /// done. This is valid for single-era calendars; the method should be overridden for multi-era calendars.
+        /// </summary>
+        internal virtual int GetAbsoluteYear(int yearOfEra, int eraIndex)
+        {
+            if (yearOfEra < 1 || yearOfEra > MaxYear)
+            {
+                throw new ArgumentOutOfRangeException("yearOfEra");
+            }
+            return yearOfEra;
+        }
+        #endregion
 
         internal FieldSet Fields { get { return fields; } }
 

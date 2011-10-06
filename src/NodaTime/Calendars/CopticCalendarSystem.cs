@@ -21,32 +21,16 @@ using NodaTime.Fields;
 namespace NodaTime.Calendars
 {
     /// <summary>
-     /// Implements the Coptic calendar system, which defines every fourth year as
-     /// leap, much like the Julian calendar. The year is broken down into 12 months,
-     /// each 30 days in length. An extra period at the end of the year is either 5
-     /// or 6 days in length. In this implementation, it is considered a 13th month.
-     /// </summary>
-     /// <remarks>
-     /// <para>
-     /// Year 1 in the Coptic calendar began on August 29, 284 CE (Julian), thus
-     /// Coptic years do not begin at the same time as Julian years. This chronology
-     /// is not proleptic, as it does not allow dates before the first Coptic year.
-     /// </para>
-     /// <para>
-     /// This implementation defines a day as midnight to midnight exactly as per
-     /// the ISO chronology. Some references indicate that a coptic day starts at
-     /// sunset on the previous ISO day, but this has not been confirmed and is not
-     /// implemented.
-     /// </para>
-     /// </remarks>
+    /// See <see cref="CalendarSystem.GetCopticCalendar"/> for details.
+    /// </summary>
     internal sealed class CopticCalendarSystem : BasicFixedMonthCalendarSystem
     {
         private const string CopticName = "Coptic";
         private static readonly CopticCalendarSystem[] instances;
         private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoMartyrm);
         // TODO: Validate these
-        internal override int MinYear { get { return -29226; } }
-        internal override int MaxYear { get { return 29227; } }
+        public override int MinYear { get { return -29226; } }
+        public override int MaxYear { get { return 29227; } }
 
         static CopticCalendarSystem()
         {

@@ -157,5 +157,21 @@ namespace NodaTime.Calendars
             long ticks = GetYearMonthDayTicks(year, 1, dayOfYear);
             return new LocalInstant(ticks + tickOfDay);
         }
+
+        #region Era handling
+        internal override int GetAbsoluteYear(int yearOfEra, int eraIndex)
+        {
+            // By now the era will have been validated; it's either 0 (BC) or 1 (AD)
+            return eraIndex == 0 ? 1 - yearOfEra: yearOfEra;
+        }
+
+        internal override int GetMaxYearOfEra(int eraIndex)
+        {
+            // By now the era will have been validated; it's either 0 (BC) or 1 (AD)
+            return eraIndex == 0 ? 1 - MinYear : MaxYear;
+        }
+
+        // No need to override GetMinYearOfEra; 1 is fine.
+        #endregion
     }
 }

@@ -79,10 +79,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalendarSystemTest.cs" />
+    <Compile Include="CalendarSystemTest.Era.cs">
+      <DependentUpon>CalendarSystemTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Calendars\CopticCalendarSystemTest.cs" />
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
     <Compile Include="Calendars\IslamicCalendarTest.cs" />
+    <Compile Include="Calendars\IsoCalendarSystemTest.Era.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Calendars\JulianCalendarSystemTest.cs" />
+    <Compile Include="Calendars\JulianCalendarSystemTest.Era.cs">
+      <DependentUpon>JulianCalendarSystemTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="LocalTimeTest.Parse.cs">
       <DependentUpon>LocalTimeTest.cs</DependentUpon>

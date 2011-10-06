@@ -34,12 +34,12 @@ namespace NodaTime.Calendars
         /// The highest year that can be fully supported. It's possible that
         /// a few years above this can be partially supported, but some calculations may overflow.
         /// </summary>
-        internal override int MaxYear { get { return 29226; } }
+        public override int MaxYear { get { return 29226; } }
 
         const int RealMinYear = -29225;
 
         /// <summary>The lowest year that can be fully supported.</summary>
-        internal override int MinYear { get { return 1; } }
+        public override int MinYear { get { return 1; } }
 
         /// <summary>Days in a pair of months, in days.</summary>
         private const int MonthPairLength = 59;
