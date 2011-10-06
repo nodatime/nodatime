@@ -28,8 +28,7 @@ namespace NodaTime.Calendars
         private const string CopticName = "Coptic";
         private static readonly CopticCalendarSystem[] instances;
         private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoMartyrm);
-        // TODO: Validate these
-        public override int MinYear { get { return -29226; } }
+        public override int MinYear { get { return 1; } }
         public override int MaxYear { get { return 29227; } }
 
         static CopticCalendarSystem()
