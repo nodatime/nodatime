@@ -26,12 +26,8 @@ namespace NodaTime.Calendars
     /// </summary>
     internal sealed class IslamicCalendar : BasicCalendarSystem
     {
-        // TODO: Remove or move to NodaConstants?
-        /// <summary>Constant value for 'Anno Hegirae', equivalent to the value returned for AD/CE</summary>
-        internal const int AH = NodaConstants.CE;
-
         /// <summary>Singleton era field.</summary>
-        private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField("AH");
+        private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoHegirae);
 
         // TODO: Validate these.
         /// <summary>

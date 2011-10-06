@@ -52,20 +52,29 @@ namespace NodaTime.Calendars
         /// </summary>
         public static readonly Era AnnoHegirae = new Era("EH"); // AH
 
-        private readonly string id;
+        private readonly string name;
         private readonly IList<string> resourceIdentifiers;
 
         internal IList<string> ResourceIdentifiers { get { return resourceIdentifiers; } }
 
-        private Era(string id, params string[] resourceIdentifiers)
+        private Era(string name, params string[] resourceIdentifiers)
         {
-            this.id = id;
+            this.name = name;
             this.resourceIdentifiers = new List<string>(resourceIdentifiers).AsReadOnly();
         }
 
+        /// <summary>
+        /// Returns the name of this era, e.g. "CE" or "BCE".
+        /// </summary>
+        public string Name { get { return name; } }
+
+        /// <summary>
+        /// Returns the name of this era.
+        /// </summary>
+        /// <returns>The name of this era.</returns>
         public override string ToString()
         {
-            return id;
+            return name;
         }
     }
 }

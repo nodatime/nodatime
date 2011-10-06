@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Calendars;
 
 namespace NodaTime.Fields
 {
@@ -25,15 +26,15 @@ namespace NodaTime.Fields
     /// </summary>
     internal class BasicSingleEraDateTimeField : DateTimeField
     {
-        private readonly string name;
+        private readonly Era era;
 
-        internal BasicSingleEraDateTimeField(string name)
+        internal BasicSingleEraDateTimeField(Era era)
             : base(DateTimeFieldType.Era, UnsupportedDurationField.Eras)
         {
-            this.name = name;
+            this.era = era;
         }
 
-        internal override string Name { get { return name; } }
+        internal override string Name { get { return era.Name; } }
 
         internal override int GetValue(LocalInstant localInstant)
         {
