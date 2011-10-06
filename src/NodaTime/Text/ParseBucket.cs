@@ -30,7 +30,6 @@ namespace NodaTime.Text
         /// are incompatible field values.
         /// </summary>
         /// <param name="usedFields">Indicates which fields were part of the original text pattern.</param>
-        /// <param name="templateValue">The template value to use for unspecified fields.</param>
         internal abstract ParseResult<T> CalculateValue(PatternFields usedFields);
 
         /// <summary>

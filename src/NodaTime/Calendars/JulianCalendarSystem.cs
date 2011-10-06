@@ -24,8 +24,9 @@ namespace NodaTime.Calendars
     /// Implements a pure proleptic Julian calendar system, which defines every
     /// fourth year as leap. This implementation follows the leap year rule
     /// strictly, even for dates before 8 CE, where leap years were actually
-    /// irregular. In the Julian calendar, year zero does not exist: 1 BCE is
-    /// followed by 1 CE.
+    /// irregular. Unlike Joda Time's implementation, the implementation in Noda Time
+    /// *does* recognize an "absolute" year zero, although it becomes 1 BCE when viewed
+    /// as a "year of era". That year (and 5 BCE, 9 BCE etc) are leap years.
     /// </summary>
     /// <remarks>
     /// Although the Julian calendar did not exist before 45 BCE, this chronology
@@ -62,40 +63,20 @@ namespace NodaTime.Calendars
         }
 
         private JulianCalendarSystem(int minDaysInFirstWeek)
-            : base(JulianName, minDaysInFirstWeek, AssembleFields)
+            : base(JulianName, minDaysInFirstWeek, null)
         {
         }
 
         private const long AverageTicksPerJulianYear = (long)(365.25m * NodaConstants.TicksPerStandardDay);
         private const long AverageTicksPerJulianMonth = (long)((365.25m * NodaConstants.TicksPerStandardDay) / 12);
 
-        // TODO: Validate
-        internal override int MinYear { get { return -29225; } }
-        internal override int MaxYear { get { return 29226; } }
+        public override int MinYear { get { return -27256; } }
+        public override int MaxYear { get { return 31196; } }
 
         internal override long AverageTicksPerMonth { get { return AverageTicksPerJulianMonth; } }
         internal override long AverageTicksPerYear { get { return AverageTicksPerJulianYear; } }
         internal override long ApproxTicksAtEpochDividedByTwo { get { return (1969L * AverageTicksPerJulianYear + 352L * NodaConstants.TicksPerStandardDay) / 2; } }
         internal override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerJulianYear / 2; } }
-
-        private static int AdjustYearForSet(int year)
-        {
-            if (year > 0)
-            {
-                return year;
-            }
-            if (year == 0)
-            {
-                throw new ArgumentException("Year cannot be 0 in Julian calendar.");
-            }
-            // Shift negative years such that -1BCE (Julian) == 0CE (ISO)
-            return year + 1;
-        }
-
-        protected override long GetDateMidnightTicks(int year, int monthOfYear, int dayOfMonth)
-        {
- 	         return base.GetDateMidnightTicks(AdjustYearForSet(year), monthOfYear, dayOfMonth);
-        }
 
         public override bool IsLeapYear(int year)
         {
@@ -130,12 +111,13 @@ namespace NodaTime.Calendars
             long ticks = (relativeYear * 365L + leapYears - (366 + 352)) * NodaConstants.TicksPerStandardDay;
             return new LocalInstant(ticks);
         }
-
+        /*
         private static void AssembleFields(FieldSet.Builder builder, CalendarSystem @this)
         {
             // Julian chronology has no year zero.
+            
             builder.Year = new SkipZeroDateTimeField(builder.Year);
             builder.WeekYear = new SkipZeroDateTimeField(builder.WeekYear);
-        }
+        }*/
     }
 }

@@ -74,12 +74,13 @@ namespace NodaTime.Calendars
         internal override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerGregorianYear / 2; } }
         internal override long AverageTicksPerMonth { get { return (long)(365.2425m * NodaConstants.TicksPerStandardDay / 12); } }
         internal override long ApproxTicksAtEpochDividedByTwo { get { return (1970 * AverageTicksPerGregorianYear) / 2; } }
-        internal override int MinYear { get { return -27257; } }
-        internal override int MaxYear { get { return 31196; } }
+
+        public override int MinYear { get { return -27256; } }
+        public override int MaxYear { get { return 31196; } }
 
         protected override LocalInstant CalculateStartOfYear(int year)
         {
-            if (year <= MinYear)
+            if (year < MinYear)
             {
                 return LocalInstant.MinValue;
             }

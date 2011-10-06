@@ -24,6 +24,8 @@ namespace NodaTime.Calendars
     /// <summary>
     /// A calendar system which wraps another one, allowing the wrapped system to be used for some operations.
     /// </summary>
+    // TODO: Decide whether or not this is actually useful. I suspect it'll only be used by LimitingCalendarSytem and IsoCalendarSystem,
+    // which may well end up overriding everything anyway...
     internal abstract class WrappedCalendarSystem : CalendarSystem
     {
         private readonly CalendarSystem baseCalendar;
@@ -35,6 +37,9 @@ namespace NodaTime.Calendars
         /// The calendar system wrapped by this one.
         /// </summary>
         internal CalendarSystem Calendar { get { return baseCalendar; } }
+
+        public override int MaxYear { get { return baseCalendar.MaxYear; } }
+        public override int MinYear { get { return baseCalendar.MinYear; } }
 
         protected WrappedCalendarSystem(string name, CalendarSystem baseCalendar, FieldAssembler assembler, IEnumerable<Era> eras)
             : base(name, (builder, @this) => AssembleFields(builder, @this, baseCalendar, assembler), eras)
@@ -98,6 +103,22 @@ namespace NodaTime.Calendars
                 return baseCalendar.GetLocalInstant(localInstant, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
             }
             return base.GetLocalInstant(localInstant, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
+        }
+
+        // Delegate era handling to wrapped calendar.
+        internal override int GetMinYearOfEra(int eraIndex)
+        {
+            return baseCalendar.GetMinYearOfEra(eraIndex);
+        }
+
+        internal override int GetMaxYearOfEra(int eraIndex)
+        {
+            return baseCalendar.GetMaxYearOfEra(eraIndex);
+        }
+
+        internal override int  GetAbsoluteYear(int yearOfEra, int eraIndex)
+        {
+ 	        return baseCalendar.GetAbsoluteYear(yearOfEra, eraIndex);
         }
     }
 }
