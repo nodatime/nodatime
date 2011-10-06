@@ -61,9 +61,6 @@ namespace NodaTime.Calendars
 
         private static void AssembleCopticFields(FieldSet.Builder builder, CalendarSystem @this)
         {
-            builder.Year = new SkipZeroDateTimeField(builder.Year);
-            builder.WeekYear = new SkipZeroDateTimeField(builder.WeekYear);
-
             builder.Era = EraField;
             builder.MonthOfYear = new BasicMonthOfYearDateTimeField((BasicCalendarSystem) @this, 13);
             builder.Months = builder.MonthOfYear.DurationField;

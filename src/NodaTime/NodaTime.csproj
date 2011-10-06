@@ -92,7 +92,6 @@
     <Compile Include="Fields\DelegatedDateTimeField.cs" />
     <Compile Include="Fields\ImpreciseDurationField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
-    <Compile Include="Fields\SkipZeroDateTimeField.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
     <Compile Include="Properties\PatternResources.Designer.cs">
       <DependentUpon>PatternResources.resx</DependentUpon>
