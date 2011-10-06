@@ -98,7 +98,6 @@
       <DependentUpon>LocalTimeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="CultureSaver.cs" />
-    <Compile Include="Fields\SkipZeroDateTimeFieldTest.cs" />
     <Compile Include="LocalDateTest.cs" />
     <Compile Include="LocalDateTest.PlusUnit.cs">
       <DependentUpon>LocalDateTest.cs</DependentUpon>
