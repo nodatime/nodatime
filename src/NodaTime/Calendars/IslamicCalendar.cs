@@ -36,8 +36,6 @@ namespace NodaTime.Calendars
         /// </summary>
         public override int MaxYear { get { return 29226; } }
 
-        const int RealMinYear = -29225;
-
         /// <summary>The lowest year that can be fully supported.</summary>
         public override int MinYear { get { return 1; } }
 
@@ -247,7 +245,7 @@ namespace NodaTime.Calendars
             {
                 throw new ArgumentOutOfRangeException("year");
             }
-            if (year < RealMinYear)
+            if (year < MinYear)
             {
                 throw new ArgumentOutOfRangeException("year");
             }
