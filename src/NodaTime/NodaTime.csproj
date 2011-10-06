@@ -89,7 +89,6 @@
     <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
     <Compile Include="Fields\BasicWeekYearDurationField.cs" />
     <Compile Include="Fields\BasicYearDurationField.cs" />
-    <Compile Include="Fields\DelegatedDateTimeField.cs" />
     <Compile Include="Fields\ImpreciseDurationField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
