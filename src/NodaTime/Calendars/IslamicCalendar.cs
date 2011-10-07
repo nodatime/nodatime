@@ -209,7 +209,7 @@ namespace NodaTime.Calendars
             return (--month % 2 == 0 ? LongMonthLength : ShortMonthLength);
         }
 
-        internal override int GetDaysInMonthMax()
+        internal override int GetMaxDaysInMonth()
         {
             return LongMonthLength;
         }

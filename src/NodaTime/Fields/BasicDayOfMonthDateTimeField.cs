@@ -46,12 +46,12 @@ namespace NodaTime.Fields
 
         internal override long GetMaximumValue()
         {
-            return calendarSystem.GetDaysInMonthMax();
+            return calendarSystem.GetMaxDaysInMonth();
         }
 
         internal override long GetMaximumValue(LocalInstant localInstant)
         {
-            return calendarSystem.GetDaysInMonthMax(localInstant);
+            return calendarSystem.GetMaxDaysInMonth(localInstant);
         }
 
         internal override long GetMinimumValue()
