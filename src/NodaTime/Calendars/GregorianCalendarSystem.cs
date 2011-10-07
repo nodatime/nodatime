@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Fields;
 
 namespace NodaTime.Calendars
 {
@@ -31,25 +32,41 @@ namespace NodaTime.Calendars
     /// fixes the start of the year at January 1, and defines the year zero.
     /// </para>
     /// <para>
-    /// This is exposed via <see cref="CalendarSystem.GetGregorianCalendar"/>.
+    /// With the exception of century related fields, the ISO calendar system is exactly the
+    /// same as the Gregorian one, so they share the same implementation - the ISO instance
+    /// is constructed with a slightly different field assembler.
+    /// </para>
+    /// <para>
+    /// Instances of this class are exposed via <see cref="CalendarSystem.GetGregorianCalendar"/>
+    /// and <see cref="CalendarSystem.Iso"/>
     /// </para>
     /// </remarks>
     internal sealed class GregorianCalendarSystem : BasicGJCalendarSystem
     {
         private const string GregorianName = "Gregorian";
+        private const string IsoName = "ISO";
+
+        // We precompute useful values for each month between these years, as we anticipate most
+        // dates will be in this range.
+        private const int FirstOptimizedYear = 1900;
+        private const int LastOptimizedYear = 2100;
+        private static readonly long[] MonthStartTicks = new long[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
+        private static readonly int[] MonthLengths = new int[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
 
         private const int DaysFrom0000To1970 = 719527;
         private const long AverageTicksPerGregorianYear = (long)(365.2425m * NodaConstants.TicksPerStandardDay);
 
-        private static readonly GregorianCalendarSystem[] instances;
+        private static readonly GregorianCalendarSystem[] GregorianCache;
+        internal static readonly GregorianCalendarSystem IsoInstance;
 
         static GregorianCalendarSystem()
         {
-            instances = new GregorianCalendarSystem[7];
+            GregorianCache = new GregorianCalendarSystem[7];
             for (int i = 0; i < 7; i++)
             {
-                instances[i] = new GregorianCalendarSystem(i + 1);
+                GregorianCache[i] = new GregorianCalendarSystem(GregorianName, i + 1, null);
             }
+            IsoInstance = new GregorianCalendarSystem(IsoName, 4, AssembleIsoFields);
         }
 
         /// <summary>
@@ -63,11 +80,25 @@ namespace NodaTime.Calendars
             {
                 throw new ArgumentOutOfRangeException("minDaysInFirstWeek", "Minimum days in first week must be between 1 and 7 inclusive");
             }
-            return instances[minDaysInFirstWeek - 1];
+            return GregorianCache[minDaysInFirstWeek - 1];
         }
 
-        private GregorianCalendarSystem(int minDaysInFirstWeek) : base(GregorianName, minDaysInFirstWeek)
+        private GregorianCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler fieldAssembler)
+            : base(name, minDaysInFirstWeek, fieldAssembler)
         {
+        }
+
+        /// <summary>
+        /// Field assembly used solely for the ISO calendar variation.
+        /// </summary>
+        private static void AssembleIsoFields(FieldSet.Builder builder, CalendarSystem @this)
+        {
+            // Use zero based century and year of century.
+            DividedDateTimeField centuryOfEra = new DividedDateTimeField(IsoYearOfEraDateTimeField.Instance, DateTimeFieldType.CenturyOfEra, 100);
+            builder.CenturyOfEra = centuryOfEra;
+            builder.YearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.YearOfCentury);
+            builder.WeekYearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.WeekYearOfCentury);
+            builder.Centuries = centuryOfEra.DurationField;
         }
 
         internal override long AverageTicksPerYear { get { return AverageTicksPerGregorianYear; } }
@@ -77,6 +108,68 @@ namespace NodaTime.Calendars
 
         public override int MinYear { get { return -27256; } }
         public override int MaxYear { get { return 31196; } }
+
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+                                                       int millisecondOfSecond, int tickOfMillisecond)
+        {
+            int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
+            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
+                dayOfMonth > MonthLengths[yearMonthIndex] || hourOfDay < 0 || hourOfDay > 23 || minuteOfHour < 0 || minuteOfHour > 59 || secondOfMinute < 0 ||
+                secondOfMinute > 59 || millisecondOfSecond < 0 || millisecondOfSecond > 999 || tickOfMillisecond < 0 ||
+                tickOfMillisecond > NodaConstants.TicksPerMillisecond - 1)
+            {
+                // It may still be okay - let's take the long way to find out
+                return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
+            }
+            // This is guaranteed not to overflow, as we've already validated the arguments
+            return new LocalInstant(unchecked(
+                MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay + hourOfDay * NodaConstants.TicksPerHour +
+                minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond +
+                millisecondOfSecond * NodaConstants.TicksPerMillisecond + tickOfMillisecond));
+        }
+
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
+        {
+            int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
+            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
+                dayOfMonth > MonthLengths[yearMonthIndex] || hourOfDay < 0 || hourOfDay > 23 || minuteOfHour < 0 || minuteOfHour > 59 || secondOfMinute < 0 ||
+                secondOfMinute > 59)
+            {
+                // It may still be okay - let's take the long way to find out
+                return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
+            }
+            // This is guaranteed not to overflow, as we've already validated the arguments
+            return new LocalInstant(unchecked(
+                MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay + hourOfDay * NodaConstants.TicksPerHour +
+                minuteOfHour * NodaConstants.TicksPerMinute + secondOfMinute * NodaConstants.TicksPerSecond));
+        }
+
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
+        {
+            int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
+            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
+                dayOfMonth > MonthLengths[yearMonthIndex] || hourOfDay < 0 || hourOfDay > 23 || minuteOfHour < 0 || minuteOfHour > 59)
+            {
+                // It may still be okay - let's take the long way to find out
+                return base.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
+            }
+            // This is guaranteed not to overflow, as we've already validated the arguments
+            return new LocalInstant(unchecked(
+                MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay + hourOfDay * NodaConstants.TicksPerHour +
+                minuteOfHour * NodaConstants.TicksPerMinute));
+        }
+
+        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
+        {
+            int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
+            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
+                dayOfMonth > MonthLengths[yearMonthIndex] || tickOfDay < 0 || tickOfDay >= NodaConstants.TicksPerStandardDay)
+            {
+                return base.GetLocalInstant(year, monthOfYear, dayOfMonth, tickOfDay);
+            }
+            // This is guaranteed not to overflow, as we've already validated the arguments
+            return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay + tickOfDay));
+        }
 
         protected override LocalInstant CalculateStartOfYear(int year)
         {
