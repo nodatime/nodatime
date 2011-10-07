@@ -20,9 +20,12 @@ using System.Globalization;
 using NodaTime.Globalization;
 namespace NodaTime.Text
 {
+    /// <summary>
+    /// Represents a pattern for parsing and formatting <see cref="LocalDate"/> values.
+    /// </summary>
     public sealed class LocalDatePattern : IPattern<LocalDate>
     {
-        internal static readonly LocalDate IsoUnixEpoch = new LocalDate(1970, 1, 1);
+        internal static readonly LocalDate DefaultTemplateValue = new LocalDate(2000, 1, 1);
         private readonly string patternText;
         private readonly NodaFormatInfo formatInfo;
         private readonly IPattern<LocalDate> pattern;
@@ -100,7 +103,7 @@ namespace NodaTime.Text
                 throw new ArgumentNullException("formatInfo");
             }
             // Use the "fixed" parser for the common case of the 
-            var patternParseResult = templateValue == IsoUnixEpoch
+            var patternParseResult = templateValue == DefaultTemplateValue
                 ? formatInfo.LocalDatePatternParser.ParsePattern(patternText)
                 : new LocalDatePatternParser(templateValue).ParsePattern(patternText, formatInfo);
             return new LocalDatePattern(patternText, formatInfo, templateValue, patternParseResult.GetResultOrThrow());
@@ -118,7 +121,7 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static LocalDatePattern Create(string patternText, NodaFormatInfo formatInfo)
         {
-            return Create(patternText, formatInfo, IsoUnixEpoch);
+            return Create(patternText, formatInfo, DefaultTemplateValue);
         }
 
         /// <summary>

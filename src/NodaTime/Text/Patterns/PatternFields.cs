@@ -39,11 +39,12 @@ namespace NodaTime.Text.Patterns
         FractionalSeconds = 1 << 5,
         AmPm = 1 << 6,
         Year = 1 << 7,
-        YearOfEra = 1 << 8,
-        MonthOfYearNumeric = 1 << 9,
-        MonthOfYearText = 1 << 10,
-        DayOfMonth = 1 << 11,
-        DayOfWeek = 1 << 12,
-        Era = 1 << 13
+        YearTwoDigits = 1 << 8,
+        YearOfEra = 1 << 9,
+        MonthOfYearNumeric = 1 << 10,
+        MonthOfYearText = 1 << 11,
+        DayOfMonth = 1 << 12,
+        DayOfWeek = 1 << 13,
+        Era = 1 << 14
     }
 }

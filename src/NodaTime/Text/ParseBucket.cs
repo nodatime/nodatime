@@ -41,5 +41,15 @@ namespace NodaTime.Text
         {
             return (usedFields & fieldToTest) != 0;
         }
+
+        /// <summary>
+        /// Convenience method to check whether a particular field set of fields has been used. This is
+        /// similar to <see cref="IsFieldUsed"/>, except it's expected to be used with multiple fields,
+        /// and will only return true if all the specified fields are present.
+        /// </summary>
+        internal static bool AreAllFieldsUsed(PatternFields usedFields, PatternFields fieldsToTest)
+        {
+            return (usedFields & fieldsToTest) == fieldsToTest;
+        }
     }
 }

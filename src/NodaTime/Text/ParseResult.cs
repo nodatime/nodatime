@@ -169,7 +169,7 @@ namespace NodaTime.Text
         internal static readonly ParseResult<T> MissingSign = ForInvalidValue(Messages.Parse_MissingSign);
         internal static readonly ParseResult<T> MissingAmPmDesignator = ForInvalidValue(Messages.Parse_MissingAmPmDesignator);
 
-        internal static ParseResult<T> FieldValueOutOfRange(object value, char field)
+        internal static ParseResult<T> FieldValueOutOfRange(int value, char field)
         {
             return ForInvalidValue(Messages.Parse_FieldValueOutOfRange, value, field, typeof(T));
         }
@@ -180,6 +180,21 @@ namespace NodaTime.Text
         internal static ParseResult<T> InconsistentValues(char field1, char field2)
         {
             return ForInvalidValue(Messages.Parse_InconsistentValues2, field1, field2, typeof(T));
+        }
+
+        internal static ParseResult<T> YearOfEraOutOfRange(int value, int eraIndex, CalendarSystem calendar)
+        {
+            return ForInvalidValue(Messages.Parse_YearOfEraOutOfRange, value, calendar.Eras[eraIndex].Name, calendar.Name);
+        }
+
+        internal static ParseResult<T> MonthOutOfRange(int month, int year)
+        {
+            return ForInvalidValue(Messages.Parse_MonthOutOfRange, month, year);
+        }
+
+        internal static ParseResult<T> DayOfMonthOutOfRange(int day, int month, int year)
+        {
+            return ForInvalidValue(Messages.Parse_DayOfMonthOutOfRange, day, month, year);
         }
         #endregion
     }
