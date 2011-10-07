@@ -60,7 +60,8 @@ namespace NodaTime.Calendars
                                         baseFields.TickOfMillisecond == Fields.TickOfMillisecond &&
                                         baseFields.TickOfSecond == Fields.TickOfSecond;
             useBaseTickOfDayFields = baseFields.TickOfDay == Fields.TickOfDay;
-            useBaseYearMonthDayFields = baseFields.Year == Fields.Year && baseFields.MonthOfYear == Fields.MonthOfYear &&
+            useBaseYearMonthDayFields = baseFields.Year == Fields.Year &&
+                                        baseFields.MonthOfYear == Fields.MonthOfYear &&
                                         baseFields.DayOfMonth == Fields.DayOfMonth;
         }
 

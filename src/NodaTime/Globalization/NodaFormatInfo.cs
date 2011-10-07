@@ -38,11 +38,13 @@ namespace NodaTime.Globalization
         private static readonly IPatternParser<Offset> GeneralOffsetPatternParser = new OffsetPatternParser();
         private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser();
         private static readonly IPatternParser<LocalTime> GeneralLocalTimePatternParser = new LocalTimePatternParser(LocalTime.Midnight);
+        private static readonly IPatternParser<LocalDate> GeneralLocalDatePatternParser = new LocalDatePatternParser(LocalDatePattern.IsoUnixEpoch);
 
         // Not read-only as they need to be changed after cloning.
         private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
         private FixedFormatInfoPatternParser<Instant> instantPatternParser;
         private FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
+        private FixedFormatInfoPatternParser<LocalDate> localDatePatternParser;
         #endregion
 
         /// <summary>
@@ -86,6 +88,7 @@ namespace NodaTime.Globalization
             offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateCachingParser(GeneralOffsetPatternParser, this);
             instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateCachingParser(GeneralInstantPatternParser, this);
             localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateCachingParser(GeneralLocalTimePatternParser, this);
+            localDatePatternParser = FixedFormatInfoPatternParser<LocalDate>.CreateCachingParser(GeneralLocalDatePatternParser, this);
         }
 
         /// <summary>
@@ -96,6 +99,7 @@ namespace NodaTime.Globalization
         internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return offsetPatternParser; } }
         internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return instantPatternParser; } }
         internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return localTimePatternParser; } }
+        internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return localDatePatternParser; } }
 
         /// <summary>
         /// Gets or sets the number format. This is usually initialized from the <see cref="CultureInfo"/>, but may be
@@ -274,6 +278,7 @@ namespace NodaTime.Globalization
             info.offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateNonCachingParser(GeneralOffsetPatternParser, info);
             info.instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateNonCachingParser(GeneralInstantPatternParser, info);
             info.localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateNonCachingParser(GeneralLocalTimePatternParser, info);
+            info.localDatePatternParser = FixedFormatInfoPatternParser<LocalDate>.CreateNonCachingParser(GeneralLocalDatePatternParser, info);
             return info;
         }
 
@@ -294,6 +299,7 @@ namespace NodaTime.Globalization
             info.offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateNonCachingParser(GeneralOffsetPatternParser, info);
             info.instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateNonCachingParser(GeneralInstantPatternParser, info);
             info.localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateNonCachingParser(GeneralLocalTimePatternParser, info);
+            info.localDatePatternParser = FixedFormatInfoPatternParser<LocalDate>.CreateNonCachingParser(GeneralLocalDatePatternParser, info);
             return info;
         }
         #endregion
@@ -411,7 +417,7 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Sets the <see cref="NodaFormatInfo" /> to use for the given culture.
+        /// Sets the <see cref="NodaFormatInfo" /> to use for the given culture.
         /// </summary>
         /// <param name="cultureInfo">The culture info.</param>
         /// <param name="formatInfo">The format info.</param>
