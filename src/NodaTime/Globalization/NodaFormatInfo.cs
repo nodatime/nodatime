@@ -38,7 +38,7 @@ namespace NodaTime.Globalization
         private static readonly IPatternParser<Offset> GeneralOffsetPatternParser = new OffsetPatternParser();
         private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser();
         private static readonly IPatternParser<LocalTime> GeneralLocalTimePatternParser = new LocalTimePatternParser(LocalTime.Midnight);
-        private static readonly IPatternParser<LocalDate> GeneralLocalDatePatternParser = new LocalDatePatternParser(LocalDatePattern.IsoUnixEpoch);
+        private static readonly IPatternParser<LocalDate> GeneralLocalDatePatternParser = new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue);
 
         // Not read-only as they need to be changed after cloning.
         private FixedFormatInfoPatternParser<Offset> offsetPatternParser;

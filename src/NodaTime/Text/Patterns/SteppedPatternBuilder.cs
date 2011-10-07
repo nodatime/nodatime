@@ -42,6 +42,8 @@ namespace NodaTime.Text.Patterns
             this.bucketProvider = bucketProvider;
         }
 
+        public PatternFields UsedFields { get { return usedFields; } }
+
         public NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
         /// <summary>

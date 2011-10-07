@@ -124,6 +124,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The day {0} is out of range in month {1} of year {2}..
+        /// </summary>
+        internal static string Parse_DayOfMonthOutOfRange {
+            get {
+                return ResourceManager.GetString("Parse_DayOfMonthOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The pattern flag &apos;{0}&apos; cannot appear twice and parse different values..
         /// </summary>
         internal static string Parse_DoubleAssignment {
@@ -138,6 +147,15 @@ namespace NodaTime.Properties {
         internal static string Parse_EmptyFormatsArray {
             get {
                 return ResourceManager.GetString("Parse_EmptyFormatsArray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;era&quot; designator cannot be specificied without the &quot;year of era&quot; field..
+        /// </summary>
+        internal static string Parse_EraWithoutYearOfEra {
+            get {
+                return ResourceManager.GetString("Parse_EraWithoutYearOfEra", resourceCulture);
             }
         }
         
@@ -277,6 +295,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The month {0} is out of range in year {1}..
+        /// </summary>
+        internal static string Parse_MonthOutOfRange {
+            get {
+                return ResourceManager.GetString("Parse_MonthOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to None of the specified formats matches the given value string..
         /// </summary>
         internal static string Parse_NoMatchingFormat {
@@ -408,6 +435,15 @@ namespace NodaTime.Properties {
         internal static string Parse_ValueStringEmpty {
             get {
                 return ResourceManager.GetString("Parse_ValueStringEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The year {0} is out of range for the {1} era in the {2} calendar..
+        /// </summary>
+        internal static string Parse_YearOfEraOutOfRange {
+            get {
+                return ResourceManager.GetString("Parse_YearOfEraOutOfRange", resourceCulture);
             }
         }
     }

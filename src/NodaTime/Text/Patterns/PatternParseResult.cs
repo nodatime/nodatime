@@ -150,6 +150,8 @@ namespace NodaTime.Text.Patterns
 
         internal static readonly PatternParseResult<T> MissingSign = ForInvalidFormat(Messages.Parse_MissingSign);
 
+        internal static readonly PatternParseResult<T> EraDesignatorWithoutYearOfEra = ForInvalidFormat(Messages.Parse_EraWithoutYearOfEra);
+
         internal static PatternParseResult<T> UnexpectedEndOfString(string pattern)
         {
             return ForInvalidFormat(Messages.Parse_UnexpectedEndOfString, pattern);

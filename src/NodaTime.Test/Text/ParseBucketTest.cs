@@ -41,5 +41,33 @@ namespace NodaTime.Test.Text
         {
             Assert.IsTrue(ParseBucket<Offset>.IsFieldUsed(PatternFields.Hours24 | PatternFields.Minutes, PatternFields.Hours24));
         }
+
+        [Test]
+        public void AllAreUsed_NoMatch()
+        {
+            Assert.IsFalse(ParseBucket<Offset>.AreAllFieldsUsed(PatternFields.Hours12 | PatternFields.Minutes,
+                                                                PatternFields.Hours24 | PatternFields.Seconds));
+        }
+
+        [Test]
+        public void AllAreUsed_PartialMatch()
+        {
+            Assert.IsFalse(ParseBucket<Offset>.AreAllFieldsUsed(PatternFields.Hours12 | PatternFields.Minutes,
+                                                                PatternFields.Hours12 | PatternFields.Seconds));
+        }
+
+        [Test]
+        public void AllAreUsed_CompleteMatch()
+        {
+            Assert.IsTrue(ParseBucket<Offset>.AreAllFieldsUsed(PatternFields.Hours12 | PatternFields.Minutes,
+                                                               PatternFields.Hours12 | PatternFields.Minutes));
+        }
+
+        [Test]
+        public void AllAreUsed_CompleteMatchWithMore()
+        {
+            Assert.IsTrue(ParseBucket<Offset>.IsFieldUsed(PatternFields.Hours24 | PatternFields.Minutes | PatternFields.Hours12,
+                                                          PatternFields.Hours24 | PatternFields.Minutes));
+        }
     }
 }

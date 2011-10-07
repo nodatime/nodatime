@@ -138,11 +138,17 @@
   <data name="Parse_CannotParseValue" xml:space="preserve">
     <value>The value "{0}" cannot be parsed into an instance of {1} using pattern "{2}"</value>
   </data>
+  <data name="Parse_DayOfMonthOutOfRange" xml:space="preserve">
+    <value>The day {0} is out of range in month {1} of year {2}.</value>
+  </data>
   <data name="Parse_DoubleAssignment" xml:space="preserve">
     <value>The pattern flag '{0}' cannot appear twice and parse different values.</value>
   </data>
   <data name="Parse_EmptyFormatsArray" xml:space="preserve">
     <value>The list of formats cannot be empty.</value>
+  </data>
+  <data name="Parse_EraWithoutYearOfEra" xml:space="preserve">
+    <value>The "era" designator cannot be specificied without the "year of era" field.</value>
   </data>
   <data name="Parse_EscapeAtEndOfString" xml:space="preserve">
     <value>The format string has an escape character (backslash '\') at the end of the string.</value>
@@ -189,6 +195,9 @@
   <data name="Parse_MissingSign" xml:space="preserve">
     <value>The required value sign is missing.</value>
   </data>
+  <data name="Parse_MonthOutOfRange" xml:space="preserve">
+    <value>The month {0} is out of range in year {1}.</value>
+  </data>
   <data name="Parse_NoMatchingFormat" xml:space="preserve">
     <value>None of the specified formats matches the given value string.</value>
   </data>
@@ -233,5 +242,8 @@
   </data>
   <data name="Parse_ValueStringEmpty" xml:space="preserve">
     <value>The value string is empty.</value>
+  </data>
+  <data name="Parse_YearOfEraOutOfRange" xml:space="preserve">
+    <value>The year {0} is out of range for the {1} era in the {2} calendar.</value>
   </data>
 </root>

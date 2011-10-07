@@ -49,6 +49,8 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "'qwe", Message = Messages.Parse_MissingEndQuote, Parameters = { '\'' } },
             new Data { Pattern = "'qwe\\", Message = Messages.Parse_EscapeAtEndOfString },
             new Data { Pattern = "'qwe\\'", Message = Messages.Parse_MissingEndQuote, Parameters = { '\'' } },
+            // Note incorrect use of "y" (year) instead of "Y" (year of era)
+            new Data { Pattern = "dd MM yyyy gg", Message = Messages.Parse_EraWithoutYearOfEra },
         };
 
         internal static Data[] ParseFailureData = {
@@ -70,9 +72,12 @@ namespace NodaTime.Test.Text
             new Data(2001, 7, 3) { Pattern = "yy M d", Text = "01 7 3" },
             new Data(2011, 7, 3) { Pattern = "yy M d", Text = "11 7 3" },
             new Data(2001, 7, 3) { Pattern = "y M d", Text = "1 7 3" },
-            new Data(2011, 7, 3) { Pattern = "y M d", Text = "11 7 3" },
-            new Data(1970, 10, 3) { Pattern = "MM/dd", Text = "10/03"},
-            new Data(2000, 10, 3) { Pattern = "MM/dd", Text = "10/03", Template = new LocalDate(2000, 1, 1) },
+            new Data(2011, 7, 3) { Pattern = "y M d", Text = "11 7 3"},
+            // Cutoff defaults to 30 (at the moment...)
+            new Data(1976, 7, 3) { Pattern = "y M d", Text = "76 7 3" },
+
+            new Data(2000, 10, 3) { Pattern = "MM/dd", Text = "10/03"},
+            new Data(1885, 10, 3) { Pattern = "MM/dd", Text = "10/03", Template = new LocalDate(1885, 10, 3) },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
@@ -86,15 +91,15 @@ namespace NodaTime.Test.Text
 	        /// <param name="value">The value.</param>
 	        public Data(LocalDate value) : base(value)
 	        {
-	            // Default to the unix epoch in the ISO calendar
-	            Template = LocalDatePattern.IsoUnixEpoch;
+	            // Default to the start of the year 2000.
+	            Template = LocalDatePattern.DefaultTemplateValue;
 	        }
 
 	        public Data(int year, int month, int day) : this(new LocalDate(year, month, day))
 	        {
 	        }
 
-            public Data() : this(LocalDatePattern.IsoUnixEpoch)
+            public Data() : this(LocalDatePattern.DefaultTemplateValue)
             {
             }
 
