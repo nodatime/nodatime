@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.Calendars;
 using NodaTime.Fields;
 
 namespace NodaTime.Test.Calendars
@@ -51,7 +52,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(1, epoch.DayOfYear);
             Assert.AreEqual(IsoDayOfWeek.Thursday, epoch.IsoDayOfWeek);
             Assert.AreEqual(4, epoch.DayOfWeek);
-            Assert.AreEqual(NodaConstants.CommonEra, epoch.Era);
+            Assert.AreEqual(Era.Common, epoch.Era);
             Assert.AreEqual(0, epoch.HourOfDay);
             Assert.AreEqual(0, epoch.MinuteOfHour);
             Assert.AreEqual(0, epoch.SecondOfMinute);
@@ -79,7 +80,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(TimeOfGreatAchievement.DayOfYear, now.DayOfYear);
             Assert.AreEqual(IsoDayOfWeek.Friday, now.IsoDayOfWeek);
             Assert.AreEqual(5, now.DayOfWeek);
-            Assert.AreEqual(NodaConstants.CommonEra, now.Era);
+            Assert.AreEqual(Era.Common, now.Era);
             Assert.AreEqual(18, now.HourOfDay);
             Assert.AreEqual(38, now.MinuteOfHour);
             Assert.AreEqual(25, now.SecondOfMinute);
@@ -155,6 +156,16 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(2012, localDate.Year);
             Assert.AreEqual(2013, localDate.WeekYear);
             Assert.AreEqual(1, localDate.WeekOfWeekYear);
+        }
+
+        [Test]
+        public void BeforeCommonEra()
+        {
+            // Year -1 in absolute terms is 2BCE
+            LocalDate localDate = new LocalDate(-1, 1, 1);
+            Assert.AreEqual(Era.BeforeCommon, localDate.Era);
+            Assert.AreEqual(-1, localDate.Year);
+            Assert.AreEqual(2, localDate.YearOfEra);
         }
     }
 }

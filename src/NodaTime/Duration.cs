@@ -212,10 +212,11 @@ namespace NodaTime
             return Ticks.GetHashCode();
         }
 
+        // TODO: We should *consider* representing this as in the same way as a period.
         /// <summary>
         /// Gets the value as a <see cref="String"/> showing the number of ticks represented by this duration.
-        /// TODO: We should *consider* representing this as in the same way as a period, but I'm reluctant to do so.
         /// </summary>
+        /// <returns>A string representation of this duration.</returns>
         public override string ToString()
         {
             return Ticks.ToString();

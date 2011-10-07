@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using NodaTime.Fields;
 
 namespace NodaTime.Calendars
@@ -23,6 +24,7 @@ namespace NodaTime.Calendars
     /// <summary>
     /// A calendar system which wraps another one, allowing the wrapped system to be used for some operations.
     /// </summary>
+    // TODO: Decide whether or not this is actually useful. It may only be used by the Buddhist calendar system...
     internal abstract class WrappedCalendarSystem : CalendarSystem
     {
         private readonly CalendarSystem baseCalendar;
@@ -35,8 +37,11 @@ namespace NodaTime.Calendars
         /// </summary>
         internal CalendarSystem Calendar { get { return baseCalendar; } }
 
-        protected WrappedCalendarSystem(string name, CalendarSystem baseCalendar, FieldAssembler assembler)
-            : base(name, (builder, @this) => AssembleFields(builder, @this, baseCalendar, assembler))
+        public override int MaxYear { get { return baseCalendar.MaxYear; } }
+        public override int MinYear { get { return baseCalendar.MinYear; } }
+
+        protected WrappedCalendarSystem(string name, CalendarSystem baseCalendar, FieldAssembler assembler, IEnumerable<Era> eras)
+            : base(name, (builder, @this) => AssembleFields(builder, @this, baseCalendar, assembler), eras)
         {
             // Quick sanity check - the point of separating out this class is to only use it in
             // situations where we really have a calendar to wrap.
@@ -98,6 +103,27 @@ namespace NodaTime.Calendars
                 return baseCalendar.GetLocalInstant(localInstant, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
             }
             return base.GetLocalInstant(localInstant, hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
+        }
+
+        // Delegate era handling to wrapped calendar.
+        internal override int GetMinYearOfEra(int eraIndex)
+        {
+            return baseCalendar.GetMinYearOfEra(eraIndex);
+        }
+
+        internal override int GetMaxYearOfEra(int eraIndex)
+        {
+            return baseCalendar.GetMaxYearOfEra(eraIndex);
+        }
+
+        internal override int GetAbsoluteYear(int yearOfEra, int eraIndex)
+        {
+ 	        return baseCalendar.GetAbsoluteYear(yearOfEra, eraIndex);
+        }
+
+        public override int GetMaxMonth(int year)
+        {
+            return baseCalendar.GetMaxMonth(year);
         }
     }
 }

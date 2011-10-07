@@ -26,24 +26,18 @@ namespace NodaTime.Calendars
     /// </summary>
     internal sealed class IslamicCalendar : BasicCalendarSystem
     {
-        // TODO: Remove or move to NodaConstants?
-        /// <summary>Constant value for 'Anno Hegirae', equivalent to the value returned for AD/CE</summary>
-        internal const int AH = NodaConstants.CE;
-
         /// <summary>Singleton era field.</summary>
-        private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField("AH");
+        private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoHegirae);
 
         // TODO: Validate these.
         /// <summary>
         /// The highest year that can be fully supported. It's possible that
         /// a few years above this can be partially supported, but some calculations may overflow.
         /// </summary>
-        internal override int MaxYear { get { return 29226; } }
-
-        const int RealMinYear = -29225;
+        public override int MaxYear { get { return 29226; } }
 
         /// <summary>The lowest year that can be fully supported.</summary>
-        internal override int MinYear { get { return 1; } }
+        public override int MinYear { get { return 1; } }
 
         /// <summary>Days in a pair of months, in days.</summary>
         private const int MonthPairLength = 59;
@@ -59,9 +53,6 @@ namespace NodaTime.Calendars
 
         /// <summary>The length of a long month, in ticks./</summary>
         private const long TicksPerLongMonth = LongMonthLength * NodaConstants.TicksPerStandardDay;
-
-        /// <summary>The length of a short month, in ticks./</summary>
-        private const long TicksPerShortMonth = ShortMonthLength * NodaConstants.TicksPerStandardDay;
 
         /// <summary>The ticks in a typical month.</summary>
         private const long TicksPerMonth = (long) (29.53056 * NodaConstants.TicksPerStandardDay);
@@ -100,7 +91,7 @@ namespace NodaTime.Calendars
             return new IslamicCalendar(patternBits, epochTicks);
         }
 
-        private IslamicCalendar(int leapYearPatternBits, long epochTicks) : base("TODO", 4, AssembleFields)
+        private IslamicCalendar(int leapYearPatternBits, long epochTicks) : base("Hijri (Islamic)", 4, AssembleFields, new[] { Era.AnnoHegirae })
         {
             this.leapYearPatternBits = leapYearPatternBits;
             this.epochTicks = epochTicks;
@@ -218,7 +209,7 @@ namespace NodaTime.Calendars
             return (--month % 2 == 0 ? LongMonthLength : ShortMonthLength);
         }
 
-        internal override int GetDaysInMonthMax()
+        internal override int GetMaxDaysInMonth()
         {
             return LongMonthLength;
         }
@@ -254,7 +245,7 @@ namespace NodaTime.Calendars
             {
                 throw new ArgumentOutOfRangeException("year");
             }
-            if (year < RealMinYear)
+            if (year < MinYear)
             {
                 throw new ArgumentOutOfRangeException("year");
             }

@@ -39,6 +39,8 @@ namespace NodaTime.Fields
         /// <summary>
         /// Creates a new instance combining the specified type and value.
         /// </summary>
+        /// <param name="fieldType">The field type represented by this component of a period.</param>
+        /// <param name="value">The value of the field within the period.</param>
         public DurationFieldValue(DurationFieldType fieldType, long value)
         {
             this.fieldType = fieldType;

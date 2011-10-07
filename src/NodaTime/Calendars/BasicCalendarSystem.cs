@@ -16,11 +16,16 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using NodaTime.Fields;
 
 namespace NodaTime.Calendars
 {
-    // TODO: Optimisations of GetLocalInstant etc.
+    /// <summary>
+    /// Abstract implementation for calendar systems that use a typical day/month/year/leapYear model,
+    /// assuming a constant number of months. Most concrete calendars in Noda Time either derive from
+    /// this class or delegate to another instance of it.
+    /// </summary>
     internal abstract class BasicCalendarSystem : CalendarSystem
     {
         private static readonly FieldSet preciseFields = CreatePreciseFields();
@@ -37,8 +42,6 @@ namespace NodaTime.Calendars
         /// </summary>
         protected abstract long GetTotalTicksByYearMonth(int year, int month);
 
-        internal abstract int MinYear { get; }
-        internal abstract int MaxYear { get; }
         internal abstract long AverageTicksPerMonth { get; }
         internal abstract long AverageTicksPerYear { get; }
         internal abstract long AverageTicksPerYearDividedByTwo { get; }
@@ -82,7 +85,8 @@ namespace NodaTime.Calendars
             return builder.Build();
         }
 
-        protected BasicCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler assembler) : base(name, AssembleFields + assembler)
+        protected BasicCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler assembler, IEnumerable<Era> eras)
+            : base(name, AssembleFields + assembler, eras)
         {
             if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7)
             {
@@ -193,7 +197,7 @@ namespace NodaTime.Calendars
             return (int)((localInstant.Ticks - dateTicks) / NodaConstants.TicksPerStandardDay) + 1;
         }
 
-        internal virtual int GetDaysInMonthMax()
+        internal virtual int GetMaxDaysInMonth()
         {
             return 31;
         }
@@ -203,7 +207,7 @@ namespace NodaTime.Calendars
             return GetMonthOfYear(localInstant, GetYear(localInstant));
         }
 
-        internal int GetDaysInMonthMax(LocalInstant localInstant)
+        internal int GetMaxDaysInMonth(LocalInstant localInstant)
         {
             int thisYear = GetYear(localInstant);
             int thisMonth = GetMonthOfYear(localInstant, thisYear);
@@ -269,7 +273,15 @@ namespace NodaTime.Calendars
             return (int)((localInstant.Ticks - yearStart) / NodaConstants.TicksPerStandardDay) + 1;
         }
 
-        // Note: no overload taking the year, as it's never used in Joda
+        /// <summary>
+        /// All basic calendars have the same number of months regardless of the year.
+        /// (Different calendars can have a different number of months, but it doesn't vary by time.)
+        /// </summary>
+        public override int GetMaxMonth(int year)
+        {
+            return GetMaxMonth();
+        }
+
         internal virtual int GetMaxMonth()
         {
             return 12;
@@ -281,6 +293,10 @@ namespace NodaTime.Calendars
             return ticks >= 0 ? ticks % NodaConstants.TicksPerStandardDay : (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);
         }
 
+        /// <summary>
+        /// Computes the ticks of the local instant at the start of the given year/month/day.
+        /// This assumes all parameters have been validated previously.
+        /// </summary>
         internal long GetYearMonthDayTicks(int year, int month, int dayOfMonth)
         {
             long ticks = GetYearTicks(year);
@@ -383,8 +399,6 @@ namespace NodaTime.Calendars
             FieldUtils.VerifyValueBounds(DateTimeFieldType.DayOfMonth, dayOfMonth, 1, GetDaysInMonth(year, monthOfYear));
             return GetYearMonthDayTicks(year, monthOfYear, dayOfMonth);
         }
-
-        // TODO: Override the remaining GetLocalInstant overload?
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {

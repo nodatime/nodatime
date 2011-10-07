@@ -137,6 +137,9 @@ namespace NodaTime.Text
         /// Creates a "numeric" pattern for the given format information. The numeric format gives the
         /// number of ticks in decimal format, with or without thousands separators.
         /// </summary>
+        /// <param name="formatInfo">The culture-specific information to use when formatting or parsing.</param>
+        /// <param name="includeThousandsSeparators">True to include thousands separators when parsing or formatting; false to omit them.</param>
+        /// <returns>A numeric pattern for the configuration</returns>
         public static InstantPattern CreateNumericPattern(NodaFormatInfo formatInfo, bool includeThousandsSeparators)
         {
             return Create(includeThousandsSeparators ? "n" : "d", formatInfo);

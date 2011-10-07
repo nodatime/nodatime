@@ -79,10 +79,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalendarSystemTest.cs" />
+    <Compile Include="CalendarSystemTest.Era.cs">
+      <DependentUpon>CalendarSystemTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Calendars\CopticCalendarSystemTest.cs" />
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
     <Compile Include="Calendars\IslamicCalendarTest.cs" />
+    <Compile Include="Calendars\IsoCalendarSystemTest.Era.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Calendars\JulianCalendarSystemTest.cs" />
+    <Compile Include="Calendars\JulianCalendarSystemTest.Era.cs">
+      <DependentUpon>JulianCalendarSystemTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="Text\PatternTestData.cs" />
     <Compile Include="Text\LocalDatePatternTest.cs" />
@@ -93,7 +103,6 @@
       <DependentUpon>LocalTimeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="CultureSaver.cs" />
-    <Compile Include="Fields\SkipZeroDateTimeFieldTest.cs" />
     <Compile Include="LocalDateTest.cs" />
     <Compile Include="LocalDateTest.PlusUnit.cs">
       <DependentUpon>LocalDateTest.cs</DependentUpon>
