@@ -161,7 +161,6 @@
     <Compile Include="Calendars\BasicCalendarSystem.cs" />
     <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
     <Compile Include="Calendars\GregorianCalendarSystem.cs" />
-    <Compile Include="Calendars\IsoCalendarSystem.cs" />
     <Compile Include="Fields\DurationFieldValue.cs" />
     <Compile Include="Period.cs" />
     <Compile Include="PeriodType.cs" />
