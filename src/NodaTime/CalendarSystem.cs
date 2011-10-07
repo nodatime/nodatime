@@ -48,6 +48,7 @@ namespace NodaTime
         // TODO: Consider moving the static accessors into a separate class. As we get more calendars,
         // this approach will become unwieldy.
 
+        #region Public factory members for calendars
         /// <summary>
         /// Returns a calendar system that follows the rules of the ISO8601 standard,
         /// which is compatible with Gregorian for all modern dates.
@@ -181,6 +182,7 @@ namespace NodaTime
         {
             return IslamicCalendar.GetInstance(leapYearPattern, epoch);
         }
+        #endregion
 
         private readonly FieldSet fields;
         private readonly string name;
@@ -239,6 +241,17 @@ namespace NodaTime
         /// The maximum valid year within this calendar.
         /// </summary>
         public abstract int MaxYear { get; }
+
+        /// <summary>
+        /// The maximum valid month within this calendar in the given year. It is assumed that
+        /// all calendars start with month 1 and go up to this month number in any valid year.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
+        /// In some cases this may not be thrown whatever value you provide, for example if all years have
+        /// the same months in this calendar. Failure to throw an exception should not be treated as an
+        /// indication that the year is valid.</exception>
+        /// <returns>The maximum month number within the given year.</returns>
+        public abstract int GetMaxMonth(int year);
 
         #region Era-based members
         /// <summary>
