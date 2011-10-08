@@ -21,8 +21,8 @@ using NodaTime.Test.Text;
 
 namespace NodaTime.Test
 {
-	public partial class LocalTimeTest
-	{
+    public partial class LocalTimeTest
+    {
         [Test]
         [TestCaseSource(typeof(LocalTimePatternTestSupport), "AllParseData")]
         public void TestParseExact_multiple(LocalTimePatternTestSupport.LocalTimeData data)
@@ -50,5 +50,5 @@ namespace NodaTime.Test
         {
             FormattingTestSupport.RunTryParseSingleTest(data, (string format, out LocalTime value) => LocalTime.TryParseExact(data.S, format, new NodaFormatInfo(data.C), out value));
         }
-	}
+    }
 }

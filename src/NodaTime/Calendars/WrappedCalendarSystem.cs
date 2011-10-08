@@ -118,7 +118,7 @@ namespace NodaTime.Calendars
 
         internal override int GetAbsoluteYear(int yearOfEra, int eraIndex)
         {
- 	        return baseCalendar.GetAbsoluteYear(yearOfEra, eraIndex);
+             return baseCalendar.GetAbsoluteYear(yearOfEra, eraIndex);
         }
 
         public override int GetMaxMonth(int year)

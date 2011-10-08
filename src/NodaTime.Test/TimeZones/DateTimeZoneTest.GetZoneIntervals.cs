@@ -36,8 +36,8 @@ namespace NodaTime.Test.TimeZones
     // - In the middle of the gap / ambiguity
     // - The last local instant of the gap / ambiguity
     // - The local instant immediately after the gap / ambiguity
-	public partial class DateTimeZoneTest
-	{
+    public partial class DateTimeZoneTest
+    {
         private static readonly Instant Transition = Instant.FromUtc(2000, 1, 1, 0, 0);
 
         private static readonly Offset Minus5 = Offset.FromHours(-5);
@@ -235,5 +235,5 @@ namespace NodaTime.Test.TimeZones
             var expected = ZoneIntervalPair.Unambiguous(zone.EarlyInterval);
             Assert.AreEqual(expected, actual);
         }
-	}
+    }
 }
