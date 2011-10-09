@@ -232,6 +232,24 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified day of the week does not matched the computed value..
+        /// </summary>
+        internal static string Parse_InconsistentDayOfWeekTextValue {
+            get {
+                return ResourceManager.GetString("Parse_InconsistentDayOfWeekTextValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The month values specified as text and numbers are inconsistent..
+        /// </summary>
+        internal static string Parse_InconsistentMonthTextValue {
+            get {
+                return ResourceManager.GetString("Parse_InconsistentMonthTextValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The individual values for the fields &apos;{0}&apos; and &apos;{1}&apos; created an inconsistency in the {2} type..
         /// </summary>
         internal static string Parse_InconsistentValues2 {
@@ -264,6 +282,15 @@ namespace NodaTime.Properties {
         internal static string Parse_MismatchedSpace {
             get {
                 return ResourceManager.GetString("Parse_MismatchedSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value string does not match the text-based field &apos;{0}&apos;..
+        /// </summary>
+        internal static string Parse_MismatchedText {
+            get {
+                return ResourceManager.GetString("Parse_MismatchedText", resourceCulture);
             }
         }
         
