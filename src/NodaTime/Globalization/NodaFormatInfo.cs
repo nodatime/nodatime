@@ -63,6 +63,12 @@ namespace NodaTime.Globalization
         private string offsetPatternLong;
         private string offsetPatternMedium;
         private string offsetPatternShort;
+        private readonly IList<string> longMonthNames;
+        private readonly IList<string> longMonthGenitiveNames;
+        private readonly IList<string> longDayNames;
+        private readonly IList<string> shortMonthNames;
+        private readonly IList<string> shortMonthGenitiveNames;
+        private readonly IList<string> shortDayNames;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class.
@@ -89,17 +95,110 @@ namespace NodaTime.Globalization
             instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateCachingParser(GeneralInstantPatternParser, this);
             localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateCachingParser(GeneralLocalTimePatternParser, this);
             localDatePatternParser = FixedFormatInfoPatternParser<LocalDate>.CreateCachingParser(GeneralLocalDatePatternParser, this);
+
+            // Turn month names into 1-based read-only lists
+            longMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.MonthNames);
+            shortMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.AbbreviatedMonthNames);
+            longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, cultureInfo.DateTimeFormat.MonthGenitiveNames);
+            shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, cultureInfo.DateTimeFormat.AbbreviatedMonthGenitiveNames);
+            longDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.DayNames);
+            shortDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.AbbreviatedDayNames);
+        }
+
+        /// <summary>
+        /// The BCL returns arrays of month names starting at 0; we want a read-only list starting at 1 (with 0 as null).
+        /// </summary>
+        private static IList<string> ConvertMonthArray(string[] monthNames)
+        {
+            List<string> list = new List<string>(monthNames);
+            list.Insert(0, null);
+            return list.AsReadOnly();
+        }
+
+        /// <summary>
+        /// The BCL returns arrays of week names starting at 0 as Sunday; we want a read-only list starting at 1 (with 0 as null)
+        /// and with 7 as Sunday.
+        /// </summary>
+        private static IList<string> ConvertDayArray(string[] dayNames)
+        {
+            List<string> list = new List<string>(dayNames);
+            list.Add(dayNames[0]);
+            list[0] = null;            
+            return list.AsReadOnly();
+        }
+
+        /// <summary>
+        /// Checks whether any of the genitive names differ from the non-genitive names, and returns
+        /// either a reference to the non-genitive names or a converted list as per ConvertMonthArray.
+        /// </summary>
+        private IList<string> ConvertGenitiveMonthArray(IList<string> nonGenitiveNames, string[] bclNames)
+        {
+            bool hasGenitive = false;
+            for (int i = 0; i < bclNames.Length && !hasGenitive; i++)
+            {
+                if (bclNames[i] != nonGenitiveNames[i + 1])
+                {
+                    hasGenitive = true;
+                }
+            }
+            return hasGenitive ? ConvertMonthArray(bclNames) : nonGenitiveNames;
         }
 
         /// <summary>
         /// Gets the culture info associated with this format provider.
         /// </summary>
-        public CultureInfo CultureInfo {  get;  private set; }
+        public CultureInfo CultureInfo { get; private set; }
 
         internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return offsetPatternParser; } }
         internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return instantPatternParser; } }
         internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return localTimePatternParser; } }
         internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return localDatePatternParser; } }
+
+        // TODO: Make these writable?
+        /// <summary>
+        /// Returns a read-only list of the names of the months for the default calendar for this culture.
+        /// See the usage guide for caveats around the use of these names for other calendars.
+        /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
+        /// </summary>
+        public IList<string> LongMonthNames { get { return longMonthNames; } }
+        /// <summary>
+        /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
+        /// See the usage guide for caveats around the use of these names for other calendars.
+        /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "Jan".
+        /// </summary>
+        public IList<string> ShortMonthNames { get { return shortMonthNames; } }
+        /// <summary>
+        /// Returns a read-only list of the names of the months for the default calendar for this culture.
+        /// See the usage guide for caveats around the use of these names for other calendars.
+        /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
+        /// The genitive form is used for month text where the day of month also appears in the pattern.
+        /// If the culture does not use genitive month names, this property will return the same reference as
+        /// <see cref="LongMonthNames"/>.
+        /// </summary>
+        public IList<string> LongMonthGenitiveNames { get { return longMonthGenitiveNames; } }
+        /// <summary>
+        /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
+        /// See the usage guide for caveats around the use of these names for other calendars.
+        /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "Jan".
+        /// The genitive form is used for month text where the day also appears in the pattern.
+        /// If the culture does not use genitive month names, this property will return the same reference as
+        /// <see cref="ShortMonthNames"/>.
+        /// </summary>
+        public IList<string> ShortMonthGenitiveNames { get { return shortMonthGenitiveNames; } }
+        /// <summary>
+        /// Returns a read-only list of the names of the days of the week for the default calendar for this culture.
+        /// See the usage guide for caveats around the use of these names for other calendars.
+        /// Element 0 of the list is null, and the other elements correspond with the index values returned from
+        /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
+        /// </summary>
+        public IList<string> LongDayNames { get { return longDayNames; } }
+        /// <summary>
+        /// Returns a read-only list of the abbreviated names of the days of the week for the default calendar for this culture.
+        /// See the usage guide for caveats around the use of these names for other calendars.
+        /// Element 0 of the list is null, and the other elements correspond with the index values returned from
+        /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
+        /// </summary>
+        public IList<string> ShortDayNames { get { return shortDayNames; } }
 
         /// <summary>
         /// Gets or sets the number format. This is usually initialized from the <see cref="CultureInfo"/>, but may be
@@ -369,6 +468,12 @@ namespace NodaTime.Globalization
             if (cultureInfo == CultureInfo.InvariantCulture)
             {
                 return InvariantInfo;
+            }
+            // Never cache (or consult the cache) for non-read-only cultures.
+            // TODO
+            if (!cultureInfo.IsReadOnly)
+            {
+                return new NodaFormatInfo(cultureInfo);
             }
             lock (Infos)
             {
