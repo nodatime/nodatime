@@ -100,6 +100,7 @@ specifiers being available for some types but not others.
 - [Offset patterns](offset-patterns.html)
 - [Instant patterns](instant-patterns.html)
 - [LocalTime patterns](localtime-patterns.html)
+- [LocalDate patterns](localdate-patterns.html)
 
 <a name="custom-patterns">Custom patterns</a>
 ---------------
