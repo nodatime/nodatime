@@ -44,6 +44,7 @@ namespace NodaTime.Text.Patterns
         /// <summary>
         /// Gets the quoted string.
         /// </summary>
+        /// <remarks>The cursor is left positioned at the end of the quoted region.</remarks>
         /// <param name="closeQuote">The close quote character to match for the end of the quoted string.</param>
         /// <param name="failure">A ref parameter to accept an early failure result of the current parsing operation.
         /// It is expected that this will be null before the call, and this method will set it to a non-null value
@@ -76,6 +77,7 @@ namespace NodaTime.Text.Patterns
                 failure = PatternParseResult<T>.MissingEndQuote(closeQuote);
                 return null;
             }
+            MovePrevious();
             return builder.ToString();
         }
 

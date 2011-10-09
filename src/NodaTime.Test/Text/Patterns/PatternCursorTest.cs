@@ -55,7 +55,7 @@ namespace NodaTime.Test.Text.Patterns
             string actual = cursor.GetQuotedString(ref failure);
             AssertNoFailure();
             Assert.AreEqual("abc", actual);
-            ValidateEndOfString(cursor);
+            Assert.IsFalse(cursor.MoveNext());
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace NodaTime.Test.Text.Patterns
             string actual = cursor.GetQuotedString(openQuote, ref failure);
             Assert.AreEqual(string.Empty, actual);
             AssertNoFailure();
-            ValidateEndOfString(cursor);
+            Assert.IsFalse(cursor.MoveNext());
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace NodaTime.Test.Text.Patterns
             char openQuote = GetNextCharacter(cursor);
             string actual = cursor.GetQuotedString(openQuote, ref failure);
             Assert.AreEqual("abc", actual);
-            ValidateEndOfString(cursor);
+            Assert.IsFalse(cursor.MoveNext());
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace NodaTime.Test.Text.Patterns
             string actual = cursor.GetQuotedString(openQuote, ref failure);
             Assert.AreEqual("abc", actual);
             AssertNoFailure();
-            ValidateEndOfString(cursor);
+            Assert.IsFalse(cursor.MoveNext());
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace NodaTime.Test.Text.Patterns
             string actual = cursor.GetQuotedString(openQuote, ref failure);
             Assert.AreEqual("ab'c", actual);
             AssertNoFailure();
-            ValidateEndOfString(cursor);
+            Assert.IsFalse(cursor.MoveNext());
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace NodaTime.Test.Text.Patterns
             string actual = cursor.GetQuotedString(']', ref failure);
             AssertNoFailure();
             Assert.AreEqual("abc", actual);
-            ValidateEndOfString(cursor);
+            Assert.IsFalse(cursor.MoveNext());
         }
 
         [Test]
@@ -129,7 +129,9 @@ namespace NodaTime.Test.Text.Patterns
             string actual = cursor.GetQuotedString(openQuote, ref failure);
             AssertNoFailure();
             Assert.AreEqual("abc", actual);
-            ValidateCurrentCharacter(cursor, 5, 'm');
+            ValidateCurrentCharacter(cursor, 4, '\'');
+
+            Assert.AreEqual('m', GetNextCharacter(cursor));
         }
 
         [Test]
@@ -140,7 +142,7 @@ namespace NodaTime.Test.Text.Patterns
             string actual = cursor.GetQuotedString(openQuote, ref failure);
             AssertNoFailure();
             Assert.AreEqual("abc", actual);
-            ValidateEndOfString(cursor);
+            Assert.IsFalse(cursor.MoveNext());
         }
 
         [Test]

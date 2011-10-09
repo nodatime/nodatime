@@ -20,8 +20,8 @@ using NodaTime.Test.Text;
 
 namespace NodaTime.Test
 {
-	public partial class LocalTimeTest
-	{
+    public partial class LocalTimeTest
+    {
         [Test, Category("Formatting"), Category("Format")]
         [TestCaseSource(typeof(LocalTimePatternTestSupport), "FormatWithoutFormat")]
         public void TestToString_Culture(LocalTimePatternTestSupport.LocalTimeData data)
@@ -58,5 +58,5 @@ namespace NodaTime.Test
             FormattingTestSupport.RunFormatTest(data, () => data.V.ToString());
         }
 
-	}
+    }
 }

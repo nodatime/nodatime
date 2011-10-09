@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 
 namespace NodaTime.Text
 {
@@ -47,14 +48,35 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        ///   Attempts to match the specified string with the current point in the string. If the
-        ///   character matches then the index is moved passed the string.
+        /// Attempts to match the specified string with the current point in the string. If the
+        /// character matches then the index is moved passed the string.
         /// </summary>
         /// <param name="match">The string to match.</param>
         /// <returns><c>true</c> if the string matches.</returns>
         internal bool Match(string match)
         {
             if (string.CompareOrdinal(Value, Index, match, 0, match.Length) == 0)
+            {
+                Move(Index + match.Length);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Attempts to match the specified string with the current point in the string in a case-insensitive
+        /// manner, according to the given comparison info.
+        /// </summary>
+        internal bool MatchCaseInsensitive(string match, CompareInfo compareInfo)
+        {
+            if (match.Length > Value.Length - Index)
+            {
+                return false;
+            }
+            // FIXME: This will fail if the length in the input string is different to the length in the
+            // match string for culture-specific reasons. It's not clear how to handle that...
+            if (compareInfo.Compare(Value, Index, match.Length,
+                                    match, 0, match.Length, CompareOptions.IgnoreCase) == 0)
             {
                 Move(Index + match.Length);
                 return true;

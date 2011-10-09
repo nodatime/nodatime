@@ -20,8 +20,8 @@ using NodaTime.Text;
 
 namespace NodaTime.Test.Text
 {
-	public partial class LocalTimePatternTest
-	{
+    public partial class LocalTimePatternTest
+    {
         [Test]
         public void TemplateValue_DefaultsToMidnight()
         {
@@ -29,7 +29,7 @@ namespace NodaTime.Test.Text
             Assert.AreEqual(LocalTime.Midnight, pattern.TemplateValue);
         }
 
-	    [Test]
+        [Test]
         public void WithTemplateValue_PropertyFetch()
         {
             LocalTime newValue = new LocalTime(1, 23, 45);
@@ -47,5 +47,5 @@ namespace NodaTime.Test.Text
             LocalTime parsed = pattern.Parse(data.S).Value;
             Assert.AreEqual(data.V, parsed);
         }
-	}
+    }
 }

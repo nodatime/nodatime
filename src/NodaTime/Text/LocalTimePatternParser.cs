@@ -453,7 +453,7 @@ namespace NodaTime.Text
                 hour = 0;
                 if (IsFieldUsed(usedFields, PatternFields.Hours24))
                 {
-                    if (IsFieldUsed(usedFields, PatternFields.Hours12) && IsFieldUsed(usedFields, PatternFields.Hours24))
+                    if (AreAllFieldsUsed(usedFields, PatternFields.Hours12 | PatternFields.Hours24))
                     {
                         if (Hours12 % 12 != Hours24 % 12)
                         {
