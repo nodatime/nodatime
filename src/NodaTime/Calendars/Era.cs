@@ -30,37 +30,37 @@ namespace NodaTime.Calendars
         /// <summary>
         /// The "Common" era (CE), also known as Anno Domini (AD). This is used in the ISO, Gregorian and Julian calendars.
         /// </summary>
-        public static readonly Era Common = new Era("CE"); // CE
+        public static readonly Era Common = new Era("CE", "Eras_Common"); // CE
 
         /// <summary>
         /// The "before common" era (BCE), also known as Before Christ (BC). This is used in the ISO, Gregorian and Julian calendars.
         /// </summary>
-        public static readonly Era BeforeCommon = new Era("BCE"); // BCE
+        public static readonly Era BeforeCommon = new Era("BCE", "Eras_BeforeCommon"); // BCE
 
         /// <summary>
         /// The 'Anno Martyrum' or 'Era of the Martyrs'. This is the sole era in the Coptic calendar.
         /// </summary>
-        public static readonly Era AnnoMartyrm = new Era("AM"); // AM
+        public static readonly Era AnnoMartyrm = new Era("AM", "Eras_AnnoMartyrum"); // AM
 
         /// <summary>
         /// Sole era used by the Buddhist calendar.
         /// </summary>
-        public static readonly Era Buddhist = new Era("BE"); // BE
+        public static readonly Era Buddhist = new Era("BE", "Eras_Buddhist"); // BE
 
         /// <summary>
         /// The "Anno Hegira" era. This is the sole era used by the Hijri (Islamic) calendar.
         /// </summary>
-        public static readonly Era AnnoHegirae = new Era("EH"); // AH
+        public static readonly Era AnnoHegirae = new Era("EH", "Eras_AnnoHegirae"); // AH
 
         private readonly string name;
-        private readonly IList<string> resourceIdentifiers;
+        private readonly string resourceIdentifier;
 
-        internal IList<string> ResourceIdentifiers { get { return resourceIdentifiers; } }
+        internal string ResourceIdentifier { get { return resourceIdentifier; } }
 
-        private Era(string name, params string[] resourceIdentifiers)
+        internal Era(string name, string resourceIdentifier)
         {
             this.name = name;
-            this.resourceIdentifiers = new List<string>(resourceIdentifiers).AsReadOnly();
+            this.resourceIdentifier = resourceIdentifier;
         }
 
         /// <summary>

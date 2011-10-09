@@ -61,6 +61,51 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A.H.|AH.
+        /// </summary>
+        internal static string Eras_AnnoHegirae {
+            get {
+                return ResourceManager.GetString("Eras_AnnoHegirae", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A.M.|AM.
+        /// </summary>
+        internal static string Eras_AnnoMartyrum {
+            get {
+                return ResourceManager.GetString("Eras_AnnoMartyrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to B.C.|B.C.E.|BC|BCE.
+        /// </summary>
+        internal static string Eras_BeforeCommon {
+            get {
+                return ResourceManager.GetString("Eras_BeforeCommon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to B.E.|BE.
+        /// </summary>
+        internal static string Eras_Buddhist {
+            get {
+                return ResourceManager.GetString("Eras_Buddhist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A.D.|AD|C.E.|CE.
+        /// </summary>
+        internal static string Eras_Common {
+            get {
+                return ResourceManager.GetString("Eras_Common", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to +H:mm:ss.fff.
         /// </summary>
         internal static string OffsetPatternFull {

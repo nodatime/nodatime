@@ -16,9 +16,11 @@
 #endregion
 #region usings
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
+using NodaTime.Calendars;
 using NodaTime.Globalization;
 #endregion
 
@@ -347,6 +349,49 @@ namespace NodaTime.Test.Globalization
         {
             NodaFormatInfo.ClearCache();
             Assert.Throws<ArgumentNullException>(() => NodaFormatInfo.SetFormatInfo(null, null));
+        }
+
+        [Test]
+        public void TestGetEraNames()
+        {
+            var info = NodaFormatInfo.GetFormatInfo(enUs);
+            IList<string> names = info.GetEraNames(Era.BeforeCommon);
+            CollectionAssert.AreEqual(new[] { "B.C.E.", "B.C.", "BCE", "BC" }, names);
+        }
+
+        [Test]
+        public void TestGetEraNames_NoSuchEra()
+        {
+            var info = NodaFormatInfo.GetFormatInfo(enUs);
+            Assert.AreEqual(0, info.GetEraNames(new Era("Ignored", "NonExistantResource")).Count);
+        }
+
+        [Test]
+        public void TestEraGetNames_Null()
+        {
+            var info = NodaFormatInfo.GetFormatInfo(enUs);
+            Assert.Throws<ArgumentNullException>(() => info.GetEraNames(null));
+        }
+
+        [Test]
+        public void TestGetEraPrimaryName()
+        {
+            var info = NodaFormatInfo.GetFormatInfo(enUs);
+            Assert.AreEqual("B.C.", info.GetEraPrimaryName(Era.BeforeCommon));
+        }
+
+        [Test]
+        public void TestGetEraPrimaryName_NoSuchEra()
+        {
+            var info = NodaFormatInfo.GetFormatInfo(enUs);
+            Assert.AreEqual("", info.GetEraPrimaryName(new Era("Ignored", "NonExistantResource")));
+        }
+
+        [Test]
+        public void TestEraGetEraPrimaryName_Null()
+        {
+            var info = NodaFormatInfo.GetFormatInfo(enUs);
+            Assert.Throws<ArgumentNullException>(() => info.GetEraPrimaryName(null));
         }
     }
 }
