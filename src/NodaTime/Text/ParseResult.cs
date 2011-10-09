@@ -151,9 +151,7 @@ namespace NodaTime.Text
         {
             return ForInvalidValue(Messages.Parse_MismatchedNumber, pattern);
         }
-
-        internal static ParseResult<T> MismatchedSpace = ForInvalidValue(Messages.Parse_MismatchedSpace);
-
+        
         internal static ParseResult<T> MismatchedCharacter(char patternCharacter)
         {
             return ForInvalidValue(Messages.Parse_MismatchedCharacter, patternCharacter);

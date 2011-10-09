@@ -189,9 +189,6 @@
   <data name="Parse_MismatchedNumber" xml:space="preserve">
     <value>The value string does not match the required number from the format string "{0}".</value>
   </data>
-  <data name="Parse_MismatchedSpace" xml:space="preserve">
-    <value>The value string does not match a space in the format string.</value>
-  </data>
   <data name="Parse_MismatchedText" xml:space="preserve">
     <value>The value string does not match the text-based field '{0}'.</value>
   </data>
