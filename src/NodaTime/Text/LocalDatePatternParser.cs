@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 namespace NodaTime.Text
@@ -253,7 +254,21 @@ namespace NodaTime.Text
                 case 3:
                 case 4:
                     field = PatternFields.MonthOfYearText;
-                    throw new NotImplementedException("Need to handle text versions!");
+                    var format = builder.FormatInfo;
+                    IList<string> nonGenitiveTextValues = count == 3 ? format.ShortMonthNames : format.LongMonthNames;
+                    IList<string> genitiveTextValues = count == 3 ? format.ShortMonthGenitiveNames : format.LongMonthGenitiveNames;
+                    if (nonGenitiveTextValues == genitiveTextValues)
+                    {
+                        builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.MonthOfYearText = value, nonGenitiveTextValues);
+                    }
+                    else
+                    {
+                        builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.MonthOfYearText = value, nonGenitiveTextValues, genitiveTextValues);
+                    }
+
+                    // Hack: see below
+                    builder.AddFormatAction(new MonthFormatActionHolder(format, count).DummyMethod);
+                    break;
                 default:
                     throw new InvalidOperationException("Invalid count!");
             }
@@ -263,6 +278,34 @@ namespace NodaTime.Text
                 return failure;
             }
             return null;
+        }
+
+        // Hacky way of building an action which depends on the final set of pattern fields to determine whether to format a month
+        // using the genitive form or not.
+        private class MonthFormatActionHolder : SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.IPostPatternParseFormatAction
+        {
+            private readonly int count;
+            private readonly NodaFormatInfo formatInfo;
+
+            internal MonthFormatActionHolder(NodaFormatInfo formatInfo, int count)
+            {
+                this.count = count;
+                this.formatInfo = formatInfo;
+            }
+
+            internal void DummyMethod(LocalDate value, StringBuilder builder)
+            {
+                throw new InvalidOperationException("This method should never be called");
+            }
+
+            public NodaAction<LocalDate, StringBuilder> BuildFormatAction(PatternFields finalFields)
+            {
+                bool genitive = (finalFields & PatternFields.DayOfMonth) != 0;
+                IList<string> textValues = count == 3
+                    ? (genitive ? formatInfo.ShortMonthGenitiveNames : formatInfo.ShortMonthNames)
+                    : (genitive ? formatInfo.LongMonthGenitiveNames : formatInfo.LongMonthNames);
+                return (value, sb) => sb.Append(textValues[value.MonthOfYear]);
+            }
         }
 
         private static PatternParseResult<LocalDate> HandleDaySpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
@@ -286,7 +329,11 @@ namespace NodaTime.Text
                 case 3:
                 case 4:
                     field = PatternFields.DayOfWeek;
-                    throw new NotImplementedException("Need to handle text versions!");
+                    var format = builder.FormatInfo;
+                    IList<string> textValues = count == 3 ? format.ShortDayNames : format.LongDayNames;
+                    builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.DayOfWeek = value, textValues);
+                    builder.AddFormatAction((value, sb) => sb.Append(textValues[value.DayOfWeek]));
+                    break;
                 default:
                     throw new InvalidOperationException("Invalid count!");
             }
@@ -339,29 +386,37 @@ namespace NodaTime.Text
             internal override ParseResult<LocalDate> CalculateValue(PatternFields usedFields)
             {
                 // This will set Year if necessary
-                ParseResult<LocalDate> failure = DetermineYear(templateValue.Calendar, usedFields);
+                ParseResult<LocalDate> failure = DetermineYear(usedFields);
+                if (failure != null)
+                {
+                    return failure;
+                }
+                // This will set MonthOfYearNumeric if necessary
+                failure = DetermineMonth(usedFields);
                 if (failure != null)
                 {
                     return failure;
                 }
 
-                // TODO: Textual month of year
-                int month = IsFieldUsed(usedFields, PatternFields.MonthOfYearNumeric) ? MonthOfYearNumeric : templateValue.MonthOfYear;
-                if (month > templateValue.Calendar.GetMaxMonth(Year))
-                {
-                    return ParseResult<LocalDate>.MonthOutOfRange(month, Year);
-                }
-                // TODO: Day of week
                 int day = IsFieldUsed(usedFields, PatternFields.DayOfMonth) ? DayOfMonth : templateValue.DayOfMonth;
-                if (day > templateValue.Calendar.GetDaysInMonth(Year, month))
+                if (day > templateValue.Calendar.GetDaysInMonth(Year, MonthOfYearNumeric))
                 {
-                    return ParseResult<LocalDate>.DayOfMonthOutOfRange(day, month, Year);
+                    return ParseResult<LocalDate>.DayOfMonthOutOfRange(day, MonthOfYearNumeric, Year);
                 }
-                return ParseResult<LocalDate>.ForValue(new LocalDate(Year, month, day, templateValue.Calendar));
+
+                LocalDate value = new LocalDate(Year, MonthOfYearNumeric, day, templateValue.Calendar);
+
+                if (IsFieldUsed(usedFields, PatternFields.DayOfWeek) && DayOfWeek != value.DayOfWeek)
+                {
+                    return ParseResult<LocalDate>.InconsistentDayOfWeekTextValue;
+                }
+
+                return ParseResult<LocalDate>.ForValue(value);
             }
 
-            private ParseResult<LocalDate> DetermineYear(CalendarSystem calendar, PatternFields usedFields)
+            private ParseResult<LocalDate> DetermineYear(PatternFields usedFields)
             {
+                CalendarSystem calendar = templateValue.Calendar;
                 int yearFromEra = 0;
                 if (IsFieldUsed(usedFields, PatternFields.YearOfEra))
                 {
@@ -429,6 +484,30 @@ namespace NodaTime.Text
                     absoluteBaseCentury -= 100;
                 }
                 return absoluteBaseCentury + twoDigits;
+            }
+
+            private ParseResult<LocalDate> DetermineMonth(PatternFields usedFields)
+            {
+                switch (usedFields & (PatternFields.MonthOfYearNumeric | PatternFields.MonthOfYearText))
+                {
+                    case PatternFields.MonthOfYearNumeric:
+                        // No-op
+                        break;
+                    case PatternFields.MonthOfYearText:
+                        MonthOfYearNumeric = MonthOfYearText;
+                        break;
+                    case PatternFields.MonthOfYearNumeric | PatternFields.MonthOfYearText:
+                        if (MonthOfYearNumeric != MonthOfYearText)
+                        {
+                            return ParseResult<LocalDate>.InconsistentMonthValues;
+                        }
+                        // No need to change MonthOfYearNumeric - this was just a check
+                        break;
+                    case 0:
+                        MonthOfYearNumeric = templateValue.MonthOfYear;
+                        break;
+                }
+                return null;
             }
         }
     }
