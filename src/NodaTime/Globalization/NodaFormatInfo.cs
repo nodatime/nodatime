@@ -20,9 +20,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
+using NodaTime.Calendars;
 using NodaTime.Properties;
 using NodaTime.Text;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 #endregion
 
@@ -70,6 +72,10 @@ namespace NodaTime.Globalization
         private readonly IList<string> shortMonthGenitiveNames;
         private readonly IList<string> shortDayNames;
 
+        // TODO: Have a single EraDescription class and one dictionary?
+        private readonly Dictionary<Era, IList<string>> eraNamesCache;
+        private readonly Dictionary<Era, string> eraPrimaryNameCache;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class.
         /// </summary>
@@ -103,6 +109,8 @@ namespace NodaTime.Globalization
             shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, cultureInfo.DateTimeFormat.AbbreviatedMonthGenitiveNames);
             longDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.DayNames);
             shortDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.AbbreviatedDayNames);
+            eraNamesCache = new Dictionary<Era, IList<string>>();
+            eraPrimaryNameCache = new Dictionary<Era, string>();
         }
 
         /// <summary>
@@ -264,6 +272,66 @@ namespace NodaTime.Globalization
         /// Gets the PM designator.
         /// </summary>
         public string PMDesignator { get { return DateTimeFormat.PMDesignator; } }
+
+        /// <summary>
+        /// Returns the names for the given era in this culture.
+        /// </summary>
+        /// <param name="era">The era to find the names of.</param>
+        /// <returns>A read-only list of names for the given era, or an empty list if
+        /// the era is not known in this culture.</returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="era"/> is null.</exception>
+        public IList<string> GetEraNames(Era era)
+        {
+            Preconditions.CheckNotNull(era, "era");
+            lock (eraNamesCache)
+            {
+                IList<string> names;
+                if (eraNamesCache.TryGetValue(era, out names))
+                {
+                    return names;
+                }
+                string pipeDelimited = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, CultureInfo);
+                if (pipeDelimited == null)
+                {
+                    names = new string[0];
+                    eraPrimaryNameCache[era] = "";
+                }
+                else
+                {
+                    string[] unsorted = pipeDelimited.Split('|');
+                    eraPrimaryNameCache[era] = unsorted[0];
+                    // Order by length, descending to avoid early out (e.g. parsing BCE as BC and then having a spare E)
+                    Array.Sort(unsorted, (x, y) => y.Length.CompareTo(x.Length));
+                    names = new List<string>(unsorted).AsReadOnly();
+                }
+                eraNamesCache[era] = names;
+                return names;
+            }
+        }
+
+        /// <summary>
+        /// Returns the primary name for the given era in this culture.
+        /// </summary>
+        /// <param name="era">The era to find the primary name of.</param>
+        /// <returns>The primary name for the given era, or an empty string if the era name is not known.</returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="era"/> is null.</exception>
+        public string GetEraPrimaryName(Era era)
+        {
+            Preconditions.CheckNotNull(era, "era");
+
+            // The era names (plural) cache is used as the lock for both this and the primary name.
+            lock (eraNamesCache)
+            {
+                string name;
+                if (eraPrimaryNameCache.TryGetValue(era, out name))
+                {
+                    return name;
+                }
+                // This will force the primary name cache to be populated
+                GetEraNames(era);
+                return eraPrimaryNameCache[era];
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="NodaFormatInfo" /> object for the current thread.
