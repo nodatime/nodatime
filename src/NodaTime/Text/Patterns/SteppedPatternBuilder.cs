@@ -16,6 +16,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using NodaTime.Globalization;
 
@@ -145,15 +146,16 @@ namespace NodaTime.Text.Patterns
 
         /// <summary>
         /// Adds parse actions for a list of strings, such as days of the week or month names.
+        /// The parsing is performed case-insensitively.
         /// TODO: Make this much more efficient in terms of capture...
         /// </summary>
-        internal void AddParseTextAction(char field, NodaAction<TBucket, int> setter, IList<string> textValues)
+        internal void AddParseTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues)
         {
             AddParseAction((str, bucket) => {
                 for (int i = 0; i < textValues.Count; i++)
                 {
                     string candidate = textValues[i];
-                    if (!string.IsNullOrEmpty(candidate) && str.Match(candidate))
+                    if (!string.IsNullOrEmpty(candidate) && str.MatchCaseInsensitive(candidate, compareInfo))
                     {
                         setter(bucket, i);
                         return null;
@@ -164,16 +166,17 @@ namespace NodaTime.Text.Patterns
         }
         /// <summary>
         /// Adds parse actions for two list of strings, such as non-genitive and genitive month names.
+        /// The parsing is performed case-insensitively.
         /// TODO: Make this much more efficient in terms of capture...
         /// </summary>
-        internal void AddParseTextAction(char field, NodaAction<TBucket, int> setter, IList<string> textValues1, IList<string> textValues2)
+        internal void AddParseTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues1, IList<string> textValues2)
         {
             AddParseAction((str, bucket) =>
             {
                 for (int i = 0; i < textValues1.Count; i++)
                 {
                     string candidate = textValues1[i];
-                    if (!string.IsNullOrEmpty(candidate) && str.Match(candidate))
+                    if (!string.IsNullOrEmpty(candidate) && str.MatchCaseInsensitive(candidate, compareInfo))
                     {
                         setter(bucket, i);
                         return null;

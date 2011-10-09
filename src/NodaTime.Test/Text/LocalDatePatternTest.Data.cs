@@ -32,28 +32,6 @@ namespace NodaTime.Test.Text
         public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
         public static readonly CultureInfo GenitiveNameTestCulture = CreateGenitiveTestCulture();
 
-        /// <summary>
-        /// .NET 3.5 doesn't contain any cultures where the abbreviated month names differ
-        /// from the non-abbreviated month names. As we're testing under .NET 3.5, we'll need to create
-        /// our own. This is just a clone of the invarant culture, with month 1 changed.
-        /// </summary>
-        private static CultureInfo CreateGenitiveTestCulture()
-        {
-            CultureInfo clone = (CultureInfo) CultureInfo.InvariantCulture.Clone();
-            DateTimeFormatInfo format = clone.DateTimeFormat;
-            format.MonthNames = ReplaceFirstElement(format.MonthNames, "FullNonGenName");
-            format.MonthGenitiveNames = ReplaceFirstElement(format.MonthGenitiveNames, "FullGenName");
-            format.AbbreviatedMonthNames = ReplaceFirstElement(format.AbbreviatedMonthNames, "AbbrNonGenName");
-            format.AbbreviatedMonthGenitiveNames = ReplaceFirstElement(format.AbbreviatedMonthGenitiveNames, "AbbrGenName");
-            return clone;
-        }
-
-        private static string[] ReplaceFirstElement(string[] input, string newElement)
-        {
-            input[0] = newElement;
-            return input;
-        }
-
         // Used by tests via reflection - do not remove!
         private static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
 
@@ -80,6 +58,12 @@ namespace NodaTime.Test.Text
         };
 
         internal static Data[] ParseOnlyData = {
+            // Month parsing should be case-insensitive
+            new Data(2011, 10, 3) { Pattern = "yyyy MMM dd", Text = "2011 OcT 03" },
+            new Data(2011, 10, 3) { Pattern = "yyyy MMMM dd", Text = "2011 OcToBeR 03" },
+            // Day-of-week parsing should be case-insensitive
+            new Data(2011, 10, 9) { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 sUN" },
+            new Data(2011, 10, 9) { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 SuNDaY" },
         };
 
         internal static Data[] FormatOnlyData = {
@@ -117,6 +101,28 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
+
+        /// <summary>
+        /// .NET 3.5 doesn't contain any cultures where the abbreviated month names differ
+        /// from the non-abbreviated month names. As we're testing under .NET 3.5, we'll need to create
+        /// our own. This is just a clone of the invarant culture, with month 1 changed.
+        /// </summary>
+        private static CultureInfo CreateGenitiveTestCulture()
+        {
+            CultureInfo clone = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+            DateTimeFormatInfo format = clone.DateTimeFormat;
+            format.MonthNames = ReplaceFirstElement(format.MonthNames, "FullNonGenName");
+            format.MonthGenitiveNames = ReplaceFirstElement(format.MonthGenitiveNames, "FullGenName");
+            format.AbbreviatedMonthNames = ReplaceFirstElement(format.AbbreviatedMonthNames, "AbbrNonGenName");
+            format.AbbreviatedMonthGenitiveNames = ReplaceFirstElement(format.AbbreviatedMonthGenitiveNames, "AbbrGenName");
+            return clone;
+        }
+
+        private static string[] ReplaceFirstElement(string[] input, string newElement)
+        {
+            input[0] = newElement;
+            return input;
+        }
 
         public sealed class Data : PatternTestData<LocalDate>
         {
