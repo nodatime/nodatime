@@ -259,11 +259,13 @@ namespace NodaTime.Text
                     IList<string> genitiveTextValues = count == 3 ? format.ShortMonthGenitiveNames : format.LongMonthGenitiveNames;
                     if (nonGenitiveTextValues == genitiveTextValues)
                     {
-                        builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.MonthOfYearText = value, nonGenitiveTextValues);
+                        builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.MonthOfYearText = value,
+                            format.CultureInfo.CompareInfo, nonGenitiveTextValues);
                     }
                     else
                     {
-                        builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.MonthOfYearText = value, nonGenitiveTextValues, genitiveTextValues);
+                        builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.MonthOfYearText = value,
+                            format.CultureInfo.CompareInfo, nonGenitiveTextValues, genitiveTextValues);
                     }
 
                     // Hack: see below
@@ -331,7 +333,7 @@ namespace NodaTime.Text
                     field = PatternFields.DayOfWeek;
                     var format = builder.FormatInfo;
                     IList<string> textValues = count == 3 ? format.ShortDayNames : format.LongDayNames;
-                    builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.DayOfWeek = value, textValues);
+                    builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.DayOfWeek = value, format.CultureInfo.CompareInfo, textValues);
                     builder.AddFormatAction((value, sb) => sb.Append(textValues[value.DayOfWeek]));
                     break;
                 default:
