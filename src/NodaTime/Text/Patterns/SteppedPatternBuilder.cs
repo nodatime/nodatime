@@ -16,6 +16,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using NodaTime.Globalization;
 
@@ -29,7 +30,7 @@ namespace NodaTime.Text.Patterns
     {
         private readonly NodaFormatInfo formatInfo;
 
-        private NodaAction<TResult, StringBuilder> formatActions;
+        private List<NodaAction<TResult, StringBuilder>> formatActions;
         private readonly List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions;
         private readonly NodaFunc<TBucket> bucketProvider;
         private PatternFields usedFields;
@@ -37,10 +38,12 @@ namespace NodaTime.Text.Patterns
         internal SteppedPatternBuilder(NodaFormatInfo formatInfo, NodaFunc<TBucket> bucketProvider)
         {
             this.formatInfo = formatInfo;
-            formatActions = null;
+            formatActions = new List<NodaAction<TResult, StringBuilder>>();
             parseActions = new List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>>();
             this.bucketProvider = bucketProvider;
         }
+
+        public PatternFields UsedFields { get { return usedFields; } }
 
         public NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
@@ -51,7 +54,13 @@ namespace NodaTime.Text.Patterns
         /// </summary>
         internal IPattern<TResult> Build()
         {
-            return new SteppedPattern(formatActions, parseActions, bucketProvider, usedFields);
+            NodaAction<TResult, StringBuilder> formatDelegate = null;
+            foreach (NodaAction<TResult, StringBuilder> formatAction in formatActions)
+            {
+                IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
+                formatDelegate += postAction == null ? formatAction : postAction.BuildFormatAction(usedFields);
+            }
+            return new SteppedPattern(formatDelegate, parseActions, bucketProvider, usedFields);
         }
 
         /// <summary>
@@ -76,7 +85,7 @@ namespace NodaTime.Text.Patterns
 
         internal void AddFormatAction(NodaAction<TResult, StringBuilder> formatAction)
         {
-            formatActions += formatAction;
+            formatActions.Add(formatAction);
         }
 
         internal void AddParseValueAction(int minimumDigits, int maximumDigits, char patternChar,
@@ -133,6 +142,57 @@ namespace NodaTime.Text.Patterns
             AddParseAction((str, bucket) => str.Match(expectedChar) ? null : failureSelector(expectedChar));
             AddFormatAction((offset, builder) => builder.Append(expectedChar));
             return null;
+        }
+
+        /// <summary>
+        /// Adds parse actions for a list of strings, such as days of the week or month names.
+        /// The parsing is performed case-insensitively.
+        /// TODO: Make this much more efficient in terms of capture...
+        /// </summary>
+        internal void AddParseTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues)
+        {
+            AddParseAction((str, bucket) => {
+                for (int i = 0; i < textValues.Count; i++)
+                {
+                    string candidate = textValues[i];
+                    if (!string.IsNullOrEmpty(candidate) && str.MatchCaseInsensitive(candidate, compareInfo))
+                    {
+                        setter(bucket, i);
+                        return null;
+                    }
+                }
+                return ParseResult<TResult>.MismatchedText(field);
+            });
+        }
+        /// <summary>
+        /// Adds parse actions for two list of strings, such as non-genitive and genitive month names.
+        /// The parsing is performed case-insensitively.
+        /// TODO: Make this much more efficient in terms of capture...
+        /// </summary>
+        internal void AddParseTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues1, IList<string> textValues2)
+        {
+            AddParseAction((str, bucket) =>
+            {
+                for (int i = 0; i < textValues1.Count; i++)
+                {
+                    string candidate = textValues1[i];
+                    if (!string.IsNullOrEmpty(candidate) && str.MatchCaseInsensitive(candidate, compareInfo))
+                    {
+                        setter(bucket, i);
+                        return null;
+                    }
+                }
+                for (int i = 0; i < textValues2.Count; i++)
+                {
+                    string candidate = textValues2[i];
+                    if (!string.IsNullOrEmpty(candidate) && str.Match(candidate))
+                    {
+                        setter(bucket, i);
+                        return null;
+                    }
+                }
+                return ParseResult<TResult>.MismatchedText(field);
+            });
         }
 
         /// <summary>
@@ -221,6 +281,14 @@ namespace NodaTime.Text.Patterns
         {
             AddFormatAction((value, sb) => FormatHelper.RightPadTruncate(selector(value), width, scale, formatInfo.DecimalSeparator, sb));
             return null;
+        }
+
+        /// <summary>
+        /// Hack to handle genitive month names - we only know what we need to do *after* we've parsed the whole pattern.
+        /// </summary>
+        internal interface IPostPatternParseFormatAction
+        {
+            NodaAction<TResult, StringBuilder> BuildFormatAction(PatternFields finalFields);
         }
 
         private class SteppedPattern : IPattern<TResult>

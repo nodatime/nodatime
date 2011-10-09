@@ -151,12 +151,15 @@ namespace NodaTime.Text
         {
             return ForInvalidValue(Messages.Parse_MismatchedNumber, pattern);
         }
-
-        internal static ParseResult<T> MismatchedSpace = ForInvalidValue(Messages.Parse_MismatchedSpace);
-
+        
         internal static ParseResult<T> MismatchedCharacter(char patternCharacter)
         {
             return ForInvalidValue(Messages.Parse_MismatchedCharacter, patternCharacter);
+        }
+
+        public static ParseResult<T> MismatchedText(char field)
+        {
+            return ForInvalidValue(Messages.Parse_MismatchedText, field);
         }
 
         internal static readonly ParseResult<T> NoMatchingFormat = ForInvalidValue(Messages.Parse_NoMatchingFormat);
@@ -169,7 +172,7 @@ namespace NodaTime.Text
         internal static readonly ParseResult<T> MissingSign = ForInvalidValue(Messages.Parse_MissingSign);
         internal static readonly ParseResult<T> MissingAmPmDesignator = ForInvalidValue(Messages.Parse_MissingAmPmDesignator);
 
-        internal static ParseResult<T> FieldValueOutOfRange(object value, char field)
+        internal static ParseResult<T> FieldValueOutOfRange(int value, char field)
         {
             return ForInvalidValue(Messages.Parse_FieldValueOutOfRange, value, field, typeof(T));
         }
@@ -180,6 +183,33 @@ namespace NodaTime.Text
         internal static ParseResult<T> InconsistentValues(char field1, char field2)
         {
             return ForInvalidValue(Messages.Parse_InconsistentValues2, field1, field2, typeof(T));
+        }
+
+        /// <summary>
+        /// The month of year is inconsistent between the text and numeric specifications.
+        /// We can't use InconsistentValues for this as the pattern character is the same in both cases.
+        /// </summary>
+        internal static readonly ParseResult<T> InconsistentMonthValues = ForInvalidValue(Messages.Parse_InconsistentMonthTextValue);
+
+        /// <summary>
+        /// The day of month is inconsistent with the day of week value.
+        /// We can't use InconsistentValues for this as the pattern character is the same in both cases.
+        /// </summary>
+        internal static readonly ParseResult<T> InconsistentDayOfWeekTextValue = ForInvalidValue(Messages.Parse_InconsistentDayOfWeekTextValue);
+
+        internal static ParseResult<T> YearOfEraOutOfRange(int value, int eraIndex, CalendarSystem calendar)
+        {
+            return ForInvalidValue(Messages.Parse_YearOfEraOutOfRange, value, calendar.Eras[eraIndex].Name, calendar.Name);
+        }
+
+        internal static ParseResult<T> MonthOutOfRange(int month, int year)
+        {
+            return ForInvalidValue(Messages.Parse_MonthOutOfRange, month, year);
+        }
+
+        internal static ParseResult<T> DayOfMonthOutOfRange(int day, int month, int year)
+        {
+            return ForInvalidValue(Messages.Parse_DayOfMonthOutOfRange, day, month, year);
         }
         #endregion
     }

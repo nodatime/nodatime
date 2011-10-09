@@ -33,12 +33,12 @@ namespace NodaTime.Fields
 
         internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
- 	        return calendarSystem.Fields.Year.SetValue(localInstant, calendarSystem.GetYear(localInstant) + value); 	        
+           return calendarSystem.Fields.Year.SetValue(localInstant, calendarSystem.GetYear(localInstant) + value);
         }
 
         internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
- 	        return Add(localInstant, (int) value);
+            return Add(localInstant, (int) value);
         }
 
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
