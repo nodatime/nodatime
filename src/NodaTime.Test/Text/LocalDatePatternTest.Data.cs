@@ -20,16 +20,39 @@ using System.Globalization;
 using System.Linq;
 using NodaTime.Text;
 using NodaTime.Properties;
-
+   
 namespace NodaTime.Test.Text
 {
-	public partial class LocalDatePatternTest
-	{
+    public partial class LocalDatePatternTest
+    {
         public static readonly CultureInfo Invariant = CultureInfo.InvariantCulture;
         public static readonly CultureInfo EnUs = new CultureInfo("en-US");
         public static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
         public static readonly CultureInfo FrCa = new CultureInfo("fr-CA");
         public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
+        public static readonly CultureInfo GenitiveNameTestCulture = CreateGenitiveTestCulture();
+
+        /// <summary>
+        /// .NET 3.5 doesn't contain any cultures where the abbreviated month names differ
+        /// from the non-abbreviated month names. As we're testing under .NET 3.5, we'll need to create
+        /// our own. This is just a clone of the invarant culture, with month 1 changed.
+        /// </summary>
+        private static CultureInfo CreateGenitiveTestCulture()
+        {
+            CultureInfo clone = (CultureInfo) CultureInfo.InvariantCulture.Clone();
+            DateTimeFormatInfo format = clone.DateTimeFormat;
+            format.MonthNames = ReplaceFirstElement(format.MonthNames, "FullNonGenName");
+            format.MonthGenitiveNames = ReplaceFirstElement(format.MonthGenitiveNames, "FullGenName");
+            format.AbbreviatedMonthNames = ReplaceFirstElement(format.AbbreviatedMonthNames, "AbbrNonGenName");
+            format.AbbreviatedMonthGenitiveNames = ReplaceFirstElement(format.AbbreviatedMonthGenitiveNames, "AbbrGenName");
+            return clone;
+        }
+
+        private static string[] ReplaceFirstElement(string[] input, string newElement)
+        {
+            input[0] = newElement;
+            return input;
+        }
 
         // Used by tests via reflection - do not remove!
         private static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
@@ -78,37 +101,49 @@ namespace NodaTime.Test.Text
 
             new Data(2000, 10, 3) { Pattern = "MM/dd", Text = "10/03"},
             new Data(1885, 10, 3) { Pattern = "MM/dd", Text = "10/03", Template = new LocalDate(1885, 10, 3) },
+
+            // When we parse in all of the below tests, we'll use the month and day-of-month if it's provided;
+            // the template value is specified to allow simple roundtripping. (Day of week doesn't affect what value is parsed; it just validates.)
+            // Non-genitive month name when there's no "day of month", even if there's a "day of week"
+            new Data(2011, 1, 3) { Pattern = "MMMM", Text = "FullNonGenName", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3)},
+            new Data(2011, 1, 3) { Pattern = "MMMM dddd", Text = "FullNonGenName Monday", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
+            new Data(2011, 1, 3) { Pattern = "MMM", Text = "AbbrNonGenName", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
+            new Data(2011, 1, 3) { Pattern = "MMM ddd", Text = "AbbrNonGenName Mon", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
+            // Genitive month name when the pattern includes "day of month"
+            new Data(2011, 1, 3) { Pattern = "MMMM dd", Text = "FullGenName 03", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
+            // TODO: Check whether or not this is actually appropriate
+            new Data(2011, 1, 3) { Pattern = "MMM dd", Text = "AbbrGenName 03", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
 
         public sealed class Data : PatternTestData<LocalDate>
-	    {
-	        /// <summary>
-	        /// Initializes a new instance of the <see cref="Data" /> class.
-	        /// </summary>
-	        /// <param name="value">The value.</param>
-	        public Data(LocalDate value) : base(value)
-	        {
-	            // Default to the start of the year 2000.
-	            Template = LocalDatePattern.DefaultTemplateValue;
-	        }
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Data" /> class.
+            /// </summary>
+            /// <param name="value">The value.</param>
+            public Data(LocalDate value) : base(value)
+            {
+                // Default to the start of the year 2000.
+                Template = LocalDatePattern.DefaultTemplateValue;
+            }
 
-	        public Data(int year, int month, int day) : this(new LocalDate(year, month, day))
-	        {
-	        }
+            public Data(int year, int month, int day) : this(new LocalDate(year, month, day))
+            {
+            }
 
             public Data() : this(LocalDatePattern.DefaultTemplateValue)
             {
             }
 
-	        internal override IPattern<LocalDate> CreatePattern()
-	        {
+            internal override IPattern<LocalDate> CreatePattern()
+            {
                 return LocalDatePattern.CreateWithInvariantInfo(Pattern)
                     .WithTemplateValue(Template)
                     .WithCulture(Culture);
-	        }
-	    }
-	}
+            }
+        }
+    }
 }
