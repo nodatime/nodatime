@@ -277,15 +277,6 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value string does not match a space in the format string..
-        /// </summary>
-        internal static string Parse_MismatchedSpace {
-            get {
-                return ResourceManager.GetString("Parse_MismatchedSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The value string does not match the text-based field &apos;{0}&apos;..
         /// </summary>
         internal static string Parse_MismatchedText {
