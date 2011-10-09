@@ -120,10 +120,10 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>/</code></td>
       <td>
-        The date separator for the format provider; slash in the invariant colture.
+        The date separator for the format provider; slash in the invariant culture.
       </td>
-      <td>en-US: <code>yyyy/MM/dd</code> => <code>2011/10/09</code></td>
-      <td>de-DE: <code>yyyy/MM/dd</code> => <code>2011.10.09</code></td>
+      <td>en-US: <code>yyyy/MM/dd</code> => <code>2011/10/09</code><br />
+          de-DE: <code>yyyy/MM/dd</code> => <code>2011.10.09</code></td>
     </tr>
   </tbody>
     
