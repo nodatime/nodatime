@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
+
 namespace NodaTime.Text
 {
     /// <summary>
@@ -48,7 +49,6 @@ namespace NodaTime.Text
             { 'Y', HandleYearOfEraSpecifier },
             { 'M', HandleMonthOfYearSpecifier },
             { 'd', HandleDaySpecifier },
-            { 'g', HandleEraSpecifier },
         };
 
         internal LocalDatePatternParser(LocalDate templateValue)
@@ -93,9 +93,17 @@ namespace NodaTime.Text
             while (patternCursor.MoveNext())
             {
                 CharacterHandler handler;
-                if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
+                // The era parser needs access to the calendar, so has to be an instance method.
+                if (patternCursor.Current == 'g')
                 {
-                    handler = HandleDefaultCharacter;
+                    handler = HandleEraSpecifier;
+                }
+                else
+                {
+                    if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
+                    {
+                        handler = HandleDefaultCharacter;
+                    }                    
                 }
                 PatternParseResult<LocalDate> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
                 if (possiblePatternParseFailure != null)
@@ -176,7 +184,7 @@ namespace NodaTime.Text
 
         private static PatternParseResult<LocalDate> HandleYearSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
         {
-            // TODO: Handle parsing negative years.
+            // TODO: Handle parsing and formatting negative years.
             PatternParseResult<LocalDate> failure = null;
             int count = pattern.GetRepeatCount(5, ref failure);
             if (failure != null)
@@ -229,7 +237,7 @@ namespace NodaTime.Text
             }
             // Maximum value will be determined later
             builder.AddParseValueAction(count, 5, 'Y', 0, 99999, (bucket, value) => bucket.YearOfEra = value);
-            builder.AddFormatAction((localDate, sb) => FormatHelper.LeftPad(localDate.Year, count, sb));
+            builder.AddFormatAction((localDate, sb) => FormatHelper.LeftPad(localDate.YearOfEra, count, sb));
             return null;
         }
 
@@ -347,10 +355,10 @@ namespace NodaTime.Text
             return null;
         }
 
-        private static PatternParseResult<LocalDate> HandleEraSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
+        private PatternParseResult<LocalDate> HandleEraSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
         {
             PatternParseResult<LocalDate> failure = null;
-            int count = pattern.GetRepeatCount(2, ref failure);
+            pattern.GetRepeatCount(2, ref failure);
             if (failure != null)
             {
                 return failure;
@@ -360,7 +368,28 @@ namespace NodaTime.Text
             {
                 return failure;
             }
-            throw new NotImplementedException("Need to handle text versions!");
+            var formatInfo = builder.FormatInfo;
+            var calendar = templateValue.Calendar;
+            // Note: currently the count is ignored. More work needed to determine whether abbreviated era names should be used for just "g".
+
+            builder.AddParseAction((cursor, bucket) => {
+                var compareInfo = formatInfo.CultureInfo.CompareInfo;
+                var eras = calendar.Eras;
+                for (int i = 0; i < eras.Count; i++)
+                {
+                    foreach (string eraName in formatInfo.GetEraNames(eras[i]))
+                    {
+                        if (cursor.MatchCaseInsensitive(eraName, compareInfo))
+                        {
+                            bucket.EraIndex = i;
+                            return null;
+                        }
+                    }
+                }
+                return ParseResult<LocalDate>.MismatchedText('g');
+            });
+            builder.AddFormatAction((value, sb) => sb.Append(formatInfo.GetEraPrimaryName(value.Era)));
+            return null;
         }
 
         private static PatternParseResult<LocalDate> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)

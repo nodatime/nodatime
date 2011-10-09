@@ -55,9 +55,22 @@ namespace NodaTime.Test.Text
         };
 
         internal static Data[] ParseFailureData = {
+            new Data { Pattern = "YYYY gg", Text = "2011 NodaEra", Message = Messages.Parse_MismatchedText, Parameters = {'g'} },
+            new Data { Pattern = "YYYY yyyy gg", Text = "0010 0009 B.C.", Message = Messages.Parse_InconsistentValues2, Parameters = {'y', 'Y', typeof(LocalDate)} },
+            new Data { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 Saturday", Message = Messages.Parse_InconsistentDayOfWeekTextValue },
+            new Data { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 Sat", Message = Messages.Parse_InconsistentDayOfWeekTextValue },
+            new Data { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 FooBar", Message = Messages.Parse_MismatchedText, Parameters = {'d'} },
+            new Data { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 FooBar", Message = Messages.Parse_MismatchedText, Parameters = {'d'} },
+            // Don't match a short name against a long pattern
+            new Data { Pattern = "yyyy MMMM dd", Text = "2011 Oct 09", Message = Messages.Parse_MismatchedText, Parameters = {'M'} },
+            // Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
+            new Data { Pattern = "yyyy MMM dd", Text = "2011 October 09", Message = Messages.Parse_MismatchedCharacter, Parameters = {' '}},
         };
 
         internal static Data[] ParseOnlyData = {
+            // Alternative era names
+            new Data(0, 10, 3) { Pattern = "YYYY MM dd gg", Text = "0001 10 03 BCE" },
+
             // Month parsing should be case-insensitive
             new Data(2011, 10, 3) { Pattern = "yyyy MMM dd", Text = "2011 OcT 03" },
             new Data(2011, 10, 3) { Pattern = "yyyy MMMM dd", Text = "2011 OcToBeR 03" },
@@ -97,6 +110,19 @@ namespace NodaTime.Test.Text
             new Data(2011, 1, 3) { Pattern = "MMMM dd", Text = "FullGenName 03", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
             // TODO: Check whether or not this is actually appropriate
             new Data(2011, 1, 3) { Pattern = "MMM dd", Text = "AbbrGenName 03", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
+
+            // Era handling
+            new Data(2011, 1, 3) { Pattern = "YYYY MM dd gg", Text = "2011 01 03 A.D." },
+            new Data(2011, 1, 3) { Pattern = "yyyy YYYY MM dd gg", Text = "2011 2011 01 03 A.D." },
+            new Data(-1, 1, 3) { Pattern = "YYYY MM dd gg", Text = "0002 01 03 B.C." },
+
+            // Day of week handling
+            new Data(2011, 10, 9) { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 Sunday" },
+            new Data(2011, 10, 9) { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 Sun" },
+
+            // Month handling
+            new Data(2011, 10, 9) { Pattern = "yyyy MMMM dd", Text = "2011 October 09" },
+            new Data(2011, 10, 9) { Pattern = "yyyy MMM dd", Text = "2011 Oct 09" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
