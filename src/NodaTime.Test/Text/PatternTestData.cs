@@ -106,9 +106,11 @@ namespace NodaTime.Test.Text
         {
             string expectedMessage = string.Format(Message, parameters.ToArray());
             IPattern<T> pattern = CreatePattern();
+            var result = pattern.Parse(Text);
+            Assert.IsFalse(result.Success);
             try
             {
-                pattern.Parse(Text);
+                result.GetValueOrThrow();
                 Assert.Fail("Expected UnparsableValueException");
             }
             catch (UnparsableValueException e)
