@@ -65,11 +65,24 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "yyyy MMMM dd", Text = "2011 Oct 09", Message = Messages.Parse_MismatchedText, Parameters = {'M'} },
             // Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
             new Data { Pattern = "yyyy MMM dd", Text = "2011 October 09", Message = Messages.Parse_MismatchedCharacter, Parameters = {' '}},
+
+            // Invalid year, month, day
+            new Data { Pattern = "yyyyy MM dd", Text = "99999 01 01", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 99999, 'y', typeof(LocalDate) } },
+            new Data { Pattern = "yyyy MM dd", Text = "2011 15 29", Message = Messages.Parse_MonthOutOfRange, Parameters = { 15, 2011 } },
+            new Data { Pattern = "yyyy MM dd", Text = "2011 02 35", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 35, 2, 2011 } },
+
+            // Invalid leap years
+            new Data { Pattern = "yyyy MM dd", Text = "2011 02 29", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 29, 2, 2011 } },
+            new Data { Pattern = "yyyy MM dd", Text = "1900 02 29", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 29, 2, 1900 } },
         };
 
         internal static Data[] ParseOnlyData = {
             // Alternative era names
             new Data(0, 10, 3) { Pattern = "YYYY MM dd gg", Text = "0001 10 03 BCE" },
+
+            // Valid leap years
+            new Data(2000, 2, 29) { Pattern = "yyyy MM dd", Text = "2000 02 29" },
+            new Data(2004, 2, 29) { Pattern = "yyyy MM dd", Text = "2004 02 29" },
 
             // Month parsing should be case-insensitive
             new Data(2011, 10, 3) { Pattern = "yyyy MMM dd", Text = "2011 OcT 03" },

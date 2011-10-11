@@ -499,6 +499,12 @@ namespace NodaTime.Text
                         break;
                     // No default: it would be impossible.
                 }
+                // TODO: Wrong field if we happen to have been given the year of era instead...
+                // Pretty insignificant problem, mind you...
+                if (Year > templateValue.Calendar.MaxYear || Year < templateValue.Calendar.MinYear)
+                {
+                    return ParseResult<LocalDate>.FieldValueOutOfRange(Year, 'y');
+                }
                 return null;
             }
 
@@ -537,6 +543,10 @@ namespace NodaTime.Text
                     case 0:
                         MonthOfYearNumeric = templateValue.MonthOfYear;
                         break;
+                }
+                if (MonthOfYearNumeric > templateValue.Calendar.GetMaxMonth(Year))
+                {
+                    return ParseResult<LocalDate>.MonthOutOfRange(MonthOfYearNumeric, Year);
                 }
                 return null;
             }
