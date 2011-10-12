@@ -77,6 +77,56 @@ namespace NodaTime.Test.Text
             Assert.Throws<ArgumentNullException>(() => LocalTimePattern.Create("HH", null));
         }
 
+        [Test]
+        [TestCaseSource("InvalidPatternData")]
+        public void InvalidPatterns(Data data)
+        {
+            data.TestInvalidPattern();
+            Console.WriteLine(data.Pattern);
+        }
+
+        [Test]
+        [TestCaseSource("ParseFailureData")]
+        public void ParseFailures(Data data)
+        {
+            data.TestParseFailure();
+        }
+
+        [Test]
+        [TestCaseSource("ParseData")]
+        public void Parse(Data data)
+        {
+            IPattern<LocalTime> pattern = data.CreatePattern();
+            if (data.Value != pattern.Parse(data.Text).Value)
+            {
+                Console.WriteLine(data.Value.LocalDateTime.LocalInstant.Ticks);
+                Console.WriteLine(pattern.Parse(data.Text).Value.LocalDateTime.LocalInstant.Ticks);
+            }
+
+            data.TestParse();
+        }
+
+        [Test]
+        [TestCaseSource("FormatData")]
+        public void Format(Data data)
+        {
+            data.TestFormat();
+        }
+
+        [Test]
+        [TestCaseSource("DefaultPatternData")]
+        public void FormatDefaultPattern(Data data)
+        {
+            Assert.AreEqual(data.Text, data.Value.ToString(data.Culture));
+        }
+
+        [Test]
+        [TestCaseSource("DefaultPatternData")]
+        public void ParseDefaultPattern(Data data)
+        {
+            Assert.AreEqual(data.Value, LocalTime.Parse(data.Text, data.Culture));
+        }
+
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             var pattern = LocalTimePattern.Create(patternText, NodaFormatInfo.GetFormatInfo(culture));
