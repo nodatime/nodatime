@@ -36,16 +36,5 @@ namespace NodaTime.Test.Text
             var pattern = LocalTimePattern.CreateWithInvariantInfo("HH").WithTemplateValue(newValue);
             Assert.AreEqual(newValue, pattern.TemplateValue);
         }
-
-        [Test]
-        [TestCaseSource(typeof(LocalTimePatternTestSupport), "TemplateValueData")]
-        public void Parse_WithTemplateValue(LocalTimePatternTestSupport.LocalTimeData data)
-        {
-            LocalTimePattern pattern = LocalTimePattern.CreateWithInvariantInfo(data.P)
-                .WithCulture(data.C)
-                .WithTemplateValue(data.TemplateValue);
-            LocalTime parsed = pattern.Parse(data.S).Value;
-            Assert.AreEqual(data.V, parsed);
-        }
     }
 }
