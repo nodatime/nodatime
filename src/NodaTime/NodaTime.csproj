@@ -97,6 +97,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Text\Delegates.cs" />
     <Compile Include="Text\FixedFormatInfoPatternParser.cs" />
     <Compile Include="Text\FormatHelper.cs" />
     <Compile Include="Text\BucketHelper.cs" />

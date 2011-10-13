@@ -61,6 +61,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 Sat", Message = Messages.Parse_InconsistentDayOfWeekTextValue },
             new Data { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 FooBar", Message = Messages.Parse_MismatchedText, Parameters = {'d'} },
             new Data { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 FooBar", Message = Messages.Parse_MismatchedText, Parameters = {'d'} },
+            new Data { Pattern = "yyyy/MM/dd", Text = "2011/02-29", Message = Messages.Parse_DateSeparatorMismatch },
             // Don't match a short name against a long pattern
             new Data { Pattern = "yyyy MMMM dd", Text = "2011 Oct 09", Message = Messages.Parse_MismatchedText, Parameters = {'M'} },
             // Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space

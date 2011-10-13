@@ -134,6 +134,78 @@ namespace NodaTime.Text.Patterns
             return null;
         }
 
+        internal static PatternParseResult<TResult> HandleQuote(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
+        {
+            PatternParseResult<TResult> failure = null;
+            string quoted = pattern.GetQuotedString(pattern.Current, ref failure);
+            if (failure != null)
+            {
+                return failure;
+            }
+            return builder.AddLiteral(quoted, ParseResult<TResult>.QuotedStringMismatch);
+        }
+
+        internal static PatternParseResult<TResult> HandleBackslash(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
+        {
+            if (!pattern.MoveNext())
+            {
+                return PatternParseResult<TResult>.EscapeAtEndOfString;
+            }
+            builder.AddLiteral(pattern.Current, ParseResult<TResult>.EscapedCharacterMismatch);
+            return null;
+        }
+
+        /// <summary>
+        /// Handle a leading "%" which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
+        /// "use a custom format string consisting of H instead of a standard pattern H".
+        /// </summary>
+        internal static PatternParseResult<TResult> HandlePercent(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
+        {
+            if (pattern.HasMoreCharacters)
+            {
+                if (pattern.PeekNext() != '%')
+                {
+                    // Handle the next character as normal
+                    return null;
+                }
+                return PatternParseResult<TResult>.PercentDoubled;
+            }
+            return PatternParseResult<TResult>.PercentAtEndOfString;
+        }
+
+        /// <summary>
+        /// Returns a handler for a zero-padded purely-numeric field specifier, such as "seconds", "minutes", "24-hour", "12-hour" etc.
+        /// </summary>
+        /// <param name="maxCount">Maximum permissable count (usually two)</param>
+        /// <param name="field">Field to remember that we've seen</param>
+        /// <param name="minValue">Minimum valid value for the field (inclusive)</param>
+        /// <param name="maxValue">Maximum value value for the field (inclusive)</param>
+        /// <param name="getter">Delegate to retrieve the field value when formatting</param>
+        /// <param name="setter">Delegate to set the field value into a bucket when parsing</param>
+        /// <returns>The pattern parsing failure, or null on success.</returns>
+        internal static CharacterHandler<TResult, TBucket> HandlePaddedField(int maxCount, PatternFields field, int minValue, int maxValue, NodaFunc<TResult, int> getter,
+            NodaAction<TBucket, int> setter)
+        {
+            return (pattern, builder) =>
+            {
+                PatternParseResult<TResult> failure = null;
+                int count = pattern.GetRepeatCount(maxCount, ref failure);
+                if (failure != null)
+                {
+                    return failure;
+                }
+                failure = builder.AddField(field, pattern.Current);
+                if (failure != null)
+                {
+                    return failure;
+                }
+
+                builder.AddParseValueAction(count, maxCount, pattern.Current, minValue, maxValue, setter);
+                builder.AddFormatLeftPad(count, getter);
+                return null;
+            };
+        }
+
         /// <summary>
         /// Adds a character which must be matched exactly when parsing, and appended directly when formatting.
         /// </summary>
@@ -223,7 +295,7 @@ namespace NodaTime.Text.Patterns
         }
 
         /// <summary>
-        /// Adds parse and format actions for a mandatory positive/negative sign.
+        /// Adds parse and format actions for an "negative only" sign.
         /// </summary>
         /// <param name="signSetter">Action to take when to set the given sign within the bucket</param>
         /// <param name="nonNegativePredicate">Predicate to detect whether the value being formatted is non-negative</param>
