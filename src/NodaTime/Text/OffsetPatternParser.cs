@@ -177,7 +177,7 @@ namespace NodaTime.Text
             // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
             // seconds part as normal. Otherwise, we continue on to the next parsing token.
             // At format time, we should always append the decimal separator, and then append using PadRightTruncate.
-            if (pattern.PeekNext() == 'f')
+            if (pattern.PeekNext() == 'F')
             {
                 PatternParseResult<Offset> failure = null;
                 pattern.MoveNext();
