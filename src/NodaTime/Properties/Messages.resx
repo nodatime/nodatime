@@ -138,6 +138,9 @@
   <data name="Parse_CannotParseValue" xml:space="preserve">
     <value>The value "{0}" cannot be parsed into an instance of {1} using pattern "{2}"</value>
   </data>
+  <data name="Parse_DateSeparatorMismatch" xml:space="preserve">
+    <value>The value string does not match a date separator in the format string.</value>
+  </data>
   <data name="Parse_DayOfMonthOutOfRange" xml:space="preserve">
     <value>The day {0} is out of range in month {1} of year {2}.</value>
   </data>

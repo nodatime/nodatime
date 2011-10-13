@@ -30,21 +30,24 @@ namespace NodaTime.Text
         private readonly LocalTime templateValue;
 
         private const int FractionOfSecondLength = 7;
-        private delegate PatternParseResult<LocalTime> CharacterHandler(PatternCursor patternCursor, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> patternBuilder);
 
-        private static readonly Dictionary<char, CharacterHandler> PatternCharacterHandlers = new Dictionary<char, CharacterHandler>()
+        private static readonly Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>> PatternCharacterHandlers = 
+            new Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>>
         {
-            // TODO: Put these first four into SteppedPatternBuilder for sure...
-            { '%', HandlePercent },
-            { '\'', HandleQuote },
-            { '\"', HandleQuote },
-            { '\\', HandleBackslash },
+            { '%', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePercent },
+            { '\'', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandleQuote },
+            { '\"', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandleQuote },
+            { '\\', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandleBackslash },
             { '.', HandlePeriod },
-            { ':', HandleColon }, //(pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<LocalTime>.TimeSeparatorMismatch) },
-            { 'h', Handle12HourSpecifier },
-            { 'H', Handle24HourSpecifier },
-            { 'm', HandleMinuteSpecifier },
-            { 's', HandleSecondSpecifier },
+            { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<LocalTime>.TimeSeparatorMismatch) },
+            { 'h', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePaddedField
+                       (2, PatternFields.Hours12, 1, 12, value => value.ClockHourOfHalfDay, (bucket, value) => bucket.Hours12 = value) },
+            { 'H', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePaddedField
+                       (2, PatternFields.Hours24, 0, 23, value => value.HourOfDay, (bucket, value) => bucket.Hours24 = value) },
+            { 'm', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePaddedField
+                       (2, PatternFields.Minutes, 0, 59, value => value.MinuteOfHour, (bucket, value) => bucket.Minutes = value) },
+            { 's', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePaddedField
+                       (2, PatternFields.Seconds, 0, 59, value => value.SecondOfMinute, (bucket, value) => bucket.Seconds = value) },
             { 'f', HandleFractionSpecifier },
             { 'F', HandleFractionSpecifier },
             { 't', HandleAmPmDesignator }
@@ -91,7 +94,7 @@ namespace NodaTime.Text
 
             while (patternCursor.MoveNext())
             {
-                CharacterHandler handler;
+                CharacterHandler<LocalTime, LocalTimeParseBucket> handler;
                 if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
                 {
                     handler = HandleDefaultCharacter;
@@ -122,55 +125,6 @@ namespace NodaTime.Text
         }
 
         #region Character handlers
-        // TODO: Move a bunch of these into SteppedPatternBuilder.
-
-        /// <summary>
-        /// Handle a leading "%" which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
-        /// "use a custom format string consisting of H instead of a standard pattern H".
-        /// </summary>
-        private static PatternParseResult<LocalTime> HandlePercent(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
-        {
-            if (pattern.HasMoreCharacters)
-            {
-                if (pattern.PeekNext() != '%')
-                {
-                    // Handle the next character as normal
-                    return null;
-                }
-                return PatternParseResult<LocalTime>.PercentDoubled;
-            }
-            return PatternParseResult<LocalTime>.PercentAtEndOfString;
-        }
-
-        private static PatternParseResult<LocalTime> HandleQuote(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
-        {
-            PatternParseResult<LocalTime> failure = null;
-            string quoted = pattern.GetQuotedString(pattern.Current, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            return builder.AddLiteral(quoted, ParseResult<LocalTime>.QuotedStringMismatch);
-        }
-
-        private static PatternParseResult<LocalTime> HandleBackslash(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
-        {
-            if (!pattern.MoveNext())
-            {
-                return PatternParseResult<LocalTime>.EscapeAtEndOfString;
-            }
-            builder.AddLiteral(pattern.Current, ParseResult<LocalTime>.EscapedCharacterMismatch);
-            return null;
-        }
-        
-        private static PatternParseResult<LocalTime> HandleColon(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
-        {
-            string timeSeparator = builder.FormatInfo.TimeSeparator;
-            builder.AddParseAction((str, bucket) => str.Match(timeSeparator) ? null : ParseResult<LocalTime>.TimeSeparatorMismatch);
-            builder.AddFormatAction((localTime, sb) => sb.Append(timeSeparator));
-            return null;
-        }
-    
         private static PatternParseResult<LocalTime> HandlePeriod(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
         {
             // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
@@ -220,81 +174,6 @@ namespace NodaTime.Text
             {
                 return builder.AddLiteral('.', ParseResult<LocalTime>.MismatchedCharacter);
             }
-        }
-
-        private static PatternParseResult<LocalTime> Handle12HourSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
-        {
-            PatternParseResult<LocalTime> failure = null;
-            int count = pattern.GetRepeatCount(2, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.Hours12, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-
-            builder.AddParseValueAction(count, 2, pattern.Current, 1, 12, (bucket, value) => bucket.Hours12 = value);
-            builder.AddFormatAction((localTime, sb) => FormatHelper.LeftPad(localTime.ClockHourOfHalfDay, count, sb)); // builder.AddFormatLeftPad(count, localTime => localTime.ClockHourOfHalfDay);
-            return null;
-        }
-
-        private static PatternParseResult<LocalTime> Handle24HourSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
-        {
-            PatternParseResult<LocalTime> failure = null;
-            int count = pattern.GetRepeatCount(2, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.Hours24, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-
-            builder.AddParseValueAction(count, 2, pattern.Current, 0, 23, (bucket, value) => bucket.Hours24 = value);
-            builder.AddFormatAction((localTime, sb) => FormatHelper.LeftPad(localTime.HourOfDay, count, sb)); // builder.AddFormatLeftPad(count, localTime => localTime.Hours);
-            return null;
-        }
-
-        private static PatternParseResult<LocalTime> HandleMinuteSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
-        {
-            PatternParseResult<LocalTime> failure = null;
-            int count = pattern.GetRepeatCount(2, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.Minutes, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-            builder.AddParseValueAction(count, 2, pattern.Current, 0, 59, (bucket, value) => bucket.Minutes = value);
-            builder.AddFormatAction((localTime, sb) => FormatHelper.LeftPad(localTime.MinuteOfHour, count, sb)); //builder.AddFormatLeftPad(count, localTime => localTime.Minutes);            
-            return null;
-        }
-
-        private static PatternParseResult<LocalTime> HandleSecondSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
-        {
-            PatternParseResult<LocalTime> failure = null;
-            int count = pattern.GetRepeatCount(2, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.Seconds, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-
-            builder.AddParseValueAction(count, 2, pattern.Current, 0, 59, (bucket, value) => bucket.Seconds = value);
-            builder.AddFormatAction((localTime, sb) => FormatHelper.LeftPad(localTime.SecondOfMinute, count, sb)); //builder.AddFormatLeftPad(count, localTime => localTime.Seconds);
-            return null;
         }
 
         private static PatternParseResult<LocalTime> HandleFractionSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
@@ -423,7 +302,7 @@ namespace NodaTime.Text
             /// <summary>
             /// AM (0) or PM (1).
             /// </summary>
-            internal int AmPm = 0;
+            internal int AmPm;
 
             internal LocalTimeParseBucket(LocalTime templateValue)
             {

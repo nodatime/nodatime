@@ -20,29 +20,30 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using NodaTime.Globalization;
-using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 
 namespace NodaTime.Text
 {
     internal sealed class OffsetPatternParser : IPatternParser<Offset>
     {
-        private delegate PatternParseResult<Offset> CharacterHandler(PatternCursor patternCursor, SteppedPatternBuilder<Offset, OffsetParseBucket> patternBuilder);
-
-        private static readonly Dictionary<char, CharacterHandler> PatternCharacterHandlers = new Dictionary<char, CharacterHandler>()
+        private static readonly Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>> PatternCharacterHandlers = 
+            new Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>>
         {
-            { '%', HandlePercent },
-            { '\'', HandleQuote },
-            { '\"', HandleQuote },
-            { '\\', HandleBackslash },
+            { '%', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePercent },
+            { '\'', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleQuote },
+            { '\"', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleQuote },
+            { '\\', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleBackslash },
             { '.', HandlePeriod },
-            { ':', HandleColon }, //(pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<Offset>.TimeSeparatorMismatch) },
+            { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<Offset>.TimeSeparatorMismatch) },
+            { 'h', (pattern, builder) => PatternParseResult<Offset>.Hour12PatternNotSupported },
+            { 'H', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
+                       (2, PatternFields.Hours24, 0, 23, value => value.Hours, (bucket, value) => bucket.Hours = value) },
+            { 'm', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
+                       (2, PatternFields.Minutes, 0, 59, value => value.Minutes, (bucket, value) => bucket.Minutes = value) },
+            { 's', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
+                       (2, PatternFields.Seconds, 0, 59, value => value.Seconds, (bucket, value) => bucket.Seconds = value) },
             { '+', HandlePlus },
             { '-', HandleMinus },
-            { 'h', (pattern, builder) => PatternParseResult<Offset>.Hour12PatternNotSupported },
-            { 'H', Handle24HourSpecifier },
-            { 'm', HandleMinuteSpecifier },
-            { 's', HandleSecondSpecifier },
             { 'f', HandleFractionSpecifier },
             { 'F', HandleFractionSpecifier },
         };
@@ -91,7 +92,7 @@ namespace NodaTime.Text
 
             while (patternCursor.MoveNext())
             {
-                CharacterHandler handler;
+                CharacterHandler<Offset, OffsetParseBucket> handler;
                 if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
                 {
                     handler = HandleDefaultCharacter;
@@ -167,54 +168,6 @@ namespace NodaTime.Text
         #endregion
 
         #region Character handlers
-        // TODO: Move a bunch of these into SteppedPatternBuilder.
-
-        /// <summary>
-        /// Handle a leading "%" which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
-        /// "use a custom format string consisting of H instead of a standard pattern H".
-        /// </summary>
-        private static PatternParseResult<Offset> HandlePercent(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
-        {
-            if (pattern.HasMoreCharacters)
-            {
-                if (pattern.PeekNext() != '%')
-                {
-                    // Handle the next character as normal
-                    return null;
-                }
-                return PatternParseResult<Offset>.PercentDoubled;
-            }
-            return PatternParseResult<Offset>.PercentAtEndOfString;
-        }
-
-        private static PatternParseResult<Offset> HandleQuote(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
-        {
-            PatternParseResult<Offset> failure = null;
-            string quoted = pattern.GetQuotedString(pattern.Current, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            return builder.AddLiteral(quoted, ParseResult<Offset>.QuotedStringMismatch);
-        }
-
-        private static PatternParseResult<Offset> HandleBackslash(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
-        {
-            if (!pattern.MoveNext())
-            {
-                return PatternParseResult<Offset>.EscapeAtEndOfString;
-            }
-            builder.AddLiteral(pattern.Current, ParseResult<Offset>.EscapedCharacterMismatch);
-            return null;
-        }
-
-        private static PatternParseResult<Offset> HandleColon(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
-        {
-            string timeSeparator = builder.FormatInfo.TimeSeparator;
-            builder.AddParseAction((str, bucket) => str.Match(timeSeparator) ? null : ParseResult<Offset>.TimeSeparatorMismatch);
-            builder.AddFormatAction((offset, sb) => sb.Append(timeSeparator));
-            return null;
-        }
 
         private static PatternParseResult<Offset> HandlePeriod(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
@@ -224,7 +177,7 @@ namespace NodaTime.Text
             // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
             // seconds part as normal. Otherwise, we continue on to the next parsing token.
             // At format time, we should always append the decimal separator, and then append using PadRightTruncate.
-            if (pattern.PeekNext() == 'F')
+            if (pattern.PeekNext() == 'f')
             {
                 PatternParseResult<Offset> failure = null;
                 pattern.MoveNext();
@@ -288,62 +241,6 @@ namespace NodaTime.Text
             }
 
             builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.TotalMilliseconds >= 0);
-            return null;
-        }
-
-        private static PatternParseResult<Offset> Handle24HourSpecifier(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
-        {
-            PatternParseResult<Offset> failure = null;
-            int count = pattern.GetRepeatCount(2, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.Hours24, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-
-            builder.AddParseValueAction(count, 2, pattern.Current, 0, 23, (bucket, value) => bucket.Hours = value);
-            builder.AddFormatAction((offset, sb) => FormatHelper.LeftPad(offset.Hours, count, sb)); // builder.AddFormatLeftPad(count, offset => offset.Hours);
-            return null;
-        }
-
-        private static PatternParseResult<Offset> HandleMinuteSpecifier(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
-        {
-            PatternParseResult<Offset> failure = null;
-            int count = pattern.GetRepeatCount(2, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.Minutes, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-            builder.AddParseValueAction(count, 2, pattern.Current, 0, 59, (bucket, value) => bucket.Minutes = value);
-            builder.AddFormatAction((offset, sb) => FormatHelper.LeftPad(offset.Minutes, count, sb)); //builder.AddFormatLeftPad(count, offset => offset.Minutes);            
-            return null;
-        }
-
-        private static PatternParseResult<Offset> HandleSecondSpecifier(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
-        {
-            PatternParseResult<Offset> failure = null;
-            int count = pattern.GetRepeatCount(2, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.Seconds, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-
-            builder.AddParseValueAction(count, 2, pattern.Current, 0, 59, (bucket, value) => bucket.Seconds = value);
-            builder.AddFormatAction((offset, sb) => FormatHelper.LeftPad(offset.Seconds, count, sb)); //builder.AddFormatLeftPad(count, offset => offset.Seconds);
             return null;
         }
 

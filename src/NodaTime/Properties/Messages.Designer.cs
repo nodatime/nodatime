@@ -124,6 +124,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value string does not match a date separator in the format string..
+        /// </summary>
+        internal static string Parse_DateSeparatorMismatch {
+            get {
+                return ResourceManager.GetString("Parse_DateSeparatorMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The day {0} is out of range in month {1} of year {2}..
         /// </summary>
         internal static string Parse_DayOfMonthOutOfRange {

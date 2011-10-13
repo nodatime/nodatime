@@ -17,8 +17,6 @@
 
 // This file contains all the delegates declared within the NodaTime namespace.
 // It's simpler than either nesting them or giving them a file per delegate.
-using System;
-
 namespace NodaTime
 {
     /// <summary>

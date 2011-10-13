@@ -29,7 +29,6 @@ namespace NodaTime.Text
     internal sealed class LocalDatePatternParser : IPatternParser<LocalDate>
     {
         private readonly LocalDate templateValue;
-        private delegate PatternParseResult<LocalDate> CharacterHandler(PatternCursor patternCursor, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> patternBuilder);
 
         /// <summary>
         /// Maximum two-digit-year in the template to treat as the current century.
@@ -37,16 +36,17 @@ namespace NodaTime.Text
         /// </summary>
         private const int TwoDigitYearMax = 30;
 
-        private static readonly Dictionary<char, CharacterHandler> PatternCharacterHandlers = new Dictionary<char, CharacterHandler>()
+        private static readonly Dictionary<char, CharacterHandler<LocalDate, LocalDateParseBucket>> PatternCharacterHandlers =
+            new Dictionary<char, CharacterHandler<LocalDate, LocalDateParseBucket>>
         {
-            // TODO: Put these first four into SteppedPatternBuilder for sure...
-            { '%', HandlePercent },
-            { '\'', HandleQuote },
-            { '\"', HandleQuote },
-            { '\\', HandleBackslash },
-            { '/', HandleSlash }, //(pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<LocalDate>.DateSeparatorMismatch) },
+            { '%', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandlePercent },
+            { '\'', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandleQuote },
+            { '\"', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandleQuote },
+            { '\\', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandleBackslash },
+            { '/', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<LocalDate>.DateSeparatorMismatch) },
             { 'y', HandleYearSpecifier },
-            { 'Y', HandleYearOfEraSpecifier },
+            { 'Y', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandlePaddedField
+                       (5, PatternFields.YearOfEra, 0, 99999, value => value.YearOfEra, (bucket, value) => bucket.YearOfEra = value) },
             { 'M', HandleMonthOfYearSpecifier },
             { 'd', HandleDaySpecifier },
         };
@@ -92,7 +92,7 @@ namespace NodaTime.Text
 
             while (patternCursor.MoveNext())
             {
-                CharacterHandler handler;
+                CharacterHandler<LocalDate, LocalDateParseBucket> handler;
                 // The era parser needs access to the calendar, so has to be an instance method.
                 if (patternCursor.Current == 'g')
                 {
@@ -133,55 +133,6 @@ namespace NodaTime.Text
         }
 
         #region Character handlers
-        // TODO: Move a bunch of these into SteppedPatternBuilder.
-
-        /// <summary>
-        /// Handle a leading "%" which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
-        /// "use a custom format string consisting of H instead of a standard pattern H".
-        /// </summary>
-        private static PatternParseResult<LocalDate> HandlePercent(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
-        {
-            if (pattern.HasMoreCharacters)
-            {
-                if (pattern.PeekNext() != '%')
-                {
-                    // Handle the next character as normal
-                    return null;
-                }
-                return PatternParseResult<LocalDate>.PercentDoubled;
-            }
-            return PatternParseResult<LocalDate>.PercentAtEndOfString;
-        }
-
-        private static PatternParseResult<LocalDate> HandleQuote(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
-        {
-            PatternParseResult<LocalDate> failure = null;
-            string quoted = pattern.GetQuotedString(pattern.Current, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            return builder.AddLiteral(quoted, ParseResult<LocalDate>.QuotedStringMismatch);
-        }
-
-        private static PatternParseResult<LocalDate> HandleBackslash(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
-        {
-            if (!pattern.MoveNext())
-            {
-                return PatternParseResult<LocalDate>.EscapeAtEndOfString;
-            }
-            builder.AddLiteral(pattern.Current, ParseResult<LocalDate>.EscapedCharacterMismatch);
-            return null;
-        }
-
-        private static PatternParseResult<LocalDate> HandleSlash(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
-        {
-            string timeSeparator = builder.FormatInfo.DateSeparator;
-            builder.AddParseAction((str, bucket) => str.Match(timeSeparator) ? null : ParseResult<LocalDate>.TimeSeparatorMismatch);
-            builder.AddFormatAction((localDate, sb) => sb.Append(timeSeparator));
-            return null;
-        }
-
         private static PatternParseResult<LocalDate> HandleYearSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
         {
             // TODO: Handle parsing and formatting negative years.
@@ -218,26 +169,6 @@ namespace NodaTime.Text
                     builder.AddFormatAction((localDate, sb) => FormatHelper.LeftPad(localDate.Year, count, sb));
                     break;
             }
-            return null;
-        }
-
-        private static PatternParseResult<LocalDate> HandleYearOfEraSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
-        {
-            // TODO: Work out whether we need special handling for Y and YY
-            PatternParseResult<LocalDate> failure = null;
-            int count = pattern.GetRepeatCount(5, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.YearOfEra, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-            // Maximum value will be determined later
-            builder.AddParseValueAction(count, 5, 'Y', 0, 99999, (bucket, value) => bucket.YearOfEra = value);
-            builder.AddFormatAction((localDate, sb) => FormatHelper.LeftPad(localDate.YearOfEra, count, sb));
             return null;
         }
 

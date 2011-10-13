@@ -146,6 +146,7 @@ namespace NodaTime.Text
         }
 
         internal static ParseResult<T> TimeSeparatorMismatch = ForInvalidValue(Messages.Parse_TimeSeparatorMismatch);
+        internal static ParseResult<T> DateSeparatorMismatch = ForInvalidValue(Messages.Parse_DateSeparatorMismatch);
 
         internal static ParseResult<T> MismatchedNumber(string pattern)
         {
