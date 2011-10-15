@@ -41,12 +41,14 @@ namespace NodaTime.Globalization
         private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser();
         private static readonly IPatternParser<LocalTime> GeneralLocalTimePatternParser = new LocalTimePatternParser(LocalTime.Midnight);
         private static readonly IPatternParser<LocalDate> GeneralLocalDatePatternParser = new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue);
+        private static readonly IPatternParser<LocalDateTime> GeneralLocalDateTimePatternParser = new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue);
 
         // Not read-only as they need to be changed after cloning.
         private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
         private FixedFormatInfoPatternParser<Instant> instantPatternParser;
         private FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
         private FixedFormatInfoPatternParser<LocalDate> localDatePatternParser;
+        private FixedFormatInfoPatternParser<LocalDateTime> localDateTimePatternParser;
         #endregion
 
         /// <summary>
@@ -101,6 +103,7 @@ namespace NodaTime.Globalization
             instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateCachingParser(GeneralInstantPatternParser, this);
             localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateCachingParser(GeneralLocalTimePatternParser, this);
             localDatePatternParser = FixedFormatInfoPatternParser<LocalDate>.CreateCachingParser(GeneralLocalDatePatternParser, this);
+            localDateTimePatternParser = FixedFormatInfoPatternParser<LocalDateTime>.CreateCachingParser(GeneralLocalDateTimePatternParser, this);
 
             // Turn month names into 1-based read-only lists
             longMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.MonthNames);
@@ -161,6 +164,7 @@ namespace NodaTime.Globalization
         internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return instantPatternParser; } }
         internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return localTimePatternParser; } }
         internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return localDatePatternParser; } }
+        internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser { get { return localDateTimePatternParser; } }
 
         // TODO: Make these writable?
         /// <summary>

@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 using NodaTime.Text;
 
@@ -67,6 +68,21 @@ namespace NodaTime.Test.Text
             int actual;
             Assert.IsFalse(result.TryGetValue(-1, out actual));
             Assert.AreEqual(-1, actual);
+        }
+
+        [Test]
+        public void WithResultType_ForFailureResult()
+        {
+            ParseResult<int> original = ParseResult<int>.ForInvalidValue("text");
+            ParseResult<string> converted = original.WithResultType<string>();
+            Assert.Throws<UnparsableValueException>(() => converted.GetValueOrThrow());
+        }
+
+        [Test]
+        public void WithResultType_ForSuccessResult()
+        {
+            ParseResult<int> original = ParseResult<int>.ForValue(10);
+            Assert.Throws<InvalidOperationException>(() => original.WithResultType<string>());
         }
     }
 }

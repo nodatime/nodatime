@@ -203,8 +203,11 @@ namespace NodaTime.Text
                     }
                     else
                     {
+                        // TODO: Make this more robust. The genitive text values come first here because in some cultures they
+                        // are longer than the non-genitive forms - we want to match the longest substring. (We're not doing any backtracking...)
+                        // This will fail to do the right thing if we get into the opposite situation.
                         builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.MonthOfYearText = value,
-                            format.CultureInfo.CompareInfo, nonGenitiveTextValues, genitiveTextValues);
+                            format.CultureInfo.CompareInfo, genitiveTextValues, nonGenitiveTextValues);
                     }
 
                     // Hack: see below
@@ -328,7 +331,12 @@ namespace NodaTime.Text
             return builder.AddLiteral(pattern.Current, ParseResult<LocalDate>.MismatchedCharacter);
         }
         #endregion
-        private sealed class LocalDateParseBucket : ParseBucket<LocalDate>
+        
+        /// <summary>
+        /// Bucket to put parsed values in, ready for later result calculation. This type is also used
+        /// by LocalDateTimePattern to store and calculate values.
+        /// </summary>
+        internal sealed class LocalDateParseBucket : ParseBucket<LocalDate>
         {
             private readonly LocalDate templateValue;
 

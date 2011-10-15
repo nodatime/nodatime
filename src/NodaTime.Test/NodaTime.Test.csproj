@@ -94,6 +94,10 @@
       <DependentUpon>JulianCalendarSystemTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
+    <Compile Include="Text\LocalDateTimePatternTest.cs" />
+    <Compile Include="Text\LocalDateTimePatternTest.Data.cs">
+      <DependentUpon>LocalDateTimePatternTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Text\LocalTimePatternTest.Data.cs">
       <DependentUpon>LocalTimePatternTest.cs</DependentUpon>
     </Compile>
