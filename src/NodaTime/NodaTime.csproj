@@ -134,7 +134,6 @@
     <Compile Include="IsoDayOfWeek.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
     <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
-    <Compile Include="FieldValueException.cs" />
     <Compile Include="LocalDate.cs" />
     <Compile Include="LocalTime.cs" />
     <Compile Include="NamespaceDoc.cs" />
