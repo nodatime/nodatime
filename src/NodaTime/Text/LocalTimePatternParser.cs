@@ -164,7 +164,8 @@ namespace NodaTime.Text
             internal int Seconds;
 
             /// <summary>
-            /// AM (0) or PM (1).
+            /// AM (0) or PM (1) - or "take from the template" (2). The latter is used in situations
+            /// where we're parsing but there is no AM or PM designator.
             /// </summary>
             internal int AmPm;
 
@@ -178,6 +179,10 @@ namespace NodaTime.Text
             /// </summary>            
             internal override ParseResult<LocalTime> CalculateValue(PatternFields usedFields)
             {
+                if (AmPm == 2)
+                {
+                    AmPm = templateValue.HourOfDay / 12;
+                }
                 int hour;
                 ParseResult<LocalTime> failure = DetermineHour(usedFields, out hour);
                 if (failure != null)
@@ -187,7 +192,6 @@ namespace NodaTime.Text
                 int minutes = IsFieldUsed(usedFields, PatternFields.Minutes) ? Minutes : templateValue.MinuteOfHour;
                 int seconds = IsFieldUsed(usedFields, PatternFields.Seconds) ? Seconds : templateValue.SecondOfMinute;
                 int fraction = IsFieldUsed(usedFields, PatternFields.FractionalSeconds) ? FractionalSeconds : templateValue.TickOfSecond;
-
                 return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondTick(hour, minutes, seconds, fraction));
             }
 

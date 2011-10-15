@@ -15,6 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Globalization;
+
 namespace NodaTime.Text.Patterns
 {
     /// <summary>
@@ -145,19 +148,43 @@ namespace NodaTime.Text.Patterns
 
                 string amDesignator = builder.FormatInfo.AMDesignator;
                 string pmDesignator = builder.FormatInfo.PMDesignator;
-                // TODO: Work out if the single character designator should also consume the full designator if it's present.
-                // TODO: Handle empty designators
-                // Single character designator
-                if (count == 1)
+
+                // If we don't have an AM or PM designator, we're nearly done. Set the AM/PM designator
+                // to the special value of 2, meaning "take it from the template".
+                if (amDesignator == "" && pmDesignator == "")
                 {
                     builder.AddParseAction((str, bucket) =>
                     {
-                        if (str.Match(amDesignator[0]))
+                        amPmSetter(bucket, 2);
+                        return null;
+                    });
+                    return null;
+                }
+                // Odd scenario (but present in af-ZA for .NET 2) - exactly one of the AM/PM designator is valid.
+                // Delegate to a separate method to keep this clearer...
+                if (amDesignator == "" || pmDesignator == "")
+                {
+                    int specifiedDesignatorValue = amDesignator == "" ? 1 : 0;
+                    string specifiedDesignator = specifiedDesignatorValue == 1 ? pmDesignator : amDesignator;
+                    HandleHalfAmPmDesignator(count, specifiedDesignator, specifiedDesignatorValue, hourOfDayGetter, amPmSetter, builder);
+                    return null;
+                }
+                CompareInfo compareInfo = builder.FormatInfo.CultureInfo.CompareInfo;
+                // Single character designator
+                if (count == 1)
+                {
+                    // It's not entirely clear whether this is the right thing to do... there's no nice
+                    // way of providing a single-character case-insensitive match.
+                    string amFirst = amDesignator.Substring(0, 1);
+                    string pmFirst = pmDesignator.Substring(0, 1);
+                    builder.AddParseAction((str, bucket) =>
+                    {
+                        if (str.MatchCaseInsensitive(amFirst, compareInfo))
                         {
                             amPmSetter(bucket, 0);
                             return null;
                         }
-                        if (str.Match(pmDesignator[0]))
+                        if (str.MatchCaseInsensitive(pmFirst, compareInfo))
                         {
                             amPmSetter(bucket, 1);
                             return null;
@@ -170,12 +197,12 @@ namespace NodaTime.Text.Patterns
                 // Full designator
                 builder.AddParseAction((str, bucket) =>
                 {
-                    if (str.Match(amDesignator))
+                    if (str.MatchCaseInsensitive(amDesignator, compareInfo))
                     {
                         amPmSetter(bucket, 0);
                         return null;
                     }
-                    if (str.Match(pmDesignator))
+                    if (str.MatchCaseInsensitive(pmDesignator, compareInfo))
                     {
                         amPmSetter(bucket, 1);
                         return null;
@@ -185,6 +212,47 @@ namespace NodaTime.Text.Patterns
                 builder.AddFormatAction((value, sb) => sb.Append(hourOfDayGetter(value) > 11 ? pmDesignator : amDesignator));
                 return null;
             };
+        }
+
+        private static void HandleHalfAmPmDesignator<TResult, TBucket>
+            (int count, string specifiedDesignator, int specifiedDesignatorValue, NodaFunc<TResult, int> hourOfDayGetter, NodaAction<TBucket, int> amPmSetter,
+             SteppedPatternBuilder<TResult, TBucket> builder)
+            where TBucket : ParseBucket<TResult>
+        {
+            CompareInfo compareInfo = builder.FormatInfo.CultureInfo.CompareInfo;
+            if (count == 1)
+            {
+                string abbreviation = specifiedDesignator.Substring(0, 1);
+                builder.AddParseAction((str, bucket) =>
+                {
+                    int value = str.MatchCaseInsensitive(abbreviation, compareInfo) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
+                    amPmSetter(bucket, value);
+                    return null;
+                });
+                builder.AddFormatAction((value, sb) =>
+                {
+                    // Only append anything if it's the non-empty designator.
+                    if (hourOfDayGetter(value) / 12 == specifiedDesignatorValue)
+                    {
+                        sb.Append(specifiedDesignator[0]);
+                    }
+                });
+                return;
+            }
+            builder.AddParseAction((str, bucket) =>
+            {
+                int value = str.MatchCaseInsensitive(specifiedDesignator, compareInfo) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
+                amPmSetter(bucket, value);
+                return null;
+            });
+            builder.AddFormatAction((value, sb) =>
+            {
+                // Only append anything if it's the non-empty designator.
+                if (hourOfDayGetter(value) / 12 == specifiedDesignatorValue)
+                {
+                    sb.Append(specifiedDesignator);
+                }
+            });
         }
     }
 }

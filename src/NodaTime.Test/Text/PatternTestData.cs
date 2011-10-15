@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using NUnit.Framework;
 using NodaTime.Text;
 
@@ -33,6 +34,8 @@ namespace NodaTime.Test.Text
         private readonly T value;
 
         internal T Value { get { return value; } }
+
+        protected abstract T DefaultTemplate { get; }
 
         /// <summary>
         /// Culture of the pattern.
@@ -55,6 +58,11 @@ namespace NodaTime.Test.Text
         internal T Template { get; set; }
 
         /// <summary>
+        /// Extra description for the test case
+        /// </summary>
+        internal string Description { get; set; }
+
+        /// <summary>
         /// Message format to verify for exceptions.
         /// </summary>
         internal string Message { get; set; }
@@ -70,6 +78,7 @@ namespace NodaTime.Test.Text
         {
             this.value = value;
             Culture = CultureInfo.InvariantCulture;
+            Template = DefaultTemplate;
         }
 
         internal abstract IPattern<T> CreatePattern();
@@ -78,7 +87,9 @@ namespace NodaTime.Test.Text
         {
             Assert.IsNull(Message);
             IPattern<T> pattern = CreatePattern();
-            Assert.AreEqual(Value, pattern.Parse(Text).Value);
+            var result = pattern.Parse(Text);
+            var actualValue = result.Value;
+            Assert.AreEqual(Value, actualValue);
         }
 
         public void TestFormat()
@@ -123,7 +134,23 @@ namespace NodaTime.Test.Text
 
         public override string  ToString()
         {
-            return string.Format("Value={0}; Pattern={1}; Text={2}", Value, Pattern, Text);
+            StringBuilder builder = new StringBuilder();
+            builder.AppendFormat("Value={0}; ", Value);
+            builder.AppendFormat("Pattern={0}; ", Pattern);
+            builder.AppendFormat("Text={0}; ", Text);
+            if (Culture != CultureInfo.InvariantCulture)
+            {
+                builder.AppendFormat("Culture={0}; ", Culture);
+            }
+            if (Description != null)
+            {
+                builder.AppendFormat("Description={0}; ", Description);
+            }
+            if (!Template.Equals(DefaultTemplate))
+            {
+                builder.AppendFormat("Template={0};", Template);
+            }
+            return builder.ToString();
         }
     }
 }

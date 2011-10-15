@@ -30,6 +30,10 @@ namespace NodaTime.Test.Text
         // Bengali: uses a time separator of "."
         public static readonly CultureInfo BnBd = new CultureInfo("bn-BD");
 
+        private static readonly CultureInfo AmOnlyCulture = CreateCustomAmPmCulture("am", "");
+        private static readonly CultureInfo PmOnlyCulture = CreateCustomAmPmCulture("", "pm");
+        private static readonly CultureInfo NoAmOrPmCulture = CreateCustomAmPmCulture("", "");
+
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "!", Message = Messages.Parse_UnknownStandardFormat, Parameters = {'!', typeof(LocalTime).FullName}},
             new Data { Pattern = "%", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '%', typeof(LocalTime).FullName } },
@@ -54,39 +58,43 @@ namespace NodaTime.Test.Text
         };
 
         internal static Data[] ParseOnlyData = {
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "4", Pattern = "%f", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "4", Pattern = "%F", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "4", Pattern = "FF", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "4", Pattern = "FFF", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "40", Pattern = "ff", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "400", Pattern = "fff", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "4000", Pattern = "ffff", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "40000", Pattern = "fffff", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "400000", Pattern = "ffffff", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "4000000", Pattern = "fffffff", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "4", Pattern = "%f", },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "4", Pattern = "%F", },
-            new Data(0, 0, 0, 450) { Culture = EnUs, Text = "45", Pattern = "ff" },
-            new Data(0, 0, 0, 450) { Culture = EnUs, Text = "45", Pattern = "FF" },
-            new Data(0, 0, 0, 450) { Culture = EnUs, Text = "45", Pattern = "FFF" },
-            new Data(0, 0, 0, 450) { Culture = EnUs, Text = "450", Pattern = "fff" },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "4", Pattern = "%f" },
-            new Data(0, 0, 0, 400) { Culture = EnUs, Text = "4", Pattern = "%F" },
-            new Data(0, 0, 0, 450) { Culture = EnUs, Text = "45", Pattern = "ff" },
-            new Data(0, 0, 0, 450) { Culture = EnUs, Text = "45", Pattern = "FF" },
-            new Data(0, 0, 0, 456) { Culture = EnUs, Text = "456", Pattern = "fff" },
-            new Data(0, 0, 0, 456) { Culture = EnUs, Text = "456", Pattern = "FFF" },
+            new Data(0, 0, 0, 400) { Text = "4", Pattern = "%f", },
+            new Data(0, 0, 0, 400) { Text = "4", Pattern = "%F", },
+            new Data(0, 0, 0, 400) { Text = "4", Pattern = "FF", },
+            new Data(0, 0, 0, 400) { Text = "4", Pattern = "FFF", },
+            new Data(0, 0, 0, 400) { Text = "40", Pattern = "ff", },
+            new Data(0, 0, 0, 400) { Text = "400", Pattern = "fff", },
+            new Data(0, 0, 0, 400) { Text = "4000", Pattern = "ffff", },
+            new Data(0, 0, 0, 400) { Text = "40000", Pattern = "fffff", },
+            new Data(0, 0, 0, 400) { Text = "400000", Pattern = "ffffff", },
+            new Data(0, 0, 0, 400) { Text = "4000000", Pattern = "fffffff", },
+            new Data(0, 0, 0, 400) { Text = "4", Pattern = "%f", },
+            new Data(0, 0, 0, 400) { Text = "4", Pattern = "%F", },
+            new Data(0, 0, 0, 450) { Text = "45", Pattern = "ff" },
+            new Data(0, 0, 0, 450) { Text = "45", Pattern = "FF" },
+            new Data(0, 0, 0, 450) { Text = "45", Pattern = "FFF" },
+            new Data(0, 0, 0, 450) { Text = "450", Pattern = "fff" },
+            new Data(0, 0, 0, 400) { Text = "4", Pattern = "%f" },
+            new Data(0, 0, 0, 400) { Text = "4", Pattern = "%F" },
+            new Data(0, 0, 0, 450) { Text = "45", Pattern = "ff" },
+            new Data(0, 0, 0, 450) { Text = "45", Pattern = "FF" },
+            new Data(0, 0, 0, 456) { Text = "456", Pattern = "fff" },
+            new Data(0, 0, 0, 456) { Text = "456", Pattern = "FFF" },
 
-            new Data(0, 0, 0, 0) { Culture = EnUs, Text = "0", Pattern = "%f" },
-            new Data(0, 0, 0, 0) { Culture = EnUs, Text = "00", Pattern = "ff" },
-            new Data(0, 0, 0, 8) { Culture = EnUs, Text = "008", Pattern = "fff" },
-            new Data(0, 0, 0, 8) { Culture = EnUs, Text = "008", Pattern = "FFF" },
-            new Data(5, 0, 0, 0) { Culture = EnUs, Text = "05", Pattern = "HH" },
-            new Data(0, 6, 0, 0) { Culture = EnUs, Text = "06", Pattern = "mm" },
-            new Data(0, 0, 7, 0) { Culture = EnUs, Text = "07", Pattern = "ss" },
-            new Data(5, 0, 0, 0) { Culture = EnUs, Text = "5", Pattern = "%H" },
-            new Data(0, 6, 0, 0) { Culture = EnUs, Text = "6", Pattern = "%m" },
-            new Data(0, 0, 7, 0) { Culture = EnUs, Text = "7", Pattern = "%s" },
+            new Data(0, 0, 0, 0) { Text = "0", Pattern = "%f" },
+            new Data(0, 0, 0, 0) { Text = "00", Pattern = "ff" },
+            new Data(0, 0, 0, 8) { Text = "008", Pattern = "fff" },
+            new Data(0, 0, 0, 8) { Text = "008", Pattern = "FFF" },
+            new Data(5, 0, 0, 0) { Text = "05", Pattern = "HH" },
+            new Data(0, 6, 0, 0) { Text = "06", Pattern = "mm" },
+            new Data(0, 0, 7, 0) { Text = "07", Pattern = "ss" },
+            new Data(5, 0, 0, 0) { Text = "5", Pattern = "%H" },
+            new Data(0, 6, 0, 0) { Text = "6", Pattern = "%m" },
+            new Data(0, 0, 7, 0) { Text = "7", Pattern = "%s" },
+
+            // AM/PM designator is case-insensitive for both short and long forms
+            new Data(17, 0, 0, 0) { Text = "5 p", Pattern = "h t" },
+            new Data(17, 0, 0, 0) { Text = "5 pm", Pattern = "h tt" },
         };
 
         internal static Data[] FormatOnlyData = {
@@ -250,21 +258,53 @@ namespace NodaTime.Test.Text
             new Data(new LocalTime(14, 2, 3)) { Culture = EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
             new Data(new LocalTime(17, 2, 3)) { Culture = EnUs, Text = "5 PM", Pattern = "h tt", Template = new LocalTime(1, 2, 3) },
             // --------------- end of template value tests ----------------------
+
+            // Only one of the AM/PM designator is present. We should still be able to work out what is meant, by the presence
+            // or absense of the non-empty one.
+            new Data(5, 0, 0) { Culture = AmOnlyCulture, Text = "5 am", Pattern = "h tt" },
+            new Data(15, 0, 0) { Culture = AmOnlyCulture, Text = "3 ", Pattern = "h tt", Description = "Implicit PM" },
+            new Data(5, 0, 0) { Culture = AmOnlyCulture, Text = "5 a", Pattern = "h t" },
+            new Data(15, 0, 0) { Culture = AmOnlyCulture, Text = "3 ", Pattern = "h t", Description = "Implicit PM"},
+
+            new Data(5, 0, 0) { Culture = PmOnlyCulture, Text = "5 ", Pattern = "h tt" },
+            new Data(15, 0, 0) { Culture = PmOnlyCulture, Text = "3 pm", Pattern = "h tt" },
+            new Data(5, 0, 0) { Culture = PmOnlyCulture, Text = "5 ", Pattern = "h t" },
+            new Data(15, 0, 0) { Culture = PmOnlyCulture, Text = "3 p", Pattern = "h t" },
+
+            // AM / PM designators are both empty strings. The parsing side relies on the AM/PM value being correct on the
+            // template value. (The template value is for the wrong actual hour, but in the right side of noon.)
+            new Data(5, 0, 0) { Culture = NoAmOrPmCulture, Text = "5 ", Pattern = "h tt", Template = new LocalTime(2, 0, 0) },
+            new Data(15, 0, 0) { Culture = NoAmOrPmCulture, Text = "3 ", Pattern = "h tt", Template = new LocalTime(14, 0, 0) },
+            new Data(5, 0, 0) { Culture = NoAmOrPmCulture, Text = "5 ", Pattern = "h t", Template = new LocalTime(2, 0, 0) },
+            new Data(15, 0, 0) { Culture = NoAmOrPmCulture, Text = "3 ", Pattern = "h t", Template = new LocalTime(14, 0, 0) },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
-        
+
+        private static CultureInfo CreateCustomAmPmCulture(string amDesignator, string pmDesignator)
+        {
+            CultureInfo clone = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+            clone.DateTimeFormat.AMDesignator = amDesignator;
+            clone.DateTimeFormat.PMDesignator = pmDesignator;
+            return clone;
+        }
+
+
         /// <summary>
         /// A container for test data for formatting and parsing <see cref="LocalTime" /> objects.
         /// </summary>
         public sealed class Data : PatternTestData<LocalTime>
         {
+            // Default to midnight
+            protected override LocalTime DefaultTemplate
+            {
+                get { return LocalTime.Midnight; }
+            }
+
             public Data(LocalTime value)
                 : base(value)
             {
-                // Default to midnight
-                Template = LocalTime.Midnight;
             }
 
             public Data(int hours, int minutes, int seconds)
