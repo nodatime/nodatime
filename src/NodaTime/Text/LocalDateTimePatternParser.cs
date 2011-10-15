@@ -41,11 +41,13 @@ namespace NodaTime.Text
             { '\"', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandleQuote },
             { '\\', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandleBackslash },
             { '/', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<LocalDateTime>.DateSeparatorMismatch) },
-            { 'y', HandleYearSpecifier },
+            { 'y', DatePatternHelper.CreateYearHandler<LocalDateTime, LocalDateTimeParseBucket>(value => value.YearOfCentury, value => value.Year, (bucket, value) => bucket.Date.Year = value) },
             { 'Y', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandlePaddedField
                        (5, PatternFields.YearOfEra, 0, 99999, value => value.YearOfEra, (bucket, value) => bucket.Date.YearOfEra = value) },
-            { 'M', HandleMonthOfYearSpecifier },
-            { 'd', HandleDaySpecifier },
+            { 'M', DatePatternHelper.CreateMonthOfYearHandler<LocalDateTime, LocalDateTimeParseBucket>
+                        (value => value.MonthOfYear, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value) },
+            { 'd', DatePatternHelper.CreateDayHandler<LocalDateTime, LocalDateTimeParseBucket>
+                        (value => value.DayOfMonth, value => value.DayOfWeek, (bucket, value) => bucket.Date.DayOfMonth = value, (bucket, value) => bucket.Date.DayOfWeek = value) },
             { '.', HandlePeriod },
             { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<LocalDateTime>.TimeSeparatorMismatch) },
             { 'h', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandlePaddedField
@@ -118,10 +120,11 @@ namespace NodaTime.Text
             while (patternCursor.MoveNext())
             {
                 CharacterHandler<LocalDateTime, LocalDateTimeParseBucket> handler;
-                // The era parser needs access to the calendar, so has to be an instance method.
+                // The era parser needs access to the calendar, so we need a new handler each time.
                 if (patternCursor.Current == 'g')
                 {
-                    handler = HandleEraSpecifier;
+                    handler = DatePatternHelper.CreateEraHandler<LocalDateTime, LocalDateTimeParseBucket>
+                        (templateValue.Calendar, value => value.Era, (bucket, value) => bucket.Date.EraIndex = value);
                 }
                 else
                 {
@@ -162,200 +165,6 @@ namespace NodaTime.Text
         }
 
         #region Character handlers
-        // Handlers copied from LocalDatePatternParser
-        private static PatternParseResult<LocalDateTime> HandleYearSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket> builder)
-        {
-            // TODO: Handle parsing and formatting negative years.
-            PatternParseResult<LocalDateTime> failure = null;
-            int count = pattern.GetRepeatCount(5, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.Year, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-            switch (count)
-            {
-                case 1:
-                case 2:
-                    builder.AddParseValueAction(count, 2, 'y', 0, 99, (bucket, value) => bucket.Date.Year = value);
-                    builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(value.YearOfCentury, count, sb));
-                    // Just remember that we've set this particular field. We can't set it twice as we've already got the Year flag set.
-                    builder.AddField(PatternFields.YearTwoDigits, pattern.Current);
-                    break;
-                case 3:
-                    // Maximum value will be determined later.
-                    // Three or more digits (ick).
-                    builder.AddParseValueAction(count, 5, 'y', 0, 99999, (bucket, value) => bucket.Date.Year = value);
-                    builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(value.Year, count, sb));
-                    break;
-                default:
-                    // Maximum value will be determined later.
-                    // Note that the *exact* number of digits are required; not just "at least count".
-                    builder.AddParseValueAction(count, count, 'y', 0, 99999, (bucket, value) => bucket.Date.Year = value);
-                    builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(value.Year, count, sb));
-                    break;
-            }
-            return null;
-        }
-
-        private static PatternParseResult<LocalDateTime> HandleMonthOfYearSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket> builder)
-        {
-            PatternParseResult<LocalDateTime> failure = null;
-            int count = pattern.GetRepeatCount(4, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            PatternFields field;
-            switch (count)
-            {
-                case 1:
-                case 2:
-                    field = PatternFields.MonthOfYearNumeric;
-                    // Handle real maximum value in the bucket
-                    builder.AddParseValueAction(count, 2, pattern.Current, 0, 99, (bucket, value) => bucket.Date.MonthOfYearNumeric = value);
-                    builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(value.MonthOfYear, count, sb));
-                    break;
-                case 3:
-                case 4:
-                    field = PatternFields.MonthOfYearText;
-                    var format = builder.FormatInfo;
-                    IList<string> nonGenitiveTextValues = count == 3 ? format.ShortMonthNames : format.LongMonthNames;
-                    IList<string> genitiveTextValues = count == 3 ? format.ShortMonthGenitiveNames : format.LongMonthGenitiveNames;
-                    if (nonGenitiveTextValues == genitiveTextValues)
-                    {
-                        builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.Date.MonthOfYearText = value,
-                            format.CultureInfo.CompareInfo, nonGenitiveTextValues);
-                    }
-                    else
-                    {
-                        // TODO: Make this more robust. The genitive text values come first here because in some cultures they
-                        // are longer than the non-genitive forms - we want to match the longest substring. (We're not doing any backtracking...)
-                        // This will fail to do the right thing if we get into the opposite situation.
-                        builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.Date.MonthOfYearText = value,
-                            format.CultureInfo.CompareInfo, genitiveTextValues, nonGenitiveTextValues);
-                    }
-
-                    // Hack: see below
-                    builder.AddFormatAction(new MonthFormatActionHolder(format, count).DummyMethod);
-                    break;
-                default:
-                    throw new InvalidOperationException("Invalid count!");
-            }
-            failure = builder.AddField(field, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-            return null;
-        }
-
-        // Hacky way of building an action which depends on the final set of pattern fields to determine whether to format a month
-        // using the genitive form or not.
-        private class MonthFormatActionHolder : SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.IPostPatternParseFormatAction
-        {
-            private readonly int count;
-            private readonly NodaFormatInfo formatInfo;
-
-            internal MonthFormatActionHolder(NodaFormatInfo formatInfo, int count)
-            {
-                this.count = count;
-                this.formatInfo = formatInfo;
-            }
-
-            internal void DummyMethod(LocalDateTime value, StringBuilder builder)
-            {
-                throw new InvalidOperationException("This method should never be called");
-            }
-
-            public NodaAction<LocalDateTime, StringBuilder> BuildFormatAction(PatternFields finalFields)
-            {
-                bool genitive = (finalFields & PatternFields.DayOfMonth) != 0;
-                IList<string> textValues = count == 3
-                    ? (genitive ? formatInfo.ShortMonthGenitiveNames : formatInfo.ShortMonthNames)
-                    : (genitive ? formatInfo.LongMonthGenitiveNames : formatInfo.LongMonthNames);
-                return (value, sb) => sb.Append(textValues[value.MonthOfYear]);
-            }
-        }
-
-        private static PatternParseResult<LocalDateTime> HandleDaySpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket> builder)
-        {
-            PatternParseResult<LocalDateTime> failure = null;
-            int count = pattern.GetRepeatCount(4, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            PatternFields field;
-            switch (count)
-            {
-                case 1:
-                case 2:
-                    field = PatternFields.DayOfMonth;
-                    // Handle real maximum value in the bucket
-                    builder.AddParseValueAction(count, 2, pattern.Current, 1, 99, (bucket, value) => bucket.Date.DayOfMonth = value);
-                    builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(value.DayOfMonth, count, sb));
-                    break;
-                case 3:
-                case 4:
-                    field = PatternFields.DayOfWeek;
-                    var format = builder.FormatInfo;
-                    IList<string> textValues = count == 3 ? format.ShortDayNames : format.LongDayNames;
-                    builder.AddParseTextAction(pattern.Current, (bucket, value) => bucket.Date.DayOfWeek = value, format.CultureInfo.CompareInfo, textValues);
-                    builder.AddFormatAction((value, sb) => sb.Append(textValues[value.DayOfWeek]));
-                    break;
-                default:
-                    throw new InvalidOperationException("Invalid count!");
-            }
-            failure = builder.AddField(field, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-            return null;
-        }
-
-        private PatternParseResult<LocalDateTime> HandleEraSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket> builder)
-        {
-            PatternParseResult<LocalDateTime> failure = null;
-            pattern.GetRepeatCount(2, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.Era, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-            var formatInfo = builder.FormatInfo;
-            var calendar = templateValue.Calendar;
-            // Note: currently the count is ignored. More work needed to determine whether abbreviated era names should be used for just "g".
-
-            builder.AddParseAction((cursor, bucket) => {
-                var compareInfo = formatInfo.CultureInfo.CompareInfo;
-                var eras = calendar.Eras;
-                for (int i = 0; i < eras.Count; i++)
-                {
-                    foreach (string eraName in formatInfo.GetEraNames(eras[i]))
-                    {
-                        if (cursor.MatchCaseInsensitive(eraName, compareInfo))
-                        {
-                            bucket.Date.EraIndex = i;
-                            return null;
-                        }
-                    }
-                }
-                return ParseResult<LocalDateTime>.MismatchedText('g');
-            });
-            builder.AddFormatAction((value, sb) => sb.Append(formatInfo.GetEraPrimaryName(value.Era)));
-            return null;
-        }
-
         // Handlers copied from LocalTimePatternParser
         private static PatternParseResult<LocalDateTime> HandlePeriod(PatternCursor pattern, SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket> builder)
         {
