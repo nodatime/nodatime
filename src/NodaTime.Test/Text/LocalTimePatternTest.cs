@@ -82,7 +82,6 @@ namespace NodaTime.Test.Text
         public void InvalidPatterns(Data data)
         {
             data.TestInvalidPattern();
-            Console.WriteLine(data.Pattern);
         }
 
         [Test]
@@ -96,13 +95,6 @@ namespace NodaTime.Test.Text
         [TestCaseSource("ParseData")]
         public void Parse(Data data)
         {
-            IPattern<LocalTime> pattern = data.CreatePattern();
-            if (data.Value != pattern.Parse(data.Text).Value)
-            {
-                Console.WriteLine(data.Value.LocalDateTime.LocalInstant.Ticks);
-                Console.WriteLine(pattern.Parse(data.Text).Value.LocalDateTime.LocalInstant.Ticks);
-            }
-
             data.TestParse();
         }
 

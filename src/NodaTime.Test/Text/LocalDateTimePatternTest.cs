@@ -46,7 +46,6 @@ namespace NodaTime.Test.Text
         public void InvalidPatterns(Data data)
         {
             data.TestInvalidPattern();
-            Console.WriteLine(data.Pattern);
         }
 
         [Test]
