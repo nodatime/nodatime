@@ -123,13 +123,6 @@ namespace NodaTime.Text
             }
         }
 
-        #region Character handlers
-        private static PatternParseResult<LocalTime> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<LocalTime, LocalTimeParseBucket> builder)
-        {
-            return builder.AddLiteral(pattern.Current, ParseResult<LocalTime>.MismatchedCharacter);
-        }
-        #endregion
-
         /// <summary>
         /// Bucket to put parsed values in, ready for later result calculation. This type is also used
         /// by LocalDateTimePattern to store and calculate values.
