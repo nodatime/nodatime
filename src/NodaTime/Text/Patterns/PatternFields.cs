@@ -45,6 +45,9 @@ namespace NodaTime.Text.Patterns
         MonthOfYearText = 1 << 11,
         DayOfMonth = 1 << 12,
         DayOfWeek = 1 << 13,
-        Era = 1 << 14
+        Era = 1 << 14,
+
+        AllTimeFields = Hours12 | Hours24 | Minutes | Seconds | FractionalSeconds | AmPm,
+        AllDateFields = Year | YearTwoDigits | YearOfEra | MonthOfYearNumeric | MonthOfYearText | DayOfMonth | DayOfWeek | Era
     }
 }

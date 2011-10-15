@@ -95,6 +95,18 @@ namespace NodaTime.Text
 
         internal bool ContinueAfterErrorWithMultipleFormats { get { return continueWithMultiple; } }
 
+        /// <summary>
+        /// Returns a new result with the target type. This result must be a failure.
+        /// </summary>
+        internal ParseResult<TTarget> WithResultType<TTarget>()
+        {
+            if (Success)
+            {
+                throw new InvalidOperationException("Can't change type of a success result");
+            }
+            return new ParseResult<TTarget>(exceptionProvider, continueWithMultiple);
+        }
+
         #region Factory methods and readonly static fields
         // TODO: Expose this and following method?
         internal static ParseResult<T> ForValue(T value)

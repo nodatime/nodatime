@@ -91,6 +91,10 @@ namespace NodaTime.Test.Text
             // Day-of-week parsing should be case-insensitive
             new Data(2011, 10, 9) { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 sUN" },
             new Data(2011, 10, 9) { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 SuNDaY" },
+
+            // Genitive name is an extension of the non-genitive name; parse longer first
+            new Data(2011, 6, 10) { Pattern = "yyyy MMMM dd", Text = "2011 junija 10", Culture = new CultureInfo("dsb-DE") },
+            new Data(2011, 6, 10) { Pattern = "yyyy MMMM dd", Text = "2011 junij 10", Culture = new CultureInfo("dsb-DE") },
         };
 
         internal static Data[] FormatOnlyData = {

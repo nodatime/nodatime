@@ -97,6 +97,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Text\LocalDateTimePatternParser.cs" />
     <Compile Include="Text\Delegates.cs" />
     <Compile Include="Text\FixedFormatInfoPatternParser.cs" />
     <Compile Include="Text\FormatHelper.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Text\InvalidPatternException.cs" />
     <Compile Include="Text\IPattern.cs" />
     <Compile Include="Text\LocalDatePattern.cs" />
+    <Compile Include="Text\LocalDateTimePattern.cs" />
     <Compile Include="Text\LocalDatePatternParser.cs" />
     <Compile Include="Text\LocalTimePattern.cs" />
     <Compile Include="Text\LocalTimePatternParser.cs" />

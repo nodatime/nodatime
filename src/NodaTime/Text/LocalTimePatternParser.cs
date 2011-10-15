@@ -29,7 +29,7 @@ namespace NodaTime.Text
     {
         private readonly LocalTime templateValue;
 
-        private const int FractionOfSecondLength = 7;
+        internal const int FractionOfSecondLength = 7;
 
         private static readonly Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>> PatternCharacterHandlers = 
             new Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>>
@@ -270,7 +270,11 @@ namespace NodaTime.Text
         }
         #endregion
 
-        private sealed class LocalTimeParseBucket : ParseBucket<LocalTime>
+        /// <summary>
+        /// Bucket to put parsed values in, ready for later result calculation. This type is also used
+        /// by LocalDateTimePattern to store and calculate values.
+        /// </summary>
+        internal sealed class LocalTimeParseBucket : ParseBucket<LocalTime>
         {
             private readonly LocalTime templateValue;
 
