@@ -17,6 +17,9 @@
 
 using System;
 using NodaTime.Calendars;
+using NodaTime.Globalization;
+using NodaTime.Text;
+using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 using NodaTime.Fields;
 
@@ -476,18 +479,6 @@ namespace NodaTime
             hash = HashCodeHelper.Hash(hash, Calendar);
             return hash;
         }
-
-        /// <summary>
-        /// Returns the fully qualified type name of this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> containing a fully qualified type name.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override string ToString()
-        {
-            return Calendar + ": " + LocalInstant;
-        }
         #endregion
 
         /// <summary>
@@ -626,5 +617,152 @@ namespace NodaTime
             LocalInstant newLocalInstant = calendar.Fields.Ticks.Add(localInstant, ticks);
             return new LocalDateTime(newLocalInstant, calendar);
         }
+
+        #region Formatting
+        /// <summary>Formats the value of the current instance using the specified format.</summary>
+        /// <returns>A <see cref="T:System.String" /> containing the value of the current instance in the specified format.</returns>
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
+        /// -or- null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
+        /// -or- null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string patternText, IFormatProvider formatProvider)
+        {
+            return PatternSupport.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
+        }
+
+        /// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return PatternSupport.Format(this, null, NodaFormatInfo.CurrentInfo);
+        }
+
+        /// <summary>Formats the value of the current instance using the specified format.</summary>
+        /// <returns>A <see cref="T:System.String" /> containing the value of the current instance in the specified format.</returns>
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
+        /// -or- null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string patternText)
+        {
+            return PatternSupport.Format(this, patternText, NodaFormatInfo.CurrentInfo);
+        }
+
+        /// <summary>Formats the value of the current instance using the specified format.</summary>
+        /// <returns>A <see cref="T:System.String" /> containing the value of the current instance in the specified format.</returns>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
+        /// -or- null to obtain the format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return PatternSupport.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
+        }
+        #endregion Formatting
+
+        #region Parsing
+        private static readonly string[] AllPatterns = { "F", "f", "G", "g", "o", "s" }; // Full (long time), full (short time), general (long), general (short time), round-trip, sortable
+        private const string DefaultFormatPattern = "G"; // General (long time)
+
+        private static readonly PatternBclSupport<LocalDateTime> PatternSupport =
+            new PatternBclSupport<LocalDateTime>(AllPatterns, DefaultFormatPattern, LocalDateTimePattern.DefaultTemplateValue, fi => fi.LocalDateTimePatternParser);
+
+        /// <summary>Parses the given string using the current culture's default format provider.</summary>
+        /// <param name="value">The value to parse.</param>
+        /// <returns>The parsed local date and time.</returns>
+        public static LocalDateTime Parse(string value)
+        {
+            return PatternSupport.Parse(value, NodaFormatInfo.CurrentInfo);
+        }
+
+        /// <summary>Parses the given string using the specified format provider.</summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed local date and time.</returns>
+        public static LocalDateTime Parse(string value, IFormatProvider formatProvider)
+        {
+            return PatternSupport.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
+        }
+
+        /// <summary>Parses the given string using the specified format pattern and format provider.</summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patternText">The text of the pattern to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed local date and time.</returns>
+        public static LocalDateTime ParseExact(string value, string patternText, IFormatProvider formatProvider)
+        {
+            return PatternSupport.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
+        }
+
+        /// <summary>Parses the given string using the specified patterns and format provider.</summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patterns">The patterns to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <returns>The parsed local date and time.</returns>
+        public static LocalDateTime ParseExact(string value, string[] patterns, IFormatProvider formatProvider)
+        {
+            return PatternSupport.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
+        }
+
+        /// <summary>
+        /// Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
+        /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="LocalDateTimePattern.DefaultTemplateValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="result">The parsed local date and time, when successful.</param>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
+        public static bool TryParse(string value, out LocalDateTime result)
+        {
+            return PatternSupport.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
+        }
+
+        /// <summary>
+        /// Attempts to parse the given string using the specified format provider.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="LocalDateTimePattern.DefaultTemplateValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed local date and time, when successful.</param>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
+        public static bool TryParse(string value, IFormatProvider formatProvider, out LocalDateTime result)
+        {
+            return PatternSupport.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
+        }
+
+        /// <summary>
+        /// Attempts to parse the given string using the specified pattern, format provider and style.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="LocalDateTimePattern.DefaultTemplateValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patternText">The text of the pattern to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed local date and time, when successful.</param>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
+        public static bool TryParseExact(string value, string patternText, IFormatProvider formatProvider, out LocalDateTime result)
+        {
+            return PatternSupport.TryParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider), out result);
+        }
+
+        /// <summary>
+        /// Attempts to parse the given string using the specified patterns and format provider.
+        /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
+        /// otherwise <see cref="LocalDateTimePattern.DefaultTemplateValue"/> is stored in the parameter and the return value is false.
+        /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <param name="patterns">The patterns to use for parsing.</param>
+        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
+        /// <param name="result">The parsed local date and time, when successful.</param>
+        /// <returns>true if the value was parsed successfully; false otherwise.</returns>
+        public static bool TryParseExact(string value, string[] patterns, IFormatProvider formatProvider, out LocalDateTime result)
+        {
+            return PatternSupport.TryParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider), out result);
+        }
+        #endregion Parsing
     }
 }

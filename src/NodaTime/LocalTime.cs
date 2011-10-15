@@ -400,7 +400,8 @@ namespace NodaTime
         private static readonly string[] AllPatterns = { "T", "t", "r" }; // Long, short, round-trip
         private const string DefaultFormatPattern = "T"; // Long
 
-        private static readonly PatternBclSupport<LocalTime> LocalTimePattern = new PatternBclSupport<LocalTime>(AllPatterns, DefaultFormatPattern, LocalTime.Midnight, fi => fi.LocalTimePatternParser);
+        private static readonly PatternBclSupport<LocalTime> LocalTimePattern =
+            new PatternBclSupport<LocalTime>(AllPatterns, DefaultFormatPattern, LocalTime.Midnight, fi => fi.LocalTimePatternParser);
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
