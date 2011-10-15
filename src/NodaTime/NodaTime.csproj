@@ -101,7 +101,6 @@
     <Compile Include="Text\Delegates.cs" />
     <Compile Include="Text\FixedFormatInfoPatternParser.cs" />
     <Compile Include="Text\FormatHelper.cs" />
-    <Compile Include="Text\BucketHelper.cs" />
     <Compile Include="Text\InstantPattern.cs" />
     <Compile Include="Text\InstantPatternParser.cs" />
     <Compile Include="Text\InvalidPatternException.cs" />
