@@ -68,7 +68,7 @@ namespace NodaTime
         /// <summary>
         /// The later of the two occurrences of the local date and time within the time zone.
         /// </summary>
-        public ZonedDateTime LaterMapping { get { return earlierMapping; } }
+        public ZonedDateTime LaterMapping { get { return laterMapping; } }
 
         /// <summary>
         /// Constructs an instance from the given information.
