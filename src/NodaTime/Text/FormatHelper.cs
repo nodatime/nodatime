@@ -51,6 +51,18 @@ namespace NodaTime.Text
         /// <exception cref="FormatException">if too many characters are requested. <see cref="MaximumPaddingLength" />.</exception>
         internal static void LeftPad(int value, int length, StringBuilder outputBuffer)
         {
+            // TODO: Do this properly...
+            if (value < 0)
+            {
+                outputBuffer.Append('-');
+                if (value == int.MinValue)
+                {
+                    outputBuffer.Append('2');
+                    value = value / 10;
+                }
+                LeftPad(Math.Abs(value), length, outputBuffer);
+                return;
+            }
             if (length > MaximumPaddingLength)
             {
                 throw new FormatException("Too many digits");
