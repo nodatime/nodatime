@@ -32,7 +32,6 @@ namespace NodaTime.Text
 
         private readonly LocalDateTime templateValue;       
 
-        // TODO: All the handlers are copied from LocalDatePatternParser or LocalTimePatternParser. It would be nice to reuse instead of copying...
         private static readonly Dictionary<char, CharacterHandler<LocalDateTime, LocalDateTimeParseBucket>> PatternCharacterHandlers =
             new Dictionary<char, CharacterHandler<LocalDateTime, LocalDateTimeParseBucket>>
         {
@@ -48,7 +47,7 @@ namespace NodaTime.Text
                         (value => value.MonthOfYear, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value) },
             { 'd', DatePatternHelper.CreateDayHandler<LocalDateTime, LocalDateTimeParseBucket>
                         (value => value.DayOfMonth, value => value.DayOfWeek, (bucket, value) => bucket.Date.DayOfMonth = value, (bucket, value) => bucket.Date.DayOfWeek = value) },
-            { '.', HandlePeriod },
+            { '.', TimePatternHelper.CreatePeriodHandler<LocalDateTime, LocalDateTimeParseBucket>(7, value => value.TickOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value) },
             { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<LocalDateTime>.TimeSeparatorMismatch) },
             { 'h', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandlePaddedField
                        (2, PatternFields.Hours12, 1, 12, value => value.ClockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value) },
@@ -58,10 +57,9 @@ namespace NodaTime.Text
                        (2, PatternFields.Minutes, 0, 59, value => value.MinuteOfHour, (bucket, value) => bucket.Time.Minutes = value) },
             { 's', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandlePaddedField
                        (2, PatternFields.Seconds, 0, 59, value => value.SecondOfMinute, (bucket, value) => bucket.Time.Seconds = value) },
-            { 'f', HandleFractionSpecifier },
-            { 'F', HandleFractionSpecifier },
-            { 't', HandleAmPmDesignator }
-
+            { 'f', TimePatternHelper.CreateFractionHandler<LocalDateTime, LocalDateTimeParseBucket>(7, value => value.TickOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value) },
+            { 'F', TimePatternHelper.CreateFractionHandler<LocalDateTime, LocalDateTimeParseBucket>(7, value => value.TickOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value) },
+            { 't', TimePatternHelper.CreateAmPmHandler<LocalDateTime, LocalDateTimeParseBucket>(time => time.HourOfDay, (bucket, value) => bucket.Time.AmPm = value) }
         };
 
         // These have to come *after* the above field initializers...
@@ -165,146 +163,6 @@ namespace NodaTime.Text
         }
 
         #region Character handlers
-        // Handlers copied from LocalTimePatternParser
-        private static PatternParseResult<LocalDateTime> HandlePeriod(PatternCursor pattern, SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket> builder)
-        {
-            // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
-
-            // If the next part of the pattern is an F, then this decimal separator is effectively optional.
-            // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
-            // seconds part as normal. Otherwise, we continue on to the next parsing token.
-            // At format time, we should always append the decimal separator, and then append using PadRightTruncate.
-            if (pattern.PeekNext() == 'F')
-            {
-                PatternParseResult<LocalDateTime> failure = null;
-                pattern.MoveNext();
-                int count = pattern.GetRepeatCount(FractionOfSecondLength, ref failure);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                builder.AddParseAction((valueCursor, bucket) =>
-                {
-                    // If the next token isn't the decimal separator, we assume it's part of the next token in the pattern
-                    if (!valueCursor.Match('.'))
-                    {
-                        return null;
-                    }
-
-                    // If there *was* a decimal separator, we should definitely have a number.
-                    int fractionalSeconds;
-                    // Last argument is false because we don't need *all* the digits to be present
-                    if (!valueCursor.ParseFraction(count, FractionOfSecondLength, out fractionalSeconds, false))
-                    {
-                        return ParseResult<LocalDateTime>.MismatchedNumber(new string('F', count));
-                    }
-                    // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
-                    bucket.Time.FractionalSeconds = fractionalSeconds;
-                    return null;
-                });
-                builder.AddFormatAction((value, sb) => sb.Append('.'));
-                builder.AddFormatRightPadTruncate(count, FractionOfSecondLength, value => value.TickOfSecond);
-                return null;
-            }
-            else
-            {
-                return builder.AddLiteral('.', ParseResult<LocalDateTime>.MismatchedCharacter);
-            }
-        }
-
-        private static PatternParseResult<LocalDateTime> HandleFractionSpecifier(PatternCursor pattern, SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket> builder)
-        {
-            PatternParseResult<LocalDateTime> failure = null;
-            char patternCharacter = pattern.Current;
-            int count = pattern.GetRepeatCount(FractionOfSecondLength, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-
-            builder.AddParseAction((str, bucket) =>
-            {
-                int fractionalSeconds;
-                // If the pattern is 'f', we need exactly "count" digits. Otherwise ('F') we need
-                // "up to count" digits.
-                if (!str.ParseFraction(count, FractionOfSecondLength, out fractionalSeconds, patternCharacter == 'f'))
-                {
-                    return ParseResult<LocalDateTime>.MismatchedNumber(new string(patternCharacter, count));
-                }
-                // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
-                bucket.Time.FractionalSeconds = fractionalSeconds;
-                return null;
-            });
-            return patternCharacter == 'f' ? builder.AddFormatRightPad(count, FractionOfSecondLength, value => value.TickOfSecond)
-                                           : builder.AddFormatRightPadTruncate(count, FractionOfSecondLength, value => value.TickOfSecond);
-        }
-
-        private static PatternParseResult<LocalDateTime> HandleAmPmDesignator(PatternCursor pattern, SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket> builder)
-        {
-            PatternParseResult<LocalDateTime> failure = null;
-            int count = pattern.GetRepeatCount(2, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.AmPm, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-
-            string amDesignator = builder.FormatInfo.AMDesignator;
-            string pmDesignator = builder.FormatInfo.PMDesignator;
-            // TODO: Work out if the single character designator should also consume the full designator if it's present.
-            // Single character designator
-            if (count == 1)
-            {
-                builder.AddParseAction((str, bucket) =>
-                {
-                    if (str.Match(amDesignator[0]))
-                    {
-                        bucket.Time.AmPm = 0;
-                        return null;
-                    }
-                    if (str.Match(pmDesignator[0]))
-                    {
-                        bucket.Time.AmPm = 1;
-                        return null;
-                    }
-                    return ParseResult<LocalDateTime>.MissingAmPmDesignator;
-                });
-                builder.AddFormatAction((value, sb) => sb.Append(value.HourOfDay > 11 ? pmDesignator[0] : amDesignator[0]));
-                return null;
-            }
-            // Full designator
-            builder.AddParseAction((str, bucket) =>
-            {
-                if (str.Match(amDesignator))
-                {
-                    bucket.Time.AmPm = 0;
-                    return null;
-                }
-                if (str.Match(pmDesignator))
-                {
-                    bucket.Time.AmPm = 1;
-                    return null;
-                }
-                return ParseResult<LocalDateTime>.MissingAmPmDesignator;
-            });
-            builder.AddFormatAction((value, sb) => sb.Append(value.HourOfDay > 11 ? pmDesignator : amDesignator));
-            return null;
-        }
-
         private static PatternParseResult<LocalDateTime> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket> builder)
         {
             return builder.AddLiteral(pattern.Current, ParseResult<LocalDateTime>.MismatchedCharacter);

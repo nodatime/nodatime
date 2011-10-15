@@ -33,7 +33,7 @@ namespace NodaTime.Text
             { '\'', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleQuote },
             { '\"', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleQuote },
             { '\\', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleBackslash },
-            { '.', HandlePeriod },
+            { '.', TimePatternHelper.CreatePeriodHandler<Offset, OffsetParseBucket>(3, value => value.FractionalSeconds, (bucket, value) => bucket.FractionalSeconds = value) },
             { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<Offset>.TimeSeparatorMismatch) },
             { 'h', (pattern, builder) => PatternParseResult<Offset>.Hour12PatternNotSupported },
             { 'H', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
@@ -44,8 +44,8 @@ namespace NodaTime.Text
                        (2, PatternFields.Seconds, 0, 59, value => value.Seconds, (bucket, value) => bucket.Seconds = value) },
             { '+', HandlePlus },
             { '-', HandleMinus },
-            { 'f', HandleFractionSpecifier },
-            { 'F', HandleFractionSpecifier },
+            { 'f', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, value => value.FractionalSeconds, (bucket, value) => bucket.FractionalSeconds = value) },
+            { 'F', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, value => value.FractionalSeconds, (bucket, value) => bucket.FractionalSeconds = value) },
         };
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
@@ -165,61 +165,30 @@ namespace NodaTime.Text
             }
             return patterns[index].Format(value);
         }
+
+        private static IPattern<Offset> CreateNumberPattern(NodaFormatInfo formatInfo)
+        {
+            NodaFunc<string, ParseResult<Offset>> parser = value =>
+            {
+                int milliseconds;
+                if (Int32.TryParse(value, NumberStyles.Integer | NumberStyles.AllowThousands,
+                                    formatInfo.NumberFormat, out milliseconds))
+                {
+                    if (milliseconds < -NodaConstants.MillisecondsPerStandardDay ||
+                        NodaConstants.MillisecondsPerStandardDay < milliseconds)
+                    {
+                        return ParseResult<Offset>.ValueOutOfRange(milliseconds);
+                    }
+                    return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
+                }
+                return ParseResult<Offset>.CannotParseValue(value, "n");
+            };
+            NodaFunc<Offset, string> formatter = value => value.TotalMilliseconds.ToString("N0", formatInfo);
+            return new SimplePattern<Offset>(parser, formatter);
+        }
         #endregion
 
         #region Character handlers
-
-        private static PatternParseResult<Offset> HandlePeriod(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
-        {
-            // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
-
-            // If the next part of the pattern is an F, then this decimal separator is effectively optional.
-            // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
-            // seconds part as normal. Otherwise, we continue on to the next parsing token.
-            // At format time, we should always append the decimal separator, and then append using PadRightTruncate.
-            if (pattern.PeekNext() == 'F')
-            {
-                PatternParseResult<Offset> failure = null;
-                pattern.MoveNext();
-                int count = pattern.GetRepeatCount(3, ref failure);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                builder.AddParseAction((valueCursor, bucket) =>
-                {
-                    // If the next token isn't a period, we assume it's part of the next token in the pattern
-                    if (!valueCursor.Match("."))
-                    {
-                        return null;
-                    }
-
-                    // If there *was* a period, we should definitely have a number.
-                    int fractionalSeconds;
-                    // Last argument is false because we don't need *all* the digits to be present
-                    if (!valueCursor.ParseFraction(count, 3, out fractionalSeconds, false))
-                    {
-                        return ParseResult<Offset>.MismatchedNumber(new string('F', count));
-                    }
-                    // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
-                    bucket.FractionalSeconds = fractionalSeconds;
-                    return null;
-                });
-                builder.AddFormatAction((offset, sb) => sb.Append("."));
-                builder.AddFormatRightPadTruncate(count, 3, offset => offset.FractionalSeconds);
-                return null;
-            }
-            else
-            {
-                return builder.AddLiteral('.', ParseResult<Offset>.MismatchedCharacter);
-            }
-        }
-
         private static PatternParseResult<Offset> HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
             PatternParseResult<Offset> failure = builder.AddField(PatternFields.Sign, pattern.Current);
@@ -244,62 +213,9 @@ namespace NodaTime.Text
             return null;
         }
 
-        private static PatternParseResult<Offset> HandleFractionSpecifier(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
-        {
-            PatternParseResult<Offset> failure = null;
-            char patternCharacter = pattern.Current;
-            int count = pattern.GetRepeatCount(3, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-
-            builder.AddParseAction((str, bucket) =>
-            {
-                int fractionalSeconds;
-                // If the pattern is 'f', we need exactly "count" digits. Otherwise ('F') we need
-                // "up to count" digits.
-                if (!str.ParseFraction(count, 3, out fractionalSeconds, patternCharacter == 'f'))
-                {
-                    return ParseResult<Offset>.MismatchedNumber(new string(patternCharacter, count));
-                }
-                // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
-                bucket.FractionalSeconds = fractionalSeconds;
-                return null;
-            });
-            return patternCharacter == 'f' ? builder.AddFormatRightPad(count, 3, offset => offset.FractionalSeconds)
-                                           : builder.AddFormatRightPadTruncate(count, 3, offset => offset.FractionalSeconds);
-        }
-
         private static PatternParseResult<Offset> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
             return builder.AddLiteral(pattern.Current, ParseResult<Offset>.MismatchedCharacter);
-        }
-
-        private static IPattern<Offset> CreateNumberPattern(NodaFormatInfo formatInfo)
-        {
-            NodaFunc<string, ParseResult<Offset>> parser = value =>
-            {
-                int milliseconds;
-                if (Int32.TryParse(value, NumberStyles.Integer | NumberStyles.AllowThousands,
-                                    formatInfo.NumberFormat, out milliseconds))
-                {
-                    if (milliseconds < -NodaConstants.MillisecondsPerStandardDay ||
-                        NodaConstants.MillisecondsPerStandardDay < milliseconds)
-                    {
-                        return ParseResult<Offset>.ValueOutOfRange(milliseconds);
-                    }
-                    return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
-                }
-                return ParseResult<Offset>.CannotParseValue(value, "n");
-            };
-            NodaFunc<Offset, string> formatter = value => value.TotalMilliseconds.ToString("N0", formatInfo);
-            return new SimplePattern<Offset>(parser, formatter);
         }
         #endregion
 

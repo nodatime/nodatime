@@ -24,8 +24,8 @@ using NodaTime.Globalization;
 namespace NodaTime.Text.Patterns
 {
     /// <summary>
-    /// Common methods used when parsing dates - these are used from both TResultTimePatternParser
-    /// and TResultPatternParser.
+    /// Common methods used when parsing dates - these are used from both LocalDateTimePatternParser
+    /// and LocalDatePatternParser.
     /// </summary>
     internal static class DatePatternHelper
     {
