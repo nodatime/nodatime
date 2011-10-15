@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
@@ -27,9 +26,9 @@ namespace NodaTime.Text
     /// </summary>
     internal sealed class LocalTimePatternParser : IPatternParser<LocalTime>
     {
-        private readonly LocalTime templateValue;
+        private static readonly CharacterHandler<LocalTime, LocalTimeParseBucket> DefaultCharacterHandler = SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandleDefaultCharacter;
 
-        internal const int FractionOfSecondLength = 7;
+        private readonly LocalTime templateValue;
 
         private static readonly Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>> PatternCharacterHandlers = 
             new Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>>
@@ -97,7 +96,7 @@ namespace NodaTime.Text
                 CharacterHandler<LocalTime, LocalTimeParseBucket> handler;
                 if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
                 {
-                    handler = HandleDefaultCharacter;
+                    handler = handler = DefaultCharacterHandler;                    ;
                 }
                 PatternParseResult<LocalTime> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
                 if (possiblePatternParseFailure != null)

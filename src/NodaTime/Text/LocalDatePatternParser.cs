@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 
@@ -28,6 +27,8 @@ namespace NodaTime.Text
     /// </summary>
     internal sealed class LocalDatePatternParser : IPatternParser<LocalDate>
     {
+        private static readonly CharacterHandler<LocalDate, LocalDateParseBucket> DefaultCharacterHandler = SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandleDefaultCharacter;
+
         private readonly LocalDate templateValue;
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace NodaTime.Text
                 {
                     if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
                     {
-                        handler = HandleDefaultCharacter;
+                        handler = DefaultCharacterHandler;
                     }                    
                 }
                 PatternParseResult<LocalDate> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
@@ -133,15 +134,6 @@ namespace NodaTime.Text
                     return null;
             }
         }
-
-        #region Character handlers
-
-
-        private static PatternParseResult<LocalDate> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<LocalDate, LocalDateParseBucket> builder)
-        {
-            return builder.AddLiteral(pattern.Current, ParseResult<LocalDate>.MismatchedCharacter);
-        }
-        #endregion
         
         /// <summary>
         /// Bucket to put parsed values in, ready for later result calculation. This type is also used

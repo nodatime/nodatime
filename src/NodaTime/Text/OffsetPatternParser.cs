@@ -26,6 +26,8 @@ namespace NodaTime.Text
 {
     internal sealed class OffsetPatternParser : IPatternParser<Offset>
     {
+        private static readonly CharacterHandler<Offset, OffsetParseBucket> DefaultCharacterHandler = SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleDefaultCharacter;
+
         private static readonly Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>> PatternCharacterHandlers = 
             new Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>>
         {
@@ -95,7 +97,7 @@ namespace NodaTime.Text
                 CharacterHandler<Offset, OffsetParseBucket> handler;
                 if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
                 {
-                    handler = HandleDefaultCharacter;
+                    handler = DefaultCharacterHandler;
                 }
                 PatternParseResult<Offset> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
                 if (possiblePatternParseFailure != null)
@@ -211,11 +213,6 @@ namespace NodaTime.Text
 
             builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.TotalMilliseconds >= 0);
             return null;
-        }
-
-        private static PatternParseResult<Offset> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
-        {
-            return builder.AddLiteral(pattern.Current, ParseResult<Offset>.MismatchedCharacter);
         }
         #endregion
 

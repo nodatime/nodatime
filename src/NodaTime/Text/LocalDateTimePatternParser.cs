@@ -15,9 +15,7 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 
@@ -28,7 +26,8 @@ namespace NodaTime.Text
     /// </summary>
     internal sealed class LocalDateTimePatternParser : IPatternParser<LocalDateTime>
     {
-        private const int FractionOfSecondLength = LocalTimePatternParser.FractionOfSecondLength;
+        private static readonly CharacterHandler<LocalDateTime, LocalDateTimeParseBucket> DefaultCharacterHandler =
+            SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandleDefaultCharacter;
 
         private readonly LocalDateTime templateValue;       
 
@@ -128,7 +127,7 @@ namespace NodaTime.Text
                 {
                     if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
                     {
-                        handler = HandleDefaultCharacter;
+                        handler = DefaultCharacterHandler;
                     }                    
                 }
                 PatternParseResult<LocalDateTime> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
@@ -161,13 +160,6 @@ namespace NodaTime.Text
                     return null;
             }
         }
-
-        #region Character handlers
-        private static PatternParseResult<LocalDateTime> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket> builder)
-        {
-            return builder.AddLiteral(pattern.Current, ParseResult<LocalDateTime>.MismatchedCharacter);
-        }
-        #endregion
         
         private sealed class LocalDateTimeParseBucket : ParseBucket<LocalDateTime>
         {
