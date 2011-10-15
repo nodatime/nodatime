@@ -82,14 +82,18 @@ namespace NodaTime.Test.Text
 
         public sealed class Data : PatternTestData<LocalDateTime>
         {
+            // Default to the start of the year 2000.
+            protected override LocalDateTime DefaultTemplate
+            {
+                get { return LocalDateTimePattern.DefaultTemplateValue; }
+            }
+
             /// <summary>
             /// Initializes a new instance of the <see cref="Data" /> class.
             /// </summary>
             /// <param name="value">The value.</param>
             public Data(LocalDateTime value) : base(value)
             {
-                // Default to the start of the year 2000.
-                Template = LocalDateTimePattern.DefaultTemplateValue;
             }
 
             public Data(int year, int month, int day) : this(new LocalDateTime(year, month, day, 0, 0))
