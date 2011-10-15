@@ -134,6 +134,14 @@ namespace NodaTime.Text.Patterns
             return null;
         }
 
+        /// <summary>
+        /// Handler for pattern characters which aren't understood as anything special by the pattern itself.
+        /// </summary>
+        internal static PatternParseResult<TResult> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
+        {
+            return builder.AddLiteral(pattern.Current, ParseResult<TResult>.MismatchedCharacter);
+        }
+
         internal static PatternParseResult<TResult> HandleQuote(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
         {
             PatternParseResult<TResult> failure = null;
@@ -236,6 +244,7 @@ namespace NodaTime.Text.Patterns
                 return ParseResult<TResult>.MismatchedText(field);
             });
         }
+
         /// <summary>
         /// Adds parse actions for two list of strings, such as non-genitive and genitive month names.
         /// The parsing is performed case-insensitively.
