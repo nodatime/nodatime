@@ -15,16 +15,32 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NodaTime.Benchmarks.Extensions;
 using NodaTime.Benchmarks.Timing;
+using NodaTime.Text;
 
 namespace NodaTime.Benchmarks
 {
     internal class LocalDateTimeBenchmarks
     {
-        private readonly LocalDateTime sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
+        private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30);
         private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
 
+        private static readonly LocalDateTimePattern Pattern = LocalDateTimePattern.CreateWithInvariantInfo("dd/MM/yyyy HH:mm:ss");
+
+        [Benchmark]
+        public void PatternFormat()
+        {
+            Pattern.Format(SampleLocalDateTime);
+        }
+
+        [Benchmark]
+        public void PatternParse()
+        {
+            var parseResult = Pattern.Parse("26/12/2009 10:08:30");
+            LocalDateTime result = parseResult.Value;
+        }
 
         [Benchmark]
         public void ConstructionToMinute()
@@ -47,61 +63,61 @@ namespace NodaTime.Benchmarks
         [Benchmark]
         public void Year()
         {
-            sample.Year.Consume();
+            SampleLocalDateTime.Year.Consume();
         }
 
         [Benchmark]
         public void Month()
         {
-            sample.MonthOfYear.Consume();
+            SampleLocalDateTime.MonthOfYear.Consume();
         }
 
         [Benchmark]
         public void DayOfMonth()
         {
-            sample.DayOfMonth.Consume();
+            SampleLocalDateTime.DayOfMonth.Consume();
         }
 
         [Benchmark]
         public void IsoDayOfWeek()
         {
-            sample.IsoDayOfWeek.Consume();
+            SampleLocalDateTime.IsoDayOfWeek.Consume();
         }
 
         [Benchmark]
         public void DayOfYear()
         {
-            sample.DayOfYear.Consume();
+            SampleLocalDateTime.DayOfYear.Consume();
         }
 
         [Benchmark]
         public void Hour()
         {
-            sample.HourOfDay.Consume();
+            SampleLocalDateTime.HourOfDay.Consume();
         }
 
         [Benchmark]
         public void Minute()
         {
-            sample.MinuteOfHour.Consume();
+            SampleLocalDateTime.MinuteOfHour.Consume();
         }
 
         [Benchmark]
         public void Second()
         {
-            sample.SecondOfMinute.Consume();
+            SampleLocalDateTime.SecondOfMinute.Consume();
         }
 
         [Benchmark]
         public void Millisecond()
         {
-            sample.MillisecondOfSecond.Consume();
+            SampleLocalDateTime.MillisecondOfSecond.Consume();
         }
 
         [Benchmark]
         public void TickOfMillisecond()
         {
-            sample.TickOfMillisecond.Consume();
+            SampleLocalDateTime.TickOfMillisecond.Consume();
         }
     }
 }
