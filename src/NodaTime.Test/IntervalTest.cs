@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -39,6 +40,13 @@ namespace NodaTime.Test
             var interval = new Interval(SampleStart, SampleStart);
             Assert.AreEqual(SampleStart, interval.Start);
             Assert.AreEqual(SampleStart, interval.End);
+            Assert.AreEqual(new Duration(0), interval.Duration);
+        }
+
+        [Test]
+        public void Construction_EndBeforeStart()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new Interval(SampleEnd, SampleStart));
         }
 
         [Test]
