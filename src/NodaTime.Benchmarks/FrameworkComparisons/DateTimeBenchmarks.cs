@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using NodaTime.Benchmarks.Extensions;
 using NodaTime.Benchmarks.Timing;
 
@@ -89,6 +90,19 @@ namespace NodaTime.Benchmarks.FrameworkComparisons
         public void ToUtc()
         {
             sample.ToUniversalTime();
+        }
+
+        [Benchmark]
+        public void Format()
+        {
+            sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+        }
+        
+        [Benchmark]
+        public void TryParseExact()
+        {
+            DateTime result;
+            DateTime.TryParseExact("26/12/2009 10:08:30", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out result);
         }
     }
 }
