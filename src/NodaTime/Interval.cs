@@ -34,12 +34,17 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="Interval"/> struct. The <see
         /// cref="Interval"/> includes the <paramref name="start"/> instant and excludes the
-        /// <paramref name="end"/> instant.
+        /// <paramref name="end"/> instant. The end may equal the start, but must not be before the start.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/>.</exception>
         /// <param name="start">The start <see cref="Instant"/>.</param>
         /// <param name="end">The end <see cref="Instant"/>.</param>
         public Interval(Instant start, Instant end)
         {
+            if (end < start)
+            {
+                throw new ArgumentOutOfRangeException("end", "The end parameter must be equal to or later than the start parameter");
+            }
             this.start = start;
             this.end = end;
         }
