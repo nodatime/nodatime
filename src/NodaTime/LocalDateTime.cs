@@ -71,7 +71,7 @@ namespace NodaTime
             this.localInstant = localInstant;
             this.calendar = calendar;
         }
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO calendar system.
         /// </summary>
@@ -354,7 +354,20 @@ namespace NodaTime
         /// <summary>
         /// Gets the date portion of this local date and time as a <see cref="LocalDate"/> in the same calendar system as this value.
         /// </summary>
-        public LocalDate Date { get { return new LocalDate(Year, MonthOfYear, DayOfMonth, calendar); } }
+        public LocalDate Date
+        { 
+            get 
+            { 
+                // Work out how far into the current day we are, and subtract that from our current ticks.
+                // This is much quicker than finding out the current day, month, year etc and then reconstructing everything.
+                long dayTicks = localInstant.Ticks % NodaConstants.TicksPerStandardDay;
+                if (dayTicks < 0)
+                {
+                    dayTicks += NodaConstants.TicksPerStandardDay;
+                }
+                return new LocalDate(new LocalDateTime(new LocalInstant(localInstant.Ticks - dayTicks), calendar));
+            }
+        }
 
         // TODO: Add an overload for the calendar to use?
         /// <summary>

@@ -83,6 +83,24 @@ namespace NodaTime.Test
             Assert.AreEqual(new LocalDateTime(1970, 1, 1, 12, 5, 23), dateTime.TimeOfDay.LocalDateTime);
         }
 
+        // Verifies that negative local instant ticks don't cause a problem with the date
+        [Test]
+        public void Date_Before1970()
+        {
+            LocalDateTime dateTime = new LocalDateTime(1965, 11, 8, 12, 5, 23);
+            LocalDate expected = new LocalDate(1965, 11, 8);
+            Assert.AreEqual(expected, dateTime.Date);
+        }
+
+        // Verifies that positive local instant ticks don't cause a problem with the date
+        [Test]
+        public void Date_After1970()
+        {
+            LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
+            LocalDate expected = new LocalDate(1975, 11, 8);
+            Assert.AreEqual(expected, dateTime.Date);
+        }
+
         [Test]
         public void ClockHourOfHalfDay()
         {
