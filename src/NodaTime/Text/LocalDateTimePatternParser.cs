@@ -29,7 +29,9 @@ namespace NodaTime.Text
         private static readonly CharacterHandler<LocalDateTime, LocalDateTimeParseBucket> DefaultCharacterHandler =
             SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandleDefaultCharacter;
 
-        private readonly LocalDateTime templateValue;       
+        // Split the template value into date and time once, to avoid doing it every time we parse.
+        private readonly LocalDate templateValueDate;
+        private readonly LocalTime templateValueTime;       
 
         private static readonly Dictionary<char, CharacterHandler<LocalDateTime, LocalDateTimeParseBucket>> PatternCharacterHandlers =
             new Dictionary<char, CharacterHandler<LocalDateTime, LocalDateTimeParseBucket>>
@@ -69,7 +71,8 @@ namespace NodaTime.Text
 
         internal LocalDateTimePatternParser(LocalDateTime templateValue)
         {
-            this.templateValue = templateValue;
+            templateValueDate = templateValue.Date;
+            templateValueTime = templateValue.TimeOfDay;
         }
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
@@ -103,7 +106,7 @@ namespace NodaTime.Text
                 }
             }
 
-            var patternBuilder = new SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo, () => new LocalDateTimeParseBucket(templateValue));
+            var patternBuilder = new SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo, () => new LocalDateTimeParseBucket(templateValueDate, templateValueTime));
             var patternCursor = new PatternCursor(patternText);
 
             // Prime the pump...
@@ -121,7 +124,7 @@ namespace NodaTime.Text
                 if (patternCursor.Current == 'g')
                 {
                     handler = DatePatternHelper.CreateEraHandler<LocalDateTime, LocalDateTimeParseBucket>
-                        (templateValue.Calendar, value => value.Era, (bucket, value) => bucket.Date.EraIndex = value);
+                        (templateValueDate.Calendar, value => value.Era, (bucket, value) => bucket.Date.EraIndex = value);
                 }
                 else
                 {
@@ -166,10 +169,10 @@ namespace NodaTime.Text
             internal readonly LocalDatePatternParser.LocalDateParseBucket Date;
             internal readonly LocalTimePatternParser.LocalTimeParseBucket Time;
 
-            internal LocalDateTimeParseBucket(LocalDateTime templateValue)
+            internal LocalDateTimeParseBucket(LocalDate templateValueDate, LocalTime templateValueTime)
             {
-                Date = new LocalDatePatternParser.LocalDateParseBucket(templateValue.Date);
-                Time = new LocalTimePatternParser.LocalTimeParseBucket(templateValue.TimeOfDay);
+                Date = new LocalDatePatternParser.LocalDateParseBucket(templateValueDate);
+                Time = new LocalTimePatternParser.LocalTimeParseBucket(templateValueTime);
             }
 
             internal override ParseResult<LocalDateTime> CalculateValue(PatternFields usedFields)
