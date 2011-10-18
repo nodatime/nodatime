@@ -132,10 +132,24 @@ namespace NodaTime.Text
         /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool Move(int targetIndex)
         {
-            var inRange = 0 <= targetIndex && targetIndex < Length;
-            Index = inRange ? targetIndex : Math.Max(-1, Math.Min(Length, targetIndex));
-            Current = inRange ? Value[Index] : Nul;
-            return inRange;
+            if (targetIndex >= 0)
+            {
+                if (targetIndex < Length)
+                {
+                    Index = targetIndex;
+                    Current = Value[Index];
+                    return true;
+                }
+                else
+                {
+                    Current = Nul;
+                    Index = Length;
+                    return false;
+                }
+            }
+            Current = Nul;
+            Index = -1;
+            return false;
         }
 
         /// <summary>
@@ -154,7 +168,18 @@ namespace NodaTime.Text
         /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool MoveNext()
         {
-            return Move(Index + 1);
+            // Logically this is Move(Index + 1), but it's micro-optimized as we
+            // know we'll never hit the lower limit this way.
+            int targetIndex = Index + 1;
+            if (targetIndex < Length)
+            {
+                Index = targetIndex;
+                Current = Value[Index];
+                return true;
+            }
+            Current = Nul;
+            Index = Length;
+            return false;
         }
 
         /// <summary>
@@ -163,7 +188,17 @@ namespace NodaTime.Text
         /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool MovePrevious()
         {
-            return Move(Index - 1);
+            // Logically this is Move(Index - 1), but it's micro-optimized as we
+            // know we'll never hit the upper limit this way.
+            if (Index > 0)
+            {
+                Index--;
+                Current = Value[Index];
+                return true;
+            }
+            Current = Nul;
+            Index = -1;
+            return false;
         }
 
         /// <summary>
