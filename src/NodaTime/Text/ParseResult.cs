@@ -170,7 +170,7 @@ namespace NodaTime.Text
             return ForInvalidValue(Messages.Parse_MismatchedCharacter, patternCharacter);
         }
 
-        public static ParseResult<T> MismatchedText(char field)
+        internal static ParseResult<T> MismatchedText(char field)
         {
             return ForInvalidValue(Messages.Parse_MismatchedText, field);
         }
