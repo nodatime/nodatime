@@ -61,8 +61,6 @@ namespace NodaTime.Test.Text
             ValidateCurrentCharacter(cursor, 2, 's');
             Assert.True(cursor.MovePrevious(), "MovePrevious()");
             ValidateCurrentCharacter(cursor, 1, 'e');
-            Assert.True(cursor.MoveCurrent(), "MoveCurrent()");
-            ValidateCurrentCharacter(cursor, 1, 'e');
             Assert.True(cursor.MoveNext(), "MoveNext()");
             ValidateCurrentCharacter(cursor, 2, 's');
         }
@@ -77,117 +75,6 @@ namespace NodaTime.Test.Text
             Assert.False(cursor.Move(1000));
             ValidateEndOfString(cursor);
             Assert.False(cursor.Move(-1000));
-            ValidateBeginningOfString(cursor);
-        }
-
-        [Test]
-        public void TestSkipWhiteSpaces()
-        {
-            const string testString = " \n  test \n  ";
-            TextCursor cursor = MakeCursor(testString);
-            ValidateContents(cursor, testString);
-            Assert.True(cursor.MoveNext(), "MoveNext()");
-            ValidateCurrentCharacter(cursor, 0, ' ');
-            Assert.True(cursor.SkipWhiteSpaces());
-            ValidateContents(cursor, testString);
-            ValidateCurrentCharacter(cursor, 4, 't');
-        }
-
-        [Test]
-        public void TestSkipWhiteSpaces_end()
-        {
-            const string testString = "t   ";
-            TextCursor cursor = MakeCursor(testString);
-            ValidateContents(cursor, testString);
-            Assert.True(cursor.Move(1), "Move(1)");
-            ValidateCurrentCharacter(cursor, 1, ' ');
-            Assert.False(cursor.SkipWhiteSpaces());
-            ValidateContents(cursor, testString);
-            ValidateEndOfString(cursor);
-        }
-
-        [Test]
-        public void TestSkipWhiteSpaces_inside()
-        {
-            const string testString = "t   est";
-            TextCursor cursor = MakeCursor(testString);
-            ValidateContents(cursor, testString);
-            Assert.True(cursor.Move(1), "Move(1)");
-            ValidateCurrentCharacter(cursor, 1, ' ');
-            Assert.True(cursor.SkipWhiteSpaces());
-            ValidateContents(cursor, testString);
-            ValidateCurrentCharacter(cursor, 4, 'e');
-        }
-
-        [Test]
-        public void TestTrimLeadingInQuoteSpaces()
-        {
-            const string testString = "' \n abc  'test";
-            const string trimmedString = "'abc  'test";
-            TextCursor cursor = MakeCursor(testString);
-            ValidateContents(cursor, testString);
-            cursor.TrimLeadingInQuoteSpaces();
-            ValidateContents(cursor, trimmedString);
-            ValidateBeginningOfString(cursor);
-        }
-
-        [Test]
-        public void TestTrimLeadingInQuoteSpaces_noQuote()
-        {
-            const string testString = " test";
-            TextCursor cursor = MakeCursor(testString);
-            ValidateContents(cursor, testString);
-            cursor.TrimLeadingInQuoteSpaces();
-            ValidateContents(cursor, testString);
-            ValidateBeginningOfString(cursor);
-        }
-
-        [Test]
-        public void TestTrimLeadingWhiteSpaces()
-        {
-            const string testString = " \n  test \n  ";
-            const string trimmedString = "test \n  ";
-            TextCursor cursor = MakeCursor(testString);
-            ValidateContents(cursor, testString);
-            cursor.TrimLeadingWhiteSpaces();
-            ValidateContents(cursor, trimmedString);
-            ValidateBeginningOfString(cursor);
-        }
-
-        [Test]
-        public void TestTrimTrailingInQuoteSpaces()
-        {
-            const string testString = " \n  test'  abc\n  '";
-            const string trimmedString = " \n  test'  abc'";
-            TextCursor cursor = MakeCursor(testString);
-            ValidateContents(cursor, testString);
-            cursor.TrimTrailingInQuoteSpaces();
-            ValidateContents(cursor, trimmedString);
-            ValidateBeginningOfString(cursor);
-        }
-
-        [Test]
-        public void TestTrimTrailingInQuoteSpaces_noQuote()
-        {
-            const string testString = "test ";
-            TextCursor cursor = MakeCursor(testString);
-            ValidateContents(cursor, testString);
-            cursor.TrimTrailingInQuoteSpaces();
-            ValidateContents(cursor, testString);
-            ValidateBeginningOfString(cursor);
-        }
-
-        [Test]
-        public void TestTrimTrailingWhiteSpaces()
-        {
-            const string testString = " \n  test \n  ";
-            const string trimmedString = " \n  test";
-            TextCursor cursor = MakeCursor(testString);
-            ValidateContents(cursor, testString);
-            Assert.True(cursor.MoveNext(), "MoveNext()");
-            ValidateCurrentCharacter(cursor, 0, ' ');
-            cursor.TrimTrailingWhiteSpaces();
-            ValidateContents(cursor, trimmedString);
             ValidateBeginningOfString(cursor);
         }
 

@@ -337,15 +337,6 @@ namespace NodaTime.Text.Patterns
             return null;
         }
 
-        /// <summary>
-        /// Adds a parse handler to skip any whitespace at the current position
-        /// </summary>
-        internal PatternParseResult<TResult> SkipWhiteSpace()
-        {
-            AddParseAction((str, bucket) => { str.SkipWhiteSpaces(); return null; });
-            return null;
-        }
-
         internal PatternParseResult<TResult> AddFormatLeftPad(int count, NodaFunc<TResult, int> selector)
         {
             AddFormatAction((value, sb) => FormatHelper.LeftPad(selector(value), count, sb));
