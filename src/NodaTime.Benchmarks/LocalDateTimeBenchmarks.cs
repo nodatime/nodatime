@@ -119,5 +119,17 @@ namespace NodaTime.Benchmarks
         {
             SampleLocalDateTime.TickOfMillisecond.Consume();
         }
+
+        [Benchmark]
+        public void Date()
+        {
+            SampleLocalDateTime.Date.Consume();
+        }
+
+        [Benchmark]
+        public void TimeOfDay()
+        {
+            SampleLocalDateTime.TimeOfDay.Consume();
+        }
     }
 }
