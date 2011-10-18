@@ -153,16 +153,6 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        /// Moves to the current index. This resets various values and is used when the index
-        /// is moved manually.
-        /// </summary>
-        /// <returns><c>true</c> if the requested index is in range.</returns>
-        internal bool MoveCurrent()
-        {
-            return Move(Index);
-        }
-
-        /// <summary>
         /// Moves to the next character.
         /// </summary>
         /// <returns><c>true</c> if the requested index is in range.</returns>
@@ -199,94 +189,6 @@ namespace NodaTime.Text
             Current = Nul;
             Index = -1;
             return false;
-        }
-
-        /// <summary>
-        /// Moves the current index forward as long as the current character is a white space character.
-        /// </summary>
-        /// <returns><c>true</c> if the requested index is in range.</returns>
-        internal bool SkipWhiteSpaces()
-        {
-            while (Current != Nul && char.IsWhiteSpace(Current))
-            {
-                MoveNext();
-            }
-            return Current != Nul;
-        }
-
-        /// <summary>
-        /// If the string starts with a quoted string then any leading white space characters in
-        /// that string are removed. This modifies the value string.
-        /// </summary>
-        internal void TrimLeadingInQuoteSpaces()
-        {
-            if (Length > 2)
-            {
-                Move(0);
-                if (Current == '\'' || Current == '"')
-                {
-                    while (MoveNext() && char.IsWhiteSpace(Current))
-                    {
-                    }
-                    if (Index > 1)
-                    {
-                        Value = Value.Remove(1, Index - 1);
-                        Length = Value.Length;
-                    }
-                }
-            }
-            Move(-1);
-        }
-
-        /// <summary>
-        /// Any leading white space characters are removed. This modifies the value string.
-        /// </summary>
-        internal void TrimLeadingWhiteSpaces()
-        {
-            Move(0);
-            while (Current != Nul && char.IsWhiteSpace(Current))
-            {
-                MoveNext();
-            }
-            if (Index > 0)
-            {
-                Value = Value.Substring(Index);
-                Length = Value.Length;
-            }
-            Move(-1);
-        }
-
-        /// <summary>
-        /// If the string end with a quoted string then any trailing white space characters in
-        /// that string are removed. This modifies the value string.
-        /// </summary>
-        internal void TrimTrailingInQuoteSpaces()
-        {
-            // FIXME: Should check for quotes!
-            if (Length > 2)
-            {
-                Move(Length - 1);
-                while (MovePrevious() && char.IsWhiteSpace(Current))
-                {
-                }
-                Value = Value.Remove(Index + 1, (Length - 2) - Index);
-                Length = Value.Length;
-            }
-            Move(-1);
-        }
-
-        /// <summary>
-        /// Any trailing white space characters are removed. This modifies the value string.
-        /// </summary>
-        internal void TrimTrailingWhiteSpaces()
-        {
-            while (Length > 0 && char.IsWhiteSpace(Value[Length - 1]))
-            {
-                Length--;
-            }
-            Value = Value.Substring(0, Length);
-            Length = Value.Length;
-            Move(-1);
         }
     }
 }
