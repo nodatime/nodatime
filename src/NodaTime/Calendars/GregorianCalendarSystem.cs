@@ -67,6 +67,16 @@ namespace NodaTime.Calendars
                 GregorianCache[i] = new GregorianCalendarSystem(GregorianName, i + 1, null);
             }
             IsoInstance = new GregorianCalendarSystem(IsoName, 4, AssembleIsoFields);
+            
+            for (int year = FirstOptimizedYear; year <= LastOptimizedYear; year++)
+            {
+                for (int month = 1; month <= 12; month++)
+                {
+                    int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
+                    MonthStartTicks[yearMonthIndex] = IsoInstance.GetYearMonthTicks(year, month);
+                    MonthLengths[yearMonthIndex] = IsoInstance.GetDaysInMonth(year, month);
+                }
+            }
         }
 
         /// <summary>
