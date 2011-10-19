@@ -110,21 +110,18 @@ namespace NodaTime.Text.Patterns
 
         /// <summary>
         /// Adds text which must be matched exactly when parsing, and appended directly when formatting.
-        /// This overload allows the failure to depend on the expected text.
-        /// </summary>
-        internal PatternParseResult<TResult> AddLiteral(string expectedText, NodaFunc<string, ParseResult<TResult>> failureSelector)
-        {
-            AddParseAction((str, bucket) => str.Match(expectedText) ? null : failureSelector(expectedText));
-            AddFormatAction((value, builder) => builder.Append(expectedText));
-            return null;
-        }
-
-        /// <summary>
-        /// Adds text which must be matched exactly when parsing, and appended directly when formatting.
         /// This overload uses the same failure result for all text values.
         /// </summary>
         internal PatternParseResult<TResult> AddLiteral(string expectedText, ParseResult<TResult> failure)
         {
+            // Common case - single character literal, often a date or time separator.
+            if (expectedText.Length == 1)
+            {
+                char expectedChar = expectedText[0];
+                AddParseAction((str, bucket) => str.Match(expectedChar) ? null : failure);
+                AddFormatAction((value, builder) => builder.Append(expectedChar));
+                return null;
+            }
             // FIXME: These are ludicrously slow... see
             // http://msmvps.com/blogs/jon_skeet/archive/2011/08/23/optimization-and-generics-part-2-lambda-expressions-and-reference-types.aspx
             // for a description of the problem. I need to find a solution though...
