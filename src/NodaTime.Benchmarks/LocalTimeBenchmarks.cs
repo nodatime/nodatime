@@ -79,5 +79,10 @@ namespace NodaTime.Benchmarks
             sample.TickOfMillisecond.Consume();
         }
 
+        [Benchmark]
+        public void TickOfDay()
+        {
+            sample.TickOfDay.Consume();
+        }
     }
 }
