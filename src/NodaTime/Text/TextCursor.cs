@@ -59,7 +59,7 @@ namespace NodaTime.Text
         /// <value>
         /// <c>true</c> if this instance has more characters; otherwise, <c>false</c>.
         /// </value>
-        internal bool HasMoreCharacters { get { return Index + 1 < Length; } }
+        internal bool HasMoreCharacters { get { unchecked { return Index + 1 < Length; } } }
 
         /// <summary>
         /// Gets the current index into the string being parsed.
@@ -120,7 +120,10 @@ namespace NodaTime.Text
         /// <returns></returns>
         internal char PeekNext()
         {
-            return HasMoreCharacters ? Value[Index + 1] : Nul;
+            unchecked
+            {
+                return HasMoreCharacters ? Value[Index + 1] : Nul;                
+            }
         }
 
         /// <summary>
@@ -132,24 +135,27 @@ namespace NodaTime.Text
         /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool Move(int targetIndex)
         {
-            if (targetIndex >= 0)
+            unchecked
             {
-                if (targetIndex < Length)
+                if (targetIndex >= 0)
                 {
-                    Index = targetIndex;
-                    Current = Value[Index];
-                    return true;
+                    if (targetIndex < Length)
+                    {
+                        Index = targetIndex;
+                        Current = Value[Index];
+                        return true;
+                    }
+                    else
+                    {
+                        Current = Nul;
+                        Index = Length;
+                        return false;
+                    }
                 }
-                else
-                {
-                    Current = Nul;
-                    Index = Length;
-                    return false;
-                }
+                Current = Nul;
+                Index = -1;
+                return false;
             }
-            Current = Nul;
-            Index = -1;
-            return false;
         }
 
         /// <summary>
@@ -158,18 +164,21 @@ namespace NodaTime.Text
         /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool MoveNext()
         {
-            // Logically this is Move(Index + 1), but it's micro-optimized as we
-            // know we'll never hit the lower limit this way.
-            int targetIndex = Index + 1;
-            if (targetIndex < Length)
+            unchecked
             {
-                Index = targetIndex;
-                Current = Value[Index];
-                return true;
+                // Logically this is Move(Index + 1), but it's micro-optimized as we
+                // know we'll never hit the lower limit this way.
+                int targetIndex = Index + 1;
+                if (targetIndex < Length)
+                {
+                    Index = targetIndex;
+                    Current = Value[Index];
+                    return true;
+                }
+                Current = Nul;
+                Index = Length;
+                return false;
             }
-            Current = Nul;
-            Index = Length;
-            return false;
         }
 
         /// <summary>
@@ -178,17 +187,20 @@ namespace NodaTime.Text
         /// <returns><c>true</c> if the requested index is in range.</returns>
         internal bool MovePrevious()
         {
-            // Logically this is Move(Index - 1), but it's micro-optimized as we
-            // know we'll never hit the upper limit this way.
-            if (Index > 0)
+            unchecked
             {
-                Index--;
-                Current = Value[Index];
-                return true;
+                // Logically this is Move(Index - 1), but it's micro-optimized as we
+                // know we'll never hit the upper limit this way.
+                if (Index > 0)
+                {
+                    Index--;
+                    Current = Value[Index];
+                    return true;
+                }
+                Current = Nul;
+                Index = -1;
+                return false;
             }
-            Current = Nul;
-            Index = -1;
-            return false;
         }
     }
 }

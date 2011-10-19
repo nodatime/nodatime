@@ -55,12 +55,15 @@ namespace NodaTime.Text
         /// <returns><c>true</c> if the string matches.</returns>
         internal bool Match(string match)
         {
-            if (string.CompareOrdinal(Value, Index, match, 0, match.Length) == 0)
+            unchecked
             {
-                Move(Index + match.Length);
-                return true;
+                if (string.CompareOrdinal(Value, Index, match, 0, match.Length) == 0)
+                {
+                    Move(Index + match.Length);
+                    return true;
+                }
+                return false;
             }
-            return false;
         }
 
         /// <summary>
@@ -69,19 +72,21 @@ namespace NodaTime.Text
         /// </summary>
         internal bool MatchCaseInsensitive(string match, CompareInfo compareInfo)
         {
-            if (match.Length > Value.Length - Index)
+            unchecked
             {
+                if (match.Length > Value.Length - Index)
+                {
+                    return false;
+                }
+                // FIXME: This will fail if the length in the input string is different to the length in the
+                // match string for culture-specific reasons. It's not clear how to handle that...
+                if (compareInfo.Compare(Value, Index, match.Length, match, 0, match.Length, CompareOptions.IgnoreCase) == 0)
+                {
+                    Move(Index + match.Length);
+                    return true;
+                }
                 return false;
             }
-            // FIXME: This will fail if the length in the input string is different to the length in the
-            // match string for culture-specific reasons. It's not clear how to handle that...
-            if (compareInfo.Compare(Value, Index, match.Length,
-                                    match, 0, match.Length, CompareOptions.IgnoreCase) == 0)
-            {
-                Move(Index + match.Length);
-                return true;
-            }
-            return false;
         }
 
         /// <summary>
@@ -96,25 +101,28 @@ namespace NodaTime.Text
         /// <returns><c>true</c> if the digits were parsed.</returns>
         internal bool ParseDigits(int minimumDigits, int maximumDigits, out int result)
         {
-            result = 0;
-            int startIndex = Index;
-            int count = 0;
-            int digit;
-            while (count < maximumDigits && (digit = GetDigit()) != -1)
+            unchecked
             {
-                result = result * 10 + digit;
-                count++;
-                if (!MoveNext())
+                result = 0;
+                int startIndex = Index;
+                int count = 0;
+                int digit;
+                while (count < maximumDigits && (digit = GetDigit()) != -1)
                 {
-                    break;
+                    result = result * 10 + digit;
+                    count++;
+                    if (!MoveNext())
+                    {
+                        break;
+                    }
                 }
+                if (count < minimumDigits)
+                {
+                    Move(startIndex);
+                    return false;
+                }
+                return true;
             }
-            if (count < minimumDigits)
-            {
-                Move(startIndex);
-                return false;
-            }
-            return true;
         }
 
         /// <summary>
@@ -131,24 +139,27 @@ namespace NodaTime.Text
         /// <returns><c>true</c> if the digits were parsed.</returns>
         internal bool ParseFraction(int maximumDigits, int scale, out int result, bool allRequired)
         {
-            if (scale < maximumDigits)
+            unchecked
             {
-                scale = maximumDigits;
+                if (scale < maximumDigits)
+                {
+                    scale = maximumDigits;
+                }
+                result = GetDigit();
+                if (result == -1)
+                {
+                    return false;
+                }
+                int count = 1;
+                int digit;
+                while (MoveNext() && count < maximumDigits && (digit = GetDigit()) != -1)
+                {
+                    result = (result * 10) + digit;
+                    count++;
+                }
+                result = (int)(result * Math.Pow(10.0, scale - count));
+                return !allRequired || (count == maximumDigits);
             }
-            result = GetDigit();
-            if (result == -1)
-            {
-                return false;
-            }
-            int count = 1;
-            int digit;
-            while (MoveNext() && count < maximumDigits && (digit = GetDigit()) != -1)
-            {
-                result = (result * 10) + digit;
-                count++;
-            }
-            result = (int)(result * Math.Pow(10.0, scale - count));
-            return !allRequired || (count == maximumDigits);
         }
 
         /// <summary>
@@ -159,8 +170,11 @@ namespace NodaTime.Text
         /// </remarks>
         private int GetDigit()
         {
-            int c = Current;
-            return c < '0' || c > '9' ? -1 : c - '0';
+            unchecked
+            {
+                int c = Current;
+                return c < '0' || c > '9' ? -1 : c - '0';                
+            }
         }
     }
 }
