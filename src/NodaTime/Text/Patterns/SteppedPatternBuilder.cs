@@ -95,16 +95,16 @@ namespace NodaTime.Text.Patterns
             AddParseAction((cursor, bucket) =>
             {
                 int value;
-                if (cursor.ParseDigits(minimumDigits, maximumDigits, out value))
+                if (!cursor.ParseDigits(minimumDigits, maximumDigits, out value))
                 {
-                    if (value < minimumValue || value > maximumValue)
-                    {
-                        return ParseResult<TResult>.FieldValueOutOfRange(value, patternChar);
-                    }
-                    valueSetter(bucket, value);
-                    return null;
+                    return ParseResult<TResult>.MismatchedNumber(new string(patternChar, minimumDigits));
                 }
-                return ParseResult<TResult>.MismatchedNumber(new string(patternChar, minimumDigits));
+                if (value < minimumValue || value > maximumValue)
+                {
+                    return ParseResult<TResult>.FieldValueOutOfRange(value, patternChar);
+                }
+                valueSetter(bucket, value);
+                return null;
             });
         }
 
