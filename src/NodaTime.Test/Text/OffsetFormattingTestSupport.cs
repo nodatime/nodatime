@@ -112,6 +112,7 @@ namespace NodaTime.Test.Text
             new OffsetData(Offset.Zero) { C = EnUs, S = "24", P = "HH", Exception=typeof(UnparsableValueException), Message = Messages.Parse_FieldValueOutOfRange, Parameters = {24, 'H', typeof(Offset) }},
             new OffsetData(Offset.Zero) { C = EnUs, S = "60", P = "mm", Exception=typeof(UnparsableValueException), Message = Messages.Parse_FieldValueOutOfRange, Parameters = {60, 'm', typeof(Offset) }},
             new OffsetData(Offset.Zero) { C = EnUs, S = "60", P = "ss", Exception=typeof(UnparsableValueException), Message = Messages.Parse_FieldValueOutOfRange, Parameters = {60, 's', typeof(Offset) }},
+            new OffsetData(Offset.Zero) { S = "+12", P = "-HH", Exception = typeof(UnparsableValueException), Message = Messages.Parse_PositiveSignInvalid }
         };
 
         /// <summary>
@@ -240,7 +241,9 @@ namespace NodaTime.Test.Text
             new OffsetData(Offset.MinValue) { C = null, S = "-23:59:59.999", P = "g", ThreadCulture = EnUs },
             new OffsetData(Offset.MaxValue) { C = EnUs, S = "+23:59:59.999", P = "g", ThreadCulture = ItIt },
             new OffsetData(Offset.MinValue) { C = EnUs, S = "-23:59:59.999", P = "g", ThreadCulture = ItIt },
-            new OffsetData(0, 30, 0, 0, true) { C = EnUs, S = "-00:30", P = "+HH:mm" }
+            new OffsetData(0, 30, 0, 0, true) { C = EnUs, S = "-00:30", P = "+HH:mm" },
+            new OffsetData(0, 30, 0, 0, true) { C = EnUs, S = "-00:30", P = "-HH:mm" },
+            new OffsetData(0, 30, 0, 0, false) { C = EnUs, S = "00:30", P = "-HH:mm" },
         };
 
         internal static readonly IEnumerable<OffsetData> AllParseData = ParseData.Concat(CommonData);
