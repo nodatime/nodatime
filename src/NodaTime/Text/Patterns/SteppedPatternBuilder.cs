@@ -28,10 +28,12 @@ namespace NodaTime.Text.Patterns
     /// </summary>
     internal class SteppedPatternBuilder<TResult, TBucket> where TBucket : ParseBucket<TResult>
     {
+        internal delegate ParseResult<TResult> ParseAction(ValueCursor cursor, TBucket bucket);
+
         private readonly NodaFormatInfo formatInfo;
 
         private List<NodaAction<TResult, StringBuilder>> formatActions;
-        private readonly List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions;
+        private readonly List<ParseAction> parseActions;
         private readonly NodaFunc<TBucket> bucketProvider;
         private PatternFields usedFields;
 
@@ -39,7 +41,7 @@ namespace NodaTime.Text.Patterns
         {
             this.formatInfo = formatInfo;
             formatActions = new List<NodaAction<TResult, StringBuilder>>();
-            parseActions = new List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>>();
+            parseActions = new List<ParseAction>();
             this.bucketProvider = bucketProvider;
         }
 
@@ -60,7 +62,7 @@ namespace NodaTime.Text.Patterns
                 IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
                 formatDelegate += postAction == null ? formatAction : postAction.BuildFormatAction(usedFields);
             }
-            return new SteppedPattern(formatDelegate, parseActions, bucketProvider, usedFields);
+            return new SteppedPattern(formatDelegate, parseActions.ToArray(), bucketProvider, usedFields);
         }
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace NodaTime.Text.Patterns
             return null;
         }
 
-        internal void AddParseAction(NodaFunc<ValueCursor, TBucket, ParseResult<TResult>> parseAction)
+        internal void AddParseAction(ParseAction parseAction)
         {
             parseActions.Add(parseAction);
         }
@@ -362,12 +364,12 @@ namespace NodaTime.Text.Patterns
         private class SteppedPattern : IPattern<TResult>
         {
             private readonly NodaAction<TResult, StringBuilder> formatActions;
-            private readonly List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions;
+            private readonly ParseAction[] parseActions;
             private readonly NodaFunc<TBucket> bucketProvider;
             private readonly PatternFields usedFields;
 
             public SteppedPattern(NodaAction<TResult, StringBuilder> formatActions,
-                List<NodaFunc<ValueCursor, TBucket, ParseResult<TResult>>> parseActions,
+                ParseAction[] parseActions,
                 NodaFunc<TBucket> bucketProvider, PatternFields usedFields)
             {
                 this.formatActions = formatActions;
