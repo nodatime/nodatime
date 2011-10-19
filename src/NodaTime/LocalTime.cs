@@ -181,7 +181,9 @@ namespace NodaTime
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
-        public long TickOfDay { get { return IsoFields.TickOfDay.GetInt64Value(localInstant); ; } }
+        // TODO: Consider making the same optimization for the fields above - but this is the one which will
+        // benefit most. It's safe because we know the local instant will be on January 1st 1970.
+        public long TickOfDay { get { return localInstant.Ticks; } }
 
         /// <summary>
         /// Returns a LocalDateTime with this local time, on January 1st 1970 in the ISO calendar.
