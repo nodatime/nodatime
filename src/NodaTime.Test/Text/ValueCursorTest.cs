@@ -166,5 +166,27 @@ namespace NodaTime.Test.Text
             Assert.AreEqual(1, actual);
             ValidateCurrentCharacter(value, 1, 'a');
         }
+
+        [Test]
+        public void TestParseDigit_nonASCII_NeverMatches()
+        {
+            // Arabic-Indic digits 0 and 1. See
+            // http://www.unicode.org/charts/PDF/U0600.pdf
+            var value = new ValueCursor("\u0660\u0661");
+            Assert.True(value.MoveNext());
+            int actual;
+            Assert.False(value.ParseDigits(1, 2, out actual));
+        }
+
+        [Test]
+        public void TestParseFraction_nonASCII_NeverMatches()
+        {
+            // Arabic-Indic digits 0 and 1. See
+            // http://www.unicode.org/charts/PDF/U0600.pdf
+            var value = new ValueCursor("\u0660\u0661");
+            Assert.True(value.MoveNext());
+            int actual;
+            Assert.False(value.ParseFraction(2, 2, out actual, true));
+        }
     }
 }

@@ -85,26 +85,24 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        ///   Parses digits at the current point in the string. If the minimum required
-        ///   digits are not present then the index is unchanged. If there are more digits than
-        ///   the maximum allowed they are ignored.
+        /// Parses digits at the current point in the string. If the minimum required
+        /// digits are not present then the index is unchanged. If there are more digits than
+        /// the maximum allowed they are ignored.
         /// </summary>
         /// <param name="minimumDigits">The minimum allowed digits.</param>
         /// <param name="maximumDigits">The maximum allowed digits.</param>
-        /// <param name="result">The result integer value.</param>
+        /// <param name="result">The result integer value. The value of this is not guaranteed
+        /// to be anything specific if the return value is false.</param>
         /// <returns><c>true</c> if the digits were parsed.</returns>
         internal bool ParseDigits(int minimumDigits, int maximumDigits, out int result)
         {
             result = 0;
             int startIndex = Index;
             int count = 0;
-            while (count < maximumDigits)
+            int digit;
+            while (count < maximumDigits && (digit = GetDigit()) != -1)
             {
-                if (!IsDigit())
-                {
-                    break;
-                }
-                result = result * 10 + GetDigit();
+                result = result * 10 + digit;
                 count++;
                 if (!MoveNext())
                 {
@@ -126,7 +124,8 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="maximumDigits">The maximum allowed digits.</param>
         /// <param name="scale">The scale of the fractional value.</param>
-        /// <param name="result">The result value scaled by scale.</param>
+        /// <param name="result">The result value scaled by scale. The value of this is not guaranteed
+        /// to be anything specific if the return value is false.</param>
         /// <param name="allRequired">If true, <paramref name="maximumDigits"/> digits must be present in the
         /// input sequence. If false, there must be just at least one digit.</param>
         /// <returns><c>true</c> if the digits were parsed.</returns>
@@ -136,16 +135,16 @@ namespace NodaTime.Text
             {
                 scale = maximumDigits;
             }
-            result = Int32.MinValue;
-            if (!IsDigit())
+            result = GetDigit();
+            if (result == -1)
             {
                 return false;
             }
-            result = GetDigit();
             int count = 1;
-            while (MoveNext() && count < maximumDigits && IsDigit())
+            int digit;
+            while (MoveNext() && count < maximumDigits && (digit = GetDigit()) != -1)
             {
-                result = (result * 10) + GetDigit();
+                result = (result * 10) + digit;
                 count++;
             }
             result = (int)(result * Math.Pow(10.0, scale - count));
@@ -153,28 +152,15 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        ///   Gets the integer value of the current digit character. Allows for non-roman digits.
+        /// Gets the integer value of the current digit character, or -1 for "not a digit".
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// This currently only handles ASCII digits, which is all we have to parse to stay in line with the BCL.
+        /// </remarks>
         private int GetDigit()
         {
             int c = Current;
-            if (c >= '0' && c <= '9')
-            {
-                return c - '0';
-            }
-            return (int)char.GetNumericValue(Current);
-        }
-
-        /// <summary>
-        ///   Determines whether the current character is a digit character.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if the current character is a digit; otherwise, <c>false</c>.
-        /// </returns>
-        private bool IsDigit()
-        {
-            return char.IsNumber(Current);
+            return c < '0' || c > '9' ? -1 : c - '0';
         }
     }
 }
