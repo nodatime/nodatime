@@ -110,27 +110,26 @@ namespace NodaTime.Text.Patterns
 
         /// <summary>
         /// Adds text which must be matched exactly when parsing, and appended directly when formatting.
-        /// This does not skip inner whitespace. This overload allows the failure to depend on the expected text.
+        /// This overload allows the failure to depend on the expected text.
         /// </summary>
         internal PatternParseResult<TResult> AddLiteral(string expectedText, NodaFunc<string, ParseResult<TResult>> failureSelector)
         {
             AddParseAction((str, bucket) => str.Match(expectedText) ? null : failureSelector(expectedText));
-            AddFormatAction((offset, builder) => builder.Append(expectedText));
+            AddFormatAction((value, builder) => builder.Append(expectedText));
             return null;
         }
 
         /// <summary>
         /// Adds text which must be matched exactly when parsing, and appended directly when formatting.
-        /// This does not skip inner whitespace. This overload uses the same failure result for all text values.
+        /// This overload uses the same failure result for all text values.
         /// </summary>
         internal PatternParseResult<TResult> AddLiteral(string expectedText, ParseResult<TResult> failure)
         {
-            string copy = expectedText;
             // FIXME: These are ludicrously slow... see
             // http://msmvps.com/blogs/jon_skeet/archive/2011/08/23/optimization-and-generics-part-2-lambda-expressions-and-reference-types.aspx
             // for a description of the problem. I need to find a solution though...
-            AddParseAction((str, bucket) => str.Match(copy) ? null : failure);
-            AddFormatAction((offset, builder) => builder.Append(copy));
+            AddParseAction((str, bucket) => str.Match(expectedText) ? null : failure);
+            AddFormatAction((value, builder) => builder.Append(expectedText));
             return null;
         }
 
@@ -220,7 +219,7 @@ namespace NodaTime.Text.Patterns
         internal PatternParseResult<TResult> AddLiteral(char expectedChar, NodaFunc<char, ParseResult<TResult>> failureSelector)
         {
             AddParseAction((str, bucket) => str.Match(expectedChar) ? null : failureSelector(expectedChar));
-            AddFormatAction((offset, builder) => builder.Append(expectedChar));
+            AddFormatAction((value, builder) => builder.Append(expectedChar));
             return null;
         }
 
