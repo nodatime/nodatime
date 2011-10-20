@@ -53,6 +53,14 @@ namespace NodaTime.Test
             Assert.AreEqual(0L, (Duration.One + Duration.NegativeOne).Ticks, "1 + (-1)");
             Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.One).Ticks, "-50,000,000 + 1");
         }
+
+        [Test]
+        public void AddMethod_Equivalence()
+        {
+            Duration x = new Duration(100);
+            Duration y = new Duration(200);
+            Assert.AreEqual(x + y, Duration.Add(x, y));
+        }
         #endregion
 
         #region operator -
