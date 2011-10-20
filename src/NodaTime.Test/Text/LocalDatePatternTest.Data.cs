@@ -70,6 +70,7 @@ namespace NodaTime.Test.Text
             // Invalid year, year-of-era, month, day
             new Data { Pattern = "yyyyy MM dd", Text = "99999 01 01", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 99999, 'y', typeof(LocalDate) } },
             new Data { Pattern = "YYYYY MM dd", Text = "99999 01 01", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 99999, "CE", "ISO" } },
+            new Data { Pattern = "YYYY MM dd", Text = "0000 01 01", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 0, "CE", "ISO" } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 15 29", Message = Messages.Parse_MonthOutOfRange, Parameters = { 15, 2011 } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 02 35", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 35, 2, 2011 } },
 
