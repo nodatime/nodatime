@@ -67,14 +67,18 @@ namespace NodaTime.Test.Text
             // Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
             new Data { Pattern = "yyyy MMM dd", Text = "2011 October 09", Message = Messages.Parse_MismatchedCharacter, Parameters = {' '}},
 
-            // Invalid year, month, day
+            // Invalid year, year-of-era, month, day
             new Data { Pattern = "yyyyy MM dd", Text = "99999 01 01", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 99999, 'y', typeof(LocalDate) } },
+            new Data { Pattern = "YYYYY MM dd", Text = "99999 01 01", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 99999, "CE", "ISO" } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 15 29", Message = Messages.Parse_MonthOutOfRange, Parameters = { 15, 2011 } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 02 35", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 35, 2, 2011 } },
 
             // Invalid leap years
             new Data { Pattern = "yyyy MM dd", Text = "2011 02 29", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 29, 2, 2011 } },
             new Data { Pattern = "yyyy MM dd", Text = "1900 02 29", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 29, 2, 1900 } },
+
+            // Year of era and two-digit year, but they don't match
+            new Data { Pattern = "YYYY yy", Text = "2011 10", Message = Messages.Parse_InconsistentValues2, Parameters = { 'y', 'Y', typeof(LocalDate) } },
         };
 
         internal static Data[] ParseOnlyData = {
@@ -103,6 +107,12 @@ namespace NodaTime.Test.Text
         };
 
         internal static Data[] FormatAndParseData = {
+            // Standard patterns
+            // Invariant culture uses the crazy MM/dd/yyyy format. Blech.
+            new Data(2011, 10, 20) { Pattern = "d", Text = "10/20/2011" },
+            new Data(2011, 10, 20) { Pattern = "D", Text = "Thursday, 20 October 2011" },
+
+            // Custom patterns
             new Data(2011, 10, 3) { Pattern = "yyyy/MM/dd", Text = "2011/10/03" },
             new Data(2011, 10, 3) { Pattern = "yyyy/MM/dd", Text = "2011-10-03", Culture = FrCa },
             new Data(2011, 10, 3) { Pattern = "yyyyMMdd", Text = "20111003" },
@@ -141,6 +151,10 @@ namespace NodaTime.Test.Text
             // Month handling
             new Data(2011, 10, 9) { Pattern = "yyyy MMMM dd", Text = "2011 October 09" },
             new Data(2011, 10, 9) { Pattern = "yyyy MMM dd", Text = "2011 Oct 09" },
+
+            // Year of era and two-digit year in the same format. Note that the year of era
+            // gives the full year information, so we're not stuck in the 20th/21st century
+            new Data(1825, 10, 9) { Pattern = "YYYY yy MM/dd", Text = "1825 25 10/09" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
