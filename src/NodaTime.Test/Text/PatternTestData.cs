@@ -101,7 +101,7 @@ namespace NodaTime.Test.Text
 
         public void TestInvalidPattern()
         {
-            string expectedMessage = string.Format(Message, parameters.ToArray());
+            string expectedMessage = FormatMessage(Message, parameters.ToArray());
             try
             {
                 CreatePattern();
@@ -116,7 +116,7 @@ namespace NodaTime.Test.Text
 
         public void TestParseFailure()
         {
-            string expectedMessage = string.Format(Message, parameters.ToArray());
+            string expectedMessage = FormatMessage(Message, parameters.ToArray());
             IPattern<T> pattern = CreatePattern();
             var result = pattern.Parse(Text);
             Assert.IsFalse(result.Success);
@@ -132,25 +132,48 @@ namespace NodaTime.Test.Text
             }
         }
 
-        public override string  ToString()
+        public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
-            builder.AppendFormat("Value={0}; ", Value);
-            builder.AppendFormat("Pattern={0}; ", Pattern);
-            builder.AppendFormat("Text={0}; ", Text);
-            if (Culture != CultureInfo.InvariantCulture)
+            try
             {
-                builder.AppendFormat("Culture={0}; ", Culture);
+                StringBuilder builder = new StringBuilder();
+                builder.AppendFormat("Value={0}; ", Value);
+                builder.AppendFormat("Pattern={0}; ", Pattern);
+                builder.AppendFormat("Text={0}; ", Text);
+                if (Culture != CultureInfo.InvariantCulture)
+                {
+                    builder.AppendFormat("Culture={0}; ", Culture);
+                }
+                if (Description != null)
+                {
+                    builder.AppendFormat("Description={0}; ", Description);
+                }
+                if (!Template.Equals(DefaultTemplate))
+                {
+                    builder.AppendFormat("Template={0};", Template);
+                }
+                return builder.ToString();
             }
-            if (Description != null)
+            catch (Exception)
             {
-                builder.AppendFormat("Description={0}; ", Description);
+                return "Formatting of test name failed";
             }
-            if (!Template.Equals(DefaultTemplate))
+        }
+
+        /// <summary>
+        /// Formats a message, giving a *useful* error message on failure. It can be a pain checking exactly what
+        /// the message format is when writing tests...
+        /// </summary>
+        private static string FormatMessage(string message, object[] parameters)
+        {
+            try
             {
-                builder.AppendFormat("Template={0};", Template);
+                return string.Format(message, parameters);
             }
-            return builder.ToString();
+            catch (FormatException)
+            {
+                throw new FormatException(string.Format("Failed to format string '{0}' with {1} parameters", message, parameters.Length));
+            }
         }
     }
 }
