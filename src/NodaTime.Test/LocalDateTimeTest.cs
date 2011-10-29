@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -48,6 +49,18 @@ namespace NodaTime.Test
                 LocalDateTime actual = LocalDateTime.FromDateTime(x);
                 Assert.AreEqual(expected, actual);
             }
+        }
+
+        [Test]
+        public void DateTime_Roundtrip_OtherCalendarInBcl()
+        {
+            DateTime original = new DateTime(1376, 6, 19, new HijriCalendar());
+            LocalDateTime noda = LocalDateTime.FromDateTime(original);
+            // The DateTime only knows about the ISO version...
+            Assert.AreNotEqual(1376, noda.Year);
+            Assert.AreEqual(CalendarSystem.Iso, noda.Calendar);
+            DateTime final = noda.ToDateTimeUnspecified();
+            Assert.AreEqual(original, final);
         }
 
         [Test]
