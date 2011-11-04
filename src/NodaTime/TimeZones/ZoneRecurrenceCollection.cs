@@ -22,7 +22,7 @@ using System.Collections.Generic;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// 
+    /// Used to create time zones.
     /// </summary>
     /// <remarks>
     /// <para>
