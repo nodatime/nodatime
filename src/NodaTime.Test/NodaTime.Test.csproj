@@ -109,7 +109,7 @@
     </Compile>
     <Compile Include="CultureSaver.cs" />
     <Compile Include="LocalDateTest.cs" />
-    <Compile Include="LocalDateTest.PlusUnit.cs">
+    <Compile Include="LocalDateTest.Pseudomutators.cs">
       <DependentUpon>LocalDateTest.cs</DependentUpon>
     </Compile>
     <Compile Include="LocalDateTest.BasicProperties.cs">
