@@ -298,13 +298,67 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a new LocalDateTime representing the current value with the given number of weeks added.
+        /// Returns a new LocalDate representing the current value with the given number of weeks added.
         /// </summary>
         /// <param name="weeks">The number of weeks to add</param>
         /// <returns>The current value plus the given number of weeks.</returns>
         public LocalDate PlusWeeks(int weeks)
         {
             return new LocalDate(LocalDateTime.PlusWeeks(weeks));
+        }
+
+        /// <summary>
+        /// Returns the next <see cref="LocalDate" /> falling on the specified <see cref="IsoDayOfWeek"/>.
+        /// This is a strict "next" - if this date on already falls on the target
+        /// day of the week, the returned value will be a week later.
+        /// </summary>
+        /// <param name="targetDayOfWeek">The ISO day of the week to return the next date of.</param>
+        /// <returns>The next <see cref="LocalDate"/> falling on the specified day of the week.</returns>
+        /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="targetDayOfWeek"/> is not a valid day of the
+        /// week (Monday to Sunday).</exception>
+        public LocalDate Next(IsoDayOfWeek targetDayOfWeek)
+        {
+            // Avoids boxing...
+            if (targetDayOfWeek < IsoDayOfWeek.Monday || targetDayOfWeek > IsoDayOfWeek.Sunday)
+            {
+                throw new ArgumentOutOfRangeException("targetDayOfWeek");
+            }
+            // This will throw the desired exception for calendars with different week systems.
+            IsoDayOfWeek thisDay = this.IsoDayOfWeek;
+            int difference = targetDayOfWeek - thisDay;
+            if (difference <= 0)
+            {
+                difference += 7;
+            }
+            return this.PlusDays(difference);
+        }
+
+        /// <summary>
+        /// Returns the previous <see cref="LocalDate" /> falling on the specified <see cref="IsoDayOfWeek"/>.
+        /// This is a strict "previous" - if this date on already falls on the target
+        /// day of the week, the returned value will be a week earlier.
+        /// </summary>
+        /// <param name="targetDayOfWeek">The ISO day of the week to return the previous date of.</param>
+        /// <returns>The previous <see cref="LocalDate"/> falling on the specified day of the week.</returns>
+        /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="targetDayOfWeek"/> is not a valid day of the
+        /// week (Monday to Sunday).</exception>
+        public LocalDate Previous(IsoDayOfWeek targetDayOfWeek)
+        {
+            // Avoids boxing...
+            if (targetDayOfWeek < IsoDayOfWeek.Monday || targetDayOfWeek > IsoDayOfWeek.Sunday)
+            {
+                throw new ArgumentOutOfRangeException("targetDayOfWeek");
+            }
+            // This will throw the desired exception for calendars with different week systems.
+            IsoDayOfWeek thisDay = this.IsoDayOfWeek;
+            int difference = targetDayOfWeek - thisDay;
+            if (difference >= 0)
+            {
+                difference -= 7;
+            }
+            return this.PlusDays(difference);
         }
 
         #region Formatting

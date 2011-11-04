@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -138,5 +139,68 @@ namespace NodaTime.Test
             Assert.AreEqual(expectedForward, start.PlusWeeks(3));
             Assert.AreEqual(expectedBackward, start.PlusWeeks(-3));
         }
+
+        // Each test case gives a day-of-month in November 2011 and a target "next day of week";
+        // the result is the next day-of-month in November 2011 with that target day.
+        // The tests are picked somewhat arbitrarily...
+        [TestCase(10, IsoDayOfWeek.Wednesday, Result = 16)]
+        [TestCase(10, IsoDayOfWeek.Friday, Result = 11)]
+        [TestCase(10, IsoDayOfWeek.Thursday, Result = 17)]
+        [TestCase(11, IsoDayOfWeek.Wednesday, Result = 16)]
+        [TestCase(11, IsoDayOfWeek.Thursday, Result = 17)]
+        [TestCase(11, IsoDayOfWeek.Friday, Result = 18)]
+        [TestCase(11, IsoDayOfWeek.Saturday, Result = 12)]
+        [TestCase(11, IsoDayOfWeek.Sunday, Result = 13)]
+        [TestCase(12, IsoDayOfWeek.Friday, Result = 18)]
+        [TestCase(13, IsoDayOfWeek.Friday, Result = 18)]
+        public int Next(int dayOfMonth, IsoDayOfWeek targetDayOfWeek)
+        {
+            LocalDate start = new LocalDate(2011, 11, dayOfMonth);
+            LocalDate target = start.Next(targetDayOfWeek);
+            Assert.AreEqual(2011, target.Year);
+            Assert.AreEqual(11, target.MonthOfYear);
+            return target.DayOfMonth;
+        }
+
+        [TestCase(0)]
+        [TestCase(-1)]
+        [TestCase(8)]
+        public void Next_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
+        {
+            LocalDate start = new LocalDate(2011, 1, 1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => start.Next(targetDayOfWeek));
+        }
+
+        // Each test case gives a day-of-month in November 2011 and a target "next day of week";
+        // the result is the next day-of-month in November 2011 with that target day.
+        [TestCase(10, IsoDayOfWeek.Wednesday, Result = 9)]
+        [TestCase(10, IsoDayOfWeek.Friday, Result = 4)]
+        [TestCase(10, IsoDayOfWeek.Thursday, Result = 3)]
+        [TestCase(11, IsoDayOfWeek.Wednesday, Result = 9)]
+        [TestCase(11, IsoDayOfWeek.Thursday, Result = 10)]
+        [TestCase(11, IsoDayOfWeek.Friday, Result = 4)]
+        [TestCase(11, IsoDayOfWeek.Saturday, Result = 5)]
+        [TestCase(11, IsoDayOfWeek.Sunday, Result = 6)]
+        [TestCase(12, IsoDayOfWeek.Friday, Result = 11)]
+        [TestCase(13, IsoDayOfWeek.Friday, Result = 11)]
+        public int Previous(int dayOfMonth, IsoDayOfWeek targetDayOfWeek)
+        {
+            LocalDate start = new LocalDate(2011, 11, dayOfMonth);
+            LocalDate target = start.Previous(targetDayOfWeek);
+            Assert.AreEqual(2011, target.Year);
+            Assert.AreEqual(11, target.MonthOfYear);
+            return target.DayOfMonth;
+        }
+
+        [TestCase(0)]
+        [TestCase(-1)]
+        [TestCase(8)]
+        public void Previous_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
+        {
+            LocalDate start = new LocalDate(2011, 1, 1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => start.Previous(targetDayOfWeek));
+        }
+
+        // No tests for non-ISO-day-of-week calendars as we don't have any yet.
     }
 }

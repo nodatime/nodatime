@@ -25,7 +25,8 @@ namespace NodaTime
     {
         /// <summary>
         /// Value indicating no day of the week; this will never be returned
-        /// by any IsoDayOfWeek property.
+        /// by any IsoDayOfWeek property, and is not valid as an argument to
+        /// any method.
         /// </summary>
         None = 0,
         /// <summary>
