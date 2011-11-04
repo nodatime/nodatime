@@ -55,5 +55,24 @@ namespace NodaTime.Test
             Assert.AreEqual(2011, date.WeekYear);
             Assert.AreEqual(9, date.WeekOfWeekYear);
         }
+
+        // See http://stackoverflow.com/questions/8010125
+        [Test]
+        public void WeekOfWeekYear_ComparisonWithOracle()
+        {
+            Assert.AreEqual(1, new LocalDate(2007, 12, 31).WeekOfWeekYear);
+            Assert.AreEqual(1, new LocalDate(2008, 1, 6).WeekOfWeekYear);
+            Assert.AreEqual(2, new LocalDate(2008, 1, 7).WeekOfWeekYear);
+
+            Assert.AreEqual(52, new LocalDate(2008, 12, 28).WeekOfWeekYear);
+            Assert.AreEqual(1, new LocalDate(2008, 12, 29).WeekOfWeekYear);
+            Assert.AreEqual(1, new LocalDate(2009, 1, 4).WeekOfWeekYear);
+            Assert.AreEqual(2, new LocalDate(2009, 1, 5).WeekOfWeekYear);
+
+            Assert.AreEqual(52, new LocalDate(2009, 12, 27).WeekOfWeekYear);
+            Assert.AreEqual(53, new LocalDate(2009, 12, 28).WeekOfWeekYear);
+            Assert.AreEqual(53, new LocalDate(2010, 1, 3).WeekOfWeekYear);
+            Assert.AreEqual(1, new LocalDate(2010, 1, 4).WeekOfWeekYear);
+        }
     }
 }
