@@ -319,19 +319,8 @@ namespace NodaTime
         /// week (Monday to Sunday).</exception>
         public LocalDate Next(IsoDayOfWeek targetDayOfWeek)
         {
-            // Avoids boxing...
-            if (targetDayOfWeek < IsoDayOfWeek.Monday || targetDayOfWeek > IsoDayOfWeek.Sunday)
-            {
-                throw new ArgumentOutOfRangeException("targetDayOfWeek");
-            }
-            // This will throw the desired exception for calendars with different week systems.
-            IsoDayOfWeek thisDay = this.IsoDayOfWeek;
-            int difference = targetDayOfWeek - thisDay;
-            if (difference <= 0)
-            {
-                difference += 7;
-            }
-            return this.PlusDays(difference);
+            // LocalDateTime.Next performs all the validation we need.
+            return new LocalDate(LocalDateTime.Next(targetDayOfWeek));
         }
 
         /// <summary>
@@ -346,19 +335,8 @@ namespace NodaTime
         /// week (Monday to Sunday).</exception>
         public LocalDate Previous(IsoDayOfWeek targetDayOfWeek)
         {
-            // Avoids boxing...
-            if (targetDayOfWeek < IsoDayOfWeek.Monday || targetDayOfWeek > IsoDayOfWeek.Sunday)
-            {
-                throw new ArgumentOutOfRangeException("targetDayOfWeek");
-            }
-            // This will throw the desired exception for calendars with different week systems.
-            IsoDayOfWeek thisDay = this.IsoDayOfWeek;
-            int difference = targetDayOfWeek - thisDay;
-            if (difference >= 0)
-            {
-                difference -= 7;
-            }
-            return this.PlusDays(difference);
+            // LocalDateTime.Next performs all the validation we need.
+            return new LocalDate(LocalDateTime.Previous(targetDayOfWeek));
         }
 
         #region Formatting
