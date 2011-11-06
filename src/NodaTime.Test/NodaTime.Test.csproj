@@ -258,6 +258,7 @@
     <Compile Include="TimeZones\ZoneTransitionTest.cs" />
     <Compile Include="TimeZones\ReadWriteTest.cs" />
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
+    <Compile Include="Utility\BclConversionsTest.cs" />
     <Compile Include="ZonedDateTimeTest.cs" />
     <None Include="Tests.nunit" />
     <Compile Include="TimeZones\DateTimeZoneTest.GetZoneIntervals.cs">
