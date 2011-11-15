@@ -145,6 +145,15 @@
       <DependentUpon>InstantTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DateTimeZoneTest.cs" />
+    <Compile Include="DateTimeZoneTest.Ids.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeZoneTest.GetZoneIntervals.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeZoneTest.LocalConversions.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="LocalDateTimeTest.cs" />
     <Compile Include="LocalDateTimeTest.Pseudomutators.cs">
       <DependentUpon>LocalDateTimeTest.cs</DependentUpon>
@@ -187,7 +196,6 @@
     <Compile Include="TimeZones\ReadWriteCompressTest.cs" />
     <Compile Include="TimeZones\IoStream.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZoneTest.cs" />
-    <Compile Include="TimeZones\DateTimeZoneTest.cs" />
     <Compile Include="DurationTest.cs" />
     <Compile Include="DurationTest.Operators.cs">
       <DependentUpon>DurationTest.cs</DependentUpon>
@@ -261,12 +269,6 @@
     <Compile Include="Utility\BclConversionsTest.cs" />
     <Compile Include="ZonedDateTimeTest.cs" />
     <None Include="Tests.nunit" />
-    <Compile Include="TimeZones\DateTimeZoneTest.GetZoneIntervals.cs">
-      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TimeZones\DateTimeZoneTest.LocalConversions.cs">
-      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Text\LocalTimePatternTest.WithTemplateValue.cs">
       <DependentUpon>LocalTimePatternTest.cs</DependentUpon>
     </Compile>
