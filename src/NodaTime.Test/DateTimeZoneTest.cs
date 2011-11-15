@@ -159,6 +159,48 @@ namespace NodaTime.Test
             }
         }
 
+        [Test]
+        public void TestMapLocalDateTime_UnambiguousDateReturnsUnambiguousMapping()
+        {
+            const ZoneLocalMapping.ResultType expected = ZoneLocalMapping.ResultType.Unambiguous;
+
+            var unambigiousTime = new LocalDateTime(2011, 11, 9, 1, 30); //2011-11-09 01:30:00 - not ambiguous in America/New York timezone
+            var target = BuildAmericaNewYorkTimeZone();
+            var actual = target.MapLocalDateTime(unambigiousTime).Type;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void TestMapLocalDateTime_AmbiguousDateReturnsAmbigousMapping()
+        {
+            const ZoneLocalMapping.ResultType expected = ZoneLocalMapping.ResultType.Ambiguous;
+
+            var ambiguousTime = new LocalDateTime(2011, 11, 6, 1, 30); //2011-11-06 01:30:00 - falls during DST - EST conversion in America/New York timezone
+            var target = BuildAmericaNewYorkTimeZone();
+            var actual = target.MapLocalDateTime(ambiguousTime).Type;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void TestMapLocalDateTime_SkippedDateReturnsSkippedMapping()
+        {
+            const ZoneLocalMapping.ResultType expected = ZoneLocalMapping.ResultType.Skipped;
+
+            var skippedTime = new LocalDateTime(2011, 3, 13, 2, 30); //2011-03-13 02:30:00 - falls during EST - DST conversion in America/New York timezone
+            var target = BuildAmericaNewYorkTimeZone();
+            var actual = target.MapLocalDateTime(skippedTime).Type;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        private DateTimeZone BuildAmericaNewYorkTimeZone()
+        {
+            const string americaNewYork = "America/New York";
+            return DateTimeZone.ForId(americaNewYork);
+        }
+
         private static void ExcerciseProvider(TestProvider provider)
         {
             var ids = DateTimeZone.Ids;
