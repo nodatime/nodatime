@@ -139,7 +139,7 @@ namespace NodaTime.TimeZones
         {
             private readonly ZonedDateTime unambiguousMapping;
 
-            internal UnambiguousMappingResult(ZonedDateTime unambiguousMapping) : base(ResultType.Ambiguous)
+            internal UnambiguousMappingResult(ZonedDateTime unambiguousMapping) : base(ResultType.Unambiguous)
             {
                 this.unambiguousMapping = unambiguousMapping;
             }
