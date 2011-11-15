@@ -136,7 +136,7 @@ namespace NodaTime
         ///   </para>
         ///   <para>
         ///     When this method is called all existing providers are removed from the list. Then the UTC
-        ///     provideer will be added and if the <paramref name = "utcOnlyFlag" /> is <c>false</c> then default
+        ///     provider will be added and if the <paramref name = "utcOnlyFlag" /> is <c>false</c> then default
         ///     provider. This means that any providers added by user code will be removed. The
         ///     <see cref="P:NodaTime.DateTimeZone.Current" /> setting will also be lost.
         ///   </para>
