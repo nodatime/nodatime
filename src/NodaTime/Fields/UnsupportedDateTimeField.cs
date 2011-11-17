@@ -21,41 +21,40 @@ namespace NodaTime.Fields
 {
     /// <summary>
     /// A placeholder implementation to use when a datetime field is not supported.
-    /// All methods throw <see cref="NotSupportedException"/>.
+    /// All methods throw <see cref="NotSupportedException"/>, and the DurationField is always
+    /// the unsupported field of the appropriate duration type.
     /// </summary>
     internal class UnsupportedDateTimeField : DateTimeField
     {
-        private static readonly object cacheLock = new object();
-        private static readonly UnsupportedDateTimeField[] cache = new UnsupportedDateTimeField[DateTimeFieldType.MaxOrdinal + 1];
+        // Convenience fields
+        public static readonly UnsupportedDateTimeField Era = new UnsupportedDateTimeField(DateTimeFieldType.Era);
+        public static readonly UnsupportedDateTimeField YearOfEra = new UnsupportedDateTimeField(DateTimeFieldType.YearOfEra);
+        public static readonly UnsupportedDateTimeField CenturyOfEra = new UnsupportedDateTimeField(DateTimeFieldType.CenturyOfEra);
+        public static readonly UnsupportedDateTimeField YearOfCentury = new UnsupportedDateTimeField(DateTimeFieldType.YearOfCentury);
+        public static readonly UnsupportedDateTimeField Year = new UnsupportedDateTimeField(DateTimeFieldType.Year);
+        public static readonly UnsupportedDateTimeField DayOfYear = new UnsupportedDateTimeField(DateTimeFieldType.DayOfYear);
+        public static readonly UnsupportedDateTimeField MonthOfYear = new UnsupportedDateTimeField(DateTimeFieldType.MonthOfYear);
+        public static readonly UnsupportedDateTimeField DayOfMonth = new UnsupportedDateTimeField(DateTimeFieldType.DayOfMonth);
+        public static readonly UnsupportedDateTimeField WeekYearOfCentury = new UnsupportedDateTimeField(DateTimeFieldType.WeekYearOfCentury);
+        public static readonly UnsupportedDateTimeField WeekYear = new UnsupportedDateTimeField(DateTimeFieldType.WeekYear);
+        public static readonly UnsupportedDateTimeField WeekOfWeekYear = new UnsupportedDateTimeField(DateTimeFieldType.WeekOfWeekYear);
+        public static readonly UnsupportedDateTimeField DayOfWeek = new UnsupportedDateTimeField(DateTimeFieldType.DayOfWeek);
+        public static readonly UnsupportedDateTimeField HalfDayOfDay = new UnsupportedDateTimeField(DateTimeFieldType.HalfDayOfDay);
+        public static readonly UnsupportedDateTimeField HourOfHalfDay = new UnsupportedDateTimeField(DateTimeFieldType.HourOfHalfDay);
+        public static readonly UnsupportedDateTimeField ClockHourOfHalfDay = new UnsupportedDateTimeField(DateTimeFieldType.ClockHourOfHalfDay);
+        public static readonly UnsupportedDateTimeField ClockHourOfDay = new UnsupportedDateTimeField(DateTimeFieldType.ClockHourOfDay);
+        public static readonly UnsupportedDateTimeField HourOfDay = new UnsupportedDateTimeField(DateTimeFieldType.HourOfDay);
+        public static readonly UnsupportedDateTimeField MinuteOfDay = new UnsupportedDateTimeField(DateTimeFieldType.MinuteOfDay);
+        public static readonly UnsupportedDateTimeField MinuteOfHour = new UnsupportedDateTimeField(DateTimeFieldType.MinuteOfHour);
+        public static readonly UnsupportedDateTimeField SecondOfMinute = new UnsupportedDateTimeField(DateTimeFieldType.SecondOfMinute);
+        public static readonly UnsupportedDateTimeField SecondOfDay = new UnsupportedDateTimeField(DateTimeFieldType.SecondOfDay);
+        public static readonly UnsupportedDateTimeField MillisecondOfSecond = new UnsupportedDateTimeField(DateTimeFieldType.MillisecondOfSecond);
+        public static readonly UnsupportedDateTimeField MillisecondOfDay = new UnsupportedDateTimeField(DateTimeFieldType.MillisecondOfDay);
+        public static readonly UnsupportedDateTimeField TickOfMillisecond = new UnsupportedDateTimeField(DateTimeFieldType.TickOfMillisecond);
+        public static readonly UnsupportedDateTimeField TickOfDay = new UnsupportedDateTimeField(DateTimeFieldType.TickOfDay);
+        public static readonly UnsupportedDateTimeField TickOfSecond = new UnsupportedDateTimeField(DateTimeFieldType.TickOfSecond);
 
-        /// <summary>
-        /// Returns an instance for the specified field type and duration field.
-        /// The returned value is cached.
-        /// TODO: Potentially use ReaderWriterLockSlim? Assess performance of caching in the first place...
-        /// </summary>
-        internal static UnsupportedDateTimeField GetInstance(DateTimeFieldType fieldType, DurationField durationField)
-        {
-            if (fieldType == null)
-            {
-                throw new ArgumentNullException("fieldType");
-            }
-            if (durationField == null)
-            {
-                throw new ArgumentNullException("durationField");
-            }
-            lock (cacheLock)
-            {
-                UnsupportedDateTimeField cached = cache[fieldType.Ordinal];
-                if (cached == null || !ReferenceEquals(cached.DurationField, durationField))
-                {
-                    cached = new UnsupportedDateTimeField(fieldType, durationField);
-                    cache[fieldType.Ordinal] = cached;
-                }
-                return cached;
-            }
-        }
-
-        private UnsupportedDateTimeField(DateTimeFieldType fieldType, DurationField durationField) : base(fieldType, durationField, false, false)
+        private UnsupportedDateTimeField(DateTimeFieldType fieldType) : base(fieldType, UnsupportedDurationField.ForFieldType(fieldType.DurationFieldType), false, false)
         {
         }
 
@@ -134,11 +133,6 @@ namespace NodaTime.Fields
         }
 
         internal override Duration Remainder(LocalInstant localInstant)
-        {
-            throw new NotSupportedException();
-        }
-
-        internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
             throw new NotSupportedException();
         }

@@ -34,9 +34,7 @@ namespace NodaTime.Test.Fields
         public void Constructor_WithUnsupportedWrappedField_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentException>(
-                () =>
-                new SimpleDecoratedDateTimeField(UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MinuteOfDay, UnsupportedDurationField.Minutes),
-                                                 DateTimeFieldType.SecondOfMinute));
+                () => new SimpleDecoratedDateTimeField(UnsupportedDateTimeField.MinuteOfDay, DateTimeFieldType.SecondOfMinute));
         }
 
         [Test]

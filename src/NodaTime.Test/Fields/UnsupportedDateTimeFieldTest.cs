@@ -25,45 +25,6 @@ namespace NodaTime.Test.Fields
     public class UnsupportedDateTimeFieldTest
     {
         [Test]
-        public void GetInstance_WithNullDurationField_ThrowsArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => UnsupportedDateTimeField.GetInstance(DateTimeFieldType.SecondOfMinute, null));
-        }
-
-        [Test]
-        public void GetInstance_WithInvalidDateTimeFieldType_ThrowsArgumentOutOfRangeException()
-        {
-            Assert.Throws<ArgumentNullException>(() => UnsupportedDateTimeField.GetInstance(null, UnsupportedDurationField.Years));
-        }
-
-        [Test]
-        public void GetInstance_Caching()
-        {
-            DurationField months = UnsupportedDurationField.Months;
-            DurationField years = UnsupportedDurationField.Years;
-
-            DateTimeField field1 = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, months);
-            DateTimeField field2 = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, months);
-            DateTimeField field3 = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, years);
-            DateTimeField field4 = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, years);
-            DateTimeField field5 = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.YearOfCentury, years);
-
-            Assert.AreSame(field1, field2);
-            Assert.AreNotSame(field2, field3);
-            Assert.AreSame(field3, field4);
-            Assert.AreNotSame(field4, field5);
-        }
-
-        [Test]
-        public void GetInstance_ReturnsCorrectValues()
-        {
-            DateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, UnsupportedDurationField.Years);
-
-            Assert.AreEqual(DateTimeFieldType.MonthOfYear, field.FieldType);
-            Assert.AreSame(UnsupportedDurationField.Years, field.DurationField);
-        }
-
-        [Test]
         public void UnsupportedOperations_ThrowNotSupportedException()
         {
             LocalInstant when = new LocalInstant();
@@ -87,7 +48,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void ConstantProperties_ReturnExpectedValues()
         {
-            DateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, UnsupportedDurationField.Years);
+            DateTimeField field = UnsupportedDateTimeField.MonthOfYear;
             Assert.IsFalse(field.IsLenient);
             Assert.IsFalse(field.IsSupported);
             Assert.IsNull(field.LeapDurationField);
@@ -96,7 +57,7 @@ namespace NodaTime.Test.Fields
 
         private static void AssertUnsupported(Action<DateTimeField> action)
         {
-            DateTimeField field = UnsupportedDateTimeField.GetInstance(DateTimeFieldType.MonthOfYear, new MockCountingDurationField(DurationFieldType.Seconds));
+            DateTimeField field = UnsupportedDateTimeField.MonthOfYear;
             Assert.Throws<NotSupportedException>(() => action(field));
         }
     }
