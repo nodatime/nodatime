@@ -89,7 +89,14 @@ namespace NodaTime.Benchmarks.Timing
                 {
                     // Scale up the iterations to work out the full test time
                     double scale = ((double)options.TestTime.Ticks) / duration.Ticks;
-                    iterations = (int)(iterations * scale);
+                    double scaledIterations = scale * iterations;
+                    // Make sure we never end up overflowing...
+                    iterations = (int)Math.Min(scaledIterations, int.MaxValue - 1);
+                    break;
+                }
+                // Make sure we don't end up overflowing due to doubling...
+                if (iterations >= int.MaxValue / 2)
+                {
                     break;
                 }
                 iterations *= 2;

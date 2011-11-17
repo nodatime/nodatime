@@ -24,12 +24,12 @@ namespace NodaTime.Benchmarks.FrameworkComparisons
 {
     internal class DateTimeBenchmarks
     {
-        private readonly DateTime sample = new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local);
+        private readonly DateTime sample = new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local);
 
         [Benchmark]
         public void Construction()
         {
-            new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local).Consume();
+            new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local).Consume();
         }
 
         [Benchmark]
