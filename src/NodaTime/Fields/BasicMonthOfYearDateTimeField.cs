@@ -63,19 +63,6 @@ namespace NodaTime.Fields
             return calendarSystem.GetMonthOfYear(localInstant);
         }
 
-        /// <summary>
-        /// Add to the Month component of the specified time instant
-        /// wrapping around within that component if necessary.
-        /// </summary>
-        /// <param name="localInstant">The local instant to update</param>
-        /// <param name="value">The months to add (can be negative)</param>
-        /// <returns>The updated local instant</returns>
-        internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
-        {
-            int months = value;
-            return SetValue(localInstant, FieldUtils.GetWrappedValue(GetValue(localInstant), months, MinimumValue, max));
-        }
-
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, MinimumValue, max);

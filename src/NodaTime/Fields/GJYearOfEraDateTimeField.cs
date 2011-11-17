@@ -19,9 +19,6 @@ using NodaTime.Calendars;
 
 namespace NodaTime.Fields
 {
-    /// <summary>
-    /// Porting status: Need AddWrapField
-    /// </summary>
     internal sealed class GJYearOfEraDateTimeField : DecoratedDateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;

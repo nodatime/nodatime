@@ -20,9 +20,6 @@ using NodaTime.Calendars;
 
 namespace NodaTime.Fields
 {
-    /// <summary>
-    /// Still need to do AddWrapField.
-    /// </summary>
     internal class IsoYearOfEraDateTimeField : DecoratedDateTimeField
     {
         internal static readonly DateTimeField Instance = new IsoYearOfEraDateTimeField();

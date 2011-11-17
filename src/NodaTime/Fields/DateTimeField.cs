@@ -106,36 +106,6 @@ namespace NodaTime.Fields
         internal abstract long GetInt64Value(LocalInstant localInstant);
 
         /// <summary>
-        /// Adds a value (which may be negative) to the local instant,
-        /// wrapping within this field.
-        /// </summary>
-        /// <param name="localInstant">The local instant to add to</param>
-        /// <param name="value">The value to add, in the units of the field</param>
-        /// <returns>The updated local instant</returns>
-        /// <remarks>
-        /// <para>
-        /// The value will be added to this field. If the value is too large to be
-        /// added solely to this field then it wraps. Larger fields are always
-        /// unaffected. Smaller fields should be unaffected, except where the
-        /// result would be an invalid value for a smaller field. In this case the
-        /// smaller field is adjusted to be in range. For example, in the ISO chronology:
-        /// </para>
-        /// <list type="bullet">
-        /// <item>2000-08-20 AddWrapField six months is 2000-02-20</item>
-        /// <item>2000-08-20 AddWrapField twenty months is 2000-04-20</item>
-        /// <item>2000-08-20 AddWrapField minus nine months is 2000-11-20</item>
-        /// <item>2001-01-31 AddWrapField one month  is 2001-02-28</item>
-        /// <item>2001-01-31 AddWrapField two months is 2001-03-31</item>
-        /// </list>
-        /// </remarks>
-        internal virtual LocalInstant AddWrapField(LocalInstant localInstant, int value)
-        {
-            int current = GetValue(localInstant);
-            int wrapped = FieldUtils.GetWrappedValue(current, value, (int)GetMinimumValue(localInstant), (int)GetMaximumValue(localInstant));
-            return SetValue(localInstant, wrapped);
-        }
-
-        /// <summary>
         /// Sets a value in the local instant supplied.
         /// <para>
         /// The value of this field will be set.

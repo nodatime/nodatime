@@ -59,12 +59,6 @@ namespace NodaTime.Fields
             return calendarSystem.GetWeekYear(localInstant);
         }
 
-        internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
-        {
-            // TODO: This won't wrap...
-            return DurationField.Add(localInstant, value);
-        }
-
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             int year = (int)value;

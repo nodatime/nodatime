@@ -19,9 +19,6 @@ using System;
 
 namespace NodaTime.Fields
 {
-    /// <summary>
-    /// Status: Need AddWrapField
-    /// </summary>
     internal sealed class RemainderDateTimeField : DecoratedDateTimeField
     {
         private readonly int divisor;

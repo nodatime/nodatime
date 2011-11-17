@@ -60,19 +60,6 @@ namespace NodaTime.Fields
             return calendarSystem.GetYear(localInstant);
         }
 
-        internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
-        {
-            if (value == 0)
-            {
-                return localInstant;
-            }
-
-            int thisYear = calendarSystem.GetYear(localInstant);
-            int wrappedYear = FieldUtils.GetWrappedValue(thisYear, value, calendarSystem.MinYear, calendarSystem.MaxYear);
-
-            return SetValue(localInstant, wrappedYear);
-        }
-
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, calendarSystem.MinYear, calendarSystem.MaxYear);
