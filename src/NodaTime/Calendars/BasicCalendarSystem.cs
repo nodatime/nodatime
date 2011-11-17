@@ -143,16 +143,19 @@ namespace NodaTime.Calendars
         /// Fetches the start of the year from the cache, or calculates
         /// and caches it.
         /// </summary>
-        internal long GetYearTicks(int year)
+        internal virtual long GetYearTicks(int year)
         {
-            YearInfo info = yearCache[year & YearCacheMask];
-            if (info.Year != year)
+            lock (yearCache)
             {
-                info = new YearInfo(year, CalculateStartOfYear(year).Ticks);
-                // TODO: Check thread safety of this; write won't be atomic...
-                yearCache[year & YearCacheMask] = info;
+                YearInfo info = yearCache[year & YearCacheMask];
+                if (info.Year != year)
+                {
+                    info = new YearInfo(year, CalculateStartOfYear(year).Ticks);
+                    // TODO: Check thread safety of this; write won't be atomic...
+                    yearCache[year & YearCacheMask] = info;
+                }
+                return info.StartOfYearTicks;
             }
-            return info.StartOfYearTicks;
         }
 
         internal int GetDayOfWeek(LocalInstant localInstant)

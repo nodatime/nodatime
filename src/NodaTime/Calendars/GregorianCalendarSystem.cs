@@ -52,6 +52,7 @@ namespace NodaTime.Calendars
         private const int LastOptimizedYear = 2100;
         private static readonly long[] MonthStartTicks = new long[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
         private static readonly int[] MonthLengths = new int[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
+        private static readonly long[] YearStartTicks = new long[LastOptimizedYear + 1 - FirstOptimizedYear];
 
         private const int DaysFrom0000To1970 = 719527;
         private const long AverageTicksPerGregorianYear = (long)(365.2425m * NodaConstants.TicksPerStandardDay);
@@ -70,6 +71,7 @@ namespace NodaTime.Calendars
             
             for (int year = FirstOptimizedYear; year <= LastOptimizedYear; year++)
             {
+                YearStartTicks[year - FirstOptimizedYear] = IsoInstance.CalculateStartOfYear(year).Ticks;
                 for (int month = 1; month <= 12; month++)
                 {
                     int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
@@ -118,6 +120,15 @@ namespace NodaTime.Calendars
 
         public override int MinYear { get { return -27256; } }
         public override int MaxYear { get { return 31196; } }
+
+        internal override long GetYearTicks(int year)
+        {
+            if (year < FirstOptimizedYear || year > LastOptimizedYear)
+            {
+                return base.GetYearTicks(year);
+            }
+            return YearStartTicks[year - FirstOptimizedYear];
+        }
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
                                                        int millisecondOfSecond, int tickOfMillisecond)
