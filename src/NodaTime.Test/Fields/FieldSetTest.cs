@@ -41,12 +41,12 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void UnsupportedDateTimeFields_AreBuiltFromDurationFields()
+        public void UnsupportedDateTimeFields_HaveUnsupportedDurationFields()
         {
             FieldSet fieldSet = new FieldSet.Builder { Seconds = PreciseDurationField.Seconds }.Build();
             DateTimeField field = fieldSet.SecondOfMinute;
             Assert.IsFalse(field.IsSupported);
-            Assert.AreSame(fieldSet.Seconds, field.DurationField);
+            Assert.IsFalse(field.DurationField.IsSupported);
         }
 
         [Test]

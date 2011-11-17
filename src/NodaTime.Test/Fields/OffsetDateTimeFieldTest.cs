@@ -52,7 +52,7 @@ namespace NodaTime.Test.Fields
         public void Constructor_WithUnsupportedField_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentException>(
-                () => new OffsetDateTimeField(UnsupportedDateTimeField.GetInstance(DateTimeFieldType.SecondOfMinute, UnsupportedDurationField.Seconds), 3));
+                () => new OffsetDateTimeField(UnsupportedDateTimeField.SecondOfMinute, 3));
         }
 
         [Test]
