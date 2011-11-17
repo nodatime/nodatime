@@ -45,6 +45,10 @@ namespace NodaTime.Benchmarks.Timing
 
         public string ToString(BenchmarkOptions options)
         {
+            if (Duration == Duration.Zero)
+            {
+                return string.Format("Invalid result: duration was 0 ({0} iterations)", Iterations);
+            }
             string formatString = options.DisplayRawData ? LongFormatString : ShortFormatString;
             return string.Format(formatString, Method.Name, CallsPerSecond, Iterations, Duration.Ticks, TicksPerCall);
         }
