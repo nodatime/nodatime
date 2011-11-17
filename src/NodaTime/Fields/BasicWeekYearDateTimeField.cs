@@ -26,13 +26,11 @@ namespace NodaTime.Fields
     internal sealed class BasicWeekYearDateTimeField : DateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;
-        private readonly DurationField durationField;
 
         internal BasicWeekYearDateTimeField(BasicCalendarSystem calendarSystem)
             : base(DateTimeFieldType.WeekYear, new BasicWeekYearDurationField(calendarSystem))
         {
             this.calendarSystem = calendarSystem;
-            durationField = new BasicWeekYearDurationField(calendarSystem);
         }
 
         /// <summary>
