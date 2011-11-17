@@ -56,8 +56,6 @@ namespace NodaTime.Fields
             return ticks >= 0 ? (ticks / UnitTicks) % effectiveRange : effectiveRange - 1 + (((ticks + 1) / UnitTicks) % effectiveRange);
         }
 
-        // TODO: addWrapField
-
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, GetMinimumValue(), GetMaximumValue());

@@ -64,11 +64,6 @@ namespace NodaTime.Fields
             return base.GetInt64Value(localInstant) + offset;
         }
 
-        internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
-        {
-            return SetValue(localInstant, FieldUtils.GetWrappedValue(GetValue(localInstant), value, min, max));
-        }
-
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             FieldUtils.VerifyValueBounds(this, value, min, max);

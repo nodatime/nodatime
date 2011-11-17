@@ -24,7 +24,6 @@ namespace NodaTime.Fields
     /// fixed divisor. The field's unit duration is scaled accordingly, but the
     /// range duration is unchanged.
     /// </summary>
-    // Porting status: need AddWrapField. Also consider making min/max ints - check usage.
     internal sealed class DividedDateTimeField : DecoratedDateTimeField
     {
         private readonly int divisor;
