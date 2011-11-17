@@ -21,9 +21,7 @@ namespace NodaTime.Fields
 {
     /// <summary>
     /// A placeholder implementation to use when a datetime field is not supported.
-    /// Operations which can be performed solely on the duration field delegate to that; most
-    /// just throw <see cref="NotSupportedException" />.
-    /// TODO: See whether we really need the delegation, or whether DurationField could just throw.
+    /// All methods throw <see cref="NotSupportedException"/>.
     /// </summary>
     internal class UnsupportedDateTimeField : DateTimeField
     {
@@ -35,7 +33,7 @@ namespace NodaTime.Fields
         /// The returned value is cached.
         /// TODO: Potentially use ReaderWriterLockSlim? Assess performance of caching in the first place...
         /// </summary>
-        public static UnsupportedDateTimeField GetInstance(DateTimeFieldType fieldType, DurationField durationField)
+        internal static UnsupportedDateTimeField GetInstance(DateTimeFieldType fieldType, DurationField durationField)
         {
             if (fieldType == null)
             {
@@ -142,7 +140,7 @@ namespace NodaTime.Fields
 
         internal override LocalInstant AddWrapField(LocalInstant localInstant, int value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }
