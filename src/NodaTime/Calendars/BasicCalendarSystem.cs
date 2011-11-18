@@ -151,7 +151,6 @@ namespace NodaTime.Calendars
                 if (info.Year != year)
                 {
                     info = new YearInfo(year, CalculateStartOfYear(year).Ticks);
-                    // TODO: Check thread safety of this; write won't be atomic...
                     yearCache[year & YearCacheMask] = info;
                 }
                 return info.StartOfYearTicks;

@@ -192,20 +192,20 @@ namespace NodaTime
 
         #region Core abstract/virtual methods
         /// <summary>
-        ///   Returns the offset from UTC, where a positive duration indicates that local time is
-        ///   later than UTC. In other words, local time = UTC + offset.
+        /// Returns the offset from UTC, where a positive duration indicates that local time is
+        /// later than UTC. In other words, local time = UTC + offset.
         /// </summary>
+        /// <remarks>
+        /// This is mostly a convenience method for calling <code>GetZoneInterval(instant).Offset</code>,
+        /// although it can also be overridden for more efficiency.
+        /// </remarks>
         /// <param name="instant">The instant for which to calculate the offset.</param>
         /// <returns>
-        ///   The offset from UTC at the specified instant.
+        /// The offset from UTC at the specified instant.
         /// </returns>
         public virtual Offset GetOffsetFromUtc(Instant instant)
         {
-            // TODO: Remove? This is really just a convenience... There's some benefit
-            // in DaylightSavingsTimeZone, but with caching and precalculating it's likely to
-            // be irrelevant.
-            ZoneInterval interval = GetZoneInterval(instant);
-            return interval.Offset;
+            return GetZoneInterval(instant).Offset;
         }
 
         /// <summary>
