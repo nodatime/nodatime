@@ -20,7 +20,8 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// TODO: Potentially remove this. Can move VerifyValueBounds into DateTimeField, probably.
+    /// TODO: Rename to something like ValidationUtils, and move to the Utility package. It's used
+    /// in LocalTime and other places.
     /// </summary>
     internal static class FieldUtils
     {
