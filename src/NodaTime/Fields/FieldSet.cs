@@ -160,9 +160,9 @@ namespace NodaTime.Fields
             return new Builder(this).WithSupportedFieldsFrom(fields).Build();
         }
 
-        // TODO: Consider making FieldSet privately mutable and mutate it directly in the builder.
-        // Pros: Less copying
-        // Cons: Builders aren't reusable, and FieldSet isn't as obviously thread-safe.
+        /// <summary>
+        /// Mutable set of fields which can be built into a full, immutable FieldSet.
+        /// </summary>
         internal class Builder
         {
             internal DurationField Ticks { get; set; }

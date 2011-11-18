@@ -238,12 +238,6 @@ namespace NodaTime.Fields
         internal abstract long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
         #endregion
 
-        // TODO(jon): Do we *really* need this?
-        public int CompareTo(DurationField other)
-        {
-            return UnitTicks.CompareTo(other.UnitTicks);
-        }
-
         public override string ToString()
         {
             return FieldType.ToString();
