@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NodaTime.Benchmarks.Extensions;
 using NodaTime.Benchmarks.Timing;
 using NodaTime.Text;
@@ -25,7 +24,6 @@ namespace NodaTime.Benchmarks
     internal class LocalDateTimeBenchmarks
     {
         private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30);
-        private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
 
         private static readonly LocalDateTimePattern Pattern = LocalDateTimePattern.CreateWithInvariantInfo("dd/MM/yyyy HH:mm:ss");
 
@@ -39,7 +37,7 @@ namespace NodaTime.Benchmarks
         public void PatternParse()
         {
             var parseResult = Pattern.Parse("26/12/2009 10:08:30");
-            LocalDateTime result = parseResult.Value;
+            parseResult.Value.Consume();
         }
 
         [Benchmark]

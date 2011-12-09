@@ -236,7 +236,6 @@ namespace NodaTime.Test
         {
             ValidateInput(value, equalValue, unEqualValue, "unEqualValue");
             Type type = typeof(T);
-            string name = type.Name;
             var equality = type.GetMethod("op_Equality", new[] { type, type });
             if (equality != null)
             {

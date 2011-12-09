@@ -25,13 +25,11 @@ namespace NodaTime.Fields
     internal sealed class BasicYearDateTimeField : DateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;
-        private readonly DurationField durationField;
 
         internal BasicYearDateTimeField(BasicCalendarSystem calendarSystem)
             : base(DateTimeFieldType.Year, new BasicYearDurationField(calendarSystem))
         {
             this.calendarSystem = calendarSystem;
-            durationField = new BasicYearDurationField(calendarSystem);
         }
 
         /// <summary>

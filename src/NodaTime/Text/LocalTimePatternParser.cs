@@ -96,7 +96,7 @@ namespace NodaTime.Text
                 CharacterHandler<LocalTime, LocalTimeParseBucket> handler;
                 if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
                 {
-                    handler = handler = DefaultCharacterHandler;                    ;
+                    handler = DefaultCharacterHandler;                    ;
                 }
                 PatternParseResult<LocalTime> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
                 if (possiblePatternParseFailure != null)

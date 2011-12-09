@@ -24,13 +24,8 @@ namespace NodaTime.Test.Fields
     /// </summary>
     internal class FakeDurationField : DurationField
     {
-        private readonly long unitTicks;
-        private readonly bool precise;
-
         internal FakeDurationField(long unitTicks, bool precise) : base(DurationFieldType.Seconds, unitTicks, precise, true)
         {
-            this.unitTicks = unitTicks;
-            this.precise = precise;
         }
 
         internal override long GetInt64Value(Duration duration, LocalInstant localInstant)

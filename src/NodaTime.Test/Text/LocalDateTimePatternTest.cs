@@ -35,12 +35,12 @@ namespace NodaTime.Test.Text
         private static readonly string[] AllStandardPatterns = { "f", "F", "g", "G", "o", "O", "s" };
         private static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
 
+#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         // TODO: Uncomment the code below when NCrunch supports names properly.
-        // Used by tests via reflection - do not remove!
         private static readonly object[] AllCulturesStandardPatterns = (from culture in AllCultures
                                                                         from format in AllStandardPatterns
                                                                         select new TestCaseData(culture, format)/*.SetName(culture + ": " + format)*/).ToArray();
-
+#pragma warning restore 0414
 
         [Test]
         [TestCaseSource("InvalidPatternData")]

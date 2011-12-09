@@ -32,8 +32,9 @@ namespace NodaTime.Test.Text
         public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
         public static readonly CultureInfo GenitiveNameTestCulture = CreateGenitiveTestCulture();
 
-        // Used by tests via reflection - do not remove!
+#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
+#pragma warning restore 0414
 
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "!", Message = Messages.Parse_UnknownStandardFormat, Parameters = {'!', typeof(LocalDate).FullName }},
