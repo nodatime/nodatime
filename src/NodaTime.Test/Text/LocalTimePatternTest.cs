@@ -28,14 +28,15 @@ namespace NodaTime.Test.Text
     [TestFixture]
     public partial class LocalTimePatternTest
     {
-        // Used by tests via reflection - do not remove!
+#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
+#pragma warning restore 0414
 
         private static readonly DateTime SampleDateTime = new DateTime(2000, 1, 1, 21, 13, 34, 123, DateTimeKind.Unspecified).AddTicks(4567);
         private static readonly LocalTime SampleLocalTime = new LocalTime(21, 13, 34, 123, 4567);
 
         // Characters we expect to work the same in Noda Time as in the BCL.
-        private static readonly string ExpectedCharacters = "hHms.:fFtT ";
+        private const string ExpectedCharacters = "hHms.:fFtT ";
 
         [Test]
         [TestCaseSource("AllCultures")]

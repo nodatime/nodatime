@@ -56,16 +56,14 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Delegation()
         {
-            LocalInstant when1 = new LocalInstant(12345L);
-            LocalInstant when2 = new LocalInstant(98765L);
-            Duration duration = new Duration(10000L);
+            LocalInstant when = new LocalInstant(12345L);
             // Just a smattering
-            AssertDelegated(x => x.GetValue(when1));
-            AssertDelegated(x => x.GetInt64Value(when1));
-            AssertDelegated(x => x.GetMaximumValue(when1));
+            AssertDelegated(x => x.GetValue(when));
+            AssertDelegated(x => x.GetInt64Value(when));
+            AssertDelegated(x => x.GetMaximumValue(when));
             AssertDelegated(x => x.GetMaximumValue());
-            AssertDelegated(x => x.SetValue(when1, 100));
-            AssertDelegated(x => x.RoundFloor(when1));
+            AssertDelegated(x => x.SetValue(when, 100));
+            AssertDelegated(x => x.RoundFloor(when));
         }
 
         private static void AssertDelegated<T>(Func<DateTimeField, T> func)

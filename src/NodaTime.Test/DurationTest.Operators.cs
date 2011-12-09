@@ -91,7 +91,7 @@ namespace NodaTime.Test
         [Test]
         public void OperatorDivision_ByZero_Throws()
         {
-            Assert.Throws<DivideByZeroException>(() => { var unused = threeMillion / 0; }, "3000000 / 0");
+            Assert.Throws<DivideByZeroException>(() => (threeMillion / 0).ToString(), "3000000 / 0");
         }
 
         [Test]
