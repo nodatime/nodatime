@@ -162,9 +162,6 @@ namespace NodaTime.Test.Text
         /// </summary>
         public string TestName
         {
-            get { return null; }
-            // TODO: Uncomment the code below and remove the null property above when NCrunch supports names properly.
-            /*
             get
             {
                 string formatted = S ?? "null";
@@ -215,7 +212,7 @@ namespace NodaTime.Test.Text
                 {
                     Name = value;
                 }
-            }*/
+            }
         }
 
         /// <summary>
