@@ -262,5 +262,17 @@ namespace NodaTime.Test.TimeZones
 
             Assert.AreEqual(ZoneLocalMapping.ResultType.Skipped, actual);
         }
+
+        // Samoa (Pacific/Apia) skipped December 30th 2011, going from
+        // 23:59:59 December 29th local time UTC-10
+        // 00:00:00 December 31st local time UTC+14
+        [Test]
+        public void AtStartOfDay_DayDoesntExist()
+        {
+            LocalDate badDate = new LocalDate(2011, 12, 30);
+            DateTimeZone samoa = DateTimeZone.ForId("Pacific/Apia");
+            var exception = Assert.Throws<SkippedTimeException>(() => samoa.AtStartOfDay(badDate));
+            Assert.AreEqual(new LocalDateTime(2011, 12, 30, 0, 0), exception.LocalDateTime);
+        }
     }
 }

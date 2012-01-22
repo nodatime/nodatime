@@ -362,6 +362,8 @@ namespace NodaTime
         /// of the transition.
         /// </summary>
         /// <param name="date">The local date to map in this time zone.</param>
+        /// <exception cref="SkippedTimeException">The entire day was skipped due to a very large time zone transition.
+        /// (This is extremely rare.)</exception>
         /// <returns>The <see cref="ZonedDateTime"/> representing the earliest time in the given date, in this time zone.</returns>
         public ZonedDateTime AtStartOfDay(LocalDate date)
         {
@@ -371,7 +373,13 @@ namespace NodaTime
             {
                 case 0:
                     var interval = GetIntervalAfterGap(localInstant);
-                    return new ZonedDateTime(new LocalDateTime(interval.LocalStart, date.Calendar), interval.Offset, this);
+                    var localDateTime = new LocalDateTime(interval.LocalStart, date.Calendar);
+                    // It's possible that the entire day is skipped. Known case: Samoa skipped December 30th 2011.
+                    if (localDateTime.Date != date)
+                    {
+                        throw new SkippedTimeException(date + LocalTime.Midnight, this);
+                    }
+                    return new ZonedDateTime(localDateTime, interval.Offset, this);
                 case 1:
                 case 2:
                     return new ZonedDateTime(date.LocalDateTime, pair.EarlyInterval.Offset, this);

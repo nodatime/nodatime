@@ -25,7 +25,7 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This occurs for spring transitions, where the clock goes forward
+    /// This normally occurs for spring transitions, where the clock goes forward
     /// (usually by an hour). For example, suppose the time zone goes forward
     /// at 2am, so the second after 01:59:59 becomes 03:00:00. In that case,
     /// times such as 02:30:00 never occur.
@@ -67,7 +67,8 @@ namespace NodaTime
         /// </remarks>
         /// <param name="localDateTime">The local date time which is skipped in the specified time zone.</param>
         /// <param name="zone">The time zone in which the local date time does not exist.</param>
-        public SkippedTimeException(LocalDateTime localDateTime, DateTimeZone zone) : base("Local time " + localDateTime + " is invalid in time zone " + zone.Id)
+        public SkippedTimeException(LocalDateTime localDateTime, DateTimeZone zone)
+            : base("Local time " + localDateTime + " is invalid in time zone " + zone.Id)
         {
             this.localDateTime = localDateTime;
             this.zone = zone;
