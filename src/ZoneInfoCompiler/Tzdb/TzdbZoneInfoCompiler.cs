@@ -134,7 +134,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public int Execute(TzdbCompilerOptions options)
         {
             log.Info("Starting compilation of directory {0}", options.SourceDirectoryName);
-            DateTimeZone.SetUtcOnly(true);
+            DateTimeZone.SetProvider(new EmptyDateTimeZoneProvider());
             var sourceDirectory = new DirectoryInfo(options.SourceDirectoryName);
             var outputFile = new FileInfo(options.OutputFileName);
             var files = options.InputFiles;

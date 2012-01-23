@@ -25,13 +25,15 @@ namespace NodaTime.Test
         [SetUp]
         public void Setup()
         {
-            DateTimeZone.SetUtcOnly(false); // Side-effect of resetting the cache
+            // Reset the cache...
+            DateTimeZone.SetProvider(DateTimeZone.DefaultDateTimeZoneProvider);
         }
 
         [TearDown]
         public void TearDown()
         {
-            DateTimeZone.SetUtcOnly(false); // Side-effect of resetting the cache
+            // Reset the cache...
+            DateTimeZone.SetProvider(DateTimeZone.DefaultDateTimeZoneProvider);
         }
     }
 }

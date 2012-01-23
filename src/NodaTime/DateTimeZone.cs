@@ -50,7 +50,8 @@ namespace NodaTime
 
         private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
 
-        private static TimeZoneCache cache = new TimeZoneCache(false);
+        private static TimeZoneCache cache = new TimeZoneCache(DefaultDateTimeZoneProvider);
+        private static readonly object cacheLock = new object();
 
         private readonly string id;
         private readonly bool isFixed;
@@ -87,64 +88,38 @@ namespace NodaTime
         /// <returns>The <see cref="DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
         public static DateTimeZone ForId(string id)
         {
-            return cache.ForId(id);
+            TimeZoneCache localCache;
+            lock (cacheLock)
+            {
+                localCache = cache;
+            }
+            return localCache[id];
         }
 
         /// <summary>
-        ///   Gets the complete list of valid time zone ids provided by all of the registered
-        ///   providers. This list will be sorted in lexigraphical order by the id name.
+        /// Sets the provider to use for time zone lookup. Note that this is a global change; it is expected
+        /// that users will only call this on start-up if at all.
         /// </summary>
+        /// <param name="provider">The provider to use for time zones.</param>
+        public static void SetProvider(IDateTimeZoneProvider provider)
+        {
+            var localCache = new TimeZoneCache(provider);
+            lock (cacheLock)
+            {
+                cache = localCache;
+            }
+        }
+
+        /// <summary>
+        /// Gets the complete list of valid time zone ids provided by all of the registered
+        /// providers. This list will be sorted in lexigraphical order by the id name.
+        /// </summary>
+        /// <remarks>
+        /// The ID "UTC" will always be present in this list; it is guaranteed to be available regardless
+        /// of the time zone provider in use.
+        /// </remarks>
         /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
         public static IEnumerable<string> Ids { get { return cache.Ids; } }
-
-        /// <summary>
-        ///   Adds the given time zone provider to the front of the provider list.
-        /// </summary>
-        /// <remarks>
-        ///   Because this adds the new provider to the from of the list, it will be checked first for
-        ///   time zone definitions and therefore can override the default system definitions. This
-        ///   allows for adding new or replacing existing time zones without updating the system. If
-        ///   the provider is already on the list nothing changes.
-        /// </remarks>
-        /// <param name="provider">The <see cref="IDateTimeZoneProvider" /> to add.</param>
-        public static void AddProvider(IDateTimeZoneProvider provider)
-        {
-            cache.AddProvider(provider);
-        }
-
-        /// <summary>
-        ///   Removes the given time zone provider from the provider list.
-        /// </summary>
-        /// <remarks>
-        ///   If the provider is not on the list nothing changes.
-        /// </remarks>
-        /// <param name="provider">The <see cref="IDateTimeZoneProvider" /> to remove.</param>
-        /// <returns><c>true</c> if the provider was removed.</returns>
-        public static bool RemoveProvider(IDateTimeZoneProvider provider)
-        {
-            return cache.RemoveProvider(provider);
-        }
-
-        /// <summary>
-        ///   Sets the UTC time zone only mode.
-        /// </summary>
-        /// <remarks>
-        ///   <para>
-        ///     If the mode is set to <c>true</c> then only the UTC time zone provider will be available
-        ///     and only the UTC time zone will be accessible. This is mainly for use during the
-        ///     building of the system when there is no existing time zone database.
-        ///   </para>
-        ///   <para>
-        ///     When this method is called all existing providers are removed from the list. Then the UTC
-        ///     provider will be added and if the <paramref name = "utcOnlyFlag" /> is <c>false</c> then default
-        ///     provider. This means that any providers added by user code will be removed.
-        ///   </para>
-        /// </remarks>
-        /// <param name="utcOnlyFlag">if set to <c>true</c> then only the UTC provider will be available.</param>
-        internal static void SetUtcOnly(bool utcOnlyFlag)
-        {
-            cache = new TimeZoneCache(utcOnlyFlag);
-        }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="T:NodaTime.DateTimeZone" /> class.

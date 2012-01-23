@@ -56,7 +56,7 @@ namespace NodaTime.Test
         [Test]
         public void TestForId_nullId()
         {
-            Assert.IsNull(DateTimeZone.ForId(null));
+            Assert.Throws<ArgumentNullException>(() => DateTimeZone.ForId(null));
         }
 
         [Test]
@@ -82,15 +82,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void TestIds_UtcOnly()
-        {
-            DateTimeZone.SetUtcOnly(true); // Side-effect of reseting the cache
-            var actual = DateTimeZone.Ids;
-            Assert.AreEqual(1, actual.Count());
-            Assert.AreEqual(DateTimeZone.UtcId, actual.First());
-        }
-
-        [Test]
         public void TestIds_All()
         {
             var actual = DateTimeZone.Ids;
@@ -98,39 +89,6 @@ namespace NodaTime.Test
             Assert.IsTrue(actualCount > 1);
             var utc = actual.Single(id => id == DateTimeZone.UtcId);
             Assert.AreEqual(DateTimeZone.UtcId, utc);
-        }
-
-        [Test]
-        public void TestAddProvider_once()
-        {
-            DateTimeZone.SetUtcOnly(true); // Side-effect of reseting the cache
-            var provider = new TestProvider();
-            DateTimeZone.AddProvider(provider);
-            ExcerciseProvider(provider);
-        }
-
-        [Test]
-        public void TestAddProvider_twice()
-        {
-            DateTimeZone.SetUtcOnly(true); // Side-effect of reseting the cache
-            var provider = new TestProvider();
-            DateTimeZone.AddProvider(provider);
-            DateTimeZone.AddProvider(provider);
-            ExcerciseProvider(provider);
-        }
-
-        [Test]
-        public void TestRemoveProvider_DefaultNotPresent()
-        {
-            DateTimeZone.SetUtcOnly(true); // Side-effect of reseting the cache
-            Assert.IsFalse(DateTimeZone.RemoveProvider(DateTimeZone.DefaultDateTimeZoneProvider));
-        }
-
-        [Test]
-        public void TestRemoveProvider_Default()
-        {
-            Assert.IsTrue(DateTimeZone.RemoveProvider(DateTimeZone.DefaultDateTimeZoneProvider));
-            Assert.IsFalse(DateTimeZone.RemoveProvider(DateTimeZone.DefaultDateTimeZoneProvider));
         }
 
         /// <summary>
