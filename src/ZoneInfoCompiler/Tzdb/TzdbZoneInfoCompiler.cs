@@ -145,7 +145,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 //// Using this conditional code makes debugging simpler in Visual Studio because exceptions will
                 //// be caught by VS and shown with the exception visualizer.
 #if DEBUG
-                Compile(fileList, output);
+                Compile(sourceDirectory.Name, fileList, output);
 #else
                 try
                 {

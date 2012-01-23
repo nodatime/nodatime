@@ -146,7 +146,7 @@ namespace NodaTime.Utility
             {
                 throw new ArgumentNullException("source");
             }
-            object obj = source.GetObject(name);
+            object obj = source.GetObject(NormalizeAsResourceName(name));
             // We should never be asked for time zones which don't exist.
             if (obj == null)
             {
