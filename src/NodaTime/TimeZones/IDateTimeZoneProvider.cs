@@ -23,13 +23,22 @@ namespace NodaTime.TimeZones
     /// Provides the interface for objects that can retrieve time zone definitions given and id.
     /// </summary>
     /// <remarks>
-    /// Original name: Provider. (I felt this was too general, and likely to clash with IOC
-    /// containers etc.)
+    /// Note that the ID "UTC" is reserved - it's the only zone which is guaranteed to be present.
+    /// Even if the provider advertises that it knows about the UTC zone, it will never be asked for it;
+    /// even if it *doesn't* advertise that it knows about UTC, <see cref="DateTimeZone.Ids" /> will always
+    /// include it.
+    /// </remarks>
+    /// <remarks>
+    /// Implementations should be accessible from any thread, but will not usually be accessed from more than
+    /// one thread concurrently. (Clients could call <see cref="DateTimeZone.SetProvider"/> with the same
+    /// provider in multiple threads, but that would be extremely unlikely.)
     /// </remarks>
     public interface IDateTimeZoneProvider
     {
         /// <summary>
-        /// Returns an enumeration of the available ids from this provider.
+        /// Returns an enumeration of the available ids from this provider. The order in which the
+        /// values are returned is irrelevant, as the time zone cache will sort them anyway. The sequence
+        /// returned may be empty, but must not be null.
         /// </summary>
         /// <value>The <see cref="IEnumerable{T}"/> of ids.</value>
         IEnumerable<string> Ids { get; }
@@ -39,11 +48,12 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>
         /// If the time zone does not yet exist, its definition is loaded from where ever this
-        /// provider gets time zone definitions. Time zones should not be cached in the provider as
-        /// they will be cached in <see cref="DateTimeZone"/>.
+        /// provider gets time zone definitions. The provider should not attempt to cache time zones;
+        /// the time zone cache handles that automatically.
         /// </remarks>
-        /// <param name="id">The id of the time zone to return.</param>
-        /// <returns>The <see cref="DateTimeZone"/> or <c>null</c> if there is no time zone with the given id.</returns>
+        /// <param name="id">The id of the time zone to return. This will be one of the IDs
+        /// returned by the <see cref="Ids"/> property.</param>
+        /// <returns>The <see cref="DateTimeZone"/> for the given ID; must not be null.</returns>
         DateTimeZone ForId(string id);
     }
 }

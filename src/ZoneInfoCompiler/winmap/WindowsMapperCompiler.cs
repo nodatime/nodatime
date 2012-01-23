@@ -52,7 +52,7 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         public int Execute(WindowsMapperCompilerOptions options)
         {
             log.Info("Starting compilation of {0}", options.SourceFileName);
-            DateTimeZone.SetUtcOnly(true);
+            DateTimeZone.SetProvider(new EmptyDateTimeZoneProvider());
             var inputFile = new FileInfo(options.SourceFileName);
             if (!inputFile.Exists)
             {

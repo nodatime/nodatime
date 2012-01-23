@@ -180,6 +180,7 @@
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
+    <Compile Include="TimeZones\EmptyDateTimeZoneProvider.cs" />
     <Compile Include="TimeZones\NamespaceDoc.cs" />
     <Compile Include="TimeZones\TimeZoneCache.cs" />
     <Compile Include="TimeZones\Transition.cs" />

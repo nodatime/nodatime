@@ -23,9 +23,6 @@ namespace NodaTime.TimeZones
     /// Provides an implementation of <see cref="IDateTimeZoneProvider"/> that can find and return
     /// the UTC time zone.
     /// </summary>
-    /// <remarks>
-    /// Original name: UTCProvider
-    /// </remarks>
     internal sealed class UtcProvider : IDateTimeZoneProvider
     {
         private static readonly string[] UtcIds = { DateTimeZone.UtcId };
