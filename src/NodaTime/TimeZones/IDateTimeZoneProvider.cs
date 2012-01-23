@@ -44,6 +44,14 @@ namespace NodaTime.TimeZones
         IEnumerable<string> Ids { get; }
 
         /// <summary>
+        /// Returns an appropriate version ID for diagnostic purposes. This doesn't have any specific format;
+        /// it's solely for diagnostic purposes. For example, the default provider returns a string such as
+        /// "TZDB: 2011n" indicating where the information comes from and which version of that information
+        /// it's loaded.
+        /// </summary>
+        string VersionId { get; }
+
+        /// <summary>
         /// Returns the time zone definition associated with the given id.
         /// </summary>
         /// <remarks>

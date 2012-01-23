@@ -17,6 +17,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Resources;
 using NodaTime.Utility;
@@ -30,12 +31,20 @@ namespace NodaTime.TimeZones
     public sealed class DateTimeZoneResourceProvider : IDateTimeZoneProvider
     {
         /// <summary>
-        /// The key used to find ID mappings within the resource.
+        /// The key used to find ID mappings within the resource. Deliberately
+        /// uses an unscore which would be normalized away if this were a time zone name.
         /// </summary>
-        public const string IdMapKey = "IdMap";
+        public const string IdMapKey = "Id_Map";
+
+        /// <summary>
+        /// The key used to find the TZDB version ID within the resource. Deliberately
+        /// uses an unscore which would be normalized away if this were a time zone name.
+        /// </summary>
+        public const string VersionKey = "Version_Id";
 
         private readonly ResourceSet source;
         private readonly IDictionary<string, string> timeZoneIdMap;
+        private readonly string version;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeZoneResourceProvider" /> class.
@@ -72,6 +81,11 @@ namespace NodaTime.TimeZones
         {
             this.source = source;
             timeZoneIdMap = ResourceHelper.LoadDictionary(source, IdMapKey);
+            if (timeZoneIdMap == null)
+            {
+                throw new InvalidDataException("No map with key " + IdMapKey + " in resource");
+            }
+            this.version = source.GetString(VersionKey);
         }
 
         #region IDateTimeZoneProvider Members
@@ -100,6 +114,11 @@ namespace NodaTime.TimeZones
         {
             [DebuggerStepThrough] get { return timeZoneIdMap.Keys; }
         }
+
+        /// <summary>
+        /// Returns a version identifier for this provider.
+        /// </summary>
+        public string VersionId { get { return "TZDB: " + version; } }
         #endregion
     }
 }

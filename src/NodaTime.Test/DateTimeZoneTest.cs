@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -34,6 +35,12 @@ namespace NodaTime.Test
         {
             // Reset the cache...
             DateTimeZone.SetProvider(DateTimeZone.DefaultDateTimeZoneProvider);
+        }
+
+        [Test]
+        public void DefaultProviderIsTzdb()
+        {
+            Assert.IsTrue(DateTimeZone.ProviderVersionId.StartsWith("TZDB: "));
         }
     }
 }

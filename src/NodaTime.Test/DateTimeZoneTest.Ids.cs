@@ -142,6 +142,8 @@ namespace NodaTime.Test
             }
 
             public List<String> Calls { get { return calls; } }
+
+            public string VersionId { get { return "version"; } }
         }
     }
 }
