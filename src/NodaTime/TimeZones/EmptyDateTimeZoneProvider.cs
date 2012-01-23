@@ -42,5 +42,10 @@ namespace NodaTime.TimeZones
         {
             throw new InvalidOperationException("EmptyDateTimeZoneProvider should never be asked for a zone");
         }
+
+        /// <summary>
+        /// Returns a version identifier for this provider.
+        /// </summary>
+        public string VersionId { get { return "Empty (UTC-only)"; } }
     }
 }

@@ -33,10 +33,12 @@ namespace NodaTime.TimeZones
         private readonly IDateTimeZoneProvider provider;
         private readonly ReadOnlyCollection<string> ids;
         private readonly IDictionary<string, DateTimeZone> timeZoneMap = new Dictionary<string, DateTimeZone>();
+        private readonly string providerVersionId;
 
         internal TimeZoneCache(IDateTimeZoneProvider provider)
         {
             this.provider = Preconditions.CheckNotNull(provider, "provider");
+            this.providerVersionId = provider.VersionId;
             var ids = new List<string>(provider.Ids);
             if (!ids.Contains(DateTimeZone.UtcId))
             {
@@ -51,6 +53,8 @@ namespace NodaTime.TimeZones
             }
             timeZoneMap[DateTimeZone.UtcId] = DateTimeZone.Utc;
         }
+
+        internal string ProviderVersionId { get { return providerVersionId; } }
 
         /// <summary>
         /// Gets the system default time zone which can only be changed by the system.

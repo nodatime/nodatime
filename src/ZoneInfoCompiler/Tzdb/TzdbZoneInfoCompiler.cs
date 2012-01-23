@@ -67,9 +67,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="fileList">The enumeration of <see cref="FileInfo" /> objects.</param>
         /// <param name="output">The destination <see cref="DirectoryInfo" /> object.</param>
         /// <returns></returns>
-        internal int Compile(IEnumerable<FileInfo> fileList, ResourceOutput output)
+        internal int Compile(string version, IEnumerable<FileInfo> fileList, ResourceOutput output)
         {
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase(version);
             ParseAllFiles(fileList, database);
             GenerateDateTimeZones(database, output);
             LogCounts(database);
@@ -149,7 +149,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 #else
                 try
                 {
-                    Compile(fileList, output);
+                    Compile(sourceDirectory.Name, fileList, output);
                 }
                 catch (Exception e)
                 {
@@ -189,7 +189,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             {
                 var timeZone = CreateTimeZone(zoneList, database.Rules);
                 timeZoneMap.Add(timeZone.Id, timeZone.Id);
-                output.WriteTimeZone(timeZone.Id, timeZone);
+                output.WriteTimeZone(timeZone);
             }
 
             foreach (var key in database.Aliases.Keys)
@@ -201,7 +201,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 }
                 timeZoneMap.Add(key, value);
             }
-
+            output.WriteString(DateTimeZoneResourceProvider.VersionKey, database.Version);
             output.WriteDictionary(DateTimeZoneResourceProvider.IdMapKey, timeZoneMap);
         }
 

@@ -97,6 +97,20 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns a version identifier for the time zone provider.
+        /// </summary>
+        public static string ProviderVersionId        
+        {
+            get
+            {
+                lock (cacheLock)
+                {
+                    return cache.ProviderVersionId;
+                }
+            }
+        }
+
+        /// <summary>
         /// Sets the provider to use for time zone lookup. Note that this is a global change; it is expected
         /// that users will only call this on start-up if at all.
         /// </summary>

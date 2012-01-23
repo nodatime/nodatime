@@ -116,7 +116,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseLine_comment()
         {
             const string line = "# Comment";
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.ParseLine(line, database);
             ValidateCounts(database, 0, 0, 0);
         }
@@ -125,7 +125,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseLine_commentWithLeadingWhitespace()
         {
             const string line = "   # Comment";
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.ParseLine(line, database);
             ValidateCounts(database, 0, 0, 0);
         }
@@ -133,7 +133,7 @@ namespace ZoneInfoCompiler.Test
         [Test]
         public void ParseLine_emptyString()
         {
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.ParseLine(string.Empty, database);
             ValidateCounts(database, 0, 0, 0);
         }
@@ -142,7 +142,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseLine_link()
         {
             const string line = "Link from to";
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.ParseLine(line, database);
             ValidateCounts(database, 0, 0, 1);
         }
@@ -151,7 +151,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseLine_whiteSpace()
         {
             const string line = "    \t\t\n";
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.ParseLine(line, database);
             ValidateCounts(database, 0, 0, 0);
         }
@@ -160,7 +160,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseLine_zone()
         {
             const string line = "Zone PST 2:00 US P%sT";
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.ParseLine(line, database);
             ValidateCounts(database, 0, 1, 0);
             Assert.AreEqual(1, database.Zones[0].Count, "Zones in set");
@@ -170,7 +170,7 @@ namespace ZoneInfoCompiler.Test
         public void ParseLine_zonePlus()
         {
             const string line = "Zone PST 2:00 US P%sT";
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.ParseLine(line, database);
 
             const string line2 = "  3:00 US P%sT";
@@ -316,7 +316,7 @@ namespace ZoneInfoCompiler.Test
         public void Parse_emptyStream()
         {
             var reader = new StringReader(string.Empty);
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 0, 0);
         }
@@ -326,7 +326,7 @@ namespace ZoneInfoCompiler.Test
         {
             const string text = "# A comment\n" + "Zone PST 2:00 US P%sT\n" + "         3:00 -  P%sT\n";
             var reader = new StringReader(text);
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 1, 0);
             Assert.AreEqual(2, database.Zones[0].Count, "Zones in set");
@@ -337,7 +337,7 @@ namespace ZoneInfoCompiler.Test
         {
             const string text = "# A comment\n" + "Zone PST 2:00 US P%sT # An end of line comment\n" + "         3:00 -  P%sT\n";
             var reader = new StringReader(text);
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 1, 0);
             Assert.AreEqual(2, database.Zones[0].Count, "Zones in set");
@@ -348,7 +348,7 @@ namespace ZoneInfoCompiler.Test
         {
             const string text = "# A comment\n" + "Zone PST 2:00 US P%sT\n";
             var reader = new StringReader(text);
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 1, 0);
             Assert.AreEqual(1, database.Zones[0].Count, "Zones in set");
@@ -359,7 +359,7 @@ namespace ZoneInfoCompiler.Test
         {
             const string text = "# First line must be a comment\n" + "Link from to\n" + "Link target source\n";
             var reader = new StringReader(text);
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 0, 2);
         }
@@ -371,7 +371,7 @@ namespace ZoneInfoCompiler.Test
                 "# A comment\n" + "Zone PST 2:00 US P%sT # An end of line comment\n" + "         3:00 -  P%sT\n" + "         4:00 -  P%sT\n" +
                 "Zone EST 2:00 US E%sT # An end of line comment\n" + "         3:00 -  E%sT\n";
             var reader = new StringReader(text);
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 2, 0);
             Assert.AreEqual(2, database.Zones[0].Count, "Zones in set " + database.Zones[0].Name);
@@ -386,7 +386,7 @@ namespace ZoneInfoCompiler.Test
                 "Zone PST 2:00 US P%sT # An end of line comment\n" + "         3:00 -  P%sT\n" + "         4:00 -  P%sT\n" +
                 "Zone EST 2:00 US E%sT # An end of line comment\n" + "         3:00 -  E%sT\n";
             var reader = new StringReader(text);
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 1, 2, 0);
             Assert.AreEqual(2, database.Zones[0].Count, "Zones in set " + database.Zones[0].Name);
@@ -422,7 +422,7 @@ namespace ZoneInfoCompiler.Test
         {
             const string text = "# A comment\n" + "Zone\tEtc/GMT-9\t9\t-\tGMT-9\n";
             var reader = new StringReader(text);
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
 
             ValidateCounts(database, 0, 1, 0);
@@ -438,7 +438,7 @@ namespace ZoneInfoCompiler.Test
         {
             const string text = "# A comment\n" + "Zone\tEtc/GMT+9\t-9\t-\tGMT+9\n";
             var reader = new StringReader(text);
-            var database = new TzdbDatabase();
+            var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
 
             ValidateCounts(database, 0, 1, 0);

@@ -101,7 +101,8 @@ namespace NodaTime.Utility
         /// </summary>
         /// <param name="manager">The <see cref="ResourceManager"/> to get resources from.</param>
         /// <returns>The default <see cref="ResourceSet"/>.</returns>
-        /// <remarks>The default <see cref="ResourceSet"/> for a <see cref="ResourceManager"/> is the <see cref="ResourceSet"/> that is used by <see cref="ResourceManager.GetObject(string)"/>.</remarks>
+        /// <remarks>The default <see cref="ResourceSet"/> for a <see cref="ResourceManager"/> is
+        /// the <see cref="ResourceSet"/> that is used by <see cref="ResourceManager.GetObject(string)"/>.</remarks>
         internal static ResourceSet GetDefaultResourceSet(ResourceManager manager)
         {
             return manager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
@@ -119,8 +120,7 @@ namespace NodaTime.Utility
             {
                 throw new ArgumentNullException("source");
             }
-            var normalizedName = NormalizeAsResourceName(name);
-            var bytes = source.GetObject(normalizedName) as byte[];
+            var bytes = source.GetObject(name) as byte[];
             if (bytes != null)
             {
                 using (var stream = new MemoryStream(bytes))
@@ -136,26 +136,28 @@ namespace NodaTime.Utility
         /// Loads a time zone with the given name from the given resource manager.
         /// </summary>
         /// <param name="source">The <see cref="ResourceSet"/> to load from.</param>
-        /// <param name="name">The resource name.</param>
+        /// <param name="name">The resource name. (This will not be normalized.)</param>
         /// <param name="id">The time zone id for the loaded time zone.</param>
-        /// <returns>The <see cref="DateTimeZone"/> or <c>null</c> if there is no such resource.</returns>
+        /// <returns>The <see cref="DateTimeZone"/> parsed from the resources.</returns>
+        /// <exception cref="ArgumentException">The </exception>
         internal static DateTimeZone LoadTimeZone(ResourceSet source, string name, string id)
         {
             if (source == null)
             {
                 throw new ArgumentNullException("source");
             }
-            var normalizedName = NormalizeAsResourceName(name);
-            var bytes = source.GetObject(normalizedName) as byte[];
-            if (bytes != null)
+            object obj = source.GetObject(name);
+            // We should never be asked for time zones which don't exist.
+            if (obj == null)
             {
-                using (var stream = new MemoryStream(bytes))
-                {
-                    var reader = new DateTimeZoneCompressionReader(stream);
-                    return reader.ReadTimeZone(id);
-                }
+                throw new ArgumentException("id");
             }
-            return null;
+            byte[] bytes = (byte[])obj;            
+            using (var stream = new MemoryStream(bytes))
+            {
+                var reader = new DateTimeZoneCompressionReader(stream);
+                return reader.ReadTimeZone(id);
+            }
         }
     }
 }

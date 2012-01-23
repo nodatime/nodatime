@@ -30,8 +30,6 @@ namespace NodaTime.ZoneInfoCompiler
     public sealed class ResourceOutput : IDisposable
     {
         private readonly IResourceWriter resourceWriter;
-        private MemoryStream memory;
-        private DateTimeZoneWriter timeZoneWriter;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="ResourceOutput" /> class.
@@ -54,10 +52,6 @@ namespace NodaTime.ZoneInfoCompiler
         public void Dispose()
         {
             resourceWriter.Close();
-            if (memory != null)
-            {
-                memory.Close();
-            }
         }
         #endregion
 
@@ -94,12 +88,6 @@ namespace NodaTime.ZoneInfoCompiler
             return result;
         }
 
-        private void MakeOutput()
-        {
-            memory = new MemoryStream();
-            timeZoneWriter = new DateTimeZoneCompressionWriter(memory);
-        }
-
         /// <summary>
         ///   Writes dictionary of string to string to  a resource with the given name.
         /// </summary>
@@ -107,38 +95,37 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
         public void WriteDictionary(string name, IDictionary<string, string> dictionary)
         {
-            MakeOutput();
-            timeZoneWriter.WriteDictionary(dictionary);
-            WriteResource(name);
+            WriteResource(name, writer => writer.WriteDictionary(dictionary));
         }
 
-        /// <summary>
-        ///   Writes contents of this object's memory stream to the resource writer.
-        /// </summary>
-        /// <param name="name">The name of the resource to write.</param>
-        private void WriteResource(string name)
+        public void WriteString(string name, string value)
         {
-            memory.Flush();
-            var bytes = memory.ToArray();
-            var normalizedName = ResourceHelper.NormalizeAsResourceName(name);
-            resourceWriter.AddResource(normalizedName, bytes);
+            resourceWriter.AddResource(name, value);
         }
 
         /// <summary>
-        ///   Writes a time zone to a resource with the given name.
+        /// Writes a time zone to a resource with the time zone ID, normalized.
         /// </summary>
-        /// <param name="name">The resource name.</param>
         /// <param name="timeZone">The <see cref="DateTimeZone" /> to write.</param>
-        public void WriteTimeZone(string name, DateTimeZone timeZone)
+        public void WriteTimeZone(DateTimeZone timeZone)
         {
-            MakeOutput();
-            timeZoneWriter.WriteTimeZone(timeZone);
-            WriteResource(name);
+            WriteResource(ResourceHelper.NormalizeAsResourceName(timeZone.Id), writer => writer.WriteTimeZone(timeZone));
+        }
+
+        private void WriteResource(string name, Action<DateTimeZoneWriter> writerAction)
+        {
+            using (var stream = new MemoryStream())
+            {
+                var writer = new DateTimeZoneCompressionWriter(stream);
+                writerAction(writer);
+                resourceWriter.AddResource(name, stream.ToArray());
+            }
+
         }
     }
 
     /// <summary>
-    ///   Defines the types of resource files we can write to.
+    /// Defines the types of resource files we can write to.
     /// </summary>
     public enum ResourceOutputType
     {

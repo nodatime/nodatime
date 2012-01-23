@@ -25,18 +25,22 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// </summary>
     internal class TzdbDatabase
     {
+        private readonly string version;
         private readonly SortedList<string, ZoneList> zoneLists;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="TzdbDatabase" /> class.
         /// </summary>
-        internal TzdbDatabase()
+        internal TzdbDatabase(string version)
         {
             zoneLists = new SortedList<string, ZoneList>();
             Rules = new Dictionary<string, IList<ZoneRule>>();
             Aliases = new Dictionary<string, string>();
             CurrentZoneList = null;
+            this.version = version;
         }
+
+        internal string Version { get { return version; } }
 
         /// <summary>
         ///   Gets or sets the time zone alias links.

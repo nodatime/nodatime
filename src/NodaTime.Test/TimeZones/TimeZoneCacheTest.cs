@@ -29,13 +29,13 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class TimeZoneCacheTest
     {
-        [TestCase]
+        [Test]
         public void Construction_NullProvider()
         {
             Assert.Throws<ArgumentNullException>(() => new TimeZoneCache(null));
         }
 
-        [TestCase]
+        [Test]
         public void CachingForPresentValues()
         {
             var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
@@ -44,7 +44,7 @@ namespace NodaTime.Test.TimeZones
             Assert.AreSame(zone, cache["Test1"]);
         }
 
-        [TestCase]
+        [Test]
         public void ProviderIsNotAskedForUtc()
         {
             var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
@@ -53,7 +53,7 @@ namespace NodaTime.Test.TimeZones
             Assert.IsNotNull(zone);
         }
 
-        [TestCase]
+        [Test]
         public void ProviderIsNotAskedForUnknownIds()
         {
             var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
@@ -62,7 +62,7 @@ namespace NodaTime.Test.TimeZones
             Assert.IsNull(zone);
         }
 
-        [TestCase]
+        [Test]
         public void NullIdRejected()
         {
             var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
@@ -70,11 +70,18 @@ namespace NodaTime.Test.TimeZones
             Assert.Throws<ArgumentNullException>(() => cache[null].GetType());
         }
 
-        [TestCase]
+        [Test]
         public void EmptyIdAccepted()
         {
             var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
             Assert.IsNull(cache[""]);
+        }
+
+        [Test]
+        public void VersionIdPassThrough()
+        {
+            var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
+            Assert.AreEqual("test-version", cache.ProviderVersionId);
         }
 
         private class TestDateTimeZoneProvider : IDateTimeZoneProvider
@@ -96,6 +103,8 @@ namespace NodaTime.Test.TimeZones
                         throw new InvalidOperationException();
                 }
             }
+
+            public string VersionId { get { return "test-version"; } }
         }
     }
 }
