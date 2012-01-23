@@ -153,7 +153,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 }
                 catch (Exception e)
                 {
-                    log.Error("{0}", e.Message);
+                    log.Error("{0}", e.StackTrace);
                     return 2;
                 }
 #endif
