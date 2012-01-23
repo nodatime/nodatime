@@ -250,7 +250,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     }
                     catch (Exception e)
                     {
-                        Log.Error("Exception {0} occurred: {1}", e.GetType().Name, e.Message);
+                        Log.Error("Exception {0} occurred: {1}", e.GetType().Name, e.StackTrace);
                         throw;
                     }
                     Log.LineNumber++;
