@@ -54,7 +54,10 @@ namespace NodaTime.ZoneInfoCompiler
         public void Dispose()
         {
             resourceWriter.Close();
-            memory.Close();
+            if (memory != null)
+            {
+                memory.Close();
+            }
         }
         #endregion
 
