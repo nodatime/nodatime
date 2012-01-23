@@ -25,8 +25,7 @@ namespace NodaTime.TimeZones
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Normally this is between standard time and daylight savings time but it might be for other
-    /// purposes like the discontinuity in the Gregorian calendar to account for leap time.
+    /// Normally this is between standard time and daylight savings time.
     /// </para>
     /// <para>
     /// Immutable, thread safe.
@@ -43,17 +42,6 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="ZoneTransition"/> class.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// Assumption 1: Offset.MaxValue &lt;&lt; Instant.MaxValue
-        /// </para>
-        /// <para>
-        /// Assumption 2: Offset.MinValue &gt;&gt; Instant.MinValue
-        /// </para>
-        /// <para>
-        /// Therefore the sum of an Instant with an Offset of the opposite sign cannot overflow or
-        /// underflow. We only have to worry about summing an Instant with an Offset of the same
-        /// sign over/underflowing.
-        /// </para>
         /// </remarks>
         /// <param name="instant">The instant that this transistion occurs at.</param>
         /// <param name="name">The name for the time at this transition e.g. PDT or PST.</param>
@@ -69,27 +57,6 @@ namespace NodaTime.TimeZones
             this.name = name;
             this.standardOffset = standardOffset;
             this.savings = savings;
-            //
-            // Make sure that the math will not overflow later.
-            //
-            if (instant.Ticks < 0 && WallOffset.TotalMilliseconds < 0)
-            {
-                long distanceFromEndOfTime = instant.Ticks - Instant.MinValue.Ticks;
-                if (distanceFromEndOfTime < Math.Abs(WallOffset.TotalTicks))
-                {
-                    this.standardOffset = Offset.FromTicks(-distanceFromEndOfTime);
-                    this.savings = Offset.Zero;
-                }
-            }
-            else if (instant.Ticks > 0 && savings.TotalMilliseconds > 0)
-            {
-                long distanceFromEndOfTime = Instant.MaxValue.Ticks - instant.Ticks;
-                if (distanceFromEndOfTime < WallOffset.TotalTicks)
-                {
-                    this.standardOffset = Offset.FromTicks(distanceFromEndOfTime);
-                    this.savings = Offset.Zero;
-                }
-            }
         }
 
         internal Instant Instant { get { return instant; } }
@@ -101,6 +68,26 @@ namespace NodaTime.TimeZones
         internal Offset Savings { get { return savings; } }
 
         internal Offset WallOffset { get { return StandardOffset + Savings; } }
+
+        /// <summary>
+        /// Returns the local instant this recurrence occurs at, handling overflow by returning
+        /// LocalInstant.MinValue or LocalInstant.MaxValue appropriately.
+        /// </summary>
+        internal LocalInstant LocalInstant
+        {
+            get
+            {
+                try
+                {
+                    return Instant.Plus(WallOffset);
+                }
+                catch (OverflowException)
+                {
+                    // Simplest way of handling the overflow, rather than manually checking for it.                    
+                    return Instant < Instant.UnixEpoch ? LocalInstant.MinValue : LocalInstant.MaxValue;
+                }
+            } 
+        }
 
         #region IComparable<ZoneTransition> Members
         /// <summary>

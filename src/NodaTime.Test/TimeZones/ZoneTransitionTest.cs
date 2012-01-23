@@ -47,25 +47,24 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Construct_BeginningOfTime_Truncated()
+        public void LocalInstant_Normal()
         {
-            const string name = "abc";
-            var instant = new Instant(Instant.MinValue.Ticks + oneHour.TotalTicks);
-            var actual = new ZoneTransition(instant, name, minusTwoHours, minusTwoHours);
-            Assert.AreEqual(instant, actual.Instant, "Instant");
-            Assert.AreEqual(minusOneHour, actual.StandardOffset, "StandardOffset");
-            Assert.AreEqual(Offset.Zero, actual.Savings, "Savings");
+            var transition = new ZoneTransition(Instant.FromUtc(2012, 1, 23, 9, 5), "xyz", Offset.FromHours(5), Offset.FromHours(1));
+            Assert.AreEqual(new LocalDateTime(2012, 1, 23, 15, 5).LocalInstant, transition.LocalInstant);
         }
 
         [Test]
-        public void Construct_EndOfTime_Truncated()
+        public void LocalInstant_BeginningOfTime()
         {
-            const string name = "abc";
-            var instant = new Instant(Instant.MaxValue.Ticks + minusOneHour.TotalTicks);
-            var actual = new ZoneTransition(instant, name, threeHours, threeHours);
-            Assert.AreEqual(instant, actual.Instant, "Instant");
-            Assert.AreEqual(oneHour, actual.StandardOffset, "StandardOffset");
-            Assert.AreEqual(Offset.Zero, actual.Savings, "Savings");
+            var transition = new ZoneTransition(Instant.MaxValue, "xyz", Offset.FromHours(5), Offset.FromHours(1));
+            Assert.AreEqual(LocalInstant.MaxValue, transition.LocalInstant);
+        }
+
+        [Test]
+        public void LocalInstant_EndOfTime()
+        {
+            var transition = new ZoneTransition(Instant.MinValue, "xyz", Offset.FromHours(-5), Offset.FromHours(1));
+            Assert.AreEqual(LocalInstant.MinValue, transition.LocalInstant);
         }
 
         [Test]

@@ -191,7 +191,9 @@
     <Compile Include="Text\ValueCursorTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
+    <Compile Include="TimeZones\DateTimeZoneBuilderTest.cs" />
     <Compile Include="TimeZones\DaylightSavingTimeZoneTest.cs" />
+    <Compile Include="TimeZones\EtcTest.cs" />
     <Compile Include="TimeZones\JordanTest.cs" />
     <Compile Include="TimeZones\ReadWriteCompressTest.cs" />
     <Compile Include="TimeZones\IoStream.cs" />

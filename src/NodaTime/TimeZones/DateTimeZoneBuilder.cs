@@ -337,12 +337,10 @@ namespace NodaTime.TimeZones
                 return false;
             }
 
-            // If local time of new transition is same as last local time, just replace last
-            // transition with new one.
-            LocalInstant lastLocal = lastTransition.Instant.Plus(lastTransition.WallOffset);
-            LocalInstant newLocal = transition.Instant.Plus(transition.WallOffset);
-
-            if (newLocal != lastLocal)
+            // If the local time of the new transition is same as last local time, just replace
+            // the last transition with new one. The LocalInstant property handles overflow,
+            // so we don't need to worry about errors around BOT/EOT.
+            if (lastTransition.LocalInstant != transition.LocalInstant)
             {
                 transitions.Add(transition);
                 return true;

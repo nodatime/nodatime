@@ -69,6 +69,12 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
+        /// Returns the fixed offset for this time zone.
+        /// </summary>
+        /// <returns>The fixed offset for this time zone.</returns>
+        public Offset Offset { get { return offset; } }
+
+        /// <summary>
         /// Gets the zone interval for the given instant. This implementation always returns the same interval.
         /// </summary>
         public override ZoneInterval GetZoneInterval(Instant instant)

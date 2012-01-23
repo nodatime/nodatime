@@ -414,5 +414,39 @@ namespace ZoneInfoCompiler.Test
             var expected = new ZoneYearOffset(TransitionMode.Wall, 4, 1, (int)DayOfWeek.Monday, false, ToOffset(0, 0, 0, 0));
             Assert.AreEqual(expected, actual);
         }
+
+        /* ############################################################################### */
+
+        [Test]
+        public void Parse_Fixed_Eastern()
+        {
+            const string text = "# A comment\n" + "Zone\tEtc/GMT-9\t9\t-\tGMT-9\n";
+            var reader = new StringReader(text);
+            var database = new TzdbDatabase();
+            Parser.Parse(reader, database);
+
+            ValidateCounts(database, 0, 1, 0);
+            Assert.AreEqual(1, database.Zones[0].Count, "Zones in set");
+            var zone = database.Zones[0][0];
+            Assert.AreEqual(Offset.FromHours(9), zone.Offset);
+            Assert.IsNull(zone.Rules);
+            Assert.AreEqual(int.MaxValue, zone.Year);
+        }
+
+        [Test]
+        public void Parse_Fixed_Western()
+        {
+            const string text = "# A comment\n" + "Zone\tEtc/GMT+9\t-9\t-\tGMT+9\n";
+            var reader = new StringReader(text);
+            var database = new TzdbDatabase();
+            Parser.Parse(reader, database);
+
+            ValidateCounts(database, 0, 1, 0);
+            Assert.AreEqual(1, database.Zones[0].Count, "Zones in set");
+            var zone = database.Zones[0][0];
+            Assert.AreEqual(Offset.FromHours(-9), zone.Offset);
+            Assert.IsNull(zone.Rules);
+            Assert.AreEqual(int.MaxValue, zone.Year);
+        }
     }
 }
