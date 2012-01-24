@@ -163,6 +163,18 @@
     <None Include="Data\2011h\Readme.txt" />
     <None Include="Data\2011h\southamerica" />
     <None Include="Data\2011h\systemv" />
+    <None Include="Data\2011n\africa" />
+    <None Include="Data\2011n\antarctica" />
+    <None Include="Data\2011n\asia" />
+    <None Include="Data\2011n\australasia" />
+    <None Include="Data\2011n\backward" />
+    <None Include="Data\2011n\etcetera" />
+    <None Include="Data\2011n\europe" />
+    <None Include="Data\2011n\northamerica" />
+    <None Include="Data\2011n\pacificnew" />
+    <None Include="Data\2011n\Readme.txt" />
+    <None Include="Data\2011n\southamerica" />
+    <None Include="Data\2011n\systemv" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
