@@ -54,7 +54,8 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// An offset that specifies the beginning of the year.
         /// </summary>
-        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "ZoneYearOffset is immutable")] public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "ZoneYearOffset is immutable")]
+        public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
 
         // TODO: find a better home for these two arrays
 
@@ -87,7 +88,7 @@ namespace NodaTime.TimeZones
         /// <param name="mode">The transition mode.</param>
         /// <param name="monthOfYear">The month year offset.</param>
         /// <param name="dayOfMonth">The day of month. 0 means not set. Negatives count from end of month.</param>
-        /// <param name="dayOfWeek">The day of week. 0 menas not set.</param>
+        /// <param name="dayOfWeek">The day of week. 0 means not set.</param>
         /// <param name="advance">if set to <c>true</c> [advance].</param>
         /// <param name="tickOfDay">The tick within the day.</param>
         public ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, Offset tickOfDay)
@@ -119,7 +120,7 @@ namespace NodaTime.TimeZones
         public int MonthOfYear { get { return monthOfYear; } }
 
         /// <summary>
-        /// Gets the day of month this rule starts.
+        /// Gets the day of month this rule starts; -1 for "last by day of week".
         /// </summary>
         public int DayOfMonth { get { return dayOfMonth; } }
 
