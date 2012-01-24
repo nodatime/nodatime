@@ -23,7 +23,7 @@ using NodaTime.TimeZones;
 using NodaTime.ZoneInfoCompiler;
 using NodaTime.ZoneInfoCompiler.Tzdb;
 
-namespace ZoneInfoCompiler.Test
+namespace ZoneInfoCompiler.Test.Tzdb
 {
     ///<summary>
     ///  This is a test class for containing all of the TzdbZoneInfoParser unit tests.
