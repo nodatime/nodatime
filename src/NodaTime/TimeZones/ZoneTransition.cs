@@ -69,26 +69,6 @@ namespace NodaTime.TimeZones
 
         internal Offset WallOffset { get { return StandardOffset + Savings; } }
 
-        /// <summary>
-        /// Returns the local instant this recurrence occurs at, handling overflow by returning
-        /// LocalInstant.MinValue or LocalInstant.MaxValue appropriately.
-        /// </summary>
-        internal LocalInstant LocalInstant
-        {
-            get
-            {
-                try
-                {
-                    return Instant.Plus(WallOffset);
-                }
-                catch (OverflowException)
-                {
-                    // Simplest way of handling the overflow, rather than manually checking for it.                    
-                    return Instant < Instant.UnixEpoch ? LocalInstant.MinValue : LocalInstant.MaxValue;
-                }
-            } 
-        }
-
         #region IComparable<ZoneTransition> Members
         /// <summary>
         /// Compares the current object with another object of the same type.
