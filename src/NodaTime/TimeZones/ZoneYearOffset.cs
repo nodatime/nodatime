@@ -55,7 +55,7 @@ namespace NodaTime.TimeZones
         /// An offset that specifies the beginning of the year.
         /// </summary>
         [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "ZoneYearOffset is immutable")]
-        public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
+        public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, Offset.Zero);
 
         // TODO: find a better home for these two arrays
 
