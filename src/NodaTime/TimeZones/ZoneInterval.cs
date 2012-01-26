@@ -80,14 +80,14 @@ namespace NodaTime.TimeZones
 
         #region Properties
         /// <summary>
-        ///   Gets the base offset for this period. This is the offset without any daylight savings
+        ///   Gets the standard offset for this period. This is the offset without any daylight savings
         ///   contributions.
         /// </summary>
         /// <remarks>
         ///   This is effectively <c>Offset - Savings</c>.
         /// </remarks>
         /// <value>The base Offset.</value>
-        public Offset BaseOffset
+        public Offset StandardOffset
         {
             [DebuggerStepThrough] get { return Offset - Savings; }
         }
