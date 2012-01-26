@@ -47,27 +47,6 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void LocalInstant_Normal()
-        {
-            var transition = new ZoneTransition(Instant.FromUtc(2012, 1, 23, 9, 5), "xyz", Offset.FromHours(5), Offset.FromHours(1));
-            Assert.AreEqual(new LocalDateTime(2012, 1, 23, 15, 5).LocalInstant, transition.LocalInstant);
-        }
-
-        [Test]
-        public void LocalInstant_BeginningOfTime()
-        {
-            var transition = new ZoneTransition(Instant.MaxValue, "xyz", Offset.FromHours(5), Offset.FromHours(1));
-            Assert.AreEqual(LocalInstant.MaxValue, transition.LocalInstant);
-        }
-
-        [Test]
-        public void LocalInstant_EndOfTime()
-        {
-            var transition = new ZoneTransition(Instant.MinValue, "xyz", Offset.FromHours(-5), Offset.FromHours(1));
-            Assert.AreEqual(LocalInstant.MinValue, transition.LocalInstant);
-        }
-
-        [Test]
         public void IEquatableIComparable_Tests()
         {
             var value = new ZoneTransition(Instant.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
