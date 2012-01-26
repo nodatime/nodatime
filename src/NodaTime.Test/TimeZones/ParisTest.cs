@@ -49,13 +49,13 @@ namespace NodaTime.Test.TimeZones
             var afterSmallChange = Paris.GetZoneInterval(utcChangeInstant);
 
             Assert.AreEqual("LMT", beforeNameChange.Name);
-            Assert.AreEqual(InitialOffset, beforeNameChange.Offset);
+            Assert.AreEqual(InitialOffset, beforeNameChange.WallOffset);
 
             Assert.AreEqual("PMT", afterNameChange.Name);
-            Assert.AreEqual(InitialOffset, afterNameChange.Offset);
+            Assert.AreEqual(InitialOffset, afterNameChange.WallOffset);
 
             Assert.AreEqual("WET", afterSmallChange.Name);
-            Assert.AreEqual(Offset.Zero, afterSmallChange.Offset);
+            Assert.AreEqual(Offset.Zero, afterSmallChange.WallOffset);
         }
     }
 }

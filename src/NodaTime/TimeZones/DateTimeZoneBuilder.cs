@@ -301,7 +301,7 @@ namespace NodaTime.TimeZones
             // TODO: include the name in this check too. Currently it fails for zones where the
             // daylight savings zone interval ends up adding -Summer or -Winter.
             if (lastTransition.StandardOffset != firstTailZoneInterval.StandardOffset ||
-                lastTransition.WallOffset != firstTailZoneInterval.Offset ||
+                lastTransition.WallOffset != firstTailZoneInterval.WallOffset ||
                 lastTransition.Savings != firstTailZoneInterval.Savings)
             {
                 throw new InvalidOperationException(
