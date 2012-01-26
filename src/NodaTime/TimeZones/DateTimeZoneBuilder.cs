@@ -109,9 +109,6 @@ namespace NodaTime.TimeZones
                 throw new ArgumentNullException("yearOffset");
             }
 
-#if DEBUG_FULL
-            Debug.WriteLine(string.Format("{0}: AddCutover({1}, {2})", Name, year, yearOffset));
-#endif
             if (ruleSets.Count > 0)
             {
                 LastRuleSet.SetUpperLimit(year, yearOffset);
@@ -127,9 +124,6 @@ namespace NodaTime.TimeZones
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
         public DateTimeZoneBuilder SetStandardOffset(Offset standardOffset)
         {
-#if DEBUG_FULL
-            Debug.WriteLine(string.Format("{0}: SetStandardOffset({1})", Name, standardOffset));
-#endif
             LastRuleSet.StandardOffset = standardOffset;
             return this;
         }
@@ -142,9 +136,6 @@ namespace NodaTime.TimeZones
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
         public DateTimeZoneBuilder SetFixedSavings(String nameKey, Offset savings)
         {
-#if DEBUG_FULL
-            Debug.WriteLine(string.Format("{0}: SetFixedSavings({1}, {2})", Name, nameKey, savings));
-#endif
             LastRuleSet.SetFixedSavings(nameKey, savings);
             return this;
         }
@@ -208,9 +199,6 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("recurrence");
             }
-#if DEBUG_FULL
-            Debug.WriteLine(string.Format("{0}: AddRecurringSavings({1})", Name, recurrence));
-#endif
             if (recurrence.FromYear <= recurrence.ToYear)
             {
                 LastRuleSet.AddRule(recurrence);
