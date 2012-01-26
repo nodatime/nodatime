@@ -82,24 +82,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Nexts the offset.
-        /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <returns></returns>
-        private static int NextInteger(Tokens tokens, string name, int defaultValue)
-        {
-            int result = defaultValue;
-            string text;
-            if (tokens.TryNextToken(name, out text))
-            {
-                result = ParserHelper.ParseInteger(text, defaultValue);
-            }
-            return result;
-        }
-
-        /// <summary>
         ///   Nexts the month.
         /// </summary>
         /// <param name="tokens">The tokens.</param>
@@ -110,28 +92,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             var value = NextString(tokens, name);
             int result = ParseMonth(value);
             return result == 0 ? 1 : result;
-        }
-
-        /// <summary>
-        ///   Nexts the month.
-        /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <returns></returns>
-        private static int NextMonth(Tokens tokens, string name, int defaultValue)
-        {
-            int result = defaultValue;
-            string text;
-            if (tokens.TryNextToken(name, out text))
-            {
-                result = ParseMonth(text);
-                if (result == 0)
-                {
-                    result = defaultValue;
-                }
-            }
-            return result;
         }
 
         /// <summary>
@@ -169,23 +129,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 Error("Missing zone info token {0}", name);
             }
             return tokens.NextToken(name);
-        }
-
-        /// <summary>
-        ///   Nexts the string.
-        /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <returns></returns>
-        private static string NextString(Tokens tokens, string name, string defaultValue)
-        {
-            string result;
-            if (!tokens.TryNextToken(name, out result))
-            {
-                result = defaultValue;
-            }
-            return result;
         }
 
         /// <summary>
