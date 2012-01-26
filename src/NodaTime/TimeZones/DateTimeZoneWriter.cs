@@ -238,7 +238,7 @@ namespace NodaTime.TimeZones
         ///   Writes the given 8 bit integer value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        protected void WriteInt8(byte value)
+        public void WriteInt8(byte value)
         {
             unchecked
             {
