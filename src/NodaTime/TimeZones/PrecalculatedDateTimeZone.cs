@@ -91,8 +91,8 @@ namespace NodaTime.TimeZones
         /// <param name="tailZone">The tail zone.</param>
         internal PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone)
             : base(id, false,
-                   ComputeOffset(periods, p => p.Offset, tailZone, Offset.Min),
-                   ComputeOffset(periods, p => p.Offset, tailZone, Offset.Max))
+                   ComputeOffset(periods, p => p.WallOffset, tailZone, Offset.Min),
+                   ComputeOffset(periods, p => p.WallOffset, tailZone, Offset.Max))
         {
             this.tailZone = tailZone;
             this.periods = periods;
@@ -190,7 +190,7 @@ namespace NodaTime.TimeZones
             {
                 writer.WriteInstant(period.Start);
                 writer.WriteString(period.Name);
-                writer.WriteOffset(period.Offset);
+                writer.WriteOffset(period.WallOffset);
                 writer.WriteOffset(period.Savings);
             }
             var end = periods[periods.Length - 1].End;

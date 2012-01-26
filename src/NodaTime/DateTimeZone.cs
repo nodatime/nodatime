@@ -194,7 +194,7 @@ namespace NodaTime
         /// </returns>
         public virtual Offset GetOffsetFromUtc(Instant instant)
         {
-            return GetZoneInterval(instant).Offset;
+            return GetZoneInterval(instant).WallOffset;
         }
 
         /// <summary>
@@ -283,11 +283,11 @@ namespace NodaTime
                 case 0:
                     throw new SkippedTimeException(localDateTime, this);
                 case 1:
-                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this);
+                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this);
                 case 2:
                     throw new AmbiguousTimeException(localDateTime, this,
-                        new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this),
-                        new ZonedDateTime(localDateTime, pair.LateInterval.Offset, this));
+                        new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this),
+                        new ZonedDateTime(localDateTime, pair.LateInterval.WallOffset, this));
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }
@@ -311,7 +311,7 @@ namespace NodaTime
                     throw new SkippedTimeException(localDateTime, this);
                 case 1:
                 case 2:
-                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this);
+                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this);
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }
@@ -334,9 +334,9 @@ namespace NodaTime
                 case 0:
                     throw new SkippedTimeException(localDateTime, this);
                 case 1:
-                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this);
+                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this);
                 case 2:
-                    return new ZonedDateTime(localDateTime, pair.LateInterval.Offset, this);
+                    return new ZonedDateTime(localDateTime, pair.LateInterval.WallOffset, this);
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }
@@ -368,10 +368,10 @@ namespace NodaTime
                     {
                         throw new SkippedTimeException(date + LocalTime.Midnight, this);
                     }
-                    return new ZonedDateTime(localDateTime, interval.Offset, this);
+                    return new ZonedDateTime(localDateTime, interval.WallOffset, this);
                 case 1:
                 case 2:
-                    return new ZonedDateTime(date.LocalDateTime, pair.EarlyInterval.Offset, this);
+                    return new ZonedDateTime(date.LocalDateTime, pair.EarlyInterval.WallOffset, this);
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }
@@ -396,11 +396,11 @@ namespace NodaTime
                     var after = GetIntervalAfterGap(localInstant);
                     return ZoneLocalMapping.SkippedResult(before, after);
                 case 1:
-                    var mapping = new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this);
+                    var mapping = new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this);
                     return ZoneLocalMapping.UnambiguousResult(mapping);
                 case 2:
-                    var earlier = new ZonedDateTime(localDateTime, pair.EarlyInterval.Offset, this);
-                    var later = new ZonedDateTime(localDateTime, pair.LateInterval.Offset, this);
+                    var earlier = new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this);
+                    var later = new ZonedDateTime(localDateTime, pair.LateInterval.WallOffset, this);
                     return ZoneLocalMapping.AmbiguousResult(earlier, later);
                 default:
                     throw new InvalidOperationException("This won't happen.");
@@ -464,7 +464,7 @@ namespace NodaTime
             // If the local interval occurs before the zone interval we're looking at start,
             // we need to find the earlier one; otherwise this interval must come after the gap, and
             // it's therefore the one we want.
-            if (localInstant.Minus(guessInterval.Offset) < guessInterval.Start)
+            if (localInstant.Minus(guessInterval.WallOffset) < guessInterval.Start)
             {
                 return GetZoneInterval(guessInterval.Start - Duration.One);
             }
@@ -480,7 +480,7 @@ namespace NodaTime
             ZoneInterval guessInterval = GetZoneInterval(guess);
             // If the local interval occurs before the zone interval we're looking at starts,
             // it's the one we're looking for. Otherwise, we need to find the next interval.
-            if (localInstant.Minus(guessInterval.Offset) < guessInterval.Start)
+            if (localInstant.Minus(guessInterval.WallOffset) < guessInterval.Start)
             {
                 return guessInterval;
             }

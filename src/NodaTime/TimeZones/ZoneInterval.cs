@@ -36,7 +36,7 @@ namespace NodaTime.TimeZones
         private readonly LocalInstant localEnd;
         private readonly LocalInstant localStart;
         private readonly string name;
-        private readonly Offset offset;
+        private readonly Offset wallOffset;
         private readonly Offset savings;
         private readonly Instant start;
 
@@ -44,13 +44,13 @@ namespace NodaTime.TimeZones
         ///   Initializes a new instance of the <see cref="ZoneInterval" /> class.
         /// </summary>
         /// <param name="name">The name of this offset period (e.g. PST or PDT).</param>
-        /// <param name="start">The first <see cref="Instant" /> that the <paramref name = "offset" /> applies.</param>
-        /// <param name="end">The last <see cref="Instant" /> (exclusive) that the <paramref name = "offset" /> applies.</param>
-        /// <param name="offset">The <see cref="Offset" /> from UTC for this period including any daylight savings.</param>
-        /// <param name="savings">The <see cref="Offset" /> daylight savings contribution to the offset.</param>
+        /// <param name="start">The first <see cref="Instant" /> that the <paramref name = "wallOffset" /> applies.</param>
+        /// <param name="end">The last <see cref="Instant" /> (exclusive) that the <paramref name = "wallOffset" /> applies.</param>
+        /// <param name="wallOffset">The <see cref="WallOffset" /> from UTC for this period including any daylight savings.</param>
+        /// <param name="savings">The <see cref="WallOffset" /> daylight savings contribution to the offset.</param>
         /// <exception cref="ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
         /// <exception cref="ArgumentNullException">If the <paramref name = "name" /> parameter is null.</exception>
-        public ZoneInterval(string name, Instant start, Instant end, Offset offset, Offset savings)
+        public ZoneInterval(string name, Instant start, Instant end, Offset wallOffset, Offset savings)
         {
             if (name == null)
             {
@@ -63,10 +63,10 @@ namespace NodaTime.TimeZones
             this.name = name;
             this.start = start;
             this.end = end;
-            this.offset = offset;
+            this.wallOffset = wallOffset;
             this.savings = savings;
-            localStart = start == Instant.MinValue ? LocalInstant.MinValue : this.start.Plus(this.offset);
-            localEnd = end == Instant.MaxValue ? LocalInstant.MaxValue : this.end.Plus(this.offset);
+            localStart = start == Instant.MinValue ? LocalInstant.MinValue : this.start.Plus(this.wallOffset);
+            localEnd = end == Instant.MaxValue ? LocalInstant.MaxValue : this.end.Plus(this.wallOffset);
         }
 
         
@@ -75,7 +75,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         internal ZoneInterval WithStart(Instant newStart)
         {
-            return new ZoneInterval(name, newStart, end, offset, savings);
+            return new ZoneInterval(name, newStart, end, wallOffset, savings);
         }
 
         #region Properties
@@ -89,7 +89,7 @@ namespace NodaTime.TimeZones
         /// <value>The base Offset.</value>
         public Offset StandardOffset
         {
-            [DebuggerStepThrough] get { return Offset - Savings; }
+            [DebuggerStepThrough] get { return WallOffset - Savings; }
         }
 
         /// <summary>
@@ -168,9 +168,9 @@ namespace NodaTime.TimeZones
         ///   Gets the offset from UTC for this period. This includes any daylight savings value.
         /// </summary>
         /// <value>The offset from UTC for this period.</value>
-        public Offset Offset
+        public Offset WallOffset
         {
-            [DebuggerStepThrough] get { return offset; }
+            [DebuggerStepThrough] get { return wallOffset; }
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return Name == other.Name && Start == other.Start && End == other.End && Offset == other.Offset && Savings == other.Savings;
+            return Name == other.Name && Start == other.Start && End == other.End && WallOffset == other.WallOffset && Savings == other.Savings;
         }
         #endregion
 
@@ -277,7 +277,7 @@ namespace NodaTime.TimeZones
             hash = HashCodeHelper.Hash(hash, Name);
             hash = HashCodeHelper.Hash(hash, Start);
             hash = HashCodeHelper.Hash(hash, End);
-            hash = HashCodeHelper.Hash(hash, Offset);
+            hash = HashCodeHelper.Hash(hash, WallOffset);
             hash = HashCodeHelper.Hash(hash, Savings);
             return hash;
         }
@@ -297,7 +297,7 @@ namespace NodaTime.TimeZones
             buffer.Append(", ");
             buffer.Append(End);
             buffer.Append(") ");
-            buffer.Append(Offset);
+            buffer.Append(WallOffset);
             buffer.Append(" (");
             buffer.Append(Savings);
             buffer.Append(")");
@@ -338,7 +338,7 @@ namespace NodaTime.TimeZones
             writer.WriteString(Name);
             writer.WriteInstant(Start);
             writer.WriteInstant(End);
-            writer.WriteOffset(Offset);
+            writer.WriteOffset(WallOffset);
             writer.WriteOffset(Savings);
         }
         #endregion // I/O
