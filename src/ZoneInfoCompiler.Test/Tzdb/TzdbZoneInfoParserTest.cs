@@ -284,7 +284,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
         public void ParseZone_withYear()
         {
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969");
-            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, 1, 1, Offset.Zero, (char)0);
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, Offset.Zero));
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -292,7 +292,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
         public void ParseZone_withYearMonthDay()
         {
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23");
-            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, 3, 23, Offset.Zero, (char)0);
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, new ZoneYearOffset(TransitionMode.Wall, 3, 23, 0, false, Offset.Zero));
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -300,7 +300,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
         public void ParseZone_withYearMonthDayTime()
         {
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856");
-            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, 3, 23, ToOffset(14, 53, 27, 856), (char)0);
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, new ZoneYearOffset(TransitionMode.Wall, 3, 23, 0, false, ToOffset(14, 53, 27, 856)));
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -308,7 +308,15 @@ namespace ZoneInfoCompiler.Test.Tzdb
         public void ParseZone_withYearMonthDayTimeZone()
         {
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856s");
-            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, 3, 23, ToOffset(14, 53, 27, 856), 's');
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, new ZoneYearOffset(TransitionMode.Standard, 3, 23, 0, false, ToOffset(14, 53, 27, 856)));
+            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
+        }
+
+        [Test]
+        public void ParseZone_withDayOfWeek()
+        {
+            var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar lastSun");
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", 1969, new ZoneYearOffset(TransitionMode.Wall, 3, -1, 1, false, Offset.Zero));
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -430,7 +438,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             var zone = database.Zones[0][0];
             Assert.AreEqual(Offset.FromHours(9), zone.Offset);
             Assert.IsNull(zone.Rules);
-            Assert.AreEqual(int.MaxValue, zone.Year);
+            Assert.AreEqual(int.MaxValue, zone.UntilYear);
         }
 
         [Test]
@@ -446,7 +454,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             var zone = database.Zones[0][0];
             Assert.AreEqual(Offset.FromHours(-9), zone.Offset);
             Assert.IsNull(zone.Rules);
-            Assert.AreEqual(int.MaxValue, zone.Year);
+            Assert.AreEqual(int.MaxValue, zone.UntilYear);
         }
     }
 }

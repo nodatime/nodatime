@@ -271,8 +271,7 @@
       <LastGenOutput>PatternResources.de-DE.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="TimeZones\Tzdb.resx">
-      <SubType>
-      </SubType>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="TimeZones\winmap.resx">
       <Generator>ResXFileCodeGenerator</Generator>

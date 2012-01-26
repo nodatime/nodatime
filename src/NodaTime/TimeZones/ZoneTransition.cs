@@ -167,9 +167,6 @@ namespace NodaTime.TimeZones
         /// greater than the given transition's and either the wall offset or the name must be
         /// different. If this is not true then this transition is considered to be redundant
         /// and should not be used.
-        /// TODO: Consider whether going from "standard=0,savings=1" to "standard=1,savings=0"
-        /// should be considered a transition. Currently we don't expose the standard/savings
-        /// aspect of a time zone, but we may well in the future.
         /// </remarks>
         /// <param name="other">The <see cref="ZoneTransition"/> to compare to.</param>
         /// <returns>

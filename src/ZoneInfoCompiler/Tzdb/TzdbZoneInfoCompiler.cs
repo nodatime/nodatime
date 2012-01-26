@@ -84,7 +84,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private static DateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, IList<ZoneRule>> ruleSets)
         {
             var builder = new DateTimeZoneBuilder();
-            foreach (var zone in zoneList)
+            foreach (Zone zone in zoneList)
             {
                 builder.SetStandardOffset(zone.Offset);
                 if (zone.Rules == null)
@@ -95,7 +95,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 {
                     try
                     {
-                        // Check if iRules actually just refers to a savings.
+                        // Check if Rules actually just refers to a savings.
                         var savings = ParserHelper.ParseOffset(zone.Rules);
                         builder.SetFixedSavings(zone.Format, savings);
                     }
@@ -109,12 +109,11 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                         AddRecurring(builder, zone.Format, rs);
                     }
                 }
-                if (zone.Year == Int32.MaxValue)
+                if (zone.UntilYear == Int32.MaxValue)
                 {
                     break;
                 }
-
-                builder.AddCutover(zone.Year, TransitionMode.Wall, zone.MonthOfYear, zone.DayOfMonth, 0, true, zone.TickOfDay);
+                builder.AddCutover(zone.UntilYear, zone.UntilYearOffset);
             }
             return builder.ToDateTimeZone(zoneList.Name);
         }
@@ -153,7 +152,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 }
                 catch (Exception e)
                 {
-                    log.Error("{0}", e.StackTrace);
+                    log.Error("{0}", e);
                     return 2;
                 }
 #endif

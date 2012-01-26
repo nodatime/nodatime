@@ -277,73 +277,76 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 
             int monthOfYear = NextMonth(tokens, "MonthOfYear");
 
-            int dayOfMonth;
-            int dayOfWeek;
-            bool advanceDayOfWeek;
+            int dayOfMonth = 1;
+            int dayOfWeek = 0;
+            bool advanceDayOfWeek = false;
 
-            var on = NextString(tokens, "When");
-            if (on.StartsWith("last", StringComparison.Ordinal))
+            if (tokens.HasNextToken)
             {
-                dayOfMonth = -1;
-                dayOfWeek = ParseDayOfWeek(on.Substring(4));
-                advanceDayOfWeek = false;
-            }
-            else
-            {
-                int index = on.IndexOf(">=", StringComparison.Ordinal);
-                if (index > 0)
+                var on = NextString(tokens, "When");
+                if (on.StartsWith("last", StringComparison.Ordinal))
                 {
-                    dayOfMonth = Int32.Parse(on.Substring(index + 2), CultureInfo.InvariantCulture);
-                    dayOfWeek = ParseDayOfWeek(on.Substring(0, index));
-                    advanceDayOfWeek = true;
+                    dayOfMonth = -1;
+                    dayOfWeek = ParseDayOfWeek(on.Substring(4));
                 }
                 else
                 {
-                    index = on.IndexOf("<=", StringComparison.Ordinal);
+                    int index = on.IndexOf(">=", StringComparison.Ordinal);
                     if (index > 0)
                     {
                         dayOfMonth = Int32.Parse(on.Substring(index + 2), CultureInfo.InvariantCulture);
                         dayOfWeek = ParseDayOfWeek(on.Substring(0, index));
-                        advanceDayOfWeek = false;
+                        advanceDayOfWeek = true;
                     }
                     else
                     {
-                        try
+                        index = on.IndexOf("<=", StringComparison.Ordinal);
+                        if (index > 0)
                         {
-                            dayOfMonth = Int32.Parse(on, CultureInfo.InvariantCulture);
-                            dayOfWeek = 0;
-                            advanceDayOfWeek = false;
+                            dayOfMonth = Int32.Parse(on.Substring(index + 2), CultureInfo.InvariantCulture);
+                            dayOfWeek = ParseDayOfWeek(on.Substring(0, index));
                         }
-                        catch (FormatException e)
+                        else
                         {
-                            throw new ArgumentException("Unparsable ON token: " + on, e);
+                            try
+                            {
+                                dayOfMonth = Int32.Parse(on, CultureInfo.InvariantCulture);
+                                dayOfWeek = 0;
+                            }
+                            catch (FormatException e)
+                            {
+                                throw new ArgumentException("Unparsable ON token: " + on, e);
+                            }
                         }
                     }
                 }
-            }
 
-            var atTime = NextString(tokens, "AT");
-            if (!string.IsNullOrEmpty(atTime))
-            {
-                if (Char.IsLetter(atTime[atTime.Length - 1]))
+                if (tokens.HasNextToken)
                 {
-                    char zoneCharacter = atTime[atTime.Length - 1];
-                    mode = ZoneYearOffset.NormalizeModeCharacter(zoneCharacter);
-                    atTime = atTime.Substring(0, atTime.Length - 1);
-                }
-                if (atTime == "24:00")
-                {
-                    LocalDate date = (dayOfMonth == -1 ?
-                            new LocalDate(2001, monthOfYear, 1) + Period.FromMonths(1) :
-                            new LocalDate(2001, monthOfYear, dayOfMonth) + Period.FromDays(1));
-                    advanceDayOfWeek = (dayOfMonth != -1);
-                    monthOfYear = date.MonthOfYear;
-                    dayOfMonth = date.DayOfMonth;
-                    dayOfWeek = ((dayOfWeek - 1 + 1) % 7) + 1;
-                }
-                else
-                {
-                    tickOfDay = ParserHelper.ParseOffset(atTime);
+                    var atTime = NextString(tokens, "AT");
+                    if (!string.IsNullOrEmpty(atTime))
+                    {
+                        if (Char.IsLetter(atTime[atTime.Length - 1]))
+                        {
+                            char zoneCharacter = atTime[atTime.Length - 1];
+                            mode = ZoneYearOffset.NormalizeModeCharacter(zoneCharacter);
+                            atTime = atTime.Substring(0, atTime.Length - 1);
+                        }
+                        if (atTime == "24:00")
+                        {
+                            LocalDate date = (dayOfMonth == -1
+                                                  ? new LocalDate(2001, monthOfYear, 1) + Period.FromMonths(1)
+                                                  : new LocalDate(2001, monthOfYear, dayOfMonth) + Period.FromDays(1));
+                            advanceDayOfWeek = (dayOfMonth != -1);
+                            monthOfYear = date.MonthOfYear;
+                            dayOfMonth = date.DayOfMonth;
+                            dayOfWeek = ((dayOfWeek - 1 + 1) % 7) + 1;
+                        }
+                        else
+                        {
+                            tickOfDay = ParserHelper.ParseOffset(atTime);
+                        }
+                    }
                 }
             }
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
@@ -510,21 +513,14 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             var rules = NextOptional(tokens, "Rules");
             var format = NextString(tokens, "Format");
             int year = NextYear(tokens, "Until Year", Int32.MaxValue);
-            int monthOfYear = NextMonth(tokens, "Until Month", 1);
-            int dayOfMonth = NextInteger(tokens, "Until Day", 1);
-            var tickOfDay = Offset.Zero;
-            var zoneCharacter = (char)0;
-            var untilTime = NextString(tokens, "Until Time", null);
-            if (!string.IsNullOrEmpty(untilTime))
+            
+            if (tokens.HasNextToken)
             {
-                if (Char.IsLetter(untilTime[untilTime.Length - 1]))
-                {
-                    zoneCharacter = untilTime[untilTime.Length - 1];
-                    untilTime = untilTime.Substring(0, untilTime.Length - 1);
-                }
-                tickOfDay = ParserHelper.ParseOffset(untilTime);
+                var until = ParseDateTimeOfYear(tokens);
+                return new Zone(name, offset, rules, format, year, until);
             }
-            return new Zone(name, offset, rules, format, year, monthOfYear, dayOfMonth, tickOfDay, zoneCharacter);
+
+            return new Zone(name, offset, rules, format, year, ZoneYearOffset.StartOfYear);
         }
 
         #region Nested type: ParseException

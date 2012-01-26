@@ -170,7 +170,7 @@ namespace NodaTime.TimeZones
                 WriteInt8(FlagTimeZoneNull);
                 return;
             }
-            else if (value is FixedDateTimeZone)
+            if (value is FixedDateTimeZone)
             {
                 WriteInt8(FlagTimeZoneFixed);
             }

@@ -19,6 +19,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using NodaTime.Fields;
+using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
@@ -31,49 +32,37 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// </remarks>
     internal class Zone : IEquatable<Zone>
     {
-        private readonly int dayOfMonth;
         private readonly string format;
-        private readonly int monthOfYear;
         private readonly string name;
         private readonly Offset offset;
         private readonly string rules;
-        private readonly Offset tickOfDay;
-        private readonly int year;
-        private readonly char zoneCharacter;
+        private readonly int untilYear;
+        private readonly ZoneYearOffset untilYearOffset;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="Zone" /> class.
         /// </summary>
-        public Zone(string name, Offset offset, string rules, string format, int year, int monthOfYear, int dayOfMonth, Offset tickOfDay, char zoneCharacter)
+        public Zone(string name, Offset offset, string rules, string format, int untilYear, ZoneYearOffset untilYearOffset)
         {
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear);
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth);
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.TotalTicks);
             this.name = name;
             this.offset = offset;
             this.rules = rules;
             this.format = format;
-            this.year = year;
-            this.monthOfYear = monthOfYear;
-            this.dayOfMonth = dayOfMonth;
-            this.tickOfDay = tickOfDay;
-            this.zoneCharacter = zoneCharacter;
+            this.untilYear = untilYear;
+            this.untilYearOffset = untilYearOffset;
         }
 
+        // FIXME: Check this!
         internal Zone(string name, Offset offset, string rules, string format)
-            : this(name, offset, rules, format, Int32.MaxValue, 1, 1, Offset.Zero, (char)0)
+            : this(name, offset, rules, format, Int32.MaxValue, new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero))
         {
-            
+
         }
 
-        /// <summary>
-        ///   Gets or sets the until day if defined.
-        /// </summary>
-        /// <value>The day number or 0.</value>
-        internal int DayOfMonth
-        {
-            get { return dayOfMonth; }
-        }
+
+        internal ZoneYearOffset UntilYearOffset { get { return untilYearOffset; } }
+
+        internal int UntilYear { get { return untilYear; } }
 
         /// <summary>
         ///   Gets or sets the format for generating the label for this time zone.
@@ -82,15 +71,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal string Format
         {
             get { return format; }
-        }
-
-        /// <summary>
-        ///   Gets or sets the until month if defined.
-        /// </summary>
-        /// <value>The month or 0.</value>
-        internal int MonthOfYear
-        {
-            get { return monthOfYear; }
         }
 
         /// <summary>
@@ -120,33 +100,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             get { return rules; }
         }
 
-        /// <summary>
-        ///   Gets or sets the until offset time of the day if defined.
-        /// </summary>
-        /// <value>The offset or Offset.MinValue.</value>
-        internal Offset TickOfDay
-        {
-            get { return tickOfDay; }
-        }
-
-        /// <summary>
-        ///   Gets or sets the until year if defined.
-        /// </summary>
-        /// <value>The until year or 0.</value>
-        internal int Year
-        {
-            get { return year; }
-        }
-
-        /// <summary>
-        ///   Gets or sets the until zone character if defined.
-        /// </summary>
-        /// <value>The zone character or NUL.</value>
-        internal char ZoneCharacter
-        {
-            get { return zoneCharacter; }
-        }
-
         #region IEquatable<Zone> Members
         /// <summary>
         ///   Indicates whether the current object is equal to another object of the same type.
@@ -166,11 +119,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             {
                 return true;
             }
-            var result = Name == other.Name && Offset == other.Offset && Rules == other.Rules && Format == other.Format && Year == other.Year;
-            if (Year != Int32.MaxValue)
+            var result = Name == other.Name && Offset == other.Offset && Rules == other.Rules && Format == other.Format && UntilYear == other.UntilYear;
+            if (UntilYear != Int32.MaxValue)
             {
-                result = result && MonthOfYear == other.MonthOfYear && DayOfMonth == other.DayOfMonth && TickOfDay == other.TickOfDay &&
-                         ZoneCharacter == other.ZoneCharacter;
+                result = result && UntilYearOffset.Equals(other.UntilYearOffset);
             }
             return result;
         }
@@ -206,13 +158,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             hash = HashCodeHelper.Hash(hash, Offset);
             hash = HashCodeHelper.Hash(hash, Rules);
             hash = HashCodeHelper.Hash(hash, Format);
-            hash = HashCodeHelper.Hash(hash, Year);
-            if (Year != Int32.MaxValue)
+            hash = HashCodeHelper.Hash(hash, UntilYear);
+            if (UntilYear != Int32.MaxValue)
             {
-                hash = HashCodeHelper.Hash(hash, MonthOfYear);
-                hash = HashCodeHelper.Hash(hash, DayOfMonth);
-                hash = HashCodeHelper.Hash(hash, TickOfDay);
-                hash = HashCodeHelper.Hash(hash, ZoneCharacter);
+                hash = HashCodeHelper.Hash(hash, UntilYearOffset.GetHashCode());
             }
 
             return hash;
@@ -231,25 +180,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             builder.Append(Offset.ToString()).Append(" ");
             builder.Append(ParserHelper.FormatOptional(Rules)).Append(" ");
             builder.Append(Format);
-            if (Year != Int32.MaxValue)
+            if (UntilYear != Int32.MaxValue)
             {
-                builder.Append(" ").Append(Year.ToString("D4", CultureInfo.InvariantCulture)).Append(" ");
-                if (MonthOfYear > 0)
-                {
-                    builder.Append(" ").Append(TzdbZoneInfoParser.Months[MonthOfYear]);
-                    if (DayOfMonth > 0)
-                    {
-                        builder.Append(" ").Append(DayOfMonth.ToString("D", CultureInfo.InvariantCulture)).Append(" ");
-                        if (TickOfDay > Offset.Zero)
-                        {
-                            builder.Append(" ").Append(TickOfDay.ToString());
-                            if (ZoneCharacter != 0)
-                            {
-                                builder.Append(ZoneCharacter);
-                            }
-                        }
-                    }
-                }
+                builder.Append(" ").Append(UntilYear.ToString("D4", CultureInfo.InvariantCulture)).Append(" ").Append(UntilYearOffset);
             }
             return builder.ToString();
         }
