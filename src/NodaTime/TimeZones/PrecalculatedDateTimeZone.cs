@@ -185,11 +185,36 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentNullException("writer");
             }
+
+            // Keep a pool of strings; we don't want to write the same strings out time and time again.
+            List<string> stringPool = new List<string>();
+            foreach (var period in periods)
+            {
+                string name = period.Name;
+                if (!stringPool.Contains(name))
+                {
+                    stringPool.Add(name);
+                }
+            }
+            writer.WriteCount(stringPool.Count);
+            foreach (string name in stringPool)
+            {
+                writer.WriteString(name);
+            }
+
             writer.WriteCount(periods.Length);
             foreach (var period in periods)
             {
                 writer.WriteInstant(period.Start);
-                writer.WriteString(period.Name);
+                int nameIndex = stringPool.IndexOf(period.Name);
+                if (stringPool.Count < 256)
+                {
+                    writer.WriteInt8((byte)nameIndex);
+                }
+                else
+                {
+                    writer.WriteInteger(nameIndex);
+                }
                 writer.WriteOffset(period.WallOffset);
                 writer.WriteOffset(period.Savings);
             }
@@ -210,12 +235,19 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         public static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
+            string[] stringPool = new string[reader.ReadCount()];
+            for (int i = 0; i < stringPool.Length; i++)
+            {
+                stringPool[i] = reader.ReadString();
+            }
+
             int size = reader.ReadCount();
             var periods = new ZoneInterval[size];
             var start = reader.ReadInstant();
             for (int i = 0; i < size; i++)
             {
-                var name = reader.ReadString();
+                int nameIndex = stringPool.Length < 256 ? reader.ReadInt8() : reader.ReadInteger();
+                var name = stringPool[nameIndex];
                 var offset = reader.ReadOffset();
                 var savings = reader.ReadOffset();
                 var nextStart = reader.ReadInstant();
