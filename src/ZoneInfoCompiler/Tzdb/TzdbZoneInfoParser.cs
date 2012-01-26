@@ -266,11 +266,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Parses the date time of year.
         /// </summary>
         /// <param name="tokens">The tokens to parse.</param>
+        /// <param name="forRule">True if this is for a Rule line, in which case ON/AT are mandatory;
+        /// false for a Zone line, in which case it's part of "until" and they're optional</param>
         /// <returns>The DateTimeOfYear object.</returns>
         /// <remarks>
         ///   IN ON AT
         /// </remarks>
-        internal ZoneYearOffset ParseDateTimeOfYear(Tokens tokens)
+        internal ZoneYearOffset ParseDateTimeOfYear(Tokens tokens, bool forRule)
         {
             var mode = ZoneYearOffset.StartOfYear.Mode;
             var tickOfDay = ZoneYearOffset.StartOfYear.TickOfDay;
@@ -281,9 +283,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             int dayOfWeek = 0;
             bool advanceDayOfWeek = false;
 
-            if (tokens.HasNextToken)
+            if (tokens.HasNextToken || forRule)
             {
-                var on = NextString(tokens, "When");
+                var on = NextString(tokens, "On");
                 if (on.StartsWith("last", StringComparison.Ordinal))
                 {
                     dayOfMonth = -1;
@@ -321,7 +323,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     }
                 }
 
-                if (tokens.HasNextToken)
+                if (tokens.HasNextToken || forRule)
                 {
                     var atTime = NextString(tokens, "AT");
                     if (!string.IsNullOrEmpty(atTime))
@@ -491,7 +493,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
             /* string type = */
             NextOptional(tokens, "Type");
-            var yearOffset = ParseDateTimeOfYear(tokens);
+            var yearOffset = ParseDateTimeOfYear(tokens, true);
             var savings = NextOffset(tokens, "SaveMillis");
             var letterS = NextOptional(tokens, "LetterS");
             var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
@@ -516,7 +518,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             
             if (tokens.HasNextToken)
             {
-                var until = ParseDateTimeOfYear(tokens);
+                var until = ParseDateTimeOfYear(tokens, false);
                 return new Zone(name, offset, rules, format, year, until);
             }
 
