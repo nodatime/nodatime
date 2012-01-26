@@ -27,7 +27,7 @@ namespace NodaTime.Demo
         public void SimpleConstruction()
         {
             LocalDate date = new LocalDate(2010, 6, 16);
-            Assert.AreEqual("2010-06-16", date.ToString());
+            Assert.AreEqual("2010-06-16", date.ToString("yyyy-MM-dd"));
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace NodaTime.Demo
             LocalDate date = new LocalDate(2010, 6, 16);
             LocalTime time = new LocalTime(16, 20, 0);
             LocalDateTime dateTime = date + time;
-            Assert.AreEqual("ISO: 2010-06-16T16:20:00 LOC", dateTime.ToString());
+            Assert.AreEqual(new LocalDateTime(2010, 6, 16, 16, 20, 0), dateTime);
         }
     }
 }
