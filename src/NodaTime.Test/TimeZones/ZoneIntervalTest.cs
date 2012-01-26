@@ -34,7 +34,7 @@ namespace NodaTime.Test.TimeZones
         public void PassthroughProperties()
         {
             Assert.AreEqual("TestTime", SampleInterval.Name);
-            Assert.AreEqual(Offset.FromHours(8), SampleInterval.BaseOffset);
+            Assert.AreEqual(Offset.FromHours(8), SampleInterval.StandardOffset);
             Assert.AreEqual(Offset.FromHours(1), SampleInterval.Savings);
             Assert.AreEqual(Offset.FromHours(9), SampleInterval.Offset);
             Assert.AreEqual(SampleStart, SampleInterval.Start);

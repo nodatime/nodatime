@@ -53,7 +53,7 @@ namespace NodaTime.Test.TimeZones
             var interval = TestZone.GetZoneInterval(Instant.FromUtc(2010, 6, 1, 0, 0));
             Assert.AreEqual("Summer", interval.Name);
             Assert.AreEqual(Offset.FromHours(6), interval.Offset);
-            Assert.AreEqual(Offset.FromHours(5), interval.BaseOffset);
+            Assert.AreEqual(Offset.FromHours(5), interval.StandardOffset);
             Assert.AreEqual(Offset.FromHours(1), interval.Savings);
             Assert.AreEqual(new LocalInstant(2010, 3, 10, 2, 0), interval.LocalStart);
             Assert.AreEqual(new LocalInstant(2010, 10, 5, 2, 0), interval.LocalEnd);
@@ -65,7 +65,7 @@ namespace NodaTime.Test.TimeZones
             var interval = TestZone.GetZoneInterval(Instant.FromUtc(2010, 11, 1, 0, 0));
             Assert.AreEqual("Winter", interval.Name);
             Assert.AreEqual(Offset.FromHours(5), interval.Offset);
-            Assert.AreEqual(Offset.FromHours(5), interval.BaseOffset);
+            Assert.AreEqual(Offset.FromHours(5), interval.StandardOffset);
             Assert.AreEqual(Offset.FromHours(0), interval.Savings);
             Assert.AreEqual(new LocalInstant(2010, 10, 5, 1, 0), interval.LocalStart);
             Assert.AreEqual(new LocalInstant(2011, 3, 10, 1, 0), interval.LocalEnd);
