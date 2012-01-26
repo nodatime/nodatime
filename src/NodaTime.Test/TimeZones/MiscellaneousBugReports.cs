@@ -68,5 +68,18 @@ namespace NodaTime.Test.TimeZones
             expectedLocal = new LocalDateTime(2000, 1, 16, 3, 0);
             Assert.AreEqual(expectedLocal, inKhartoum.LocalDateTime);
         }
+
+        /// <summary>
+        /// Tbilisi used daylight saving time for winter 1996/1997 too.
+        /// </summary>
+        [Test]
+        public void Tbilisi()
+        {
+            var zone = DateTimeZone.ForId("Asia/Tbilisi");
+            Instant summer1996 = Instant.FromUtc(1996, 6, 1, 0, 0);
+            var interval = zone.GetZoneInterval(summer1996);
+            Assert.AreEqual(new LocalDateTime(1996, 3, 31, 1, 0), interval.IsoLocalStart);
+            Assert.AreEqual(new LocalDateTime(1997, 10, 26, 0, 0), interval.IsoLocalEnd);
+        }
     }
 }

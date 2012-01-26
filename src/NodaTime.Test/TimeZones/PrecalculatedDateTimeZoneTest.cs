@@ -84,6 +84,18 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void GetZoneIntervalInstant_FinalInterval_End()
+        {
+            Assert.AreEqual(ThirdInterval, TestZone.GetZoneInterval(ThirdInterval.End - Duration.One));
+        }
+
+        [Test]
+        public void GetZoneIntervalInstant_FinalInterval_Start()
+        {
+            Assert.AreEqual(ThirdInterval, TestZone.GetZoneInterval(ThirdInterval.Start));
+        }
+
+        [Test]
         public void GetZoneIntervalInstant_TailZone()
         {
             Assert.AreEqual(ClampedTailZoneInterval, TestZone.GetZoneInterval(ThirdInterval.End));

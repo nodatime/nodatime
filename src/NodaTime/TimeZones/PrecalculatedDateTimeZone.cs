@@ -30,15 +30,20 @@ namespace NodaTime.TimeZones
     {
         private readonly ZoneInterval[] periods;
         private readonly DateTimeZone tailZone;
+        /// <summary>
+        /// The first instant covered by the tail zone, or Instant.MaxValue if there's no tail zone.
+        /// </summary>
+        private readonly Instant tailZoneStart;
+        private readonly ZoneInterval firstTailZoneInterval;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class.
+        /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class which uses a tail zone.
         /// </summary>
-        /// <param name="id">The id.</param>
+        /// <param name="id">The id of the time zone.</param>
         /// <param name="transitions">The transitions.</param>
-        /// <param name="precalcedEnd">The precalced end.</param>
-        /// <param name="tailZone">The tail zone.</param>
-        internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant precalcedEnd, DateTimeZone tailZone)
+        /// <param name="tailZoneStart">The first instant which isn't covered by the given transitions.</param>
+        /// <param name="tailZone">The tail zone, for use beyond precalcedEnd.</param>
+        internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant tailZoneStart, DateTimeZone tailZone)
             : base(id, false,
                    ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Min),
                    ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Max))
@@ -48,20 +53,33 @@ namespace NodaTime.TimeZones
                 throw new ArgumentNullException("transitions");
             }
             this.tailZone = tailZone;
-            int size = transitions.Count;
-            if (size == 0)
+            this.tailZoneStart = tailZoneStart;
+            if (tailZone != null)
             {
-                throw new ArgumentException("There must be at least one transition", "transitions");
+                // Cache a "clamped" zone interval for use at the start of the tail zone.
+                firstTailZoneInterval = tailZone.GetZoneInterval(tailZoneStart).WithStart(tailZoneStart);
             }
+            int size = transitions.Count;
             periods = new ZoneInterval[size];
             for (int i = 0; i < size; i++)
             {
                 var transition = transitions[i];
-                var endInstant = i == size - 1 ? precalcedEnd : transitions[i + 1].Instant;
+                var endInstant = i == size - 1 ? tailZoneStart : transitions[i + 1].Instant;
                 var period = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset, transition.Savings);
                 periods[i] = period;
             }
             ValidatePeriods(periods, tailZone);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class with no tail zone.
+        /// </summary>
+        /// <param name="id">Time zone ID</param>
+        /// <param name="transitions">Transitions, which must span the whole of time</param>
+        internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions)
+            : this(id, transitions, Instant.MaxValue, null)
+
+        {
         }
 
         /// <summary>
@@ -78,12 +96,19 @@ namespace NodaTime.TimeZones
         {
             this.tailZone = tailZone;
             this.periods = periods;
+            this.tailZone = tailZone;
+            this.tailZoneStart = periods[periods.Length - 1].End;
+            if (tailZone != null)
+            {
+                // Cache a "clamped" zone interval for use at the start of the tail zone.
+                firstTailZoneInterval = tailZone.GetZoneInterval(tailZoneStart).WithStart(tailZoneStart);
+            }
             ValidatePeriods(periods, tailZone);
         }
 
         /// <summary>
         /// Validates that all the periods before the tail zone make sense. We have to start at the beginning of time,
-        /// and then have adjoining periods. This is only called in the 
+        /// and then have adjoining periods. This is only called in the constructors.
         /// </summary>
         /// <remarks>This is only called from the constructors, but is internal to make it easier to test.</remarks>
         /// <exception cref="ArgumentException">The periods specified are invalid</exception>
@@ -111,37 +136,29 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Gets the zone offset period for the given instant. Null is returned if no period is defined by the time zone
-        /// for the given instant.
-        /// TODO: Is it even possible for a zone to not have a zone interval for a particular instant? It makes no logical
-        /// sense. Suggest we state that this can't happen, and throw an exception...
+        /// Gets the zone offset period for the given instant.
         /// </summary>
-        /// <param name="instant">The Instant to test.</param>
-        /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+        /// <param name="instant">The Instant to find.</param>
+        /// <returns>The ZoneInterval including the given instant.</returns>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
-            int last = periods.Length - 1;
-            if (periods[last].End <= instant)
+            if (tailZone != null && instant >= tailZoneStart)
             {
                 // Clamp the tail zone interval to start at the end of our final period, if necessary, so that the
                 // join is seamless.
-                ZoneInterval fromTailZone = tailZone.GetZoneInterval(instant);
-                return fromTailZone.Start < periods[last].End ? fromTailZone.WithStart(periods[last].End) : fromTailZone;
+                ZoneInterval intervalFromTailZone = tailZone.GetZoneInterval(instant);
+                return intervalFromTailZone.Start < tailZoneStart ? firstTailZoneInterval : intervalFromTailZone;
             }
+
             // TODO: Consider using a binary search instead.
-            for (var p = last; p >= 0; p--)
+            for (var p = periods.Length - 1; p >= 0; p--)
             {
-                // TODO: It's not clear how this would happen. Do we need it?
-                if (periods[p].End <= instant)
-                {
-                    break;
-                }
                 if (periods[p].Contains(instant))
                 {
                     return periods[p];
                 }
             }
-            return null;
+            throw new InvalidOperationException(string.Format("Instant {0} did not exist in time zone {1}", instant, Id));
         }
 
         /// <summary>

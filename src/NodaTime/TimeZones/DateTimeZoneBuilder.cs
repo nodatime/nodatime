@@ -94,38 +94,6 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Adds a cutover for added rules.
         /// </summary>
-        /// <remarks>
-        /// A cutover is a point where the standard offset from GMT/UTC changed. This occurs mostly
-        /// pre-1900. The standard offset at the cutover defaults to 0. Call <see
-        /// cref="DateTimeZoneBuilder.SetStandardOffset"/> afterwards to change it.
-        /// </remarks>
-        /// <param name="year">The year of cutover.</param>
-        /// <param name="mode">The transition mode.</param>
-        /// <param name="monthOfYear">The month of year.</param>
-        /// <param name="dayOfMonth">The day of the month. If negative, set to ((last day of month)
-        /// - ~dayOfMonth). For example, if -1, set to last day of month</param>
-        /// <param name="dayOfWeek">The day of week. If 0, ignore.</param>
-        /// <param name="advanceDayOfWeek">if dayOfMonth does not fall on dayOfWeek, then if advanceDayOfWeek set to <c>true</c>
-        /// advance to dayOfWeek when true, otherwise retreat to dayOfWeek when true.</param>
-        /// <param name="tickOfDay">The <see cref="Duration"/> into the day. Additional precision for specifying time of day of transitions</param>
-        /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
-        public DateTimeZoneBuilder AddCutover(int year, TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advanceDayOfWeek,
-                                              Offset tickOfDay)
-        {
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear);
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
-            if (dayOfWeek != 0)
-            {
-                FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
-            }
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.TotalTicks);
-
-            return AddCutover(year, new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay));
-        }
-
-        /// <summary>
-        /// Adds a cutover for added rules.
-        /// </summary>
         /// <param name="year">The year of cutover.</param>
         /// <param name="yearOffset">The offset into the year of the cutover.</param>
         /// <returns></returns>
@@ -267,6 +235,7 @@ namespace NodaTime.TimeZones
 
             ZoneTransition nextTransition = null;
             int ruleSetCount = ruleSets.Count;
+            bool tailZoneSeamValid = false;
             for (int i = 0; i < ruleSetCount; i++)
             {
                 var ruleSet = ruleSets[i];
@@ -285,7 +254,10 @@ namespace NodaTime.TimeZones
                         if (tailZone != null)
                         {
                             // Got the extra transition before DaylightSavingsTimeZone.
-                            nextTransition = transitionIterator.Next();
+                            // This final transition has a valid start point and offset, but
+                            // we don't know where it ends - which is fine, as the tail zone will
+                            // take over.
+                            tailZoneSeamValid = true;
                             break;
                         }
                     }
@@ -301,18 +273,44 @@ namespace NodaTime.TimeZones
                 instant = ruleSet.GetUpperLimit(transitionIterator.Savings);
             }
 
-            // Check if a simpler zone implementation can be returned.
-            if (transitions.Count == 0)
+            // Simple case where we don't have a trailing daylight saving zone.
+            if (tailZone == null)
             {
-                return tailZone ?? new FixedDateTimeZone(zoneId, Offset.Zero);
+                switch (transitions.Count)
+                {
+                    case 0:
+                        return new FixedDateTimeZone(zoneId, Offset.Zero);
+                    case 1:
+                        return new FixedDateTimeZone(zoneId, transitions[0].WallOffset);
+                    default:
+                        var ret = new PrecalculatedDateTimeZone(zoneId, transitions, Instant.MaxValue, null);
+                        return ret.IsCachable() ? CachedDateTimeZone.ForZone(ret) : ret;
+                }
             }
-            if (transitions.Count == 1 && tailZone == null)
+
+            // Sanity check
+            if (!tailZoneSeamValid)
             {
-                var transition = transitions[0];
-                return new FixedDateTimeZone(zoneId, transition.WallOffset);
+                throw new InvalidOperationException("Invalid time zone data for id " + zoneId + "; no valid transition before tail zone");
             }
-            var precalcedEnd = nextTransition != null ? nextTransition.Instant : Instant.MaxValue;
-            var zone = new PrecalculatedDateTimeZone(zoneId, transitions, precalcedEnd, tailZone);
+
+            // The final transition should not be used for a zone interval,
+            // although it should have the same offset etc as the tail zone for its starting point.
+            var lastTransition = transitions[transitions.Count - 1];
+            var firstTailZoneInterval = tailZone.GetZoneInterval(lastTransition.Instant);
+            // TODO: include the name in this check too. Currently it fails for zones where the
+            // daylight savings zone interval ends up adding -Summer or -Winter.
+            if (lastTransition.StandardOffset != firstTailZoneInterval.BaseOffset ||
+                lastTransition.WallOffset != firstTailZoneInterval.Offset ||
+                lastTransition.Savings != firstTailZoneInterval.Savings)
+            {
+                throw new InvalidOperationException(
+                    string.Format("Invalid seam to tail zone in time zone {0}; final transition {1} different to first tail zone interval {2}",
+                                  zoneId, lastTransition, firstTailZoneInterval));
+            }
+
+            transitions.RemoveAt(transitions.Count - 1);
+            var zone = new PrecalculatedDateTimeZone(zoneId, transitions, lastTransition.Instant, tailZone);
             return zone.IsCachable() ? CachedDateTimeZone.ForZone(zone) : zone;
         }
 
@@ -337,17 +335,20 @@ namespace NodaTime.TimeZones
                 return false;
             }
 
-            // If the local time of the new transition is same as last local time, just replace
+            Offset lastOffset = transitions.Count < 2 ? Offset.Zero : transitions[transitions.Count - 2].WallOffset;
+            Offset newOffset = lastTransition.WallOffset;
+            // If the local time of the new transition is the same as the local time of the previous one, just replace
             // the last transition with new one. The LocalInstant property handles overflow,
             // so we don't need to worry about errors around BOT/EOT.
-            if (lastTransition.LocalInstant != transition.LocalInstant)
+            LocalInstant lastLocalStart = lastTransition.Instant.Plus(lastOffset);
+            LocalInstant newLocalStart = transition.Instant.Plus(newOffset);
+            if (lastLocalStart == newLocalStart)
             {
-                transitions.Add(transition);
-                return true;
+                transitions.RemoveAt(transitionCount - 1);
+                return AddTransition(transitions, transition);
             }
-
-            transitions.RemoveAt(transitionCount - 1);
-            return AddTransition(transitions, transition);
+            transitions.Add(transition);
+            return true;
         }
 
         /// <summary>

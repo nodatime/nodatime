@@ -159,8 +159,12 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return mode == other.mode && monthOfYear == other.monthOfYear && dayOfMonth == other.dayOfMonth && dayOfWeek == other.dayOfWeek &&
-                   advance == other.advance && tickOfDay == other.tickOfDay;
+            return mode == other.mode && 
+                monthOfYear == other.monthOfYear && 
+                dayOfMonth == other.dayOfMonth && 
+                dayOfWeek == other.dayOfWeek &&
+                advance == other.advance && 
+                tickOfDay == other.tickOfDay;
         }
         #endregion
 
@@ -390,28 +394,29 @@ namespace NodaTime.TimeZones
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
         private LocalInstant SetDayOfWeek(CalendarSystem calendar, LocalInstant instant)
         {
-            if (dayOfWeek != 0)
+            if (dayOfWeek == 0)
             {
-                int dayOfWeekOfInstant = calendar.Fields.DayOfWeek.GetValue(instant);
-                int daysToAdd = dayOfWeek - dayOfWeekOfInstant;
-                if (daysToAdd != 0)
+                return instant;
+            }
+            int dayOfWeekOfInstant = calendar.Fields.DayOfWeek.GetValue(instant);
+            int daysToAdd = dayOfWeek - dayOfWeekOfInstant;
+            if (daysToAdd != 0)
+            {
+                if (advance)
                 {
-                    if (advance)
+                    if (daysToAdd < 0)
                     {
-                        if (daysToAdd < 0)
-                        {
-                            daysToAdd += 7;
-                        }
+                        daysToAdd += 7;
                     }
-                    else
-                    {
-                        if (daysToAdd > 0)
-                        {
-                            daysToAdd -= 7;
-                        }
-                    }
-                    instant = calendar.Fields.Days.Add(instant, daysToAdd);
                 }
+                else
+                {
+                    if (daysToAdd > 0)
+                    {
+                        daysToAdd -= 7;
+                    }
+                }
+                instant = calendar.Fields.Days.Add(instant, daysToAdd);
             }
             return instant;
         }
@@ -528,6 +533,10 @@ namespace NodaTime.TimeZones
                     break;
                 case TransitionMode.Wall:
                     break;
+            }
+            if (advance)
+            {
+                builder.Append(" (advance)");
             }
             return builder.ToString();
         }

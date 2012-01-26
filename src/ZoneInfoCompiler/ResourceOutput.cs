@@ -120,7 +120,6 @@ namespace NodaTime.ZoneInfoCompiler
                 writerAction(writer);
                 resourceWriter.AddResource(name, stream.ToArray());
             }
-
         }
     }
 

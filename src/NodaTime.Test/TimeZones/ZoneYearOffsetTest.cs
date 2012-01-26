@@ -333,6 +333,14 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void MakeInstant_LastSundayInOctober()
+        {
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int)IsoDayOfWeek.Sunday, false, Offset.Zero);
+            var actual = offset.MakeInstant(1996, Offset.Zero, Offset.Zero);
+            Assert.AreEqual(Instant.FromUtc(1996, 10, 27, 0, 0), actual);
+        }
+
+        [Test]
         public void Test()
         {
             var dio = new DtzIoHelper("ZoneYearOffset");

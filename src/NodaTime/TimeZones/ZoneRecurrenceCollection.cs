@@ -245,7 +245,7 @@ namespace NodaTime.TimeZones
                 // Make a copy before we destroy the rules.
                 var saveRules = new List<ZoneRecurrence>(rules);
 
-                // Iterate through all the transitions until firstMillis is reached. Use the name key
+                // Iterate through all the transitions until startingInstant is reached. Use the name key
                 // and savings for whatever rule reaches the limit.
 
                 Instant nextInstant = Instant.MinValue;

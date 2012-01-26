@@ -152,7 +152,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Test()
+        public void TestSerialization()
         {
             var dio = new DtzIoHelper("ZoneRecurrence");
             var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
