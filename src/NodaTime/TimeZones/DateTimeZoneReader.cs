@@ -46,7 +46,7 @@ namespace NodaTime.TimeZones
         /// <returns>The boolean value.</returns>
         internal bool ReadBoolean()
         {
-            return ReadInt8() == 0 ? false : true;
+            return ReadByte() == 0 ? false : true;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace NodaTime.TimeZones
         /// <returns>The integer value from the stream.</returns>
         internal int ReadEnum()
         {
-            return ReadInteger();
+            return ReadInt32();
         }
 
         /// <summary>
@@ -103,18 +103,6 @@ namespace NodaTime.TimeZones
         internal Instant ReadInstant()
         {
             return new Instant(ReadTicks());
-        }
-
-        /// <summary>
-        ///   Reads an integer value from the stream.
-        /// </summary>
-        /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteInteger" />.
-        /// </remarks>
-        /// <returns>The integer value from the stream.</returns>
-        internal virtual int ReadInteger()
-        {
-            return ReadInt32();
         }
 
         /// <summary>
@@ -182,7 +170,7 @@ namespace NodaTime.TimeZones
         /// <returns>The <see cref="DateTimeZone" /> value from the stream.</returns>
         internal DateTimeZone ReadTimeZone(string id)
         {
-            int flag = ReadInt8();
+            int flag = ReadByte();
             switch (flag)
             {
                 case DateTimeZoneWriter.FlagTimeZoneFixed:
@@ -217,12 +205,12 @@ namespace NodaTime.TimeZones
         ///   Reads a signed 16 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 16 bit int value.</returns>
-        protected int ReadInt16()
+        internal int ReadInt16()
         {
             unchecked
             {
-                int high = ReadInt8() & 0xff;
-                int low = ReadInt8() & 0xff;
+                int high = ReadByte() & 0xff;
+                int low = ReadByte() & 0xff;
                 return (high << 8) | low;
             }
         }
@@ -231,7 +219,7 @@ namespace NodaTime.TimeZones
         ///   Reads a signed 32 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 32 bit int value.</returns>
-        protected int ReadInt32()
+        internal int ReadInt32()
         {
             unchecked
             {
@@ -245,7 +233,7 @@ namespace NodaTime.TimeZones
         ///   Reads a signed 64 bit integer value from the stream and returns it as an long.
         /// </summary>
         /// <returns>The 64 bit long value.</returns>
-        protected long ReadInt64()
+        internal long ReadInt64()
         {
             unchecked
             {
@@ -259,9 +247,15 @@ namespace NodaTime.TimeZones
         ///   Reads a signed 8 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 8 bit int value.</returns>
-        public byte ReadInt8()
+        /// <exception cref="EndOfStreamException">The data in the stream has been exhausted</exception>
+        internal byte ReadByte()
         {
-            return (byte)Input.ReadByte();
+            int value = Input.ReadByte();
+            if (value == -1)
+            {
+                throw new EndOfStreamException();
+            }
+            return (byte)value;
         }
     }
 }

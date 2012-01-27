@@ -104,11 +104,11 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(expected, actual, name + " Instant ");
         }
 
-        public void TestInteger(int expected)
+        public void TestInt32(int expected)
         {
             Reset();
-            Writer.WriteInteger(expected);
-            var actual = Reader.ReadInteger();
+            Writer.WriteInt32(expected);
+            var actual = Reader.ReadInt32();
             Assert.AreEqual(expected, actual, name + " Integer ");
         }
 

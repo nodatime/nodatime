@@ -44,7 +44,7 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                byte flag = ReadInt8();
+                byte flag = ReadByte();
                 if (flag == 0xff)
                 {
                     return ReadInt32();
@@ -62,7 +62,7 @@ namespace NodaTime.TimeZones
                 if ((flag & 0xc0) == 0x80)
                 {
                     int first = flag & 0x3f;
-                    int second = ReadInt8();
+                    int second = ReadByte();
                     return ((first << 8) + second) + adjustment;
                 }
                 adjustment += 0x4000;
@@ -76,7 +76,7 @@ namespace NodaTime.TimeZones
                 {
                     adjustment += 0x200000;
                     int first = flag & 0x0f;
-                    int second = ReadInt8();
+                    int second = ReadByte();
                     int third = ReadInt16();
                     return (((first << 8) + second) << 16) + third + adjustment;
                 }
@@ -107,7 +107,7 @@ namespace NodaTime.TimeZones
              */
             unchecked
             {
-                byte flag = ReadInt8();
+                byte flag = ReadByte();
                 if (flag == DateTimeZoneCompressionWriter.FlagMinValue)
                 {
                     return Int32.MinValue;
@@ -125,8 +125,8 @@ namespace NodaTime.TimeZones
                 if ((flag & 0xc0) == DateTimeZoneCompressionWriter.FlagMillisSeconds)
                 {
                     int first = flag & ~0xc0;
-                    int second = ReadInt8() & 0xff;
-                    int third = ReadInt8() & 0xff;
+                    int second = ReadByte() & 0xff;
+                    int third = ReadByte() & 0xff;
 
                     int units = (((first << 8) + second) << 8) + third;
                     units = units - DateTimeZoneCompressionWriter.MaxMillisSeconds;
@@ -163,7 +163,7 @@ namespace NodaTime.TimeZones
              */
             unchecked
             {
-                byte flag = ReadInt8();
+                byte flag = ReadByte();
                 if (flag == DateTimeZoneCompressionWriter.FlagMinValue)
                 {
                     return Int64.MinValue;
@@ -181,8 +181,8 @@ namespace NodaTime.TimeZones
                 if ((flag & 0xc0) == DateTimeZoneCompressionWriter.FlagMinutes)
                 {
                     int first = flag & ~0xc0;
-                    int second = ReadInt8() & 0xff;
-                    int third = ReadInt8() & 0xff;
+                    int second = ReadByte() & 0xff;
+                    int third = ReadByte() & 0xff;
 
                     long units = (((first << 8) + second) << 8) + third;
                     units = units - DateTimeZoneCompressionWriter.MaxMinutes;

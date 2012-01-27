@@ -154,9 +154,9 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Test_Integer()
+        public void Test_Int32()
         {
-            RunTests_Integers(Dio.TestInteger);
+            RunTests_Integers(Dio.TestInt32);
         }
 
         [Test]

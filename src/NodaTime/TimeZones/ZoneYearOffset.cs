@@ -248,11 +248,11 @@ namespace NodaTime.TimeZones
         internal void Write(DateTimeZoneWriter writer)
         {
             writer.WriteEnum((int)Mode);
-            writer.WriteInteger(MonthOfYear);
+            writer.WriteInt32(MonthOfYear);
             // Day or month can range from -(max value) to max value so if we add max value it will
             // force it into the positive range
-            writer.WriteInteger(DayOfMonth);
-            writer.WriteInteger(DayOfWeek);
+            writer.WriteInt32(DayOfMonth);
+            writer.WriteInt32(DayOfWeek);
             writer.WriteBoolean(AdvanceDayOfWeek);
             writer.WriteOffset(TickOfDay);
         }
@@ -264,11 +264,11 @@ namespace NodaTime.TimeZones
                 throw new ArgumentNullException("reader");
             }
             var mode = (TransitionMode)reader.ReadEnum();
-            int monthOfYear = reader.ReadInteger();
+            int monthOfYear = reader.ReadInt32();
             // Day or month can range from -(max value) to max value so we added max value so it will
             // force it into the positive range
-            int dayOfMonth = reader.ReadInteger();
-            int dayOfWeek = reader.ReadInteger();
+            int dayOfMonth = reader.ReadInt32();
+            int dayOfWeek = reader.ReadInt32();
             bool advance = reader.ReadBoolean();
             var ticksOfDay = reader.ReadOffset();
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay);
