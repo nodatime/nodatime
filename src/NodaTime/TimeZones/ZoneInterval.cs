@@ -304,43 +304,5 @@ namespace NodaTime.TimeZones
             return buffer.ToString();
         }
         #endregion // object Overrides
-        
-        #region I/O
-        /// <summary>
-        ///   Reads the specified reader.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <returns></returns>
-        internal static ZoneInterval Read(DateTimeZoneReader reader)
-        {
-            if (reader == null)
-            {
-                throw new ArgumentNullException("reader");
-            }
-            var name = reader.ReadString();
-            var start = new Instant(reader.ReadTicks());
-            var end = new Instant(reader.ReadTicks());
-            var offset = reader.ReadOffset();
-            var savings = reader.ReadOffset();
-            return new ZoneInterval(name, start, end, offset, savings);
-        }
-
-        /// <summary>
-        ///   Writes the specified writer.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-        internal void Write(DateTimeZoneWriter writer)
-        {
-            if (writer == null)
-            {
-                throw new ArgumentNullException("writer");
-            }
-            writer.WriteString(Name);
-            writer.WriteInstant(Start);
-            writer.WriteInstant(End);
-            writer.WriteOffset(WallOffset);
-            writer.WriteOffset(Savings);
-        }
-        #endregion // I/O
     }
 }
