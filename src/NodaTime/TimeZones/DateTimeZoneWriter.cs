@@ -85,15 +85,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Writes an enumeration's integer value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        internal void WriteEnum(int value)
-        {
-            WriteInt32(value);
-        }
-
-        /// <summary>
         ///   Writes the <see cref="Instant" /> value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>

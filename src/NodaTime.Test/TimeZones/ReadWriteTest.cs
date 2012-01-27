@@ -142,12 +142,6 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Test_Enum()
-        {
-            RunTests_Integers(Dio.TestEnum);
-        }
-
-        [Test]
         public void Test_Instant()
         {
             RunTests_Ticks(value => Dio.TestInstant((new Instant(value))));
