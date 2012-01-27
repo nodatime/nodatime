@@ -218,12 +218,7 @@ namespace NodaTime.TimeZones
                 writer.WriteOffset(period.WallOffset);
                 writer.WriteOffset(period.Savings);
             }
-            var end = periods[periods.Length - 1].End;
-            if (end != Instant.MaxValue)
-            {
-                end = end + Duration.One;
-            }
-            writer.WriteInstant(end);
+            writer.WriteInstant(tailZoneStart);
             writer.WriteTimeZone(tailZone);
         }
 
