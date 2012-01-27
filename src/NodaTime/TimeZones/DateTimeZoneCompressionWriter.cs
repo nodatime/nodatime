@@ -71,45 +71,45 @@ namespace NodaTime.TimeZones
             {
                 if (value < 0)
                 {
-                    WriteInt8(0xff);
+                    WriteByte(0xff);
                     WriteInt32(value);
                     return;
                 }
                 if (value <= 0x0e)
                 {
-                    WriteInt8((byte)(0xf0 + value));
+                    WriteByte((byte)(0xf0 + value));
                     return;
                 }
                 value -= 0x0f;
                 if (value <= 0x7f)
                 {
-                    WriteInt8((byte)value);
+                    WriteByte((byte)value);
                     return;
                 }
                 value -= 0x80;
                 if (value <= 0x3fff)
                 {
-                    WriteInt8((byte)(0x80 + (value >> 8)));
-                    WriteInt8((byte)(value & 0xff));
+                    WriteByte((byte)(0x80 + (value >> 8)));
+                    WriteByte((byte)(value & 0xff));
                     return;
                 }
                 value -= 0x4000;
 
                 if (value <= 0x1fffff)
                 {
-                    WriteInt8((byte)(0xc0 + (value >> 16)));
+                    WriteByte((byte)(0xc0 + (value >> 16)));
                     WriteInt16((short)(value & 0xffff));
                     return;
                 }
                 value -= 0x200000;
                 if (value <= 0x0fffffff)
                 {
-                    WriteInt8((byte)(0xe0 + (value >> 24)));
-                    WriteInt8((byte)((value >> 16) & 0xff));
+                    WriteByte((byte)(0xe0 + (value >> 24)));
+                    WriteByte((byte)((value >> 16) & 0xff));
                     WriteInt16((short)(value & 0xffff));
                     return;
                 }
-                WriteInt8(0xff);
+                WriteByte(0xff);
                 WriteInt32(value + 0x200000 + 0x4000 + 0x80 + 0x0f);
             }
         }
@@ -137,12 +137,12 @@ namespace NodaTime.TimeZones
             {
                 if (value == Int32.MinValue)
                 {
-                    WriteInt8(FlagMinValue);
+                    WriteByte(FlagMinValue);
                     return;
                 }
                 if (value == Int32.MaxValue)
                 {
-                    WriteInt8(FlagMaxValue);
+                    WriteByte(FlagMaxValue);
                     return;
                 }
                 if (value % (30 * NodaConstants.MillisecondsPerMinute) == 0)
@@ -152,7 +152,7 @@ namespace NodaTime.TimeZones
                     if (MinMillisHalfHours <= units && units <= MaxMillisHalfHours)
                     {
                         units = units + MaxMillisHalfHours;
-                        WriteInt8((byte)(units & 0x7f));
+                        WriteByte((byte)(units & 0x7f));
                         return;
                     }
                 }
@@ -164,7 +164,7 @@ namespace NodaTime.TimeZones
                     if (MinMillisSeconds <= seconds && seconds <= MaxMillisSeconds)
                     {
                         seconds = seconds + MaxMillisSeconds;
-                        WriteInt8((byte)(FlagMillisSeconds | (byte)((seconds >> 16) & 0x3f)));
+                        WriteByte((byte)(FlagMillisSeconds | (byte)((seconds >> 16) & 0x3f)));
                         WriteInt16((short)(seconds & 0xffff));
                         return;
                     }
@@ -174,7 +174,7 @@ namespace NodaTime.TimeZones
                 // required or the minutes didn't fit in the field.
 
                 // Form 11 (64 bits effective precision, but write as if 70 bits)
-                WriteInt8(FlagMilliseconds);
+                WriteByte(FlagMilliseconds);
                 WriteInt32(value);
             }
         }
@@ -205,12 +205,12 @@ namespace NodaTime.TimeZones
             {
                 if (value == Int64.MinValue)
                 {
-                    WriteInt8(FlagMinValue);
+                    WriteByte(FlagMinValue);
                     return;
                 }
                 if (value == Int64.MaxValue)
                 {
-                    WriteInt8(FlagMaxValue);
+                    WriteByte(FlagMaxValue);
                     return;
                 }
                 if (value % (30 * NodaConstants.TicksPerMinute) == 0)
@@ -220,7 +220,7 @@ namespace NodaTime.TimeZones
                     if (MinHalfHours <= units && units <= MaxHalfHours)
                     {
                         units = units + MaxHalfHours;
-                        WriteInt8((byte)(units & 0x3f));
+                        WriteByte((byte)(units & 0x3f));
                         return;
                     }
                 }
@@ -232,7 +232,7 @@ namespace NodaTime.TimeZones
                     if (MinMinutes <= minutes && minutes <= MaxMinutes)
                     {
                         minutes = minutes + MaxMinutes;
-                        WriteInt8((byte)(FlagMinutes | (byte)((minutes >> 16) & 0x3f)));
+                        WriteByte((byte)(FlagMinutes | (byte)((minutes >> 16) & 0x3f)));
                         WriteInt16((short)(minutes & 0xffff));
                         return;
                     }
@@ -245,7 +245,7 @@ namespace NodaTime.TimeZones
                     if (MinSeconds <= seconds && seconds <= MaxSeconds)
                     {
                         seconds = seconds + MaxSeconds;
-                        WriteInt8((byte)(FlagSeconds | (byte)((seconds >> 32) & 0x3f)));
+                        WriteByte((byte)(FlagSeconds | (byte)((seconds >> 32) & 0x3f)));
                         WriteInt32((int)(seconds & 0xffffffff));
                         return;
                     }
@@ -255,7 +255,7 @@ namespace NodaTime.TimeZones
                 // required or the minutes didn't fit in the field.
 
                 // Form 11 (64 bits effective precision, but write as if 70 bits)
-                WriteInt8(FlagTicks);
+                WriteByte(FlagTicks);
                 WriteInt64(value);
             }
         }

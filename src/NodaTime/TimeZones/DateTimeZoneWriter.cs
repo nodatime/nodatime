@@ -54,7 +54,7 @@ namespace NodaTime.TimeZones
         /// <param name="value">The value to write.</param>
         internal void WriteBoolean(bool value)
         {
-            WriteInt8((byte)(value ? 1 : 0));
+            WriteByte((byte)(value ? 1 : 0));
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace NodaTime.TimeZones
         /// <param name="value">The value to write.</param>
         internal void WriteEnum(int value)
         {
-            WriteInteger(value);
+            WriteInt32(value);
         }
 
         /// <summary>
@@ -100,15 +100,6 @@ namespace NodaTime.TimeZones
         internal void WriteInstant(Instant value)
         {
             WriteTicks(value.Ticks);
-        }
-
-        /// <summary>
-        ///   Writes the integer value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        internal void WriteInteger(int value)
-        {
-            WriteInt32(value);
         }
 
         /// <summary>
@@ -167,28 +158,28 @@ namespace NodaTime.TimeZones
         {
             if (value == null)
             {
-                WriteInt8(FlagTimeZoneNull);
+                WriteByte(FlagTimeZoneNull);
                 return;
             }
             if (value is FixedDateTimeZone)
             {
-                WriteInt8(FlagTimeZoneFixed);
+                WriteByte(FlagTimeZoneFixed);
             }
             else if (value is PrecalculatedDateTimeZone)
             {
-                WriteInt8(FlagTimeZonePrecalculated);
+                WriteByte(FlagTimeZonePrecalculated);
             }
             else if (value is CachedDateTimeZone)
             {
-                WriteInt8(FlagTimeZoneCached);
+                WriteByte(FlagTimeZoneCached);
             }
             else if (value is DaylightSavingsTimeZone)
             {
-                WriteInt8(FlagTimeZoneDst);
+                WriteByte(FlagTimeZoneDst);
             }
             else
             {
-                WriteInt8(FlagTimeZoneUser);
+                WriteByte(FlagTimeZoneUser);
                 WriteString(value.GetType().AssemblyQualifiedName);
             }
             value.Write(this);
@@ -203,8 +194,8 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                WriteInt8((byte)((value >> 8) & 0xff));
-                WriteInt8((byte)(value & 0xff));
+                WriteByte((byte)((value >> 8) & 0xff));
+                WriteByte((byte)(value & 0xff));
             }
         }
 
@@ -212,7 +203,7 @@ namespace NodaTime.TimeZones
         ///   Writes the given 32 bit integer value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        protected void WriteInt32(int value)
+        internal void WriteInt32(int value)
         {
             unchecked
             {
@@ -225,7 +216,7 @@ namespace NodaTime.TimeZones
         ///   Writes the given 64 bit integer value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        protected void WriteInt64(long value)
+        internal void WriteInt64(long value)
         {
             unchecked
             {
@@ -238,7 +229,7 @@ namespace NodaTime.TimeZones
         ///   Writes the given 8 bit integer value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        public void WriteInt8(byte value)
+        internal void WriteByte(byte value)
         {
             unchecked
             {

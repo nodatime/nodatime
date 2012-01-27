@@ -209,11 +209,11 @@ namespace NodaTime.TimeZones
                 int nameIndex = stringPool.IndexOf(period.Name);
                 if (stringPool.Count < 256)
                 {
-                    writer.WriteInt8((byte)nameIndex);
+                    writer.WriteByte((byte)nameIndex);
                 }
                 else
                 {
-                    writer.WriteInteger(nameIndex);
+                    writer.WriteInt32(nameIndex);
                 }
                 writer.WriteOffset(period.WallOffset);
                 writer.WriteOffset(period.Savings);
@@ -246,7 +246,7 @@ namespace NodaTime.TimeZones
             var start = reader.ReadInstant();
             for (int i = 0; i < size; i++)
             {
-                int nameIndex = stringPool.Length < 256 ? reader.ReadInt8() : reader.ReadInteger();
+                int nameIndex = stringPool.Length < 256 ? reader.ReadByte() : reader.ReadInt32();
                 var name = stringPool[nameIndex];
                 var offset = reader.ReadOffset();
                 var savings = reader.ReadOffset();
