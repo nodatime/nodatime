@@ -88,14 +88,6 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(expected, actual, name + " Dictionary ");
         }
 
-        public void TestEnum(int expected)
-        {
-            Reset();
-            Writer.WriteEnum(expected);
-            var actual = Reader.ReadEnum();
-            Assert.AreEqual(expected, actual, name + " Enum ");
-        }
-
         public void TestInstant(Instant expected)
         {
             Reset();

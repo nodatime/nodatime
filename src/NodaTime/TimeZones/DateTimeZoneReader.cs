@@ -82,18 +82,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads an enumeration integer value from the stream.
-        /// </summary>
-        /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteEnum" />.
-        /// </remarks>
-        /// <returns>The integer value from the stream.</returns>
-        internal int ReadEnum()
-        {
-            return ReadInt32();
-        }
-
-        /// <summary>
         ///   Reads an <see cref="Instant" /> value from the stream.
         /// </summary>
         /// <remarks>
