@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Experimental", "No
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Experimental.Test", "NodaTime.Experimental.Test\NodaTime.Experimental.Test.csproj", "{254FA79B-3E8E-4066-B9F2-05176C78085D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.CheckTimeZones", "NodaTime.CheckTimeZones\NodaTime.CheckTimeZones.csproj", "{1002B6E1-294B-4475-8E8A-8D51B0A2E332}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,16 @@ Global
 		{254FA79B-3E8E-4066-B9F2-05176C78085D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{254FA79B-3E8E-4066-B9F2-05176C78085D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{254FA79B-3E8E-4066-B9F2-05176C78085D}.Release|x86.ActiveCfg = Release|Any CPU
+		{1002B6E1-294B-4475-8E8A-8D51B0A2E332}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1002B6E1-294B-4475-8E8A-8D51B0A2E332}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{1002B6E1-294B-4475-8E8A-8D51B0A2E332}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{1002B6E1-294B-4475-8E8A-8D51B0A2E332}.Debug|x86.ActiveCfg = Debug|x86
+		{1002B6E1-294B-4475-8E8A-8D51B0A2E332}.Debug|x86.Build.0 = Debug|x86
+		{1002B6E1-294B-4475-8E8A-8D51B0A2E332}.Release|Any CPU.ActiveCfg = Release|x86
+		{1002B6E1-294B-4475-8E8A-8D51B0A2E332}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{1002B6E1-294B-4475-8E8A-8D51B0A2E332}.Release|Mixed Platforms.Build.0 = Release|x86
+		{1002B6E1-294B-4475-8E8A-8D51B0A2E332}.Release|x86.ActiveCfg = Release|x86
+		{1002B6E1-294B-4475-8E8A-8D51B0A2E332}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
