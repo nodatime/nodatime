@@ -172,7 +172,7 @@ namespace NodaTime.Calendars
             return difference;
         }
 
-        protected override long GetTotalTicksByYearMonth(int year, int month)
+        protected override long GetTicksFromStartOfYearToStartOfMonth(int year, int month)
         {
             // The number of ticks at the *start* of a month isn't affected by
             // the year as the only month length which varies by year is the last one.

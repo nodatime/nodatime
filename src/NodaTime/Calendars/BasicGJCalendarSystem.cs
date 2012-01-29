@@ -87,7 +87,7 @@ namespace NodaTime.Calendars
             return MaxDaysPerMonth[month - 1];
         }
 
-        protected override long GetTotalTicksByYearMonth(int year, int month)
+        protected override long GetTicksFromStartOfYearToStartOfMonth(int year, int month)
         {
             return IsLeapYear(year) ? MaxTotalTicksByMonth[month - 1] : MinTotalTicksByMonth[month - 1];
         }
