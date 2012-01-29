@@ -274,7 +274,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
         public void ParseZone_optionalRule()
         {
             var tokens = Tokens.Tokenize("2:00 - P%sT");
-            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), null, "P%sT");
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), null, "P%sT", int.MaxValue, ZoneYearOffset.StartOfYear);
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
@@ -282,7 +282,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
         public void ParseZone_simple()
         {
             var tokens = Tokens.Tokenize("2:00 US P%sT");
-            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT");
+            var expected = new Zone(string.Empty, ToOffset(2, 0, 0, 0), "US", "P%sT", int.MaxValue, ZoneYearOffset.StartOfYear);
             Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
         }
 
