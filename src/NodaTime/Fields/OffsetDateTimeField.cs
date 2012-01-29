@@ -82,7 +82,7 @@ namespace NodaTime.Fields
             return WrappedField.GetLeapAmount(localInstant);
         }
 
-        internal override DurationField LeapDurationField { get { return WrappedField.LeapDurationField; } }
+        internal override PeriodField LeapPeriodField { get { return WrappedField.LeapPeriodField; } }
         #endregion
 
         #region Ranges

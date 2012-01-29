@@ -28,7 +28,7 @@ namespace NodaTime.Test
             var sut = PeriodType.Years;
 
             Assert.AreEqual(1, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Years, sut[0]);
             Assert.AreEqual("Years", sut.Name);
             Assert.AreEqual("PeriodType[Years]", sut.ToString());
         }
@@ -39,7 +39,7 @@ namespace NodaTime.Test
             var sut = PeriodType.Months;
 
             Assert.AreEqual(1, sut.Size);
-            Assert.AreEqual(DurationFieldType.Months, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Months, sut[0]);
             Assert.AreEqual("Months", sut.Name);
             Assert.AreEqual("PeriodType[Months]", sut.ToString());
         }
@@ -50,7 +50,7 @@ namespace NodaTime.Test
             var sut = PeriodType.Weeks;
 
             Assert.AreEqual(1, sut.Size);
-            Assert.AreEqual(DurationFieldType.Weeks, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Weeks, sut[0]);
             Assert.AreEqual("Weeks", sut.Name);
             Assert.AreEqual("PeriodType[Weeks]", sut.ToString());
         }
@@ -61,7 +61,7 @@ namespace NodaTime.Test
             var sut = PeriodType.Days;
 
             Assert.AreEqual(1, sut.Size);
-            Assert.AreEqual(DurationFieldType.Days, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Days, sut[0]);
             Assert.AreEqual("Days", sut.Name);
             Assert.AreEqual("PeriodType[Days]", sut.ToString());
         }
@@ -72,7 +72,7 @@ namespace NodaTime.Test
             var sut = PeriodType.Hours;
 
             Assert.AreEqual(1, sut.Size);
-            Assert.AreEqual(DurationFieldType.Hours, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Hours, sut[0]);
             Assert.AreEqual("Hours", sut.Name);
             Assert.AreEqual("PeriodType[Hours]", sut.ToString());
         }
@@ -83,7 +83,7 @@ namespace NodaTime.Test
             var sut = PeriodType.Minutes;
 
             Assert.AreEqual(1, sut.Size);
-            Assert.AreEqual(DurationFieldType.Minutes, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Minutes, sut[0]);
             Assert.AreEqual("Minutes", sut.Name);
             Assert.AreEqual("PeriodType[Minutes]", sut.ToString());
         }
@@ -94,7 +94,7 @@ namespace NodaTime.Test
             var sut = PeriodType.Seconds;
 
             Assert.AreEqual(1, sut.Size);
-            Assert.AreEqual(DurationFieldType.Seconds, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Seconds, sut[0]);
             Assert.AreEqual("Seconds", sut.Name);
             Assert.AreEqual("PeriodType[Seconds]", sut.ToString());
         }
@@ -105,7 +105,7 @@ namespace NodaTime.Test
             var sut = PeriodType.Milliseconds;
 
             Assert.AreEqual(1, sut.Size);
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Milliseconds, sut[0]);
             Assert.AreEqual("Milliseconds", sut.Name);
             Assert.AreEqual("PeriodType[Milliseconds]", sut.ToString());
         }
@@ -116,7 +116,7 @@ namespace NodaTime.Test
             var sut = PeriodType.Ticks;
 
             Assert.AreEqual(1, sut.Size);
-            Assert.AreEqual(DurationFieldType.Ticks, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Ticks, sut[0]);
             Assert.AreEqual("Ticks", sut.Name);
             Assert.AreEqual("PeriodType[Ticks]", sut.ToString());
         }
@@ -127,15 +127,15 @@ namespace NodaTime.Test
             var sut = PeriodType.AllFields;
 
             Assert.AreEqual(9, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut[0]);
-            Assert.AreEqual(DurationFieldType.Months, sut[1]);
-            Assert.AreEqual(DurationFieldType.Weeks, sut[2]);
-            Assert.AreEqual(DurationFieldType.Days, sut[3]);
-            Assert.AreEqual(DurationFieldType.Hours, sut[4]);
-            Assert.AreEqual(DurationFieldType.Minutes, sut[5]);
-            Assert.AreEqual(DurationFieldType.Seconds, sut[6]);
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut[7]);
-            Assert.AreEqual(DurationFieldType.Ticks, sut[8]);
+            Assert.AreEqual(PeriodFieldType.Years, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Months, sut[1]);
+            Assert.AreEqual(PeriodFieldType.Weeks, sut[2]);
+            Assert.AreEqual(PeriodFieldType.Days, sut[3]);
+            Assert.AreEqual(PeriodFieldType.Hours, sut[4]);
+            Assert.AreEqual(PeriodFieldType.Minutes, sut[5]);
+            Assert.AreEqual(PeriodFieldType.Seconds, sut[6]);
+            Assert.AreEqual(PeriodFieldType.Milliseconds, sut[7]);
+            Assert.AreEqual(PeriodFieldType.Ticks, sut[8]);
             Assert.AreEqual("All", sut.Name);
             Assert.AreEqual("PeriodType[All]", sut.ToString());
         }
@@ -146,14 +146,14 @@ namespace NodaTime.Test
             var sut = PeriodType.YearMonthDayTime;
 
             Assert.AreEqual(8, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut[0]);
-            Assert.AreEqual(DurationFieldType.Months, sut[1]);
-            Assert.AreEqual(DurationFieldType.Days, sut[2]);
-            Assert.AreEqual(DurationFieldType.Hours, sut[3]);
-            Assert.AreEqual(DurationFieldType.Minutes, sut[4]);
-            Assert.AreEqual(DurationFieldType.Seconds, sut[5]);
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut[6]);
-            Assert.AreEqual(DurationFieldType.Ticks, sut[7]);
+            Assert.AreEqual(PeriodFieldType.Years, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Months, sut[1]);
+            Assert.AreEqual(PeriodFieldType.Days, sut[2]);
+            Assert.AreEqual(PeriodFieldType.Hours, sut[3]);
+            Assert.AreEqual(PeriodFieldType.Minutes, sut[4]);
+            Assert.AreEqual(PeriodFieldType.Seconds, sut[5]);
+            Assert.AreEqual(PeriodFieldType.Milliseconds, sut[6]);
+            Assert.AreEqual(PeriodFieldType.Ticks, sut[7]);
             Assert.AreEqual("YearMonthDayTime", sut.Name);
             Assert.AreEqual("PeriodType[YearMonthDayTime]", sut.ToString());
         }
@@ -164,9 +164,9 @@ namespace NodaTime.Test
             var sut = PeriodType.YearMonthDay;
 
             Assert.AreEqual(3, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut[0]);
-            Assert.AreEqual(DurationFieldType.Months, sut[1]);
-            Assert.AreEqual(DurationFieldType.Days, sut[2]);
+            Assert.AreEqual(PeriodFieldType.Years, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Months, sut[1]);
+            Assert.AreEqual(PeriodFieldType.Days, sut[2]);
             Assert.AreEqual("YearMonthDay", sut.Name);
             Assert.AreEqual("PeriodType[YearMonthDay]", sut.ToString());
         }
@@ -177,14 +177,14 @@ namespace NodaTime.Test
             var sut = PeriodType.YearWeekDayTime;
 
             Assert.AreEqual(8, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut[0]);
-            Assert.AreEqual(DurationFieldType.Weeks, sut[1]);
-            Assert.AreEqual(DurationFieldType.Days, sut[2]);
-            Assert.AreEqual(DurationFieldType.Hours, sut[3]);
-            Assert.AreEqual(DurationFieldType.Minutes, sut[4]);
-            Assert.AreEqual(DurationFieldType.Seconds, sut[5]);
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut[6]);
-            Assert.AreEqual(DurationFieldType.Ticks, sut[7]);
+            Assert.AreEqual(PeriodFieldType.Years, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Weeks, sut[1]);
+            Assert.AreEqual(PeriodFieldType.Days, sut[2]);
+            Assert.AreEqual(PeriodFieldType.Hours, sut[3]);
+            Assert.AreEqual(PeriodFieldType.Minutes, sut[4]);
+            Assert.AreEqual(PeriodFieldType.Seconds, sut[5]);
+            Assert.AreEqual(PeriodFieldType.Milliseconds, sut[6]);
+            Assert.AreEqual(PeriodFieldType.Ticks, sut[7]);
             Assert.AreEqual("YearWeekDayTime", sut.Name);
             Assert.AreEqual("PeriodType[YearWeekDayTime]", sut.ToString());
         }
@@ -195,9 +195,9 @@ namespace NodaTime.Test
             var sut = PeriodType.YearWeekDay;
 
             Assert.AreEqual(3, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut[0]);
-            Assert.AreEqual(DurationFieldType.Weeks, sut[1]);
-            Assert.AreEqual(DurationFieldType.Days, sut[2]);
+            Assert.AreEqual(PeriodFieldType.Years, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Weeks, sut[1]);
+            Assert.AreEqual(PeriodFieldType.Days, sut[2]);
             Assert.AreEqual("YearWeekDay", sut.Name);
             Assert.AreEqual("PeriodType[YearWeekDay]", sut.ToString());
         }
@@ -208,13 +208,13 @@ namespace NodaTime.Test
             var sut = PeriodType.YearDayTime;
 
             Assert.AreEqual(7, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut[0]);
-            Assert.AreEqual(DurationFieldType.Days, sut[1]);
-            Assert.AreEqual(DurationFieldType.Hours, sut[2]);
-            Assert.AreEqual(DurationFieldType.Minutes, sut[3]);
-            Assert.AreEqual(DurationFieldType.Seconds, sut[4]);
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut[5]);
-            Assert.AreEqual(DurationFieldType.Ticks, sut[6]);
+            Assert.AreEqual(PeriodFieldType.Years, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Days, sut[1]);
+            Assert.AreEqual(PeriodFieldType.Hours, sut[2]);
+            Assert.AreEqual(PeriodFieldType.Minutes, sut[3]);
+            Assert.AreEqual(PeriodFieldType.Seconds, sut[4]);
+            Assert.AreEqual(PeriodFieldType.Milliseconds, sut[5]);
+            Assert.AreEqual(PeriodFieldType.Ticks, sut[6]);
             Assert.AreEqual("YearDayTime", sut.Name);
             Assert.AreEqual("PeriodType[YearDayTime]", sut.ToString());
         }
@@ -225,8 +225,8 @@ namespace NodaTime.Test
             var sut = PeriodType.YearDay;
 
             Assert.AreEqual(2, sut.Size);
-            Assert.AreEqual(DurationFieldType.Years, sut[0]);
-            Assert.AreEqual(DurationFieldType.Days, sut[1]);
+            Assert.AreEqual(PeriodFieldType.Years, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Days, sut[1]);
             Assert.AreEqual("YearDay", sut.Name);
             Assert.AreEqual("PeriodType[YearDay]", sut.ToString());
         }
@@ -237,12 +237,12 @@ namespace NodaTime.Test
             var sut = PeriodType.DayTime;
 
             Assert.AreEqual(6, sut.Size);
-            Assert.AreEqual(DurationFieldType.Days, sut[0]);
-            Assert.AreEqual(DurationFieldType.Hours, sut[1]);
-            Assert.AreEqual(DurationFieldType.Minutes, sut[2]);
-            Assert.AreEqual(DurationFieldType.Seconds, sut[3]);
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut[4]);
-            Assert.AreEqual(DurationFieldType.Ticks, sut[5]);
+            Assert.AreEqual(PeriodFieldType.Days, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Hours, sut[1]);
+            Assert.AreEqual(PeriodFieldType.Minutes, sut[2]);
+            Assert.AreEqual(PeriodFieldType.Seconds, sut[3]);
+            Assert.AreEqual(PeriodFieldType.Milliseconds, sut[4]);
+            Assert.AreEqual(PeriodFieldType.Ticks, sut[5]);
             Assert.AreEqual("DayTime", sut.Name);
             Assert.AreEqual("PeriodType[DayTime]", sut.ToString());
         }
@@ -253,11 +253,11 @@ namespace NodaTime.Test
             var sut = PeriodType.Time;
 
             Assert.AreEqual(5, sut.Size);
-            Assert.AreEqual(DurationFieldType.Hours, sut[0]);
-            Assert.AreEqual(DurationFieldType.Minutes, sut[1]);
-            Assert.AreEqual(DurationFieldType.Seconds, sut[2]);
-            Assert.AreEqual(DurationFieldType.Milliseconds, sut[3]);
-            Assert.AreEqual(DurationFieldType.Ticks, sut[4]);
+            Assert.AreEqual(PeriodFieldType.Hours, sut[0]);
+            Assert.AreEqual(PeriodFieldType.Minutes, sut[1]);
+            Assert.AreEqual(PeriodFieldType.Seconds, sut[2]);
+            Assert.AreEqual(PeriodFieldType.Milliseconds, sut[3]);
+            Assert.AreEqual(PeriodFieldType.Ticks, sut[4]);
             Assert.AreEqual("Time", sut.Name);
             Assert.AreEqual("PeriodType[Time]", sut.ToString());
         }

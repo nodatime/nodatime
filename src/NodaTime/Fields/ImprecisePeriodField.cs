@@ -1,6 +1,6 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,42 +15,27 @@
 // limitations under the License.
 #endregion
 
-using NodaTime.Fields;
-
-namespace NodaTime.Test.Fields
+namespace NodaTime.Fields
 {
     /// <summary>
-    /// Class allowing simple construction of fields for testing constructors of other fields.
+    /// Base class for imprecise period fields - i.e. where the duration of a single value depends on when the value occurs.
+    /// (For example, months and years.) Derived classes need only override Add and GetInt64Difference.
     /// </summary>
-    internal class FakeDurationField : DurationField
+    internal abstract class ImprecisePeriodField : PeriodField
     {
-        internal FakeDurationField(long unitTicks, bool precise) : base(DurationFieldType.Seconds, unitTicks, precise, true)
+        internal ImprecisePeriodField(PeriodFieldType fieldType, long averageUnitTicks)
+            : base(fieldType, averageUnitTicks, false, true)
         {
         }
 
         internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
-            return 0;
+            return GetInt64Difference(localInstant + duration, localInstant);
         }
 
         internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
-            return new Duration(0);
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return new LocalInstant();
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            return new LocalInstant();
-        }
-
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return 0;
+            return Add(localInstant, value) - localInstant;
         }
     }
 }

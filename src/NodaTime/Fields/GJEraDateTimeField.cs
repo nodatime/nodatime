@@ -30,12 +30,12 @@ namespace NodaTime.Fields
         private const int CommonEraIndex = 1;
 
         internal GJEraDateTimeField(BasicCalendarSystem calendarSystem) 
-            : base(DateTimeFieldType.Era, UnsupportedDurationField.Eras)
+            : base(DateTimeFieldType.Era, UnsupportedPeriodField.Eras)
         {
             this.calendarSystem = calendarSystem;
         }
 
-        internal override DurationField RangeDurationField { get { return null; } }
+        internal override PeriodField RangePeriodField { get { return null; } }
 
         #region Values
         internal override long GetInt64Value(LocalInstant localInstant)

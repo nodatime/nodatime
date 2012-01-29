@@ -27,19 +27,19 @@ namespace NodaTime.Test
         {
             var sut = PeriodType.DayTime;
 
-            Assert.AreEqual(-1, sut.IndexOf(DurationFieldType.Eras));
-            Assert.AreEqual(-1, sut.IndexOf(DurationFieldType.Centuries));
-            Assert.AreEqual(-1, sut.IndexOf(DurationFieldType.WeekYears));
-            Assert.AreEqual(-1, sut.IndexOf(DurationFieldType.Years));
-            Assert.AreEqual(-1, sut.IndexOf(DurationFieldType.Months));
-            Assert.AreEqual(-1, sut.IndexOf(DurationFieldType.Weeks));
-            Assert.AreEqual(0, sut.IndexOf(DurationFieldType.Days));
-            Assert.AreEqual(-1, sut.IndexOf(DurationFieldType.HalfDays));
-            Assert.AreEqual(1, sut.IndexOf(DurationFieldType.Hours));
-            Assert.AreEqual(2, sut.IndexOf(DurationFieldType.Minutes));
-            Assert.AreEqual(3, sut.IndexOf(DurationFieldType.Seconds));
-            Assert.AreEqual(4, sut.IndexOf(DurationFieldType.Milliseconds));
-            Assert.AreEqual(5, sut.IndexOf(DurationFieldType.Ticks));
+            Assert.AreEqual(-1, sut.IndexOf(PeriodFieldType.Eras));
+            Assert.AreEqual(-1, sut.IndexOf(PeriodFieldType.Centuries));
+            Assert.AreEqual(-1, sut.IndexOf(PeriodFieldType.WeekYears));
+            Assert.AreEqual(-1, sut.IndexOf(PeriodFieldType.Years));
+            Assert.AreEqual(-1, sut.IndexOf(PeriodFieldType.Months));
+            Assert.AreEqual(-1, sut.IndexOf(PeriodFieldType.Weeks));
+            Assert.AreEqual(0, sut.IndexOf(PeriodFieldType.Days));
+            Assert.AreEqual(-1, sut.IndexOf(PeriodFieldType.HalfDays));
+            Assert.AreEqual(1, sut.IndexOf(PeriodFieldType.Hours));
+            Assert.AreEqual(2, sut.IndexOf(PeriodFieldType.Minutes));
+            Assert.AreEqual(3, sut.IndexOf(PeriodFieldType.Seconds));
+            Assert.AreEqual(4, sut.IndexOf(PeriodFieldType.Milliseconds));
+            Assert.AreEqual(5, sut.IndexOf(PeriodFieldType.Ticks));
         }
     }
 }

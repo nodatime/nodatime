@@ -51,8 +51,8 @@ namespace NodaTime.Test.Fields
             DateTimeField field = UnsupportedDateTimeField.MonthOfYear;
             Assert.IsFalse(field.IsLenient);
             Assert.IsFalse(field.IsSupported);
-            Assert.IsNull(field.LeapDurationField);
-            Assert.IsNull(field.RangeDurationField);
+            Assert.IsNull(field.LeapPeriodField);
+            Assert.IsNull(field.RangePeriodField);
         }
 
         private static void AssertUnsupported(Action<DateTimeField> action)

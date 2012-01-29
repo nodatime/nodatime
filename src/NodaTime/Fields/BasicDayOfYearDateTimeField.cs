@@ -23,11 +23,11 @@ namespace NodaTime.Fields
     /// Provides time calculations for the day of the year component of time.
     /// </summary>
     // Porting status: Needs partial and max for set support.
-    internal sealed class BasicDayOfYearDateTimeField : PreciseDurationDateTimeField
+    internal sealed class BasicDayOfYearDateTimeField : PrecisePeriodDateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal BasicDayOfYearDateTimeField(BasicCalendarSystem calendarSystem, DurationField days) : base(DateTimeFieldType.DayOfYear, days)
+        internal BasicDayOfYearDateTimeField(BasicCalendarSystem calendarSystem, PeriodField days) : base(DateTimeFieldType.DayOfYear, days)
         {
             this.calendarSystem = calendarSystem;
         }
@@ -42,7 +42,7 @@ namespace NodaTime.Fields
             return calendarSystem.GetDayOfYear(localInstant);
         }
 
-        internal override DurationField RangeDurationField { get { return calendarSystem.Fields.Years; } }
+        internal override PeriodField RangePeriodField { get { return calendarSystem.Fields.Years; } }
 
         internal override long GetMaximumValue()
         {

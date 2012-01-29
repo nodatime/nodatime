@@ -23,11 +23,11 @@ namespace NodaTime.Fields
     /// Provides time calculations for the day of the month component of time.
     /// </summary>
     // Porting status: Needs partial and max for set support.
-    internal sealed class BasicDayOfMonthDateTimeField : PreciseDurationDateTimeField
+    internal sealed class BasicDayOfMonthDateTimeField : PrecisePeriodDateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal BasicDayOfMonthDateTimeField(BasicCalendarSystem calendarSystem, DurationField days) : base(DateTimeFieldType.DayOfMonth, days)
+        internal BasicDayOfMonthDateTimeField(BasicCalendarSystem calendarSystem, PeriodField days) : base(DateTimeFieldType.DayOfMonth, days)
         {
             this.calendarSystem = calendarSystem;
         }
@@ -42,7 +42,7 @@ namespace NodaTime.Fields
             return calendarSystem.GetDayOfMonth(localInstant);
         }
 
-        internal override DurationField RangeDurationField { get { return calendarSystem.Fields.Months; } }
+        internal override PeriodField RangePeriodField { get { return calendarSystem.Fields.Months; } }
 
         internal override long GetMaximumValue()
         {

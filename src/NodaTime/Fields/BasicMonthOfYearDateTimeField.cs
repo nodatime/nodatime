@@ -31,14 +31,14 @@ namespace NodaTime.Fields
         private readonly int leapMonth;
 
         internal BasicMonthOfYearDateTimeField(BasicCalendarSystem calendarSystem, int leapMonth)
-            : base(DateTimeFieldType.MonthOfYear, new BasicMonthDurationField(calendarSystem))
+            : base(DateTimeFieldType.MonthOfYear, new BasicMonthPeriodField(calendarSystem))
         {
             this.calendarSystem = calendarSystem;
             max = calendarSystem.GetMaxMonth();
             this.leapMonth = leapMonth;
         }
 
-        internal override DurationField RangeDurationField { get { return calendarSystem.Fields.Years; } }
+        internal override PeriodField RangePeriodField { get { return calendarSystem.Fields.Years; } }
 
         #region Values
         /// <summary>
@@ -90,7 +90,7 @@ namespace NodaTime.Fields
             return IsLeap(localInstant) ? 1 : 0;
         }
 
-        internal override DurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
+        internal override PeriodField LeapPeriodField { get { return calendarSystem.Fields.Days; } }
         #endregion
 
         #region Ranges

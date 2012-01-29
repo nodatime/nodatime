@@ -62,7 +62,7 @@ namespace NodaTime.Calendars
         {
             builder.Era = EraField;
             builder.MonthOfYear = new BasicMonthOfYearDateTimeField((BasicCalendarSystem) @this, 13);
-            builder.Months = builder.MonthOfYear.DurationField;
+            builder.Months = builder.MonthOfYear.PeriodField;
         }
 
         protected override LocalInstant CalculateStartOfYear(int year)

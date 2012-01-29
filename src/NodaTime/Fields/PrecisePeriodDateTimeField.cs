@@ -20,23 +20,23 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Precise datetime field, which has a precise unit duration field.
+    /// Precise datetime field, which has a precise unit period field.
     /// </summary>
     /// <remarks>
     /// </remarks>
-    internal abstract class PreciseDurationDateTimeField : DateTimeField
+    internal abstract class PrecisePeriodDateTimeField : DateTimeField
     {
         /// <summary>
         /// The fractional unit in ticks
         /// </summary>
         private readonly long unitTicks;
 
-        protected PreciseDurationDateTimeField(DateTimeFieldType fieldType, DurationField unitField)
+        protected PrecisePeriodDateTimeField(DateTimeFieldType fieldType, PeriodField unitField)
             : base(fieldType, unitField)
         {
             if (!unitField.IsPrecise)
             {
-                throw new ArgumentException("Unit duration field must be precise");
+                throw new ArgumentException("Unit period field must be precise");
             }
 
             unitTicks = unitField.UnitTicks;

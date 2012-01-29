@@ -462,7 +462,7 @@ namespace NodaTime
             LocalInstant result = start;
             for (int i = 0; i < size; i++)
             {
-                DurationField field = GetField(periodType[i]);
+                PeriodField field = GetField(periodType[i]);
                 long value = field.GetInt64Difference(end, result);
                 values[i] = value;
 
@@ -483,7 +483,7 @@ namespace NodaTime
             }
 
             LocalInstant result = localInstant;
-            foreach (DurationFieldValue fieldValue in period)
+            foreach (PeriodFieldValue fieldValue in period)
             {
                 if (fieldValue.Value != 0)
                 {
@@ -493,35 +493,35 @@ namespace NodaTime
             return result;
         }
 
-        private DurationField GetField(DurationFieldType fieldType)
+        private PeriodField GetField(PeriodFieldType fieldType)
         {
             switch (fieldType)
             {
-                case DurationFieldType.Eras:
+                case PeriodFieldType.Eras:
                     return Fields.Eras;
-                case DurationFieldType.Centuries:
+                case PeriodFieldType.Centuries:
                     return Fields.Centuries;
-                case DurationFieldType.WeekYears:
+                case PeriodFieldType.WeekYears:
                     return Fields.WeekYears;
-                case DurationFieldType.Years:
+                case PeriodFieldType.Years:
                     return Fields.Years;
-                case DurationFieldType.Months:
+                case PeriodFieldType.Months:
                     return Fields.Months;
-                case DurationFieldType.Weeks:
+                case PeriodFieldType.Weeks:
                     return Fields.Weeks;
-                case DurationFieldType.Days:
+                case PeriodFieldType.Days:
                     return Fields.Days;
-                case DurationFieldType.HalfDays:
+                case PeriodFieldType.HalfDays:
                     return Fields.HalfDays;
-                case DurationFieldType.Hours:
+                case PeriodFieldType.Hours:
                     return Fields.Hours;
-                case DurationFieldType.Minutes:
+                case PeriodFieldType.Minutes:
                     return Fields.Minutes;
-                case DurationFieldType.Seconds:
+                case PeriodFieldType.Seconds:
                     return Fields.Seconds;
-                case DurationFieldType.Milliseconds:
+                case PeriodFieldType.Milliseconds:
                     return Fields.Milliseconds;
-                case DurationFieldType.Ticks:
+                case PeriodFieldType.Ticks:
                     return Fields.Ticks;
                 default:
                     throw new InvalidOperationException();

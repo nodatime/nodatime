@@ -29,7 +29,7 @@ namespace NodaTime.Fields
         private readonly Era era;
 
         internal BasicSingleEraDateTimeField(Era era)
-            : base(DateTimeFieldType.Era, UnsupportedDurationField.Eras)
+            : base(DateTimeFieldType.Era, UnsupportedPeriodField.Eras)
         {
             this.era = era;
         }
@@ -78,7 +78,7 @@ namespace NodaTime.Fields
         }
 
         // FIXME: Joda returns a null. Could return an unsupported field?
-        internal override DurationField RangeDurationField
+        internal override PeriodField RangePeriodField
         {
             get { throw new NotSupportedException(); }
         }

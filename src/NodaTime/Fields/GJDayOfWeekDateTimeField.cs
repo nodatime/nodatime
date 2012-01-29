@@ -22,11 +22,11 @@ namespace NodaTime.Fields
     /// <summary>
     /// Porting status: need text.
     /// </summary>
-    internal sealed class GJDayOfWeekDateTimeField : PreciseDurationDateTimeField
+    internal sealed class GJDayOfWeekDateTimeField : PrecisePeriodDateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal GJDayOfWeekDateTimeField(BasicCalendarSystem calendarSystem, DurationField days) : base(DateTimeFieldType.DayOfWeek, days)
+        internal GJDayOfWeekDateTimeField(BasicCalendarSystem calendarSystem, PeriodField days) : base(DateTimeFieldType.DayOfWeek, days)
         {
             this.calendarSystem = calendarSystem;
         }
@@ -41,7 +41,7 @@ namespace NodaTime.Fields
             return calendarSystem.GetDayOfWeek(localInstant);
         }
 
-        internal override DurationField RangeDurationField { get { return calendarSystem.Fields.Weeks; } }
+        internal override PeriodField RangePeriodField { get { return calendarSystem.Fields.Weeks; } }
 
         internal override long GetMaximumValue()
         {

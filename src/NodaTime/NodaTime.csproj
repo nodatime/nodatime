@@ -85,11 +85,11 @@
     <Compile Include="Calendars\NamespaceDoc.cs" />
     <Compile Include="Calendars\WrappedCalendarSystem.cs" />
     <Compile Include="Delegates.cs" />
-    <Compile Include="Fields\BasicMonthDurationField.cs" />
+    <Compile Include="Fields\BasicMonthPeriodField.cs" />
     <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
-    <Compile Include="Fields\BasicWeekYearDurationField.cs" />
-    <Compile Include="Fields\BasicYearDurationField.cs" />
-    <Compile Include="Fields\ImpreciseDurationField.cs" />
+    <Compile Include="Fields\BasicWeekYearPeriodField.cs" />
+    <Compile Include="Fields\BasicYearPeriodField.cs" />
+    <Compile Include="Fields\ImprecisePeriodField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
     <Compile Include="Properties\PatternResources.Designer.cs">
@@ -146,7 +146,7 @@
     <Compile Include="Fields\DecoratedDateTimeField.cs" />
     <Compile Include="Fields\DividedDateTimeField.cs" />
     <Compile Include="Fields\FieldSet.cs" />
-    <Compile Include="Fields\DurationField.cs" />
+    <Compile Include="Fields\PeriodField.cs" />
     <Compile Include="Fields\FieldUtils.cs" />
     <Compile Include="Fields\GJDayOfWeekDateTimeField.cs" />
     <Compile Include="Fields\GJEraDateTimeField.cs" />
@@ -154,19 +154,19 @@
     <Compile Include="Fields\IsoYearOfEraDateTimeField.cs" />
     <Compile Include="Fields\OffsetDateTimeField.cs" />
     <Compile Include="Fields\PreciseDateTimeField.cs" />
-    <Compile Include="Fields\PreciseDurationField.cs" />
-    <Compile Include="Fields\PreciseDurationDateTimeField.cs" />
+    <Compile Include="Fields\PrecisePeriodField.cs" />
+    <Compile Include="Fields\PrecisePeriodDateTimeField.cs" />
     <Compile Include="Fields\RemainderDateTimeField.cs" />
-    <Compile Include="Fields\ScaledDurationField.cs" />
-    <Compile Include="Fields\TicksDurationField.cs" />
+    <Compile Include="Fields\ScaledPeriodField.cs" />
+    <Compile Include="Fields\TicksPeriodField.cs" />
     <Compile Include="Fields\UnsupportedDateTimeField.cs" />
-    <Compile Include="Fields\UnsupportedDurationField.cs" />
+    <Compile Include="Fields\UnsupportedPeriodField.cs" />
     <Compile Include="Fields\ZeroIsMaxDateTimeField.cs" />
     <Compile Include="LocalInstant.cs" />
     <Compile Include="Calendars\BasicCalendarSystem.cs" />
     <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
     <Compile Include="Calendars\GregorianCalendarSystem.cs" />
-    <Compile Include="Fields\DurationFieldValue.cs" />
+    <Compile Include="Fields\PeriodFieldValue.cs" />
     <Compile Include="Period.cs" />
     <Compile Include="PeriodType.cs" />
     <Compile Include="Properties\Messages.Designer.cs">
@@ -210,7 +210,7 @@
     <Compile Include="Fields\DateTimeFieldType.cs" />
     <Compile Include="DateTimeZone.cs" />
     <Compile Include="Duration.cs" />
-    <Compile Include="Fields\DurationFieldType.cs" />
+    <Compile Include="Fields\PeriodFieldType.cs" />
     <Compile Include="Instant.cs" />
     <Compile Include="Interval.cs" />
     <Compile Include="NodaConstants.cs" />
@@ -225,7 +225,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Diagrams\Calendars.cd" />
-    <None Include="Diagrams\DurationFields.cd" />
+    <None Include="Diagrams\PeriodFields.cd" />
     <None Include="Diagrams\DateTimeFields.cd" />
   </ItemGroup>
   <ItemGroup>

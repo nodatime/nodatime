@@ -27,7 +27,7 @@ namespace NodaTime.Fields
         private readonly BasicCalendarSystem calendarSystem;
 
         internal BasicYearDateTimeField(BasicCalendarSystem calendarSystem)
-            : base(DateTimeFieldType.Year, new BasicYearDurationField(calendarSystem))
+            : base(DateTimeFieldType.Year, new BasicYearPeriodField(calendarSystem))
         {
             this.calendarSystem = calendarSystem;
         }
@@ -35,7 +35,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Always returns null (not supported)
         /// </summary>
-        internal override DurationField RangeDurationField { get { return null; } }
+        internal override PeriodField RangePeriodField { get { return null; } }
 
         #region Values
         /// <summary>
@@ -76,7 +76,7 @@ namespace NodaTime.Fields
             return IsLeap(localInstant) ? 1 : 0;
         }
 
-        internal override DurationField LeapDurationField { get { return calendarSystem.Fields.Days; } }
+        internal override PeriodField LeapPeriodField { get { return calendarSystem.Fields.Days; } }
         #endregion
 
         #region Ranges

@@ -20,19 +20,19 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Precise datetime field, composed of two precise duration fields.
+    /// Precise datetime field, composed of two precise period fields.
     /// </summary>
     /// <remarks>
     /// This DateTimeField is useful for defining fields that are composed
-    /// of precise durations, like time of day fields. If either duration field is
+    /// of precise durations, like time of day fields. If either period field is
     /// imprecise, then an ImpreciseDateTimeField may be used instead.
     /// </remarks>
-    internal sealed class PreciseDateTimeField : PreciseDurationDateTimeField
+    internal sealed class PreciseDateTimeField : PrecisePeriodDateTimeField
     {
-        private readonly DurationField rangeField;
+        private readonly PeriodField rangeField;
         private readonly long effectiveRange;
 
-        internal PreciseDateTimeField(DateTimeFieldType type, DurationField unit, DurationField rangeField) : base(type, unit)
+        internal PreciseDateTimeField(DateTimeFieldType type, PeriodField unit, PeriodField rangeField) : base(type, unit)
         {
             if (rangeField == null)
             {
@@ -40,7 +40,7 @@ namespace NodaTime.Fields
             }
             if (!rangeField.IsPrecise)
             {
-                throw new ArgumentException("Range duration field must be precise");
+                throw new ArgumentException("Range period field must be precise");
             }
             effectiveRange = rangeField.UnitTicks / unit.UnitTicks;
             if (effectiveRange < 2)
@@ -63,7 +63,7 @@ namespace NodaTime.Fields
             return new LocalInstant(ticks + (value - GetInt64Value(localInstant)) * UnitTicks);
         }
 
-        internal override DurationField RangeDurationField { get { return rangeField; } }
+        internal override PeriodField RangePeriodField { get { return rangeField; } }
 
         internal override long GetMaximumValue()
         {

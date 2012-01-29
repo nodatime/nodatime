@@ -159,7 +159,7 @@
       <DependentUpon>LocalDateTimeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Testing\StubClockTest.cs" />
-    <Compile Include="Fields\DurationFieldValueTest.cs" />
+    <Compile Include="Fields\PeriodFieldValueTest.cs" />
     <Compile Include="LocalTimeTest.cs" />
     <Compile Include="PeriodTest.cs" />
     <Compile Include="PeriodTypeTest.cs" />
@@ -208,18 +208,18 @@
     </Compile>
     <Compile Include="Fields\DateTimeFieldTest.cs" />
     <Compile Include="Fields\DecoratedDateTimeFieldTest.cs" />
-    <Compile Include="Fields\DurationFieldTest.cs" />
-    <Compile Include="Fields\FakeDurationField.cs" />
+    <Compile Include="Fields\PeriodFieldTest.cs" />
+    <Compile Include="Fields\FakePeriodField.cs" />
     <Compile Include="Fields\FieldSetTest.cs" />
-    <Compile Include="Fields\MockCountingDurationField.cs" />
+    <Compile Include="Fields\MockCountingPeriodField.cs" />
     <Compile Include="Fields\OffsetDateTimeFieldTest.cs" />
     <Compile Include="Fields\PreciseDateTimeFieldTest.cs" />
-    <Compile Include="Fields\PreciseDurationDateTimeFieldTest.cs" />
-    <Compile Include="Fields\PreciseDurationFieldTest.cs" />
+    <Compile Include="Fields\PrecisePeriodDateTimeFieldTest.cs" />
+    <Compile Include="Fields\PrecisePeriodFieldTest.cs" />
     <Compile Include="Fields\ScaledDurationTest.cs" />
-    <Compile Include="Fields\TicksDurationFieldTest.cs" />
+    <Compile Include="Fields\TicksPeriodFieldTest.cs" />
     <Compile Include="Fields\UnsupportedDateTimeFieldTest.cs" />
-    <Compile Include="Fields\UnsupportedDurationFieldTest.cs" />
+    <Compile Include="Fields\UnsupportedPeriodFieldTest.cs" />
     <Compile Include="Fields\ZeroIsMaxDateTimeFieldTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.DateFields.cs">

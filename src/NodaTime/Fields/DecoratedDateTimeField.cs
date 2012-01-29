@@ -43,8 +43,8 @@ namespace NodaTime.Fields
     {
         private readonly DateTimeField wrappedField;
 
-        protected DecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType, DurationField durationField)
-            : base(fieldType, durationField, Preconditions.CheckNotNull(wrappedField, "wrappedField").IsLenient, true)
+        protected DecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType, PeriodField periodField)
+            : base(fieldType, periodField, Preconditions.CheckNotNull(wrappedField, "wrappedField").IsLenient, true)
         {
             // Already checked for nullity by now
             if (!wrappedField.IsSupported)
@@ -55,7 +55,7 @@ namespace NodaTime.Fields
         }
 
         protected DecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType)
-            : this(Preconditions.CheckNotNull(wrappedField, "wrappedField"), fieldType, wrappedField.DurationField)
+            : this(Preconditions.CheckNotNull(wrappedField, "wrappedField"), fieldType, wrappedField.PeriodField)
         {
         }
 
@@ -64,7 +64,7 @@ namespace NodaTime.Fields
         /// </summary>
         public DateTimeField WrappedField { get { return wrappedField; } }
 
-        internal override DurationField RangeDurationField { get { return wrappedField.RangeDurationField; } }
+        internal override PeriodField RangePeriodField { get { return wrappedField.RangePeriodField; } }
 
         internal override long GetInt64Value(LocalInstant localInstant)
         {

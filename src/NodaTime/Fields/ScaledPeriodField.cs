@@ -21,14 +21,14 @@ using NodaTime.Utility;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// TODO: Decide whether this wouldn't be better as a DelegatedDurationField...
+    /// TODO: Decide whether this wouldn't be better as a DelegatedPeriodField...
     /// </summary>
-    internal sealed class ScaledDurationField : DurationField
+    internal sealed class ScaledPeriodField : PeriodField
     {
         private readonly int scale;
-        private readonly DurationField wrappedField;
+        private readonly PeriodField wrappedField;
 
-        internal ScaledDurationField(DurationField wrappedField, DurationFieldType fieldType, int scale)
+        internal ScaledPeriodField(PeriodField wrappedField, PeriodFieldType fieldType, int scale)
             : base(fieldType, Preconditions.CheckNotNull(wrappedField, "wrappedField").UnitTicks * scale, wrappedField.IsPrecise, true)
         {
             if (!wrappedField.IsSupported)

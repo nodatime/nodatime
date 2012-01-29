@@ -57,14 +57,14 @@ namespace NodaTime.Calendars
             // which rely on the other properties
             FieldSet.Builder builder = new FieldSet.Builder
                                        {
-                                           Ticks = TicksDurationField.Instance,
-                                           Milliseconds = PreciseDurationField.Milliseconds,
-                                           Seconds = PreciseDurationField.Seconds,
-                                           Minutes = PreciseDurationField.Minutes,
-                                           Hours = PreciseDurationField.Hours,
-                                           HalfDays = PreciseDurationField.HalfDays,
-                                           Days = PreciseDurationField.Days,
-                                           Weeks = PreciseDurationField.Weeks
+                                           Ticks = TicksPeriodField.Instance,
+                                           Milliseconds = PrecisePeriodField.Milliseconds,
+                                           Seconds = PrecisePeriodField.Seconds,
+                                           Minutes = PrecisePeriodField.Minutes,
+                                           Hours = PrecisePeriodField.Hours,
+                                           HalfDays = PrecisePeriodField.HalfDays,
+                                           Days = PrecisePeriodField.Days,
+                                           Weeks = PrecisePeriodField.Weeks
                                        };
             builder.TickOfSecond = new PreciseDateTimeField(DateTimeFieldType.TickOfSecond, builder.Ticks, builder.Seconds);
             builder.TickOfMillisecond = new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, builder.Ticks, builder.Milliseconds);
@@ -133,10 +133,10 @@ namespace NodaTime.Calendars
             // The remaining (imprecise) durations are available from the newly
             // created datetime fields.
 
-            builder.Years = builder.Year.DurationField;
-            builder.Centuries = builder.CenturyOfEra.DurationField;
-            builder.Months = builder.MonthOfYear.DurationField;
-            builder.WeekYears = builder.WeekYear.DurationField;
+            builder.Years = builder.Year.PeriodField;
+            builder.Centuries = builder.CenturyOfEra.PeriodField;
+            builder.Months = builder.MonthOfYear.PeriodField;
+            builder.WeekYears = builder.WeekYear.PeriodField;
         }
 
         /// <summary>
