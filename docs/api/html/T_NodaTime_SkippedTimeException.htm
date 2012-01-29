@@ -6,7 +6,7 @@
 <span class="keyword">Public</span> <span class="keyword">Class</span> <span class="identifier">SkippedTimeException</span> _
 	<span class="keyword">Inherits</span> <a href="http://msdn2.microsoft.com/en-us/library/8xt94y6e" target="_blank">ArgumentOutOfRangeException</a></pre></td></tr></table></span><span codeLanguage="ManagedCPlusPlus"><table><tr><th>Visual C++</th></tr><tr><td><pre xml:space="preserve">[<a href="http://msdn2.microsoft.com/en-us/library/bcfsa90a" target="_blank">SerializableAttribute</a>]
 <span class="keyword">public</span> <span class="keyword">ref class</span> <span class="identifier">SkippedTimeException</span> : <span class="keyword">public</span> <a href="http://msdn2.microsoft.com/en-us/library/8xt94y6e" target="_blank">ArgumentOutOfRangeException</a></pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(remarksToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(remarksToggle, event)" tabindex="0"><img id="remarksToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Remarks</span></h1><div id="remarksSection" class="section" name="collapseableSection" style=""><p>
-            This occurs for spring transitions, where the clock goes forward
+            This normally occurs for spring transitions, where the clock goes forward
             (usually by an hour). For example, suppose the time zone goes forward
             at 2am, so the second after 01:59:59 becomes 03:00:00. In that case,
             times such as 02:30:00 never occur.
