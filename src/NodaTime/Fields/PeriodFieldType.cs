@@ -17,60 +17,60 @@
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Indicates the type of a value represented by a duration field.
+    /// Indicates the type of a value represented by a period field.
     /// </summary>
-    public enum DurationFieldType
+    public enum PeriodFieldType
     {
         /// <summary>
-        /// DurationFieldType for eras.
+        /// PeriodFieldType for eras.
         /// </summary>
         Eras,
         /// <summary>
-        /// DurationFieldType for centuries.
+        /// PeriodFieldType for centuries.
         /// </summary>
         Centuries,
         /// <summary>
-        /// DurationFieldType for week-years.
+        /// PeriodFieldType for week-years.
         /// </summary>
         WeekYears,
         /// <summary>
-        /// DurationFieldType for years.
+        /// PeriodFieldType for years.
         /// </summary>
         Years,
         /// <summary>
-        /// DurationFieldType for months.
+        /// PeriodFieldType for months.
         /// </summary>
         Months,
         /// <summary>
-        /// DurationFieldType for weeks.
+        /// PeriodFieldType for weeks.
         /// </summary>
         Weeks,
         /// <summary>
-        /// DurationFieldType for days.
+        /// PeriodFieldType for days.
         /// </summary>
         Days,
         /// <summary>
-        /// DurationFieldType for half days.
+        /// PeriodFieldType for half days.
         /// </summary>
         HalfDays,
         /// <summary>
-        /// DurationFieldType for hours.
+        /// PeriodFieldType for hours.
         /// </summary>
         Hours,
         /// <summary>
-        /// DurationFieldType for minutes.
+        /// PeriodFieldType for minutes.
         /// </summary>
         Minutes,
         /// <summary>
-        /// DurationFieldType for seconds.
+        /// PeriodFieldType for seconds.
         /// </summary>
         Seconds,
         /// <summary>
-        /// DurationFieldType for milliseconds.
+        /// PeriodFieldType for milliseconds.
         /// </summary>
         Milliseconds,
         /// <summary>
-        /// DurationFieldType for ticks.
+        /// PeriodFieldType for ticks.
         /// </summary>
         Ticks,
     }

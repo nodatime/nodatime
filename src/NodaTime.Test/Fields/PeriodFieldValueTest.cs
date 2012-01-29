@@ -21,17 +21,17 @@ using NodaTime.Fields;
 namespace NodaTime.Test.Fields
 {
     /// <summary>
-    /// Tests for <see cref="DurationFieldValue"/>. Currently fairly bare, as the struct itself is trivial...
+    /// Tests for <see cref="PeriodFieldValue"/>. Currently fairly bare, as the struct itself is trivial...
     /// but it may get bigger.
     /// </summary>
     [TestFixture]
-    public class DurationFieldValueTest
+    public class PeriodFieldValueTest
     {
         [Test]
         public void Construction_RetainsValues()
         {
-            DurationFieldValue fieldValue = new DurationFieldValue(DurationFieldType.Months, 15);
-            Assert.AreEqual(DurationFieldType.Months, fieldValue.FieldType);
+            PeriodFieldValue fieldValue = new PeriodFieldValue(PeriodFieldType.Months, 15);
+            Assert.AreEqual(PeriodFieldType.Months, fieldValue.FieldType);
             Assert.AreEqual(15, fieldValue.Value);
         }
     }

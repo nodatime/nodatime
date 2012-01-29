@@ -37,7 +37,7 @@ namespace NodaTime
     /// and skipped date/time values becoming a problem within a series of calculations; instead,
     /// these can be considered just once, at the point of conversion to a ZonedDateTime.
     /// </remarks>
-    public sealed class Period : IEnumerable<DurationFieldValue>, IEquatable<Period>
+    public sealed class Period : IEnumerable<PeriodFieldValue>, IEquatable<Period>
     {
         private readonly PeriodType periodType;
         private readonly long[] values;
@@ -167,7 +167,7 @@ namespace NodaTime
             // TODO: Make this a lot faster :)
             for (int i = 0; i < all.Size; i++)
             {
-                DurationFieldType fieldType = all[i];
+                PeriodFieldType fieldType = all[i];
                 newValues[i] = left[fieldType] + right[fieldType];
             }
             return new Period(PeriodType.AllFields, newValues);
@@ -195,7 +195,7 @@ namespace NodaTime
             // TODO: Make this a lot faster :)
             for (int i = 0; i < all.Size; i++)
             {
-                DurationFieldType fieldType = all[i];
+                PeriodFieldType fieldType = all[i];
                 newValues[i] = minuend[fieldType] - subtrahend[fieldType];
             }
             return new Period(PeriodType.AllFields, newValues);
@@ -315,11 +315,11 @@ namespace NodaTime
         /// Returns the fields and values within this period.
         /// </summary>
         /// <returns>The fields and values within this period.</returns>
-        public IEnumerator<DurationFieldValue> GetEnumerator()
+        public IEnumerator<PeriodFieldValue> GetEnumerator()
         {
             for (int i = 0; i < values.Length; i++)
             {
-                yield return new DurationFieldValue(periodType[i], values[i]);
+                yield return new PeriodFieldValue(periodType[i], values[i]);
             }
         }
 
@@ -338,7 +338,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="fieldType">The type of field to fetch the value of.</param>
         /// <returns>The value of the given field within this period, or 0 if this period does not contain the given field.</returns>
-        public long this[DurationFieldType fieldType]
+        public long this[PeriodFieldType fieldType]
         {
             get
             {
@@ -351,39 +351,39 @@ namespace NodaTime
         /// <summary>
         /// Gets the number of years within this period.
         /// </summary>
-        public long Years { get { return this[DurationFieldType.Years]; } }
+        public long Years { get { return this[PeriodFieldType.Years]; } }
         /// <summary>
         /// Gets the number of months within this period.
         /// </summary>
-        public long Months { get { return this[DurationFieldType.Months]; } }
+        public long Months { get { return this[PeriodFieldType.Months]; } }
         /// <summary>
         /// Gets the number of weeks within this period.
         /// </summary>
-        public long Weeks { get { return this[DurationFieldType.Weeks]; } }
+        public long Weeks { get { return this[PeriodFieldType.Weeks]; } }
         /// <summary>
         /// Gets the number of days within this period.
         /// </summary>
-        public long Days { get { return this[DurationFieldType.Days]; } }
+        public long Days { get { return this[PeriodFieldType.Days]; } }
         /// <summary>
         /// Gets the number of hours within this period.
         /// </summary>
-        public long Hours { get { return this[DurationFieldType.Hours]; } }
+        public long Hours { get { return this[PeriodFieldType.Hours]; } }
         /// <summary>
         /// Gets the number of minutes within this period.
         /// </summary>
-        public long Minutes { get { return this[DurationFieldType.Minutes]; } }
+        public long Minutes { get { return this[PeriodFieldType.Minutes]; } }
         /// <summary>
         /// Gets the number of seconds within this period.
         /// </summary>
-        public long Seconds { get { return this[DurationFieldType.Seconds]; } }
+        public long Seconds { get { return this[PeriodFieldType.Seconds]; } }
         /// <summary>
         /// Gets the number of milliseconds within this period.
         /// </summary>
-        public long Milliseconds { get { return this[DurationFieldType.Milliseconds]; } }
+        public long Milliseconds { get { return this[PeriodFieldType.Milliseconds]; } }
         /// <summary>
         /// Gets the number of ticks within this period.
         /// </summary>
-        public long Ticks { get { return this[DurationFieldType.Ticks]; } }
+        public long Ticks { get { return this[PeriodFieldType.Ticks]; } }
         #endregion
 
         #region Object overrides
@@ -405,7 +405,7 @@ namespace NodaTime
         {
             int hash = HashCodeHelper.Initialize();
             // TODO: Make this a lot faster :)
-            foreach (DurationFieldType fieldType in PeriodType.AllFields)
+            foreach (PeriodFieldType fieldType in PeriodType.AllFields)
             {
                 hash = HashCodeHelper.Hash(hash, this[fieldType]);
             }
@@ -430,7 +430,7 @@ namespace NodaTime
             }
 
             // TODO: Make this a lot faster :)
-            foreach (DurationFieldType fieldType in PeriodType.AllFields)
+            foreach (PeriodFieldType fieldType in PeriodType.AllFields)
             {
                 if (this[fieldType] != other[fieldType])
                 {

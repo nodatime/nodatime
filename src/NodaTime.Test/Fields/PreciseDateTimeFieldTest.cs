@@ -27,7 +27,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Constructor_WithNullRangeField_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, new FakeDurationField(1, true), null));
+            Assert.Throws<ArgumentNullException>(() => new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, new FakePeriodField(1, true), null));
         }
 
         [Test]
@@ -35,21 +35,21 @@ namespace NodaTime.Test.Fields
         {
             // Effectively like "seconds per second" - effective range = 1
             Assert.Throws<ArgumentException>(
-                () => new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, new FakeDurationField(1, true), new FakeDurationField(1, true)));
+                () => new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, new FakePeriodField(1, true), new FakePeriodField(1, true)));
         }
 
         [Test]
         public void Constructor_WithImprecise_RangeField_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentException>(
-                () => new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, new FakeDurationField(1, true), new FakeDurationField(60, false)));
+                () => new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, new FakePeriodField(1, true), new FakePeriodField(60, false)));
         }
 
         [Test]
         public void FieldType()
         {
-            PreciseDateTimeField field = new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, new FakeDurationField(1, true),
-                                                                  new FakeDurationField(60, true));
+            PreciseDateTimeField field = new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, new FakePeriodField(1, true),
+                                                                  new FakePeriodField(60, true));
             Assert.AreEqual(DateTimeFieldType.MinuteOfHour, field.FieldType);
         }
 
@@ -63,7 +63,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetInt64Value()
         {
-            // Slightly odd LocalInstant in that it's in seconds, not ticks - due to the way the MockCountingDurationField works.
+            // Slightly odd LocalInstant in that it's in seconds, not ticks - due to the way the MockCountingPeriodField works.
             PreciseDateTimeField field = CreateMinuteOfHourField();
             Assert.AreEqual(0, field.GetInt64Value(new LocalInstant(0L)));
             Assert.AreEqual(1, field.GetInt64Value(new LocalInstant(60L)));
@@ -73,7 +73,7 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetInt64Value_Negative()
         {
-            // Slightly odd LocalInstant in that it's in seconds, not ticks - due to the way the MockCountingDurationField works.
+            // Slightly odd LocalInstant in that it's in seconds, not ticks - due to the way the MockCountingPeriodField works.
             PreciseDateTimeField field = CreateMinuteOfHourField();
             Assert.AreEqual(0, field.GetInt64Value(new LocalInstant(0L)));
             Assert.AreEqual(59, field.GetInt64Value(new LocalInstant(-59L)));
@@ -106,10 +106,10 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(0L, field.GetLeapAmount(new LocalInstant(0L)));
         }
 
-        public void LeapDurationField_DefaultsToNull()
+        public void LeapPeriodField_DefaultsToNull()
         {
             DateTimeField field = CreateMinuteOfHourField();
-            Assert.IsNull(field.LeapDurationField);
+            Assert.IsNull(field.LeapPeriodField);
         }
 
         [Test]
@@ -201,8 +201,8 @@ namespace NodaTime.Test.Fields
         private static PreciseDateTimeField CreateMinuteOfHourField()
         {
             return new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour,
-                new MockCountingDurationField(DurationFieldType.Minutes, 60),
-                new MockCountingDurationField(DurationFieldType.Hours, 60 * 60));
+                new MockCountingPeriodField(PeriodFieldType.Minutes, 60),
+                new MockCountingPeriodField(PeriodFieldType.Hours, 60 * 60));
         }
     }
 }

@@ -24,72 +24,72 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class DateTimeFieldType
     {
-        public static readonly DateTimeFieldType Era = new DateTimeFieldType("Era", DurationFieldType.Eras, null, 0);
-        public static readonly DateTimeFieldType YearOfEra = new DateTimeFieldType("YearOfEra", DurationFieldType.Years, DurationFieldType.Eras, 1);
-        public static readonly DateTimeFieldType CenturyOfEra = new DateTimeFieldType("CenturyOfEra", DurationFieldType.Centuries, DurationFieldType.Eras, 2);
-        public static readonly DateTimeFieldType YearOfCentury = new DateTimeFieldType("YearOfCentury", DurationFieldType.Years, DurationFieldType.Centuries, 3);
-        public static readonly DateTimeFieldType Year = new DateTimeFieldType("Year", DurationFieldType.Years, null, 4);
-        public static readonly DateTimeFieldType DayOfYear = new DateTimeFieldType("DayOfYear", DurationFieldType.Days, DurationFieldType.Years, 5);
-        public static readonly DateTimeFieldType MonthOfYear = new DateTimeFieldType("MonthOfYear", DurationFieldType.Months, DurationFieldType.Years, 6);
-        public static readonly DateTimeFieldType DayOfMonth = new DateTimeFieldType("DayOfMonth", DurationFieldType.Days, DurationFieldType.Months, 7);
+        public static readonly DateTimeFieldType Era = new DateTimeFieldType("Era", PeriodFieldType.Eras, null, 0);
+        public static readonly DateTimeFieldType YearOfEra = new DateTimeFieldType("YearOfEra", PeriodFieldType.Years, PeriodFieldType.Eras, 1);
+        public static readonly DateTimeFieldType CenturyOfEra = new DateTimeFieldType("CenturyOfEra", PeriodFieldType.Centuries, PeriodFieldType.Eras, 2);
+        public static readonly DateTimeFieldType YearOfCentury = new DateTimeFieldType("YearOfCentury", PeriodFieldType.Years, PeriodFieldType.Centuries, 3);
+        public static readonly DateTimeFieldType Year = new DateTimeFieldType("Year", PeriodFieldType.Years, null, 4);
+        public static readonly DateTimeFieldType DayOfYear = new DateTimeFieldType("DayOfYear", PeriodFieldType.Days, PeriodFieldType.Years, 5);
+        public static readonly DateTimeFieldType MonthOfYear = new DateTimeFieldType("MonthOfYear", PeriodFieldType.Months, PeriodFieldType.Years, 6);
+        public static readonly DateTimeFieldType DayOfMonth = new DateTimeFieldType("DayOfMonth", PeriodFieldType.Days, PeriodFieldType.Months, 7);
 
-        public static readonly DateTimeFieldType WeekYearOfCentury = new DateTimeFieldType("WeekYearOfCentury", DurationFieldType.WeekYears,
-                                                                                           DurationFieldType.Centuries, 8);
+        public static readonly DateTimeFieldType WeekYearOfCentury = new DateTimeFieldType("WeekYearOfCentury", PeriodFieldType.WeekYears,
+                                                                                           PeriodFieldType.Centuries, 8);
 
-        public static readonly DateTimeFieldType WeekYear = new DateTimeFieldType("WeekYear", DurationFieldType.WeekYears, null, 9);
+        public static readonly DateTimeFieldType WeekYear = new DateTimeFieldType("WeekYear", PeriodFieldType.WeekYears, null, 9);
 
-        public static readonly DateTimeFieldType WeekOfWeekYear = new DateTimeFieldType("WeekOfWeekYear", DurationFieldType.Weeks, DurationFieldType.WeekYears,
+        public static readonly DateTimeFieldType WeekOfWeekYear = new DateTimeFieldType("WeekOfWeekYear", PeriodFieldType.Weeks, PeriodFieldType.WeekYears,
                                                                                         10);
 
-        public static readonly DateTimeFieldType DayOfWeek = new DateTimeFieldType("DayOfWeek", DurationFieldType.Days, DurationFieldType.Weeks, 11);
-        public static readonly DateTimeFieldType HalfDayOfDay = new DateTimeFieldType("HalfDayOfDay", DurationFieldType.HalfDays, DurationFieldType.Days, 12);
-        public static readonly DateTimeFieldType HourOfHalfDay = new DateTimeFieldType("HourOfHalfDay", DurationFieldType.Hours, DurationFieldType.HalfDays, 13);
+        public static readonly DateTimeFieldType DayOfWeek = new DateTimeFieldType("DayOfWeek", PeriodFieldType.Days, PeriodFieldType.Weeks, 11);
+        public static readonly DateTimeFieldType HalfDayOfDay = new DateTimeFieldType("HalfDayOfDay", PeriodFieldType.HalfDays, PeriodFieldType.Days, 12);
+        public static readonly DateTimeFieldType HourOfHalfDay = new DateTimeFieldType("HourOfHalfDay", PeriodFieldType.Hours, PeriodFieldType.HalfDays, 13);
 
-        public static readonly DateTimeFieldType ClockHourOfHalfDay = new DateTimeFieldType("ClockHourOfHalfDay", DurationFieldType.Hours,
-                                                                                            DurationFieldType.Days, 14);
+        public static readonly DateTimeFieldType ClockHourOfHalfDay = new DateTimeFieldType("ClockHourOfHalfDay", PeriodFieldType.Hours,
+                                                                                            PeriodFieldType.Days, 14);
 
-        public static readonly DateTimeFieldType ClockHourOfDay = new DateTimeFieldType("ClockHourOfDay", DurationFieldType.Hours, DurationFieldType.HalfDays,
+        public static readonly DateTimeFieldType ClockHourOfDay = new DateTimeFieldType("ClockHourOfDay", PeriodFieldType.Hours, PeriodFieldType.HalfDays,
                                                                                         15);
 
-        public static readonly DateTimeFieldType HourOfDay = new DateTimeFieldType("HourOfDay", DurationFieldType.Hours, DurationFieldType.Days, 16);
-        public static readonly DateTimeFieldType MinuteOfDay = new DateTimeFieldType("MinuteOfDay", DurationFieldType.Minutes, DurationFieldType.Days, 17);
-        public static readonly DateTimeFieldType MinuteOfHour = new DateTimeFieldType("MinuteOfHour", DurationFieldType.Minutes, DurationFieldType.Hours, 18);
+        public static readonly DateTimeFieldType HourOfDay = new DateTimeFieldType("HourOfDay", PeriodFieldType.Hours, PeriodFieldType.Days, 16);
+        public static readonly DateTimeFieldType MinuteOfDay = new DateTimeFieldType("MinuteOfDay", PeriodFieldType.Minutes, PeriodFieldType.Days, 17);
+        public static readonly DateTimeFieldType MinuteOfHour = new DateTimeFieldType("MinuteOfHour", PeriodFieldType.Minutes, PeriodFieldType.Hours, 18);
 
-        public static readonly DateTimeFieldType SecondOfMinute = new DateTimeFieldType("SecondOfMinute", DurationFieldType.Seconds, DurationFieldType.Minutes,
+        public static readonly DateTimeFieldType SecondOfMinute = new DateTimeFieldType("SecondOfMinute", PeriodFieldType.Seconds, PeriodFieldType.Minutes,
                                                                                         19);
 
-        public static readonly DateTimeFieldType SecondOfDay = new DateTimeFieldType("SecondOfDay", DurationFieldType.Seconds, DurationFieldType.Days, 20);
+        public static readonly DateTimeFieldType SecondOfDay = new DateTimeFieldType("SecondOfDay", PeriodFieldType.Seconds, PeriodFieldType.Days, 20);
 
-        public static readonly DateTimeFieldType MillisecondOfSecond = new DateTimeFieldType("MillisecondOfSecond", DurationFieldType.Milliseconds,
-                                                                                             DurationFieldType.Seconds, 21);
+        public static readonly DateTimeFieldType MillisecondOfSecond = new DateTimeFieldType("MillisecondOfSecond", PeriodFieldType.Milliseconds,
+                                                                                             PeriodFieldType.Seconds, 21);
 
-        public static readonly DateTimeFieldType MillisecondOfDay = new DateTimeFieldType("MillisecondOfDay", DurationFieldType.Milliseconds,
-                                                                                          DurationFieldType.Days, 22);
+        public static readonly DateTimeFieldType MillisecondOfDay = new DateTimeFieldType("MillisecondOfDay", PeriodFieldType.Milliseconds,
+                                                                                          PeriodFieldType.Days, 22);
 
-        public static readonly DateTimeFieldType TickOfMillisecond = new DateTimeFieldType("TickOfMillisecond", DurationFieldType.Ticks,
-                                                                                           DurationFieldType.Milliseconds, 23);
+        public static readonly DateTimeFieldType TickOfMillisecond = new DateTimeFieldType("TickOfMillisecond", PeriodFieldType.Ticks,
+                                                                                           PeriodFieldType.Milliseconds, 23);
 
-        public static readonly DateTimeFieldType TickOfDay = new DateTimeFieldType("TickOfDay", DurationFieldType.Ticks, DurationFieldType.Days, 24);
-        public static readonly DateTimeFieldType TickOfSecond = new DateTimeFieldType("TickOfSecond", DurationFieldType.Ticks, DurationFieldType.Seconds, 25);
+        public static readonly DateTimeFieldType TickOfDay = new DateTimeFieldType("TickOfDay", PeriodFieldType.Ticks, PeriodFieldType.Days, 24);
+        public static readonly DateTimeFieldType TickOfSecond = new DateTimeFieldType("TickOfSecond", PeriodFieldType.Ticks, PeriodFieldType.Seconds, 25);
 
         internal static readonly int MaxOrdinal = 25; // Update this if new types are ever added.
 
         private readonly string name;
-        private readonly DurationFieldType durationFieldType;
-        private readonly DurationFieldType? rangeDurationFieldType;
+        private readonly PeriodFieldType periodFieldType;
+        private readonly PeriodFieldType? rangePeriodFieldType;
         private readonly int ordinal;
 
-        private DateTimeFieldType(string name, DurationFieldType durationFieldType, DurationFieldType? rangeDurationFieldType, int ordinal)
+        private DateTimeFieldType(string name, PeriodFieldType periodFieldType, PeriodFieldType? rangePeriodFieldType, int ordinal)
         {
             this.name = name;
-            this.durationFieldType = durationFieldType;
-            this.rangeDurationFieldType = rangeDurationFieldType;
+            this.periodFieldType = periodFieldType;
+            this.rangePeriodFieldType = rangePeriodFieldType;
             this.ordinal = ordinal;
         }
 
         public int Ordinal { get { return ordinal; } }
-        public DurationFieldType DurationFieldType { get { return durationFieldType; } }
-        public DurationFieldType? RangeDurationFieldType { get { return rangeDurationFieldType; } }
+        public PeriodFieldType PeriodFieldType { get { return periodFieldType; } }
+        public PeriodFieldType? RangePeriodFieldType { get { return rangePeriodFieldType; } }
 
         //TODO: make sure that there is no better place for this method
         //TODO: consider making it a delegate within the enum value.

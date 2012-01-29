@@ -22,12 +22,12 @@ using NodaTime.Fields;
 namespace NodaTime.Test.Fields
 {
     [TestFixture]
-    public class UnsupportedDurationFieldTest
+    public class UnsupportedPeriodFieldTest
     {
         [Test]
         public void ConstantProperties_ReturnExpectedValues()
         {
-            DurationField field = UnsupportedDurationField.Seconds;
+            PeriodField field = UnsupportedPeriodField.Seconds;
             Assert.IsFalse(field.IsSupported);
             Assert.IsTrue(field.IsPrecise);
             Assert.AreEqual(0, field.UnitTicks);
@@ -36,9 +36,9 @@ namespace NodaTime.Test.Fields
         [Test]
         public void CachedValuesAreSingletons()
         {
-            DurationField field1 = UnsupportedDurationField.Seconds;
-            DurationField field2 = UnsupportedDurationField.ForFieldType(DurationFieldType.Seconds);
-            DurationField field3 = UnsupportedDurationField.ForFieldType(DurationFieldType.Seconds);
+            PeriodField field1 = UnsupportedPeriodField.Seconds;
+            PeriodField field2 = UnsupportedPeriodField.ForFieldType(PeriodFieldType.Seconds);
+            PeriodField field3 = UnsupportedPeriodField.ForFieldType(PeriodFieldType.Seconds);
 
             Assert.AreSame(field1, field2);
             Assert.AreSame(field1, field3);
@@ -64,9 +64,9 @@ namespace NodaTime.Test.Fields
             AssertUnsupported(x => x.Subtract(when, 0L));
         }
 
-        private static void AssertUnsupported(Action<UnsupportedDurationField> action)
+        private static void AssertUnsupported(Action<UnsupportedPeriodField> action)
         {
-            Assert.Throws<NotSupportedException>(() => action(UnsupportedDurationField.Seconds));
+            Assert.Throws<NotSupportedException>(() => action(UnsupportedPeriodField.Seconds));
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
+// Copyright 2009-2011 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,27 +15,42 @@
 // limitations under the License.
 #endregion
 
-namespace NodaTime.Fields
+using NodaTime.Fields;
+
+namespace NodaTime.Test.Fields
 {
     /// <summary>
-    /// Base class for imprecise duration fields - i.e. where the duration of a single value depends on when the value occurs.
-    /// (For example, months and years.) Derived classes need only override Add and GetInt64Difference.
+    /// Class allowing simple construction of fields for testing constructors of other fields.
     /// </summary>
-    internal abstract class ImpreciseDurationField : DurationField
+    internal class FakePeriodField : PeriodField
     {
-        internal ImpreciseDurationField(DurationFieldType fieldType, long averageUnitTicks)
-            : base(fieldType, averageUnitTicks, false, true)
+        internal FakePeriodField(long unitTicks, bool precise) : base(PeriodFieldType.Seconds, unitTicks, precise, true)
         {
         }
 
         internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
-            return GetInt64Difference(localInstant + duration, localInstant);
+            return 0;
         }
 
         internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
-            return Add(localInstant, value) - localInstant;
+            return new Duration(0);
+        }
+
+        internal override LocalInstant Add(LocalInstant localInstant, int value)
+        {
+            return new LocalInstant();
+        }
+
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
+        {
+            return new LocalInstant();
+        }
+
+        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        {
+            return 0;
         }
     }
 }

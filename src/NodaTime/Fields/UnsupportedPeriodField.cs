@@ -20,42 +20,42 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// A placeholder implementation to use when a duration field is not supported.
+    /// A placeholder implementation to use when a period field is not supported.
     /// <para>
-    /// UnsupportedDurationField is thread-safe and immutable.
+    /// UnsupportedPeriodField is thread-safe and immutable.
     /// </para>
     /// </summary>
-    internal sealed class UnsupportedDurationField : DurationField
+    internal sealed class UnsupportedPeriodField : PeriodField
     {
-        private static readonly UnsupportedDurationField[] cache = Array.ConvertAll((DurationFieldType[])Enum.GetValues(typeof(DurationFieldType)),
-                                                                                    type => new UnsupportedDurationField(type));
+        private static readonly UnsupportedPeriodField[] cache = Array.ConvertAll((PeriodFieldType[])Enum.GetValues(typeof(PeriodFieldType)),
+                                                                                    type => new UnsupportedPeriodField(type));
 
         // Convenience fields
-        public static readonly UnsupportedDurationField Eras = cache[(int)DurationFieldType.Eras];
-        public static readonly UnsupportedDurationField Centuries = cache[(int)DurationFieldType.Centuries];
-        public static readonly UnsupportedDurationField WeekYears = cache[(int)DurationFieldType.WeekYears];
-        public static readonly UnsupportedDurationField Years = cache[(int)DurationFieldType.Years];
-        public static readonly UnsupportedDurationField Months = cache[(int)DurationFieldType.Months];
-        public static readonly UnsupportedDurationField Weeks = cache[(int)DurationFieldType.Weeks];
-        public static readonly UnsupportedDurationField Days = cache[(int)DurationFieldType.Days];
-        public static readonly UnsupportedDurationField HalfDays = cache[(int)DurationFieldType.HalfDays];
-        public static readonly UnsupportedDurationField Hours = cache[(int)DurationFieldType.Hours];
-        public static readonly UnsupportedDurationField Minutes = cache[(int)DurationFieldType.Minutes];
-        public static readonly UnsupportedDurationField Seconds = cache[(int)DurationFieldType.Seconds];
-        public static readonly UnsupportedDurationField Milliseconds = cache[(int)DurationFieldType.Milliseconds];
-        public static readonly UnsupportedDurationField Ticks = cache[(int)DurationFieldType.Ticks];
+        public static readonly UnsupportedPeriodField Eras = cache[(int)PeriodFieldType.Eras];
+        public static readonly UnsupportedPeriodField Centuries = cache[(int)PeriodFieldType.Centuries];
+        public static readonly UnsupportedPeriodField WeekYears = cache[(int)PeriodFieldType.WeekYears];
+        public static readonly UnsupportedPeriodField Years = cache[(int)PeriodFieldType.Years];
+        public static readonly UnsupportedPeriodField Months = cache[(int)PeriodFieldType.Months];
+        public static readonly UnsupportedPeriodField Weeks = cache[(int)PeriodFieldType.Weeks];
+        public static readonly UnsupportedPeriodField Days = cache[(int)PeriodFieldType.Days];
+        public static readonly UnsupportedPeriodField HalfDays = cache[(int)PeriodFieldType.HalfDays];
+        public static readonly UnsupportedPeriodField Hours = cache[(int)PeriodFieldType.Hours];
+        public static readonly UnsupportedPeriodField Minutes = cache[(int)PeriodFieldType.Minutes];
+        public static readonly UnsupportedPeriodField Seconds = cache[(int)PeriodFieldType.Seconds];
+        public static readonly UnsupportedPeriodField Milliseconds = cache[(int)PeriodFieldType.Milliseconds];
+        public static readonly UnsupportedPeriodField Ticks = cache[(int)PeriodFieldType.Ticks];
 
-        private UnsupportedDurationField(DurationFieldType fieldType) : base(fieldType, 0, true, false)
+        private UnsupportedPeriodField(PeriodFieldType fieldType) : base(fieldType, 0, true, false)
         {
         }
 
         /// <summary>
-        /// Gets an instance of UnsupportedDurationField for a specific named field.
+        /// Gets an instance of UnsupportedPeriodField for a specific named field.
         /// The returned instance is cached.
         /// </summary>
         /// <param name="fieldType">The type to obtain</param>
         /// <returns>The instance</returns>
-        public static UnsupportedDurationField ForFieldType(DurationFieldType fieldType)
+        public static UnsupportedPeriodField ForFieldType(PeriodFieldType fieldType)
         {
             if (!IsTypeValid(fieldType))
             {

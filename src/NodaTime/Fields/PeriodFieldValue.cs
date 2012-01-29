@@ -18,18 +18,18 @@
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// A simple combination of a <see cref="DurationFieldType" /> and a 64-bit integer value.
+    /// A simple combination of a <see cref="PeriodFieldType" /> and a 64-bit integer value.
     /// These are used when representing periods.
     /// </summary>
-    public struct DurationFieldValue
+    public struct PeriodFieldValue
     {
-        private readonly DurationFieldType fieldType;
+        private readonly PeriodFieldType fieldType;
         private readonly long value;
 
         /// <summary>
-        /// The <see cref="DurationFieldType"/> component of the value.
+        /// The <see cref="PeriodFieldType"/> component of the value.
         /// </summary>
-        public DurationFieldType FieldType { get { return fieldType; } }
+        public PeriodFieldType FieldType { get { return fieldType; } }
 
         /// <summary>
         /// The 64-bit integer component of the value.
@@ -41,7 +41,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="fieldType">The field type represented by this component of a period.</param>
         /// <param name="value">The value of the field within the period.</param>
-        public DurationFieldValue(DurationFieldType fieldType, long value)
+        public PeriodFieldValue(PeriodFieldType fieldType, long value)
         {
             this.fieldType = fieldType;
             this.value = value;

@@ -75,10 +75,10 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void LeapDurationField_DefaultsToNull()
+        public void LeapPeriodField_DefaultsToNull()
         {
             var field = new StubDateTimeField();
-            Assert.IsNull(field.LeapDurationField);
+            Assert.IsNull(field.LeapPeriodField);
         }
         #endregion
 
@@ -189,7 +189,7 @@ namespace NodaTime.Test.Fields
 
         private class StubDateTimeField : DateTimeField
         {
-            internal StubDateTimeField(DateTimeFieldType type) : base(type, new MockCountingDurationField(DurationFieldType.Seconds))
+            internal StubDateTimeField(DateTimeFieldType type) : base(type, new MockCountingPeriodField(PeriodFieldType.Seconds))
             {
             }
 
@@ -214,7 +214,7 @@ namespace NodaTime.Test.Fields
                 return localInstant;
             }
 
-            internal override DurationField RangeDurationField { get { return new MockCountingDurationField(DurationFieldType.Minutes); } }
+            internal override PeriodField RangePeriodField { get { return new MockCountingPeriodField(PeriodFieldType.Minutes); } }
 
             public bool GetMaxWasCalled;
 

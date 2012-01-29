@@ -20,13 +20,13 @@ using NodaTime.Calendars;
 
 namespace NodaTime.Fields
 {
-    internal class BasicWeekYearDurationField : ImpreciseDurationField
+    internal class BasicWeekYearPeriodField : ImprecisePeriodField
     {
         private static readonly Duration Week53Ticks = Duration.FromStandardWeeks(52);
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal BasicWeekYearDurationField(BasicCalendarSystem calendarSystem)
-            : base(DurationFieldType.WeekYears, calendarSystem.AverageTicksPerYear)
+        internal BasicWeekYearPeriodField(BasicCalendarSystem calendarSystem)
+            : base(PeriodFieldType.WeekYears, calendarSystem.AverageTicksPerYear)
         {
             this.calendarSystem = calendarSystem;
         }

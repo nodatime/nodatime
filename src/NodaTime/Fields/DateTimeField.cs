@@ -28,20 +28,20 @@ namespace NodaTime.Fields
     internal abstract class DateTimeField
     {
         private readonly DateTimeFieldType fieldType;
-        private readonly DurationField durationField;
+        private readonly PeriodField periodField;
         private readonly bool isSupported;
         private readonly bool isLenient;
 
-        protected DateTimeField(DateTimeFieldType fieldType, DurationField durationField)
-            : this(fieldType, durationField, false, true)
+        protected DateTimeField(DateTimeFieldType fieldType, PeriodField periodField)
+            : this(fieldType, periodField, false, true)
         {
         }
 
-        protected DateTimeField(DateTimeFieldType fieldType, DurationField durationField,
+        protected DateTimeField(DateTimeFieldType fieldType, PeriodField periodField,
             bool isLenient, bool isSupported)
         {
             this.fieldType = Preconditions.CheckNotNull(fieldType, "fieldType");
-            this.durationField = Preconditions.CheckNotNull(durationField, "durationField");
+            this.periodField = Preconditions.CheckNotNull(periodField, "PeriodField");
             this.isLenient = isLenient;
             this.isSupported = isSupported;
         }
@@ -58,22 +58,22 @@ namespace NodaTime.Fields
         /// By convention, names follow a pattern of "dddOfRrr", where "ddd" represents
         /// the (singular) duration unit field name and "Rrr" represents the (singular)
         /// duration range field name. If the range field is not applicable, then
-        /// the name of the field is simply the (singular) duration field name.
+        /// the name of the field is simply the (singular) period field name.
         /// </remarks>
         internal virtual string Name { get { return FieldType.ToString(); } }
 
         /// <summary>
-        /// Gets the duration per unit value of this field, or UnsupportedDurationField if field has no duration.
+        /// Gets the duration per unit value of this field, or UnsupportedPeriodField if field has no duration.
         /// For example, if this
         /// field represents "hour of day", then the duration is an hour.
         /// </summary>
-        internal DurationField DurationField { get { return durationField; } }
+        internal PeriodField PeriodField { get { return periodField; } }
 
         /// <summary>
         /// Returns the range duration of this field. For example, if this field
         /// represents "hour of day", then the range duration is a day.
         /// </summary>
-        internal abstract DurationField RangeDurationField { get; }
+        internal abstract PeriodField RangePeriodField { get; }
 
         /// <summary>
         /// Whether or not this is a supported field.
@@ -142,9 +142,9 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Defaults to null, i.e. no leap duration field.
+        /// Defaults to null, i.e. no leap period field.
         /// </summary>
-        internal virtual DurationField LeapDurationField { get { return null; } }
+        internal virtual PeriodField LeapPeriodField { get { return null; } }
         #endregion
 
         #region Ranges
@@ -209,7 +209,7 @@ namespace NodaTime.Fields
             LocalInstant newInstant = RoundFloor(localInstant);
             if (newInstant != localInstant)
             {
-                newInstant = DurationField.Add(newInstant, 1);
+                newInstant = PeriodField.Add(newInstant, 1);
             }
             return newInstant;
         }

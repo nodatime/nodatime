@@ -20,24 +20,24 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Defines the calculation engine for duration fields.
+    /// Defines the calculation engine for period fields.
     /// The abstract class defines a set of methods that manipulate a tick duration
     /// with regards to a single field, such as months or seconds. This class is
     /// threadsafe, and all subclasses must be too.
     /// </summary>
-    internal abstract class DurationField
+    internal abstract class PeriodField
     {
-        internal static bool IsTypeValid(DurationFieldType type)
+        internal static bool IsTypeValid(PeriodFieldType type)
         {
-            return type >= 0 && type <= DurationFieldType.Ticks;
+            return type >= 0 && type <= PeriodFieldType.Ticks;
         }
 
-        private readonly DurationFieldType fieldType;
+        private readonly PeriodFieldType fieldType;
         private readonly long unitTicks;
         private readonly bool precise;
         private readonly bool supported;
 
-        protected DurationField(DurationFieldType fieldType, long unitTicks, bool precise, bool supported)
+        protected PeriodField(PeriodFieldType fieldType, long unitTicks, bool precise, bool supported)
         {
             if (!IsTypeValid(fieldType))
             {
@@ -52,7 +52,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Get the type of the field.
         /// </summary>
-        internal DurationFieldType FieldType { get { return fieldType; } }
+        internal PeriodFieldType FieldType { get { return fieldType; } }
 
         /// <summary>
         /// Returns true if this field is supported.

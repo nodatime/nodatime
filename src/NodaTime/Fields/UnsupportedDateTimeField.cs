@@ -21,7 +21,7 @@ namespace NodaTime.Fields
 {
     /// <summary>
     /// A placeholder implementation to use when a datetime field is not supported.
-    /// All methods throw <see cref="NotSupportedException"/>, and the DurationField is always
+    /// All methods throw <see cref="NotSupportedException"/>, and the PeriodField is always
     /// the unsupported field of the appropriate duration type.
     /// </summary>
     internal class UnsupportedDateTimeField : DateTimeField
@@ -54,13 +54,13 @@ namespace NodaTime.Fields
         public static readonly UnsupportedDateTimeField TickOfDay = new UnsupportedDateTimeField(DateTimeFieldType.TickOfDay);
         public static readonly UnsupportedDateTimeField TickOfSecond = new UnsupportedDateTimeField(DateTimeFieldType.TickOfSecond);
 
-        private UnsupportedDateTimeField(DateTimeFieldType fieldType) : base(fieldType, UnsupportedDurationField.ForFieldType(fieldType.DurationFieldType), false, false)
+        private UnsupportedDateTimeField(DateTimeFieldType fieldType) : base(fieldType, UnsupportedPeriodField.ForFieldType(fieldType.PeriodFieldType), false, false)
         {
         }
 
-        internal override DurationField RangeDurationField { get { return null; } }
+        internal override PeriodField RangePeriodField { get { return null; } }
 
-        internal override DurationField LeapDurationField { get { return null; } }
+        internal override PeriodField LeapPeriodField { get { return null; } }
 
         internal override int GetValue(LocalInstant localInstant)
         {

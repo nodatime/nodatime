@@ -24,43 +24,43 @@ namespace NodaTime.Test.Fields
     [TestFixture]
     public class ScaledDurationTest
     {
-        private readonly ScaledDurationField sample = new ScaledDurationField(TicksDurationField.Instance, DurationFieldType.Minutes, 90);
+        private readonly ScaledPeriodField sample = new ScaledPeriodField(TicksPeriodField.Instance, PeriodFieldType.Minutes, 90);
         private readonly LocalInstant localInstant = new LocalInstant(567L);
 
         [Test]
         public void Constructor_WithNullField_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new ScaledDurationField(null, DurationFieldType.Minutes, 10));
+            Assert.Throws<ArgumentNullException>(() => new ScaledPeriodField(null, PeriodFieldType.Minutes, 10));
         }
 
         [Test]
         public void Constructor_WithUnsupportedField_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentException>(() => new ScaledDurationField(UnsupportedDurationField.Milliseconds, DurationFieldType.Minutes, 10));
+            Assert.Throws<ArgumentException>(() => new ScaledPeriodField(UnsupportedPeriodField.Milliseconds, PeriodFieldType.Minutes, 10));
         }
 
         [Test]
         public void Constructor_WithInvalidFieldType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ScaledDurationField(TicksDurationField.Instance, (DurationFieldType)(-1), 10));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ScaledPeriodField(TicksPeriodField.Instance, (PeriodFieldType)(-1), 10));
         }
 
         [Test]
         public void Constructor_WithScaleOfZero_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ScaledDurationField(TicksDurationField.Instance, DurationFieldType.Minutes, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ScaledPeriodField(TicksPeriodField.Instance, PeriodFieldType.Minutes, 0));
         }
 
         [Test]
         public void Constructor_WithScaleOfOne_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ScaledDurationField(TicksDurationField.Instance, DurationFieldType.Minutes, 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ScaledPeriodField(TicksPeriodField.Instance, PeriodFieldType.Minutes, 1));
         }
 
         [Test]
         public void SimpleProperties()
         {
-            Assert.AreEqual(DurationFieldType.Minutes, sample.FieldType);
+            Assert.AreEqual(PeriodFieldType.Minutes, sample.FieldType);
             Assert.IsTrue(sample.IsSupported);
             Assert.IsTrue(sample.IsPrecise);
         }

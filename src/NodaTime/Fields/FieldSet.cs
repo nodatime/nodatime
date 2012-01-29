@@ -20,23 +20,23 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// An immutable collection of date/time and duration fields.
+    /// An immutable collection of date/time and period fields.
     /// </summary>
     internal sealed class FieldSet
     {
-        private readonly DurationField ticks;
-        private readonly DurationField milliseconds;
-        private readonly DurationField seconds;
-        private readonly DurationField minutes;
-        private readonly DurationField hours;
-        private readonly DurationField halfDays;
-        private readonly DurationField days;
-        private readonly DurationField weeks;
-        private readonly DurationField weekYears;
-        private readonly DurationField months;
-        private readonly DurationField years;
-        private readonly DurationField centuries;
-        private readonly DurationField eras;
+        private readonly PeriodField ticks;
+        private readonly PeriodField milliseconds;
+        private readonly PeriodField seconds;
+        private readonly PeriodField minutes;
+        private readonly PeriodField hours;
+        private readonly PeriodField halfDays;
+        private readonly PeriodField days;
+        private readonly PeriodField weeks;
+        private readonly PeriodField weekYears;
+        private readonly PeriodField months;
+        private readonly PeriodField years;
+        private readonly PeriodField centuries;
+        private readonly PeriodField eras;
 
         private readonly DateTimeField tickOfSecond;
         private readonly DateTimeField tickOfMillisecond;
@@ -65,19 +65,19 @@ namespace NodaTime.Fields
         private readonly DateTimeField centruryOfEra;
         private readonly DateTimeField era;
 
-        internal DurationField Ticks { get { return ticks; } }
-        internal DurationField Milliseconds { get { return milliseconds; } }
-        internal DurationField Seconds { get { return seconds; } }
-        internal DurationField Minutes { get { return minutes; } }
-        internal DurationField Hours { get { return hours; } }
-        internal DurationField HalfDays { get { return halfDays; } }
-        internal DurationField Days { get { return days; } }
-        internal DurationField Weeks { get { return weeks; } }
-        internal DurationField WeekYears { get { return weekYears; } }
-        internal DurationField Months { get { return months; } }
-        internal DurationField Years { get { return years; } }
-        internal DurationField Centuries { get { return centuries; } }
-        internal DurationField Eras { get { return eras; } }
+        internal PeriodField Ticks { get { return ticks; } }
+        internal PeriodField Milliseconds { get { return milliseconds; } }
+        internal PeriodField Seconds { get { return seconds; } }
+        internal PeriodField Minutes { get { return minutes; } }
+        internal PeriodField Hours { get { return hours; } }
+        internal PeriodField HalfDays { get { return halfDays; } }
+        internal PeriodField Days { get { return days; } }
+        internal PeriodField Weeks { get { return weeks; } }
+        internal PeriodField WeekYears { get { return weekYears; } }
+        internal PeriodField Months { get { return months; } }
+        internal PeriodField Years { get { return years; } }
+        internal PeriodField Centuries { get { return centuries; } }
+        internal PeriodField Eras { get { return eras; } }
 
         internal DateTimeField TickOfSecond { get { return tickOfSecond; } }
         internal DateTimeField TickOfMillisecond { get { return tickOfMillisecond; } }
@@ -108,19 +108,19 @@ namespace NodaTime.Fields
 
         private FieldSet(Builder builder)
         {
-            ticks = builder.Ticks ?? UnsupportedDurationField.Ticks;
-            milliseconds = builder.Milliseconds ?? UnsupportedDurationField.Milliseconds;
-            seconds = builder.Seconds ?? UnsupportedDurationField.Seconds;
-            minutes = builder.Minutes ?? UnsupportedDurationField.Minutes;
-            hours = builder.Hours ?? UnsupportedDurationField.Hours;
-            halfDays = builder.HalfDays ?? UnsupportedDurationField.HalfDays;
-            days = builder.Days ?? UnsupportedDurationField.Days;
-            weeks = builder.Weeks ?? UnsupportedDurationField.Weeks;
-            weekYears = builder.WeekYears ?? UnsupportedDurationField.WeekYears;
-            months = builder.Months ?? UnsupportedDurationField.Months;
-            years = builder.Years ?? UnsupportedDurationField.Years;
-            centuries = builder.Centuries ?? UnsupportedDurationField.Centuries;
-            eras = builder.Eras ?? UnsupportedDurationField.Eras;
+            ticks = builder.Ticks ?? UnsupportedPeriodField.Ticks;
+            milliseconds = builder.Milliseconds ?? UnsupportedPeriodField.Milliseconds;
+            seconds = builder.Seconds ?? UnsupportedPeriodField.Seconds;
+            minutes = builder.Minutes ?? UnsupportedPeriodField.Minutes;
+            hours = builder.Hours ?? UnsupportedPeriodField.Hours;
+            halfDays = builder.HalfDays ?? UnsupportedPeriodField.HalfDays;
+            days = builder.Days ?? UnsupportedPeriodField.Days;
+            weeks = builder.Weeks ?? UnsupportedPeriodField.Weeks;
+            weekYears = builder.WeekYears ?? UnsupportedPeriodField.WeekYears;
+            months = builder.Months ?? UnsupportedPeriodField.Months;
+            years = builder.Years ?? UnsupportedPeriodField.Years;
+            centuries = builder.Centuries ?? UnsupportedPeriodField.Centuries;
+            eras = builder.Eras ?? UnsupportedPeriodField.Eras;
 
             tickOfSecond = builder.TickOfSecond ?? UnsupportedDateTimeField.TickOfSecond;
             tickOfMillisecond = builder.TickOfMillisecond ?? UnsupportedDateTimeField.TickOfMillisecond;
@@ -165,19 +165,19 @@ namespace NodaTime.Fields
         /// </summary>
         internal class Builder
         {
-            internal DurationField Ticks { get; set; }
-            internal DurationField Milliseconds { get; set; }
-            internal DurationField Seconds { get; set; }
-            internal DurationField Minutes { get; set; }
-            internal DurationField Hours { get; set; }
-            internal DurationField HalfDays { get; set; }
-            internal DurationField Days { get; set; }
-            internal DurationField Weeks { get; set; }
-            internal DurationField WeekYears { get; set; }
-            internal DurationField Months { get; set; }
-            internal DurationField Years { get; set; }
-            internal DurationField Centuries { get; set; }
-            internal DurationField Eras { get; set; }
+            internal PeriodField Ticks { get; set; }
+            internal PeriodField Milliseconds { get; set; }
+            internal PeriodField Seconds { get; set; }
+            internal PeriodField Minutes { get; set; }
+            internal PeriodField Hours { get; set; }
+            internal PeriodField HalfDays { get; set; }
+            internal PeriodField Days { get; set; }
+            internal PeriodField Weeks { get; set; }
+            internal PeriodField WeekYears { get; set; }
+            internal PeriodField Months { get; set; }
+            internal PeriodField Years { get; set; }
+            internal PeriodField Centuries { get; set; }
+            internal PeriodField Eras { get; set; }
 
             internal DateTimeField TickOfSecond { get; set; }
             internal DateTimeField TickOfMillisecond { get; set; }

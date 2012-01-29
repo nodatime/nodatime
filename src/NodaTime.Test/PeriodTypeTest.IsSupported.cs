@@ -27,19 +27,19 @@ namespace NodaTime.Test
         {
             var sut = PeriodType.DayTime;
 
-            Assert.IsFalse(sut.IsSupported(DurationFieldType.Eras));
-            Assert.IsFalse(sut.IsSupported(DurationFieldType.Centuries));
-            Assert.IsFalse(sut.IsSupported(DurationFieldType.WeekYears));
-            Assert.IsFalse(sut.IsSupported(DurationFieldType.Years));
-            Assert.IsFalse(sut.IsSupported(DurationFieldType.Months));
-            Assert.IsFalse(sut.IsSupported(DurationFieldType.Weeks));
-            Assert.IsTrue(sut.IsSupported(DurationFieldType.Days));
-            Assert.IsFalse(sut.IsSupported(DurationFieldType.HalfDays));
-            Assert.IsTrue(sut.IsSupported(DurationFieldType.Hours));
-            Assert.IsTrue(sut.IsSupported(DurationFieldType.Minutes));
-            Assert.IsTrue(sut.IsSupported(DurationFieldType.Seconds));
-            Assert.IsTrue(sut.IsSupported(DurationFieldType.Milliseconds));
-            Assert.IsTrue(sut.IsSupported(DurationFieldType.Ticks));
+            Assert.IsFalse(sut.IsSupported(PeriodFieldType.Eras));
+            Assert.IsFalse(sut.IsSupported(PeriodFieldType.Centuries));
+            Assert.IsFalse(sut.IsSupported(PeriodFieldType.WeekYears));
+            Assert.IsFalse(sut.IsSupported(PeriodFieldType.Years));
+            Assert.IsFalse(sut.IsSupported(PeriodFieldType.Months));
+            Assert.IsFalse(sut.IsSupported(PeriodFieldType.Weeks));
+            Assert.IsTrue(sut.IsSupported(PeriodFieldType.Days));
+            Assert.IsFalse(sut.IsSupported(PeriodFieldType.HalfDays));
+            Assert.IsTrue(sut.IsSupported(PeriodFieldType.Hours));
+            Assert.IsTrue(sut.IsSupported(PeriodFieldType.Minutes));
+            Assert.IsTrue(sut.IsSupported(PeriodFieldType.Seconds));
+            Assert.IsTrue(sut.IsSupported(PeriodFieldType.Milliseconds));
+            Assert.IsTrue(sut.IsSupported(PeriodFieldType.Ticks));
         }
     }
 }

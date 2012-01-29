@@ -23,87 +23,87 @@ using NodaTime.Fields;
 namespace NodaTime.Test.Fields
 {
     [TestFixture]
-    public class DurationFieldTest
+    public class PeriodFieldTest
     {
         [Test]
         public void Constructor_WithInvalidType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new StubDurationField((DurationFieldType)(-1)));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new StubPeriodField((PeriodFieldType)(-1)));
         }
 
         [Test]
         public void Constructor_WithValidType_RemembersType()
         {
-            DurationField field = new StubDurationField(DurationFieldType.HalfDays);
-            Assert.AreEqual(DurationFieldType.HalfDays, field.FieldType);
+            PeriodField field = new StubPeriodField(PeriodFieldType.HalfDays);
+            Assert.AreEqual(PeriodFieldType.HalfDays, field.FieldType);
         }
 
         [Test]
         public void IsSupported_ReturnsTrue()
         {
-            DurationField field = new StubDurationField();
+            PeriodField field = new StubPeriodField();
             Assert.IsTrue(field.IsSupported);
         }
 
         [Test]
         public void GetDurationWithoutLocalInstant_UsesUnitTicks()
         {
-            DurationField field = new StubDurationField();
+            PeriodField field = new StubPeriodField();
             Assert.AreEqual(1230L, field.GetDuration(10).Ticks);
         }
 
         [Test]
         public void GetDurationWithoutLocalInstant_ThrowsOnOverflow()
         {
-            DurationField field = new StubDurationField();
+            PeriodField field = new StubPeriodField();
             Assert.Throws<OverflowException>(() => field.GetDuration(long.MaxValue));
         }
 
         [Test]
         public void GetValueWithoutLocalInstant_UsesUnitTicks()
         {
-            DurationField field = new StubDurationField();
+            PeriodField field = new StubPeriodField();
             Assert.AreEqual(9, field.GetValue(new Duration(1200L)));
         }
 
         [Test]
         public void GetValueWithoutLocalInstant_ThrowsOnOverflow()
         {
-            DurationField field = new StubDurationField();
+            PeriodField field = new StubPeriodField();
             Assert.Throws<OverflowException>(() => field.GetValue(new Duration(long.MaxValue)));
         }
 
         [Test]
         public void GetInt64ValueWithoutLocalInstant_UsesUnitTicks()
         {
-            DurationField field = new StubDurationField();
+            PeriodField field = new StubPeriodField();
             Assert.AreEqual(long.MaxValue / 123, field.GetInt64Value(new Duration(long.MaxValue)));
         }
 
         [Test]
         public void IsTypeValid_AllEnumValues_AreValid()
         {
-            foreach (DurationFieldType type in Enum.GetValues(typeof(DurationFieldType)))
+            foreach (PeriodFieldType type in Enum.GetValues(typeof(PeriodFieldType)))
             {
-                Assert.IsTrue(DurationField.IsTypeValid(type));
+                Assert.IsTrue(PeriodField.IsTypeValid(type));
             }
         }
 
         [Test]
         public void IsTypeValid_ValuesOutOfRange_AreInvalid()
         {
-            Assert.IsFalse(DurationField.IsTypeValid((DurationFieldType)(-1)));
-            DurationFieldType max = Enum.GetValues(typeof(DurationFieldType)).Cast<DurationFieldType>().Max();
-            Assert.IsFalse(DurationField.IsTypeValid(max + 1));
+            Assert.IsFalse(PeriodField.IsTypeValid((PeriodFieldType)(-1)));
+            PeriodFieldType max = Enum.GetValues(typeof(PeriodFieldType)).Cast<PeriodFieldType>().Max();
+            Assert.IsFalse(PeriodField.IsTypeValid(max + 1));
         }
 
-        private class StubDurationField : DurationField
+        private class StubPeriodField : PeriodField
         {
-            internal StubDurationField() : this(DurationFieldType.Seconds)
+            internal StubPeriodField() : this(PeriodFieldType.Seconds)
             {
             }
 
-            internal StubDurationField(DurationFieldType fieldType) : base(fieldType, 123, true, true)
+            internal StubPeriodField(PeriodFieldType fieldType) : base(fieldType, 123, true, true)
             {
             }
 

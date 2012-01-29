@@ -22,7 +22,7 @@ namespace NodaTime.Test.Calendars
     public partial class IsoCalendarSystemTest
     {
         [Test]
-        public void DurationFields_Eras()
+        public void PeriodFields_Eras()
         {
             var sut = isoFields.Eras;
 
@@ -31,7 +31,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_Centuries()
+        public void PeriodFields_Centuries()
         {
             var sut = isoFields.Centuries;
 
@@ -41,7 +41,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_Years()
+        public void PeriodFields_Years()
         {
             var sut = isoFields.Years;
 
@@ -51,7 +51,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_WeekYears()
+        public void PeriodFields_WeekYears()
         {
             var sut = isoFields.WeekYears;
 
@@ -61,7 +61,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_Months()
+        public void PeriodFields_Months()
         {
             var sut = isoFields.Months;
 
@@ -71,7 +71,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_Weeks()
+        public void PeriodFields_Weeks()
         {
             var sut = isoFields.Weeks;
 
@@ -81,7 +81,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_Days()
+        public void PeriodFields_Days()
         {
             var sut = isoFields.Days;
 
@@ -91,7 +91,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_Hours()
+        public void PeriodFields_Hours()
         {
             var sut = isoFields.Hours;
 
@@ -101,7 +101,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_Minutes()
+        public void PeriodFields_Minutes()
         {
             var sut = isoFields.Minutes;
 
@@ -111,7 +111,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_Seconds()
+        public void PeriodFields_Seconds()
         {
             var sut = isoFields.Seconds;
 
@@ -121,7 +121,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_Milliseconds()
+        public void PeriodFields_Milliseconds()
         {
             var sut = isoFields.Milliseconds;
 
@@ -131,7 +131,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DurationFields_Ticks()
+        public void PeriodFields_Ticks()
         {
             var sut = isoFields.Ticks;
 

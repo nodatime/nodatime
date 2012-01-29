@@ -17,15 +17,15 @@
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Singleton duration field for a fixed duration of 1 tick.
+    /// Singleton period field for a fixed duration of 1 tick.
     /// </summary>
-    internal sealed class TicksDurationField : DurationField
+    internal sealed class TicksPeriodField : PeriodField
     {
-        private static readonly TicksDurationField instance = new TicksDurationField();
+        private static readonly TicksPeriodField instance = new TicksPeriodField();
 
-        public static TicksDurationField Instance { get { return instance; } }
+        public static TicksPeriodField Instance { get { return instance; } }
 
-        private TicksDurationField() : base(DurationFieldType.Ticks, 1, true, true)
+        private TicksPeriodField() : base(PeriodFieldType.Ticks, 1, true, true)
         {
         }
 

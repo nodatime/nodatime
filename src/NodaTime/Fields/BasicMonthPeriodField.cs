@@ -21,15 +21,15 @@ using NodaTime.Calendars;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Duration field for months in a basic calendar system with a fixed number of months of varying lengths.
+    /// Period field for months in a basic calendar system with a fixed number of months of varying lengths.
     /// </summary>
-    internal sealed class BasicMonthDurationField : ImpreciseDurationField
+    internal sealed class BasicMonthPeriodField : ImprecisePeriodField
     {
         private readonly BasicCalendarSystem calendarSystem;
         private readonly int monthsPerYear;
 
-        internal BasicMonthDurationField(BasicCalendarSystem calendarSystem)
-            : base(DurationFieldType.Months, calendarSystem.AverageTicksPerMonth)
+        internal BasicMonthPeriodField(BasicCalendarSystem calendarSystem)
+            : base(PeriodFieldType.Months, calendarSystem.AverageTicksPerMonth)
         {
             this.calendarSystem = calendarSystem;
             // Assumes 1-based value, and fixed number of months.

@@ -31,7 +31,7 @@ namespace NodaTime.Fields
         private readonly long max;
 
         internal DividedDateTimeField(DateTimeField field, DateTimeFieldType fieldType, int divisor)
-            : base(field, fieldType, new ScaledDurationField(field.DurationField, fieldType.DurationFieldType, divisor))
+            : base(field, fieldType, new ScaledPeriodField(field.PeriodField, fieldType.PeriodFieldType, divisor))
         {
             if (divisor < 2)
             {

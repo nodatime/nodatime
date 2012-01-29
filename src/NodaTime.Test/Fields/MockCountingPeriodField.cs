@@ -19,16 +19,16 @@ using NodaTime.Fields;
 
 namespace NodaTime.Test.Fields
 {
-    internal class MockCountingDurationField : DurationField
+    internal class MockCountingPeriodField : PeriodField
     {
         // FIXME: Use a proper mock?
         private readonly long unitTicks;
 
-        internal MockCountingDurationField(DurationFieldType fieldType) : this(fieldType, 60)
+        internal MockCountingPeriodField(PeriodFieldType fieldType) : this(fieldType, 60)
         {
         }
 
-        internal MockCountingDurationField(DurationFieldType fieldType, long unitTicks) : base(fieldType, unitTicks, true, true)
+        internal MockCountingPeriodField(PeriodFieldType fieldType, long unitTicks) : base(fieldType, unitTicks, true, true)
         {
             this.unitTicks = unitTicks;
         }
