@@ -39,7 +39,7 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Returns the number of ticks from the start of the given year to the start of the given month.
         /// </summary>
-        protected abstract long GetTotalTicksByYearMonth(int year, int month);
+        protected abstract long GetTicksFromStartOfYearToStartOfMonth(int year, int month);
 
         internal abstract long AverageTicksPerMonth { get; }
         internal abstract long AverageTicksPerYear { get; }
@@ -311,7 +311,7 @@ namespace NodaTime.Calendars
         internal long GetYearMonthTicks(int year, int month)
         {
             long ticks = GetYearTicks(year);
-            return ticks + GetTotalTicksByYearMonth(year, month);
+            return ticks + GetTicksFromStartOfYearToStartOfMonth(year, month);
         }
 
         /// <summary>

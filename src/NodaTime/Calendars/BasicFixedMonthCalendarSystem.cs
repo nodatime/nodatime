@@ -78,7 +78,7 @@ namespace NodaTime.Calendars
             return difference;
         }
 
-        protected override long GetTotalTicksByYearMonth(int year, int month)
+        protected override long GetTicksFromStartOfYearToStartOfMonth(int year, int month)
         {
             return (month - 1) * TicksPerMonth;
         }
