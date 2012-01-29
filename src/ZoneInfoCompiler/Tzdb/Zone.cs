@@ -40,7 +40,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private readonly ZoneYearOffset untilYearOffset;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="Zone" /> class.
+        /// Initializes a new instance of the <see cref="Zone" /> class.
         /// </summary>
         public Zone(string name, Offset offset, string rules, string format, int untilYear, ZoneYearOffset untilYearOffset)
         {
@@ -52,53 +52,33 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             this.untilYearOffset = untilYearOffset;
         }
 
-        // FIXME: Check this!
-        internal Zone(string name, Offset offset, string rules, string format)
-            : this(name, offset, rules, format, Int32.MaxValue, new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero))
-        {
-
-        }
-
-
         internal ZoneYearOffset UntilYearOffset { get { return untilYearOffset; } }
 
         internal int UntilYear { get { return untilYear; } }
 
         /// <summary>
-        ///   Gets or sets the format for generating the label for this time zone.
+        /// Returns the format for generating the label for this time zone.
         /// </summary>
         /// <value>The format string.</value>
-        internal string Format
-        {
-            get { return format; }
-        }
+        internal string Format { get { return format; } }
 
         /// <summary>
-        ///   Gets or sets the name of the time zone
+        /// Returns the name of the time zone.
         /// </summary>
         /// <value>The time zone name.</value>
-        internal string Name
-        {
-            get { return name; }
-        }
+        internal string Name { get { return name; } }
 
         /// <summary>
-        ///   Gets or sets the offset to add to UTC for this time zone.
+        /// Returns the offset to add to UTC for this time zone.
         /// </summary>
         /// <value>The offset from UTC.</value>
-        internal Offset Offset
-        {
-            get { return offset; }
-        }
+        internal Offset Offset { get { return offset; } }
 
         /// <summary>
-        ///   Gets or sets the daylight savings rules name applicable to this zone line.
+        /// Returns the daylight savings rules name applicable to this zone line.
         /// </summary>
         /// <value>The rules name.</value>
-        internal string Rules
-        {
-            get { return rules; }
-        }
+        internal string Rules { get { return rules; } }
 
         #region IEquatable<Zone> Members
         /// <summary>

@@ -111,13 +111,5 @@ namespace NodaTime.Calendars
             long ticks = (relativeYear * 365L + leapYears - (366 + 352)) * NodaConstants.TicksPerStandardDay;
             return new LocalInstant(ticks);
         }
-        /*
-        private static void AssembleFields(FieldSet.Builder builder, CalendarSystem @this)
-        {
-            // Julian chronology has no year zero.
-            
-            builder.Year = new SkipZeroDateTimeField(builder.Year);
-            builder.WeekYear = new SkipZeroDateTimeField(builder.WeekYear);
-        }*/
     }
 }
