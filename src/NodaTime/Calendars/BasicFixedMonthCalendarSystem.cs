@@ -121,7 +121,7 @@ namespace NodaTime.Calendars
             return ((int)monthZeroBased) + 1;
         }
 
-        internal override int GetMaxMonth()
+        internal override sealed int GetMaxMonth()
         {
             return 13;
         }

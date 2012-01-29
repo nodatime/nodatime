@@ -38,7 +38,6 @@ namespace NodaTime.Calendars
 
         /// <summary>
         /// Returns the number of ticks from the start of the given year to the start of the given month.
-        /// TODO: We always add this to the ticks at the start of the year. Why not just do it?
         /// </summary>
         protected abstract long GetTotalTicksByYearMonth(int year, int month);
 
@@ -80,7 +79,8 @@ namespace NodaTime.Calendars
             builder.HourOfHalfDay = new PreciseDateTimeField(DateTimeFieldType.HourOfHalfDay, builder.Hours, builder.HalfDays);
             builder.ClockHourOfDay = new ZeroIsMaxDateTimeField(builder.HourOfDay, DateTimeFieldType.ClockHourOfDay);
             builder.ClockHourOfHalfDay = new ZeroIsMaxDateTimeField(builder.HourOfHalfDay, DateTimeFieldType.ClockHourOfHalfDay);
-            // TODO: This was a separate subclass in Joda, for i18n purposes
+            // This was a separate subclass in Joda, for i18n purposes
+            // Our calendar systems don't have their own i18n support.
             builder.HalfDayOfDay = new PreciseDateTimeField(DateTimeFieldType.HalfDayOfDay, builder.HalfDays, builder.Days);
             return builder.Build();
         }
@@ -194,8 +194,7 @@ namespace NodaTime.Calendars
 
         internal int GetDayOfMonth(LocalInstant localInstant, int year, int month)
         {
-            long dateTicks = GetYearTicks(year);
-            dateTicks += GetTotalTicksByYearMonth(year, month);
+            long dateTicks = GetYearMonthTicks(year, month);
             return (int)((localInstant.Ticks - dateTicks) / NodaConstants.TicksPerStandardDay) + 1;
         }
 
@@ -301,16 +300,18 @@ namespace NodaTime.Calendars
         /// </summary>
         internal long GetYearMonthDayTicks(int year, int month, int dayOfMonth)
         {
-            long ticks = GetYearTicks(year);
-            ticks += GetTotalTicksByYearMonth(year, month);
+            long ticks = GetYearMonthTicks(year, month);
             return ticks + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay;
         }
 
+        /// <summary>
+        /// Returns the number of ticks (the LocalInstant, effectively) at the start of the
+        /// given year/month.
+        /// </summary>
         internal long GetYearMonthTicks(int year, int month)
         {
             long ticks = GetYearTicks(year);
-            ticks += GetTotalTicksByYearMonth(year, month);
-            return ticks;
+            return ticks + GetTotalTicksByYearMonth(year, month);
         }
 
         /// <summary>
