@@ -308,5 +308,27 @@ namespace NodaTime.Test.Calendars
                 islamicDate = islamicDate.PlusDays(1);
             }
         }
+
+        [Test]
+        public void GetDaysInMonth()
+        {
+            // Just check that we've got the long/short the right way round...
+            CalendarSystem calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil);
+            Assert.AreEqual(30, calendar.GetDaysInMonth(7, 1));
+            Assert.AreEqual(29, calendar.GetDaysInMonth(7, 2));
+            Assert.AreEqual(30, calendar.GetDaysInMonth(7, 3));
+            Assert.AreEqual(29, calendar.GetDaysInMonth(7, 4));
+            Assert.AreEqual(30, calendar.GetDaysInMonth(7, 5));
+            Assert.AreEqual(29, calendar.GetDaysInMonth(7, 6));
+            Assert.AreEqual(30, calendar.GetDaysInMonth(7, 7));
+            Assert.AreEqual(29, calendar.GetDaysInMonth(7, 8));
+            Assert.AreEqual(30, calendar.GetDaysInMonth(7, 9));
+            Assert.AreEqual(29, calendar.GetDaysInMonth(7, 10));
+            Assert.AreEqual(30, calendar.GetDaysInMonth(7, 11));
+            // As noted before, 7 isn't a leap year in this calendar
+            Assert.AreEqual(29, calendar.GetDaysInMonth(7, 12));
+            // As noted before, 8 is a leap year in this calendar
+            Assert.AreEqual(30, calendar.GetDaysInMonth(8, 12));
+        }
     }
 }

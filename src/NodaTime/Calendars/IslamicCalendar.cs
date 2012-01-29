@@ -48,12 +48,6 @@ namespace NodaTime.Calendars
         /// <summary>The length of a short month, in days.</summary>
         private const int ShortMonthLength = 29;
 
-        /// <summary>The length of a pair of months, in ticks./</summary>
-        private const long TicksPerMonthPair = MonthPairLength * NodaConstants.TicksPerStandardDay;
-
-        /// <summary>The length of a long month, in ticks./</summary>
-        private const long TicksPerLongMonth = LongMonthLength * NodaConstants.TicksPerStandardDay;
-
         /// <summary>The ticks in a typical month.</summary>
         private const long TicksPerMonth = (long) (29.53056 * NodaConstants.TicksPerStandardDay);
 
@@ -82,6 +76,24 @@ namespace NodaTime.Calendars
         private readonly int leapYearPatternBits;
         /// <summary>The ticks at the start of the epoch for this calendar.</summary>
         private readonly long epochTicks;
+
+        private static readonly long[] TotalTicksByMonth;
+
+        static IslamicCalendar()
+        {
+            long ticks = 0;
+            TotalTicksByMonth = new long[12];
+            for (int i = 0; i < 12; i++)
+            {
+                TotalTicksByMonth[i] = ticks;
+                // Here, the month number is 0-based, so even months are long
+                int days = (i & 2) == 0 ? LongMonthLength : ShortMonthLength;
+                // This doesn't take account of leap years, but that doesn't matter - because
+                // it's not used on the last iteration, and leap years only affect the final month
+                // in the Islamic calendar.
+                ticks += days * NodaConstants.TicksPerStandardDay;
+            }
+        }
 
         // TODO: Caching
         internal static CalendarSystem GetInstance(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
@@ -162,16 +174,9 @@ namespace NodaTime.Calendars
 
         protected override long GetTotalTicksByYearMonth(int year, int month)
         {
-            if (--month % 2 == 1)
-            {
-                month /= 2;
-                return month * TicksPerMonthPair + TicksPerLongMonth;
-            }
-            else
-            {
-                month /= 2;
-                return month * TicksPerMonthPair;
-            }
+            // The number of ticks at the *start* of a month isn't affected by
+            // the year as the only month length which varies by year is the last one.
+            return TotalTicksByMonth[month - 1];
         }
 
         internal override int GetDayOfMonth(LocalInstant localInstant)
@@ -206,7 +211,8 @@ namespace NodaTime.Calendars
             {
                 return LongMonthLength;
             }
-            return (--month % 2 == 0 ? LongMonthLength : ShortMonthLength);
+            // Note: month is 1-based here, so even months are the short ones
+            return (month & 1) == 0 ? ShortMonthLength : LongMonthLength;
         }
 
         internal override int GetMaxDaysInMonth()
@@ -220,17 +226,18 @@ namespace NodaTime.Calendars
             {
                 return LongMonthLength;
             }
-            return (--month % 2 == 0 ? LongMonthLength : ShortMonthLength);
+            // Note: month is 1-based here, so even months are the long ones
+            return (month & 1) == 0 ? ShortMonthLength : LongMonthLength;
         }
 
         protected internal override int GetMonthOfYear(LocalInstant localInstant, int year)
         {
-            int doyZeroBased = (int)((localInstant.Ticks - GetYearTicks(year)) / NodaConstants.TicksPerStandardDay);
-            if (doyZeroBased == 354)
+            int dayOfYearZeroBased = (int)((localInstant.Ticks - GetYearTicks(year)) / NodaConstants.TicksPerStandardDay);
+            if (dayOfYearZeroBased == 354)
             {
                 return 12;
             }
-            return ((doyZeroBased * 2) / MonthPairLength) + 1;
+            return ((dayOfYearZeroBased * 2) / MonthPairLength) + 1;
         }
 
         internal override long AverageTicksPerYear { get { return TicksPerYear; } }
