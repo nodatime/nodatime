@@ -124,7 +124,7 @@ namespace NodaTime.Text.Patterns
                 AddFormatAction((value, builder) => builder.Append(expectedChar));
                 return null;
             }
-            // FIXME: These are ludicrously slow... see
+            // TODO: These are ludicrously slow... see
             // http://msmvps.com/blogs/jon_skeet/archive/2011/08/23/optimization-and-generics-part-2-lambda-expressions-and-reference-types.aspx
             // for a description of the problem. I need to find a solution though...
             AddParseAction((str, bucket) => str.Match(expectedText) ? null : failure);
