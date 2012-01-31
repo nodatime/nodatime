@@ -38,8 +38,8 @@ namespace NodaTime.CheckTimeZones
         private static readonly Instant Start = Instant.FromUtc(1900, 1, 1, 0,  0);
         private static readonly Instant End = Instant.FromUtc(2050, 1, 1, 0, 0);
 
-        private static readonly LocalDateTimePattern DateTimePattern
-            = LocalDateTimePattern.CreateWithInvariantInfo("yyyy-MM-dd HH:mm:ss");
+        private static readonly InstantPattern DateTimePattern
+            = InstantPattern.CreateWithInvariantInfo("yyyy-MM-dd HH:mm:ss");
 
         private static readonly OffsetPattern OffsetPattern
             = OffsetPattern.CreateWithInvariantInfo("+HH:mm:ss");
@@ -61,10 +61,8 @@ namespace NodaTime.CheckTimeZones
             while (instant < End)
             {
                 var interval = zone.GetZoneInterval(instant);
-                // TODO: Make this simpler... ToIsoUtc perhaps?
-                var local = new ZonedDateTime(instant, DateTimeZone.Utc).LocalDateTime;
                 output.WriteLine("{0}  {1}  {2}",
-                    DateTimePattern.Format(local),
+                    DateTimePattern.Format(instant),
                     OffsetPattern.Format(interval.StandardOffset),
                     OffsetPattern.Format(interval.Savings));
                 instant = interval.End;

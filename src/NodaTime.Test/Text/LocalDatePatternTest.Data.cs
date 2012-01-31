@@ -25,11 +25,6 @@ namespace NodaTime.Test.Text
 {
     public partial class LocalDatePatternTest
     {
-        public static readonly CultureInfo Invariant = CultureInfo.InvariantCulture;
-        public static readonly CultureInfo EnUs = new CultureInfo("en-US");
-        public static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
-        public static readonly CultureInfo FrCa = new CultureInfo("fr-CA");
-        public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
         public static readonly CultureInfo GenitiveNameTestCulture = CreateGenitiveTestCulture();
 
 #pragma warning disable 0414 // Used by tests via reflection - do not remove!
@@ -116,7 +111,7 @@ namespace NodaTime.Test.Text
 
             // Custom patterns
             new Data(2011, 10, 3) { Pattern = "yyyy/MM/dd", Text = "2011/10/03" },
-            new Data(2011, 10, 3) { Pattern = "yyyy/MM/dd", Text = "2011-10-03", Culture = FrCa },
+            new Data(2011, 10, 3) { Pattern = "yyyy/MM/dd", Text = "2011-10-03", Culture = Cultures.FrCa },
             new Data(2011, 10, 3) { Pattern = "yyyyMMdd", Text = "20111003" },
             new Data(2011, 7, 3) { Pattern = "yyy M d", Text = "2011 7 3" },
             new Data(2001, 7, 3) { Pattern = "yy M d", Text = "01 7 3" },
