@@ -79,10 +79,6 @@ namespace NodaTime.TimeZones
             {
                 throw new ArgumentException("At least one recurrence must not have savings applied");
             }
-            if (dst.Name == standard.Name)
-            {
-                dst = dst.RenameAppend("-Summer");
-            }
             dstRecurrence = dst;
             standardRecurrence = standard;
         }

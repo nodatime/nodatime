@@ -41,24 +41,6 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void RenameAppend_nullSuffix()
-        {
-            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
-            var old = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
-            Assert.Throws(typeof(ArgumentNullException), () => old.RenameAppend(null), "Null suffix");
-        }
-
-        [Test]
-        public void RenameAppend()
-        {
-            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
-            var old = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
-            var actual = old.RenameAppend("-Summer");
-            var expected = new ZoneRecurrence("bob-Summer", Offset.Zero, yearOffset, 1971, 2009);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
         public void Next_BeforeFirstYear()
         {
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
