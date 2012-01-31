@@ -79,6 +79,18 @@ namespace NodaTime.Text.Patterns
 
         internal bool ContinueAfterErrorWithMultipleFormats { get { return continueWithMultiple; } }
 
+        /// <summary>
+        /// Returns a new result with the target type. This result must be a failure.
+        /// </summary>
+        internal PatternParseResult<TTarget> WithResultType<TTarget>()
+        {
+            if (Success)
+            {
+                throw new InvalidOperationException("Can't change type of a success result");
+            }
+            return new PatternParseResult<TTarget>(exceptionProvider, continueWithMultiple);
+        }
+
         #region Factory methods and readonly static fields
         internal static PatternParseResult<T> ForInvalidFormat(string formatString, params object[] parameters)
         {

@@ -49,7 +49,14 @@ namespace NodaTime.Text
             patternText = patternText.Trim();
             if (patternText.Length > 1)
             {
-                return PatternParseResult<Instant>.FormatInvalid(patternText);
+                PatternParseResult<LocalDateTime> localResult =
+                    formatInfo.LocalDateTimePatternParser.ParsePattern(patternText);
+                if (localResult.Success)
+                {
+                    var parser = new LocalDateTimePatternAdapter(localResult.GetResultOrThrow());
+                    return PatternParseResult<Instant>.ForValue(parser);
+                }
+                return localResult.WithResultType<Instant>();
             }
             char patternChar = char.ToLowerInvariant(patternText[0]);
             switch (patternChar)
@@ -158,6 +165,28 @@ namespace NodaTime.Text
             public override string Format(Instant value)
             {
                 return value.Ticks.ToString(systemFormatString, FormatInfo);
+            }
+        }
+
+        private sealed class LocalDateTimePatternAdapter : IPattern<Instant>
+        {
+            private readonly IPattern<LocalDateTime> pattern;
+
+            internal LocalDateTimePatternAdapter(IPattern<LocalDateTime> pattern)
+            {
+                this.pattern = pattern;
+            }
+
+            public string Format(Instant value)
+            {
+                return pattern.Format(new LocalDateTime(new LocalInstant(value.Ticks)));
+            }
+
+            public ParseResult<Instant> Parse(string text)
+            {
+                var result = pattern.Parse(text);
+                return result.Success ? ParseResult<Instant>.ForValue(new Instant(result.Value.LocalInstant.Ticks))
+                    : result.WithResultType<Instant>();
             }
         }
     }
