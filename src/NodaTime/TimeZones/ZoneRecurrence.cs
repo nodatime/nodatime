@@ -209,21 +209,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns a new <see cref="ZoneRecurrence"/> with the same settings and given suffix appended
-        /// to the original name. Used to created "-Summer" versions of conflicting recurrences.
-        /// </summary>
-        /// <param name="suffix">The suffix to append to the name key.</param>
-        /// <returns>The newly created <see cref="ZoneRecurrence"/> with the new name.</returns>
-        internal ZoneRecurrence RenameAppend(String suffix)
-        {
-            if (suffix == null)
-            {
-                throw new ArgumentNullException("suffix");
-            }
-            return new ZoneRecurrence(Name + suffix, Savings, yearOffset, fromYear, toYear);
-        }
-
-        /// <summary>
         /// Writes this object to the given <see cref="DateTimeZoneWriter"/>.
         /// </summary>
         /// <param name="writer">Where to send the output.</param>

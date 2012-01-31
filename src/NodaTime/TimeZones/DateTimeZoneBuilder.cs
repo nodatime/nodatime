@@ -286,11 +286,10 @@ namespace NodaTime.TimeZones
             // although it should have the same offset etc as the tail zone for its starting point.
             var lastTransition = transitions[transitions.Count - 1];
             var firstTailZoneInterval = tailZone.GetZoneInterval(lastTransition.Instant);
-            // TODO: include the name in this check too. Currently it fails for zones where the
-            // daylight savings zone interval ends up adding -Summer or -Winter.
             if (lastTransition.StandardOffset != firstTailZoneInterval.StandardOffset ||
                 lastTransition.WallOffset != firstTailZoneInterval.WallOffset ||
-                lastTransition.Savings != firstTailZoneInterval.Savings)
+                lastTransition.Savings != firstTailZoneInterval.Savings ||
+                lastTransition.Name != firstTailZoneInterval.Name)
             {
                 throw new InvalidOperationException(
                     string.Format("Invalid seam to tail zone in time zone {0}; final transition {1} different to first tail zone interval {2}",
