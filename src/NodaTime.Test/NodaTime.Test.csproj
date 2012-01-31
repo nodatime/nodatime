@@ -95,6 +95,8 @@
     </Compile>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="IntervalTest.cs" />
+    <Compile Include="Text\InstantPatternTest.cs" />
+    <Compile Include="Text\InstantPatternTest.Data.cs" />
     <Compile Include="Text\LocalDateTimePatternTest.cs" />
     <Compile Include="Text\LocalDateTimePatternTest.Data.cs">
       <DependentUpon>LocalDateTimePatternTest.cs</DependentUpon>
