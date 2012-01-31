@@ -25,10 +25,8 @@ namespace NodaTime.Test.Text
 {
     public partial class LocalTimePatternTest
     {
-        public static readonly CultureInfo EnUs = new CultureInfo("en-US");
-        public static readonly CultureInfo ItIt = new CultureInfo("it-IT");
         // Bengali: uses a time separator of "."
-        public static readonly CultureInfo BnBd = new CultureInfo("bn-BD");
+        private static readonly CultureInfo BnBd = new CultureInfo("bn-BD");
 
         private static readonly CultureInfo AmOnlyCulture = CreateCustomAmPmCulture("am", "");
         private static readonly CultureInfo PmOnlyCulture = CreateCustomAmPmCulture("", "pm");
@@ -124,16 +122,16 @@ namespace NodaTime.Test.Text
             new Data(1, 1, 1, 456) { Text = "456", Pattern = "FFF" },
 
 
-            new Data(5, 6, 7, 8) { Culture = EnUs, Text = "0", Pattern = "%f" },
-            new Data(5, 6, 7, 8) { Culture = EnUs, Text = "00", Pattern = "ff" },
-            new Data(5, 6, 7, 8) { Culture = EnUs, Text = "008", Pattern = "fff" },
-            new Data(5, 6, 7, 8) { Culture = EnUs, Text = "008", Pattern = "FFF" },
-            new Data(5, 6, 7, 8) { Culture = EnUs, Text = "05", Pattern = "HH" },
-            new Data(5, 6, 7, 8) { Culture = EnUs, Text = "06", Pattern = "mm" },
-            new Data(5, 6, 7, 8) { Culture = EnUs, Text = "07", Pattern = "ss" },
-            new Data(5, 6, 7, 8) { Culture = EnUs, Text = "5", Pattern = "%H" },
-            new Data(5, 6, 7, 8) { Culture = EnUs, Text = "6", Pattern = "%m" },
-            new Data(5, 6, 7, 8) { Culture = EnUs, Text = "7", Pattern = "%s" },
+            new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "0", Pattern = "%f" },
+            new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "00", Pattern = "ff" },
+            new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "008", Pattern = "fff" },
+            new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "008", Pattern = "FFF" },
+            new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "05", Pattern = "HH" },
+            new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "06", Pattern = "mm" },
+            new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "07", Pattern = "ss" },
+            new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "5", Pattern = "%H" },
+            new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "6", Pattern = "%m" },
+            new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "7", Pattern = "%s" },
         };
         
         internal static Data[] DefaultPatternData = {                              
@@ -143,29 +141,29 @@ namespace NodaTime.Test.Text
             new Data(5, 12, 34, 0) { Text = "05:12:34" },
 
             // US uses hh:mm:ss tt for the "long" pattern
-            new Data(17, 0, 0, 0) { Culture = EnUs, Text = "5:00:00 PM" },
-            new Data(5, 0, 0, 0) { Culture = EnUs, Text = "5:00:00 AM" },
-            new Data(5, 12, 0, 0) { Culture = EnUs, Text = "5:12:00 AM" },
-            new Data(5, 12, 34, 0) { Culture = EnUs, Text = "5:12:34 AM" },
+            new Data(17, 0, 0, 0) { Culture = Cultures.EnUs, Text = "5:00:00 PM" },
+            new Data(5, 0, 0, 0) { Culture = Cultures.EnUs, Text = "5:00:00 AM" },
+            new Data(5, 12, 0, 0) { Culture = Cultures.EnUs, Text = "5:12:00 AM" },
+            new Data(5, 12, 34, 0) { Culture = Cultures.EnUs, Text = "5:12:34 AM" },
         };
 
         internal static readonly Data[] TemplateValueData = {
             // Pattern specifies nothing - template value is passed through
-            new Data(new LocalTime(1, 2, 3, 4, 5)) { Culture = EnUs, Text = "X", Pattern = "%X", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "X", Pattern = "%X", Template = new LocalTime(1, 2, 3, 4, 5) },
             // Tests for each individual field being propagated
-            new Data(new LocalTime(1, 6, 7, 8, 9)) { Culture = EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 2, 7, 8, 9)) { Culture = EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 7, 3, 8, 9)) { Culture = EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 7, 8, 4, 5)) { Culture = EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(6, 7, 8, 4, 5)) { Culture = Cultures.EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = new LocalTime(1, 2, 3, 4, 5) },
 
             // Hours are tricky because of the ways they can be specified
-            new Data(new LocalTime(6, 2, 3)) { Culture = EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(1, 2, 3) },
-            new Data(new LocalTime(18, 2, 3)) { Culture = EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(14, 2, 3) },
-            new Data(new LocalTime(2, 2, 3)) { Culture = EnUs, Text = "AM", Pattern = "tt", Template = new LocalTime(14, 2, 3) },
-            new Data(new LocalTime(14, 2, 3)) { Culture = EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(14, 2, 3) },
-            new Data(new LocalTime(2, 2, 3)) { Culture = EnUs, Text = "AM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
-            new Data(new LocalTime(14, 2, 3)) { Culture = EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
-            new Data(new LocalTime(17, 2, 3)) { Culture = EnUs, Text = "5 PM", Pattern = "h tt", Template = new LocalTime(1, 2, 3) },
+            new Data(new LocalTime(6, 2, 3)) { Culture = Cultures.EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(1, 2, 3) },
+            new Data(new LocalTime(18, 2, 3)) { Culture = Cultures.EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(14, 2, 3) },
+            new Data(new LocalTime(2, 2, 3)) { Culture = Cultures.EnUs, Text = "AM", Pattern = "tt", Template = new LocalTime(14, 2, 3) },
+            new Data(new LocalTime(14, 2, 3)) { Culture = Cultures.EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(14, 2, 3) },
+            new Data(new LocalTime(2, 2, 3)) { Culture = Cultures.EnUs, Text = "AM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
+            new Data(new LocalTime(14, 2, 3)) { Culture = Cultures.EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
+            new Data(new LocalTime(17, 2, 3)) { Culture = Cultures.EnUs, Text = "5 PM", Pattern = "h tt", Template = new LocalTime(1, 2, 3) },
         };
 
         /// <summary>
@@ -173,56 +171,56 @@ namespace NodaTime.Test.Text
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
         /// </summary>
         internal static readonly Data[] FormatAndParseData = {
-            new Data(LocalTime.Midnight) { Culture = EnUs, Text = ".", Pattern = "%." },
-            new Data(LocalTime.Midnight) { Culture = EnUs, Text = ":", Pattern = "%:" },
+            new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = ".", Pattern = "%." },
+            new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = ":", Pattern = "%:" },
             // TODO: Work out what this should actually do...
-            new Data(LocalTime.Midnight) { Culture = ItIt, Text = ".", Pattern = "%." },
-            new Data(LocalTime.Midnight) { Culture = ItIt, Text = ".", Pattern = "%:" },
-            new Data(LocalTime.Midnight) { Culture = EnUs, Text = "H", Pattern = "\\H" },
-            new Data(LocalTime.Midnight) { Culture = EnUs, Text = "HHss", Pattern = "'HHss'" },
-            new Data(0, 0, 0, 100) { Culture = EnUs, Text = "1", Pattern = "%f" },
-            new Data(0, 0, 0, 100) { Culture = EnUs, Text = "1", Pattern = "%F" },
-            new Data(0, 0, 0, 100) { Culture = EnUs, Text = "1", Pattern = "FF" },
-            new Data(0, 0, 0, 100) { Culture = EnUs, Text = "1", Pattern = "FFF" },
-            new Data(0, 0, 0, 120) { Culture = EnUs, Text = "12", Pattern = "ff" },
-            new Data(0, 0, 0, 120) { Culture = EnUs, Text = "12", Pattern = "FF" },
-            new Data(0, 0, 0, 120) { Culture = EnUs, Text = "12", Pattern = "FFF" },
-            new Data(0, 0, 0, 123) { Culture = EnUs, Text = "123", Pattern = "fff" },
-            new Data(0, 0, 0, 123) { Culture = EnUs, Text = "123", Pattern = "FFF" },
-            new Data(0, 0, 0, 123, 4000) { Culture = EnUs, Text = "1234", Pattern = "ffff" },
-            new Data(0, 0, 0, 123, 4000) { Culture = EnUs, Text = "1234", Pattern = "FFFF" },
-            new Data(0, 0, 0, 123, 4500) { Culture = EnUs, Text = "12345", Pattern = "fffff" },
-            new Data(0, 0, 0, 123, 4500) { Culture = EnUs, Text = "12345", Pattern = "FFFFF" },
-            new Data(0, 0, 0, 123, 4560) { Culture = EnUs, Text = "123456", Pattern = "ffffff" },
-            new Data(0, 0, 0, 123, 4560) { Culture = EnUs, Text = "123456", Pattern = "FFFFFF" },
-            new Data(0, 0, 0, 123, 4567) { Culture = EnUs, Text = "1234567", Pattern = "fffffff" },
-            new Data(0, 0, 0, 123, 4567) { Culture = EnUs, Text = "1234567", Pattern = "FFFFFFF" },
-            new Data(0, 0, 0, 600) { Culture = EnUs, Text = ".6", Pattern = ".f" },
-            new Data(0, 0, 0, 600) { Culture = EnUs, Text = ".6", Pattern = ".F" },
-            new Data(0, 0, 0, 600) { Culture = EnUs, Text = ".6", Pattern = ".FFF" }, // Elided fraction
-            new Data(0, 0, 0, 678) { Culture = EnUs, Text = ".678", Pattern = ".fff" },
-            new Data(0, 0, 0, 678) { Culture = EnUs, Text = ".678", Pattern = ".FFF" },
-            new Data(0, 0, 12, 0) { Culture = EnUs, Text = "12", Pattern = "%s" },
-            new Data(0, 0, 12, 0) { Culture = EnUs, Text = "12", Pattern = "ss" },
-            new Data(0, 0, 2, 0) { Culture = EnUs, Text = "2", Pattern = "%s" },
-            new Data(0, 12, 0, 0) { Culture = EnUs, Text = "12", Pattern = "%m" },
-            new Data(0, 12, 0, 0) { Culture = EnUs, Text = "12", Pattern = "mm" },
-            new Data(0, 2, 0, 0) { Culture = EnUs, Text = "2", Pattern = "%m" },
-            new Data(1, 0, 0, 0) { Culture = EnUs, Text = "1", Pattern = "H.FFF" }, // Missing fraction
-            new Data(12, 0, 0, 0) { Culture = EnUs, Text = "12", Pattern = "%H" },
-            new Data(12, 0, 0, 0) { Culture = EnUs, Text = "12", Pattern = "HH" },
-            new Data(2, 0, 0, 0) { Culture = EnUs, Text = "2", Pattern = "%H" },
-            new Data(2, 0, 0, 0) { Culture = EnUs, Text = "2", Pattern = "%H" },
-            new Data(0, 0, 12, 340) { Culture = EnUs, Text = "12.34", Pattern = "ss.FFF"  },
+            new Data(LocalTime.Midnight) { Culture = Cultures.ItIt, Text = ".", Pattern = "%." },
+            new Data(LocalTime.Midnight) { Culture = Cultures.ItIt, Text = ".", Pattern = "%:" },
+            new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = "H", Pattern = "\\H" },
+            new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = "HHss", Pattern = "'HHss'" },
+            new Data(0, 0, 0, 100) { Culture = Cultures.EnUs, Text = "1", Pattern = "%f" },
+            new Data(0, 0, 0, 100) { Culture = Cultures.EnUs, Text = "1", Pattern = "%F" },
+            new Data(0, 0, 0, 100) { Culture = Cultures.EnUs, Text = "1", Pattern = "FF" },
+            new Data(0, 0, 0, 100) { Culture = Cultures.EnUs, Text = "1", Pattern = "FFF" },
+            new Data(0, 0, 0, 120) { Culture = Cultures.EnUs, Text = "12", Pattern = "ff" },
+            new Data(0, 0, 0, 120) { Culture = Cultures.EnUs, Text = "12", Pattern = "FF" },
+            new Data(0, 0, 0, 120) { Culture = Cultures.EnUs, Text = "12", Pattern = "FFF" },
+            new Data(0, 0, 0, 123) { Culture = Cultures.EnUs, Text = "123", Pattern = "fff" },
+            new Data(0, 0, 0, 123) { Culture = Cultures.EnUs, Text = "123", Pattern = "FFF" },
+            new Data(0, 0, 0, 123, 4000) { Culture = Cultures.EnUs, Text = "1234", Pattern = "ffff" },
+            new Data(0, 0, 0, 123, 4000) { Culture = Cultures.EnUs, Text = "1234", Pattern = "FFFF" },
+            new Data(0, 0, 0, 123, 4500) { Culture = Cultures.EnUs, Text = "12345", Pattern = "fffff" },
+            new Data(0, 0, 0, 123, 4500) { Culture = Cultures.EnUs, Text = "12345", Pattern = "FFFFF" },
+            new Data(0, 0, 0, 123, 4560) { Culture = Cultures.EnUs, Text = "123456", Pattern = "ffffff" },
+            new Data(0, 0, 0, 123, 4560) { Culture = Cultures.EnUs, Text = "123456", Pattern = "FFFFFF" },
+            new Data(0, 0, 0, 123, 4567) { Culture = Cultures.EnUs, Text = "1234567", Pattern = "fffffff" },
+            new Data(0, 0, 0, 123, 4567) { Culture = Cultures.EnUs, Text = "1234567", Pattern = "FFFFFFF" },
+            new Data(0, 0, 0, 600) { Culture = Cultures.EnUs, Text = ".6", Pattern = ".f" },
+            new Data(0, 0, 0, 600) { Culture = Cultures.EnUs, Text = ".6", Pattern = ".F" },
+            new Data(0, 0, 0, 600) { Culture = Cultures.EnUs, Text = ".6", Pattern = ".FFF" }, // Elided fraction
+            new Data(0, 0, 0, 678) { Culture = Cultures.EnUs, Text = ".678", Pattern = ".fff" },
+            new Data(0, 0, 0, 678) { Culture = Cultures.EnUs, Text = ".678", Pattern = ".FFF" },
+            new Data(0, 0, 12, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "%s" },
+            new Data(0, 0, 12, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "ss" },
+            new Data(0, 0, 2, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%s" },
+            new Data(0, 12, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "%m" },
+            new Data(0, 12, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "mm" },
+            new Data(0, 2, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%m" },
+            new Data(1, 0, 0, 0) { Culture = Cultures.EnUs, Text = "1", Pattern = "H.FFF" }, // Missing fraction
+            new Data(12, 0, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "%H" },
+            new Data(12, 0, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "HH" },
+            new Data(2, 0, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
+            new Data(2, 0, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
+            new Data(0, 0, 12, 340) { Culture = Cultures.EnUs, Text = "12.34", Pattern = "ss.FFF"  },
 
-            new Data(14, 15, 16) { Culture = EnUs, Text = "14:15:16", Pattern = "r" },
-            new Data(14, 15, 16, 700) { Culture = EnUs, Text = "14:15:16.7", Pattern = "r" },
-            new Data(14, 15, 16, 780) { Culture = EnUs, Text = "14:15:16.78", Pattern = "r" },
-            new Data(14, 15, 16, 789) { Culture = EnUs, Text = "14:15:16.789", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1000) { Culture = EnUs, Text = "14:15:16.7891", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1200) { Culture = EnUs, Text = "14:15:16.78912", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1230) { Culture = EnUs, Text = "14:15:16.789123", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1234) { Culture = EnUs, Text = "14:15:16.7891234", Pattern = "r" },
+            new Data(14, 15, 16) { Culture = Cultures.EnUs, Text = "14:15:16", Pattern = "r" },
+            new Data(14, 15, 16, 700) { Culture = Cultures.EnUs, Text = "14:15:16.7", Pattern = "r" },
+            new Data(14, 15, 16, 780) { Culture = Cultures.EnUs, Text = "14:15:16.78", Pattern = "r" },
+            new Data(14, 15, 16, 789) { Culture = Cultures.EnUs, Text = "14:15:16.789", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1000) { Culture = Cultures.EnUs, Text = "14:15:16.7891", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1200) { Culture = Cultures.EnUs, Text = "14:15:16.78912", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1230) { Culture = Cultures.EnUs, Text = "14:15:16.789123", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1234) { Culture = Cultures.EnUs, Text = "14:15:16.7891234", Pattern = "r" },
             new Data(14, 15, 16, 700) { Culture = BnBd, Text = "14.15.16.7", Pattern = "r" },
             new Data(14, 15, 16, 780) { Culture = BnBd, Text = "14.15.16.78", Pattern = "r" },
             new Data(14, 15, 16, 789) { Culture = BnBd, Text = "14.15.16.789", Pattern = "r" },
@@ -233,30 +231,30 @@ namespace NodaTime.Test.Text
 
             // ------------ Template value tests ----------
             // Mixtures of 12 and 24 hour times
-            new Data(18, 0, 0) { Culture = EnUs, Text = "18 6 PM", Pattern = "HH h tt" },
-            new Data(18, 0, 0) { Culture = EnUs, Text = "18 6", Pattern = "HH h" },
-            new Data(18, 0, 0) { Culture = EnUs, Text = "18 PM", Pattern = "HH tt" },
-            new Data(18, 0, 0) { Culture = EnUs, Text = "6 PM", Pattern = "h tt" },
-            new Data(6, 0, 0) { Culture = EnUs, Text = "6", Pattern = "%h" },
-            new Data(0, 0, 0) { Culture = EnUs, Text = "AM", Pattern = "tt" },
-            new Data(12, 0, 0) { Culture = EnUs, Text = "PM", Pattern = "tt" },
+            new Data(18, 0, 0) { Culture = Cultures.EnUs, Text = "18 6 PM", Pattern = "HH h tt" },
+            new Data(18, 0, 0) { Culture = Cultures.EnUs, Text = "18 6", Pattern = "HH h" },
+            new Data(18, 0, 0) { Culture = Cultures.EnUs, Text = "18 PM", Pattern = "HH tt" },
+            new Data(18, 0, 0) { Culture = Cultures.EnUs, Text = "6 PM", Pattern = "h tt" },
+            new Data(6, 0, 0) { Culture = Cultures.EnUs, Text = "6", Pattern = "%h" },
+            new Data(0, 0, 0) { Culture = Cultures.EnUs, Text = "AM", Pattern = "tt" },
+            new Data(12, 0, 0) { Culture = Cultures.EnUs, Text = "PM", Pattern = "tt" },
 
             // Pattern specifies nothing - template value is passed through
-            new Data(new LocalTime(1, 2, 3, 4, 5)) { Culture = EnUs, Text = "X", Pattern = "%X", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "X", Pattern = "%X", Template = new LocalTime(1, 2, 3, 4, 5) },
             // Tests for each individual field being propagated
-            new Data(new LocalTime(1, 6, 7, 8, 9)) { Culture = EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 2, 7, 8, 9)) { Culture = EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 7, 3, 8, 9)) { Culture = EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 7, 8, 4, 5)) { Culture = EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(6, 7, 8, 4, 5)) { Culture = Cultures.EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = new LocalTime(1, 2, 3, 4, 5) },
 
             // Hours are tricky because of the ways they can be specified
-            new Data(new LocalTime(6, 2, 3)) { Culture = EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(1, 2, 3) },
-            new Data(new LocalTime(18, 2, 3)) { Culture = EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(14, 2, 3) },
-            new Data(new LocalTime(2, 2, 3)) { Culture = EnUs, Text = "AM", Pattern = "tt", Template = new LocalTime(14, 2, 3) },
-            new Data(new LocalTime(14, 2, 3)) { Culture = EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(14, 2, 3) },
-            new Data(new LocalTime(2, 2, 3)) { Culture = EnUs, Text = "AM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
-            new Data(new LocalTime(14, 2, 3)) { Culture = EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
-            new Data(new LocalTime(17, 2, 3)) { Culture = EnUs, Text = "5 PM", Pattern = "h tt", Template = new LocalTime(1, 2, 3) },
+            new Data(new LocalTime(6, 2, 3)) { Culture = Cultures.EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(1, 2, 3) },
+            new Data(new LocalTime(18, 2, 3)) { Culture = Cultures.EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(14, 2, 3) },
+            new Data(new LocalTime(2, 2, 3)) { Culture = Cultures.EnUs, Text = "AM", Pattern = "tt", Template = new LocalTime(14, 2, 3) },
+            new Data(new LocalTime(14, 2, 3)) { Culture = Cultures.EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(14, 2, 3) },
+            new Data(new LocalTime(2, 2, 3)) { Culture = Cultures.EnUs, Text = "AM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
+            new Data(new LocalTime(14, 2, 3)) { Culture = Cultures.EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
+            new Data(new LocalTime(17, 2, 3)) { Culture = Cultures.EnUs, Text = "5 PM", Pattern = "h tt", Template = new LocalTime(1, 2, 3) },
             // --------------- end of template value tests ----------------------
 
             // Only one of the AM/PM designator is present. We should still be able to work out what is meant, by the presence
