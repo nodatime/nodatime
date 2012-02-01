@@ -54,10 +54,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             foreach (var rule in ruleSet)
             {
-                builder.AddRecurringSavings(rule.FormatName(nameFormat), rule.Recurrence.Savings, rule.Recurrence.FromYear, rule.Recurrence.ToYear,
-                                            rule.Recurrence.YearOffset.Mode, rule.Recurrence.YearOffset.MonthOfYear, rule.Recurrence.YearOffset.DayOfMonth,
-                                            rule.Recurrence.YearOffset.DayOfWeek, rule.Recurrence.YearOffset.AdvanceDayOfWeek,
-                                            rule.Recurrence.YearOffset.TickOfDay);
+                string name = rule.FormatName(nameFormat);
+                builder.AddRecurringSavings(rule.Recurrence.WithName(name));
             }
         }
 

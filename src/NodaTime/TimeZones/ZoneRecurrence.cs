@@ -62,8 +62,8 @@ namespace NodaTime.TimeZones
                 throw new ArgumentNullException("yearOffset");
             }
             this.name = name;
-            this.yearOffset = yearOffset;
             this.savings = savings;
+            this.yearOffset = yearOffset;
             this.fromYear = fromYear;
             this.toYear = toYear;
         }
@@ -79,6 +79,14 @@ namespace NodaTime.TimeZones
         public int ToYear { get { return toYear; } }
 
         public bool IsInfinite { get { return ToYear == Int32.MaxValue; } }
+
+        /// <summary>
+        /// Returns a new recurrence which has the same values as this, but a different name.
+        /// </summary>
+        internal ZoneRecurrence WithName(string newName)
+        {
+            return new ZoneRecurrence(newName, savings, yearOffset, fromYear, toYear);
+        }
 
         #region IEquatable<ZoneRecurrence> Members
         /// <summary>
