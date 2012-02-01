@@ -76,7 +76,8 @@ namespace NodaTime.TimeZones
         private readonly IList<ZoneRecurrenceCollection> ruleSets = new List<ZoneRecurrenceCollection>();
 
         /// <summary>
-        /// Gets the last rule set if there are no rule sets one that spans all of time is created and returned.
+        /// Gets the last rule set in this builder. If there are currently no rule sets,
+        /// one that spans all of time is created and returned.
         /// </summary>
         /// <value>The last rule set.</value>
         private ZoneRecurrenceCollection LastRuleSet
@@ -143,54 +144,6 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Adds a recurring daylight saving time rule.
         /// </summary>
-        /// <param name="nameKey">The name key of new rule.</param>
-        /// <param name="savings">The <see cref="Duration"/> to add to standard offset.</param>
-        /// <param name="fromYear">First year that rule is in effect. <see cref="Int32.MinValue"/> indicates beginning of time.</param>
-        /// <param name="toYear">Last year (inclusive) that rule is in effect. <see cref="Int32.MaxValue"/> indicates end of time.</param>
-        /// <param name="mode">The transition mode.</param>
-        /// <param name="monthOfYear">The month of year.</param>
-        /// <param name="dayOfMonth">The day of the month. If negative, set to ((last day of month)
-        /// - ~dayOfMonth). For example, if -1, set to last day of month</param>
-        /// <param name="dayOfWeek">The day of week. If 0, ignore.</param>
-        /// <param name="advanceDayOfWeek">if dayOfMonth does not fall on dayOfWeek, then if advanceDayOfWeek set to <c>true</c>
-        /// advance to dayOfWeek when true, otherwise retreat to dayOfWeek when true.</param>
-        /// <param name="tickOfDay">The <see cref="Duration"/> into the day. Additional precision for specifying time of day of transitions</param>
-        /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
-        public DateTimeZoneBuilder AddRecurringSavings(String nameKey, Offset savings, int fromYear, int toYear, TransitionMode mode, int monthOfYear,
-                                                       int dayOfMonth, int dayOfWeek, bool advanceDayOfWeek, Offset tickOfDay)
-        {
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear);
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
-            if (dayOfWeek != 0)
-            {
-                FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
-            }
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.TotalTicks);
-            var yearOffset = new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
-            return AddRecurringSavings(new ZoneRecurrence(nameKey, savings, yearOffset, fromYear, toYear));
-        }
-
-        /// <summary>
-        /// Adds a recurring daylight saving time rule.
-        /// </summary>
-        /// <param name="nameKey">The name key of new rule.</param>
-        /// <param name="savings">The <see cref="Duration"/> to add to standard offset.</param>
-        /// <param name="fromYear">First year that rule is in effect. <see cref="Int32.MinValue"/> indicates beginning of time.</param>
-        /// <param name="toYear">Last year (inclusive) that rule is in effect. <see cref="Int32.MaxValue"/> indicates end of time.</param>
-        /// <param name="yearOffset">The offset into the year.</param>
-        /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns> 
-        public DateTimeZoneBuilder AddRecurringSavings(String nameKey, Offset savings, int fromYear, int toYear, ZoneYearOffset yearOffset)
-        {
-            if (yearOffset == null)
-            {
-                throw new ArgumentNullException("yearOffset");
-            }
-            return AddRecurringSavings(new ZoneRecurrence(nameKey, savings, yearOffset, fromYear, toYear));
-        }
-
-        /// <summary>
-        /// Adds a recurring daylight saving time rule.
-        /// </summary>
         /// <param name="recurrence">The zone recurrence defining the recurrening savings.</param>
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns> 
         public DateTimeZoneBuilder AddRecurringSavings(ZoneRecurrence recurrence)
@@ -221,14 +174,13 @@ namespace NodaTime.TimeZones
             DateTimeZone tailZone = null;
             Instant instant = Instant.MinValue;
 
-            ZoneTransition nextTransition = null;
             int ruleSetCount = ruleSets.Count;
             bool tailZoneSeamValid = false;
             for (int i = 0; i < ruleSetCount; i++)
             {
                 var ruleSet = ruleSets[i];
                 var transitionIterator = ruleSet.Iterator(instant);
-                nextTransition = transitionIterator.First();
+                ZoneTransition nextTransition = transitionIterator.First();
                 if (nextTransition == null)
                 {
                     continue;
