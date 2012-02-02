@@ -101,6 +101,7 @@ specifiers being available for some types but not others.
 - [Instant patterns](instant-patterns.html)
 - [LocalTime patterns](localtime-patterns.html)
 - [LocalDate patterns](localdate-patterns.html)
+- [LocalDateTime patterns](localdatetime-patterns.html)
 
 <a name="custom-patterns">Custom patterns</a>
 ---------------
@@ -151,7 +152,6 @@ Additionally:
 
 - Where valid, `:` always refers to the culture-specific time separator (a colon in the invariant culture)
 - Where valid, `/` always refers to the culture-specific date separator (a forward slash in the invariant culture)
-- Where valid, `.` always refers to the culture-specific decimal separator (a period in the invariant culture)
 
 Notes to come, including:
 
