@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C7
 		userguide-src\markdown\index.txt = userguide-src\markdown\index.txt
 		userguide-src\markdown\instant-patterns.txt = userguide-src\markdown\instant-patterns.txt
 		userguide-src\markdown\localdate-patterns.txt = userguide-src\markdown\localdate-patterns.txt
+		localdatetime-patterns.txt = localdatetime-patterns.txt
 		userguide-src\markdown\localtime-patterns.txt = userguide-src\markdown\localtime-patterns.txt
 		userguide-src\markdown\offset-patterns.txt = userguide-src\markdown\offset-patterns.txt
 		userguide-src\markdown\rationale.txt = userguide-src\markdown\rationale.txt
