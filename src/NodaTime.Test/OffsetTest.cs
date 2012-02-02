@@ -63,9 +63,24 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Tmp()
+        public void FromTimeSpan_OutOfRange([Values(-24, 24)] int hours)
         {
-            Offset.ParseExact(".6", ".FFF", NodaFormatInfo.InvariantInfo);
+            TimeSpan ts = TimeSpan.FromHours(hours);
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTimeSpan(ts));
+        }
+
+        [Test]
+        public void FromTimeSpan_Truncation()
+        {
+            TimeSpan ts = TimeSpan.FromTicks(10000 + 200);
+            Assert.AreEqual(Offset.FromMilliseconds(1), Offset.FromTimeSpan(ts));
+        }
+
+        [Test]
+        public void FromTimeSpan_Simple()
+        {
+            TimeSpan ts = TimeSpan.FromHours(2);
+            Assert.AreEqual(Offset.FromHours(2), Offset.FromTimeSpan(ts));
         }
     }
 }

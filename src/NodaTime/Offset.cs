@@ -663,6 +663,22 @@ namespace NodaTime
         {
             return TimeSpan.FromMilliseconds(milliseconds);
         }
+
+        /// <summary>
+        /// Converts the given <see cref="TimeSpan"/> to an offset, with fractional milliseconds truncated.
+        /// </summary>
+        /// <param name="timeSpan">The timespan to convert</param>
+        /// <exception cref="ArgumentOutOfRangeException">The given time span falls outside the range of +/- 24 hours.</exception>
+        /// <returns>A new offset for the same time as the given time span.</returns>
+        internal static Offset FromTimeSpan(TimeSpan timeSpan)
+        {
+            int milliseconds = (int)timeSpan.TotalMilliseconds;
+            Preconditions.CheckArgumentRange("timeSpan", milliseconds,
+                -NodaConstants.MillisecondsPerStandardDay + 1,
+                NodaConstants.MillisecondsPerStandardDay - 1);
+            return new Offset((int)timeSpan.TotalMilliseconds);
+        }
         #endregion
+
     }
 }
