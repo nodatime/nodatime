@@ -87,7 +87,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="mode">The transition mode.</param>
         /// <param name="monthOfYear">The month year offset.</param>
-        /// <param name="dayOfMonth">The day of month. 0 means not set. Negatives count from end of month.</param>
+        /// <param name="dayOfMonth">The day of month. Negatives count from end of month.</param>
         /// <param name="dayOfWeek">The day of week. 0 means not set.</param>
         /// <param name="advance">if set to <c>true</c> [advance].</param>
         /// <param name="tickOfDay">The tick within the day.</param>
