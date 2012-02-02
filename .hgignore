@@ -47,3 +47,5 @@ docs/api/*.xml
 NodaTime.shfbproj_Jon
 *.class
 *.jar
+*.ncrunchproject
+*.ncrunchsolution
