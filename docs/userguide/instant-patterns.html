@@ -33,8 +33,9 @@ but down to ticks.)</p>
 
 <h2>Custom Patterns</h2>
 
-<p><a href="../api/html/T_NodaTime_Instant.htm"><code>Instant</code></a> doesn't currently support
-any custom patterns.</p>
+<p><a href="../api/html/T_NodaTime_Instant.htm"><code>Instant</code></a> supports all the <a href="localdatetime-patterns.html"><code>LocalDateTime</code> custom patterns</a>.
+The pattern allows the culture to be specified, but <em>always</em> uses the ISO-8601 calendar, and <em>always</em> uses the UTC
+time zone. The "template value" is always the unix epoch.</p>
 
   </body>
 </html>
