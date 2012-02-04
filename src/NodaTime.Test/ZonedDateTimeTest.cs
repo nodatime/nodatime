@@ -139,6 +139,20 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void WithZone()
+        {
+            Instant instant = Instant.FromUtc(2012, 2, 4, 12, 35);
+            ZonedDateTime zoned = new ZonedDateTime(instant, SampleZone);
+            Assert.AreEqual(new LocalDateTime(2012, 2, 4, 16, 35, 0), zoned.LocalDateTime);
+
+            // Will be UTC-8 for our instant.
+            DateTimeZone newZone = new SingleTransitionZone(Instant.FromUtc(2000, 1, 1, 0, 0), -7, -8);
+            ZonedDateTime converted = zoned.WithZone(newZone);
+            Assert.AreEqual(new LocalDateTime(2012, 2, 4, 4, 35, 0), converted.LocalDateTime);
+            Assert.AreEqual(converted.ToInstant(), instant);
+        }
+
+        [Test]
         public void ToDateTimeOffset()
         {
             ZonedDateTime zoned = SampleZone.AtExactly(new LocalDateTime(2011, 3, 5, 1, 0, 0));
