@@ -200,6 +200,18 @@ namespace NodaTime
             return localDateTime.LocalInstant.Minus(offset);
         }
 
+        /// <summary>
+        /// Creates a new <see cref="ZonedDateTime"/> representing the same instant in time, in the
+        /// same calendar but a different time zone.
+        /// </summary>
+        /// <param name="targetZone">The target time zone to convert to. Must not be null.</param>
+        /// <returns>A new value in the target time zone.</returns>
+        public ZonedDateTime WithZone(DateTimeZone targetZone)
+        {
+            Preconditions.CheckNotNull(targetZone, "targetZone");
+            return new ZonedDateTime(ToInstant(), targetZone, localDateTime.Calendar);
+        }
+
         #region Equality
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
