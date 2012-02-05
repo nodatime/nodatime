@@ -27,7 +27,7 @@ namespace NodaTime
     /// LocalDate is an immutable struct representing a date within the calendar,
     /// with no reference to a particular time zone or time of day.
     /// </summary>
-    public struct LocalDate : IEquatable<LocalDate>
+    public struct LocalDate : IEquatable<LocalDate>, IFormattable
     {
         private readonly LocalDateTime localTime;
 
