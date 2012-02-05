@@ -42,7 +42,7 @@ namespace NodaTime
     /// This type is immutable and thread-safe.
     /// </para>
     /// </remarks>
-    public struct LocalDateTime : IEquatable<LocalDateTime>
+    public struct LocalDateTime : IEquatable<LocalDateTime>, IFormattable
     {
         private readonly CalendarSystem calendar;
         private readonly LocalInstant localInstant;
