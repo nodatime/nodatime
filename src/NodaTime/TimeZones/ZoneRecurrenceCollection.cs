@@ -337,8 +337,8 @@ namespace NodaTime.TimeZones
                 // Check if upper limit reached or passed.
                 if (ruleSet.upperYear < Int32.MaxValue)
                 {
-                    Instant upperMillis = ruleSet.upperYearOffset.MakeInstant(ruleSet.upperYear, ruleSet.StandardOffset, savings);
-                    if (nextTicks >= upperMillis)
+                    Instant upperTicks = ruleSet.upperYearOffset.MakeInstant(ruleSet.upperYear, ruleSet.StandardOffset, savings);
+                    if (nextTicks >= upperTicks)
                     {
                         // At or after upper limit.
                         return null;
