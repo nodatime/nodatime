@@ -145,7 +145,7 @@ namespace NodaTime.TimeZones
         /// adjusted instant is determined. If the next adjustment is after the ending year the
         /// input instant is returned otherwise the next transition is returned.
         /// </remarks>
-        /// <param name="instant">The <see cref="Instant"/> lower bound for the next trasnition.</param>
+        /// <param name="instant">The <see cref="Instant"/> lower bound for the next transition.</param>
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
         /// <returns></returns>
