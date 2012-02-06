@@ -42,8 +42,8 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>
         /// At least one of the recurrences (it doesn't matter which) must be a "standard", i.e. not have any savings
-        /// applied. The other may still not have any savings (e.g. for America/Resolute) but any savings must be
-        /// non-negative.
+        /// applied. The other may still not have any savings (e.g. for America/Resolute) or (for BCL compatibility) may
+        /// even have negative daylight savings.
         /// </remarks>
         /// <param name="id">The id.</param>
         /// <param name="standardOffset">The standard offset.</param>
@@ -68,12 +68,6 @@ namespace NodaTime.TimeZones
             {
                 dst = endRecurrence;
                 standard = startRecurrence;
-            }
-            if (dst.Savings < Offset.Zero)
-            {
-                // Not necessarily positive... America/Resolute ends up switching
-                // between two different zone names, neither of which has daylight savings...
-                throw new ArgumentException("Daylight savings must be non-negative");
             }
             if (standard.Savings != Offset.Zero)
             {
