@@ -79,17 +79,21 @@ namespace NodaTime.Experimental.TimeZones
             }
             Offset standardOffset = Offset.FromTimeSpan(zone.BaseUtcOffset);
 
-            DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
-            builder.SetStandardOffset(standardOffset);
             foreach (var rule in zone.GetAdjustmentRules())
             {
+                int startYear = rule.DateStart.Year == 1 ? int.MinValue : rule.DateStart.Year;
+                int endYear = rule.DateStart.Year == 9999 ? int.MaxValue : rule.DateStart.Year;
                 Offset daylightOffset = Offset.FromTimeSpan(rule.DaylightDelta);
                 ZoneYearOffset daylightStart = ConvertTransition(rule.DaylightTransitionStart);
                 ZoneYearOffset daylightEnd = ConvertTransition(rule.DaylightTransitionEnd);
-                builder.AddRecurringSavings(new ZoneRecurrence(zone.StandardName, Offset.Zero, daylightEnd, rule.DateStart.Year, rule.DateEnd.Year));
-                builder.AddRecurringSavings(new ZoneRecurrence(zone.DaylightName, daylightOffset, daylightStart, rule.DateStart.Year, rule.DateEnd.Year));
+                var standard = new ZoneRecurrence(zone.StandardName, Offset.Zero, daylightEnd, startYear, endYear);
+                var daylight = new ZoneRecurrence(zone.DaylightName, daylightOffset, daylightStart, startYear, endYear);
             }
-            return builder.ToDateTimeZone(zone.Id);
+
+            // Go from the start of time, working out 
+            Instant cursor = Instant.MinValue;
+
+            return null;
         }
 
         private ZoneYearOffset ConvertTransition(TimeZoneInfo.TransitionTime transitionTime)

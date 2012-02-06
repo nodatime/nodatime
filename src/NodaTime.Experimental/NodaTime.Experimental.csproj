@@ -37,7 +37,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeZones\AdjustmentInterval.cs" />
     <Compile Include="TimeZones\WindowsTimeZoneProvider.cs" />
+    <Compile Include="WindowsTimeZone.cs" />
     <Compile Include="WithXyz\LocalDateExtensions.cs" />
     <Compile Include="WithXyz\LocalDateTimeExtensions.cs" />
   </ItemGroup>
