@@ -32,7 +32,7 @@ namespace NodaTime.Experimental.Test.TimeZones
         [TestCaseSource("WindowsSystemZones")]
         public void AllZoneTransitions(TimeZoneInfo windowsZone)
         {
-            var nodaZone = ZoneProvider.ConvertZone(windowsZone);
+            var nodaZone = BclTimeZone.FromTimeZoneInfo(windowsZone);
 
             Instant instant = Instant.FromUtc(1800, 1, 1, 0, 0);
             Instant end = Instant.FromUtc(2050, 1, 1, 0, 0);
