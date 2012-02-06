@@ -391,7 +391,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Returns a <see cref="System.String" /> that represents this instance. Equivilent to
+        ///   Returns a <see cref="System.String" /> that represents this instance. Equivalent to
         ///   calling <c>ToString(null)</c>.
         /// </summary>
         /// <returns>
