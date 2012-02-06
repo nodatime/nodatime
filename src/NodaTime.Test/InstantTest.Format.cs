@@ -49,6 +49,12 @@ namespace NodaTime.Test
             TestToStringBase(Instant.UnixEpoch, "1970-01-01T00:00:00Z");
         }
 
+        [Test, Category("Formatting"), Category("Format")]
+        public void TestToString_Padding()
+        {
+            TestToStringBase(Instant.FromUtc(1, 1, 1, 12, 34, 56), "0001-01-01T12:34:56Z");
+        }
+
         private static void TestToStringBase(Instant value, string gvalue)
         {
             string actual = value.ToString();

@@ -74,24 +74,8 @@ namespace NodaTime.Text
 
         private sealed class GeneralPattern : AbstractPattern<Instant>
         {
-            private static readonly DateTimeField YearField;
-            private static readonly DateTimeField MonthOfYearField;
-            private static readonly DateTimeField DayOfMonthField;
-            private static readonly DateTimeField HourOfDayField;
-            private static readonly DateTimeField MinuteOfHourField;
-            private static readonly DateTimeField SecondOfMinuteField;
+            private static readonly LocalDateTimePattern LocalParsePattern = LocalDateTimePattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
 
-            static GeneralPattern()
-            {
-                var isoFields = CalendarSystem.Iso.Fields;
-                YearField = isoFields.Year;
-                MonthOfYearField = isoFields.MonthOfYear;
-                DayOfMonthField = isoFields.DayOfMonth;
-                HourOfDayField = isoFields.HourOfDay;
-                MinuteOfHourField = isoFields.MinuteOfHour;
-                SecondOfMinuteField = isoFields.SecondOfMinute;
-            }
- 
             internal GeneralPattern() : base(NodaFormatInfo.InvariantInfo)
             {
             }
@@ -107,14 +91,9 @@ namespace NodaTime.Text
                     return ParseResult<Instant>.ForValue(Instant.MaxValue);
                 }
 
-                DateTime result;
-                // TODO: When we've got our own parsers fully working, parse this as a LocalDateTime.
-                if (!DateTime.TryParseExact(value, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", FormatInfo.DateTimeFormat,
-                                            DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out result))
-                {
-                    return ParseResult<Instant>.CannotParseValue(value, "g");
-                }
-                return ParseResult<Instant>.ForValue(Instant.FromDateTimeUtc(result));
+                var result = LocalParsePattern.Parse(value);
+                return result.Success ? ParseResult<Instant>.ForValue(new Instant(result.Value.LocalInstant.Ticks))
+                    : result.WithResultType<Instant>();
             }
 
             public override string Format(Instant value)
@@ -127,15 +106,7 @@ namespace NodaTime.Text
                 {
                     return Instant.EndOfTimeLabel;
                 }
-                var localInstant = new LocalInstant(value.Ticks); // Effectively UTC...
-                return string.Format(CultureInfo.InvariantCulture,
-                        "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z",
-                        YearField.GetValue(localInstant),
-                        MonthOfYearField.GetValue(localInstant),
-                        DayOfMonthField.GetValue(localInstant),
-                        HourOfDayField.GetValue(localInstant),
-                        MinuteOfHourField.GetValue(localInstant),
-                        SecondOfMinuteField.GetValue(localInstant));
+                return LocalParsePattern.Format(new LocalDateTime(new LocalInstant(value.Ticks)));
             }
         }
 
