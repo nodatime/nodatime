@@ -56,9 +56,20 @@ namespace NodaTime.TimeZones
             return instant == other.Instant && oldOffset == other.OldOffset && newOffset == other.NewOffset;
         }
 
-        internal Transition Later(Transition left, Transition right)
+        /// <summary>
+        /// Returns the transition which occurs later of the two provided. (If they occur at the same instant, the second argument is returned.)
+        /// </summary>
+        internal static Transition Later(Transition left, Transition right)
         {
+            return left.Instant > right.Instant ? left : right;
+        }
 
+        /// <summary>
+        /// Returns the transition which occurs earlier of the two provided. (If they occur at the same instant, the first argument is returned.)
+        /// </summary>
+        internal static Transition Earlier(Transition left, Transition right)
+        {
+            return left.Instant > right.Instant ? right : left;
         }
 
         #region Operators

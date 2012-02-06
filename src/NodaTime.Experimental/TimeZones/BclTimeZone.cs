@@ -1,18 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NodaTime.TimeZones;
+﻿#region Copyright and license information
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2012 Jon Skeet
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
 
-namespace NodaTime.Experimental
+using System;
+using System.Collections.Generic;
+using NodaTime.TimeZones;
+using NodaTime.Utility;
+
+namespace NodaTime.Experimental.TimeZones
 {
     /// <summary>
-    /// Representation of a time zone converted from a <see cref="TimeZoneInfo"/> from .NET.
+    /// Representation of a time zone converted from a <see cref="TimeZoneInfo"/> from the Base Class Library.
     /// </summary>
     public sealed class BclTimeZone : DateTimeZone
     {
         private readonly TimeZoneInfo bclZone;
-        private readonly List<AdjustmentInterval> intervals;
+        private readonly List<AdjustmentInterval> adjustmentIntervals;
         private readonly ZoneInterval headInterval;
 
         /// <summary>
@@ -20,11 +36,22 @@ namespace NodaTime.Experimental
         /// </summary>
         public TimeZoneInfo OriginalZone { get { return bclZone; } }
 
-        private BclTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset)
+        /// <summary>
+        /// Returns the display name associated with the time zone, as provided by the Base Class Library.
+        /// </summary>
+        public string DisplayName { get { return OriginalZone.DisplayName; } }
+
+        private BclTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, List<AdjustmentInterval> adjustmentIntervals, ZoneInterval headInterval)
             : base(bclZone.Id, bclZone.SupportsDaylightSavingTime, minOffset, maxOffset)
         {
+            this.bclZone = bclZone;
+            this.adjustmentIntervals = adjustmentIntervals;
+            this.headInterval = headInterval;
         }
 
+        /// <summary>
+        /// Returns the zone interval for the given instant in time. See <see cref="ZonedDateTime"/> for more details.
+        /// </summary>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
             if (headInterval != null && headInterval.Contains(instant))
@@ -34,21 +61,21 @@ namespace NodaTime.Experimental
             // Avoid having to worry about Instant.MaxValue for the rest of the class.
             if (instant == Instant.MaxValue)
             {
-                return intervals[intervals.Count - 1].GetZoneInterval(instant);
+                return adjustmentIntervals[adjustmentIntervals.Count - 1].GetZoneInterval(instant);
             }
 
             int lower = 0; // Inclusive
-            int upper = intervals.Count; // Exclusive
+            int upper = adjustmentIntervals.Count; // Exclusive
 
             while (lower < upper)
             {
                 int current = (lower + upper) / 2;
-                var candidate = intervals[current];
+                var candidate = adjustmentIntervals[current];
                 if (candidate.Start > instant)
                 {
                     upper = current;
                 }
-                else if (candidate.End < instant)
+                else if (candidate.End <= instant)
                 {
                     lower = current + 1;
                 }
@@ -61,14 +88,24 @@ namespace NodaTime.Experimental
                 ("Instant " + instant + " did not exist in the range of adjustment intervals");
         }
 
-        internal static BclTimeZone FromTimeZoneInfo(TimeZoneInfo bclZone)
+        /// <summary>
+        /// Creates a new <see cref="BclTimeZone" /> from a <see cref="TimeZoneInfo"/> from the Base Class Library.
+        /// </summary>
+        /// <param name="bclZone">The original time zone to take information from; must not be null.</param>
+        /// <returns>A Noda Time representation of the given time zone.</returns>
+        public static BclTimeZone FromTimeZoneInfo(TimeZoneInfo bclZone)
         {
+            Preconditions.CheckNotNull(bclZone, "bclZone");
             Offset standardOffset = Offset.FromTimeSpan(bclZone.BaseUtcOffset);
+            Offset minSavings = Offset.Zero; // Just in case we have negative savings!
+            Offset maxSavings = Offset.Zero;
 
             if (!bclZone.SupportsDaylightSavingTime)
             {
-                return new BclTimeZone(bclZone, standardOffset, standardOffset);
+                var fixedInterval = new ZoneInterval(bclZone.StandardName, Instant.MinValue, Instant.MaxValue, standardOffset, Offset.Zero);
+                return new BclTimeZone(bclZone, standardOffset, standardOffset, null, fixedInterval);
             }
+            var adjustmentIntervals = new List<AdjustmentInterval>();
             var rules = bclZone.GetAdjustmentRules();
             var headInterval = ComputeHeadInterval(bclZone, rules[0]);
             Instant previousEnd = headInterval != null ? headInterval.End : Instant.MinValue;
@@ -77,19 +114,45 @@ namespace NodaTime.Experimental
                 var rule = rules[i];
                 ZoneRecurrence standard, daylight;
                 GetRecurrences(bclZone, rule, out standard, out daylight);
+
+                minSavings = Offset.Min(minSavings, daylight.Savings);
+                maxSavings = Offset.Max(maxSavings, daylight.Savings);
+
                 // Find the last valid transition
                 var lastStandard = standard.Previous(Instant.MaxValue, standardOffset, daylight.Savings).Value;
                 var lastDaylight = daylight.Previous(Instant.MaxValue, standardOffset, Offset.Zero).Value;
-                Offset seamOffset = lastStandard.Instant > lastDaylight.Instant ? Offset.Zero : daylight.Savings;
-                string seamName = lastStandard.Instant > lastDaylight.Instant ? standard.Name : daylight.Name;
-                ZoneInterval seam;
+                Transition lastTransition = Transition.Later(lastStandard, lastDaylight);
+                Offset seamSavings = lastTransition.NewOffset - standardOffset;
+                string seamName = seamSavings == Offset.Zero ? bclZone.StandardName : bclZone.DaylightName;
+
+                Instant nextStart;
+                // Now work out the new "previous end" - i.e. where the next adjustment interval will start.
                 if (i == rules.Length - 1)
                 {
-                    seam = new ZoneInterval(seamName, Instant.Max(lastStandard.Instant, lastDaylight.Instant),
+                    nextStart = Instant.MaxValue;
                 }
+                else
+                {
+                    var nextRule = rules[i + 1];
+                    // TODO: Tidy this up (we do the same thing on the next iteration...)
+                    ZoneRecurrence nextStandard, nextDaylight;
+                    GetRecurrences(bclZone, nextRule, out nextStandard, out nextDaylight);
+                    var firstRecurrence = seamSavings == Offset.Zero ? nextDaylight: nextStandard;
+                    nextStart = firstRecurrence.Next(lastTransition.Instant, standardOffset, seamSavings).Value.Instant;
+                }
+                var seam = new ZoneInterval(seamName, lastTransition.Instant, nextStart, lastTransition.NewOffset, seamSavings);
+                var adjustmentZone = new DaylightSavingsTimeZone("ignored", standardOffset, standard.ToInfinity(), daylight.ToInfinity());
+
+                adjustmentIntervals.Add(new AdjustmentInterval(previousEnd, adjustmentZone, seam));
+                previousEnd = nextStart;
             }
+
+            return new BclTimeZone(bclZone, standardOffset + minSavings, standardOffset + maxSavings, adjustmentIntervals, headInterval);
         }
 
+        /// <summary>
+        /// Work out the period of standard time (if any) before the first adjustment rule is applied.
+        /// </summary>
         private static ZoneInterval ComputeHeadInterval(TimeZoneInfo zone, TimeZoneInfo.AdjustmentRule rule)
         {
             if (rule.DateStart.Year == 1)
@@ -109,6 +172,10 @@ namespace NodaTime.Experimental
                 firstTransition.Value.Instant, standardOffset, Offset.Zero);
         }
 
+        /// <summary>
+        /// Converts the two adjustment rules in <paramref name="rule"/> into two ZoneRecurrences,
+        /// storing them in the out parameters.
+        /// </summary>
         private static void GetRecurrences(TimeZoneInfo zone, TimeZoneInfo.AdjustmentRule rule,
             out ZoneRecurrence standardRecurrence, out ZoneRecurrence daylightRecurrence)
         {
@@ -131,7 +198,7 @@ namespace NodaTime.Experimental
             }
 
             // Floating: 1st Sunday in March etc.
-            IsoDayOfWeek dayOfWeek = BclConversions.ToIsoDayOfWeek(transitionTime.DayOfWeek);
+            int dayOfWeek = (int) BclConversions.ToIsoDayOfWeek(transitionTime.DayOfWeek);
             int dayOfMonth;
             bool advance;
             // "Last"
@@ -148,10 +215,12 @@ namespace NodaTime.Experimental
                 dayOfMonth = (transitionTime.Week * 7) - 6;
             }
             return new ZoneYearOffset(TransitionMode.Wall, transitionTime.Month, dayOfMonth,
-                (int)dayOfWeek, advance, Offset.FromTimeSpan(transitionTime.TimeOfDay.TimeOfDay));
+                dayOfWeek, advance, Offset.FromTimeSpan(transitionTime.TimeOfDay.TimeOfDay));
         }
 
-
+        /// <summary>
+        /// Would write the time zone to a stream; not supported at the moment.
+        /// </summary>
         internal override void Write(DateTimeZoneWriter writer)
         {
             throw new NotImplementedException();
@@ -171,15 +240,11 @@ namespace NodaTime.Experimental
             internal Instant Start { get { return start; } }
             internal Instant End { get { return seam.End; } }
 
-            internal AdjustmentInterval(Instant start,
-                ZoneRecurrence standardRecurrence,
-                ZoneRecurrence daylightRecurrence,
-                Offset standardOffset, ZoneInterval seam)
+            internal AdjustmentInterval(Instant start, DaylightSavingsTimeZone adjustmentZone, ZoneInterval seam)
             {
                 this.start = start;
                 this.seam = seam;
-                this.adjustmentZone = new DaylightSavingsTimeZone("ignored", standardOffset,
-                    standardRecurrence.ToInfinity(), daylightRecurrence.ToInfinity());
+                this.adjustmentZone = adjustmentZone;
             }
 
             internal ZoneInterval GetZoneInterval(Instant instant)
