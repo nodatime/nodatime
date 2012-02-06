@@ -141,14 +141,14 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>
         /// If the given instant is before the starting year, the year of the given instant is
-        /// adjusted to the beginning of the starting year. The then first transition after the
-        /// adjusted instant is determined. If the next adjustment is after the ending year the
-        /// input instant is returned otherwise the next transition is returned.
+        /// adjusted to the beginning of the starting year. The first transition after the
+        /// adjusted instant is determined. If the next adjustment is after the ending year, this
+        /// method returns null; otherwise the next transition is returned.
         /// </remarks>
         /// <param name="instant">The <see cref="Instant"/> lower bound for the next transition.</param>
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
-        /// <returns></returns>
+        /// <returns>The next transition, or null if there is no next transition.</returns>
         internal Transition? Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             CalendarSystem calendar = CalendarSystem.Iso;
@@ -187,7 +187,7 @@ namespace NodaTime.TimeZones
         /// <param name="instant">The <see cref="Instant"/> lower bound for the next trasnition.</param>
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
-        /// <returns></returns>
+        /// <returns>The previous transition, or null if there is no previous transition.</returns>
         internal Transition? Previous(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             CalendarSystem calendar = CalendarSystem.Iso;
@@ -305,6 +305,16 @@ namespace NodaTime.TimeZones
         internal ZoneRecurrence ToStartOfTime()
         {
             return fromYear == int.MinValue ? this : new ZoneRecurrence(name, savings, yearOffset, int.MinValue, toYear);
+        }
+
+        /// <summary>
+        /// Returns either "this" (if this zone recurrence is already infinite)
+        /// or a new zone recurrence which is identical but with a from year of int.MinValue
+        /// and an end year of int.MaxValue.
+        /// </summary>
+        internal ZoneRecurrence ToInfinity()
+        {
+            return this.IsInfinite ? this : new ZoneRecurrence(name, savings, yearOffset, int.MinValue, int.MaxValue);
         }
     }
 }

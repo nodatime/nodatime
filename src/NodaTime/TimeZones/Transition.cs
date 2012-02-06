@@ -56,6 +56,11 @@ namespace NodaTime.TimeZones
             return instant == other.Instant && oldOffset == other.OldOffset && newOffset == other.NewOffset;
         }
 
+        internal Transition Later(Transition left, Transition right)
+        {
+
+        }
+
         #region Operators
         /// <summary>
         /// Implements the operator == (equality).
