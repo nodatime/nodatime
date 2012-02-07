@@ -71,18 +71,34 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void WithResultType_ForFailureResult()
+        public void Convert_ForFailureResult()
         {
             ParseResult<int> original = ParseResult<int>.ForInvalidValue("text");
-            ParseResult<string> converted = original.WithResultType<string>();
+            ParseResult<string> converted = original.Convert(x => "xx" + x + "xx");
             Assert.Throws<UnparsableValueException>(() => converted.GetValueOrThrow());
         }
 
         [Test]
-        public void WithResultType_ForSuccessResult()
+        public void Convert_ForSuccessResult()
         {
             ParseResult<int> original = ParseResult<int>.ForValue(10);
-            Assert.Throws<InvalidOperationException>(() => original.WithResultType<string>());
+            ParseResult<string> converted = original.Convert(x => "xx" + x + "xx");
+            Assert.AreEqual("xx10xx", converted.Value);
+        }
+
+        [Test]
+        public void ConvertError_ForFailureResult()
+        {
+            ParseResult<int> original = ParseResult<int>.ForInvalidValue("text");
+            ParseResult<string> converted = original.ConvertError<string>();
+            Assert.Throws<UnparsableValueException>(() => converted.GetValueOrThrow());
+        }
+
+        [Test]
+        public void ConvertError_ForSuccessResult()
+        {
+            ParseResult<int> original = ParseResult<int>.ForValue(10);
+            Assert.Throws<InvalidOperationException>(() => original.ConvertError<string>());            
         }
     }
 }

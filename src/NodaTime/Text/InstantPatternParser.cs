@@ -74,7 +74,9 @@ namespace NodaTime.Text
 
         private sealed class GeneralPattern : AbstractPattern<Instant>
         {
-            private static readonly LocalDateTimePattern LocalParsePattern = LocalDateTimePattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
+            private static readonly LocalDateTimePatternAdapter NonInfinitePattern =
+                new LocalDateTimePatternAdapter(
+                    LocalDateTimePattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"));
 
             internal GeneralPattern() : base(NodaFormatInfo.InvariantInfo)
             {
@@ -91,9 +93,7 @@ namespace NodaTime.Text
                     return ParseResult<Instant>.ForValue(Instant.MaxValue);
                 }
 
-                var result = LocalParsePattern.Parse(value);
-                return result.Success ? ParseResult<Instant>.ForValue(new Instant(result.Value.LocalInstant.Ticks))
-                    : result.WithResultType<Instant>();
+                return NonInfinitePattern.Parse(value);
             }
 
             public override string Format(Instant value)
@@ -106,7 +106,7 @@ namespace NodaTime.Text
                 {
                     return Instant.EndOfTimeLabel;
                 }
-                return LocalParsePattern.Format(new LocalDateTime(new LocalInstant(value.Ticks)));
+                return NonInfinitePattern.Format(value);
             }
         }
 
@@ -155,9 +155,7 @@ namespace NodaTime.Text
 
             public ParseResult<Instant> Parse(string text)
             {
-                var result = pattern.Parse(text);
-                return result.Success ? ParseResult<Instant>.ForValue(new Instant(result.Value.LocalInstant.Ticks))
-                    : result.WithResultType<Instant>();
+                return pattern.Parse(text).Convert(local => new Instant(local.LocalInstant.Ticks));
             }
         }
     }
