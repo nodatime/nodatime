@@ -88,9 +88,9 @@ namespace NodaTime.Test
         [Test]
         public void InZone()
         {
+            DateTimeZone london = DateTimeZone.ForId("Europe/London");
             ZonedDateTime viaInstant = Instant.FromUtc(2008, 6, 10, 13, 16, 17).InZone(london);
 
-            DateTimeZone london = DateTimeZone.ForId("Europe/London");
             // London is UTC+1 in the Summer, so the above is 14:16:17 local.
             LocalDateTime local = new LocalDateTime(2008, 6, 10, 14, 16, 17);
             ZonedDateTime expected = london.AtExactly(local);
