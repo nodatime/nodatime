@@ -78,6 +78,40 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void ToIsoUtc()
+        {
+            ZonedDateTime viaInstant = Instant.FromUtc(2008, 4, 3, 10, 35, 23).InIsoUtc();
+            ZonedDateTime expected = DateTimeZone.Utc.AtExactly(new LocalDateTime(2008, 4, 3, 10, 35, 23));
+            Assert.AreEqual(expected, viaInstant);
+        }
+
+        [Test]
+        public void InZone()
+        {
+            ZonedDateTime viaInstant = Instant.FromUtc(2008, 6, 10, 13, 16, 17).InZone(london);
+
+            DateTimeZone london = DateTimeZone.ForId("Europe/London");
+            // London is UTC+1 in the Summer, so the above is 14:16:17 local.
+            LocalDateTime local = new LocalDateTime(2008, 6, 10, 14, 16, 17);
+            ZonedDateTime expected = london.AtExactly(local);
+
+            Assert.AreEqual(expected, viaInstant);
+        }
+
+        [Test]
+        public void InZoneWithCalendar()
+        {
+            CalendarSystem copticCalendar = CalendarSystem.GetCopticCalendar(4);
+            DateTimeZone london = DateTimeZone.ForId("Europe/London");
+            ZonedDateTime viaInstant = Instant.FromUtc(2004, 6, 9, 11, 10).InZone(london, copticCalendar);
+
+            // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)
+            LocalDateTime local = new LocalDateTime(1720, 10, 2, 12, 10, 0, copticCalendar);
+            ZonedDateTime expected = london.AtExactly(local);
+            Assert.AreEqual(expected, viaInstant);
+        }
+
+        [Test]
         public void Max()
         {
             Instant x = new Instant(100);

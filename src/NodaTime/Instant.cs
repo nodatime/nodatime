@@ -18,6 +18,7 @@
 using System;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 #endregion
 
@@ -590,6 +591,43 @@ namespace NodaTime
                 throw new ArgumentException("Invalid DateTime.Kind for Instant.FromDateTimeUtc", "dateTime");
             }
             return new Instant(dateTime.Ticks - NodaConstants.DateTimeEpochTicks);
+        }
+
+        /// <summary>
+        /// Returns the representation of this instant in the UTC time zone, in the ISO-8601 calendar.
+        /// This is a shortcut for calling InZone with an argument of DateTimeZone.Utc.
+        /// </summary>
+        /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the UTC time zone
+        /// and the ISO-8601 calendar</returns>
+        public ZonedDateTime InIsoUtc()
+        {
+            return new ZonedDateTime(this, DateTimeZone.Utc, CalendarSystem.Iso);
+        }
+
+        /// <summary>
+        /// Returns the representation of this instant in the specified time zone, in the ISO-8601 calendar.
+        /// </summary>
+        /// <param name="zone">The time zone in which to represent this instant. Must not be null.</param>
+        /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
+        /// and the ISO-8601 calendar</returns>
+        public ZonedDateTime InZone(DateTimeZone zone)
+        {
+            Preconditions.CheckNotNull(zone, "zone");
+            return new ZonedDateTime(this, zone, CalendarSystem.Iso);
+        }
+
+        /// <summary>
+        /// Returns the representation of this instant in the specified time zone and calendar system.
+        /// </summary>
+        /// <param name="zone">The time zone in which to represent this instant. Must not be null.</param>
+        /// <param name="calendar">The calendar system in which to represent this instant. Must not be null.</param>
+        /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
+        /// and calendar</returns>
+        public ZonedDateTime InZone(DateTimeZone zone, CalendarSystem calendar)
+        {
+            Preconditions.CheckNotNull(zone, "zone");
+            Preconditions.CheckNotNull(calendar, "calendar");
+            return new ZonedDateTime(this, zone, calendar);
         }
     }
 }
