@@ -217,6 +217,36 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
+        /// Piggy-backs onto Next, but fails with an InvalidOperationException if there's no such transition.
+        /// </summary>
+        internal Transition NextOrFail(Instant instant, Offset standardOffset, Offset previousSavings)
+        {
+            Transition? next = Next(instant, standardOffset, previousSavings);
+            if (next == null)
+            {
+                throw new InvalidOperationException(
+                    string.Format("Noda Time bug or bad data: Expected a transition later than {0}; standard offset = {1}; previousSavings = {2}; recurrence = {3}",
+                        instant, standardOffset, previousSavings, this));
+            }
+            return next.Value;
+        }
+
+        /// <summary>
+        /// Piggy-backs onto Previous, but fails with a descriptive InvalidOperationException if there's no such transition.
+        /// </summary>
+        internal Transition PreviousOrFail(Instant instant, Offset standardOffset, Offset previousSavings)
+        {
+            Transition? previous = Previous(instant, standardOffset, previousSavings);
+            if (previous == null)
+            {
+                throw new InvalidOperationException(
+                    string.Format("Noda Time bug or bad data: Expected a transition earlier than {0}; standard offset = {1}; previousSavings = {2}; recurrence = {3}",
+                        instant, standardOffset, previousSavings, this));
+            }
+            return previous.Value;
+        }
+
+        /// <summary>
         /// Writes this object to the given <see cref="DateTimeZoneWriter"/>.
         /// </summary>
         /// <param name="writer">Where to send the output.</param>

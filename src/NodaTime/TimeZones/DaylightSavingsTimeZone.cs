@@ -159,10 +159,10 @@ namespace NodaTime.TimeZones
             // Find the transitions which start *after* the one we're currently in - then
             // pick the later of them, which will be the same "polarity" as the one we're currently
             // in.
-            Transition? nextDstStart = dstRecurrence.Next(instant, standardOffset, standardRecurrence.Savings);
-            Transition? nextStandardStart = standardRecurrence.Next(instant, standardOffset, dstRecurrence.Savings);
             // Both transitions must be non-null, as our recurrences are infinite.
-            return nextDstStart.Value.Instant > nextStandardStart.Value.Instant ? dstRecurrence : standardRecurrence;
+            Transition nextDstStart = dstRecurrence.NextOrFail(instant, standardOffset, standardRecurrence.Savings);
+            Transition nextStandardStart = standardRecurrence.NextOrFail(instant, standardOffset, dstRecurrence.Savings);
+            return nextDstStart.Instant > nextStandardStart.Instant ? dstRecurrence : standardRecurrence;
         }
 
         /// <summary>
@@ -171,21 +171,10 @@ namespace NodaTime.TimeZones
         /// <param name="instant">The instant after which to consider transitions.</param>
         private Transition NextTransition(Instant instant)
         {
-            Transition? dstTransition = dstRecurrence.Next(instant, standardOffset, standardRecurrence.Savings);
-            Transition? standardTransition = standardRecurrence.Next(instant, standardOffset, dstRecurrence.Savings);
-            if (dstTransition.HasValue)
-            {
-                if (standardTransition.HasValue)
-                {
-                    return (dstTransition.Value.Instant > standardTransition.Value.Instant) ? standardTransition.Value : dstTransition.Value;
-                }
-                return dstTransition.Value;
-            }
-            if (standardTransition.HasValue)
-            {
-                return standardTransition.Value;
-            }
-            throw new ArgumentOutOfRangeException("instant", "Infinite recurrences should always have a next transition");
+            // Both recurrences are infinite, so they'll both have previous transitions (possibly at int.MinValue).
+            Transition dstTransition = dstRecurrence.NextOrFail(instant, standardOffset, standardRecurrence.Savings);
+            Transition standardTransition = standardRecurrence.NextOrFail(instant, standardOffset, dstRecurrence.Savings);
+            return (dstTransition.Instant > standardTransition.Instant) ? standardTransition : dstTransition;
         }
 
         /// <summary>
@@ -197,25 +186,10 @@ namespace NodaTime.TimeZones
         /// </returns>
         private Transition PreviousTransition(Instant instant)
         {
-            Transition? dstTransition = dstRecurrence.Previous(instant, standardOffset, standardRecurrence.Savings);
-            Transition? standardTransition = standardRecurrence.Previous(instant, standardOffset, dstRecurrence.Savings);
-
-            if (dstTransition.HasValue)
-            {
-                if (standardTransition.HasValue)
-                {
-                    return (dstTransition.Value.Instant > standardTransition.Value.Instant) ? dstTransition.Value : standardTransition.Value;
-                }
-                else
-                {
-                    return dstTransition.Value;
-                }
-            }
-            if (standardTransition.HasValue)
-            {
-                return standardTransition.Value;
-            }
-            throw new ArgumentOutOfRangeException("instant", "Infinite (start of time) recurrences should always have a previous transition");
+            // Both recurrences are infinite, so they'll both have previous transitions (possibly at int.MinValue).
+            Transition dstTransition = dstRecurrence.PreviousOrFail(instant, standardOffset, standardRecurrence.Savings);
+            Transition standardTransition = standardRecurrence.PreviousOrFail(instant, standardOffset, dstRecurrence.Savings);
+            return (dstTransition.Instant > standardTransition.Instant) ? dstTransition : standardTransition;
         }
 
         /// <summary>

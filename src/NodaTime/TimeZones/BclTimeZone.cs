@@ -119,8 +119,8 @@ namespace NodaTime.TimeZones
 
                 // Find the last valid transition by working back from the end of time. It's safe to unconditionally
                 // take the value here, as there must *be* some recurrences.
-                var lastStandard = standard.Previous(Instant.MaxValue, standardOffset, daylight.Savings).Value;
-                var lastDaylight = daylight.Previous(Instant.MaxValue, standardOffset, Offset.Zero).Value;
+                var lastStandard = standard.PreviousOrFail(Instant.MaxValue, standardOffset, daylight.Savings);
+                var lastDaylight = daylight.PreviousOrFail(Instant.MaxValue, standardOffset, Offset.Zero);
                 bool standardIsLater = lastStandard.Instant > lastDaylight.Instant;
                 Transition lastTransition = standardIsLater ? lastStandard : lastDaylight;
                 Offset seamSavings = lastTransition.NewOffset - standardOffset;
@@ -143,7 +143,7 @@ namespace NodaTime.TimeZones
                     // first transition into daylight time in the new set of rules, and vice versa. Again, there
                     // must *be* a transition, as otherwise the rules are invalid.
                     var firstRecurrence = standardIsLater ? nextDaylight : nextStandard;
-                    nextStart = firstRecurrence.Next(lastTransition.Instant, standardOffset, seamSavings).Value.Instant;
+                    nextStart = firstRecurrence.NextOrFail(lastTransition.Instant, standardOffset, seamSavings).Instant;
                 }
                 var seam = new ZoneInterval(seamName, lastTransition.Instant, nextStart, lastTransition.NewOffset, seamSavings);
                 var adjustmentZone = new DaylightSavingsTimeZone("ignored", standardOffset, standard.ToInfinity(), daylight.ToInfinity());
@@ -167,14 +167,8 @@ namespace NodaTime.TimeZones
             ZoneRecurrence firstStandard, firstDaylight;
             GetRecurrences(zone, rule, out firstStandard, out firstDaylight);
             var standardOffset = Offset.FromTimeSpan(zone.BaseUtcOffset);
-            Transition? firstTransition = firstDaylight.Next(Instant.MinValue,
-                standardOffset, Offset.Zero);
-            if (firstTransition == null)
-            {
-                throw new InvalidOperationException("Adjustment rule never has an effect");
-            }
-            return new ZoneInterval(zone.StandardName, Instant.MinValue,
-                firstTransition.Value.Instant, standardOffset, Offset.Zero);
+            Transition firstTransition = firstDaylight.NextOrFail(Instant.MinValue, standardOffset, Offset.Zero);
+            return new ZoneInterval(zone.StandardName, Instant.MinValue, firstTransition.Instant, standardOffset, Offset.Zero);
         }
 
         /// <summary>
