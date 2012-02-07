@@ -18,15 +18,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NodaTime.TimeZones;
 
-namespace NodaTime.Experimental.TimeZones
+namespace NodaTime.TimeZones
 {
     /// <summary>
     /// An <see cref="IDateTimeZoneProvider" /> implementation which uses <see cref="TimeZoneInfo"/> from
     /// .NET 3.5 and later.
     /// </summary>
-    public class WindowsTimeZoneProvider : IDateTimeZoneProvider
+    public class BclTimeZoneProvider : IDateTimeZoneProvider
     {
         /// <summary>
         /// Returns the IDs of all system time zones.

@@ -176,6 +176,8 @@
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="SystemClock.cs" />
     <Compile Include="Text\ValueCursor.cs" />
+    <Compile Include="TimeZones\BclTimeZone.cs" />
+    <Compile Include="TimeZones\BclTimeZoneProvider.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />

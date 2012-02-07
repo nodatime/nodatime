@@ -17,10 +17,9 @@
 
 using System;
 using System.Collections.Generic;
-using NodaTime.TimeZones;
 using NodaTime.Utility;
 
-namespace NodaTime.Experimental.TimeZones
+namespace NodaTime.TimeZones
 {
     /// <summary>
     /// Representation of a time zone converted from a <see cref="TimeZoneInfo"/> from the Base Class Library.
@@ -118,12 +117,14 @@ namespace NodaTime.Experimental.TimeZones
                 minSavings = Offset.Min(minSavings, daylight.Savings);
                 maxSavings = Offset.Max(maxSavings, daylight.Savings);
 
-                // Find the last valid transition
+                // Find the last valid transition by working back from the end of time. It's safe to unconditionally
+                // take the value here, as there must *be* some recurrences.
                 var lastStandard = standard.Previous(Instant.MaxValue, standardOffset, daylight.Savings).Value;
                 var lastDaylight = daylight.Previous(Instant.MaxValue, standardOffset, Offset.Zero).Value;
-                Transition lastTransition = Transition.Later(lastStandard, lastDaylight);
+                bool standardIsLater = lastStandard.Instant > lastDaylight.Instant;
+                Transition lastTransition = standardIsLater ? lastStandard : lastDaylight;
                 Offset seamSavings = lastTransition.NewOffset - standardOffset;
-                string seamName = seamSavings == Offset.Zero ? bclZone.StandardName : bclZone.DaylightName;
+                string seamName = standardIsLater ? bclZone.StandardName : bclZone.DaylightName;
 
                 Instant nextStart;
                 // Now work out the new "previous end" - i.e. where the next adjustment interval will start.
@@ -137,7 +138,11 @@ namespace NodaTime.Experimental.TimeZones
                     // TODO: Tidy this up (we do the same thing on the next iteration...)
                     ZoneRecurrence nextStandard, nextDaylight;
                     GetRecurrences(bclZone, nextRule, out nextStandard, out nextDaylight);
-                    var firstRecurrence = seamSavings == Offset.Zero ? nextDaylight: nextStandard;
+
+                    // If the "start of seam" transition is a transition into standard time, we want to find the
+                    // first transition into daylight time in the new set of rules, and vice versa. Again, there
+                    // must *be* a transition, as otherwise the rules are invalid.
+                    var firstRecurrence = standardIsLater ? nextDaylight : nextStandard;
                     nextStart = firstRecurrence.Next(lastTransition.Instant, standardOffset, seamSavings).Value.Instant;
                 }
                 var seam = new ZoneInterval(seamName, lastTransition.Instant, nextStart, lastTransition.NewOffset, seamSavings);
@@ -188,6 +193,7 @@ namespace NodaTime.Experimental.TimeZones
             daylightRecurrence = new ZoneRecurrence(zone.DaylightName, daylightOffset, daylightStart, startYear, endYear);
         }
 
+        // Converts a TimeZoneInfo "TransitionTime" to a "ZoneYearOffset" - the two correspond pretty closely.
         private static ZoneYearOffset ConvertTransition(TimeZoneInfo.TransitionTime transitionTime)
         {
             // Easy case - fixed day of the month.
