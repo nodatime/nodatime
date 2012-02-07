@@ -24,11 +24,6 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class ZoneTransitionTest
     {
-        private readonly Offset threeHours = Offset.Create(3, 0, 0, 0);
-        private Offset oneHour = Offset.Create(1, 0, 0, 0);
-        private Offset minusOneHour = Offset.Create(1, 0, 0, 0, true);
-        private readonly Offset minusTwoHours = Offset.Create(2, 0, 0, 0, true);
-
         [Test]
         public void Construct_NullName_Exception()
         {
