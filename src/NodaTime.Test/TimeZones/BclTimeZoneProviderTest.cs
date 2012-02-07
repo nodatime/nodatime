@@ -18,15 +18,16 @@
 using System;
 using System.Collections.ObjectModel;
 using NUnit.Framework;
-using NodaTime.Experimental.TimeZones;
+using NodaTime.TimeZones;
 
-namespace NodaTime.Experimental.Test.TimeZones
+namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public class WindowsTimeZoneProviderTest
+    public class BclTimeZoneTest
     {
+#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly ReadOnlyCollection<TimeZoneInfo> WindowsSystemZones = TimeZoneInfo.GetSystemTimeZones();
-        private static readonly WindowsTimeZoneProvider ZoneProvider = new WindowsTimeZoneProvider();
+#pragma warning restore 0414
 
         [Test]
         [TestCaseSource("WindowsSystemZones")]

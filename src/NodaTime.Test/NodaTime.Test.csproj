@@ -98,7 +98,7 @@
     <Compile Include="Text\Cultures.cs" />
     <Compile Include="Text\InstantPatternTest.cs" />
     <Compile Include="Text\InstantPatternTest.Data.cs">
-      <DependentUpon>InstantPatternTest.cs</DependentUpon>    
+      <DependentUpon>InstantPatternTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Text\LocalDateTimePatternTest.cs" />
     <Compile Include="Text\LocalDateTimePatternTest.Data.cs">
@@ -195,6 +195,7 @@
     <Compile Include="Text\OffsetFormattingTestSupport.cs" />
     <Compile Include="Text\ValueCursorTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
+    <Compile Include="TimeZones\BclTimeZoneProviderTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilderTest.cs" />
     <Compile Include="TimeZones\TimeZoneCacheTest.cs" />
