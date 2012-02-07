@@ -96,13 +96,24 @@ namespace NodaTime.Text
         internal bool ContinueAfterErrorWithMultipleFormats { get { return continueWithMultiple; } }
 
         /// <summary>
-        /// Returns a new result with the target type. This result must be a failure.
+        /// Converts this result to a new target type, either by executing the given projection
+        /// for a success result, or propagating the exception provider for failure.
         /// </summary>
-        internal ParseResult<TTarget> WithResultType<TTarget>()
+        internal ParseResult<TTarget> Convert<TTarget>(NodaFunc<T, TTarget> projection)
+        {
+            return Success ? ParseResult<TTarget>.ForValue(projection(Value))
+                : new ParseResult<TTarget>(exceptionProvider, continueWithMultiple);
+        }
+
+        /// <summary>
+        /// Converts this result to a new target type by propagating the exception provider.
+        /// This parse result must already be an error result.
+        /// </summary>
+        internal ParseResult<TTarget> ConvertError<TTarget>()
         {
             if (Success)
             {
-                throw new InvalidOperationException("Can't change type of a success result");
+                throw new InvalidOperationException("ConvertError should not be called on a successful parse result");
             }
             return new ParseResult<TTarget>(exceptionProvider, continueWithMultiple);
         }

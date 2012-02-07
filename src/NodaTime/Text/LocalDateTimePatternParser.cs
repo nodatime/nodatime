@@ -180,12 +180,12 @@ namespace NodaTime.Text
                 ParseResult<LocalDate> dateResult = Date.CalculateValue(usedFields & PatternFields.AllDateFields);
                 if (!dateResult.Success)
                 {
-                    return dateResult.WithResultType<LocalDateTime>();
+                    return dateResult.ConvertError<LocalDateTime>();
                 }
                 ParseResult<LocalTime> timeResult = Time.CalculateValue(usedFields & PatternFields.AllTimeFields);
                 if (!timeResult.Success)
                 {
-                    return timeResult.WithResultType<LocalDateTime>();
+                    return timeResult.ConvertError<LocalDateTime>();
                 }
                 return ParseResult<LocalDateTime>.ForValue(dateResult.Value + timeResult.Value);
             }
