@@ -131,7 +131,6 @@ namespace NodaTime.Tools.BuildMarkdownDocs
         private static string TranslateUrl(Match match, string memberTypePrefix)
         {
             string name = match.Groups[1].Value;
-            Console.WriteLine("Matched {0}", name);
             return ApiUrlPrefix + memberTypePrefix + "_" + name.Replace(".", "_") + ".htm";
         }
 
