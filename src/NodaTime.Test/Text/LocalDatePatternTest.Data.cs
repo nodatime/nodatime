@@ -175,8 +175,10 @@ namespace NodaTime.Test.Text
 
         private static string[] ReplaceFirstElement(string[] input, string newElement)
         {
-            input[0] = newElement;
-            return input;
+            // Cloning so we don't accidentally *really* change any read-only cultures, to work around a bug in Mono.
+            string[] clone = (string[])input.Clone();
+            clone[0] = newElement;
+            return clone;
         }
 
         public sealed class Data : PatternTestData<LocalDate>
