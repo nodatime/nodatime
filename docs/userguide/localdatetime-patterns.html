@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Patterns for LocalDateTime values</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Patterns for LocalDateTime values</h1>
+    <p>The <a href="../api/html/T_NodaTime_LocalDateTime.htm"><code>LocalDateTime</code></a> type supports the following patterns:</p>
+
+<h2>Standard Patterns</h2>
+
+<p>The following standard patterns are supported:</p>
+
+<ul>
+<li><p><code>o</code> or <code>O</code>: The round-trip pattern, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff" using the invariant culture and the ISO-8601 calendar.</p></li>
+<li><p><code>s</code>: The sortable pattern, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss" using the invariant culture and the ISO-8601 calendar.</p></li>
+<li><p><code>f</code>: The culture's <a href="http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longdatepattern.aspx">long date pattern</a> followed by a space,
+followed by the <a href="http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shorttimepattern.aspx">short time pattern</a>.</p></li>
+<li><p><code>F</code>: The full date and time pattern as defined by the culture's <a href="http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.fulldatetimepattern.aspx"><code>DateTimeFormatInfo.FullDateTimePattern</code></a> 
+For example, in the invariant culture this is "dddd, dd MMMM yyyy HH:mm:ss".</p></li>
+<li><p><code>g</code>: The culture's <a href="http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shortdatepattern.aspx">short date pattern</a> followed by a space,
+followed by the <a href="http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shorttimepattern.aspx">short time pattern</a>.</p></li>
+<li><p><code>g</code>: The culture's <a href="http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shortdatepattern.aspx">short date pattern</a> followed by a space,
+followed by the <a href="http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longtimepattern.aspx">long time pattern</a>.</p></li>
+</ul>
+
+<h2>Custom Patterns</h2>
+
+<p>The custom format patterns for local date and time are provided by combining the <a href="localdate-patterns.html">custom patterns for <code>LocalDate</code></a> with
+the <a href="localtime-patterns.html">custom patterns for <code>LocalTime</code></a>. The result is simply the combination of the date and the time.</p>
+
+  </body>
+</html>
