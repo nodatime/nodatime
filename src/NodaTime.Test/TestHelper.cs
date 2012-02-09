@@ -21,10 +21,12 @@ using NUnit.Framework;
 namespace NodaTime.Test
 {
     /// <summary>
-    ///   Provides methods to help run tests for some of the system interfaces and object support.
+    /// Provides methods to help run tests for some of the system interfaces and object support.
     /// </summary>
     public static class TestHelper
     {
+        public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
+
         /// <summary>
         ///   Tests the <see cref="IComparable{T}.CompareTo" /> method for reference objects.
         /// </summary>
