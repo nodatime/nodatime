@@ -156,16 +156,14 @@ namespace NodaTime.Globalization
         /// </remarks>
         private IList<string> ConvertGenitiveMonthArray(IList<string> nonGenitiveNames, string[] bclNames, string[] invariantNames)
         {
-            bool hasGenitive = false;
-            for (int i = 0; i < bclNames.Length && !hasGenitive; i++)
+            for (int i = 0; i < bclNames.Length; i++)
             {
                 if (bclNames[i] != nonGenitiveNames[i + 1] && bclNames[i] != invariantNames[i])
                 {
-                    hasGenitive = true;
-                    Console.WriteLine("Got genitive! {3} {0} {1} {2}", bclNames[i], nonGenitiveNames[i + 1], invariantNames[i], CultureInfo);
+                    return ConvertMonthArray(bclNames);
                 }
             }
-            return hasGenitive ? ConvertMonthArray(bclNames) : nonGenitiveNames;
+            return nonGenitiveNames;
         }
 
         /// <summary>

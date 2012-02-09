@@ -25,9 +25,6 @@ namespace NodaTime.Test.Text
 {
     public partial class LocalTimePatternTest
     {
-        // Bengali: uses a time separator of "."
-        private static readonly CultureInfo BnBd = new CultureInfo("bn-BD");
-
         private static readonly CultureInfo AmOnlyCulture = CreateCustomAmPmCulture("am", "");
         private static readonly CultureInfo PmOnlyCulture = CreateCustomAmPmCulture("", "pm");
         private static readonly CultureInfo NoAmOrPmCulture = CreateCustomAmPmCulture("", "");
@@ -221,13 +218,13 @@ namespace NodaTime.Test.Text
             new Data(14, 15, 16, 789, 1200) { Culture = Cultures.EnUs, Text = "14:15:16.78912", Pattern = "r" },
             new Data(14, 15, 16, 789, 1230) { Culture = Cultures.EnUs, Text = "14:15:16.789123", Pattern = "r" },
             new Data(14, 15, 16, 789, 1234) { Culture = Cultures.EnUs, Text = "14:15:16.7891234", Pattern = "r" },
-            new Data(14, 15, 16, 700) { Culture = BnBd, Text = "14.15.16.7", Pattern = "r" },
-            new Data(14, 15, 16, 780) { Culture = BnBd, Text = "14.15.16.78", Pattern = "r" },
-            new Data(14, 15, 16, 789) { Culture = BnBd, Text = "14.15.16.789", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1000) { Culture = BnBd, Text = "14.15.16.7891", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1200) { Culture = BnBd, Text = "14.15.16.78912", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1230) { Culture = BnBd, Text = "14.15.16.789123", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1234) { Culture = BnBd, Text = "14.15.16.7891234", Pattern = "r" },
+            new Data(14, 15, 16, 700) { Culture = Cultures.ItIt, Text = "14.15.16.7", Pattern = "r" },
+            new Data(14, 15, 16, 780) { Culture = Cultures.ItIt, Text = "14.15.16.78", Pattern = "r" },
+            new Data(14, 15, 16, 789) { Culture = Cultures.ItIt, Text = "14.15.16.789", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1000) { Culture = Cultures.ItIt, Text = "14.15.16.7891", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1200) { Culture = Cultures.ItIt, Text = "14.15.16.78912", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1230) { Culture = Cultures.ItIt, Text = "14.15.16.789123", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1234) { Culture = Cultures.ItIt, Text = "14.15.16.7891234", Pattern = "r" },
 
             // ------------ Template value tests ----------
             // Mixtures of 12 and 24 hour times

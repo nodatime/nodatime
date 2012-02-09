@@ -80,26 +80,48 @@ namespace NodaTime.Test.Text
         [TestCaseSource("AllCulturesStandardPatterns")]
         public void ParseFormattedStandardPattern(CultureInfo culture, string patternText)
         {
-            if (culture.ToString() == "af-ZA")
+            // If the pattern really can't distinguish between AM and PM (e.g. it's 12 hour with an
+            // abbreviated AM/PM designator) then let's let it go.
+            if (SampleLocalDateTime.ToString(patternText, culture) ==
+                SampleLocalDateTime.PlusHours(-12).ToString(patternText, culture))
             {
-                // Still need to handle Afrikaans having just a PM designator.
                 return;
             }
+
             // Some cultures use two-digit years, so let's put them in the right century.
             var pattern = LocalDateTimePattern.Create(patternText, NodaFormatInfo.GetFormatInfo(culture))
                 .WithTemplateValue(new LocalDateTime(1400, 1, 1, 0, 0));
+
+            // If the culture doesn't have either AM or PM designators, we'll end up using the template value
+            // AM/PM, so let's make sure that's right. (This happens on Mono for a few cultures.)
+            if (culture.DateTimeFormat.AMDesignator == "" &&
+                culture.DateTimeFormat.PMDesignator == "")
+            {
+                pattern = pattern.WithTemplateValue(new LocalDateTime(1400, 1, 1, 12, 0));
+            }
+
             string formatted = pattern.Format(SampleLocalDateTime);
             var parseResult = pattern.Parse(formatted);
             Assert.IsTrue(parseResult.Success);
             var parsed = parseResult.Value;
-            Assert.IsTrue(parsed == SampleLocalDateTime ||
-                          parsed == SampleLocalDateTimeNoTicks ||
-                          parsed == SampleLocalDateTimeNoMillis ||
-                          parsed == SampleLocalDateTimeNoSeconds);
+            Assert.That(parsed, Is.EqualTo(SampleLocalDateTime) |
+                                Is.EqualTo(SampleLocalDateTimeNoTicks) |
+                                Is.EqualTo(SampleLocalDateTimeNoMillis) |
+                                Is.EqualTo(SampleLocalDateTimeNoSeconds));
         }
 
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
+            // On Mono, some general patterns include an offset at the end. For the moment, ignore them.
+            // TODO: Work out what to do in such cases...
+            if ((patternText == "f" && culture.DateTimeFormat.ShortTimePattern.EndsWith("z")) ||
+                (patternText == "F" && culture.DateTimeFormat.FullDateTimePattern.EndsWith("z")) ||
+                (patternText == "g" && culture.DateTimeFormat.ShortTimePattern.EndsWith("z")) ||
+                (patternText == "G" && culture.DateTimeFormat.LongTimePattern.EndsWith("z")))
+            {
+                return;
+            }
+
             var pattern = LocalDateTimePattern.Create(patternText, NodaFormatInfo.GetFormatInfo(culture));
             // Create the BCL version in the culture's calendar, so that when formatted it really will have those
             // values, even though that may represent a completely different date/time to the Noda Time version...

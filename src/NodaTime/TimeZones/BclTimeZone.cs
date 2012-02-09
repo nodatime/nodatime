@@ -99,13 +99,13 @@ namespace NodaTime.TimeZones
             Offset minSavings = Offset.Zero; // Just in case we have negative savings!
             Offset maxSavings = Offset.Zero;
 
-            if (!bclZone.SupportsDaylightSavingTime)
+            var rules = bclZone.GetAdjustmentRules();
+            if (!bclZone.SupportsDaylightSavingTime || rules.Length == 0)
             {
                 var fixedInterval = new ZoneInterval(bclZone.StandardName, Instant.MinValue, Instant.MaxValue, standardOffset, Offset.Zero);
                 return new BclTimeZone(bclZone, standardOffset, standardOffset, null, fixedInterval);
             }
             var adjustmentIntervals = new List<AdjustmentInterval>();
-            var rules = bclZone.GetAdjustmentRules();
             var headInterval = ComputeHeadInterval(bclZone, rules[0]);
             Instant previousEnd = headInterval != null ? headInterval.End : Instant.MinValue;
             for (int i = 0; i < rules.Length; i++)
