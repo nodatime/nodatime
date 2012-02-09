@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NUnit.Framework;
 using NodaTime.TimeZones;
@@ -26,11 +27,16 @@ namespace NodaTime.Test.TimeZones
     public class BclTimeZoneTest
     {
 #pragma warning disable 0414 // Used by tests via reflection - do not remove!
-        private static readonly ReadOnlyCollection<TimeZoneInfo> WindowsSystemZones = TimeZoneInfo.GetSystemTimeZones();
+        // This test is effectively disabled on Mono as its time zone support is broken in the current
+        // stable release - see http://bugzilla.xamarin.com/show_bug.cgi?id=326 for example: even asking
+        // for the offset from UTC *for a UTC DateTime* can fail. We can restore these tests when we either
+        // find something to fix in Noda Time, or Mono is fixed.
+        private static readonly ReadOnlyCollection<TimeZoneInfo> BclZonesOrEmptyOnMono = TestHelper.IsRunningOnMono
+            ? new List<TimeZoneInfo>().AsReadOnly() : TimeZoneInfo.GetSystemTimeZones();
 #pragma warning restore 0414
 
         [Test]
-        [TestCaseSource("WindowsSystemZones")]
+        [TestCaseSource("BclZonesOrEmptyOnMono")]
         public void AllZoneTransitions(TimeZoneInfo windowsZone)
         {
             var nodaZone = BclTimeZone.FromTimeZoneInfo(windowsZone);
@@ -40,8 +46,8 @@ namespace NodaTime.Test.TimeZones
 
             while (instant < end)
             {
-                ValidateZoneEquality(instant, nodaZone, windowsZone);
                 ValidateZoneEquality(instant - Duration.One, nodaZone, windowsZone);
+                ValidateZoneEquality(instant, nodaZone, windowsZone);
                 instant = nodaZone.GetZoneInterval(instant).End;
             }
         }

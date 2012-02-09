@@ -28,6 +28,12 @@ namespace NodaTime.Test.Text
         internal static readonly CultureInfo EnUs = new CultureInfo("en-US");
         internal static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
         internal static readonly CultureInfo FrCa = new CultureInfo("fr-CA");
-        internal static readonly CultureInfo ItIt = new CultureInfo("it-IT");
+
+        // We mostly use Italy as an example of a culture with a "." as the time separator
+        // - but it doesn't have it on Mono, so force it here. (In fact, it looks like it
+        // changed to : between .NET 2 and .NET 4 anyway... another reason to force it.)
+        internal static readonly CultureInfo ItIt = new CultureInfo("it-IT") {
+            DateTimeFormat = { TimeSeparator = "." }
+        };
     }
 }

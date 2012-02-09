@@ -25,7 +25,8 @@ namespace NodaTime.Test.Text
 {
     public partial class LocalDatePatternTest
     {
-        public static readonly CultureInfo GenitiveNameTestCulture = CreateGenitiveTestCulture();
+        internal static readonly CultureInfo GenitiveNameTestCulture = CreateGenitiveTestCulture();
+        internal static readonly CultureInfo GenitiveNameTestCultureWithLeadingNames = CreateGenitiveTestCultureWithLeadingNames();
 
 #pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
@@ -93,9 +94,11 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 9) { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 sUN" },
             new Data(2011, 10, 9) { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 SuNDaY" },
 
-            // Genitive name is an extension of the non-genitive name; parse longer first
-            new Data(2011, 6, 10) { Pattern = "yyyy MMMM dd", Text = "2011 junija 10", Culture = new CultureInfo("dsb-DE") },
-            new Data(2011, 6, 10) { Pattern = "yyyy MMMM dd", Text = "2011 junij 10", Culture = new CultureInfo("dsb-DE") },
+            // Genitive name is an extension of the non-genitive name; parse longer first.
+            new Data(2011, 1, 10) { Pattern = "yyyy MMMM dd", Text = "2011 MonthName-Genitive 10", Culture = GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "yyyy MMMM dd", Text = "2011 MonthName 10", Culture = GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "yyyy MMM dd", Text = "2011 MN-Gen 10", Culture = GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "yyyy MMM dd", Text = "2011 MN 10", Culture = GenitiveNameTestCultureWithLeadingNames },
         };
 
         internal static Data[] FormatOnlyData = {
@@ -173,10 +176,27 @@ namespace NodaTime.Test.Text
             return clone;
         }
 
+        /// <summary>
+        /// Some cultures may have genitive month names which are longer than th
+        /// On Windows, we could use dsb-DE for this - but that doesn't exist in Mono.
+        /// </summary>
+        private static CultureInfo CreateGenitiveTestCultureWithLeadingNames()
+        {
+            CultureInfo clone = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+            DateTimeFormatInfo format = clone.DateTimeFormat;
+            format.MonthNames = ReplaceFirstElement(format.MonthNames, "MonthName");
+            format.MonthGenitiveNames = ReplaceFirstElement(format.MonthGenitiveNames, "MonthName-Genitive");
+            format.AbbreviatedMonthNames = ReplaceFirstElement(format.AbbreviatedMonthNames, "MN");
+            format.AbbreviatedMonthGenitiveNames = ReplaceFirstElement(format.AbbreviatedMonthGenitiveNames, "MN-Gen");
+            return clone;
+        }
+
         private static string[] ReplaceFirstElement(string[] input, string newElement)
         {
-            input[0] = newElement;
-            return input;
+            // Cloning so we don't accidentally *really* change any read-only cultures, to work around a bug in Mono.
+            string[] clone = (string[])input.Clone();
+            clone[0] = newElement;
+            return clone;
         }
 
         public sealed class Data : PatternTestData<LocalDate>

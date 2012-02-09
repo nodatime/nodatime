@@ -36,6 +36,12 @@ namespace NodaTime.Globalization
     [DebuggerStepThrough]
     public class NodaFormatInfo : IFormatProvider, ICloneable
     {
+        // Names that we can use to check for broken Mono behaviour.
+        // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
+        // See http://bugzilla.xamarin.com/show_bug.cgi?id=3279
+        private static readonly string[] ShortInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.Clone();
+        private static readonly string[] LongInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Clone();
+
         #region Patterns and pattern parsers
         private static readonly IPatternParser<Offset> GeneralOffsetPatternParser = new OffsetPatternParser();
         private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser();
@@ -108,8 +114,8 @@ namespace NodaTime.Globalization
             // Turn month names into 1-based read-only lists
             longMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.MonthNames);
             shortMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.AbbreviatedMonthNames);
-            longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, cultureInfo.DateTimeFormat.MonthGenitiveNames);
-            shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, cultureInfo.DateTimeFormat.AbbreviatedMonthGenitiveNames);
+            longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, cultureInfo.DateTimeFormat.MonthGenitiveNames, LongInvariantMonthNames);
+            shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, cultureInfo.DateTimeFormat.AbbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
             longDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.DayNames);
             shortDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.AbbreviatedDayNames);
             eraNamesCache = new Dictionary<Era, IList<string>>();
@@ -142,17 +148,22 @@ namespace NodaTime.Globalization
         /// Checks whether any of the genitive names differ from the non-genitive names, and returns
         /// either a reference to the non-genitive names or a converted list as per ConvertMonthArray.
         /// </summary>
-        private IList<string> ConvertGenitiveMonthArray(IList<string> nonGenitiveNames, string[] bclNames)
+        /// <remarks>
+        /// Mono uses the invariant month names for the genitive month names by default, so we'll assume that
+        /// if we see an invariant name, that *isn't* deliberately a genitive month name. A non-invariant culture
+        /// which decided to have genitive month names exactly matching the invariant ones would be distinctly odd.
+        /// See http://bugzilla.xamarin.com/show_bug.cgi?id=3278 for more details and progress.
+        /// </remarks>
+        private IList<string> ConvertGenitiveMonthArray(IList<string> nonGenitiveNames, string[] bclNames, string[] invariantNames)
         {
-            bool hasGenitive = false;
-            for (int i = 0; i < bclNames.Length && !hasGenitive; i++)
+            for (int i = 0; i < bclNames.Length; i++)
             {
-                if (bclNames[i] != nonGenitiveNames[i + 1])
+                if (bclNames[i] != nonGenitiveNames[i + 1] && bclNames[i] != invariantNames[i])
                 {
-                    hasGenitive = true;
+                    return ConvertMonthArray(bclNames);
                 }
             }
-            return hasGenitive ? ConvertMonthArray(bclNames) : nonGenitiveNames;
+            return nonGenitiveNames;
         }
 
         /// <summary>
