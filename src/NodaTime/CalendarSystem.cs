@@ -23,18 +23,30 @@ using NodaTime.Fields;
 namespace NodaTime
 {
     /// <summary>
-    /// CalendarSystem provides a skeleton implementation for CalendarSystem.
-    /// Many utility methods are defined, but all fields are unsupported.
-    /// <para>
-    /// CalendarSystem is thread-safe and immutable, and all subclasses must be
-    /// as well.
-    /// </para>
+    /// A calendar system maps the non-calendar-specific "local time line" to human concepts
+    /// such as years, months and days.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// Many developers will never need to touch this class, other than to potentially ask a calendar
+    /// how many days are in a particular year/month and the like. Noda Time defaults to using the ISO-8601
+    /// calendar anywhere that a calendar system is required but hasn't been explicitly specified.
+    /// </para>
+    /// <para>
+    /// If you need to obtain a CalendarSystem instance, use one of the static properties or methods in this
+    /// class, such as the Iso property or the GetGregorianCalendar method.
+    /// </para>
+    /// <para>Although this class is abstract, other assemblies cannot derive from it: it contains internal
+    /// abstract methods, referring to internal types. This ensures that all calendar types are genuinely
+    /// immutable and thread-safe, aside from anything else. If you require a calendar system which is not
+    /// currently supported, please file a feature request and we'll see what we can do.
+    /// </para>
+    /// <para>
     /// This class roughly corresponds to Chronology in Joda Time, although it includes
     /// the functionality of Chronology, BaseChronology and AssembledChronology all mashed
     /// together. Unlike Chronology, there's no time zone handling in CalendarSystem - that's
     /// treated entirely separately to calendaring.
+    /// </para>
     /// </remarks>
     public abstract class CalendarSystem
     {
@@ -50,7 +62,7 @@ namespace NodaTime
 
         #region Public factory members for calendars
         /// <summary>
-        /// Returns a calendar system that follows the rules of the ISO8601 standard,
+        /// Returns a calendar system that follows the rules of the ISO-8601 standard,
         /// which is compatible with Gregorian for all modern dates.
         /// </summary>
         /// <remarks>
@@ -74,8 +86,8 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// Although the Gregorian calendar did not exist before 1582 CE, this
-        /// chronology assumes it did, thus it is proleptic. This implementation also
-        /// fixes the start of the year at January 1, and defines the year zero.
+        /// calendar system assumes it did, thus it is proleptic. This implementation also
+        /// fixes the start of the year at January 1.
         /// </remarks>
         /// <param name="minDaysInFirstWeek">The minimum number of days in the first week of the year.
         /// When computing the WeekOfWeekYear and WeekYear properties of a particular date, this is
@@ -89,10 +101,9 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a pure proleptic Julian calendar system, which defines every
-        /// fourth year as leap. This implementation follows the leap year rule
+        /// fourth year as a leap year. This implementation follows the leap year rule
         /// strictly, even for dates before 8 CE, where leap years were actually
-        /// irregular. In the Julian calendar, year zero does not exist: 1 BCE is
-        /// followed by 1 CE.
+        /// irregular.
         /// </summary>
         /// <remarks>
         /// Although the Julian calendar did not exist before 45 BCE, this chronology
@@ -204,15 +215,17 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the name of this calendar system. Each calendar system must have a unique name.
+        /// Gets the name of this calendar system. Each kind of calendar system has a unique name, although this
+        /// does not necessarily provide enough information for round-tripping. (For example, the name of an
+        /// Islamic calendar system does not indicate which kind of leap cycle it uses.)
         /// </summary>
         /// <value>The calendar system name.</value>
         public string Name { get { return name; } }
 
         /// <summary>
-        /// Returns whether the day-of-week field refers to ISO days. If true, types such as LocalDateTime
-        /// can use the IsoDayOfWeek property to avoid using magic numbers. This defaults to true, but can be
-        /// overridden by specific calendars.
+        /// Returns whether the day-of-week field refers to ISO days. If true, types such as <see cref="LocalDateTime" />
+        /// can use the <see cref="IsoDayOfWeek" /> property to avoid using magic numbers.
+        /// This defaults to true, but can be overridden by specific calendars.
         /// </summary>
         public virtual bool UsesIsoDayOfWeek { get { return true; } }
 
@@ -221,6 +234,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="year">The year in which to consider the month</param>
         /// <param name="month">The month to determine the number of days in</param>
+        /// <exception cref="ArgumentOutOfRangeException">The given year / month combination
+        /// is invalid for this calendar.</exception>
         /// <returns>The number of days in the given month and year.</returns>
         public abstract int GetDaysInMonth(int year, int month);
 
@@ -228,22 +243,26 @@ namespace NodaTime
         /// Returns whether or not the given year is a leap year in this calendar.
         /// </summary>
         /// <param name="year">The year to consider.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
+        /// In some cases this may not be thrown whatever value you provide, for example if all years have
+        /// the same months in this calendar. Failure to throw an exception should not be treated as an
+        /// indication that the year is valid.</exception>
         /// <returns>True if the given year is a leap year; false otherwise.</returns>
         public abstract bool IsLeapYear(int year);
 
         /// <summary>
-        /// The minimum valid year within this calendar.
+        /// The minimum valid year (inclusive) within this calendar.
         /// </summary>
         // TODO: Back these by simple fields?
         public abstract int MinYear { get; }
 
         /// <summary>
-        /// The maximum valid year within this calendar.
+        /// The maximum valid year (inclusive) within this calendar.
         /// </summary>
         public abstract int MaxYear { get; }
 
         /// <summary>
-        /// The maximum valid month within this calendar in the given year. It is assumed that
+        /// The maximum valid month (inclusive) within this calendar in the given year. It is assumed that
         /// all calendars start with month 1 and go up to this month number in any valid year.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
@@ -278,7 +297,7 @@ namespace NodaTime
         /// Returns the maximum valid year in the given era.
         /// </summary>
         /// <param name="era">The era in which to find the greatest year</param>
-        /// <returns>The maximum valid year in the given eraera.</returns>
+        /// <returns>The maximum valid year in the given era.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="era"/> is null</exception>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era of this calendar</exception>
         public int GetMaxYearOfEra(Era era)
