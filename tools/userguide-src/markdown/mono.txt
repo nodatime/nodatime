@@ -28,7 +28,7 @@ Noda Time runs on Mono, but with some limitations:
 - If you build Noda Time under Mono but execute it under the
   Microsoft .NET 4 64-bit CLR, you may see exceptions around
   type initializers and `RuntimeHelpers.InitializeArray`. We believe
-  this to be due to a [bug in .NET]()
+  this to be due to a [bug in .NET](http://connect.microsoft.com/VisualStudio/feedback/details/635365)
   which the Mono compiler happens to trigger. We would recommend that
   you use a binary build by the Microsoft C# compiler if you wish
   to run using this CLR.
