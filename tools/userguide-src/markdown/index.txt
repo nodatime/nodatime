@@ -8,10 +8,11 @@ later, please drop a line to the mailing list.
 User guide contents
 -------------------
 
-- [Why does this project exist?][7]
-- [Core concepts][8]
-- [Design principles][9]
-- [Text handling][10]
+- [Why does this project exist?](rationale.html)
+- [Core concepts](concepts.html)
+- [Design principles](design.html)
+- [Text handling](text.html)
+- [Mono support](mono.html)
 
 Resources
 ---------
@@ -30,7 +31,3 @@ offline, it's the offline API docs)
 [4]: http://noda-time.googlecode.com/hg/docs/userguide/index.html
 [5]: http://noda-time.googlecode.com/hg/docs/api/Index.html
 [6]: ../api/Index.html
-[7]: rationale.html
-[8]: concepts.html
-[9]: design.html
-[10]: text.html
