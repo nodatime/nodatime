@@ -1,0 +1,66 @@
+Mono support
+
+[Mono](http://mono-project.com) is an open source implementation of
+the Common Language Infrastructure which runs on various platforms,
+including Windows, Linux and OS X.
+
+Noda Time runs on Mono, but with some limitations:
+
+- Noda Time is not *developed* on Mono, so releases will be tested
+  against it (running all the unit tests), code which isn't part
+  of a release may not work. Please raise an issue on the
+  [tracker page](http://code.google.com/p/noda-time/issues/list) if
+  you come across a breakage like this, and we'll fix it as soon
+  as possible.
+- `TimeZoneInfo` in Mono has some critical flaws in the latest stable
+  Mono release at the time of this writing (2.10.8) - while
+  [`BclTimeZone`](noda-type://NodaTime.TimeZones.BclTimeZone) *may*
+  do the right thing, it may disagree with the results of calling
+  methods directly on the time zone.
+- Some cultures in Mono have standard date/time patterns including
+  "z" for "offset from UTC". These will not display appropriately
+  when used for text formatting in Noda Time, as the "z" is
+  meaningless for local dates and times.
+- Some cultures in Mono have standard date/time patterns which
+  use the abbreviated am/pm designator, but have am/pm designators
+  which are the same when abbreviated. In these cases, parsing
+  is ambiguous.
+- If you build Noda Time under Mono but execute it under the
+  Microsoft .NET 4 64-bit CLR, you may see exceptions around
+  type initializers and `RuntimeHelpers.InitializeArray`. We believe
+  this to be due to a [bug in .NET]()
+  which the Mono compiler happens to trigger. We would recommend that
+  you use a binary build by the Microsoft C# compiler if you wish
+  to run using this CLR.
+
+System requirements
+-------------------
+
+We have tested Mono support using Mono 2.10.5 and 2.10.8. To build
+Noda Time under Linux, you need to install the following packages:
+
+- mono-devel
+- xbuild
+
+To fetch the source code from the main Google Code repository,
+you'll need a Mercurial client.
+
+To run the tests, you'll need
+[NUnit](http://nunit.org/index.php?p=download) version 2.5.10 or
+higher. (The version that comes with stable builds of Mono at the
+time of this writing doesn't support everything used by the unit
+tests of Noda Time.)
+
+Fetching and building
+---------------------
+
+Building is performed with `xbuild`, which needs a couple of properties to help it
+recognize which version of the framework we're using:
+
+    $ hg clone https://code.google.com/p/noda-time/
+    $ cd noda-time/src
+    $ xbuild /p:TargetFrameworkVersion="v3.5" /p:TargetFrameworkProfile="" "NodaTime Mono.sln"
+    $ mono /path/to/nunit-console.exe NodaTime.Test/bin/Debug/NodaTime.Test.dll
+    
+To build the release configuration (which also builds the XML documentation file) use
+`/p:Configuration=Release` in addition to the existing properties when running `xbuild`.
