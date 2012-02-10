@@ -33,8 +33,8 @@ namespace NodaTime
     /// calendar anywhere that a calendar system is required but hasn't been explicitly specified.
     /// </para>
     /// <para>
-    /// If you need to obtain a CalendarSystem instance, use one of the static properties or methods in this
-    /// class, such as the Iso property or the GetGregorianCalendar method.
+    /// If you need to obtain a <see cref="CalendarSystem" /> instance, use one of the static properties or methods in this
+    /// class, such as the <see cref="Iso" /> property or the <see cref="GetGregorianCalendar(int)" /> method.
     /// </para>
     /// <para>Although this class is abstract, other assemblies cannot derive from it: it contains internal
     /// abstract methods, referring to internal types. This ensures that all calendar types are genuinely
@@ -336,7 +336,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// See <see cref="GetMinYearOfEra(Era)"/> - but this uses a pre-validated index.
+        /// See <see cref="GetMinYearOfEra(NodaTime.Calendars.Era)" /> - but this uses a pre-validated index.
         /// This default implementation returns 1, but can be overridden by derived classes.
         /// </summary>
         internal virtual int GetMinYearOfEra(int eraIndex)
@@ -345,7 +345,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// See <see cref="GetMinYearOfEra(Era)"/> - but this uses a pre-validated index.
+        /// See <see cref="GetMaxYearOfEra(Era)"/> - but this uses a pre-validated index.
         /// This default implementation returns the maximum year for this calendar, which is
         /// a valid implementation for single-era calendars.
         /// </summary>
