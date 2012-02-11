@@ -37,7 +37,7 @@ is ambiguous.</li>
 <li>If you build Noda Time under Mono but execute it under the
 Microsoft .NET 4 64-bit CLR, you may see exceptions around
 type initializers and <code>RuntimeHelpers.InitializeArray</code>. We believe
-this to be due to a <a href="">bug in .NET</a>
+this to be due to a <a href="http://connect.microsoft.com/VisualStudio/feedback/details/635365">bug in .NET</a>
 which the Mono compiler happens to trigger. We would recommend that
 you use a binary build by the Microsoft C# compiler if you wish
 to run using this CLR.</li>

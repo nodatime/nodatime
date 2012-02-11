@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Date and Time Arithmetic in Noda Time</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Date and Time Arithmetic in Noda Time</h1>
+    <p>There are two types of arithmetic in Noda Time: arithmetic on the
+time line (in some sense "absolute" arithmetic), and calendrical arithmetic.
+Noda Time deliberately separates the two, with the aim of avoiding
+subtle bugs where developers may be tempted to mix concepts inappropriately.</p>
+
+<h2>Time Line Arithmetic</h2>
+
+<p>The <a href="../api/html/T_NodaTime_Instant.htm"><code>Instant</code></a> and
+<a href="../api/html/T_NodaTime_ZonedDateTime.htm"><code>ZonedDateTime</code></a> types both unambiguously
+refer to a point in time. We can add a length of time to that point to get
+another point in time - but only if it's a truly fixed length of time, such as
+"3 minutes". While a minute is a fixed length of time, a month isn't - so
+the concept of adding "3 months" to an instant makes no sense.</p>
+
+<p>These "fixed lengths of time" are represented in Noda Time with the
+<a href="../api/html/T_NodaTime_Duration.htm"><code>Duration</code></a> type, and they can be
+added to either an <code>Instant</code> or <code>ZonedDateTime</code> using either the <code>+</code> operator
+or <code>Plus</code> methods:</p>
+
+<pre class="prettyprint"><code>Duration duration = Duration.FromMinutes(3);
+Instant now = SystemClock.SystemNow;    
+Instant future = now + duration; // Or now.Plus(duration)
+
+ZonedDateTime nowInIsoUtc = now.InIsoUtc();
+ZonedDateTime thenInIsoUtc = nowInIsoUtc + duration;
+</code></pre>
+
+<p>(There are also static <code>Add</code> and <code>Subtract</code> methods, the <code>-</code> operator and
+the instance <code>Minus</code> method on both <code>Instant</code> and <code>ZonedDateTime</code>.)</p>
+
+<p>Time line arithmetic is pretty simple, except you might not <em>always</em> get
+what you expect when you add time to a <code>ZonedDateTime</code>, due to daylight savings:</p>
+
+<pre class="prettyprint"><code>DateTimeZone london = DateTimeZone.ForId("Europe/London");
+// 12:45am on March 27th 2012
+LocalDateTime local = new LocalDateTime(2012, 3, 27, 0, 45, 00);
+ZonedDateTime before = london.AtExactly(local);
+ZonedDateTime after = before + Duration.FromMinutes(20);
+</code></pre>
+
+<p>We start off with a <em>local</em> time of 12.45am. The time that we add is effectively
+"experienced" time - as if we'd simply waited twenty minutes. However, at 1am on that day,
+the clocks in the Europe/London time zone go forward by an hour - so we end up with a local
+time of 2:05am, not the 1:05am you might have expected.</p>
+
+<p>The reverse effect can happen at the other daylight saving transition, when clocks go backward
+instead of forward: so twenty minutes after 1:45am could easily be 1:05am! So even though we
+have a concept of "local time" in <code>ZonedDateTime</code>, any arithmetic performed on it is computed
+using the underlying time line.</p>
+
+<h2>Calendrical Arithmetic</h2>
+
+<p>(TBD)</p>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="http://noda-time.blogspot.com/2010/11/joys-of-datetime-arithmetic.html">The joys of date/time arithmetic</a></li>
+</ul>
+
+  </body>
+</html>
