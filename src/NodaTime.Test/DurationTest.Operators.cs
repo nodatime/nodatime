@@ -55,11 +55,12 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void AddMethod_Equivalence()
+        public void OperatorPlus_MethodEquivalents()
         {
             Duration x = new Duration(100);
             Duration y = new Duration(200);
             Assert.AreEqual(x + y, Duration.Add(x, y));
+            Assert.AreEqual(x + y, x.Plus(y));
         }
         #endregion
 
@@ -78,6 +79,15 @@ namespace NodaTime.Test
             Assert.AreEqual(2999999L, (threeMillion - Duration.One).Ticks, "3,000,000 - 1");
             Assert.AreEqual(2L, (Duration.One - Duration.NegativeOne).Ticks, "1 - (-1)");
             Assert.AreEqual(-50000001L, (negativeFiftyMillion - Duration.One).Ticks, "-50,000,000 - 1");
+        }
+
+        [Test]
+        public void OperatorMinus_MethodEquivalents()
+        {
+            Duration x = new Duration(100);
+            Duration y = new Duration(200);
+            Assert.AreEqual(x - y, Duration.Subtract(x, y));
+            Assert.AreEqual(x - y, x.Minus(y));
         }
         #endregion
 
@@ -99,6 +109,12 @@ namespace NodaTime.Test
         {
             Assert.AreEqual(1, (threeMillion / 2000000).Ticks, "3000000 / 2000000");
             Assert.AreEqual(-1, (threeMillion / -2000000).Ticks, "3000000 / -2000000");
+        }
+
+        [Test]
+        public void OperatorDivision_MethodEquivalent()
+        {
+            Assert.AreEqual(threeMillion / 2000000, Duration.Divide(threeMillion, 2000000));
         }
         #endregion
 
@@ -127,6 +143,19 @@ namespace NodaTime.Test
             Assert.AreEqual(threeMillion, threeMillion * 1, "3000000 * 1");
             Assert.AreEqual(Duration.Zero, Duration.Zero * 1, "0 * 1");
             Assert.AreEqual(negativeFiftyMillion, negativeFiftyMillion * 1, "-50000000 * 1");
+        }
+
+        [Test]
+        public void Commutation()
+        {
+            Assert.AreEqual(threeMillion * 5, 5 * threeMillion);
+        }
+
+        [Test]
+        public void OperatorMultiplication_MethodEquivalents()
+        {
+            Assert.AreEqual(new Duration(-50000) * 1000, Duration.Multiply(new Duration(-50000), 1000));
+            Assert.AreEqual(1000 * new Duration(-50000), Duration.Multiply(1000, new Duration(-50000)));
         }
         #endregion
     }
