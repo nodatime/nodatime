@@ -326,8 +326,15 @@ namespace NodaTime.Test
             Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.One).Ticks, "-50,000,000 + 1");
         }
 
+        // Smoke tests for methods which simply delegate to the + operator.
+        [Test]
+        public void OperatorPlus_Equivalents()
+        {
+            Assert.AreEqual(threeMillion + Duration.One, threeMillion.Plus(Duration.One));
+            Assert.AreEqual(threeMillion + Duration.One, Instant.Add(threeMillion, Duration.One));
+        }
+
         // The Plus(Offset) method *would* be an operator, but can't be as LocalInstant is internal.
-        // TODO: Instant tests need a certain amount of work :)
         [Test]
         public void OperatorPlusOffset_Zero_IsNeutralElement()
         {
@@ -337,21 +344,48 @@ namespace NodaTime.Test
         }
         #endregion
 
-        #region operator -
+        #region operator - (duration)
         [Test]
-        public void OperatorMinusDuration_Zero_IsNeutralElement()
+        public void OperatorMinusDuration()
+        {
+            Assert.AreEqual(threeMillion, threeMillion - Duration.Zero);
+            Assert.AreEqual(2999999L, (threeMillion - Duration.One).Ticks, "3,000,000 - 1");
+            Assert.AreEqual(2L, (one - Duration.FromTicks(-1)).Ticks, "1 - (-1)");
+            Assert.AreEqual(-50000001L, (negativeFiftyMillion - Duration.One).Ticks, "-50,000,000 - 1");
+        }
+
+        // Smoke tests for methods which simply delegate to the - operator.
+        [Test]
+        public void OperatorMinus_Duration_Equivalents()
+        {
+            Assert.AreEqual(threeMillion - Duration.One, threeMillion.Minus(Duration.One));
+            Assert.AreEqual(threeMillion - Duration.One, Instant.Subtract(threeMillion, Duration.One));
+        }
+        #endregion
+
+        #region operator - (instant)
+        [Test]
+        public void OperatorMinusInstant_NonZero()
+        {
+            Assert.AreEqual(2999999L, (threeMillion - one).Ticks, "3,000,000 - 1");
+            Assert.AreEqual(2L, (one - negativeOne).Ticks, "1 - (-1)");
+            Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).Ticks, "-50,000,000 - 1");
+        }
+
+        [Test]
+        public void OperatorMinusInstant_UnixEpoch_IsNeutralElement()
         {
             Assert.AreEqual(0L, (Instant.UnixEpoch - Instant.UnixEpoch).Ticks, "0 - 0");
             Assert.AreEqual(1L, (one - Instant.UnixEpoch).Ticks, "1 - 0");
             Assert.AreEqual(-1L, (Instant.UnixEpoch - one).Ticks, "0 - 1");
         }
 
+        // Smoke tests for methods which simply delegate to the - operator.
         [Test]
-        public void OperatorMinusDuration_NonZero()
+        public void OperatorMinus_Instant_Equivalents()
         {
-            Assert.AreEqual(2999999L, (threeMillion - one).Ticks, "3,000,000 - 1");
-            Assert.AreEqual(2L, (one - negativeOne).Ticks, "1 - (-1)");
-            Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).Ticks, "-50,000,000 - 1");
+            Assert.AreEqual(threeMillion - one, threeMillion.Minus(one));
+            Assert.AreEqual(threeMillion - one, Instant.Subtract(threeMillion, one));
         }
         #endregion
 

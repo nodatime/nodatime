@@ -187,7 +187,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Adds a duration to an instant. Friendly alternative to <c>operator+()</c>.
+        /// Adds a duration to an instant. Friendly alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -195,6 +195,16 @@ namespace NodaTime
         public static Instant Add(Instant left, Duration right)
         {
             return left + right;
+        }
+
+        /// <summary>
+        /// Returns the result of adding a duration to this instant, for a fluent alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="duration">The duration to add</param>
+        /// <returns>A new <see cref="Instant" /> representing the result of the addition.</returns>
+        public Instant Plus(Duration duration)
+        {
+            return this + duration;
         }
 
         /// <summary>
@@ -209,7 +219,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Implements the operator - (subtraction) for <see cref="Instant" /> - <see cref="Duration" />.
+        /// Implements the operator - (subtraction) for <see cref="Instant" /> - <see cref="Duration" />.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -231,7 +241,17 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Subtracts a duration from an instant. Friendly alternative to <c>operator-()</c>.
+        /// Returns the result of subtracting another instant from this one, for a fluent alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="other">The other instant to subtract</param>
+        /// <returns>A new <see cref="Instant" /> representing the result of the subtraction.</returns>
+        public Duration Minus(Instant other)
+        {
+            return this - other;
+        }
+
+        /// <summary>
+        /// Subtracts a duration from an instant. Friendly alternative to <c>operator-()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -239,6 +259,16 @@ namespace NodaTime
         public static Instant Subtract(Instant left, Duration right)
         {
             return left - right;
+        }
+
+        /// <summary>
+        /// Returns the result of subtracting a duration from this instant, for a fluent alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="duration">The duration to subtract</param>
+        /// <returns>A new <see cref="Instant" /> representing the result of the subtraction.</returns>
+        public Instant Minus(Duration duration)
+        {
+            return this - duration;
         }
 
         /// <summary>
