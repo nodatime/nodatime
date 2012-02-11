@@ -56,6 +56,14 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void ObjectEquals_ToNonInstant_IsFalse()
+        {
+            object oOne = one;
+
+            Assert.False(oOne.Equals("foo"));
+        }
+
+        [Test]
         public void ObjectEquals_ToSelf_IsTrue()
         {
             object oOne = one;
