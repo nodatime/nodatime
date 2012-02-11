@@ -311,6 +311,17 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the result of adding a duration to this zoned date and time, for a fluent alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="duration">The duration to add</param>
+        /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the addition.</returns>
+        public ZonedDateTime Plus(Duration duration)
+        {
+            return this + duration;
+        }
+
+
+        /// <summary>
         /// Subtracts a duration from zoned date and time. Friendly alternative to <c>operator-()</c>.
         /// </summary>
         /// <param name="zonedDateTime">The value to subtract the duration from.</param>
@@ -319,6 +330,16 @@ namespace NodaTime
         public static ZonedDateTime Subtract(ZonedDateTime zonedDateTime, Duration duration)
         {
             return zonedDateTime - duration;
+        }
+
+        /// <summary>
+        /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="duration">The duration to subtract</param>
+        /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the subtraction.</returns>
+        public ZonedDateTime Minus(Duration duration)
+        {
+            return this - duration;
         }
 
         /// <summary>

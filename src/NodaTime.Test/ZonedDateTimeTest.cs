@@ -125,6 +125,14 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Add_MethodEquivalents()
+        {
+            ZonedDateTime before = SampleZone.AtExactly(new LocalDateTime(2011, 6, 12, 15, 0));
+            Assert.AreEqual(before + Duration.OneDay, ZonedDateTime.Add(before, Duration.OneDay));
+            Assert.AreEqual(before + Duration.OneDay, before.Plus(Duration.OneDay));
+        }
+
+        [Test]
         public void Subtract_AroundTimeZoneTransition()
         {
             // After the transition at 4pm...
@@ -137,6 +145,15 @@ namespace NodaTime.Test
             Assert.AreEqual(beforeExpected, beforeSubtract);
             Assert.AreEqual(beforeExpected, beforeOperator);
         }
+
+        [Test]
+        public void Subtract_MethodEquivalents()
+        {
+            ZonedDateTime after = SampleZone.AtExactly(new LocalDateTime(2011, 6, 13, 16, 0));
+            Assert.AreEqual(after - Duration.OneDay, ZonedDateTime.Subtract(after, Duration.OneDay));
+            Assert.AreEqual(after - Duration.OneDay, after.Minus(Duration.OneDay));
+        }
+
 
         [Test]
         public void WithZone()
