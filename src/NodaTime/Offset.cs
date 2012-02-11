@@ -198,7 +198,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the result of adding another Offset to this one, for a fluent alternative to <c>operator_()</c>.
+        /// Returns the result of adding another Offset to this one, for a fluent alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="other">The offset to add</param>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>

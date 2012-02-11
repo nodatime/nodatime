@@ -163,7 +163,7 @@ namespace NodaTime
 
         #region Operators
         /// <summary>
-        ///   Implements the operator + (addition) for <see cref="Instant" /> + <see cref="Duration" />.
+        /// Implements the operator + (addition) for <see cref="Instant" /> + <see cref="Duration" />.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -174,10 +174,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Adds the given offset to this instant, to return a <see cref="LocalInstant" />.
+        /// Adds the given offset to this instant, to return a <see cref="LocalInstant" />.
         /// </summary>
         /// <remarks>
-        ///   This was previously an operator+ implementation, but operators can't be internal.
+        /// This was previously an operator+ implementation, but operators can't be internal.
         /// </remarks>
         /// <param name="offset">The right hand side of the operator.</param>
         /// <returns>A new <see cref="LocalInstant" /> representing the sum of the given values.</returns>
