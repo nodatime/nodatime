@@ -193,7 +193,7 @@ namespace NodaTime
         // TODO: Assert no units as large a day
         /// <summary>
         /// Creates a new local time by adding a period to an existing time. The period must not contain
-        /// any fields as large as a day or larger.
+        /// any date-related units (days etc) with non-zero values.
         /// </summary>
         /// <param name="time">The time to add the period to</param>
         /// <param name="period">The period to add</param>
@@ -206,7 +206,7 @@ namespace NodaTime
         // TODO: Assert no units as large as a day
         /// <summary>
         /// Creates a new local time by subtracting a period from an existing time. The period must not contain
-        /// any fields as large as a day or larger.
+        /// any date-related units (days etc) with non-zero values.
         /// </summary>
         /// <param name="time">The time to subtract the period from</param>
         /// <param name="period">The period to subtract</param>

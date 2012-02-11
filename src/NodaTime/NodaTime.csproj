@@ -92,6 +92,7 @@
     <Compile Include="Fields\ImprecisePeriodField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
+    <Compile Include="PeriodUnits.cs" />
     <Compile Include="Properties\PatternResources.Designer.cs">
       <DependentUpon>PatternResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -166,9 +167,7 @@
     <Compile Include="Calendars\BasicCalendarSystem.cs" />
     <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
     <Compile Include="Calendars\GregorianCalendarSystem.cs" />
-    <Compile Include="Fields\PeriodFieldValue.cs" />
     <Compile Include="Period.cs" />
-    <Compile Include="PeriodType.cs" />
     <Compile Include="Properties\Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
