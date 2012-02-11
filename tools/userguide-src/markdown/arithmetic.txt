@@ -1,0 +1,59 @@
+Date and Time Arithmetic in Noda Time
+
+There are two types of arithmetic in Noda Time: arithmetic on the
+time line (in some sense "absolute" arithmetic), and calendrical arithmetic.
+Noda Time deliberately separates the two, with the aim of avoiding
+subtle bugs where developers may be tempted to mix concepts inappropriately.
+
+Time Line Arithmetic
+--------------------
+
+The [`Instant`](noda-type://NodaTime.Instant) and
+[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) types both unambiguously
+refer to a point in time. We can add a length of time to that point to get
+another point in time - but only if it's a truly fixed length of time, such as
+"3 minutes". While a minute is a fixed length of time, a month isn't - so
+the concept of adding "3 months" to an instant makes no sense.
+
+These "fixed lengths of time" are represented in Noda Time with the
+[`Duration`](noda-type://NodaTime.Duration) type, and they can be
+added to either an `Instant` or `ZonedDateTime` using either the `+` operator
+or `Plus` methods:
+
+    Duration duration = Duration.FromMinutes(3);
+    Instant now = SystemClock.SystemNow;    
+    Instant future = now + duration; // Or now.Plus(duration)
+    
+    ZonedDateTime nowInIsoUtc = now.InIsoUtc();
+    ZonedDateTime thenInIsoUtc = nowInIsoUtc + duration;
+
+(There are also static `Add` and `Subtract` methods, the `-` operator and
+the instance `Minus` method on both `Instant` and `ZonedDateTime`.)
+
+Time line arithmetic is pretty simple, except you might not *always* get
+what you expect when you add time to a `ZonedDateTime`, due to daylight savings:
+
+    DateTimeZone london = DateTimeZone.ForId("Europe/London");
+    // 12:45am on March 27th 2012
+    LocalDateTime local = new LocalDateTime(2012, 3, 27, 0, 45, 00);
+    ZonedDateTime before = london.AtExactly(local);
+    ZonedDateTime after = before + Duration.FromMinutes(20);
+    
+We start off with a *local* time of 12.45am. The time that we add is effectively
+"experienced" time - as if we'd simply waited twenty minutes. However, at 1am on that day,
+the clocks in the Europe/London time zone go forward by an hour - so we end up with a local
+time of 2:05am, not the 1:05am you might have expected.
+
+The reverse effect can happen at the other daylight saving transition, when clocks go backward
+instead of forward: so twenty minutes after 1:45am could easily be 1:05am! So even though we
+have a concept of "local time" in `ZonedDateTime`, any arithmetic performed on it is computed
+using the underlying time line.
+
+Calendrical Arithmetic
+----------------------
+
+(TBD)
+
+See also:
+
+- [The joys of date/time arithmetic](http://noda-time.blogspot.com/2010/11/joys-of-datetime-arithmetic.html)
