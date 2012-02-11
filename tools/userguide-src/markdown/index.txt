@@ -11,6 +11,7 @@ User guide contents
 - [Why does this project exist?](rationale.html)
 - [Core concepts](concepts.html)
 - [Design principles](design.html)
+- [Arithmetic](arithmetic.html)
 - [Text handling](text.html)
 - [Mono support](mono.html)
 
