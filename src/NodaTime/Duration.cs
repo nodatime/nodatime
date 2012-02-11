@@ -247,6 +247,16 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the result of adding another duration to this one, for a fluent alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="other">The duration to add</param>
+        /// <returns>A new <see cref="Duration" /> representing the result of the addition.</returns>
+        public Duration Plus(Duration other)
+        {
+            return this + other;
+        }
+
+        /// <summary>
         /// Implements the operator - (subtraction).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
@@ -266,6 +276,16 @@ namespace NodaTime
         public static Duration Subtract(Duration left, Duration right)
         {
             return left - right;
+        }
+
+        /// <summary>
+        /// Returns the result of subtracting another duration from this one, for a fluent alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="other">The duration to subtract</param>
+        /// <returns>A new <see cref="Duration" /> representing the result of the subtraction.</returns>
+        public Duration Minus(Duration other)
+        {
+            return this - other;
         }
 
         /// <summary>
@@ -472,26 +492,6 @@ namespace NodaTime
             return Ticks == other.Ticks;
         }
         #endregion
-
-        /// <summary>
-        /// Converts this duration to an <see cref="Interval"/> starting at the specified instant.
-        /// </summary>
-        /// <param name="start">The instant to start the interval at</param>
-        /// <returns>An <see cref="Interval"/> starting at the specified instant</returns>
-        public Interval ToIntervalFrom(Instant start)
-        {
-            return new Interval(start, start + this);
-        }
-
-        /// <summary>
-        /// Converts this duration to an <see cref="Interval"/> ending at the specified instant.
-        /// </summary>
-        /// <param name="end">The instant to end the interval at</param>
-        /// <returns>An <see cref="Interval"/> ending at the specified instant</returns>
-        public Interval ToIntervalTo(Instant end)
-        {
-            return new Interval(end - this, end);
-        }
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of standard weeks made
