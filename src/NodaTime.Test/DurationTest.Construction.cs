@@ -60,7 +60,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Factory_StandardMinutes()
+        public void FromMinutes()
         {
             Duration test = Duration.FromMinutes(1);
             Assert.AreEqual(1 * NodaConstants.TicksPerMinute, test.Ticks);
@@ -73,7 +73,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Factory_StandardSeconds()
+        public void FromSeconds()
         {
             Duration test = Duration.FromSeconds(1);
             Assert.AreEqual(1 * NodaConstants.TicksPerSecond, test.Ticks);
@@ -86,7 +86,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Factory_Milliseconds()
+        public void FromMilliseconds()
         {
             Duration test = Duration.FromMilliseconds(1);
             Assert.AreEqual(1 * NodaConstants.TicksPerMillisecond, test.Ticks);
@@ -95,6 +95,19 @@ namespace NodaTime.Test
             Assert.AreEqual(2 * NodaConstants.TicksPerMillisecond, test.Ticks);
 
             test = Duration.FromMilliseconds(0);
+            Assert.AreEqual(Duration.Zero, test);
+        }
+
+        [Test]
+        public void FromTicks()
+        {
+            Duration test = Duration.FromTicks(1);
+            Assert.AreEqual(1, test.Ticks);
+
+            test = Duration.FromTicks(2);
+            Assert.AreEqual(2, test.Ticks);
+
+            test = Duration.FromTicks(0);
             Assert.AreEqual(Duration.Zero, test);
         }
 
