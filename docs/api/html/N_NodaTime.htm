@@ -8,12 +8,9 @@
             Exception thrown to indicate that the specified local time occurs twice
             in a particular time zone due to daylight saving time changes.    
             </div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_NodaTime_CalendarSystem.htm">CalendarSystem</a></td><td><div class="summary">
-            CalendarSystem provides a skeleton implementation for CalendarSystem.
-            Many utility methods are defined, but all fields are unsupported.
-            <p>
-            CalendarSystem is thread-safe and immutable, and all subclasses must be
-            as well.
-            </p></div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a></td><td><div class="summary">
+            A calendar system maps the non-calendar-specific "local time line" to human concepts
+            such as years, months and days.
+            </div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a></td><td><div class="summary">
             Represents a time zone - a mapping between UTC and local time.
             </div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_NodaTime_NodaConstants.htm">NodaConstants</a></td><td><div class="summary">
             Original name: NodaConstants.
@@ -26,8 +23,6 @@
             Represents a period of time expressed in human chronological terms: hours, days,
             weeks, months and so on. All implementations in Noda Time are immutable, and return fields
             in descending size order: hours before minutes, for example.
-            </div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_NodaTime_PeriodType.htm">PeriodType</a></td><td><div class="summary">
-            Controls a period implementation by specifying which period fields are to be used.
             </div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_NodaTime_SkippedTimeException.htm">SkippedTimeException</a></td><td><div class="summary">
             Exception thrown to indicate that the specified local time doesn't
             exist in a particular time zone due to daylight saving time changes.    
@@ -55,6 +50,8 @@
               An offset from UTC in milliseconds. A positive value means that the local time is
               ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
               UTC (e.g. for America).
+            </div></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" alt="Public structure" title="Public structure" /></td><td><a href="T_NodaTime_Period_UnitValue.htm">Period<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>UnitValue</a></td><td><div class="summary">
+            A simple combination of a single unit (year, month, hour, minute etc) with a 64-bit integer value.
             </div></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" alt="Public structure" title="Public structure" /></td><td><a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a></td><td><div class="summary">
             A <a href="P_NodaTime_ZonedDateTime_LocalDateTime.htm">LocalDateTime</a> in a specific time zone and with a particular offset to distinguish between otherwise-ambiguous
             instants. A ZonedDateTime is global, in that it maps to a single <a href="T_NodaTime_Instant.htm">Instant</a>.
@@ -68,6 +65,10 @@
             Equates the days of the week with their numerical value according to
             ISO-8601. This corresponds with System.DayOfWeek except for Sunday, which
             is 7 in the ISO numbering and 0 in System.DayOfWeek.
+            </div></td></tr><tr data="enumeration; public"><td><img src="../icons/pubenumeration.gif" alt="Public enumeration" title="Public enumeration" /></td><td><a href="T_NodaTime_PeriodUnits.htm">PeriodUnits</a></td><td><div class="summary">
+            The units within a <a href="T_NodaTime_Period.htm">Period</a>. When a period is created to find the difference between two local values,
+            the caller may specify which units are required - for example, you can ask for the difference between two dates
+            in "years and weeks". Units are always applied largest-first in arithmetic.
             </div></td></tr></table></div></div><div id="footer"><div class="footerLine"><img width="100%" height="3px" src="../icons/footer.gif" alt="Footer image" title="Footer image" /></div><A NAME="feedback"></A><span id="fb" class="feedbackcss"></span><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda-Time">Noda-Time Google Groups</a><script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
