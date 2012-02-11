@@ -442,7 +442,8 @@ namespace NodaTime
         /// <returns>The resulting local date and time</returns>
         public LocalDateTime Plus(Period period)
         {
-            return new LocalDateTime(calendar.Add(period, localInstant, 1), calendar);
+            Preconditions.CheckNotNull(period, "period");
+            return new LocalDateTime(period.AddTo(localInstant, calendar, 1), calendar);
         }
 
         /// <summary>
@@ -465,7 +466,8 @@ namespace NodaTime
         /// <returns>The resulting local date and time</returns>
         public LocalDateTime Minus(Period period)
         {
-            return new LocalDateTime(calendar.Add(period, localInstant, -1), calendar);
+            Preconditions.CheckNotNull(period, "period");
+            return new LocalDateTime(period.AddTo(localInstant, calendar, -1), calendar);
         }
 
         /// <summary>

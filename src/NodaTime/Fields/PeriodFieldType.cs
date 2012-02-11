@@ -19,7 +19,7 @@ namespace NodaTime.Fields
     /// <summary>
     /// Indicates the type of a value represented by a period field.
     /// </summary>
-    public enum PeriodFieldType
+    internal enum PeriodFieldType
     {
         /// <summary>
         /// PeriodFieldType for eras.

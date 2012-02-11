@@ -37,33 +37,90 @@ namespace NodaTime
     /// and skipped date/time values becoming a problem within a series of calculations; instead,
     /// these can be considered just once, at the point of conversion to a ZonedDateTime.
     /// </remarks>
-    public sealed class Period : IEnumerable<PeriodFieldValue>, IEquatable<Period>
+    public sealed class Period : IEnumerable<Period.UnitValue>, IEquatable<Period>
     {
-        private readonly PeriodType periodType;
+        /// <summary>
+        /// A simple combination of a single unit (year, month, hour, minute etc) with a 64-bit integer value.
+        /// </summary>
+        public struct UnitValue
+        {
+            private readonly long value;
+            private readonly PeriodUnits unit;
+
+            /// <summary>
+            /// The magnitude of the value, e.g. the number of months in a period.
+            /// </summary>
+            public long Value { get { return value; } }
+
+            /// <summary>
+            /// The single unit (Month, Year etc) that this value applies to.
+            /// </summary>
+            public PeriodUnits Unit { get { return unit; } }
+
+            /// <summary>
+            /// Constructs a 
+            /// </summary>
+            /// <param name="unit">The unit of the new unit/value pair. Must be a single unit rather than a combination of multiple units.</param>
+            /// <param name="value">The value of the new unit/value pair.</param>
+            public UnitValue(PeriodUnits unit, long value)
+            {
+                if (Period.GetSingleFieldIndex(unit) == -1)
+                {
+                    throw new ArgumentOutOfRangeException("unit", "Value " + unit + " does not represent a single unit");
+                }
+                this.unit = unit;
+                this.value = value;
+            }
+        }
+
+        /// <summary>
+        /// The number of values in an array for a compound period. This is always the same, representing
+        /// all possible units.
+        /// </summary>
+        private const int ValuesArraySize = 9;
+
+        /// <summary>
+        /// The units contained within this period.
+        /// </summary>
+        private readonly PeriodUnits units;
+
+        /// <summary>
+        /// The single value for single-valued periods. Ignored for compound periods.
+        /// </summary>
+        private readonly long singleValue;
+
+        /// <summary>
+        /// All values for compound periods, or null for single-valued periods.
+        /// </summary>
         private readonly long[] values;
 
         /// <summary>
         /// Creates a new period with the given array without copying it. The array contents must
         /// not be changed after the value has been constructed - which is why this method is private.
         /// </summary>
-        /// <param name="periodType">Type of this period, describing which fields are present</param>
+        /// <param name="units">The units within this period, describing which fields are present</param>
         /// <param name="values">Values for each field in the period type</param>
-        private Period(PeriodType periodType, long[] values)
+        private Period(PeriodUnits units, long[] values)
         {
             this.values = values;
-            this.periodType = periodType;
+            this.units = units;
+            this.singleValue = 0;
         }
 
         /// <summary>
-        /// Returns the type of this period, which describes the fields within this period.
+        /// Createds a new period with the given single value. The unit is assumed to be single.
         /// </summary>
-        public PeriodType PeriodType { get { return periodType; } }
-
-        private static Period CreateSingleFieldPeriod(PeriodType periodType, long value)
+        private Period(PeriodUnits periodUnit, long value)
         {
-            long[] values = { value };
-            return new Period(periodType, values);
+            this.values = null;
+            this.units = periodUnit;
+            this.singleValue = value;
         }
+
+        /// <summary>
+        /// Returns the units within this period, such as "year, month, day" or "hour".
+        /// </summary>
+        public PeriodUnits Units { get { return units; } }
 
         /// <summary>
         /// Creates a period representing the specified number of years.
@@ -72,7 +129,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of years.</returns>
         public static Period FromYears(long years)
         {
-            return CreateSingleFieldPeriod(PeriodType.Years, years);
+            return new Period(PeriodUnits.Year, years);
         }
 
         /// <summary>
@@ -82,7 +139,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of months.</returns>
         public static Period FromMonths(long months)
         {
-            return CreateSingleFieldPeriod(PeriodType.Months, months);
+            return new Period(PeriodUnits.Month, months);
         }
 
         /// <summary>
@@ -92,7 +149,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of days.</returns>
         public static Period FromDays(long days)
         {
-            return CreateSingleFieldPeriod(PeriodType.Days, days);
+            return new Period(PeriodUnits.Day, days);
         }
 
         /// <summary>
@@ -102,7 +159,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of hours.</returns>
         public static Period FromHours(long hours)
         {
-            return CreateSingleFieldPeriod(PeriodType.Hours, hours);
+            return new Period(PeriodUnits.Hour, hours);
         }
 
         /// <summary>
@@ -112,7 +169,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of minutes.</returns>
         public static Period FromMinutes(long minutes)
         {
-            return CreateSingleFieldPeriod(PeriodType.Minutes, minutes);
+            return new Period(PeriodUnits.Minute, minutes);
         }
 
         /// <summary>
@@ -122,7 +179,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of seconds.</returns>
         public static Period FromSeconds(long seconds)
         {
-            return CreateSingleFieldPeriod(PeriodType.Seconds, seconds);
+            return new Period(PeriodUnits.Second, seconds);
         }
 
         /// <summary>
@@ -132,7 +189,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of milliseconds.</returns>
         public static Period FromMillseconds(long milliseconds)
         {
-            return CreateSingleFieldPeriod(PeriodType.Milliseconds, milliseconds);
+            return new Period(PeriodUnits.Millisecond, milliseconds);
         }
 
         /// <summary>
@@ -142,7 +199,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of ticks.</returns>
         public static Period FromTicks(long ticks)
         {
-            return CreateSingleFieldPeriod(PeriodType.Ticks, ticks);
+            return new Period(PeriodUnits.Tick, ticks);
         }
 
         /// <summary>
@@ -154,23 +211,31 @@ namespace NodaTime
         /// <returns>The sum of the two periods.</returns>
         public static Period operator +(Period left, Period right)
         {
-            if (left == null)
+            Preconditions.CheckNotNull(left, "left");
+            Preconditions.CheckNotNull(right, "right");
+            long[] sum = new long[ValuesArraySize];
+            left.AddValuesTo(sum);
+            right.AddValuesTo(sum);
+            return new Period(PeriodUnits.AllUnits, sum);
+        }
+
+        /// <summary>
+        /// Adds all the values in this period to the given array of values (which is assumed to be of the right length).
+        /// </summary>
+        private void AddValuesTo(long[] newValues)
+        {
+            if (values == null)
             {
-                throw new ArgumentNullException("left");
+                int index = GetSingleFieldIndex(units);
+                newValues[index] += singleValue;
             }
-            if (right == null)
+            else
             {
-                throw new ArgumentNullException("right");
+                for (int i = 0; i < values.Length; i++)
+                {
+                    newValues[i] += values[i];
+                }
             }
-            PeriodType all = PeriodType.AllFields;
-            long[] newValues = new long[all.Size];
-            // TODO: Make this a lot faster :)
-            for (int i = 0; i < all.Size; i++)
-            {
-                PeriodFieldType fieldType = all[i];
-                newValues[i] = left[fieldType] + right[fieldType];
-            }
-            return new Period(PeriodType.AllFields, newValues);
         }
 
         /// <summary>
@@ -182,23 +247,17 @@ namespace NodaTime
         /// <returns>The result of subtracting all the values in the second operand from the values in the first.</returns>
         public static Period operator -(Period minuend, Period subtrahend)
         {
-            if (minuend == null)
+            Preconditions.CheckNotNull(minuend, "minuend");
+            Preconditions.CheckNotNull(subtrahend, "subtrahend");
+            long[] sum = new long[ValuesArraySize];
+            subtrahend.AddValuesTo(sum);
+            // Not terribly efficient, but it's only 9 values...
+            for (int i = 0; i < sum.Length; i++)
             {
-                throw new ArgumentNullException("minuend");
+                sum[i] = -sum[i];
             }
-            if (subtrahend == null)
-            {
-                throw new ArgumentNullException("subtrahend");
-            }
-            PeriodType all = PeriodType.AllFields;
-            long[] newValues = new long[all.Size];
-            // TODO: Make this a lot faster :)
-            for (int i = 0; i < all.Size; i++)
-            {
-                PeriodFieldType fieldType = all[i];
-                newValues[i] = minuend[fieldType] - subtrahend[fieldType];
-            }
-            return new Period(PeriodType.AllFields, newValues);
+            minuend.AddValuesTo(sum);
+            return new Period(PeriodUnits.AllUnits, sum);
         }
 
         /// <summary>
@@ -214,23 +273,97 @@ namespace NodaTime
         /// </remarks>
         /// <param name="start">Start date/time</param>
         /// <param name="end">End date/time</param>
-        /// <param name="periodType">Period type to use for calculations</param>
+        /// <param name="units">Period type to use for calculations</param>
+        /// <exception cref="ArgumentException"><paramref name="units"/> is empty or contained unknown values</exception>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="periodType"/> is null</exception>
         /// <returns>The period between the given date/times</returns>
-        public static Period Between(LocalDateTime start, LocalDateTime end, PeriodType periodType)
+        public static Period Between(LocalDateTime start, LocalDateTime end, PeriodUnits units)
         {
-            if (periodType == null)
+            if (units == 0)
             {
-                throw new ArgumentNullException("periodType");
+                throw new ArgumentException("Units must not be empty", "units");
             }
-            if (!start.Calendar.Equals(end.Calendar))
+            if ((units & ~PeriodUnits.AllUnits) != 0)
             {
-                throw new ArgumentException("start and end must use the same calendar system");
+                throw new ArgumentException("Units contains an unknown value: " + units, "units");
             }
-            long[] values = start.Calendar.GetPeriodValues(start.LocalInstant, end.LocalInstant, periodType);
-            return new Period(periodType, values);
+            CalendarSystem calendar = start.Calendar;
+            if (!calendar.Equals(end.Calendar))
+            {
+                throw new ArgumentException("start and end must use the same calendar system", "calendar");
+            }
+
+            LocalInstant startLocalInstant = start.LocalInstant;
+            LocalInstant endLocalInstant = end.LocalInstant;
+
+            FieldSet fieldSet = calendar.Fields;
+
+            // Optimization for single field
+            int singleIndex = GetSingleFieldIndex(units);
+            if (singleIndex != -1)
+            {
+                long value = startLocalInstant == endLocalInstant ? 0 : GetFieldForIndex(fieldSet, singleIndex).GetInt64Difference(end.LocalInstant, start.LocalInstant);
+                return new Period(units, value);
+            }
+
+            // Multiple fields
+            long[] values = new long[ValuesArraySize];
+
+            if (startLocalInstant == endLocalInstant)
+            {
+                return new Period(units, values);
+            }
+
+            LocalInstant remaining = startLocalInstant;
+            int numericFields = (int) units;
+            for (int i = 0; i < ValuesArraySize; i++)
+            {
+                if ((numericFields & (1 << i)) != 0)
+                {
+                    var field = GetFieldForIndex(fieldSet, i);
+                    values[i] = field.GetInt64Difference(endLocalInstant, remaining);
+                    remaining = field.Add(remaining, values[i]);
+                }
+            }
+            return new Period(units, values);
         }
+
+        /// <summary>
+        /// Adds the contents of this period to the given local instant in the given calendar system.
+        /// </summary>
+        /// <param name="localInstant"></param>
+        /// <param name="calendar"></param>
+        /// <param name="scalar"></param>
+        /// <returns></returns>
+        internal LocalInstant AddTo(LocalInstant localInstant, CalendarSystem calendar, int scalar)
+        {
+            Preconditions.CheckNotNull(calendar, "calendar");
+            if (scalar == 0)
+            {
+                return localInstant;
+            }
+
+            FieldSet fieldSet = calendar.Fields;
+            if (values == null)
+            {
+                int index = GetSingleFieldIndex(units);
+                PeriodField field = GetFieldForIndex(fieldSet, index);
+                return field.Add(localInstant, singleValue * scalar);
+            }
+
+            LocalInstant result = localInstant;
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                long value = values[i];
+                if (value != 0)
+                {
+                    result = GetFieldForIndex(fieldSet, i).Add(result, value * scalar);
+                }
+            }
+            return result;
+        }
+
 
         /// <summary>
         /// Returns the difference between two date/times using the "all fields" period type.
@@ -240,7 +373,7 @@ namespace NodaTime
         /// <returns>The period between the two date and time values, using all period fields.</returns>
         public static Period Between(LocalDateTime start, LocalDateTime end)
         {
-            return Between(start, end, PeriodType.AllFields);
+            return Between(start, end, PeriodUnits.AllUnits);
         }
 
         /// <summary>
@@ -256,14 +389,18 @@ namespace NodaTime
         /// </remarks>
         /// <param name="start">Start date</param>
         /// <param name="end">End date</param>
-        /// <param name="periodType">Period type to use for calculations</param>
-        /// <exception cref="ArgumentException"><paramref name="periodType"/> contains time fields</exception>
+        /// <param name="units">Units to use for calculations</param>
+        /// <exception cref="ArgumentException"><paramref name="units"/> contains time fields, is empty or contains unknown values</exception>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="periodType"/> is null</exception>
         /// <returns>The period between the given dates using the specified period type</returns>
-        public static Period Between(LocalDate start, LocalDate end, PeriodType periodType)
+        public static Period Between(LocalDate start, LocalDate end, PeriodUnits units)
         {
-            return Between(start.LocalDateTime, end.LocalDateTime, periodType);
+            if ((units & PeriodUnits.AllTimeUnits) != 0)
+            {
+                throw new ArgumentException("Units contain time fields: " + units, "units");
+            }
+
+            return Between(start.LocalDateTime, end.LocalDateTime, units);
         }
 
         /// <summary>
@@ -274,7 +411,7 @@ namespace NodaTime
         /// <returns>The period between the two dates, using year, month and day fields.</returns>
         public static Period Between(LocalDate start, LocalDate end)
         {
-            return Between(start.LocalDateTime, end.LocalDateTime, PeriodType.YearMonthDay);
+            return Between(start.LocalDateTime, end.LocalDateTime, PeriodUnits.YearMonthDay);
         }
 
         /// <summary>
@@ -290,14 +427,17 @@ namespace NodaTime
         /// </remarks>
         /// <param name="start">Start time</param>
         /// <param name="end">End time</param>
-        /// <param name="periodType">Period type to use for calculations</param>
-        /// <exception cref="ArgumentException"><paramref name="periodType"/> contains time fields</exception>
+        /// <param name="units">Units to use for calculations</param>
+        /// <exception cref="ArgumentException"><paramref name="units"/> contains date fields, is empty or contains unknown values</exception>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="periodType"/> is null</exception>
         /// <returns>The period between the given times</returns>
-        public static Period Between(LocalTime start, LocalTime end, PeriodType periodType)
+        public static Period Between(LocalTime start, LocalTime end, PeriodUnits units)
         {
-            return Between(start.LocalDateTime, end.LocalDateTime, periodType);
+            if ((units & PeriodUnits.AllDateUnits) != 0)
+            {
+                throw new ArgumentException("Units contain date fields: " + units, "units");
+            }
+            return Between(start.LocalDateTime, end.LocalDateTime, units);
         }
 
         /// <summary>
@@ -308,18 +448,29 @@ namespace NodaTime
         /// <returns>The period between the two times, using the "time" period fields.</returns>
         public static Period Between(LocalTime start, LocalTime end)
         {
-            return Between(start.LocalDateTime, end.LocalDateTime, PeriodType.Time);
+            return Between(start.LocalDateTime, end.LocalDateTime, PeriodUnits.AllTimeUnits);
         }
 
         /// <summary>
-        /// Returns the fields and values within this period.
+        /// Returns the units and values within this period.
         /// </summary>
-        /// <returns>The fields and values within this period.</returns>
-        public IEnumerator<PeriodFieldValue> GetEnumerator()
+        /// <returns>The units and values within this period.</returns>
+        public IEnumerator<UnitValue> GetEnumerator()
         {
-            for (int i = 0; i < values.Length; i++)
+            if (values == null)
             {
-                yield return new PeriodFieldValue(periodType[i], values[i]);
+                yield return new UnitValue(units, singleValue);
+            }
+            else
+            {
+                for (int i = 0; i < values.Length; i++)
+                {
+                    PeriodUnits singlePeriodUnit = (PeriodUnits) (1 << i);
+                    if ((singlePeriodUnit & units) != 0)
+                    {
+                        yield return new UnitValue(singlePeriodUnit, values[i]);
+                    }
+                }                
             }
         }
 
@@ -336,14 +487,58 @@ namespace NodaTime
         /// Returns the value of the given field within this period. If the period does not contain
         /// the given field, 0 is returned.
         /// </summary>
-        /// <param name="fieldType">The type of field to fetch the value of.</param>
+        /// <param name="index">The index to fetch the value of.</param>
         /// <returns>The value of the given field within this period, or 0 if this period does not contain the given field.</returns>
-        public long this[PeriodFieldType fieldType]
+        private long this[int index]
         {
             get
             {
-                int index = periodType.IndexOf(fieldType);
-                return index == -1 ? 0 : values[index];
+                if (values == null)
+                {
+                    return (int) units == (1 << index) ? singleValue : 0;
+                }
+                return values[index];
+            }
+        }
+
+        /// <summary>
+        /// Returns the index (0-8 inclusive) for the given single field, or -1 if the value does
+        /// not represent a single field.
+        /// </summary>
+        private static int GetSingleFieldIndex(PeriodUnits units)
+        {
+            switch (units)
+            {
+                case PeriodUnits.Year: return 0;
+                case PeriodUnits.Month: return 1;
+                case PeriodUnits.Week: return 2;
+                case PeriodUnits.Day: return 3;
+                case PeriodUnits.Hour: return 4;
+                case PeriodUnits.Minute: return 5;
+                case PeriodUnits.Second: return 6;
+                case PeriodUnits.Millisecond: return 7;
+                case PeriodUnits.Tick: return 8;
+                default: return -1;
+            }
+        }
+
+        /// <summary>
+        /// Returns the PeriodField for the given index, in the range 0-8 inclusive.
+        /// </summary>
+        private static PeriodField GetFieldForIndex(FieldSet fields, int index)
+        {
+            switch (index)
+            {
+                case 0: return fields.Years;
+                case 1: return fields.Months;
+                case 2: return fields.Weeks;
+                case 3: return fields.Days;
+                case 4: return fields.Hours;
+                case 5: return fields.Minutes;
+                case 6: return fields.Seconds;
+                case 7: return fields.Milliseconds;
+                case 8: return fields.Ticks;
+                default: throw new ArgumentOutOfRangeException("index");
             }
         }
 
@@ -351,39 +546,39 @@ namespace NodaTime
         /// <summary>
         /// Gets the number of years within this period.
         /// </summary>
-        public long Years { get { return this[PeriodFieldType.Years]; } }
+        public long Years { get { return this[0]; } }
         /// <summary>
         /// Gets the number of months within this period.
         /// </summary>
-        public long Months { get { return this[PeriodFieldType.Months]; } }
+        public long Months { get { return this[1]; } }
         /// <summary>
         /// Gets the number of weeks within this period.
         /// </summary>
-        public long Weeks { get { return this[PeriodFieldType.Weeks]; } }
+        public long Weeks { get { return this[2]; } }
         /// <summary>
         /// Gets the number of days within this period.
         /// </summary>
-        public long Days { get { return this[PeriodFieldType.Days]; } }
+        public long Days { get { return this[3]; } }
         /// <summary>
         /// Gets the number of hours within this period.
         /// </summary>
-        public long Hours { get { return this[PeriodFieldType.Hours]; } }
+        public long Hours { get { return this[4]; } }
         /// <summary>
         /// Gets the number of minutes within this period.
         /// </summary>
-        public long Minutes { get { return this[PeriodFieldType.Minutes]; } }
+        public long Minutes { get { return this[5]; } }
         /// <summary>
         /// Gets the number of seconds within this period.
         /// </summary>
-        public long Seconds { get { return this[PeriodFieldType.Seconds]; } }
+        public long Seconds { get { return this[6]; } }
         /// <summary>
         /// Gets the number of milliseconds within this period.
         /// </summary>
-        public long Milliseconds { get { return this[PeriodFieldType.Milliseconds]; } }
+        public long Milliseconds { get { return this[7]; } }
         /// <summary>
         /// Gets the number of ticks within this period.
         /// </summary>
-        public long Ticks { get { return this[PeriodFieldType.Ticks]; } }
+        public long Ticks { get { return this[8]; } }
         #endregion
 
         #region Object overrides
@@ -405,9 +600,9 @@ namespace NodaTime
         {
             int hash = HashCodeHelper.Initialize();
             // TODO: Make this a lot faster :)
-            foreach (PeriodFieldType fieldType in PeriodType.AllFields)
+            for (int i = 0; i < ValuesArraySize; i++)
             {
-                hash = HashCodeHelper.Hash(hash, this[fieldType]);
+                hash = HashCodeHelper.Hash(hash, this[i]);
             }
             return hash;
         }
@@ -429,10 +624,9 @@ namespace NodaTime
                 return false;
             }
 
-            // TODO: Make this a lot faster :)
-            foreach (PeriodFieldType fieldType in PeriodType.AllFields)
+            for (int i = 0; i < ValuesArraySize; i++)
             {
-                if (this[fieldType] != other[fieldType])
+                if (this[i] != other[i])
                 {
                     return false;
                 }

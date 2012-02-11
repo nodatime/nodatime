@@ -164,25 +164,8 @@
       <DependentUpon>LocalDateTimeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Testing\StubClockTest.cs" />
-    <Compile Include="Fields\PeriodFieldValueTest.cs" />
     <Compile Include="LocalTimeTest.cs" />
     <Compile Include="PeriodTest.cs" />
-    <Compile Include="PeriodTypeTest.cs" />
-    <Compile Include="PeriodTypeTest.Equality.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PeriodTypeTest.IndexOf.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PeriodTypeTest.IsSupported.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PeriodTypeTest.Masking.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PeriodTypeTest.Types.cs">
-      <DependentUpon>PeriodTypeTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="SystemClockTest.cs" />
     <Compile Include="Text\AbstractFormattingData.cs" />
     <Compile Include="Text\FormattingTestSupport.cs" />
