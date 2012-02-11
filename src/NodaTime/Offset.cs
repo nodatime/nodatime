@@ -165,18 +165,10 @@ namespace NodaTime
         /// Implements the unary operator + .
         /// </summary>
         /// <param name="offset">The operand.</param>
+        /// <remarks>There is no method form of this operator; the <see cref="Plus"/> method is an instance
+        /// method for addition, and is more useful than a method form of this would be.</remarks>
         /// <returns>The same <see cref="Offset" /> instance</returns>
         public static Offset operator +(Offset offset)
-        {
-            return offset;
-        }
-
-        /// <summary>
-        /// Returns the specified offset. This is the method form of the unary plus operator.
-        /// </summary>
-        /// <param name="offset">The offset to return.</param>
-        /// <returns>The same offset as the one passed in.</returns>
-        public static Offset Plus(Offset offset)
         {
             return offset;
         }
@@ -186,6 +178,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the sum of the given values.</returns>
         public static Offset operator +(Offset left, Offset right)
         {
@@ -193,10 +186,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Adds one Offset to another. Friendly alternative to <c>operator+()</c>.
+        /// Adds one Offset to another. Friendly alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the sum of the given values.</returns>
         public static Offset Add(Offset left, Offset right)
         {
@@ -204,10 +198,22 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the result of adding another Offset to this one, for a fluent alternative to <c>operator_()</c>.
+        /// </summary>
+        /// <param name="other">The offset to add</param>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
+        /// <returns>The result of adding the other offset to this one.</returns>
+        public Offset Plus(Offset other)
+        {
+            return this + other;
+        }
+
+        /// <summary>
         /// Implements the operator - (subtraction).
         /// </summary>
         /// <param name="minuend">The left hand side of the operator.</param>
         /// <param name="subtrahend">The right hand side of the operator.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
         public static Offset operator -(Offset minuend, Offset subtrahend)
         {
@@ -219,6 +225,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="minuend">The left hand side of the operator.</param>
         /// <param name="subtrahend">The right hand side of the operator.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
         public static Offset Subtract(Offset minuend, Offset subtrahend)
         {
@@ -226,7 +233,18 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Implements the operator == (equality).
+        /// Returns the result of subtracting another Offset from this one, for a fluent alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="other">The offset to subtract</param>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
+        /// <returns>The result of subtracting the other offset from this one.</returns>
+        public Offset Minus(Offset other)
+        {
+            return this - other;
+        }
+
+        /// <summary>
+        /// Implements the operator == (equality).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -237,7 +255,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Implements the operator != (inequality).
+        /// Implements the operator != (inequality).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -248,7 +266,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Implements the operator &lt; (less than).
+        /// Implements the operator &lt; (less than).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -259,7 +277,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Implements the operator &lt;= (less than or equal).
+        /// Implements the operator &lt;= (less than or equal).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -270,7 +288,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Implements the operator &gt; (greater than).
+        /// Implements the operator &gt; (greater than).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -294,7 +312,7 @@ namespace NodaTime
 
         #region IComparable<Offset> Members
         /// <summary>
-        ///   Compares the current object with another object of the same type.
+        /// Compares the current object with another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>
