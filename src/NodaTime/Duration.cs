@@ -554,5 +554,19 @@ namespace NodaTime
         {
             return OneMillisecond * milliseconds;
         }
+
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the given number of ticks.
+        /// </summary>
+        /// <remarks>
+        /// This is simply an alternative to calling the constructor, allowing for consistent
+        /// code when there are multiple <c>FromXyz</c> calls.
+        /// </remarks>
+        /// <param name="ticks">The number of ticks.</param>
+        /// <returns>A <see cref="Duration"/> number of ticks.</returns>
+        public static Duration FromTicks(long ticks)
+        {
+            return new Duration(ticks);
+        }
     }
 }
