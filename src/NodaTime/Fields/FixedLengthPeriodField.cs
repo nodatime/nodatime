@@ -19,17 +19,17 @@ namespace NodaTime.Fields
     /// <summary>
     /// Period field class representing a field with a fixed unit length.
     /// </summary>
-    internal sealed class PrecisePeriodField : PeriodField
+    internal sealed class FixedLengthPeriodField : PeriodField
     {
-        internal static readonly PrecisePeriodField Milliseconds = new PrecisePeriodField(PeriodFieldType.Milliseconds, NodaConstants.TicksPerMillisecond);
-        internal static readonly PrecisePeriodField Seconds = new PrecisePeriodField(PeriodFieldType.Seconds, NodaConstants.TicksPerSecond);
-        internal static readonly PrecisePeriodField Minutes = new PrecisePeriodField(PeriodFieldType.Minutes, NodaConstants.TicksPerMinute);
-        internal static readonly PrecisePeriodField Hours = new PrecisePeriodField(PeriodFieldType.Hours, NodaConstants.TicksPerHour);
-        internal static readonly PrecisePeriodField HalfDays = new PrecisePeriodField(PeriodFieldType.HalfDays, NodaConstants.TicksPerStandardDay / 2);
-        internal static readonly PrecisePeriodField Days = new PrecisePeriodField(PeriodFieldType.Days, NodaConstants.TicksPerStandardDay);
-        internal static readonly PrecisePeriodField Weeks = new PrecisePeriodField(PeriodFieldType.Weeks, NodaConstants.TicksPerStandardWeek);
+        internal static readonly FixedLengthPeriodField Milliseconds = new FixedLengthPeriodField(PeriodFieldType.Milliseconds, NodaConstants.TicksPerMillisecond);
+        internal static readonly FixedLengthPeriodField Seconds = new FixedLengthPeriodField(PeriodFieldType.Seconds, NodaConstants.TicksPerSecond);
+        internal static readonly FixedLengthPeriodField Minutes = new FixedLengthPeriodField(PeriodFieldType.Minutes, NodaConstants.TicksPerMinute);
+        internal static readonly FixedLengthPeriodField Hours = new FixedLengthPeriodField(PeriodFieldType.Hours, NodaConstants.TicksPerHour);
+        internal static readonly FixedLengthPeriodField HalfDays = new FixedLengthPeriodField(PeriodFieldType.HalfDays, NodaConstants.TicksPerStandardDay / 2);
+        internal static readonly FixedLengthPeriodField Days = new FixedLengthPeriodField(PeriodFieldType.Days, NodaConstants.TicksPerStandardDay);
+        internal static readonly FixedLengthPeriodField Weeks = new FixedLengthPeriodField(PeriodFieldType.Weeks, NodaConstants.TicksPerStandardWeek);
 
-        internal PrecisePeriodField(PeriodFieldType type, long unitTicks) : base(type, unitTicks, true, true)
+        internal FixedLengthPeriodField(PeriodFieldType type, long unitTicks) : base(type, unitTicks, true, true)
         {
         }
 

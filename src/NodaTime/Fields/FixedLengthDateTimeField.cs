@@ -20,27 +20,27 @@ using System;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Precise datetime field, composed of two precise period fields.
+    /// "Fixed length" date/time field, composed of two fixed length period fields.
     /// </summary>
     /// <remarks>
     /// This DateTimeField is useful for defining fields that are composed
-    /// of precise durations, like time of day fields. If either period field is
-    /// imprecise, then an ImpreciseDateTimeField may be used instead.
+    /// of fixed length periods, like time of day fields. If the length of either period field
+    /// varies, then a VariableLengthDateTimeField may be used instead.
     /// </remarks>
-    internal sealed class PreciseDateTimeField : PrecisePeriodDateTimeField
+    internal sealed class FixedLengthDateTimeField : FixedLengthPeriodDateTimeField
     {
         private readonly PeriodField rangeField;
         private readonly long effectiveRange;
 
-        internal PreciseDateTimeField(DateTimeFieldType type, PeriodField unit, PeriodField rangeField) : base(type, unit)
+        internal FixedLengthDateTimeField(DateTimeFieldType type, PeriodField unit, PeriodField rangeField) : base(type, unit)
         {
             if (rangeField == null)
             {
                 throw new ArgumentNullException("rangeField");
             }
-            if (!rangeField.IsPrecise)
+            if (!rangeField.IsFixedLength)
             {
-                throw new ArgumentException("Range period field must be precise");
+                throw new ArgumentException("Range period field must have a fixed length");
             }
             effectiveRange = rangeField.UnitTicks / unit.UnitTicks;
             if (effectiveRange < 2)

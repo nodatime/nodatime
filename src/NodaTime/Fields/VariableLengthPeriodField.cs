@@ -18,12 +18,12 @@
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Base class for imprecise period fields - i.e. where the duration of a single value depends on when the value occurs.
+    /// Base class for variable length period fields - i.e. where the duration of a single value depends on when the value occurs.
     /// (For example, months and years.) Derived classes need only override Add and GetInt64Difference.
     /// </summary>
-    internal abstract class ImprecisePeriodField : PeriodField
+    internal abstract class VaryiableLengthPeriodField : PeriodField
     {
-        internal ImprecisePeriodField(PeriodFieldType fieldType, long averageUnitTicks)
+        internal VaryiableLengthPeriodField(PeriodFieldType fieldType, long averageUnitTicks)
             : base(fieldType, averageUnitTicks, false, true)
         {
         }

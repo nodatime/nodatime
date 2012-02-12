@@ -29,7 +29,7 @@ namespace NodaTime.Fields
         private readonly PeriodField wrappedField;
 
         internal ScaledPeriodField(PeriodField wrappedField, PeriodFieldType fieldType, int scale)
-            : base(fieldType, Preconditions.CheckNotNull(wrappedField, "wrappedField").UnitTicks * scale, wrappedField.IsPrecise, true)
+            : base(fieldType, Preconditions.CheckNotNull(wrappedField, "wrappedField").UnitTicks * scale, wrappedField.IsFixedLength, true)
         {
             if (!wrappedField.IsSupported)
             {

@@ -23,7 +23,7 @@ namespace NodaTime.Fields
     /// Provides time calculations for the day of the year component of time.
     /// </summary>
     // Porting status: Needs partial and max for set support.
-    internal sealed class BasicDayOfYearDateTimeField : PrecisePeriodDateTimeField
+    internal sealed class BasicDayOfYearDateTimeField : FixedLengthPeriodDateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;
 

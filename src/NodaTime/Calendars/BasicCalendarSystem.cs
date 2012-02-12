@@ -28,7 +28,7 @@ namespace NodaTime.Calendars
     /// </summary>
     internal abstract class BasicCalendarSystem : CalendarSystem
     {
-        private static readonly FieldSet preciseFields = CreatePreciseFields();
+        private static readonly FieldSet FixedLengthFields = CreateFixedLengthFields();
 
         private const int YearCacheSize = 1 << 10;
         private const int YearCacheMask = YearCacheSize - 1;
@@ -51,37 +51,37 @@ namespace NodaTime.Calendars
         internal abstract long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
         internal abstract LocalInstant SetYear(LocalInstant localInstant, int year);
 
-        private static FieldSet CreatePreciseFields()
+        private static FieldSet CreateFixedLengthFields()
         {
             // First create the simple durations, then fill in date/time fields,
             // which rely on the other properties
             FieldSet.Builder builder = new FieldSet.Builder
                                        {
                                            Ticks = TicksPeriodField.Instance,
-                                           Milliseconds = PrecisePeriodField.Milliseconds,
-                                           Seconds = PrecisePeriodField.Seconds,
-                                           Minutes = PrecisePeriodField.Minutes,
-                                           Hours = PrecisePeriodField.Hours,
-                                           HalfDays = PrecisePeriodField.HalfDays,
-                                           Days = PrecisePeriodField.Days,
-                                           Weeks = PrecisePeriodField.Weeks
+                                           Milliseconds = FixedLengthPeriodField.Milliseconds,
+                                           Seconds = FixedLengthPeriodField.Seconds,
+                                           Minutes = FixedLengthPeriodField.Minutes,
+                                           Hours = FixedLengthPeriodField.Hours,
+                                           HalfDays = FixedLengthPeriodField.HalfDays,
+                                           Days = FixedLengthPeriodField.Days,
+                                           Weeks = FixedLengthPeriodField.Weeks
                                        };
-            builder.TickOfSecond = new PreciseDateTimeField(DateTimeFieldType.TickOfSecond, builder.Ticks, builder.Seconds);
-            builder.TickOfMillisecond = new PreciseDateTimeField(DateTimeFieldType.TickOfMillisecond, builder.Ticks, builder.Milliseconds);
-            builder.TickOfDay = new PreciseDateTimeField(DateTimeFieldType.TickOfDay, builder.Ticks, builder.Days);
-            builder.MillisecondOfSecond = new PreciseDateTimeField(DateTimeFieldType.MillisecondOfSecond, builder.Milliseconds, builder.Seconds);
-            builder.MillisecondOfDay = new PreciseDateTimeField(DateTimeFieldType.MillisecondOfDay, builder.Milliseconds, builder.Days);
-            builder.SecondOfMinute = new PreciseDateTimeField(DateTimeFieldType.SecondOfMinute, builder.Seconds, builder.Minutes);
-            builder.SecondOfDay = new PreciseDateTimeField(DateTimeFieldType.SecondOfDay, builder.Seconds, builder.Days);
-            builder.MinuteOfHour = new PreciseDateTimeField(DateTimeFieldType.MinuteOfHour, builder.Minutes, builder.Hours);
-            builder.MinuteOfDay = new PreciseDateTimeField(DateTimeFieldType.MinuteOfDay, builder.Minutes, builder.Days);
-            builder.HourOfDay = new PreciseDateTimeField(DateTimeFieldType.HourOfDay, builder.Hours, builder.Days);
-            builder.HourOfHalfDay = new PreciseDateTimeField(DateTimeFieldType.HourOfHalfDay, builder.Hours, builder.HalfDays);
+            builder.TickOfSecond = new FixedLengthDateTimeField(DateTimeFieldType.TickOfSecond, builder.Ticks, builder.Seconds);
+            builder.TickOfMillisecond = new FixedLengthDateTimeField(DateTimeFieldType.TickOfMillisecond, builder.Ticks, builder.Milliseconds);
+            builder.TickOfDay = new FixedLengthDateTimeField(DateTimeFieldType.TickOfDay, builder.Ticks, builder.Days);
+            builder.MillisecondOfSecond = new FixedLengthDateTimeField(DateTimeFieldType.MillisecondOfSecond, builder.Milliseconds, builder.Seconds);
+            builder.MillisecondOfDay = new FixedLengthDateTimeField(DateTimeFieldType.MillisecondOfDay, builder.Milliseconds, builder.Days);
+            builder.SecondOfMinute = new FixedLengthDateTimeField(DateTimeFieldType.SecondOfMinute, builder.Seconds, builder.Minutes);
+            builder.SecondOfDay = new FixedLengthDateTimeField(DateTimeFieldType.SecondOfDay, builder.Seconds, builder.Days);
+            builder.MinuteOfHour = new FixedLengthDateTimeField(DateTimeFieldType.MinuteOfHour, builder.Minutes, builder.Hours);
+            builder.MinuteOfDay = new FixedLengthDateTimeField(DateTimeFieldType.MinuteOfDay, builder.Minutes, builder.Days);
+            builder.HourOfDay = new FixedLengthDateTimeField(DateTimeFieldType.HourOfDay, builder.Hours, builder.Days);
+            builder.HourOfHalfDay = new FixedLengthDateTimeField(DateTimeFieldType.HourOfHalfDay, builder.Hours, builder.HalfDays);
             builder.ClockHourOfDay = new ZeroIsMaxDateTimeField(builder.HourOfDay, DateTimeFieldType.ClockHourOfDay);
             builder.ClockHourOfHalfDay = new ZeroIsMaxDateTimeField(builder.HourOfHalfDay, DateTimeFieldType.ClockHourOfHalfDay);
             // This was a separate subclass in Joda, for i18n purposes
             // Our calendar systems don't have their own i18n support.
-            builder.HalfDayOfDay = new PreciseDateTimeField(DateTimeFieldType.HalfDayOfDay, builder.HalfDays, builder.Days);
+            builder.HalfDayOfDay = new FixedLengthDateTimeField(DateTimeFieldType.HalfDayOfDay, builder.HalfDays, builder.Days);
             return builder.Build();
         }
 
@@ -105,7 +105,7 @@ namespace NodaTime.Calendars
             BasicCalendarSystem thisCalendar = (BasicCalendarSystem) @this;
             // First copy the fields that are the same for all basic
             // calendars
-            builder.WithSupportedFieldsFrom(preciseFields);
+            builder.WithSupportedFieldsFrom(FixedLengthFields);
 
             // Now create fields that have unique behavior for Gregorian and Julian
             // calendars.
@@ -130,8 +130,8 @@ namespace NodaTime.Calendars
 
             field = new RemainderDateTimeField(builder.WeekYear, DateTimeFieldType.WeekYearOfCentury, 100);
             builder.WeekYearOfCentury = new OffsetDateTimeField(field, DateTimeFieldType.WeekYearOfCentury, 1);
-            // The remaining (imprecise) durations are available from the newly
-            // created datetime fields.
+            // The remaining (variable length) periods are available from the newly
+            // created date/time fields.
 
             builder.Years = builder.Year.PeriodField;
             builder.Centuries = builder.CenturyOfEra.PeriodField;

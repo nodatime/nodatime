@@ -22,7 +22,7 @@ namespace NodaTime.Fields
     /// <summary>
     /// Porting status: need text.
     /// </summary>
-    internal sealed class GJDayOfWeekDateTimeField : PrecisePeriodDateTimeField
+    internal sealed class GJDayOfWeekDateTimeField : FixedLengthPeriodDateTimeField
     {
         private readonly BasicCalendarSystem calendarSystem;
 

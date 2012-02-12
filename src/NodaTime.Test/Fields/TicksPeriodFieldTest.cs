@@ -35,9 +35,9 @@ namespace NodaTime.Test.Fields
             Assert.IsTrue(TicksPeriodField.Instance.IsSupported);
         }
 
-        public void IsPrecise()
+        public void IsFixedLength()
         {
-            Assert.IsTrue(TicksPeriodField.Instance.IsPrecise);
+            Assert.IsTrue(TicksPeriodField.Instance.IsFixedLength);
         }
 
         [Test]

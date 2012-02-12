@@ -62,7 +62,7 @@ namespace NodaTime.Test.Fields
         {
             Assert.AreEqual(PeriodFieldType.Minutes, sample.FieldType);
             Assert.IsTrue(sample.IsSupported);
-            Assert.IsTrue(sample.IsPrecise);
+            Assert.IsTrue(sample.IsFixedLength);
         }
 
         [Test]

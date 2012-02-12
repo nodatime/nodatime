@@ -23,7 +23,7 @@ namespace NodaTime.Fields
     /// Provides time calculations for the week of a week based year component of time.
     /// </summary>
     // Needs partial and max for set support.
-    internal sealed class BasicWeekOfWeekYearDateTimeField : PrecisePeriodDateTimeField
+    internal sealed class BasicWeekOfWeekYearDateTimeField : FixedLengthPeriodDateTimeField
     {
         private static readonly Duration ThreeDays = Duration.FromStandardDays(3);
         private readonly BasicCalendarSystem calendarSystem;

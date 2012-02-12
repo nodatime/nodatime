@@ -22,20 +22,20 @@ using NodaTime.Fields;
 namespace NodaTime.Test.Fields
 {
     [TestFixture]
-    public class PrecisePeriodFieldTest
+    public class FixedLengthPeriodFieldTest
     {
-        private PrecisePeriodField field;
+        private FixedLengthPeriodField field;
 
         [SetUp]
         public void SetUp()
         {
-            field = new PrecisePeriodField(PeriodFieldType.Milliseconds, NodaConstants.TicksPerMillisecond);
+            field = new FixedLengthPeriodField(PeriodFieldType.Milliseconds, NodaConstants.TicksPerMillisecond);
         }
 
         [Test]
         public void Constructor_WithInvalidType_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new PrecisePeriodField((PeriodFieldType)(-1), 10));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new FixedLengthPeriodField((PeriodFieldType)(-1), 10));
         }
 
         [Test]
@@ -45,9 +45,9 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void IsPrecise_ReturnsTrue()
+        public void IsFixedLength_ReturnsTrue()
         {
-            Assert.IsTrue(field.IsPrecise);
+            Assert.IsTrue(field.IsFixedLength);
         }
 
         [Test]
