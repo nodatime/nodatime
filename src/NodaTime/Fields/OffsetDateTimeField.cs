@@ -66,7 +66,7 @@ namespace NodaTime.Fields
 
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            FieldUtils.VerifyValueBounds(this, value, min, max);
+            Preconditions.CheckArgumentRange("value", value, min, max);
             return base.SetValue(localInstant, value - offset);
         }
         #endregion

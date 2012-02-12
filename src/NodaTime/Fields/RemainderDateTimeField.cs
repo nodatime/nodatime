@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -57,7 +58,7 @@ namespace NodaTime.Fields
 
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            FieldUtils.VerifyValueBounds(this, value, 0, divisor - 1);
+            Preconditions.CheckArgumentRange("value", value, 0, divisor - 1);
             int wrappedValue = WrappedField.GetValue(localInstant);
             int divided = wrappedValue >= 0 ? wrappedValue / divisor : ((wrappedValue + 1) / divisor) - 1;
             return WrappedField.SetValue(localInstant, divided * divisor + value);

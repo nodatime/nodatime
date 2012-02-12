@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using NodaTime.Fields;
+using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
@@ -397,16 +398,16 @@ namespace NodaTime.Calendars
 
         protected virtual long GetDateMidnightTicks(int year, int monthOfYear, int dayOfMonth)
         {
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.Year, year, MinYear, MaxYear);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.MonthOfYear, monthOfYear, 1, GetMaxMonth());
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.DayOfMonth, dayOfMonth, 1, GetDaysInMonth(year, monthOfYear));
+            Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
+            Preconditions.CheckArgumentRange("monthOfYear", monthOfYear, 1, GetMaxMonth());
+            Preconditions.CheckArgumentRange("dayOfMonth", dayOfMonth, 1, GetDaysInMonth(year, monthOfYear));
             return GetYearMonthDayTicks(year, monthOfYear, dayOfMonth);
         }
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
+            Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, 23);
+            Preconditions.CheckArgumentRange("minuteOfHour", minuteOfHour, 0, 59);
 
             return
                 new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + hourOfDay * NodaConstants.TicksPerHour +
@@ -415,9 +416,9 @@ namespace NodaTime.Calendars
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, secondOfMinute, 0, 59);
+            Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, 23);
+            Preconditions.CheckArgumentRange("minuteOfHour", minuteOfHour, 0, 59);
+            Preconditions.CheckArgumentRange("secondOfMinute", secondOfMinute, 0, 59);
 
             return
                 new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + hourOfDay * NodaConstants.TicksPerHour +
@@ -427,11 +428,11 @@ namespace NodaTime.Calendars
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
                                                        int millisecondOfSecond, int tickOfMillisecond)
         {
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.HourOfDay, hourOfDay, 0, 23);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.MinuteOfHour, minuteOfHour, 0, 59);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.SecondOfMinute, secondOfMinute, 0, 59);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.MillisecondOfSecond, millisecondOfSecond, 0, 999);
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfMillisecond, tickOfMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
+            Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, 23);
+            Preconditions.CheckArgumentRange("minuteOfHour", minuteOfHour, 0, 59);
+            Preconditions.CheckArgumentRange("secondOfMinute", secondOfMinute, 0, 59);
+            Preconditions.CheckArgumentRange("millisecondOfSecond", millisecondOfSecond, 0, 999);
+            Preconditions.CheckArgumentRange("tickOfMillisecond", tickOfMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
 
             return
                 new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + hourOfDay * NodaConstants.TicksPerHour +
@@ -441,7 +442,7 @@ namespace NodaTime.Calendars
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
-            FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfDay, tickOfDay, 0, NodaConstants.TicksPerStandardDay - 1);
+            Preconditions.CheckArgumentRange("tickOfDay", tickOfDay, 0, NodaConstants.TicksPerStandardDay - 1);
             return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + tickOfDay);
         }
     }
