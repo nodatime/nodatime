@@ -29,7 +29,14 @@ namespace NodaTime.Calendars
         /// <summary>Singleton era field.</summary>
         private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoHegirae);
 
-        // TODO: Validate these.
+        // These are ugly, but we have unit tests which will spot if they get out of sync...
+        private static readonly int MinEpochNumber = 1;
+        private static readonly int MaxEpochNumber = 2;
+
+        private static readonly int MinLeapYearPatternNumber = 1;
+        private static readonly int MaxLeapYearPatternNumber = 4;
+
+        // TODO(Post-V1): Validate these.
         /// <summary>
         /// The highest year that can be fully supported. It's possible that
         /// a few years above this can be partially supported, but some calculations may overflow.
@@ -79,6 +86,8 @@ namespace NodaTime.Calendars
 
         private static readonly long[] TotalTicksByMonth;
 
+        private static IslamicCalendar[,] Calendars;
+
         static IslamicCalendar()
         {
             long ticks = 0;
@@ -93,14 +102,31 @@ namespace NodaTime.Calendars
                 // in the Islamic calendar.
                 ticks += days * NodaConstants.TicksPerStandardDay;
             }
+            Calendars = new IslamicCalendar[(MaxLeapYearPatternNumber - MinLeapYearPatternNumber + 1), (MaxEpochNumber - MinEpochNumber + 1)];
+            for (int i = MinLeapYearPatternNumber; i <= MaxLeapYearPatternNumber; i++)
+            {
+                int patternBits = GetLeapYearPatternBits((IslamicLeapYearPattern) i);
+                for (int j = MinEpochNumber; j <= MaxEpochNumber; j++)
+                {
+                    long epochTicks = GetEpochTicks((IslamicEpoch) j);
+                    Calendars[i - MinLeapYearPatternNumber, j - MinEpochNumber] = new IslamicCalendar(patternBits, epochTicks);
+                }
+            }
         }
 
-        // TODO: Caching
         internal static CalendarSystem GetInstance(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
         {
-            int patternBits = GetLeapYearPatternBits(leapYearPattern);
-            long epochTicks = GetEpochTicks(epoch);
-            return new IslamicCalendar(patternBits, epochTicks);
+            int leapYearPatternNumber = (int)leapYearPattern;
+            int epochNumber = (int)epoch;
+            if (leapYearPatternNumber < MinLeapYearPatternNumber || leapYearPatternNumber > MaxLeapYearPatternNumber)
+            {
+                throw new ArgumentOutOfRangeException("leapYearPattern");
+            }
+            if (epochNumber < MinEpochNumber || epochNumber > MaxEpochNumber)
+            {
+                throw new ArgumentOutOfRangeException("epoch");
+            }
+            return Calendars[leapYearPatternNumber - MinLeapYearPatternNumber, epochNumber - MinEpochNumber];
         }
 
         private IslamicCalendar(int leapYearPatternBits, long epochTicks) : base("Hijri (Islamic)", 4, AssembleFields, new[] { Era.AnnoHegirae })
@@ -140,19 +166,7 @@ namespace NodaTime.Calendars
             int dayOfYear = GetDayOfYear(localInstant, thisYear);
             long tickOfDay = GetTickOfDay(localInstant);
 
-            if (dayOfYear > 354)
-            {
-                // Current year is leap, and day is leap.
-                if (!IsLeapYear(year))
-                {
-                    // Moving to a non-leap year, leap day doesn't exist.
-                    dayOfYear--;
-                }
-            }
-            // TODO: Use GetYearTicks and just add the dayOfYear * ticks per day?
-            long resultTicks = GetYearMonthDayTicks(year, 1, dayOfYear);
-            resultTicks += tickOfDay;
-            return new LocalInstant(resultTicks);
+            return new LocalInstant(GetYearTicks(year) + (dayOfYear * NodaConstants.TicksPerStandardDay) + tickOfDay);
         }
 
         internal override long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
@@ -256,7 +270,7 @@ namespace NodaTime.Calendars
             {
                 throw new ArgumentOutOfRangeException("year");
             }
-            // TODO: Clarify this comment, which is incorrect as far as I can tell...
+            // TODO(Post-V1): Clarify this comment, which is incorrect as far as I can tell...
             // Unix epoch is 1970-01-01 Gregorian which is 0622-07-16 Islamic.
             // 0001-01-01 Islamic is -42520809600000L
             // would prefer to calculate against year zero, but leap year
