@@ -225,9 +225,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Diagrams\Calendars.cd" />
-    <None Include="Diagrams\PeriodFields.cd" />
-    <None Include="Diagrams\DateTimeFields.cd" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
