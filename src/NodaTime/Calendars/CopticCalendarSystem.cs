@@ -28,8 +28,6 @@ namespace NodaTime.Calendars
         private const string CopticName = "Coptic";
         private static readonly CopticCalendarSystem[] instances;
         private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoMartyrm);
-        public override int MinYear { get { return 1; } }
-        public override int MaxYear { get { return 29227; } }
 
         static CopticCalendarSystem()
         {
@@ -54,7 +52,7 @@ namespace NodaTime.Calendars
             return instances[minDaysInFirstWeek - 1];
         }
 
-        private CopticCalendarSystem(int minDaysInFirstWeek) : base(CopticName, minDaysInFirstWeek, AssembleCopticFields, new[] { Era.AnnoMartyrm })
+        private CopticCalendarSystem(int minDaysInFirstWeek) : base(CopticName, minDaysInFirstWeek, 1, 29227, AssembleCopticFields, new[] { Era.AnnoMartyrm })
         {
         }
 

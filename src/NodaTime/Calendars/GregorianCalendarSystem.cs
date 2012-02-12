@@ -96,7 +96,7 @@ namespace NodaTime.Calendars
         }
 
         private GregorianCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler fieldAssembler)
-            : base(name, minDaysInFirstWeek, fieldAssembler)
+            : base(name, minDaysInFirstWeek, -27256, 31196, fieldAssembler)
         {
         }
 
@@ -117,9 +117,6 @@ namespace NodaTime.Calendars
         internal override long AverageTicksPerYearDividedByTwo { get { return AverageTicksPerGregorianYear / 2; } }
         internal override long AverageTicksPerMonth { get { return (long)(365.2425m * NodaConstants.TicksPerStandardDay / 12); } }
         internal override long ApproxTicksAtEpochDividedByTwo { get { return (1970 * AverageTicksPerGregorianYear) / 2; } }
-
-        public override int MinYear { get { return -27256; } }
-        public override int MaxYear { get { return 31196; } }
 
         internal override long GetYearTicks(int year)
         {
