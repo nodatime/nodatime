@@ -40,7 +40,9 @@ We have tested Mono support using Mono 2.10.5 and 2.10.8. To build
 Noda Time under Linux, you need to install the following packages:
 
 - mono-devel
-- xbuild
+- mono-xbuild
+
+(These will add the other dependencies you need.)
 
 To fetch the source code from the main Google Code repository,
 you'll need a Mercurial client.
