@@ -17,6 +17,7 @@
 
 using System;
 using System.Globalization;
+using NodaTime.Text;
 
 namespace NodaTime
 {
@@ -316,10 +317,9 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            // TODO: Use proper formatting!
+            var pattern = LocalDateTimePattern.CreateWithInvariantInfo("yyyy-MM-ddTHH:mm:ss LOC");
             var utc = new LocalDateTime(new LocalInstant(Ticks));
-            return string.Format(CultureInfo.InvariantCulture, "{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00} LOC", utc.Year, utc.MonthOfYear, utc.DayOfMonth,
-                                 utc.HourOfDay, utc.MinuteOfHour, utc.SecondOfMinute);
+            return pattern.Format(utc);
         }
         #endregion  // Object overrides
 

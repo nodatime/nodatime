@@ -48,7 +48,7 @@ namespace NodaTime.Text
             return new NonCachingFixedFormatInfoPatternParser(patternParser, formatInfo);
         }
 
-        private class CachingFixedFormatInfoPatternParser: FixedFormatInfoPatternParser<T>
+        private sealed class CachingFixedFormatInfoPatternParser: FixedFormatInfoPatternParser<T>
         {
             // TODO: Replace this with a real LRU cache or something similar.
             private readonly Dictionary<string, PatternParseResult<T>> cache;
@@ -88,7 +88,7 @@ namespace NodaTime.Text
             }
         }
 
-        private class NonCachingFixedFormatInfoPatternParser : FixedFormatInfoPatternParser<T>
+        private sealed class NonCachingFixedFormatInfoPatternParser : FixedFormatInfoPatternParser<T>
         {
             internal NonCachingFixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
                 : base(patternParser, formatInfo)
