@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.Calendars;
 using NodaTime.Testing.TimeZones;
 
 namespace NodaTime.Test
@@ -36,6 +37,34 @@ namespace NodaTime.Test
         private static SingleTransitionZone SampleZone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 3, 4);
 
         private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
+
+        [Test]
+        public void SimpleProperties()
+        {
+            var value = SampleZone.AtExactly(new LocalDateTime(2012, 2, 10, 8, 9, 10, 11, 12));
+            Assert.AreEqual(Era.Common, value.Era);
+            Assert.AreEqual(20, value.CenturyOfEra);
+            Assert.AreEqual(12, value.YearOfCentury);
+            Assert.AreEqual(2012, value.Year);
+            Assert.AreEqual(2012, value.YearOfEra);
+            Assert.AreEqual(2, value.MonthOfYear);
+            Assert.AreEqual(10, value.DayOfMonth);
+            Assert.AreEqual(6, value.WeekOfWeekYear);
+            Assert.AreEqual(2012, value.WeekYear);
+            Assert.AreEqual(IsoDayOfWeek.Friday, value.IsoDayOfWeek);
+            Assert.AreEqual((int) IsoDayOfWeek.Friday, value.DayOfWeek);
+            Assert.AreEqual(41, value.DayOfYear);
+            Assert.AreEqual(8, value.ClockHourOfHalfDay);
+            Assert.AreEqual(8, value.HourOfDay);
+            Assert.AreEqual(9, value.MinuteOfHour);
+            Assert.AreEqual(10, value.SecondOfMinute);
+            Assert.AreEqual(8 * 3600 + 9 * 60 + 10, value.SecondOfDay);
+            Assert.AreEqual(11, value.MillisecondOfSecond);
+            Assert.AreEqual(value.SecondOfDay * 1000 + 11, value.MillisecondOfDay);
+            Assert.AreEqual(12, value.TickOfMillisecond);
+            Assert.AreEqual(11 * 10000 + 12, value.TickOfSecond);
+            Assert.AreEqual(value.MillisecondOfDay * 10000L + 12, value.TickOfDay);
+        }
 
         [Test]
         public void ZoneAt_SpecifyingDateAndTimeToMinutesInWinter()
@@ -200,6 +229,42 @@ namespace NodaTime.Test
             Assert.AreEqual(expected, actual);
             // Kind isn't checked by Equals...
             Assert.AreEqual(DateTimeKind.Unspecified, actual.Kind);
+        }
+
+        [Test]
+        public void Equality()
+        {
+            // Goes back from 2am to 1am on June 13th
+            SingleTransitionZone zone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
+            var sample = zone.AtEarlier(new LocalDateTime(2011, 6, 13, 1, 30));
+            var fromUtc = Instant.FromUtc(2011, 6, 12, 21, 30).InZone(zone);
+
+            // Checks all the overloads etc: first check is that the zone matters
+            TestHelper.TestEqualsStruct(sample, fromUtc, Instant.FromUtc(2011, 6, 12, 21, 30).InIsoUtc());
+            TestHelper.TestOperatorEquality(sample, fromUtc, Instant.FromUtc(2011, 6, 12, 21, 30).InIsoUtc());
+
+            // Now just use a simple inequality check for other aspects...
+
+            // Different offset
+            var later = zone.AtLater(new LocalDateTime(2011, 6, 13, 1, 30));
+            Assert.AreEqual(sample.LocalDateTime, later.LocalDateTime);
+            Assert.AreNotEqual(sample.Offset, later.Offset);
+            Assert.AreNotEqual(sample, later);
+
+            // Different local time
+            Assert.AreNotEqual(sample, zone.AtEarlier(new LocalDateTime(2011, 6, 13, 1, 29)));
+
+            // Different calendar
+            var withOtherCalendar = zone.AtEarlier(new LocalDateTime(2011, 6, 13, 1, 30, CalendarSystem.GetGregorianCalendar(4)));
+            Assert.AreNotEqual(sample, withOtherCalendar);
+        }
+
+        [Test]
+        public void Constructor_ArgumentValidation()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), null));
+            Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), null, CalendarSystem.Iso));
+            Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), SampleZone, null));
         }
     }
 }
