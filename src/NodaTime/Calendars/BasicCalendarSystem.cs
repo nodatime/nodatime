@@ -441,7 +441,6 @@ namespace NodaTime.Calendars
 
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
-            // TODO: Report bug in Joda Time, which doesn't have the - 1 here.
             FieldUtils.VerifyValueBounds(DateTimeFieldType.TickOfDay, tickOfDay, 0, NodaConstants.TicksPerStandardDay - 1);
             return new LocalInstant(GetDateMidnightTicks(year, monthOfYear, dayOfMonth) + tickOfDay);
         }

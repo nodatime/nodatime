@@ -23,15 +23,23 @@ namespace NodaTime.Calendars
     /// years, according to one of the patterns within this enum. See <see cref="CalendarSystem.GetIslamicCalendar"/>
     /// for more detail.
     /// </summary>
-    // TODO: The names are from Joda Time, and could probably do with more research.
+    /// <remarks>
+    /// While the patterns themselves are reasonably commonly documented (e.g. http://en.wikipedia.org/wiki/Tabular_Islamic_calendar)
+    /// there is little standardization in terms of naming the patterns. I hope the current names do not
+    /// cause offence to anyone; suggestions for better names would be welcome.
+    /// </remarks>
     public enum IslamicLeapYearPattern
     {
         /// <summary>
         /// A pattern of leap years in 2, 5, 7, 10, 13, 15, 18, 21, 24, 26 and 29.
+        /// This pattern and <see cref="Base16"/> are the most commonly used ones,
+        /// and only differ in whether the 15th or 16th year is deemed leap.
         /// </summary>
         Base15 = 1,
         /// <summary>
         /// A pattern of leap years in 2, 5, 7, 10, 13, 16, 18, 21, 24, 26 and 29.
+        /// This pattern and <see cref="Base15"/> are the most commonly used ones,
+        /// and only differ in whether the 15th or 16th year is deemed leap.
         /// </summary>
         Base16 = 2,
         /// <summary>

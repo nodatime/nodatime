@@ -57,7 +57,7 @@ namespace NodaTime
         /// </summary>
         internal delegate void FieldAssembler(FieldSet.Builder builder, CalendarSystem @this);
 
-        // TODO: Consider moving the static accessors into a separate class. As we get more calendars,
+        // TODO(Post-V1): Consider moving the static accessors into a separate class. As we get more calendars,
         // this approach will become unwieldy.
 
         #region Public factory members for calendars

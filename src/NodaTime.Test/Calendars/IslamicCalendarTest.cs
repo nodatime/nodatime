@@ -15,7 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using NUnit.Framework;
 using NodaTime.Calendars;
 using System;
@@ -329,6 +331,45 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(29, calendar.GetDaysInMonth(7, 12));
             // As noted before, 8 is a leap year in this calendar
             Assert.AreEqual(30, calendar.GetDaysInMonth(8, 12));
+        }
+
+        [Test]
+        public void GetInstance_Caching()
+        {
+            var queue = new Queue<CalendarSystem>();
+            var set = new HashSet<CalendarSystem>();
+
+            foreach (IslamicLeapYearPattern leapYearPattern in Enum.GetValues(typeof(IslamicLeapYearPattern)))
+            {
+                foreach (IslamicEpoch epoch in Enum.GetValues(typeof(IslamicEpoch)))
+                {
+                    var calendar = CalendarSystem.GetIslamicCalendar(leapYearPattern, epoch);
+                    queue.Enqueue(calendar);
+                    Assert.IsTrue(set.Add(calendar)); // Check we haven't already seen it...
+                }
+            }
+
+            // Now check we get the same references again...
+            foreach (IslamicLeapYearPattern leapYearPattern in Enum.GetValues(typeof(IslamicLeapYearPattern)))
+            {
+                foreach (IslamicEpoch epoch in Enum.GetValues(typeof(IslamicEpoch)))
+                {
+                    var oldCalendar = queue.Dequeue();
+                    var newCalendar = CalendarSystem.GetIslamicCalendar(leapYearPattern, epoch);
+                    Assert.AreSame(oldCalendar, newCalendar);
+                }
+            }
+        }
+
+        [Test]
+        public void GetInstance_ArgumentValidation()
+        {
+            var epochs = Enum.GetValues(typeof(IslamicEpoch)).Cast<IslamicEpoch>();
+            var leapYearPatterns = Enum.GetValues(typeof(IslamicLeapYearPattern)).Cast<IslamicLeapYearPattern>();
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Min() - 1, epochs.Min()));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Min(), epochs.Min() - 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Max() + 1, epochs.Min()));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Min(), epochs.Max() + 1));
         }
     }
 }

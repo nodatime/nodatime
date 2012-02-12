@@ -24,7 +24,7 @@ namespace NodaTime.Calendars
     /// <summary>
     /// A calendar system which wraps another one, allowing the wrapped system to be used for some operations.
     /// </summary>
-    // TODO: Decide whether or not this is actually useful. It may only be used by the Buddhist calendar system...
+    // TODO(Post-V1): Decide whether or not this is actually useful. It may only be used by the Buddhist calendar system...
     internal abstract class WrappedCalendarSystem : CalendarSystem
     {
         private readonly CalendarSystem baseCalendar;
