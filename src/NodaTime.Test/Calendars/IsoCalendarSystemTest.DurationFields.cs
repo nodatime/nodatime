@@ -37,7 +37,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("Centuries"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.False);
+            Assert.That(sut.IsFixedLength, Is.False);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("Years"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.False);
+            Assert.That(sut.IsFixedLength, Is.False);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("WeekYears"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.False);
+            Assert.That(sut.IsFixedLength, Is.False);
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("Months"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.False);
+            Assert.That(sut.IsFixedLength, Is.False);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("Weeks"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.True);
+            Assert.That(sut.IsFixedLength, Is.True);
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("Days"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.True);
+            Assert.That(sut.IsFixedLength, Is.True);
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("Hours"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.True);
+            Assert.That(sut.IsFixedLength, Is.True);
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("Minutes"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.True);
+            Assert.That(sut.IsFixedLength, Is.True);
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("Seconds"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.True);
+            Assert.That(sut.IsFixedLength, Is.True);
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("Milliseconds"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.True);
+            Assert.That(sut.IsFixedLength, Is.True);
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.That(sut.ToString(), Is.EqualTo("Ticks"));
             Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsPrecise, Is.True);
+            Assert.That(sut.IsFixedLength, Is.True);
         }
     }
 }

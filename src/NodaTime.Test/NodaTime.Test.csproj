@@ -202,9 +202,9 @@
     <Compile Include="Fields\FieldSetTest.cs" />
     <Compile Include="Fields\MockCountingPeriodField.cs" />
     <Compile Include="Fields\OffsetDateTimeFieldTest.cs" />
-    <Compile Include="Fields\PreciseDateTimeFieldTest.cs" />
-    <Compile Include="Fields\PrecisePeriodDateTimeFieldTest.cs" />
-    <Compile Include="Fields\PrecisePeriodFieldTest.cs" />
+    <Compile Include="Fields\FixedLengthDateTimeFieldTest.cs" />
+    <Compile Include="Fields\FixedLengthPeriodDateTimeFieldTest.cs" />
+    <Compile Include="Fields\FixedLengthPeriodFieldTest.cs" />
     <Compile Include="Fields\ScaledDurationTest.cs" />
     <Compile Include="Fields\TicksPeriodFieldTest.cs" />
     <Compile Include="Fields\UnsupportedDateTimeFieldTest.cs" />

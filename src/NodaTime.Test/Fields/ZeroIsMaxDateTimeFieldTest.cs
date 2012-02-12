@@ -24,7 +24,7 @@ namespace NodaTime.Test.Fields
     public class ZeroIsMaxDateTimeFieldTest
     {
         private readonly ZeroIsMaxDateTimeField field =
-            new ZeroIsMaxDateTimeField(new PreciseDateTimeField(DateTimeFieldType.HourOfDay, PrecisePeriodField.Hours, PrecisePeriodField.Days),
+            new ZeroIsMaxDateTimeField(new FixedLengthDateTimeField(DateTimeFieldType.HourOfDay, FixedLengthPeriodField.Hours, FixedLengthPeriodField.Days),
                                        DateTimeFieldType.ClockHourOfDay);
 
         [Test]

@@ -29,7 +29,7 @@ namespace NodaTime.Test.Fields
         {
             PeriodField field = UnsupportedPeriodField.Seconds;
             Assert.IsFalse(field.IsSupported);
-            Assert.IsTrue(field.IsPrecise);
+            Assert.IsTrue(field.IsFixedLength);
             Assert.AreEqual(0, field.UnitTicks);
         }
 

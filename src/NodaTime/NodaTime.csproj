@@ -89,7 +89,7 @@
     <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
     <Compile Include="Fields\BasicWeekYearPeriodField.cs" />
     <Compile Include="Fields\BasicYearPeriodField.cs" />
-    <Compile Include="Fields\ImprecisePeriodField.cs" />
+    <Compile Include="Fields\VariableLengthPeriodField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
     <Compile Include="PeriodUnits.cs" />
@@ -154,9 +154,9 @@
     <Compile Include="Fields\GJYearOfEraDateTimeField.cs" />
     <Compile Include="Fields\IsoYearOfEraDateTimeField.cs" />
     <Compile Include="Fields\OffsetDateTimeField.cs" />
-    <Compile Include="Fields\PreciseDateTimeField.cs" />
-    <Compile Include="Fields\PrecisePeriodField.cs" />
-    <Compile Include="Fields\PrecisePeriodDateTimeField.cs" />
+    <Compile Include="Fields\FixedLengthDateTimeField.cs" />
+    <Compile Include="Fields\FixedLengthPeriodField.cs" />
+    <Compile Include="Fields\FixedLengthPeriodDateTimeField.cs" />
     <Compile Include="Fields\RemainderDateTimeField.cs" />
     <Compile Include="Fields\ScaledPeriodField.cs" />
     <Compile Include="Fields\TicksPeriodField.cs" />

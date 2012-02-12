@@ -24,7 +24,7 @@ namespace NodaTime.Test.Fields
     /// </summary>
     internal class FakePeriodField : PeriodField
     {
-        internal FakePeriodField(long unitTicks, bool precise) : base(PeriodFieldType.Seconds, unitTicks, precise, true)
+        internal FakePeriodField(long unitTicks, bool fixedLength) : base(PeriodFieldType.Seconds, unitTicks, fixedLength, true)
         {
         }
 

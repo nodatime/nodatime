@@ -34,10 +34,10 @@ namespace NodaTime.Fields
 
         private readonly PeriodFieldType fieldType;
         private readonly long unitTicks;
-        private readonly bool precise;
+        private readonly bool fixedLength;
         private readonly bool supported;
 
-        protected PeriodField(PeriodFieldType fieldType, long unitTicks, bool precise, bool supported)
+        protected PeriodField(PeriodFieldType fieldType, long unitTicks, bool fixedLength, bool supported)
         {
             if (!IsTypeValid(fieldType))
             {
@@ -45,7 +45,7 @@ namespace NodaTime.Fields
             }
             this.fieldType = fieldType;
             this.unitTicks = unitTicks;
-            this.precise = precise;
+            this.fixedLength = fixedLength;
             this.supported = supported;
         }
 
@@ -60,11 +60,10 @@ namespace NodaTime.Fields
         internal bool IsSupported { get { return supported; } }
 
         /// <summary>
-        /// Is this field precise. A precise field can calculate its value from
-        /// milliseconds without needing a reference date. Put another way, a
-        /// precise field's unit size is not variable.
+        /// Returns true if this field has a fixed length, regardless of a reference point.
+        /// For example, "minute" is a fixed length field, but "month" is not.
         /// </summary>
-        internal bool IsPrecise { get { return precise; } }
+        internal bool IsFixedLength { get { return fixedLength; } }
 
         /// <summary>
         /// Returns the amount of ticks per unit value of this field.
@@ -76,7 +75,7 @@ namespace NodaTime.Fields
         #region Extract field value from a duration
         /// <summary>
         /// Get the value of this field from the ticks, which is approximate
-        /// if this field is imprecise.
+        /// if this field has a variable length.
         /// </summary>
         /// <param name="duration">The duration to query, which may be negative</param>
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
@@ -87,7 +86,7 @@ namespace NodaTime.Fields
 
         /// <summary>
         /// Get the value of this field from the ticks, which is approximate
-        /// if this field is imprecise.
+        /// if this field has a variable length.
         /// </summary>
         /// <param name="duration">The duration to query, which may be negative</param>
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
@@ -98,7 +97,7 @@ namespace NodaTime.Fields
 
         /// <summary>
         /// Get the value of this field from the duration relative to an
-        /// instant. For precise fields this method produces the same result as for
+        /// instant. For fixed length fields this method produces the same result as for
         /// the single argument get method.
         /// <para>
         /// If the duration is positive, then the instant is treated as a "start instant". 
@@ -115,7 +114,7 @@ namespace NodaTime.Fields
 
         /// <summary>
         /// Get the value of this field from the duration relative to an
-        /// instant. For precise fields this method produces the same result as for
+        /// instant. For fixed length fields this method produces the same result as for
         /// the single argument get method.
         /// <para>
         /// If the duration is positive, then the instant is treated as a "start instant". 
@@ -131,7 +130,7 @@ namespace NodaTime.Fields
         #region Create a duration from a field value
         /// <summary>
         /// Get the duration of this field from its value, which is
-        /// approximate if this field is imprecise.
+        /// approximate if this field has a variable length
         /// </summary>
         /// <param name="value">The value of the field, which may be negative</param>
         /// <returns>The duration that the field represents, which may be negative</returns>
@@ -142,7 +141,7 @@ namespace NodaTime.Fields
 
         /// <summary>
         /// Get the duration of this field from its value relative to an instant.
-        /// For precise fields this method produces the same result as for
+        /// For fixed length fields this method produces the same result as for
         /// the single argument GetDuration method.
         /// <para>
         /// If the value is positive, then the instant is treated as a "start
