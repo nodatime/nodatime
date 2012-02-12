@@ -218,6 +218,7 @@
     <Compile Include="Utility\BclConversions.cs" />
     <Compile Include="Utility\HashCodeHelper.cs" />
     <Compile Include="Utility\NamespaceDoc.cs" />
+    <Compile Include="Utility\ReferenceEqualityComparer.cs" />
     <Compile Include="Utility\ResourceHelper.cs" />
     <Compile Include="Utility\Preconditions.cs" />
     <Compile Include="ZonedDateTime.cs" />

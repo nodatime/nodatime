@@ -93,6 +93,37 @@ namespace NodaTime.Test.Globalization
         }
 
         [Test]
+        public void TestCachingWithReadOnly()
+        {
+            var original = new CultureInfo("en-US");
+            // Fool Noda Time into believing both are read-only, so it can use a cache...
+            var wrapper1 = CultureInfo.ReadOnly(original);
+            var wrapper2 = CultureInfo.ReadOnly(original);
+
+            var nodaWrapper1 = NodaFormatInfo.GetFormatInfo(wrapper1);
+            var nodaWrapper2 = NodaFormatInfo.GetFormatInfo(wrapper2);
+            Assert.AreSame(nodaWrapper1, nodaWrapper2);
+        }
+
+        [Test]
+        public void TestCachingWithClonedCulture()
+        {
+            var original = new CultureInfo("en-US");
+            var clone = (CultureInfo) original.Clone();
+            Assert.AreEqual(original.Name, clone.Name);
+            clone.DateTimeFormat.DateSeparator = "@@@";
+
+            // Fool Noda Time into believing both are read-only, so it can use a cache...
+            original = CultureInfo.ReadOnly(original);
+            clone = CultureInfo.ReadOnly(clone);
+
+            var nodaOriginal = NodaFormatInfo.GetFormatInfo(original);
+            var nodaClone = NodaFormatInfo.GetFormatInfo(clone);
+            Assert.AreEqual(original.DateTimeFormat.DateSeparator, nodaOriginal.DateSeparator);
+            Assert.AreEqual(clone.DateTimeFormat.DateSeparator, nodaClone.DateSeparator);
+        }
+
+        [Test]
         public void TestConstructor()
         {
             var info = new NodaFormatInfo(enUs);
@@ -314,41 +345,6 @@ namespace NodaTime.Test.Globalization
             Assert.Throws<ArgumentNullException>(() => info.OffsetPatternShort = null);
             info.IsReadOnly = true;
             Assert.Throws<InvalidOperationException>(() => info.OffsetPatternShort = "abc");
-        }
-
-        [Test]
-        public void TestSetFormatInfo()
-        {
-            NodaFormatInfo.ClearCache();
-
-            var info1 = NodaFormatInfo.GetFormatInfo(enUs);
-            Assert.NotNull(info1);
-            Assert.IsTrue(info1.IsReadOnly);
-
-            var info2 = new NodaFormatInfo(enGb);
-            Assert.IsFalse(info2.IsReadOnly);
-            NodaFormatInfo.SetFormatInfo(enUs, info2);
-            Assert.IsTrue(info2.IsReadOnly);
-
-            var info3 = NodaFormatInfo.GetFormatInfo(enUs);
-            Assert.NotNull(info3);
-            Assert.IsTrue(info3.IsReadOnly);
-            Assert.AreSame(info2, info3);
-            Assert.AreNotSame(info1, info3);
-
-            NodaFormatInfo.SetFormatInfo(enUs, null);
-            var info4 = NodaFormatInfo.GetFormatInfo(enUs);
-            Assert.NotNull(info4);
-            Assert.IsTrue(info4.IsReadOnly);
-            Assert.AreNotSame(info1, info4);
-            Assert.AreSame(info1.CultureInfo, info4.CultureInfo);
-        }
-
-        [Test]
-        public void TestSetFormatInfo_failure()
-        {
-            NodaFormatInfo.ClearCache();
-            Assert.Throws<ArgumentNullException>(() => NodaFormatInfo.SetFormatInfo(null, null));
         }
 
         [Test]

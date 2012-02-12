@@ -31,9 +31,9 @@ using NodaTime.Utility;
 namespace NodaTime.Globalization
 {
     /// <summary>
-    ///   Defines how NodaTime values are formatted and displayed, depending on the culture.
+    /// Defines how NodaTime values are formatted and displayed, depending on the culture.
     /// </summary>
-    [DebuggerStepThrough]
+    //[DebuggerStepThrough]
     public class NodaFormatInfo : IFormatProvider, ICloneable
     {
         // Names that we can use to check for broken Mono behaviour.
@@ -62,8 +62,8 @@ namespace NodaTime.Globalization
         /// </summary>
         public static NodaFormatInfo InvariantInfo  = new NodaFormatInfo(CultureInfo.InvariantCulture);
 
-        private static readonly IDictionary<String, NodaFormatInfo> Infos = new Dictionary<string, NodaFormatInfo>();
-        internal static bool DisableCaching; // Used in testing and debugging
+        // TODO(Post-V1): Reconsider everything about caching, cloning etc.
+        private static readonly IDictionary<CultureInfo, NodaFormatInfo> Cache = new Dictionary<CultureInfo, NodaFormatInfo>(new ReferenceEqualityComparer<CultureInfo>());
 
         private readonly string description;
         private DateTimeFormatInfo dateTimeFormat;
@@ -80,7 +80,7 @@ namespace NodaTime.Globalization
         private readonly IList<string> shortMonthGenitiveNames;
         private readonly IList<string> shortDayNames;
 
-        // TODO: Have a single EraDescription class and one dictionary?
+        // TODO(Post-V1): Have a single EraDescription class and one dictionary?
         private readonly Dictionary<Era, IList<string>> eraNamesCache;
         private readonly Dictionary<Era, string> eraPrimaryNameCache;
 
@@ -177,7 +177,7 @@ namespace NodaTime.Globalization
         internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return localDatePatternParser; } }
         internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser { get { return localDateTimePatternParser; } }
 
-        // TODO: Make these writable?
+        // TODO(Post-V1): Make these writable?
         /// <summary>
         /// Returns a read-only list of the names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
@@ -369,7 +369,7 @@ namespace NodaTime.Globalization
             {
                 if (isReadOnly && value != true)
                 {
-                    throw new InvalidOperationException("Cannot make a read only object writable.");
+                    throw new InvalidOperationException("Cannot make a read-only object writable.");
                 }
                 isReadOnly = value;
             }
@@ -472,7 +472,7 @@ namespace NodaTime.Globalization
         /// </summary>
         internal NodaFormatInfo Clone(NodaCultureInfo clonedCultureInfo)
         {
-            // TODO: Potentially extract common code with the parameterless Clone method above.
+            // TODO(Post-V1): Potentially extract common code with the parameterless Clone method above.
             var info = (NodaFormatInfo)MemberwiseClone();
             info.isReadOnly = false;
             info.CultureInfo = clonedCultureInfo;
@@ -519,7 +519,7 @@ namespace NodaTime.Globalization
         /// </summary>
         internal static void ClearCache()
         {
-            lock (Infos) Infos.Clear();
+            lock (Cache) Cache.Clear();
         }
 
         private void SetValue<T>(T value, ref T property) where T : class
@@ -542,10 +542,7 @@ namespace NodaTime.Globalization
         /// <returns>The <see cref="NodaFormatInfo" />. Will next be <c>null</c>.</returns>
         internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
         {
-            if (cultureInfo == null)
-            {
-                throw new ArgumentNullException("cultureInfo");
-            }
+            Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
             string name = cultureInfo.Name;
             NodaFormatInfo result;
             if (cultureInfo == CultureInfo.InvariantCulture)
@@ -553,22 +550,16 @@ namespace NodaTime.Globalization
                 return InvariantInfo;
             }
             // Never cache (or consult the cache) for non-read-only cultures.
-            // TODO
             if (!cultureInfo.IsReadOnly)
             {
                 return new NodaFormatInfo(cultureInfo);
             }
-            lock (Infos)
+            lock (Cache)
             {
-                // TODO: Consider fetching by the cultureInfo instead, as otherwise two culture instances
-                // with the same name will give the wrong result.
-                if (DisableCaching || !Infos.TryGetValue(name, out result))
+                if (!Cache.TryGetValue(cultureInfo, out result))
                 {
                     result = new NodaFormatInfo(cultureInfo) { IsReadOnly = true };
-                    if (!DisableCaching)
-                    {
-                        Infos.Add(name, result);
-                    }
+                    Cache.Add(cultureInfo, result);
                 }
             }
             return result;
@@ -602,29 +593,6 @@ namespace NodaTime.Globalization
                 }
             }
             return GetInstance(CultureInfo.CurrentCulture);
-        }
-
-        /// <summary>
-        /// Sets the <see cref="NodaFormatInfo" /> to use for the given culture.
-        /// </summary>
-        /// <param name="cultureInfo">The culture info.</param>
-        /// <param name="formatInfo">The format info.</param>
-        internal static void SetFormatInfo(CultureInfo cultureInfo, NodaFormatInfo formatInfo)
-        {
-            if (cultureInfo == null)
-            {
-                throw new ArgumentNullException("cultureInfo");
-            }
-            string name = cultureInfo.Name;
-            if (formatInfo == null)
-            {
-                lock (Infos) Infos.Remove(name);
-            }
-            else
-            {
-                formatInfo.IsReadOnly = true;
-                lock (Infos) Infos[name] = formatInfo;
-            }
         }
 
         /// <summary>
