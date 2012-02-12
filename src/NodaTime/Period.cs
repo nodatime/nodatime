@@ -39,6 +39,18 @@ namespace NodaTime
     /// </remarks>
     public sealed class Period : IEnumerable<Period.UnitValue>, IEquatable<Period>
     {
+        // Just to avoid magic numbers elsewhere. Not an enum as we normally want to use
+        // the value as an index immediately afterwards.
+        private const int YearIndex = 0;
+        private const int MonthIndex = 1;
+        private const int WeekIndex = 2;
+        private const int DayIndex = 3;
+        private const int HourIndex = 4;
+        private const int MinuteIndex = 5;
+        private const int SecondIndex = 6;
+        private const int MillisecondIndex = 7;
+        private const int TickIndex = 8;
+
         /// <summary>
         /// A simple combination of a single unit (year, month, hour, minute etc) with a 64-bit integer value.
         /// </summary>
@@ -475,6 +487,66 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns whether or not this period contains any non-zero-valued time-based units (hours or lower).
+        /// The units of this period may include time units, so long as they have zero values.
+        /// </summary>
+        public bool HasTimeComponent
+        {
+            get
+            {
+                // Simple case: there are no time units anyway
+                if ((units & PeriodUnits.AllTimeUnits) == 0)
+                {
+                    return false;
+                }
+                // Single value case - no need to check unit type, as it must be a time one by now.
+                if (values == null)
+                {
+                    return singleValue != 0;
+                }
+                // Compound case: just check the time-related indexes
+                for (int i = HourIndex; i <= TickIndex; i++)
+                {
+                    if (values[i] != 0)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns whether or not this period contains any non-zero date-based units (days or higher).
+        /// The units of this period may include date units, so long as they have zero values.
+        /// </summary>
+        public bool HasDateComponent
+        {
+            get
+            {
+                // Simple case: there are no date units anyway
+                if ((units & PeriodUnits.AllDateUnits) == 0)
+                {
+                    return false;
+                }
+                // Single value case - no need to check unit type, as it must be a date one by now.
+                if (values == null)
+                {
+                    return singleValue != 0;
+                }
+                // Compound case: just check the date-related indexes
+                for (int i = YearIndex; i <= DayIndex; i++)
+                {
+                    if (values[i] != 0)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Returns the fields and values within this period.
         /// </summary>
         /// <returns>The fields and values within this period.</returns>
@@ -546,39 +618,39 @@ namespace NodaTime
         /// <summary>
         /// Gets the number of years within this period.
         /// </summary>
-        public long Years { get { return this[0]; } }
+        public long Years { get { return this[YearIndex]; } }
         /// <summary>
         /// Gets the number of months within this period.
         /// </summary>
-        public long Months { get { return this[1]; } }
+        public long Months { get { return this[MonthIndex]; } }
         /// <summary>
         /// Gets the number of weeks within this period.
         /// </summary>
-        public long Weeks { get { return this[2]; } }
+        public long Weeks { get { return this[WeekIndex]; } }
         /// <summary>
         /// Gets the number of days within this period.
         /// </summary>
-        public long Days { get { return this[3]; } }
+        public long Days { get { return this[DayIndex]; } }
         /// <summary>
         /// Gets the number of hours within this period.
         /// </summary>
-        public long Hours { get { return this[4]; } }
+        public long Hours { get { return this[HourIndex]; } }
         /// <summary>
         /// Gets the number of minutes within this period.
         /// </summary>
-        public long Minutes { get { return this[5]; } }
+        public long Minutes { get { return this[MinuteIndex]; } }
         /// <summary>
         /// Gets the number of seconds within this period.
         /// </summary>
-        public long Seconds { get { return this[6]; } }
+        public long Seconds { get { return this[SecondIndex]; } }
         /// <summary>
         /// Gets the number of milliseconds within this period.
         /// </summary>
-        public long Milliseconds { get { return this[7]; } }
+        public long Milliseconds { get { return this[MillisecondIndex]; } }
         /// <summary>
         /// Gets the number of ticks within this period.
         /// </summary>
-        public long Ticks { get { return this[8]; } }
+        public long Ticks { get { return this[TickIndex]; } }
         #endregion
 
         #region Object overrides
@@ -599,7 +671,6 @@ namespace NodaTime
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            // TODO: Make this a lot faster :)
             for (int i = 0; i < ValuesArraySize; i++)
             {
                 hash = HashCodeHelper.Hash(hash, this[i]);

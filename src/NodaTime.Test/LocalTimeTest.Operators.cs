@@ -73,5 +73,41 @@ namespace NodaTime.Test
             // Call to ToString just to make it a valid statement
             Assert.Throws<ArgumentNullException>(() => (date - (Period)null).ToString());
         }
+
+        [Test]
+        public void Addition_PeriodWithDate()
+        {
+            LocalTime time = new LocalTime(20, 30, 0);
+            Period period = Period.FromDays(1);
+            // Use method not operator here to form a valid statement
+            Assert.Throws<ArgumentException>(() => LocalTime.Add(time, period));
+        }
+
+        [Test]
+        public void Subtraction_PeriodWithTime()
+        {
+            LocalTime time = new LocalTime(20, 30, 0);
+            Period period = Period.FromDays(1);
+            // Use method not operator here to form a valid statement
+            Assert.Throws<ArgumentException>(() => LocalTime.Subtract(time, period));
+        }
+
+        [Test]
+        public void PeriodAddition_MethodEquivalents()
+        {
+            LocalTime start = new LocalTime(20, 30, 0);
+            Period period = Period.FromHours(3) + Period.FromMinutes(10);
+            Assert.AreEqual(start + period, LocalTime.Add(start, period));
+            Assert.AreEqual(start + period, start.Plus(period));
+        }
+
+        [Test]
+        public void PeriodSubtraction_MethodEquivalents()
+        {
+            LocalTime start = new LocalTime(20, 30, 0);
+            Period period = Period.FromHours(3) + Period.FromMinutes(10);
+            Assert.AreEqual(start - period, LocalTime.Subtract(start, period));
+            Assert.AreEqual(start - period, start.Minus(period));
+        }
     }
 }

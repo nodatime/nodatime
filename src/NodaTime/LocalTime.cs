@@ -191,7 +191,6 @@ namespace NodaTime
         /// </summary>
         public LocalDateTime LocalDateTime { get { return new LocalDateTime(localInstant); } }
 
-        // TODO: Assert no units as large a day
         /// <summary>
         /// Creates a new local time by adding a period to an existing time. The period must not contain
         /// any date-related units (days etc) with non-zero values.
@@ -201,10 +200,32 @@ namespace NodaTime
         /// <returns>The result of adding the period to the time, wrapping via midnight if necessary</returns>
         public static LocalTime operator +(LocalTime time, Period period)
         {
+            Preconditions.CheckNotNull(period, "period");
+            Preconditions.CheckArgument(!period.HasDateComponent, "period", "Cannot add a period with a date component to a time");
             return (time.LocalDateTime + period).TimeOfDay;
         }
 
-        // TODO: Assert no units as large as a day
+        /// <summary>
+        /// Adds the specified period to the time. Friendly alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="time">The time to add the period to</param>
+        /// <param name="period">The period to add. Must not contain any (non-zero) date units.</param>
+        /// <returns>The sum of the given time and period</returns>
+        public static LocalTime Add(LocalTime time, Period period)
+        {
+            return time + period;
+        }
+
+        /// <summary>
+        /// Adds the specified period to this time. Fluent alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="period">The period to add. Must not contain any (non-zero) date units.</param>
+        /// <returns>The sum of this time and the given period</returns>
+        public LocalTime Plus(Period period)
+        {
+            return this + period;
+        }
+
         /// <summary>
         /// Creates a new local time by subtracting a period from an existing time. The period must not contain
         /// any date-related units (days etc) with non-zero values.
@@ -214,7 +235,30 @@ namespace NodaTime
         /// <returns>The result of subtract the period from the time, wrapping via midnight if necessary</returns>
         public static LocalTime operator -(LocalTime time, Period period)
         {
+            Preconditions.CheckNotNull(period, "period");
+            Preconditions.CheckArgument(!period.HasDateComponent, "period", "Cannot subtract a period with a date component from a time");
             return (time.LocalDateTime - period).TimeOfDay;
+        }
+
+        /// <summary>
+        /// Subtracts the specified period from the time. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="time">The time to subtract the period from</param>
+        /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
+        /// <returns>The result of subtracting the given period from the time.</returns>
+        public static LocalTime Subtract(LocalTime time, Period period)
+        {
+            return time - period;
+        }
+
+        /// <summary>
+        /// Subtracts the specified period from this time. Fluent alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
+        /// <returns>The result of subtracting the given period from this time.</returns>
+        public LocalTime Minus(Period period)
+        {
+            return this - period;
         }
 
         /// <summary>

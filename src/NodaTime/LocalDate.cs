@@ -20,6 +20,7 @@ using NodaTime.Calendars;
 using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 namespace NodaTime
 {
@@ -132,16 +133,34 @@ namespace NodaTime
         /// Adds the specified period to the date.
         /// </summary>
         /// <param name="date">The date to add the period to</param>
-        /// <param name="period">The period to add</param>
+        /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
         /// <returns>The sum of the given date and period</returns>
-        // TODO: Assert no units smaller than a day, and more documentation.
         public static LocalDate operator +(LocalDate date, Period period)
         {
-            if (period == null)
-            {
-                throw new ArgumentNullException("period");
-            }
+            Preconditions.CheckNotNull(period, "period");
+            Preconditions.CheckArgument(!period.HasTimeComponent, "period", "Cannot add a period with a time component to a date");
             return new LocalDate(date.LocalDateTime + period);
+        }
+
+        /// <summary>
+        /// Adds the specified period to the date. Friendly alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="date">The date to add the period to</param>
+        /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
+        /// <returns>The sum of the given date and period</returns>
+        public static LocalDate Add(LocalDate date, Period period)
+        {
+            return date + period;
+        }
+
+        /// <summary>
+        /// Adds the specified period to this date. Fluent alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
+        /// <returns>The sum of this date and the given period</returns>
+        public LocalDate Plus(Period period)
+        {
+            return this + period;
         }
 
         /// <summary>
@@ -162,16 +181,34 @@ namespace NodaTime
         /// Subtracts the specified period from the date.
         /// </summary>
         /// <param name="date">The date to subtract the period from</param>
-        /// <param name="period">The period to subtract</param>
+        /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
         /// <returns>The result of subtracting the given period from the date</returns>
-        // TODO: Assert no units smaller than a day, and more documentation.
         public static LocalDate operator -(LocalDate date, Period period)
         {
-            if (period == null)
-            {
-                throw new ArgumentNullException("period");
-            }
+            Preconditions.CheckNotNull(period, "period");
+            Preconditions.CheckArgument(!period.HasTimeComponent, "period", "Cannot subtract a period with a time component from a date");
             return new LocalDate(date.LocalDateTime - period);
+        }
+
+        /// <summary>
+        /// Subtracts the specified period from the date. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="date">The date to subtract the period from</param>
+        /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
+        /// <returns>The result of subtracting the given period from the date.</returns>
+        public static LocalDate Subtract(LocalDate date, Period period)
+        {
+            return date - period;
+        }
+
+        /// <summary>
+        /// Subtracts the specified period from this date. Fluent alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
+        /// <returns>The result of subtracting the given period from this date.</returns>
+        public LocalDate Minus(Period period)
+        {
+            return this - period;
         }
 
         /// <summary>
