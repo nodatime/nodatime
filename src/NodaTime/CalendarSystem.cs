@@ -197,17 +197,23 @@ namespace NodaTime
 
         private readonly FieldSet fields;
         private readonly string name;
-        private readonly IList<Era> eras; 
+        private readonly IList<Era> eras;
+        private readonly int minYear;
+        private readonly int maxYear;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CalendarSystem"/> class.
         /// </summary>
         /// <param name="name">The name of the calendar</param>
+        /// <param name="minYear">Minimum year in the calendar</param>
+        /// <param name="maxYear">Maximum year in the calendar</param>
         /// <param name="fieldAssembler">Delegate to invoke in order to assemble fields for this calendar.</param>
         /// <param name="eras">The eras within this calendar, which need not be unique to the calendar.</param>
-        internal CalendarSystem(string name, FieldAssembler fieldAssembler, IEnumerable<Era> eras)
+        internal CalendarSystem(string name, int minYear, int maxYear, FieldAssembler fieldAssembler, IEnumerable<Era> eras)
         {
             this.name = name;
+            this.minYear = minYear;
+            this.maxYear = maxYear;
             this.eras = new List<Era>(eras).AsReadOnly();
             FieldSet.Builder builder = new FieldSet.Builder();
             fieldAssembler(builder, this);
@@ -253,13 +259,12 @@ namespace NodaTime
         /// <summary>
         /// The minimum valid year (inclusive) within this calendar.
         /// </summary>
-        // TODO: Back these by simple fields?
-        public abstract int MinYear { get; }
+        public int MinYear { get { return minYear; } }
 
         /// <summary>
         /// The maximum valid year (inclusive) within this calendar.
         /// </summary>
-        public abstract int MaxYear { get; }
+        public int MaxYear { get { return maxYear; } }
 
         /// <summary>
         /// The maximum valid month (inclusive) within this calendar in the given year. It is assumed that

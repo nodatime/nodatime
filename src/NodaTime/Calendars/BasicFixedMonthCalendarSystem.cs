@@ -35,8 +35,8 @@ namespace NodaTime.Calendars
 
         private const long AverageTicksPerFixedMonthYear = (long)(365.25 * NodaConstants.TicksPerStandardDay);
 
-        protected BasicFixedMonthCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler fieldAssembler, IEnumerable<Era> eras)
-            : base(name, minDaysInFirstWeek, fieldAssembler, eras)
+        protected BasicFixedMonthCalendarSystem(string name, int minDaysInFirstWeek, int minYear, int maxYear, FieldAssembler fieldAssembler, IEnumerable<Era> eras)
+            : base(name, minDaysInFirstWeek, minYear, maxYear, fieldAssembler, eras)
         {
         }
 

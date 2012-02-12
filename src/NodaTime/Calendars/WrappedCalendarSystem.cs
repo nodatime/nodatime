@@ -37,11 +37,8 @@ namespace NodaTime.Calendars
         /// </summary>
         internal CalendarSystem Calendar { get { return baseCalendar; } }
 
-        public override int MaxYear { get { return baseCalendar.MaxYear; } }
-        public override int MinYear { get { return baseCalendar.MinYear; } }
-
         protected WrappedCalendarSystem(string name, CalendarSystem baseCalendar, FieldAssembler assembler, IEnumerable<Era> eras)
-            : base(name, (builder, @this) => AssembleFields(builder, @this, baseCalendar, assembler), eras)
+            : base(name, baseCalendar.MinYear, baseCalendar.MaxYear, (builder, @this) => AssembleFields(builder, @this, baseCalendar, assembler), eras)
         {
             // Quick sanity check - the point of separating out this class is to only use it in
             // situations where we really have a calendar to wrap.

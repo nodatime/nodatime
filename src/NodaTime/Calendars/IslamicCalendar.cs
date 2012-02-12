@@ -36,16 +36,6 @@ namespace NodaTime.Calendars
         private static readonly int MinLeapYearPatternNumber = 1;
         private static readonly int MaxLeapYearPatternNumber = 4;
 
-        // TODO(Post-V1): Validate these.
-        /// <summary>
-        /// The highest year that can be fully supported. It's possible that
-        /// a few years above this can be partially supported, but some calculations may overflow.
-        /// </summary>
-        public override int MaxYear { get { return 29226; } }
-
-        /// <summary>The lowest year that can be fully supported.</summary>
-        public override int MinYear { get { return 1; } }
-
         /// <summary>Days in a pair of months, in days.</summary>
         private const int MonthPairLength = 59;
 
@@ -129,7 +119,8 @@ namespace NodaTime.Calendars
             return Calendars[leapYearPatternNumber - MinLeapYearPatternNumber, epochNumber - MinEpochNumber];
         }
 
-        private IslamicCalendar(int leapYearPatternBits, long epochTicks) : base("Hijri (Islamic)", 4, AssembleFields, new[] { Era.AnnoHegirae })
+        // TODO(Post-V1): Validate highest year. It's possible that we *could* support some higher years.
+        private IslamicCalendar(int leapYearPatternBits, long epochTicks) : base("Hijri (Islamic)", 4, 1, 29226, AssembleFields, new[] { Era.AnnoHegirae })
         {
             this.leapYearPatternBits = leapYearPatternBits;
             this.epochTicks = epochTicks;

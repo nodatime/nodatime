@@ -63,15 +63,12 @@ namespace NodaTime.Calendars
         }
 
         private JulianCalendarSystem(int minDaysInFirstWeek)
-            : base(JulianName, minDaysInFirstWeek, null)
+            : base(JulianName, minDaysInFirstWeek, -27256, 31196, null)
         {
         }
 
         private const long AverageTicksPerJulianYear = (long)(365.25m * NodaConstants.TicksPerStandardDay);
         private const long AverageTicksPerJulianMonth = (long)((365.25m * NodaConstants.TicksPerStandardDay) / 12);
-
-        public override int MinYear { get { return -27256; } }
-        public override int MaxYear { get { return 31196; } }
 
         internal override long AverageTicksPerMonth { get { return AverageTicksPerJulianMonth; } }
         internal override long AverageTicksPerYear { get { return AverageTicksPerJulianYear; } }

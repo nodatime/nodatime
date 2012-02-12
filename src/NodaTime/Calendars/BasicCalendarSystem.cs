@@ -85,8 +85,8 @@ namespace NodaTime.Calendars
             return builder.Build();
         }
 
-        protected BasicCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler assembler, IEnumerable<Era> eras)
-            : base(name, AssembleFields + assembler, eras)
+        protected BasicCalendarSystem(string name, int minDaysInFirstWeek, int minYear, int maxYear, FieldAssembler assembler, IEnumerable<Era> eras)
+            : base(name, minYear, maxYear, AssembleFields + assembler, eras)
         {
             if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7)
             {
