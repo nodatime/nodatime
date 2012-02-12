@@ -22,7 +22,7 @@ namespace NodaTime.Fields
 {
     /// <summary>
     /// Porting status: needs text
-    /// TODO: Rename to "GregulianEraDateTimeField" or something similar?
+    /// TODO(Post-V1): Rename to "GregulianEraDateTimeField" or something similar?
     /// </summary>
     internal sealed class GJEraDateTimeField : DateTimeField
     {

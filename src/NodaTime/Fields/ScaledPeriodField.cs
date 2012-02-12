@@ -21,7 +21,7 @@ using NodaTime.Utility;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// TODO: Decide whether this wouldn't be better as a DelegatedPeriodField...
+    /// A period field which is simply scaled by a fixed amount.
     /// </summary>
     internal sealed class ScaledPeriodField : PeriodField
     {
@@ -35,9 +35,9 @@ namespace NodaTime.Fields
             {
                 throw new ArgumentException("Wrapped field must be supported", "wrappedField");
             }
-            if (scale == 0 || scale == 1)
+            if (scale < 2)
             {
-                throw new ArgumentOutOfRangeException("scale", "The scale must not be 0 or 1");
+                throw new ArgumentOutOfRangeException("scale", "The scale must be 2 or more");
             }
             this.scale = scale;
             this.wrappedField = wrappedField;
