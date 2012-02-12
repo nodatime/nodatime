@@ -436,17 +436,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Adds a period to this local date/time. Fields are added in the order provided by the period.
-        /// </summary>
-        /// <param name="period">Period to add</param>
-        /// <returns>The resulting local date and time</returns>
-        public LocalDateTime Plus(Period period)
-        {
-            Preconditions.CheckNotNull(period, "period");
-            return new LocalDateTime(period.AddTo(localInstant, calendar, 1), calendar);
-        }
-
-        /// <summary>
         /// Adds a period to a local date/time. Fields are added in the order provided by the period.
         /// This is a convenience operator over the <see cref="Plus"/> method.
         /// </summary>
@@ -459,15 +448,25 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Subtracts a period from a local date/time. Fields are subtracted in the order provided by the period.
-        /// This is a convenience operator over the <see cref="Minus"/> method.
+        /// Add the specified period to the date and time. Friendly alternative to <c>operator+()</c>.
         /// </summary>
-        /// <param name="period">Period to subtract</param>
+        /// <param name="localDateTime">Initial local date and time</param>
+        /// <param name="period">Period to add</param>
         /// <returns>The resulting local date and time</returns>
-        public LocalDateTime Minus(Period period)
+        public static LocalDateTime Add(LocalDateTime localDateTime, Period period)
+        {
+            return localDateTime.Plus(period);
+        }
+
+        /// <summary>
+        /// Adds a period to this local date/time. Fields are added in the order provided by the period.
+        /// </summary>
+        /// <param name="period">Period to add</param>
+        /// <returns>The resulting local date and time</returns>
+        public LocalDateTime Plus(Period period)
         {
             Preconditions.CheckNotNull(period, "period");
-            return new LocalDateTime(period.AddTo(localInstant, calendar, -1), calendar);
+            return new LocalDateTime(period.AddTo(localInstant, calendar, 1), calendar);
         }
 
         /// <summary>
@@ -480,6 +479,29 @@ namespace NodaTime
         public static LocalDateTime operator -(LocalDateTime localDateTime, Period period)
         {
             return localDateTime.Minus(period);
+        }
+
+        /// <summary>
+        /// Subtracts the specified period from the date and time. Friendly alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <param name="localDateTime">Initial local date and time</param>
+        /// <param name="period">Period to subtract</param>
+        /// <returns>The resulting local date and time</returns>
+        public static LocalDateTime Subtract(LocalDateTime localDateTime, Period period)
+        {
+            return localDateTime.Minus(period);
+        }
+
+        /// <summary>
+        /// Subtracts a period from a local date/time. Fields are subtracted in the order provided by the period.
+        /// This is a convenience operator over the <see cref="Minus"/> method.
+        /// </summary>
+        /// <param name="period">Period to subtract</param>
+        /// <returns>The resulting local date and time</returns>
+        public LocalDateTime Minus(Period period)
+        {
+            Preconditions.CheckNotNull(period, "period");
+            return new LocalDateTime(period.AddTo(localInstant, calendar, -1), calendar);
         }
         #endregion
 

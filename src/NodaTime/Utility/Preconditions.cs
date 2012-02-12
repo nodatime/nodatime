@@ -56,5 +56,13 @@ namespace NodaTime.Utility
                     "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
             }
         }
+
+        internal static void CheckArgument(bool expression, string parameter, string message)
+        {
+            if (!expression)
+            {
+                throw new ArgumentException(message, parameter);
+            }
+        }
     }
 }

@@ -265,6 +265,64 @@ namespace NodaTime.Test
             Assert.IsFalse(Period.FromHours(1).Equals((object) null));
         }
 
+        [Test]
+        public void HasTimeComponent_SingleValued()
+        {
+            Assert.IsTrue(Period.FromHours(1).HasTimeComponent);
+            Assert.IsFalse(Period.FromDays(1).HasTimeComponent);
+        }
+
+        [Test]
+        public void HasDateComponent_SingleValued()
+        {
+            Assert.IsFalse(Period.FromHours(1).HasDateComponent);
+            Assert.IsTrue(Period.FromDays(1).HasDateComponent);
+        }
+
+        [Test]
+        public void HasTimeComponent_Compound()
+        {
+            LocalDateTime dt1 = new LocalDateTime(2000, 1, 1, 10, 45, 00);
+            LocalDateTime dt2 = new LocalDateTime(2000, 2, 4, 11, 50, 00);
+
+            // Case 1: Entire period is date-based (no time units available)
+            Assert.IsFalse(Period.Between(dt1.Date, dt2.Date).HasTimeComponent);
+
+            // Case 2: Period contains date and time units, but time units are all zero
+            Assert.IsFalse(Period.Between(dt1.Date + LocalTime.Midnight, dt2.Date + LocalTime.Midnight).HasTimeComponent);
+
+            // Case 3: Entire period is time-based, but 0. (Same local time twice here.)
+            Assert.IsFalse(Period.Between(dt1.TimeOfDay, dt1.TimeOfDay).HasTimeComponent);
+
+            // Case 4: Period contains date and time units, and some time units are non-zero
+            Assert.IsTrue(Period.Between(dt1, dt2).HasTimeComponent);
+            
+            // Case 5: Entire period is time-based, and some time units are non-zero
+            Assert.IsTrue(Period.Between(dt1.TimeOfDay, dt2.TimeOfDay).HasTimeComponent);
+        }
+
+        [Test]
+        public void HasDateComponent_Compound()
+        {
+            LocalDateTime dt1 = new LocalDateTime(2000, 1, 1, 10, 45, 00);
+            LocalDateTime dt2 = new LocalDateTime(2000, 2, 4, 11, 50, 00);
+
+            // Case 1: Entire period is time-based (no date units available)
+            Assert.IsFalse(Period.Between(dt1.TimeOfDay, dt2.TimeOfDay).HasDateComponent);
+
+            // Case 2: Period contains date and time units, but date units are all zero
+            Assert.IsFalse(Period.Between(dt1, dt1.Date + dt2.TimeOfDay).HasDateComponent);
+
+            // Case 3: Entire period is date-based, but 0. (Same local date twice here.)
+            Assert.IsFalse(Period.Between(dt1.Date, dt1.Date).HasDateComponent);
+
+            // Case 4: Period contains date and time units, and some date units are non-zero
+            Assert.IsTrue(Period.Between(dt1, dt2).HasDateComponent);
+
+            // Case 5: Entire period is date-based, and some time units are non-zero
+            Assert.IsTrue(Period.Between(dt1.Date, dt2.Date).HasDateComponent);
+        }
+
         private void SpecialAssertEqual(Period period1, Period period2)
         {
             Assert.AreEqual(period1.GetHashCode(), period2.GetHashCode());
