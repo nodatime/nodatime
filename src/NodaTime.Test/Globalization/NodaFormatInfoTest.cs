@@ -96,12 +96,11 @@ namespace NodaTime.Test.Globalization
         public void TestCachingWithReadOnly()
         {
             var original = new CultureInfo("en-US");
-            // Fool Noda Time into believing both are read-only, so it can use a cache...
-            var wrapper1 = CultureInfo.ReadOnly(original);
-            var wrapper2 = CultureInfo.ReadOnly(original);
+            // Use a read-only wrapper so that it gets cached
+            var wrapper = CultureInfo.ReadOnly(original);
 
-            var nodaWrapper1 = NodaFormatInfo.GetFormatInfo(wrapper1);
-            var nodaWrapper2 = NodaFormatInfo.GetFormatInfo(wrapper2);
+            var nodaWrapper1 = NodaFormatInfo.GetFormatInfo(wrapper);
+            var nodaWrapper2 = NodaFormatInfo.GetFormatInfo(wrapper);
             Assert.AreSame(nodaWrapper1, nodaWrapper2);
         }
 
