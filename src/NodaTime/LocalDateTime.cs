@@ -369,7 +369,6 @@ namespace NodaTime
             }
         }
 
-        // TODO: Add an overload for the calendar to use?
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this value which has a <see cref="DateTime.Kind" />
         /// of <see cref="DateTimeKind.Unspecified"/>.
@@ -548,10 +547,7 @@ namespace NodaTime
         /// <returns>The converted LocalDateTime.</returns>
         public LocalDateTime WithCalendar(CalendarSystem calendarSystem)
         {
-            if (calendarSystem == null)
-            {
-                throw new ArgumentNullException("calendarSystem");
-            }
+            Preconditions.CheckNotNull(calendarSystem, "calendarSystem");
             return new LocalDateTime(localInstant, calendarSystem);
         }
 

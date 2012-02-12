@@ -51,7 +51,7 @@ namespace NodaTime.Text
         /// <exception cref="FormatException">if too many characters are requested. <see cref="MaximumPaddingLength" />.</exception>
         internal static void LeftPad(int value, int length, StringBuilder outputBuffer)
         {
-            // TODO: Do this properly...
+            // TODO(V1-Blocker): Do this properly... (or at least find out what's wrong with it!)
             if (value < 0)
             {
                 outputBuffer.Append('-');

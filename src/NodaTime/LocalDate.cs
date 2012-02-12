@@ -278,7 +278,6 @@ namespace NodaTime
         /// <returns>The converted LocalDate</returns>
         public LocalDate WithCalendar(CalendarSystem calendarSystem)
         {
-            // TODO: This currently assumes the time will stay as midnight. Is that valid?
             return new LocalDate(LocalDateTime.WithCalendar(calendarSystem));
         }
 

@@ -70,7 +70,6 @@ namespace NodaTime
         /// <param name="milliseconds">The number of milliseconds in the offset.</param>
         private Offset(int milliseconds)
         {
-            // TODO: Possibly move this to all the public factory methods instead, and trust internal callers.
             Preconditions.CheckArgumentRange("milliseconds", milliseconds,
                 -NodaConstants.MillisecondsPerStandardDay + 1,
                 NodaConstants.MillisecondsPerStandardDay - 1);
@@ -635,10 +634,6 @@ namespace NodaTime
         /// <returns>
         ///   A new <see cref="Offset" /> representing the given values.
         /// </returns>
-        /// <remarks>
-        ///   TODO: not sure about the name. Anyone got a better one?
-        ///   TODO: The behaviour around negative values needs documenting too! (Make this internal for now?)
-        /// </remarks>
         /// <returns>A new <see cref="Offset"/> representing the given values.</returns>
         public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds)
         {
@@ -690,11 +685,9 @@ namespace NodaTime
         /// <returns>A new offset for the same time as the given time span.</returns>
         internal static Offset FromTimeSpan(TimeSpan timeSpan)
         {
-            int milliseconds = (int)timeSpan.TotalMilliseconds;
-            Preconditions.CheckArgumentRange("timeSpan", milliseconds,
-                -NodaConstants.MillisecondsPerStandardDay + 1,
-                NodaConstants.MillisecondsPerStandardDay - 1);
-            return new Offset((int)timeSpan.TotalMilliseconds);
+            long milliseconds = (long) timeSpan.TotalMilliseconds;
+            Preconditions.CheckArgumentRange("timeSpan", milliseconds, MinValue.TotalMilliseconds, MaxValue.TotalMilliseconds);
+            return new Offset((int) milliseconds);
         }
         #endregion
 
