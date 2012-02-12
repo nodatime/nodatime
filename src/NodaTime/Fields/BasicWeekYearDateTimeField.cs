@@ -62,7 +62,7 @@ namespace NodaTime.Fields
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             int year = (int)value;
-            // TODO: Check this. In the Java it uses Math.abs, but I'm not convinced that's correct...
+            // TODO(Post-V1): Check this. In the Java it uses Math.abs, but I'm not convinced that's correct...
             FieldUtils.VerifyValueBounds(this, year, calendarSystem.MinYear, calendarSystem.MaxYear);
 
             // Do nothing if no real change is requested
@@ -78,7 +78,7 @@ namespace NodaTime.Fields
             // Calculate the maximum weeks in the target year
             int weeksInFromYear = calendarSystem.GetWeeksInYear(thisWeekYear);
             int weeksInToYear = calendarSystem.GetWeeksInYear(year);
-            // TODO: Check this. Doesn't look right, but mirrors the Java code
+            // TODO(Post-V1): Check this. Doesn't look right, but mirrors the Java code
             int maxOutWeeks = Math.Min(weeksInToYear, weeksInFromYear);
 
             // Get the current week of the year. This will be preserved in
