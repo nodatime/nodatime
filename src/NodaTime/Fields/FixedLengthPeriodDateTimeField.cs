@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -67,7 +68,7 @@ namespace NodaTime.Fields
         /// <returns>The updated local instant</returns>
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            FieldUtils.VerifyValueBounds(this, value, GetMinimumValue(), GetMaximumValueForSet(localInstant, value));
+            Preconditions.CheckArgumentRange("value", value, GetMinimumValue(), GetMaximumValueForSet(localInstant, value));
             return new LocalInstant(localInstant.Ticks + (value - GetInt64Value(localInstant)) * unitTicks);
         }
         #endregion

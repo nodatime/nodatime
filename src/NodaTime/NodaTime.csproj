@@ -148,7 +148,6 @@
     <Compile Include="Fields\DividedDateTimeField.cs" />
     <Compile Include="Fields\FieldSet.cs" />
     <Compile Include="Fields\PeriodField.cs" />
-    <Compile Include="Fields\FieldUtils.cs" />
     <Compile Include="Fields\GJDayOfWeekDateTimeField.cs" />
     <Compile Include="Fields\GJEraDateTimeField.cs" />
     <Compile Include="Fields\GJYearOfEraDateTimeField.cs" />

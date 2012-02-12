@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Calendars;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -48,7 +49,7 @@ namespace NodaTime.Fields
 
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            FieldUtils.VerifyValueBounds(this, value, 0, 0);
+            Preconditions.CheckArgumentRange("value", value, 0, 0);
             return localInstant;
         }
 

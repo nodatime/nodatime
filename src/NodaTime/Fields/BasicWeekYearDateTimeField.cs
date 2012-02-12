@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Calendars;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -63,7 +64,7 @@ namespace NodaTime.Fields
         {
             int year = (int)value;
             // TODO(Post-V1): Check this. In the Java it uses Math.abs, but I'm not convinced that's correct...
-            FieldUtils.VerifyValueBounds(this, year, calendarSystem.MinYear, calendarSystem.MaxYear);
+            Preconditions.CheckArgumentRange("value", year, calendarSystem.MinYear, calendarSystem.MaxYear);
 
             // Do nothing if no real change is requested
             int thisWeekYear = GetValue(localInstant);

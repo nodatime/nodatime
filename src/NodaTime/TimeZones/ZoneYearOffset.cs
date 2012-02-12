@@ -93,13 +93,13 @@ namespace NodaTime.TimeZones
         /// <param name="tickOfDay">The tick within the day.</param>
         public ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, Offset tickOfDay)
         {
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear);
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
+            VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear, false);
+            VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
             if (dayOfWeek != 0)
             {
-                FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfWeek, "dayOfWeek", dayOfWeek);
+                VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfWeek, "dayOfWeek", dayOfWeek, false);
             }
-            FieldUtils.VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.TotalTicks);
+            VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.TotalTicks, false);
 
             this.mode = mode;
             this.monthOfYear = monthOfYear;
@@ -108,6 +108,45 @@ namespace NodaTime.TimeZones
             this.advance = advance;
             this.tickOfDay = tickOfDay;
         }
+
+        /// <summary>
+        /// Verifies the input value against the valid range of the calendar field.
+        /// </summary>
+        /// <remarks>
+        /// If this becomes more widely required, move to Preconditions.
+        /// </remarks>
+        /// <param name="field">The calendar field definition.</param>
+        /// <param name="name">The name of the field for the error message.</param>
+        /// <param name="value">The value to check.</param>
+        /// <param name="allowNegated">if set to <c>true</c> all the range of value to be the negative as well.</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the given value is not in the valid range of the given calendar field.</exception>
+        private static void VerifyFieldValue(DateTimeField field, string name, long value, bool allowNegated)
+        {
+            bool failed = false;
+            long minimum = field.GetMinimumValue();
+            long maximum = field.GetMaximumValue();
+            if (allowNegated && value < 0)
+            {
+                if (value < -maximum || -minimum < value)
+                {
+                    failed = true;
+                }
+            }
+            else
+            {
+                if (value < minimum || maximum < value)
+                {
+                    failed = true;
+                }
+            }
+            if (failed)
+            {
+                string range = allowNegated ? "[" + minimum + ", " + maximum + "] or [" + -maximum + ", " + -minimum + "]"
+                    : "[" + minimum + ", " + maximum + "]";
+                throw new ArgumentOutOfRangeException(name, value, name + " is not in the valid range: " + range);
+            }
+        }
+
 
         /// <summary>
         /// Gets the method by which offsets are added to Instants to get LocalInstants.

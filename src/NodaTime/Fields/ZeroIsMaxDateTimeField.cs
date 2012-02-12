@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -50,7 +51,7 @@ namespace NodaTime.Fields
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
             long max = GetMaximumValue();
-            FieldUtils.VerifyValueBounds(this, value, 1, max);
+            Preconditions.CheckArgumentRange("value", value, 1, max);
             return WrappedField.SetValue(localInstant, value == max ? 0 : value);
         }
         #endregion
