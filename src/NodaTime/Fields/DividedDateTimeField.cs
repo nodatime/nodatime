@@ -87,7 +87,7 @@ namespace NodaTime.Fields
 
         internal override Duration Remainder(LocalInstant localInstant)
         {
-            // TODO: Check this - it looks very odd to me.
+            // TODO(Post-V1): Check this - it looks very odd to me.
             Duration wrappedRemainder = WrappedField.Remainder(localInstant);
             return new Duration(SetValue(localInstant, GetValue(new LocalInstant(wrappedRemainder.Ticks))).Ticks);
         }
