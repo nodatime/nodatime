@@ -37,9 +37,9 @@ namespace NodaTime.TimeZones
     /// </remarks>
     public abstract class ZoneLocalMapping
     {
-        // TODO: Include zone and LocalDateTime information for completeness?
+        // TODO(Post-V1): Include zone and LocalDateTime information for completeness?
 
-        // TODO: Just have the Transition for the gap instead of the two ZoneIntervals? Significantly
+        // TODO(Post-V1): Just have the Transition for the gap instead of the two ZoneIntervals? Significantly
         // less information that way.
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace NodaTime.TimeZones
             this.type = type;
         }
 
-        // TODO: Determine whether it's better for this to be a variable with a non-virtual property,
+        // TODO(Post-V1): Determine whether it's better for this to be a variable with a non-virtual property,
         // or a virtual property overridden in every subclass.
         private readonly ResultType type;
 

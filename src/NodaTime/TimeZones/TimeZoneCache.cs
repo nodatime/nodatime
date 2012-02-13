@@ -69,9 +69,10 @@ namespace NodaTime.TimeZones
         {
             get
             {
-                // TODO: Cache this?
+                // TODO(Post-V1): Cache this?
                 string systemName = TimeZone.CurrentTimeZone.StandardName;
                 string timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName) ?? DateTimeZone.UtcId;
+                // TODO(V1-Blocker): Reconsider this policy. Could throw or return null.
                 // Use UTC if we can't find the time zone ID - e.g. if DateTimeZone has been set to use UTC only.
                 return this[timeZoneId] ?? DateTimeZone.Utc;
             }

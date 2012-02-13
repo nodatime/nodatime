@@ -362,7 +362,7 @@ namespace NodaTime
         /// Converts this date and time to text according to the default formatting for the culture.
         /// </summary>
         /// <returns>A text representation of this value.</returns>
-        // TODO: Improve description and make the implementation match the documentation :)
+        // TODO(Post-V1): Proper formatting support.
         public override string ToString()
         {
             return "Local: " + localDateTime + " Offset: " + offset + " Zone: " + zone;
