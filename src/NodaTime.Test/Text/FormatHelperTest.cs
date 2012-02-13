@@ -28,25 +28,9 @@ namespace NodaTime.Test.Text
         [Test]
         public void TestLeftPad_valueSmaller()
         {
-            var builder = new StringBuilder();
-            FormatHelper.LeftPad(1, 3, builder);
-            Assert.AreEqual("001", builder.ToString());
-        }
-
-        [Test]
-        public void TestLeftPad_valueSame()
-        {
-            var builder = new StringBuilder();
-            FormatHelper.LeftPad(123, 3, builder);
-            Assert.AreEqual("123", builder.ToString());
-        }
-
-        [Test]
-        public void TestLeftPad_valueLarger()
-        {
-            var builder = new StringBuilder();
-            FormatHelper.LeftPad(123456, 3, builder);
-            Assert.AreEqual("123456", builder.ToString());
+            AssertLeftPad(123, 5, "00123");
+            AssertLeftPad(123, 3, "123");
+            AssertLeftPad(123, 1, "123");
         }
 
         [Test]
@@ -54,6 +38,29 @@ namespace NodaTime.Test.Text
         {
             var builder = new StringBuilder();
             Assert.Throws<FormatException>(() => FormatHelper.LeftPad(123456, 3000, builder));
+        }
+
+        [Test]
+        public void TestLeftPad_Negative()
+        {
+            AssertLeftPad(-123, 5, "-00123");
+            AssertLeftPad(-123, 3, "-123");
+            AssertLeftPad(-123, 1, "-123");
+        }
+
+        [Test]
+        public void TestLeftPad_MinValue()
+        {
+            AssertLeftPad(int.MinValue, 15, "-000002147483648");
+            AssertLeftPad(int.MinValue, 10, "-2147483648");
+            AssertLeftPad(int.MinValue, 3, "-2147483648");
+        }
+
+        private static void AssertLeftPad(int value, int length, string expected)
+        {
+            var builder = new StringBuilder();
+            FormatHelper.LeftPad(value, length, builder);
+            Assert.AreEqual(expected, builder.ToString());
         }
 
         [Test]
