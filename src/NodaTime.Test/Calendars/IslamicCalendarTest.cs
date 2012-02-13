@@ -37,8 +37,8 @@ namespace NodaTime.Test.Calendars
 
             ldt = ldt.WithCalendar(SampleCalendar);
             Assert.AreEqual(Era.AnnoHegirae, ldt.Era);
-            Assert.AreEqual(14, ldt.CenturyOfEra);  // TODO(V1-Blocker) confirm
-            Assert.AreEqual(64, ldt.YearOfCentury); // TODO(V1-Blocker) confirm
+            Assert.AreEqual(14, ldt.CenturyOfEra);
+            Assert.AreEqual(64, ldt.YearOfCentury);
             Assert.AreEqual(1364, ldt.YearOfEra);
 
             Assert.AreEqual(1364, ldt.Year);
