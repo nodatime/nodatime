@@ -21,7 +21,7 @@ namespace NodaTime.TimeZones
 {
     /// <summary>
     /// A transition between two offsets, usually for daylight saving reasons.
-    /// TODO(jon): Potentially rename this to ZoneTransition after doing something
+    /// TODO(Post-V1): Potentially rename this to ZoneTransition after doing something
     /// else with the current ZoneTransition class :)
     /// </summary>
     internal struct Transition : IEquatable<Transition>
