@@ -120,7 +120,7 @@ namespace NodaTime.Test.Text
             }
             Type oldException = data.Exception;
             string oldMessage = data.Message;
-            // TODO: See if we can clean this up...
+            // TODO(Post-V1): See if we can clean this up...
             // ValueStringEmpty is an failure mode which aborts immediately - there's no point in continuing with multiple patterns.
             if (data.Exception == typeof(UnparsableValueException) && data.Message != Messages.Parse_ValueStringEmpty)
             {
@@ -204,7 +204,7 @@ namespace NodaTime.Test.Text
             }
             Type oldException = data.Exception;
             string oldMessage = data.Message;
-            // TODO: See if we can clean this up...
+            // TODO(Post-V1): See if we can clean this up...
             // ValueStringEmpty is an failure mode which aborts immediately - there's no point in continuing with multiple patterns.
             if (data.Exception == typeof(UnparsableValueException) && data.Message != Messages.Parse_ValueStringEmpty)
             {

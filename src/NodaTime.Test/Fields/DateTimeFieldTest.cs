@@ -21,7 +21,7 @@ using NodaTime.Fields;
 
 namespace NodaTime.Test.Fields
 {
-    // TODO: Refactor a lot of these tests: there's a lot of duplication down the hierarchy.
+    // TODO(Post-V1): Refactor a lot of these tests: there's a lot of duplication down the hierarchy.
     [TestFixture]
     public class DateTimeFieldTest
     {

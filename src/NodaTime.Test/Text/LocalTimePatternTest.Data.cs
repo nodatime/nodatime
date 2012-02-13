@@ -170,7 +170,6 @@ namespace NodaTime.Test.Text
         internal static readonly Data[] FormatAndParseData = {
             new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = ".", Pattern = "%." },
             new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = ":", Pattern = "%:" },
-            // TODO: Work out what this should actually do...
             new Data(LocalTime.Midnight) { Culture = Cultures.ItIt, Text = ".", Pattern = "%." },
             new Data(LocalTime.Midnight) { Culture = Cultures.ItIt, Text = ".", Pattern = "%:" },
             new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = "H", Pattern = "\\H" },

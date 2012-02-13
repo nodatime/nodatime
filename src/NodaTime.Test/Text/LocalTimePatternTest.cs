@@ -32,7 +32,7 @@ namespace NodaTime.Test.Text
         private static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
         // Some tests don't run nicely on Mono, e.g. as they have characters we don't expect in their long/short patterns.
         // Pretend we have no cultures, for the sake of these tests.
-        // TODO: Make the tests pass instead?
+        // TODO(Post-V1): Make the tests pass instead?
         private static readonly IEnumerable<CultureInfo> AllCulturesOrEmptyOnMono = TestHelper.IsRunningOnMono ? new CultureInfo[0] : AllCultures;
 #pragma warning restore 0414
 
@@ -127,7 +127,7 @@ namespace NodaTime.Test.Text
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             // On Mono, some general patterns include an offset at the end. For the moment, ignore them.
-            // TODO: Work out what to do in such cases...
+            // TODO(Post-V1): Work out what to do in such cases...
             if (patternText.EndsWith("z"))
             {
                 return;

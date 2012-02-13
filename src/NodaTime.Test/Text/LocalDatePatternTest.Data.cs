@@ -136,7 +136,7 @@ namespace NodaTime.Test.Text
             new Data(2011, 1, 3) { Pattern = "MMM ddd", Text = "AbbrNonGenName Mon", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
             // Genitive month name when the pattern includes "day of month"
             new Data(2011, 1, 3) { Pattern = "MMMM dd", Text = "FullGenName 03", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
-            // TODO: Check whether or not this is actually appropriate
+            // TODO(Post-V1): Check whether or not this is actually appropriate
             new Data(2011, 1, 3) { Pattern = "MMM dd", Text = "AbbrGenName 03", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
 
             // Era handling
