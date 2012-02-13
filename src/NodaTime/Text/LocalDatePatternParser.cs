@@ -33,7 +33,7 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Maximum two-digit-year in the template to treat as the current century.
-        /// TODO: Make this configurable, and define its meaning for negative absolute years.
+        /// TODO(Post-V1): Make this configurable, and define its meaning for negative absolute years.
         /// </summary>
         private const int TwoDigitYearMax = 30;
 
@@ -86,7 +86,7 @@ namespace NodaTime.Text
             var patternCursor = new PatternCursor(patternText);
 
             // Prime the pump...
-            // TODO: Add this to the builder?
+            // TODO(Post-V1): Add this to the builder?
             patternBuilder.AddParseAction((str, bucket) =>
             {
                 str.MoveNext();
@@ -243,8 +243,9 @@ namespace NodaTime.Text
                         break;
                     // No default: it would be impossible.
                 }
-                // TODO: Wrong field if we happen to have been given the year of era instead...
+                // TODO(Post-V1): Wrong field if we happen to have been given the year of era instead...
                 // Pretty insignificant problem, mind you...
+                // (The error is reported in the right circumstances - it's just that it will refer to 'y' regardless.)
                 if (Year > calendar.MaxYear || Year < calendar.MinYear)
                 {
                     return ParseResult<LocalDate>.FieldValueOutOfRange(Year, 'y');
@@ -254,7 +255,7 @@ namespace NodaTime.Text
 
             private static int GetAbsoluteYearFromTwoDigits(int absoluteBase, int twoDigits)
             {
-                // TODO: Sanity check this. It's one way of defining it...
+                // TODO(Post-V1): Sanity check this. It's one way of defining it...
                 if (absoluteBase < 0)
                 {
                     return -GetAbsoluteYearFromTwoDigits(Math.Abs(absoluteBase), twoDigits);

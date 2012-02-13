@@ -124,7 +124,7 @@ namespace NodaTime.Text.Patterns
                 AddFormatAction((value, builder) => builder.Append(expectedChar));
                 return null;
             }
-            // TODO: These are ludicrously slow... see
+            // TODO(Post-V1): These are ludicrously slow... see
             // http://msmvps.com/blogs/jon_skeet/archive/2011/08/23/optimization-and-generics-part-2-lambda-expressions-and-reference-types.aspx
             // for a description of the problem. I need to find a solution though...
             AddParseAction((str, bucket) => str.Match(expectedText) ? null : failure);
@@ -225,7 +225,7 @@ namespace NodaTime.Text.Patterns
         /// <summary>
         /// Adds parse actions for a list of strings, such as days of the week or month names.
         /// The parsing is performed case-insensitively.
-        /// TODO: Make this much more efficient in terms of capture...
+        /// TODO(Post-V1): Make this much more efficient in terms of capture...
         /// </summary>
         internal void AddParseTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues)
         {
@@ -246,7 +246,7 @@ namespace NodaTime.Text.Patterns
         /// <summary>
         /// Adds parse actions for two list of strings, such as non-genitive and genitive month names.
         /// The parsing is performed case-insensitively.
-        /// TODO: Make this much more efficient in terms of capture...
+        /// TODO(Post-V1): Make this much more efficient in terms of capture...
         /// </summary>
         internal void AddParseTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues1, IList<string> textValues2)
         {
@@ -321,7 +321,7 @@ namespace NodaTime.Text.Patterns
                 {
                     return ParseResult<TResult>.PositiveSignInvalid;
                 }
-                // TODO: This is different to the original logic, which would fail with a required sign error now... Check!
+                // TODO(V1-Blocker): This is different to the original logic, which would fail with a required sign error now... Check!
                 signSetter(bucket, true);
                 return null;
             });

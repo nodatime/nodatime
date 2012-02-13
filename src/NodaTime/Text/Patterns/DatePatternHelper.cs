@@ -38,7 +38,7 @@ namespace NodaTime.Text.Patterns
         {
             return (pattern, builder) =>
             {
-                // TODO: Handle parsing and formatting negative years.
+                // TODO(Post-V1): Handle parsing and formatting negative years.
                 PatternParseResult<TResult> failure = null;
                 int count = pattern.GetRepeatCount(5, ref failure);
                 if (failure != null)
@@ -114,7 +114,7 @@ namespace NodaTime.Text.Patterns
                         }
                         else
                         {
-                            // TODO: Make this more robust. The genitive text values come first here because in some cultures they
+                            // TODO(Post-V1): Make this more robust. The genitive text values come first here because in some cultures they
                             // are longer than the non-genitive forms - we want to match the longest substring. (We're not doing any backtracking...)
                             // This will fail to do the right thing if we get into the opposite situation.
                             builder.AddParseTextAction(pattern.Current, textSetter, format.CultureInfo.CompareInfo,

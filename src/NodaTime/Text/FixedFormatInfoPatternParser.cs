@@ -24,7 +24,7 @@ namespace NodaTime.Text
     /// <summary>
     /// A pattern parser for a single format info, which caches patterns by text/style.
     /// </summary>
-    // TODO: Consider making this an interface. It was a sealed class before we needed a non-caching implementation.
+    // TODO(Post-V1): Consider making this an interface. It was a sealed class before we needed a non-caching implementation.
     internal abstract class FixedFormatInfoPatternParser<T>
     {
         private readonly IPatternParser<T> patternParser;
@@ -50,7 +50,7 @@ namespace NodaTime.Text
 
         private sealed class CachingFixedFormatInfoPatternParser: FixedFormatInfoPatternParser<T>
         {
-            // TODO: Replace this with a real LRU cache or something similar.
+            // TODO(V1-Blocker): Replace this with a real LRU cache or something similar.
             private readonly Dictionary<string, PatternParseResult<T>> cache;
 
             internal CachingFixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
@@ -61,8 +61,6 @@ namespace NodaTime.Text
 
             internal override PatternParseResult<T> ParsePattern(string pattern)
             {
-                // TODO: This currently only caches valid patterns. Is that reasonable?
-
                 // I don't normally like locking on anything other than object, but I trust
                 // Dictionary not to lock on itself.
                 lock (cache)

@@ -18,6 +18,7 @@
 using System;
 using System.Globalization;
 using NodaTime.Globalization;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
@@ -92,15 +93,9 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static LocalTimePattern Create(string patternText, NodaFormatInfo formatInfo, LocalTime templateValue)
         {
-            // TODO: Work out the best place to do this test. Currently it's also done in LocalTimePatternParser.
-            if (patternText == null)
-            {
-                throw new ArgumentNullException("patternText");
-            }
-            if (formatInfo == null)
-            {
-                throw new ArgumentNullException("formatInfo");
-            }
+            // TODO(Post-V1): Work out the best place to do this test. Currently it's also done in LocalTimePatternParser.
+            Preconditions.CheckNotNull(patternText, "patternText");
+            Preconditions.CheckNotNull(formatInfo, "formatInfo");
             // Use the "fixed" parser for the common case of the 
             var patternParseResult = templateValue == LocalTime.Midnight 
                 ? formatInfo.LocalTimePatternParser.ParsePattern(patternText)
