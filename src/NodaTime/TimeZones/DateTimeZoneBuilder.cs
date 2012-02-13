@@ -278,7 +278,7 @@ namespace NodaTime.TimeZones
             Offset newOffset = lastTransition.WallOffset;
             // If the local time just before the new transition is the same as the local time just
             // before the previous one, just replace the last transition with new one.
-            // TODO: It's not clear what this is doing... work it out and give an example
+            // TODO(Post-V1): It's not clear what this is doing... work it out and give an example
             LocalInstant lastLocalStart = lastTransition.Instant.Plus(lastOffset);
             LocalInstant newLocalStart = transition.Instant.Plus(newOffset);
             if (lastLocalStart == newLocalStart)

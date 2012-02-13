@@ -54,7 +54,7 @@ namespace NodaTime.TimeZones
 
         private ZoneIntervalPair(ZoneInterval early, ZoneInterval late, int matchingIntervals)
         {
-            // TODO: Validation, if we want it:
+            // TODO(Post-V1): Validation, if we want it:
             // - If early is null, late must be null
             // - If both are specified, the end of early must equal the start of late
             this.earlyInterval = early;

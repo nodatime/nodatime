@@ -57,7 +57,7 @@ namespace NodaTime.TimeZones
         [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "ZoneYearOffset is immutable")]
         public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, Offset.Zero);
 
-        // TODO: find a better home for these two arrays
+        // TODO(Post-V1): find a better home for these two arrays
 
         /// <summary>
         /// The months of the year names as they appear in the TZDB zone files. They are
@@ -78,8 +78,9 @@ namespace NodaTime.TimeZones
         private readonly TransitionMode mode;
         private readonly int monthOfYear;
 
-        // TODO: store this as a Duration? It's not accurate to the nearest tick, and it's not really
-        // the right type to use here.
+        // TODO(V1-Blocker): Delve into "24:00" behaviour
+
+        // TODO(Post-V1): Consider using LocalTime instead, as that's what we really mean.
         private readonly Offset tickOfDay;
 
         /// <summary>
@@ -177,7 +178,6 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Gets the tick of day when the rule takes effect.
         /// </summary>
-        // TODO: Is Offset really an appropriate type here? Duration might make more sense.
         public Offset TickOfDay { get { return tickOfDay; } }
 
         #region IEquatable<ZoneYearOffset> Members
@@ -367,7 +367,7 @@ namespace NodaTime.TimeZones
             }
             catch (OverflowException)
             {
-                // TODO: Determine why we really want this behaviour, rather than just letting it throw?
+                // TODO(Post-V1): Determine why we really want this behaviour, rather than just letting it throw?
                 // Would need explicit handling for MinValue and MaxValue probably...
                 return direction < 0 ? Instant.MinValue : Instant.MaxValue;
             }

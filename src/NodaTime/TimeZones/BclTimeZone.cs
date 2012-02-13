@@ -135,7 +135,7 @@ namespace NodaTime.TimeZones
                 else
                 {
                     var nextRule = rules[i + 1];
-                    // TODO: Tidy this up (we do the same thing on the next iteration...)
+                    // TODO(Post-V1): Tidy this up (we do the same thing on the next iteration...)
                     ZoneRecurrence nextStandard, nextDaylight;
                     GetRecurrences(bclZone, nextRule, out nextStandard, out nextDaylight);
 

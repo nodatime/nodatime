@@ -150,7 +150,7 @@ namespace NodaTime.TimeZones
                 return intervalFromTailZone.Start < tailZoneStart ? firstTailZoneInterval : intervalFromTailZone;
             }
 
-            // TODO: Consider using a binary search instead.
+            // TODO(V1-Blocker): Consider using a binary search instead.
             for (var p = periods.Length - 1; p >= 0; p--)
             {
                 if (periods[p].Contains(instant))
@@ -168,7 +168,7 @@ namespace NodaTime.TimeZones
         /// <returns><c>true</c> if this instance is cachable; otherwise, <c>false</c>.</returns>
         public bool IsCachable()
         {
-            // TODO: Work out some decent rules for this. Previously we would only cache if the
+            // TODO(Post-V1): Work out some decent rules for this. Previously we would only cache if the
             // tail zone was non-null... which was *always* the case due to the use of NullDateTimeZone.
             // We could potentially go back to returning tailZone != null - benchmarking required.
             return true;
