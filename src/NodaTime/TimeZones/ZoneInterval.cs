@@ -23,13 +23,8 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///   Represents a range of time for which a particular Offset applies.
+    /// Represents a range of time for which a particular Offset applies.
     /// </summary>
-    /// <remarks>
-    ///   <para>
-    ///     This type is immutable and thread-safe.
-    ///   </para>
-    /// </remarks>
     public class ZoneInterval : IEquatable<ZoneInterval>
     {
         private readonly Instant end;

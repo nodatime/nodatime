@@ -209,6 +209,18 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void GetZoneIntervals_NullTailZone_Eot()
+        {
+            ZoneInterval[] intervals =
+            {
+                new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", new Instant(20), Instant.MaxValue, Offset.Zero, Offset.Zero),                                       
+            };
+            var zone = new PrecalculatedDateTimeZone("Test", intervals, null);
+            Assert.AreEqual(intervals[1], zone.GetZoneInterval(Instant.MaxValue));
+        }
+
+        [Test]
         public void Validation_EmptyPeriodArray()
         {
             Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(new ZoneInterval[0],
