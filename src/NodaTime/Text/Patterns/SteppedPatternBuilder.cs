@@ -321,7 +321,6 @@ namespace NodaTime.Text.Patterns
                 {
                     return ParseResult<TResult>.PositiveSignInvalid;
                 }
-                // TODO(V1-Blocker): This is different to the original logic, which would fail with a required sign error now... Check!
                 signSetter(bucket, true);
                 return null;
             });

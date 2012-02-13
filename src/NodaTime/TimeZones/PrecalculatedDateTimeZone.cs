@@ -149,15 +149,34 @@ namespace NodaTime.TimeZones
                 ZoneInterval intervalFromTailZone = tailZone.GetZoneInterval(instant);
                 return intervalFromTailZone.Start < tailZoneStart ? firstTailZoneInterval : intervalFromTailZone;
             }
-
-            // TODO(V1-Blocker): Consider using a binary search instead.
-            for (var p = periods.Length - 1; p >= 0; p--)
+            
+            // Special case to avoid the later logic being problematic
+            if (instant == Instant.MaxValue)
             {
-                if (periods[p].Contains(instant))
+                return periods[periods.Length - 1];
+            }
+
+            int lower = 0; // Inclusive
+            int upper = periods.Length; // Exclusive
+
+            while (lower < upper)
+            {
+                int current = (lower + upper) / 2;
+                var candidate = periods[current];
+                if (candidate.Start > instant)
                 {
-                    return periods[p];
+                    upper = current;
+                }
+                else if (candidate.End <= instant)
+                {
+                    lower = current + 1;
+                }
+                else
+                {
+                    return candidate;
                 }
             }
+            // Note: this would indicate a bug. The time zone is meant to cover the whole of time.
             throw new InvalidOperationException(string.Format("Instant {0} did not exist in time zone {1}", instant, Id));
         }
 
