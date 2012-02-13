@@ -84,12 +84,12 @@ namespace NodaTime.Text
             var patternCursor = new PatternCursor(patternText);
 
             // Prime the pump...
-            // TODO: Add this to the builder?
+            // TODO(Post-V1): Add this to the builder?
             patternBuilder.AddParseAction((str, bucket) =>
-                                          {
-                                              str.MoveNext();
-                                              return null;
-                                          });
+            {
+                str.MoveNext();
+                return null;
+            });
 
             while (patternCursor.MoveNext())
             {
