@@ -21,9 +21,11 @@ using NodaTime.TimeZones;
 
 namespace NodaTime.Test.TimeZones
 {
-    // Tests for aspects of DateTimeZone to do with converting from LocalDateTime and 
-    // LocalDate to ZonedDateTime.
-    /// TODO: Fix all tests to use SingleTransitionZone.
+    /// <summary>
+    /// Tests for aspects of DateTimeZone to do with converting from LocalDateTime and 
+    /// LocalDate to ZonedDateTime.
+    /// </summary>
+    // TODO(Post-V1): Fix all tests to use SingleTransitionZone.
     public partial class DateTimeZoneTest
     {
         // Sample time zones for DateTimeZone.AtStartOfDay etc. I didn't want to only test midnight transitions.

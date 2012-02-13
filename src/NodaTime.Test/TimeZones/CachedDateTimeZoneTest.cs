@@ -49,7 +49,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneIntervalInstant_RepeatedCallsReturnDifferentObject()
         {
-            // TODO: Work out whether this is a good test or not, and whether it's okay
+            // TODO(V1-Blocker): Work out whether this is a good test or not, and whether it's okay
             // to just hard code a value which is more than the cache size here. We don't
             // really need the cache size in the API in general.
             int moreThanCacheSize = 512;

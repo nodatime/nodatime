@@ -24,7 +24,7 @@ namespace NodaTime.Test
     /// <summary>
     /// Tests for <see cref="LocalDateTime" />.
     /// </summary>
-    // TODO: We need more tests, desperately!
+    // TODO(Post-V1): We need more tests, desperately!
     [TestFixture]
     public partial class LocalDateTimeTest
     {

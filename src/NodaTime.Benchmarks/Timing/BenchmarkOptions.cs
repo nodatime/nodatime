@@ -39,7 +39,7 @@ namespace NodaTime.Benchmarks.Timing
 
         internal static BenchmarkOptions FromCommandLine(string[] args)
         {
-            // TODO: Use command line:)
+            // TODO(Post-V1): Use command line:)
             return new BenchmarkOptions
                    {
                        TypeFilter = args.FirstOrDefault(),

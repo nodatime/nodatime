@@ -113,7 +113,7 @@ namespace NodaTime.Test.Text
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             // On Mono, some general patterns include an offset at the end. For the moment, ignore them.
-            // TODO: Work out what to do in such cases...
+            // TODO(Post-V1): Work out what to do in such cases...
             if ((patternText == "f" && culture.DateTimeFormat.ShortTimePattern.EndsWith("z")) ||
                 (patternText == "F" && culture.DateTimeFormat.FullDateTimePattern.EndsWith("z")) ||
                 (patternText == "g" && culture.DateTimeFormat.ShortTimePattern.EndsWith("z")) ||
@@ -129,7 +129,7 @@ namespace NodaTime.Test.Text
 
             // Formatting a DateTime with an always-invariant pattern (round-trip, sortable) does the wrong thing.
             // Use the Gregorian calendar for those tests.
-            // TODO: Check this actually makes sense... maybe we ought to be converting to the ISO calendar in that case.
+            // TODO(V1-Blocker): Check this actually makes sense... maybe we ought to be converting to the ISO calendar in that case.
             Calendar calendar = "Oos".Contains(patternText) ? CultureInfo.InvariantCulture.Calendar : culture.Calendar;
             // Note that we're using Jon's -600th birthday so as to be in the right year range for the Saudi calendar.
             DateTime sampleDateTime = new DateTime(1376, 6, 19, 21, 13, 34, 123, calendar,

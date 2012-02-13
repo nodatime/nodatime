@@ -68,8 +68,7 @@ namespace NodaTime.Test
         [Test]
         public void Constructor_InvalidYear()
         {
-            // TODO: We don't actually *expose* the maximum year of calendars. Maybe we should.
-            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(40000, 1, 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(CalendarSystem.Iso.MaxYear + 1, 1, 1));
         }
     }
 }

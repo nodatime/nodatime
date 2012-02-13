@@ -30,9 +30,9 @@ namespace NodaTime.CheckTimeZones
     /// Currently, there's just code to dump both sets of transitions (for all zones) - you can then
     /// use a diffing tool to see the changes (or lack thereof).
     /// </remarks>
-    // TODO: Include the ability to dump a single zone
-    // TODO: Include the ability to parse the output of JodaDump and just validate it
-    // TODO: Include the ability to specify a resx file or possibly even a tzdb data directory
+    // TODO(Post-V1): Include the ability to dump a single zone
+    // TODO(Post-V1): Include the ability to parse the output of JodaDump and just validate it
+    // TODO(Post-V1): Include the ability to specify a resx file or possibly even a tzdb data directory
     public class Program
     {
         private static readonly Instant Start = Instant.FromUtc(1900, 1, 1, 0,  0);
