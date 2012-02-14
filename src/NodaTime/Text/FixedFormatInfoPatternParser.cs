@@ -50,7 +50,7 @@ namespace NodaTime.Text
 
         private sealed class CachingFixedFormatInfoPatternParser: FixedFormatInfoPatternParser<T>
         {
-            // TODO(V1-Blocker): Replace this with a real LRU cache or something similar.
+            // TODO(Post-V1): Replace this with a real LRU cache or something similar.
             private readonly Dictionary<string, PatternParseResult<T>> cache;
 
             internal CachingFixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
