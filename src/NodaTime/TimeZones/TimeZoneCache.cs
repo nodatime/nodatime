@@ -60,10 +60,15 @@ namespace NodaTime.TimeZones
         /// Gets the system default time zone, as mapped by the underlying provider.
         /// </summary>
         /// <remarks>
-        /// This method never returns null, or defaults to a particular time zone. If the local system time zone cannot
-        /// be mapped, it will throw <see cref="InvalidOperationException"/>.
+        /// Callers should be aware that this method can return null, even with standard Windows time zones.
+        /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
+        /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
+        /// the null-coalescing operator to effectively provider a default:
         /// </remarks>
-        /// <exception cref="InvalidOperationException">The system time zone could not be mapped by the underlying provider.</exception>
+        /// <returns>
+        /// The provider-specific representation of the system time zone, or null if the time zone
+        /// could not be mapped.
+        /// </returns>
         // TODO(Post-V1): Take another look at this policy and canvas user opinion.
         internal DateTimeZone GetSystemDefault()
         {
@@ -71,14 +76,9 @@ namespace NodaTime.TimeZones
             string id = provider.MapTimeZoneId(bcl);
             if (id == null)
             {
-                throw new InvalidOperationException("The system time zone '" + bcl.Id + "' has no mapping with the current DateTimeZoneProvider");
+                return null;
             }
-            DateTimeZone zone = this[id];
-            if (zone == null)
-            {
-                throw new InvalidOperationException("The system time zone '" + bcl.Id + "' maps to provider ID '" + id + "'; which couldn't be found");
-            }
-            return zone;
+            return this[id];
         }
 
         /// <summary>
