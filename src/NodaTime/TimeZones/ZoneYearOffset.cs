@@ -560,6 +560,7 @@ namespace NodaTime.TimeZones
             hash = HashCodeHelper.Hash(hash, dayOfWeek);
             hash = HashCodeHelper.Hash(hash, advance);
             hash = HashCodeHelper.Hash(hash, tickOfDay);
+            hash = HashCodeHelper.Hash(hash, addDay);
             return hash;
         }
 
