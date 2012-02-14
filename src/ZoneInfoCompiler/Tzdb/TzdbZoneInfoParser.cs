@@ -225,6 +225,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             int dayOfMonth = 1;
             int dayOfWeek = 0;
             bool advanceDayOfWeek = false;
+            bool addDay = false;
 
             if (tokens.HasNextToken || forRule)
             {
@@ -279,13 +280,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                         }
                         if (atTime == "24:00")
                         {
-                            LocalDate date = (dayOfMonth == -1
-                                                  ? new LocalDate(2001, monthOfYear, 1) + Period.FromMonths(1)
-                                                  : new LocalDate(2001, monthOfYear, dayOfMonth) + Period.FromDays(1));
-                            advanceDayOfWeek = (dayOfMonth != -1);
-                            monthOfYear = date.MonthOfYear;
-                            dayOfMonth = date.DayOfMonth;
-                            dayOfWeek = ((dayOfWeek - 1 + 1) % 7) + 1;
+                            tickOfDay = Offset.Zero;
+                            addDay = true;
                         }
                         else
                         {
@@ -294,7 +290,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     }
                 }
             }
-            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay);
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay, addDay);
         }
 
         /// <summary>

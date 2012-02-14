@@ -77,8 +77,7 @@ namespace NodaTime.TimeZones
         private readonly int dayOfWeek;
         private readonly TransitionMode mode;
         private readonly int monthOfYear;
-
-        // TODO(V1-Blocker): Delve into "24:00" behaviour
+        private readonly bool addDay;
 
         // TODO(Post-V1): Consider using LocalTime instead, as that's what we really mean.
         private readonly Offset tickOfDay;
@@ -92,7 +91,22 @@ namespace NodaTime.TimeZones
         /// <param name="dayOfWeek">The day of week. 0 means not set.</param>
         /// <param name="advance">if set to <c>true</c> [advance].</param>
         /// <param name="tickOfDay">The tick within the day.</param>
-        public ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, Offset tickOfDay)
+        internal ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, Offset tickOfDay)
+            : this(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, tickOfDay, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZoneYearOffset"/> class.
+        /// </summary>
+        /// <param name="mode">The transition mode.</param>
+        /// <param name="monthOfYear">The month year offset.</param>
+        /// <param name="dayOfMonth">The day of month. Negatives count from end of month.</param>
+        /// <param name="dayOfWeek">The day of week. 0 means not set.</param>
+        /// <param name="advance">if set to <c>true</c> [advance].</param>
+        /// <param name="tickOfDay">The tick within the day.</param>
+        /// <param name="addDay">Whether to add an extra day (for 24:00 handling).</param>
+        internal ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, Offset tickOfDay, bool addDay)
         {
             VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear, false);
             VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
@@ -108,6 +122,7 @@ namespace NodaTime.TimeZones
             this.dayOfWeek = dayOfWeek;
             this.advance = advance;
             this.tickOfDay = tickOfDay;
+            this.addDay = addDay;
         }
 
         /// <summary>
@@ -203,7 +218,8 @@ namespace NodaTime.TimeZones
                 dayOfMonth == other.dayOfMonth && 
                 dayOfWeek == other.dayOfWeek &&
                 advance == other.advance && 
-                tickOfDay == other.tickOfDay;
+                tickOfDay == other.tickOfDay &&
+                addDay == other.addDay;
         }
         #endregion
 
@@ -250,6 +266,11 @@ namespace NodaTime.TimeZones
             instant = SetDayOfWeek(calendar, instant);
 
             Offset offset = GetOffset(standardOffset, savings);
+            if (addDay)
+            {
+                instant += Duration.OneDay;
+            }
+
             // Convert from local time to UTC.
             return instant.Minus(offset);
         }
@@ -294,6 +315,7 @@ namespace NodaTime.TimeZones
             writer.WriteCount(DayOfWeek + 7);
             writer.WriteBoolean(AdvanceDayOfWeek);
             writer.WriteOffset(TickOfDay);
+            writer.WriteBoolean(addDay);
         }
 
         public static ZoneYearOffset Read(DateTimeZoneReader reader)
@@ -309,7 +331,8 @@ namespace NodaTime.TimeZones
             int dayOfWeek = reader.ReadCount() - 7;
             bool advance = reader.ReadBoolean();
             var ticksOfDay = reader.ReadOffset();
-            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay);
+            var addDay = reader.ReadBoolean();
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay, addDay);
         }
 
         /// <summary>
@@ -361,6 +384,10 @@ namespace NodaTime.TimeZones
                         newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
                         newInstant = SetDayOfWeek(calendar, newInstant);
                     }
+                }
+                if (addDay)
+                {
+                    newInstant += Duration.OneDay;
                 }
                 // Convert from local time to UTC.
                 return newInstant.Minus(offset);

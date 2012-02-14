@@ -106,7 +106,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             const string text = "Mar Tue>=14 2:00";
             var tokens = Tokens.Tokenize(text);
             var actual = Parser.ParseDateTimeOfYear(tokens, true);
-            var expected = new ZoneYearOffset(TransitionMode.Wall, 3, 14, (int)DayOfWeek.Tuesday, true, ToOffset(2, 0, 0, 0));
+            var expected = new ZoneYearOffset(TransitionMode.Wall, 3, 14, (int)IsoDayOfWeek.Tuesday, true, ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
         }
 
@@ -116,7 +116,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             const string text = "Mar Tue<=14 2:00";
             var tokens = Tokens.Tokenize(text);
             var actual = Parser.ParseDateTimeOfYear(tokens, true);
-            var expected = new ZoneYearOffset(TransitionMode.Wall, 3, 14, (int)DayOfWeek.Tuesday, false, ToOffset(2, 0, 0, 0));
+            var expected = new ZoneYearOffset(TransitionMode.Wall, 3, 14, (int)IsoDayOfWeek.Tuesday, false, ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
         }
 
@@ -126,7 +126,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             const string text = "Mar lastTue 2:00";
             var tokens = Tokens.Tokenize(text);
             var actual = Parser.ParseDateTimeOfYear(tokens, true);
-            var expected = new ZoneYearOffset(TransitionMode.Wall, 3, -1, (int)DayOfWeek.Tuesday, false, ToOffset(2, 0, 0, 0));
+            var expected = new ZoneYearOffset(TransitionMode.Wall, 3, -1, (int)IsoDayOfWeek.Tuesday, false, ToOffset(2, 0, 0, 0));
             Assert.AreEqual(expected, actual);
         }
 
@@ -423,13 +423,55 @@ namespace ZoneInfoCompiler.Test.Tzdb
 
         /* ############################################################################### */
 
+        public void Parse_2400_FromDay_AtLeast_Sunday()
+        {
+            const string text = "Apr Sun>=1  24:00";
+            var tokens = Tokens.Tokenize(text);
+            var rule = Parser.ParseDateTimeOfYear(tokens, true);
+            var actual = rule.Next(Instant.FromUtc(2012, 1, 1, 0, 0), Offset.Zero, Offset.Zero);
+            var expected = Instant.FromUtc(2012, 4, 2, 0, 0);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Parse_2400_FromDay_AtMost_Sunday()
+        {
+            const string text = "Apr Sun<=7  24:00";
+            var tokens = Tokens.Tokenize(text);
+            var rule = Parser.ParseDateTimeOfYear(tokens, true);
+            var actual = rule.Next(Instant.FromUtc(2012, 1, 1, 0, 0), Offset.Zero, Offset.Zero);
+            var expected = Instant.FromUtc(2012, 4, 2, 0, 0);
+            Assert.AreEqual(expected, actual);
+        }
+
+        public void Parse_2400_FromDay_AtLeast_Wednesday()
+        {
+            const string text = "Apr Wed>=1  24:00";
+            var tokens = Tokens.Tokenize(text);
+            var rule = Parser.ParseDateTimeOfYear(tokens, true);
+            var actual = rule.Next(Instant.FromUtc(2012, 1, 1, 0, 0), Offset.Zero, Offset.Zero);
+            var expected = Instant.FromUtc(2012, 4, 5, 0, 0);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Parse_2400_FromDay_AtMost_Wednesday()
+        {
+            const string text = "Apr Wed<=14  24:00";
+            var tokens = Tokens.Tokenize(text);
+            var rule = Parser.ParseDateTimeOfYear(tokens, true);
+            var actual = rule.Next(Instant.FromUtc(2012, 1, 1, 0, 0), Offset.Zero, Offset.Zero);
+            var expected = Instant.FromUtc(2012, 4, 12, 0, 0);
+            Assert.AreEqual(expected, actual);
+        }
+
         [Test]
         public void Parse_2400_FromDay()
         {
             const string text = "Apr Sun>=1  24:00";
             var tokens = Tokens.Tokenize(text);
             var actual = Parser.ParseDateTimeOfYear(tokens, true);
-            var expected = new ZoneYearOffset(TransitionMode.Wall, 4, 2, (int)DayOfWeek.Monday, true, ToOffset(0, 0, 0, 0));
+            var expected = new ZoneYearOffset(TransitionMode.Wall, 4, 1, (int)IsoDayOfWeek.Sunday, true, ToOffset(0, 0, 0, 0), true);
             Assert.AreEqual(expected, actual);
         }
 
@@ -439,7 +481,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             const string text = "Mar lastSun 24:00";
             var tokens = Tokens.Tokenize(text);
             var actual = Parser.ParseDateTimeOfYear(tokens, true);
-            var expected = new ZoneYearOffset(TransitionMode.Wall, 4, 1, (int)DayOfWeek.Monday, false, ToOffset(0, 0, 0, 0));
+            var expected = new ZoneYearOffset(TransitionMode.Wall, 3, -1, (int)IsoDayOfWeek.Sunday, false, ToOffset(0, 0, 0, 0), true);
             Assert.AreEqual(expected, actual);
         }
 
