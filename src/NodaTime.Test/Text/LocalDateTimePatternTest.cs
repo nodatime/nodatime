@@ -127,9 +127,9 @@ namespace NodaTime.Test.Text
             // values, even though that may represent a completely different date/time to the Noda Time version...
             // we're only testing the formatting here.
 
-            // Formatting a DateTime with an always-invariant pattern (round-trip, sortable) does the wrong thing.
+            // Formatting a DateTime with an always-invariant pattern (round-trip, sortable) converts to the ISO
+            // calendar in .NET (which is reasonable, as there's no associated calendar).
             // Use the Gregorian calendar for those tests.
-            // TODO(V1-Blocker): Check this actually makes sense... maybe we ought to be converting to the ISO calendar in that case.
             Calendar calendar = "Oos".Contains(patternText) ? CultureInfo.InvariantCulture.Calendar : culture.Calendar;
             // Note that we're using Jon's -600th birthday so as to be in the right year range for the Saudi calendar.
             DateTime sampleDateTime = new DateTime(1376, 6, 19, 21, 13, 34, 123, calendar,
