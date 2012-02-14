@@ -195,6 +195,11 @@ namespace NodaTime.TimeZones
         /// </summary>
         public Offset TickOfDay { get { return tickOfDay; } }
 
+        /// <summary>
+        /// Determines whether or not to add an extra day, for "24:00" offsets.
+        /// </summary>
+        public bool AddDay { get { return addDay; } }
+
         #region IEquatable<ZoneYearOffset> Members
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -588,7 +593,14 @@ namespace NodaTime.TimeZones
                 builder.Append(AdvanceDayOfWeek ? ">=" : "<=");
                 builder.Append(DayOfMonth).Append(" ");
             }
-            builder.Append(TickOfDay);
+            if (!addDay)
+            {
+                builder.Append(TickOfDay);
+            }
+            else
+            {
+                builder.Append("24:00");
+            }
             switch (Mode)
             {
                 case TransitionMode.Standard:
