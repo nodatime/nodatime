@@ -34,9 +34,14 @@ namespace NodaTime.TimeZones
     public sealed class DateTimeZoneResourceProvider : IDateTimeZoneProvider
     {
         /// <summary>
-        /// The key used to find the Winows to TZDB ID mappings.
+        /// The key used to find the Windows to TZDB ID mappings.
         /// </summary>
-        public const string WindowToPosixMapKey = "Windows_To_Posix";
+        public const string WindowsToPosixMapKey = "Windows_To_Posix";
+
+        /// <summary>
+        /// The key used to find the Windows to TZDB ID version.
+        /// </summary>
+        public const string WindowsToPosixMapVersionKey = "Windows_To_Posix_Version";
 
         /// <summary>
         /// The key used to find ID mappings within the resource. Deliberately
@@ -94,13 +99,13 @@ namespace NodaTime.TimeZones
             {
                 throw new InvalidDataException("No map with key " + IdMapKey + " in resource");
             }
-            windowsIdMap = ResourceHelper.LoadDictionary(source, WindowToPosixMapKey);
+            windowsIdMap = ResourceHelper.LoadDictionary(source, WindowsToPosixMapKey);
             // TODO(Post-V1): Consider forming inverse map too.
             if (windowsIdMap == null)
             {
-                throw new InvalidDataException("No map with key " + WindowToPosixMapKey + " in resource");
+                throw new InvalidDataException("No map with key " + WindowsToPosixMapKey + " in resource");
             }
-            this.version = source.GetString(VersionKey);
+            this.version = source.GetString(VersionKey) + " (mapping: " + source.GetString(WindowsToPosixMapVersionKey) + ")";
         }
 
         /// <summary>
