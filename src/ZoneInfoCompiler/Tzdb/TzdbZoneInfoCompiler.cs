@@ -116,45 +116,27 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             return builder.ToDateTimeZone(zoneList.Name);
         }
 
-        /// <summary>
-        ///   Executes compiler with the specified command line.
-        /// </summary>
-        /// <param name="arguments">The command line arguments.</param>
-        /// <returns>0 if successful, non-zero if an error occurred.</returns>
-        internal int Execute(string[] arguments)
+        public int Execute(string sourceDirectoryName, ResourceOutput output)
         {
-            var options = new TzdbCompilerOptions();
-            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(log.InfoWriter));
-            return parser.ParseArguments(arguments, options) ? Execute(options) : 1;
-        }
-
-        public int Execute(TzdbCompilerOptions options)
-        {
-            log.Info("Starting compilation of directory {0}", options.SourceDirectoryName);
+            log.Info("Starting compilation of directory {0}", sourceDirectoryName);
             DateTimeZone.SetProvider(new EmptyDateTimeZoneProvider());
-            var sourceDirectory = new DirectoryInfo(options.SourceDirectoryName);
-            var outputFile = new FileInfo(options.OutputFileName);
-            var files = options.InputFiles;
-            var fileList = MakeFileList(sourceDirectory, files);
-            ValidateArguments(sourceDirectory, fileList);
-            using (var output = new ResourceOutput(outputFile.FullName, options.OutputType))
-            {
-                //// Using this conditional code makes debugging simpler in Visual Studio because exceptions will
-                //// be caught by VS and shown with the exception visualizer.
+            var sourceDirectory = new DirectoryInfo(sourceDirectoryName);
+            var fileList = sourceDirectory.GetFiles();
+            //// Using this conditional code makes debugging simpler in Visual Studio because exceptions will
+            //// be caught by VS and shown with the exception visualizer.
 #if DEBUG
-                Compile(sourceDirectory.Name, fileList, output);
+            Compile(sourceDirectory.Name, fileList, output);
 #else
-                try
-                {
-                    Compile(sourceDirectory.Name, fileList, output);
-                }
-                catch (Exception e)
-                {
-                    log.Error("{0}", e);
-                    return 2;
-                }
-#endif
+            try
+            {
+                Compile(sourceDirectory.Name, fileList, output);
             }
+            catch (Exception e)
+            {
+                log.Error("{0}", e);
+                return 2;
+            }
+#endif
             log.Info("Done compiling time zones.");
             return 0;
         }
@@ -215,44 +197,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             log.Info("=======================================");
         }
 
-        /// <summary>
-        ///   Takes an enumeration of file names and converts it to an enumeration of FileInfo
-        ///   objects.
-        /// </summary>
-        /// <remarks>
-        ///   Only those files that actually exist are returned. If a file does not exist, a message
-        ///   is logged. If the list is empty then all of the files in the <paramref name = "source" />
-        ///   directory are returned.
-        /// </remarks>
-        /// <param name="source">The source directory <see cref="DirectoryInfo" /> object.</param>
-        /// <param name="files">The enumeration of file name strings.</param>
-        /// <returns>Am <see cref="IEnumerable{T}" /> of <see cref="FileInfo" /> objects.</returns>
-        private IEnumerable<FileInfo> MakeFileList(DirectoryInfo source, IEnumerable<string> files)
-        {
-            if (files == null || files.Count() == 0)
-            {
-                var allFiles = source.GetFiles();
-                foreach (var file in allFiles)
-                {
-                    yield return file;
-                }
-            }
-            else
-            {
-                foreach (var fileName in files)
-                {
-                    var fileInfo = new FileInfo(Path.Combine(source.ToString(), fileName));
-                    if (!fileInfo.Exists)
-                    {
-                        log.Error("File [{0}] does not exist", fileInfo.FullName);
-                    }
-                    else
-                    {
-                        yield return fileInfo;
-                    }
-                }
-            }
-        }
 
         /// <summary>
         ///   Parses all of the given files.

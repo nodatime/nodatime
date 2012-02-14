@@ -182,6 +182,7 @@
     <Compile Include="TimeZones\BclTimeZoneTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilderTest.cs" />
+    <Compile Include="TimeZones\DateTimeZoneResourceProviderTest.cs" />
     <Compile Include="TimeZones\TimeZoneCacheTest.cs" />
     <Compile Include="TimeZones\DaylightSavingTimeZoneTest.cs" />
     <Compile Include="TimeZones\EtcTest.cs" />

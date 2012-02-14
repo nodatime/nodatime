@@ -29,7 +29,7 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         private readonly ILog log;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="WindowsMapperCompiler" /> class.
+        /// Initializes a new instance of the <see cref="WindowsMapperCompiler" /> class.
         /// </summary>
         /// <param name="log">The log to write message to.</param>
         public WindowsMapperCompiler(ILog log)
@@ -37,35 +37,19 @@ namespace NodaTime.ZoneInfoCompiler.winmap
             this.log = log;
         }
 
-        /// <summary>
-        ///   Executes the specified arguments.
-        /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns></returns>
-        internal int Execute(string[] arguments)
+        public int Execute(string inputFileName, ResourceOutput output)
         {
-            var options = new WindowsMapperCompilerOptions();
-            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(log.InfoWriter));
-            return parser.ParseArguments(arguments, options) ? Execute(options) : 1;
-        }
-
-        public int Execute(WindowsMapperCompilerOptions options)
-        {
-            log.Info("Starting compilation of {0}", options.SourceFileName);
+            log.Info("Starting compilation of {0}", inputFileName);
             DateTimeZone.SetProvider(new EmptyDateTimeZoneProvider());
-            var inputFile = new FileInfo(options.SourceFileName);
+            var inputFile = new FileInfo(inputFileName);
             if (!inputFile.Exists)
             {
                 log.Error("Source file {0} does not exist", inputFile.FullName);
                 return 2;
             }
             var mappings = ReadInput(inputFile);
-            using (var output = new ResourceOutput(WindowsToPosixResource.WindowToPosixMapBase, options.OutputType))
-            {
-                log.Info("Compiling to {0}", output.OutputFileName);
-                output.WriteDictionary(WindowsToPosixResource.WindowToPosixMapKey, mappings);
-            }
-            log.Info("Finished compiling.", options.SourceFileName);
+            output.WriteDictionary(DateTimeZoneResourceProvider.WindowToPosixMapKey, mappings);
+            log.Info("Finished compiling.", inputFileName);
             return 0;
         }
 
