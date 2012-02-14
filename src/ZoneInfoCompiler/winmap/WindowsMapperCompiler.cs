@@ -18,9 +18,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using System.Xml.XPath;
-using CommandLine;
+using System.Linq;
 using NodaTime.TimeZones;
+using System.Xml.Linq;
 
 namespace NodaTime.ZoneInfoCompiler.winmap
 {
@@ -47,20 +47,46 @@ namespace NodaTime.ZoneInfoCompiler.winmap
                 log.Error("Source file {0} does not exist", inputFile.FullName);
                 return 2;
             }
-            var mappings = ReadInput(inputFile);
-            output.WriteDictionary(DateTimeZoneResourceProvider.WindowToPosixMapKey, mappings);
+            var document = LoadFile(inputFile);
+            var mappings = MapZones(document);
+            log.Info("Mapped {0} zones in total.", mappings.Count);
+            output.WriteDictionary(DateTimeZoneResourceProvider.WindowsToPosixMapKey, mappings);
+            var version = FindVersion(document);
+            output.WriteString(DateTimeZoneResourceProvider.WindowsToPosixMapVersionKey, version);
             log.Info("Finished compiling.", inputFileName);
             return 0;
         }
 
         /// <summary>
-        ///   Reads the input XML file for the windows mappings.
+        /// Reads the input XML file for the windows mappings.
         /// </summary>
-        /// <param name="inputFile">The input file.</param>
         /// <returns>An <see cref="IDictionary{TKey,TValue}" /> of Windows time zone names to POSIX names.</returns>
-        private IDictionary<string, string> ReadInput(FileInfo inputFile)
+        private IDictionary<string, string> MapZones(XDocument document)
         {
-            var mappings = new Dictionary<string, string>();
+            return document.Root.Element("windowsZones")
+                .Element("mapTimezones")
+                .Elements("mapZone")
+                .ToDictionary(x => x.Attribute("other").Value, x => x.Attribute("type").Value);
+        }
+
+        private string FindVersion(XDocument document)
+        {
+            string revision = (string)document.Root.Element("version").Attribute("number");
+            string prefix = "$Revision: ";
+            if (revision.StartsWith(prefix))
+            {
+                revision = revision.Substring(prefix.Length);
+            }
+            string suffix = " $";
+            if (revision.EndsWith(suffix))
+            {
+                revision = revision.Substring(0, revision.Length - suffix.Length);
+            }
+            return revision;
+        }
+
+        private XDocument LoadFile(FileInfo inputFile)
+        {
             using (var reader = inputFile.OpenText())
             {
                 // These settings allow the XML parser to ignore the DOCTYPE element
@@ -69,32 +95,9 @@ namespace NodaTime.ZoneInfoCompiler.winmap
                 readerSettings.ProhibitDtd = false;
                 using (var xmlReader = XmlReader.Create(reader, readerSettings))
                 {
-                    var document = new XPathDocument(xmlReader);
-                    var navigator = document.CreateNavigator();
-                    // Old format
-                    var nodes = navigator.Select("/supplementalData/timezoneData/mapTimezones[@type = 'windows']/mapZone");
-                    if (nodes.Count == 0)
-                    {
-                        // New format
-                        nodes = navigator.Select("/supplementalData/windowsZones/mapTimezones/mapZone");
-                        if (nodes.Count == 0)
-                        {
-                            log.Error("Unable to find any zone information in {0}", inputFile.FullName);
-                            return mappings;
-                        }
-                    }
-                    while (nodes.MoveNext())
-                    {
-                        var node = nodes.Current;
-                        var windowsName = node.GetAttribute("other", "");
-                        var posixName = node.GetAttribute("type", "");
-                        mappings.Add(windowsName, posixName);
-                        log.Info("Mapping Windows name {0} to Posix name {1}", windowsName, posixName);
-                    }
-                    log.Info("Mapped {0} zones in total.", mappings.Count);
+                    return XDocument.Load(xmlReader);
                 }
             }
-            return mappings;
         }
     }
 }
