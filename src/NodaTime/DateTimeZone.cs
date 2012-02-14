@@ -69,17 +69,17 @@ namespace NodaTime
         public static DateTimeZone Utc { get { return UtcZone; } }
 
         /// <summary>
-        ///   Gets the system default time zone which can only be changed by the system.
+        /// Gets the system default time zone, as mapped by the underlying provider.
         /// </summary>
         /// <remarks>
-        ///   <para>
-        ///     The time zones defined in the operating system are different than the ones defines in
-        ///     this library so a mapping will occur. If an exact mapping can be made then that will be
-        ///     used otherwise UTC will be used.
-        ///   </para>
+        /// This method never returns null, or defaults to a particular time zone. If the local system time zone cannot
+        /// be mapped, it will throw <see cref="InvalidOperationException"/>.
         /// </remarks>
-        /// <value>The system default <see cref="T:NodaTime.DateTimeZone" /> this will never be <c>null</c>.</value>
-        public static DateTimeZone SystemDefault { get { return cache.SystemDefault; } }
+        /// <exception cref="InvalidOperationException">The system time zone could not be mapped by the underlying provider.</exception>
+        public static DateTimeZone GetSystemDefault()
+        {
+            return cache.GetSystemDefault();
+        }
 
         /// <summary>
         ///   Returns the time zone with the given id.

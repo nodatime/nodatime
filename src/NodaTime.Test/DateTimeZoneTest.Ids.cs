@@ -48,12 +48,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void SystemDefaultIsNotNull()
-        {
-            Assert.IsNotNull(DateTimeZone.SystemDefault);
-        }
-
-        [Test]
         public void TestForId_nullId()
         {
             Assert.Throws<ArgumentNullException>(() => DateTimeZone.ForId(null));
@@ -144,6 +138,12 @@ namespace NodaTime.Test
             public List<String> Calls { get { return calls; } }
 
             public string VersionId { get { return "version"; } }
+
+
+            public string MapTimeZoneId(TimeZoneInfo timeZone)
+            {
+                return "map";
+            }
         }
     }
 }
